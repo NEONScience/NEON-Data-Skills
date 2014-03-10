@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 title:            Minimal Mistakes
 description:      A responsive Jekyll theme large featured images and solid typography.
 #Comment out url when working locally to resolve base urls correctly
@@ -14,7 +15,7 @@ owner:
   github:         "mmistakes"
   instagram:      "mmistakes"
   # For Google Authorship https://plus.google.com/authorship
-  google_plus:    "http://plus.google.com/118238196859537351707"
+  google_plus:    "MichaelRoseDesign"
 
 # Analytics and webmaster tools stuff goes here
 google_analytics:   UA-2011187-3
