@@ -10,7 +10,7 @@
 * Optional large feature images for posts and pages.
 * Simple and clear permalink structure.
 * [Custom 404 page](http://mmistakes.github.io/minimal-mistakes/404.html) to get you started.
-* Stylesheets for Pygments and Coderay [syntax highlighting](http://mmistakes.github.io/articles/minimal-mistakes/code-highlighting-post/) to make your code examples look snazzy.
+* Stylesheets for Pygments and Coderay [syntax highlighting](http://mmistakes.github.io/minimal-mistakes/articles/code-highlighting-post/) to make your code examples look snazzy.
 
 ![screenshot of Minimal Mistakes theme](http://mmistakes.github.io/minimal-mistakes/images/mm-theme-post-600.jpg)
 
@@ -29,7 +29,6 @@
 ## More Theme Setup Goodness
 
 To learn more about how customize this theme, include feature images in posts, use the Grunt build scripts, and some other junk, [read up here](http://mmistakes.github.io/minimal-mistakes-theme/theme-setup/).
-
 
 ---
 

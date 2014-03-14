@@ -155,7 +155,8 @@ A [sample index page]({{ site.url }}/posts/) listing all posts grouped by the ye
     url: /writing/
 {% endhighlight %}
 * Rename `posts.md` to `writing.md` and update the YAML front matter to match the title and URL set in `_config.yml`
-* Update the **View all posts** links in `home.html` and `post.html` layouts found in `_layouts` to match title and URL set previously.
+
+* Update the **View all posts** link in `post.html` layout found in `_layouts` to match title and URL set previously.
 
 #### Thumbnails for OG and Twitter Cards
 
