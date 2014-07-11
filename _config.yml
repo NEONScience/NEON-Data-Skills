@@ -1,14 +1,14 @@
 title:            Minimal Mistakes
 description:      A responsive Jekyll theme large featured images and solid typography.
 #Comment out url when working locally to resolve base urls correctly
-url:              http://mmistakes.github.io/minimal-mistakes
+url:              http://lwasser.github.io/minimal-mistakes
 disqus_shortname:
 
 # Owner/author information
 owner:
-  name:           Michael Rose
+  name:           yup that's me
   avatar:         bio-photo.jpg
-  bio:            "Just another boring, time traveling, tattooed, designer from Buffalo New York."
+  bio:            "i am the great houdini - thanks."
   email:          michael@mademistakes.com
   # Social networking links are used in author-bio sidebar. Update and remove as you like.
   twitter:        "mmistakes"
@@ -18,10 +18,10 @@ owner:
   google_plus:    "MichaelRoseDesign"
 
 # Analytics and webmaster tools stuff goes here
-google_analytics:   UA-2011187-3
-google_verify:      UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y
+#google_analytics:   UA-2011187-3
+#google_verify:      UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
-bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
+#bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
 
 # Links to include in top navigation
 # For external links add external: true
