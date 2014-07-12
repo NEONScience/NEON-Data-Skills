@@ -7,16 +7,16 @@ disqus_shortname:
 
 # Owner/author information
 owner:
-  name:           yup that's me
-  avatar:         bio-photo.jpg
-  bio:            "i am the great houdini - thanks."
-  email:          michael@mademistakes.com
+  name:           Leah A Wasser
+  avatar:         bio-photo2.jpg
+  bio:            "i-luv-data - national ecological observatory network"
+  email:          lwasser@neoninc.org
   # Social networking links are used in author-bio sidebar. Update and remove as you like.
-  twitter:        "mmistakes"
-  github:         "mmistakes"
-  instagram:      "mmistakes"
+  twitter:        "lawasser"
+  github:         "lwasser"
+ # instagram:      "mmistakes"
   # For Google Authorship https://plus.google.com/authorship
-  google_plus:    "MichaelRoseDesign"
+ # google_plus:    "MichaelRoseDesign"
 
 # Analytics and webmaster tools stuff goes here
 #google_analytics:   UA-2011187-3
