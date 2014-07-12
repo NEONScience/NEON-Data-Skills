@@ -34,6 +34,27 @@
   <div class="article-author-side">
     {% include _author-bio.html %}
 
+
+      {% for category in site.categories %}
+    <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
+	    <ul class="posts">
+	    {% for posts in category %}
+	      {% for post in posts %}
+	      {% if post.url %}
+	        <li>
+	        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+	        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+	        </li>
+	        {% endif %}
+	      {% endfor %}
+	    {% endfor %}
+	    </ul>
+
+	{% endfor %}
+
+
+
+
     <div class="related-articles">
 	  <h4>Related Activities <small class="pull-right">(<a href="{{ site.url }}/posts/">View all posts</a>)</small></h4>
 	    <ul>
@@ -43,23 +64,6 @@
 	    </ul>
 	    <hr />
   </div><!-- /.related-articles -->
-
-
-<h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
-    <ul class="posts">
-    {% for posts in category %}
-      {% for post in posts %}
-      {% if post.url %}
-        <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </li>
-        {% endif %}
-      {% endfor %}
-    {% endfor %}
-    </ul>
-
-{% endfor %}
 
 
   </div>
