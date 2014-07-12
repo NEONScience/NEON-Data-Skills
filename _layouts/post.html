@@ -35,9 +35,9 @@
     {% include _author-bio.html %}
 
     <div class="related-articles">
-	  <h4>You might also enjoy <small class="pull-right">(<a href="{{ site.url }}/posts/">View all posts</a>)</small></h4>
+	  <h4>Related Activities <small class="pull-right">(<a href="{{ site.url }}/posts/">View all posts</a>)</small></h4>
 	    <ul>
-	    {% for post in site.related_posts limit:3 %}
+	    {% for post in site.related_posts limit:2 %}
 	      <li><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
 	    {% endfor %}
 	    </ul>
