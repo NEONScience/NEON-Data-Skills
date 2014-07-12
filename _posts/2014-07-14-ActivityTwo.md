@@ -10,3 +10,6 @@ tags : [measuring vegetation,remote sensing, laser scanning]
 ## Overview ##
 
 Lahahahahalalalal
+
+
+{% include image.html url="/images/bio-photo2.png" description="My cat, Robert Downey Jr." %}
