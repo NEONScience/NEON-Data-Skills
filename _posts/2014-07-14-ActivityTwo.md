@@ -12,4 +12,4 @@ tags : [measuring vegetation,remote sensing, laser scanning]
 Lahahahahalalalal
 
 
-{% include _image.html url="/images/bio-photo2.png" description="My cat, Robert Downey Jr." %}
+{% include _images.html url="/images/bio-photo2.png" description="My cat, Robert Downey Jr." %}
