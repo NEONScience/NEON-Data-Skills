@@ -29,12 +29,12 @@ owner:
 links:
   - title: About
     url: /about/
-  - title: Posts
+  - title: Learning Activities
     url: /posts/
   - title: Theme Setup
     url: /theme-setup/
-  - title: Made Mistakes
-    url: http://mademistakes.com
+  - title: NEON
+    url: http://neoninc.org
     external: true
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
