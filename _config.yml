@@ -2,6 +2,7 @@ title:            Minimal Mistakes
 description:      A responsive Jekyll theme large featured images and solid typography.
 #Comment out url when working locally to resolve base urls correctly
 url:              http://lwasser.github.io/minimal-mistakes
+baseurl: 	  http://lwasser.github.io/minimal-mistakes
 disqus_shortname:
 
 # Owner/author information
