@@ -1,9 +1,12 @@
 ---
 layout: post
-title:  "Activity Two -- LiDAR Data "
+title:  "Activity Two -- 3 Important LiDAR Data Products "
 date:   2014-07-12 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
+description: "Learn how LiDAR data are used to make commonly used data products including the 
+Canopy Height Model, Digital Surface Model and Digital Elevation Model."
+
 ---
 
 
