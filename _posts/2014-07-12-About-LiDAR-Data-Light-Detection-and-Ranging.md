@@ -4,6 +4,9 @@ title:  "LiDAR Data Basics"
 date:   2014-07-12 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
+description: "Learn the basics of how a LiDAR system operates, how Lidar
+data are used in science and explore some free lidar data analysis tools. Awesome!"
+
 ---
 
 
