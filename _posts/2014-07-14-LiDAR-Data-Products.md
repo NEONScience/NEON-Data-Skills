@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Activity Two -- 3 Important LiDAR Data Products "
+title:  "LiDAR Data, Activity 3 -- 3 Key LiDAR Data Products"
 date:   2014-07-12 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
