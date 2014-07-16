@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "LiDAR Data, Activity 1 -- The Basics"
-date:   2014-07-12 20:49:52
+date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Learn the basics of how a LiDAR system operates, how Lidar

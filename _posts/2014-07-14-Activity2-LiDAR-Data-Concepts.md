@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "LiDAR Data, Activity 2 -- LiDAR Data Concepts"
+date:   2014-07-12 20:49:52
+categories: [Working With LiDAR Data]
+tags : [measuring vegetation,remote sensing, laser scanning]
+description: "Learn some basic data concepts associated with LiDAR data including raster vs vector data."
+
+---
+
 # LiDAR Data Products - How We Use LiDAR Data #
 
 ## Goals##
