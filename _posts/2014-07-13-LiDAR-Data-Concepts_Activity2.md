@@ -7,12 +7,7 @@ tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Understand two common lidar data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 ---
 
-{% include _postHeader_intro.html overview="This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
-
-- Raster vs vector data 
-- Attribute data
-
-Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+{% include _postHeader_intro.html overview="This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include: Raster vs vector data, Attribute data" %}
 
 # Overview #
 This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
