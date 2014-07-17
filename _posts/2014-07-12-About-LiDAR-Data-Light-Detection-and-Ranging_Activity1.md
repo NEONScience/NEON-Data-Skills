@@ -9,6 +9,7 @@ data are used in science and explore some free lidar data analysis tools. Awesom
 
 ---
 
+<div class="clients" markdown="1"> **Markdown text** </div>
 
 ## Overview ##
 
