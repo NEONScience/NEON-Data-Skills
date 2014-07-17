@@ -23,6 +23,9 @@ In this unit, we will explore some LiDAR data using the freely available plas.io
 
 ![A picture of a shrub](/betaEducationModules/images/shrub.png "Title")
 
+
+{% include _images.html url="/betaEducationModules/images/shrub.png" description="My cat, Robert Downey Jr." %}
+
 ##Goals#
 *	Understand LiDAR as a key tool to measure vegetation over large areas
 
