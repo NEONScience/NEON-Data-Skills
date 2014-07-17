@@ -5,53 +5,35 @@ date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Understand two common lidar data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
+
 ---
 
-{% include _postHeader_intro.html overview="This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include: Raster vs vector data, Attribute data" %}
 
-<div style="background-color:#cccccc; padding:20px">This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
+<div style="background-color:#cccccc; padding:20px; font-size:.8em">
+<h2>Overview</h2>
+This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
 <ul>
 <li> Raster vs vector data </li>
-- Attribute data  
-- Different gridding methods that can be used to turn LiDAR data points into rasters that map elevation and tree height across the entire extent of a LiDAR data collection area. 
+<li> Attribute data   </li>
+<li> Different gridding methods that can be used to turn LiDAR data points into rasters that map elevation and tree height across the entire extent of a LiDAR data collection area.  </li>
 </ul>
 
-</div>
-<span style="font-size:.85em; margin:15px">
-asd
-</span>
-
-
-# Overview #
-This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
-
-- Raster vs vector data 
-- Attribute data  
-- Different gridding methods that can be used to turn LiDAR data points into rasters that map elevation and tree height across the entire extent of a LiDAR data collection area. 
-
-In this activity, we will cover 4 core LiDAR data products: 
-
-
-1. Classified LiDAR data point clouds
-2. Digital elevation models (DEM) also called Digital Terrain Models (DTM)
-3. Digital surface models (DSM)
-4. Canopy height models (CHM).
-
-## Goals##
+<h3> Goals </h3>
 - Understand the basic LiDAR data product formats - raster and vector. 
 - Understand what classified LiDAR data points are and how they are used.
 
-## Learning Concepts ##
-
-### General Geospatial Data Concepts ###
+<h4> General Geospatial Learning Concepts </h4>
 *    The basic formats of LiDAR data - raster and vector
 *    Understand how we convert points into grids (basics gridding)
 *    How to view raster and vector data (and associated attributes) in QGIS
 
-### LiDAR Remote Sensing Concepts ###
+<h4> LiDAR Remote Sensing Learning Concepts </h4>
 *    Understand how LiDAR data are classified to support derivation of raster based data products
 *    Understand two basic ways LiDAR can be used to measure tree height
 *    Understand ways in which how LiDAR raster products are derived (point to grid)
+
+</div>
+
 
 ## Introduction
 * This activity will cover the fundamental processing techniques that are required to convert LiDAR point clouds into useful data products.. 
