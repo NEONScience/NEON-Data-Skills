@@ -19,23 +19,24 @@ This activity will review the basic data concepts and also processing techniques
 </ul>
 
 <h3> Goals </h3>
-- Understand the basic LiDAR data product formats - raster and vector. 
-- Understand what classified LiDAR data points are and how they are used.
+<ul>
+<li> Understand the basic LiDAR data product formats - raster and vector.</li> 
+<li> Understand what classified LiDAR data points are and how they are used.</li>
+</ul>
 
-<h4> General Geospatial Learning Concepts </h4>
-*    The basic formats of LiDAR data - raster and vector
-*    Understand how we convert points into grids (basics gridding)
-*    How to view raster and vector data (and associated attributes) in QGIS
-
-<h4> LiDAR Remote Sensing Learning Concepts </h4>
-*    Understand how LiDAR data are classified to support derivation of raster based data products
-*    Understand two basic ways LiDAR can be used to measure tree height
-*    Understand ways in which how LiDAR raster products are derived (point to grid)
-
+<h4> Learning Concepts </h4>
+<ul>
+<li> The basic formats of LiDAR data - raster and vector</li>
+<li> Understand how we convert points into grids (basics gridding)</li>
+<li> How to view raster and vector data (and associated attributes) in QGIS</li>
+<li> Understand how LiDAR data are classified to support derivation of raster based data products</li>
+<li> Understand two basic ways LiDAR can be used to measure tree height</li>
+<li> Understand ways in which how LiDAR raster products are derived (point to grid)</li> 
+</ul>
 </div>
 
 
-## Introduction
+## Introduction ##
 * This activity will cover the fundamental processing techniques that are required to convert LiDAR point clouds into useful data products.. 
 * As we discussed in Activity 1<link>, LiDAR data are simply a bunch of points that tell us something about the heights of things on the ground. However, the LiDAR system does not tell us what what the points reflected off of. So we can’t distinguish points that are from the ground vs points from vegetation, without further analysis.
 *    There are a series of steps associated with turning LiDAR data points into information that we can use in science for things like characterizing vegetation.
