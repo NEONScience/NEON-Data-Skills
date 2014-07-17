@@ -9,9 +9,16 @@ description: "Understand two common lidar data product formats: raster and vecto
 
 {% include _postHeader_intro.html overview="This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include: Raster vs vector data, Attribute data" %}
 
-<div style="background-color:#cccccc">M</div>
+<div style="background-color:#cccccc; padding:20px">This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
+<ul>
+<li> Raster vs vector data </li>
+- Attribute data  
+- Different gridding methods that can be used to turn LiDAR data points into rasters that map elevation and tree height across the entire extent of a LiDAR data collection area. 
+</ul>
+
+</div>
 <span style="font-size:.85em; margin:15px">
-This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
+asd
 </span>
 
 
