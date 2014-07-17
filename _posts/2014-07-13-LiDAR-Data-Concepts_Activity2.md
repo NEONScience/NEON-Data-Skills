@@ -1,4 +1,4 @@
-   ---
+---
 layout: post
 title:  "LiDAR Data, Activity 2 -- LiDAR Data Processing Basics"
 date:   2014-07-11 20:49:52
