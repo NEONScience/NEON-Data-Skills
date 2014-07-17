@@ -1,11 +1,12 @@
-  ---
+---
 layout: post
 title:  "LiDAR Data, Activity 2 -- LiDAR Data Processing Basics"
 date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
-description: "Understand two common lidar data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
+description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 ---
+
 # Overview #
 This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
 
