@@ -21,10 +21,7 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 In this unit, we will explore some LiDAR data using the freely available plas.io website and optionally, QGIS (open GIS software).
 
 
-![A picture of a shrub](/betaEducationModules/images/shrub.png "Title")
-
-
-{% include _images.html url="/betaEducationModules/images/shrub.png" description="My cat, Robert Downey Jr." %}
+{% include _images.html url="/betaEducationModules/images/shrub.png" description="Look - Some Shrubbery! by Leah Wasser" %}
 
 ##Goals#
 *	Understand LiDAR as a key tool to measure vegetation over large areas
