@@ -1,4 +1,4 @@
-  ---
+---
 layout: post
 title:  "LiDAR Data, Activity 2 -- LiDAR Data Processing Basics"
 date:   2014-07-11 20:49:52
@@ -7,6 +7,8 @@ tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Learn the basics of how a LiDAR system operates, how Lidar
 data are used in science and explore some free lidar data analysis tools. Awesome!"
 ---
+
+
 # Overview #
 This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
 *  Raster vs vector data, 
