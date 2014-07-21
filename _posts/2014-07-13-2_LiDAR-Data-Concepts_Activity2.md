@@ -4,14 +4,14 @@ title:  "LiDAR Data, Activity 2 -- LiDAR Data Processing Basics"
 date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
-description: "Understand two common lidar data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
+description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 
 ---
 
 
-<div style="background-color:#cccccc; padding:20px; font-size:.8em">
+<div style="background-color:#cccccc; padding:20px; font-size:.9em">
 <h2>Overview</h2>
-This activity will review the basic data concepts and also processing techniques that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
+We are going to review the basic data models or types associated with LiDAR data products. We will talk about the processing methods that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
 <ul>
 <li> Raster vs vector data </li>
 <li> Attribute data   </li>
@@ -37,29 +37,37 @@ This activity will review the basic data concepts and also processing techniques
 
 
 ## Introduction ##
-* This activity will cover the fundamental processing techniques that are required to convert LiDAR point clouds into useful data products.. 
-* As we discussed in Activity 1<link>, LiDAR data are simply a bunch of points that tell us something about the heights of things on the ground. However, the LiDAR system does not tell us what what the points reflected off of. So we can’t distinguish points that are from the ground vs points from vegetation, without further analysis.
-*    There are a series of steps associated with turning LiDAR data points into information that we can use in science for things like characterizing vegetation.
-*    In this activity, we will explore how discrete LiDAR data points are processed to yield useful data products such as maps of ground elevation and tree height. We will also explore some point data and raster data in QGIS to familiarize ourselves with basic QGIS tools.
+Let's explore the fundamental lidar data products types that are required to use LiDAR data in science. As we discussed previously <link>, (Discrete return) LiDAR data are simply a bunch of points that tell us something about the heights of things on the ground. However, the LiDAR system does not tell us what what the points reflected off of. So we can’t distinguish points that are from the ground vs points from vegetation, without further analysis.
 
-To understand LiDAR data products we need to first understand a few basic data concepts:
-*    The difference between Vector and Raster data
+There are are several LiDAR data methods associated with turning LiDAR data points into information that we can use in science for things like characterizing vegetation. Let's review two of them
+
+* Classification of LiDAR Points
+* Conversion of LiDAR points into raster formats
+
+To better understand LiDAR data product we will use the freely available QGIS software to explore both LiDAR points. We will also use QGIS to create a LiDAR derived raster dataset.
+
+To understand LiDAR data products we need to first understand the differences between the key LiDAR DATA products including:
+*    LiDAR point clouds and associated attributes (stored in .las - a typical LiDAR data format)
 *    Attribute data associated with vector and raster data
 We’ll review these concepts, hands on, by exploring the data in the freely available QGIS software.
 
-## Raster vs Vector Data -- The Basics 
-* So let's first talk about the difference between raster and point based vector data. Lidar data points are Vector data . 
-#### Vector ####
-Each point in a LiDAR dataset has a X, Y, Z value and other attributes as we discussed in Activity One. The points may be located anywhere in space are not within any particular grid.
+## LiDAR Point Clouds -- The Basics  ##
+Let's first talk about LiDAR point clouds. Each point in a LiDAR dataset has a X, Y, Z value and other attributes as we discussed in Activity One. The points may be located anywhere in space are not within any particular grid. <image: LiDAR data point spacing>.
 
-#### Raster ###
-In comparison a raster file is a regular grid of cells, all of which are the same size. A few notes about rasters:  
+As discussed in the first activity, LiDAR point clouds are typically available in a .las file format. The .las file format is a compressed format that can better handle the millions of points that are often associated with LIDAr data point clouds.
+
+Some scientists prefer to run their own algorithms on LIDAR points to create useful data products given there are so many processing options associated with converign LIDAR data points into a gridded or raster format (discussed next).
+
+#### Gridded or Raster LiDAR Data Products ###
+LiDAR data products are most often worked within a gridded or raster data format. A raster file is a regular grid of cells, all of which are the same size. A few notes about rasters:  
 
 -  Each cell is called a pixel. 
 -  And each pixel represents an area on the ground. 
--  The resolution of the raster represents the area that each pixel represents on the ground. So, for instance if the raster is 1m resolution, that simple means that each pixel represents a 1 m by 1m area on the ground.
+-  The resolution of the raster represents the area that each pixel represents on the ground. So, for instance if the raster is 1 m resolution, that simple means that each pixel represents a 1 m by 1m area on the ground.
 
-Raster data can have attributes associated with it as well. For instance each cell might represent a particular landcover class or an elevation value. 
+Raster data can have attributes associated with it as well. For instance in a LiDAR derived digital elevation model (DEM), each cell might represent a particular elevation value.  In a LIDAR derived intensity image, each cell represents a LIDAR intensity value.
+
+
 #### Raster vs. Vector -- Learn More  ####
 
 - [Discussion of Raster Data - ESRI](http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=What_is_raster_data%3F)
@@ -68,7 +76,7 @@ Raster data can have attributes associated with it as well. For instance each ce
 > Side bar: raster format that you are familiar with is an image...more about that...
 
 ## The Skinny -- 
-In short, when you go to download lidar data the first question you should ask is what format the data are in. Are you downloading point clouds that you might have to process? Or rasters that are already processed for you. How do you know?
+In short, when you go to download LiDAR data the first question you should ask is what format the data are in. Are you downloading point clouds that you might have to process? Or rasters that are already processed for you. How do you know?
 1. check out the metadata
 2. look at the file format - if you are downloading a .las file, then you are getting points. 
 
