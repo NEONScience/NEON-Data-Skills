@@ -179,5 +179,12 @@ have them create a shapefile in QGIS using a text file... very simple...
 *	[las: python ingest](http://laspy.readthedocs.org/en/latest/tut_background.html)
 *	[las v1.3 specs](http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf)
 
+
+
+## Check out our gallery on Flikr! ##
+
+<div style='position: relative; padding-bottom: 76%; height: 0; overflow: hidden;'><iframe id='iframe' src='http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157645715298956&caption=true&thumbnails=1&transition=0&layoutType=responsive&sort=0' scrolling='no' frameborder='0'style='width:100%; height:100%; position: absolute; top:0; left:0;' ></iframe></div>
+
+
 #THE END 
 
