@@ -59,13 +59,14 @@ At the end of this activity, participants should:
 
 #Let's Get To It!
 
-##Introduction - Key Points to Review
+##Introduction - Key Points to Review ##
+
 ### Why LiDAR ###
 
 As ecologists, we often want to characterize vegetation over large regions. Because we don’t have the resources to measure each and every tree - we use tools that can estimate key characteristics over large areas. These tools often use remote methods - that is to say, we aren’t actually physically measuring things with our hands and eyes, we are using sensors which capture information about a landscape and record things that we can use to estimate conditions and characteristics.
 
 
-{% include _images.html url="/betaEducationModules/images/ScalingTrees_NatGeo.png" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
+{% include _images.html url="/minimal-mistakes/images/ScalingTrees_NatGeo.png" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
 
 To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can than be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one RS method that can be used to map vegetation height, density and other characteristics across a region.
 
