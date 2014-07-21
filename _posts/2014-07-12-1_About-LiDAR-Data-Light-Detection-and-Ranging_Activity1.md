@@ -103,7 +103,7 @@ We can think about light in terms of photons. As photons that make up light move
 
 > ### About LiDAR Waveforms - It's All About the Photons!
 > As light or photons travel to the ground, they reflect off of  objects on the ground, and travels back to the LiDAR sensor where they are recorded. The  reflected light energy that returns to the sensor returns as a waveform of energy - seen in the curve below. The areas where more photons or more light energy returns to the sensor are often objects like leaves and branches.
-> {% include _images.html url="/minimal-mistakes/images/Waveform.png" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+> {% include _images.html url="/minimal-mistakes/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
 > 	**Image: photon joke - a Photon Walks in ao Hotel...??&**
 
 
