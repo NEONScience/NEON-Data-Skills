@@ -20,17 +20,15 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 In this unit, we will explore some LiDAR data using the freely available [plas.io website](http://plas.io) and the open source, free to download QGIS software (A free GIS software package).
 
 
-{% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="Look - Some Shrubbery! by Leah Wasser" %}
-
-<a href="https://www.flickr.com/photos/126239263@N04/14532371197" title="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP). by Leah Wasser, on Flickr"><img src="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" width="500" height="499" alt="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)."></a>
+{% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP) - available on https://www.flickr.com/photos/126239263@N04/sets" %}
 
 ##Goals##
-*	Understand how LiDAR systems work
-*	Understand what LiDAR point clouds are
+*	Understand how LiDAR systems work.
+*	Understand what LiDAR point clouds represent.
 
 ##Learning Objectives ##
 *	Understand that LiDAR data provide elevation information using reflected laser energy.
-*	Understand attributes of discrete LiDAR returns are
+*	Understand the key attributes of discrete LiDAR returns
 *	Understand what LiDAR point clouds look like
 *	View attributes associated with points in QGIS.
 
@@ -47,21 +45,20 @@ In this unit, we will explore some LiDAR data using the freely available [plas.i
 <iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc" frameborder="0" allowfullscreen></iframe>
 
 ##How LiDAR Works ##
-<iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/watch?v=RR1QFE-mB0k" frameborder="0" allowfullscreen></iframe>
 
 
 ##Learning Outcomes
-At the end of this activity, participants should: 
+At the end of this activity, you should be able to: 
 
 *	Explain how a LiDAR system works
 *	List some key attributes of discrete return LiDAR data points
 *	Explain how LiDAR data are used in science
 *	Understand what LIDAR point clouds look like and know how to use the PLAS.Io viewer to explore LiDAR data las files.
-*	Understand the basic formats that lIDAR data are available in.
+*	Understand the basic formats that LiDAR data are available in.
 
-#Let's Get To It!
 
-##Introduction - Key Points to Review ##
+## Let's Get Started - Key Concepts to Review ##
 
 ### Why LiDAR ###
 
@@ -70,10 +67,12 @@ As ecologists, we often want to characterize vegetation over large regions. Beca
 
 {% include _images.html url="/minimal-mistakes/images/ScalingTrees_NatGeo.jpg" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
 
-To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can than be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one RS method that can be used to map vegetation height, density and other characteristics across a region.
+To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can  be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one remote sensing method that can be used to map vegetation height, density and other characteristics across a region.
 
 ### How Scientists Use LiDAR Data ##
 There are many different uses for LiDAR data. 
+
+
 - LiDAR data classically have been used to derive high resolution elevation data <image: low vs high resolution DEM>
 - LiDAR data have also been used to derive information about vegetation structure including
 	- Canopy Height
@@ -87,12 +86,13 @@ There are many different uses for LiDAR data.
 
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
-
-**ANIMATION SHOWING light traveling down and being recorded from powerpoint**
+{% include _images.html url="farm6.staticflickr.com/5551/14532580828_2933469e24.jpg" width="500" height="354" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
 
 Now remember from the video that the LiDAR system times the travel of the light to the ground and back and that time is used to in turn calculate distance traveled. Distance traveled is then converted to elevation. Also remember that a LiDAR system contains a GPS and an IMU that help it accurately identify the location of reflected light energy, on the ground.
 
-**Insert Animation -- LiDAR Returns **
+** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
+
+<iframe width="560" height="315" src="//youtu.be/FtfoclsX1zI" frameborder="0" allowfullscreen></iframe>
 
 > Active vs Passive Remote Sensing
 > Active systems like LiDAR (and also radar) use their own energy source to sample the earth. In the case of the LiDAR system that source is a light emitted from a rapidly firing laser. A passive system measures existing energy that is emitted from the earth. For example a thermal sensor measures how much heat is emitted from an object - and that object might be heated by the sun. That heat was already there and is simply, **passively** measured by the instrument.
