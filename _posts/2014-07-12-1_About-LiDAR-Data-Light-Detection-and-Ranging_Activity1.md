@@ -17,7 +17,7 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 2. The key attributes of LiDAR data
 3. How LiDAR data are used to measure trees. 
 
-In this unit, we will explore some LiDAR data using the freely available [plas.io website](http://plas.io) and the open souce, free to download QGIS software (A free GIS software package).
+In this unit, we will explore some LiDAR data using the freely available [plas.io website](http://plas.io) and the open source, free to download QGIS software (A free GIS software package).
 
 
 {% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="Look - Some Shrubbery! by Leah Wasser" %}
