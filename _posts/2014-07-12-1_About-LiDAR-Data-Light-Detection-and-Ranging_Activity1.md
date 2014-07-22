@@ -86,7 +86,7 @@ There are many different uses for LiDAR data.
 
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
-{% include _images.html url="farm6.staticflickr.com/5551/14532580828_2933469e24.jpg" width="500" height="354" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
+{% include _images.html url="//farm6.staticflickr.com/5551/14532580828_2933469e24.jpg" width="500" height="354" description="Active vs Passive remote sensing systems. LiDAR is an active remote sensing system given it has it's own light source - a laser which rapidly emits pulses of light." %}
 
 Now remember from the video that the LiDAR system times the travel of the light to the ground and back and that time is used to in turn calculate distance traveled. Distance traveled is then converted to elevation. Also remember that a LiDAR system contains a GPS and an IMU that help it accurately identify the location of reflected light energy, on the ground.
 
