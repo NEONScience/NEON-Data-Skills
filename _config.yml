@@ -41,8 +41,8 @@ links:
 timezone:    America/New_York
 future:      true
 # turning off pygments for the time being
-#pygments:    true
-#highlighter: pygments
+#pygments:    false
+highlighter: pygments
 markdown:    kramdown
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks

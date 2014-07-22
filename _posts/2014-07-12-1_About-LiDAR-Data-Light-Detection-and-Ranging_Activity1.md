@@ -81,6 +81,10 @@ There are many different uses for LiDAR data.
 	- Vertical Forest Structure
 	- Species identification (in less dense forests with high point density LiDAR)
 
+{% include _images.html url="//farm4.staticflickr.com/3883/14718736222_190e498006.jpg" width="500" height="354" description="LiDAR data have historically been used to generate high resolution elevation datasets." %}
+
+{% include _images.html url="//farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
+
 
 ### How A LiDAR System Works (video review) ##
 
@@ -92,7 +96,7 @@ Now remember from the video that the LiDAR system times the travel of the light 
 
 ** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
 
-<iframe width="740" height="416" src="//www.youtube.com/embed/7KLu9Nl1nKY?rel=0&vq=hd480" frameborder="0" allowfullscreen></iframe>
+<iframe width="960" height="720" src="/www.youtube.com/embed/OPgsL79eoBE?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 ** still working on refining this embed so that you can replay the video... **
 
 > Active vs Passive Remote Sensing
