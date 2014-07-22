@@ -22,6 +22,12 @@ In this unit, we will explore some LiDAR data using the freely available [plas.i
 
 {% include _images.html url="/betaEducationModules/images/shrub.png" description="Look - Some Shrubbery! by Leah Wasser" %}
 
+{% include _images.html url="/betaEducationModules/images/shrub.png" description="Look - Some Shrubbery! by Leah Wasser" %}
+
+[url=https://flic.kr/p/o9bcE6][img]https://farm4.staticflickr.com/3913/14532371197_a17d52e010_s.jpg[/img][/url][url=https://flic.kr/p/o9bcE6]LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP).[/url] by [url=https://www.flickr.com/people//]leahawasser[/url], on Flickr
+
+<a href="https://www.flickr.com/photos/126239263@N04/14532371197" title="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP). by Leah Wasser, on Flickr"><img src="https://farm4.staticflickr.com/3913/14532371197_a17d52e010_s.jpg" width="75" height="75" alt="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)."></a>
+
 ##Goals##
 *	Understand how LiDAR systems work
 *	Understand what LiDAR point clouds are
@@ -183,7 +189,7 @@ have them create a shapefile in QGIS using a text file... very simple...
 
 ## Check out our gallery on Flikr! ##
 
-<div style='position: relative; padding-bottom: 76%; height: 0; overflow: hidden;'><iframe id='iframe' src='http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157645715298956&caption=true&thumbnails=1&transition=0&layoutType=responsive&sort=0' scrolling='no' frameborder='0'style='width:100%; height:100%; position: absolute; top:0; left:0;' ></iframe></div>
+
 
 
 #THE END 
