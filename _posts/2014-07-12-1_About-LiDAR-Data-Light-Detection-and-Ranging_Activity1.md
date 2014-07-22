@@ -90,43 +90,52 @@ There are many different uses for LiDAR data.
 
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
-{% include _images.html url="//farm6.staticflickr.com/5551/14532580828_2933469e24.jpg" width="500" height="354" description="Active vs Passive remote sensing systems. LiDAR is an active remote sensing system given it has it's own light source - a laser which rapidly emits pulses of light." %}
+**Plane Flying Animation will go here**
+ 
 
 Now remember from the video that the LiDAR system times the travel of the light to the ground and back and that time is used to in turn calculate distance traveled. Distance traveled is then converted to elevation. Also remember that a LiDAR system contains a GPS and an IMU that help it accurately identify the location of reflected light energy, on the ground.
 
-** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
-
 <iframe width="960" height="720" src="//www.youtube.com/embed/OPgsL79eoBE?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
-** still working on refining this embed so that you can replay the video... **
+ *still working on refining this embed so that the quality is what we want it to be *
 
-> Active vs Passive Remote Sensing
+> A brief review of Active vs Passive Remote Sensing
 > Active systems like LiDAR (and also radar) use their own energy source to sample the earth. In the case of the LiDAR system that source is a light emitted from a rapidly firing laser. A passive system measures existing energy that is emitted from the earth. For example a thermal sensor measures how much heat is emitted from an object - and that object might be heated by the sun. That heat was already there and is simply, **passively** measured by the instrument.
-> IMAGE: *THERMAL REMOTE SENSING IMAGE vs LIDAR POINTS or something that shows active vs passive.*
+
+{% include _images.html url="//farm6.staticflickr.com/5551/14532580828_2933469e24.jpg" width="500" height="354" description="Active vs Passive remote sensing systems. LiDAR is an active remote sensing system given it has it's own light source - a laser which rapidly emits pulses of light." %}
+
+{% include _images.html url="//upload.wikimedia.org/wikipedia/commons/0/0c/Infrared_dog.jpg" width="416" height="212" description="A thermal camera is an example of a passive sensor. This sensor detects the amount of heat that an object gives off." %}
 
 
-##Digging Deeper - How LiDAR Works
 
-We can think about light in terms of photons. As photons that make up light moves towards the ground, they hits different things - like say branches on a tree. Some of the light reflects off of those objects and returns to the sensor, if the object is small, some light continues down towards the ground. So, you can get multiple reflections from one pulse of light. The distribution of energy that returns to the sensor creates what we call a waveform and may have various peaks associated with it where larger amounts of energy reflected off of things. The peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
+##Digging Deeper - The Distribution of Reflected Light Energy in terms of Photons
 
-> ### About LiDAR Waveforms - It's All About the Photons!
-> As light or photons travel to the ground, they reflect off of  objects on the ground, and travels back to the LiDAR sensor where they are recorded. The  reflected light energy that returns to the sensor returns as a waveform of energy - seen in the curve below. The areas where more photons or more light energy returns to the sensor are often objects like leaves and branches.
-> {% include _images.html url="/minimal-mistakes/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+Light energy is a collection of photons. As photons that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
+
+The distribution of energy that returns to the sensor creates what we call a waveform. The amount of energy that returned to the LiDAR sensor is known as "intensity". The areas where more photons or more light energy returns to the sensor create peaks in the distribution of energy. Theses peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
+
+{% include _images.html url="/minimal-mistakes/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+
 > 	**Image: photon joke - a Photon Walks in ao Hotel...??&**
 
 
 ### Discrete vs Full Waveform LiDAR ###
 LiDAR data may be recorded in two ways.
+
+
+
 1. A **Discrete Return LiDAR System** records individual (discrete) points for the peaks in the waveform curve. Discrete return LiDAR systems, identify peaks and record a point at each peak location in the waveform curve. These discrete or individual points are called returns. A discrete system may record 1-4 (and sometimes more) returns from each laser pulse.
 2. A **Full Waveform LiDAR System** records a distribution of returned light energy. Full waveform LiDAR data are thus more complex to process however they can often capture more information compared to discrete return LiDAR systems.
 
 ##LiDAR File Formats **
-* Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. * Returns make up what is called a LiDAR point cloud.
-* The commonly used file format to store LIDAR data is called .las developed by... <link to ASPRS>.
+Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
+
+The commonly used file format to store LIDAR point cloud data is called .las developed by... <link to ASPRS>.
 
 	
 ##	Activity 1 - Exploring Discrete Return LiDAR data Point Attributes
 **need to think this through a bit more **
-To complete activity 1, do the following
+Let's first look at what a las file looks like to better understand LiDAR data attributes.
+
 1. Open up the XXX file in QGIS
 2. Use the attribute button to look at the attributes of each point noting that there are key elements: x,y,z and intensity. 
 3. Note that there are some other attributes in this file including scan angle, intensity (amount of photons)
