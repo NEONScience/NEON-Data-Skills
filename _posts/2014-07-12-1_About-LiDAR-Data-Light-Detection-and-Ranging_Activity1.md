@@ -92,7 +92,7 @@ Now remember from the video that the LiDAR system times the travel of the light 
 
 ** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/7KLu9Nl1nKY?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="740" height="416" src="//www.youtube.com/embed/7KLu9Nl1nKY?rel=0" frameborder="0" allowfullscreen></iframe>
 ** still working on refining this embed so that you can replay the video... **
 
 > Active vs Passive Remote Sensing
