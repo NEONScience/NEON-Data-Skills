@@ -92,7 +92,7 @@ Now remember from the video that the LiDAR system times the travel of the light 
 
 ** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
 
-<iframe width="560" height="315" src="//youtu.be/FtfoclsX1zI" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/FtfoclsX1zI" frameborder="0" allowfullscreen></iframe>
 
 > Active vs Passive Remote Sensing
 > Active systems like LiDAR (and also radar) use their own energy source to sample the earth. In the case of the LiDAR system that source is a light emitted from a rapidly firing laser. A passive system measures existing energy that is emitted from the earth. For example a thermal sensor measures how much heat is emitted from an object - and that object might be heated by the sun. That heat was already there and is simply, **passively** measured by the instrument.
