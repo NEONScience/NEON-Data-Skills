@@ -20,13 +20,9 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 In this unit, we will explore some LiDAR data using the freely available [plas.io website](http://plas.io) and the open souce, free to download QGIS software (A free GIS software package).
 
 
-{% include _images.html url="/betaEducationModules/images/shrub.png" description="Look - Some Shrubbery! by Leah Wasser" %}
+{% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="Look - Some Shrubbery! by Leah Wasser" %}
 
-{% include _images.html url="/betaEducationModules/images/shrub.png" description="Look - Some Shrubbery! by Leah Wasser" %}
-
-[url=https://flic.kr/p/o9bcE6][img]https://farm4.staticflickr.com/3913/14532371197_a17d52e010_s.jpg[/img][/url][url=https://flic.kr/p/o9bcE6]LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP).[/url] by [url=https://www.flickr.com/people//]leahawasser[/url], on Flickr
-
-<a href="https://www.flickr.com/photos/126239263@N04/14532371197" title="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP). by Leah Wasser, on Flickr"><img src="https://farm4.staticflickr.com/3913/14532371197_a17d52e010_s.jpg" width="75" height="75" alt="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)."></a>
+<a href="https://www.flickr.com/photos/126239263@N04/14532371197" title="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP). by Leah Wasser, on Flickr"><img src="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" width="500" height="499" alt="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)."></a>
 
 ##Goals##
 *	Understand how LiDAR systems work
