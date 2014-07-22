@@ -42,10 +42,10 @@ In this unit, we will explore some LiDAR data using the freely available [plas.i
 
 
 ##The Story of LiDAR Data video - On YouTube
-<iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
 
 ##How LiDAR Works ##
-<iframe width="560" height="315" src="//www.youtube.com/watch?v=RR1QFE-mB0k" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/RR1QFE-mB0k?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
 ##Learning Outcomes
@@ -92,7 +92,8 @@ Now remember from the video that the LiDAR system times the travel of the light 
 
 ** INSERT -- ANIMATION SHOWING light traveling down and being recorded from powerpoint**
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/7KLu9Nl1nKY" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/7KLu9Nl1nKY?rel=0" frameborder="0" allowfullscreen></iframe>
+** still working on refining this embed so that you can replay the video... **
 
 > Active vs Passive Remote Sensing
 > Active systems like LiDAR (and also radar) use their own energy source to sample the earth. In the case of the LiDAR system that source is a light emitted from a rapidly firing laser. A passive system measures existing energy that is emitted from the earth. For example a thermal sensor measures how much heat is emitted from an object - and that object might be heated by the sun. That heat was already there and is simply, **passively** measured by the instrument.
