@@ -7,8 +7,8 @@ disqus_shortname:
 
 # Owner/author information
 owner:
-  name:           Leah A Wasser
-  avatar:         bio-photo2.jpg
+ # name:           Leah A Wasser
+ # avatar:         bio-photo2.jpg
   bio:            "i-luv-data - national ecological observatory network"
   email:          lwasser@neoninc.org
   # Social networking links are used in author-bio sidebar. Update and remove as you like.
@@ -27,13 +27,7 @@ google_analytics:   UA-52746937-1
 # Links to include in top navigation
 # For external links add external: true
 links:
-  - title: About
-    url: /about/
-  - title: Learning Activities
-    url: /posts/
-  - title: Theme Setup
-    url: /theme-setup/
-  - title: NEON
+  - title: National Ecological Observatory Network - (NEON)
     url: http://neoninc.org
     external: true
 
