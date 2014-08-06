@@ -10,9 +10,9 @@ description: "Understand two common LiDAR data product formats: raster and vecto
 
 
 ### Three Common LiDAR Data Products ###
-- [Digital Terrain Model](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - this product represents the ground.
-- [Digital Surface Model](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
-- [Digital Terrain Model ](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - this represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
+- [Digital Terrain Model](http://neoninc.org/leah_test/ESA2014/DTM.html) - this product represents the ground.
+- [Digital Surface Model](http://neoninc.org/leah_test/ESA2014/DTM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
+- [Digital Terrain Model ](http://neoninc.org/leah_test/ESA2014/DTM.html) - this represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
 
 
 ## LiDAR Point Clouds -- The Basics  ##
@@ -30,11 +30,7 @@ LiDAR data products are most often worked within a gridded or raster data format
 
 Raster data can have attributes associated with it as well. For instance in a LiDAR derived digital elevation model (DEM), each cell might represent a particular elevation value.  In a LIDAR derived intensity image, each cell represents a LIDAR intensity value.
 
-
-
-
-
-## The Skinny -- 
+## What To Look for In The Metadata  
 In short, when you go to download LiDAR data the first question you should ask is what format the data are in. Are you downloading point clouds that you might have to process? Or rasters that are already processed for you. How do you know?
 1. check out the metadata
 2. look at the file format - if you are downloading a .las file, then you are getting points. 
