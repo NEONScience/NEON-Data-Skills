@@ -2,7 +2,7 @@
 layout: post
 title:  "LiDAR DSM, DTM, CHM"
 date:   2014-07-11 20:49:52
-categories: [Working With LiDAR Data]
+categories: [LiDAR Links]
 tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 
