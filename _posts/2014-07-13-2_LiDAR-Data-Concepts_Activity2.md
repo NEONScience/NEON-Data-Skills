@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LiDAR Data, Activity 2 -- LiDAR Data Processing Basics"
+title:  "LiDAR Data Products"
 date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
@@ -8,55 +8,12 @@ description: "Understand two common LiDAR data product formats: raster and vecto
 
 ---
 
-
-<div style="background-color:#cccccc; padding:20px; font-size:.9em">
-<h2>Overview</h2>
-We are going to review the basic data models or types associated with LiDAR data products. We will talk about the processing methods that are required to convert discrete return LiDAR data points into useful data products that can be used to measure elevation and vegetation height. Concepts include:
-<ul>
-<li> Raster vs vector data </li>
-<li> Attribute data   </li>
-<li> Different gridding methods that can be used to turn LiDAR data points into rasters that map elevation and tree height across the entire extent of a LiDAR data collection area.  </li>
-</ul>
-
-<h3> Goals </h3>
-<ul>
-<li> Understand the basic LiDAR data product formats - raster and vector.</li> 
-<li> Understand what classified LiDAR data points are and how they are used.</li>
-</ul>
-
-<h4> Learning Concepts </h4>
-<ul>
-<li> The basic formats of LiDAR data - raster and vector</li>
-<li> Understand how we convert points into grids (basics gridding)</li>
-<li> How to view raster and vector data (and associated attributes) in QGIS</li>
-<li> Understand how LiDAR data are classified to support derivation of raster based data products</li>
-<li> Understand two basic ways LiDAR can be used to measure tree height</li>
-<li> Understand ways in which how LiDAR raster products are derived (point to grid)</li> 
-</ul>
-</div>
-
-
-## Introduction ##
-Let's explore the fundamental lidar data products types that are required to use LiDAR data in science. As we discussed previously <link>, (Discrete return) LiDAR data are simply a bunch of points that tell us something about the heights of things on the ground. However, the LiDAR system does not tell us what what the points reflected off of. So we can’t distinguish points that are from the ground vs points from vegetation, without further analysis.
-
-There are are several LiDAR data methods associated with turning LiDAR data points into information that we can use in science for things like characterizing vegetation. Let's review two of them
-
-* Classification of LiDAR Points
-* Conversion of LiDAR points into raster formats
-
-To better understand LiDAR data product we will use the freely available QGIS software to explore both LiDAR points. We will also use QGIS to create a LiDAR derived raster dataset.
-
-To understand LiDAR data products we need to first understand the differences between the key LiDAR DATA products including:
-*    LiDAR point clouds and associated attributes (stored in .las - a typical LiDAR data format)
-*    Attribute data associated with vector and raster data
-We’ll review these concepts, hands on, by exploring the data in the freely available QGIS software.
-
 ## LiDAR Point Clouds -- The Basics  ##
-Let's first talk about LiDAR point clouds. Each point in a LiDAR dataset has a X, Y, Z value and other attributes as we discussed in Activity One. The points may be located anywhere in space are not within any particular grid. <image: LiDAR data point spacing>.
+Each point in a LiDAR dataset has a X, Y, Z value and other attributes as we discussed in Activity One. The points may be located anywhere in space are not within any particular grid. <image: LiDAR data point spacing>.
 
-As discussed in the first activity, LiDAR point clouds are typically available in a .las file format. The .las file format is a compressed format that can better handle the millions of points that are often associated with LIDAr data point clouds.
+LiDAR point clouds are typically available in a .las file format. The .las file format is a compressed format that can better handle the millions of points that are often associated with LiDAR data point clouds.
 
-Some scientists prefer to run their own algorithms on LIDAR points to create useful data products given there are so many processing options associated with converign LIDAR data points into a gridded or raster format (discussed next).
+Some scientists prefer to run their own algorithms on LIDAR points to create useful data products given there are so many processing options associated with converting LIDAR data points into a gridded or raster format (discussed next).
 
 #### Gridded or Raster LiDAR Data Products ###
 LiDAR data products are most often worked within a gridded or raster data format. A raster file is a regular grid of cells, all of which are the same size. A few notes about rasters:  
@@ -91,19 +48,12 @@ Lidar Point cloud classification is often already done when you download LiDAR p
 So when you are looking at metadata for LiDAR, it's good to notice whether the data have been classified or not. 
 Image/ animation: Classifying LiDAR points
 
-
-----------
-**--->>>> move this section to activity 1????**
-## LiDAR Point Cloud File Formats
-The file format most commonly associated with the LiDAR point clouds is called .las 
-Sometimes - LiDAR point cloud files are available in a text file format. 
-
 ### Free point cloud viewers that open LiDAR point clouds ###
 - [Fusion: US Forest Service RSAC](http://www.fs.fed.us/eng/rsac/fusion/)
 - [Cloud compare](http://www.danielgm.net/cc/)
 - [Plas.io website](http://plas.io) 
 - Others (link to some of the online list of tools)
-**---! > end move**
+
 
 ## LiDAR derived raster data products
 While some papers suggest that point cloud derived analysis may yield more accurate estimate of vegetation characteristics (citations here), Point clouds are challenging to work with. For one, there are often millions of points on a LiDAR dataset which can slow processing down. Also point cloud based analysis often requires custom programming. The most commonly used LiDAR data products are in a raster data format. Raster data are easy to work with in common GIS tools like QGIS and even in programming languages like R and Matlab.
