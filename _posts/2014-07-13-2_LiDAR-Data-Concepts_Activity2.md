@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LiDAR Data Products"
+title:  "LiDAR DSM, DTM, CHM"
 date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
@@ -8,12 +8,18 @@ description: "Understand two common LiDAR data product formats: raster and vecto
 
 ---
 
+
+### Three Common LiDAR Data Products ###
+- [Digital Terrain Model](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - this product represents the ground.
+- [Digital Surface Model](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
+- [Digital Terrain Model ](http://http://neoninc.org/leah_test/ESA2014/DTM.html) - this represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
+
+
 ## LiDAR Point Clouds -- The Basics  ##
-Each point in a LiDAR dataset has a X, Y, Z value and other attributes as we discussed in Activity One. The points may be located anywhere in space are not within any particular grid. <image: LiDAR data point spacing>.
+Each point in a LiDAR dataset has a X, Y, Z value and other attributes. The points may be located anywhere in space are not aligned within any particular grid. <image: LiDAR data point spacing>.
 
 LiDAR point clouds are typically available in a .las file format. The .las file format is a compressed format that can better handle the millions of points that are often associated with LiDAR data point clouds.
 
-Some scientists prefer to run their own algorithms on LIDAR points to create useful data products given there are so many processing options associated with converting LIDAR data points into a gridded or raster format (discussed next).
 
 #### Gridded or Raster LiDAR Data Products ###
 LiDAR data products are most often worked within a gridded or raster data format. A raster file is a regular grid of cells, all of which are the same size. A few notes about rasters:  
@@ -25,12 +31,8 @@ LiDAR data products are most often worked within a gridded or raster data format
 Raster data can have attributes associated with it as well. For instance in a LiDAR derived digital elevation model (DEM), each cell might represent a particular elevation value.  In a LIDAR derived intensity image, each cell represents a LIDAR intensity value.
 
 
-#### Raster vs. Vector -- Learn More  ####
 
-- [Discussion of Raster Data - ESRI](http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=What_is_raster_data%3F)
-- [GIS Lounge - Discussion of Raster vs VEctor](http://www.gislounge.com/geodatabases-explored-vector-and-raster-data/)
 
-> Side bar: raster format that you are familiar with is an image...more about that...
 
 ## The Skinny -- 
 In short, when you go to download LiDAR data the first question you should ask is what format the data are in. Are you downloading point clouds that you might have to process? Or rasters that are already processed for you. How do you know?
@@ -40,23 +42,19 @@ In short, when you go to download LiDAR data the first question you should ask i
 ## Creating useful data products from LiDAR data
 
 ### Classifying LiDAR point clouds
-LiDAR data points are vector data. LiDAR point clouds are useful because they tell us something about the heights of objects on the ground. However, how do we know whether a point reflected off of a tree, a bird, a building or the ground? In order to develop products like elevation models and canopy height models, we need to classify individual LiDAR points. We might classify LiDAR points into classes like
+LiDAR data points are vector data. LiDAR point clouds are useful because they tell us something about the heights of objects on the ground. However, how do we know whether a point reflected off of a tree, a bird, a building or the ground? In order to develop products like elevation models and canopy height models, we need to classify individual LiDAR points. We might classify LiDAR points into classes including:
 - Ground
 - Vegetation
 - Buildings
-Lidar Point cloud classification is often already done when you download LiDAR point clouds but just know that it’s not to be taken for granted! Programs such as lastools, fusion and terrascan are often used to perform this classification. Once the points are classified, they can be used to derive various LiDAR data products. For example the ground points can be used to create a digital elevation model or DEM. And the vegetation points can be used to create a canopy height model. More on that in the next activity.
-So when you are looking at metadata for LiDAR, it's good to notice whether the data have been classified or not. 
-Image/ animation: Classifying LiDAR points
+Lidar Point cloud classification is often already done when you download LiDAR point clouds but just know that it’s not to be taken for granted! Programs such as lastools, fusion and terrascan are often used to perform this classification. Once the points are classified, they can be used to derive various LiDAR data products. 
+
+
 
 ### Free point cloud viewers that open LiDAR point clouds ###
 - [Fusion: US Forest Service RSAC](http://www.fs.fed.us/eng/rsac/fusion/)
 - [Cloud compare](http://www.danielgm.net/cc/)
 - [Plas.io website](http://plas.io) 
 - Others (link to some of the online list of tools)
-
-
-## LiDAR derived raster data products
-While some papers suggest that point cloud derived analysis may yield more accurate estimate of vegetation characteristics (citations here), Point clouds are challenging to work with. For one, there are often millions of points on a LiDAR dataset which can slow processing down. Also point cloud based analysis often requires custom programming. The most commonly used LiDAR data products are in a raster data format. Raster data are easy to work with in common GIS tools like QGIS and even in programming languages like R and Matlab.
 
 ## Creating A Raster From LiDAR Point Clouds
 There are different ways to create a raster from LiDAR point clouds. Let's look one of the most basic ways to create a raster file points- basic gridding. When you perform a gridding algorithm, you are simply calculating a value, using point data, for each pixels in your raster dataset. To do this:
@@ -71,32 +69,3 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 8. You can view a grid in 2dimensions or 3dimensions. <<pan around a 2d hill shade and then a 3d hillshade...>>
 
 {% include _images.html url="/minimal-mistakes/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
-
-CREATE ANIMATION IN POWERPOINT SHOWING THIS→ Tristan’s graphics??
-
-## ACTIVITY -- Creating a Raster in QGIS
-In this activity, we will perform a basic gridding calculation to convert LiDAR data points to a raster grid.
-
-
-
-1. Import the points into QGIS that we created in Activity 1.
-2. Use the "grid" tool to create a grid. In this case use "max value" to create your raster.
-3. Instructur: Talk about how you decide what value to use if you have lots of points in a cell
-4. Instructure Notes:Talk about or link to gridding methods...gridding vs interpolation
-
-## Summary
-So, here’s what we’ve covered so far
-
-
-- There are 2 formats of data: raster / vector
-- LiDAR data are most often nvativley collects as points however we often convert those points to rasters in order to produce maps of ground elevation and vegetation height.
-- And raster data can be created with or without interpolation
-We also covered some basic tools to perform gridding in the freely available QGIS.
-
-In activity 3, we will review some key LiDAR data products.
-
-
-
-
-
-
