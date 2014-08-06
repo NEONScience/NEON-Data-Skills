@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LiDAR Data, Activity 1 -- The Basics"
+title:  "LiDAR Data Basics"
 date:   2014-07-11 20:49:52
 categories: [Working With LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
@@ -11,34 +11,17 @@ description: "Learn the basics of how a LiDAR works and what a LiDAR system meas
 
 ## Overview ##
 
-LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing system that can be used to measure vegetation height across wide areas. This unit will introduce you to the fundamental concepts needed to understand:
+LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing system that can be used to measure vegetation height across wide areas. This page will introduce you to the fundamental concepts needed to understand:
 
 1. What LiDAR data are 
 2. The key attributes of LiDAR data
 3. How LiDAR data are used to measure trees. 
 
-In this unit, we will explore some LiDAR data using the freely available [plas.io website](http://plas.io) and the open source, free to download QGIS software (A free GIS software package).
-
 
 {% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP) - available on https://www.flickr.com/photos/126239263@N04/sets" %}
 
-##Goals##
-*	Understand how LiDAR systems work.
-*	Understand what LiDAR point clouds represent.
 
-##Learning Objectives ##
-*	Understand that LiDAR data provide elevation information using reflected laser energy.
-*	Understand the key attributes of discrete LiDAR returns
-*	Understand what LiDAR point clouds look like
-*	View attributes associated with points in QGIS.
-
-
-##What to Do In Advance 
-
-*   Watch: The Story of LiDAR Data Video on You Tube
-*   Watch: How LiDAR works on youTube
-*   [Install QGIS](http://www.qgis.org/en/site/): QGIS is a free to download and use GIS program! It works on both MAC and PC and can be used to work with geospatial data. 
-*   Make sure you can access the [plas.io website](http://plas.io/).  
+#Some Background on LiDAR
 
 
 ##The Story of LiDAR Data video - On YouTube
@@ -46,16 +29,6 @@ In this unit, we will explore some LiDAR data using the freely available [plas.i
 
 ##How LiDAR Works ##
 <iframe width="560" height="315" src="//www.youtube.com/embed/RR1QFE-mB0k?rel=0" frameborder="0" allowfullscreen></iframe>
-
-
-##Learning Outcomes
-At the end of this activity, you should be able to: 
-
-*	Explain how a LiDAR system works
-*	List some key attributes of discrete return LiDAR data points
-*	Explain how LiDAR data are used in science
-*	Understand what LIDAR point clouds look like and know how to use the PLAS.Io viewer to explore LiDAR data las files.
-*	Understand the basic formats that LiDAR data are available in.
 
 
 ## Let's Get Started - Key Concepts to Review ##
@@ -132,32 +105,10 @@ Whether it is collected as discrete points or full waveform, most often LiDAR da
 The commonly used file format to store LIDAR point cloud data is called .las developed by... <link to ASPRS>.
 
 	
-##	Activity 1 - Exploring Discrete Return LiDAR data Point Attributes
-**need to think this through a bit more **
-Let's first look at what a las file looks like to better understand LiDAR data attributes.
-
-1. Open up the XXX file in QGIS
-2. Use the attribute button to look at the attributes of each point noting that there are key elements: x,y,z and intensity. 
-3. Note that there are some other attributes in this file including scan angle, intensity (amount of photons)
-4. ???Could also mention that there are other key lidar attributes like return number, etc (all of this is in the ppt)
 
 
-####QGIS -- Let’s Look at Some DATA
-Discrete return LiDAR data just represent the peaks of returned energy. These are discrete points (hence the name). These points contain attributes including and x, y and z values. 
-
-*	Option 1: Open the text file and  look at some values for individual points -- (note that there are other values stored in the las data… but these are the first key ones
-*	Option 2: this option will be more about working with QGIS (if you wish to emphasize these skills). Converting a text file with lat longs to a point shapefile. Open QGIS and convert the XYZ values to an actual shapefile.
-	
-* Have the students bring in an image to see how the points related to on the ground conditions (ie you will be able to generally see where trees are even in the points as there will be more returns there).
-
-** i think i should reconsider this activity because converting the points to a shapefile will be distracting... maybe that can be an advanced option...??**
-
-
-### Activity Two - Exploring 3D LIDAR data in a free Online Viewer
-1. View some LiDAR data in the [plas.io website](plas.io)   **<<-- need to make sure i credit Martin and his colleagues for this **
-2. Talk about intensity
-3. Talk about classification
-4. Talk about what you can measure…looking at the data - have the students begin to guess at the types of things that this data may be used for...
+### Exploring 3D LIDAR data in a free Online Viewer
+You can LiDAR data in the [plas.io website](plas.io)   develped by Martin Isenberg of Las Tools and his colleagues.
 
 
 
@@ -176,16 +127,7 @@ We’ll talk about that in more detail in later units.
 ----------
 ----------
 
-## Assessment ##
-1. Create a diagram that represents the key components of a LIDAR system.
-2. What does a LiDAR system record. 
-3. Explain in as few sentences as possible, what LIDAR intensity is. 
-4. Draw an example LiDAR waveform. Label the X and Y Axis and note atleast one location where a lidar return might be recorded by a discrete return LiDAR system.
 
-
-## Extra ##
- 
-have them create a shapefile in QGIS using a text file... very simple...
 
 ###Additional Resources:
 *	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")-*
