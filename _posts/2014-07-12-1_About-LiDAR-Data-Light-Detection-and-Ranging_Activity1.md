@@ -79,8 +79,6 @@ The distribution of energy that returns to the sensor creates what we call a wav
 
 {% include _images.html url="/minimal-mistakes/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
 
-> 	**Image: photon joke - a Photon Walks in ao Hotel...??&**
-
 
 ### Discrete vs Full Waveform LiDAR ###
 LiDAR data may be recorded in two ways.
