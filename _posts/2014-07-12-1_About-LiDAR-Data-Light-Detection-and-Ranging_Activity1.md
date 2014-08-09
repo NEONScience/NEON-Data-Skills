@@ -90,9 +90,7 @@ LiDAR data may be recorded in two ways.
 ##LiDAR File Formats **
 Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-The commonly used file format to store LIDAR point cloud data is called .las developed by... <link to ASPRS>.
-
-	
+The commonly used file format to store LIDAR point cloud data is called .las which is a format supported by the Americal Society of Photogrametry and Remote sensing (ASPRS). Recently, the (.laz)[http://www.laszip.org/] format has been  developed by Martin isenberg of LasTools. Laz is a highly compressed version of .las.
 
 
 ### Exploring 3D LIDAR data in a free Online Viewer
