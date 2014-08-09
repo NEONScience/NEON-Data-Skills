@@ -71,7 +71,7 @@ Now remember from the video that the LiDAR system times the travel of the light 
 <iframe width="960" height="720" src="//www.youtube.com/embed/OPgsL79eoBE?rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
 
 
-##Digging Deeper - The Distribution of Reflected Light Energy in terms of Photons
+##The Distribution of Reflected Light Energy in terms of Photons
 
 Light energy is a collection of photons. As photons that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
 
@@ -90,7 +90,7 @@ LiDAR data may be recorded in two ways.
 ##LiDAR File Formats **
 Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-The commonly used file format to store LIDAR point cloud data is called .las which is a format supported by the Americal Society of Photogrametry and Remote sensing (ASPRS). Recently, the (.laz)[http://www.laszip.org/] format has been  developed by Martin isenberg of LasTools. Laz is a highly compressed version of .las.
+The commonly used file format to store LIDAR point cloud data is called .las which is a format supported by the Americal Society of Photogrametry and Remote sensing (ASPRS). Recently, the [.laz](http://www.laszip.org/) format has been  developed by Martin isenberg of LasTools. Laz is a highly compressed version of .las.
 
 
 ### Exploring 3D LIDAR data in a free Online Viewer
