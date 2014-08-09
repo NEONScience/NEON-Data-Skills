@@ -10,9 +10,9 @@ description: "Understand two common LiDAR data product formats: raster and vecto
 
 
 ### Three Common LiDAR Data Products ###
-- [Digital Terrain Model](http://neoninc.org/leah_test/ESA2014/DTM.html) - this product represents the ground.
-- [Digital Surface Model](http://neoninc.org/leah_test/ESA2014/DTM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
-- [Digital Terrain Model ](http://neoninc.org/leah_test/ESA2014/DTM.html) - this represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
+- [Digital Terrain Model](http://neoninc.org/leah_test/ESA2014/DTM.html) - This product represents the ground.
+- [Digital Surface Model](http://neoninc.org/leah_test/ESA2014/DSM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
+- [Canopy Height Model](http://neoninc.org/leah_test/ESA2014/CHM.html) - This represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
 
 
 ## LiDAR Point Clouds -- The Basics  ##
