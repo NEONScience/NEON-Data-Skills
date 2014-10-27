@@ -3,8 +3,8 @@ description: 	A test development site that will host education materials that su
 #Comment out url when working locally to resolve base urls correctly ok
 #use this when pushing to git for live version
 
-#url:            http://lwasser.github.io/NEON_HigherEd
-#baseurl:	http://lwasser.github.io/NEON_HigherEd
+url:            http://lwasser.github.io/NEON_HigherEd
+baseurl:	http://lwasser.github.io/NEON_HigherEd
 
 #use this when working locally
 #url: http://localhost:4000
