@@ -14,8 +14,10 @@ image:
 
 # What you'll need
 1. R or R studio loaded on your computer
+2. GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a>
+
 2. Load the download the raster package to be called in this activity
-3. Download the raster and insitu collected vegetation structure data here.
+3. Download the raster and *insitu* collected vegetation structure data here.
 [-->Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/CHM_InSitu_Data.zip "Raster and InSitu Data") 
 
 > NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").

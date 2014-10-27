@@ -31,7 +31,7 @@ In this activity, we will explore lidar data point clouds and learn:
 ##Quick Review -- LiDAR File Formats **
 LiDAR data are most often available as discrete points. Although, remember that these data can be collected by the lidar instrument, in either discrete or full waveform, formats. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-".las" is the commonly used file format to store LIDAR point cloud data. This format is supported by the American Society of Photogrammetry and Remote sensing (ASPRS). Recently, the [.laz](http://www.laszip.org/) format has been  developed by Martin Isenberg of LasTools. Laz is a highly compressed version of .las.
+".las" is the commonly used file format to store LIDAR point cloud data. This format is supported by the American Society of Photogrammetry and Remote sensing (ASPRS). Recently, the <a href="http://www.laszip.org/" target="_blank">.laz</a> format has been  developed by Martin Isenberg of LasTools. Laz is a highly compressed version of .las.
 
 In this activity, you will open a .las file, in the plas.io free online lidar data viewer. You will then explore some of the attributes associated with a lidar data point cloud.
 
@@ -40,7 +40,7 @@ Remember that not all lidar data are created equally. Different lidar data may h
 
 
 ## Let's Get Started - Key Concepts to Review ##
-We will use the [plas.io website](http://plas.io "plas.io") in this activity. As described on their [plas.io github page](https://github.com/verma/plasio "plas.io github site"):
+We will use the [plas.io website](http://plas.io "plas.io") in this activity. As described on their  <a href="https://github.com/verma/plasio" target="_blank">plas.io github page</a>:
 
 > Plasio is a project by Uday Verma and Howard Butler that implements point cloud rendering capability in a browser. Specifically, it provides a functional implementation of the ASPRS LAS format, and it can consume LASzip-compressed data using LASzip NaCl module. Plasio is Chrome-only at this time, but it is hoped that other contributors can step forward to bring it to other browsers.
 > 
