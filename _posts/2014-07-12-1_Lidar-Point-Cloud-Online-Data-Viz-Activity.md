@@ -59,7 +59,7 @@ Enough reading, let's open some NEON LiDAR data!
 
 NICE! You should see something similar to the screenshot below:
 
-{% include _images_nolink.html url="./images/plasio_dataImport.png" description="NEON lidar data in the plas.io online tool." %}
+{% include _images_nolink.html url="../../images/plasio_dataImport.png" description="NEON lidar data in the plas.io online tool." %}
 
 ### Exploring Navigation in Plas.io
 You might prefer to use a mouse to explore your data in plas.io. Let's text the navigation out.
@@ -71,7 +71,7 @@ You might prefer to use a mouse to explore your data in plas.io. Let's text the 
 ###How The Points are Colored - Black and White Data
 Notice that the data, upon initial view, are colored in a black - white color scheme. These colors represent the data's intensity values. Remember that the intensity value, for each LiDAR point, represents the amount of light energy that reflected off of an object and returned to the sensor. In this case, darker colors represent LESS light energy returned. Lighter colors represent MORE light returned.
 
-{% include _images_nolink.html url="/images/Lidar_Intensity.png" description="Lidar intensity values represent the amount of light energy that reflected off of an object and returned to the sensor." %}
+{% include _images_nolink.html url="../../images/Lidar_Intensity.png" description="Lidar intensity values represent the amount of light energy that reflected off of an object and returned to the sensor." %}
 
 
 ## 2. Adjust the intensity threshold
