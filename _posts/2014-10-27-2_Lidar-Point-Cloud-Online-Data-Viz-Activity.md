@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Activity: Online Visualization of LiDAR Data"
+title:  "Activity: Online LiDAR Data Viz"
 date:   2014-10-26 11:00:52
 categories: [Using LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
