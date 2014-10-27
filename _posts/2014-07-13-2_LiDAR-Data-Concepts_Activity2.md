@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "LiDAR DSM, DTM, CHM"
+title:  "Raster LiDAR Data"
 date:   2014-07-11 20:49:52
-categories: [LiDAR Links]
+categories: [Using LiDAR Data]
 tags : [measuring vegetation,remote sensing, laser scanning]
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 
@@ -64,4 +64,12 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 7. Interpolation is useful because it can provide us with some ability to predict cell values in areas where there are no data (or no points). And to quantify the error associated with those predictions which is useful to know, if you are doing research. 
 8. You can view a grid in 2dimensions or 3dimensions. <<pan around a 2d hill shade and then a 3d hillshade...>>
 
-{% include _images.html url="/minimal-mistakes/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+{% include _images.html url="/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+
+
+
+## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
+
+
+<iframe width="100%" height="500px" frameborder="0" scrolling="no" src="http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157648481541867&caption=true&theme=1&thumbnails=1&transition=1&layoutType=responsive&sort=0" ></iframe>
+
