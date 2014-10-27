@@ -8,7 +8,7 @@ baseurl: 	  http://lwasser.github.io/NEON_HigherEd
 
 #use this when working locally
 #url: http://localhost:4000
-baseurl:
+#baseurl:
 
 disqus_shortname:
 
