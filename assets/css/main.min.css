@@ -194,8 +194,8 @@ h1 {
 	line-height: .8125
 }
 h2 {
-	margin-bottom: 26px;
-	margin-bottom: 1.625rem;
+	margin: 5px 0 6px 0;
+	margin: 0.5rem 0 0.625rem 0;
 	font-size: 28px;
 	font-size: 1.75rem;
 	line-height: .9286
