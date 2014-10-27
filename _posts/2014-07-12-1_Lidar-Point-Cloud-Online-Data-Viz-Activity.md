@@ -105,6 +105,8 @@ In this case, these data are classified as either ground, or non-ground. To view
 
 {% include _images_nolink.html url="../../images/classification_Colorization2.png" description="Set the colorization to 'classified' and then adjust the intensity blending to view the points, colored by ground and non-ground classification." %}
 
+## 4. Spend Some Time Exploring - Do you See Any Trees?
+Finally, spend some time exploring the data. what features do you see in this dataset? What does the topography look like? Is the site flat? Hilly? Mountainous? What do the lidar data tell you, just upon initial inspection?
 
 ##Summary
 *	The plas.io online point cloud viewer allows you to quickly view and explore lidar data point clouds.
