@@ -3,7 +3,7 @@ description: 	A test development site that will host education materials that su
 #Comment out url when working locally to resolve base urls correctly ok
 #use this when pushing to git for live version
 
-url:            http://lwasser.github.io/NEON_HigherEd
+url:           http://lwasser.github.io/NEON_HigherEd
 baseurl:	http://lwasser.github.io/NEON_HigherEd
 
 #use this when working locally
@@ -13,9 +13,9 @@ baseurl:	http://lwasser.github.io/NEON_HigherEd
 #disqus_shortname:
 
 # Owner/author information
-owner: Leah Wasser, National Ecological Observatory Network
-# name:           Leah A Wasser
-# avatar:         bio-photo2.jpg
+owner: 		Leah Wasser, National Ecological Observatory Network
+name:           Leah A Wasser
+avatar:         profilePic.png
 bio:            "i-luv-data - national ecological observatory network"
 email:          lwasser@neoninc.org
 # Social networking links are used in author-bio sidebar. Update and remove as you like.
