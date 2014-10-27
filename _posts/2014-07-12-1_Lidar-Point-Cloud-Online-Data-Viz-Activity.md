@@ -69,7 +69,7 @@ You might prefer to use a mouse to explore your data in plas.io. Let's text the 
 2. Right click on the screen and drag noticing that this moves the entire dataset around
 3. Use the scroll bar on your mouse to zoom in and out. 
 
-###How The Points are Colored - Black and White Data
+###How The Points are Colored - Why is everything grey when the data are loaded? 
 Notice that the data, upon initial view, are colored in a black - white color scheme. These colors represent the data's intensity values. Remember that the intensity value, for each LiDAR point, represents the amount of light energy that reflected off of an object and returned to the sensor. In this case, darker colors represent LESS light energy returned. Lighter colors represent MORE light returned.
 
 {% include _images_nolink.html url="../../images/Lidar_Intensity.png" description="Lidar intensity values represent the amount of light energy that reflected off of an object and returned to the sensor." %}
@@ -119,10 +119,7 @@ In this case, these data are classified as either ground, or non-ground. To view
 
 
 ###Additional Resources:
-*	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")-*
-*	General/LASer-LAS-File-Format-Exchange-Activities.html
-*	What is Discrete Return lidar (ppt)
-*	What is full waveform LiDAR (ppt)
+*	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")
 *	[las: python ingest](http://laspy.readthedocs.org/en/latest/tut_background.html)
 *	[las v1.3 specs](http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf)
 
