@@ -80,7 +80,7 @@ Next, scroll down through the tools in plas.io. Look for the Intensity Scaling s
 
 Drag the slider back and forth. Notice that you can brighten up the data using the slider.
 
-{% include _images_nolink.html url="/images/intensitySlider.png" description="The intensity scaling slider is located below the color map tool so it's easy to miss. Drag the slider back and forth to adjust the range of intensity values and to brighten up the lidar point clouds." %}
+{% include _images_nolink.html url="../../images/intensitySlider.png" description="The intensity scaling slider is located below the color map tool so it's easy to miss. Drag the slider back and forth to adjust the range of intensity values and to brighten up the lidar point clouds." %}
 
 ## 3. Change the lidar point cloud color options to Classification
 
@@ -102,14 +102,7 @@ In this case, these data are classified as either ground, or non-ground. To view
 - Change the intensity blending slider to "All Color" 
 - For kicks - play with the various colormap options to change the colors of the points.
 
-{% include _images_nolink.html url="/images/classification_Colorization2.png" description="Set the colorization to 'classified' and then adjust the intensity blending to view the points, colored by ground and non-ground classification." %}
-
-
-
-
-
-
-
+{% include _images_nolink.html url="../../images/classification_Colorization2.png" description="Set the colorization to 'classified' and then adjust the intensity blending to view the points, colored by ground and non-ground classification." %}
 
 
 ##Summary
