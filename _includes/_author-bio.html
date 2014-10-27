@@ -1,15 +1,16 @@
+
 {% if site.owner.avatar contains 'http://' %}
 	<img src="{{ site.owner.avatar }}" class="bio-photo" alt="{{ site.owner.name }} bio photo"></a>
 {% elsif site.owner.avatar contains 'https://' %}
 	<img src="{{ site.owner.avatar }}" class="bio-photo" alt="{{ site.owner.name }} bio photo"></a>
 {% else %}
-	 <img src="{{ site.url }}/images/ {{ site.owner.avatar }}" class="bio-photo" alt="{{ site.owner.name }} bio photo"></a>
+	 <img src="{{ site.url }}/images/{{ site.owner.avatar }}" class="bio-photo" alt="{{ site.owner.name }} bio photo"></a>
 {% endif %}
 
 
-<h3>{{ site.owner.name }} </h3>
 
-Other Activities
+
+<!-- Data Activities -->
       {% for category in site.categories %}
     <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
 	    <ul class="posts">
@@ -25,12 +26,13 @@ Other Activities
 	    {% endfor %}
 	    </ul>
 	{% endfor %}
-
-
-
+<h3>  </h3>
+<h3>{{ site.owner.name }}</h3>
 <p>{{ site.owner.bio }}</p>
+
 {% if site.owner.twitter %}<a href="http://twitter.com/{{ site.owner.twitter }}" class="author-social" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a>{% endif %}
 {% if site.owner.facebook %}<a href="http://facebook.com/{{ site.owner.facebook }}" class="author-social" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a>{% endif %}
+{% if site.owner.youtube %}<a href="https://youtube.com/user/{{ author.youtube }}" class="author-social" target="_blank"><i class="fa fa-fw fa-youtube-square"></i> Youtube</a>{% endif %}
 {% if site.owner.google_plus %}<a href="http://plus.google.com/+{{ site.owner.google_plus }}" class="author-social" target="_blank"><i class="fa fa-google-plus-square"></i> Google+</a>{% endif %}
 {% if site.owner.linkedin %}<a href="http://linkedin.com/in/{{ site.owner.linkedin }}" class="author-social" target="_blank"><i class="fa fa-linkedin-square"></i> LinkedIn</a>{% endif %}
 {% if site.owner.instagram %}<a href="http://instagram.com/{{ site.owner.instagram }}" class="author-social" target="_blank"><i class="fa fa-instagram"></i> Instagram</a>{% endif %}

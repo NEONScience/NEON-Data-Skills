@@ -11,16 +11,17 @@ baseurl:	http://lwasser.github.io/NEON_HigherEd
 #baseurl:
 
 #disqus_shortname:
+# Social networking links are used in author-bio sidebar. Update and remove as you like.
 
 # Owner/author information
-owner: 		Leah Wasser, National Ecological Observatory Network
-name:           Leah A Wasser
-avatar:         profilePic.png
-bio:            "i-luv-data - national ecological observatory network"
-email:          lwasser@neoninc.org
-# Social networking links are used in author-bio sidebar. Update and remove as you like.
-twitter:        "lawasser"
-github:         "lwasser"
+owner: 		
+  name: NEON EDU
+  avatar: profilePic.png
+  bio: "We are devoted to facilitating the use of Big Data in education."
+  email: "lwasser@neoninc.org"
+  twitter: "lawasser"
+  github: "lwasser"
+  youtube: neonbetaedu
 # instagram:      "mmistakes"
 # For Google Authorship https://plus.google.com/authorship
 # google_plus:    "MichaelRoseDesign"
