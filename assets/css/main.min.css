@@ -3250,9 +3250,9 @@ font-size:.875rem;
 }
 .article-author-side .bio-photo {
 	max-width: 110px;
-	-webkit-border-radius: 150px;
-	-moz-border-radius: 150px;
-	border-radius: 150px
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px
 }
 @media only screen and (min-width:37.5em) {
 .article-author-side {
