@@ -59,7 +59,7 @@ Enough reading, let's open some NEON LiDAR data!
 
 NICE! You should see something similar to the screenshot below:
 
-{% include _images_nolink.html url="images/plasio_dataImport.png" description="NEON lidar data in the plas.io online tool." %}
+{% include _images_nolink.html url="./images/plasio_dataImport.png" description="NEON lidar data in the plas.io online tool." %}
 
 ### Exploring Navigation in Plas.io
 You might prefer to use a mouse to explore your data in plas.io. Let's text the navigation out.
