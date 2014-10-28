@@ -33,9 +33,10 @@ In this activity, we will create a Canopy Height Model. Remember that the canopy
 To begin the CHM creation, we will call the raster libraries in R and import the lidar derived digital surface model (DSM). Then we will import and plot the DSM.
 
 
+    ```testing
     # Import DSM into R 
     library(raster)
-	
+    ```	
 	# IMPORTANT - the path to your DSM data may be different than the path below.  
     dsm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/SJER2013_DSM.tif"
     
