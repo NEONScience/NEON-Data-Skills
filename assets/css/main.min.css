@@ -337,8 +337,11 @@ font-size:.75rem;
 pre {
 	overflow-x: auto;
 	font-size: 12px;
-font-size:.75rem;
+        font-size:.75rem;
 	line-height: 1.5
+	padding:20px;
+	box-shadow:10px 10px 5px #666;
+	border: 1px solid #ccc;
 }
 .highlight {
 	margin-bottom: 1.5em;
