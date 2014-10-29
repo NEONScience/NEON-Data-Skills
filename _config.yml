@@ -35,8 +35,11 @@ google_analytics:   UA-52746937-1
 categories: [using lidar data, Working With Field Data, zcarbon links]
 # Links to include in top navigation
 # For external links add external: true
-links:
-  - title: National Ecological Observatory Network - (NEON)
+links:  
+  - title: All Posts
+    url: /writing/
+    
+  - title: NEON Website
     url: http://neoninc.org
     external: true
 
