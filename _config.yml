@@ -37,7 +37,10 @@ categories: [using lidar data, Working With Field Data, zcarbon links]
 # For external links add external: true
 links:  
   - title: All Posts
-    url: /writing/
+    url: /posts/
+  
+  - title: About
+    url: /about/
     
   - title: NEON Website
     url: http://neoninc.org
