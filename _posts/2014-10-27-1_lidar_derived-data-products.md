@@ -9,7 +9,7 @@ description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a f
 permalink: /using-lidar-data/1_lidar_derived-data-products/
 image:
   feature: textur2_pointsProfile.jpg
-  credit: National Ecological Observatory Network (NEON)
+  credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
 ---
 
@@ -28,16 +28,18 @@ image:
 ##Background
 NEON (National Ecological Observatory Network) will provide derived LiDAR products as one of its many free ecological data products. One such product is a digital surface model which represents the top of the surface elevation of objects on the earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which is simply a raster format, that is spatially located on the earth. Geotiffs can be easily accessed using the `raster` package in R.
 
-##Creating a LiDAR derived Canopy Height Model (CHM)
+## Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
 In this activity, we will create a Canopy Height Model. Remember that the canopy height model, represents the actual heights of the trees on the ground. And we can derive the CHM by subtracting the ground elevation from the elevation of the top of the surface (or the tops of the trees). 
 
 To begin the CHM creation, we will call the raster libraries in R and import the lidar derived digital surface model (DSM). Then we will import and plot the DSM.
 
 
-    ```testing
+	#Because we will be exporting data in this activity, let's set the working directory before we go any further. The working directory will determine where data are saved.
+	setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")    
+
     # Import DSM into R 
     library(raster)
-    ```	
+    	
 	# IMPORTANT - the path to your DSM data may be different than the path below.  
     dsm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/SJER2013_DSM.tif"
     
@@ -66,11 +68,13 @@ Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is s
     chm <- overlay(dsm,dtm,fun = canopyCalc)
     ### a little raster math
     plot(chm)
-	#leah's note: rename cnopy --> CHM -- make sure the code works
 
-Woo hoo! we've now successfully created a canopy height model using basic raster math - in R! 
+	#write out the CHM in tiff format. We can look at this in any GIS software.
+	writeRaster(chm,"chm.tiff","GTiff")
 
-##The Omni-present Question -- How does our CHM data compare to field measured tree heights?
+Woo hoo! We've now successfully created a canopy height model using basic raster math - in R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.  
+
+##Part 2. The Omni-present Question -- How does our CHM data compare to field measured tree heights?
 
 So now we have a canopy height model. however, how does that dataset compare to our laboriously collected, field measured height data? Let's see.
 
@@ -80,7 +84,7 @@ We will need to convert the plot centroids to a spatial points dataset in R. To 
 
 Let's get started!
 
-    ```{r Data overlay}
+    {r Data overlay}
     library(sp)
     library(dplyr)
 
@@ -92,16 +96,21 @@ Let's get started!
 	#plot the chm
     plot(chm)
 
-### Extract xy locations for centroids, convert to spatial format, Assign coordinate reference system 
+	#Overlay the centroid points and the stem locations on the CHM plot
+	#HINT: help(points) to see all of the options for plotting points. for example, cex = point size 
     points(centroids$easting,centroids$northing, pch=19, cex = 2,col = 2)
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
-	# extract the CRS (coordinate reference system) from the CHM and apply it to our plot centroid data
-	# In this case, we know these data are all in the same projection
+
+##Spatial Data Need a Coordinate Reference System - CRS
+Next, assign a CRS to our insitu data. the CRS is information that allows a program like QGIS to determine where the data are located, in the world. <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">Read more about CRSs here</a>
+
+	## Create a spatial ponts object using the CRS (coordinate reference system) from the CHM and apply it to our plot centroid data.
+	#In this case, we know these data are all in the same projection
 	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
 
 ### Extract CMH data within 20 m radius of each centroid.
-	# Insitu sampling took place within 20m x 20m plots.	
+	# Insitu sampling took place within 40m x 40m square plots.	
     # Note that below will return a list, so we can extract via lapply
     cent_ovr <- extract(chm,centroid_sp,buffer = 20)
     
