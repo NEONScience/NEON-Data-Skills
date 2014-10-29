@@ -95,7 +95,7 @@ in R. or check out the stack overflow thread that helped us sort out how this wo
 
 Note 1: Spatial polygons require a list of lists. Each list contains the xy coordinates of each vertex in the polygon - in order. This includes the closing vertex that we discussed above. So, remember, you'll have to repeat the first vertex coordinate.
 
-Note 2: you can grab the CRS string from another file that has CRS information already. To do this, use the syntax: proj4string =CRS(as.character(YOU-DATA-HERE@crs)). So, for example if I imported a tiff called "canopy" that was in a UTM coordinate system, i could type proj4string-CRS(as.character(canopy@crs))
+Note 2: you can grab the CRS string from another file that has CRS information already. To do this, use the syntax: proj4string =CRS(as.character(YOU-DATA-HERE@crs)). So, for example if we imported a tiff called "canopy" that was in a UTM coordinate system, we could type proj4string-CRS(as.character(canopy@crs))
 
 **Let's Do this the efficient way - we will use the mapply function.**
 
