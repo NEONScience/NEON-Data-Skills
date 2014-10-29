@@ -76,7 +76,11 @@ The next piece of code sets the radius for the plots. This radius is used to cal
 
 Next, we will extract each plot's unique ID from the centroids csv file. We will associate the centroid plot ID with the plot perimeter polygon that we create below.
 
-	#Extract the plot ID information
+	#Extract the plot ID information. NOTE: because we set
+	#stringsAsFactor to false above, we can import the plot 
+	#ID's using the code below. If we didn't do that, our ID's would 
+	#come in as factors by default. 
+	#We'd thus have to use the code ID=as.character(centroids$Plot_ID) 
 	ID=centroids$Plot_ID
 	
 NOTE: When calculating the coordinates for the vertices, it is important to CLOSE the polygon. This means that a square will have 5 instead of 4 vertices. The fifth vertex is identical to the first vertex. Thus, by repeating the first vertex coordinate (xMinus,yPlus) the polygon will be closed.
@@ -91,9 +95,9 @@ in R. or check out the stack overflow thread that helped us sort out how this wo
 
 Note 1: Spatial polygons require a list of lists. Each list contains the xy coordinates of each vertex in the polygon - in order. This includes the closing vertex that we discussed above. So, remember, you'll have to repeat the first vertex coordinate.
 
-Note 2: you can grab the CRS string from another file is like this proj4string =CRS(as.character(YOU-DATA-HERE@crs))
+Note 2: you can grab the CRS string from another file that has CRS information already. To do this, use the syntax: proj4string =CRS(as.character(YOU-DATA-HERE@crs)). So, for example if I imported a tiff called "canopy" that was in a UTM coordinate system, i could type proj4string-CRS(as.character(canopy@crs))
 
-**Let's Do this the efficient way - this required the mapply function.**
+**Let's Do this the efficient way - we will use the mapply function.**
 
 	#create spatial polygons
 	polys <- SpatialPolygons(mapply(function(poly, id) {
