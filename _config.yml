@@ -15,9 +15,9 @@ baseurl:	http://lwasser.github.io/NEON_HigherEd
 
 # Owner/author information
 owner: 		
-  name: NEON EDU
+  name: NEON EDUCATION
   avatar: profilePic_circle.png
-  bio: "We are devoted to facilitating the use of Big Data in education."
+  bio: "We are devoted to open data, open source and facilitating the use of Big Data in education."
   email: "lwasser@neoninc.org"
   twitter: "lawasser"
   github: "lwasser"
