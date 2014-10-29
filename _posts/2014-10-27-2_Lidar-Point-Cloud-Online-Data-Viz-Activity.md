@@ -23,15 +23,18 @@ In this activity, we will explore lidar data point clouds and learn:
 3. About the .las and .laz lidar file formats (standard lidar point cloud formats).
 
 ## What you Need  ##
-1. Access to the internet so you can use the [plas.io](http://plas.io "plas.io") website.
-2. Please download the lidar data  collected by NEON AOP (National ecological observatory network, airborne observation platform). [-->Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data")
+1. Access to the internet so you can use the <a href="http://plas.io" target="_blank"> plas.io website.</a>
+2. Your very own, sparking personality.
+
+###Data to Download
+Please download the lidar data  collected by NEON AOP (National ecological observatory network, airborne observation platform). [-->RIGHT Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data")
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
 ##Quick Review -- LiDAR File Formats **
 LiDAR data are most often available as discrete points. Although, remember that these data can be collected by the lidar instrument, in either discrete or full waveform, formats. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-".las" is the commonly used file format to store LIDAR point cloud data. This format is supported by the American Society of Photogrammetry and Remote sensing (ASPRS). Recently, the <a href="http://www.laszip.org/" target="_blank">.laz</a> format has been  developed by Martin Isenberg of LasTools. Laz is a highly compressed version of .las.
+".las" is the commonly used file format to store LIDAR point cloud data. This format is supported by the <a href="http://www.asprs.org/" target="_blank"> American Society of Photogrammetry and Remote sensing (ASPRS)</a>. Recently, the <a href="http://www.laszip.org/" target="_blank">.laz</a> format has been  developed by Martin Isenberg of LasTools. Laz is a highly compressed version of .las.
 
 In this activity, you will open a .las file, in the plas.io free online lidar data viewer. You will then explore some of the attributes associated with a lidar data point cloud.
 
@@ -39,8 +42,8 @@ In this activity, you will open a .las file, in the plas.io free online lidar da
 Remember that not all lidar data are created equally. Different lidar data may have different attributes. In this activity, we will look at data that contain both intensity values and a ground vs non ground classification.
 
 
-## Let's Get Started - Key Concepts to Review ##
-We will use the [plas.io website](http://plas.io "plas.io") in this activity. As described on their  <a href="https://github.com/verma/plasio" target="_blank">plas.io github page</a>:
+## Key Review Concepts ##
+We will use the <a href="http://plas.io" target="_blank"> plas.io website.</a> in this activity. As described on their  <a href="https://github.com/verma/plasio" target="_blank">plas.io github page</a>:
 
 > Plasio is a project by Uday Verma and Howard Butler that implements point cloud rendering capability in a browser. Specifically, it provides a functional implementation of the ASPRS LAS format, and it can consume LASzip-compressed data using LASzip NaCl module. Plasio is Chrome-only at this time, but it is hoped that other contributors can step forward to bring it to other browsers.
 > 
@@ -52,18 +55,18 @@ Enough reading, let's open some NEON LiDAR data!
  
 ## 1. Open a .las file in plas.io ###
 
-1. Download the NEON prepackaged lidar dataset [-->Here<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/data.htm "SAMPLE NEON LiDAR Data") if you haven't already.
+1. Download the NEON prepackaged lidar dataset [-->RIGHT CLICK Here to download<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/data.htm "SAMPLE NEON LiDAR Data") if you haven't already.
 2. The file is named: r_filtered_256000_4111000.las 
-2. When the download is complete, drag the file r_filtered_256000_4111000.las into the [plas.io](http://plas.io "plas.io") window.
+2. When the download is complete, drag the file r_filtered_256000_4111000.las into the <a href="http://plas.io" target="_blank"> plas.io website.</a> window.
 3. Zoom and pan around the data
-4. Use the particle size slider to adjust the size of each individual lidar point
+4. Use the particle size slider to adjust the size of each individual lidar point. NOTE: the particle size slider is located a little more than half way down the plas.io toolbar in the "Data" section.
 
 NICE! You should see something similar to the screenshot below:
 
 {% include _images_nolink.html url="../../images/plasio_dataImport.png" description="NEON lidar data in the plas.io online tool." %}
 
-### Exploring Navigation in Plas.io
-You might prefer to use a mouse to explore your data in plas.io. Let's text the navigation out.
+### Navigation Around Your Data in Plas.io
+You might prefer to use a mouse to explore your data in plas.io. Let's test the navigation out.
 
 1. Left click on the screen and drag the data on the screen. Notice that this tilts the data up and down.
 2. Right click on the screen and drag noticing that this moves the entire dataset around
@@ -95,7 +98,7 @@ In addition to intensity values, these lidar data also have a classification val
 - 5 High Vegetation
 - 6 Building
 
-{% include _images.html url="//farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape. The lidar data are classified into non-ground (green) and ground (orange points) classes and then colored in the cross section." %}
+{% include _images_nolink.html url="../../images/plasio_ColorsKendra.png" description="Blue and Orange gradient color scheme submitted by Kendra Sand. Which color scheme is your favorite? email screenshots to: lwasser at neoninc.org" %}
 
 In this case, these data are classified as either ground, or non-ground. To view the points, colored by class:
 
@@ -119,12 +122,10 @@ Finally, spend some time exploring the data. what features do you see in this da
 ----------
 
 
-
 ###Additional Resources:
-*	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")
-*	[las: python ingest](http://laspy.readthedocs.org/en/latest/tut_background.html)
-*	[las v1.3 specs](http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf)
-
+*	What is the <a href="http://www.asprs.org/Committee" target="_blank"> las file format</a>?
+*	<a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank"> Las: python ingest</a>
+*	<a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank"> las v1.3 specifications</a>
 
 
 ## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##

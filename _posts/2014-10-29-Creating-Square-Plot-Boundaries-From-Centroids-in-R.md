@@ -24,9 +24,9 @@ permalink: /working-with-field-data/Field-Data-Polygons-From-Centroids
 </section><!-- /#table-of-contents -->
 
 #About This Activity
-Sometimes you have a set of plot centroid (center of the plot) values in x,y format. You need to derive the plot boundaries. If the plot is a circle, this task is quite simple using a buffer function in R or a GIS package. However, creating a SQUARE boundary around a centroid requires an alternate approach. This activity presents a way to create square polygons of a given radius (referring to half of the plots width), for each plot centroid location in a dataset.
+Sometimes we have a set of plot centroid (marking the center of a plot) values in x,y format. We need to derive the plot boundaries or edges of the plot, from the centroids. If the plot is a circle, we can generate the plot boundary using a buffer function in R or a GIS package. However, creating a SQUARE boundary around a centroid requires an alternate approach. This activity presents a way to create square polygons of a given radius (referring to half of the plots width), for each plot centroid location in a dataset.
 
-This activity requires a ".csv" (Comma Separatef Value) file that contains the plot centroids in X,Y format and preferably some sort of unique plot ID. The data used in this activity were collected at the National Ecological Observatory Network field site in San Joachium Experimental Range, California. 
+This activity requires a ".csv" (Comma Separated Value) file that contains the plot centroids in X,Y format and preferably some sort of unique plot ID. The data used in this activity were collected at the National Ecological Observatory Network field site in San Joaquin Experimental Range, California. 
 
 **We'd Like to Thank**
 
@@ -35,31 +35,32 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 # What You Need
 - R or RStudio
 - A functioning thinking cap
-
-###Data to Download
-- The plot centroid csv located [HERE](http://lwasser.github.io/data/SJERPlotCentroids.csv "Centroid data for SJER") (right click to download)
-
-###Required R Packages
-- the sp and rgdal packages -- make sure they are installed or else calling them as a library won't work. <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Huh??: about installing packages in R by R-bloggers.</a>
+- **Data to Download:** The plot centroid csv located [HERE](http://lwasser.github.io/data/SJERPlotCentroids.csv "Centroid data for SJER") (right click to download)
+- **Required R Packages:** the sp and rgdal packages.
+- Quick Hint: You need to first install the sp and rgdal packages before calling them in your code. Make sure they are installed or else calling them as a library won't work.
+	- For example, installing the sp package requires you to run the following: install.packages(‘sp’) 
+	-  <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
 
 ##Part 1 - Load CSV, Setup Plots 
 
-	#this code will create square "plots" of X radius using plot centroids
-	#first, call the sp and gdal libraries
+	#this code will create square "plots" of a user-defined radius from X,Y  centroids
+	#first, load the sp and gdal libraries
+	
 	library(sp)
 	library(rgdal)
 
-	#be sure to set your working directory so you know where the data are saved at the end.
+	#be sure to set your working directory so you know where any code outputs are saved.
 	setwd("~/SET-YOUR-DIRECTORY-HERE/1_DataWorkshop_ESA2014/ESAWorkshop_data")
 
-	#Make sure the data don't import as factors
+	#Make sure character strings don't import as factors
 	options(stringsAsFactors=FALSE)
 
-	#read in the FSU plot centroid information (downloaded above)
-	#make sure this is placed in your working directory
+	#read in the NEON plot centroid data (downloaded above - 
+	#SJERPlotCentroids.csv)
+	#make sure this file has been saved in your working directory
 	centroids <- read.csv("SJERPlotCentroids.csv")
 
-This code allows you to set hte radius for your plots. In this case, we used a 40 x 40m radius square plot. Radius is in METERS given the data are in UTM.
+The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
 	#set the radius for the plots
 	radius <- 20 #radius in meters
@@ -73,10 +74,10 @@ This code allows you to set hte radius for your plots. In this case, we used a 4
 	yMinus <- centroids$northing-radius
 	xMinus <- centroids$easting-radius
 
-Each plot has a unique ID. Let's extract that from the centroids csv so we can capture it in our polygon file that we create below.
+Next, we will extract each plot's unique ID from the centroids csv file. We will associate the centroid plot ID with the plot perimeter polygon that we create below.
 
 	#Extract the plot ID information
-	ID=as.character(centroids$Plot_ID)
+	ID=centroids$Plot_ID
 	
 NOTE: When calculating the coordinates for the vertices, it is important to CLOSE the polygon. This means that a square will have 5 instead of 4 vertices. The fifth vertex is identical to the first vertex. Thus, by repeating the first vertex coordinate (xMinus,yPlus) the polygon will be closed.
 

@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Measure Photosynthesis Data Basics"
+title:  "zMeasure Photosynthesis Data Basics"
 date:   2014-07-11 20:49:52
-categories: [Carbon Links]
+categories: [ZCarbon Links]
 tags : [measuring vegetation,infrared gas analyzer]
 description: "Learn how we measure photosynthesis."
 id: 72157645715298956
