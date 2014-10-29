@@ -20,6 +20,8 @@ Sometimes you have a set of plot centroid values (x,y) and you need to derive th
 
 It requires a csv file that contains the plot centroids and preferably some sort of unique plot ID. The data used in this activity were collected at the National Ecological Observatory Network field site in San Joachium Experimental Range, California. 
 
+Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target="_blank"> jbaums</a> from StackOverflow for helping with the SpatialPolygons code!
+
 #Learning Objectives
 
 # Activity Requirements
@@ -69,11 +71,29 @@ Note 1: Spatial polygons require a list of lists. Each list contains the xy coor
 
 Note 2: you can grab the CRS string from another file is like this proj4string =CRS(as.character(YOU-DATA-HERE@crs))
 
+###Let's Do this the efficient way - this required the mapply function.
+
 	#create spatial polygons
 	polys <- SpatialPolygons(mapply(function(poly, id) {
 	  xy <- matrix(poly, ncol=2, byrow=TRUE)
 	  Polygons(list(Polygon(xy)), ID=id)
 	}, split(square, row(square)), ID),proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
+
+###If the above doesn't make sense, let's try to less efficient way - using a loop
+
+The code below uses simpler R code contained within a loop. Please keep in mind that loops are less efficient to process your data. But this code might be easier for you to understand if you are newer to R.  
+	
+	#this is the inefficient way of doing this - using a for loop
+	#initialize the list
+	a <- vector('list', length(2))
+
+    #loop through each centroid value and create a polygon
+	for (i in 1:nrow(centroids)) {	   
+	  a[[i]]<-Polygons(list(Polygon(matrix(square[i, ], ncol=2, byrow=TRUE))), ID[i]) 
+	}
+	
+	polys<-SpatialPolygons(a,proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
 
 Before you can export a shapefile, you need to convert the spatialpolygons to a spatial polygon data frame. Note: this is the step where you could add additional attribute data if you wanted to!
 
