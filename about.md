@@ -12,12 +12,16 @@ image:
   creditlink: http://texturelovers.com
 ---
 
-This site is devoted to the creation of materials that support the use of big data in ecology. 
+This site is devoted to the creation of materials that support the use of big data in ecology. It is managed by the Education Department at the National Ecological Observatory Network (NEON). NEON will provide free and open data for 30 years, to support the study of ecological change.
 
 
-## Some things about this site:
+## Some Random Notes:
 
-* All materials posted on this site are free to use in education! Please do so
+* All materials posted on this site are free to use in education / for non commercial purposes! Please do so.
 * Please comment on things that you think might be improved. and share ideas you have for other data activities. 
 * The focus of all content is  data analysis and literacy.
-* I sincerely appreciate any and all input!
+* We sincerely appreciate any and all input!
+
+Please Also Visit
+You tube channel
+flickr page

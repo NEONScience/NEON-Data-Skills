@@ -12,13 +12,28 @@ image:
   credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
 ---
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3 >Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
 
 # What you'll need
 1. R or R studio loaded on your computer
 2. GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a>
 
-2. Load the download the raster package to be called in this activity
-3. Download the raster and *insitu* collected vegetation structure data here.
+###Required R Packages
+Please make sure the following packages are installed: Raster, sp, dplyr. 
+<a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Say What? --> about installing packages in R by R-bloggers.</a>
+
+
+###Data to Download
+
+Download the raster and *insitu* collected vegetation structure data here.
 [-->Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/CHM_InSitu_Data.zip "Raster and InSitu Data") 
 
 > NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
@@ -34,13 +49,16 @@ In this activity, we will create a Canopy Height Model. Remember that the canopy
 To begin the CHM creation, we will call the raster libraries in R and import the lidar derived digital surface model (DSM). Then we will import and plot the DSM.
 
 
-	#Because we will be exporting data in this activity, let's set the working directory before we go any further. The working directory will determine where data are saved.
+	#Because we will be exporting data in this activity, let's set the
+	#working directory before we go any further. The working directory 
+	#will determine where data are saved.
 	setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")    
 
     # Import DSM into R 
     library(raster)
     	
-	# IMPORTANT - the path to your DSM data may be different than the path below.  
+	# IMPORTANT - the path to your DSM data may be different than the 
+	#path below.  
     dsm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/SJER2013_DSM.tif"
     
     dsm <- raster(dsm_f)
@@ -59,7 +77,8 @@ Next, we will import the Digital Terrain Model (DTM). Remember that the DTM repr
 
 Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is simply the difference between the DSM and the DTM. So, we can perform some basic raster math to accomplish this. You might perform the SAME raster math in a GIS package like [QGIS](http://www.qgis.org/en/site/ "QGIS").
     
-    ## Create a function that performs this raster math. Canopy height is dsm - dtm
+    # Create a function that performs this raster math. Canopy height 
+	#is dsm - dtm
     canopyCalc <- function(x, y) {
       return(x - y)
       }
@@ -74,7 +93,7 @@ Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is s
 
 Woo hoo! We've now successfully created a canopy height model using basic raster math - in R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.  
 
-##Part 2. The Omni-present Question -- How does our CHM data compare to field measured tree heights?
+##Part 2. How does our CHM data compare to field measured tree heights?
 
 So now we have a canopy height model. however, how does that dataset compare to our laboriously collected, field measured height data? Let's see.
 
@@ -97,24 +116,43 @@ Let's get started!
     plot(chm)
 
 	#Overlay the centroid points and the stem locations on the CHM plot
-	#HINT: help(points) to see all of the options for plotting points. for example, cex = point size 
+	#HINT: help(points) to see all of the options for plotting points. 
+	#for example, cex = point size 
     points(centroids$easting,centroids$northing, pch=19, cex = 2,col = 2)
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 
-##Spatial Data Need a Coordinate Reference System - CRS
+**Spatial Data Need a Coordinate Reference System - CRS**
+
 Next, assign a CRS to our insitu data. the CRS is information that allows a program like QGIS to determine where the data are located, in the world. <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">Read more about CRSs here</a>
 
-	## Create a spatial ponts object using the CRS (coordinate reference system) from the CHM and apply it to our plot centroid data.
+	# Create a spatial ponts object using the CRS (coordinate 
+	#reference system) from the CHM and apply it to our plot centroid data.
 	#In this case, we know these data are all in the same projection
 	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
 
-### Extract CMH data within 20 m radius of each centroid.
+**Extract CMH data within 20 m radius of each centroid.**
+
+There are a few ways to go about this task. If your plots are circular, then the extract tool will do the job on it's own! However, if you'd like to use a shapefile that contains the plot boundaries OR if your boundaries are rectangular, you might consider a variation of the code below.
+
 	# Insitu sampling took place within 40m x 40m square plots.	
     # Note that below will return a list, so we can extract via lapply
     cent_ovr <- extract(chm,centroid_sp,buffer = 20)
+
+**Variation Two -- Extract CHM values Using a Shapefile**
+
+If your plot boundaries are saved in a shapefile, you can use the code below. There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you downloaded at the top of this page.
+
+	#extract CHM data using polygon boundaries from a shapefile
+	squarePlot <- readShapePoly("InSitu_Data/SJERPlotCentroids_Buffer.shp")
+	v <- extract(chm, squarePlot, weights=FALSE, fun=max)
+
+**Variation Three -- Derive Square Plot boundaries, then CHM values Using a Shapefile**
+For more on this, see the [activity](../../working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
+
     
-### Create new dataframe by pulling the CHM max value found within the 20m radius from each plot centroid location
+**Create new dataframe by pulling the CHM max value found within the 20m radius from each plot centroid location**
+
 	centroids$overlay <- unlist(lapply(cent_ovr,max))
 	
 	#find the max and 95th percentile value for all trees within each plot 
@@ -122,9 +160,12 @@ Next, assign a CRS to our insitu data. the CRS is information that allows a prog
 	
 	centroids$insitu <- insitu$max
 
-### Create the regression final plot that compares in situ max tree height to CHM derived max height
+### Create Regression Plot (CHM vs Measured)
+Create the regression final plot that compares in situ max tree height to CHM derived max height.
+
 	ggplot(centroids,aes(x=overlay, y =insitu )) + geom_point() + theme_bw() + ylab("Maximum measured height") + xlab("Maximum LiDAR pixel")+geom_abline(intercept = 0, slope=1)+xlim(0, max(centroids[,6:7])) + ylim(0,max(centroids[,6:7]))
-```
+
+And that is it! You have now successfully created a canopy height model using lidar data AND compared lidar derived vegetation height, within plots, to actual measured tree height data!
 
 
 
