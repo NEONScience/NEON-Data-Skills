@@ -6,6 +6,8 @@ library(rgdal)
 #be sure to set your working directory so you know where the data are saved at the end.
 setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")
 
+#Make sure that character strings don't import as factors
+options(stringsAsFactors=FALSE)
 
 #read in the FSU plot location data
 centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
@@ -20,7 +22,7 @@ yMinus <- centroids$northing-radius
 xMinus <- centroids$easting-radius
 
 #Extract the plot ID information
-ID=as.character(centroids$Plot_ID)
+ID=centroids$Plot_ID
 
 #calculate polygon coordinates for each plot centroid. NOTE: the first vertex coordinate is repeated (xMinus,yPlus) to close the polygon.
 square=cbind(xMinus,yPlus, xPlus,yPlus, xPlus,yMinus, xMinus,yMinus,xMinus,yPlus,xMinus,yPlus)
