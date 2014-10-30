@@ -12,7 +12,12 @@
 <p>{{ site.owner.bio }}</p>
 
 
-<!-- Data Activities -->
+<!-- Testing This out to see if it crashes -->
+
+{% assign sorted_pages = (site.pages | sort: 'title') %}
+{% for page in sorted_pages %}
+    <li class="cardmenu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
+{% endfor %}
 
 <h3>  </h3>
 
