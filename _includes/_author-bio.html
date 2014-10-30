@@ -21,7 +21,7 @@
 
 {% assign sorted_categories = (site.categories | sort: 'categories') %}
 {% for page in sorted_categories %}
-    <li class="cardmenu-item"> {{ page.categories }}</li>
+    <li class="cardmenu-item"> {{ page | first }}</li>
 {% endfor %}
 
 <h3>  </h3>
