@@ -13,6 +13,7 @@
 
 
 <!-- Data Activities -->
+	  {% assign sorted_categories = site.categories | sort:"category" %}
       {% for category in site.categories %}
     <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
 	    <ul class="posts">
