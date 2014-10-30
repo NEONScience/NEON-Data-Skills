@@ -14,22 +14,11 @@
 
 <!-- Data Activities   	  {% assign sorted_categories = site.categories | sort:"categories" %}
 -->
-      {% assign categorysort = (site.categories | where: "categories" , "using lidar data") %}
-      {% for category in categorysort %}
-    <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
-	    <ul class="posts">
-	    {% for posts in category %}
-	      {% for post in posts %}
-	      {% if post.url %}
-	        <li>
-	        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> -->
-	        </li>
-	        {% endif %}
-	      {% endfor %}
-	    {% endfor %}
-	    </ul>
-	{% endfor %}
+      {% assign tutorials = (site.pages | where: "layout" , "java-tutorials") %}
+	  {% for page in tutorials %}
+	       // do some work
+       {% endfor %}
+
 <h3>  </h3>
 
 <!-- Data Activities -->
