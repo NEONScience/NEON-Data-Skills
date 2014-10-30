@@ -11,14 +11,6 @@
 <h3>{{ site.owner.name }}</h3>
 <p>{{ site.owner.bio }}</p>
 
-{% for category in site.categories where site.categories="zcarbon links" %}
-{% capture category %}{{post.category | category: "zcarbon links"}}{% endcapture %}
-  {% if category == "zcarbon links" %}
-      <p>{{ post.date }}</p>
-      were
-      <p>{{ post.title }}</p>
-  {% endif %}
-{% endfor %}
 
 <!-- Data Activities -->
       {% for category in site.categories %}
