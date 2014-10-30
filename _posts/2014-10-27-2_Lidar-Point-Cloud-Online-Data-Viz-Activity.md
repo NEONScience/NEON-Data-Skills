@@ -23,7 +23,7 @@ In this activity, we will explore lidar data point clouds and learn:
 3. About the .las and .laz lidar file formats (standard lidar point cloud formats).
 
 ## What you Need  ##
-1. Access to the internet so you can use the <a href="http://plas.io" target="_blank"> plas.io website.</a>
+1. Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io website.</a>
 2. Your very own, sparking personality.
 
 ###Data to Download

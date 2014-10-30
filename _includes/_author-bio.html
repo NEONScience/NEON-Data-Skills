@@ -19,6 +19,11 @@
     <li class="cardmenu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
 {% endfor %}
 
+{% assign sorted_categories = (site.categories | sort: 'categories') %}
+{% for page in sorted_categories %}
+    <li class="cardmenu-item"> {{ page.categories }}</li>
+{% endfor %}
+
 <h3>  </h3>
 
 <!-- Data Activities -->
