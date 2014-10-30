@@ -32,7 +32,8 @@ google_analytics:   UA-52746937-1
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 #bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
 
-categories: [using lidar data, Working With Field Data, zcarbon links]
+category: [using lidar data, working with field data, zcarbon links]
+categories: [using lidar data, working with field data, zcarbon links]
 # Links to include in top navigation
 # For external links add external: true
 links:  
