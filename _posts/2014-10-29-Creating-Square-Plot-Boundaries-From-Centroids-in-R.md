@@ -39,17 +39,15 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 - **Required R Packages:** the sp and rgdal packages.
 - Quick Hint: You need to first install the sp and rgdal packages before calling them in your code. Make sure they are installed or else calling them as a library won't work.
 	
-{% highlight ruby %}
-def foo
-  puts 'foo'
-end
-{% endhighlight %}
+
 
 ##REVIEW: How to Install Packages
 Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
 
-    install.packages(‘sp’)
-    install.packages(‘rgdal’)
+{% highlight ruby %}
+install.packages(‘sp’)
+install.packages(‘rgdal’)
+{% endhighlight %}
 
 ##Part 1 - Load CSV, Setup Plots 
 
