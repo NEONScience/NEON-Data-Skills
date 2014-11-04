@@ -43,7 +43,7 @@ Let's start by defining a function `fahr_to_kelvin` that converts temperature va
 {% highlight r %}
 fahr_to_kelvin <- function(temp) {
     kelvin <- ((temp - 32) * (5/9)) + 273.15
-	kelvin
+    kelvin
 }
 {% endhighlight %}
 
@@ -51,10 +51,10 @@ The definition opens with the name of your new function, which is followed by th
 
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The last line within the function is what R will evaluate as a returning value. Remember that the last line has to be a command that will print to the screen, and not an object definition, otherwise the function will return nothing - it will work, but will provide no output. For example, let's try running our function. Calling our own function is no different from calling any other function:
 
-```{r}
+{% highlight r %}
 fahr_to_kelvin(32)
 paste('boiling point of water:', fahr_to_kelvin(212))
-```
+{% endhighlight %}
 
 We've successfully called the function that we defined, and we have access to the value that we returned. However, it the function was redefined as follows
 
