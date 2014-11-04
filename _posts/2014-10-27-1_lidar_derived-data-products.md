@@ -49,7 +49,7 @@ Download the raster and *insitu* collected vegetation structure data here.
 ##Background
 NEON (National Ecological Observatory Network) will provide derived LiDAR products as one of its many free ecological data products. One such product is a digital surface model which represents the top of the surface elevation of objects on the earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which is simply a raster format, that is spatially located on the earth. Geotiffs can be easily accessed using the `raster` package in R.
 
-## Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
+##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
 In this activity, we will create a Canopy Height Model. Remember that the canopy height model, represents the actual heights of the trees on the ground. And we can derive the CHM by subtracting the ground elevation from the elevation of the top of the surface (or the tops of the trees). 
 
 To begin the CHM creation, we will call the raster libraries in R and import the lidar derived digital surface model (DSM). Then we will import and plot the DSM.
@@ -60,10 +60,10 @@ To begin the CHM creation, we will call the raster libraries in R and import the
 	#will determine where data are saved.
 	setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")    
 
-    # Import DSM into R 
+    #Import DSM into R 
     library(raster)
     	
-	# IMPORTANT - the path to your DSM data may be different than the 
+	#IMPORTANT - the path to your DSM data may be different than the 
 	#path below.  
     dsm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/SJER2013_DSM.tif"
     
@@ -76,14 +76,14 @@ To begin the CHM creation, we will call the raster libraries in R and import the
 Next, we will import the Digital Terrain Model (DTM). Remember that the DTM represents the ground (terrain) elevation.
 
 
-    # import the digital terrain model
+    #import the digital terrain model
     dtm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalTerrainModel/SJER2013_DTM.tif"
     dtm <- raster(dtm_f)
     plot(dtm)
 
 Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is simply the difference between the DSM and the DTM. So, we can perform some basic raster math to accomplish this. You might perform the SAME raster math in a GIS package like [QGIS](http://www.qgis.org/en/site/ "QGIS").
     
-    # Create a function that performs this raster math. Canopy height 
+    #Create a function that performs this raster math. Canopy height 
 	#is dsm - dtm
     canopyCalc <- function(x, y) {
       return(x - y)
@@ -128,24 +128,24 @@ Let's get started!
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 
-**Spatial Data Need a Coordinate Reference System - CRS**
+###Spatial Data Need a Coordinate Reference System - CRS
 
 Next, assign a CRS to our insitu data. the CRS is information that allows a program like QGIS to determine where the data are located, in the world. <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">Read more about CRSs here</a>
 
-	# Create a spatial ponts object using the CRS (coordinate 
+	#Create a spatial ponts object using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
 	#In this case, we know these data are all in the same projection
 	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
 
-**Extract CMH data within 20 m radius of each centroid.**
+###Extract CMH data within 20 m radius of each centroid.**
 
 There are a few ways to go about this task. If your plots are circular, then the extract tool will do the job on it's own! However, if you'd like to use a shapefile that contains the plot boundaries OR if your boundaries are rectangular, you might consider a variation of the code below.
 
-	# Insitu sampling took place within 40m x 40m square plots.	
-    # Note that below will return a list, so we can extract via lapply
+	#Insitu sampling took place within 40m x 40m square plots.	
+    #Note that below will return a list, so we can extract via lapply
     cent_ovr <- extract(chm,centroid_sp,buffer = 20)
 
-**Variation Two -- Extract CHM values Using a Shapefile**
+###Variation Two -- Extract CHM values Using a Shapefile**
 
 If your plot boundaries are saved in a shapefile, you can use the code below. There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you downloaded at the top of this page.
 
@@ -153,11 +153,11 @@ If your plot boundaries are saved in a shapefile, you can use the code below. Th
 	squarePlot <- readShapePoly("InSitu_Data/SJERPlotCentroids_Buffer.shp")
 	v <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
-**Variation Three -- Derive Square Plot boundaries, then CHM values Using a Shapefile**
+###Variation Three -- Derive Square Plot boundaries, then CHM values Using a Shapefile
 For more on this, see the [activity](../../working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
 
     
-**Create new dataframe by pulling the CHM max value found within the 20m radius from each plot centroid location**
+Create new dataframe by pulling the CHM max value found within the 20m radius from each plot centroid location**
 
 	centroids$overlay <- unlist(lapply(cent_ovr,max))
 	
