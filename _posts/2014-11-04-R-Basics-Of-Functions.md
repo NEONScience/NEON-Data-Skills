@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Creating Plot Boundaries"
+title: "Activity: Working With Fs\unctions"
 date:   2014-10-29 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [R]
@@ -11,7 +11,7 @@ image:
   feature: textur2_FieldWork.jpg
   credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
   creditlink: http://www.neoninc.org
-permalink: /working-with-field-data/Field-Data-Polygons-From-Centroids
+permalink: /using-R/Working-With-Functions
 ---
 <section id="table-of-contents" class="toc">
   <header>
