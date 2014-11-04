@@ -52,7 +52,7 @@ timezone:    America/New_York
 future:      true
 # turning off pygments for the time being
 #pygments:    true
-#highlighter: pygments
+highlighter: pygments
 markdown:    kramdown
 #markdown: redcarpet2
 
