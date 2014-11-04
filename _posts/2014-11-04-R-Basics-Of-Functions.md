@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Working With Fs\unctions"
+title: "Activity: Working With Functions"
 date:   2014-10-29 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Using R]
