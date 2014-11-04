@@ -53,8 +53,8 @@ future:      true
 # turning off pygments for the time being
 #pygments:    true
 #highlighter: pygments
-markdown:    kramdown
-#markdown: redcarpet2
+#markdown:    kramdown
+markdown: redcarpet2
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink:   /:categories/:title/
