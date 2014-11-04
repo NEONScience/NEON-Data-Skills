@@ -48,7 +48,6 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
 
 ##Part 1 - Load CSV, Setup Plots 
 
-{% highlight pygments %}
 
 	#this code will create square "plots" of a user-defined radius from X,Y  centroids
 	#first, load the sp and gdal libraries
@@ -66,8 +65,7 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
 	#SJERPlotCentroids.csv)
 	#make sure this file has been saved in your working directory
 	centroids <- read.csv("SJERPlotCentroids.csv")
-	
-{% endhighlight %}
+
 
 The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
