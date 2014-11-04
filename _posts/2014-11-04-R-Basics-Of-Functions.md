@@ -40,12 +40,15 @@ But what if we have 10 or 12 or more files files to analyze? In addition, that n
 ##getting started
 Let's start by defining a function `fahr_to_kelvin` that converts temperature values from Fahrenheit to Kelvin:
 
+{% highlight r %}
+
 ```{r}
 fahr_to_kelvin <- function(temp) {
     kelvin <- ((temp - 32) * (5/9)) + 273.15
 	kelvin
 }
 ```
+{% endhighlight %}
 
 The definition opens with the name of your new function, which is followed by the call to make it a `function` and a parenthesized list of parameter names. You can have as many input parameters as you would like (but too many might be bad style). The body, or implementation, is surrounded by curly braces `{ }`. In many languages, the body of the function - the statements that are executed when it runs - must be indented, typically using 4 spaces. While this is not a mandatory requirement in R coding, we strongly recommend you to adopt this as good practice.
 
