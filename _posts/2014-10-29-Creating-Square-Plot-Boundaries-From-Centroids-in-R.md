@@ -45,8 +45,8 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
 
 {% highlight ruby %}
 
-    install.packages(‘sp’)
-    install.packages(‘rgdal’)
+install.packages(‘sp’)
+install.packages(‘rgdal’)
     
 {% endhighlight %}
 
