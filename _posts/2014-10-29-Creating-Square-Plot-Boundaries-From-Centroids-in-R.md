@@ -39,6 +39,11 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 - **Required R Packages:** the sp and rgdal packages.
 - Quick Hint: You need to first install the sp and rgdal packages before calling them in your code. Make sure they are installed or else calling them as a library won't work.
 	
+{% highlight ruby %}
+def foo
+  puts 'foo'
+end
+{% endhighlight %}
 
 ##REVIEW: How to Install Packages
 Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
@@ -47,8 +52,6 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
     install.packages(‘rgdal’)
 
 ##Part 1 - Load CSV, Setup Plots 
-
-{% highlight pygments %}
 
 	#this code will create square "plots" of a user-defined radius from X,Y  centroids
 	#first, load the sp and gdal libraries
@@ -67,11 +70,11 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
 	#make sure this file has been saved in your working directory
 	centroids <- read.csv("SJERPlotCentroids.csv")
 	
-{% endhighlight %}
+
 
 The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
-{% highlight ruby %}
+
 
 	#set the radius for the plots
 	radius <- 20 #radius in meters
@@ -85,7 +88,6 @@ The next piece of code sets the radius for the plots. This radius is used to cal
 	yMinus <- centroids$northing-radius
 	xMinus <- centroids$easting-radius
 	
-{% endhighlight %}
 
 
 Next, we will extract each plot's unique ID from the centroids csv file. We will associate the centroid plot ID with the plot perimeter polygon that we create below.
