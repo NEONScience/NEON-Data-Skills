@@ -132,7 +132,7 @@ Let's get started!
 
 Next, assign a CRS to our insitu data. the CRS is information that allows a program like QGIS to determine where the data are located, in the world. <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">Read more about CRSs here</a>
 
-	#Create a spatial ponts object using the CRS (coordinate 
+	#make spatial points object using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
 	#In this case, we know these data are all in the same projection
 	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
