@@ -53,24 +53,25 @@ Use the code below to install the sp and rgdal packages. NOTE: you can just type
 
 ##Part 1 - Load CSV, Setup Plots 
 
-	#this code will create square "plots" of a user-defined radius from X,Y  centroids
-	#first, load the sp and gdal libraries
+{% highlight ruby %}
+#this code will create square "plots" of a user-defined radius from X,Y  centroids
+#first, load the sp and gdal libraries
+
+library(sp)
+library(rgdal)
+
+#be sure to set your working directory so you know where any code outputs are saved.
+setwd("~/SET-YOUR-DIRECTORY-HERE/1_DataWorkshop_ESA2014/ESAWorkshop_data")
+
+#Make sure character strings don't import as factors
+options(stringsAsFactors=FALSE)
+
+#read in the NEON plot centroid data (downloaded above - 
+#SJERPlotCentroids.csv)
+#make sure this file has been saved in your working directory
+centroids <- read.csv("SJERPlotCentroids.csv")
 	
-	library(sp)
-	library(rgdal)
-
-	#be sure to set your working directory so you know where any code outputs are saved.
-	setwd("~/SET-YOUR-DIRECTORY-HERE/1_DataWorkshop_ESA2014/ESAWorkshop_data")
-
-	#Make sure character strings don't import as factors
-	options(stringsAsFactors=FALSE)
-
-	#read in the NEON plot centroid data (downloaded above - 
-	#SJERPlotCentroids.csv)
-	#make sure this file has been saved in your working directory
-	centroids <- read.csv("SJERPlotCentroids.csv")
-	
-
+{% endhighlight %}
 
 The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
