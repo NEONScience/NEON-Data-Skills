@@ -49,7 +49,7 @@ fahr_to_kelvin <- function(temp) {
 
 The definition opens with the name of your new function, which is followed by the call to make it a `function` and a parenthesized list of parameter names. The parameters are the input values that the function will use to perform any calculations. In this case, the input might be the temperature value that we wish to convert from fahrenheit to kelvin. You can have as many input parameters as you would like (but too many might be bad style). The body, or implementation, is surrounded by curly braces `{ }`. In many languages, the body of the function - the statements that are executed when it runs - must be indented, typically using 4 spaces. 
 
-HINT: While it is not mandatory to indent your code 4 spaces within a function, it is  strongly recommended as good practice!
+>HINT: While it is not mandatory to indent your code 4 spaces within a function, it is  strongly recommended as good practice!
 
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The last line within the function is what R will evaluate as a returning value. Remember that the last line has to be a command that will print to the screen, and not an object definition, otherwise the function will return nothing - it will work, but will provide no output. For example, let's try running our function. Calling our own function is no different from calling any other function:
 
