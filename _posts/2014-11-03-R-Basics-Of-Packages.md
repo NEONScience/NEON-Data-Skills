@@ -29,6 +29,7 @@ image:
 # What you'll Learn Here
 - The basics of what a package is in R
 - How to install a package in R
+- How to call upon (use) that installed package in R
 - How to update a package in R
 - How to see what packages are installed on your computer 
 
@@ -48,6 +49,14 @@ To install packages, use the code: `install.packages('package-Name-Here)` So, fo
 
     install.packages(‘raster’)
     install.packages(‘sp’)
+
+## CALLING packages in R
+Now, by installing a package onto your machine, you are half way there. If you want to USE the package - or the functions contained in that package - in your code, you need to first CALL it. So, to call the raster package that we installed above, we would type `library(raster)`. 
+
+In the code, it would look something like:
+
+    library(sp)
+    library(dplyr)
 
 ##What Packages are installed On Your Machine? 
 Good question - let's find out. Use `old.packages()` to list all your locally installed packages that are now out of date. `update.packages()` will update all packages in the known libraries interactively. This can take a while if you haven't done it recently. To update everything without any user intervention, use the `ask = FALSE` argument.

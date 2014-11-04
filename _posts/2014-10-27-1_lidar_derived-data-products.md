@@ -90,8 +90,8 @@ Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is s
       }
     
 	#use the function to create the final CHM
+	#then plot it.
     chm <- overlay(dsm,dtm,fun = canopyCalc)
-    ### a little raster math
     plot(chm)
 
 	#write out the CHM in tiff format. We can look at this in any GIS software.
