@@ -44,14 +44,13 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
 
 {% highlight ruby %}
-
 install.packages(‘sp’)
 install.packages(‘rgdal’)
-    
 {% endhighlight %}
 
 ##Part 1 - Load CSV, Setup Plots 
 
+{% highlight ruby %}
 
 	#this code will create square "plots" of a user-defined radius from X,Y  centroids
 	#first, load the sp and gdal libraries
@@ -70,6 +69,7 @@ install.packages(‘rgdal’)
 	#make sure this file has been saved in your working directory
 	centroids <- read.csv("SJERPlotCentroids.csv")
 
+{% endhighlight %}
 
 The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
