@@ -11,7 +11,7 @@ image:
   feature: textur2_FieldWork.jpg
   credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
   creditlink: http://www.neoninc.org
-permalink: /Using-R/Working-With-Functions
+permalink: /Using-R/Getting-Started-With-R
 ---
 <section id="table-of-contents" class="toc">
   <header>
