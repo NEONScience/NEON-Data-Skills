@@ -54,7 +54,7 @@ future:      true
 #pygments:    true
 #highlighter: pygments
 #markdown:    kramdown
-markdown: redcarpet
+markdown: redcarpet2
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink:   /:categories/:title/
