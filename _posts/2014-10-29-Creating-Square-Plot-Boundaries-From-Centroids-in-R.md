@@ -43,14 +43,14 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 ##REVIEW: How to Install Packages
 Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
 
-{% highlight ruby %}
+{% highlight r %}
 install.packages(‘sp’)
 install.packages(‘rgdal’)
 {% endhighlight %}
 
 ##Part 1 - Load CSV, Setup Plots 
 
-{% highlight ruby %}
+{% highlight r %}
 
 #this code will create square "plots" of a user-defined radius from X,Y  centroids
 #first, load the sp and gdal libraries
