@@ -25,37 +25,37 @@ permalink: /Using-R/Getting-Started-With-R
 
 
 
-# R for Beginners 
+# Getting Started with R  
 --------------------------------------------------
-
-* Draw concept map of where we are headed towards best scientific practices, and reproducibility.
-* Its really important that you know what you did. More journals/grants/etc. are also making it important for them to know what you did.
-* A lot of scientific code is *not* reproducible.
-* If you keep a lab notebook, why are we not as careful with our code? 
-* We edit each others manuscripts, but we don't edit each other's code. 
-* If you write your code with "future you" in mind, you will save yourself and others a lot of time.
 
 # The Very basics of R
 
-R is a versatile, open source programming language that was specifically designed for data analysis. As such R is extremely useful both for statistics and data science. Inspired by the programming language S.  
+R is a versatile, open source programming language that was specifically designed for data analysis. R is extremely useful both for statistics and analyzing data. 
+
+>Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
 
 * Open source software under GPL.  
-* Superior (if not just comparable) to commercial alternatives. R has over 5,000 user contributed packages at this time. It's widely used both in academia and industry.  
-* Available on all platforms.  
+* A good alternative to commercial analysis tools. R has over 5,000 user contributed packages and is widely used both in academia and industry.  
+* R is available on all platforms.  
 * Not just for statistics, but also general purpose programming.  
 * Is (sort of) object oriented and functional.  
 * Large and growing community of peers.  
 
-
-Notice that we have _nested_ one function inside of another.  
+#Basic SYntax
 
 ##Comments in R
 Use `#` signs to comment. Comment liberally in your R scripts. Anything to the right of a `#` is ignored by R.  
+    #this is a comment. there is a line of code below it.
+    a <- 1+2
 
-### Assignment operator
+### Drop the Equals Sign - Assignment operator
 
 `<-` is the assignment operator. Assigns values on the right to objects on the left. Mostly similar to `=` but not always. Learn to use `<-` as it is good programming practice. Using `=` in place of `<-` can lead to issues down the line.
 
+    a<- 1+2 #this is preferred syntax over:
+    a= 1+2 #this is NOT preferred syntax
+    
+    
 ### Package management
 
 `install.packages("package-name")` will download a package from one of the CRAN mirrors assuming that a binary is available for your operating system. If you have not set a preferred CRAN mirror in your `options()`, then a menu will pop up asking you to choose a location. To set it permanently, add the CRAN mirror in your `~/.Rprofile`
@@ -130,6 +130,7 @@ hours <- 365 * 24
 
 The *result* of the operation on the right hand side of `<-` is *assigned* to an object with the name specified on the left hand side of `<-`. The *result* could be any type of R object, including your own functions.
 
+Notice that we have _nested_ one function inside of another.  
 
 
 ### List All objects in the environment
