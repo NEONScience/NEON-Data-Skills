@@ -52,22 +52,22 @@ install.packages(‘rgdal’)
 
 {% highlight ruby %}
 
-	#this code will create square "plots" of a user-defined radius from X,Y  centroids
-	#first, load the sp and gdal libraries
-	
-	library(sp)
-	library(rgdal)
+#this code will create square "plots" of a user-defined radius from X,Y  centroids
+#first, load the sp and gdal libraries
 
-	#be sure to set your working directory so you know where any code outputs are saved.
-	setwd("~/SET-YOUR-DIRECTORY-HERE/1_DataWorkshop_ESA2014/ESAWorkshop_data")
+library(sp)
+library(rgdal)
 
-	#Make sure character strings don't import as factors
-	options(stringsAsFactors=FALSE)
+#be sure to set your working directory so you know where any code outputs are saved.
+setwd("~/SET-YOUR-DIRECTORY-HERE/1_DataWorkshop_ESA2014/ESAWorkshop_data")
 
-	#read in the NEON plot centroid data (downloaded above - 
-	#SJERPlotCentroids.csv)
-	#make sure this file has been saved in your working directory
-	centroids <- read.csv("SJERPlotCentroids.csv")
+#Make sure character strings don't import as factors
+options(stringsAsFactors=FALSE)
+
+#read in the NEON plot centroid data (downloaded above - 
+#SJERPlotCentroids.csv)
+#make sure this file has been saved in your working directory
+centroids <- read.csv("SJERPlotCentroids.csv")
 
 {% endhighlight %}
 
