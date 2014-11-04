@@ -75,21 +75,21 @@ centroids <- read.csv("SJERPlotCentroids.csv")
 
 The next piece of code sets the radius for the plots. This radius is used to calculate the vertex locations that define the plot perimeter. In this case, we will use a radius of 20m to create a 40 m x 40 m square plot. Radius is in METERS given the data are in the UTM coordinate reference system (CRS).
 
+{% highlight pygments %}
 
+#set the radius for the plots
+radius <- 20 #radius in meters
 
-	#set the radius for the plots
-	radius <- 20 #radius in meters
-
-	#define the plot boundaries based upon the plot radius. 
-	#NOTE: this assumes that plots are oriented North and are not rotated. 
-	#If the plots are rotated, you'd need to do additional math to find 
-	#the corners.
-	yPlus <- centroids$northing+radius
-	xPlus <- centroids$easting+radius
-	yMinus <- centroids$northing-radius
-	xMinus <- centroids$easting-radius
+#define the plot boundaries based upon the plot radius. 
+#NOTE: this assumes that plots are oriented North and are not rotated. 
+#If the plots are rotated, you'd need to do additional math to find 
+#the corners.
+yPlus <- centroids$northing+radius
+xPlus <- centroids$easting+radius
+yMinus <- centroids$northing-radius
+xMinus <- centroids$easting-radius
 	
-
+{% endhighlight %}
 
 Next, we will extract each plot's unique ID from the centroids csv file. We will associate the centroid plot ID with the plot perimeter polygon that we create below.
 
