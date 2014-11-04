@@ -30,6 +30,12 @@ image:
 Please make sure the following packages are installed: Raster, sp, dplyr. 
 <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Say What? --> about installing packages in R by R-bloggers.</a>
 
+##REVIEW: How to Install Packages
+Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
+
+    install.packages(‘raster’)
+    install.packages(‘sp’)
+    install.packages(‘dplyr’)
 
 ###Data to Download
 

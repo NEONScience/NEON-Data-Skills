@@ -11,14 +11,13 @@
 <h3>{{ site.owner.name }}</h3>
 <p>{{ site.owner.bio }}</p>
 
+sdf
 
 
-
-<h2> related activities</h2>
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.categories }}</a></h2>
 {% for post in site.posts %}
-    {% if post.categories == page.categories %}
+    {% if post.categories contains '{{ page.categories }}' %}
 
         <ul class="posts">
         <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
@@ -27,10 +26,40 @@
 {% endfor %}
 
 
-<h4><a href="../../posts/">View ALL Activities</a></h4>
-<h3></h3>
-<h3></h3>
-<h3></h3>
+<!-- Testing This out to see if it crashes -->
+{% for post in site.posts %}
+    {% if post.categories contains 'using lidar data' %}
+
+        <ul class="posts">
+        <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+        </ul>
+    {% endif %}
+{% endfor %}
+
+
+
+<h3>  </h3>
+
+<!-- Data Activities -->
+
+      {% for category in site.categories %}
+
+    <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
+	    <ul class="posts">
+	    {% for posts in category %}
+	      {% for post in posts %}
+	      {% if post.url %}
+	        <li>
+	        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> -->
+	        </li>
+	        {% endif %}
+	      {% endfor %}
+	    {% endfor %}
+	    </ul>
+	{% endfor %}
+
+
 
 
 {% if site.owner.twitter %}<a href="http://twitter.com/{{ site.owner.twitter }}" class="author-social" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a>{% endif %}

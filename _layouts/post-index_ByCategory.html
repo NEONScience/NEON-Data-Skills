@@ -36,29 +36,6 @@
 
 <div id="index">
   <h1>{{ page.title }}</h1>
-  By Topic
-
-   {% for category in site.categories %}
-
-      <h2><a name="{{ category | first }}">{{ category | first }}</a></h2>
-  	    <ul class="posts">
-  	    {% for posts in category %}
-  	      {% for post in posts %}
-  	      {% if post.url %}
-  	        <li>
-  	        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> -->
-  	        </li>
-  	        {% endif %}
-  	      {% endfor %}
-  	    {% endfor %}
-  	    </ul>
-	{% endfor %}
-<br>
-<br>
-<br>
- By Date
-
   {% for post in site.posts %}
   {% unless post.next %}
     <h3>{{ post.date | date: '%Y' }}</h3>
