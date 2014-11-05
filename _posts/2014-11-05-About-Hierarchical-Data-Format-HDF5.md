@@ -5,7 +5,7 @@ date:   2014-11-05 20:49:52
 authors: Leah A. Wasser
 categories: [Hierarchical Data Formats]
 tags : []
-description: "This activity will Introduce the HDF5 file format.."
+description: "An activity in progress -- This activity will Introduce the HDF5 file format."
 code1: 
 image:
   feature: textur2_FieldWork.jpg
