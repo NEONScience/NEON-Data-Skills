@@ -50,8 +50,14 @@ The Hierarchical Data Format, allows the storage of large heterogeneous data set
 - Has wide support in the many programming languages, `R` included.
 
 
-![Why HDF5]({{  base.url  }}/images/whyHDF5.jpg)
-caption: http://www.hdfgroup.org/why_hdf/
+![Why HDF5]({{ site.baseurl }}/images/whyHDF5.jpg)
+
+<figure>
+    <a href="{{ site.baseurl }}/images/whyHDF5.jpg"><img src="{{ site.baseurl }}/images/whyHDF5.jpg"></a>
+    <figcaption>HDF5. Image Source: http://www.hdfgroup.org/why_hdf/</figcaption>
+</figure>
+
+caption: 
 
 HDF5 as a format can essentially be thought of as a file system contained within one single file. If you think about your computer, you might have a folder structure. For example, you might have some temperature data for multiple field sites that you are working at. This temperature data might be collected every 30 minutes and summarized on an hourly, daily and weekly basis. The folder structure might look like this
 
