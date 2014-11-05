@@ -99,7 +99,7 @@ In summary, HDF5 files consists of groups (directories) and datasets (files). Th
 
 ##Exploring and HDF5 File in HDFView
 
-The first thing that we will do, is open an HDF5 file in the viewer to gain a better understanding of how HDF5 files are structured.
+The first thing that we will do, is open an HDF5 file in the viewer to see how HDF5 files can be structured.
 
 
 https://bluewaters.ncsa.illinois.edu/c/document_library/get_file?uuid=a2dc7a56-cb6e-4c3f-8df0-3a51b5a5caf9&groupId=10157
