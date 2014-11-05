@@ -24,26 +24,13 @@ permalink: /HDF5/About
 </section><!-- /#table-of-contents -->
 
 
-    #not sure what this is
-    source("../chunk_options.R")
- 
-
 ##Learning Goals
 
 1. Provide an introduction to Hierarchical Data Formats - specifically the HDF5 file format - a common data format used by many disciplines (also the backbone of NetCDF4)
-2. Use the HDF viewer to explore a HDF5 file to better understand the benefits and possibilities of these data formats 
+
 
 ##What you'll Need
-- Install the [free HDFview application](http://www.hdfgroup.org/products/java/hdfview/). This application will allow you to explore the contents of an HDF5 file easily. <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click HERE to go to the download page. </a>
-
-NOTE: Select the HDFView + Java Wrapper download that matches the operating system and computer setup (32 bit vs 64 bit) that you have:
-<figure>
-    <a href="{{ site.baseurl }}/images/hdfViewerDL.jpg">
-    <img src="{{ site.baseurl }}/images/hdfViewerDL.jpg"></a>
-    <figcaption>Download the HDFview that includes the java wrapper.</figcaption>
-</figure>
-
-- Download the TOWER and the Hyperspectral Remote Sensing hdf5 files <<ADD LINKS>>
+- Internet access and a working thinking cap.
 
 ##About Hierarchical Data Formats - HDF5
 
@@ -68,6 +55,7 @@ The Hierarchical Data Format version 5 (HDF5), is an open file format that suppo
 
 
 THe HDF5 - model (or format) can  be thought of as a file system contained and described within one single file. Think about your computer. You probably have a folder or directory structure that keeps your information organized. For example, as a scientist, you might have a data directory with some temperature data for multiple field sites that you are working at. This temperature data might be collected every minute and summarized on an hourly, daily and weekly basis. The folder structure might look something like this:
+
 
 Site One 
 
@@ -97,10 +85,9 @@ One key benefit of all of this metadata attached to each group and dataset, is t
 In summary, HDF5 files consists of groups (directories) and datasets (files). The dataset holds the actual data, but the groups provide structure to that data. You'll see what this looks like when we open an hdf5 file in the HDFviewer.
 
 
-##Exploring and HDF5 File in HDFView
 
-The first thing that we will do, is open an HDF5 file in the viewer to see how HDF5 files can be structured.
-
+More about HDF5
+source: HDF5 Group
 
 https://bluewaters.ncsa.illinois.edu/c/document_library/get_file?uuid=a2dc7a56-cb6e-4c3f-8df0-3a51b5a5caf9&groupId=10157
 
