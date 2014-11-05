@@ -39,7 +39,7 @@ permalink: /HDF5/About
 NOTE: Select the HDFView + Java Wrapper download that matches the operating system and computer setup (32 bit vs 64 bit) that you have:
 <figure>
     <a href="{{ site.baseurl }}/images/hdfViewerDL.jpg">
-    <img src="{{ site.baseurl }}/images/whyHDF5.jpg"></a>
+    <img src="{{ site.baseurl }}/images/hdfViewerDL.jpg"></a>
     <figcaption>Download the HDFview that includes the java wrapper.</figcaption>
 </figure>
 
