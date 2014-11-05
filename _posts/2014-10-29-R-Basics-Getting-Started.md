@@ -23,28 +23,24 @@ permalink: /Using-R/Getting-Started-With-R
 </div>
 </section><!-- /#table-of-contents -->
 
-
-
-# Getting Started with R  
---------------------------------------------------
-
-# The Very basics of R
+# The Very Basics of R
 
 R is a versatile, open source programming language that was specifically designed for data analysis. R is extremely useful both for statistics and analyzing data. 
 
 >Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
 
-* Open source software under GPL.  
+R is:
+* Open source software under a <a href="http://en.wikipedia.org/wiki/GNU_General_Public_License" target="_blank">General Public License (GPL)</a>.  
 * A good alternative to commercial analysis tools. R has over 5,000 user contributed packages and is widely used both in academia and industry.  
-* R is available on all platforms.  
-* Not just for statistics, but also general purpose programming.  
-* Is (sort of) object oriented and functional.  
-* Large and growing community of peers.  
+* Available on all platforms.  
+* Not just for statistics, but also general purpose programming.   
+* Supported by a large and growing community of peers.  
 
-#Basic SYntax
+#Basic Syntax
 
 ##Comments in R
 Use `#` signs to comment. Comment liberally in your R scripts. Anything to the right of a `#` is ignored by R.  
+
     #this is a comment. there is a line of code below it.
     a <- 1+2
 
@@ -56,111 +52,66 @@ Use `#` signs to comment. Comment liberally in your R scripts. Anything to the r
     a= 1+2 #this is NOT preferred syntax
     
     
-### Package management
+### Packages in R
+R comes with a set of functions or commands that perform particular sets of calculations. For example, in the equation 1+2, R knows that the "+" means to add the two numbers, 1 and 2 together. However, you can expand the capability of R by installing packages that contain suites of functions and compiled code that you can also use in your code.  
 
-`install.packages("package-name")` will download a package from one of the CRAN mirrors assuming that a binary is available for your operating system. If you have not set a preferred CRAN mirror in your `options()`, then a menu will pop up asking you to choose a location. To set it permanently, add the CRAN mirror in your `~/.Rprofile`
-
-
-```r
-local({
-    r <- getOption("repos")
-    r["CRAN"] <- "http://cran.rstudio.com/"  # hard code the RStudio mirror
-    options(repos = r)
-})
-```
-
-
-Use `old.packages()` to list all your locally-installed packages that are now out of date. `update.packages()` will update all packages in the known libraries interactively. This can take a while if you haven't done it recently. To update everything without any user intervention, use the `ask = FALSE` argument.
-
-
-```r
-update.packages(ask = FALSE)
-```
+[Learn more about packages in R - Adapted from Software Carpentry, HERE.]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R")
 
 
 ## Introduction to R and RStudio
 
-Let's start by learning about our tool.  
+You can use R or RStudio to write your code. Some people prefer R studio as it provides a graphic interface where you can see what objects have been created and you can also set variables like your working directory, using menu options.
 
-_Point out the different windows in RStudio._ 
-* Console, Scripts, Environments, Plots
-* Avoid using shortcuts. 
-* Code and workflow is more reproducible if we can document everything that we do.
-* Our end goal is not just to "do stuff" but to do it in a way that anyone can easily and exactly replicate our workflow and results.
+> Let's start by learning about our tool.  
+> 
+> _Point out the different windows in RStudio._ 
+> * Console, Scripts, Environments, Plots
+> * Avoid using shortcuts. 
+> * Code and workflow is more reproducible if we can document everything that we do.
+> * Our end goal is not just to "do stuff" but to do it in a way that anyone can easily and exactly replicate our workflow and results.
 
-You can get output from R simply by typing in math
-	
+##Basic Operations in R
+Let's take a few moments to play with R. You can get output from R simply by typing in math
 
-```r
-3 + 5
-```
-
-```
-## [1] 8
-```
-
-```r
-12/7
-```
-
-```
-## [1] 1.714
-```
+    3 + 5
 
 
+`OUTPUT = [1] 8` 
+
+    12/7
+
+
+`OUTPUT [1] 1.714`
+ 
 or by typing words, with the command `writeLines()`
 
 
-```r
-writeLines("hello world")
-```
+    writeLines("hello world")
 
-```
-## hello world
-```
-
+`  hello world`
 
 We can assign our results to an object, if we give it a name
 
-
-```r
-a <- 60 * 60
-hours <- 365 * 24
-```
-
+    a <- 60 * 60
+    hours <- 365 * 24
+ 
 The *result* of the operation on the right hand side of `<-` is *assigned* to an object with the name specified on the left hand side of `<-`. The *result* could be any type of R object, including your own functions.
-
-Notice that we have _nested_ one function inside of another.  
 
 
 ### List All objects in the environment
 Some of the same commands we learned from the command line can be used in R.
 List objects in your current environment
 
-
-```r
-ls()
-```
-
+    ls()
 
 Remove objects from your current environment.  
 
-
-```r
-x <- 5
-rm(x)
-```
-
+    x <- 5
+    rm(x)
 
 Remove all objects from your current environment. Typing `x` on the console will give you an error.
 
-
-```r
-rm(list = ls())
-```
-
-
-
+    rm(list = ls())
 
 ## Data types and structures
 
@@ -168,7 +119,7 @@ rm(list = ls())
 
 To make the best of the R language, you'll need a strong understanding of the basic data types and data structures and how to operate on those.
 
-Very important to understand because these are the objects you will manipulate on a day-to-day basis in R. Dealing with object conversions is one of the most common sources of frustration for beginners.
+This understanding is because these are the objects you will manipulate on a day-to-day basis in R. Dealing with object conversions is one of the most common sources of frustration for beginners.
 
 **Everything** in R is an object.
 
@@ -190,20 +141,21 @@ By *atomic*, we mean the vector only holds data of a single type.
 
 R provides many functions to examine features of vectors and other objects, for example
 
-* `typeof()` - what is it?  
+
+
+1. * `typeof()` - what is it?  
 * `length()` - how long is it? What about two dimensional objects?  
-* `attributes()` - does it have any metadata?  
+* `attributes()` - does it have any metadata?
+ 
 
+    # Example
 
-```r
-# Example
-x <- "dataset"
-typeof(x)
-```
+    x <- "dataset"
 
-```
-## [1] "character"
-```
+    typeof(x)
+
+> ## OUTPUT: [1] "character"
+
 
 ```r
 attributes(x)

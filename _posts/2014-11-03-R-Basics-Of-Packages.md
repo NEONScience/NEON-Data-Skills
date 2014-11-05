@@ -50,7 +50,6 @@ To install packages, use the code: `install.packages('package-Name-Here)` So, fo
     install.packages(‘raster’)
     install.packages(‘sp’)
 
-## CALLING packages in R
 Now, by installing a package onto your machine, you are half way there. If you want to USE the package - or the functions contained in that package - in your code, you need to first CALL it. So, to call the raster package that we installed above, we would type `library(raster)`. 
 
 In the code, it would look something like:
@@ -70,6 +69,16 @@ Sometimes packages are updated by the users who created them. Updating packages 
     {r, eval=FALSE}
     update.packages(ask = FALSE)
 
+
+
+
+
+Use `old.packages()` to list all your locally-installed packages that are now out of date. `update.packages()` will update all packages in the known libraries interactively. This can take a while if you haven't done it recently. To update everything without any user intervention, use the `ask = FALSE` argument.
+
+
+```r
+update.packages(ask = FALSE)
+```
 
 
 ##Activity

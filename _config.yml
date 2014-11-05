@@ -8,7 +8,7 @@ baseurl:	http://lwasser.github.io/NEON_HigherEd
 
 #use this when working locally
 #url: http://localhost:4000
-#baseurl:
+#baseurl: http://localhost:4000
 
 #disqus_shortname:
 # Social networking links are used in author-bio sidebar. Update and remove as you like.
