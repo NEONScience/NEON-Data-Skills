@@ -35,6 +35,14 @@ permalink: /HDF5/About
 
 ##What you'll Need
 - Install the [free HDFview application](http://www.hdfgroup.org/products/java/hdfview/). This application will allow you to explore the contents of an HDF5 file easily. <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click HERE to go to the download page. </a>
+
+NOTE: Select the HDFView + Java Wrapper download that matches the operating system and computer setup (32 bit vs 64 bit) that you have:
+<figure>
+    <a href="{{ site.baseurl }}/images/hdfViewerDL.jpg">
+    <img src="{{ site.baseurl }}/images/whyHDF5.jpg"></a>
+    <figcaption>Download the HDFview that includes the java wrapper.</figcaption>
+</figure>
+
 - Download the TOWER and the Hyperspectral Remote Sensing hdf5 files <<ADD LINKS>>
 
 ##About Hierarchical Data Formats - HDF5
