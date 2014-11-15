@@ -5,11 +5,11 @@ date:   2014-11-05 20:49:52
 authors: Leah A. Wasser
 categories: [Hierarchical Data Formats]
 tags : []
-description: "An activity in progress -- This activity will Introduce the HDF5 file format."
+description: "An introduction to the Hierarchical Data Format 5 (HDF5) file / data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 code1: 
 image:
-  feature: textur2_FieldWork.jpg
-  credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
+  feature: hierarchy_folder1.png
+  credit: Colin Williams
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About
 ---
@@ -38,7 +38,7 @@ The Hierarchical Data Format version 5 (HDF5), is an open file format that suppo
 
 >NOTE: HDF5 is one hierarchical data format, that builds upon both HDF4 and NetCDF (two other hierarchical data formats). 
 
-<a href="http://www.hdfgroup.org/why_hdf/" target="_blank" Read  more about HDF5 Here.</a>
+<a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 Here.</a>
 
 ###Some Benefits of HDF5 
 
@@ -74,10 +74,10 @@ Site Two
 	- Weekly average
 
 
-Within **ONE** HDF5 file, you can store a similar set of data organized in the same way (or however you'd like it to be organized). You can load chunks or slices of different types of data into the HDF5 file, in the same way that you might store the datasets within directorys or folders on your laptop. So following this anology, what we know as the "directories" or "folders" on our computers, are called "groups" in an HDF5 file and what we call "files" on our computer, are called are "datasets" in an HDF5 file. 
+Within **ONE** HDF5 file, you can store a similar set of data organized in the same way (or however you'd like it to be organized). You can load chunks or slices of different types of data into the HDF5 file, in the same way that you might store the datasets within directories or folders on your laptop. So following this anology, what we know as the "directories" or "folders" on our computers, are called "groups" in an HDF5 file and what we call "files" on our computer, are called are "datasets" in an HDF5 file. 
 
 ##HDF5 is a Self Describing Format
-HDF5 format is self describing. What this measn is that each group and dataset can have metadata attached to it - that describes exactly what the data are. Using the example above, we might attach information about each site to the file includ the X,Y location, and even a site description. SImilarly, we might add information describing the sensor used to collect the temperature data. To each dataset within the site group, we might attach information pertaining to how the averaging was performed. And describing the time period available. 
+HDF5 format is self describing. This means that each group and dataset can have associated metadata that describes exactly what the data are. Using the example above, we might attach information about each site to the file include the X,Y location, and even a site description. Similarly, we might add information describing the sensor used to collect the temperature data. To each dataset within the site group, we might attach information pertaining to how the averaging was performed. And describing the time period available. 
 
 One key benefit of all of this metadata attached to each group and dataset, is that it facilitates automation. Using a programming language, like `R`, you can grab information from the metadata that you might need to process the data. All of this attached metadata, makes the hdf5 format, self-describing. 
 
@@ -86,8 +86,8 @@ In summary, HDF5 files consists of groups (directories) and datasets (files). Th
 
 
 
-More about HDF5
-source: HDF5 Group
+##Additional Resources About HDF5
 
-https://bluewaters.ncsa.illinois.edu/c/document_library/get_file?uuid=a2dc7a56-cb6e-4c3f-8df0-3a51b5a5caf9&groupId=10157
+- <a href="{{ site.baseurl }}/documents/HDF5-Intro.pdf">About HDF5 - Presentation from the HDF5 Group</a>
+
 
