@@ -8,8 +8,8 @@ tags : []
 description: "An activity in progress -- This activity will Introduce the HDF5 file format."
 code1: 
 image:
-  feature: textur2_FieldWork.jpg
-  credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
+  feature: hierarchy_folder_green.png
+  credit: Colin Williams
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Exploring-Data-HDFView
 ---
