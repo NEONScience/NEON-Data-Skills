@@ -77,7 +77,7 @@ Light energy is a collection of photons. As photons that make up light moves tow
 
 The distribution of energy that returns to the sensor creates what we call a waveform. The amount of energy that returned to the LiDAR sensor is known as "intensity". The areas where more photons or more light energy returns to the sensor create peaks in the distribution of energy. Theses peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
 
-{% include _images.html url="../images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+{% include _images_nolink.html url="../../images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
 
 ### LiDAR Data Attributes: X,Y, Z, Intensity and Classification ###
 LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation values). Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
