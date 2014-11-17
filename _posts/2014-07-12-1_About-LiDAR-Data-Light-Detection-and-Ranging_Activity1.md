@@ -54,9 +54,9 @@ There are many different uses for LiDAR data.
 	- Vertical Forest Structure
 	- Species identification (in less dense forests with high point density LiDAR)
 
-{% include _images.html url="//farm4.staticflickr.com/3883/14718736222_190e498006.jpg" width="500" height="354" description="LiDAR data have historically been used to generate high resolution elevation datasets." %}
+{% include _images.html url="http://farm4.staticflickr.com/3883/14718736222_190e498006.jpg" width="500" height="354" description="LiDAR data have historically been used to generate high resolution elevation datasets." %}
 
-{% include _images.html url="//farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
+{% include _images.html url="http://farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
 
 
 ### How A LiDAR System Works (video review) ##
