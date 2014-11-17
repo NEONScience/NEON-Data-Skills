@@ -38,7 +38,7 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 As ecologists, we often want to characterize vegetation over large regions. Because we don’t have the resources to measure each and every tree - we use tools that can estimate key characteristics over large areas. These tools often use remote methods - that is to say, we aren’t actually physically measuring things with our hands and eyes, we are using sensors which capture information about a landscape and record things that we can use to estimate conditions and characteristics.
 
 
-{% include _images.html url="/images/ScalingTrees_NatGeo.jpg" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
+{% include _images.html url="{{ site.baseurl }}/images/ScalingTrees_NatGeo.jpg" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
 
 To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can  be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one remote sensing method that can be used to map vegetation height, density and other characteristics across a region.
 
@@ -77,7 +77,7 @@ Light energy is a collection of photons. As photons that make up light moves tow
 
 The distribution of energy that returns to the sensor creates what we call a waveform. The amount of energy that returned to the LiDAR sensor is known as "intensity". The areas where more photons or more light energy returns to the sensor create peaks in the distribution of energy. Theses peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
 
-{% include _images.html url="/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+{% include _images.html url="{{ site.baseurl }}/images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
 
 ### LiDAR Data Attributes: X,Y, Z, Intensity and Classification ###
 LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation values). Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
