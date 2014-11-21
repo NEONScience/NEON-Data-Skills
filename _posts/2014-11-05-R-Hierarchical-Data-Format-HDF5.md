@@ -101,20 +101,26 @@ So now let's look at the structure of our file.  Notice that the `h5ls()` comman
 HDF5 files can hold mixed types as well.  Each data set can be of it's own type with different types within the group, or a dataset can be of mixed type itself as a dataframe object.  Furthermore, metadata can easily be added by creating attributes in R objects before adding them.  Let's do an example. We'll add some units information to our data. Note that `write.attributes = TRUE` is needed to create embedded metadata.
 
 	#r add metadata}
-	p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100)attr(p1,"units") <- "millimeters"
+	p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100)
+	attr(p1,"units") <- "millimeters"
 	
 	#Now add this back into our file
 	h5write(p1,file = "sensorData.h5","location1/precip",write.attributes=T)
 
 
-
-Now we can easily read our data back out. If `read.attributes` is set to `TRUE` then we can see the metadata about the matrix.  Furthermore, we don't need to read the whole data set in, we can examine just the first 10 rows.
-```{r read data}
-l1p1 <- h5read("sensorData.h5","location1/precip",read.attributes=T)
-l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
-```
+Now, we've successfully created an HDF5 file! We can use a different set of functions to quickly read our data back out. If `read.attributes` is set to `TRUE` then we can see the metadata about the matrix. Furthermore, we can chose to read in a subset, like the first 10 rows of data, rather than loading the entire dataset into R.
  
-Next we'll work with a realworld data file. We'll look at the structure of an unknown file, extract metadata, and vizualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
+	#r read all data
+	l1p1 <- h5read("sensorData.h5","location1/precip",read.attributes=T)
+	#read in first 10 lines
+	l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
+
+### End Section One ###
+ 
+##Working with Real World Data
+Next we'll work with a real world data file. We will work with  [flux tower tempearture data](http://neoninc.org/science-design/collection-methods/flux-tower-measurements) collected by the [NEON project](http://www.neoninc.org). NEON will provide 30 years of free ecological data.
+
+In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and vizualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
 
 # Working with real world files
 
