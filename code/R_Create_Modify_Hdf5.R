@@ -50,3 +50,47 @@ l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = l
 f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
 h5ls(f,all=T)
 
+# HDF5 allows us to quickly extract parts of a dataset or even groups.
+# extract temperature data from one site (Ordway Swisher, Florida) and plot it
+
+temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
+#view the header and the first 6 rows of the dataset
+head(temp)
+plot(temp$mean,type='l')
+
+
+#r extracting metadata from an HDF5 file
+# Open file
+out <- H5Fopen(f)
+# open a group
+g <- H5Gopen(out,'/Domain_03/Ord')
+a <- H5Aopen_by_idx(g,1)
+H5Aget_name(a)
+
+
+#Be sure to close all files that you opened!
+H5Aclose(a)
+H5Gclose(g)
+H5Fclose(out)
+
+
+#The above methods are tedious. Let's create a function that
+#will extract all metadata available for a group without our file
+
+h5metadata <- function(fileN, group, natt){
+  out <- H5Fopen(fileN)
+  g <- H5Gopen(out,group)
+  output <- list()
+  for(i in 0:(natt-1)){
+    ## Open the attribute
+    a <- H5Aopen_by_idx(g,i)
+    output[H5Aget_name(a)] <-  H5Aread(a)
+    ## Close the attributes
+    H5Aclose(a)
+  }
+  H5Gclose(g)
+  H5Fclose(out)
+  return(output)
+}
+
+

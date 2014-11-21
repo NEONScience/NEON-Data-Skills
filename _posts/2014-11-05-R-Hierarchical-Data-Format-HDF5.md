@@ -150,7 +150,10 @@ Take note that there are 4 groups and one dataset called temperature in this par
 ### Extracting metadata
 Another advantage of HDF5 is that it's self describing. This means that metadata are embedded in the file. Metadata can be associated with every group, dataset and even the file itself. 
 
-The best way to access HDF5 metadata is via the low level HDF5 API **(TED's NOTE: submitted a pull request to the package and a new fxn called 'h5readAttributes(file, name)' is now in the DEV version of rhdf5, so that may be in the latest version)**
+**The best way to access HDF5 metadata is via the low level HDF5 API**
+ **(TED's NOTE: submitted a pull request to the package and a new fxn called 'h5readAttributes(file, name)' is now in the DEV version of rhdf5, so that may be in the latest version)**
+ 
+The art of extracting metdata in R is not yet refined. Thus to do it effectively, we need to extract attributes individually. Some examples of doing this are below. 
 
 	#r extracting metadata from an HDF5 file
 	# Open file
@@ -159,44 +162,45 @@ The best way to access HDF5 metadata is via the low level HDF5 API **(TED's NOTE
 	g <- H5Gopen(out,'/Domain_03/Ord')
 	a <- H5Aopen_by_idx(g,1)
 	H5Aget_name(a)
-	aval <- H5Aread(a)
-	aval 
 
-### Lastly we need to close the file
-H5Aclose(a)
-H5Gclose(g)
-H5Fclose(out)
-```
+** Be sure to close all files that you opened!
 
-But this is really tedious.  We can easily create a simple function that can extract all the metadata from any group.
+	H5Aclose(a)
+	H5Gclose(g)
+	H5Fclose(out)
 
-```{r metdatafxn}
 
-h5metadata <- function(fileN, group, natt){
-  out <- H5Fopen(fileN)
-  g <- H5Gopen(out,group)
-  output <- list()
-  for(i in 0:(natt-1)){
-    ## Open the attribute
-    a <- H5Aopen_by_idx(g,i)
-    output[H5Aget_name(a)] <-  H5Aread(a)
-    ## Close the attributes
-    H5Aclose(a)
-  }
+THe above method to extract metadata is tedious bceause it requires individual commands that query parts of our dataset. An alternative is to create a  function that extracts all of the metadata from any group. Let's do that!
+
+##Create Metadata Extraction Function
+
+	#r metdata function
+
+	h5metadata <- function(fileN, group, natt){
+  	  out <- H5Fopen(fileN)
+  	  g <- H5Gopen(out,group)
+  	  output <- list()
+  	  for(i in 0:(natt-1)){
+    		## Open the attribute
+    		a <- H5Aopen_by_idx(g,i)
+    		output[H5Aget_name(a)] <-  H5Aread(a)
+    		## Close the attributes
+    		H5Aclose(a)
+  		}
   H5Gclose(g)
   H5Fclose(out)
   return(output)
-}
+	}
 
-```
+Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could loop through the whole file and extract metadata for every element.
 
-Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could easily loop through the whole file and extract metadata for every element.
-
-```{r extracting metadat}
-fiu_struct <- h5ls(f,all=T)
-g <- paste(fiu_struct[2,1:2],collapse="/")
-h5metadata(f,g,fiu_struct$num_attrs[2])
-```
+	#r extract metadata}
+	fiu_struct <- h5ls(f,all=T)
+	g <- paste(fiu_struct[2,1:2],collapse="/")
+	h5metadata(f,g,fiu_struct$num_attrs[2])
+	
+	
+	
 
 ### Visualizing temperature differences
 
