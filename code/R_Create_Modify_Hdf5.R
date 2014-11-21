@@ -33,6 +33,20 @@ for(i in 1:3){
   h5write(matrix(rnorm(300,25,5),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"temp",sep="/"))
 }
 
-#r ls again
+#r ls again ti see the new file structure with the datasets added
 h5ls("sensorData.h5")
+
+#r add metadata to our datasets
+p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100) 
+attr(p1,"units") <- "millimeters"
+
+#r read the precipitation data in for location 1
+l1p1 <- h5read("sensorData.h5","location1/precip",read.attributes=T)
+#read in just the first 10 lines 
+l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
+
+#REAL WORLD DATA EXAMPLE
+#r load file (make sure the path is correct!!)
+f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
+h5ls(f,all=T)
 

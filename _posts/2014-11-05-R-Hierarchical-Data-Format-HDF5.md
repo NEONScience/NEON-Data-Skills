@@ -117,42 +117,51 @@ Now, we've successfully created an HDF5 file! We can use a different set of func
 
 ### End Section One ###
  
-##Working with Real World Data
+##P2. Working with Real World Data
 Next we'll work with a real world data file. We will work with  [flux tower tempearture data](http://neoninc.org/science-design/collection-methods/flux-tower-measurements) collected by the [NEON project](http://www.neoninc.org). NEON will provide 30 years of free ecological data.
 
 In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and vizualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
 
-# Working with real world files
+### Examine file contents
 
-### Examining file contents
+Often we won't know the structure of an HDF5 file that we receive. In this case, we'll need to start by explore the underlying structure. Let's load up a NEON tower data file and examine it's contents using `h5ls`.
 
-Often we won't know what's in an HDF5 file, and we will need to explore the underlying structure.  So let's load up a file and examine it's contents.
+	#r load file}
+	f <- "data/fiuTestFile.hdf5"
+	h5ls(f,all=T)
 
-```{r load file}
-f <- "data/fiuTestFile.hdf5"
-h5ls(f,all=T)
-```
+Note that `h5ls` returns the full, hierarchical file structure including the group name, the name of a particular node (which may be a group), the type, class and the dimensions of the object.  In this case because the class of the groups is compound (meaning there are mixed data types), the dimensions are returned as the number of elements.
 
-Note that it returns the group, the name of a particular node (which may be a group), the type, and class, and the dimensions of the object.  In this case because the class is compound (meaning there are mixed data types), the dimensions are returned as the number of elements.
+One major benefit of HDF5 files is the ability to subset and slice out parts of the file. Let's extract some temperature data, collected at the Ordway Swisher Biological Station, [(A NEON Field Site)](http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station) and plot it.
 
-```{r readHDF}
-temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
-head(temp)
-plot(temp$mean,type='l')
-```
+Now remember, we are dealing with **hierarchical data**. In this case we have a nested group and dataset structure. Below, we will extract temperature data which is located within the following structure:
+ Domain_03 --> Ord --> min_1 --> boom_1 -->temperature
+ 
+Take note that there are 4 groups and one dataset called temperature in this part of the hdf5 file.
+
+	#r in temperature data
+	temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
+	head(temp)
+	plot(temp$mean,type='l')
+	
+
+![image](../../images/TempData.png)
 
 ### Extracting metadata
-It's that simple to extract a single table from an HDF5 file.  Another great advantage of HDF5 is that it's self describing, so metadata is embedded in the file. However the best way to access it via the low level HDF5 API (NOTE To instructors:  I submitted a pull request to the package and a new fxn called 'h5readAttributes(file, name)' is now in the DEV version of rhdf5, so that may be in the latest version)
+Another advantage of HDF5 is that it's self describing. This means that metadata are embedded in the file. Metadata can be associated with every group, dataset and even the file itself. 
 
-```{r metadata}
-# Open file
-out <- H5Fopen(f)
-# open a group
-g <- H5Gopen(out,'/Domain_03/Ord')
-a <- H5Aopen_by_idx(g,1)
-H5Aget_name(a)
-aval <- H5Aread(a)
-aval 
+The best way to access HDF5 metadata is via the low level HDF5 API **(TED's NOTE: submitted a pull request to the package and a new fxn called 'h5readAttributes(file, name)' is now in the DEV version of rhdf5, so that may be in the latest version)**
+
+	#r extracting metadata from an HDF5 file
+	# Open file
+	out <- H5Fopen(f)
+	# open a group
+	g <- H5Gopen(out,'/Domain_03/Ord')
+	a <- H5Aopen_by_idx(g,1)
+	H5Aget_name(a)
+	aval <- H5Aread(a)
+	aval 
+
 ### Lastly we need to close the file
 H5Aclose(a)
 H5Gclose(g)
