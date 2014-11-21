@@ -132,8 +132,8 @@ Now, we've successfully created an HDF5 file! We can use a different set of func
 	l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
 
 
-**If you get done early...**
+###Extra Credit If you get done early...###
 Activity: Think about an application for HDF5 that you might have. Create a new HDF5 File that would support the data that you need to store. 
 
-#### **************** End Section One **************** ####
+
 
