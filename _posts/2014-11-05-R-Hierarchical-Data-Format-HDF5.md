@@ -174,22 +174,25 @@ THe above method to extract metadata is tedious bceause it requires individual c
 
 ##Create Metadata Extraction Function
 
+# this code doesn't work as the h5read part fails... need to followup with ted. 
+
 	#r metdata function
 
 	h5metadata <- function(fileN, group, natt){
-  	  out <- H5Fopen(fileN)
-  	  g <- H5Gopen(out,group)
-  	  output <- list()
-  	  for(i in 0:(natt-1)){
-    		## Open the attribute
-    		a <- H5Aopen_by_idx(g,i)
-    		output[H5Aget_name(a)] <-  H5Aread(a)
-    		## Close the attributes
-    		H5Aclose(a)
-  		}
-  H5Gclose(g)
-  H5Fclose(out)
-  return(output)
+  	 out <- H5Fopen(fileN)
+  	 g <- H5Gopen(out,group)
+     output <- list()
+	 for(i in 0:(natt-1)){
+    	  ## Open the attribute
+    	  a <- H5Aopen_by_idx(g,i)
+    	  output[H5Aget_name(a)] <-  H5Aread(a)
+    	  ## Close the attributes
+    	  H5Aclose(a)
+  	 }
+  	 
+  	H5Gclose(g)
+  	H5Fclose(out)
+  	return(output)
 	}
 
 Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could loop through the whole file and extract metadata for every element.
@@ -206,14 +209,15 @@ Now we can combine the information we get from `h5ls` with our metadata extracti
 
 Now, let's say we want to compare temeratures across sites, how can we build a dataframe to do this?  We'll use our knowledge of the structure of the HDF5 to easily loop through the file and build a new data frame.  Let's look at Domain 3, 1 minute series across all the booms.
 
-```{r compare booms}
-library(dplyr)
-library(ggplot2)
-# Set the path string
-s <- "/Domain_03/Ord/min_1"
+	#r compare booms}
+	library(dplyr)
+	library(ggplot2)
+	# Set the path string
+	s <- "/Domain_03/Ord/min_1"
+
 ### Grab the paths
-paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
-ord_temp <- data.frame()
+	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
+	ord_temp <- data.frame()
 for(i in paths$path){
   boom <-  strsplit(i,"/")[[1]][5]
   dat <- h5read(f,i)
@@ -231,9 +235,9 @@ Now, what if we want to compare temperatures at our two different sites? Well le
 ```{r Compare sites}
 
 ### We want all sites in the minute 30 so this will help us prune our list
-s <- "min_30"
+	s <- "min_30"
 ### Grab the paths
-paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
+	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
 temp_30 <- data.frame()
 for(i in paths$path){
   boom <-  strsplit(i,"/")[[1]][5]
@@ -243,12 +247,14 @@ for(i in paths$path){
   dat$site <- rep(site,dim(dat)[1])
  temp_30 <- rbind(temp_30,dat)
 }
-### Dates aren't dates though, so let's fix that
-temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
 
-temp30_sum <- temp_30 %.% group_by(date,site) %.% summarise(mean = mean(mean))
-ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
-```
+### Dates aren't dates though, so let's fix that
+	temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
+
+	temp30_sum <- temp_30 %.% group_by(date,site) %.% summarise(mean = mean(mean))
+	ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
+
+
 
 
 
