@@ -94,3 +94,13 @@ h5metadata <- function(fileN, group, natt){
 }
 
 
+#Create Function that Extracts All Metadata in a group
+
+
+# Use Function to Extract metadata
+fiu_struct <- h5ls(f,all=T)
+g <- paste(fiu_struct[2,1:2],collapse="/")
+h5metadata(f,g,fiu_struct$num_attrs[2])
+
+
+
