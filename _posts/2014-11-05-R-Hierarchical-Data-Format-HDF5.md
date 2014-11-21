@@ -39,64 +39,74 @@ HDF5 is a format that allows the storage of large heterogeneous data sets with s
 
 
 The package we'll be using is `rhdf5` which is part of the [Bioconductor](http://www.bioconductor.org) suite of `R` packages
-```{r Installation}
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("rhdf5")
-library("rhdf5")
-```
 
-It's easy to understand HDF5 files when you realize they are just a self-contained directory structure. In HDF5 files though "directories" are called "groups", and "files" are "datasets", but other than that the analogy holds.  Each element can have metadata attached to it as well, whether it is a dataset or group, therefore HDF5 files are self-describing.  The easiest way to understand HDF5 files is to create your own.
 
-Let's start by outlining the file we want to create.  We'll build a file called "sensorData.h5", which will hold data for a set of sensors at three different locations.  Each sensor takes three replicates of two different measurements every minute.  So now let's think about how to structure the file. We'll have a root group, and then a group for each sensor location.  The flexiblitiy of HDF5 lets us store the same data different ways. However we will add another group, which is sensor type, and then a matrix of time x replicate within that group.  So let's create the file and call it "sensorData.h5" and then add our groups. 
+	#source("http://bioconductor.org/biocLite.R")
+	#biocLite("rhdf5")
+	library("rhdf5")
 
-```{r Create file}
-h5createFile("sensorData.h5")
-h5createGroup("sensorData.h5", "location1")
+##Review
+The HDF5 format is in essence, a self-contained directory structure. In HDF5 files though "directories" are called "groups", and "files" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
 
-```
+## Let's Create a File
 
-We can make creating groups easier with loops, and nested loops if you have a nested group structure.
+Let's start by outlining the file we want to create.  We'll build a file called "sensorData.h5", which will hold data for a set of sensors at three different locations. Each sensor takes three replicates of two different measurements every minute. 
 
-```{r loop creation}
-l1 <- c("location2","location3")
-for(i in 1:length(l1)){
-  h5createGroup("sensorData.h5", l1[i])
-}
+HDF5 allows us to organize and store data in many ways. Therefore we need to decide what type of structure is ideally suited to our data. To structure the HDF5 file, we'll start with a root group. Within that group, we will create a group for each sensor location. Within that group, we will create another group, which is sensor type, and then a matrix of time x replicate within that group.  
 
-```
+So let's create the file and call it "sensorData.h5" and then add our groups. 
+
+###r Create file}
+	#create hdf5 file
+	h5createFile("sensorData.h5")
+	h5createGroup("sensorData.h5", "location1")
+
+The processing of creating nested groups can be simplified with loops, and nested loops.
+
+	#create loops
+	l1 <- c("location2","location3")
+	for(i in 1:length(l1)){
+  	  h5createGroup("sensorData.h5", l1[i])
+	}
 
 Now let's checkout our file and see what it looks like, we'll use `h5ls()` to do this.
 
-```{r checkout file}
-h5ls("sensorData.h5")
-```
+	#r checkout file
+	h5ls("sensorData.h5")
 
-Our group structure is now set-up, but there's no data.  Now let's say each sensor took replicate measurements for 100 minutes.  So we'll add a 100 x 3 matrix of simulated data to each of our groups.  Similar to what we did before, we'll do this with loops.
+Our group structure is now set-up, but it doesn't contain any data. Let's simulate some data pretending that each sensor took replicate measurements for 100 minutes. We'll add a 100 x 3 matrix (called a dataset in HDF5 terminology) of simulated data to each of our groups. We'll use loops to create these matrices and then paste them into the hdf5 file as datasets.
 
-```{r add data}
-for(i in 1:3){
-  g <- paste("location",i,sep="")
-  h5write(matrix(rgamma(300,2,1),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"precip",sep="/"))
-  h5write(matrix(rnorm(300,25,5),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"temp",sep="/"))
-}
-```
+	#r add data
+	for(i in 1:3){
+      g <- paste("location",i,sep="")
+  	
+    h5write(matrix(rgamma(300,2,1),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"precip",sep="/"))
+    h5write(matrix(rnorm(300,25,5),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"temp",sep="/"))
+	}
 
-So now let's look at the structure of our file.  Note that `h5ls()` will tell you what each element in the file is, group or dataset, as well as the dimenensions and types of the data.  In our case you'll see that each data set for precipitationh and temperature is of type 'float' and of dimensions 100 x 3, exactly what we'd expect.
+Sometimes you may run into code that combines multiple functions into one line. It can be helpful to break the pieces of the code apart to understand their function. 
 
-```{r ls again}
-h5ls("sensorData.h5")
+Let's break down the second part of the code above. `matrix(rgamma(300,2,1),ncol=3,nrow=100)` is telling R to create a matrix that has 3 columns and 100 rows. try to past just that line of code into the console and see the result. Notice in this loop we are creating a "precip" and a "temp" dataset and pasting them within each location group (the loop iterates 3 times).
 
-```
+`h5write`
+is writing that matrix to a dataset in our hdf file (sensorData.h5). `file = "sensorData.h5",paste(g,"precip",sep="/")` Notice that the dataset is called precip. 
+
+So now let's look at the structure of our file.  Notice that the `h5ls()` command tells us what each element in the file is, group or dataset. It also provides the dimenensions of the datasets and types of the data. In this case, the  precipitation and temperature datasets are of type 'float' and of dimensions 100 x 3.
+
+[More about float vs interger here](http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum)
+
+	#r ls again
+	h5ls("sensorData.h5")
 
 HDF5 files can hold mixed types as well.  Each data set can be of it's own type with different types within the group, or a dataset can be of mixed type itself as a dataframe object.  Furthermore, metadata can easily be added by creating attributes in R objects before adding them.  Let's do an example. We'll add some units information to our data. Note that `write.attributes = TRUE` is needed to create embedded metadata.
 
-```{r add metadata}
-p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100)
-attr(p1,"units") <- "millimeters"
-# Now add this back into our file
-h5write(p1,file = "sensorData.h5","location1/precip",write.attributes=T)
+	#r add metadata}
+	p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100)attr(p1,"units") <- "millimeters"
+	
+	#Now add this back into our file
+	h5write(p1,file = "sensorData.h5","location1/precip",write.attributes=T)
 
-```
+
 
 Now we can easily read our data back out. If `read.attributes` is set to `TRUE` then we can see the metadata about the matrix.  Furthermore, we don't need to read the whole data set in, we can examine just the first 10 rows.
 ```{r read data}
