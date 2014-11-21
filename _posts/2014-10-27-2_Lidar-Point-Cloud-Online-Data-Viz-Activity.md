@@ -59,7 +59,12 @@ Enough reading, let's open some NEON LiDAR data!
 2. The file is named: r_filtered_256000_4111000.las 
 2. When the download is complete, drag the file r_filtered_256000_4111000.las into the <a href="http://plas.io" target="_blank"> plas.io website.</a> window.
 3. Zoom and pan around the data
-4. Use the particle size slider to adjust the size of each individual lidar point. NOTE: the particle size slider is located a little more than half way down the plas.io toolbar in the "Data" section.
+4. Use the particle size slider to adjust the size of each individual lidar point. NOTE: the particle size slider is located a little more than half way down the plas.io tool
+5. 
+6. 
+7. 
+8. 
+9. bar in the "Data" section.
 
 NICE! You should see something similar to the screenshot below:
 
