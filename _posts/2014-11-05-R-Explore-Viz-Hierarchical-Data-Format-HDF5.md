@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "R: HDF5 - Data Exploration & Viz"
-date:   2014-11-05 20:49:52
+date:   2014-11-17 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Hierarchical Data Formats]
 tags : []
