@@ -11,7 +11,7 @@ image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
-permalink: /HDF5/HDF5-In-R/
+permalink: /HDF5/Explore-HDF5-R/
 ---
 
 <section id="table-of-contents" class="toc">
@@ -53,7 +53,7 @@ In this activity, we'll work with a real world data file. We will work with  [fl
 
 In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and visualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
 
-### Examine file contents
+###P1. Examine file contents
 
 Often we won't know the structure of an HDF5 file that we receive. In this case, we'll need to start by explore the underlying structure. Let's load up a NEON flux tower data file and examine its contents using `h5ls`.
 
@@ -138,14 +138,14 @@ Now we can combine the information we get from `h5ls` with our metadata extracti
 	g <- paste(fiu_struct[2,1:2],collapse="/")
 	h5metadata(f,g,fiu_struct$num_attrs[2])
 
-### ******* End Part 2 ********	
+### ******* End Part 1 ********	
 
 
-## P3. Visualizing datasets in a HDF5 File
+##P2 Visualizing datasets in a HDF5 File
 
 This particular dataset contains temperature data collected using different sensors across for multiple field sites and through time. What is we wanted to create a plot that compared data across sensors or sites? 
 
-##P3a. Data from different sensors at one site
+##P2a. Data from different sensors at one site
 
 To compare data, we'll first need to loop through the HDF5 file and build a new data frame that contains temperature information over time, for each sensor or site. Let's start by comparing temperature data collected by sensor located at different heights (on different boom arms on the tower), and averaged every 1 minute for the NEON Domain 3 site, Ordway Swisher Biological Station located in Florida.
 
@@ -202,9 +202,9 @@ Now we can make our plot of temperature for all booms on the tower!
 	ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
 
 
-![Image]({{ site.baseurl }}/images/images/HDf5/ordwayPlot.png)
+![Image]({{ site.baseurl }}/images/HDf5/ordwayPlot.png)
 
-##P3a. Data from different sites
+##P2b. Data from different sites
 
 Now, what if we want to compare temperatures at our two different sites? Well let's do that but this time we'll compare 30 minute averages. We'll need to modify our search strings a bit. Bbut we can still re-use most of the code we just built.
 
@@ -232,7 +232,7 @@ First, let's extract all 30 minute averaged data, for all sites.
 	#Create plot!
 	ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
 
-![Image]({{ site.baseurl }}/images/images/HDf5/OrdwaySterling.png)
+![Image]({{ site.baseurl }}/images/HDf5/OrdwaySterling.png)
 
 > Extra Credit: Create a plot of both sites with all booms at each site on the plot.
 
