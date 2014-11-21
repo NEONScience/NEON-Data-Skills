@@ -47,7 +47,8 @@ l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = l
 
 #REAL WORLD DATA EXAMPLE
 #r load file (make sure the path is correct!!)
-f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
+#MAC f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
+f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
 h5ls(f,all=T)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.
@@ -64,9 +65,12 @@ plot(temp$mean,type='l')
 out <- H5Fopen(f)
 # open a group
 g <- H5Gopen(out,'/Domain_03/Ord')
+#view the first attribute stored in the attributes for the group above (g)
 a <- H5Aopen_by_idx(g,1)
 H5Aget_name(a)
-
+#get the value for the attribute (in this case it's the site name)
+aval <- H5Aread(a)
+aval
 
 #Be sure to close all files that you opened!
 H5Aclose(a)
@@ -94,9 +98,6 @@ h5metadata <- function(fileN, group, natt){
 }
 
 
-#Create Function that Extracts All Metadata in a group
-
-
 # Use Function to Extract metadata
 fiu_struct <- h5ls(f,all=T)
 g <- paste(fiu_struct[2,1:2],collapse="/")
@@ -104,3 +105,22 @@ h5metadata(f,g,fiu_struct$num_attrs[2])
 
 
 
+#r compare temperatuer data for different booms at the Ordway Swisher site.
+library(dplyr)
+library(ggplot2)
+# Set the path string
+s <- "/Domain_03/Ord/min_1"
+
+
+###All clear until here *****************************************************
+
+paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
+ord_temp <- data.frame()
+
+
+for(i in paths$path){
+  boom <-  strsplit(i,"/")[[1]][5]
+  dat <- h5read(f,i)
+  dat$boom <- rep(boom,dim(dat)[1])
+  ord_temp <- rbind(ord_temp,dat)
+}

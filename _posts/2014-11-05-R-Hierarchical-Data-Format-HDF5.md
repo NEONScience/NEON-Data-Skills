@@ -5,14 +5,15 @@ date:   2014-11-05 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Hierarchical Data Formats]
 tags : []
-description: "This activity will Introduce the HDF5 file format.."
+description: "Learn more about the HDF5 file format by creating a file from scratch in R. Explore an existing file and plot some data."
 code1: 
 image:
-  feature: textur2_FieldWork.jpg
-  credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
+  feature: hierarchy_folder_purple.png
+  credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/HDF5-In-R/
 ---
+
 <section id="table-of-contents" class="toc">
   <header>
     <h3 >Contents</h3>
@@ -23,58 +24,70 @@ permalink: /HDF5/HDF5-In-R/
 </div>
 </section><!-- /#table-of-contents -->
 
+**R Skill Level:** intermediate
 
-    #not sure what this is
-    source("../chunk_options.R")
- 
+##Objectives
+After completing this activity, you will:
 
-**Goals**
+1. Understand how HDF5 files can be created and organized in R supporting increased understanding of the file format and it's potential to store large, heterogeneous file formats. 
+2. Understand the basics of manipulating big data sets using indexing, loops, and `dplyr`.
+3. Understand the 3 key HDF5 data types: **file**, **groups** and **datasets**.
+3. Be exposed to and learn how to apply a variety of data manipulation tasks including identifying data types given a new dataset, string parsing, and working with / formatting date information.
 
-1. Teach students about HDF5, a common data format used by many disciplines (also the backbone of NetCDF4)
-2. Show students a real use case manipulating big data sets using indexing, loops, and `dplyr`
-3. Reinforce to students in a variety of data munging type tasks such as understanding data types, string parsing, and working with dates
+The HDF5 file can store large, heterogeneous data sets that include self-describing metadata. It supports compression and parallel I/O. It also supports efficient data slicing, or extraction of particular parts of a dataset; thus, if you don't have to read large files   read into the computers memory / RAM to work with them - a real benefit to languages like `R`. HDF5 also is supporting in many programming languages including `R` and `Python`. When HDF5 files contain spatial data, they can also be read directly into GIS programs such as `QGiS`.  
 
+To be able to access HDF5 files, you'll need to first install the base [HDF5 libraries](http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain). It might also be useful to install [HDFview](http://www.hdfgroup.org/products/java/hdfview/) which will allow you to explore the contents of an HDF5 file visually using a graphic interface. 
 
-HDF5 is a format that allows the storage of large heterogeneous data sets with self-describing metadata.  It supports compression, parallel I/O, and easy data slicing which means large files don't need to be completely read into RAM (a real benefit to `R`).  Plus it has wide support in the many programming languages, `R` included.  To be able to access HDF5 files, you'll need to first install the base [HDF5 libraries](http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain).  It might also be useful to install [HDFview](http://www.hdfgroup.org/products/java/hdfview/) which will allow you to explore the contents of an HDF5 file easily. HDF5 as a format can essentially be thought of as a file system that you load slices of at a time.  HDF5 files consists of groups (directories) and datasets (files).  The dataset holds the actual data, but the groups provide structure to that data, as you'll see in our example.
-
-
-The package we'll be using is `rhdf5` which is part of the [Bioconductor](http://www.bioconductor.org) suite of `R` packages
-
+The package we'll be using is `rhdf5` which is part of the [Bioconductor](http://www.bioconductor.org) suite of `R` packages. If you haven't installed this package before, you can use the first two lines of code below to install. Then use the library command to call the `rhdf5` library.
 
 	#source("http://bioconductor.org/biocLite.R")
 	#biocLite("rhdf5")
 	library("rhdf5")
 
 ##Review
-The HDF5 format is in essence, a self-contained directory structure. In HDF5 files though "directories" are called "groups", and "files" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
+The HDF5 format is a self-contained directory structure. In HDF5 files though "directories" are called "**groups**" and "**files**" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
+
 
 ## Let's Create a File
 
-Let's start by outlining the file we want to create.  We'll build a file called "sensorData.h5", which will hold data for a set of sensors at three different locations. Each sensor takes three replicates of two different measurements every minute. 
+Let's start by outlining the structure for the file we want to create.  We'll build a file called "sensorData.h5", which will hold data for a set of sensors at three different locations. Each sensor takes three replicates of two different measurements every minute. 
 
-HDF5 allows us to organize and store data in many ways. Therefore we need to decide what type of structure is ideally suited to our data. To structure the HDF5 file, we'll start with a root group. Within that group, we will create a group for each sensor location. Within that group, we will create another group, which is sensor type, and then a matrix of time x replicate within that group.  
+HDF5 allows us to organize and store data in many ways. Therefore we need to decide what type of structure is ideally suited to our data before creating the HDF5 file. To structure the HDF5 file, we'll start at the file level. We will create a group for each sensor location. Within that group, we will create another group, which is sensor type, and then a matrix of time x replicate within that group.
 
+So it will look something like this:
+
+- HDF5 FILE 
+	- Location_One (Group)
+		- Sensor Type (Group)
+			- Actual Data (Dataset)
+	- Location_Two  (Group)
+		- Sensor Type (Group)
+			- Actual Data (Dataset)
+	- Location_Three  (Group)
+		- Sensor Type (Group)
+			- Actual Data (Dataset)
+   
 So let's create the file and call it "sensorData.h5" and then add our groups. 
 
-###r Create file}
+###r Create file
 	#create hdf5 file
 	h5createFile("sensorData.h5")
 	h5createGroup("sensorData.h5", "location1")
 
 The processing of creating nested groups can be simplified with loops, and nested loops.
 
-	#create loops
+	#create loops that will populate 2 additional location "groups" in our HDF5 file
 	l1 <- c("location2","location3")
 	for(i in 1:length(l1)){
   	  h5createGroup("sensorData.h5", l1[i])
 	}
 
-Now let's checkout our file and see what it looks like, we'll use `h5ls()` to do this.
+Now let's view the structure of our HDF5 file. We'll use the `h5ls()` function to do this.
 
-	#r checkout file
+	#r view HDF5 File Structure
 	h5ls("sensorData.h5")
 
-Our group structure is now set-up, but it doesn't contain any data. Let's simulate some data pretending that each sensor took replicate measurements for 100 minutes. We'll add a 100 x 3 matrix (called a dataset in HDF5 terminology) of simulated data to each of our groups. We'll use loops to create these matrices and then paste them into the hdf5 file as datasets.
+Our group structure that will contain the location information is now set-up. However, it doesn't contain any data. Let's simulate some data pretending that each sensor took replicate measurements for 100 minutes. We'll add a 100 x 3 matrix that will be stored as a **dataset** in our  HDF5 file. We'll populate this dataset with simulated data for each of our groups. We'll use loops to create these matrices and then paste them into the hdf5 file as datasets.
 
 	#r add data
 	for(i in 1:3){
@@ -93,7 +106,7 @@ is writing that matrix to a dataset in our hdf file (sensorData.h5). `file = "se
 
 So now let's look at the structure of our file.  Notice that the `h5ls()` command tells us what each element in the file is, group or dataset. It also provides the dimenensions of the datasets and types of the data. In this case, the  precipitation and temperature datasets are of type 'float' and of dimensions 100 x 3.
 
-[More about float vs interger here](http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum)
+<a href="http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum" target="_blank">More about float vs integer data here</a>
 
 	#r ls again
 	h5ls("sensorData.h5")
@@ -108,51 +121,51 @@ HDF5 files can hold mixed types as well.  Each data set can be of it's own type 
 	h5write(p1,file = "sensorData.h5","location1/precip",write.attributes=T)
 
 
-Now, we've successfully created an HDF5 file! We can use a different set of functions to quickly read our data back out. If `read.attributes` is set to `TRUE` then we can see the metadata about the matrix. Furthermore, we can chose to read in a subset, like the first 10 rows of data, rather than loading the entire dataset into R.
+Now, we've successfully created an HDF5 file! We can use a different set of functions to quickly read our data back out. If `read.attributes` is set to `TRUE` then we can also see the metadata about the matrix. Furthermore, we can chose to read in a subset, like the first 10 rows of data, rather than loading the entire dataset into R.
  
-	#r read all data
+	#r read in all data
 	l1p1 <- h5read("sensorData.h5","location1/precip",read.attributes=T)
-	#read in first 10 lines
+
+	#read in first 10 lines of the data
 	l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
 
-### End Section One ###
+### **************** End Section One **************** ###
  
 ##P2. Working with Real World Data
 Next we'll work with a real world data file. We will work with  [flux tower tempearture data](http://neoninc.org/science-design/collection-methods/flux-tower-measurements) collected by the [NEON project](http://www.neoninc.org). NEON will provide 30 years of free ecological data.
 
-In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and vizualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
+In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and visualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
 
 ### Examine file contents
 
-Often we won't know the structure of an HDF5 file that we receive. In this case, we'll need to start by explore the underlying structure. Let's load up a NEON tower data file and examine it's contents using `h5ls`.
+Often we won't know the structure of an HDF5 file that we receive. In this case, we'll need to start by explore the underlying structure. Let's load up a NEON flux tower data file and examine its contents using `h5ls`.
 
-	#r load file}
-	f <- "data/fiuTestFile.hdf5"
+	#r load file
+	#NOTE: be sure to adjust the path to match your file structure!
+	f <- "data/NEON_TowerDataD3_D10.hdf5"
 	h5ls(f,all=T)
 
-Note that `h5ls` returns the full, hierarchical file structure including the group name, the name of a particular node (which may be a group), the type, class and the dimensions of the object.  In this case because the class of the groups is compound (meaning there are mixed data types), the dimensions are returned as the number of elements.
+Note that `h5ls` returns the full, hierarchical file structure including the group name, the name of a particular node (which may be a group), the type, class and the dimensions of the object.  In this case the class of the groups is compound. Compound class means there are mixed data types contained within that group. The dimensions are returned as the number of elements for compound groups.
 
-One major benefit of HDF5 files is the ability to subset and slice out parts of the file. Let's extract some temperature data, collected at the Ordway Swisher Biological Station, [(A NEON Field Site)](http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station) and plot it.
+One major benefit of HDF5 files is the ability to subset and slice out parts of the file. Let's extract some temperature data, collected at the Ordway Swisher Biological Station, <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">A NEON Field Site</a> and plot it.
 
 Now remember, we are dealing with **hierarchical data**. In this case we have a nested group and dataset structure. Below, we will extract temperature data which is located within the following structure:
  Domain_03 --> Ord --> min_1 --> boom_1 -->temperature
  
 Take note that there are 4 groups and one dataset called temperature in this part of the hdf5 file.
 
-	#r in temperature data
+	#read in temperature data
 	temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
+	#view the first few lines of the data 
 	head(temp)
 	plot(temp$mean,type='l')
 	
 
-![image](../../images/TempData.png)
+![image]({{ site.baseurl }}/images/TempData.png)
 
 ### Extracting metadata
 Another advantage of HDF5 is that it's self describing. This means that metadata are embedded in the file. Metadata can be associated with every group, dataset and even the file itself. 
 
-**The best way to access HDF5 metadata is via the low level HDF5 API**
- **(TED's NOTE: submitted a pull request to the package and a new fxn called 'h5readAttributes(file, name)' is now in the DEV version of rhdf5, so that may be in the latest version)**
- 
 The art of extracting metdata in R is not yet refined. Thus to do it effectively, we need to extract attributes individually. Some examples of doing this are below. 
 
 	#r extracting metadata from an HDF5 file
@@ -160,23 +173,29 @@ The art of extracting metdata in R is not yet refined. Thus to do it effectively
 	out <- H5Fopen(f)
 	# open a group
 	g <- H5Gopen(out,'/Domain_03/Ord')
+	#extract the first attribute for that group (g,1)
 	a <- H5Aopen_by_idx(g,1)
+	#get the name of that attribute
 	H5Aget_name(a)
 
-** Be sure to close all files that you opened!
+	#get the value for the attribute (in this case it's the site name)
+	aval <- H5Aread(a)
+	aval
+
+** Be sure to close all elements that you opened!
 
 	H5Aclose(a)
 	H5Gclose(g)
 	H5Fclose(out)
 
 
-THe above method to extract metadata is tedious bceause it requires individual commands that query parts of our dataset. An alternative is to create a  function that extracts all of the metadata from any group. Let's do that!
+The above method to extract metadata is tedious because it requires individual commands that query parts of our dataset. An alternative is to create a  function that extracts all of the metadata from any group. Let's do that!
 
-##Create Metadata Extraction Function
+###Create Metadata Extraction Function
 
-# this code doesn't work as the h5read part fails... need to followup with ted. 
-
-	#r metdata function
+	#Create metadata extraction function
+	#note: per Ted Hart, this code may be ingested into the rhdf5 
+    #library in the future. as of 11/2014 it wasn't there yet.
 
 	h5metadata <- function(fileN, group, natt){
   	 out <- H5Fopen(fileN)
@@ -190,71 +209,111 @@ THe above method to extract metadata is tedious bceause it requires individual c
     	  H5Aclose(a)
   	 }
   	 
-  	H5Gclose(g)
-  	H5Fclose(out)
-  	return(output)
+	H5Gclose(g)
+	H5Fclose(out)
+	return(output)
 	}
 
-Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could loop through the whole file and extract metadata for every element.
+Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could loop through the whole file and extract metadata for every element if we so desired.
 
 	#r extract metadata}
 	fiu_struct <- h5ls(f,all=T)
 	g <- paste(fiu_struct[2,1:2],collapse="/")
 	h5metadata(f,g,fiu_struct$num_attrs[2])
-	
-	
-	
 
-### Visualizing temperature differences
+### ******* End Part 2 ********	
 
-Now, let's say we want to compare temeratures across sites, how can we build a dataframe to do this?  We'll use our knowledge of the structure of the HDF5 to easily loop through the file and build a new data frame.  Let's look at Domain 3, 1 minute series across all the booms.
 
-	#r compare booms}
+## P3. Visualizing datasets in a HDF5 File
+
+This particular dataset contains temperature data collected using different sensors across for multiple field sites and through time. What is we wanted to create a plot that compared data across sensors or sites? 
+
+##P3a. Data from different sensors at one site
+
+To compare data, we'll first need to loop through the HDF5 file and build a new data frame that contains temperature information over time, for each sensor or site. Let's start by comparing temperature data collected by sensor located at different heights (on different boom arms on the tower), and averaged every 1 minute for the NEON Domain 3 site, Ordway Swisher Biological Station located in Florida.
+
+	# Compare temperature data across booms 
 	library(dplyr)
 	library(ggplot2)
 	# Set the path string
 	s <- "/Domain_03/Ord/min_1"
 
-### Grab the paths
+### Grab the paths to the data we want to use
+
 	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
 	ord_temp <- data.frame()
-for(i in paths$path){
-  boom <-  strsplit(i,"/")[[1]][5]
-  dat <- h5read(f,i)
-  dat$boom <- rep(boom,dim(dat)[1])
-  ord_temp <- rbind(ord_temp,dat)
-}
-### Dates aren't dates though, so let's fix that
-ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
-## Now we can make our plot!
-ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
-```
+	
 
-Now, what if we want to compare temperatures at our two different sites? Well let's do that but this time we'll compare 30 minute averages. We'll need to change up our search strings a bit. but we can still use most of the code we just build
 
-```{r Compare sites}
+Now, the above code is rather complex. It uses the powerful dplyr libraries to filter things down. Let's break down what the first line is doing. 
 
-### We want all sites in the minute 30 so this will help us prune our list
+
+
+- We defined `fiu_struct` earlier - that's just the structure of our HDF5 file that we got using `h5ls`.
+- `grepl` looks for a pattern. type `help(grepl)`. The pattern we are looking for is s which we defined earlier as "/Domain_03/Ord/min_1". Type `s` into the console to see what comes up. 
+
+So let's put this together. Type, `fiu_struct %.% filter(grepl(s,group))` into the console. Notice that you get a list of both datasets and groups for the Domain_03 site. But we just want the datasets as that is where our information is stored. The groups  just store the data - like a folder would on our computer. We wamt the files.
+
+- The second part of the filter `grepl("DATA",otype))` tells R to look for objects in the file that contain the word "data". Run this: `fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype))` in the console and notice that you just get the elements in the file that are both for the Ordway site AND are of type "dataset".
+- The last part appends the group name (boom_1, boom_2, etc) and the dataset name (temperature in this case) to the path.  `group_by(group) %.% summarise(path = paste(group,name,sep="/"))`
+
+
+	for(i in paths$path){
+	  boom <-  strsplit(i,"/")[[1]][5]
+	  dat <- h5read(f,i)
+	  dat$boom <- rep(boom,dim(dat)[1])
+	  ord_temp <- rbind(ord_temp,dat)
+	}
+
+The loop above iterates through the file, grabs the temperature data for each boom in the 1 minute data series for Ordway. it also adds the boom name to the end of the data.frame. Let's break this loop down. 
+
+- First we have `for i in path$path`. Remember that we have 5 "paths" total - one for each boom: booms 1,2,3,5 and the tower top (boom 4 doesn't have a temperature sensor on it).
+- `boom <-  strsplit(i,"/")[[1]][5]` identify the name of the boom for iteration i. 
+- read in the data from our hdf5 file (f) for iteration i (whichever iteration in the loop we are on) `dat <- h5read(f,i)`.
+-  `dat$boom <- rep(boom,dim(dat)[1])` -- add the boom name as the final column in the dataset - column named "boom"
+-  `ord_temp <- rbind(ord_temp,dat)` append dataset to the end of the data.frame called ord_temp
+
+    EXTRA CREDIT: Modify the loop above so that it added both the boom name, the site name and the data type (1 minute) as columns in our data frame.
+
+### Cleaning Up Dates
+As imported, the dates field in our data frame aren't in "date format". we need to tell R to format the information as a date. This will ensure that the plot that we create has dates labeled correctly. Let's dig in:
+
+	ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
+
+Now we can make our plot of temperature for all booms on the tower!
+
+	ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
+
+##P3a. Data from different sites
+
+Now, what if we want to compare temperatures at our two different sites? Well let's do that but this time we'll compare 30 minute averages. We'll need to modify our search strings a bit. Bbut we can still re-use most of the code we just built.
+
+First, let's extract all 30 minute averaged data, for all sites.
+
 	s <- "min_30"
-### Grab the paths
+	# Grab the paths for all sites, 30 minute averaged data
 	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
-temp_30 <- data.frame()
-for(i in paths$path){
-  boom <-  strsplit(i,"/")[[1]][5]
-  site <- strsplit(i,"/")[[1]][3]
-  dat <- h5read(f,i)
-  dat$boom <- rep(boom,dim(dat)[1])
-  dat$site <- rep(site,dim(dat)[1])
- temp_30 <- rbind(temp_30,dat)
-}
 
-### Dates aren't dates though, so let's fix that
+	temp_30 <- data.frame()
+	for(i in paths$path){
+	  boom <-  strsplit(i,"/")[[1]][5]
+	  site <- strsplit(i,"/")[[1]][3]
+	  dat <- h5read(f,i)
+	  dat$boom <- rep(boom,dim(dat)[1])
+	  dat$site <- rep(site,dim(dat)[1])
+	 temp_30 <- rbind(temp_30,dat)
+	}
+
+	#Assign the date field to a "date" format in R
 	temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
 
 	temp30_sum <- temp_30 %.% group_by(date,site) %.% summarise(mean = mean(mean))
+	
+	#Create plot!
 	ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
 
 
 
+> Extra Credit: Create a plot of both sites with all booms at each site on the plot.
 
 
