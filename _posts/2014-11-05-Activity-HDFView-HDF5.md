@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Exploring HDF5 Files in HDFView"
+title: "HDFView: Exploring HDF5 Files"
 date:   2014-11-05 20:49:52
 authors: Leah A. Wasser
 categories: [Hierarchical Data Formats]
