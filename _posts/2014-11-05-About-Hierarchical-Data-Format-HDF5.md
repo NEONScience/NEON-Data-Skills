@@ -53,6 +53,7 @@ The Hierarchical Data Format version 5 (HDF5), is an open file format that suppo
     <figcaption>Why Use HDF5. Image Source: http://www.hdfgroup.org/why_hdf/</figcaption>
 </figure>
 
+##Hierarchical Structure - A file directory within a file
 
 THe HDF5 - model (or format) can  be thought of as a file system contained and described within one single file. Think about your computer. You probably have a folder or directory structure that keeps your information organized. For example, as a scientist, you might have a data directory with some temperature data for multiple field sites that you are working at. This temperature data might be collected every minute and summarized on an hourly, daily and weekly basis. The folder structure might look something like this:
 
@@ -75,6 +76,20 @@ Site Two
 
 
 Within **ONE** HDF5 file, you can store a similar set of data organized in the same way (or however you'd like it to be organized). You can load chunks or slices of different types of data into the HDF5 file, in the same way that you might store the datasets within directories or folders on your laptop. So following this anology, what we know as the "directories" or "folders" on our computers, are called "groups" in an HDF5 file and what we call "files" on our computer, are called are "datasets" in an HDF5 file. 
+
+##Store Heterogeneous Data in One File
+HDF5 files can store many different types of data. And they can store all of those data in the same place. This means that you could store any of the following in one file:
+
+- Temperature, precipitation and PAR (photosynthetic active radiation) data for a site or for many sites 
+- A set of images that cover one or more areas (each image can have specific spatial information associated with it - all in the same file)
+- a multi or hyperspectral spatial dataset that contains thousands of bands.
+- plot data for several sites characerizing insects, vegetation and climate.
+
+The HDF5 format is flexible enough to all of these data and more in just one file.
+
+## Compressed & Efficient subsetting
+THe HDF5 format is a compressed format. this means that the size of all data contained in HDF5 is optimized. More powerful is the ability to quickly and efficiently extract parts or subsets of a dataset stored within HDF5. Subsetting allows a scientist to efficiently work with very large (gigs or more of data) datasets. 
+
 
 ##HDF5 is a Self Describing Format
 HDF5 format is self describing. This means that each group and dataset can have associated metadata that describes exactly what the data are. Using the example above, we might attach information about each site to the file include the X,Y location, and even a site description. Similarly, we might add information describing the sensor used to collect the temperature data. To each dataset within the site group, we might attach information pertaining to how the averaging was performed. And describing the time period available. 
