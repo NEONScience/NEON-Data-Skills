@@ -140,50 +140,46 @@ By *atomic*, we mean the vector only holds data of a single type.
 
 R provides many functions to examine features of vectors and other objects, for example
 
-
-
 1. `typeof()` - what is it?  
 2. `length()` - how long is it? What about two dimensional objects?  
 3. `attributes()` - does it have any metadata?
  
 
-# Example
+**Let's look at some examples:**
 
     x <- "dataset"
     typeof(x)
 
 
-OUTPUT: [1] "character"
+`OUTPUT: [1] "character"`
 
     attributes(x)
 
-## NULL
+`NULL`
 
     y <- 1:10
     y
 
 
-OUTPUT:  [1]  1  2  3  4  5  6  7  8  9 10
-```
-
+`OUTPUT: [1]  1  2  3  4  5  6  7  8  9 10`
 
     typeof(y)
 
 
-OUTPUT: [1] "integer"
+`OUTPUT: [1] "integer"`
 
     length(y)
 
-OUTPUT: [1] 10
+`OUTPUT: [1] 10`
 
 z <- as.numeric(y)
 z
 
-OUTPUT: [1]  1  2  3  4  5  6  7  8  9 10
+`OUTPUT: [1]  1  2  3  4  5  6  7  8  9 10`
 
     typeof(z)
 
-OUTPUT: [1] "double"
+`OUTPUT: [1] "double"`
 
 
 R has many __data structures__. These include
@@ -196,7 +192,7 @@ R has many __data structures__. These include
 
 ### Vectors
 
-A vector is the most common and basic data structure in R and is pretty much the workhorse of R. Technically, vectors can be one of two types:
+A vector is the most common and basic data structure in R and is the workhorse of R. Technically, vectors can be one of two types:
 
 * atomic vectors
 * lists
@@ -211,118 +207,79 @@ A vector is a collection of elements that are most commonly `character`, `logica
 You can create an empty vector with `vector()`. (By default the mode is `logical`. You can be more explicit as shown in the examples below.) It is more common to use direct constructors such as `character()`, `numeric()`, etc.
 
 
-
     x <- vector()
-# with a length and type
+    
+	#Create vector with a length and type
     vector("character", length = 10)
 
-##  [1] "" "" "" "" "" "" "" "" "" ""
-```
-
-```r
-character(5)  ## character vector of length 5
-```
-
-```
-## [1] "" "" "" "" ""
-```
-
-```r
-numeric(5)
-```
-
-```
-## [1] 0 0 0 0 0
-```
-
-```r
-logical(5)
-```
-
-```
-## [1] FALSE FALSE FALSE FALSE FALSE
-```
+`OUTPUT: [1] "" "" "" "" "" "" "" "" "" ""`
 
 
-Various examples:
+	#create character vector with length of 5
+	character(5)  
+
+`OUTPUT: [1] "" "" "" "" ""`
+
+	#numeric vector length=5
+	numeric(5)
+
+`OUTPUT: [1] 0 0 0 0 0`
+	
+	#logical vector length=5
+	logical(5)
+
+`OUTPUT: [1] FALSE FALSE FALSE FALSE FALSE`
 
 
-```r
-x <- c(1, 2, 3)
-x
-```
-
-```
-## [1] 1 2 3
-```
-
-```r
-length(x)
-```
-
-```
-## [1] 3
-```
+Some othe examples of creating objects in R follow:
 
 
-`x` is a numeric vector. These are the most common kind. They are numeric objects and are treated as double precision real numbers. To explicitly create integers, add an `L` to each (or *coerce* to the integer type using `as.integer()`.
+	x <- c(1, 2, 3)
+	x
 
 
-```r
-x1 <- c(1L, 2L, 3L)
-```
+`OUTPUT: [1] 1 2 3`
+
+
+	length(x)
+
+`OUTPUT: [1] 3`
+
+`x` is a numeric vector. These are the most common kind. They are numeric objects and are treated as double precision real numbers (they can store decimal points). To explicitly create integers (no decimal points), add an `L` to each (or *coerce* to the integer type using `as.integer()`.
+
+	#a numeric vector with integers (L)
+	x1 <- c(1L, 2L, 3L)
 
 
 You can also have logical vectors. 
 
-
-```r
-y <- c(TRUE, TRUE, FALSE, FALSE)
-```
+	y <- c(TRUE, TRUE, FALSE, FALSE)
 
 
 Finally you can have character vectors:
 
-
-```r
-z <- c("Sarah", "Tracy", "Jon")
-```
+	z <- c("Sarah", "Tracy", "Jon")
 
 
 **Examine your vector**  
 
 
-```r
-typeof(z)
-```
+	typeof(z)
 
-```
-## [1] "character"
-```
 
-```r
-length(z)
-```
+`OUTPUT: [1] "character"`
 
-```
-## [1] 3
-```
+	length(z)
 
-```r
-class(z)
-```
 
-```
-## [1] "character"
-```
+`OUTPUT [1] 3 '
 
-```r
-str(z)
-```
+	class(z)
 
-```
-##  chr [1:3] "Sarah" "Tracy" "Jon"
-```
+`OUTPUT: [1] "character"`
+
+	str(z)
+`OUTPUT:  chr [1:3] "Sarah" "Tracy" "Jon"`
 
 
 Question: Do you see a property that's common to all these vectors above?
@@ -330,77 +287,56 @@ Question: Do you see a property that's common to all these vectors above?
 **Add elements**
 
 
-```r
-z <- c(z, "Annette")
-z
-```
-
-```
-## [1] "Sarah"   "Tracy"   "Jon"     "Annette"
-```
+	z <- c(z, "Annette")
+	z
+`OUTPUT: [1] "Sarah"   "Tracy"   "Jon"     "Annette"'
 
 
 More examples of vectors
 
-
-```r
-x <- c(0.5, 0.7)
-x <- c(TRUE, FALSE)
-x <- c("a", "b", "c", "d", "e")
-x <- 9:100
-x <- c(1 + (0+0i), 2 + (0+4i))
-```
-
+	x <- c(0.5, 0.7)
+	x <- c(TRUE, FALSE)
+	x <- c("a", "b", "c", "d", "e")
+	x <- 9:100
+	x <- c(1 + (0+0i), 2 + (0+4i))
 
 You can also create vectors as a sequence of numbers
 
 
-```r
-series <- 1:10
-seq(10)
-```
 
-```
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
+	series <- 1:10
+	seq(10)
 
-```r
-seq(from = 1, to = 10, by = 0.1)
-```
 
-```
-##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1  2.2  2.3
-## [15]  2.4  2.5  2.6  2.7  2.8  2.9  3.0  3.1  3.2  3.3  3.4  3.5  3.6  3.7
-## [29]  3.8  3.9  4.0  4.1  4.2  4.3  4.4  4.5  4.6  4.7  4.8  4.9  5.0  5.1
-## [43]  5.2  5.3  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5
-## [57]  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9
-## [71]  8.0  8.1  8.2  8.3  8.4  8.5  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3
-## [85]  9.4  9.5  9.6  9.7  9.8  9.9 10.0
-```
+`OUTPUT:  [1]  1  2  3  4  5  6  7  8  9 10`
+
+
+	seq(from = 1, to = 10, by = 0.1)
+
+
+OUTPUT:
+` [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1  2.2  2.3
+ [15]  2.4  2.5  2.6  2.7  2.8  2.9  3.0  3.1  3.2  3.3  3.4  3.5  3.6  3.7
+ [29]  3.8  3.9  4.0  4.1  4.2  4.3  4.4  4.5  4.6  4.7  4.8  4.9  5.0  5.1
+ [43]  5.2  5.3  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5
+ [57]  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9
+ [71]  8.0  8.1  8.2  8.3  8.4  8.5  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3
+ [85]  9.4  9.5  9.6  9.7  9.8  9.9 10.0`
+
 
 
 `Inf` is infinity. You can have either positive or negative infinity.
 
 
-```r
-1/0
-```
-
-```
-## [1] Inf
-```
+	1/0
+`OUTPUT: [1] Inf`
 
 
 `NaN` means Not a Number. It's an undefined value.
 
+	0/0
 
-```r
-0/0
-```
-
-```
-## [1] NaN
-```
+`OUTPUT: [1] NaN`
 
 
 Objects can have __attributes__. Attribues are part of the object. These include:
