@@ -172,8 +172,8 @@ R provides many functions to examine features of vectors and other objects, for 
 
 `OUTPUT: [1] 10`
 
-z <- as.numeric(y)
-z
+	z <- as.numeric(y)
+	z
 
 `OUTPUT: [1]  1  2  3  4  5  6  7  8  9 10`
 
@@ -357,18 +357,18 @@ You can also glean other attribute-like information such as length (works on vec
 
 	length(1:10)
 
-OUTPUT [1] 10
+[1] 10
 
 	nchar("Software Carpentry")
 
-OUTPUT [1] 18
+[1] 18
 
-**What happens when you mix types?**
 
-R will create a resulting vector that is the least common denominator. The coercion will move towards the one that's easiest to __coerce__ to.
+####What happens when you mix types?
+
+When you mix types, R will create a resulting vector that is the least common denominator. The coercion will move towards the one that's easiest to __coerce__ to.
 
 Guess what the following do without running them first
-
 
 
 	xx <- c(1.7, "a")
@@ -409,9 +409,9 @@ In R matrices are an extension of the numeric or character vectors. They are not
 
 OUTPUT:
 
- [,1] [,2]
- [1,]   NA   NA
- [2,]   NA   NA
+   [,1] [,2]
+[1,]   NA   NA
+[2,]   NA   NA
 
 
 
@@ -431,7 +431,7 @@ Matrices in R are filled column-wise.
 
 
 
-Other ways to construct a matrix
+Other ways to construct a matrix. 
 
 
 
@@ -440,9 +440,7 @@ Other ways to construct a matrix
 
 
 
-This takes a vector and transform into a matrix with 2 rows and 5 columns.
-
-Another way is to bind columns or rows using `cbind()` and `rbind()`.
+`Dim` takes a vector and transform into a matrix with 2 rows and 5 columns. Another way to shape your matrix is to bind columns `cbind()` or rows `rbind()`.
 
 
 
@@ -453,10 +451,10 @@ Another way is to bind columns or rows using `cbind()` and `rbind()`.
 
 
 OUTPUT
-      x  y
- [1,] 1 10
- [2,] 2 11
- [3,] 3 12
+.    x  y
+[1,] 1 10
+[2,] 2 11
+[3,] 3 12
 
 
 
@@ -465,9 +463,9 @@ OUTPUT
 
 
 OUTPUT
- [,1] [,2] [,3]
- x    1    2    3
- y   10   11   12
+[,1] [,2] [,3]
+x    1    2    3
+y   10   11   12
 
 
 You can also use the `byrow` argument to specify how the matrix is filled. From R's own documentation:
@@ -479,9 +477,9 @@ You can also use the `byrow` argument to specify how the matrix is filled. From 
 
 
 OUTPUT:
-      [,1] [,2] [,3]
- [1,]    1    2    3
- [2,]   11   12   13
+.     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]   11   12   13
 
 
 
@@ -500,17 +498,18 @@ Create lists using `list()` or coerce other objects using `as.list()`. An empty 
 
 
 OUTPUT:
- [[1]]
- [1] 1
+
+[[1]]
+[1] 1
  
- [[2]]
- [1] "a"
+[[2]]
+[1] "a"
  
- [[3]]
- [1] TRUE
+[[3]]
+[1] TRUE
  
- [[4]]
- [1] 1+4i
+[[4]]
+[1] 1+4i
 
 
 
@@ -548,21 +547,22 @@ OUTPUT:  NULL
 	xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
 	xlist
 
+
 OUTPUT
- $a
- [1] "Karthik Ram"
+$a
+[1] "Ben Smiley"
  
- $b
-  [1]  1  2  3  4  5  6  7  8  9 10
+$b
+[1]  1  2  3  4  5  6  7  8  9 10
  
- $data
-   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
- 1          5.1         3.5          1.4         0.2  setosa
- 2          4.9         3.0          1.4         0.2  setosa
- 3          4.7         3.2          1.3         0.2  setosa
- 4          4.6         3.1          1.5         0.2  setosa
- 5          5.0         3.6          1.4         0.2  setosa
- 6          5.4         3.9          1.7         0.4  setosa
+$data
+.  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
 
 
 
