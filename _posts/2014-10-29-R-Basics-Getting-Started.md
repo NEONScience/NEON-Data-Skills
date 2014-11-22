@@ -8,7 +8,7 @@ tags : []
 description: "This activity will provide the basics of using R."
 code1: 
 image:
-  feature: codedFieldwork1.png
+  feature: codedpoints2.png
   credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
 permalink: /Using-R/Getting-Started-With-R
