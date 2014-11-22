@@ -5,3 +5,4 @@ tag: lidar
 permalink: lidar/
 ---
 
+Lidar or Light is really cool
