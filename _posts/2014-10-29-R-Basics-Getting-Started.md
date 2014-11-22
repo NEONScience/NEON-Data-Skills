@@ -565,20 +565,23 @@ $b
 
 |    | Sepal.Length  | Sepal.Width | Petal.Length   |
 | --- | ------------- |:-------------:| -----:|
-| c2  | 5.1           | right-aligned | $1600 |
-| c3  | 4.9           | centered      |   $12 |
-| c4  | 4.7           | are neat      |    $1 |
+| 2  | 5.1           | right-aligned | $1600 |
+| 3  | 4.9           | centered      |   $12 |
+| 4  | 4.7           | are neat      |    $1 |
  
  TRING THING
  
- | one |  two |
- | --- | --- |
- | 3  | 3 |
+| one |  two |
+| --- | --- |
+| 3  | 3 |
+ 
+ 
+ 
 $data
 #sdf
 
 |   | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
-| -- | ---------- | --------- | ----------- | -----------|-------|
+| -- | ---------- | --------- | ----------- | --------------- | ------- |
 | 1 |      5.1   |    3.5    |      1.4    |      0.2  |         setosa |
 | 2 |      4.9   |    3.0    |      1.4    |      0.2  |         setosa |
 | 3 |      4.7   |    3.2    |      1.3    |      0.2  |         setosa |
