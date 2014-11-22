@@ -5,5 +5,3 @@ tag: lidar
 permalink: lidar/
 ---
 
-
-testing this out
