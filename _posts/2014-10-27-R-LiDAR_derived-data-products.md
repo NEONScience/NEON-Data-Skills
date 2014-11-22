@@ -4,7 +4,7 @@ title: "Activity: LiDAR derived data products"
 date:   2014-10-27 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [Using LiDAR Data]
-tags : [lidar,remote sensing, laser scanning]
+tags : [lidar,remote-sensing, R]
 description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
 permalink: /using-lidar-data/1_lidar_derived-data-products/
 code1: Create_Lidar_CHM.R
