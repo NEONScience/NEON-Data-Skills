@@ -557,7 +557,7 @@ $b
 [1]  1  2  3  4  5  6  7  8  9 10
 
 
-| Tables        | Are           | Cool  |
+|         | Sepal.Length           | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
 | col 2 is      | centered      |   $12 |
