@@ -4,7 +4,7 @@ title: "Activity: Getting Started with R"
 date:   2014-11-04 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
-tags : []
+tags : [R]
 description: "This activity will present the basics of using R."
 code1: 
 image:
@@ -14,20 +14,12 @@ image:
 permalink: /R-Programming/Getting-Started-With-R/
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+
 
 
 **R Skill Level:** beginner
 
-# The Very Basics of R
+# The Very Basics of R #
 
 R is a versatile, open source programming language that was specifically designed for data analysis. R is extremely useful both for statistics and analyzing data. 
 
