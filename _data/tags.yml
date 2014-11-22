@@ -6,4 +6,7 @@
   
 - slug: R
   name: R programming
+  
+- slug: hdf5
+  name: Hierarchical Data Formats (HDF5)
 
