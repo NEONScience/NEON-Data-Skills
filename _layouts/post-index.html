@@ -43,7 +43,7 @@
   	      {% for post in posts %}
   	      <article>
   	      {% if post.url %}	      
-  	        <h2 class="link-post"><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+  	        <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
   	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
   	       
   	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> --> 	       
