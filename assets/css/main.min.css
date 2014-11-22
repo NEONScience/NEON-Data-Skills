@@ -4239,5 +4239,9 @@ margin: 2rem 0 .5rem 0;
 
 #relatedCode {
 	background-color:#cfcfcf;
-	padding: 0.1rem 0 .5rem 0;
+	padding: 0.01rem 2rem 2rem 2rem;
+}
+
+#relatedCode a {
+	color: #94B8B8;
 }
