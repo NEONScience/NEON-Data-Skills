@@ -4,7 +4,7 @@ title:  "LiDAR Data Basics"
 date:   2014-07-11 20:49:52
 categories: [Using LiDAR Data]
 authors: leah a wasser
-tags : [lidar,remote-sensing]
+tags : [lidar,remote-sensing, R]
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
 
 ---
