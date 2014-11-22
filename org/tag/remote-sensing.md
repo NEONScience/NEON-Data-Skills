@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Articles by tag: lidar'
+title: 'Articles by tag: remote sensing'
 tag: remote-sensing
 permalink: remote-sensing/
 ---
