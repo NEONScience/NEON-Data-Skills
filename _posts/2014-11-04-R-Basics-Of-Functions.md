@@ -8,7 +8,7 @@ tags : []
 description: "This activity will provide the basics of creating a function in R."
 code1: 
 image:
-  feature: data/codedFieldJournal.png
+  feature: codedFieldJournal.png
   credit: NEON staff working in the field
   creditlink: http://www.neoninc.org
 permalink: /Using-R/Working-With-Functions
