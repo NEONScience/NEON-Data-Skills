@@ -8,7 +8,7 @@ tags : []
 description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file / data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 code1: 
 image:
-  feature: hierarchy_folder1.png
+  feature: hierarchy_folder.png
   credit: Colin Williams
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About
