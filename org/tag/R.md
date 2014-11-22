@@ -2,7 +2,7 @@
 layout: post_by_tag
 title: 'Articles by tag: R'
 tag: R
-permalink: R-programming/
+permalink: R/
 ---
 
 This will list all pages with r code.
