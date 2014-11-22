@@ -664,7 +664,9 @@ OUTPUT
 
 A data frame is a very important data type in R. It's pretty much the *de facto* data structure for most tabular data and what we use for statistics.  
 
+
 A data frame is a special type of list where every element of the list has same length.  
+
 
 Data frames can have additional attributes such as `rownames()`, which can be useful for annotating data, like `subject_id` or `sample_id`. But most of the time they are not used.  
 
