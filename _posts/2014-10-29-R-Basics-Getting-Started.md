@@ -11,7 +11,7 @@ image:
   feature: codedpoints2.png
   credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
-permalink: /R-Programming/Getting-Started-With-R
+permalink: /R-Programming/Getting-Started-With-R/
 ---
 
 <section id="table-of-contents" class="toc">
