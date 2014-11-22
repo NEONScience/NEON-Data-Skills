@@ -14,7 +14,6 @@ image:
 permalink: /R-Programming/Getting-Started-With-R/
 ---
 
-
 <section id="table-of-contents" class="toc">
   <header>
     <h3 >Contents</h3>
@@ -25,16 +24,13 @@ permalink: /R-Programming/Getting-Started-With-R/
 </div>
 </section><!-- /#table-of-contents -->
 
-
-
-
 **R Skill Level:** beginner
 
 # The Very Basics of R #
 
 R is a versatile, open source programming language that was specifically designed for data analysis. R is extremely useful both for statistics and analyzing data. 
 
-Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
+>Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
 
 R is:
 * Open source software under a <a href="http://en.wikipedia.org/wiki/GNU_General_Public_License" target="_blank">General Public License (GPL)</a>.  
