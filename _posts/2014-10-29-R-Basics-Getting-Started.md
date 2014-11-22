@@ -4,8 +4,8 @@ title: "Activity: Getting Started with R"
 date:   2014-11-04 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
-tags : [R]
-description: "This activity will provide the basics of using R."
+tags : []
+description: "This activity will present the basics of using R."
 code1: 
 image:
   feature: codedpoints2.png
