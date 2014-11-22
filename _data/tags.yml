@@ -1,8 +1,5 @@
 - slug: lidar
   name: LiDAR
-
-- slug: remote-sensing
-  name: Remote Sensing
   
 - slug: R
   name: R programming
@@ -10,3 +7,5 @@
 - slug: hdf5
   name: Hierarchical Data Formats (HDF5)
 
+- slug: GIS
+  name: Geographic Information Systems(GIS)
