@@ -556,12 +556,18 @@ $a
 $b
 [1]  1  2  3  4  5  6  7  8  9 10
 
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
 
 |    | Sepal.Length  | Sepal.Width | Petal.Length   |
 | --- | ------------- |:-------------:| -----:|
-|  2  | 5.1           | right-aligned | $1600 |
-|  3  | 4.9           | centered      |   $12 |
-|  4  | 4.7           | are neat      |    $1 |
+| c2  | 5.1           | right-aligned | $1600 |
+| c3  | 4.9           | centered      |   $12 |
+| c4  | 4.7           | are neat      |    $1 |
  
  TRING THING
  
@@ -572,7 +578,7 @@ $data
 #sdf
 
 |   | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
-|-- | ---------- | --------- | ----------- | -----------|-------|
+| -- | ---------- | --------- | ----------- | -----------|-------|
 | 1 |      5.1   |    3.5    |      1.4    |      0.2  |         setosa |
 | 2 |      4.9   |    3.0    |      1.4    |      0.2  |         setosa |
 | 3 |      4.7   |    3.2    |      1.3    |      0.2  |         setosa |
