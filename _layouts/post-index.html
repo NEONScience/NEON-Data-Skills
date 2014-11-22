@@ -84,11 +84,11 @@
 
 
 
-TAGS yo
+Posts by Tag
 {% assign post = page %}
 
 {% for tag in site.tags %}
-      <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
+      <h3><a name="{{ post | first }}">{{ post | first }}</a></h3>
   	    {% for posts in tag %}
   	      {% for post in posts %}
   	      <article>
