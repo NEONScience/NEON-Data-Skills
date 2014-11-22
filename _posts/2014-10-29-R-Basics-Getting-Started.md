@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: HDF5 - Data Exploration & Viz"
+title: "R: BBBBASICSation & Viz"
 date:   2014-11-17 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
