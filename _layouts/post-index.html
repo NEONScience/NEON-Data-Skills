@@ -40,9 +40,6 @@
   
   By Topic
    {% for category in site.categories %}
-   
-   {% if data_category.slug == category %}
-   {{ tag.name }}
       <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
       
   	    {% for posts in category %}
@@ -57,7 +54,6 @@
   	        </article>
   	      {% endfor %}
   	    {% endfor %}
-  	    {% endif %} 
 	{% endfor %}
 <br>
 <br>
@@ -82,88 +78,6 @@
       {% endif %}
     </article>
   {% endfor %}
-  
- {% assign post = page %}
-  
-  
-  <h1>TRYING ANOTHER THING OUT</h1>
-  
-        {% for post in site.tags %}
-            {% capture post_year %}{{ post.date | date: '%Y' }}{% endcapture %}
-            {% if forloop.first %}
-               <!-- <h3>{{ post_year }}</h3>--><div class="list-group"> 
-            {% endif %}
-			
-            {% if forloop.first == false %}
-                {% assign previous_index = forloop.index0 | minus: 1 %}
-                {% capture previous_post_year %}{{ site.tags[previous_index].date | date: '%Y' }}{% endcapture %}
-                {% if post_year != previous_post_year %}
-                    </div><h3>{{ post_year }}</h3><div class="list-group">
-                {% endif %}
-            {% endif %}
-			
-            <a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
-                <h2 class="list-group-item-heading">{{ post.title }}</h2>
-                <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
-            </a>
-
-            {% if forloop.last %}
-                </div>
-            {% endif %}
-        {% endfor %}
-
-  
-  
-  
-  
-  
-  
-  
-  
-  <h1>Articles by tag take 2222 :</h1>
-<div>
-    {% if site.tags %}
-        {% for post in site.tags %}
-            <a href="{{ post.url }}/">{{ post.title }}</a>
-        {% endfor %}
-    {% else %}
-        <p>There are no posts for this tag.</p>
-    {% endif %}
-</div>
-
-<h1>Articles by tag }</h1>
-<div>
-    {% if site.tags[page.tag] %}
-        {% for post in site.tags[page.tag] %}
-            <a href="{{ post.url }}/">{{ post.title }}</a>
-        {% endfor %}
-    {% else %}
-        <p>There are no posts for this tag.</p>
-    {% endif %}
-</div>
-
-
-
-
-    {% capture tags_content %}Posted with {% if post.tags.size == 1 %}<i class="fa fa-tag"></i>{% else %}<i class="fa fa-tags"></i>{% endif %}: {% endcapture %}
-    
-    {% for currentTag in site.tags %}
-        {% for data_tag in site.data.tags %}
-            {% if data_tag.slug == currentTag %}
-                {% assign tag = data_tag %}
-                {{ tag.name }} this is tag name here
-            {% endif %}
-        {% endfor %}
-        {% if tag %}
-            {% capture tags_content_temp %}{{ tags_content }}<a href="/blog/tag/{{ tag.slug }}/">{{ tag.name }}</a>{% if forloop.last == false %}, {% endif %}{% endcapture %}
-            {% assign tags_content = tags_content_temp %}
-        {% endif %}
-    {% endfor %}
-
-
-
-
-
 
 
 </div><!-- /#index -->
