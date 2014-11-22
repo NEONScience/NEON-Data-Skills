@@ -1,6 +1,23 @@
----
-layout: default
----
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+{% include _head.html %}
+
+<link rel="stylesheet" href="http://lwasser.github.io/NEON_HigherEd/assets/highlightjs/styles/default.css">
+<script src="http://lwasser.github.io/NEON_HigherEd/assets/highlightjs/highlight.packR.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body class="post">
+
+{% include _browser-upgrade.html %}
+
+{% include _navigation.html %}
+
+{% if page.image.feature %}
 
 <header id="post-header">
     <h1 id="post-title">{{ page.tag }}</h1>
@@ -35,3 +52,5 @@ layout: default
         <p>There are no posts for this tag.</p>
     {% endif %}
 </div>
+
+</body>
