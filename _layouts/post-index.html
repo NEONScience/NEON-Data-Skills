@@ -40,7 +40,11 @@
   
   By Topic
    {% for category in site.categories %}
+   
+   {% if data_category.slug == category %}
+   {{ tag.name }}
       <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
+      
   	    {% for posts in category %}
   	      {% for post in posts %}
   	      <article>
