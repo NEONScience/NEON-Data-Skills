@@ -112,7 +112,7 @@
   
   
   
-  <h1>Articles by tag :</h1>
+  <h1>Articles by tag take 2222 :</h1>
 <div>
     {% if site.tags %}
         {% for post in site.tags %}
@@ -122,6 +122,31 @@
         <p>There are no posts for this tag.</p>
     {% endif %}
 </div>
+
+
+
+{% if site.tags.size > 0 %}
+    {% capture tags_content %}Posted with {% if post.tags.size == 1 %}<i class="fa fa-tag"></i>{% else %}<i class="fa fa-tags"></i>{% endif %}: {% endcapture %}
+    {% for post_tag in site.tags %}
+        {% for data_tag in site.data.tags %}
+            {% if data_tag.slug == post_tag %}
+                {% assign tag = data_tag %}
+                {{ tag.name }} this is tag name here
+            {% endif %}
+        {% endfor %}
+        {% if tag %}
+            {% capture tags_content_temp %}{{ tags_content }}<a href="/blog/tag/{{ tag.slug }}/">{{ tag.name }}</a>{% if forloop.last == false %}, {% endif %}{% endcapture %}
+            {% assign tags_content = tags_content_temp %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% assign tags_content = '' %}
+{% endif %}
+
+
+
+
+
 
 </div><!-- /#index -->
 
