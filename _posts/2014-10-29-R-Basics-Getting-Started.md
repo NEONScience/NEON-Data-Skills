@@ -643,8 +643,7 @@ OUTPUT: [1] 1 3 4 2
 
 
 
-OUTPUT [1]  1  5 10  2
-
+OUTPUT [1]  1  5 10  2  
 
 
 In modeling functions, it is important to know what the baseline level is. This is the first factor but by default the ordering is determined by alphanumerical order of elements. You can change this by speciying the `levels` (another option is to use the function `relevel()`).
@@ -655,7 +654,7 @@ In modeling functions, it is important to know what the baseline level is. This 
 	x
 
 
-OUTPUT:
+OUTPUT  
  [1] yes no  yes
  Levels: yes no
 
@@ -663,11 +662,11 @@ OUTPUT:
 
 ### Data frame
 
-A data frame is a very important data type in R. It's pretty much the *de facto* data structure for most tabular data and what we use for statistics.
+A data frame is a very important data type in R. It's pretty much the *de facto* data structure for most tabular data and what we use for statistics.  
 
-A data frame is a special type of list where every element of the list has same length.
+A data frame is a special type of list where every element of the list has same length.  
 
-Data frames can have additional attributes such as `rownames()`, which can be useful for annotating data, like `subject_id` or `sample_id`. But most of the time they are not used.
+Data frames can have additional attributes such as `rownames()`, which can be useful for annotating data, like `subject_id` or `sample_id`. But most of the time they are not used.  
 
 Some additional information on data frames:
 
@@ -686,18 +685,18 @@ Some additional information on data frames:
 	dat
 
 
-OUTPUT:
+OUTPUT  
     id  x  y  
  1   a  1 11  
  2   b  2 12  
  3   c  3 13  
  4   d  4 14  
- 5   e  5 15
- 6   f  6 16
- 7   g  7 17
- 8   h  8 18
- 9   i  9 19
- 10  j 10 20
+ 5   e  5 15  
+ 6   f  6 16  
+ 7   g  7 17  
+ 8   h  8 18  
+ 9   i  9 19  
+ 10  j 10 20  
 
 
 
