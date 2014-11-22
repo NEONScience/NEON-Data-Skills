@@ -3,7 +3,7 @@ layout: post
 title:  "Activity: Online LiDAR Data Viz"
 date:   2014-10-26 11:00:52
 categories: [Using LiDAR Data]
-tags : [measuring vegetation,remote sensing, laser scanning]
+tags : [lidar,remote sensing, laser scanning]
 authors: leah a wasser
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
 image:
