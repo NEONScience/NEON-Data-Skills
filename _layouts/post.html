@@ -37,6 +37,30 @@
 
 
 
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+  
+    {% include _author-bio.html %}
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      {% if page.link %}
+        <h1><a href="{{ page.link }}">{{ page.title }}</a></h1>
+      {% else %}
+        <h1><a href="{{ site.url }}{{ page.url }}" rel="bookmark" title="{{ page.title }}">{{ page.title }}</a></h1>
+      {% endif %}
+    </div><!--/ .headline-wrap -->
+
+    <div class="article-wrap">
+      {{ content }}
+
+
+
+<!-- remove the stuff below if the site slows down - this is to populate tags -->
+
 {% if post.category %}
 	{% for site_category in site.data.categories %}
 		{% if site_category.slug == post.category %}
@@ -67,28 +91,14 @@
 	{% assign tags_content = '' %}
 {% endif %}
 
+<!-- remove the stuff above if the site slows down - this is to populate tags -->
 
 
 
 
 
-<div id="main" role="main">
-  <div class="article-author-side">
-  
-    {% include _author-bio.html %}
 
-  </div>
-  <article>
-    <div class="headline-wrap">
-      {% if page.link %}
-        <h1><a href="{{ page.link }}">{{ page.title }}</a></h1>
-      {% else %}
-        <h1><a href="{{ site.url }}{{ page.url }}" rel="bookmark" title="{{ page.title }}">{{ page.title }}</a></h1>
-      {% endif %}
-    </div><!--/ .headline-wrap -->
 
-    <div class="article-wrap">
-      {{ content }}
 
 
       <hr />
