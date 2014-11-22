@@ -558,14 +558,16 @@ $b
 
 
 |    | Sepal.Length  | Sepal.Width | Petal.Length   |
-| -- | ------------- |:-------------:| -----:|
+| --- | ------------- |:-------------:| -----:|
 |  2  | 5.1           | right-aligned | $1600 |
 |  3  | 4.9           | centered      |   $12 |
 |  4  | 4.7           | are neat      |    $1 |
  
  TRING THING
  
- 
+ | one |  two |
+ | --- | --- |
+ | 3  | 3 |
 $data
 #sdf
 
