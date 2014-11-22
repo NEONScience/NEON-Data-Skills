@@ -37,19 +37,18 @@
 <div id="index">
   <h1>{{ page.title }}</h1>
   By Topic
-
    {% for category in site.categories %}
-
       <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
-  	    
   	    {% for posts in category %}
   	      {% for post in posts %}
+  	      <article>
   	      {% if post.url %}	      
   	        <h2 class="link-post"><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
   	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
   	       
-  	        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> 	       
+  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> --> 	       
   	        {% endif %}
+  	        </article>
   	      {% endfor %}
   	    {% endfor %}
 	{% endfor %}
@@ -57,7 +56,6 @@
 <br>
 <br>
  By Date
-
   {% for post in site.posts %}
   {% unless post.next %}
     <h3>{{ post.date | date: '%Y' }}</h3>
