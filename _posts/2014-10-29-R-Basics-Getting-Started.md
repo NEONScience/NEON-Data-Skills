@@ -557,10 +557,10 @@ $b
 [1]  1  2  3  4  5  6  7  8  9 10
 
 
-|         | Sepal.Length           | Cool  |
+|    Sepal.Length     | Sepal.Width | Petal.Length   |
 | ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
+| 5.1     | right-aligned | $1600 |
+| 4.9      | centered      |   $12 |
 | zebra stripes | are neat      |    $1 |
  
  TRING THING
