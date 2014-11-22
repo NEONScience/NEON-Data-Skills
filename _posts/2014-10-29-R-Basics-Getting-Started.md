@@ -555,6 +555,9 @@ $a
  
 $b
 [1]  1  2  3  4  5  6  7  8  9 10
+
+
+
  
 $data
 
@@ -571,28 +574,26 @@ $data
 
 1. What is the length of this object? What about its structure?
 
-Lists can be extremely useful inside functions. You can “staple” together lots of different kinds of results into a single object that a function can return.
+* Lists can be extremely useful inside functions. You can “staple” together lots of different kinds of results into a single object that a function can return.
 
-A list does not print to the console like a vector. Instead, each element of the list starts on a new line.
+* A list does not print to the console like a vector. Instead, each element of the list starts on a new line.
 
-Elements are indexed by double brackets. Single brackets will still return a(nother) list.
+* Elements are indexed by double brackets. Single brackets will still return a(nother) list.
 
 
 ### Factors
 
-Factors are special vectors that represent categorical data. Factors can be ordered or unordered and are important for modelling functions such as `lm()` and `glm()` and also in `plot()` methods.
+Factors are special vectors that represent categorical data. Factors can be ordered or unordered and are important for modelling functions such as `lm()` and `glm()` and also in `plot()` methods. Once created, factors can only contain a pre-defined set values, known as *levels*.
 
-Once created factors can only contain a pre-defined set values, known as *levels*.
+Factors are stored as integers that have labels associated the unique integers. While factors look (and often behave) like character vectors, they are actually integers under the hood. You need to be careful when treating them like strings. Some string methods will coerce factors to strings, while others will throw an error.
 
-Factors are stored as integers that have labels associated the unique integers. While factors look (and often behave) like character vectors, they are actually integers under the hood, and you need to be careful when treating them like strings. Some string methods will coerce factors to strings, while others will throw an error.
+* Sometimes factors can be left unordered. Example: male, female.
 
-Sometimes factors can be left unordered. Example: male, female.
+* Other times you might want factors to be ordered (or ranked). Example: low, medium, high.
 
-Other times you might want factors to be ordered (or ranked). Example: low, medium, high.
+* Underlying it's represented by numbers 1, 2, 3.
 
-Underlying it's represented by numbers 1, 2, 3.
-
-They are better than using simple integer labels because factors are what are called self describing. male and female is more descriptive than 1s and 2s. Helpful when there is no additional metadata.
+* They are better than using simple integer labels because factors are what are called self describing. male and female is more descriptive than 1s and 2s. Helpful when there is no additional metadata.
 
 Which is male? 1 or 2? You wouldn't be able to tell with just integer data. Factors have this information built in.
 
@@ -638,7 +639,7 @@ OUTPUT: [1] 1 3 4 2
 
 
 
-as.numeric(as.character(f))
+	as.numeric(as.character(f))
 
 
 
@@ -686,11 +687,11 @@ Some additional information on data frames:
 
 
 OUTPUT:
-    id  x  y
- 1   a  1 11
- 2   b  2 12
- 3   c  3 13
- 4   d  4 14
+    id  x  y  
+ 1   a  1 11  
+ 2   b  2 12  
+ 3   c  3 13  
+ 4   d  4 14  
  5   e  5 15
  6   f  6 16
  7   g  7 17
