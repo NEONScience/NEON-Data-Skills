@@ -2,8 +2,8 @@
 layout: post
 title:  "Raster LiDAR Data"
 date:   2014-07-11 20:49:52
-categories: [Using LiDAR Data]
-tags : [lidar,remote-sensing]
+categories: [Remote Sensing]
+tags : [lidar]
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 
 ---

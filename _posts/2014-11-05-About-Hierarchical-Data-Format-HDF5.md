@@ -3,7 +3,7 @@ layout: post
 title: "About: Hierarchical Data Formats (HDF5)"
 date:   2014-11-20 20:49:52
 authors: Leah A. Wasser
-categories: [Hierarchical Data Formats]
+categories: [Coding and Informatics]
 tags : [hdf5]
 description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file / data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 code1: 

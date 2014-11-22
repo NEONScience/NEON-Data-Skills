@@ -41,18 +41,17 @@
    {% for category in site.categories %}
 
       <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
-  	    <ul class="posts">
+  	    
   	    {% for posts in category %}
   	      {% for post in posts %}
-  	      {% if post.url %}
-  	        <li>
-  	        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> -->
-  	        </li>
+  	      {% if post.url %}	      
+  	        <h2 class="link-post"><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+  	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
+  	       
+  	        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> 	       
   	        {% endif %}
   	      {% endfor %}
   	    {% endfor %}
-  	    </ul>
 	{% endfor %}
 <br>
 <br>

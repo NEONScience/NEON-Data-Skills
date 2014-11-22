@@ -3,8 +3,8 @@ layout: post
 title: "Activity: Working With Functions"
 date:   2014-10-29 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
-categories: [Using R]
-tags : []
+categories: [Coding and Informatics]
+tags : [R]
 description: "This activity will provide the basics of creating a function in R."
 code1: 
 image:
