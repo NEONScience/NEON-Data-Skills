@@ -1,12 +1,17 @@
 ---
 layout: post
-title: "Activity: Getting Started with R"
-date:   2014-11-04 20:49:52
-authors: Adapted from Software Carpentry Materials by Leah A. Wasser
+title: "R: HDF5 - Data Exploration & Viz"
+date:   2014-11-17 20:49:52
+authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
-tags : [R]
-description: "This activity will present the basics of using R."
-
+tags : [HDF5,R]
+description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
+code1: R_Create_Modify_Hdf5.R
+image:
+  feature: hierarchy_folder_purple.png
+  credit: The Artistry of Colin Williams, NEON
+  creditlink: http://www.neoninc.org
+permalink: /HDF522/Explore-HDF5-Using-R/
 ---
 
 
@@ -20,6 +25,13 @@ description: "This activity will present the basics of using R."
 </div>
 </section><!-- /#table-of-contents -->
 
+layout: post
+title: "Activity: Getting Started with R"
+date:   2014-11-04 20:49:52
+authors: Adapted from Software Carpentry Materials by Leah A. Wasser
+categories: [Coding and Informatics]
+tags : [R]
+description: "This activity will present the basics of using R."
 
 code1: 
 image:
