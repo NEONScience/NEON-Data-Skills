@@ -59,12 +59,12 @@
 
 
 
-<!-- remove the stuff below if the site slows down - this is to populate tags -->
+<!-- This code supports the tags below the stuff below if the site slows down - this is to populate tags -->
 
 {% assign post = page %}
 
 {% if post.tags.size > 0 %}
-    {% capture tags_content %}Posted with {% if post.tags.size == 1 %}<i class="fa fa-tag"></i>{% else %}<i class="fa fa-tags"></i>{% endif %}: {% endcapture %}
+    {% capture tags_content %}Tags: {% if post.tags.size == 1 %}<i class="fa fa-tag"></i>{% else %}<i class="fa fa-tags"></i>{% endif %}: {% endcapture %}
     {% for post_tag in post.tags %}
         {% for data_tag in site.data.tags %}
             {% if data_tag.slug == post_tag %}
@@ -83,10 +83,9 @@
 <!-- remove the stuff above if the site slows down - this is to populate tags -->
 
 
-
       <hr />
       {% include _relatedCode.html %}     
-     <p id="post-meta">TAGS HERE {{ tags_content }}</p>
+     <p id="post-meta">{{ category_content }}{{ tags_content }}</p>
       <footer role="contentinfo">
         <div class="article-author-bottom">
           {% include _author-bio.html %}
