@@ -557,16 +557,18 @@ $b
 [1]  1  2  3  4  5  6  7  8  9 10
 
 
-|    Sepal.Length     | Sepal.Width | Petal.Length   |
-| ------------- |:-------------:| -----:|
-| 5.1     | right-aligned | $1600 |
-| 4.9      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+|   | Sepal.Length  | Sepal.Width | Petal.Length   |
+|-- | ------------- |:-------------:| -----:|
+| 2 | 5.1           | right-aligned | $1600 |
+| 3 | 4.9           | centered      |   $12 |
+| 4 | 4.7           | are neat      |    $1 |
  
  TRING THING
  
  
 $data
+#sdf
+
 |   | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
 |-- | ---------- | --------- | ----------- | -----------|-------|
 | 1 |      5.1   |    3.5    |      1.4    |      0.2  |         setosa |
