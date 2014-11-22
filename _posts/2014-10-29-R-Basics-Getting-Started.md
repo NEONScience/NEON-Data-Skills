@@ -557,11 +557,11 @@ $b
 [1]  1  2  3  4  5  6  7  8  9 10
 
 
-|   | Sepal.Length  | Sepal.Width | Petal.Length   |
-|-- | ------------- |:-------------:| -----:|
-| 2 | 5.1           | right-aligned | $1600 |
-| 3 | 4.9           | centered      |   $12 |
-| 4 | 4.7           | are neat      |    $1 |
+|    | Sepal.Length  | Sepal.Width | Petal.Length   |
+| -- | ------------- |:-------------:| -----:|
+|  2  | 5.1           | right-aligned | $1600 |
+|  3  | 4.9           | centered      |   $12 |
+|  4  | 4.7           | are neat      |    $1 |
  
  TRING THING
  
