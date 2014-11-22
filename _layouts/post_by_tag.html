@@ -36,12 +36,6 @@
 
 <div id="index">
   <h1>{{ page.title }}</h1>
-  By Topic
-
-<br>
-<br>
-<br>
- lidar posts testing this
  <header id="post-header">
     <h1 id="post-title">{{ page.tag }}</h1>
     <h4 id="post-subtitle">Articles by tag</h4>
@@ -65,6 +59,7 @@
 			
             <a href="{{ post.url }}/" class="list-group-item">
                 <h4 class="list-group-item-heading">{{ post.title }}</h4>
+                <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
             </a>
 
             {% if forloop.last %}
@@ -77,18 +72,6 @@
 </div>
   
   
-  
-  
-  <h1>Articles by tag :{{ page.tag }}</h1>
-<div>
-    {% if site.tags[page.tag] %}
-        {% for post in site.tags[page.tag] %}
-            <a href="{{ post.url }}/">{{ post.title }}</a>
-        {% endfor %}
-    {% else %}
-        <p>There are no posts for this tag.</p>
-    {% endif %}
-</div>
 
 </div><!-- /#index -->
 
