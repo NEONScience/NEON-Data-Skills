@@ -14,7 +14,7 @@ description: "Learn the basics of how a LiDAR works and what a LiDAR system meas
 LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing system that can be used to measure vegetation height across wide areas. This page will introduce you to the fundamental concepts needed to understand:
 
 1. What LiDAR data are.
-2. The key attributes of LiDAR data
+2. The key attributes of LiDAR data.
 3. How LiDAR data are used to measure trees. 
 
 
