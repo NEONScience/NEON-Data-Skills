@@ -4232,3 +4232,12 @@ margin: 2rem 0 .5rem 0;
 	margin: 0 0 0 1rem;
 	padding: 0px
 }
+
+#relatedCode h2 {
+
+}
+
+#relatedCode {
+	background-color:#cfcfcf;
+	padding: 0.1rem 0 .5rem 0;
+}
