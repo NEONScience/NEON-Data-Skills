@@ -4,7 +4,7 @@ title: "R: Creating HDF5 Files"
 date:   2014-11-18 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Hierarchical Data Formats]
-tags : [HDF5,R]
+tags : [hdf5,R]
 description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files in the HDFviewer."
 code1: R_Create_Modify_Hdf5.R
 image:
