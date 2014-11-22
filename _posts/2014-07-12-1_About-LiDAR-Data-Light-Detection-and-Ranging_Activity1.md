@@ -6,6 +6,10 @@ categories: [Using LiDAR Data]
 authors: leah a wasser
 tags : [lidar,remote-sensing, R]
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
+image:
+  feature: data/codedpoints2.png
+  credit: National Ecological Observatory Network
+  creditlink: http://www.neoninc.org
 
 ---
 

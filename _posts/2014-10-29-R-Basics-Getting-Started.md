@@ -8,8 +8,8 @@ tags : []
 description: "This activity will provide the basics of using R."
 code1: 
 image:
-  feature: textur2_FieldWork.jpg
-  credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
+  feature: data/codedFieldwork1.png
+  credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
 permalink: /Using-R/Getting-Started-With-R
 ---

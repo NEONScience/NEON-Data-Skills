@@ -8,8 +8,8 @@ tags : []
 description: "This activity will provide the basics of creating a function in R."
 code1: 
 image:
-  feature: textur2_FieldWork.jpg
-  credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
+  feature: data/codedFieldJournal.png
+  credit: NEON staff working in the field
   creditlink: http://www.neoninc.org
 permalink: /Using-R/Working-With-Functions
 ---

@@ -8,7 +8,7 @@ tags : []
 description: "This activity provides the basics of installing and working with packaged in R"
 permalink: /R/Packages-In-R/
 image:
-  feature: textur2_pointsProfile.jpg
+  feature: data/codedFieldwork1.png
   credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
 ---
