@@ -62,9 +62,8 @@ R comes with a set of functions or commands that perform particular sets of calc
 
 You can use R or RStudio to write your code. Some people prefer R studio as it provides a graphic interface where you can see what objects have been created and you can also set variables like your working directory, using menu options.
 
-> Let's start by learning about our tool.  
-> 
-> _Point out the different windows in RStudio._ 
+> Let's start by learning about R studio and R.  
+> [Learn More about R Studio](http://dss.princeton.edu/training/RStudio101.pdf)
 > * Console, Scripts, Environments, Plots
 > * Avoid using shortcuts. 
 > * Code and workflow is more reproducible if we can document everything that we do.
@@ -76,19 +75,19 @@ Let's take a few moments to play with R. You can get output from R simply by typ
     3 + 5
 
 
-`OUTPUT = [1] 8` 
+`[1] 8` 
 
     12/7
 
 
-`OUTPUT [1] 1.714`
+`[1] 1.714`
  
 or by typing words, with the command `writeLines()`
 
 
-    writeLines("hello world")
+   writeLines("hello world")
 
-`  hello world`
+`hello world`
 
 We can assign our results to an object, if we give it a name
 
