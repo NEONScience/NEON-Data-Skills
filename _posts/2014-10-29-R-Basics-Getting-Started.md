@@ -133,90 +133,67 @@ R has 6 (although we will not discuss the raw class for this workshop) atomic ve
 
 By *atomic*, we mean the vector only holds data of a single type.
 
-* **character**: `"a"`, `"swc"`
-* **numeric**: `2`, `15.5`
-* **integer**: `2L` (the `L` tells R to store this as an integer)
-* **logical**: `TRUE`, `FALSE`
-* **complex**: `1+4i` (complex numbers with real and imaginary parts)
+- **character**: `"a"`, `"swc"`
+- **numeric**: `2`, `15.5`
+- **integer**: `2L` (the `L` tells R to store this as an integer)
+- **logical**: `TRUE`, `FALSE`
+- **complex**: `1+4i` (complex numbers with real and imaginary parts)
 
 R provides many functions to examine features of vectors and other objects, for example
 
 
 
-1. * `typeof()` - what is it?  
-* `length()` - how long is it? What about two dimensional objects?  
-* `attributes()` - does it have any metadata?
+1. `typeof()` - what is it?  
+2. `length()` - how long is it? What about two dimensional objects?  
+3. `attributes()` - does it have any metadata?
  
 
-    # Example
+# Example
 
     x <- "dataset"
-
     typeof(x)
 
-> ## OUTPUT: [1] "character"
 
+OUTPUT: [1] "character"
 
-```r
-attributes(x)
-```
+    attributes(x)
 
-```
 ## NULL
+
+    y <- 1:10
+    y
+
+
+OUTPUT:  [1]  1  2  3  4  5  6  7  8  9 10
 ```
 
-```r
 
-y <- 1:10
-y
-```
+    typeof(y)
 
-```
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
 
-```r
-typeof(y)
-```
+OUTPUT: [1] "integer"
 
-```
-## [1] "integer"
-```
+    length(y)
 
-```r
-length(y)
-```
-
-```
-## [1] 10
-```
-
-```r
+OUTPUT: [1] 10
 
 z <- as.numeric(y)
 z
-```
 
-```
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
+OUTPUT: [1]  1  2  3  4  5  6  7  8  9 10
 
-```r
-typeof(z)
-```
+    typeof(z)
 
-```
-## [1] "double"
-```
+OUTPUT: [1] "double"
 
 
 R has many __data structures__. These include
 
-* atomic vector
-* list
-* matrix
-* data frame
-* factors
+- atomic vector
+- list
+- matrix
+- data frame
+- factors
 
 ### Vectors
 
