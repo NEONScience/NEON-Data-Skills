@@ -149,46 +149,44 @@ This particular dataset contains temperature data collected using different sens
 
 To compare data, we'll first need to loop through the HDF5 file and build a new data frame that contains temperature information over time, for each sensor or site. Let's start by comparing temperature data collected by sensor located at different heights (on different boom arms on the tower), and averaged every 1 minute for the NEON Domain 3 site, Ordway Swisher Biological Station located in Florida.
 
-	# Compare temperature data across booms 
+	# Load libraries
 	library(dplyr)
 	library(ggplot2)
 	# Set the path string
 	s <- "/Domain_03/Ord/min_1"
 
-### Grab the paths to the data we want to use
-
+    # Grab the paths to the data we want to use
 	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
 	ord_temp <- data.frame()
 	
 
+The above code uses the powerful `dplyr` libraries to filter data. Let's break the code down. 
 
-Now, the above code is rather complex. It uses the powerful dplyr libraries to filter things down. Let's break down what the first line is doing. 
+- `fiu_struct`, defined above in the code, is the structure of our HDF5 file that we returned using `h5ls`.
+- `grepl` looks for a text pattern. Type `help(grepl)` to see how it operates. We want to return all "paths" in the HDF file that match `s` which we defined earlier as "/Domain_03/Ord/min_1". Type `s` into the console to see what comes up. 
 
+Pulling this together, type, `fiu_struct %.% filter(grepl(s,group))` in the console. This code will return a list of both datasets and groups for the Domain_03 site that contain the "/Domain_03/Ord/min_1" path. 
+Now let's review the second part of the code:
 
+- `grepl("DATA",otype))` tells R to look for objects in the file that contain the word "data". Type: `fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype))` in the console. Notice that this code returns the elements in the file that are both for the Ordway site AND are of type "dataset".
+- `group_by(group) %.% summarise(path = paste(group,name,sep="/"))`: This code appends the group name (boom_1, boom_2, etc.) and the dataset name (temperature in this case) to the path.
 
-- We defined `fiu_struct` earlier - that's just the structure of our HDF5 file that we got using `h5ls`.
-- `grepl` looks for a pattern. type `help(grepl)`. The pattern we are looking for is s which we defined earlier as "/Domain_03/Ord/min_1". Type `s` into the console to see what comes up. 
+Next, we will create a loop that will populate the final data.frame that contains information for all booms in the site that we want to plot.
+     
+    for(i in paths$path){
+     boom <-  strsplit(i,"/")[[1]][5]
+     dat <- h5read(f,i)
+     dat$boom <- rep(boom,dim(dat)[1])
+     ord_temp <- rbind(ord_temp,dat)
+    }
 
-So let's put this together. Type, `fiu_struct %.% filter(grepl(s,group))` into the console. Notice that you get a list of both datasets and groups for the Domain_03 site. But we just want the datasets as that is where our information is stored. The groups  just store the data - like a folder would on our computer. We wamt the files.
+The loop above iterates through the file and grabs the temperature data for each boom in the 1 minute data series for Ordway. It also adds the boom name to the end of the `data.frame` as follows: 
 
-- The second part of the filter `grepl("DATA",otype))` tells R to look for objects in the file that contain the word "data". Run this: `fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype))` in the console and notice that you just get the elements in the file that are both for the Ordway site AND are of type "dataset".
-- The last part appends the group name (boom_1, boom_2, etc) and the dataset name (temperature in this case) to the path.  `group_by(group) %.% summarise(path = paste(group,name,sep="/"))`
-
-
-	for(i in paths$path){
-	  boom <-  strsplit(i,"/")[[1]][5]
-	  dat <- h5read(f,i)
-	  dat$boom <- rep(boom,dim(dat)[1])
-	  ord_temp <- rbind(ord_temp,dat)
-	}
-
-The loop above iterates through the file, grabs the temperature data for each boom in the 1 minute data series for Ordway. it also adds the boom name to the end of the data.frame. Let's break this loop down. 
-
-- First we have `for i in path$path`. Remember that we have 5 "paths" total - one for each boom: booms 1,2,3,5 and the tower top (boom 4 doesn't have a temperature sensor on it).
-- `boom <-  strsplit(i,"/")[[1]][5]` identify the name of the boom for iteration i. 
-- read in the data from our hdf5 file (f) for iteration i (whichever iteration in the loop we are on) `dat <- h5read(f,i)`.
--  `dat$boom <- rep(boom,dim(dat)[1])` -- add the boom name as the final column in the dataset - column named "boom"
--  `ord_temp <- rbind(ord_temp,dat)` append dataset to the end of the data.frame called ord_temp
+- `for i in path$path`. We have 5 "paths" total - one for each boom: booms 1,2,3,5 and the tower top (boom 4 doesn't have a temperature sensor on it). Thus we will need do iterate through the data 5 times
+- `boom <-  strsplit(i,"/")[[1]][5]`: identify the name of the boom for iteration i. 
+- `dat <- h5read(f,i)`: read in the data from our hdf5 file (f) for iteration i (whichever iteration in the loop we are on) .
+-  `dat$boom <- rep(boom,dim(dat)[1])`: add the boom name as the final column in the dataset - column named "boom"
+-  `ord_temp <- rbind(ord_temp,dat)`: append dataset to the end of the data.frame called ord_temp
 
     EXTRA CREDIT: Modify the loop above so that it added both the boom name, the site name and the data type (1 minute) as columns in our data frame.
 
