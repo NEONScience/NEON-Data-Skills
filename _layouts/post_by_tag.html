@@ -42,6 +42,9 @@
 </header>
 
 <div id="post-content">
+
+{{ content }}
+
     {% if site.tags[page.tag] %}
         {% for post in site.tags[page.tag] %}
             {% capture post_year %}{{ post.date | date: '%Y' }}{% endcapture %}
