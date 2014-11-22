@@ -6,12 +6,7 @@ authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
 tags : [R]
 description: "This activity will present the basics of using R."
-code1: 
-image:
-  feature: codedpoints2.png
-  credit: National Ecological Observatory Network
-  creditlink: http://www.neoninc.org
-permalink: /R-Programming/Getting-Started-With-R/
+
 ---
 
 
@@ -25,9 +20,13 @@ permalink: /R-Programming/Getting-Started-With-R/
 </div>
 </section><!-- /#table-of-contents -->
 
-**R Skill Level:** intermediate
 
-
+code1: 
+image:
+  feature: codedpoints2.png
+  credit: National Ecological Observatory Network
+  creditlink: http://www.neoninc.org
+permalink: /R-Programming/Getting-Started-With-R/
 
 
 **R Skill Level:** beginner
