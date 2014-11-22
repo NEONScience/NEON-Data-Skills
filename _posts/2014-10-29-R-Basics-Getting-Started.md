@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "R: BBBBASICSation & Viz"
-date:   2014-11-17 20:49:52
-authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
+title: "Activity: Getting Started with R"
+date:   2014-11-04 20:49:52
+authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]
-tags : [HDF5,R]
-description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
-code1: R_Create_Modify_Hdf5.R
+tags : [R]
+description: "This activity will present the basics of using R."
+code1: 
 image:
-  feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  feature: codedpoints2.png
+  credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
-permalink: /HDF522/Explore-HDF5-Using-R/
+permalink: /R-Programming/Getting-Started-With-R/
 ---
 
 
@@ -25,20 +25,7 @@ permalink: /HDF522/Explore-HDF5-Using-R/
 </div>
 </section><!-- /#table-of-contents -->
 
-layout: post
-title: "Activity: Getting Started with R"
-date:   2014-11-04 20:49:52
-authors: Adapted from Software Carpentry Materials by Leah A. Wasser
-categories: [Coding and Informatics]
-tags : [R]
-description: "This activity will present the basics of using R."
 
-code1: 
-image:
-  feature: codedpoints2.png
-  credit: National Ecological Observatory Network
-  creditlink: http://www.neoninc.org
-permalink: /R-Programming/Getting-Started-With-R/
 
 
 **R Skill Level:** beginner
@@ -47,7 +34,7 @@ permalink: /R-Programming/Getting-Started-With-R/
 
 R is a versatile, open source programming language that was specifically designed for data analysis. R is extremely useful both for statistics and analyzing data. 
 
->Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
+Cool Fact: R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
 
 R is:
 * Open source software under a <a href="http://en.wikipedia.org/wiki/GNU_General_Public_License" target="_blank">General Public License (GPL)</a>.  
