@@ -5,7 +5,10 @@ date:   2014-07-11 20:49:52
 categories: [remote-sensing]
 tags : [lidar]
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
-
+image:
+  feature: lidar_GrandMesa.jpg
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: http://www.neoninc.org
 ---
 
 
