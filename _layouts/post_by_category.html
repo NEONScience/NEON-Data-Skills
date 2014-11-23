@@ -45,6 +45,7 @@
 
 {{ content }}
 
+{% assign post = page %}
 
 {% if site.categories[page.category] %}
         {% for post in site.categories[page.category] %}
