@@ -41,9 +41,10 @@
  
  
   By Topic with links test Adjusted Link
+  
    {% for acategory in site.data.categories %}	  
-      <h3><a href="{{ site.baseurl }}{{ acategory.slug }}"> /{{ acategory.name }}</a></h3>
-  	    {% for posts in acategory.slug %}
+      <h3><a href="{{ site.baseurl }}/{{ acategory.slug }}"> {{ acategory.name }}</a></h3>
+  	    
   	      {% for post in posts %}
   	      <article>
   	      {% if post.url %}	      
@@ -54,7 +55,7 @@
   	        {% endif %}
   	        </article>
   	      {% endfor %}
-  	    {% endfor %}
+  	    
 	{% endfor %}
 <br>
 <br>
@@ -65,7 +66,7 @@
   By TAG with links test Adjusted LInk
    {% for atag in site.data.tags %}
    	  
-      <h3><a href="{{ base.url }}{{ atag.slug }}">{{ atag.name }}</a></h3>
+      <h3><a href="{{ base.url }}/{{ atag.slug }}">{{ atag.name }}</a></h3>
   	    {% for posts in atag %}
   	    
   	      {% for post in posts %}
