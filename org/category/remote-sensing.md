@@ -1,8 +1,8 @@
 ---
 layout: post_by_category
 title: 'Articles by category: Remote Sensing'
-category: Remote Sensing
+category: remote-sensing
 permalink: remote-sensing/
 ---
 
-Remote Sensing Information
+Remote Sensing Information wil go here
