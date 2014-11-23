@@ -36,19 +36,19 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 {% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP) - available on https://www.flickr.com/photos/126239263@N04/sets" %}
 
 
-#Some Background on LiDAR
+#Lidar Background
 
 
-##The Story of LiDAR Data video - On YouTube
+###The Story of LiDAR Data video - On YouTube
 <iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
 
-##How LiDAR Works ##
+###How LiDAR Works ##
 <iframe width="560" height="315" src="//www.youtube.com/embed/RR1QFE-mB0k?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
-## Let's Get Started - Key Concepts to Review ##
+### Let's Get Started - Key Concepts to Review ##
 
-### Why LiDAR ###
+## Why LiDAR ##
 
 As ecologists, we often want to characterize vegetation over large regions. Because we don’t have the resources to measure each and every tree - we use tools that can estimate key characteristics over large areas. These tools often use remote methods - that is to say, we aren’t actually physically measuring things with our hands and eyes, we are using sensors which capture information about a landscape and record things that we can use to estimate conditions and characteristics.
 
@@ -57,7 +57,7 @@ As ecologists, we often want to characterize vegetation over large regions. Beca
 
 To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can  be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one remote sensing method that can be used to map vegetation height, density and other characteristics across a region.
 
-### How Scientists Use LiDAR Data ##
+## How Scientists Use LiDAR Data ##
 There are many different uses for LiDAR data. 
 
 
@@ -74,7 +74,7 @@ There are many different uses for LiDAR data.
 {% include _images.html url="http://farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
 
 
-### How A LiDAR System Works (video review) ##
+## How LiDAR Works ##
 
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
@@ -86,7 +86,7 @@ Now remember from the video that the LiDAR system times the travel of the light 
 <iframe width="560" height="315" src="//www.youtube.com/embed/uSESVm59uDQ?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
-##The Distribution of Reflected Light Energy in terms of Photons
+###The Distribution of Reflected Light Energy in terms of Photons ###
 
 Light energy is a collection of photons. As photons that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
 
@@ -94,15 +94,10 @@ The distribution of energy that returns to the sensor creates what we call a wav
 
 {% include _images_nolink.html url="../../images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
 
-### LiDAR Data Attributes: X,Y, Z, Intensity and Classification ###
-LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation values). Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
-
-Some lidar data will also be "classified". Classification of lidar point clouds is an additional processing step. Classification simply represents the type of object that the laser return reflected off of. So if the light energy reflected off of a tree, it might be classified as "vegetation". And if it reflected off of the ground, it might be classified as "ground".
-
-Some lidar data  will be classified as "ground / non ground". Some datasets will be further processed to determine which points reflected off of buildings and other infrastructure. Some lidar data will be classified according to the vegetation type.   
+## LiDAR Data Attributes & Types
 
 
-### Discrete vs. Full Waveform LiDAR ###
+## Discrete vs. Full Waveform LiDAR ##
 LiDAR data may be recorded in two ways.
 
 
@@ -113,6 +108,13 @@ LiDAR data may be recorded in two ways.
 Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
 The commonly used file format to store LIDAR point cloud data is called .las which is a format supported by the Americal Society of Photogrametry and Remote sensing (ASPRS). Recently, the [.laz](http://www.laszip.org/) format has been  developed by Martin isenberg of LasTools. Laz is a highly compressed version of .las.
+
+### LiDAR Data Attributes: X,Y, Z, Intensity and Classification ###
+LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation values). Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
+
+Some lidar data will also be "classified". Classification of lidar point clouds is an additional processing step. Classification simply represents the type of object that the laser return reflected off of. So if the light energy reflected off of a tree, it might be classified as "vegetation". And if it reflected off of the ground, it might be classified as "ground".
+
+Some lidar data  will be classified as "ground / non ground". Some datasets will be further processed to determine which points reflected off of buildings and other infrastructure. Some lidar data will be classified according to the vegetation type.   
 
 
 ### Exploring 3D LIDAR data in a free Online Viewer
@@ -127,11 +129,10 @@ You can LiDAR data in the [plas.io website](plas.io)   develped by Martin Isenbe
 
 
 ----------
-----------
 
 
 
-###Additional Resources:
+##Additional Resources:
 *	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")-*
 *	General/LASer-LAS-File-Format-Exchange-Activities.html
 *	What is Discrete Return lidar (ppt)
@@ -142,7 +143,7 @@ You can LiDAR data in the [plas.io website](plas.io)   develped by Martin Isenbe
 
 
 
-## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
+### Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
 
 
 <iframe width="100%" height="500px" frameborder="0" scrolling="no" src="http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157648481541867&caption=true&theme=1&thumbnails=1&transition=1&layoutType=responsive&sort=0" ></iframe>
