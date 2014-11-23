@@ -87,7 +87,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if tag %}
-                    {% capture tags_content_temp %}{{ tags_content }}<a href="{{ site.baseurl }}/org/tag/{{ tag.slug }}/">{{ tag.name }}</a>{% if forloop.last == false %}, {% endif %}{% endcapture %}
+                    {% capture tags_content_temp %}{{ tags_content }}<a href="{{ site.baseurl }}/{{ tag.slug }}/">{{ tag.name }}</a>{% if forloop.last == false %}, {% endif %}{% endcapture %}
                     {% assign tags_content = tags_content_temp %}
                 {% endif %}
             {% endfor %}
