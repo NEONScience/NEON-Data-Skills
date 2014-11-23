@@ -38,52 +38,7 @@
   <h1>{{ page.title }}</h1>
   {{ content }}
   
- 
- 
-  By Topic with links test Adjusted Link
-   {% for acategory in site.data.categories %}	  
-      <h3><a href="{{ site.baseurl }}{{ acategory.slug }}"> {{ acategory.name }}</a></h3>
-  	    {% for posts in acategory.slug %}
-  	      {% for post in posts %}
-  	      <article>
-  	      {% if post.url %}	      
-  	        <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
-  	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
-  	       
-  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> --> 	       
-  	        {% endif %}
-  	        </article>
-  	      {% endfor %}
-  	    {% endfor %}
-	{% endfor %}
-<br>
-<br>
- 
- 
- 
- 
-  By TAG with links test Adjusted LInk
-   {% for atag in site.data.tags %}
-   	  
-      <h3><a href="{{ base.url }}{{ atag.slug }}">{{ atag.name }}</a></h3>
-  	    {% for posts in atag %}
-  	    
-  	      {% for post in posts %}
-  	      <article>
-  	      {% if post.url %}	      
-  	        <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
-  	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
-  	       
-  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> --> 	       
-  	        {% endif %}
-  	        </article>
-  	      {% endfor %}
-  	    {% endfor %}
-  	
-	{% endfor %}
- 
- 
-  By Topic - no links to the topics
+  By Topic
    {% for category in site.categories %}
       <h3><a name="{{ category | first }}">{{ category | first }}</a></h3>
   	    {% for posts in category %}
