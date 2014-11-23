@@ -11,6 +11,16 @@ image:
   creditlink: http://www.neoninc.org
 ---
 
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3 >Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
 
 ### Three Common LiDAR Data Products ###
 - [Digital Terrain Model](http://neoninc.org/NEONedu/ESA2014/DTM.html) - This product represents the ground.
