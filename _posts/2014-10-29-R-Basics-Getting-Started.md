@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Getting Started with R"
+title: "Activity: Getting Started with the R Programming Language"
 date:   2014-11-04 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]

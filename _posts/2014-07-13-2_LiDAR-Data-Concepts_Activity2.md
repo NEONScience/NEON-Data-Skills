@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Raster LiDAR Data"
+title:  "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"
 date:   2014-07-11 20:49:52
 category: remote-sensing
 categories: [Remote Sensing]

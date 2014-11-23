@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Working With Functions"
+title: "Working With Functions in R"
 date:   2014-10-29 20:49:52
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]

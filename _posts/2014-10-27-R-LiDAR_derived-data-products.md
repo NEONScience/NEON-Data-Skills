@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: LiDAR derived data products"
+title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
 date:   2014-10-27 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing

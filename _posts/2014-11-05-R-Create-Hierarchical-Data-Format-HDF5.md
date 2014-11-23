@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: Creating HDF5 Files"
+title: "R: Creating HDF5 Files in the R"
 date:   2014-11-18 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [Coding and Informatics]

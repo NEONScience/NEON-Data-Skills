@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LiDAR Data Basics"
+title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
 date:   2014-07-11 20:49:52
 category: remote-sensing
 categories: [Remote Sensing]

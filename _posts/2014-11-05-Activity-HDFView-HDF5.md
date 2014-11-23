@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HDFView: Exploring HDF5 Files"
+title: "HDFView: Exploring HDF5 Files in a Free Viewer"
 date:   2014-11-19 20:49:52
 authors: Leah A. Wasser
 categories: [Coding and Informatics]

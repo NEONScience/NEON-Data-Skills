@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Activity: Creating Plot Boundaries"
+title: "Activity: Creating A Square Buffer Around a Plot Centroid in R"
 date:   2014-10-29 20:49:52
 authors: Leah A. Wasser, Natalie Robinson, Sarah Elmendorf
 categories: [Coding and Informatics]
