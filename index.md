@@ -1,6 +1,7 @@
 ---
 layout: home
-description: "A responsive Jekyll theme with editorial tendencies by designer Michael 
+description: "A site devoted to open science and open data. Maintained by Leah Wasser"
+Tags: []
 image:
   feature: texture-feature-07.jpg
   credit: NEON
