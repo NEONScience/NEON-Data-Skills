@@ -5,4 +5,4 @@ category: remote-sensing
 permalink: remote-sensing/
 ---
 
-Remote Sensing Information wil go here
+Remote Sensing Information will go here. This page will cover lidar and hyperspectral remote sensing data. 
