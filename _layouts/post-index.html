@@ -40,18 +40,10 @@
   
  
  
-
-<br>
-<br>
- 
- 
- 
- 
-  By TAG with links test Adjusted LInk
-   {% for atag in site.data.tags %}
-   	  
-      <h3><a href="{{ base.url }}/{{ atag.slug }}">{{ atag.name }}</a></h3>
-  	    {% for posts in atag %}
+  By Topic with links to each category 
+  
+   {% for acategory in site.data.categories %}	  
+      <h3><a href="{{ site.baseurl }}/{{ acategory.slug }}"> {{ acategory.name }}</a></h3>
   	    
   	      {% for post in posts %}
   	      <article>
@@ -63,9 +55,12 @@
   	        {% endif %}
   	        </article>
   	      {% endfor %}
-  	    {% endfor %}
-  	
+  	    
 	{% endfor %}
+<br>
+<br>
+ 
+
  
  
   By Topic - no links to the topics
