@@ -3,7 +3,7 @@ layout: post
 title: "R: HDF5 - Data Exploration & Viz"
 date:   2014-11-17 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
-categories: [Coding and Informatics]
+categories: coding-and-informatics
 tags : [HDF5,R]
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
 code1: R_Create_Modify_Hdf5.R

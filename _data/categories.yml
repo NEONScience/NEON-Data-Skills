@@ -1,6 +1,8 @@
 - slug: remote-sensing
   name: Remote Sensing
+  color: '#1abc9c'
   
 - slug: coding-and-informatics
   name: Coding and Informatics
+  color: '#1abc9c'
 
