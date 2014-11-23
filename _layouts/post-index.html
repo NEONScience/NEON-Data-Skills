@@ -60,7 +60,28 @@
 <br>
 <br>
  
-
+ 
+ 
+ 
+  By TAG with links test Adjusted LInk
+   {% for atag in site.data.tags %}
+   	  
+      <h3><a href="{{ base.url }}/{{ atag.slug }}">{{ atag.name }}</a></h3>
+  	    {% for posts in atag %}
+  	    
+  	      {% for post in posts %}
+  	      <article>
+  	      {% if post.url %}	      
+  	        <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+  	       <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
+  	       
+  	       <!-- <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> --> 	       
+  	        {% endif %}
+  	        </article>
+  	      {% endfor %}
+  	    {% endfor %}
+  	
+	{% endfor %}
  
  
   By Topic - no links to the topics
