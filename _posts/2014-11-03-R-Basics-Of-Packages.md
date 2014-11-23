@@ -4,6 +4,7 @@ title: "Activity: Installing & Updating Packages in R"
 date:   2014-10-27 20:49:52
 authors: Leah A. Wasser - Activity Modified From Data Carpentry and Software Carpentry Content 
 categories: [Coding and Informatics]
+category: coding-and-informatics
 tags : [R]
 description: "This activity provides the basics of installing and working with packaged in R"
 permalink: /R/Packages-In-R/

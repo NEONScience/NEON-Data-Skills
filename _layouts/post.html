@@ -72,7 +72,7 @@
                 {% endif %}
             {% endfor %}
             {% if category %}
-                {% capture category_content %} in <span class="label" style="background-color:{{ category.color }}"><a href="{{ site.baseurl }}/org/category/{{ category.slug }}/">{{ category.name }}</a></span>{% endcapture %}
+                {% capture category_content %}Posted in <span class="label" style="background-color:{{ category.color }}"><a href="{{ site.baseurl }}/org/category/{{ category.slug }}/">{{ category.name }}</a></span>{% endcapture %}
             {% endif %}
         {% else %}
             {% assign category_content = '' %}
@@ -100,8 +100,6 @@
 
       <hr />
       {% include _relatedCode.html %} 
-      <p id="post-meta">stuff here: {{ category_content }}</p>
-    
      <p id="post-meta">{{ category_content }}{{ tags_content }}</p>
       <footer role="contentinfo">
         <div class="article-author-bottom">
