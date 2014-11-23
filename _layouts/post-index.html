@@ -42,7 +42,7 @@
  
   By Topic with links test Adjusted Link
    {% for acategory in site.data.categories %}	  
-      <h3><a href="{{ site.baseurl }}{{ acategory.slug }}"> {{ acategory.name }}</a></h3>
+      <h3><a href="{{ site.baseurl }}{{ acategory.slug }}"> /{{ acategory.name }}</a></h3>
   	    {% for posts in acategory.slug %}
   	      {% for post in posts %}
   	      <article>
