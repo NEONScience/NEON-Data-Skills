@@ -1,6 +1,6 @@
 ---
 layout: post_by_category
-title: 'Articles by category: Coding and Informatics'
+title: 'Coding and Informatics Activities'
 category: coding-and-informatics
 permalink: coding-and-informatics/
 ---

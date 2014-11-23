@@ -3,7 +3,7 @@ layout: post
 title: "HDFView: Exploring HDF5 Files"
 date:   2014-11-19 20:49:52
 authors: Leah A. Wasser
-categories: [Coding and Informatics]
+category: [coding-and-informatics]
 tags : [HDF5]
 description: "Explore HDF5 files and the groups and datasets contained within, using the free HDFview tool. See how HDF5 files can be structured and explore metadata. Explore both spatial and temporal data stored in HDF5!"
 code1: 

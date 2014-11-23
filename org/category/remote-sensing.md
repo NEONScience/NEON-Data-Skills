@@ -1,6 +1,6 @@
 ---
 layout: post_by_category
-title: 'Articles by category: Remote Sensing'
+title: 'Remote Sensing Activities'
 category: remote-sensing
 permalink: remote-sensing/
 ---
