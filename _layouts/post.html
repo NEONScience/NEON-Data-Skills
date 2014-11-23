@@ -59,9 +59,26 @@
 
 
 
-<!-- This code supports the tags below the stuff below if the site slows down - this is to populate tags -->
+<!-- The code directly below is required to generate tags and categories at the page bottom-->
 
 {% assign post = page %}
+
+<!-- This code generates the category link at the bottom of the page-->
+
+{% if post.category %}
+	{% for site_category in site.data.categories %}
+		{% if site_category.slug == post.category %}
+			{% assign category = site_category %}
+		{% endif %}
+	{% endfor %}
+	{% if category %}
+		{% capture category_content %} in <span class="label" style="background-color:{{ category.color }}"><a href="/blog/category/{{ category.slug }}/">{{ category.name }}</a></span>{% endcapture %}
+	{% endif %}
+{% else %}
+	{% assign category_content = '' %}
+{% endif %}
+<!-- This code generates the tag link at the bottom of the page-->
+
 
 {% if post.tags.size > 0 %}
     {% capture tags_content %}Tags: {% if post.tags.size == 1 %}<i class="fa fa-tag"></i>{% else %}<i class="fa fa-tags"></i>{% endif %}: {% endcapture %}
