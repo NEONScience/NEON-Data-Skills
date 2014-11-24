@@ -1,5 +1,5 @@
 ---
-layout: post_by_tag
+layout: post_by_category
 title: 'Articles by tag: HDF5'
 category: HDF5
 permalink: HDF5/
