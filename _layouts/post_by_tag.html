@@ -59,12 +59,12 @@
                     </div><h3>{{ post_year }}</h3><div class="list-group">
                 {% endif %}
             {% endif %}
-			
+			<article>
             <a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
                 <h2 class="list-group-item-heading">{{ post.title }}</h2>
                 <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
             </a>
-
+			</article>
             {% if forloop.last %}
                 </div>
             {% endif %}
