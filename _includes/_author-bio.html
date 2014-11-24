@@ -14,7 +14,7 @@
 
 
 
-{% if page.categories  %} <h2> related activities</h2>{% endif %}
+{% if page.categories  %} {% endif %}
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.categories }}</a></h2>
 {% for post in site.posts %}
