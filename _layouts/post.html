@@ -67,7 +67,7 @@
 
 		{% if post.category %}
             {% for site_category in site.data.categories %}
-                c
+                {% if site_category.slug == post.category %}
                     {% assign category = site_category %}
                 {% endif %}
             {% endfor %}
