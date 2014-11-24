@@ -5,4 +5,8 @@
 - slug: coding-and-informatics
   name: Coding and Informatics
   color: '#1abc9c'
+   
+- slug: HDF5
+  name: Hierarchical Data Formats (HDF5)
+  color: '#cccccc'
 
