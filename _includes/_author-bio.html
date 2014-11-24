@@ -14,7 +14,7 @@
 
 
 
-<h2> related activities</h2>
+{% if page.categories  %} <h2> related activities</h2>{% endif %}
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.categories }}</a></h2>
 {% for post in site.posts %}
@@ -28,7 +28,9 @@
 
 
 
-<h4><a href="../../posts/">View ALL Activities</a></h4>
+<h4><a href="{{ site.baseurl }}/activities/">View ALL Activities</a></h4>
+<h4><a href="{{ site.baseurl }}/activities-by-tag/">Activities by Tag</a></h4>
+
 <h3></h3>
 <h3></h3>
 <h3></h3>

@@ -38,7 +38,7 @@ categories: [using lidar data, working with field data, zcarbon links]
 # For external links add external: true
 links:  
   - title: All Data Activities
-    url: /posts/
+    url: /activities/
   
   - title: About
     url: /about/
