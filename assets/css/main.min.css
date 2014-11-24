@@ -4246,7 +4246,7 @@ margin: 2rem 0 .5rem 0;
 	color: #4F5C5C;
 }
 
-div#cat_tag_content {
+div#cat_tag_content, div#objectives {
 	background-color:#f4f7f7;
 	padding:1.3em;
 	font-size:.9em;

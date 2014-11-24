@@ -24,14 +24,20 @@ permalink: /HDF5/About
 </div>
 </section><!-- /#table-of-contents -->
 
+<div id="objectives">
 
-##Learning Goals
+<h3>Goals / Objectives</h3>
+After completing this activity, you will:
+<ol>
+<li>Have a better understanding of what HDF5, Hierarchical Data Format is</li>
+<li>Know the key components of the HDF5 data model that make it useful to scientists working with big data.</li>
+<li>Understand both the types of data that can be stored in HDF5 and how it can be stored.</li>
+</ol>
 
-1. Provide an introduction to Hierarchical Data Formats - specifically the HDF5 file format - a common data format used by many disciplines (also the backbone of NetCDF4)
+<h3>What you'll Need</h3>
+<p>Internet access and a working thinking cap.</p>
 
-
-##What you'll Need
-- Internet access and a working thinking cap.
+</div>
 
 ##About Hierarchical Data Formats - HDF5
 

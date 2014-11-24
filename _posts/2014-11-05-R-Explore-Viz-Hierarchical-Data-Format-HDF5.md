@@ -27,17 +27,29 @@ permalink: /HDF5/Explore-HDF5-Using-R/
 
 **R Skill Level:** intermediate
 
-##Objectives
+<div id="objectives">
+<h3>Goals / Objectives</h3>
+
 After completing this activity, you will:
+<ol>
+<li> Know how to explore a new HDF5 dataset in R </li>
+<li> Access various groups and datasets within an HDF5 file.</li>
+<li> Understand the basics of manipulating big data sets using indexing, loops, and `dplyr`.</li>
+<li> Know how to work with the 3 key HDF5 data types: <b>file</b>, <b>groups</b> and <b>datasets</b>.</li>
+<li> Refine your data plotting skills using `GGPLOT` in `R`.</li>
+<li> Be exposed to and learn how to apply a variety of data manipulation tasks including identifying data types given a new dataset, string parsing, and working with / formatting date information.</li>
 
-1. Know how to explore a new HDF5 dataset in R
-2. Access various groups and datasets within an HDF5 file.
-3. Understand the basics of manipulating big data sets using indexing, loops, and `dplyr`.
-3. Know how to work with the 3 key HDF5 data types: **file**, **groups** and **datasets**.
-4. Refine your data plotting skills using `GGPLOT` in `R`.
-5. Be exposed to and learn how to apply a variety of data manipulation tasks including identifying data types given a new dataset, string parsing, and working with / formatting date information.
+</ol>
 
-###What you Need
+
+<h3>You will need:</h3>
+<ul>
+<li>R or R studio running on your laptop. </li>
+<li>HDF5 libraries and associated packages as described in the "getting started" section below. </li>
+</ul>
+</div>
+
+###Getting Started
 To be able to access HDF5 files, you'll need to first install the base [HDF5 libraries](http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain). It might also be useful to install [HDFview](http://www.hdfgroup.org/products/java/hdfview/) which will allow you to explore the contents of an HDF5 file visually using a graphic interface. 
 
 The package we'll be using is `rhdf5` which is part of the [Bioconductor](http://www.bioconductor.org) suite of `R` packages. If you haven't installed this package before, you can use the first two lines of code below to install. Then use the library command to call the `rhdf5` library.
