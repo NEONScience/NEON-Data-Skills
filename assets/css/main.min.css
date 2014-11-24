@@ -4252,3 +4252,13 @@ div#cat_tag_content {
 	font-size:.9em;
 	box-shadow: .2em .2em .1em #ccc;
 }
+
+div.article-author-side h5 {
+	margin:0rem .3rem 0rem .2rem;
+	color: #707070;
+	line-height:1.2rem;
+	}
+	
+div.article-author-side h5 a{
+	color: #707070;
+	}	

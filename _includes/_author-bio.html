@@ -28,13 +28,17 @@
 
 
 
-<h3>Activity By Topic</h3>
+<h3>Activities By Topic</h3>
 {% for tag in site.tags %}
-            <a href="/tags/{{tag | first}}/">
-                {{tag | first }}
-                ({{ tag | last | size }})
-            </a>
-    {% endfor %} 
+{% assign t = tag | first %}
+  {% for atag in site.data.tags %}
+    {% if atag.slug == t %}
+      <h5><a href="{{ site.baseurl }}/{{ atag.slug }}">{{ atag.name }}  
+    {% endif %}
+  {% endfor %} 
+      ({{ tag | last | size }}) 
+     </a></h5>
+{% endfor %} 
 
 
 <h4><a href="{{ site.baseurl }}/activities/">View ALL Activities</a></h4>
