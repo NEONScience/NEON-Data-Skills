@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Activity: Free Online Data Viz to Explore LiDAR Data"
-date:   2014-10-26 11:00:52
+date:   2014-7-19 11:00:52
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar]
