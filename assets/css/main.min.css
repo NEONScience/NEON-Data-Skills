@@ -4247,7 +4247,8 @@ margin: 2rem 0 .5rem 0;
 }
 
 div#cat_tag_content {
-	background-color:#D1E0E0;
-	padding:10em;
+	background-color:#f4f7f7;
+	padding:1.3em;
 	font-size:.9em;
+	box-shadow: 2em .2em .1em #ccc;
 }
