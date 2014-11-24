@@ -42,7 +42,7 @@ NOTE: Select the HDFView download option that matches the operating system and c
 </figure>
 
 - Download the [National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE]({{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5 "FIU data").
-- Download the [National Ecological Observatory Network (NEON)Airborne Observation Platform Spectrometer Data HDF5 File](http://www.neoninc.org/NEONedu/Data/HDF5/SJER_140123_chip.h5 "FIU data"). NOTE that this second file has an h5 extension while the first has an HDF5 extension. Both extensions represent the hdf5 data type.
+- Download the [National Ecological Observatory Network (NEON)Airborne Observation Platform Spectrometer Data HDF5 File](http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5 "FIU data"). NOTE that this second file has an h5 extension while the first has an HDF5 extension. Both extensions represent the hdf5 data type.
 
 ##Review: Hierarchical Data Format 5 - HDF5
 
