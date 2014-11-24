@@ -28,6 +28,21 @@
 
 
 
+Tags
+{% for category in site.categories %}
+        <li class="camelize_me">
+            <a href="/tags/{{category | first}}/">
+                {{category | first }}
+                {{ category | last | size }}
+                <span class="badge">
+                <!-- Post count here -->
+                </span>
+            </a>
+        </li>
+    {% endfor %} 
+</ul>
+
+
 <h4><a href="{{ site.baseurl }}/activities/">View ALL Activities</a></h4>
 <h4><a href="{{ site.baseurl }}/activities-by-tag/">Activities by Tag</a></h4>
 
