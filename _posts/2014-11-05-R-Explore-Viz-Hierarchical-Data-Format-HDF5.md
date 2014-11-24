@@ -38,7 +38,6 @@ After completing this activity, you will:
 <li> Know how to work with the 3 key HDF5 data types: <b>file</b>, <b>groups</b> and <b>datasets</b>.</li>
 <li> Refine your data plotting skills using `GGPLOT` in `R`.</li>
 <li> Be exposed to and learn how to apply a variety of data manipulation tasks including identifying data types given a new dataset, string parsing, and working with / formatting date information.</li>
-
 </ol>
 
 
@@ -47,7 +46,7 @@ After completing this activity, you will:
 <li>R or R studio running on your laptop. </li>
 <li>HDF5 libraries and associated packages as described in the "getting started" section below. </li>
 <li>
-<a href="../../data/NEON_TowerDataD3_D10.hdf5"  target="_blank">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a></li>
+<a href="../../data/NEON_TowerDataD3_D10.hdf5" target="_blank">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a></li>
 </ul>
 </div>
 
