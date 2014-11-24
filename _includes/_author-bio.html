@@ -28,27 +28,19 @@
 
 
 
-Tags
-{% for category in site.categories %}
-        <li class="camelize_me">
-            <a href="/tags/{{category | first}}/">
-                {{category | first }}
-                {{ category | last | size }}
-                <span class="badge">
-                <!-- Post count here -->
-                </span>
+<h3>Activity By Topic</h3>
+{% for tag in site.tags %}
+            <a href="/tags/{{tag | first}}/">
+                {{tag | first }}
+                ({{ tag | last | size }})
             </a>
-        </li>
     {% endfor %} 
-</ul>
 
 
 <h4><a href="{{ site.baseurl }}/activities/">View ALL Activities</a></h4>
 <h4><a href="{{ site.baseurl }}/activities-by-tag/">Activities by Tag</a></h4>
 
-<h3></h3>
-<h3></h3>
-<h3></h3>
+<br><br><br>
 
 
 {% if site.owner.twitter %}<a href="http://twitter.com/{{ site.owner.twitter }}" class="author-social" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a>{% endif %}
