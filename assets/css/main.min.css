@@ -4245,3 +4245,9 @@ margin: 2rem 0 .5rem 0;
 #relatedCode a {
 	color: #4F5C5C;
 }
+
+div#cat_tag_content {
+	background-color:#D1E0E0;
+	padding:10em;
+	font-size:.9em;
+}
