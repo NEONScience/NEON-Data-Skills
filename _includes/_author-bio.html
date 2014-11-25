@@ -14,7 +14,7 @@
 
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.tags }}</a></h2>
-{% assign l = tag | first %}
+{% assign l = page.tags | first %}
 {% for post in site.posts %}
     {% if post.tags == l  %}
 
