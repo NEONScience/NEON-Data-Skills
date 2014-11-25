@@ -15,7 +15,7 @@
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.mainTag }}</a></h2>
 {% for post in site.posts %}
-    {% if post.tags contains page.mainTag  %}
+    {% if post.tags contains page.tags | first  %}
         <ul class="posts">
         <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
         </ul>
