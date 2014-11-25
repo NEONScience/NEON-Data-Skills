@@ -12,7 +12,16 @@
 <p>{{ site.owner.bio }}</p>
 
 
+<!-- Testing This out to see if it crashes -->
+<h2><a>{{ page.tags }}</a></h2>
+{% for post in site.posts %}
+    {% if post.tags == page.tags | first %}
 
+        <ul class="posts">
+        <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+        </ul>
+    {% endif %}
+{% endfor %}
 
 {% if page.categories  %} {% endif %}
 <!-- Testing This out to see if it crashes -->
@@ -28,7 +37,7 @@
 
 
 
-<h3>Activities By Topic</h3>
+<h3>All Activities By Topic</h3>
 {% for tag in site.tags %}
 {% assign t = tag | first %}
   {% for atag in site.data.tags %}
