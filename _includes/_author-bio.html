@@ -14,8 +14,9 @@
 
 <!-- Testing This out to see if it crashes -->
 <h2><a>{{ page.tags }}</a></h2>
+{% assign l = tag | first %}
 {% for post in site.posts %}
-    {% if post.tags == page.tags[1]  %}
+    {% if post.tags == l  %}
 
         <ul class="posts">
         <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
