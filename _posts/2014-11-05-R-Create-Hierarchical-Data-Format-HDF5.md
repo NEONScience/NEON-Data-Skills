@@ -6,6 +6,7 @@ authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [coding-and-informatics]
 category: coding-and-informatics
 tags: [HDF5,R]
+mainTag: HDF5
 description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files in the HDFviewer."
 code1: R_Create_Modify_Hdf5.R
 image:
