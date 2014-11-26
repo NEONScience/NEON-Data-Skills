@@ -3,11 +3,11 @@ layout: post
 title: "R: Working with HDF5 Format Hyperspectral Remote Sensing Data in in R"
 date:   2014-11-17 20:49:52
 authors: Edmund Hart, Leah A. Wasser
-categories: [coding-and-informatics]
-category: coding-and-informatics
-tags: [HDF5,R]
-mainTag: HDF5
-description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files in the HDFviewer."
+categories: [remote-sensing]
+category: remote-sensing
+tags: [hyperspectral-imaging,R]
+mainTag: hyperspectral-imaging
+description: "Open up and explore hyperspectral imagery in HDF format R."
 code1: 
 image:
   feature: hierarchy_folder_purple.png

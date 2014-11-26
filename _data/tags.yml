@@ -9,3 +9,6 @@
 
 - slug: HDF5
   name: Hierarchical Data Formats (HDF5)
+  
+- slug: hyperspectral-imaging
+  name: Hyperspectral Imaging
