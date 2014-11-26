@@ -2,7 +2,7 @@
 layout: post_by_tag
 title: 'Articles by tag: Hyperspectral Remote Sensing'
 tag: hyperspectral-remote-sensing
-permalink: hyperspectral/
+permalink: hyperspectral-remote-sensing/
 ---
 
 <div id="objectives>
