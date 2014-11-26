@@ -28,7 +28,7 @@ In this activity, we will explore lidar data point clouds and learn:
 2. Your very own, sparking personality.
 
 ###Data to Download
-Please download the lidar data  collected by NEON AOP (National ecological observatory network, airborne observation platform). [-->RIGHT Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data")
+Please download the lidar data  collected by NEON AOP (National ecological observatory network, airborne observation platform). [-->RIGHT Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.highered.org/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data")
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
