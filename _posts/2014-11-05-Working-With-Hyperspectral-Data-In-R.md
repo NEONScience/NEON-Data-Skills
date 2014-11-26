@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "R: Working with HDF5 Format Hyperspectral Remote Sensing Data in in R"
-date:   2014-11-17 20:49:52
+date:   2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
@@ -87,12 +87,12 @@ So now that we've gotten that out of the way - let's write some more code.
     #read in the wavelength information from the Hdf5 file
     wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
 
-Now - let's have a look at one of the bands. Each band in the hdf5 file represents a particular 
-Let's check out the green band... which is band 34. For fun - ask R to tell you what wavelength value band 19 is.Slice up bands make a quick plot of the data.
+Now - let's have a look at one of the bands. Each band in the hdf5 file represents a particular group of wavelengths. 
+ 
+Let's check out the green band... which is band 34. For fun - ask R to tell you what wavelength value band 19 is. Slice up bands make a quick plot of the data.
 
-```{r slicing}
-
-b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
+    #r extract "slices" of data from an HDF5 file
+	b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
 
 > ##Arrays vs. Matrices - The Skinny
 > Arrays are matrices with more than 2 dimensions. Put the other way: matrices
