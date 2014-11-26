@@ -1,7 +1,7 @@
 ---
 layout: post_by_tag
 title: 'Articles by tag: Hyperspectral Remote Sensing'
-tag: lidar
+tag: hyperspectral-remote-sensing
 permalink: hyperspectral/
 ---
 

@@ -5,7 +5,7 @@ date:   2014-11-17 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
-tags: [hyperspectral-imaging,R]
+tags: [hyperspectral-remote-sensing,R,HDF5]
 mainTag: hyperspectral-imaging
 description: "Open up and explore hyperspectral imagery in HDF format R."
 code1: 
