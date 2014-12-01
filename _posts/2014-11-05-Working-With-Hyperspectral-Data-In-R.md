@@ -33,10 +33,7 @@ After completing this activity, you will:
 <p>R or R studio to write your code.</p>
 
 <h3>Data to Download</h3>
-Be sure to download the NEON Imaging Spectrometer data subset. These data were collected
-over the San Joachim field site located in California (NEON Domain 17). 
-
-put link to the HDF5 file on the server here...
+ Be sure to download the NEON Imaging Spectrometer data subset.<a href="http://neonhighered.org/data/SJER_140123_chip.h5"> ->> RIGHT CLICK HERE TO DOWNLOAD <<- </a>. These data were collected over the San Joachim field site located in California (NEON Domain 17). 
 
 </div>
 
@@ -69,7 +66,7 @@ We will use the raster and the rhdf5 libraries to read in the hdf5 data that con
 Important: you can use functions that you've created in other R scripts without copying the code into your file. Just make sure to call the file that contains the function towards the top of the code (or before you call the function in the code).
 
     #make sure the hdf5 metadata function is loaded
-                   source("/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/hdf5_RCode/h5metadata.R")
+    source("/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/hdf5_RCode/h5metadata.R")
 
 Let's use our custom function to grab metadata from the hdf5 file. 
 
@@ -87,31 +84,33 @@ So now that we've gotten that out of the way - let's write some more code.
     #read in the wavelength information from the Hdf5 file
     wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
 
-Now - let's have a look at one of the bands. Each band in the hdf5 file represents a particular group of wavelengths. 
- 
-Let's check out the green band... which is band 34. For fun - ask R to tell you what wavelength value band 19 is. Slice up bands make a quick plot of the data.
+Now - let's have a look at one of the bands. Each band in this hdf5 file represents a particular group of wavelengths. Let's check out the green band... which is band 34. For fun - ask R to tell you what wavelength value band 19 is. Slice up bands make a quick plot of the data.
 
     #r extract "slices" of data from an HDF5 file
 	b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
 
-> ##Arrays vs. Matrices - The Skinny
+> **Arrays vs. Matrices - The Skinny**
 > Arrays are matrices with more than 2 dimensions. Put the other way: matrices
 > are arrays with only 2 dimensions.
 > Arrays can have any number of dimensions including 1, 2, 3, etc.
 
-## Convert from array to matrix
-b34 <- b34[,,1]
+    #Convert from array to matrix
+    b34 <- b34[,,1]
 
-#let's plot one band, to see what it looks like ... 
+Next, let's plot one band, to see what it looks like. Plotting spatial data as a visual "data check"is often a good idea - particularly when working in a non-gui environment like R or Python. 
 
-image(b34)
-#hmmm it look a bit fishy. let's look at the distribution of values
-#let's have a look at the range of values in our data.
-hist(b34,breaks=40,col="darkmagenta")
-hist(b34,breaks=40,col="darkmagenta",xlim = c(0, 5000))
+    image(b34)
 
-#what's going on towards the right of the plot? It looks like we have some pixels that are skewing how this renders
-hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
+
+So the image, looks a bit hmmm it look a bit dark and the detail of the image is missing. What could be causing this? Let's have look at the distribution of reflectance values in our data.
+
+    #View range of reflectance values.
+    hist(b34,breaks=40,col="darkmagenta")
+    hist(b34,breaks=40,col="darkmagenta",xlim = c(0, 5000))
+
+What's going on towards the right of the plot? It looks like we have some pixels that are skewing how this renders.
+
+    hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
 #from the metadata we know that 15000 is "no data" - let's set it to NA so R doesn't try to render those pixels
 b34[b34 > 14999] <- NA
