@@ -14,10 +14,22 @@ image:
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Imaging-Spectroscopy-HDF5-In-R/
+code1: hyperspectral_HDF5_Data_R.R
+
 ---
 
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3 >Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
 <div id="objectives">
-**R Skill Level:** intermediate
+<strong>R Skill Level:</strong> Intermediate
 
 
 <h3>Goals / Objectives</h3>
@@ -51,7 +63,7 @@ In this activity we will exploring reading HDF5 data into R that contains spatia
 
 
 
-##P1. Read Hdf5 data into R
+##1. Read Hdf5 data into R
 We will use the raster and the rhdf5 libraries to read in the hdf5 data that contains hyperspectral data for the San Joaquin NEON field site in Domain 17. We will also read in the h5metadata function which is a custom script that allows us to import metadata including the coordinate reference system into R. We will use this information to plot things and to perform the math.
 
 ><<look into this to make sure it's a universal function - not convinced that it is>>
@@ -76,7 +88,7 @@ Let's use our custom function to grab metadata from the hdf5 file.
 
 Next, let's read in the wavelength center associated with each band in the hdf5 file. What wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19)
 
->What this means: A band is simple a group of wavelengths. The imaging spectrometer collects reflected light energy in a pixel for light in that band - for example 800-805nm might be a band. Often when you get a multi or hyperspectral dataset, the band information is reported as the wavelength, which actually represents the center point value of the band AND the full width half max (FWHM) which represents the spread of the band around that center point. So, a band that covers 800-805nm might have a FRWHM of 2.5 and a wavelength value of 802.5.
+>What this means: A band is simple a group of wavelengths. The imaging spectrometer collects reflected light energy in a pixel for light in that band - for example 800-805nm might be a band. Often when you get a multi or hyperspectral dataset, the band information is reported as the wavelength, which actually represents the center point value of the band AND the full width half max (FWHM) which represents the spread of the band around that center point. So, a band that covers 800-805nm might have a FWHM of 2.5 and a wavelength value of 802.5.
 
 So now that we've gotten that out of the way - let's write some more code.
 
@@ -112,132 +124,133 @@ What's going on towards the right of the plot? It looks like we have some pixels
 
     hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
-#from the metadata we know that 15000 is "no data" - let's set it to NA so R doesn't try to render those pixels
-b34[b34 > 14999] <- NA
+From the metadata we know that 15000 is "no data" - let's set it to NA so R doesn't try to render those pixels
+	
+	b34[b34 > 14999] <- NA
 
-#let's run a simple log on the values to try to factor out those high numbers just a bit. we will learn how to sharpen our data later.
-image(log((b34)))
+Let's run a log on the values to try to factor out those high numbers. We will learn how to sharpen our data later.
 
-```
+	image(log((b34)))
+
 
 so... now we have an image - but perhaps not quite oriented in the correct direction. This is because R reads in matrices starting from the upper left hand corner. Whereas, most rasters read pixels starting from the lower left hand corner. We can deal with this issue but creating a proper raster in R that will read in pixels as other software like QGIS and ENVI do.
 
-let's try again but this time, let's flip the order of things
+Let's try again but this time, let's flip the order of things
 
-```{r slicing - try two}
+    #r slicing - try two
+	b34_2<- h5read(f,"Reflectance",index=list(1:477,502:1,34))
 
-b34_2<- h5read(f,"Reflectance",index=list(1:477,502:1,34))
-## Convert from array to matrix
-b34_2 <- t(b34_2[,,1])
-image(log(t(b34_2)))
+	#Convert from array to matrix
+	b34_2 <- t(b34_2[,,1])
+	image(log(t(b34_2)))
 
-#sweet! that looks a bit more like the image that we want to see
-```
+The results of the code above creates an image that looks a bit more like the image that we want to see.
 
+##Create a Georeferenced Raster
+Next, let's create a meaningful raster, that is plotted in geographic space from our HDF5 data. To do this we need to know the coordinate reference system (CRS), and the location of the first pixel (located in the lower left hand corner of the raster). We also need the resolution or size of each pixel in the data. 
+NOTE that we are using the original matrix - b34 that we created above. if you remember correctly, this matrix is flipped along the Y axis. This is OK because the R raster function is smart enough to know to how to read in the data properly (starting at the lower left hand corner!). 
 
-Ok, so now let's create a meaningful raster, that is plotted in geographic space from our data. to do this we need to know the coordinate reference system, and the location of the location of the first pixel (located in the lower left hand corner of the raster) we also need the resolution or size of each pixel in the data. Now NOTE that we are using the original matrix - b34 that we created above. if you remember correctly, this matrix is flipped along the Y axis. this is OK because the R raster function is smart enough to know to how to read in the data properly (starting at the lower left hand corner!). 
-
-```{r create raster}
-b34r <- raster((b34))
+	#r create raster}
+	b34r <- raster((b34))
 
 ## Now we need to grab the extent in a bounding box.  Luckily this is in the metadata,  We'll need it in the form of LL lon, UR lon, LL lat, UR lat
 
-ex <- sort(unlist(spinfo[2:5]))
-e <- extent(ex)
-extent(b34r) <- e
-plot(b34r)
-#hmmm... the image still looks faint... what could be causing that??
+	ex <- sort(unlist(spinfo[2:5]))
+	e <- extent(ex)
+	extent(b34r) <- e
+	plot(b34r)
 
-```
+What do you notice about the image above? The contrast in the image is low. What could be causing this?
+
 
 Awesome! Now  we've plotted one band in geographic space. Try plotting some other bands and see what it looks like. Notice that the images that we plot lack contrast... we'll get to that next!
 
 Now, let's try and generate a full color image with the RGB bands.  But before we start, let's write a function to handle some of the basic cleaning we did earlier, that way we can bulk process bands.
 
 
-```{r RGB}
-# f: the hdf file
-# band: the band you want to grab
-# returns: a cleaned up HDF5 reflectance file
-getBandMat <- function(f, band){
-  out<- h5read(f,"Reflectance",index=list(1:477,1:502,band))
-  ## Convert from array to matrix
-  out <- t(out[,,1])
-  out[out > 14999] <- NA
-  return(out)
-}
-band2rast <- function(f,band){
+	#r RGB}
+	# f: the hdf file
+	# band: the band you want to grab
+	# returns: a cleaned up HDF5 reflectance file
+	getBandMat <- function(f, band){
+  	  out<- h5read(f,"Reflectance",index=list(1:477,1:502,band))
+  	  #Convert from array to matrix
+  	  out <- t(out[,,1])
+  	  out[out > 14999] <- NA
+  	  return(out)
+	}
+	band2rast <- function(f,band){
 
-out <-  raster(getBandMat(f,band),crs="+zone=11N +ellps=WGS84 +datum=WGS84 +proj=longlat")
+	out <-  raster(getBandMat(f,band),crs="+zone=11N +ellps=WGS84 +datum=WGS84 +proj=longlat")
 
-  ex <- sort(unlist(spinfo[2:5]))
-# If you want to stay in UTM's you can use the code below and comment out the two lines above. Note that these were calculated externally and not embedded in the metadata.  In the future they will be embedded in the metadata of NEON HDF5 files.
+	ex <- sort(unlist(spinfo[2:5]))
 
-#out <-  raster(getBandMat(f,band),crs="+zone=11 +units=m +ellps=WGS84 +datum=WGS84 +proj=utm")
-# ex <- c(256521.0,256998.0,4112069.0,4112571.0)
-  e <- extent(ex)
-  extent(out) <- e
-  return(out)
-}
+If you want to stay in UTM's you can use the code below and comment out the two lines above. Note that these were calculated externally and not embedded in the metadata. In the future they will be embedded in the metadata of NEON HDF5 files.
 
-
-
-stackList <- function(rastList){
-  ## Creates a stack of rasters from a list of rasters
-  masterRaster <- stack(rastList[[1]])
-  for(i in 2:length(rastList)){
-    masterRaster<-  addLayer(masterRaster,rastList[[i]])
-  }
-  return(masterRaster)
-}
-
-rgb <- list(58,34,19)
-rgb_rast <- lapply(rgb,band2rast, f = f)
-## Add the names of the bands so we can easily keep track of the bands in the list
-names(rgb_rast) <- as.character(rgb)
-### Check with a plot
-plot(rgb_rast[[1]])
-rgb_stack <- stackList(rgb_rast)
-plot(rgb_stack)
-plotRGB(rgb_stack,r=1,g=2,b=3, scale=300, stretch = "Lin")
+	#out <-  raster(getBandMat(f,band),crs="+zone=11 +units=m +ellps=WGS84 +datum=WGS84 +proj=utm")
+	# ex <- c(256521.0,256998.0,4112069.0,4112571.0)
+	e <- extent(ex)
+  	extent(out) <- e
+  	return(out)
+	}
 
 
-writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
-```
+	stackList <- function(rastList){
+  	## Creates a stack of rasters from a list of rasters
+  	masterRaster <- stack(rastList[[1]])
+  	for(i in 2:length(rastList)){
+    		masterRaster<-  addLayer(masterRaster,rastList[[i]])
+  	}
+  	return(masterRaster)
+	}
+
+	rgb <- list(58,34,19)
+	rgb_rast <- lapply(rgb,band2rast, f = f)
+
+Add the names of the bands so we can easily keep track of the bands in the list
+
+	names(rgb_rast) <- as.character(rgb)
+
+	### Check with a plot
+	plot(rgb_rast[[1]])
+	rgb_stack <- stackList(rgb_rast)
+	plot(rgb_stack)
+	plotRGB(rgb_stack,r=1,g=2,b=3, scale=300, stretch = "Lin")
+
+
+	writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
 
 **a note about image stretching** 
 notice that hte scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter
 
 If you want to play around a bit with this -- try plotting the RGB image using different bands. Here are some suggestions.
-Color Infrared / False Color: rgb: (90,34,19)
-SWIR, NIR,Red Band -- rgb (152,90,58)
+* Color Infrared / False Color: rgb: (90,34,19)
+* SWIR, NIR,Red Band -- rgb (152,90,58)
 
 More on Band Combinations: [http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations](http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations)
 
 We can also plot our image on a map of the US
 
-```{r mapping}
-library(maps)
-map(database="state",region="california")
-points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
-### Add raster
-```
+	#Create a Map in R
+	library(maps)
+	map(database="state",region="california")
+	points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
+	# Add raster
 
 Now the fun stuff!  Let's create NDVI or Normalized Difference Vegetation Index
 NDVI is simply a ration between the Near infrared portion of the spectrum and the red. Please keep in mind the there are different ways to aggregate bands when using hyperspectral data. We are just showing you how the do the math. This is not necessarily the best way to calculate NDVI using hyperspectral data! 
 
-```{r ndvi}
+	#r ndvi}
 
-ndvi_bands <- c(58,90)
+	ndvi_bands <- c(58,90)
 
-ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
-ndvi_stack <- stackList(ndvi_rast)
-NDVI <- function(x) {
-  (x[,2]-x[,1])/(x[,2]+x[,1])
-}
-ndvi_calc <- calc(ndvi_stack,NDVI)
-plot(ndvi_calc)
-```
+	ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
+	ndvi_stack <- stackList(ndvi_rast)
+	NDVI <- function(x) {
+  	  (x[,2]-x[,1])/(x[,2]+x[,1])
+	}
+	ndvi_calc <- calc(ndvi_stack,NDVI)
+	plot(ndvi_calc)
 
 
 
