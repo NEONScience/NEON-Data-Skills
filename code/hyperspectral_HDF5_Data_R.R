@@ -5,14 +5,13 @@
 #r Load `raster` and `rhdf5` packages and read NIS data into R
 library(raster)
 library(rhdf5)
+
+#specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
 #f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-f <- '/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure 
 h5ls(f,all=T)
 
-#make sure the hdf5 metadata function is loaded
-source("/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/code/h5metadata.R")
-
 #r get spatial info and map info
-spinfo <- h5metadata(f,"spatialInfo",11)
+spinfo <- h5readAttributes(f,"spatialInfo")
