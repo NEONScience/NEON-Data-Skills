@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HDFView: Exploring HDF5 Files in a Free Viewer"
+title: "HDFView: Exploring HDF5 Files in the Free HDFview Tool"
 date:   2014-11-19 20:49:52
 authors: Leah A. Wasser
 categories: [coding-and-informatics]
@@ -107,7 +107,7 @@ Next, we will look at a spatial data stored in HDF5 format.
 #Part 2. Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
-    <a href="{{ site.baseurl }}/images/AOP_0.png"><img src="{{ site.baseurl }}/images/AOP_0.png"></a>
+    <a href="{{ site.baseurl }}/images/aop_0.png"><img src="{{ site.baseurl }}/images/AOP_0.png"></a>
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
