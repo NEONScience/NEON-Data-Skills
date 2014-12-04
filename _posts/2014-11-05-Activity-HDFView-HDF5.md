@@ -107,7 +107,7 @@ Next, we will look at a spatial data stored in HDF5 format.
 #Part 2. Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
-    <a href="{{ site.baseurl }}/images/aop_0.jpg"><img src="{{ site.baseurl }}/images/AOP_0.png"></a>
+    <a href="{{ site.baseurl }}/images/aop_0.jpg"><img src="{{ site.baseurl }}/images/aop_0.jpg"></a>
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
