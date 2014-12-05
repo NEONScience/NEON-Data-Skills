@@ -2,6 +2,7 @@ library(devtools)
 library(plotly)
 library(dplyr)
 library(ggplot2)
+library(rhdf5)
 
 f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
 ## Get names of elements in our file
@@ -36,7 +37,6 @@ finalPlot
 
 #plot in plotly
 
-library(plotly)
 py <- plotly(username="leahawasser", key="tpdjz2b8pu")
 out <- py$ggplotly(finalPlot)
 

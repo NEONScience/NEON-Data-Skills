@@ -1,7 +1,6 @@
 
 #this code allows you to explore and visualize data in HDF5 format.
 
-
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 
@@ -69,7 +68,6 @@ for(i in paths$path){
   ord_temp <- rbind(ord_temp,dat)
 }
 
-h5close()
 
 #fix the dates
 ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
@@ -81,7 +79,7 @@ ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mea
 ### We want all sites in the minute 30 so this will help us prune our list
 s <- "min_30"
 # Grab the paths for all sites, 30 minute averaged data
-paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
+paths <- fiu_struct %>% filter(grepl(s,group), grepl("DATA",otype)) %>% group_by(group) %>% summarise(path = paste(group,name,sep="/"))
 
 temp_30 <- data.frame()
 for(i in paths$path){
@@ -97,22 +95,12 @@ for(i in paths$path){
 temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
 
 #assign a mean value for all three booms. 
-temp30_sum <- temp_30 %.% group_by(date,site) %.% summarise(mean = mean(mean))
+temp30_sum <- temp_30 %>% group_by(site,date) %>% summarise(mean = mean(mean))
 
 #Create plot!
-ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
+thePlot <- ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path() +ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher vs Sterling CO")
 
-
-
-#############extra stuff...
-
-#siteName <-  strsplit(i,"/")[[1]][3]
-#interval <-  strsplit(i,"/")[[1]][4]
-
-
-#so we can do this but then we need to past the boom 1 text as an additional column or just make sure our labels in the plot are correct.
-
-a <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
-
-
-# ******** What leah would do as the above i suppose is automated but seems overly complex
+finalPlot2<-thePlot + scale_colour_discrete(name="NEON Site",
+                                           breaks=c("Ord", "Ste"),
+                                           labels=c("Ordway Swisher", "Sterling"))
+finalPlot2
