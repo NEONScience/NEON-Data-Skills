@@ -35,7 +35,7 @@ or=temp
 
 py <- plotly(username="leahawasser", key="tpdjz2b8pu")
 
-or$A <- temp$mean
+#or$A <- temp$mean
 #fit the dates
 temp$date <- as.POSIXct(temp$date ,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
 

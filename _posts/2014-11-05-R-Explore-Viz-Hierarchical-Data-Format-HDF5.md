@@ -8,7 +8,7 @@ category: coding-and-informatics
 tags: [HDF5,R]
 mainTag: HDF5
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
-code1: plotFIUData.R
+code1: explore_dataViz.R
 image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
@@ -66,7 +66,7 @@ The package we'll be using is `rhdf5` which is part of the [Bioconductor](http:/
 ###HDF5 Quick Review
 The HDF5 format is a self-contained directory structure. In HDF5 files though "directories" are called "**groups**" and "**files**" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
 
-##Working with Real World Data
+##Temperature Time Series - Working with Temporal NEON Tower Data  
 In this activity, we'll work with a real world data file. We will work with  [flux tower temperature data](http://neoninc.org/science-design/collection-methods/flux-tower-measurements) collected by the [NEON project](http://www.neoninc.org). NEON will provide 30 years of free ecological data.
 
 In this case, we'll examine this file as if we knew nothing about it. We will view it's structure, extract metadata and visualize the contents of the files. The goal of the lesson is to use loops and custom functions to quickly examine data with a complex nested structure using advanced tools like `dplyr`.
@@ -98,63 +98,37 @@ Take note that there are 4 groups and one dataset called temperature in this par
 
 ![image]({{ site.baseurl }}/images/TempData.png)
 
+We can make our plot look a bit nicer by adding date values to the x axis.
+
+	#let's fix up the plot above a bit. We can first add dates to the x axis. 
+	#in order to list dates, we need to specify the format that the date field is in.
+	temp$date <- as.POSIXct(temp$date ,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
+	
+	ordwayPlot <- qplot (date,mean,data=temp,geom="line", title="ordwayData",
+	                 main="Mean Temperature - Ordway Swisher", xlab="Date", 
+	                 ylab="Mean Temperature (Degrees C)")
+	
+	#let's check out the plot
+	ordwayPlot
+
+Your plot should look like this - pretty cool, right?:
+
+<iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=800&height=600"></iframe>
+
+
 ### Extracting metadata
 Another advantage of HDF5 is that it's self describing. This means that metadata are embedded in the file. Metadata can be associated with every group, dataset and even the file itself. 
 
-The art of extracting metdata in R is not yet refined. Thus to do it effectively, we need to extract attributes individually. Some examples of doing this are below. 
+To read the metadata for elements in a file, you can use the `h5readAttributes` function. We'll work with this next.
 
-	#r extracting metadata from an HDF5 file
-	# Open file
-	out <- H5Fopen(f)
-	# open a group
-	g <- H5Gopen(out,'/Domain_03/Ord')
-	#extract the first attribute for that group (g,1)
-	a <- H5Aopen_by_idx(g,1)
-	#get the name of that attribute
-	H5Aget_name(a)
-
-	#get the value for the attribute (in this case it's the site name)
-	aval <- H5Aread(a)
-	aval
-
-** Be sure to close all elements that you opened!
-
-	H5Aclose(a)
-	H5Gclose(g)
-	H5Fclose(out)
-
-
-The above method to extract metadata is tedious because it requires individual commands that query parts of our dataset. An alternative is to create a  function that extracts all of the metadata from any group. Let's do that!
-
-###Create Metadata Extraction Function
-
-	#Create metadata extraction function
-	#note: per Ted Hart, this code may be ingested into the rhdf5 
-    #library in the future. as of 11/2014 it wasn't there yet.
-
-	h5metadata <- function(fileN, group, natt){
-  	 out <- H5Fopen(fileN)
-  	 g <- H5Gopen(out,group)
-     output <- list()
-	 for(i in 0:(natt-1)){
-    	  ## Open the attribute
-    	  a <- H5Aopen_by_idx(g,i)
-    	  output[H5Aget_name(a)] <-  H5Aread(a)
-    	  ## Close the attributes
-    	  H5Aclose(a)
-  	 }
-  	 
-	H5Gclose(g)
-	H5Fclose(out)
-	return(output)
-	}
-
-Now we can combine the information we get from `h5ls` with our metadata extraction function. This means we could loop through the whole file and extract metadata for every element if we so desired.
-
-	#r extract metadata}
+	## Get names of elements in our file
 	fiu_struct <- h5ls(f,all=T)
+	## Concatenate the second element.
 	g <- paste(fiu_struct[2,1:2],collapse="/")
-	h5metadata(f,g,fiu_struct$num_attrs[2])
+	## Check out what that element is
+	print(g)
+	## Now view the metadata
+	h5readAttributes(f,g)
 
 ### ******* End Part 1 ********	
 
@@ -174,8 +148,8 @@ To compare data, we'll first need to loop through the HDF5 file and build a new 
 	s <- "/Domain_03/Ord/min_1"
 
     # Grab the paths to the data we want to use
-	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
-	ord_temp <- data.frame()
+	paths <- fiu_struct %>% filter(grepl(s,group), grepl("DATA",otype)) %>% group_by(group) %>% summarise(path = paste(group,name,sep="/"))
+ord_temp <- data.frame()
 	
 
 The above code uses the powerful `dplyr` libraries to filter data. Let's break the code down. 
@@ -183,11 +157,11 @@ The above code uses the powerful `dplyr` libraries to filter data. Let's break t
 - `fiu_struct`, defined above in the code, is the structure of our HDF5 file that we returned using `h5ls`.
 - `grepl` looks for a text pattern. Type `help(grepl)` to see how it operates. We want to return all "paths" in the HDF file that match `s` which we defined earlier as "/Domain_03/Ord/min_1". Type `s` into the console to see what comes up. 
 
-Pulling this together, type, `fiu_struct %.% filter(grepl(s,group))` in the console. This code will return a list of both datasets and groups for the Domain_03 site that contain the "/Domain_03/Ord/min_1" path. 
+Pulling this together, type, `fiu_struct %>% filter(grepl(s,group))` in the console. This code will return a list of both datasets and groups for the Domain_03 site that contain the "/Domain_03/Ord/min_1" path. 
 Now let's review the second part of the code:
 
-- `grepl("DATA",otype))` tells R to look for objects in the file that contain the word "data". Type: `fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype))` in the console. Notice that this code returns the elements in the file that are both for the Ordway site AND are of type "dataset".
-- `group_by(group) %.% summarise(path = paste(group,name,sep="/"))`: This code appends the group name (boom_1, boom_2, etc.) and the dataset name (temperature in this case) to the path.
+- `grepl("DATA",otype))` tells R to look for objects in the file that contain the word "data". Type: `fiu_struct %>% filter(grepl(s,group), grepl("DATA",otype))` in the console. Notice that this code returns the elements in the file that are both for the Ordway site AND are of type "dataset".
+- `group_by(group) %>% summarise(path = paste(group,name,sep="/"))`: This code appends the group name (boom_1, boom_2, etc.) and the dataset name (temperature in this case) to the path.
 
 Next, we will create a loop that will populate the final data.frame that contains information for all booms in the site that we want to plot.
      
