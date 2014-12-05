@@ -17,3 +17,20 @@ library("devtools")
 library(plotly)
 
 set_credentials_file("leahawasser", "tpdjz2b8pu")
+
+p <- plotly(username="leahawasser", key="tpdjz2b8pu")
+
+
+x0 = rnorm(500)
+x1 = rnorm(500)+1
+data0 = list(x=x0,
+             type='histogramx',
+             opacity=0.8)
+data1 = list(x=x1,
+             type='histogramx',
+             opacity=0.8)
+layout = list(barmode='overlay')  
+
+response = p$plotly(data0, data1, kwargs=list(layout=layout)) 
+
+browseURL(response$url)
