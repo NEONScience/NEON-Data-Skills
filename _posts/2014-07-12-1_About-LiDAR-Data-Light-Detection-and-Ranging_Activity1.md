@@ -43,7 +43,7 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 <iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
 
 ###How LiDAR Works ##
-<iframe width="560" height="315" src="//www.youtube.com/embed/RR1QFE-mB0k?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
 ### Let's Get Started - Key Concepts to Review ##
