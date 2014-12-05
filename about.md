@@ -7,9 +7,9 @@ tags: [light detection and ranging, LiDAR, remote sensing, education, ]
 modified: 07-12-2014
 comments: true
 image:
-  feature: texture-feature-02.jpg
-  credit: Texture Lovers
-  creditlink: http://texturelovers.com
+  feature: aboutBanner.png
+  credit: Colin Williams
+  creditlink: 
 ---
 
 This site provides free and open materials that support the use of big data in ecology. It is managed by the Education Department at the National Ecological Observatory Network (NEON). NEON will provide free and open data for 30 years, to support the study of ecological change.
