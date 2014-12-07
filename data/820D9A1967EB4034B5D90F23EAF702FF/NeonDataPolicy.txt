@@ -1,0 +1,28 @@
+
+Copyright 2013 National Ecological Observatory Network, Inc.
+
+Permission is hereby granted, free of charge, to any person or organization 
+obtaining a copy of the NEON Observatory data products, associated software and 
+accompanying documentation covered by this license (the "NEON Data Products") to 
+use, reproduce, display, distribute, publish, execute, and transmit the 
+NEON Data Products, and to prepare derivative works of the NEON Data Products, 
+and to permit third-parties to whom the NEON Data Products are furnished to do 
+so, all subject to the following:
+
+The copyright notices in the NEON Data Products and this entire statement, 
+including the above copyright statement, license grant, this restriction and 
+the following disclaimer, must be included in all copies of the 
+NEON Data Products, in whole or in part, and all derivative works of 
+the Data Products.
+
+THE NEON DATA PRODUCTS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE NEON DATA 
+PRODUCTS BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, 
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+THE NEON DATA PRODUCTS.
+
+
+
+

@@ -315,8 +315,10 @@ p {
 	margin: 0 0 1.625rem
 }
 p+p {
-	margin-top: -1.625rem;
-	text-indent: 1.625rem
+	/* margin-top: -1.625rem;
+	text-indent: 1.625rem */
+	margin-top:0rem;
+	
 }
 tt, code, kbd, samp, pre {
 	font-family: Monaco, "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace
@@ -3284,7 +3286,7 @@ font-size:.875rem;
 }
 @media only screen and (min-width:62em) {
 .article-author-side h3, .article-author-side .bio-photo, .article-author-side p, .article-author-side .author-social {
-	max-width: 150px
+	max-width: 100px
 }
 }
 @media only screen and (min-width:86.375em) {
@@ -4222,8 +4224,16 @@ tr {
 /* leah's modifications - make the side bar smaller */
 .article-author-side > h2 {
 	font-size: 1.2rem;
-margin: 2rem 0 .5rem 0;
+	margin: 2rem 0 .5rem 0;
 	color: #343434
+}
+.article-author-side > h3 {
+	font-size: 1.2rem;
+	color:#636363;
+}
+
+.article-author-side p, .article-author-bottom p {
+	color:#828282; 
 }
 .post-link {
 	font-size: 0.8rem;

@@ -1,0 +1,76 @@
+table,fieldName,description,validValues,dataType,units
+mam_perplotnight_pub,uid,Unique ID within NEON database; an identifier for the record.,NA,TBD,NA
+mam_perplotnight_pub,eventID,"An identifier for the set of information associated with the event, which includes information about the place and time of the event",NA,string,NA
+mam_perplotnight_pub,domainID,Unique identifier of the NEON domain,[D][01-20],string,NA
+mam_perplotnight_pub,siteID,NEON site code,NA,string,NA
+mam_perplotnight_pub,plotID,Plot identifier (NEON site code _XXX),NA,string,NA
+mam_perplotnight_pub,date,"Date or date and time of measurement, observation, or collection event",NA,date,date
+mam_perplotnight_pub,night,Number of the night of trapping or collection event within the multi-night sampling bout., 1 - 3,unsigned integer,NA
+mam_perplotnight_pub,setTraps,"Total number of traps set per reference area (site, plot, etc.)",0 - 100,unsigned integer,NA
+mam_perplotnight_pub,disturbedTraps,Total number of set traps that were closed or disturbed.,0 - 100,unsigned integer,NA
+mam_perplotnight_pub,samplingEffort,"The total amount of sampling effort (e.g. trapping effort) expended during a bout; with necessary corrections (e.g., for disturbed traps).",NA ,unsigned integer,trap-nights
+mam_perplotnight_pub,samplingProtocol,The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX.,NA,string,NA
+mam_perplotnight_pub,identificationReferences,"A list of sources (concatenated and semicolon separated) used to derive the specific taxon concept; including field guide editions, books, or versions of NEON keys used.",NA,string,NA
+mam_perplotnight_pub,remarks,Technician notes; free text comments accompanying the record.,NA,string,NA
+mam_perplotnight_pub,duplicateNightQF,Quality Flag for duplicate records per night,0 - 1,signed integer,NA
+mam_perplotnight_pub,missingRecordsPerBoutQF,Quality Flag for missing records at the bout level,0 - 1,signed integer,NA
+mam_pertrapnight_pub,uid,Unique ID within NEON database; an identifier for the record.,NA,TBD,NA
+mam_pertrapnight_pub,eventID,"An identifier for the set of information associated with the event, which includes information about the place and time of the event",NA,string,NA
+mam_pertrapnight_pub,domainID,Unique identifier of the NEON domain,[D][01-20],string,NA
+mam_pertrapnight_pub,siteID,NEON site code,NA,string,NA
+mam_pertrapnight_pub,plotID,Plot identifier (NEON site code _XXX),NA,string,NA
+mam_pertrapnight_pub,date,"Date or date and time of measurement, observation, or collection event",NA,date,date
+mam_pertrapnight_pub,trapCoordinate,"Relative coordinate of the trap within the given plotID (A1 - J10). If row or column coordinate is unknown, X is used.","[A-J, X][1 -10, X]",string,NA
+mam_pertrapnight_pub,trapStatus,Categorical descriptor of trap status; 0 - no data; 1 - trap not set; 2 - trap disturbed/door closed but empty; 3 - trap door open or closed w/ spoor left; 4 - >1 capture in one trap; 5 - capture; 6 - trap set and empty,0 - 6,unsigned integer,NA
+mam_pertrapnight_pub,duplicateTrapCoordinateQF,Quality Flag for duplicate records for trap coordinate,0 - 2,signed integer,NA
+mam_capturedata_pub,uid,Unique ID within NEON database; an identifier for the record.,NA,TBD,NA
+mam_capturedata_pub,eventID,"An identifier for the set of information associated with the event, which includes information about the place and time of the event",NA,string,NA
+mam_capturedata_pub,individualID,Domain-level unique identifier for an individual: NEON.MOD.D##.######,NA,string,NA
+mam_capturedata_pub,domainID,Unique identifier of the NEON domain,[D][01-20],string,NA
+mam_capturedata_pub,siteID,NEON site code,NA,string,NA
+mam_capturedata_pub,plotID,Plot identifier (NEON site code _XXX),NA,string,NA
+mam_capturedata_pub,trapCoordinate,"Relative coordinate of the trap within the given plotID (A1 - J10). If row or column coordinate is unknown, X is used.","[A-J, X][1 -10, X]",string,NA
+mam_capturedata_pub,nlcdClass,National Land Cover Database Vegetation Type Name,NA,string,NA
+mam_capturedata_pub,decimalLatitude,"The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.", '-90 - 90',real,decimal degrees
+mam_capturedata_pub,decimalLongitude,"The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.", '-180 - 180',real,decimal degrees
+mam_capturedata_pub,geodeticDatum,Model used to measure horizontal position on the earth,NA,string,NA
+mam_capturedata_pub,coordinateUncertainty,The horizontal distance (in meters) from the given decimalLatitude and decimalLongitude describing the smallest circle containing the whole of the Location. Zero is not a valid value for this term.,> 0,real,meters
+mam_capturedata_pub,elevation,Elevation (in meters) above sea level,>= 0 ,real,meters
+mam_capturedata_pub,elevationUncertainty,Uncertainty in elevation values (in meters),>= 0,real,meters
+mam_capturedata_pub,date,"Date or date and time of measurement, observation, or collection event",NA,date,date
+mam_capturedata_pub,taxonID,"Species code, based on one or more sources",NA,string,NA
+mam_capturedata_pub,scientificName,"Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.",NA,string,NA
+mam_capturedata_pub,taxonRank,The lowest level taxonomic rank that can be determined for the individual or specimen.,NA,string,NA
+mam_capturedata_pub,identificationQualifier,A standard term to express the determiner's doubts about the Identification,NA,string,NA
+mam_capturedata_pub,identificationStatus,"A categorical indicator of changes applied to an identification based on conflicting sources, where applicable.",NA,string,NA
+mam_capturedata_pub,sex,"M for male, F for female, U for unknown", 'M' | 'F' | 'U',string,NA
+mam_capturedata_pub,reproductiveCondition,The reproductive condition of the individual at the time of capture. R for reproductive; N for non-reproductive, 'R' | 'N',string,NA
+mam_capturedata_pub,recapture,"Indicates whether or not the captured individual is a recapture; 'Y' for yes, 'N' for no", 'Y' | 'N',string,NA
+mam_capturedata_pub,fate,"The fate of the individual, unless marked and released; 'dead' =  dead, 'escaped' = escaped while handling, 'nontarget' = released, non-target species", 'escaped' | 'dead' | 'nontarget',string,NA
+mam_capturedata_pub,replacedTag,Indicates which ear tag was replaced (L#### | R####) or which ear appears to have lost a tag ('left' = left ear tag replaced; 'right' = right ear tag replaced), 'left' | 'right' | L#### | R####,string,NA
+mam_capturedata_pub,lifeStage,"The age class of the individual at the time the Occurrence was recorded. juvenile = obvious signs of a very young individual, small size, distinctive pelage coloration; subabult; adult",  'juvenile' | 'subadult' | 'adult',string,NA
+mam_capturedata_pub,testes,"Condition of the testes at time of capture; if mature: scrotal = testes descended, nonscrotal = testes abdominal", 'scrotal' | 'nonscrotal' | no data,string,NA
+mam_capturedata_pub,nipples,"Condition of the nipples at time of capture; if mature: enlarged = nipples enlarged, nonenlarged = nipples not enlarged ", 'enlarged' | 'nonenlarged' | no data,string,NA
+mam_capturedata_pub,pregnancyStatus,Condition at time of capture; if mature: 'pregnant' | 'not', 'pregnant' | 'not',string,NA
+mam_capturedata_pub,vagina,"Condition of the vagina at time of capture; if mature: swollen, plugged, neither", 'swollen' | 'plugged' | 'neither' | no data,string,NA
+mam_capturedata_pub,hindfootLength,length of left hindfoot; including claws; in millimeters,5-101,unsigned integer,millimeters
+mam_capturedata_pub,earLength,length of left ear; in millimeters,0-50,unsigned integer,millimeters
+mam_capturedata_pub,tailLength,length of tail; in millimeters,5-250,unsigned integer,millimeters
+mam_capturedata_pub,totalLength,total length (head + body); in millimeters,50-500,unsigned integer,millimeters
+mam_capturedata_pub,weight,Live weight as measured with a spring scale; in grams,0-601,unsigned integer,grams
+mam_capturedata_pub,bloodSampleID,Unique identifier for the blood sample,NA,string,NA
+mam_capturedata_pub,bloodSampleMethod,Method used to collect the blood sample, 'mandibular' | 'retroorbital' | 'unsuccessful',string,NA
+mam_capturedata_pub,fecalSampleID,Unique identifier for the fecal sample,NA,string,NA
+mam_capturedata_pub,fecalSampleCondition,Condition of fecal sample at time of collection; 'fresh' = fresh fecal sample collected from mammal; 'old' = 'Old' fecal sample collected from trap, 'fresh' | 'old' | no data,string,NA
+mam_capturedata_pub,earSampleID,Unique identifier for the ear sample,NA,string,NA
+mam_capturedata_pub,hairSampleID,Unique identifier for the hair sample,NA,string,NA
+mam_capturedata_pub,whiskerSampleID,Unique identifier for the whisker sample,NA,string,NA
+mam_capturedata_pub,voucherSampleID,Unique identifier for the voucher sample,NA,string,NA
+mam_capturedata_pub,remarks,Technician notes; free text comments accompanying the record.,NA,string,NA
+mam_capturedata_pub,measuredBy,An identifier for the technician who measured or collected the data.,NA,string,NA
+mam_capturedata_pub,recordedBy,An identifier for the technician who recorded the data.,NA,string,NA
+mam_capturedata_pub,consistencyTagIDSexQF,Quality Flag for temporal consistency - Tag ID and Sex, '-1 - 1',signed integer,NA
+mam_capturedata_pub,consistencyTagIDTaxonIDQF,Quality Flag for temporal consistency - Tag ID and Taxon ID, '-1 - 1',signed integer,NA
+mam_capturedata_pub,consistencyTagIDLifeStageQF,Quality Flag for temporal consistency - Tag ID and Life Stage, '-1 - 1',signed integer,NA
+mam_capturedata_pub,orderTagIDRecaptureQF,Quality Flag for order - Tag ID and Fate, '-1 - 1',signed integer,NA
+mam_capturedata_pub,orderTagIDLifeStageQF,Quality Flag for order - Life Stage, '-1 - 1',signed integer,NA
