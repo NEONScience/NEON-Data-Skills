@@ -6,7 +6,7 @@ authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
 tags: [hyperspectral-remote-sensing,R,HDF5]
-mainTag: hyperspectral-imaging
+mainTag: HDF5
 description: "Open up and explore hyperspectral imagery in HDF format R."
 code1: 
 image:
@@ -15,7 +15,7 @@ image:
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Imaging-Spectroscopy-HDF5-In-R/
 code1: hyperspectral_HDF5_Data_R.R
-
+comments: true
 ---
 
 <section id="table-of-contents" class="toc">
@@ -69,7 +69,8 @@ In this activity we will explore reading a HDF5 data into R that contains spatia
 	source("http://bioconductor.org/biocLite.R")
 	biocLite("rhdf5")
 
-> Note: to update all packages use update.packages().
+<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
+{: .notice}
 
 
 ##1. Read Hdf5 data into R
