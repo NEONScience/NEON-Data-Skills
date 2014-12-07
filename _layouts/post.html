@@ -105,7 +105,8 @@
         <div class="article-author-bottom">
           {% include _author-bio.html %}
         </div>
-        <p class="byline"><strong>{{ page.title }}</strong> was published on <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time>{% if page.modified %} and last modified on <time datetime="{{ page.modified | date: "%Y-%m-%d" }}">{{ page.modified | date: "%B %d, %Y" }}</time>{% endif %} by {{ page.authors }} <a href="{{ site.url }}/about" title="About {{ site.owner.name }}">{{ site.owner.name }}</a>.</p>
+        <p class="byline id="post-meta">{{ category_content }}{{ tags_content }}</p>
+        <p class="byline"><strong>{{ page.title }}</strong> on <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time>{% if page.modified %} and last modified on <time datetime="{{ page.modified | date: "%Y-%m-%d" }}">{{ page.modified | date: "%B %d, %Y" }}</time>{% endif %} by {{ page.authors }} <a href="{{ site.url }}/about" title="About {{ site.owner.name }}">{{ site.owner.name }}</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   {% if site.disqus_shortname and page.comments %}
@@ -119,7 +120,14 @@
 <div class="footer-wrap">
   <div class="related-articles">
   <!-- <h4>You might also enjoy <small class="pull-right">(<a href="{{ site.url }}/posts/">View all activities</a>)</small></h4> -->
-
+<h2><a href="">Related:{{ page.mainTag }}</a></h2>
+{% for post in site.posts %}
+    {% if post.tags contains page.mainTag  %}
+        <ul class="posts">
+        <li><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+        </ul>
+    {% endif %}
+{% endfor %}
   </div><!-- /.related-articles -->
   <footer>
     {% include _footer.html %}

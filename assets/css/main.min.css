@@ -302,7 +302,7 @@ font-size:.75rem;
 } */
 
 .notice {
-    background-color: #f4f4f4;
+    background-color: #E8E8E8;
     border-radius: 10px;
     -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -4290,10 +4290,11 @@ tr {
 }
 
 div#cat_tag_content, div#objectives {
-	background-color:#f4f7f7;
+	background-color:#E3E8E8;
 	padding:1.3em;
 	font-size:.9em;
 	box-shadow: .2em .2em .1em #ccc;
+	border-radius: 1em;
 }
 
 div.article-author-side h5 {
