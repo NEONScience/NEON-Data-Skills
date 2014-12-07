@@ -110,7 +110,10 @@ is writing that matrix to a dataset in our hdf file (sensorData.h5). `file = "se
 ###Our HDf5 File Structure
 So now let's look at the structure of our file.  Notice that the `h5ls()` command tells us what each element in the file is, group or dataset. It also provides the dimenensions of the datasets and types of the data. In this case, the  precipitation and temperature datasets are of type 'float' and of dimensions 100 x 3.
 
-<a href="http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum" target="_blank">More about float vs integer data here</a>
+
+<i class="fa fa-star"></i> **Data Tip:** It's useful to learn about the different types of data that can be stored within R (and other objects). <a href="http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum" target="_blank">Learn more about float vs integer data here</a>
+{: .notice}
+
 
 	#r ls again
 	h5ls("sensorData.h5")

@@ -38,7 +38,7 @@ After completing this activity, you will:
 <h3>What you'll Need</h3>
 <ul>
 <li>Install the [free HDFview application](http://www.hdfgroup.org/products/java/hdfview/). This application will allow you to explore the contents of an HDF5 file easily. <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click HERE to go to the download page. </a></li>
-<li>Download the <a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn">National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> </li>
+<li>Data: <a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> </li>
 <li>Download the <a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5">NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a> NOTE that this second file has an ".h5" extension while the first has an HDF5 extension. Both extensions represent the HDF5 data type.</li>
 </ul>
 </div>
@@ -88,7 +88,10 @@ Within the Ord group there are two more groups - Min_1 and Min_30. What data are
 
 - Expand the "min_1" group wtihin the Ord site in Domain_03. Notice that there are 5 more nested groups named "Boom_1, 2, etc". A boom refers to an arm that contains sensors, at a particular height on the tower. In this case, we are working with data collected using temperature sensors, mounted on the tower booms.
 
-<a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">read more about NEON towers, here. </a>
+<i class="fa fa-star"></i> **Note:** The data used in this activity were collected by a temperature sensor mounted on a National Ecological Observatory Network (NEON) "flux tower". 
+<a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
+{: .notice}
+
 <figure>
     <a href="{{ site.baseurl }}/images/NEONtower.png"><img src="{{ site.baseurl }}/images/NEONtower.png"></a>
     <figcaption>A NEON tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>

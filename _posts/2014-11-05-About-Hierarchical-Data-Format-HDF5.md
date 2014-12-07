@@ -44,9 +44,9 @@ After completing this activity, you will:
 
 The Hierarchical Data Format version 5 (HDF5), is an open source file format that supports large, complex, heterogensous data.  HDF5 uses a "file directory" like structure that allows you to organize data within the file in many different structured ways as you might do with files on your computer. Finally, HDF5 is a self describing file format. Self-describing means that the metadata for data contained within the HDF5 file, are built into the file itself. Thus, there are no additional files needed when you use or share an HDF5 file. It's all self contained.
 
->NOTE: HDF5 is one hierarchical data format, that builds upon both HDF4 and NetCDF (two other hierarchical data formats). 
+<i class="fa fa-star"></i> **Data Tip:** HDF5 is one hierarchical data format, that builds upon both HDF4 and NetCDF (two other hierarchical data formats). <a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 Here.</a>
+{: .notice}
 
-<a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 Here.</a>
 
 ###Some Benefits of HDF5 
 
