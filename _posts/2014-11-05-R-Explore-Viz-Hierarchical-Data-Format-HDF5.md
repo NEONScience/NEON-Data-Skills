@@ -113,8 +113,7 @@ We can make our plot look a bit nicer by adding date values to the x axis.
 
 Your plot should look like this - pretty cool, right?:
 
-<iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=800&height=600"></iframe>
-
+<iframe width="460" height="345" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=460&height=345"></iframe>
 
 ### Extracting metadata
 Another advantage of HDF5 is that it's self describing. This means that metadata are embedded in the file. Metadata can be associated with every group, dataset and even the file itself. 
