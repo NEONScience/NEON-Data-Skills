@@ -287,18 +287,32 @@ font-size:.75rem;
 .image-credit a {
 	color: #80807e
 }
+/* commenting this out and updating with the element below
 .notice {
 	padding: .5em 1em;
 	margin-top: 1.5em;
 	font-size: 14px;
-font-size:.875rem;
+	font-size:.875rem;
 	text-indent: 0;
 	background-color: #fff;
 	border: 1px solid #ccc;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px
+} */
+
+.notice {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+    font-size: 0.875rem;
+    line-height: 1.71429;
+    margin-bottom: 0;
+    padding: 1.618em;
+    position: relative;
 }
+
 blockquote {
 	padding-left: 20px;
 	margin-left: -28px;
@@ -1117,6 +1131,25 @@ font-size:.875rem;
 	line-height: 1;
 	-moz-osx-font-smoothing: grayscale
 }
+
+.fa-star {content: $fa-var-star;}
+.fa-star:before {content: $fa-var-star;}
+/*the new code... not turning this on just yet.
+.fa {
+    -moz-font-feature-settings: normal;
+    -moz-font-language-override: normal;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: inherit;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+}*/
 .fa-lg {
 	font-size: 1.3333333333333333em;
 	line-height: .75em;
