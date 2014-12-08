@@ -62,6 +62,8 @@ image(log(b34))
 b34r <- raster((b34))
 plot(b34r)
 
+#http://stackoverflow.com/questions/14513480/convert-matrix-to-raster-in-r
+
 # grab raster extent from the metadata
 ex <- sort(unlist(spinfo[2:5]))
 e <- extent(ex)
