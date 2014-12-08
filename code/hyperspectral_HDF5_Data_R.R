@@ -53,19 +53,38 @@ hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),
      xlab="Reflectance")
 #set data ignore value (15000) to NA (null value)
 
-b34[b34 = 15000] <- NA
+b34[b34 > 14999] <- NA
 image(b34)
 image(log(b34))
 
-
 #convert matrix to raster
-b34r <- raster((b34))
-plot(b34r)
+#b34r <- raster((b34))
+#plot(b34r)
 
 #http://stackoverflow.com/questions/14513480/convert-matrix-to-raster-in-r
 
 # grab raster extent from the metadata
-ex <- sort(unlist(spinfo[2:5]))
-e <- extent(ex)
+#ex <- sort(unlist(spinfo[2:5]))
+#e <- extent(ex)
 #assign the extent to the raster
-extent(b34r) <- e
+#extent(b34r) <- e
+
+
+
+#The code below gets the extend from the map info this -- 
+#get the map info, split out elements
+mapInfo<-h5read(f,"map info")
+mapInfo<-unlist(strsplit(a, ","))
+
+#define extents of the data using metadata and matrix attributes
+xmn=as.numeric(mapInfo[4])
+xmx=(xmn+nrow(b34))
+ymn=as.numeric(mapInfo[5]) 
+ymx=(ymn+ncol(b34))
+
+#define final raster with projection info and extents
+b34r<-raster(b34, 
+            xmn, xmx, ymn,ymx, #the extent info
+            crs=CRS("+proj=utm +zone=11 +datum=WGS84+ellps=WGS84")
+            )
+
