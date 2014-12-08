@@ -106,7 +106,8 @@ Let's look at one of the green bands in our dataset - band 34. What is the cente
 	
 One of the benefits of HDF5 files is data slicing. SLicing means that you can extract and work with subsets of the data rather than reading in the entire dataset into memory. Thus, in this case, we can extract and plot the geen band without reading in all 426 bands of information. The ability to slice large datasets, makes HDF5 ideal for working with big data. 	
 
-<i class="fa fa-star"></i> **Data Tip: Arrays vs. Matrices** Arrays are matrices with more than 2 dimensions. Put the other way: matrices are arrays with only 2 dimensions. Arrays can have any number of dimensions one, two, ten or more. When we say dimension, we are talking about the "z" associated with the data. 
+<i class="fa fa-star"></i> **Data Tip: Arrays vs. Matrices** Arrays are matrices with more than 2 dimensions. Put the other way: matrices are arrays with only 2 dimensions. Arrays can have any number of dimensions one, two, ten or more. When we say dimension, we are talking about the "z" associated with the data.
+{: .notice} 
 
 Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 
@@ -134,9 +135,15 @@ Next, let's look at the metadata for the reflectance data. When we do this, take
     h5readAttributes(f,"Reflectance")
     
 
-Let's plot the band 34 data. Plotting spatial data as a visual "data check"is a good idea to make sure processing is being performed correctly and all is well with the image. 
+Let's plot the band 34 data. Plotting spatial data as a visual "data check" is a good idea to make sure processing is being performed correctly and all is well with the image. 
 
     image(b34)
+    #note - when R brings in the matrix, the dimensions are read in reverse order
+	#so we need to transpose x and y values in order for our final image to plot properly
+	b34<-t(b34)
+
+<i class="fa fa-star"></i> **Data Tip: Transpose** in HDF5 view, notice that the image dimensions for this file are bands x rows x columns. However, when R reads in the dataset, it reads them as columns x bands x rows. The data thus come in flipped. We can quickly transpose the data to correct for this using the `t` or `transpose` command in `R`.
+{: .notice} 
 
 What do you notice about the image? Its a bit dark and lacking any detail. What could be causing this? Let's look at the distribution of reflectance values in our data to figure out what is going on.
 
@@ -163,19 +170,18 @@ Notice in the data that there are some larger reflectance values (>5,000) that r
     
 Remember that the metadata for the `Reflectance` dataset designated 15,000 as `data ignore value`. Thus, let's set all pixels with a value = 15,000 to `NA` (no value). If we do this, R won't try to render these pixels.
 	
-	
 	b34[b34 = 15000] <- NA
 
-Our image still looks dark because R is trying to render all reflectance values between 0 and 14999 as if they were distributed equally in the historgram. however we know they are not distribuetd equally. There are many more values between 0-5000 then there are values >5000. The proper way to adjust our data would be what's called an `image stretch`. We will learn how to stretch our image data, later. For now, let's run a log on the pixel reflectance values to factor out those values >10,000. 
+Our image still looks dark because R is trying to render all reflectance values between 0 and 14999 as if they were distributed equally in the histogram. However we know they are not distributed equally. There are many more values between 0-5000 then there are values >5000. The proper way to adjust our data would be what's called an `image stretch`. We will learn how to stretch our image data, later. For now, let's run a log on the pixel reflectance values to factor out those values >10,000. 
 
-#check to see if i need all of the ((()))
-
-	image(log((b34)))
+	image(log(b34))
 	
 
 The log applied to our image makes the data actually look like - an image! However, look at the images below. The top one is what our log adjusted image looks like when plotted. The bottom on is an RGB version of the same image. Notice a difference?
 
 The orientation is off in our log adjusted image. This is because `R` reads in matrices starting from the upper left hand corner. Whereas, most rasters read pixels starting from the lower left hand corner. We can deal with this issue but creating a proper raster in R that will read in pixels following the same methods as other GIS and imaging processing software like QGIS and ENVI do.
+
+#Go to these coordinates in Google Earth 37.12784,-119.7408
 
 #REMOVE THIS
 Let's try again but this time, let's flip the order of things
@@ -209,6 +215,9 @@ NOTE that we are using the original matrix - b34 that we created above. if you r
 Awesome! Now  we've plotted one band in geographic space. Try plotting some other bands and see what it looks like. Notice that the images that we plot lack contrast... we'll get to that next!	
 
 Next, let's grab the raster extent or the bounding box for the data. The extent is simply the xy coordinates of each corner of the dataset. We can find this information from the `HDF5` metadata. We'll need it in the form of LL lon, UR lon, LL lat, UR lat
+
+#Would be better to calculate the extent in UTM since we have the ll already in the map info. might add this...
+#also look into whether R can read ll coordinates and calculate extent like some programs do.
 
 	ex <- sort(unlist(spinfo[2:5]))
 	e <- extent(ex)
