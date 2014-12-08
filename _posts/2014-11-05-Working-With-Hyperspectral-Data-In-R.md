@@ -228,27 +228,31 @@ Next we define the extents of our raster. The extents will be used to calculate 
 
 	#assign the spatial extent to the raster
 	extent(b34r) <- rasExt
+	#look at raster attribtues
+	b34r
+
+We've now created a raster from band 34 reflectance data. We can plot that data if we want using the `plot` command. Now, let's generate a full color image with the red, green and blue (RGB) bands. But before we start, let's write a function to handle some of the basic cleaning we did earlier, that way we can bulk process bands.
 
 
-Now, let's try and generate a full color image with the RGB bands.  But before we start, let's write a function to handle some of the basic cleaning we did earlier, that way we can bulk process bands.
-
-
-	#r RGB}
+	#Plot  RGB
 	# f: the hdf file
 	# band: the band you want to grab
 	# returns: a cleaned up HDF5 reflectance file
 	getBandMat <- function(f, band){
   	  out<- h5read(f,"Reflectance",index=list(1:477,1:502,band))
   	  #Convert from array to matrix
-  	  out <- t(out[,,1])
+  	  out <- (out[,,1])
+	  #assign data ignore values to NA
   	  out[out > 14999] <- NA
   	  return(out)
 	}
+
 	band2rast <- function(f,band){
 
 	out <-  raster(getBandMat(f,band),crs="+zone=11N +ellps=WGS84 +datum=WGS84 +proj=longlat")
 
 	ex <- sort(unlist(spinfo[2:5]))
+	}
 
 If you want to stay in UTM's you can use the code below and comment out the two lines above. Note that these were calculated externally and not embedded in the metadata. In the future they will be embedded in the metadata of NEON HDF5 files.
 

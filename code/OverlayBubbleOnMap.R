@@ -18,6 +18,7 @@ devtools::source_gist("33baa3a79c5cfef0f6df")
 # nice US map GeoJSON
 #us <- readOGR(dsn="http://eric.clst.org/wupl/Stuff/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
 
+#this is now a local layer for all to use!
 us <- readOGR("C:/Users/lwasser/Documents/GitHub/NEON_HigherEd/code/BubbleMapData/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
 
 #canada layer is one i found, downloaded and reprojected to WGS84 geographic
@@ -33,8 +34,8 @@ us <- SpatialPolygonsDataFrame(gSimplify(us, tol=0.1, topologyPreserve=TRUE),
                                data=us@data)
 
 # Simplify the topology to decrease the file size 
-can <- SpatialPolygonsDataFrame(gSimplify(can, tol=0.1, topologyPreserve=TRUE), 
-                                data=can@data)
+#can <- SpatialPolygonsDataFrame(gSimplify(can, tol=0.1, topologyPreserve=TRUE), 
+                               # data=can@data)
 
 # Remove extraneous regions from the map
 us <- us[!us$NAME %in% c("Alaska", "Hawaii", "Puerto Rico", "District of Columbia"),]
@@ -44,7 +45,10 @@ us <- us[!us$NAME %in% c("Alaska", "Hawaii", "Puerto Rico", "District of Columbi
 #FORTIFY: http://docs.ggplot2.org/0.9.3.1/fortify.map.html
 #This function turns a map into a data frame that can more easily be plotted with ggplot2.
 map <- fortify(us, region="NAME")
-canMap <- fortify(can, region="NAME")
+#canMap <- fortify(can, region="NAME")
+
+#NOTE: if you run into errors running fortify, make sure install.packages('gpclib', type='source')
+#then make sure gpclibPermitStatus() is true when you type it into the console.
 
 # Pop Data
 myData <- data.frame(name=c("Florida", "Colorado", "California", "Harvard", "Yellowstone"),
@@ -60,15 +64,16 @@ gg <- gg + geom_map(data=map, map=map,
                     aes(x=long, y=lat, map_id=id, group=group),
                     fill="#ffffff", color="#0e0e0e", size=0.15)
 #geom_polygon(data = biggestWatershed
-gg <- gg + geom_map(data=canMap, map=canMap,
-                    aes(x=long, y=lat, map_id=id, group=group),
-                    fill="#ffffff", color="#cccccc", size=0.15)
+#gg <- gg + geom_map(data=canMap, map=canMap,
+                #    aes(x=long, y=lat, map_id=id, group=group),
+                 #   fill="#ffffff", color="#cccccc", size=0.15)
 # your bubbles
 gg <- gg + geom_point(data=myData, 
                       aes(x=long, y=lat, size=pop), color="#AD655F") 
 
-gg <- gg + xlim(-175, -70) + 
-  ylim(20, 70) +
+#these limits are for a us map.
+gg <- gg + xlim(-125, -75) + 
+  ylim(25, 50) +
   labs(title="Species Occurrence Data") +
   coord_equal()
 
