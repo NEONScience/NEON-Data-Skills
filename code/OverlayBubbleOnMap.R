@@ -16,9 +16,13 @@ library(ggplot2)
 devtools::source_gist("33baa3a79c5cfef0f6df")
 
 # nice US map GeoJSON
-us <- readOGR(dsn="http://eric.clst.org/wupl/Stuff/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
+#us <- readOGR(dsn="http://eric.clst.org/wupl/Stuff/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
+
+us <- readOGR("C:/Users/lwasser/Documents/GitHub/NEON_HigherEd/code/BubbleMapData/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
+
 #canada layer is one i found, downloaded and reprojected to WGS84 geographic
-can<-readOGR("/Users/law/Downloads/Canada","canadaWGS84")
+#this dataset is on my home mac as i processed it there- need to push it to GIT.
+#can<-readOGR("/Users/law/Downloads/Canada","canadaWGS84")
 
 
 #http://eric.clst.org/Stuff/USGeoJSON
@@ -33,8 +37,8 @@ can <- SpatialPolygonsDataFrame(gSimplify(can, tol=0.1, topologyPreserve=TRUE),
                                 data=can@data)
 
 # Remove extraneous regions from the map
-#us <- us[!us$NAME %in% c("Alaska", "Hawaii", "Puerto Rico", "District of Columbia"),]
-us <- us[!us$NAME %in% c( "Hawaii", "Puerto Rico", "District of Columbia"),]
+us <- us[!us$NAME %in% c("Alaska", "Hawaii", "Puerto Rico", "District of Columbia"),]
+#us <- us[!us$NAME %in% c( "Hawaii", "Puerto Rico", "District of Columbia"),]
 
 # for ggplot
 #FORTIFY: http://docs.ggplot2.org/0.9.3.1/fortify.map.html

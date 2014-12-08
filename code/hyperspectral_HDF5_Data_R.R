@@ -14,8 +14,8 @@ packageVersion("rhdf5")
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure 
 h5ls(f,all=T)
@@ -57,34 +57,30 @@ b34[b34 > 14999] <- NA
 image(b34)
 image(log(b34))
 
-#convert matrix to raster
-#b34r <- raster((b34))
-#plot(b34r)
 
-#http://stackoverflow.com/questions/14513480/convert-matrix-to-raster-in-r
-
-# grab raster extent from the metadata
-#ex <- sort(unlist(spinfo[2:5]))
-#e <- extent(ex)
-#assign the extent to the raster
-#extent(b34r) <- e
+#######################
+#Convert Matrix to Raster
+#######################
 
 
-
-#The code below gets the extend from the map info this -- 
+#Populate the raster image extent value. 
 #get the map info, split out elements
 mapInfo<-h5read(f,"map info")
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
 #define extents of the data using metadata and matrix attributes
-xmn=as.numeric(mapInfo[4])
-xmx=(xmn+(nrow(b34)))
-ymn=as.numeric(mapInfo[5]) 
-ymx=(ymn+(ncol(b34))
+xMN=as.numeric(mapInfo[4])
+xMX=(xMN+(ncol(b34)))
+yMN=as.numeric(mapInfo[5]) 
+yMX=(yMN+(nrow(b34)))
+     
+rasExt <- extent(xMN,xMX,yMN,yMX)
 
-#define final raster with projection info and extents
+#define final raster with projection info 
 b34r<-raster(b34, 
-            xmn, xmx, ymn,ymx, #the extent info
-            crs=("+proj=utm +zone=11 +datum=WGS84+ellps=WGS84")
-            )
+            crs=(spinfo$projdef))
+
+#assign the spatial extent to the raster
+extent(b34r) <- rasExt
+
 
