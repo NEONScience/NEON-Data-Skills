@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: HDF5 - Data Exploration & Viz in R"
+title: "About Hyperspectral Remote Sensing Data"
 date:   2014-11-10 20:49:52
 authors: Ted Hart - Adapted from Software Carpentry Materials by Leah A. Wasser
 categories: [remote-sensing]
@@ -13,7 +13,7 @@ image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
-permalink: /HDF5/Explore-HDF5-Using-R/
+permalink: /HDF5/About-Hyperspectral-Remote-Sensing-Data/
 ---
 
 <section id="table-of-contents" class="toc">
