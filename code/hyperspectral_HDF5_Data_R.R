@@ -32,7 +32,7 @@ b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
 #Convert from array to matrix
 b34 <- b34[,,1]
 
-#note - when R brings in the matrix, the dimensions are read in reverse order
+#note - when R imports the matrix, the dimensions are read in reverse order
 #so we need to transpose x and y values in order for our final image to plot properly
 b34<-t(b34)
 
@@ -74,17 +74,17 @@ image(log(b34))
 #The code below gets the extend from the map info this -- 
 #get the map info, split out elements
 mapInfo<-h5read(f,"map info")
-mapInfo<-unlist(strsplit(a, ","))
+mapInfo<-unlist(strsplit(mapInfo, ","))
 
 #define extents of the data using metadata and matrix attributes
 xmn=as.numeric(mapInfo[4])
-xmx=(xmn+nrow(b34))
+xmx=(xmn+(nrow(b34)))
 ymn=as.numeric(mapInfo[5]) 
-ymx=(ymn+ncol(b34))
+ymx=(ymn+(ncol(b34))
 
 #define final raster with projection info and extents
 b34r<-raster(b34, 
             xmn, xmx, ymn,ymx, #the extent info
-            crs=CRS("+proj=utm +zone=11 +datum=WGS84+ellps=WGS84")
+            crs=("+proj=utm +zone=11 +datum=WGS84+ellps=WGS84")
             )
 
