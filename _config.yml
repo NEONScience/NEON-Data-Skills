@@ -1,0 +1,81 @@
+title: 		NEON Big Data Skills
+description: 	A test development site that will host education materials that support the use of big data in science.
+#Comment out url when working locally to resolve base urls correctly ok
+#use this when pushing to git for live version
+
+url:           http://neondataskills.org
+baseurl:	http://neondataskills.org
+
+#use this when working locally
+#url: http://localhost:4000
+#baseurl: http://localhost:4000
+
+disqus_shortname: neondataskills
+
+# Social networking links are used in author-bio sidebar. Update and remove as you like.
+
+# Owner/author information
+owner: 		
+  name: NEON EDUCATION
+  avatar: profilePic_circle.png
+  bio: "Devoted to open data and open source in science and education."
+  email: "lwasser@neoninc.org"
+  twitter: "leahawasser"
+  github: "lwasser"
+  youtube: "neonbetaedu"
+# instagram:      "mmistakes"
+# For Google Authorship https://plus.google.com/authorship
+# google_plus:    "MichaelRoseDesign"
+
+# Analytics and webmaster tools stuff goes here
+google_analytics:   UA-52746937-1
+#google_verify:      UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+#bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
+
+category: [using lidar data, working with field data, zcarbon links]
+categories: [using lidar data, working with field data, zcarbon links]
+# Links to include in top navigation
+# For external links add external: true
+links:  
+  - title: All Data Activities
+    url: /activities/
+  
+  - title: About
+    url: /about/
+    
+  - title: NEON Website
+    url: http://neoninc.org
+    external: true
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    America/Denver
+future:      true
+# turning off pygments for the time being
+#pygments:    true
+#highlighter: pygments
+markdown:    kramdown
+#markdown: redcarpet
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:categories/:title/
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..2
+  use_coderay: false
+
+  coderay:
+    coderay_line_numbers: 
+    coderay_line_numbers_start: 1
+    coderay_tab_width: 4
+    coderay_bold_every: 10
+    coderay_css: class
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
