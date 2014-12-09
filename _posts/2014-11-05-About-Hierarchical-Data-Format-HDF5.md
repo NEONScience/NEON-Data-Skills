@@ -68,7 +68,7 @@ THe HDF5 format can  be thought of as a file system contained and described with
 
 <figure>
     <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"></a>
-    <figcaption>LEFT: The results of the code we've written so far. RIGHT: RGB image showing what the site should look like. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
+    <figcaption>An examle HDF file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
 
@@ -110,7 +110,12 @@ The HDF5 format is a compressed format. This means that the size of all data con
 ##HDF5 is a Self Describing Format
 HDF5 format is self describing. This means that each group and dataset can have associated metadata that describes exactly what the data are. Using the example above, we might attach information about each site to the file include the X,Y location, and even a site description. Similarly, we might add information describing the sensor used to collect the temperature data. We can attach information pertaining to both how the averaging was performed to each dataset within the site group and to describe the time period for which data are available. 
 
-One key benefit of all of this metadata attached to each group and dataset, is that it facilitates automation. Using a programming language, like `R` or `Python`, you can grab information from the metadata that you might need to process the data. . 
+One key benefit of all of this metadata attached to each group and dataset, is that it facilitates automation. Using a programming language, like `R` or `Python`, you can grab information from the metadata that you might need to process the data.
+
+<figure>
+    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure2.jpg"></a>
+    <figcaption>HDF5 files are self describing - this means that all elements (the file itself, groups and datasets) can have associated metadata that describes the information contained within the element.</figcaption>
+</figure> 
 
 ###Summary
 In summary, HDF5 files consists of groups (directories) and datasets (files). The dataset holds the actual data, but the groups provide structure to that data. You'll see what this looks like when we open an HDF5 file in the HDFviewer.
