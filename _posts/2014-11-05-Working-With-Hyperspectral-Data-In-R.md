@@ -59,8 +59,6 @@ The electromagnetic spectrum is composed of thousands of bands representing diff
 
 The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm portions of the electromagnetic spectrum within bands that are approximately 5nm in width. This results in a hyperspectral data cube that contains approximately 428 bands - which means BIG DATA. 
 
-![Google maps view of the same general area.]({{ site.baseurl }}\images\hyperspectral\DataCube.png)
-
 
 <figure>
 	<a href="{{ site.baseurl }}/images/hyperspectral/DataCube.png"><img src="{{ site.baseurl }}/images/hyperspectral/DataCube.png"></a>
@@ -153,10 +151,12 @@ Let's plot the band 34 data. Plotting spatial data as a visual "data check" is a
     image(b34)
     #note - when R brings in the matrix, the dimensions are read in reverse order
     
-<figure class="half">
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"></a>
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"></a>
-    <figcaption>On the left is the RGB image showing what the site should look like. On the right are our results. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
+<figure class="third">
+	<a href="https://www.google.com/maps/@37.1251888,-119.7395302,797m/data=!3m1!1e3" target="_blank"><img src="{{ site.baseurl }}/images/hyperspectral/
+	GoogleEarth_SJERImage.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
+    <figcaption>LEFT: The results of the code we've written so far. RIGHT: RGB image showing what the site should look like. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
 </figure>    
     
 	#We need to transpose x and y values in order for our final image to plot properly
