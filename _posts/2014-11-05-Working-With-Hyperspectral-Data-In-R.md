@@ -193,8 +193,8 @@ The log applied to our image makes the data actually look like - an image! Howev
 <a href="https://www.google.com/maps/place/37%C2%B007'40.2%22N+119%C2%B044'26.9%22W/@37.1243731,-119.7370126,803m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0" target="_blank">View the image in google maps</a>
 
 <figure class="half">
-    <a href="https://www.google.com/maps/place/37%C2%B007'40.2%22N+119%C2%B044'26.9%22W/@37.1243731,-119.7370126,803m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0" target="_blank"><img src="{{ site.baseurl }}\images\HDf5\SJERImage.png"></a>
-    <a href="/images/image-filename-2-large.jpg"><img src="/images/image-filename-2.jpg"></a>
+    <a href="https://www.google.com/maps/place/37%C2%B007'40.2%22N+119%C2%B044'26.9%22W/@37.1243731,-119.7370126,803m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0" target="_blank"><img src="{{ site.baseurl }}\images\hyperspectral\SJERImage.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="/images/image-filename-2.jpg"></a>
     <figcaption>Caption describing these two images.</figcaption>
 </figure>
 
