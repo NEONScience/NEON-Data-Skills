@@ -63,7 +63,18 @@ The Hierarchical Data Format version 5 (HDF5), is an open source file format tha
 
 ##Hierarchical Structure - A file directory within a file
 
-THe HDF5 format can  be thought of as a file system contained and described within one single file. Think about your computer. You probably have a folder or directory structure that keeps your files organized. For example, as a scientist, you might have a data directory with some temperature data for multiple field sites that you are working at. This temperature data might be collected every minute and summarized on an hourly, daily and weekly basis. Within **ONE** HDF5 file, you can store a similar set of data organized in the same way that you might organize files and folders on your computer. However in a HDF5 file, what we call "directories" or "folders" on our computers, are called "groups" and what we call "files" on our computer are called datasets. The HDF5 file might be structured like this:  
+THe HDF5 format can  be thought of as a file system contained and described within one single file. Think about your computer. You probably have a folder or directory structure that keeps your files organized. For example, as a scientist, you might have a data directory with some temperature data for multiple field sites that you are working at. This temperature data might be collected every minute and summarized on an hourly, daily and weekly basis. Within **ONE** HDF5 file, you can store a similar set of data organized in the same way that you might organize files and folders on your computer. However in a HDF5 file, what we call "directories" or "folders" on our computers, are called "groups" and what we call "files" on our computer are called datasets. 
+
+
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/hdf5_structure4.jpg"></a>
+    <figcaption>LEFT: The results of the code we've written so far. RIGHT: RGB image showing what the site should look like. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
+</figure> 
+
+
+
+
+The HDF5 file might be structured like this:  
 
 
 Site One (Group)
