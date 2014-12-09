@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
+title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 date:   2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
@@ -45,17 +45,16 @@ After completing this activity, you will:
 <li>R or R studio to write your code.</li>
 <li>The latest version of RHDF5 packag for R.</li>
 </ul>
-SJER_140123_chip.h5
 
 <h3>Data to Download</h3>
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
+<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
 <p>The data in this HDF5 file were collected over the San Joachim field site located in California (NEON Domain 17) and processed at NEON headquarters. The entire dataset can be access by request from the NEON website.</p>  
-</div>
+</div> 
 
 
-##About Imaging Spectroscopy (hyperspectral) Remote Sensing Data
+##About Hyperspectral Remote Sensing Data
 
-The electromagnetic spectrum is composed of thousands of bands representing different types of light energy. Imaging spectrometers break the electromagnetic spectrum into groups of bands that support classification of objects by their spectral properties on the earth's surface. Hyperspectral data consists of many bands - up to hundreds of bands - that cover the electromagnetic spectrum.
+The electromagnetic spectrum is composed of thousands of bands representing different types of light energy. Imaging spectrometers (instruments that collect hyperspectral data) break the electromagnetic spectrum into groups of bands that support classification of objects by their spectral properties on the earth's surface. Hyperspectral data consists of many bands - up to hundreds of bands - that cover the electromagnetic spectrum.
 
 The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm portions of the electromagnetic spectrum within bands that are approximately 5nm in width. This results in a hyperspectral data cube that contains approximately 428 bands - which means BIG DATA. 
 
@@ -98,7 +97,7 @@ We can use the `h5readAttributes` function to read and extract metadata from the
 	spinfo <- h5readAttributes(f,"spatialInfo"))
 
 
-Next, let's read in the wavelength center associated with each band in the hdf5 file. What wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19)
+Next, let's read in the wavelength center associated with each band in the hdf5 file. What wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19 - `Wavelengths[19]`).
 
     #read in the wavelength information from the Hdf5 file
     wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
@@ -134,11 +133,9 @@ Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 | average length | 2.4       | 3.5       |
 | average height | 32        | 12        |
 
-<i class="fa fa-star"></i> **Data Tip: Dimensions in Arrays** An array might add an additional dimension to this dataset. For example, let's say that we collected this same set of species data for every day in a 30 day month. We might then have a matrix like the one above for each day for a total of 30 days making a 4 x 3 x 30 array (this dataset has more than 2 dimensions).
+<i class="fa fa-star"></i> **Data Tip: Dimensions in Arrays** An array might add an additional dimension to this dataset. For example, let's say that we collected this same set of species data for every day in a 30 day month. We might then have a matrix like the one above for each day for a total of 30 days making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R object types <a href="http://www.statmethods.net/input/datatypes.html">here</a>.
 {: .notice}
 
-# image showing matrix vs array
-#http://www.statmethods.net/input/datatypes.html
 
 Next, let's look at the metadata for the reflectance data. When we do this, take note of 1) the scale factor and 2) the data ignore value.
     
@@ -156,7 +153,7 @@ Let's plot the band 34 data. Plotting spatial data as a visual "data check" is a
 	GoogleEarth_SJERImage.png"></a>
     <a href="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"></a>
     <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
-    <figcaption>LEFT: The results of the code we've written so far. RIGHT: RGB image showing what the site should look like. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
+    <figcaption>LEFT: The results of the code we've written so far. LEFT: RGB image showing the site as seen in google maps. Middle: code results. RIGHT: RGB image plotted in R. Notice that the data as produced by our code (Middle image) are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
 </figure>    
     
 	#We need to transpose x and y values in order for our final image to plot properly
@@ -183,13 +180,6 @@ Also what do reflectance values between 1-15,000 actually mean? Reflectance valu
 
 <i class="fa fa-star"></i> **Data Tip: Scale factors**The scale factor represents a value that you multiply or divide the data by. This is often used to reduce files sizes. In this case, reflectance values range from 0-1 but we have values from 1-15,000. The scale factor is added to compress the data. decimal places necessitate the use of the "float" numeric data type which makes the file size large. If we divide all of the values by 1,000, we will get data within the 0-1 range. We can then deduct that values over 1 are not good reflectance values. 
 {: .notice}
-
-
-<i class="fa fa-star"></i> **Data Tip: Reflectance Values and Image Stretch** MORE WILL GO HERE #something about image stretching
-{: .notice}
-
-
-
     
 Remember that the metadata for the `Reflectance` dataset designated 15,000 as `data ignore value`. Thus, let's set all pixels with a value > 14,999 to `NA` (no value). If we do this, R won't try to render these pixels.
 	
@@ -206,16 +196,17 @@ Our image still looks dark because R is trying to render all reflectance values 
 The log applied to our image increases the contrast making it look more like an image. However, look at the images below. The top one is what our log adjusted image looks like when plotted. The bottom on is an RGB version of the same image. Notice a difference? 
 
 
-<figure class="third">
-    <a href="https://www.google.com/maps/place/37%C2%B007'40.2%22N+119%C2%B044'26.9%22W/@37.1243731,-119.7370126,803m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0" target="_blank"><img src="{{ site.baseurl }}/images/hyperspectral/SJERImage.png"></a>
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"></a>
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"></a>
+<figure class="half">
+    <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"></a>
     <figcaption>On the left is the orientation of the actual image. On the right  describing these two images.</figcaption>
 </figure>
 
 
 The orientation is off in our log adjusted image. This is because `R` reads in matrices starting from the upper left hand corner. Whereas, most rasters read pixels starting from the lower left hand corner. In the next section, we will deal with this issue by creating a proper georeferenced (spatiall located) raster in R. The raster format will read in pixels following the same methods as other GIS and imaging processing software like QGIS and ENVI do.
 
+<i class="fa fa-star"></i> **Data Tip: Reflectance Values and Image Stretch** Images have a distribution of reflectance values. A typical image viewing program will render the values by distributing the entire range of reflectance values  across a range of "shades" that the monitor can render - between 0 and 255. However, often times the distriubtion of reflectance values is not linear. For example, in the case of ur data, most of the reflectance values fall between 0 and .5. Yet there are a few valuesa >1 that are heavily impacting the way the image is drawn on our monitor. Imaging processing programs like ENVI, QGIS and ArcGIS (and even photoshop) allow you to adjust the stretch of the image. This is similar to adjusting the contrast and brightness in Photoshop. Read more about this topic: <a href="http://www.r-s-c-c.org/node/241" target="_blank">About Image Stretch - RSCC</a> and another link that discussed image stretch <a href="http://www.r-s-c-c.org/node/240" target="_blank">Read more about linear image Stretch discussion</a>
+{: .notice}
 
 
 ##2. Create a Georeferenced Raster
@@ -233,12 +224,14 @@ To create a raster in R, we need a few pieces of information, including:
 * The location of the first pixel (located in the lower left hand corner of the raster). 
 * The resolution or size of each pixel in the data. 
 
-First let's grab the spatial information that we need from the HDF5 file. The CRS and associated information that is needed is stored in the `map info` dataset. The map info string looks something like this: `"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,1.000000e+000,11,North,WGS-84,units=Meters" ` Notice that this information is separated by commas. We can use the `strsplit` command in R to extract each element into a vector. The elements are position 4 and 5 represent the lower left hand corner of the raster. We need this information to define the raster's extent.
+First let's grab the spatial information that we need from the HDF5 file. The CRS and associated information that is needed is stored in the `map info` dataset. The map info string looks something like this: `"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,`
+`1.000000e+000,11,North,WGS-84,units=Meters" `. Notice that this information is separated by commas. We can use the `strsplit` command in R to extract each element into a vector. The elements are position 4 and 5 represent the lower left hand corner of the raster. We need this information to define the raster's extent.
 
 	#Populate the raster image extent value. 
 	#get the map info, split out elements
 	mapInfo<-h5read(f,"map info")
-	#Extract each element of the map info information so we can extract the lower left hand corner coordinates.
+	#Extract each element of the map info information 
+	#so we can extract the lower left hand corner coordinates.
 	mapInfo<-unlist(strsplit(mapInfo, ","))
 
 Next we define the extents of our raster. The extents will be used to calculate the raster's resolution. The lower left hand corner is located at mapInfo[4:5]. We can define the final raster dataset extent by adding the number of rows to the Y lower left hand corner coordinate and the number of columns in the `Reflectance` dataset to the X lower left hand corner coordinate.    
@@ -262,7 +255,13 @@ Next we define the extents of our raster. The extents will be used to calculate 
 We've now created a raster from band 34 reflectance data. We can plot that data if we want using the `plot` command. 
 
 	writeRaster(b34r,file="band34.tif",overwrite=TRUE)
+	
+	
+###Extra Credit
+If you get done early, experiment with 
 
+1. Creating rasters from other bands in the dataset.
+2. Varying the distribution of values in the image to mimick an image stretch. e.g. `b34[b34 > 6000 ] <- 1`
 
 
 

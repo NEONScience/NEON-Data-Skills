@@ -248,10 +248,11 @@ a:hover, a:active {
 figcaption {
 	padding-top: 10px;
 	font-size: 14px;
-font-size:.875rem;
+	font-size:.875rem;
 	line-height: 1.8571;
 	line-height: 1.3;
-	color: #4d4d4b
+	color: #4d4d4b;
+	margin-bottom: 1.5rem;
 }
 .image-credit {
 	display: inline;
@@ -308,7 +309,7 @@ font-size:.75rem;
 	-moz-border-radius: 10px;
     font-size: 0.875rem;
     line-height: 1.71429;
-    margin-bottom: 0;
+    margin-bottom: 1.4em;
     padding: 1.618em;
     position: relative;
 }
@@ -989,7 +990,8 @@ svg:not(:root) {
 .half img {
 	display: inline;
 	float: left;
-	width: 50%
+	padding: 0.1rem;
+    width: 48%;
 }
 .half figcaption {
 	display: inline;
@@ -1021,7 +1023,8 @@ svg:not(:root) {
 .third img {
 	display: inline;
 	float: left;
-	width: 33.333333333333336%
+	width: 31.333333333333336%;
+	padding:.1em;
 }
 .third figcaption {
 	display: inline;

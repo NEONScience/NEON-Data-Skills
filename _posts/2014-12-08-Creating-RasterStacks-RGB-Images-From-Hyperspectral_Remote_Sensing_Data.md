@@ -60,11 +60,11 @@ After completing this activity, you will:
 We often want to generate a 3 band image from multi or hyperspectral dataset. The most commonly recognized band combination is RGB which stands for Red, Green and Blue. RGB images are just like the images that your camera takes. But there are other band combinations that are useful too. For example near infrared images emphasize vegetation and help us classify or identify where vegetation is located on the ground.
 
 <figure class="third">
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"><img src="{{ site.baseurl }}/images/hyperspectral/SJER_RGB.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
     <a href="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"><img src="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"></a>
     <a href="{{ site.baseurl }}/images/hyperspectral/falseColor.png"><img src="{{ site.baseurl }}/images/hyperspectral/falseColor.png"></a>
     
-    <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands90, 34, 19).</figcaption>
+    <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
 </figure>
 
 <i class="fa fa-star"></i> **Data Tip - Band Combinations:** the Biodiversity INformatics group created a great interactive tool that lets you explore band combinations. Check it out:<a hreaf="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using this great online tool!</a>
