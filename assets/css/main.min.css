@@ -4281,7 +4281,7 @@ tr {
 }
 
 #relatedCode {
-	background-color:#cfcfcf;
+	/*background-color:#cfcfcf; */
 	padding: 0.01rem 2rem .2rem 2rem;
 	margin: 0 0 1em 0;
 	border-radius: 1em;

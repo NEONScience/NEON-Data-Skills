@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: Working with HDF5 Format Hyperspectral Remote Sensing Data in in R"
+title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 date:   2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
