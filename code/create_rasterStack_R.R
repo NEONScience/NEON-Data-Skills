@@ -7,51 +7,63 @@ library(raster)
 library(rhdf5)
 
 #make sure you have atleast rhdf5 version 2.10 installed
-packageVersion("rhdf5")
+#packageVersion("rhdf5")
 
 #update rhdf5 if needed.
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure 
 h5ls(f,all=T)
 
-#############################
-# here now.
-######################
+#r get spatial info and map info using the h5readAttributes function developed by Ted Hart
+spinfo <- h5readAttributes(f,"spatialInfo")
+
+#Populate the raster image extent value. 
+#get the map info, split out elements
+mapInfo<-h5read(f,"map info")
+mapInfo<-unlist(strsplit(mapInfo, ","))
 
 #Plot  RGB
 # f: the hdf file
 # band: the band you want to grab
 # returns: a cleaned up HDF5 reflectance file
+#create a function that processes multiple bands of data
 getBandMat <- function(f, band){
   out<- h5read(f,"Reflectance",index=list(1:477,1:502,band))
   #Convert from array to matrix
   out <- (out[,,1])
+  #transpose data to fix flipped row and column order 
+  out <-t(out)
   #assign data ignore values to NA
   out[out > 14999] <- NA
   return(out)
 }
 
+
 band2rast <- function(f,band){
-  
-  out <-  raster(getBandMat(f,band),crs="+zone=11N +ellps=WGS84 +datum=WGS84 +proj=longlat")
-  
-  ex <- sort(unlist(spinfo[2:5]))
-  #out <-  raster(getBandMat(f,band),crs="+zone=11 +units=m +ellps=WGS84 +datum=WGS84 +proj=utm")
-  # ex <- c(256521.0,256998.0,4112069.0,4112571.0)
-  e <- extent(ex)
-  extent(out) <- e
+  #define the raster including the CRS (taken from SPINFO)
+  out <-  raster(getBandMat(f,band),crs=(spinfo$projdef))
+  #define extents of the data using metadata and matrix attributes
+  xMN=as.numeric(mapInfo[4])
+  xMX=(xMN+(ncol(f)))
+  yMN=as.numeric(mapInfo[5]) 
+  yMX=(yMN+(nrow(f)))
+  #set raster extent
+  rasExt <- extent(xMN,xMX,yMN,yMX)
+  #assign extent to raster
+  extent(out) <- rasExt
   return(out)
 }
 
 
 stackList <- function(rastList){
-  ## Creates a stack of rasters from a list of rasters
+  ## Creates a raster stack (multiple rasters in one file
+  # from a list of rasters
   masterRaster <- stack(rastList[[1]])
   for(i in 2:length(rastList)){
     masterRaster<-  addLayer(masterRaster,rastList[[i]])
@@ -59,7 +71,13 @@ stackList <- function(rastList){
   return(masterRaster)
 }
 
+#typical RGB bands
 rgb <- list(58,34,19)
+#color infrared (estimating landsat)
+rgb <- list(90,34,19)
+#false color (estimating landsat)
+rgb <- list(363,246,55)
+
 rgb_rast <- lapply(rgb,band2rast, f = f)
 
 names(rgb_rast) <- as.character(rgb)
@@ -68,16 +86,22 @@ names(rgb_rast) <- as.character(rgb)
 plot(rgb_rast[[1]])
 rgb_stack <- stackList(rgb_rast)
 plot(rgb_stack)
+
 plotRGB(rgb_stack,r=1,g=2,b=3, scale=300, stretch = "Lin")
 
 
-writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
+writeRaster(rgb_stack,file="threeBandImage.tif",overwrite=TRUE)
 
 
 #Create a Map in R
+#note: this is a quick and dirty way to map the location of this region
+#in this case the maps data requires coordinates in lat long
+#thus we tool the lat and long values from spinfo as opposed to
+#the UTM coordinates in the map info dataset
 library(maps)
 map(database="state",region="california")
 points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
+
 # Add raster
 
 

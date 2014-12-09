@@ -1040,9 +1040,9 @@ font-size:.875rem;
 	border-color: #111;
 	border-style: solid!important;
 	border-width: 2px!important;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px
 }
 .btn:visited {
 	color: #fff
@@ -4282,11 +4282,15 @@ tr {
 
 #relatedCode {
 	background-color:#cfcfcf;
-	padding: 0.01rem 2rem 2rem 2rem;
+	padding: 0.01rem 2rem .2rem 2rem;
+	margin: 0 0 1em 0;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
 }
 
 #relatedCode a {
-	color: #4F5C5C;
+	color: #fff;
 }
 
 div#cat_tag_content, div#objectives {

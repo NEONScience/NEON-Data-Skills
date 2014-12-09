@@ -14,10 +14,12 @@ packageVersion("rhdf5")
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
-#look at the HDF5 file structure 
+#look at the HDF5 file structure. take note of the
+#dimensions of the reflectance dataset (477 x 502 x 426)
+# columns, rows and band
 h5ls(f,all=T)
 
 #r get spatial info and map info using the h5readAttributes function developed by Ted Hart
@@ -31,6 +33,11 @@ b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
 
 #Convert from array to matrix
 b34 <- b34[,,1]
+
+#let's look at the dimensions of the b34 objects
+#notice that the dimensions are 477 x 502
+dim(b34)
+refInfo <- h5readAttributes(f,"Reflectance")
 
 #note - when R imports the matrix, the dimensions are read in reverse order
 #so we need to transpose x and y values in order for our final image to plot properly
@@ -84,5 +91,7 @@ b34r<-raster(b34,
 extent(b34r) <- rasExt
 image(b34r)
 
+#Write out the final raster
+WriteRaster(b34r,file="band34.tif",overwrite=TRUE)
 
 
