@@ -67,7 +67,7 @@ THe HDF5 format can  be thought of as a file system contained and described with
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/hdf5_structure4.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"></a>
     <figcaption>LEFT: The results of the code we've written so far. RIGHT: RGB image showing what the site should look like. Notice that the data are flipped. This is caused by how R reads in the dimensions of our HDF5 file.</figcaption>
 </figure> 
 
