@@ -101,7 +101,7 @@ writeRaster(rgb_stack,file="threeBandImage.tif",overwrite=TRUE)
 library(maps)
 map(database="state",region="california")
 points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
-
+title(main="NEON Site Location in Southern California")
 # Add raster
 
 

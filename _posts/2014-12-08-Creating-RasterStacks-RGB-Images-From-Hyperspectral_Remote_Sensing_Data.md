@@ -7,7 +7,7 @@ categories: [remote-sensing]
 category: remote-sensing
 tags: [hyperspectral-remote-sensing,R,HDF5]
 mainTag: hyperspectral-remote-sensing
-description: "Open up and explore hyperspectral imagery in HDF format R."
+description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
@@ -48,7 +48,7 @@ After completing this activity, you will:
 
 
 <h3>Data to Download</h3>
-<a href="http://neonhighered.org/data/SJER_140123_chip.h5" class="btn btn-success"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
+<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
 <p>The data in this HDF5 file were collected over the San Joachim field site located in California (NEON Domain 17) and processed at NEON headquarters. The entire dataset can be access by request from the NEON website.</p>  
 
 <h3>Pre-reqs</h3>

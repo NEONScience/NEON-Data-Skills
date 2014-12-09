@@ -45,10 +45,10 @@ After completing this activity, you will:
 <li>R or R studio to write your code.</li>
 <li>The latest version of RHDF5 packag for R.</li>
 </ul>
-
+SJER_140123_chip.h5
 
 <h3>Data to Download</h3>
-<a href="http://neonhighered.org/data/SJER_140123_chip.h5" class="btn"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
+<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
 <p>The data in this HDF5 file were collected over the San Joachim field site located in California (NEON Domain 17) and processed at NEON headquarters. The entire dataset can be access by request from the NEON website.</p>  
 </div>
 
