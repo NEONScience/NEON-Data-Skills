@@ -14,8 +14,8 @@ library(rhdf5)
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure 
 h5ls(f,all=T)
@@ -63,7 +63,7 @@ band2rast <- function(f,band){
 
 stackList <- function(rastList){
   ## Creates a raster stack (multiple rasters in one file
-  # from a list of rasters
+  # from a raster list of rasters
   masterRaster <- stack(rastList[[1]])
   for(i in 2:length(rastList)){
     masterRaster<-  addLayer(masterRaster,rastList[[i]])
@@ -79,17 +79,30 @@ rgb <- list(90,34,19)
 rgb <- list(363,246,55)
 
 rgb_rast <- lapply(rgb,band2rast, f = f)
+#check out the properties of rgb_rast
+rgb_rast
 
+#add the band names to each raster in the raster list
 names(rgb_rast) <- as.character(rgb)
 
-### Check with a plot
+
+
+### Plot one raster in the list
 plot(rgb_rast[[1]])
+#create a raster stack from the raster list
 rgb_stack <- stackList(rgb_rast)
+
+#Add band names to each raster in the stack
+bandNames=paste("Band_",unlist(rgb),sep="")
+for (i in 1:length(rgb_rast) ) {
+  names(rgb_stack)[i]=bandNames[i]
+}
+
+#this will plot each band individually
 plot(rgb_stack)
-
+#this will plot all 3 bands as one image
 plotRGB(rgb_stack,r=1,g=2,b=3, scale=300, stretch = "Lin")
-
-
+#save the raster as a tiff.
 writeRaster(rgb_stack,file="threeBandImage.tif",overwrite=TRUE)
 
 
@@ -102,11 +115,12 @@ library(maps)
 map(database="state",region="california")
 points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
 title(main="NEON Site Location in Southern California")
-# Add raster
 
+##############################
+# Calculate Vegetation Indices
+##############################
 
-#r ndvi}
-
+#designate which bands we need for a particular calculation
 ndvi_bands <- c(58,90)
 
 ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
@@ -115,7 +129,31 @@ NDVI <- function(x) {
   (x[,2]-x[,1])/(x[,2]+x[,1])
 }
 ndvi_calc <- calc(ndvi_stack,NDVI)
-plot(ndvi_calc)
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
-#http://stackoverflow.com/questions/9542039/resolution-values-for-rasters-in-r
+
+## need to followup with Nathan and tristan on this and look at the data.
+#EVI
+#B3 - Red Band: USE NIS Band 58 .668nm
+#B4: NIR Band: USE NIS Band 90 .828nm
+#B1: Blue USE NIS Band 19 .4724
+#For rendering a color image: Green band: 34
+
+evi_bands <- c(19,58,90)
+evi_rast <- lapply(evi_bands,band2rast, f = f)
+evi_stack <- stackList(evi_rast)
+evi <- function(x) {
+  #(x[,2]-x[,1])/(x[,2]+x[,1])
+  b4=x[,3]/1000
+  b3=x[,2]/1000
+  b1=x[,1]/1000
+  2.5 * ((b4-b3) / ( b4 + 6*b3 - 7.5*b1 + 1) )
+}
+
+evi_calc <- calc(evi_stack,evi)
+plot(evi_calc, main="EVI for the NEON SJER Field Site")
+
+
+
+
 

@@ -74,7 +74,7 @@ THe HDF5 format can  be thought of as a file system contained and described with
 
 
 
-The HDF5 file might be structured like this:  
+An HDF5 file containing data, might be structured like this:  
 
 
 Site One (Group)
@@ -93,6 +93,10 @@ Site Two (Group)
 	- 1 Hour average
 	- Weekly average
 
+<figure>
+    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"></a>
+    <figcaption>An examle HDF file structure which contains groups, datasets and associated metadata.</figcaption>
+</figure> 
 
 ##Examples of Types of Data That can be Stored in One HDF5 File 
 HDF5 files can store many different types of data. And they can store all of those data in the same place. This means that you could store any of the following in one file:
