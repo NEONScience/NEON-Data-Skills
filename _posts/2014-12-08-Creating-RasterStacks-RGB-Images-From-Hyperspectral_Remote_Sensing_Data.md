@@ -235,6 +235,7 @@ In this last part, we will calculate some vegetation indices using raster math i
 	
 ## Extra Credit
 IF you get done early, try any of the following:
+
 1. Calculate EVI using the following formula : EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))
 2. Calculate NDNI using the following equation: log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
 3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple red and NIR bands and then calculate NDVI?
