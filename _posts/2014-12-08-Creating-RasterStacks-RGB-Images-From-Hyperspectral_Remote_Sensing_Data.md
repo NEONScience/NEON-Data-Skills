@@ -225,6 +225,14 @@ In this last part, we will calculate some vegetation indices using raster math i
 	ndvi_calc <- calc(ndvi_stack,NDVI)
 	plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 	
+	
+<figure class="half">
+<a href="{{ site.baseurl }}/images/hyperspectral/NDVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/NDVI.png"></a>
+<a href="{{ site.baseurl }}/images/hyperspectral/EVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/EVI.png"></a>
+    
+<figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
+</figure>
+	
 ## Extra Credit
 IF you get done early, try any of the following:
 1. Calculate EVI using the following formula : EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))

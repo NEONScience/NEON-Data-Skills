@@ -144,9 +144,9 @@ evi_rast <- lapply(evi_bands,band2rast, f = f)
 evi_stack <- stackList(evi_rast)
 evi <- function(x) {
   #(x[,2]-x[,1])/(x[,2]+x[,1])
-  b4=x[,3]/1000
-  b3=x[,2]/1000
-  b1=x[,1]/1000
+  b4=x[,3]/10000
+  b3=x[,2]/10000
+  b1=x[,1]/10000
   2.5 * ((b4-b3) / ( b4 + 6*b3 - 7.5*b1 + 1) )
 }
 
