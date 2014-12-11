@@ -6,6 +6,7 @@ category: remote-sensing
 categories: [Remote Sensing]
 authors: leah a wasser
 tags : [lidar, R]
+mainTag: lidar
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
 image:
   feature: codedpoints2.png
