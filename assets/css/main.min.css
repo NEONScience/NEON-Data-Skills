@@ -4313,4 +4313,10 @@ div.article-author-side h5 {
 	
 div.article-author-side h5 a{
 	color: #707070;
-	}	
+	}
+	
+	
+related-articles h2 a {
+	font-size: 1.5rem;
+	color:#525252
+}
