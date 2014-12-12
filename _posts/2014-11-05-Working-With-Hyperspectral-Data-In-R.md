@@ -133,8 +133,14 @@ Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 | average length | 2.4       | 3.5       |
 | average height | 32        | 12        |
 
-<i class="fa fa-star"></i> **Data Tip: Dimensions in Arrays** An array might add an additional dimension to this dataset. For example, let's say that we collected this same set of species data for every day in a 30 day month. We might then have a matrix like the one above for each day for a total of 30 days making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R object types <a href="http://www.statmethods.net/input/datatypes.html">here</a>.
+<i class="fa fa-star"></i> **Data Tip: Dimensions in Arrays** An array contains 1 or more dimensions in the "z" direction. For example, let's say that we collected this same set of species data for every day in a 30 day month. We might then have a matrix like the one above for each day for a total of 30 days making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R object types <a href="http://www.statmethods.net/input/datatypes.html">here</a>.
 {: .notice}
+
+<figure class="half">
+    <a href="{{ site.baseurl }}/images/R/matrix.png"><img src="{{ site.baseurl }}/images/R/matrix.png"></a>
+    <a href="{{ site.baseurl }}/images/R/array.png"><img src="{{ site.baseurl }}/images/R/array.png"></a>
+    <figcaption>On the left is the orientation of the actual image. On the right  describing these two images.</figcaption>
+</figure>
 
 
 Next, let's look at the metadata for the reflectance data. When we do this, take note of 1) the scale factor and 2) the data ignore value.
