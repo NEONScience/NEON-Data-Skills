@@ -94,7 +94,7 @@ Site Two (Group)
 	- Weekly average
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"></a>
     <figcaption>An examle HDF file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
