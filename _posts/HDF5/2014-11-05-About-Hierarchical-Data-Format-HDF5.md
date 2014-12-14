@@ -15,6 +15,7 @@ image:
   credit: Colin Williams
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About
+comments: true
 ---
 <section id="table-of-contents" class="toc">
   <header>

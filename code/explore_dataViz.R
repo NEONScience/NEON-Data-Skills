@@ -7,8 +7,8 @@
 
 library("rhdf5")
 
-#MAC f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
-f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
+f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
+#f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
 h5ls(f,all=T)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.
@@ -102,5 +102,5 @@ thePlot <- ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_p
 
 finalPlot2<-thePlot + scale_colour_discrete(name="NEON Site",
                                            breaks=c("Ord", "Ste"),
-                                           labels=c("Ordway Swisher", "Sterling"))
+                                           labels=c("Ordway Swisher Biological Station", "Sterling"))
 finalPlot2

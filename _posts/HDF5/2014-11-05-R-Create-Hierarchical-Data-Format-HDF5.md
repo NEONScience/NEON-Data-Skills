@@ -16,6 +16,7 @@ image:
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Create-HDF5-In-R/
+comments: true
 ---
 
 <section id="table-of-contents" class="toc">
