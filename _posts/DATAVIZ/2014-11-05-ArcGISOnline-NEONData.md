@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Species Occurence maps""
+title: "Species Occurence maps"
 date:   2014-12-06 20:49:52
 authors: Leah A. Wasser,Edmund Hart
 categories: [coding-and-informatics]
