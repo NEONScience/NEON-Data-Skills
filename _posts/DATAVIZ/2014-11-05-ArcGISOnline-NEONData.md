@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Interactive Data Viz Using R, GGPLOT2 and PLOTLY"
+title: "Species Occurence maps""
 date:   2014-12-06 20:49:52
 authors: Leah A. Wasser,Edmund Hart
 categories: [coding-and-informatics]
@@ -13,7 +13,7 @@ image:
   feature: lidar_GrandMesa.jpg
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
-permalink: /R/Plotly/
+permalink: /GIS/ArcGISOnline/
 code1:
 comments: true
 ---
