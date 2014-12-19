@@ -24,24 +24,30 @@ image:
 </div>
 </section><!-- /#table-of-contents -->
 
+
+##Background
+NEON (National Ecological Observatory Network) will provide derived LiDAR products as one of its many free ecological data products. One data product that NEON will provide is a digital surface model which represents the top of the surface elevation of objects on the earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which is simply a raster format, that is spatially located on the earth. Geotiffs can be easily accessed using the `raster` package in R.
+
+A common first analysis using LiDAR data is to derive top of the canopy height values from the LiDAR data. These values are often used to track changes in forest structure over time, to calculate biomass, and even LAI. Let's dive into the basics of working with raster formatted lidar data in R! Before we begin, make sure you've downloaded the data required to run the code below.
+
 <div id="objectives">
 <h3>What you'll need</h3>
 <ol>
 <li>R or R studio loaded on your computer </li>
 <li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a></li>
 </ol>
+
 ###Data to Download
 
 Download the raster and *insitu* collected vegetation structure data:
 
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
+</div>
+
 > NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
 > 
 > Before walking through this activity, you may want to review the DSM, DTM and CHM discussion in the Raster LiDAR Data here.
-
-
-</div>
 
 ###Required R Packages
 Please make sure the following packages are installed: Raster, sp, dplyr. 
@@ -53,8 +59,7 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
     install.packages(‘dplyr’)
 
 
-##Background
-NEON (National Ecological Observatory Network) will provide derived LiDAR products as one of its many free ecological data products. One such product is a digital surface model which represents the top of the surface elevation of objects on the earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which is simply a raster format, that is spatially located on the earth. Geotiffs can be easily accessed using the `raster` package in R.
+
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
 In this activity, we will create a Canopy Height Model. Remember that the canopy height model, represents the actual heights of the trees on the ground. And we can derive the CHM by subtracting the ground elevation from the elevation of the top of the surface (or the tops of the trees). 
