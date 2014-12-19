@@ -17,11 +17,9 @@ permalink: /GIS/ArcGISOnline/
 code1:
 comments: true
 ---
+The map below was created using small mammal data downloded from the NEON data portal. The last map represents soil N:P ratio derived using the NEON soil megapit data. Learn more about NEON <a href="http://neoninc.org/science-design/collection-methods/soil-sensors-measurements" target="_blank">soils</a> and <a href="http://neoninc.org/science-design/collection-methods/terrestrial-organism-sampling" target="_blank">terrestrial </a>sampling.
 
-<iframe width="640px" height="480px" src="https://neon.maps.arcgis.com/apps/MapSeries/?appid=969c8bd2aa5a4e4c97f808b78dfd093f" frameborder="0" scrolling="no"></iframe>
+<iframe width="800px" height="600px" src="https://neon.maps.arcgis.com/apps/MapSeries/?appid=969c8bd2aa5a4e4c97f808b78dfd093f" frameborder="0" scrolling="no"></iframe>
 
-
-<i class="fa fa-star"></i> **Data Tip** these plots were created using R `GGPLOT2` and `plotly` libraries. You can turn many plots that you in R into online interactive viz elements. You can also use python `matplotlib` to create and publish visualizations.
-{: .notice}
 
 
