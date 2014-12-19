@@ -25,10 +25,11 @@ image:
 </section><!-- /#table-of-contents -->
 
 <div id="objectives">
-# What you'll need
-1. R or R studio loaded on your computer
-2. GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a>
-
+<h3>What you'll need</h3>
+<ol>
+<li>R or R studio loaded on your computer </li>
+<li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a></li>
+</ol>
 ###Data to Download
 
 Download the raster and *insitu* collected vegetation structure data:
