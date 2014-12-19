@@ -7,7 +7,7 @@ categories: [coding-and-informatics]
 category: coding-and-informatics
 tags: [R, data-viz]
 mainTag: data-viz
-description: "ArcGIS online test"
+description: "Explore some provisional NEON data that characterizes small mammal abundance and soil N:P ratio data at several NEON sites. Maps created using ESRI ArcGIS online. "
 code1: 
 image:
   feature: lidar_GrandMesa.jpg
