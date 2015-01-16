@@ -26,9 +26,7 @@ In this activity, we will explore lidar data point clouds and learn:
 ## What you Need  ##
 1. Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io website.</a>
 2. Your very own, sparking personality.
-
-###Data to Download
-Please download the lidar data  collected by NEON AOP (National ecological observatory network, airborne observation platform). [-->RIGHT Click here to DOWNLOAD Sample NEON LiDAR Data<--](http://www.highered.org/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data")
+3. Download lidar data collected by NEON AOP (National ecological observatory network, airborne observation platform). <a href="http://www.neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR Point Cloud Data</a>
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
