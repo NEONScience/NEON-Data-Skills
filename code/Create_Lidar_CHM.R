@@ -4,20 +4,25 @@
 setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")
 
 # C:\Users\lwasser\Documents\Conferences\1_DataWorkshop_ESA2014\ESAWorkshop_data\Part3_LiDAR
+#mac
+# ~\Users\law\Documents\data\CHM_InSitu_Data\
 
 # Import DSM into R 
 library(raster)
 
 # IMPORTANT - the path to your DSM data may be different than the path below.  
-dsm_f <- "C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/DigitalSurfaceModel/SJER2013_DSM.tif"
-
+#dsm_f <- "C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/DigitalSurfaceModel/SJER2013_DSM.tif"
+dsm_f <- "/Users/law/Documents/data/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
 dsm <- raster(dsm_f)
 ## See info about the raster. notice it has a CRS associated with it.
 dsm
 plot(dsm)
 
 # import the digital terrain model
-dtm_f <- "C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/DigitalTerrainModel/SJER2013_DTM.tif"
+#dtm_f <- "C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/DigitalTerrainModel/SJER2013_DTM.tif"
+#mac 
+dtm_f <- "/Users/law/Documents/data/CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif"
+
 dtm <- raster(dtm_f)
 plot(dtm)
 
@@ -44,8 +49,8 @@ library(dplyr)
 
 #import the centroid data and the vegetation structure data
 options(stringsAsFactors=FALSE)
-centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
-insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
+centroids <- read.csv("/Users/law/Documents/data/CHM_InSitu_Data/InSitu_Data/SJERPlotCentroids.csv")
+insitu_dat <- read.csv("/Users/law/Documents/data/CHM_InSitu_Data/InSitu_Data/D17_2013_vegStr.csv")
 
 #Overlay the centroid points and the stem locations to the CHM plot.
 points(centroids$easting,centroids$northing, pch=22, cex = 4,col = 2)
@@ -105,3 +110,14 @@ p + theme(panel.background = element_rect(colour = "grey")) + ggtitle("LiDAR CHM
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
   theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
   theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+
+
+
+## create plotly map
+
+library(plotly)
+set_credentials_file("yourUserName", "yourKey")
+p <- plotly(username="yourUserName", key="yourKey")
+
+py <- plotly()
+py$ggplotly()

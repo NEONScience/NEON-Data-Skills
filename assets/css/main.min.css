@@ -4293,7 +4293,7 @@ tr {
 }
 
 #relatedCode a {
-	color: #fff;
+	
 }
 
 div#cat_tag_content, div#objectives {
@@ -4316,7 +4316,7 @@ div.article-author-side h5 a{
 	}
 	
 	
-related-articles h2 a {
+.related-articles h2 a {
 	font-size: 1.5rem;
 	color:#525252
 }

@@ -29,7 +29,7 @@ h5ls("sensorData.h5")
 for(i in 1:3){
   g <- paste("location",i,sep="")
   
-  h5write(matrix(rgamma(300,2,1),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"precip",sep="/"))
+  h5write(matrix(rnorm(300,2,1),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"precip",sep="/"))
   h5write(matrix(rnorm(300,25,5),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"temp",sep="/"))
 }
 
@@ -37,7 +37,7 @@ for(i in 1:3){
 h5ls("sensorData.h5")
 
 #r add metadata to our datasets
-p1 <- matrix(rgamma(300,2,1),ncol=3,nrow=100) 
+p1 <- matrix(rnorm(300,2,1),ncol=3,nrow=100) 
 attr(p1,"units") <- "millimeters"
 
 #r read the precipitation data in for location 1
