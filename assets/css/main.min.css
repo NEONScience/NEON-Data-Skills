@@ -2917,9 +2917,9 @@ body {
 	float: none;
 	width: 83.33333333333334%;
 	margin-right: 8.333333333333334%;
-	margin-bottom: 1em;
+	padding-bottom: 2em;
 	margin-left: 8.333333333333334%;
-	background: url("http://www.neondataskills.org/images/solely_NSF.png") no-repeat right top;
+	background: url("http://www.neondataskills.org/images/solely_NSF.png") no-repeat right 5% top;
 }
 @media only screen and (min-width:37.5em) {
 .top-navigation {
