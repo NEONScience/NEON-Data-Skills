@@ -40,8 +40,10 @@ After completing this activity, you will:
 </ol>
 
 <h3>What You'll Need</h3>
-<p>R or R studio installed and the R HDF5 libraries.</p>
-
+<ul>
+<li>R or R studio installed and the R HDF5 libraries.</li>
+<li>Recommended Background: Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 libraries</a></li>
+</ul>
 </div>
 
 ### A Brief Review - About HDF5

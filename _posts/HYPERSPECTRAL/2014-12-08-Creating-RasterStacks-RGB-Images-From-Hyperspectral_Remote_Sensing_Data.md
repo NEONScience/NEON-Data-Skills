@@ -44,6 +44,7 @@ After completing this activity, you will:
 <ul>
 <li>R or R studio to write your code.</li>
 <li>The latest version of RHDF5 package for R.</li>
+<li>Recommended Background: Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 libraries</a></li>
 </ul>
 
 

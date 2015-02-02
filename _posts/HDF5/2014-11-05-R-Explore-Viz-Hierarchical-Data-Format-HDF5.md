@@ -46,10 +46,12 @@ After completing this activity, you will:
 <ul>
 <li>R or R studio running on your computer. </li>
 <li>HDF5 libraries and associated packages as described in the "getting started" section below. </li>
+<li>Recommended Background: Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 libraries</a></li>
 </ul>
 
 <h3>Data to Download:</h3>
 <a href="../../data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a>
+
 </div>
 
 ###Getting Started
