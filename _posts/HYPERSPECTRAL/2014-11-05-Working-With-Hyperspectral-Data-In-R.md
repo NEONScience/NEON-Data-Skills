@@ -94,10 +94,10 @@ We can use the `h5readAttributes` function to read and extract metadata from the
  
     #r get spatial info and map info using the h5readAttributes function 
     #notes - this function was developed by the infamous Ted Hart
-	spinfo <- h5readAttributes(f,"spatialInfo"))
+	spinfo <- h5readAttributes(f,"spatialInfo")
 
 
-Next, let's read in the wavelength center associated with each band in the hdf5 file. What wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19 - `Wavelengths[19]`).
+Next, let's read in the wavelength center associated with each band in the hdf5 file. What wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19 - `wavelengths[19]`).
 
     #read in the wavelength information from the Hdf5 file
     wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
