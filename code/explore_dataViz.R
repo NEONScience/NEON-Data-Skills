@@ -7,14 +7,13 @@
 
 library("rhdf5")
 
-f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
-#f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
+f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
 h5ls(f,all=T)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.
 # extract temperature data from one site (Ordway Swisher, Florida) and plot it
 
-temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
+temp <- h5read(f,"/Domain_03/OSBS/min_1/boom_1/temperature")
 #view the header and the first 6 rows of the dataset
 head(temp)
 plot(temp$mean,type='l')
@@ -52,7 +51,7 @@ h5readAttributes(f,g)
 library(dplyr)
 library(ggplot2)
 # Set the path string
-s <- "/Domain_03/Ord/min_1"
+s <- "/Domain_03/OSBS/min_1"
 
 
 #grab the paths
@@ -101,6 +100,6 @@ temp30_sum <- temp_30 %>% group_by(site,date) %>% summarise(mean = mean(mean))
 thePlot <- ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path() +ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher vs Sterling CO")
 
 finalPlot2<-thePlot + scale_colour_discrete(name="NEON Site",
-                                           breaks=c("Ord", "Ste"),
+                                           breaks=c("OSBS", "STER"),
                                            labels=c("Ordway Swisher Biological Station", "Sterling"))
 finalPlot2

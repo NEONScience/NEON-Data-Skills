@@ -34,16 +34,16 @@ comments: true
 <h3>Goals / Objectives</h3>
 After completing this activity, you will:
 <ol>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li>Extract a "slice" of data from a hyperspectral data cube.</li>
+<li>Create a rasterstack in R which can then be used to create RGB images from bands in a hyperspectral data cube.</li>
+<li>Plot data spatially on a map.</li>
+<li>Create basic vegetation indices like NDVI using raster  based calculations in R.</li>
 </ol>
 
 <h3>What you'll Need</h3>
 <ul>
 <li>R or R studio to write your code.</li>
-<li>The latest version of RHDF5 packag for R.</li>
+<li>The latest version of RHDF5 package for R.</li>
 </ul>
 
 
@@ -185,15 +185,17 @@ The `plotRGB` function allows you to combine three bands to create an image. <a 
 {: .notice}
 
 
-**a note about image stretching** 
-Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter
-
 If you want to play around a bit with this -- try plotting the RGB image using different bands. Here are some suggestions.
+
 * Color Infrared / False Color: rgb: (90,34,19)
 * SWIR, NIR,Red Band -- rgb (152,90,58)
 * False Color: -- rgb (363,246,55)
 
 More on Band Combinations: [http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations](http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations)
+
+<i class="fa fa-star"></i>**A note about image stretching** 
+Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter.
+{: .notice}
 
 ##2. Plotting our data on a map.
 We can plot the location of our image on a map of the US. FOr this we'll use the lower left coordinates of the raster, extracted from the SPINFO group. Note that these coordinates are in latitude and longitude (geographic coordinates) rather than UTM coordinates.
