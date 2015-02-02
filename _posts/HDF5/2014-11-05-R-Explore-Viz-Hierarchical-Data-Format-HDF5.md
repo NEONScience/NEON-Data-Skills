@@ -49,7 +49,7 @@ After completing this activity, you will:
 </ul>
 
 <h3>Data to Download:</h3>
-<a href="../../data/NEON_TowerDataD3_D10.hdf5" target="_blank">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a>
+<a href="../../data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a>
 </div>
 
 ###Getting Started
@@ -58,21 +58,21 @@ To access HDF5 files in R, you'll need to first install the base [HDF5 libraries
 The package we'll be using is `rhdf5` which is part of the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of `R` packages. If you haven't installed this package before, you can use the first two lines of code below to install. Then use the library command to call the `rhdf5` library.
 
 	# Install rhdf5 packages
-     	#source("http://bioconductor.org/biocLite.R")
-	#biocLite("rhdf5")
+    # source("http://bioconductor.org/biocLite.R")
+	# biocLite("rhdf5")
 	library("rhdf5")
 
 ###HDF5 Quick Review
 The HDF5 format is a self-contained directory structure. In HDF5 files though "directories" are called "**groups**" and "**files**" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
 
 ## Working with NEON Temporal Temperature Tower Data  
-In this activity, we'll work with <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements"> flux tower temperature data </a> collected by  <a href="http://www.neoninc.org" target="_blank">the National Ecological Observatory Network (NEON) </a>. NEON will provide 30 years of open ecological data.
+In this activity, we'll work with <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements"> temperature data collected using sensors on a flux tower</a> by  <a href="http://www.neoninc.org" target="_blank">the National Ecological Observatory Network (NEON) </a>. NEON will provide 30 years of open ecological data.
 
 We'll examine our HDF5 file as if we knew nothing about it. We will view its structure, extract metadata and visualize data contained within datasets in the HDF5 file. We will also use use loops and custom functions to efficiently examine data with a complex nested structure using advanced tools like `dplyr`.
 
 ##1. Examine File Contents
 
-Often we don't know the structure of an HDF5 file that we receive. This means that to work with the data, we'll first need to explore the underlying file structure. Let's explore a NEON flux tower data file in HDF5 format in R. We'll examine the file contents using the `h5ls` function.
+Often we don't know the structure of an HDF5 file that we receive. This means that to work with the data, we'll first need to explore the underlying file structure. Let's explore a NEON flux tower data file in HDF5 format in R. We'll examine the file contents using the R function, `h5ls`.
 
 	# Load file
 	#NOTE: be sure to adjust the path to match your file structure!
@@ -84,16 +84,16 @@ Often we don't know the structure of an HDF5 file that we receive. This means th
 Note that `h5ls` returns the full, hierarchical file structure including the group name, the name of a particular node (which may be a group), the type, class and the dimensions of the object. In this case the class of the groups is compound. Compound class means there are mixed data types (e.g. some columns are strings and some columns are integer or floating point numbers)  contained within that group. The dimensions for each dataset are also returned. When the dataset is compound, the dimension returned is the number of elements (or rows in the matrix in this case).
 
 ## Slicing Data
-One major benefit of HDF5 files is the ability to subset or `slice` out parts of the file. Let's extract some temperature data, collected at <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">the NEON field site - Ordway Swisher Biological Station</a> and plot it.
+One major benefit of HDF5 files is the ability to subset or `slice` out parts of the file. Data slicing is particularly useful and efficient if you're dealing with large files (even gigabytes or more). Let's extract some temperature data, collected at <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">the NEON field site - Ordway Swisher Biological Station (OSBS)</a> and plot it.
 
 Remember that we are dealing with **hierarchical data**. In this case we have a nested group and dataset structure. Below, we will slice out temperature data which is located within the following path:
- Domain_03 --> Ord --> min_1 --> boom_1 -->temperature
+ Domain_03 --> OSBS --> min_1 --> boom_1 -->temperature
  
-Take note that there are 4 groups and one dataset called temperature in this part of the hdf5 file as follows:
+Take note that there are 4 groups and one dataset called temperature in this part of the HDF5 file as follows:
 
-* **Domain_03** - A group representing one of the 20 regions that NEON uses to organize its network spatially.
-* **Ord** - a group representing data from the Ordway Swisher Biological Station)
-* **min_1** - A group representing the mean temperature data value for every for one minute in time. Temperature data is often collected at high frequencies (20 hz or 20 measurements a second) or more. Most data products average the measurements.  
+* **Domain_03** - A NEON domain is an ecologically unique region. Domain 3 is one of 20 regions that <a href="http://neoninc.org/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
+* **OSBS** - a group representing data from the <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank"> Ordway Swisher Biological Station.</a>
+* **min_1** - A group representing the mean temperature data value for every for one minute in time. Temperature data is often collected at high frequencies (20 hz or 20 measurements a second) or more. A typical data product derived from high frequency data is an average value - in this case, all measurements are averaged every minute.  
 * **boom_1** - Boom 1 is the first and lowest arm or level on the tower. Towers often contain arms where the sensors are mounted, that reach out horizontally away from the tower (see figure below). The tower at Ordway Swisher has a total of 6 booms (booms 1-5 and the tower top). 
 
 <i class="fa fa-star"></i> **Note:** The data used in this activity were collected by a temperature sensor mounted on a National Ecological Observatory Network (NEON) "flux tower". 
@@ -106,7 +106,7 @@ Take note that there are 4 groups and one dataset called temperature in this par
 </figure>
 
 	#read in temperature data
-	temp <- h5read(f,"/Domain_03/Ord/min_1/boom_1/temperature")
+	temp <- h5read(f,"/Domain_03/OSBS/min_1/boom_1/temperature")
 	#view the first few lines of the data 
 	head(temp)
 	#generate a quick plot of the data
@@ -115,13 +115,13 @@ Take note that there are 4 groups and one dataset called temperature in this par
 
 ![image]({{ site.baseurl }}/images/TempData.png)
 
-We can make our plot look a bit nicer by adding date values to the x axis. However, in order to list dates o the X axis, we need to assign the date field a date format so that R knows how to read and organize the labels on the axis.
+We can make our plot look nicer by adding date values to the x axis. However, in order to list dates o the X axis, we need to assign the date field a date format so that R knows how to read and organize the labels on the axis.
 
 
 	# Assign the date column a date format.
 	temp$date <- as.POSIXct(temp$date ,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
 	
-        #load GGPLOT 
+    #load GGPLOT 
 	library(ggplot2)
 	#Create plot
 	ordwayPlot <- qplot (date,mean,data=temp,geom="line", title="ordwayData",
@@ -169,10 +169,10 @@ To compare data, we'll first need to loop through the HDF5 file and build a new 
 	# Set the path string
 	s <- "/Domain_03/Ord/min_1"
 
-       # Grab the paths to the data we want to use
+    # Grab the paths to the data we want to use
 	paths <- fiu_struct %>% filter(grepl(s,group), 
 	     grepl("DATA",otype)) %>% group_by(group) %>% summarise(path = paste(group,name,sep="/"))
-	 #create a new blank data frame    
+	#create a new blank data frame    
 	ord_temp <- data.frame()
 	
 
@@ -180,7 +180,7 @@ The above code uses the powerful `dplyr` libraries to filter data. Let's break t
 
 - `fiu_struct`, defined above in the code, is the structure of our HDF5 file that we returned using `h5ls`.
 - `grepl` looks for a text pattern. Type `help(grepl)` to see how it operates. We want to return all "paths" in the HDF file that match `s` which we defined earlier as "/Domain_03/Ord/min_1". Type `s` into the console to see what comes up. 
-- `%>%` is syntax specific to the `dplyr` package. the `dplyr` package contains functions that are used to query and subset data in different ways. the `%<%` function allows you to 'chain' or combine multiple queries together into one, concise, line of code. 
+- `%>%` is syntax specific to the `dplyr` package. the `dplyr` package contains functions that are used to query and subset data in different ways. The `%<%` function allows you to 'chain' or combine multiple queries together into one, concise, line of code. 
 
 Pulling this together, type, `fiu_struct %>% filter(grepl(s,group))` in the console. This code will return a list of both datasets and groups for the Domain_03 site that contain the "/Domain_03/Ord/min_1" path. 
 Now let's review the second part of the code:
@@ -200,35 +200,36 @@ Next, we will create a loop that will populate the final `data.frame` that conta
 
 The loop above iterates through the file and grabs the temperature data for each boom in the 1 minute data series for Ordway. It also adds the boom name to the end of the `data.frame` as follows: 
 
-- `for i in path$path`. We have 5 "paths" total - one for each boom: booms 1,2,3,5 and the tower top (boom 4 doesn't have a temperature sensor on it). Thus we will need do iterate through the data 5 times
+- `for i in path$path`. We have 5 "paths" total - one for each boom: booms 1,2,3,5 and the tower top. NOTE: the boom 4 sensor was not operational when this HDF5 file was created, which is why there is no boom 4 in our list! Thus we will need do iterate through the data 5 times
 - `boom <-  strsplit(i,"/")[[1]][5]`: identify the name of the boom for iteration i. 
 - `dat <- h5read(f,i)`: read in the data from our hdf5 file (f) for iteration i (whichever iteration in the loop we are on) .
 -  `dat$boom <- rep(boom,dim(dat)[1])`: add the boom name as the final column in the dataset - column named "boom"
 -  `ord_temp <- rbind(ord_temp,dat)`: append dataset to the end of the data.frame called ord_temp
 
-    EXTRA CREDIT: Modify the loop above so that it added both the boom name, the site name and the data type (1 minute) as columns in our data frame.
+    EXTRA CREDIT: Modify the loop above so that it adds both the boom name, the site name and the data type (1 minute) as columns in our data frame.
 
 ### Cleaning Up Dates
-As imported, the dates field in our data frame aren't in "date format". we need to tell R to format the information as a date. This will ensure that the plot that we create has dates labeled correctly. Let's dig in:
+The dates field in our data frame aren't imported by default in "date format". We need to tell R to format the information as a date. Formatting out date fields also allows us to properly label the x axis of our plots. 
 
+	#format the date column as a date field. "TZ:, time zone = Eastern Standard Time
 	ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
 
-Now we can make our plot of temperature for all booms on the tower!
+Now we can make our plot of temperature for all booms on the tower! Notice we are using ggplot to do this.
 
-	ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
+	ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher Biological Station")
 
 
 ![Image]({{ site.baseurl }}/images/HDf5/ordwayPlot.png)
 
 ##Data from different sites
 
-Now, what if we want to compare temperatures at our two different sites? Well let's do that but this time we'll compare 30 minute averages. We'll need to modify our search strings a bit. But we can still re-use most of the code we just built.
+Next, let's compare temperature at two different sites: Ordway Swisher Biological Station located in Florida and North Sterling located in Central Colorado. This time we'll plot data averaged every 30 minutes instead of every minute. We'll need to modify our search strings a bit. But we can still re-use most of the code that we just built.
 
 First, let's extract all 30 minute averaged data, for all sites.
 
 	s <- "min_30"
 	# Grab the paths for all sites, 30 minute averaged data
-	paths <- fiu_struct %.% filter(grepl(s,group), grepl("DATA",otype)) %.% group_by(group) %.% summarise(path = paste(group,name,sep="/"))
+	paths <- fiu_struct %>% filter(grepl(s,group), grepl("DATA",otype)) %>% group_by(group) %>% summarise(path = paste(group,name,sep="/"))
 
 	temp_30 <- data.frame()
 	for(i in paths$path){
@@ -243,10 +244,10 @@ First, let's extract all 30 minute averaged data, for all sites.
 	#Assign the date field to a "date" format in R
 	temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
 
-	temp30_sum <- temp_30 %.% group_by(date,site) %.% summarise(mean = mean(mean))
+	temp30_sum <- temp_30 %.% group_by(date,site) %>% summarise(mean = mean(mean))
 	
 	#Create plot!
-	ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher(FL) vs Sterling(CO)")
+	ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + geom_path()+ylab("Mean temperature, 30 Minute Average") + xlab("Date")+theme_bw()+ggtitle("Comparison of Ordway-Swisher Biological Station (FL) vs North Sterling (CO)")
 
 ![Image]({{ site.baseurl }}/images/HDf5/OrdwaySterling.png)
 
