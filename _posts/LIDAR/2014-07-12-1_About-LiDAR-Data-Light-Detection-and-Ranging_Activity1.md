@@ -27,7 +27,7 @@ comments: true
 
 
 ## Overview ##
-LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing system that can be used to measure vegetation height across wide areas. This page will introduce you to the fundamental concepts needed to understand:
+LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing system that can be used to measure vegetation height across wide areas. This page will introduce fundamental lidar concepts including:
 
 1. What LiDAR data are.
 2. The key attributes of LiDAR data.
@@ -51,7 +51,7 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 
 ## Why LiDAR ##
 
-As ecologists, we often want to characterize vegetation over large regions. Because we don’t have the resources to measure each and every tree - we use tools that can estimate key characteristics over large areas. These tools often use remote methods - that is to say, we aren’t actually physically measuring things with our hands and eyes, we are using sensors which capture information about a landscape and record things that we can use to estimate conditions and characteristics.
+Scientists often need to characterize vegetation over large regions. We use tools that can estimate key characteristics over large areas because we don’t have the resources to measure each and every tree. These tools often use remote methods. Remote sensing means that we aren’t actually physically measuring things with our hands, we are using sensors which capture information about a landscape and record things that we can use to estimate conditions and characteristics.
 
 
 {% include _images_nolink.html url="../../images/ScalingTrees_NatGeo.jpg" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
