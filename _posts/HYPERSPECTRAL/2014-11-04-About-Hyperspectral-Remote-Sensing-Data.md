@@ -5,8 +5,8 @@ date:   2014-11-10 20:49:52
 authors: Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
-tags: [hyperspectral-remote-sensinggg]
-mainTag: hyperspectral-remote-sensinggg
+tags: [hyperspectral-remote-sensing]
+mainTag: hyperspectral-remote-sensing
 description: "Learn about the fundamental principles of hyperspectral remote sensing data."
 code1: 
 image:
@@ -30,6 +30,7 @@ comments: true
 
 
 <div id="objectives">
+NOTE: this page is under development! We welcome any and all feedback!
 <h3>Goals / Objectives</h3>
 
 After completing this activity, you will:
