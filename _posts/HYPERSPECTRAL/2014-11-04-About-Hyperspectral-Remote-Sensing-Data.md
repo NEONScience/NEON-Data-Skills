@@ -31,6 +31,7 @@ comments: true
 
 <div id="objectives">
 NOTE: this page is under development! We welcome any and all feedback!
+> 
 <h3>Goals / Objectives</h3>
 
 After completing this activity, you will:
@@ -41,14 +42,53 @@ After completing this activity, you will:
 <li>Generally understand spatial references of large raster data cubes.</li>
 </ol>
 
-
 <h3>You will need:</h3>
-A working thinking cap - this is an overview / background activity.
+A working thinking cap. This is an overview / background activity.
 </div>
 
 ###Getting Started
 
-Raster data, and raster data cubes can be organized and stored in many different ways. To understand raster datasets we often need to explore the data first to tease out key metadata or attributes such as spatial reference information (projection), spatial resolution and spectral resolution. This page will overview the key components of hyperspectral remote sensing data that are required to begin working with the data in a tool like `R` or `Python`.
+Raster data, and raster data cubes can be organized and stored in many different ways. To understand raster datasets we often need to explore the data first to tease out key metadata or attributes such as spatial reference information (projection), spatial resolution and spectral resolution. This page will overview the key components of hyperspectral remote sensing data that are required to begin working with the data in a tool like `R` or `Python`. These attributes include: 
+
+1. Bands and Wavelengths
+2. Spectral Resolution
+3. Width of each Band - Full width Half max
+4. Spatial Resolution
+5. Coordinate Reference System / Projection Information
+6. Raster Extent
+
+#Attributes that Apply to all Raster Datasets
+There are some key attributes that apply to all raster datasets. These include spatial resolution / cell size, file extent and coordinate reference system / projection information. 
+ 
+##Spatial Resolution
+A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixels in the image represents a 1 m x 1 m area on the ground.
+
+
+##Coordinate Reference System / Projection Information
+
+> A spatial reference system (SRS) or coordinate reference system (CRS) is a coordinate-based local, regional or global system used to locate geographical entities. -- Wikipedia
+
+The earth is round. This is not an new concept by any means, however we need to remember this when we talk about coordinate reference systems associated with spatial data. When we make maps on paper or on a computer screen, we are moving from a 3 dimensional space (the globe) to 2 dimensions. To keep this short, the projection of a dataset relates to how the data are "flattened" in geographic space so our human eyes and brains can make sense of the information in 2 dimensions.
+
+The projection refers to the mathematical calculations performed to "flatten the data" in into 2D space. The coordinate system references to the x and y coordinate space, that is associated with the projection used to flatten the data. If you have the same dataset, saved in two different projections, it won't line up.
+
+<figure>
+    <a href="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg"><img src="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg"></a>
+    
+    <figcaption>Maps of the United States in different projections. Notice the differences in shape associated with each different projection. These differences are a direct result of the calculations used to "flatten" the data onto a 2 dimensional map. Source: opennews.org</figcaption>
+</figure>
+
+<a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
+
+##Making Spatial Data Line Up
+There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections ** will not line up in any GIS or other program **. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
+
+##Reprojecting Data
+If you run into multiple spatial datasets with varying projections, you can always ** reproject ** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
+
+	# reproject data to CRS of dataset2
+	reprojectedData <- spTransform(dataset,CRS(proj4string(dataset2))) 
+
 
 ##About Hyperspectral Remote Sensing Data
 
@@ -56,7 +96,7 @@ The electromagnetic spectrum is composed of thousands of bands representing diff
 
 The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm portions of the electromagnetic spectrum within bands that are approximately 5nm in width. This results in a hyperspectral data cube that contains approximately 426 bands - which means BIG DATA.
 
-#Stuff to look for When Exploring Hyperspectral Data
+#Key Attributes of Hyperspectral Data
 
 ###Bands and Wavelengths
 
@@ -84,23 +124,5 @@ The full width half max (FWHM) will also often be reported in a multi or hypersp
 
 
 Above: Source - landsat.usgs.gov
-
-##Spatial Resolution
-A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixels in the image represents a 1 m x 1 m area on the ground.
-
-
-##Coordinate Reference System / Projection Information
-
-> A spatial reference system (SRS) or coordinate reference system (CRS) is a coordinate-based local, regional or global system used to locate geographical entities. -- Wikipedia
-
-The earth is round. This is not an new concept by any means, however we need to remember this when we talk about coordinate reference systems associated with spatial data. When we make maps on paper or on a computer screen, we are moving from a 3 dimensional space (the globe) to 2 dimensions. To keep this short, the projection of a dataset relates to how the data are "flattened" in geographic space so our human eyes and brains can make sense of the information in 2 dimensions.
-
-The projection refers to the mathematical calculations performed to "flatten the data" in into 2D space. The coordinate system references to the x and y coordinate space, that is associated with the projection used to flatten the data. 
-
-##Making Spatial Data Line Up
-There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections ** will not line up in any GIS or other program **. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and carry that information through when you process / analyze the data.
-
-##Reprojecting Data
-If you run into multiple spatial datasets with varying projections, you can always ** reproject ** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
 
 
