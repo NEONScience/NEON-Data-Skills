@@ -63,6 +63,17 @@ There are some key attributes that apply to all raster datasets. These include s
 ##Spatial Resolution
 A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixels in the image represents a 1 m x 1 m area on the ground.
 
+##Spatial Extent
+The other piece of information that you will need to successfully work with a raster dataset is the spatial extent of the layer. The spatial extent, represents the coordinates of the corners of the raster in geographic space. This information, in addition to the cell size or spatial resolution, tells the program how to place or render each pixel in 2 dimensional space.   
+
+	#set raster extent
+    rasExt <- extent(xMN,xMX,yMN,yMX)
+
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/"></a>
+    
+    <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
+</figure>
 
 ##Coordinate Reference System / Projection Information
 
@@ -84,9 +95,9 @@ The projection refers to the mathematical calculations performed to "flatten the
 There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections ** will not line up in any GIS or other program **. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
 
 ##Reprojecting Data
-If you run into multiple spatial datasets with varying projections, you can always ** reproject ** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
+If you run into multiple spatial datasets with varying projections, you can always **reproject** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
 
-	# reproject data to CRS of dataset2
+	# reproject data to CRS of dataset2 in R
 	reprojectedData <- spTransform(dataset,CRS(proj4string(dataset2))) 
 
 
