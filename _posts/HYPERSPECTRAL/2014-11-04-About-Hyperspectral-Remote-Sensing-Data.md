@@ -14,6 +14,7 @@ image:
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About-Hyperspectral-Remote-Sensing-Data/
+comments: true
 ---
 
 <section id="table-of-contents" class="toc">
@@ -65,22 +66,21 @@ The spectral resolution of a dataset that has more than one band, refers to the 
 
  
 ##Full Width Half Max (FWHM)
-The full width half max (FWHM) will also often be reported in a multi or hyperspectral dataset. This value represents the spread of the band around that center point. So, a band that covers 800nm-805nm might have a FWHM of 2.5 nm. While a general spectral resolution of the sensor is often  provided, not all sensors create bands of uniform widths. For instance
+The full width half max (FWHM) will also often be reported in a multi or hyperspectral dataset. This value represents the spread of the band around that center point. So, a band that covers 800nm-805nm might have a FWHM of 2.5 nm. While a general spectral resolution of the sensor is often  provided, not all sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below:
 
 
 | Band | Wavelength range | Spatial Resolution | Spectral Width |
 |-------------------------------------|------------------|--------------------|----------------|
-| Band 1 - Coastal aerosol | 0.43 - 0.45 | 30 |  |
-| Band 2 - Blue | 0.45 - 0.51 | 30 |  |
-| Band 3 - Green | 0.53 - 0.59 | 30 |  |
-| Band 4 - Red | 0.64 - 0.67 | 30 |  |
-| Band 5 - Near Infrared (NIR) | 0.85 - 0.88 | 30 |  |
-| Band 6 - SWIR 1 | 1.57 - 1.65 | 30 |  |
-| Band 7 - SWIR 2 | 2.11 - 2.29 | 30 |  |
-| Band 8 - Panchromatic | 0.50 - 0.68 | 15 |  |
-| Band 9 - Cirrus | 1.36 - 1.38 | 30 |  |
-| Band 10 - Thermal Infrared (TIRS) 1 | 10.60 - 11.19 | 100 * (30) |  |
-| Band 11 - Thermal Infrared (TIRS) 2 | 11.50 - 12.51 | 100 * (30) |  |
+| Band 1 - Coastal aerosol | 0.43 - 0.45 | 30 | 0.02 nm |
+| Band 2 - Blue | 0.45 - 0.51 | 30 | 0.06 nm |
+| Band 3 - Green | 0.53 - 0.59 | 30 | 0.06 nm |
+| Band 4 - Red | 0.64 - 0.67 | 30 | 0.03 nm |
+| Band 5 - Near Infrared (NIR) | 0.85 - 0.88 | 30 | 0.03 nm |
+| Band 6 - SWIR 1 | 1.57 - 1.65 | 30 | 0.08 nm  |
+| Band 7 - SWIR 2 | 2.11 - 2.29 | 30 | 0.18 nm |
+| Band 8 - Panchromatic | 0.50 - 0.68 | 15 | 0.18 nm |
+| Band 9 - Cirrus | 1.36 - 1.38 | 30 | 0.02 nm |
+
 
 Above: Source - landsat.usgs.gov
 
@@ -89,4 +89,17 @@ A raster consists of a series of uniform pixels, each with the same dimension an
 
 
 ##Coordinate Reference System / Projection Information
+
+> A spatial reference system (SRS) or coordinate reference system (CRS) is a coordinate-based local, regional or global system used to locate geographical entities. -- Wikipedia
+
+The earth is round. This is not an new concept by any means, however we need to remember this when we talk about coordinate reference systems associated with spatial data. When we make maps on paper or on a computer screen, we are moving from a 3 dimensional space (the globe) to 2 dimensions. To keep this short, the projection of a dataset relates to how the data are "flattened" in geographic space so our human eyes and brains can make sense of the information in 2 dimensions.
+
+The projection refers to the mathematical calculations performed to "flatten the data" in into 2D space. The coordinate system references to the x and y coordinate space, that is associated with the projection used to flatten the data. 
+
+##Making Spatial Data Line Up
+There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections ** will not line up in any GIS or other program **. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and carry that information through when you process / analyze the data.
+
+##Reprojecting Data
+If you run into multiple spatial datasets with varying projections, you can always ** reproject ** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
+
 
