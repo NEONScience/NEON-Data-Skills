@@ -70,7 +70,7 @@ The other piece of information that you will need to successfully work with a ra
     rasExt <- extent(xMN,xMX,yMN,yMX)
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"></a>
     
     <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
 </figure>
@@ -91,8 +91,8 @@ The projection refers to the mathematical calculations performed to "flatten the
 
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
-##Making Spatial Data Line Up
-There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections ** will not line up in any GIS or other program **. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
+##What Makes Spatial Data Line Up On A Map?
+There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections **will not line up in any GIS or other program**. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
 
 ##Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can always **reproject** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
