@@ -36,7 +36,7 @@ NOTE: this page is under development! We welcome any and all feedback!
 
 After completing this activity, you will:
 <ol>
-<li>The key attributes required to work with raster data including: spatial extent, coordinate reference system and spatial resolution.</li>
+<li>Know the key attributes required to work with raster data including: spatial extent, coordinate reference system and spatial resolution.</li>
 <li>Understand what a spatial extent it.</li>
 <li>Generally understand spatial references of large raster data cubes.</li>
 </ol>
@@ -57,12 +57,13 @@ This post will overview the key components of hyperspectral remote sensing data 
 ##Spatial Resolution
 A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixel in the image represents a 1 m x 1 m area on the ground.
 
-
-
 <figure>
     <a href="{{ site.baseurl }}/images/pixelDetail.png"><img src="{{ site.baseurl }}/images/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell in meters. This size in turn relates to the area on the ground that the pixel represents.</figcaption>
 </figure>
+
+
+
 
 ##Spatial Extent
 The spatial extent of a raster, represents the "X, Y" coordinates of the corners of the raster in geographic space. This information, in addition to the cell size or spatial resolution, tells the program how to place or render each pixel in 2 dimensional space.  Tools like `R`, using supporting packages such as `GDAL` and associated raster tools often have comments that allow you to define the extent of a raster that is created within the tool. 
@@ -75,9 +76,7 @@ The spatial extent of a raster, represents the "X, Y" coordinates of the corners
     <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
 	<a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
     
- <figcaption>
- To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. 
- </figcaption>
+    <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
 </figure>
 
 ##Coordinate Reference System / Projection Information
