@@ -186,7 +186,9 @@ Next, let's add the names of each band to our raster list. Then we can plot the 
 The `plotRGB` function allows you to combine three bands to create an image. <a href="http://www.inside-r.org/packages/cran/raster/docs/plotRGB" target="_blank">More on plotRGB here.</a>
 
 	#write out final raster	
-	#note - you should be able to bring this tiff into any GIS program!writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
+	#note - you should be able to bring this tiff into any GIS program!
+
+	writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
 
 <i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** Use the band combinations listed at the top of this page to modify the raster list. What type of image do you get when you change the band values?
 {: .notice}
