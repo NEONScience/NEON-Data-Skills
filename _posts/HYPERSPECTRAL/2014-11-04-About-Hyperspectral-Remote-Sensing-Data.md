@@ -58,6 +58,11 @@ The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm por
 
 A *band* represents a group of wavelengths. For example, the wavelength values between 800nm and 805nm might be one band as captured by an imaging spectrometer. The imaging spectrometer collects reflected light energy in a pixel for light in that band. Often when you work with a multi or hyperspectral dataset, the band information is reported as the center wavelength value. This value represents the center point value of the wavelengths represented in that  band. Thus in a band spanning 800-805 nm, the center would be 802.5).
 
+<figure>
+    <a href="{{ site.baseurl }}/images/spectrumZoomed.png"><img src="{{ site.baseurl }}/images/spectrumZoomed.png"></a>
+    <figcaption>Imaging spectrometers collect reflected light information within defined bands or regions of the electromagnetic spectrum.</figcaption>
+</figure>
+
 ##Spectral Resolution
 The spectral resolution of a dataset that has more than one band, refers to the width of each band in the dataset. In the example above, a band was defined as spanning 800-805nm. The width or Spatial Resolution of the band is thus 5 nanometers. To see an example of this, check out the band widths for the <a href="http://landsat.usgs.gov/band_designations_landsat_satellites.php" target="_blank">Landsat sensors</a>.
 
