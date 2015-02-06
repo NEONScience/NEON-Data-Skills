@@ -72,11 +72,15 @@ The spatial extent of a raster, represents the "X, Y" coordinates of the corners
 	#xMN = minimum x value, xMX=maximum x value, yMN - minimum Y value, yMX=maximum Y value
     	rasExt <- extent(xMN,xMX,yMN,yMX)
 
-<figure class="half">
+<figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
+   
+    <figcaption>To be located geographically, the images location needs to be defined in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system.</figcaption>
+</figure>
+<figure>
 	<a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
     
-    <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
+    <figcaption>The X and Y mins and max values relate to the coordinate system that the file is in (see below). </figcaption>
 </figure>
 
 ##Coordinate Reference System / Projection Information
