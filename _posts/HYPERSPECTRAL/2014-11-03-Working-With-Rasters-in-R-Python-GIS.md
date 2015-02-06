@@ -46,17 +46,17 @@ A working thinking cap. This is an overview / background activity.
 </div>
 
 ###Getting Started
-This activity with overview the key attributes that you need to extract for a raster dataset's metadata in tools like R, Python and QGIS. Raster data, and raster data cubes can be organized and stored in many different ways. To understand raster datasets we often need to explore the data first to tease out key metadata or attributes such as spatial reference information (projection), spatial resolution and spectral resolution. This page will overview the key components of hyperspectral remote sensing data that are required to begin working with the data in a tool like `R` or `Python`. These attributes include: 
+This activity with overview the key attributes that you need to extract for a raster dataset's metadata in tools like R, Python and QGIS. Raster data, and raster data cubes can be organized and stored in many different ways. To understand raster datasets we often need to explore the data first to tease out key metadata or attributes including:
 
 1. Spatial Resolution
 2. Coordinate Reference System / Projection Information
 3. Raster Extent
 
-#Attributes that Apply to all Raster Datasets
-There are some key attributes that apply to all raster datasets. These include spatial resolution / cell size, file extent and coordinate reference system / projection information. 
+This post will overview the key components of hyperspectral remote sensing data that are required to begin working with the data in a tool like `R` or `Python`.
  
 ##Spatial Resolution
-A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixels in the image represents a 1 m x 1 m area on the ground.
+A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixel in the image represents a 1 m x 1 m area on the ground.
+
 
 
 <figure>
@@ -65,23 +65,26 @@ A raster consists of a series of uniform pixels, each with the same dimension an
 </figure>
 
 ##Spatial Extent
-The other piece of information that you will need to successfully work with a raster dataset is the spatial extent of the layer. The spatial extent, represents the coordinates of the corners of the raster in geographic space. This information, in addition to the cell size or spatial resolution, tells the program how to place or render each pixel in 2 dimensional space.   
+The spatial extent of a raster, represents the "X, Y" coordinates of the corners of the raster in geographic space. This information, in addition to the cell size or spatial resolution, tells the program how to place or render each pixel in 2 dimensional space.  Tools like `R`, using supporting packages such as `GDAL` and associated raster tools often have comments that allow you to define the extent of a raster that is created within the tool. 
 
-	#set raster extent
-    rasExt <- extent(xMN,xMX,yMN,yMX)
+	#set raster extent (R Code)
+	#xMN = minimum x value, xMX=maximum x value, yMN - minimum Y value, yMX=maximum Y value
+    	rasExt <- extent(xMN,xMX,yMN,yMX)
 
 <figure class="half">
     <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
 	<a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
     
-    <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
+ <figcaption>
+ To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. 
+ </figcaption>
 </figure>
 
 ##Coordinate Reference System / Projection Information
 
 > A spatial reference system (SRS) or coordinate reference system (CRS) is a coordinate-based local, regional or global system used to locate geographical entities. -- Wikipedia
 
-The earth is round. This is not an new concept by any means, however we need to remember this when we talk about coordinate reference systems associated with spatial data. When we make maps on paper or on a computer screen, we are moving from a 3 dimensional space (the globe) to 2 dimensions. To keep this short, the projection of a dataset relates to how the data are "flattened" in geographic space so our human eyes and brains can make sense of the information in 2 dimensions.
+The earth is round. This is not an new concept by any means, however we need to remember this when we talk about coordinate reference systems associated with spatial data. When we make maps on paper or on a computer screen, we are moving from a 3 dimensional space (the globe) to 2 dimensions (our computer screens or a piece of paper). To keep this short, the projection of a dataset relates to how the data are "flattened" in geographic space so our human eyes and brains can make sense of the information in 2 dimensions. 
 
 The projection refers to the mathematical calculations performed to "flatten the data" in into 2D space. The coordinate system references to the x and y coordinate space, that is associated with the projection used to flatten the data. If you have the same dataset, saved in two different projections, it won't line up.
 
@@ -94,7 +97,7 @@ The projection refers to the mathematical calculations performed to "flatten the
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
 ##What Makes Spatial Data Line Up On A Map?
-There are lots of great resources that describe Coordinate Reference systems and projection in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but in different projections **will not line up in any GIS or other program**. Thus it's important when working with spatial data in a program like R or Python to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
+There are lots of great resources that describe Coordinate Reference systems and projections in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but saved in different projections **will not line up in any GIS or other program**. Thus it's important when working with spatial data in a program like `R` or `Python` to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
 
 ##Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can always **reproject** the data so that they are all in the same projection. Python and R both have reprojection tools that perform this task.
