@@ -50,7 +50,8 @@ After completing this activity, you will:
 
 <h3>Data to Download</h3>
 <a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
-<p>The data in this HDF5 file were collected over the San Joachim field site located in California (NEON Domain 17) and processed at NEON headquarters. The entire dataset can be access by request from the NEON website.</p>  
+<p>The data in this HDF5 file were collected over the San Joachim field site located in California (NEON Domain 17) and processed at NEON headquarters. The entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+</p>  
 
 <h3>Pre-reqs</h3>
 <p>We highly recommend you work through the - Introduction to Working with hyperspectral data in R activity before moving on to this activity.</p>
@@ -58,7 +59,7 @@ After completing this activity, you will:
 
 
 ##About 
-We often want to generate a 3 band image from multi or hyperspectral dataset. The most commonly recognized band combination is RGB which stands for Red, Green and Blue. RGB images are just like the images that your camera takes. But there are other band combinations that are useful too. For example near infrared images emphasize vegetation and help us classify or identify where vegetation is located on the ground.
+We often want to generate a 3 band image from multi or hyperspectral data. The most commonly recognized band combination is RGB which stands for Red, Green and Blue. RGB images are just like the images that your camera takes. But there are other band combinations that are useful too. For example, near infrared images emphasize vegetation and help us classify or identify where vegetation is located on the ground.
 
 <figure class="third">
     <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
@@ -68,7 +69,7 @@ We often want to generate a 3 band image from multi or hyperspectral dataset. Th
     <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
 </figure>
 
-<i class="fa fa-star"></i> **Data Tip - Band Combinations:** the Biodiversity Informatics group created a great interactive tool that lets you explore band combinations. Check it out:<a hreaf="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using a great online tool!</a>
+<i class="fa fa-star"></i> **Data Tip - Band Combinations:** the Biodiversity Informatics group created a great interactive tool that lets you explore band combinations. Check it out:<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using a great online tool!</a>
 {: .notice}
 
 
@@ -79,7 +80,7 @@ In this activity, we will learn how to create multi (3) band images. We will als
 
 ##1. Creating a Raster Stack in R
 
-In the previous activity, we exported a subset of the NEON Reflectance data from a HDF5 file. In this activity, we will create a full color image using 3 (red, green and blue - RGB) bands. We will follow many of the steps we followed in the [intro to working with hyperspectral data activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/). These steps included loading required packages, reading in our file and viewing the file structure.
+In the [previous activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/), we exported a subset of the NEON Reflectance data from a HDF5 file. In this activity, we will create a full color image using 3 (red, green and blue - RGB) bands. We will follow many of the steps we followed in the [intro to working with hyperspectral data activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/). These steps included loading required packages, reading in our file and viewing the file structure.
 
 	#Load required packages
 	library(raster)
@@ -89,6 +90,13 @@ In the previous activity, we exported a subset of the NEON Reflectance data from
 	f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 	#View HDF5 file structure 
 	h5ls(f,all=T)
+	#r get spatial info and map info using the h5readAttributes function developed by Ted Hart
+	spinfo <- h5readAttributes(f,"spatialInfo")
+
+	#Populate the raster image extent value. 
+	#get the map info, split out elements
+	mapInfo<-h5read(f,"map info")
+	mapInfo<-unlist(strsplit(mapInfo, ","))
 
 Next, we'll write a set of functions that will perform the processing that we did step by step in the [intro to working with hyperspectral data activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/). This will allow us to process multiple bands in bulk.
 
@@ -144,7 +152,7 @@ Now that the functions are created, we can create our list of rasters. The list 
 {: .notice}
 
 	rgb <- list(58,34,19)
-	#lapply tells R to apple the function to each element in the list
+	#lapply tells R to apply the function to each element in the list
 	rgb_rast <- lapply(rgb,band2rast, f = f)
 	#check out the properties or rgb_rast
 	#note that it displays properties of 3 rasters.
@@ -178,9 +186,9 @@ Next, let's add the names of each band to our raster list. Then we can plot the 
 The `plotRGB` function allows you to combine three bands to create an image. <a href="http://www.inside-r.org/packages/cran/raster/docs/plotRGB" target="_blank">More on plotRGB here.</a>
 
 	#write out final raster	
-	#note - you should be able to bring this tiff into any GIS program!	writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
+	#note - you should be able to bring this tiff into any GIS program!writeRaster(rgb_stack,file="test6.tif",overwrite=TRUE)
 
-<i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** Use the band combinations listed at the top of this page to modify the raster list. what type of image do you get when you change the band values?
+<i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** Use the band combinations listed at the top of this page to modify the raster list. What type of image do you get when you change the band values?
 {: .notice}
 
 
@@ -192,12 +200,12 @@ If you want to play around a bit with this -- try plotting the RGB image using d
 
 More on Band Combinations: [http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations](http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations)
 
-<i class="fa fa-star"></i>**A note about image stretching** 
+<i class="fa fa-star"></i>**A note about image stretching:** 
 Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter.
 {: .notice}
 
 ##2. Plotting our data on a map.
-We can plot the location of our image on a map of the US. FOr this we'll use the lower left coordinates of the raster, extracted from the SPINFO group. Note that these coordinates are in latitude and longitude (geographic coordinates) rather than UTM coordinates.
+We can plot the location of our image on a map of the US. For this we'll use the lower left coordinates of the raster, extracted from the SPINFO group. Note that these coordinates are in latitude and longitude (geographic coordinates) rather than UTM coordinates.
 
 	#Create a Map in R
 	library(maps)
@@ -210,7 +218,7 @@ We can plot the location of our image on a map of the US. FOr this we'll use the
 ## 3. Raster Math - Creating NDVI and other Vegetation Indices in R
 In this last part, we will calculate some vegetation indices using raster math in R! We will start by creating NDVI or Normalized Difference Vegetation Index. 
 
-<i class="fa fa-star"></i> **Data Tip - About NDVI:** NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum. Please keep in mind the there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data! 
+<i class="fa fa-star"></i> **Data Tip - About NDVI:** NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum. Please keep in mind that there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data! 
 {: .notice}
 
 	#Calculate NDVI

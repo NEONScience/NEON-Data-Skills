@@ -57,7 +57,7 @@ After completing this activity, you will:
 
 The electromagnetic spectrum is composed of thousands of bands representing different types of light energy. Imaging spectrometers (instruments that collect hyperspectral data) break the electromagnetic spectrum into groups of bands that support classification of objects by their spectral properties on the earth's surface. Hyperspectral data consists of many bands - up to hundreds of bands - that cover the electromagnetic spectrum.
 
-The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm portions of the electromagnetic spectrum within bands that are approximately 5nm in width. This results in a hyperspectral data cube that contains approximately 428 bands - which means BIG DATA. 
+The NEON imaging spectrometer (NIS) collects data within the 380 nm to 2510 nm portions of the electromagnetic spectrum within bands that are approximately 5 nm in width. This results in a hyperspectral data cube that contains approximately 428 bands - which means BIG DATA. 
 
 
 <figure>
@@ -104,9 +104,8 @@ We can use the `h5readAttributes` function to read and extract metadata from the
 
  
     #r get spatial info and map info using the h5readAttributes function 
-    #notes - this function was developed by the infamous Ted Hart
+    #notes - this function was developed by the infamous Ted Hart.
 	spinfo <- h5readAttributes(f,"spatialInfo")
-
 
 Next, let's read in the wavelength center associated with each band in the HDF5 file. Which wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19 - `wavelengths[19]`).
 
@@ -289,6 +288,6 @@ We've now created a raster from band 34 reflectance data. We can plot that data 
 If you get done early, experiment with 
 
 1. Creating rasters from other bands in the dataset.
-2. Varying the distribution of values in the image to mimick an image stretch. e.g. `b34[b34 > 6000 ] <- 1`
+2. Varying the distribution of values in the image to mimic an image stretch. e.g. `b34[b34 > 6000 ] <- 1`
 
 
