@@ -58,7 +58,7 @@ This post will overview the key components of hyperspectral remote sensing data 
 A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixel in the image represents a 1 m x 1 m area on the ground.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/pixelDetail.png"><img src="{{ site.baseurl }}/images/pixelDetail.png"></a>
+    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"><img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell in meters. This size in turn relates to the area on the ground that the pixel represents.</figcaption>
 </figure>
 
