@@ -52,7 +52,7 @@ The electromagnetic spectrum is composed of thousands of bands representing diff
 
 The NEON imaging spectrometer (NIS) collects data within the 380nm to 2510nm portions of the electromagnetic spectrum within bands that are approximately 5nm in width. This results in a hyperspectral data cube that contains approximately 426 bands - which means BIG DATA.
 
-#Key Attributes of Hyperspectral Data
+#Key Metadata for Hyperspectral Data
 
 ###Bands and Wavelengths
 

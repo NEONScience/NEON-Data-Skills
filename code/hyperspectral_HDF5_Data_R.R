@@ -5,6 +5,7 @@
 #r Load `raster` and `rhdf5` packages and read NIS data into R
 library(raster)
 library(rhdf5)
+library(rgdal)
 
 #make sure you have atleast rhdf5 version 2.10 installed
 packageVersion("rhdf5")
@@ -92,6 +93,6 @@ extent(b34r) <- rasExt
 image(b34r)
 
 #Write out the final raster
-WriteRaster(b34r,file="band34.tif",overwrite=TRUE)
+writeRaster(b34r,file="band34.tif",overwrite=TRUE)
 
 
