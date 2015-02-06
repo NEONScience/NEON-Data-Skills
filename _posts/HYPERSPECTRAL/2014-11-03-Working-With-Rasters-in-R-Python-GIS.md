@@ -58,14 +58,21 @@ There are some key attributes that apply to all raster datasets. These include s
 ##Spatial Resolution
 A raster consists of a series of uniform pixels, each with the same dimension and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixels in the image represents a 1 m x 1 m area on the ground.
 
+
+<figure>
+    <a href="{{ site.baseurl }}/images/pixelDetail.png"><img src="{{ site.baseurl }}/images/pixelDetail.png"></a>
+    <figcaption>The spatial resolution of a raster refers the size of each cell in meters. This size in turn relates to the area on the ground that the pixel represents.</figcaption>
+</figure>
+
 ##Spatial Extent
 The other piece of information that you will need to successfully work with a raster dataset is the spatial extent of the layer. The spatial extent, represents the coordinates of the corners of the raster in geographic space. This information, in addition to the cell size or spatial resolution, tells the program how to place or render each pixel in 2 dimensional space.   
 
 	#set raster extent
     rasExt <- extent(xMN,xMX,yMN,yMX)
 
-<figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"><img src="{{ site.baseurl }}/images/hyperspectral/BoulderLocation_Location.jpg"></a>
+<figure class="half">
+    <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
+	<a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"><img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
     
     <figcaption>To be located geographically, an image needs to be located in geographic space (on a spatial grid). The spatial extent defines the 4 corners of a raster, within a given coordinate reference system. </figcaption>
 </figure>
