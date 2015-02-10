@@ -68,7 +68,14 @@ The spectral resolution of a dataset that has more than one band, refers to the 
 
  
 ##Full Width Half Max (FWHM)
-The full width half max (FWHM) will also often be reported in a multi or hyperspectral dataset. This value represents the spread of the band around that center point. So, a band that covers 800nm-805nm might have a FWHM of 2.5 nm. While a general spectral resolution of the sensor is often  provided, not all sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below:
+The full width half max (FWHM) will also often be reported in a multi or hyperspectral dataset. This value represents the spread of the band around that center point. 
+
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/FWHM2.png"><img src="{{ site.baseurl }}/images/hyperspectral/FWHM2.png"></a>
+    <figcaption>Imaging spectrometers collect reflected light information within defined bands or regions of the electromagnetic spectrum.</figcaption>
+</figure>
+
+This means that a band that covers 800 nm-805 nm might have a FWHM of 2.5 nm. While a general spectral resolution of the sensor is often  provided, not all sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below:
 
 
 | Band | Wavelength range | Spatial Resolution | Spectral Width |
