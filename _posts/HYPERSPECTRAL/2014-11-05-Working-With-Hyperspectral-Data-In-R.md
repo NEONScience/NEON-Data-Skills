@@ -2,6 +2,7 @@
 layout: post
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 date:   2014-11-26 20:49:52
+lastModified: 2015-2-10 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
