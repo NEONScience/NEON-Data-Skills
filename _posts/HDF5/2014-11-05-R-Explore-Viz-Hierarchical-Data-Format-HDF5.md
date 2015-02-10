@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Working With Temperature Data Collected for Multiple Sites and Stored in  HDF5 Format in R"
-date:   2014-11-02 20:49:52
+date:   2015-1-28 20:49:52
 dateCreated:   2014-11-17 20:49:52
-lastModified:   2014-1-05 20:49:52
+lastModified:   2015-2-06 20:49:52
 authors: Ted Hart, Leah A Wasser, Adapted from Software Carpentry Materials
 contributors: Elizabeth Webb
 categories: [coding-and-informatics]
