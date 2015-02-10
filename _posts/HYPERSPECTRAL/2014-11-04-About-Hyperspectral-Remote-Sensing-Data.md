@@ -1,13 +1,13 @@
 ---
 layout: post
 title: "About Hyperspectral Remote Sensing Data"
-date:   2015-1-14 20:49:52
+date:   2015-1-15 20:49:52
 createdDate:   2014-1-10 20:49:52
 lastModified: 2015-2-9 20:49:52
 authors: Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
-tags: [hyperspectral-remote-sensing]
+tags: [hyperspectral-remote-sensing,HDF5]
 mainTag: hyperspectral-remote-sensing
 description: "Learn about the fundamental principles of hyperspectral remote sensing data."
 code1: 
