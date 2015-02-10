@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "About: Hierarchical Data Formats - What is HDF5?"
-date:   2014-11-27 20:49:52
+date:   2014-11-01 20:49:52
+dateCreated:   2014-11-27 20:49:52
+dateModified:  2015-2-06 14:49:52
 authors: Leah A. Wasser
 contributors: Elizabeth Webb
 categories: [coding-and-informatics]

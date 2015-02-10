@@ -4322,3 +4322,8 @@ div.article-author-side h5 a{
 	font-size: 1.5rem;
 	color:#525252
 }
+
+
+.post-date {font-size: 0.85em;
+	font-style:italic
+	}

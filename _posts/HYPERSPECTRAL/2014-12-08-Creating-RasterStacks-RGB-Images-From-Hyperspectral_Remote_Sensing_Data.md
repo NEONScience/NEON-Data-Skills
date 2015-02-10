@@ -2,6 +2,7 @@
 layout: post
 title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 date:   2014-11-26 20:49:52
+createddate:   2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing

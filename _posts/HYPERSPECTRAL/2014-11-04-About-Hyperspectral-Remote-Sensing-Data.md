@@ -2,6 +2,7 @@
 layout: post
 title: "About Hyperspectral Remote Sensing Data"
 date:   2014-11-10 20:49:52
+lastModified: 2015-2-9 20:49:52
 authors: Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
