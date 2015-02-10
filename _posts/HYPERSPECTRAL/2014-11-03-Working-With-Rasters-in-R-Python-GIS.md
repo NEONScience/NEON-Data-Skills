@@ -2,6 +2,7 @@
 layout: post
 title: "Working With Rasters in R, Python, QGIS and Other Tools"
 date:   2014-11-03 20:49:52
+lastModified: 2015-2-9 20:49:52
 authors: Leah A. Wasser
 categories: [GIS]
 category: remote-sensing
