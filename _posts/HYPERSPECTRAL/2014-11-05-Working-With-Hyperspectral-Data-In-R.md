@@ -110,8 +110,8 @@ We can use the `h5readAttributes` function to read and extract metadata from the
 Next, let's read in the wavelength center associated with each band in the HDF5 file. Which wavelength is band 19 associated with? (hint: look at the wavelengths vector that we just imported and check out the data located at index 19 - `wavelengths[19]`).
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/*.png"><img src="{{ site.baseurl }}/images/hyperspectral/*.png"></a>
-    <figcaption>Image in development: 472 nanometers falls within the blue portion of the electromagnetic spectrum.</figcaption>
+    <a href="{{ site.baseurl }}/images/hyperspectral/bluelight.png"><img src="{{ site.baseurl }}/images/hyperspectral/bluelight.png"></a>
+    <figcaption>472 nanometers falls within the blue portion of the electromagnetic spectrum.</figcaption>
 </figure>
 
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. This value equates to 472.44 nanometers (nm) which is in the visible blue portion of the electromagnetic spectrum (~ 400-700 nm). 
