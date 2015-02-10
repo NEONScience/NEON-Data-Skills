@@ -7,7 +7,7 @@ lastModified: 2015-2-9 20:49:52
 authors: Leah A. Wasser
 categories: [GIS]
 category: remote-sensing
-tags: [R, hyperspectral-remote-sensing]
+tags: [R, hyperspectral-remote-sensing,GIS]
 mainTag: hyperspectral-remote-sensing
 description: "Learn about the key attributes needed to work with raster data in tools like R, Python and QGIS."
 code1: 
