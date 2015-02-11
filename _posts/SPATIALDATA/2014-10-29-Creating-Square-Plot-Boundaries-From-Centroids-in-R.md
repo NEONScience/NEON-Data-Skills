@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Activity: Creating A Square Buffer Around a Plot Centroid in R"
-date:   2014-10-29 20:49:52
+date:   2015-1-05 20:49:52
+createdDate:   2014-10-29 20:49:52
 lastModified:   2014-10-29 20:49:52
 authors: Leah A. Wasser, Natalie Robinson, Sarah Elmendorf
 categories: [Coding and Informatics]
