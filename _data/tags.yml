@@ -5,7 +5,7 @@
   name: R programming
   
 - slug: GIS
-  name: Geographic Information Systems(GIS)
+  name: Spatial Data & GIS
 
 - slug: HDF5
   name: Hierarchical Data Formats (HDF5)
@@ -14,5 +14,5 @@
   name: Hyperspectral Remote Sensing
   
 - slug: data-viz
-  name: Data Visualization
+  name: Data Visualization 
   
