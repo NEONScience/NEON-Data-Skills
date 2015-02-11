@@ -6,7 +6,7 @@ lastModified:   2014-10-29 20:49:52
 authors: Leah A. Wasser, Natalie Robinson, Sarah Elmendorf
 categories: [Coding and Informatics]
 category: coding-and-informatics
-tags : [R, GIS]
+tags : [R, GIS-Spatial-Data]
 description: "This activity walks you through creating square polygons from a plot centroid (x,y format) in R."
 code1: final_PlotBoundaryCode.R
 image:

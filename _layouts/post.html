@@ -72,7 +72,7 @@
                 {% endif %}
             {% endfor %}
             {% if category %}
-                {% capture category_content %}Posted in <span class="label" style="background-color:{{ category.color }}"><a href="{{ site.baseurl }}/{{ category.slug }}/">{{ category.name }}</a></span>{% endcapture %}
+                {% capture category_content %}posted in <span class="label" style="background-color:{{ category.color }}"><a href="{{ site.baseurl }}/{{ category.slug }}/">{{ category.name }}</a></span>{% endcapture %}
             {% endif %}
         {% else %}
             {% assign category_content = '' %}
