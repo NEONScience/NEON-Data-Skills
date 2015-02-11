@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Articles by tag: GIS & Spatial Data'
+title: 'Articles by tag: GIS & Spatial Data in R and Python'
 tag: GIS-Spatial-Data
 permalink: GIS-Spatial-Data/
 ---
