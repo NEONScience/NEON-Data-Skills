@@ -3,7 +3,7 @@ layout: post
 title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
 date:   2014-07-21 20:49:52
 createdDate:   2014-07-21 20:49:52
-lastModified:   2014-2-10 22:33:52
+lastModified:   2015-2-10 22:33:52
 category: remote-sensing
 categories: [Remote Sensing]
 authors: leah a wasser
