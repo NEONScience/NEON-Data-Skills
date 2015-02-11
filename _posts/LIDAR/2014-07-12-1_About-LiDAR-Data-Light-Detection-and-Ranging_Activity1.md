@@ -2,6 +2,8 @@
 layout: post
 title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
 date:   2014-07-21 20:49:52
+createdDate:   2014-07-21 20:49:52
+lastModified:   2014-2-10 22:33:52
 category: remote-sensing
 categories: [Remote Sensing]
 authors: leah a wasser
@@ -56,31 +58,12 @@ Scientists often need to characterize vegetation over large regions. We use tool
 
 {% include _images_nolink.html url="../../images/ScalingTrees_NatGeo.jpg" description="Conventional on the ground methods to measure trees are resource intensive and limit the amount of vegetation that can be characterized! Photo: National Geographic" %}
 
-To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can  be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one remote sensing method that can be used to map vegetation height, density and other characteristics across a region.
-
-## How Scientists Use LiDAR Data ##
-There are many different uses for LiDAR data. 
-
-
-- LiDAR data classically have been used to derive high resolution elevation data <image: low vs high resolution DEM>
-- LiDAR data have also been used to derive information about vegetation structure including
-	- Canopy Height
-	- Canopy Cover 
-	- Leaf Area Index
-	- Vertical Forest Structure
-	- Species identification (in less dense forests with high point density LiDAR)
-
-{% include _images.html url="http://farm4.staticflickr.com/3883/14718736222_190e498006.jpg" width="500" height="354" description="LiDAR data have historically been used to generate high resolution elevation datasets." %}
-
-{% include _images.html url="http://farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
-
+To measure vegetation across large areas we need remote sensing methods that can take many measurements, quickly using automated sensors. These measurements can  be used to estimate forest structure across larger areas. LiDAR, or light detection ranging (sometimes also referred to as active laser scanning) is one remote sensing method that can be used to map structure including vegetation height, density and other characteristics across a region. LiDAR directly measures the height and density of vegetation on the ground making it an ideal tool for scientists studying vegetation over large areas.
 
 ## How LiDAR Works ##
 
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
-**Plane Flying Animation will go here**
- 
 
 Now remember from the video that the LiDAR system times the travel of the light to the ground and back and that time is used to in turn calculate distance traveled. Distance traveled is then converted to elevation. Also remember that a LiDAR system contains a GPS and an IMU that help it accurately identify the location of reflected light energy, on the ground.
 
@@ -94,6 +77,22 @@ Light energy is a collection of photons. As photons that make up light moves tow
 The distribution of energy that returns to the sensor creates what we call a waveform. The amount of energy that returned to the LiDAR sensor is known as "intensity". The areas where more photons or more light energy returns to the sensor create peaks in the distribution of energy. Theses peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
 
 {% include _images_nolink.html url="../../images/Waveform.PNG" description="An example LiDAR waveform. Image: National Ecological Observatory Network, Boulder, CO" %}
+
+## How Scientists Use LiDAR Data ##
+There are many different uses for LiDAR data. 
+
+- LiDAR data classically have been used to derive high resolution elevation data <image: low vs high resolution DEM>
+- LiDAR data have also been used to derive information about vegetation structure including
+	- Canopy Height
+	- Canopy Cover 
+	- Leaf Area Index
+	- Vertical Forest Structure
+	- Species identification (in less dense forests with high point density LiDAR)
+
+{% include _images.html url="http://farm4.staticflickr.com/3883/14718736222_190e498006.jpg" width="500" height="354" description="LiDAR data have historically been used to generate high resolution elevation datasets." %}
+
+{% include _images.html url="http://farm6.staticflickr.com/5584/14696841986_586d180bee.jpg" width="500" height="354" description="Cross section showing LiDAR data and an example profile of a landscape." %}
+
 
 
 ## Discrete vs. Full Waveform LiDAR ##
