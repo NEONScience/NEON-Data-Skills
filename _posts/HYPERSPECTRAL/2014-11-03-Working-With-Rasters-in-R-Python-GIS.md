@@ -102,7 +102,8 @@ The projection refers to the mathematical calculations performed to "flatten the
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
 ####How Map Projections Can Fool the Eye
-Check out this short video highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!.
+Check out this short video highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
 
 ##What Makes Spatial Data Line Up On A Map?
