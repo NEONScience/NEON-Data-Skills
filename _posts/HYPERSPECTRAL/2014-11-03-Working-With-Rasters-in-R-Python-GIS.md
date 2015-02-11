@@ -101,6 +101,10 @@ The projection refers to the mathematical calculations performed to "flatten the
 
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
+####How Map Projections Can Fool the Eye
+Check out this short video highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+
 ##What Makes Spatial Data Line Up On A Map?
 There are lots of great resources that describe Coordinate Reference systems and projections in greater detail. However, for the purposes of this activity, what is important to understand is that data, from the same location, but saved in different projections **will not line up in any GIS or other program**. Thus it's important when working with spatial data in a program like `R` or `Python` to identify the coordinate reference system applied to the data, and to grab that information and retain it when you process / analyze the data.
 
