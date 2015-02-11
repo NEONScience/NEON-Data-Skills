@@ -1,7 +1,7 @@
 ---
 layout: post_by_tag
 title: 'Articles by tag: GIS & Spatial Data'
-tag: GIS
+tag: GIS-Spatial-Data
 permalink: GIS-Spatial-Data/
 ---
 
