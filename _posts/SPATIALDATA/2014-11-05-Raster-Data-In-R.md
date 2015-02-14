@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
+title: "Raster Data in R - The Basics"
 date:   2014-11-26 20:49:52
 authors: Leah A. Wasser
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
 mainTag: GIS-Spatial-Data
-description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
+description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
