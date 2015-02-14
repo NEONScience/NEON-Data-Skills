@@ -13,7 +13,7 @@ image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
-permalink: /HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/
+permalink: /R/Raster-Data-In-R/
 code1: r_RasterFundamentals.R
 comments: true
 ---
