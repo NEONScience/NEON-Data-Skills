@@ -137,6 +137,12 @@ We've now loaded a raster into R. We've also made sure we knew the CRS (coordina
 A raster stack is a collection of raster layers. Each raster layer in the stack needs to be in the same projection (CRS), spatial extent and resolution. You might use raster stacks for different reasons. For instance, you might want to group a time series of rasters representing precipitation or temperature into one R object. In part 2, we will stack 3 bands from a multi-band image together to create a final RGB image.
 
 
+	#import tiffs
+	band19 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band19.tif"
+	band34 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band34.tif"
+	band58 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band58.tif"
+
+
  
 
 ~~ create raster stack (this means i'll have to create something RGB. it would be simpler and would make more sense. maybe i'll create 3 tiffs from the HDF file. then combine as an RGB tiff.
