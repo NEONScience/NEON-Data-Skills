@@ -15,8 +15,8 @@ packageVersion("rhdf5")
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure. take note of the
 #dimensions of the reflectance dataset (477 x 502 x 426)
@@ -26,11 +26,18 @@ h5ls(f,all=T)
 #r get spatial info and map info using the h5readAttributes function developed by Ted Hart
 spinfo <- h5readAttributes(f,"spatialInfo")
 
-#read in the wavelength information from the Hdf5 file
-wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
+#get the dimensions of the wavelengths dataset in the H5 file
+shapeWave<-dim(h5read(f,"wavelength"))
+       
+#read in the wavelength information from the Hdf5 file using the shape information above
+wavelengths<- h5read(f,"wavelength",index=list(1:shapeWave[1],shapeWave[2]))
+
+#get the dimensions of the reflectance dataset in the H5 file
+shapeRefl<-dim(h5read(f,"Reflectance"))
 
 #r extract "slices" of data from an HDF5 file (read in only the parts that you need)
-b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
+#in this case we are extracting band 34 from the data
+b34<- h5read(f,"Reflectance",index=list(1:shapeRefl[1],1:shapeRefl[2],34))
 
 #Convert from array to matrix
 b34 <- b34[,,1]
@@ -85,6 +92,7 @@ yMX=(yMN+(nrow(b34)))
 rasExt <- extent(xMN,xMX,yMN,yMX)
 
 #define final raster with projection info 
+#note, this will throw errors on a MAC if the UTM is capitalized!
 b34r<-raster(b34, 
             crs=(spinfo$projdef))
 

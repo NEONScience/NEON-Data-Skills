@@ -118,8 +118,12 @@ Next, let's read in the wavelength center associated with each band in the HDF5 
 
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. This value equates to 472.44 nanometers (nm) which is in the visible blue portion of the electromagnetic spectrum (~ 400-700 nm). 
 
+    
+    #get shape of the wavelength dataset (how many bands in the data?)
+    #get the dimensions of the wavelengths dataset in the H5 file
+    shapeWave<-dim(h5read(f,"wavelength"))
     #read in the wavelength information from the Hdf5 file
-    wavelengths<- h5read(f,"wavelength",index=list(1:426,1))
+    wavelengths<- h5read(f,"wavelength",index=list(1:shapeWave[1],shapeWave[2]))
 
 <i class="fa fa-star"></i> **Data Tip: Bands and Wavelengths** A *band* represents a group of wavelengths. For example, the wavelength values between 800nm and 805nm might be one band as captured by an imaging spectrometer. The imaging spectrometer collects reflected light energy in a pixel for light in that band. Often when you work with a multi or hyperspectral dataset, the band information is reported as the center wavelength value. This value represents the center point value of the wavelengths represented in that  band. Thus in a band spanning 800-805 nm, the center would be 802.5 nm). The full width half max (FWHM) will also be reported. This value represents the spread of the band around that center point. So, a band that covers 800 nm-805 nm might have a FWHM of 2.5 and a wavelength value of 802.5. 
 {: .notice}
@@ -133,8 +137,11 @@ The HDF5 dataset that we are working with in this activity contains more informa
 
 The HDF5 format allows us to slice (or subset) the data - quickly extracting the subset that we need to process. Let's extract one of the green bands in our dataset - band 34. By the way - what is the center wavelength value associated with band 34? hint `wavelengths[34]`. How do we know this band is a green band in the visible portion of the spectrum?
 
+    
+    #get the dimensions of the reflectance dataset in the H5 file
+    shapeRefl<-dim(h5read(f,"Reflectance"))
     #Extract or "slice" data for band 34 from the HDF5 file
-	b34<- h5read(f,"Reflectance",index=list(1:477,1:502,34))
+    b34<- h5read(f,"Reflectance",index=list(1:shapeRefl[1],1:shapeRefl[2],34))
 	
 
 ###A Note About Data Slicing in HDF5
@@ -273,12 +280,14 @@ Next we define the extents of our raster. The extents will be used to calculate 
 	rasExt <- extent(xMN,xMX,yMN,yMX)
 
 	#define final raster with projection info 
+	#note that capitalization will throw errors on a MAC.
+	#if UTM is all caps it might cause an error!
 	b34r<-raster(b34, 
             crs=(spinfo$projdef))
 
 	#assign the spatial extent to the raster
 	extent(b34r) <- rasExt
-	#look at raster attribtues
+	#look at raster attributes
 	b34r
 
 We've now created a raster from band 34 reflectance data. We can plot that data if we want using the `plot` command. 

@@ -14,8 +14,8 @@ library(rhdf5)
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure 
 h5ls(f,all=T)
@@ -27,6 +27,9 @@ spinfo <- h5readAttributes(f,"spatialInfo")
 #get the map info, split out elements
 mapInfo<-h5read(f,"map info")
 mapInfo<-unlist(strsplit(mapInfo, ","))
+
+#get the dimensions of the reflectance dataset
+dim(h5read(f,"Reflectance"))
 
 #Plot  RGB
 # f: the hdf file
@@ -81,10 +84,6 @@ rgb <- list(363,246,55)
 rgb_rast <- lapply(rgb,band2rast, f = f)
 #check out the properties of rgb_rast
 rgb_rast
-
-#add the band names to each raster in the raster list
-names(rgb_rast) <- as.character(rgb)
-
 
 
 ### Plot one raster in the list
