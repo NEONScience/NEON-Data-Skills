@@ -129,8 +129,8 @@ Band 19 has a associate wavelength center or 0.47244 which is in micrometers. Th
 {: .notice}
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/*.png"><img src="{{ site.baseurl }}/images/hyperspectral/*.png"></a>
-    <figcaption>Image in development: Bands represent a range of valuues within the electromagnetic spectrum. Values for each band are often represents as the center point value of each band.</figcaption>
+    <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png"><img src="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png"></a>
+    <figcaption>Bands represent a range of values (types of light) within the electromagnetic spectrum. Values for each band are often represented as the center point value of each band.</figcaption>
 </figure>
 
 The HDF5 dataset that we are working with in this activity contains more information than we need to work with. For example, we don't necessarily need to process all 426 bands - if we are interested in creating a product like NDVI which only users bands in the near infra-red and red portions of the spectrum. Or we might only be interested in a spatial subset of the data - perhaps a region where we have plots in the field.
