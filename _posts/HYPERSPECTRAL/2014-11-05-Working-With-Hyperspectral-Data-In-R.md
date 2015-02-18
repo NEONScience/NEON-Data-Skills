@@ -3,7 +3,7 @@ layout: post
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 date:   2015-1-14 20:49:52
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-2-17 23:39:52
+lastModified: 2015-2-18 11:30:52
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing
@@ -275,8 +275,8 @@ Next we define the extents of our raster. The extents will be used to calculate 
 	#define extents of the data using metadata and matrix attributes
 	xMN=as.numeric(mapInfo[4])
 	xMX=(xMN+(ncol(b34)))
-	yMN=as.numeric(mapInfo[5]) 
-	yMX=(yMN+(nrow(b34)))     
+	yMX=as.numeric(mapInfo[5]) 
+	yMN=(yMN-(nrow(b34)))     
 	rasExt <- extent(xMN,xMX,yMN,yMX)
 
 	#define final raster with projection info 
@@ -293,7 +293,9 @@ Next we define the extents of our raster. The extents will be used to calculate 
 We've now created a raster from band 34 reflectance data. We can plot that data if we want using the `plot` command. 
 
 	writeRaster(b34r,file="band34.tif",overwrite=TRUE)
-	
+	#we're done with the H5 file - 
+    #close the H5 file
+    H5close()
 	
 ###Extra Credit
 If you get done early, experiment with 

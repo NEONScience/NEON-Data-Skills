@@ -15,8 +15,8 @@ packageVersion("rhdf5")
 #biocLite("rhdf5")
 
 #specify the path to the H5 file. Notice that HDF5 extension can be either "hdf5" or "h5"
-#f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
-f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
+f <- '/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/HDF5File/SJER_140123_chip.h5'
+#f <- '/Users/law/Documents/data/SJER_140123_chip.h5'
 
 #look at the HDF5 file structure. take note of the
 #dimensions of the reflectance dataset (477 x 502 x 426)
@@ -33,6 +33,7 @@ shapeWave<-dim(h5read(f,"wavelength"))
 wavelengths<- h5read(f,"wavelength",index=list(1:shapeWave[1],shapeWave[2]))
 
 #get the dimensions of the reflectance dataset in the H5 file
+
 shapeRefl<-dim(h5read(f,"Reflectance"))
 
 #r extract "slices" of data from an HDF5 file (read in only the parts that you need)
@@ -46,6 +47,10 @@ b34 <- b34[,,1]
 #notice that the dimensions are 477 x 502
 dim(b34)
 refInfo <- h5readAttributes(f,"Reflectance")
+
+#we're done with the H5 file - close it
+#close the H5 file
+H5close()
 
 #note - when R imports the matrix, the dimensions are read in reverse order
 #so we need to transpose x and y values in order for our final image to plot properly
@@ -86,10 +91,9 @@ mapInfo<-unlist(strsplit(mapInfo, ","))
 #define extents of the data using metadata and matrix attributes
 xMN=as.numeric(mapInfo[4])
 xMX=(xMN+(ncol(b34)))
-yMN=as.numeric(mapInfo[5]) 
-yMX=(yMN+(nrow(b34)))
+yMX=as.numeric(mapInfo[5]) 
+yMN=(yMN-(nrow(b34)))
      
-rasExt <- extent(xMN,xMX,yMN,yMX)
 
 #define final raster with projection info 
 #note, this will throw errors on a MAC if the UTM is capitalized!

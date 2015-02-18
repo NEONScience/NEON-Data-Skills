@@ -3,13 +3,13 @@ layout: post
 title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
 date:   2014-07-21 20:49:52
 createdDate:   2014-07-21 20:49:52
-lastModified:   2015-2-10 22:33:52
+lastModified:   2015-2-11 22:33:52
 category: remote-sensing
 categories: [Remote Sensing]
 authors: leah a wasser
 tags : [lidar, R]
 mainTag: lidar
-description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
+description: "Explore the basics of how a LiDAR system works and what a LiDAR system measures."
 image:
   feature: codedpoints2.png
   credit: National Ecological Observatory Network
@@ -65,14 +65,14 @@ To measure vegetation across large areas we need remote sensing methods that can
 LIDAR is an **active remote sensing** system. An active system means that the system itself generates energy - in this case light - to measure things on the ground. In a LiDAR system, light is emitted from a rapidly firing laser. You can imagine, light quickly strobing from a laser light source. This light travels to the ground and reflects off of things like buildings and tree branches. The reflected light energy then returns to the LiDAR sensor where it is recorded.
 
 
-Now remember from the video that the LiDAR system times the travel of the light to the ground and back and that time is used to in turn calculate distance traveled. Distance traveled is then converted to elevation. Also remember that a LiDAR system contains a GPS and an IMU that help it accurately identify the location of reflected light energy, on the ground.
+A LiDAR system measures the time it takes for emitted light to travel  to the ground and back. That time is used to calculate distance traveled. Distance traveled is then converted to elevation. These measurements are made using the key components of a lidar system including a GPS that identifies the X,Y,Z location of the light energy and an IMU that provides the orientation of the plane in the sky.
 
 <iframe width="560" height="315" src="//www.youtube.com/embed/uSESVm59uDQ?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
-###The Distribution of Reflected Light Energy in terms of Photons ###
+###How Light Energy Is Used to Measure Trees ###
 
-Light energy is a collection of photons. As photons that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
+Light energy is a collection of photons. As photon that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
 
 The distribution of energy that returns to the sensor creates what we call a waveform. The amount of energy that returned to the LiDAR sensor is known as "intensity". The areas where more photons or more light energy returns to the sensor create peaks in the distribution of energy. Theses peaks in the waveform often represent objects on the ground like - a branch, a group of leaves or a building. 
 
@@ -96,7 +96,7 @@ There are many different uses for LiDAR data.
 
 
 ## Discrete vs. Full Waveform LiDAR ##
-LiDAR data may be recorded in two ways.
+A waveform or distribution of light energy is what returns to the LiDAR sensor. However, this return may be recorded in two different ways.
 
 
 1. A **Discrete Return LiDAR System** records individual (discrete) points for the peaks in the waveform curve. Discrete return LiDAR systems, identify peaks and record a point at each peak location in the waveform curve. These discrete or individual points are called returns. A discrete system may record 1-4 (and sometimes more) returns from each laser pulse.
@@ -116,7 +116,7 @@ Some lidar data  will be classified as "ground / non ground". Some datasets will
 
 
 ### Exploring 3D LIDAR data in a free Online Viewer
-You can LiDAR data in the [plas.io website](plas.io)   develped by Martin Isenberg of Las Tools and his colleagues.
+[Check out our activity that uses a free online lidar data viewer to view NEON LiDAR data!](http://neondataskills.org/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/). The Plas.io viewer used in this activity was developed by Martin Isenberg of Las Tools and his colleagues.
 
 
 ##Summary
@@ -127,7 +127,6 @@ You can LiDAR data in the [plas.io website](plas.io)   develped by Martin Isenbe
 
 
 ----------
-
 
 
 ##Additional Resources:

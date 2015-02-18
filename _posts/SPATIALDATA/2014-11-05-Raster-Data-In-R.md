@@ -1,8 +1,10 @@
 ---
 layout: post
 title: "Raster Data in R - The Basics"
-date:   2014-11-26 20:49:52
+date:   2015-1-26 20:49:52
 authors: Leah A. Wasser
+dateCreated:  2014-11-26 20:49:52
+lastModified: 2015-02-18 12:30:52
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
@@ -50,16 +52,24 @@ After completing this activity, you will know:
 
 
 <h3>Data to Download</h3>
-###Data to Download
 
 Download the raster and *insitu* collected vegetation structure data:
-
+<b>Part 1 data</b>
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a>
+<b>Part 2 data</b>
+<a href="http://www.neondataskills.org/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
 
-<p>The LiDAR data used to create the rasters in this dataset were collected over the San Joachim field site located in California (NEON Domain 17) and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> headquarters. The entire dataset can be access by request from the NEON website.</p>  
+<p>The LiDAR and imagery data used to create the rasters in this dataset were collected over the San Joachim field site located in California (NEON Domain 17) and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> headquarters. The entire dataset can be access by request from the NEON website.</p>  
 
 <h3>Pre-reqs</h3>
-<p></p>
+<ul>
+<li>
+<a href="http://neondataskills.org/HDF5/Working-With-Rasters/">Please consider reading the background page on rasters, by clicking here.</a>
+</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Read more about the Raster Package in R.</a>
+</li>
+</ul>
 </div>
 
 #About Raster Data
@@ -119,9 +129,14 @@ Now that we have the raster loaded into R, let's grab some key metadata.
 	DEM@crs
 	DEM@extent
 	#plot the raster
-	plot(DEM
+	plot(DEM)
+
+## Part 2 - Working with multiple rasters within Raster Stacks and Raster Bricks
+We've now loaded a raster into R. We've also made sure we knew the CRS (coordinate reference system) and extent of the dataset among other key metadata attributes. Next, let's create a raster stack from 3 raster images.
+
+A raster stack is a collection of raster layers. Each raster layer in the stack needs to be in the same projection (CRS), spatial extent and resolution. You might use raster stacks for different reasons. For instance, you might want to group a time series of rasters representing precipitation or temperature into one R object. In part 2, we will stack 3 bands from a multi-band image together to create a final RGB image.
 
 
-So we've now successfully loaded a raster into R. Next, let's 
+ 
 
 ~~ create raster stack (this means i'll have to create something RGB. it would be simpler and would make more sense. maybe i'll create 3 tiffs from the HDF file. then combine as an RGB tiff.
