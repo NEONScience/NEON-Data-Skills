@@ -131,18 +131,83 @@ Now that we have the raster loaded into R, let's grab some key metadata.
 	#plot the raster
 	plot(DEM)
 
+
+Also notice it has a resolution and a set of dimension values associated with the raster. This means less work for us!
+
+	DEM
+	
+OUTPUT:
+
+	class       : RasterLayer 
+	dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+	resolution  : 1, 1  (x, y)
+	extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+	coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+	data source : /Users/law/Documents/data/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif 
+	names       : SJER2013_DSM 
+
+
+	#let's create a plot of our raster
+	plot(DEM)
+
+#Cropping Rasters in R
+
+You can crop rasters in R using different methods. You can crop the raster right in the plot area. To do this, first plot the raster. Then define the crop extent by clicking twice: 1) click in the upper left hand corner where you want the crop box to begin. Then click again in the lower RIGHT hand corner where the box ends. you'll see a red box on the plot. NOTE that this method is a manual process. But it's cool to know how to do.
+
+	
+	#first, click in the upper left hand corner where you want the crop to begin
+	# next click somewhere in the lower right hand corner to define the bottom right corner of your extent box you will see
+	#note: this is a manual process!
+	plot(DEM)
+	cropBox <- drawExtent()
+	#crop the raster then plot the new cropped raster
+	DEMcrop <- crop(DEM, cropBox)
+	plot(DEMcrop)
+
+You can also manually assign the coordinate to use to crop. You'll need the extent defined as (xmin,xmax,ymin,ymax) to do this. This is how you'd crop using a GIS shapefile (with a rectangular shape)
+
+	cropbox2 <-c(255077.3,257158.6,4109614,4110934)
+	DEMcrop2 <- crop(DEM, cropbox2)
+	plot(DEMcrop2)
+
+
 ## Part 2 - Working with multiple rasters within Raster Stacks and Raster Bricks
 We've now loaded a raster into R. We've also made sure we knew the CRS (coordinate reference system) and extent of the dataset among other key metadata attributes. Next, let's create a raster stack from 3 raster images.
 
 A raster stack is a collection of raster layers. Each raster layer in the stack needs to be in the same projection (CRS), spatial extent and resolution. You might use raster stacks for different reasons. For instance, you might want to group a time series of rasters representing precipitation or temperature into one R object. In part 2, we will stack 3 bands from a multi-band image together to create a final RGB image.
 
+The difficult way to do this is to load our rasters one at a time. But we're over that!
 
 	#import tiffs
 	band19 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band19.tif"
 	band34 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band34.tif"
 	band58 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band58.tif"
 
+We can also just use the list.files command to grab all of the files in a directory.
 
+	#create list of files to make raster stack
+	#path to files
+	tifPath <- (paste(getwd(),"/rasterLayers_tif",sep = ""))
+	rasterlist <- list.files(tifPath)
+
+	#create raster stack
+	rgbRaster <- stack(rasterlist)
+
+	#check to see that you've created a raster stack and plot the layers
+	rgbRaster
+	plot(rgbRaster)
+
+	#remember that crop function? You can crop all rasters within a raster stack too
+	#finally you can crop all rasters within a raster stack!
+	rgbRaster_crop <- crop(rgbRaster, cropBox)
+	plot(rgbRaster_crop)
+
+#now we have a list of rasters in a stack. these rasters
+#are all the same extent CRS and resolution but
+#a raster brick will create one raster object in R that contains all of the rasters
+#we can use this object to quickly create RGB images!
+
+RGBbrick <- brick(rgbRaster)
  
 
 ~~ create raster stack (this means i'll have to create something RGB. it would be simpler and would make more sense. maybe i'll create 3 tiffs from the HDF file. then combine as an RGB tiff.
