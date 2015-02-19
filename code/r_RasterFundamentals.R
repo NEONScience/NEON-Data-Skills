@@ -86,9 +86,9 @@ RGBbrick <- brick(rgbRaster)
 #in this case, the blue (band 19) is first but it's looking for the red band first (RGB)
 #so we can make a new stack in the order we want the data in:
 
-finalRGBstack <- stack(rgbRaster$58,rgbRaster$34,rgbRaster$19)
+finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
 
-writeRaster(rgbRaster,"rgbRaster.tiff","GTiff", overwrite=TRUE)
+writeRaster(finalRGBstack,"rgbRaster.tiff","GTiff", overwrite=TRUE)
 
 
 
