@@ -5,11 +5,13 @@ library(raster)
 library(sp)
 #Set your working directory 
 
-setwd("~/Documents/WorkshopData/")
-#setwd("C:/Users/lwasser/Documents/WorkshopData/")
+#setwd("~/Documents/WorkshopData/")
+
+setwd("C:/Users/lwasser/Documents/WorkshopData/ESAWorkshop_data/Part3_LiDAR")
 
 #setwd("C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/")
-DEMTiff <- "/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
+#DEMTiff <- "/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
+DEMTiff <- "/DigitalTerrainModel/SJER2013_DTM.tif"
 DEM <- raster(paste(getwd(),DEMTiff,sep=""))
 
 #notice that this raster already has a CRS and an extent assigned to it
@@ -39,9 +41,16 @@ cropbox2 <-c(255077.3,257158.6,4109614,4110934)
 DEMcrop2 <- crop(DEM, cropbox2)
 plot(DEMcrop2)
 
+
+#############################
+#part 2!
+#############################
+
 #next we'll work with the rasters in the rasterLayers_tif folder. 
 #to begin let's tell R where we're working
-setwd(paste(getwd(),"/rasterLayers_tif",sep = ""))
+setwd("C:/Users/lwasser/Documents/WorkshopData/rasterLayers_tif")
+
+#setwd(paste(getwd(),"/rasterLayers_tif",sep = ""))
 
 #create list of files to make raster stack
 #list files in the working directory 
@@ -50,14 +59,18 @@ rasterlist <- list.files()
 #create raster stack
 rgbRaster <- stack(rasterlist)
 
+#you can also expore the data
+hist(rgbRaster)
+
 #check to see that you've created a raster stack and plot the layers
 rgbRaster
 plot(rgbRaster)
-plotRGB(rgbRaster,r=1,g=2,b=3, scale=800, stretch = "Lin")
+plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
 
 #remember that crop function? You can crop all rasters within a raster stack too
 #finally you can crop all rasters within a raster stack!
-rgbRaster_crop <- crop(rgbRaster, cropBox)
+rgbCrop <- c(256770.7,256959,4112140,4112284)
+rgbRaster_crop <- crop(rgbRaster, rgbCrop)
 plot(rgbRaster_crop)
 
 #now we have a list of rasters in a stack. these rasters

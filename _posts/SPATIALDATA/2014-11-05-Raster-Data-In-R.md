@@ -197,17 +197,40 @@ We can also just use the list.files command to grab all of the files in a direct
 	rgbRaster
 	plot(rgbRaster)
 
+
+<figure>
+   <a href="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"><img src="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"></a>
+ <figcaption>All rasters in the rasterstack plotted.</figcaption>
+</figure>
+
+
+
+You can also explore the data.
+
+
+	#look at histogram of reflectance values for all rasters
+	hist(rgbRaster)
+
+
+<figure>
+   <a href="{{ site.baseurl }}/images/GIS/RGBhist.png"><img src="{{ site.baseurl }}/images/GIS/RGBhist.png"></a>
+ <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
+</figure>
+
 	#remember that crop function? You can crop all rasters within a raster stack too
 	#finally you can crop all rasters within a raster stack!
 	rgbRaster_crop <- crop(rgbRaster, cropBox)
 	plot(rgbRaster_crop)
 
-#now we have a list of rasters in a stack. these rasters
-#are all the same extent CRS and resolution but
-#a raster brick will create one raster object in R that contains all of the rasters
-#we can use this object to quickly create RGB images!
+<figure>
+   <a href="{{ site.baseurl }}/images/GIS/cropRaster2.png"><img src="{{ site.baseurl }}/images/GIS/cropRaster2.png"></a>
+ <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
+</figure>
 
-RGBbrick <- brick(rgbRaster)
+
+##Raster Bricks in R
+Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images!
+
+	#create raster brick
+	RGBbrick <- brick(rgbRaster)
  
-
-~~ create raster stack (this means i'll have to create something RGB. it would be simpler and would make more sense. maybe i'll create 3 tiffs from the HDF file. then combine as an RGB tiff.
