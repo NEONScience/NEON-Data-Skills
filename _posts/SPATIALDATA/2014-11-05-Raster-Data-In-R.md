@@ -233,4 +233,13 @@ Now we have a list of rasters in a stack. These rasters are all the same extent 
 
 	#create raster brick
 	RGBbrick <- brick(rgbRaster)
+
+## Write a raster to a Geotiff File in R
+
+We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack, ordering the rasters in the proper - red, green and blue format.
+
+	#Make a new stack in the order we want the data in:
+	finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
+	#write the geotiff
+	writeRaster(finalRGBstack,"rgbRaster.tiff","GTiff", overwrite=TRUE)
  
