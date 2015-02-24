@@ -191,7 +191,7 @@ h1 {
 	margin: 2rem 0 0.625rem 0;
 	font-size: 32px;
 	font-size: 2rem;
-	line-height: .8125
+	line-height: 1.2
 }
 h2 {
 	margin: 30px 0 8px 0;
@@ -4322,6 +4322,27 @@ div.article-author-side h5 a{
 	font-size: 1.5rem;
 	color:#525252
 }
+
+
+	
+/* ################### table Formating ################# */
+
+tbody tr:nth-child(odd) {
+   background-color: #f9f9f9;
+   border-bottom: 1px solid #dddddd;
+   border-top: 1px solid #dddddd;
+}
+
+th {
+    text-align: left;
+    font-family:"PT Sans Narrow",sans-serif;
+    font-size:1.2em;
+}
+
+td {
+    padding: 0.5em;
+}
+
 
 
 .post-date {font-size: 0.85em;
