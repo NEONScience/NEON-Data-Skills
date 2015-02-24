@@ -4353,6 +4353,10 @@ td {
     padding: 0.5em;
 }
 
+td a {
+	border-bottom: 1pm solid #99CCFF;
+}
+
 
 
 .post-date {font-size: 0.85em;
