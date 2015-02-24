@@ -3142,6 +3142,16 @@ top:.42857142857142855rem
 	margin-left: 0
 }
 }
+@media only screen and (min-width:37.5em) {
+#mainWorkshop article {
+	display: inline;
+	float: left;
+	width: 60%;
+	margin-right: 0;
+	margin-left: 0
+}
+}
+
 @media only screen and (min-width:86.375em) {
 #main article {
 	display: inline;
