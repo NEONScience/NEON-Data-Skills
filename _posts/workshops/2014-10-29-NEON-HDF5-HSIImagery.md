@@ -2,6 +2,7 @@
 layout: workshop
 title: "NEON Working With Hyperspectral Imagery in HDF5 Format (R)"
 estimatedTime: 3.0 Hours
+packagesLibraries: RHDF5, DPLYR
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
 lastModified: 2015-2-23 22:11:52

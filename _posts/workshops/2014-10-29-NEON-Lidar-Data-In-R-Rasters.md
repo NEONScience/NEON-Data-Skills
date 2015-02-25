@@ -2,6 +2,7 @@
 layout: workshop
 title: "NEON Working With Lidar Derived Rasters in R"
 estimatedTime: 1.5 - 2.0 Hours
+packagesLibraries: Raster, Sp
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
 lastModified: 2015-2-23 22:11:52
