@@ -15,7 +15,7 @@ image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
-permalink: /HDF5/Working-With-Rasters/
+permalink: /GIS-Spatial-Data/Working-With-Rasters/
 comments: true
 ---
 

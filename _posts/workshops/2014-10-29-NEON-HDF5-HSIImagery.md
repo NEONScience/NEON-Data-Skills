@@ -1,20 +1,20 @@
 ---
 layout: workshop
-title: "NEON Intro to HDF5 Workshop"
-estimatedTime: 3.0 - 3.5 Hours
+title: "NEON Working With Hyperspectral Imagery in HDF5 Format (R)"
+estimatedTime: 3.0 Hours
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
 lastModified: 2015-2-23 22:11:52
 authors: Leah A. Wasser
 tags: [Data-Workshops]
 mainTag: Data-Workshops
-description: "This workshop introduces the concept of Hierarchical Data Formats. Learn what an HDF5 file is. Explore HDF5 files in the free HDFviewer. Create and open HDF5 file sin R."
+description: "This workshop introduces remote sensing hyperspectral imagery. We will review the background of the data, how to open it in R and how to perform basic raster calculations. We will also explore raster data in R."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
-permalink: /Data-Workshops/NEON-HDF5-Beta
+permalink: /Data-Workshops/NEON-HDF5-HyperspectralImagery-In-R
 comments: true 
 ---
 
@@ -22,18 +22,16 @@ comments: true
 
 **Date:** Spring 2015
 
-This workshop will providing hands on experience with working hierarchical data formats(HDF5), and lidar data in R. It will also cover spatial data analysis in R.
-
-<a href="http://lwasser.github.io/08-09-2015_NEON_ESA2015/about/">Read Full Abstract Here.</a>
+This workshop will providing hands on experience with working with hyperspectral imagery in hierarchical data formats(HDF5), in R. It will also cover raster data analysis in R.
 
 <div id="objectives">
 
 <h3>Goals / Objectives</h3>
 After completing this workshop, you will:
 <ol>
-<li>Know what the Hierarchical Data Format (HDF5) is.</li>
-<li>Know How to create and read from HDF5 files in R.</li>
-<li>Know how to read and visualization time series data stored in an HDF5 format.</li>
+<li>Know what the hyperspectral remote sensing data are</li>
+<li>Know How to create and read from HDF5 files containing spatial data in R.</li>
+<li>Know they key attributes of raster data that you need to spatially locate raster data in R.</li>
 </ol>
 
 <h3>Before the Workshop Please</h3>
@@ -56,15 +54,15 @@ After completing this workshop, you will:
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
-| 2:00     | [What is HDF5?]({{ site.baseurl }}/HDF5/About/) |          |
-| 2:30     | [Explore an HDF5 File (HDFviewer)]({{ site.baseurl }}/HDF5/Exploring-Data-HDFView/ "What is HDF5")      |            |
-| 3:00 | [Create an HDF5 file in R]({{ site.baseurl }}/HDF5/Create-HDF5-In-R/ "What is HDF5")          | Coffee     |
-| 4:00 | [Working with and visualizating time series data in HDF5 format]({{ site.baseurl }}/HDF5/Explore-HDF5-Using-R/ "What is HDF5")        | ??         |
-
-
+| 2:00     | [Working with Rasters - general overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/) |          |
+| 2:30     | [Raster Data in R - the skinny]({{ site.baseurl }}/R/Raster-Data-In-R/ "What is HDF5")      |            |
+| 3:00 | [about Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "What is HDF5")          |      |
+| 4:00 | [Working with Hyperspectral Remote Sensing Data in R - P1]({{ site.baseurl }}HDF5/Imaging-Spectroscopy-HDF5-In-R/ "What is HDF5")        | ??         |
+| 4:00 | [Raster Stacks in R - Working with Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ "What is HDF5")          |      |
 
 
 ##Setup
+
 To participate in the workshop, you will need working copies of the software described below. Please make sure to install everything (or at least to download the installers) before the start of the workshop.
 
 #HDFView

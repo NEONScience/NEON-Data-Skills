@@ -1,14 +1,14 @@
 ---
 layout: workshop
-title: "NEON Intro to HDF5 Workshop"
-estimatedTime: 3.0 - 3.5 Hours
+title: "NEON Working With Lidar Derived Rasters in R"
+estimatedTime: 1.5 - 2.0 Hours
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
 lastModified: 2015-2-23 22:11:52
 authors: Leah A. Wasser
 tags: [Data-Workshops]
 mainTag: Data-Workshops
-description: "This workshop introduces the concept of Hierarchical Data Formats. Learn what an HDF5 file is. Explore HDF5 files in the free HDFviewer. Create and open HDF5 file sin R."
+description: "This workshop will present how to work with Lidar Data derived rasters in R. Learn how to import rasters into R. Learn associated key metadata attributed needed to work with raster formats. Analyzing the data performing basic raster math  to create a canopy height model. Export raster results as a (spatially located) geotiff."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
@@ -22,18 +22,16 @@ comments: true
 
 **Date:** Spring 2015
 
-This workshop will providing hands on experience with working hierarchical data formats(HDF5), and lidar data in R. It will also cover spatial data analysis in R.
-
-<a href="http://lwasser.github.io/08-09-2015_NEON_ESA2015/about/">Read Full Abstract Here.</a>
+This workshop will providing hands on experience with working lidar data in raster format in R. It will cover the basics of what lidar data are, and commonly derived data products.
 
 <div id="objectives">
 
 <h3>Goals / Objectives</h3>
 After completing this workshop, you will:
 <ol>
-<li>Know what the Hierarchical Data Format (HDF5) is.</li>
-<li>Know How to create and read from HDF5 files in R.</li>
-<li>Know how to read and visualization time series data stored in an HDF5 format.</li>
+<li>Know what lidar data are and how they're used in science.</li>
+<li>Understand the key lidar data products - Digital Surface model, digitcal terrain model and canopy height model. </li>
+<li>know how to work with, analyze and export results of lidar derived rasters in R.</li>
 </ol>
 
 <h3>Before the Workshop Please</h3>
@@ -50,16 +48,15 @@ After completing this workshop, you will:
 </div>
 
 
-
 ##SCHEDULE
 
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
-| 2:00     | [What is HDF5?]({{ site.baseurl }}/HDF5/About/) |          |
-| 2:30     | [Explore an HDF5 File (HDFviewer)]({{ site.baseurl }}/HDF5/Exploring-Data-HDFView/ "What is HDF5")      |            |
-| 3:00 | [Create an HDF5 file in R]({{ site.baseurl }}/HDF5/Create-HDF5-In-R/ "What is HDF5")          | Coffee     |
-| 4:00 | [Working with and visualizating time series data in HDF5 format]({{ site.baseurl }}/HDF5/Explore-HDF5-Using-R/ "What is HDF5")        | ??         |
+| 2:00     | [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/) |          |
+| 2:10     | [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM")      |            |
+| 2:20 | [Work with Lidar Point Clouds]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
+| 2:40 | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        | ??         |
 
 
 
