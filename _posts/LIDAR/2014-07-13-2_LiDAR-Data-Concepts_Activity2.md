@@ -33,9 +33,8 @@ image:
     <a href="http://neonhighered.org/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
     <a href="http://neonhighered.org/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
     
-    <figcaption>3d models of a: LEFT: lidar derived digital surface model (DSM) , MIDDLE: Digital Elevation Model (DEM) and RIGHT: Canopy Height Model (CHM). Click on the images to view interactive 3d models.</figcaption>
+    <figcaption> 3d models of a: LEFT: lidar derived digital surface model (DSM) , MIDDLE: Digital Elevation Model (DEM) and RIGHT: Canopy Height Model (CHM). Click on the images to view interactive 3d models. </figcaption>
 </figure>
-
 
 
 ## LiDAR Point Clouds -- The Basics  ##
@@ -85,7 +84,7 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 5. We can use a simple grid approach and use basic math to calculate the value for each cell. For example, we might take the mean elevation of all LiDAR points within each cell. This might mean that some cells have no value - which might be ok. 
 6. Or, we can use a more advanced approach that considers the values of points outside of the call in addition to points within the cell to calculate a value. This method - called interpolation .
 7. Interpolation is useful because it can provide us with some ability to predict cell values in areas where there are no data (or no points). And to quantify the error associated with those predictions which is useful to know, if you are doing research. 
-8. You can view a grid in 2dimensions or 3dimensions. <<pan around a 2d hill shade and then a 3d hillshade...>>
+8. You can view a grid in 2dimensions or 3dimensions.
 
 {% include _images.html url="{{ site.baseurl }}/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
