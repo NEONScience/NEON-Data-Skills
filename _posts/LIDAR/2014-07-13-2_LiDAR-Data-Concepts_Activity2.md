@@ -90,8 +90,6 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 {% include _images.html url="{{ site.baseurl }}/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
-<iframe height="300px" width="500px" src="http://neonhighered.org/3d/SJER_CHM_3d.html" > </iframe>
-
 ## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
 
 
