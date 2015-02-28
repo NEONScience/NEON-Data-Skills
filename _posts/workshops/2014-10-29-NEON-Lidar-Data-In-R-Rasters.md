@@ -65,7 +65,7 @@ Please read the following  materials prior to attending
 | 11:00     | Brief Introduction to Raster Data |          |
 | 11:10     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
 | 11:50     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
-| 12:00     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
+| 12:00     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
 | 12:10     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
 | 12:50     | Wrap-up, Feedback, Questions     |         |
 
