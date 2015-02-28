@@ -77,14 +77,11 @@ Lidar Point cloud classification is often already done when you download LiDAR p
 ## Creating A Raster From LiDAR Point Clouds
 There are different ways to create a raster from LiDAR point clouds. Let's look one of the most basic ways to create a raster file points- basic gridding. When you perform a gridding algorithm, you are simply calculating a value, using point data, for each pixels in your raster dataset. To do this:
 
-1. To begin, a grid is placed on top of the LiDAR data in space. each cell in the grid has the same spatial dimensions. These dimensions represent that particular area on the ground. 
-2. So we might overlay a 1m by 1m grid over the LiDAR data points . 
-3. To create the raster file, we simply calculate a value, using the LiDAR points for each 1m cell.
-4. Now there are different algorithms that can be applied to calculate this value. 
-5. We can use a simple grid approach and use basic math to calculate the value for each cell. For example, we might take the mean elevation of all LiDAR points within each cell. This might mean that some cells have no value - which might be ok. 
-6. Or, we can use a more advanced approach that considers the values of points outside of the call in addition to points within the cell to calculate a value. This method - called interpolation .
-7. Interpolation is useful because it can provide us with some ability to predict cell values in areas where there are no data (or no points). And to quantify the error associated with those predictions which is useful to know, if you are doing research. 
-8. You can view a grid in 2 dimensions or 3 dimensions.
+1. To begin, a grid is placed on top of the LiDAR data in space. Each cell in the grid has the same spatial dimensions. These dimensions represent that particular area on the ground. If we want to derive a 1 m resolution raster from the lidar data, we overlay a 1m by 1m grid over the LiDAR data points. 
+2. Within each 1 m x 1 m cell, we calculate a value to be applied to that cell, using the LiDAR points found within that cell. The simplest method of doing this is to take the max, min or mean height value of all lidar points found within the 1 m cell. If we use this approach, we might have cells in the raster that don't contains any lidar points. These cells will have a "no data" value if we process our raster in this way. 
+
+### Point to Raster Methods - Interpolation
+A different approach is to interpolate the value for each cell. Interpolation considers the values of points outside of the cell in addition to points within the cell to calculate a value. Interpolation is useful because it can provide us with some ability to predict or calculate cell values in areas where there are no data (or no points). And to quantify the error associated with those predictions which is useful to know, if you are doing research. 
 
 
 {% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
