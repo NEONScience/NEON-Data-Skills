@@ -28,6 +28,15 @@ image:
 - [Digital Surface Model](http://neonhighered.org/3dRasterLidar/DSM.html) - This represents the top of the surface (so imagine draping a sheet over the canopy of a forest).
 - [Canopy Height Model](http://neonhighered.org/3dRasterLidar/CHM.html) - This represents the elevation of the Earth's surface - and it sometimes also called a DEM or digital elevation model.
 
+<figure class="third">
+    <a href="http://neonhighered.org/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
+    <a href="http://neonhighered.org/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
+    <a href="http://neonhighered.org/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
+    
+    <figcaption>3d models of a: LEFT: lidar derived digital surface model (DSM) , MIDDLE: Digital Elevation Model (DEM) and RIGHT: Canopy Height Model (CHM). Click on the images to view interactive 3d models.</figcaption>
+</figure>
+
+
 
 ## LiDAR Point Clouds -- The Basics  ##
 Each point in a LiDAR dataset has a X, Y, Z value and other attributes. The points may be located anywhere in space are not aligned within any particular grid. <image: LiDAR data point spacing>.
@@ -81,7 +90,7 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 {% include _images.html url="{{ site.baseurl }}/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
-<iframe height="30%" width="70%" scrolling="no" frameborder="1" src="http://neonhighered.org/3d/SJER_CHM_3d.html" > </iframe>
+<iframe height="300px" width="500px" src="http://neonhighered.org/3d/SJER_CHM_3d.html" > </iframe>
 
 ## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
 
