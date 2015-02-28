@@ -87,14 +87,7 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 8. You can view a grid in 2 dimensions or 3 dimensions.
 
 
-<figure>
-   
-    <a href="{{ site.baseurl }}/images/gridding.gif"><img src="{{ site.baseurl }}/images/gridding.gif"></a>
-    
-    <figcaption> Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network</figcaption>
-</figure>
-
-{% include _images.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+{% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
 ## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
