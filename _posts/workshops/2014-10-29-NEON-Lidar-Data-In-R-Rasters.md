@@ -48,27 +48,31 @@ After completing this workshop, you will:
 
 </div>
 
+##Background Materials
+Please read the following  materials prior to attending
+
+* [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)
+* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/) |          |
+* [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM")      | 
+
+
 
 ##SCHEDULE
 
 
-| Time        | Topic         | Instructor | 
-|-------------|---------------|------------|
-| 2:00     | [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/) |          |
-| 2:10     | [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM")      |            |
-| 2:20 | [Work with Lidar Point Clouds]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
-| 2:40 | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        | ??         |
-
+| Time      | Topic         | 		   | 
+|-----------|---------------|------------|
+| 11:00     | Brief Introduction to Raster Data |          |
+| 11:10     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
+| 11:50     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
+| 12:00     | [Work with Lidar Point Clouds]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
+| 12:10     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
+| 12:50     | Wrap-up, Feedback, Questions     |         |
 
 
 
 ##Setup
 To participate in the workshop, you will need working copies of the software described below. Please make sure to install everything (or at least to download the installers) before the start of the workshop.
-
-#HDFView
-
-Hierarchical Data Format 5 (HDF5) is a file format used to store, package, and simultaneously organize large quantities of related data. Although we will use R to analyze data stored in this format, HDFView is free-ware that allows for quick and easy viewing and editing of these files.
-
 
 #R
 
@@ -77,15 +81,16 @@ Hierarchical Data Format 5 (HDF5) is a file format used to store, package, and s
 ## R Packages to Install
 We will use several packages, including 
 
-* <a href = "http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf">rhdf5</a> 
-* <a href = "http://cran.r-project.org/web/packages/rgdal/rgdal.pdf">gdal</a>
-* others?? 
+* Raster
+* Sp
+
+Please be sure to install them prior to attending the workshop `install.packages(Raster)`, install.packages(Sp)
 
 DOWNLOAD 
 
 1. The package installation script <a href="https://github.com/NEONdps/neonESA2014/blob/master/packageInstallation.R">here</a>, 
 2. The <a href = "http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries">gdal</a> libraries, and 
-3. The <a href = "http://www.hdfgroup.org/HDF5/release/obtain5.html">hdf5</a> libraries. 
+
 
 #Optional resources
 
