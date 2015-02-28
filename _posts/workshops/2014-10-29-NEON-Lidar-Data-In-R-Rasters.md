@@ -1,11 +1,11 @@
 ---
 layout: workshop
-title: "NEON Working With Lidar Derived Rasters in R"
+title: "NEON Working With (Lidar Derived) Rasters in R"
 estimatedTime: 1.5 - 2.0 Hours
 packagesLibraries: Raster, Sp
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
-lastModified: 2015-2-23 22:11:52
+lastModified: 2015-2-27 17:11:52
 authors: Leah A. Wasser
 tags: [Data-Workshops]
 mainTag: Data-Workshops
@@ -42,8 +42,8 @@ After completing this workshop, you will:
 
 <p>Install Packages using this script. Package list includes:</p>
 <ul>
-<li>GDAL</li>
-<li>RHDF5 </li>
+<li>Raster</li>
+<li>Sp </li>
 </ul>
 
 </div>
@@ -52,8 +52,8 @@ After completing this workshop, you will:
 Please read the following  materials prior to attending
 
 * [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)
-* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/) |          |
-* [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM")      | 
+* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)
+* [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM") 
 
 
 
@@ -84,7 +84,7 @@ We will use several packages, including
 * Raster
 * Sp
 
-Please be sure to install them prior to attending the workshop `install.packages(Raster)`, install.packages(Sp)
+Please be sure to install them prior to attending the workshop `install.packages(Raster)`, `install.packages(Sp)`
 
 DOWNLOAD 
 
