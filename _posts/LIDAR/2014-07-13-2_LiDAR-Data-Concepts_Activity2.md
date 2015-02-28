@@ -78,9 +78,10 @@ There are different ways to create a raster from LiDAR point clouds. Let's look 
 7. Interpolation is useful because it can provide us with some ability to predict cell values in areas where there are no data (or no points). And to quantify the error associated with those predictions which is useful to know, if you are doing research. 
 8. You can view a grid in 2dimensions or 3dimensions. <<pan around a 2d hill shade and then a 3d hillshade...>>
 
-{% include _images.html url="../../images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+{% include _images.html url="{{ site.baseurl }}/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
+<iframe src="http://neonhighered.org/3d/SJER_CHM_3d.html" style="border:0px #FFFFFF none;" name="myiFrame" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="30%" width="70%"></iframe>
 
 ## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
 

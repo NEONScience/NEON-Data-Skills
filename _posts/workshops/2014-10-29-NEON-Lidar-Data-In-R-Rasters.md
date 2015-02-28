@@ -51,9 +51,9 @@ After completing this workshop, you will:
 ##Background Materials
 Please read the following  materials prior to attending
 
-* [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)
-* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)
-* [Key Lidar Derived Data Products - About the CHM, DEM and DSM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM") 
+* [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/ "Working with Rasters")
+* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/ "About Lidar Data")
+* [3 Raster Lidar Derived Data Products: DEM, DSM, & CHM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM") 
 
 
 
@@ -65,7 +65,7 @@ Please read the following  materials prior to attending
 | 11:00     | Brief Introduction to Raster Data |          |
 | 11:10     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
 | 11:50     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
-| 12:00     | [Work with Lidar Point Clouds]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
+| 12:00     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
 | 12:10     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
 | 12:50     | Wrap-up, Feedback, Questions     |         |
 
@@ -79,12 +79,10 @@ To participate in the workshop, you will need working copies of the software des
 <a href = "http://cran.r-project.org/">R</a> is a programming language that specializes in statistical computing. It is a powerful tool for exploratory data analysis. To interact with R, we recommend, but do not require, <a href="http://www.rstudio.com/">RStudio</a>, an interactive development environment (IDE). 
 
 ## R Packages to Install
-We will use several packages, including 
+Please install the following packages prior to the workshop: 
 
-* Raster
-* Sp
-
-Please be sure to install them prior to attending the workshop `install.packages(Raster)`, `install.packages(Sp)`
+* Raster - `install.packages(Raster)`
+* Sp - `install.packages(Sp)`
 
 DOWNLOAD 
 
