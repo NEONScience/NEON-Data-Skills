@@ -15,8 +15,7 @@ layout:
   <email>{{ site.owner.email }}</email>
 </author>
 
-{% if site.tags["R"] %}
- {% for post in site.tags["R"] %}
+ {% for post in site.tags == 'R' %}
 <entry>
   <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
   <link rel="alternate" type="text/html" href="{{ site.url }}{{ post.url }}" />
@@ -34,7 +33,5 @@ layout:
   &lt;p&gt;&lt;a href=&quot;{{ site.url }}{{ post.url }}&quot;&gt;{{ post.title }}&lt;/a&gt; was originally published by {{ site.owner.name }} at &lt;a href=&quot;{{ site.url }}&quot;&gt;{{ site.title }}&lt;/a&gt; on {{ post.date | date: "%B %d, %Y" }}.&lt;/p&gt;</content>
 </entry>
 {% endfor %}
- {% else %}
-        <p>There are no posts for this tag.</p>
-{% endif %}
+
 </feed>
