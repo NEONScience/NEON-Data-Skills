@@ -15,8 +15,8 @@ layout:
   <email>{{ site.owner.email }}</email>
 </author>
 
-{% if site.tags[R] %}
- {% for post in site.tags[R] %}
+{% if site.tags == "R"] %}
+ {% for post in site.tags == "R" %}
 <entry>
   <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
   <link rel="alternate" type="text/html" href="{{ site.url }}{{ post.url }}" />
