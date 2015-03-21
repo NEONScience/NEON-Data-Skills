@@ -4362,3 +4362,9 @@ td a {
 .post-date {font-size: 0.85em;
 	font-style:italic
 	}
+
+/* ################### code Formating ################# */	
+	
+.hljs {
+	padding:1.4em;
+}	
