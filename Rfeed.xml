@@ -23,7 +23,7 @@ layout:
   {% if post.modified %}<updated>{{ post.modified | to_xmlschema }}T00:00:00-00:00</updated>
   <published>{{ post.date | date_to_xmlschema }}</published>
   {% else %}<published>{{ post.date | date_to_xmlschema }}</published>
-  <updated>{{ post.lastModified | date_to_xmlschema }}</updated>{% endif %}
+  <updated>{{ post.date | date_to_xmlschema }}</updated>{% endif %}
   <author>
     <name>{{ site.owner.name }}</name>
     <uri>{{ site.url }}</uri>
