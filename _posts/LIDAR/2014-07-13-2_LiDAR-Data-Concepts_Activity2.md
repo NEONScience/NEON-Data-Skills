@@ -2,6 +2,10 @@
 layout: post
 title:  "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"
 date:   2014-07-20 20:49:52
+createdDate:   2014-07-21 20:49:52
+lastModified:   2015-1-6 22:33:52
+estimatedTime: 0.25 - 0.5 Hours
+packagesLibraries:
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar]

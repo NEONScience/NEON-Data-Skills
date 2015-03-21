@@ -2,6 +2,10 @@
 layout: post
 title:  "Activity: Free Online Data Viz to Explore LiDAR Data"
 date:   2014-7-19 11:00:52
+createdDate:   2014-07-21 20:49:52
+lastModified:   2015-1-06 22:33:52
+estimatedTime: 0.25 - 0.5 Hours
+packagesLibraries: plas.io website
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar]

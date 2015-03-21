@@ -2,6 +2,10 @@
 layout: post
 title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
 date:   2014-7-18 20:49:52
+createdDate:   2014-07-21 20:49:52
+lastModified:   2015-2-05 22:33:52
+estimatedTime: 3.0 - 3.5 Hours
+packagesLibraries: Raster, sp, Dplyr
 authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing
 categories: [Remote Sensing]
