@@ -4,6 +4,8 @@ title: "HDFView: Exploring HDF5 Files in the Free HDFview Tool"
 date:   2015-1-30 20:49:52
 lastModified:   2015-1-10 20:49:52
 createdDate:   2014-11-19 20:49:52
+estimatedTime: 0.25 - 0.5 Hours
+packagesLibraries: HDFview
 authors: Leah A. Wasser
 categories: [coding-and-informatics]
 category: coding-and-informatics

@@ -4,6 +4,8 @@ title: "About Hyperspectral Remote Sensing Data"
 date:   2015-1-15 20:49:52
 createdDate:   2014-1-10 20:49:52
 lastModified: 2015-2-9 20:49:52
+estimatedTime: 0.25 - 0.5 Hours
+packagesLibraries:
 authors: Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing

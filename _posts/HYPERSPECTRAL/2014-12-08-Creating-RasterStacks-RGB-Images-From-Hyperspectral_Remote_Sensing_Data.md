@@ -4,6 +4,8 @@ title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 date:   2015-1-13 20:49:52
 lastModified: 2015-2-9 20:49:52
 createddate:   2014-11-26 20:49:52
+estimatedTime: 1.0 - 1.5 Hours
+packagesLibraries: RHDF5, Raster
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing

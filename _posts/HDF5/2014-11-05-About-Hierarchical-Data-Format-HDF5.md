@@ -4,6 +4,8 @@ title: "About: Hierarchical Data Formats - What is HDF5?"
 date:   2015-1-31 20:49:52
 dateCreated:   2014-11-27 20:49:52
 lastModified:  2015-2-06 14:49:52
+estimatedTime: 0.25 - 0.5 Hours
+packagesLibraries:
 authors: Leah A. Wasser
 contributors: Elizabeth Webb
 categories: [coding-and-informatics]

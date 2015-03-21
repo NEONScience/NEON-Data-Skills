@@ -4,6 +4,8 @@ title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format i
 date:   2015-1-14 20:49:52
 dateCreated:  2014-11-26 20:49:52
 lastModified: 2015-2-18 11:30:52
+estimatedTime: 1.0 - 1.5 Hours
+packagesLibraries: RHDF5, Raster, Rgdal
 authors: Edmund Hart, Leah A. Wasser
 categories: [remote-sensing]
 category: remote-sensing

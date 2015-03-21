@@ -4,6 +4,8 @@ title: "Working With Temperature Data Collected for Multiple Sites and Stored in
 date:   2015-1-28 20:49:52
 dateCreated:   2014-11-17 20:49:52
 lastModified:   2015-2-06 20:49:52
+estimatedTime: 1.0 - 1.5 Hours
+packagesLibraries: RHDF5, Ggplot
 authors: Ted Hart, Leah A Wasser, Adapted from Software Carpentry Materials
 contributors: Elizabeth Webb
 categories: [coding-and-informatics]
