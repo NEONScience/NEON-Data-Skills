@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "About Hyperspectral Remote Sensing Data"
+title: "Mapping the Invisible - About Optical Remote Sensing Sensors"
 date:   2015-1-15 20:49:52
 createdDate:   2014-1-10 20:49:52
 lastModified: 2015-2-9 20:49:52
@@ -11,7 +11,7 @@ categories: [remote-sensing]
 category: remote-sensing
 tags: [hyperspectral-remote-sensing]
 mainTag: hyperspectral-remote-sensing
-description: "Learn about the fundamental principles of hyperspectral remote sensing data."
+description: "Learn how optical sensors like cameras and remote sensing sensors like Landsat and MODIS work."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
@@ -22,7 +22,6 @@ comments: true
 ---
 
 
-#About Spectral Remote Sensing Sensors
 
 Did you ever wonder how your camera captures images of the things we see outside? This video introduces you to the basic principles of spectral remote sensing. We hope that you enjoy it!
 
