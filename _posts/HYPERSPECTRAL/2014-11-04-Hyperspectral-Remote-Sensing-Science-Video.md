@@ -14,8 +14,8 @@ mainTag: hyperspectral-remote-sensing
 description: "Learn how optical sensors like cameras and remote sensing sensors like Landsat and MODIS work."
 code1: 
 image:
-  feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  feature:  codedpoints2.png
+  credit: Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /Remote-Sensing/Mapping-The-Invisible-Hyperspectral-and-Optical-Sensors/
 comments: true
