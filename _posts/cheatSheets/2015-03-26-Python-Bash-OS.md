@@ -1,6 +1,6 @@
 ---
 layout: post_cheatsheet
-title: "R Studio Cheatsheets - Data Wrangling"
+title: "Managing Files and Folders with Python - OS Library"
 authors: Leah A. Wasser
 date:   2015-03-26 20:49:52
 dateCreated:   

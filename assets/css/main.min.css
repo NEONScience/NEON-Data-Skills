@@ -4429,5 +4429,9 @@ td a {
 	box-shadow: 6px 6px 4px #ccc;
 	border: 1px solid #ccc;
 }
+
+img.load {
+	width: 100%;
+}
 	
 
