@@ -39,7 +39,7 @@ categories: [using lidar data, working with field data, zcarbon links]
 # Links to include in top navigation
 # For external links add external: true
 links:  
-  - title: All Data Tutorials
+  - title: Data Tutorials
     url: /activities/
   
   - title: About
@@ -47,6 +47,9 @@ links:
 
   - title: Data Workshops
     url: /Data-Workshops/
+    
+  - title: R & Python Cheatsheets
+    url: /cheatsheets/
     
   - title: NEON Website
     url: http://neoninc.org

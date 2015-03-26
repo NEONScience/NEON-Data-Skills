@@ -4396,7 +4396,7 @@ td a {
 }
 
 #main #mainCheat article {
-	margin-left:10%;
+	margin-left:15%;
 	margin-right:10%;
 	width:80%;
 }
@@ -4424,6 +4424,10 @@ td a {
     margin-top: 0.4em;
 }
 
-
+.tiles article img {
+	height:11em;
+	box-shadow: 6px 6px 4px #ccc;
+	border: 1px solid #ccc;
+}
 	
 
