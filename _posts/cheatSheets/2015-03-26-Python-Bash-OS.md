@@ -2,7 +2,7 @@
 layout: post_cheatsheet
 title: "R Studio Cheatsheets - Data Wrangling"
 authors: Leah A. Wasser
-date:   2015-03-20 20:49:52
+date:   2015-03-26 20:49:52
 dateCreated:   
 lastModified:  
 category: articles
@@ -13,7 +13,7 @@ sourceRepo: https://github.com/sjspielman/UTbiocomputing2015/tree/master/Cheatsh
 sourceAuthors: April Wrighting, Rebecca Tarvin, Steph Spiel
 image: 
   feature: codingInformatics.jpg
-  teaser: data-wrangling-cheatsheet.png
+  teaser: cheat_PythonBash.png
 permalink: /cheatsheets/R-Data-Wrangling-Cheatsheet
 comments: true
 ---
