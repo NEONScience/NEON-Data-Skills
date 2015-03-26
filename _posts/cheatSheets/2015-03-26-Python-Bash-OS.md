@@ -14,7 +14,7 @@ sourceAuthors: April Wrighting, Rebecca Tarvin, Steph Spiel
 image: 
   feature: codingInformatics.jpg
   teaser: cheat_PythonBash.png
-permalink: /cheatsheets/R-Data-Wrangling-Cheatsheet
+permalink: /cheatsheets/Python-Files-Folders-OS-Cheatsheet
 comments: true
 ---
 
