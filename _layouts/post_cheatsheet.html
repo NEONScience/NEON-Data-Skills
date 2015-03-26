@@ -35,10 +35,6 @@
 {% endif %}
 
 
-
-
-
-
 <div id="main" role="main">
   <div class="article-author-side">
 
@@ -58,7 +54,8 @@
 
     <p>{{ page.description }}</p>
     <strong>Cheatsheet Created By:</strong> {{ page.sourceAuthors }}
-	<br>
+
+	<br><br>
     <a href="{{ page.sourceURL }}" target="_blank" class="btn btn-success">
     {% if page.image.teaser %}
 	<img src="{{ site.url }}/images/{{ page.image.teaser }}" class="load" alt="teaser" itemprop="image">
