@@ -48,7 +48,9 @@ After completing this workshop, you will:
 
 </div>
 
+##Please also watch this video prior to the workshop
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE?rel=0" frameborder="0" allowfullscreen></iframe>
 
 ##SCHEDULE
 
