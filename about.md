@@ -7,7 +7,7 @@ tags: [light detection and ranging, LiDAR, remote sensing, education, ]
 modified: 07-12-2014
 comments: true
 image:
-  feature: aboutBanner.png
+  feature: /banners/aboutBanner.png
   credit: Colin Williams
   creditlink: 
 ---
