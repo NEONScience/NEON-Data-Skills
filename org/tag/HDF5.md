@@ -3,6 +3,11 @@ layout: post_by_tag
 title: 'Articles by tag: HDF5'
 tag: HDF5
 permalink: HDF5/
+image:
+  feature: 
+  credit: National Ecological Observatory Network here
+  creditlink: http://www.neoninc.org
+
 ---
 
 The Hierarchical Data Format version 5 (HDF5), is an open file format that supports large, complex, heterogensous data. Below, you will find a set of activities that focus on teaching key concepts surrounding:
