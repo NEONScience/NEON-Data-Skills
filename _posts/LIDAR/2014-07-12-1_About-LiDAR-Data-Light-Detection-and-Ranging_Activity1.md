@@ -13,8 +13,8 @@ tags : [lidar, R]
 mainTag: lidar
 description: "Explore the basics of how a LiDAR system works and what a LiDAR system measures."
 image:
-  feature: lidar_GrandMesa.jpg
-  credit: BY NEON
+  feature: /banners/codedpoints2.png
+  credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
 comments: true
 ---
