@@ -4,8 +4,8 @@ title: 'Articles by tag: HDF5'
 tag: HDF5
 permalink: HDF5/
 image:
-  feature: 
-  credit: National Ecological Observatory Network here
+  feature: banners/hierarchy_folder_blue.png
+  credit: National Ecological Observatory Network
   creditlink: http://www.neoninc.org
 
 ---
