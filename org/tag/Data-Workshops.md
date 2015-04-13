@@ -5,7 +5,7 @@ tag: Data-Workshops
 permalink: Data-Workshops/
 image:
   feature: chalkboard_1150x287.png
-  credit: 
+  credit: Colin Williams, NEON Inc.
 ---
 
-Below please find a list of tutorials, grouped by theme into cohesive workshops that we will be holding over the next 12 months.
+NEON supports and provides data workshops that teach data analysis, visualization and management skills using tools including R, Python, and others. A few of the workshop materials that have been delivered are listed below. We will be added to this list through time so be sure to come back and check out our latest materials.

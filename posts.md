@@ -5,7 +5,7 @@ title: Data Tutorials & Workshop Groupings
 tagline: A List of Posts
 tags: [R,hdf5,lidar]
 image:
-  feature: activitiesXtag.jpg
+  feature: /banners/activitiesXtag.png
   credit: Colin Williams
 ---
 
