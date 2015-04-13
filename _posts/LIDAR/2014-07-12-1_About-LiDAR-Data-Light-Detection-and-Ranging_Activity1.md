@@ -14,8 +14,8 @@ mainTag: lidar
 description: "Explore the basics of how a LiDAR system works and what a LiDAR system measures."
 image:
   feature: /banners/codedpoints2.png
-  credit: National Ecological Observatory Network
-  creditlink: http://www.neoninc.org
+  credit: National Ecological Observatory Network here
+  creditlink: http://www.neoninc.org 
 comments: true
 ---
 
