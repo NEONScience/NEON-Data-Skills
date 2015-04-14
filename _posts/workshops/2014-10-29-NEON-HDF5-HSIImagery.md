@@ -13,7 +13,7 @@ description: "This workshop introduces remote sensing hyperspectral imagery. We 
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /Data-Workshops/NEON-HDF5-HyperspectralImagery-In-R
 comments: true 
