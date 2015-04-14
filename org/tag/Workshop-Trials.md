@@ -5,7 +5,7 @@ tag: Workshop-Trials
 permalink: Workshop-Trials/
 image:
   feature: remoteSensingBanner.png
-  credit: 
+  credit: Colin Williams NEON, Inc.
 ---
 
 A list of all workshop test runs. 
