@@ -4,7 +4,7 @@ title: 'NEON Data Workshops'
 tag: Data-Workshops
 permalink: Data-Workshops/
 image:
-  feature: chalkboard_1150x287.png
+  feature: chalkboard.png
   credit: Colin Williams, NEON Inc.
 ---
 
