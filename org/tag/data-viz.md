@@ -5,7 +5,7 @@ tag: data-viz
 permalink: data-viz/
 image:
   feature: planeBanner.png
-  credit: National Ecological Observatory Network (NEON)
+  credit: Colin Williams NEON, Inc.
   creditlink: 
 ---
 
