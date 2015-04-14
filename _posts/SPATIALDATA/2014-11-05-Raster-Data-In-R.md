@@ -13,7 +13,7 @@ description: "This post explains the fundamental principles, functions and metad
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /R/Raster-Data-In-R/
 code1: r_RasterFundamentals.R
