@@ -16,7 +16,7 @@ description: "Create a HDF5 in R from scratch! Add groups and datasets. View the
 code1: R_Create_Modify_Hdf5.R
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Create-HDF5-In-R/
 comments: true
