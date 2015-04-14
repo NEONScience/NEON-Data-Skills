@@ -12,7 +12,7 @@ sourceURL: http://neondataskills.org/documents/cheatsheets/Cheatsheet_Python1.pd
 sourceRepo: https://github.com/sjspielman/UTbiocomputing2015/tree/master/Cheatsheets
 sourceAuthors: April Wrighting, Rebecca Tarvin, Steph Spiel
 image: 
-  feature: codingInformatics.jpg
+  feature: codingInformatics.png
   teaser: cheat_pythonNumStr.png
 permalink: /cheatsheets/Python-Number-String-Operators-Cheatsheet
 comments: true
