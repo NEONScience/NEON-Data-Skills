@@ -10,7 +10,7 @@ description: "Nic Webber shared this R-Python-Matlab cheat sheet."
 sourceURL: http://mathesaurus.sourceforge.net/matlab-python-xref.pdf
 code1: 
 image:
-  feature: codingInformatics.jpg
+  feature: codingInformatics.png
   teaser: RPythonMatlab.png
 permalink: /cheatsheets/R-Python-Matlab
 comments: true
