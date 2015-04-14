@@ -5,7 +5,7 @@ tag: HDF5
 permalink: HDF5/
 image:
   feature: hierarchy_folder_blue.png
-  credit: National Ecological Observatory Network
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 
 ---

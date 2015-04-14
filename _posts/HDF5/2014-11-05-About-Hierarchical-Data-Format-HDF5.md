@@ -16,7 +16,7 @@ description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) fil
 code1: 
 image:
   feature: hierarchy_folder.png
-  credit: Colin Williams
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About
 comments: true

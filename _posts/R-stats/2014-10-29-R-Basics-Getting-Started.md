@@ -10,7 +10,7 @@ description: "This activity will present the basics of using R."
 code1: 
 image:
   feature: codedpoints2.png
-  credit: National Ecological Observatory Network
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /R-Programming/Getting-Started-With-R/
 

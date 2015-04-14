@@ -12,7 +12,7 @@ tags : [lidar]
 authors: leah a wasser
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
 image:
-  feature: lidar_GrandMesa.jpg
+  feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
 comments: true

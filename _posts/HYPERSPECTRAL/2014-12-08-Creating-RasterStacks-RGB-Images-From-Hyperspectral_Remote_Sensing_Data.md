@@ -15,7 +15,7 @@ description: "Open up and explore hyperspectral imagery in HDF format R. Combine
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/
 code1: create_rasterStack_R.R

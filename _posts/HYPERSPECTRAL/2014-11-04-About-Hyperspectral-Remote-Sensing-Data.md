@@ -15,7 +15,7 @@ description: "Learn about the fundamental principles of hyperspectral remote sen
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/About-Hyperspectral-Remote-Sensing-Data/
 comments: true

@@ -14,7 +14,7 @@ description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a f
 permalink: /using-lidar-data/1_lidar_derived-data-products/
 code1: Create_Lidar_CHM.R
 image:
-  feature: textur2_pointsProfile.jpg
+  feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
 ---

@@ -15,7 +15,7 @@ description: "Explore HDF5 files and the groups and datasets contained within, u
 code1: 
 image:
   feature: hierarchy_folder_green.png
-  credit: Colin Williams
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Exploring-Data-HDFView
 ---

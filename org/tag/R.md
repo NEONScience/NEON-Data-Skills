@@ -5,7 +5,7 @@ tag: R
 permalink: R/
 image:
   feature: RBanner.png
-  credit: 
+  credit: Colin Williams NEON, Inc.
 ---
 
 This will list all pages with r code.

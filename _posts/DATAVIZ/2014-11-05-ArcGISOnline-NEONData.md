@@ -10,7 +10,7 @@ mainTag: data-viz
 description: "Explore some provisional NEON data that characterizes small mammal abundance and soil N:P ratio data at several NEON sites. Maps created using ESRI ArcGIS online. "
 code1: 
 image:
-  feature: lidar_GrandMesa.jpg
+  feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
 permalink: /GIS/ArcGISOnline/

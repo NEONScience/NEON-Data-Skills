@@ -16,7 +16,7 @@ description: "Explore, extract and visualize temporal temperature data collected
 code1: explore_dataViz.R
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Explore-HDF5-Using-R/
 comments: true

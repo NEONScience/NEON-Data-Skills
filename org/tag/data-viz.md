@@ -4,8 +4,8 @@ title: 'Articles by tag: Data Visualization'
 tag: data-viz
 permalink: data-viz/
 image:
-  feature: /banners/plane.png
-  credit: National Ecological Observatory Network (NEON)
+  feature: planeBanner.png
+  credit: Colin Williams NEON, Inc.
   creditlink: 
 ---
 
