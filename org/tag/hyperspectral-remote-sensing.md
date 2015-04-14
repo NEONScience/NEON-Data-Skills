@@ -4,8 +4,8 @@ title: 'Articles by tag: Hyperspectral Remote Sensing'
 tag: hyperspectral-remote-sensing
 permalink: hyperspectral-remote-sensing/
 image:
-  feature: 
-  credit: 
+  feature: lidar_GrandMesa.png
+  credit: National Ecological Observatory Network
   creditlink: 
 ---
 
