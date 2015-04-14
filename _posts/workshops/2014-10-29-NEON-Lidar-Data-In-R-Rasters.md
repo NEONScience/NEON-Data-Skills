@@ -12,7 +12,7 @@ mainTag: Data-Workshops
 description: "This workshop will present how to work with Lidar Data derived rasters in R. Learn how to import rasters into R. Learn associated key metadata attributed needed to work with raster formats. Analyzing the data performing basic raster math  to create a canopy height model. Export raster results as a (spatially located) geotiff."
 code1: 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: hierarchy_folder_green.png
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /Data-Workshops/NEON-lidar-Rasters-R
