@@ -13,7 +13,7 @@ description: "This workshop will present how to work with Lidar Data derived ras
 code1: 
 image:
   feature: hierarchy_folder_green.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /Data-Workshops/NEON-lidar-Rasters-R
 comments: true 
