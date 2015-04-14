@@ -10,7 +10,7 @@ description: "This activity provides the basics of installing and working with p
 permalink: /R/Packages-In-R/
 image:
   feature: codedFieldwork.png
-  credit: National Ecological Observatory Network (NEON) Higher Education
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 ---
 <section id="table-of-contents" class="toc">
