@@ -11,7 +11,7 @@ description: "This workshop introduces the concept of Hierarchical Data Formats.
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /Data-Workshops/ESA2015R
 comments: true
