@@ -9,7 +9,7 @@ tags : [R]
 description: "This activity provides the basics of installing and working with packaged in R"
 permalink: /R/Packages-In-R/
 image:
-  feature: codedFieldwork1.png
+  feature: codedFieldwork.png
   credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
 ---
