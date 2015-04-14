@@ -5,7 +5,7 @@ tag: lidar
 permalink: lidar/
 image:
   feature: remoteSensingBanner.png
-  credit: 
+  credit: Colin Williams NEON, Inc.
 ---
 
 LiDAR or Light Detection and Ranging is an active remote sensing system that can be used to measure vegetation height across wide areas. The activities on this page will introduce you to the core concepts surrounding:
