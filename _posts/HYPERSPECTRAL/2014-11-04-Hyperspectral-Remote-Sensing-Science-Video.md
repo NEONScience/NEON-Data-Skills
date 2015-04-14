@@ -15,7 +15,7 @@ description: "Learn how optical sensors like cameras and remote sensing sensors 
 code1: 
 image:
   feature:  codedpoints2.png
-  credit: Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /Remote-Sensing/Mapping-The-Invisible-Hyperspectral-and-Optical-Sensors/
 comments: true
