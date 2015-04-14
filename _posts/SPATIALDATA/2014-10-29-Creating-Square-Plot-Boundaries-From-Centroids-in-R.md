@@ -14,7 +14,7 @@ tags : [R, GIS-Spatial-Data]
 description: "This activity walks you through creating square polygons from a plot centroid (x,y format) in R."
 code1: final_PlotBoundaryCode.R
 image:
-  feature: textur2_FieldWork.jpg
+  feature: textur2_FieldWork.png
   credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
   creditlink: http://www.neoninc.org
 permalink: /working-with-field-data/Field-Data-Polygons-From-Centroids
