@@ -14,7 +14,7 @@ description: "This post contains a running list of cheat sheets that i've found 
 code1: 
 image:
   feature: codedpoints2.png
-  credit: National Ecological Observatory Network (NEON)
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /R-Python/Cheatsheets/
 comments: true
