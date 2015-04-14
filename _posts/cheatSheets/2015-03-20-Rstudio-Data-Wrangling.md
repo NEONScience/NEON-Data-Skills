@@ -10,7 +10,7 @@ mainTag:
 description: "Rstudio has developed a series of cheat sheets that are pretty nice. My favorite is the data wrangling cheat sheet!"
 sourceURL: http://www.rstudio.com/resources/cheatsheets/
 image: 
-  feature: codingInformatics.jpg
+  feature: codingInformatics.png
   teaser: data-wrangling-cheatsheet.png
 permalink: /cheatsheets/R-Data-Wrangling-Cheatsheet
 comments: true
