@@ -4,7 +4,7 @@ title: 'Coding and Informatics Activities'
 category: coding-and-informatics
 permalink: coding-and-informatics/
 image:
-  feature: codingInformatics.jpg
+  feature: codingInformatics.png
   credit: 
 ---
 
