@@ -13,7 +13,7 @@ description: "Learn about the key attributes needed to work with raster data in 
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /GIS-Spatial-Data/Working-With-Rasters/
 comments: true
