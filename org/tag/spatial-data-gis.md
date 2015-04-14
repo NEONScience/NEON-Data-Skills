@@ -5,7 +5,7 @@ tag: GIS-Spatial-Data
 permalink: GIS-Spatial-Data/
 image:
   feature: codedFieldJournal.png
-  credit: National Ecological Observatory Network
+  credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org/
 ---
 
