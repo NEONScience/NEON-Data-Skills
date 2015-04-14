@@ -12,7 +12,7 @@ sourceURL: http://neondataskills.org/documents/cheatsheets/Cheatsheet_PythonBash
 sourceRepo: https://github.com/sjspielman/UTbiocomputing2015/tree/master/Cheatsheets
 sourceAuthors: April Wrighting, Rebecca Tarvin, Steph Spiel
 image: 
-  feature: codingInformatics.jpg
+  feature: codingInformatics.png
   teaser: cheat_PythonBash.png
 permalink: /cheatsheets/Python-Files-Folders-OS-Cheatsheet
 comments: true
