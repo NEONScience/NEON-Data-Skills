@@ -188,7 +188,7 @@ For see how to extract square plots using a plot centroid value, check out the [
 ##Working with extracted data 
 Using one of the methods above, we have created the `centre_ovr` object in R. This object contains all of the lidar CHM pixel values contained within our plot boundaries. Next, we will create a new dataframe by pulling the maximum value found within our plots.
 
-	centroids$overlay <- unlist(lapply(cent_ovr,max))
+	centroids$chmMax <- unlist(lapply(cent_ovr,max))
 
 ##Extracting descriptive stats from Insitu Data 
 Now, there are two ways to extract stats from a dataset. The first option is to write each line out. 
