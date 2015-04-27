@@ -41,9 +41,9 @@ A common first analysis using LiDAR data is to derive top of the canopy height v
 <li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a></li>
 </ol>
 
-###Data to Download
+<h2>Data to Download</h2>
 
-Download the raster and *insitu* collected vegetation structure data:
+Download the raster and <i>insitu</i> collected vegetation structure data:
 
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
@@ -61,8 +61,6 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
     install.packages(‘raster’)
     install.packages(‘sp’)
     install.packages(‘dplyr’)
-
-
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -107,9 +105,9 @@ Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is s
     
 	#use the function to create the final CHM
 	#then plot it.
-    #you could use the overlay function here chm <- overlay(dsm,dtm,fun = canopyCalc)
-    #but you can also just perform matrix math to get the same output.
-	chm2 <- canopyCalc(dsm,dtm)
+    #You could use the overlay function here chm <- overlay(dsm,dtm,fun = canopyCalc)
+    #but you can also perform matrix math to get the same output.
+    chm <- canopyCalc(dsm,dtm)
     plot(chm)
 
 	#write out the CHM in tiff format. We can look at this in any GIS software.
