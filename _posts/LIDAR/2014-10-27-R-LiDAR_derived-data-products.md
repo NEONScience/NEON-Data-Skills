@@ -3,9 +3,9 @@ layout: post
 title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
 date:   2014-7-18 20:49:52
 createdDate:   2014-07-21 20:49:52
-lastModified:   2015-2-05 22:33:52
+lastModified:   2015-4-27 15:33:52
 estimatedTime: 3.0 - 3.5 Hours
-packagesLibraries: Raster, sp, Dplyr
+packagesLibraries: raster, sp, dplyr, maptools, rgeos
 authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing
 categories: [Remote Sensing]
@@ -169,8 +169,14 @@ There are a few ways to go about this task. If your plots are circular, then the
 
 ###Variation 2: Extract CHM values Using a Shapefile
 
-If your plot boundaries are saved in a shapefile, you can use the code below. There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you downloaded at the top of this page.
+If your plot boundaries are saved in a shapefile, you can use the code below. There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you downloaded at the top of this page. NOTE: to import a shapefile using the code below, you'll need to have the `maptools` package installed whcih requires the `rgeos` package. Be sure to install them first:
+	
+	#install needed packages
+	`install.packages(rgeos)`
+	`install.packages(maptools)`
 
+	#call the maptools package
+	library(maptools)
 	#extract CHM data using polygon boundaries from a shapefile
 	squarePlot <- readShapePoly("InSitu_Data/SJERPlotCentroids_Buffer.shp")
 	cent_ovr <- extract(chm, squarePlot, weights=FALSE, fun=max)
