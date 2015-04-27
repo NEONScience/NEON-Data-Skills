@@ -197,7 +197,7 @@ Now, there are two ways to extract stats from a dataset. The first option is to 
 
 First select plots that are also represented in our centroid layer. Quick test - how many plots are in the centroid folder?
 
-    insitu_inCentroid <- insitu_dat %.% filter(plotid %in% centroids$Plot_ID)
+    insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
 
 Next, list out plot id results. how many are there?
 
@@ -205,13 +205,13 @@ Next, list out plot id results. how many are there?
 
 Finally, find the max stem height value for each plot. We will compare this value to the max CHM value.
 
-    insitu_maxStemHeight <- insit_inCentroid %.% group_by(plotid) %.% summarise(max = max(stemheight))
+    insitu_maxStemHeight <- insit_inCentroid %>% group_by(plotid) %.% summarise(max = max(stemheight))
 
 ###Option 2 - Extracting Data Using one Line of Code!
 We can be super tricky and combine the above steps into one line of code. See below how this is done. To do this, we can take full advantage of the dplyr package.
 	
 	#find the max and 95th percentile value for all trees within each plot 
-	insitu <- insitu_dat %.% filter(plotid %in% centroids$Plot_ID) %.% group_by(plotid) %.% summarise(quant = quantile(stemheight,.95), max = max(stemheight))
+	insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% group_by(plotid) %>% summarise(quant = quantile(stemheight,.95), max = max(stemheight))
 
 	#assign the final output to a column in our centroids object
 	centroids$insitu <- insitu$max
@@ -219,7 +219,7 @@ We can be super tricky and combine the above steps into one line of code. See be
 ### Plot Data (CHM vs Measured)
 Create the  final plot that compares in situ max tree height to CHM derived max height.
 
-	ggplot(centroids,aes(x=overlay, y =insitu )) + geom_point() + theme_bw() + ylab("Maximum measured height") + xlab("Maximum LiDAR pixel")+geom_abline(intercept = 0, slope=1)+xlim(0, max(centroids[,6:7])) + ylim(0,max(centroids[,6:7]))
+	ggplot(centroids,aes(x=chmMax, y =insitu )) + geom_point() + theme_bw() + ylab("Maximum measured height") + xlab("Maximum LiDAR pixel")+geom_abline(intercept = 0, slope=1)+xlim(0, max(centroids[,6:7])) + ylim(0,max(centroids[,6:7]))
 
 Another option -- A regression plot. Explore with GGPLOT options. Customize your plot.
 
