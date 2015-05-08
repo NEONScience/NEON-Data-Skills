@@ -1,7 +1,7 @@
 ---
 layout: workshop
 title: "NEON Brownbag: Intro to HDF5 Workshop"
-estimatedTime: 3.0 - 3.5 Hours
+estimatedTime: 1.0 Hours
 packagesLibraries: RHDF5, H5PY
 language: [python,R]
 date: 2015-5-08 10:49:52
@@ -82,3 +82,18 @@ please download the H5 viewer prior to coming to the brownbag.</p>
 # Useful HDF5 Resources
 
 * [A set of data tutorials on working with HDF5 in R](http://neondataskills.org/HDF5/ "Working with HDF5 in R")
+
+
+# Python Code to Open HDF5 files
+
+The code below is starter code to create an H5 file in Python.
+
+	import h5py
+
+	# create the new H5 file
+
+	hFile = h5py.File('data/brightPixelsH5/bri' + plot + '.h5', 'a') 
+	#grp = hFile.create_group("Reflectance")
+	#create the reflectance group
+	hFile['Reflectance'] = brightPixels
+	hFile.close()
