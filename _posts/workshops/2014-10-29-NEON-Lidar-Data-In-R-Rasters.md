@@ -41,7 +41,6 @@ After completing this workshop, you will:
 <a href="##" class="btn btn-success"> Eventual Download Data Link</a>
 
 <h4>Install R Packages</h4>
-<p>Install required R Packages: </p>
 <ul>
 <li>Raster</li>
 <li>Sp </li>
