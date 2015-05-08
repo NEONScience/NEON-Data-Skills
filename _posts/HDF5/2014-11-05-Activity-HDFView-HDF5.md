@@ -48,13 +48,11 @@ After completing this activity, you will:
 </div>
 
 ###About Installing HDFView
-Select the HDFView download option that matches the operating system and computer setup (32 bit vs 64 bit) that you have. Also *don't* click on the "(MDF)" link. Click on the operating system name (ie Windows or Mac for java 1.7).
+Select the HDFView download option that matches the operating system and computer
+ setup (32 bit vs 64 bit) that you have. If you are using a windows machine, you 
+can click on the VS 2012 version. Click on the operating system name (ie Windows 
+or Mac).
 
-<figure>
-    <a href="{{ site.baseurl }}/images/HDF5View_Install.png">
-    <img src="{{ site.baseurl }}/images/HDF5View_Install.png"></a>
-    <figcaption>HDFview download options. Click on the operating system name (not the MDF link) to access install files.</figcaption>
-</figure>
 
 ##Review: Hierarchical Data Format 5 - HDF5
 
