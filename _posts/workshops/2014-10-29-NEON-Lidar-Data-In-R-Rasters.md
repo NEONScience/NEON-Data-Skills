@@ -1,7 +1,7 @@
 ---
 layout: workshop
 title: "NEON Working With (Lidar Derived) Rasters in R"
-estimatedTime: 1.5 - 2.0 Hours
+estimatedTime: 3.0 Hours
 packagesLibraries: Raster, Sp
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
@@ -35,21 +35,26 @@ After completing this workshop, you will:
 <li>know how to work with, analyze and export results of lidar derived rasters in R.</li>
 </ol>
 
-<h3>Before the Workshop Please</h3>
-<p>Download All Data Here</p>
+<h3>Things to Do Before the Workshop</h3>
+<h4>Download The Data</h4>
 
 <a href="##" class="btn btn-success"> Eventual Download Data Link</a>
 
-<p>Install Packages using this script. Package list includes:</p>
+<h4>Install R Packages</h4>
+<p>Install required R Packages: </p>
 <ul>
 <li>Raster</li>
 <li>Sp </li>
+<li>Maptools </li>
 </ul>
 
+<h4>Read Background Materials</h4>
+
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" >REad this</a>
 </div>
 
 ##Background Materials
-Please read the following  materials prior to attending
+
 
 * [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/ "Working with Rasters")
 * [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/ "About Lidar Data")
