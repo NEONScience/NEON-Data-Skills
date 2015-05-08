@@ -5,7 +5,7 @@ estimatedTime: 1.5 - 2.0 Hours
 packagesLibraries: Raster, Sp
 date:   2015-1-15 20:49:52
 dateCreated:   2015-2-23 10:49:52
-lastModified: 2015-2-27 17:11:52
+lastModified: 2015-5-08 13:00:52
 authors: Leah A. Wasser
 tags: [Data-Workshops]
 mainTag: Data-Workshops
@@ -21,7 +21,7 @@ comments: true
 
 ###A NEON Data Carpentry Workshop
 
-**Date:** Spring 2015
+**Date:** 14 May 2015
 
 This workshop will providing hands on experience with working lidar data in raster format in R. It will cover the basics of what lidar data are, and commonly derived data products.
 
@@ -62,12 +62,12 @@ Please read the following  materials prior to attending
 
 | Time      | Topic         | 		   | 
 |-----------|---------------|------------|
-| 11:00     | Brief Introduction to Raster Data |          |
-| 11:10     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
-| 11:50     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
-| 12:00     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
-| 12:10     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
-| 12:50     | Wrap-up, Feedback, Questions     |         |
+| 12:00     | Brief Introduction to Raster Data |          |
+| 12:15     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
+| 1:15     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
+| 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
+| 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
+| 2:50     | Wrap-up, Feedback, Questions     |         |
 
 
 
