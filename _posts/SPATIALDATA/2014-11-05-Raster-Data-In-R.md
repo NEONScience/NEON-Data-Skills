@@ -30,11 +30,12 @@ comments: true
 </div>
 </section><!-- /#table-of-contents -->
 
+##About
+This activity will walk you through the fundamental principles of working 
+with raster data in R.
+**R Skill Level:** Intermediate
+
 <div id="objectives">
-<h3>About</h3>
-</p>This activity will walk you through the fundamental principles of working 
-with raster data in R.</p>
-<strong>R Skill Level:</strong> Intermediate
 
 <h3>Goals / Objectives</h3>
 After completing this activity, you will know:
@@ -44,7 +45,7 @@ After completing this activity, you will know:
 <li>How to perform basic calculations using rasters in R.</li>
 </ol>
 
-<h3>What you'll Need</h3>
+<h3>Things You'll Need To Complete This Lesson</h3>
 <ul>
 <li>R or R studio to write your code.</li>
 <li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
@@ -55,17 +56,17 @@ here for videos on installing GDAL on a MAC and a PC.</a></li>
 <h3>Data to Download</h3>
 
 Download the raster and *insitu* collected vegetation structure data:
-<b>Part 1 data</b>
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a>
-<b>Part 2 data</b>
-<a href="http://www.neondataskills.org/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
+<ul>
+<li><a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a></li>
+<li><a href="http://www.neondataskills.org/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
+</ul>
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
 collected over the San Joachim field site located in California (NEON Domain 17) 
 and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be access by request from the NEON website.</p>  
 
-<h3>Pre-reqs</h3>
+<h3>Recommended Reading</h3>
 <ul>
 <li>
 <a href="http://http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/">

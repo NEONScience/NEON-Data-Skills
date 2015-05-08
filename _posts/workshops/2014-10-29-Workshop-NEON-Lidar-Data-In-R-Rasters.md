@@ -23,7 +23,7 @@ comments: true
 
 **Date:** 14 May 2015
 
-This workshop will providing hands on experience with working lidar data in raster format in R. It will cover the basics of what lidar data are, and commonly derived data products.
+This workshop will provide hands on experience with working lidar data in raster format in R. It will cover the basics of what lidar data are and commonly derived data products.
 
 <div id="objectives">
 
@@ -64,7 +64,7 @@ After completing this workshop, you will:
 | Time      | Topic         | 		   | 
 |-----------|---------------|------------|
 | 12:00     | Brief Introduction to Raster Data |          |
-| 12:15     | [Working with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
+| 12:15     | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
 | 1:15     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
 | 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
 | 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
