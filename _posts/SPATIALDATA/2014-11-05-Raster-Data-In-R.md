@@ -16,7 +16,7 @@ image:
   credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /R/Raster-Data-In-R/
-code1: r_RasterFundamentals.R
+code1: /R/raster-data-in-R.R
 comments: true
 ---
 
@@ -96,7 +96,7 @@ raster dataset. Each pixel in the Landsat derived raster represents a landcover
 class.</figcaption>
 </figure>
 
-To work with rasters in R, we need two key libraries, `GDAL` and `Raster`. 
+To work with rasters in R, we need two key libraries, `sp` and `Raster`. 
 Let's start by loading these into r. To install the raster library you can use 
 `install.packages(‘raster’)`.
 
@@ -113,7 +113,7 @@ that tells R to paste the working directory into the path, and then it tells it
 to add the location of the raster layer.
 
 	#load raster in an R objected called 'DEM'
-	DEM <- raster(paste(getwd(), "/path here/SJER2013_DTM.tif", sep = ""))  # Tmin for January
+	DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
 	#next, let's look at the attributes of the raster. 
 	DEM
 	
@@ -174,43 +174,63 @@ OUTPUT:
 
 #Cropping Rasters in R
 
-You can crop rasters in R using different methods. You can crop the raster right in the plot area. To do this, first plot the raster. Then define the crop extent by clicking twice: 1) click in the upper left hand corner where you want the crop box to begin. Then click again in the lower RIGHT hand corner where the box ends. you'll see a red box on the plot. NOTE that this method is a manual process. But it's cool to know how to do.
+You can crop rasters in R using different methods. You can crop the raster directly 
+in the plot area. To do this, first plot the raster. Then define the crop extent 
+by clicking twice: 
 
-	
-	#first, click in the upper left hand corner where you want the crop to begin
-	# next click somewhere in the lower right hand corner to define the bottom right corner of your extent box you will see
-	#note: this is a manual process!
+1. Click in the upper left hand corner where you want the crop 
+box to begin. 
+2. Click again in the lower RIGHT hand corner to define where the box ends.
+ 
+You'll see a red box on the plot. NOTE that this is a manual process that can be
+used to quickly define a crop extent.
+
+	#plot the DEM
 	plot(DEM)
+	#Define the extent of the crop by clicking on the plot
 	cropBox <- drawExtent()
 	#crop the raster then plot the new cropped raster
 	DEMcrop <- crop(DEM, cropBox)
 	plot(DEMcrop)
 
-You can also manually assign the coordinate to use to crop. You'll need the extent defined as (xmin,xmax,ymin,ymax) to do this. This is how you'd crop using a GIS shapefile (with a rectangular shape)
+You can also manually assign the extent coordinates to be used to crop a raster. 
+We'll need the extent defined as (`xmin`, `xmax`, `ymin` , `ymax`) to do this. 
+This is how we'd crop using a GIS shapefile (with a rectangular shape)
 
 	cropbox2 <-c(255077.3,257158.6,4109614,4110934)
 	DEMcrop2 <- crop(DEM, cropbox2)
 	plot(DEMcrop2)
 
 
-## Part 2 - Working with multiple rasters within Raster Stacks and Raster Bricks
-We've now loaded a raster into R. We've also made sure we knew the CRS (coordinate reference system) and extent of the dataset among other key metadata attributes. Next, let's create a raster stack from 3 raster images.
+## Working with multiple rasters within Raster Stacks and Raster Bricks
+We've now loaded a raster into R. We've also made sure we knew the `CRS` 
+(coordinate reference system) and extent of the dataset among other key metadata 
+attributes. Next, let's create a raster stack from 3 raster images.
 
-A raster stack is a collection of raster layers. Each raster layer in the stack needs to be in the same projection (CRS), spatial extent and resolution. You might use raster stacks for different reasons. For instance, you might want to group a time series of rasters representing precipitation or temperature into one R object. In part 2, we will stack 3 bands from a multi-band image together to create a final RGB image.
+A raster stack is a collection of raster layers. Each raster layer in the stack 
+needs to be in the same projection (CRS), spatial extent and resolution. You 
+might use raster stacks for different reasons. For instance, you might want to 
+group a time series of rasters representing precipitation or temperature into 
+one R object. 
 
-The difficult way to do this is to load our rasters one at a time. But we're over that!
+In this lesson, we will stack 3 bands from a multi-band image together to create 
+a final RGB image.
+
+The difficult way to do this is to load our rasters one at a time. But that takes
+ a good bit of effort. 
 
 	#import tiffs
 	band19 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band19.tif"
 	band34 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band34.tif"
 	band58 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band58.tif"
 
-We can also just use the list.files command to grab all of the files in a directory.
+We can also use the list.files command to grab all of the files in a directory.
 
 	#create list of files to make raster stack
-	#path to files
-	tifPath <- (paste(getwd(),"/rasterLayers_tif",sep = ""))
-	rasterlist <- list.files(tifPath)
+	rasterlist <-  list.files('rasterLayers_tif')
+
+	#Let's change our working directory to where our tif files are located.
+	setwd("~/1_Workshops/05-14-2015_NEON_Raster_R/rasterLayers_tif")
 
 	#create raster stack
 	rgbRaster <- stack(rasterlist)

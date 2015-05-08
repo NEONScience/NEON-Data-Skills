@@ -3,16 +3,21 @@
 #load the raster package
 library(raster)
 library(sp)
-#Set your working directory 
 
+#Set your working directory to the folder where you saved the data
+#for this lesson.
 #setwd("~/Documents/WorkshopData/")
 
 setwd("C:/Users/lwasser/Documents/WorkshopData/ESAWorkshop_data/Part3_LiDAR")
 
 #setwd("C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/")
 #DEMTiff <- "/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
-DEMTiff <- "/DigitalTerrainModel/SJER2013_DTM.tif"
-DEM <- raster(paste(getwd(),DEMTiff,sep=""))
+DEMTiff <- "DigitalTerrainModel/SJER2013_DTM.tif"
+ 
+#DEM <- raster(paste(getwd(),DEMTiff,sep=""))
+
+#import the raster
+DEM <- raster(DEMTiff)
 
 #notice that this raster already has a CRS and an extent assigned to it
 DEM@crs
@@ -48,16 +53,19 @@ plot(DEMcrop2)
 
 #next we'll work with the rasters in the rasterLayers_tif folder. 
 #to begin let's tell R where we're working
-setwd("C:/Users/lwasser/Documents/WorkshopData/rasterLayers_tif")
 
-#setwd(paste(getwd(),"/rasterLayers_tif",sep = ""))
 
 #create list of files to make raster stack
-#list files in the working directory 
-rasterlist <- list.files()
+#list files in the rasterLayers_tif directory within the main working directory 
+rasterlist <- list.files('rasterLayers_tif')
+
+#let's shift our working directory to where our tif files are located.
+setwd("~/1_Workshops/05-14-2015_NEON_Raster_R/rasterLayers_tif")
 
 #create raster stack
 rgbRaster <- stack(rasterlist)
+
+
 
 #you can also expore the data
 hist(rgbRaster)
