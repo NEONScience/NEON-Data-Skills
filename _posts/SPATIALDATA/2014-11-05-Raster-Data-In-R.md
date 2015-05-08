@@ -46,6 +46,8 @@ After completing this activity, you will know:
 </ol>
 
 <h3>Things You'll Need To Complete This Lesson</h3>
+
+<h4>Tools & Libraries To Install</h4>
 <ul>
 <li>R or R studio to write your code.</li>
 <li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
@@ -53,12 +55,12 @@ here for videos on installing GDAL on a MAC and a PC.</a></li>
 </ul>
 
 
-<h3>Data to Download</h3>
+<h4>Data to Download</h4>
 
 Download the raster and *insitu* collected vegetation structure data:
 <ul>
-<li><a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a></li>
-<li><a href="http://www.neondataskills.org/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
+<li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a></li>
+<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
 </ul>
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
@@ -66,10 +68,10 @@ collected over the San Joachim field site located in California (NEON Domain 17)
 and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be access by request from the NEON website.</p>  
 
-<h3>Recommended Reading</h3>
+<h4>Recommended Pre-Lesson Reading</h4>
 <ul>
 <li>
-<a href="http://http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/">
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/">
 Please read "Working With Rasters in R, Python and other NON gui tools.</a>
 </li>
 <li>
@@ -83,25 +85,32 @@ Read more about the Raster Package in R.</a>
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
 each pixel represents an area "land" on the ground. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
-that location in the real world. <a href="http://neondataskills.org/HDF5/Working-With-Rasters/">
-More on rasters here</a>. 
+that location in the real world. 
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/"> More on 
+rasters here</a>. 
 
 <figure>
-   <figcaption>Raster showing land cover??</figcaption>
+	<img src="{{ site.baseurl }}/images/GIS/NLCD06_conus_lg.gif">
+   <figcaption>The National Land Cover dataset is an example of a commonly used 
+raster dataset. Each pixel in the Landsat derived raster represents a landcover
+class.</figcaption>
 </figure>
 
-To work with rasters in R, you will want two key packages, `GDAL` and `Raster`. 
-Let's start by loading these into r. To install the raster package you can use 
+To work with rasters in R, we need two key libraries, `GDAL` and `Raster`. 
+Let's start by loading these into r. To install the raster library you can use 
 `install.packages(‘raster’)`.
 
 	#load the raster and sp packages
 	library(raster)
 	library(sp)
-	#Set your working directory 
+	#Set your working directory to the folder where your data for this workshop
+	#are stored 
 	setwd("~/yourWorkingDirectoryHere")  
 	
 
-Next, let's load the raster into R. Notice that we're using some clever code that tells R to paste the working directory into the path, and then it tells it to add the location of the raster layer.
+Next, let's load the raster into R. Notice that we're using some clever code 
+that tells R to paste the working directory into the path, and then it tells it 
+to add the location of the raster layer.
 
 	#load raster in an R objected called 'DEM'
 	DEM <- raster(paste(getwd(), "/path here/SJER2013_DTM.tif", sep = ""))  # Tmin for January
