@@ -4,7 +4,7 @@ title: "Raster Data in R - The Basics"
 date:   2015-1-26 20:49:52
 authors: Leah A. Wasser
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-02-18 12:30:52
+lastModified: 2015-05-08 14:30:52
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
@@ -37,10 +37,9 @@ with raster data in R.</p>
 <strong>R Skill Level:</strong> Intermediate
 
 <h3>Goals / Objectives</h3>
-This activity is under development
 After completing this activity, you will know:
 <ol>
-<li>what a raster dataset is and it's fundamental attributes.</li>
+<li>What a raster dataset is and it's fundamental attributes.</li>
 <li>How to work with the raster package to import rasters into R</li>
 <li>How to perform basic calculations using rasters in R.</li>
 </ol>
