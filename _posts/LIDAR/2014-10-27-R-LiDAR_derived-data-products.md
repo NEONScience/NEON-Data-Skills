@@ -17,6 +17,7 @@ image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON) Higher Education
   creditlink: http://www.neoninc.org
+comments:true
 ---
 <section id="table-of-contents" class="toc">
   <header>
