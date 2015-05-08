@@ -50,15 +50,12 @@ After completing this workshop, you will:
 
 <h4>Read Background Materials</h4>
 
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" >REad this</a>
+<ul>
+<li><a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" >The basics of working with Rasters in tools like R and Python</a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
+</ul>
 </div>
-
-##Background Materials
-
-
-* [Working with Rasters: An overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/ "Working with Rasters")
-* [About Lidar Data]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/ "About Lidar Data")
-* [3 Raster Lidar Derived Data Products: DEM, DSM, & CHM]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2// "Lidar Derived Data Products - CHM, DEM, DSM") 
 
 
 

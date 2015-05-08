@@ -32,7 +32,8 @@ comments: true
 
 <div id="objectives">
 <h3>About</h3>
-</p>This activity will walk you through the fundamental principles of working with raster data in R.</p>
+</p>This activity will walk you through the fundamental principles of working 
+with raster data in R.</p>
 <strong>R Skill Level:</strong> Intermediate
 
 <h3>Goals / Objectives</h3>
@@ -47,7 +48,8 @@ After completing this activity, you will know:
 <h3>What you'll Need</h3>
 <ul>
 <li>R or R studio to write your code.</li>
-<li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a></li>
+<li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
+here for videos on installing GDAL on a MAC and a PC.</a></li>
 </ul>
 
 
@@ -59,27 +61,38 @@ Download the raster and *insitu* collected vegetation structure data:
 <b>Part 2 data</b>
 <a href="http://www.neondataskills.org/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
 
-<p>The LiDAR and imagery data used to create the rasters in this dataset were collected over the San Joachim field site located in California (NEON Domain 17) and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> headquarters. The entire dataset can be access by request from the NEON website.</p>  
+<p>The LiDAR and imagery data used to create the rasters in this dataset were 
+collected over the San Joachim field site located in California (NEON Domain 17) 
+and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
+headquarters. The entire dataset can be access by request from the NEON website.</p>  
 
 <h3>Pre-reqs</h3>
 <ul>
 <li>
-<a href="http://neondataskills.org/HDF5/Working-With-Rasters/">Please consider reading the background page on rasters, by clicking here.</a>
+<a href="http://http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/">
+Please read "Working With Rasters in R, Python and other NON gui tools.</a>
 </li>
 <li>
-<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Read more about the Raster Package in R.</a>
+<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
+Read more about the Raster Package in R.</a>
 </li>
 </ul>
 </div>
 
 #About Raster Data
-Raster or "gridded" data are data that are saved in pixels. In the spatial world, each pixel represents an area "land" on the ground. For example in the raster below, each pixel represents a particular land cover class that would be found in that location in the real world. <a href="http://neondataskills.org/HDF5/Working-With-Rasters/">More on rasters here</a>. 
+Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
+each pixel represents an area "land" on the ground. For example in the raster 
+below, each pixel represents a particular land cover class that would be found in 
+that location in the real world. <a href="http://neondataskills.org/HDF5/Working-With-Rasters/">
+More on rasters here</a>. 
 
 <figure>
    <figcaption>Raster showing land cover??</figcaption>
 </figure>
 
-To work with rasters in R, you will want two key packages, `GDAL` and `Raster`. Let's start by loading these into r. To install the raster package you can use `install.packages(‘raster’)`.
+To work with rasters in R, you will want two key packages, `GDAL` and `Raster`. 
+Let's start by loading these into r. To install the raster package you can use 
+`install.packages(‘raster’)`.
 
 	#load the raster and sp packages
 	library(raster)
