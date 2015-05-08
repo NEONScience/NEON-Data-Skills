@@ -38,7 +38,7 @@ temperature data.
 <p>We will use the data below in our brownbag. Please download it in advance.</p>
 
 <ul>
-<li><a href="##" class="btn btn-success"> NEON Temperature Data: Sample H5 
+<li><a href="http://neondataskills.org/data/NEON_TowerDataD3_D10.hdf5" class="btn btn-success"> NEON Temperature Data: Sample H5 
 Structure</a></li>
 <li><a href="##" class="btn btn-success"> NEON Hyperspectral Data: Sample Data
 </a></li>
