@@ -42,7 +42,7 @@ temperature data.
 Structure</a></li>
 <li><a href="##" class="btn btn-success"> NEON Hyperspectral Data: Sample Data
 </a></li>
-<li><a href="##" class="btn btn-success"> EOS Sample Data</a></li>
+<li><a href="http://neonhighered.org/Data/HDF5/1B.GPM.GMI.TB2014.20150325-S175130-E192403.006085.V03C.HDF5" class="btn btn-success"> EOS Sample Data</a></li>
 
 </ul>
 
