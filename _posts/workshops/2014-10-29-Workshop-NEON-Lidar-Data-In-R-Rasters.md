@@ -31,8 +31,10 @@ This workshop will provide hands on experience with working lidar data in raster
 After completing this workshop, you will:
 <ol>
 <li>Know what lidar data are and how they're used in science.</li>
-<li>Understand the key lidar data products - Digital Surface model, digitcal terrain model and canopy height model. </li>
-<li>know how to work with, analyze and export results of lidar derived rasters in R.</li>
+<li>Understand the key lidar data products - Digital Surface model, digital 
+terrain model and canopy height model. </li>
+<li>know how to work with, analyze and export results of lidar derived rasters 
+in R.</li>
 </ol>
 
 <h3>Things to Do Before the Workshop</h3>
@@ -69,7 +71,7 @@ Or you can download the script below and run it to install all libraries at once
 
 </ul>
 
-<a href="{{ site.baseurl }}/code/R/raster-data-in-R.R" class="btn btn-success"> 
+<a href="{{ site.baseurl }}/code/R/install-for-raster-wkshp.R" class="btn btn-success"> 
 Download Script to Install Packages in R</a>
 
 <h4>Read Background Materials</h4>

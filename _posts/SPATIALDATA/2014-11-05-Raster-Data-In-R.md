@@ -189,6 +189,10 @@ better for rendering larger rasters.
 	col=terrain.colors(5)
 	image(DEM, zlim=c(250,300), col=col)
 
+	#and we can specify the breaks we wish to use
+	brk <- c(250, 300, 350, 400,450,500)
+	image(DEM, zlim=c(250,300), col=col, breaks=brk)
+
 
 ## Challenge Yourself
 

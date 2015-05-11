@@ -26,12 +26,16 @@ DEM@extent
 #this means less work for us!
 DEM
 #let's create a plot of our raster
-plot(DEM)
+plot(DEM, legend=T)
 
 #the image command allows you to plot more pixels
-image(DEM)
+plot(DEM)
 #specify the range of values that you want to plot
-image(DEM, zlim=c(250,300))
+plot(DEM, zlim=c(250,300))
+
+#add breaks to the colormap
+brk <- c(250, 300, 350, 400,450,500)
+plot(DEM, zlim=c(250,300), col=col, breaks=brk)
 
 
 #here's the cool part. you can crop the raster right in the plot area
