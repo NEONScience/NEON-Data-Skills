@@ -9,7 +9,7 @@ packagesLibraries: raster, sp, dplyr, maptools, rgeos
 authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing
 categories: [Remote Sensing]
-tags : [lidar,R]
+tags : [lidar, R]
 description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
 permalink: /lidar-data/lidar-data-rasters-in-R/
 code1: Create_Lidar_CHM.R
