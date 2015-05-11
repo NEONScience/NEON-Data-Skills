@@ -12,8 +12,8 @@ mainTag: GIS-Spatial-Data
 description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
 code1: 
 image:
-  feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
 permalink: /R/Raster-Data-In-R/
 code1: /R/raster-data-in-R.R
@@ -265,6 +265,10 @@ rasters.
 
 	#create list of files to make raster stack
 	rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE)
+
+NOTE: If your list of rasters is located in your main R working director, you can
+achieve the same results as above by looking for all files with a '.tif' extension:
+ 'rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tiff")'. 
 
 	#create raster stack
 	rgbRaster <- stack(rasterlist)

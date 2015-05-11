@@ -12,8 +12,8 @@ mainTag: GIS-Spatial-Data
 description: "Learn about the key attributes needed to work with raster data in tools like R, Python and QGIS."
 code1: 
 image:
-  feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
 permalink: /GIS-Spatial-Data/Working-With-Rasters/
 comments: true

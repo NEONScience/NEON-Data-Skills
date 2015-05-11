@@ -61,13 +61,13 @@ You can chose to install each library individually if you already have some inst
 Or you can download the script below and run it to install all libraries at once.
 
 <ul>
-<li>raster - `install.packages("raster")`</li>
-<li>sp (installs with the raster library) - `install.packages("sp")` </li>
-<li>rgdal - `install.packages("rgdal")`</li>
-<li>maptools - `install.packages("maptools")`</li>
-<li>ggplot2 - `install.packages("ggplot2")`</li>
-<li>rgeos - `install.packages("rgeos")`</li>
-<li>dplyr - `install.packages("dplyr")`</li>
+<li>raster - install.packages("raster")</li>
+<li>sp (installs with the raster library) - install.packages("sp") </li>
+<li>rgdal - install.packages("rgdal")</li>
+<li>maptools - install.packages("maptools")</li>
+<li>ggplot2 - install.packages("ggplot2")</li>
+<li>rgeos - install.packages("rgeos")</li>
+<li>dplyr - install.packages("dplyr")</li>
 
 </ul>
 
