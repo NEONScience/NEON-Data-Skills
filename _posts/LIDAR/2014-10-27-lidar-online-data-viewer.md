@@ -60,7 +60,7 @@ Enough reading, let's open some NEON LiDAR data!
  
 ## 1. Open a .las file in plas.io ###
 
-1. Download the NEON prepackaged lidar dataset [-->RIGHT CLICK Here to download<--](http://www.neoninc.org/NEONedu/Data/LidarActivity/data.htm "SAMPLE NEON LiDAR Data") if you haven't already.
+1. Download the NEON prepackaged lidar dataset [-->RIGHT CLICK Here to download<--](http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data") if you haven't already.
 2. The file is named: r_filtered_256000_4111000.las 
 2. When the download is complete, drag the file r_filtered_256000_4111000.las into the <a href="http://plas.io" target="_blank"> plas.io website.</a> window.
 3. Zoom and pan around the data

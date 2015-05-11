@@ -58,7 +58,8 @@ to run the code below.
 
 Download the raster and <i>insitu</i> collected vegetation structure data:
 
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a>
+<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
+DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
 </div>
 

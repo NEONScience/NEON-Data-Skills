@@ -38,13 +38,20 @@ After completing this workshop, you will:
 <h3>Things to Do Before the Workshop</h3>
 <h4>Download The Data</h4>
 
-<a href="##" class="btn btn-success"> Eventual Download Data Link</a>
+<a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
+ DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
+<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
+DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
+<a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
+Download Lidar Pint Cloud Data</a>
 
 <h4>Install R Packages</h4>
 <ul>
 <li>Raster</li>
 <li>Sp </li>
-<li>Maptools </li>
+<li>Maptools</li>
+<li>Rgeos</li>
+
 </ul>
 
 <h4>Read Background Materials</h4>
