@@ -73,8 +73,8 @@ Download NEON Lidar Point Cloud Data</a>
 | 12:00     | Brief Introduction to Raster Data |          |
 | 12:15     | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
 | 1:15     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
-| 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/ "Working With Lidar Point Clouds")          |     |
-| 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/using-lidar-data/1_lidar_derived-data-products/ "Working with Lidar Rasters in R")        |         |
+| 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/lidar-data/online-data-viewer/ "Working With Lidar Point Clouds")          |     |
+| 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/ "Working with Lidar Rasters in R")        |         |
 | 2:50     | Wrap-up, Feedback, Questions     |         |
 
 

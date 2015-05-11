@@ -26,18 +26,23 @@ comments: true
 In this activity, we will explore lidar data point clouds and learn:
 
 1. How to visualize lidar point clouding using a free online data viewer 
-2. About some of the attributes associated with discrete return lidar points including intensity, classification and RGB values.
+2. About some of the attributes associated with discrete return lidar points including 
+intensity, classification and RGB values.
 3. About the .las and .laz lidar file formats (standard lidar point cloud formats).
 
 ## What you Need  ##
-1. Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io website.</a>
+1. Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io 
+website.</a>
 2. Your very own, sparking personality.
-3. Download lidar data collected by NEON AOP (National ecological observatory network, airborne observation platform). <a href="http://www.neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR Point Cloud Data</a>
+3. Download lidar data collected by NEON AOP (National ecological observatory network, 
+airborne observation platform). <a href="http://www.neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR Point Cloud Data</a>
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
 ##Quick Review -- LiDAR File Formats
-LiDAR data are most often available as discrete points. Although, remember that these data can be collected by the lidar instrument, in either discrete or full waveform, formats. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
+LiDAR data are most often available as discrete points. Although, remember that these data 
+can be collected by the lidar instrument, in either discrete or full waveform, formats. 
+A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
 ".las" is the commonly used file format to store LIDAR point cloud data. This format is supported by the <a href="http://www.asprs.org/" target="_blank"> American Society of Photogrammetry and Remote sensing (ASPRS)</a>. Recently, the <a href="http://www.laszip.org/" target="_blank">.laz</a> format has been  developed by Martin Isenberg of LasTools. Laz is a highly compressed version of .las.
 
