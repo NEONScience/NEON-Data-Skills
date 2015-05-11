@@ -15,10 +15,7 @@ description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a f
 permalink: /lidar-data/lidar-data-rasters-in-R/
 comments:true
 code1: Create_Lidar_CHM.R
-image:
-  feature: textur2_pointsProfile.png
-  credit: National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+
 ---
 
 
@@ -33,7 +30,7 @@ image:
 </section><!-- /#table-of-contents -->
 
 
-##Background
+## Background ##
 NEON (National Ecological Observatory Network) will provide derived LiDAR products as one of its many free ecological data products. One data product that NEON will provide is a digital surface model which represents the top of the surface elevation of objects on the earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which is simply a raster format, that is spatially located on the earth. Geotiffs can be easily accessed using the `raster` package in R.
 
 A common first analysis using LiDAR data is to derive top of the canopy height values from the LiDAR data. These values are often used to track changes in forest structure over time, to calculate biomass, and even LAI. Let's dive into the basics of working with raster formatted lidar data in R! Before we begin, make sure you've downloaded the data required to run the code below.
