@@ -51,7 +51,7 @@ to run the code below.
 <h3>What you'll need</h3>
 <ol>
 <li>R or R studio loaded on your computer </li>
-<li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click here for videos on installing GDAL on a MAC and a PC.</a></li>
+<li>rgdal, dplyr, raster, maptools, libraries installed on you computer.</li>
 </ol>
 
 <h2>Data to Download</h2>
@@ -61,11 +61,12 @@ Download the raster and <i>insitu</i> collected vegetation structure data:
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
 DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
+<h3>Recommended Reading</h3>
+[Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.](http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
 </div>
 
 > NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
-> 
-> Before walking through this activity, you may want to review the DSM, DTM and CHM discussion in the Raster LiDAR Data here.
+
 
 ###Required R Packages
 Please make sure the following packages are installed: Raster, sp, dplyr. 
@@ -75,6 +76,8 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
     install.packages(‘raster’)
     install.packages(‘sp’)
     install.packages(‘dplyr’)
+    install.packages(‘rgdal’)
+	install.packages(‘ggplot2’)
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -132,6 +135,7 @@ accomplish this. You might perform the SAME raster math in a GIS package like
     chm <- canopyCalc(dsm,dtm)
     plot(chm)
 
+
 	#write out the CHM in tiff format. We can look at this in any GIS software.
     #note that the code below places the output in an "outputs" folder. 
     #you need to create this folder or else you will get an error.
@@ -140,15 +144,22 @@ accomplish this. You might perform the SAME raster math in a GIS package like
 Woo hoo! We've now successfully created a canopy height model using basic raster math - in 
 R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.  
 
-##Part 2. How does our CHM data compare to field measured tree heights?
 
-So now we have a canopy height model. however, how does that dataset compare to our 
+## Challenge
+
+> 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color map of 3 colors. Add a title to your plot.
+> 2. Look at a histogram of your data. Are there sets of breaks that make more sense than 0,10, 20 and 30 meters? experiment with producing a final map that provides useful information.
+
+
+## Part 2. How does our CHM data compare to field measured tree heights?
+
+We now have a canopy height model. However, how does that dataset compare to our 
 laboriously collected, field measured height data? Let's see.
 
-For this activity, we have two csv (comma separate value) files. The first file contains 
-plot centroid location information (X,Y) where we measured trees. The second file contains 
-our vegetation structure data for each plot. Let's start by plotting the plot locations 
-(in red) on a map. 
+For this activity, we have two csv (comma separate value) files. The first file 
+contains plot centroid location information (X,Y) where we measured trees. The 
+second file contains our vegetation structure data for each plot. Let's start by 
+plotting the plot locations (in red) on a map. 
 
 We will need to convert the plot centroids to a spatial points dataset in R. To do this 
 we'll need two additional packages - the spatial package - 
@@ -219,7 +230,7 @@ to install them first:
 	#call the maptools package
 	library(maptools)
 	#extract CHM data using polygon boundaries from a shapefile
-	squarePlot <- readShapePoly("InSitu_Data/SJERPlotCentroids_Buffer.shp")
+	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
 	cent_ovr <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
 ###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile

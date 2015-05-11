@@ -1,44 +1,33 @@
 #this code will extract lidar derived cnaopy height data from plots that were measured in situ. the final activity will involve plotting measured vs lidar vegetation height.
-
 #because we will be exporting data in this activity, let's set the working directory before we go any further.
-setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")
 
-# C:\Users\lwasser\Documents\Conferences\1_DataWorkshop_ESA2014\ESAWorkshop_data\Part3_LiDAR
-#mac
-# ~\Users\law\Documents\data\CHM_InSitu_Data\
 
 # Import DSM into R 
 #please note that the raster package also requires and will load the sp package
 library(raster)
 
 # IMPORTANT - the path to your DSM data may be different than the path below.  
-dsm_f <- "C:/Users/lwasser/Documents/workshopData/ESAWorkshop_data/Part3_LiDAR/DigitalSurfaceModel/SJER2013_DSM.tif"
-#dsm_f <- "/Users/law/Documents/data/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
+dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
+
 dsm <- raster(dsm_f)
 ## See info about the raster. notice it has a CRS associated with it.
 dsm
-plot(dsm)
+plot(dsm, main="NEON Digital Surface Model")
 
 # import the digital terrain model
-dtm_f <- "C:/Users/lwasser/Documents/workshopData/ESAWorkshop_data/Part3_LiDAR/DigitalTerrainModel/SJER2013_DTM.tif"
-#mac 
-#dtm_f <- "/Users/law/Documents/data/CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif"
-
+dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
 dtm <- raster(dtm_f)
-plot(dtm)
+plot(dtm, main="NEON Digital Terrain Model")
 
 ## Create a function that performs this raster math. Canopy height is dsm - dtm
 canopyCalc <- function(x, y) {
   return(x - y)
 }
 
-#use the function to create the final CHM
-#chm <- overlay(dsm,dtm,fun = canopyCalc)
-
 #or just call the function
 chm <- canopyCalc(dsm,dtm)
 ### a little raster math
-plot(chm)
+plot(chm, main = "Canopy Height Model - tree height")
 
 #write out the CHM in tiff format. We can look at this in any GIS software.
 writeRaster(chm,"outputs/chm2.tiff","GTiff")
@@ -51,14 +40,9 @@ library(dplyr)
 #import the centroid data and the vegetation structure data
 options(stringsAsFactors=FALSE)
 
-# Please note that the syntax for a path is slightly different between mac and pc.
-#mac
-#centroids <- read.csv("/Users/law/Documents/data/CHM_InSitu_Data/InSitu_Data/SJERPlotCentroids.csv")
-#insitu_dat <- read.csv("/Users/law/Documents/data/CHM_InSitu_Data/InSitu_Data/D17_2013_vegStr.csv")
-
-#pc
-centroids <- read.csv("/Users/lwasser/Documents/workshopData/ESAWorkshop_data/InSitu_Data/SJERPlotCentroids.csv")
-insitu_dat <- read.csv("/Users/lwasser/Documents/workshopData/ESAWorkshop_data/InSitu_Data/D17_2013_vegStr.csv")
+#import CSV files
+centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
+insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
 
 #Overlay the centroid points and the stem locations on top of CHM plot.
 points(centroids$easting,centroids$northing, pch=22, cex = 4,col = 2)

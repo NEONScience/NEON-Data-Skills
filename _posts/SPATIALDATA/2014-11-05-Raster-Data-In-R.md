@@ -268,7 +268,7 @@ rasters.
 
 NOTE: If your list of rasters is located in your main R working director, you can
 achieve the same results as above by looking for all files with a '.tif' extension:
- 'rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tiff")'. 
+ `rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tiff")`. 
 
 	#create raster stack
 	rgbRaster <- stack(rasterlist)
