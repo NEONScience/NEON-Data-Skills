@@ -83,6 +83,12 @@ Structure</a></li>
 
 * [A set of data tutorials on working with HDF5 in R](http://neondataskills.org/HDF5/ "Working with HDF5 in R")
 
+## Python resources for HDF5:
+1. [Downloads, docs, etc on GitHub]( http://www.h5py.org/ )
+2. [O’Reilly book on Python and HDF5! The modern stamp of legitimacy for programming.](https://www.hdfgroup.org/HDF5/examples/api18-py.html) 
+3. [Python examples from the HDF5 people themselves!](https://www.hdfgroup.org/HDF5/examples/api18-py.html)
+
+
 
 # Python Code to Open HDF5 files
 
