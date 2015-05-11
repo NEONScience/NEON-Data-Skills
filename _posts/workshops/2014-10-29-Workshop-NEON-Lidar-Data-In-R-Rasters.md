@@ -45,14 +45,32 @@ DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
 <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
 Download NEON Lidar Point Cloud Data</a>
 
+<h4>Setup RStudio</h4>
+To participate in the workshop, we recommend that you come with R and RSTUDIO 
+installed. <a href = "http://cran.r-project.org/">R</a> is a programming language 
+that specializes in statistical computing. It is a powerful tool for exploratory
+ data analysis. To interact with R, we STRONGLY recommend 
+<a href="http://www.rstudio.com/">RStudio</a>, an interactive development 
+environment (IDE). 
+
+
 <h4>Install R Packages</h4>
+You can chose to install each library individually if you already have some installed.
+Or you can download the script below and run it to install all libraries at once.
+
 <ul>
-<li>Raster</li>
-<li>Sp </li>
-<li>Maptools</li>
-<li>Rgeos</li>
+<li>raster - `install.packages("raster")`</li>
+<li>sp (installs with the raster library) - `install.packages("sp")` </li>
+<li>rgdal - `install.packages("rgdal")`</li>
+<li>maptools - `install.packages("maptools")`</li>
+<li>ggplot2 - `install.packages("ggplot2")`</li>
+<li>rgeos - `install.packages("rgeos")`</li>
+<li>dplyr - `install.packages("dplyr")`</li>
 
 </ul>
+
+<a href="{{ site.baseurl }}/code/R/raster-data-in-R.R" class="btn btn-success"> 
+Download Script to Install Packages in R</a>
 
 <h4>Read Background Materials</h4>
 
@@ -70,32 +88,13 @@ Download NEON Lidar Point Cloud Data</a>
 
 | Time      | Topic         | 		   | 
 |-----------|---------------|------------|
-| 12:00     | Brief Introduction to Raster Data |          |
+| 12:00     | [Brief Introduction to Raster Data]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/) |          |
 | 12:15     | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
-| 1:15     | Brief Overview of Lidar Data & Lidar derived rasters     |            |
+| 1:15     | [Brief Overview of Lidar Data & Lidar derived rasters]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)     |            |
 | 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/lidar-data/online-data-viewer/ "Working With Lidar Point Clouds")          |     |
 | 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/ "Working with Lidar Rasters in R")        |         |
 | 2:50     | Wrap-up, Feedback, Questions     |         |
 
-
-
-##Setup
-To participate in the workshop, you will need working copies of the software described below. Please make sure to install everything (or at least to download the installers) before the start of the workshop.
-
-#R
-
-<a href = "http://cran.r-project.org/">R</a> is a programming language that specializes in statistical computing. It is a powerful tool for exploratory data analysis. To interact with R, we recommend, but do not require, <a href="http://www.rstudio.com/">RStudio</a>, an interactive development environment (IDE). 
-
-## R Packages to Install
-Please install the following packages prior to the workshop: 
-
-* Raster - `install.packages(Raster)`
-* Sp - `install.packages(Sp)`
-
-DOWNLOAD 
-
-1. The package installation script <a href="https://github.com/NEONdps/neonESA2014/blob/master/packageInstallation.R">here</a>, 
-2. The <a href = "http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries">gdal</a> libraries, and 
 
 
 #Optional resources

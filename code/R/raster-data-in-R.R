@@ -28,6 +28,12 @@ DEM
 #let's create a plot of our raster
 plot(DEM)
 
+#the image command allows you to plot more pixels
+image(DEM)
+#specify the range of values that you want to plot
+image(DEM, zlim=c(250,300))
+
+
 #here's the cool part. you can crop the raster right in the plot area
 #first define the extent by running the line of code below
 #first, click in the upper left hand corner where you want the crop to begin
@@ -57,14 +63,11 @@ plot(DEMcrop2)
 
 #create list of files to make raster stack
 #list files in the rasterLayers_tif directory within the main working directory 
-rasterlist <- list.files('rasterLayers_tif')
-
-#let's shift our working directory to where our tif files are located.
-setwd("~/1_Workshops/05-14-2015_NEON_Raster_R/rasterLayers_tif")
+#note the use of full.names=TRUE This tells R to include the directory path.
+rasterlist <- list.files('rasterLayers_tif',full.names=TRUE)
 
 #create raster stack
 rgbRaster <- stack(rasterlist)
-
 
 
 #you can also expore the data

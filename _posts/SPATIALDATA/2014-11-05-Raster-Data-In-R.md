@@ -96,15 +96,18 @@ raster dataset. Each pixel in the Landsat derived raster represents a landcover
 class.</figcaption>
 </figure>
 
-To work with rasters in R, we need two key libraries, `sp` and `Raster`. 
+To work with rasters in R, we need two key libraries, `sp` and `raster`. 
 Let's start by loading these into r. To install the raster library you can use 
-`install.packages(‘raster’)`.
+`install.packages(‘raster’)`. When you install the raster library, `sp` should 
+also install. It is also suggested that you install the `rgdal` library" 
+`install.packages(‘rgdal’)`.
 
 	#load the raster and sp packages
 	library(raster)
 	library(sp)
 	#Set your working directory to the folder where your data for this workshop
-	#are stored 
+	#are stored. NOTE: if you created a project file in R studio, then you don't
+	#need to setup the working directory as it's part of the project.
 	setwd("~/yourWorkingDirectoryHere")  
 	
 
@@ -169,8 +172,36 @@ OUTPUT:
 	names       : SJER2013_DSM 
 
 
+## Image vs Plot
+
+R has an `image` function that allows you to better control the way a raster is
+rendered on the screen. The `plot` command in R has a base setting for the number
+of pixels that it will plot (100,000 pixels). The image command thus might be 
+better for rendering larger rasters.
+
 	#let's create a plot of our raster
-	plot(DEM)
+	image(DEM)
+	#specify the range of values that you want to plot in the DEM
+	#just plot pixels between 250 and 300 m
+	image(DEM, zlim=c(250,300))
+
+	#we can specify the colors too
+	col=terrain.colors(5)
+	image(DEM, zlim=c(250,300), col=col)
+
+
+## Challenge Yourself
+
+1. What happens if you change the number of colors in the terrain.colors command?
+
+[More on colors here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on colors.")
+
+[Another good post on colors.](http://www.r-bloggers.com/color-palettes-in-r/)
+
+2. What happens if you change the zlim values in the image command?
+3. What are the other attributes that you can specify when using the image command?
+
+
 
 #Cropping Rasters in R
 
@@ -225,18 +256,19 @@ The difficult way to do this is to load our rasters one at a time. But that take
 	band58 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band58.tif"
 
 We can also use the list.files command to grab all of the files in a directory.
+We can use `full.names=TRUE` to ensure R stores the directory path in our list of
+rasters.
 
 	#create list of files to make raster stack
-	rasterlist <-  list.files('rasterLayers_tif')
-
-	#Let's change our working directory to where our tif files are located.
-	setwd("~/1_Workshops/05-14-2015_NEON_Raster_R/rasterLayers_tif")
+	rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE)
 
 	#create raster stack
 	rgbRaster <- stack(rasterlist)
 
 	#check to see that you've created a raster stack and plot the layers
 	rgbRaster
+	#view histogram of data
+	hist(rgbRaster)
 	plot(rgbRaster)
 
 
