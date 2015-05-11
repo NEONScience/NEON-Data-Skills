@@ -10,6 +10,7 @@ authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar, R]
+mainTag: lidar
 description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
 permalink: /lidar-data/lidar-data-rasters-in-R/
 comments:true
@@ -18,7 +19,6 @@ image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
-
 ---
 
 

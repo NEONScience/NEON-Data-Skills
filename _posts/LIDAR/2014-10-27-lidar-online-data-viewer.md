@@ -9,6 +9,7 @@ packagesLibraries: plas.io website
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar]
+mainTag: lidar
 authors: leah a wasser
 permalink: /lidar-data/online-data-viewer/
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."

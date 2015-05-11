@@ -9,6 +9,7 @@ packagesLibraries:
 category: remote-sensing
 categories: [Remote Sensing]
 tags : [lidar]
+mainTag: lidar
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 image:
   feature: lidar_GrandMesa.png
