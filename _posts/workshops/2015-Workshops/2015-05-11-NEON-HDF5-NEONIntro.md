@@ -57,12 +57,8 @@ Structure</a></li>
 </li>
 </ul>
 
-
-
-<ul>
-<li><a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
- viewer here</a></li>
-</ul>
+<a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
+ viewer here</a>
 
 <h3>Please review the following:</h3>
 <ul>
