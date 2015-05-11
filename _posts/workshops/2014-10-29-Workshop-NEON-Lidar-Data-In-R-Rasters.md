@@ -43,7 +43,7 @@ After completing this workshop, you will:
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
 DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
 <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
-Download Lidar Point Cloud Data</a>
+Download NEON Lidar Point Cloud Data</a>
 
 <h4>Install R Packages</h4>
 <ul>
