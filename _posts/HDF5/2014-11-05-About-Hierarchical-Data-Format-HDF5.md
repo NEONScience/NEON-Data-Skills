@@ -110,7 +110,7 @@ HDF5 files can store many different types of data within in the same file. For e
 - A set of images that cover one or more areas (each image can have specific spatial information associated with it - all in the same file)
 - A multi or hyperspectral spatial dataset that contains thousands of bands.
 - Field data for several sites characterizing insects, mammals, vegetation and climate.
-- And more much!
+- And much more!
 
 ## Open Format 
 The HDF5 format is open and free to use. The supporting libraries (and a free viewer), can be downloaded from the <a href="http://www.hdfgroup.org" target="_blank">HDF Group </a> website.  As such, it has wide support in a host of programs including open source programming languages like `R` and `Python`, commercial programming tools like `Matlab` and `IDL`. Spatial data, stored in HDF5 format can be used in GIS and imaging programs including `QGIS`, `ArcGIS`, and `ENVI`.
