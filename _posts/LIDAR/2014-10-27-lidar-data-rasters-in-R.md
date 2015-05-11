@@ -12,12 +12,7 @@ categories: [Remote Sensing]
 tags : [lidar, R]
 description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
 permalink: /lidar-data/lidar-data-rasters-in-R/
-code1: Create_Lidar_CHM.R
-image:
-  feature: textur2_pointsProfile.png
-  credit: National Ecological Observatory Network (NEON) Higher Education
-  creditlink: http://www.neoninc.org
-comments:true
+
 ---
 <section id="table-of-contents" class="toc">
   <header>
