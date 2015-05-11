@@ -51,7 +51,11 @@ Structure</a></li>
 <p>The free H5 viewer will allow you to explore H5 data, using a graphic interface. 
 </p>
 
+<ul>
+<li>
 <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank" class="btn btn-success"> HDF5 viewer can be downloaded from this page.</a>
+</li>
+</ul>
 
 
 
