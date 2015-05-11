@@ -67,7 +67,7 @@ cent_ovr <- extract(chm,centroid_sp,buffer = 20)
 
 
 library(maptools)
-squarePlot <- readShapePoly("/Users/lwasser/Documents/workshopData/ESAWorkshop_data/InSitu_Data/SJERPlotCentroids_Buffer.shp")
+squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
 cent_ovr2 <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
 
