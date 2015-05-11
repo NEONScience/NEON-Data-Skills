@@ -62,7 +62,7 @@ Download the raster and <i>insitu</i> collected vegetation structure data:
 DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
 <h3>Recommended Reading</h3>
-[Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.](http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+<a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.</a>
 </div>
 
 > NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
