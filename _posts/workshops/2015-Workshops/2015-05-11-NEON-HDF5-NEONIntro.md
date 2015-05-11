@@ -40,7 +40,7 @@ Please review, download and setup the following, prior to attending the brownbag
 <ul>
 <li><a href="http://neondataskills.org/data/HDF_AOPSampleOSBS/NEON_TowerDataD3_D10.hdf5" class="btn btn-success"> NEON Temperature Data: Sample H5 
 Structure</a></li>
-<li><a href="http://neonhighered.org/Data/HDF5/NIS1_20140507_143910_atmcor.h5" class="btn btn-success"> NEON Hyperspectral Data: Sample Data
+<li><a href="http://neonhighered.org/Data/HDF5/HDF_AOPSampleOSBS/NIS1_20140507_143910_atmcor.h5" class="btn btn-success"> NEON Hyperspectral Data: Sample Data
 </a></li>
 <li><a href="http://neonhighered.org/Data/HDF5/1B.GPM.GMI.TB2014.20150325-S175130-E192403.006085.V03C.HDF5" class="btn btn-success"> EOS Sample Data</a></li>
 
