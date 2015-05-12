@@ -241,9 +241,53 @@ For see how to extract square plots using a plot centroid value, check out the
 ##Working with extracted data 
 Using one of the methods above, we have created the `centre_ovr` object in R. This object 
 contains all of the lidar CHM pixel values contained within our plot boundaries. Next, we 
-will create a new dataframe by pulling the maximum value found within our plots.
+will create a new column in our dataframe that represents the max height value for all pixels
+within each plot boundary. To do this, we will use the `sapply` function. The `sapply` function
+aggregates elements in the list using a aggregate function such as mean, max or min that we
+specify in our code.
 
-	centroids$chmMax <- unlist(lapply(cent_ovr,max))
+## Sapply Example
+
+	a = c(2, 3, 5, 7) 
+ 	b = c(23, 13, 45, 57) 
+	c = c(2, 1, 4, 5) 
+	#create a list
+	x= list(a,b,c)
+
+	x
+	
+The list looks like: 
+	
+	[[1]]
+	[1] 2 3 5 7
+
+	[[2]]
+	[1] 23 13 45 57
+
+	[[3]]
+	[1] 2 1 4 5
+
+Let's call elements from the list
+
+	# grab the first two elements of the second list in the x object
+	x[[2]][1:2]
+
+Calculate summary
+
+	# grab the max value from each list in our object x
+	summary= sapply(x,max)
+	
+OUTPUT:
+
+	[1]  7 57  5
+
+<a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">More about
+the apply functions in R.</a>
+
+In this case, we'll use the `sapply` command to return the `max` height value for pixels in each plot. 
+Given we are working with lidar data, the max value will represent the tallest trees in the plot.
+
+	centroids$chmMax <- sapply(cent_ovr, max)
 
 ##Extracting descriptive stats from Insitu Data 
 Now, there are two ways to extract stats from a dataset. The first option is to write each 
