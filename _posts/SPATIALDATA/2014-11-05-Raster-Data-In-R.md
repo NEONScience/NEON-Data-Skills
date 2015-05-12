@@ -50,11 +50,7 @@ After completing this activity, you will know:
 <h4>Tools & Libraries To Install</h4>
 <ul>
 <li>R or R studio to write your code.</li>
-<!-- Doesn't seem like this is necessary for this tutorial 
-<li>GDAL libraries installed on your computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
-here for videos on installing GDAL on a MAC and a PC.</a></li>
--->
-<li>R packages <code>raster</code> and <code>rgdal</code>
+<li>R packages `raster` and `rgdal`
 </ul>
 
 
@@ -79,7 +75,7 @@ Please read "Working With Rasters in R, Python and other NON gui tools.</a>
 </li>
 <li>
 <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the <code>raster</code> package in R.</a>
+Read more about the `raster` package in R.</a>
 </li>
 </ul>
 </div>
@@ -154,10 +150,7 @@ Notice a few things about this raster.
 
 ##Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key metadata.
-<!-- I think it would be better to not grab class attributes - use the object instead
-		DEM@crs -->
-	DEM$crs
-	<!-- DEM@extent -->
+	DEM@crs
 	DEM$extent
 	#plot the raster
 	plot(DEM)
@@ -320,12 +313,10 @@ Now we have a list of rasters in a stack. These rasters are all the same extent 
 
 	#create raster brick
 	RGBbrick <- brick(rgbRaster)
-	
-	<!-- can we visualize this brick as a single image? I tried a couple options but not sure how this helps me more than the stack, other than I can save a single geotiff file to open in some other program. -->
 
 ## Write a raster to a Geotiff File in R
 
-We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack, ordering the rasters in the proper - red, green and blue format.
+We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack with the rasters in the proper order - red, green and blue format.
 
 	#Make a new stack in the order we want the data in: 
 	finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
