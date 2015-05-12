@@ -73,11 +73,11 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
 
 [More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R")
 
-    install.packages(‘raster’)
-    install.packages(‘sp’)
-    install.packages(‘dplyr’)
-    install.packages(‘rgdal’)
-	install.packages(‘ggplot2’)
+    install.packages('raster')
+    install.packages('sp')
+    install.packages('dplyr')
+    install.packages('rgdal')
+	install.packages('ggplot2')
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -127,7 +127,7 @@ accomplish this. You might perform the SAME raster math in a GIS package like
 	#is dsm - dtm
     canopyCalc <- function(x, y) {
       return(x - y)
-      }
+    }
     
 	#use the function to create the final CHM
 	#then plot it.
@@ -245,7 +245,8 @@ Before we go any further, it's good to look at the distribution of values we've 
 Let's create a histogram of the data.
 
 	# create a histogram
-	hist(cent_ovr[[2]]
+	hist(cent_ovr)  #LEAH - check this. you had the histogram indexed by [[2]], which was 
+                       #    the value of the second element in the list (so no histogram)
 
 If we wanted, we could loop through several plots and create histograms using a for loop.
 
@@ -253,7 +254,7 @@ If we wanted, we could loop through several plots and create histograms using a 
 	
 	for (i in 1:5) {
 	  hist(cent_ovr[[i]], main=(paste("plot",i)))
-	   }
+	}
 
 
 # Challenge
@@ -272,11 +273,11 @@ specify in our code.
 
 ## Sapply Example
 
-	a = c(2, 3, 5, 7) 
- 	b = c(23, 13, 45, 57) 
-	c = c(2, 1, 4, 5) 
+	a <- c(2, 3, 5, 7)
+    b <- c(23, 13, 45, 57) 
+	c <- c(2, 1, 4, 5) 
 	#create a list
-	x= list(a,b,c)
+	x <- list(a,b,c)
 
 	x
 	
@@ -299,7 +300,7 @@ Let's call elements from the list
 Calculate summary
 
 	# grab the max value from each list in our object x
-	summary= sapply(x,max)
+	summary <- sapply(x,max)
 	
 OUTPUT:
 
@@ -322,7 +323,10 @@ line out.
 First select plots that are also represented in our centroid layer. Quick test - how many 
 plots are in the centroid folder?
 
-    insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
+    insitu_inCentroid <- insitu_dat[insitu_dat$plotid %in% centroids$Plot_ID,] 
+
+    #Optional - create this dataframe using dplyr
+    #insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
 
 Next, list out plot id results. how many are there?
 
@@ -330,19 +334,33 @@ Next, list out plot id results. how many are there?
 
 Finally, find the max stem height value for each plot. We will compare this value to the 
 max CHM value.
+ 
+    #Here, we use the aggregate function, the arguments of which are: 
+    #      the data on which you want to calculate something ~ the grouping variable
+    #      the FUNction
+    insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
+                insitu_inCentroid$plotid, FUN = max )  
+ 
+    #And make the dataframe prettier by assigning names to the columns
+    names(insitu_maxStemHeight) <- c('plotid','max')
 
-    insitu_maxStemHeight <- insit_inCentroid %>% 
-    	group_by(plotid) %>% 
-    	summarise(max = max(stemheight))
+    #Optional - create this dataframe using dplyr
+    #insitu_maxStemHeight <- insitu_inCentroid %>% 
+    #	group_by(plotid) %>% 
+    #	summarise(max = max(stemheight))
 
 ###Option 2 - Extracting Data Using one Line of Code!
 We can be super tricky and combine the above steps into one line of code. See below how 
 this is done. To do this, we can take full advantage of the dplyr package.
 	
-	#find the max and 95th percentile value for all trees within each plot 
-	insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
-		      group_by(plotid) %>% 
-		      summarise(quant = quantile(stemheight,.95), max = max(stemheight))
+	#add the max and 95th percentile value for all trees within each plot
+    insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid$stemheight, 
+                    insitu_inCentroid$plotid, quantile, prob = 0.95))
+
+    #Optional - create this dataframe using dplyr
+	#insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
+	#	      group_by(plotid) %>% 
+	#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
 
 	#assign the final output to a column in our centroids object
 	centroids$insitu <- insitu$max
