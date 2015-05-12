@@ -50,7 +50,7 @@ After completing this activity, you will know:
 <h4>Tools & Libraries To Install</h4>
 <ul>
 <li>R or R studio to write your code.</li>
-<li>R packages `raster` and `rgdal`
+<li>R packages `raster` and `rgdal` </li>
 </ul>
 
 
