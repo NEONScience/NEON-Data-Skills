@@ -92,15 +92,16 @@ derived digital surface model (DSM). Then we will import and plot the DSM.
 
 	#Because we will be exporting data in this activity, let's set the
 	#working directory before we go any further. The working directory 
-	#will determine where data are saved.
-	setwd("~/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data")    
+	#will determine where data are saved. If you already have an R studio project
+	#setup you can skip this step!
+	setwd("yourPathHere")    
 
     #Import DSM into R 
     library(raster)
     	
 	#IMPORTANT - the path to your DSM data may be different than the 
 	#path below.  
-    dsm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/SJER2013_DSM.tif"
+    dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
     
     dsm <- raster(dsm_f)
     ## See info about the raster.
@@ -113,7 +114,7 @@ ground (terrain) elevation.
 
 
     #import the digital terrain model
-    dtm_f <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalTerrainModel/SJER2013_DTM.tif"
+    dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
     dtm <- raster(dtm_f)
     plot(dtm)
 
