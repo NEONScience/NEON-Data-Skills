@@ -151,7 +151,7 @@ Notice a few things about this raster.
 ##Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key metadata.
 	DEM@crs
-	DEM$extent
+	DEM@extent
 	#plot the raster
 	plot(DEM)
 
@@ -313,6 +313,7 @@ Now we have a list of rasters in a stack. These rasters are all the same extent 
 
 	#create raster brick
 	RGBbrick <- brick(rgbRaster)
+	plotRGB(RGBbrick,r=3,g=2,b=1, scale=800, stretch = "Lin")
 
 ## Write a raster to a Geotiff File in R
 
