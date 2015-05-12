@@ -40,8 +40,8 @@ with raster data in R.
 <h3>Goals / Objectives</h3>
 After completing this activity, you will know:
 <ol>
-<li>What a raster dataset is and it's fundamental attributes.</li>
-<li>How to work with the raster package to import rasters into R</li>
+<li>What a raster dataset is and its fundamental attributes.</li>
+<li>How to work with the raster package to import rasters into R.</li>
 <li>How to perform basic calculations using rasters in R.</li>
 </ol>
 
@@ -50,14 +50,17 @@ After completing this activity, you will know:
 <h4>Tools & Libraries To Install</h4>
 <ul>
 <li>R or R studio to write your code.</li>
-<li>GDAL libraries installed on you computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
+<!-- Doesn't seem like this is necessary for this tutorial 
+<li>GDAL libraries installed on your computer. <a href="https://www.youtube.com/watch?v=ZqfiZ_J_pQQ&list=PLLWiknuNGd50NbvZhydbTqJJh5ZRkjuak" target="_blank">Click 
 here for videos on installing GDAL on a MAC and a PC.</a></li>
+-->
+<li>R packages <code>raster</code> and <code>rgdal</code>
 </ul>
 
 
 <h4>Data to Download</h4>
 
-Download the raster and *insitu* collected vegetation structure data:
+Download the raster and *in situ* collected vegetation structure data:
 <ul>
 <li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a></li>
 <li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
@@ -66,7 +69,7 @@ Download the raster and *insitu* collected vegetation structure data:
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
 collected over the San Joachim field site located in California (NEON Domain 17) 
 and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
-headquarters. The entire dataset can be access by request from the NEON website.</p>  
+headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
 
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>
@@ -76,14 +79,14 @@ Please read "Working With Rasters in R, Python and other NON gui tools.</a>
 </li>
 <li>
 <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the Raster Package in R.</a>
+Read more about the <code>raster</code> package in R.</a>
 </li>
 </ul>
 </div>
 
 #About Raster Data
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
-each pixel represents an area "land" on the ground. For example in the raster 
+each pixel represents an area on the Earth's surface. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
 that location in the real world. 
 <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/"> More on 
@@ -97,17 +100,18 @@ class.</figcaption>
 </figure>
 
 To work with rasters in R, we need two key libraries, `sp` and `raster`. 
-Let's start by loading these into r. To install the raster library you can use 
+Let's start by loading these into R. To install the raster library you can use 
 `install.packages(‘raster’)`. When you install the raster library, `sp` should 
-also install. It is also suggested that you install the `rgdal` library" 
+also install. Also install the `rgdal` library" 
 `install.packages(‘rgdal’)`.
 
-	#load the raster and sp packages
+	#load the raster, sp, and rgdal packages
 	library(raster)
 	library(sp)
+	library(rgdal)
 	#Set your working directory to the folder where your data for this workshop
 	#are stored. NOTE: if you created a project file in R studio, then you don't
-	#need to setup the working directory as it's part of the project.
+	#need to set the working directory as it's part of the project.
 	setwd("~/yourWorkingDirectoryHere")  
 	
 
@@ -115,8 +119,8 @@ Next, let's load the raster into R. Notice that we're using some clever code
 that tells R to paste the working directory into the path, and then it tells it 
 to add the location of the raster layer.
 
-	#load raster in an R objected called 'DEM'
-	DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
+	#load raster in an R object called 'DEM'
+	DEM <- raster("CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif")  
 	#next, let's look at the attributes of the raster. 
 	DEM
 	
@@ -137,7 +141,7 @@ Notice a few things about this raster.
 * **Ncells** is the total number of pixels that make up the raster.
 *  **Resolution** is the size of each pixel (in meters in this case)
 *  **Extent** this is the spatial extent of the raster. this value will be coordinate units associated with the coordinate reference system of the raster.
-*  **Coord ref** this is the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More in UTM here</a>.
+*  **Coord ref** this is the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
 ##About UTM
 
@@ -150,9 +154,11 @@ Notice a few things about this raster.
 
 ##Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key metadata.
-
-	DEM@crs
-	DEM@extent
+<!-- I think it would be better to not grab class attributes - use the object instead
+		DEM@crs -->
+	DEM$crs
+	<!-- DEM@extent -->
+	DEM$extent
 	#plot the raster
 	plot(DEM)
 
@@ -182,7 +188,7 @@ better for rendering larger rasters.
 	#let's create a plot of our raster
 	image(DEM)
 	#specify the range of values that you want to plot in the DEM
-	#just plot pixels between 250 and 300 m
+	#just plot pixels between 250 and 300 m in elevation
 	image(DEM, zlim=c(250,300))
 
 	#we can specify the colors too
@@ -213,9 +219,9 @@ You can crop rasters in R using different methods. You can crop the raster direc
 in the plot area. To do this, first plot the raster. Then define the crop extent 
 by clicking twice: 
 
-1. Click in the upper left hand corner where you want the crop 
+1. Click in the UPPER LEFT hand corner where you want the crop 
 box to begin. 
-2. Click again in the lower RIGHT hand corner to define where the box ends.
+2. Click again in the LOWER RIGHT hand corner to define where the box ends.
  
 You'll see a red box on the plot. NOTE that this is a manual process that can be
 used to quickly define a crop extent.
@@ -223,10 +229,10 @@ used to quickly define a crop extent.
 	#plot the DEM
 	plot(DEM)
 	#Define the extent of the crop by clicking on the plot
-	cropBox <- drawExtent()
-	#crop the raster then plot the new cropped raster
-	DEMcrop <- crop(DEM, cropBox)
-	plot(DEMcrop)
+	cropbox1 <- drawExtent()
+	#crop the raster, then plot the new cropped raster
+	DEMcrop1 <- crop(DEM, cropbox1)
+	plot(DEMcrop1)
 
 You can also manually assign the extent coordinates to be used to crop a raster. 
 We'll need the extent defined as (`xmin`, `xmax`, `ymin` , `ymax`) to do this. 
@@ -255,28 +261,26 @@ The difficult way to do this is to load our rasters one at a time. But that take
  a good bit of effort. 
 
 	#import tiffs
-	band19 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band19.tif"
-	band34 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band34.tif"
-	band58 <- "CHANGE-THIS-TO-PATH-ON-YOUR-COMPUTER/DigitalSurfaceModel/band58.tif"
+	band19 <- "CHM_InSitu_Data/DigitalSurfaceModel/band19.tif"
+	band34 <- "CHM_InSitu_Data/DigitalSurfaceModel/band34.tif"
+	band58 <- "CHM_InSitu_Data//DigitalSurfaceModel/band58.tif"
 
 We can also use the list.files command to grab all of the files in a directory.
-We can use `full.names=TRUE` to ensure R stores the directory path in our list of
+We can use `full.names=TRUE` to ensure that R will store the directory path in our list of
 rasters.
 
 	#create list of files to make raster stack
 	rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE)
 
-NOTE: If your list of rasters is located in your main R working director, you can
+NOTE: If your list of rasters is located in your main R working directory, you can
 achieve the same results as above by looking for all files with a '.tif' extension:
- `rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tiff")`. 
+ `rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tif")`. 
 
 	#create raster stack
 	rgbRaster <- stack(rasterlist)
 
 	#check to see that you've created a raster stack and plot the layers
 	rgbRaster
-	#view histogram of data
-	hist(rgbRaster)
 	plot(rgbRaster)
 
 
@@ -301,7 +305,8 @@ You can also explore the data.
 
 	#remember that crop function? You can crop all rasters within a raster stack too
 	#finally you can crop all rasters within a raster stack!
-	rgbRaster_crop <- crop(rgbRaster, cropBox)
+	rgbCrop <- c(256770.7,256959,4112140,4112284)
+	rgbRaster_crop <- crop(rgbRaster, rgbCrop)
 	plot(rgbRaster_crop)
 
 <figure>
@@ -315,13 +320,15 @@ Now we have a list of rasters in a stack. These rasters are all the same extent 
 
 	#create raster brick
 	RGBbrick <- brick(rgbRaster)
+	
+	<!-- can we visualize this brick as a single image? I tried a couple options but not sure how this helps me more than the stack, other than I can save a single geotiff file to open in some other program. -->
 
 ## Write a raster to a Geotiff File in R
 
 We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack, ordering the rasters in the proper - red, green and blue format.
 
-	#Make a new stack in the order we want the data in:
+	#Make a new stack in the order we want the data in: 
 	finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
-	#write the geotiff
+	#write the geotiff - change overwrite=TRUE to overwrite=FALSE if you want to make sure you don't overwrite your files!
 	writeRaster(finalRGBstack,"rgbRaster.tiff","GTiff", overwrite=TRUE)
  
