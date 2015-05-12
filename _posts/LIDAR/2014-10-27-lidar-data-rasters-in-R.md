@@ -366,16 +366,21 @@ Plot.ly is a free to use, online interactive data viz site. If you have the plot
 you can quickly export a ggplot graphic into plot.ly! (NOTE: it also works for python matplotlib)!!
 To use plotly, you need to setup an account. 
 
-library(plotly)
-set_credentials_file("yourUserName", "yourKey")
-p <- plotly(username="yourUserName", key="yourKey")
+	library(plotly)
+	#setup your plot.ly credentials
+	set_credentials_file("yourUserName", "yourKey")
+	p <- plotly(username="yourUserName", key="yourKey")
 
-py <- plotly()
-py$ggplotly()
+	#generate the plot
+	py <- plotly()
+	py$ggplotly()
 
 
 Check out the results! 
-<iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24/neon-lidar-chm-derived-vs-measured-tree-height/"></iframe>
+
+NEON Remote Sensing Data compared to NEON Terrestrial Measurements for the SJER Field Site
+
+<iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
 
 
 
