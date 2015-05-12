@@ -3,7 +3,7 @@ layout: post
 title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
 date:   2014-7-18 20:49:52
 createdDate:   2014-07-21 20:49:52
-lastModified:   2015-4-27 15:33:52
+lastModified:   2015-5-11 19:33:52
 estimatedTime: 3.0 - 3.5 Hours
 packagesLibraries: raster, sp, dplyr, maptools, rgeos
 authors: Edmund Hart, Leah A. Wasser
@@ -331,8 +331,9 @@ Next, list out plot id results. how many are there?
 Finally, find the max stem height value for each plot. We will compare this value to the 
 max CHM value.
 
-    insitu_maxStemHeight <- insit_inCentroid %>% group_by(plotid) %>% 
-    					    summarise(max = max(stemheight))
+    insitu_maxStemHeight <- insit_inCentroid %>% 
+    	group_by(plotid) %>% 
+    	summarise(max = max(stemheight))
 
 ###Option 2 - Extracting Data Using one Line of Code!
 We can be super tricky and combine the above steps into one line of code. See below how 
