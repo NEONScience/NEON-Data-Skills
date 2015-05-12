@@ -238,6 +238,29 @@ For see how to extract square plots using a plot centroid value, check out the
  [extracting square shapes activity.](../../working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
 
    
+## Explore Our Data
+
+Before we go any further, it's good to look at the distribution of values we've extracted for each plot.
+Let's create a histogram of the data.
+
+	# create a histogram
+	hist(cent_ovr[[2]]
+
+If we wanted, we could loop through several plots and create histograms using a for loop.
+
+	# create histograms for the first 5 plots of data
+	
+	for (i in 1:5) {
+	  hist(cent_ovr[[i]], main=(paste("plot",i)))
+	   }
+
+
+# Challenge
+
+1. One way to setup a layout with multiple plots in R is: `par(mfrow=c(6,3)) `. This code will give you 6 rows of plots with 
+3 plots in each row. Modify the for loop to plot all 18 histograms. Improve upon the plot's final appearance to make a readable final 
+figure. When you are done and happy with your code - please ** share it via the comments on the bottom of this page** ! 
+
 ##Working with extracted data 
 Using one of the methods above, we have created the `centre_ovr` object in R. This object 
 contains all of the lidar CHM pixel values contained within our plot boundaries. Next, we 
