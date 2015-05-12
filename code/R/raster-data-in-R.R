@@ -6,12 +6,7 @@ library(sp)
 
 #Set your working directory to the folder where you saved the data
 #for this lesson.
-#setwd("~/Documents/WorkshopData/")
 
-setwd("C:/Users/lwasser/Documents/WorkshopData/ESAWorkshop_data/Part3_LiDAR")
-
-#setwd("C:/Users/lwasser/Documents/Conferences/1_DataWorkshop_ESA2014/ESAWorkshop_data/Part3_LiDAR/")
-#DEMTiff <- "/CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
 DEMTiff <- "DigitalTerrainModel/SJER2013_DTM.tif"
  
 #DEM <- raster(paste(getwd(),DEMTiff,sep=""))
@@ -26,7 +21,7 @@ DEM@extent
 #this means less work for us!
 DEM
 #let's create a plot of our raster
-plot(DEM, legend=T)
+plot(DEM, legend=T, main="Digital Elevation Model (DEM)")
 
 #the image command allows you to plot more pixels
 plot(DEM)
