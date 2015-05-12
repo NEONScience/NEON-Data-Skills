@@ -57,8 +57,7 @@ This activity will overview the key attributes that you need to extract for a ra
 This post will overview the key components of hyperspectral remote sensing data that are required to begin working with the data in a tool like `R` or `Python`.
  
 ##Spatial Resolution
-<!-- I keep seeing this 'on the ground' - very terrestrial-based. But it might be a cloud or a patch of water. Should use 'on the Earth's surface' or 'on the uppermost surface that a satellite views on the Earth' or something like that? -->
-A raster consists of a series of uniform pixels, each with the same dimensions and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the ground. The size of the area on the ground that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixel in the image represents a 1 m x 1 m area on the ground.
+A raster consists of a series of uniform pixels, each with the same dimensions and shape. In the case of rasters derived from airborne sensors, each pixel represents an area of space on the Earth's surface. The size of the area on the surface that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1m spatial resolution means that each pixel in the image represents a 1 m x 1 m area.
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"><img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
