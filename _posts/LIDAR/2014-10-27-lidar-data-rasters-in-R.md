@@ -51,7 +51,7 @@ to run the code below.
 <h3>What you'll need</h3>
 <ol>
 <li>R or R studio loaded on your computer </li>
-<li>rgdal, dplyr, raster, maptools, libraries installed on you computer.</li>
+<li>R packages rgdal, dplyr, raster, ggplot2and maptools installed on your computer.</li>
 </ol>
 
 <h2>Data to Download</h2>
@@ -73,11 +73,13 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
 
 [More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R")
 
-    install.packages(‘raster’)
-    install.packages(‘sp’)
-    install.packages(‘dplyr’)
-    install.packages(‘rgdal’)
-	install.packages(‘ggplot2’)
+    install.packages("raster")
+    install.packages("sp")
+    install.packages("dplyr")
+    install.packages("rgdal")
+    install.packages("ggplot2")
+    install.packages("rgeos")
+    install.packages("maptools")
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -101,7 +103,7 @@ derived digital surface model (DSM). Then we will import and plot the DSM.
     	
 	#IMPORTANT - the path to your DSM data may be different than the 
 	#path below.  
-    dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
+    dsm_f <- "CHM_InSitu_Data/DigitalSurfaceModel/SJER2013_DSM.tif"
     
     dsm <- raster(dsm_f)
     ## See info about the raster.
@@ -114,7 +116,7 @@ ground (terrain) elevation.
 
 
     #import the digital terrain model
-    dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
+    dtm_f <- "CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif"
     dtm <- raster(dtm_f)
     plot(dtm)
 
@@ -138,8 +140,9 @@ accomplish this. You might perform the SAME raster math in a GIS package like
 
 
 	#write out the CHM in tiff format. We can look at this in any GIS software.
-    #note that the code below places the output in an "outputs" folder. 
+    #Note that the code below places the output in an "outputs" folder. 
     #you need to create this folder or else you will get an error.
+    	dir.create("outputs")
 	writeRaster(chm,"outputs/chm.tiff","GTiff")
 
 Woo hoo! We've now successfully created a canopy height model using basic raster math - in 
@@ -149,7 +152,7 @@ R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.
 ## Challenge
 
 > 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color map of 3 colors. Add a title to your plot.
-> 2. Look at a histogram of your data. Are there sets of breaks that make more sense than 0,10, 20 and 30 meters? experiment with producing a final map that provides useful information.
+> 2. Look at a histogram of your data. Are there sets of breaks that make more sense than 0,10, 20 and 30 meters? Experiment with producing a final map that provides useful information.
 
 
 ## Part 2. How does our CHM data compare to field measured tree heights?
@@ -157,26 +160,24 @@ R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.
 We now have a canopy height model. However, how does that dataset compare to our 
 laboriously collected, field measured height data? Let's see.
 
-For this activity, we have two csv (comma separate value) files. The first file 
+For this activity, we have two csv (comma separated values) files. The first file 
 contains plot centroid location information (X,Y) where we measured trees. The 
 second file contains our vegetation structure data for each plot. Let's start by 
 plotting the plot locations (in red) on a map. 
 
 We will need to convert the plot centroids to a spatial points dataset in R. To do this 
-we'll need two additional packages - the spatial package - 
-[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
-and [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr"). 
+we'll need an additional package - the spatial package
+[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package"). 
 
 Let's get started!
 
     #load needed libraries
     library(sp)
-    library(dplyr)
 
     #import the centroid data and the vegetation structure data
 	options(stringsAsFactors=FALSE)
-	centroids <- read.csv("data/SJERPlotCentroids.csv")
-    insitu_dat <- read.csv("data/D17_2013_vegStr.csv")
+	centroids <- read.csv("CHM_InSitu_Data/InSitu_Data/SJERPlotCentroids.csv")
+    	insitu_dat <- read.csv("CHM_InSitu_Data/InSitu_Data/D17_2013_vegStr.csv")
 
 	#Overlay the centroid points and the stem locations on the CHM plot
 
@@ -185,13 +186,12 @@ Let's get started!
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 > HINT: type in `help(points)` to read about the options for plotting points.
-> Also, to see a list of pch values (symbols), check out 
-<a href="http://www.endmemo.com/program/R/pchsymbols.php" target=_blank">this website.</a>
+> Also, to see a list of pch values (symbols), check out <a href="http://www.endmemo.com/program/R/pchsymbols.php" target="_blank">this website.</a>
 
 ###Spatial Data Need a Coordinate Reference System - CRS
 
 Next, assign a CRS to our insitu data. The CRS is information that allows a program like 
-QGIS to determine where the data are located, in the world. 
+QGIS to determine where the data are located in the world. 
 <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">
 Read more about CRS here</a>
 
@@ -221,17 +221,12 @@ will do the job! However, you might need to use a shapefile that contains the pl
 If your plot boundaries are saved in a shapefile, you can use the code below. There are two 
 shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you 
 downloaded at the top of this page. NOTE: to import a shapefile using the code below, you'll 
-need to have the `maptools` package installed which requires the `rgeos` package. Be sure 
-to install them first:
-	
-	#install needed packages
-	`install.packages(rgeos)`
-	`install.packages(maptools)`
+need to have the `maptools` package installed which requires the `rgeos` package.
 
 	#call the maptools package
 	library(maptools)
 	#extract CHM data using polygon boundaries from a shapefile
-	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
+	squarePlot <- readShapePoly("CHM_InSitu_Data/PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
 	cent_ovr <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
 ###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
@@ -245,7 +240,7 @@ Before we go any further, it's good to look at the distribution of values we've 
 Let's create a histogram of the data.
 
 	# create a histogram
-	hist(cent_ovr[[2]]
+	hist(cent_ovr[[2]])
 
 If we wanted, we could loop through several plots and create histograms using a for loop.
 
@@ -263,7 +258,7 @@ If we wanted, we could loop through several plots and create histograms using a 
 figure. When you are done and happy with your code - please ** share it via the comments on the bottom of this page** ! 
 
 ##Working with extracted data 
-Using one of the methods above, we have created the `centre_ovr` object in R. This object 
+Using one of the methods above, we have created the `cent_ovr` object in R. This object 
 contains all of the lidar CHM pixel values contained within our plot boundaries. Next, we 
 will create a new column in our dataframe that represents the max height value for all pixels
 within each plot boundary. To do this, we will use the `sapply` function. The `sapply` function
@@ -338,6 +333,8 @@ max CHM value.
 ###Option 2 - Extracting Data Using one Line of Code!
 We can be super tricky and combine the above steps into one line of code. See below how 
 this is done. To do this, we can take full advantage of the dplyr package.
+
+	library(dplyr)
 	
 	#find the max and 95th percentile value for all trees within each plot 
 	insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
