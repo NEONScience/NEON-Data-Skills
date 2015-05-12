@@ -63,7 +63,7 @@ Download the raster and *in situ* collected vegetation structure data:
 </ul>
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
-collected over the San Joachim field site located in California (NEON Domain 17) 
+collected over the San Joaquin field site located in California (NEON Domain 17) 
 and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
 
@@ -277,10 +277,16 @@ achieve the same results as above by looking for all files with a '.tif' extensi
 	plot(rgbRaster)
 
 
+
 <figure>
    <a href="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"><img src="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"></a>
  <figcaption>All rasters in the rasterstack plotted.</figcaption>
 </figure>
+
+You can plot an RGB image from the stack. You need to specify the order of the bands when you do this. In our raster stack, band 19 which is the blue band, is first in the list, whereas band 58 which is the red band is last. Thus the order is 3,2,1 to ensure the red band is rendered first as red. 
+
+	#plot an RGB version of the stack
+	plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
 
 
 
@@ -304,7 +310,7 @@ You can also explore the data.
 
 <figure>
    <a href="{{ site.baseurl }}/images/GIS/cropRaster2.png"><img src="{{ site.baseurl }}/images/GIS/cropRaster2.png"></a>
- <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
+ <figcaption>Cropped rasters in the raster stack.</figcaption>
 </figure>
 
 

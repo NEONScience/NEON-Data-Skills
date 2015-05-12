@@ -95,6 +95,7 @@ Download Script to Install Packages in R</a>
 | 1:15     | [Brief Overview of Lidar Data & Lidar derived rasters]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)     |            |
 | 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/lidar-data/online-data-viewer/ "Working With Lidar Point Clouds")          |     |
 | 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/ "Working with Lidar Rasters in R")        |         |
+| 2:30     | [Capstone - Create NDVI from Geotiffs in R]({{ site.baseurl }}/R/create-NDVI-in-R/ "Create NDVI in R")  |         |
 | 2:50     | Wrap-up, Feedback, Questions     |         |
 
 

@@ -75,6 +75,9 @@ hist(rgbRaster)
 #check to see that you've created a raster stack and plot the layers
 rgbRaster
 plot(rgbRaster)
+
+#plot the raster as an RGB image. Note that you need to specify the order
+#of the  bands in the image
 plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
 
 #remember that crop function? You can crop all rasters within a raster stack too
