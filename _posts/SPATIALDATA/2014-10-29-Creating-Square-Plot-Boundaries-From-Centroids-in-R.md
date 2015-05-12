@@ -18,7 +18,9 @@ image:
   credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
   creditlink: http://www.neoninc.org
 permalink: /working-with-field-data/Field-Data-Polygons-From-Centroids
+comments: true
 ---
+
 <section id="table-of-contents" class="toc">
   <header>
     <h3 >Contents</h3>
