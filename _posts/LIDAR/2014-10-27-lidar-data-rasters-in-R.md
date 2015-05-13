@@ -108,7 +108,7 @@ derived digital surface model (DSM) and the digital terrain model (DTM).
     dsm <- raster(dsm_f)
     # View info about the raster. Then plot it.
     dsm
-    plot(dsm)
+    plot(dsm, main="LiDAR Digital Surface Model")
 
 
 Next, we will import the Digital Terrain Model (DTM). The [DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
@@ -117,7 +117,7 @@ Next, we will import the Digital Terrain Model (DTM). The [DTM represents the gr
     #import the digital terrain model
     dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
     dtm <- raster(dtm_f)
-    plot(dtm)
+    plot(dtm, main="LiDAR Digital Terrain Model")
 
 Finally, we can create the Canopy Height Model (CHM). The[ CHM represents the difference between the DSM and the DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/). 
 We can perform some basic raster math to calculate the CHM. You can perform the 
@@ -194,7 +194,8 @@ Let's get started!
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 > HINT: type in `help(points)` to read about the options for plotting points.
-> Also, to see a list of pch values (symbols), check out 
+ 
+To see a list of pch values (symbols), check out 
 <a href="http://www.endmemo.com/program/R/pchsymbols.php" target=_blank">this website.</a>
 
 ###Spatial Data Need a Coordinate Reference System - CRS

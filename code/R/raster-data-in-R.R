@@ -21,7 +21,11 @@ DEM@extent
 #this means less work for us!
 DEM
 #let's create a plot of our raster
-plot(DEM, legend=T, main="Digital Elevation Model (DEM)")
+plot(DEM, main="Digital Elevation Model (DEM)", legend=T)
+
+legend("topright", legend=c("low","med","high"),inset=.05, title="Number of Cylinders",
+       fill=terrain.colors(3))
+
 
 #the image command allows you to plot more pixels
 plot(DEM)
@@ -30,6 +34,8 @@ plot(DEM, zlim=c(250,300))
 
 #add breaks to the colormap
 brk <- c(250, 300, 350, 400,450,500)
+#set the colors
+col=terrain.colors(3)
 plot(DEM, zlim=c(250,300), col=col, breaks=brk)
 
 

@@ -188,10 +188,6 @@ better for rendering larger rasters.
 	col=terrain.colors(5)
 	image(DEM, zlim=c(250,300), col=col)
 
-	#and we can specify the breaks we wish to use
-	brk <- c(250, 300, 350, 400,450,500)
-	image(DEM, zlim=c(250,300), col=col, breaks=brk)
-
 
 ## Challenge Yourself
 
@@ -204,6 +200,51 @@ better for rendering larger rasters.
 2. What happens if you change the zlim values in the image command?
 3. What are the other attributes that you can specify when using the image command?
 
+## Breaks and Colorbars in R
+A digital elevation model (DEM) is an example of a continuous raster. It contains elevation values for a range. For example, elevations values in a DEM might include any set of values between 200 m and 500 m. Given this range, you can plot DEM pixels using a gradient of colors. Like this:
+
+
+	#let's create a plot of our raster
+	plot(DEM, main="Digital Elevation Model (DEM)", legend=T)
+
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/DEMRaster.png"><img src="{{ site.baseurl }}/images/spatialData/DEMRaster.png"></a>
+    <figcaption>A DEM is a continuous dataset. Thus we can apply a gradient of colors to the data.</figcaption>
+</figure>
+
+By default, R will assign the gradient of colors uniformly across the full range of values in the data. In our case, our DEM has values between 250 and 500. However, we can adjust the "breaks" which represent the numeric locations where the colors change if we want too.
+
+
+	#add a color map with 5 colors
+	col=terrain.colors(5)
+	#add breaks to the colormap (6 breaks = 5 segments)
+	brk <- c(250, 300, 350, 400,450,500)
+	plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/DEM_5Breaks.png"><img src="{{ site.baseurl }}/images/spatialData/DEM_5Breaks.png"></a>
+    <figcaption>A DEM with more breaks.</figcaption>
+</figure>
+
+	#add a color map with 4 colors
+	col=terrain.colors(4)
+	#add breaks to the colormap (6 breaks = 5 segments)
+	 brk <- c(200, 300, 350, 400,500)
+	plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/DEM_FewerBreaks.png"><img src="{{ site.baseurl }}/images/spatialData/DEM_FewerBreaks.png"></a>
+    <figcaption>A DEM with fewer breaks.</figcaption>
+</figure>
+
+A discrete dataset has a set of unique categories or classes. One example could be landuse classes. The example below shows elevation zones generated using the same DEM.
+
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/DEM_DiscreteLegend.png"><img src="{{ site.baseurl }}/images/spatialData/DEM_DiscreteLegend.png"></a>
+    <figcaption>A DEM with discrete classes. In this case, the classes relate to regions of elevation values.</figcaption>
+</figure>
 
 
 #Cropping Rasters in R
