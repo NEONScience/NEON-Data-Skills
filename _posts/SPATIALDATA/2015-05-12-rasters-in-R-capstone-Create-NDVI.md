@@ -14,7 +14,7 @@ mainTag: lidar
 description: "This capstone activity brings together skills learned about rasters in R, from tutorials on this site."
 permalink: /R/create-NDVI-in-R/
 comments: true
-code1: Create_Lidar_CHM.R
+code1: 
 image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON)
