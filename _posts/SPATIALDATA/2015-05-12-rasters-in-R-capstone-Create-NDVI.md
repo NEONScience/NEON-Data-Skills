@@ -34,7 +34,12 @@ image:
 
 
 ## Background ##
-This activity will utilize the skills that you learned in the previous lessons. You will 1) import several rasters into R and 2) perform raster math to calculate NDVI (Normalized Difference Vegetation Index) and 3) create a color coded plot of NDVI and 4) export the NDVI file as a georeferenced tiff.
+This activity will utilize the skills that you learned in the previous lessons. You will 
+
+1. Import several rasters into R
+2. Perform raster math to calculate NDVI (Normalized Difference Vegetation Index) 
+3. Create a color coded plot of NDVI 
+4. Export the NDVI file as a georeferenced tiff.
 
 <div id="objectives">
 <h3>What you'll need</h3>

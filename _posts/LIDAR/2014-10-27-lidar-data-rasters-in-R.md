@@ -216,13 +216,30 @@ will do the job! However, you might need to use a shapefile that contains the pl
     #Note that below will return a list, so we can extract via lapply
     cent_ovr <- extract(chm,centroid_sp,buffer = 20)
 
+#### Explore The Data Distribution
+
+Before we go any further, it's good to look at the distribution of values we've 
+extracted for each plot. Let's create a histogram of the data.
+
+	# create a histogram
+	hist(cent_ovr)
+
+If we wanted, we could loop through several plots and create histograms using a for loop.
+
+	# create histograms for the first 5 plots of data
+	
+	for (i in 1:5) {
+	  hist(cent_ovr[[i]], main=(paste("plot",i)))
+	}
+
+
 ###Variation 2: Extract CHM values Using a Shapefile
 
-If your plot boundaries are saved in a shapefile, you can use the code below. There are two 
-shapefiles in the folder named "PlotCentroid_Shapefile" within the zip file that you 
-downloaded at the top of this page. NOTE: to import a shapefile using the code below, you'll 
-need to have the `maptools` package installed which requires the `rgeos` package. Be sure 
-to install them first:
+If your plot boundaries are saved in a shapefile, you can use the code below. 
+There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the 
+zip file that you downloaded at the top of this page. NOTE: to import a shapefile 
+using the code below, you'll need to have the `maptools` package installed which 
+requires the `rgeos` package. Be sure to install them first:
 	
 	#install needed packages
 	`install.packages(rgeos)`
@@ -234,39 +251,27 @@ to install them first:
 	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
 	cent_ovr <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
+
+
 ###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
 For see how to extract square plots using a plot centroid value, check out the
  [extracting square shapes activity.](../../working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
 
-   
-## Explore Our Data
-
-Before we go any further, it's good to look at the distribution of values we've extracted for each plot.
-Let's create a histogram of the data.
-
-	# create a histogram
-	hist(cent_ovr)  #LEAH - check this. you had the histogram indexed by [[2]], which was 
-                       #    the value of the second element in the list (so no histogram)
-
-If we wanted, we could loop through several plots and create histograms using a for loop.
-
-	# create histograms for the first 5 plots of data
-	
-	for (i in 1:5) {
-	  hist(cent_ovr[[i]], main=(paste("plot",i)))
-	}
 
 
 # Challenge
 
-1. One way to setup a layout with multiple plots in R is: `par(mfrow=c(6,3)) `. This code will give you 6 rows of plots with 
-3 plots in each row. Modify the for loop to plot all 18 histograms. Improve upon the plot's final appearance to make a readable final 
-figure. When you are done and happy with your code - please ** share it via the comments on the bottom of this page** ! 
+> One way to setup a layout with multiple plots in R is: `par(mfrow=c(6,3)) `. 
+> This code will give you 6 rows of plots with 3 plots in each row. Modify the 
+> `for loop` above to plot all 18 histograms. Improve upon the plot's final 
+> appearance to make a readable final figure. When you are done and happy with your 
+> code - please ** share it via the comments on the bottom of this page** ! 
+
 
 ##Working with extracted data 
-Using one of the methods above, we have created the `centre_ovr` object in R. This object 
-contains all of the lidar CHM pixel values contained within our plot boundaries. Next, we 
-will create a new column in our dataframe that represents the max height value for all pixels
+If we use variation ONE above, we create the `centre_ovr` object in R. This object 
+contains all of the lidar CHM pixel values contained within our plot boundaries. 
+Next, we will create a new column in our dataframe that represents the max height value for all pixels
 within each plot boundary. To do this, we will use the `sapply` function. The `sapply` function
 aggregates elements in the list using a aggregate function such as mean, max or min that we
 specify in our code.
