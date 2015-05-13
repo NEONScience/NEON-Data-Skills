@@ -4435,5 +4435,37 @@ td a {
 img.load {
 	width: 100%;
 }
+
+
+
+/* ############## SIDEBAR STUFF #########  */
+
+.sidebar {
+    background-color: #F6F8F8;
+    bottom: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: "PT Sans",Helvetica,Arial,sans-serif;
+    font-size: 0.875rem;
+    left: -14rem;
+    overflow-y: auto;
+    top: 0;
+    transition: all 0.3s ease-in-out 0s;
+    width: 85%;
+}
+
+.sidebar-nav {
+    border-bottom: 1px solid #e3e8e8;
+}
+.sidebar-nav-item {
+    border-top: 1px solid #e3e8e8;
+    display: block;
+    padding: 0.4rem .5rem;
+}
+
+.sidebar-nav-item.active, a.sidebar-nav-item:hover, a.sidebar-nav-item:focus {
+    background-color: #e3e8e8;
+    border-color: transparent;
+    text-decoration: none;
+}
 	
 
