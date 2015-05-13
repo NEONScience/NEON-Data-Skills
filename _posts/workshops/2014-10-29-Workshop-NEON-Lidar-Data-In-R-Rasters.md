@@ -1,6 +1,6 @@
 ---
 layout: workshop
-title: "NEON Working With (Lidar Derived) Rasters in R"
+title: "NEON DataSkills: Work With (Lidar Derived) Rasters in R"
 estimatedTime: 3.0 Hours
 packagesLibraries: Raster, Sp
 date:   2015-1-15 20:49:52
@@ -19,7 +19,7 @@ permalink: /Data-Workshops/NEON-lidar-Rasters-R
 comments: true 
 ---
 
-###A NEON Data Carpentry Workshop
+###A NEON #DataSkills Workshop
 
 **Date:** 14 May 2015
 
