@@ -65,8 +65,8 @@ DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 <a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.</a>
 </div>
 
-> NOTE: These data were collected by the National Ecological Observatory Network
-> in their <a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
+> NOTE: The data used in this tutorial were collected by the National Ecological 
+> Observatory Network in their <a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
 > Domain 17 California field site</a>. The data are available in full, for 
 > no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
 
