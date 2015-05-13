@@ -139,6 +139,13 @@ Notice a few things about this raster.
 *  **Extent** this is the spatial extent of the raster. this value will be coordinate units associated with the coordinate reference system of the raster.
 *  **Coord ref** this is the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
+If you do not see the min and max cell values in the output above, try this:
+
+	#Get min and max cell values from raster
+	cellStats(DEM, min)
+	cellStats(DEM, max)
+	cellStats(DEM, range)
+
 ##About UTM
 
 <figure>
