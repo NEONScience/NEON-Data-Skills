@@ -35,10 +35,9 @@ image:
 
 ## Background ##
 NEON (National Ecological Observatory Network) will provide derived LiDAR products as one 
-of its many free ecological data products. One data product that NEON will provide is a 
-digital surface model which represents the top of the surface elevation of objects on the 
-earth. These products will come in a [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") 
-format, which is simply a raster format, that is spatially located on the earth. Geotiffs 
+of its many free ecological data products. These products will come in a
+ [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which 
+is simply a raster format, that is spatially located on the earth. Geotiffs 
 can be easily accessed using the `raster` package in R.
 
 A common first analysis using LiDAR data is to derive top of the canopy height values from 
@@ -51,7 +50,8 @@ to run the code below.
 <h3>What you'll need</h3>
 <ol>
 <li>R or R studio loaded on your computer </li>
-<li>rgdal, dplyr, raster, maptools, libraries installed on you computer.</li>
+<li><strong>R Libraries:</strong> rgdal, dplyr, raster, maptools, ggplot2 libraries 
+installed on you computer.</li>
 </ol>
 
 <h2>Data to Download</h2>
@@ -65,11 +65,14 @@ DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 <a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.</a>
 </div>
 
-> NOTE: these data are available in full, for no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
+> NOTE: These data were collected by the National Ecological Observatory Network
+> in their <a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
+> Domain 17 California field site</a>. The data are available in full, for 
+> no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
 
 
 ###Required R Packages
-Please make sure the following packages are installed: Raster, sp, dplyr. 
+Please make sure the following packages are installed: 
 
 [More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R")
 
@@ -81,36 +84,34 @@ Please make sure the following packages are installed: Raster, sp, dplyr.
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
-In this activity, we will create a Canopy Height Model. Remember that the canopy height 
-model, represents the actual heights of the trees on the ground. And we can derive the CHM 
-by subtracting the ground elevation from the elevation of the top of the surface (or the 
-tops of the trees). 
+In this activity, we will create a Canopy Height Model. The [canopy height 
+model]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/), represents
+ the actual heights of the trees on the ground. And we can derive the CHM 
+by subtracting the ground elevation from the elevation of the top of the surface 
+(or the tops of the trees). 
 
-To begin the CHM creation, we will call the raster libraries in R and import the lidar 
-derived digital surface model (DSM). Then we will import and plot the DSM.
+To create the CHM, we will call the raster libraries in R and import the lidar 
+derived digital surface model (DSM) and the digital terrain model (DTM). 
 
 
-	#Because we will be exporting data in this activity, let's set the
-	#working directory before we go any further. The working directory 
-	#will determine where data are saved. If you already have an R studio project
-	#setup you can skip this step!
+	#Make sure your working directory is set properly!
+	#The working directory will determine where data are saved. 
+	#If you already have an R studio project setup then you can skip this step!
 	setwd("yourPathHere")    
 
     #Import DSM into R 
     library(raster)
     	
-	#IMPORTANT - the path to your DSM data may be different than the 
-	#path below.  
+	# If the cod ebelow doesn't work, check your working directory path!  
     dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
     
     dsm <- raster(dsm_f)
-    ## See info about the raster.
+    # View info about the raster. Then plot it.
     dsm
     plot(dsm)
 
 
-Next, we will import the Digital Terrain Model (DTM). Remember that the DTM represents the 
-ground (terrain) elevation.
+Next, we will import the Digital Terrain Model (DTM). The [DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
 
 
     #import the digital terrain model
@@ -118,70 +119,78 @@ ground (terrain) elevation.
     dtm <- raster(dtm_f)
     plot(dtm)
 
-Finally, we can create the Canopy Height Model (CHM). Remember that the CHM is simply the 
-difference between the DSM and the DTM. So, we can perform some basic raster math to 
-accomplish this. You might perform the SAME raster math in a GIS package like 
-[QGIS](http://www.qgis.org/en/site/ "QGIS").
+Finally, we can create the Canopy Height Model (CHM). The[ CHM represents the difference between the DSM and the DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/). 
+We can perform some basic raster math to calculate the CHM. You can perform the 
+SAME raster math in a GIS program like [QGIS](http://www.qgis.org/en/site/ "QGIS").
     
-    #Create a function that performs this raster math. Canopy height 
-	#is dsm - dtm
+    #Create a function that subtracts one raster from another
     canopyCalc <- function(x, y) {
       return(x - y)
     }
     
 	#use the function to create the final CHM
 	#then plot it.
-    #You could use the overlay function here chm <- overlay(dsm,dtm,fun = canopyCalc)
-    #but you can also perform matrix math to get the same output.
+    #You could use the overlay function here 
+    #chm <- overlay(dsm,dtm,fun = canopyCalc) 
+	#but you can also perform matrix math to get the same output.
     chm <- canopyCalc(dsm,dtm)
     plot(chm)
 
 
 	#write out the CHM in tiff format. We can look at this in any GIS software.
-    #note that the code below places the output in an "outputs" folder. 
+    #NOTE: the code below places the output in an "outputs" folder. 
     #you need to create this folder or else you will get an error.
 	writeRaster(chm,"outputs/chm.tiff","GTiff")
 
-Woo hoo! We've now successfully created a canopy height model using basic raster math - in 
-R! We can bring the chm.tiff file into QGIS (or any GIS) and look at it.  
+We've now successfully created a canopy height model using basic raster math - in 
+R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at it.  
 
 
 ## Challenge
 
-> 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color map of 3 colors. Add a title to your plot.
-> 2. Look at a histogram of your data. Are there sets of breaks that make more sense than 0,10, 20 and 30 meters? experiment with producing a final map that provides useful information.
+> 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color 
+> map of 3 colors. Add a title to your plot.
+> 2. Look at a histogram of your data. Are there sets of breaks that make more 
+> sense than 0,10, 20 and 30 meters? Experiment with producing a final map that 
+> provides useful information.
 
+### CHALLENGE EXTRA CREDIT!
+Share your output map from the challenge above in the comments section at the 
+bottom of the page. 
 
 ## Part 2. How does our CHM data compare to field measured tree heights?
 
-We now have a canopy height model. However, how does that dataset compare to our 
-laboriously collected, field measured height data? Let's see.
+We now have a canopy height model for our study area in California. However, how 
+do the height values extracted from the CHM compare to our laboriously collected, 
+field measured canopy height data? Let's find out.
 
-For this activity, we have two csv (comma separate value) files. The first file 
-contains plot centroid location information (X,Y) where we measured trees. The 
-second file contains our vegetation structure data for each plot. Let's start by 
-plotting the plot locations (in red) on a map. 
+For this activity, we have two csv (comma separate value) files located in the
+`InSitu` folder. The first file contains plot centroid location information (X,Y) 
+where we measured trees. The second file contains our vegetation structure data 
+for each plot. Let's start by plotting the plot locations where we measured trees
+ (in red) on a map. 
 
 We will need to convert the plot centroids to a spatial points dataset in R. To do this 
 we'll need two additional packages - the spatial package - 
 [sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
-and [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr"). 
+and [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr").
+NOTE: the `sp` library typically installs when you install the raster package. 
 
 Let's get started!
 
-    #load needed libraries
+    #load libraries
     library(sp)
     library(dplyr)
 
     #import the centroid data and the vegetation structure data
 	options(stringsAsFactors=FALSE)
-	centroids <- read.csv("data/SJERPlotCentroids.csv")
-    insitu_dat <- read.csv("data/D17_2013_vegStr.csv")
+	centroids <- read.csv("InSitu/SJERPlotCentroids.csv")
+    insitu_dat <- read.csv("InSitu/D17_2013_vegStr.csv")
 
 	#Overlay the centroid points and the stem locations on the CHM plot
 
 	#for example, cex = point size 
-    points(centroids$easting,centroids$northing, pch=19, cex = 2,col = 2)
+    points(centroids$easting,centroids$northing, pch=19, cex = 2, col = 2)
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 > HINT: type in `help(points)` to read about the options for plotting points.
@@ -221,10 +230,11 @@ will do the job! However, you might need to use a shapefile that contains the pl
 Before we go any further, it's good to look at the distribution of values we've 
 extracted for each plot. Let's create a histogram of the data.
 
-	# create a histogram
-	hist(cent_ovr)
+	# create a histogram of all pixels extracted in the second plot
+	hist(cent_ovr[[2]])
 
-If we wanted, we could loop through several plots and create histograms using a for loop.
+If we wanted, we could loop through several plots and create histograms using a 
+`for loop`.
 
 	# create histograms for the first 5 plots of data
 	
@@ -249,13 +259,14 @@ requires the `rgeos` package. Be sure to install them first:
 	library(maptools)
 	#extract CHM data using polygon boundaries from a shapefile
 	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
-	cent_ovr <- extract(chm, squarePlot, weights=FALSE, fun=max)
+	cent_ovrMax <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
-
+Once you've created the `cent_ovrMax` object, you can add the max values to the 
+`centroids` data.frame using `centroids$maxHeight <- centr_ovrMax`.
 
 ###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
 For see how to extract square plots using a plot centroid value, check out the
- [extracting square shapes activity.](../../working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
+ [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
 
 
 
@@ -264,29 +275,32 @@ For see how to extract square plots using a plot centroid value, check out the
 > One way to setup a layout with multiple plots in R is: `par(mfrow=c(6,3)) `. 
 > This code will give you 6 rows of plots with 3 plots in each row. Modify the 
 > `for loop` above to plot all 18 histograms. Improve upon the plot's final 
-> appearance to make a readable final figure. When you are done and happy with your 
-> code - please ** share it via the comments on the bottom of this page** ! 
+> appearance to make a readable final figure. 
 
 
 ##Working with extracted data 
+
+NOTE: If you followed variation 2 above, you don't need the steps below!
+
 If we use variation ONE above, we create the `centre_ovr` object in R. This object 
 contains all of the lidar CHM pixel values contained within our plot boundaries. 
-Next, we will create a new column in our dataframe that represents the max height value for all pixels
+Next, we will create a new column in our `data.frame` that represents the max height value for all pixels
 within each plot boundary. To do this, we will use the `sapply` function. The `sapply` function
 aggregates elements in the list using a aggregate function such as mean, max or min that we
 specify in our code.
 
 ## Sapply Example
 
+	# create 3 vectors of numbers
 	a <- c(2, 3, 5, 7)
     b <- c(23, 13, 45, 57) 
 	c <- c(2, 1, 4, 5) 
-	#create a list
+	#create a list of lists
 	x <- list(a,b,c)
 
 	x
 	
-The list looks like: 
+The object `x` looks like: 
 	
 	[[1]]
 	[1] 2 3 5 7
@@ -320,10 +334,10 @@ Given we are working with lidar data, the max value will represent the tallest t
 	centroids$chmMax <- sapply(cent_ovr, max)
 
 ##Extracting descriptive stats from Insitu Data 
-Now, there are two ways to extract stats from a dataset. The first option is to write each 
-line out. 
+Let's explore two ways to extract stats from a dataset. We can use base R or the 
+`dplyr` library. We'll demonstrate both below
 
-###Option 1 - Extracting Data Using Several Lines of Code
+###Option 1 - Step by methods to extract stats from our data.frame
 
 First select plots that are also represented in our centroid layer. Quick test - how many 
 plots are in the centroid folder?
@@ -355,10 +369,11 @@ max CHM value.
     #	summarise(max = max(stemheight))
 
 ###Option 2 - Extracting Data Using one Line of Code!
-We can be super tricky and combine the above steps into one line of code. See below how 
-this is done. To do this, we can take full advantage of the dplyr package.
+We can combine the above steps into one line of code that takes care of the data
+aggregation and summary components. We can take full advantage of the `dplyr`
+to do this OR we can use base R.
 	
-	#add the max and 95th percentile value for all trees within each plot
+	#add the max and 95th percentile height value for all trees within each plot
     insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid$stemheight, 
                     insitu_inCentroid$plotid, quantile, prob = 0.95))
 
@@ -371,14 +386,16 @@ this is done. To do this, we can take full advantage of the dplyr package.
 	centroids$insitu <- insitu$max
 
 ### Plot Data (CHM vs Measured)
-Create the  final plot that compares in situ max tree height to CHM derived max height.
+Let's create a plot that illustrates the relationship between in situ measured 
+max canopy height values and lidar derived max canopy height values.
 
 	ggplot(centroids,aes(x=chmMax, y =insitu )) + geom_point() + theme_bw() + 
 	     ylab("Maximum measured height") + xlab("Maximum LiDAR pixel")+
 	     geom_abline(intercept = 0, slope=1)+xlim(0, max(centroids[,6:7])) + 
 	     ylim(0,max(centroids[,6:7]))
 
-Another option -- A regression plot. Explore with GGPLOT options. Customize your plot.
+We can also add a regression fit to our plot. Explore the GGPLOT options and 
+customize your plot.
 
 	#plot with regression fit
 	p <- ggplot(centroids,aes(x=chmMax, y =insitu )) + geom_point() + 
@@ -401,18 +418,22 @@ You have now successfully created a canopy height model using lidar data AND com
 derived vegetation height, within plots, to actual measured tree height data!
 
 
-#Test Your Skills
+#Challenge 
 
-- Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or Lidar 95th 
-percentile vs *insitu* 95th percentile.
+> Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or Lidar 95th 
+> percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the
+> colors, fonts and the look of your plot. If you are happy with the outcome, share
+> your plot in the comments below! 
 
 ## Plot.ly Interactive Plotting
 
-## create plotly map
+## Create Interactive plot.ly map
 
-Plot.ly is a free to use, online interactive data viz site. If you have the plot.ly library installed, 
-you can quickly export a ggplot graphic into plot.ly! (NOTE: it also works for python matplotlib)!!
-To use plotly, you need to setup an account. 
+Plot.ly is a free to use, online interactive data viz site. If you have the 
+plot.ly library installed, you can quickly export a ggplot graphic into plot.ly!
+ (NOTE: it also works for python matplotlib)!! To use plotly, you need to setup 
+an account. Once you've setup an account, you can get your key from the plot.ly 
+site to make the code below work.
 
 	library(plotly)
 	#setup your plot.ly credentials
@@ -429,6 +450,3 @@ Check out the results!
 NEON Remote Sensing Data compared to NEON Terrestrial Measurements for the SJER Field Site
 
 <iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
-
-
-
