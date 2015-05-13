@@ -89,7 +89,7 @@ that location in the real world.
 rasters here</a>. 
 
 <figure>
-	<img src="{{ site.baseurl }}/images/GIS/NLCD06_conus_lg.gif">
+	<img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
    <figcaption>The National Land Cover dataset is an example of a commonly used 
 raster dataset. Each pixel in the Landsat derived raster represents a landcover
 class.</figcaption>
@@ -327,7 +327,7 @@ achieve the same results as above by looking for all files with a '.tif' extensi
 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"><img src="{{ site.baseurl }}/images/GIS/rgbStackPlot.png"></a>
+   <a href="{{ site.baseurl }}/images/spatialData/rgbStackPlot.png"><img src="{{ site.baseurl }}/images/spatialData/rgbStackPlot.png"></a>
  <figcaption>All rasters in the rasterstack plotted.</figcaption>
 </figure>
 
@@ -346,7 +346,7 @@ You can also explore the data.
 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/GIS/RGBhist.png"><img src="{{ site.baseurl }}/images/GIS/RGBhist.png"></a>
+   <a href="{{ site.baseurl }}/images/spatialData/RGBhist.png"><img src="{{ site.baseurl }}/images/spatialData/RGBhist.png"></a>
  <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
 </figure>
 
@@ -357,7 +357,7 @@ You can also explore the data.
 	plot(rgbRaster_crop)
 
 <figure>
-   <a href="{{ site.baseurl }}/images/GIS/cropRaster2.png"><img src="{{ site.baseurl }}/images/GIS/cropRaster2.png"></a>
+   <a href="{{ site.baseurl }}/images/spatialData/cropRaster2.png"><img src="{{ site.baseurl }}/images/spatialData/cropRaster2.png"></a>
  <figcaption>Cropped rasters in the raster stack.</figcaption>
 </figure>
 
