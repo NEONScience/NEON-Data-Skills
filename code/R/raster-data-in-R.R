@@ -39,6 +39,7 @@ col=terrain.colors(3)
 plot(DEM, zlim=c(250,300), col=col, breaks=brk)
 
 
+
 #here's the cool part. you can crop the raster right in the plot area
 #first define the extent by running the line of code below
 #first, click in the upper left hand corner where you want the crop to begin

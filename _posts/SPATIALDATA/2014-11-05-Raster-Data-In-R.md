@@ -157,6 +157,8 @@ If you do not see the min and max cell values in the output above, try this:
 
 ##Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key metadata.
+
+
 	DEM@crs
 	DEM@extent
 	#plot the raster
