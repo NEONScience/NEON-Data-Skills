@@ -127,9 +127,8 @@ OUTPUT:
 	resolution  : 1, 1  (x, y)
 	extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
 	coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-	data source : /Users/law/Documents/data/CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTMHill.tif 
-	names       : SJER2013_DTMHill 
-	values      : 0, 253  (min, max)
+	data source : /Users/law/Documents/1_Workshops/R_Raster_NEON/CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif 
+	names       : SJER2013_DTM 
 		
 Notice a few things about this raster. 
 
