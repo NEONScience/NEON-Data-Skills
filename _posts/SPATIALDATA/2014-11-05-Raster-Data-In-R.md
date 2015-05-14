@@ -302,9 +302,9 @@ The difficult way to do this is to load our rasters one at a time. But that take
  a good bit of effort. 
 
 	#import tiffs
-	band19 <- "CHM_InSitu_Data/DigitalSurfaceModel/band19.tif"
-	band34 <- "CHM_InSitu_Data/DigitalSurfaceModel/band34.tif"
-	band58 <- "CHM_InSitu_Data//DigitalSurfaceModel/band58.tif"
+	band19 <- "rasterLayers_tif/band19.tif"
+	band34 <- "rasterLayers_tif/band34.tif"
+	band58 <- "rasterLayers_tif/band58.tif"
 
 We can also use the list.files command to grab all of the files in a directory.
 We can use `full.names=TRUE` to ensure that R will store the directory path in our list of
