@@ -82,6 +82,9 @@ Download Script to Install Packages in R</a>
 <li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
 <li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
 </ul>
+
+
+<h3><a href="https://etherpad.mozilla.org/NEONRasters" target="_blank">Click here for the Etherpad</a></h3>
 </div>
 
 
