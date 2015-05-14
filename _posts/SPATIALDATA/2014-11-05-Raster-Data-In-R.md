@@ -193,7 +193,7 @@ better for rendering larger rasters.
 	image(DEM, zlim=c(250,300))
 
 	#we can specify the colors too
-	col=terrain.colors(5)
+	col <- terrain.colors(5)
 	image(DEM, zlim=c(250,300), col=col)
 
 
