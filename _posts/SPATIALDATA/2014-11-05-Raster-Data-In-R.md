@@ -378,3 +378,7 @@ We can write out the raster in tiff format as well. When we do this it will copy
 	#write the geotiff - change overwrite=TRUE to overwrite=FALSE if you want to make sure you don't overwrite your files!
 	writeRaster(finalRGBstack,"rgbRaster.tiff","GTiff", overwrite=TRUE)
  
+
+## Challenge 
+
+1. Open band 90 in the rasters folder. You might want to look at it in QGIS first compared to the other rasters. Look closely at the extent and pixel size. Does anything look off? Fix what's missing. Export a new geotiff. Do things line up?
