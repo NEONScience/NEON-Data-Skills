@@ -300,7 +300,7 @@ max CHM value.
     #      the data on which you want to calculate something ~ the grouping variable
     #      the FUNction
     insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
-                insitu_inCentroid$plotid, FUN = max )  
+         insitu_inCentroid$plotid, FUN = max )  
  
     #Assign cleaner names to the columns
     names(insitu_maxStemHeight) <- c('plotid','max')
@@ -316,15 +316,14 @@ max CHM value.
 	
 ## Option 2 - Use DPLYR to achieve the same results
 
-    # Select plots that are in the centroid layer using DPLYR
-    insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
+	library(dplyr)
     
-    	#get list of unique plot id's 
+    #get list of unique plot id's 
     unique(insitu_inCentroid$plotid) 
     
 	#find the max stem height for each plot
     insitu_maxStemHeight <- insitu_inCentroid %>% 
-    	    group_by(plotid) %>% 
+    	group_by(plotid) %>% 
      	summarise(max = max(stemheight))
     
     # Optional - do this all in one line of nested commands
@@ -396,9 +395,7 @@ derived vegetation height, within plots, to actual measured tree height data!
 > colors, fonts and the look of your plot. If you are happy with the outcome, share
 > your plot in the comments below! 
 
-## Plot.ly Interactive Plotting
-
-## Create Interactive plot.ly map
+## Create Plot.ly Interactive Plot
 
 Plot.ly is a free to use, online interactive data viz site. If you have the 
 plot.ly library installed, you can quickly export a ggplot graphic into plot.ly!
