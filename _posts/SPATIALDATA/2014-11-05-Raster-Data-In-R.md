@@ -204,8 +204,8 @@ In the above example. `terrain.colors()` tells r to create a palette of colors w
 
 ## Challenge Yourself
 
-<i class="fa fa-star"></i> What happens if you change the number of colors in the terrain.colors command?
-<i class="fa fa-star"></i> What happens if you change the zlim values in the image command?
+<i class="fa fa-star"></i> What happens if you change the number of colors in the terrain.colors command?<br>
+<i class="fa fa-star"></i> What happens if you change the zlim values in the image command?<br>
 <i class="fa fa-star"></i> What are the other attributes that you can specify when using the image command?
 {: .notice}
 

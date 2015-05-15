@@ -196,7 +196,7 @@ Let's get started!
 > HINT: type in `help(points)` to read about the options for plotting points.
  
 To see a list of pch values (symbols), check out 
-<a href="http://www.endmemo.com/program/R/pchsymbols.php" target=_blank">this website.</a>
+<a href="http://www.endmemo.com/program/R/pchsymbols.php" target="_blank">this website.</a>
 
 ###Spatial Data Need a Coordinate Reference System - CRS
 
@@ -211,19 +211,17 @@ In this case, we know these data are all in the same projection.
 
 	#make spatial points object using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
-	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
+	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =chm@crs)
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
 There are a few ways to go about this task. If your plots are circular, then the extract tool 
-will do the job! However, you might need to use a shapefile that contains the plot boundaries
- OR perhaps your plot boundaries are rectangular. Several variations to complete this task 
- are described below.
+will do the job! 
 
-###Variation 1: Extract Plot Data Using Circle: 20m Radius Plots
+### Variation 1: Extract Plot Data Using Circle: 20m Radius Plots
 
 	#Insitu sampling took place within 40m x 40m square plots so we use a 20m radius.	
-    #Note that below will return a list, so we can extract via lapply
+    #Note that below will return a list of pixel values for each plot
     cent_ovr <- extract(chm,centroid_sp,buffer = 20)
 
 #### Explore The Data Distribution
@@ -244,33 +242,6 @@ If we wanted, we could loop through several plots and create histograms using a
 	}
 
 
-###Variation 2: Extract CHM values Using a Shapefile
-
-If your plot boundaries are saved in a shapefile, you can use the code below. 
-There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the 
-zip file that you downloaded at the top of this page. NOTE: to import a shapefile 
-using the code below, you'll need to have the `maptools` package installed which 
-requires the `rgeos` package. Be sure to install them first:
-	
-	#install needed packages
-	`install.packages(rgeos)`
-	`install.packages(maptools)`
-
-	#call the maptools package
-	library(maptools)
-	#extract CHM data using polygon boundaries from a shapefile
-	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
-	cent_ovrMax <- extract(chm, squarePlot, weights=FALSE, fun=max)
-
-Once you've created the `cent_ovrMax` object, you can add the max values to the 
-`centroids` data.frame using `centroids$maxHeight <- centr_ovrMax`.
-
-###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
-For see how to extract square plots using a plot centroid value, check out the
- [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
-
-
-
 # Challenge
 
 > One way to setup a layout with multiple plots in R is: `par(mfrow=c(6,3)) `. 
@@ -279,14 +250,13 @@ For see how to extract square plots using a plot centroid value, check out the
 > appearance to make a readable final figure. 
 
 
-##Working with extracted data 
+## Summarizing lidar height values for each plot 
 
-NOTE: If you followed variation 2 above, you don't need the steps below!
+The `centre_ovr` object is a list of lists. It contains the lidar CHM pixel values that fall within each plot boundary. We want to summarize the data to get ONE summary height value for each plot. 
+We will then create a new column in our `data.frame` that represents the max height value for all pixels
+within each plot boundary. 
 
-If we use variation ONE above, we create the `centre_ovr` object in R. This object 
-contains all of the lidar CHM pixel values contained within our plot boundaries. 
-Next, we will create a new column in our `data.frame` that represents the max height value for all pixels
-within each plot boundary. To do this, we will use the `sapply` function. The `sapply` function
+To summarize a list of numbers, we can use the `sapply` function. The `sapply` function
 aggregates elements in the list using a aggregate function such as mean, max or min that we
 specify in our code.
 
@@ -333,20 +303,47 @@ In this case, we'll use the `sapply` command to return the `max` height value fo
 Given we are working with lidar data, the max value will represent the tallest trees in the plot.
 
 	centroids$chmMax <- sapply(cent_ovr, max)
+ 	# look at the centroids dataframe structure
+ 	head(centroids$chmMax)
+
+
+
+###Variation 2: Extract CHM values Using a Shapefile
+
+If your plot boundaries are saved in a shapefile, you can use the code below. 
+There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the 
+zip file that you downloaded at the top of this page. NOTE: to import a shapefile 
+using the code below, you'll need to have the `maptools` package installed which 
+requires the `rgeos` package. Be sure to install them first:
+	
+	#install needed packages
+	#install.packages(rgeos)
+	#install.packages(maptools)
+
+	#call the maptools package
+	library(maptools)
+	#extract CHM data using polygon boundaries from a shapefile
+	squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
+	centroids$chmMaxShape <- extract(chm, squarePlot, weights=FALSE, fun=max)
+
+
+###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
+For see how to extract square plots using a plot centroid value, check out the
+ [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
+
+
+
 
 ##Extracting descriptive stats from Insitu Data 
-Let's explore two ways to extract stats from a dataset. We can use base R or the 
-`dplyr` library. We'll demonstrate both below
+In our final step, we will extract summary height values from our field data. We can use base R or the 
+`dplyr` library to do this. We'll demonstrate both below
 
-###Option 1 - Step by methods to extract stats from our data.frame
+### Extract stats from our data.frame using Base R
 
 First select plots that are also represented in our centroid layer. Quick test - how many 
 plots are in the centroid folder?
 
     insitu_inCentroid <- insitu_dat[insitu_dat$plotid %in% centroids$Plot_ID,] 
-
-    #Optional - create this dataframe using dplyr
-    #insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
 
 Next, list out plot id results. how many are there?
 
@@ -364,46 +361,63 @@ max CHM value.
     #And make the dataframe prettier by assigning names to the columns
     names(insitu_maxStemHeight) <- c('plotid','max')
 
-    #Optional - create this dataframe using dplyr
-    #insitu_maxStemHeight <- insitu_inCentroid %>% 
-    #	group_by(plotid) %>% 
-    #	summarise(max = max(stemheight))
+    
 
-###Option 2 - Extracting Data Using one Line of Code!
-We can combine the above steps into one line of code that takes care of the data
-aggregation and summary components. We can take full advantage of the `dplyr`
-to do this OR we can use base R.
+### Nesting Commands: Extracting Data Using one Line of Code
+We can combine the above steps into one line of code that takes care of the data aggregation and summary components.
 	
 	#add the max and 95th percentile height value for all trees within each plot
-    insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid$stemheight, 
-                    insitu_inCentroid$plotid, quantile, prob = 0.95))
+    insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
+         insitu_inCentroid$plotid, quantile, prob = 0.95))
 
-    #Optional - create this dataframe using dplyr
-	#insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
-	#	      group_by(plotid) %>% 
-	#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
 
 	#assign the final output to a column in our centroids object
 	centroids$insitu <- insitu$max
+	
+## Option 2 - Use DPLYR to achieve the same results
+
+    # Select plots that are in the centroid layer using DPLYR
+    insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
+    
+    	#get list of unique plot id's 
+    unique(insitu_inCentroid$plotid) 
+    
+	#find the max stem height for each plot
+    insitu_maxStemHeight <- insitu_inCentroid %>% 
+    	    group_by(plotid) %>% 
+     	summarise(max = max(stemheight))
+    
+    # Optional - do this all in one line of nested commands
+    #insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
+	#	      group_by(plotid) %>% 
+	#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
+	
 
 ### Plot Data (CHM vs Measured)
 Let's create a plot that illustrates the relationship between in situ measured 
 max canopy height values and lidar derived max canopy height values.
 
-	ggplot(centroids,aes(x=chmMax, y =insitu )) + geom_point() + theme_bw() + 
-	     ylab("Maximum measured height") + xlab("Maximum LiDAR pixel")+
-	     geom_abline(intercept = 0, slope=1)+xlim(0, max(centroids[,6:7])) + 
+	ggplot(centroids,aes(x=chmMax, y =insitu )) + 
+		geom_point() + 
+		theme_bw() + 
+	     ylab("Maximum measured height") + 
+	     xlab("Maximum LiDAR pixel")+
+	     geom_abline(intercept = 0, slope=1)+
+	     xlim(0, max(centroids[,6:7])) + 
 	     ylim(0,max(centroids[,6:7]))
 
 We can also add a regression fit to our plot. Explore the GGPLOT options and 
 customize your plot.
 
 	#plot with regression fit
-	p <- ggplot(centroids,aes(x=chmMax, y =insitu )) + geom_point() + 
-	    ylab("Maximum Measured Height") + xlab("Maximum LiDAR Height")+
+	p <- ggplot(centroids,aes(x=chmMax, y =insitu )) + 
+		geom_point() + 
+	    ylab("Maximum Measured Height") + 
+	    xlab("Maximum LiDAR Height")+
 	    geom_abline(intercept = 0, slope=1)+
 	    geom_smooth(method=lm) +
-	    xlim(0, max(centroids[,6:7])) + ylim(0,max(centroids[,6:7])) 
+	    xlim(0, max(centroids[,6:7])) + 
+	    ylim(0,max(centroids[,6:7])) 
 	
 	p + theme(panel.background = element_rect(colour = "grey")) + 
 	    ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
