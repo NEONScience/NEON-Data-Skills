@@ -210,9 +210,9 @@ In this case, we know these data are all in the same projection.
 
 > HINT: to find out what projection our CHM is in, Type `chm@crs`
 
-	#make spatial points object using the CRS (coordinate 
+	#make spatial points data.frame using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
-	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =chm@crs)
+	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =chm@crs,centroids)
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
@@ -222,24 +222,30 @@ will do the job!
 ### Variation 1: Extract Plot Data Using Circle: 20m Radius Plots
 
 	#Insitu sampling took place within 40m x 40m square plots so we use a 20m radius.	
-    #Note that below will return a list of pixel values for each plot
-    cent_ovr <- extract(chm,centroid_sp,buffer = 20)
+    #Note that below will return a dataframe containing the max height
+	# calculated from all pixels in the buffer for each plot
+    cent_ovr <- extract(chm,centroid_sp,buffer = 20, fun=max, df=true)
 
-#### Explore The Data Distribution
+	#grab the names of the plots from the centroid_spdf
+	cent_ovr$plot_id <- centroid_spdf$Plot_ID  
+	#fix the column names
+	names(cent_ovr) <- c('ID','chmMaxHeight','plot_id')
+	
+	#merge the chm data into the centroids data.frame
+	centroids <- merge(centroids, cent_ovr, by.x = 'Plot_ID', by.y = 'plot_id')
 
-Before we go any further, it's good to look at the distribution of values we've 
-extracted for each plot. Let's create a histogram of the data.
+	#have a look at the centroids data frame
+	head(centroids)
 
-	# create a histogram of all pixels extracted in the second plot
-	hist(cent_ovr[[2]])
+#### If you want to explore The Data Distribution
 
-If we wanted, we could loop through several plots and create histograms using a 
+If you want to explore the data distribution of pixel height values in each plot, you could remove the `fun` call to max and generate a list. `cent_ovrList <- extract(chm,centroid_sp,buffer = 20)`. It's good to look at the distribution of values we've 
+extracted for each plot. Then you could generate a histogram for each plot `hist(cent_ovrList[[2]])`. If we wanted, we could loop through several plots and create histograms using a 
 `for loop`.
 
 	# create histograms for the first 5 plots of data
-	
 	for (i in 1:5) {
-	  hist(cent_ovr[[i]], main=(paste("plot",i)))
+	  hist(cent_ovrList[[i]], main=(paste("plot",i)))
 	}
 
 
@@ -249,66 +255,6 @@ If we wanted, we could loop through several plots and create histograms using a
 > This code will give you 6 rows of plots with 3 plots in each row. Modify the 
 > `for loop` above to plot all 18 histograms. Improve upon the plot's final 
 > appearance to make a readable final figure. 
-
-
-## Summarizing lidar height values for each plot 
-
-The `centre_ovr` object is a list of lists. It contains the lidar CHM pixel values that fall within each plot boundary. We want to summarize the data to get ONE summary height value for each plot. 
-We will then create a new column in our `data.frame` that represents the max height value for all pixels
-within each plot boundary. 
-
-To summarize a list of numbers, we can use the `sapply` function. The `sapply` function
-aggregates elements in the list using a aggregate function such as mean, max or min that we
-specify in our code.
-
-## Sapply Example
-
-	# create 3 vectors of numbers
-	a <- c(2, 3, 5, 7)
-    b <- c(23, 13, 45, 57) 
-	c <- c(2, 1, 4, 5) 
-	#create a list of lists
-	x <- list(a,b,c)
-
-	x
-	
-The object `x` looks like: 
-	
-	[[1]]
-	[1] 2 3 5 7
-
-	[[2]]
-	[1] 23 13 45 57
-
-	[[3]]
-	[1] 2 1 4 5
-
-Let's call elements from the list
-
-	# grab the first two elements of the second list in the x object
-	x[[2]][1:2]
-
-Calculate summary
-
-	# grab the max value from each list in our object x
-	summary <- sapply(x,max)
-	
-OUTPUT:
-
-	[1]  7 57  5
-
-<a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">More about
-the apply functions in R.</a>
-
-In this case, we'll use the `sapply` command to return the `max` height value for pixels in each plot. 
-Given we are working with lidar data, the max value will represent the tallest trees in the plot.
-
-	centroids$chmMax <- sapply(cent_ovr, max)
- 	
- 	#look at the centroids dataframe structure
- 	head(centroids$chmMax)
-
-
 
 ###Variation 2: Extract CHM values Using a Shapefile
 
@@ -342,31 +288,27 @@ In our final step, we will extract summary height values from our field data. We
 
 ### Extract stats from our data.frame using Base R
 
-First select plots that are also represented in our centroid layer. Quick test - how many 
-plots are in the centroid folder?
-
-	#extract only the field data that have plot id's that are in our centroids layer
-    insitu_inCentroid <- insitu_dat[insitu_dat$plotid %in% centroids$Plot_ID,] 
+First let's see how many plots are in the centroid folder.
 
 	# How many plots are there?
-    unique(insitu_inCentroid$plotid) 
+    unique(insitu_dat$plotid) 
 
-Finally, find the max stem height value for each plot. We will compare this value to the 
+Next, find the max stem height value for each plot. We will compare this value to the 
 max CHM value.
  
-    #Here, we use the aggregate function, the arguments of which are: 
+    #Use the aggregate function, the arguments of which are: 
     #      the data on which you want to calculate something ~ the grouping variable
     #      the FUNction
     insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
                 insitu_inCentroid$plotid, FUN = max )  
  
-    #And make the dataframe prettier by assigning names to the columns
+    #Assign cleaner names to the columns
     names(insitu_maxStemHeight) <- c('plotid','max')
 
     #OPTIONAL - combine the above steps into one line of code.
 	#add the max and 95th percentile height value for all trees within each plot
     #insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
-         insitu_inCentroid$plotid, quantile, prob = 0.95))
+    #     insitu_inCentroid$plotid, quantile, prob = 0.95))
 
 
 	#assign the final output to a column in our centroids object
@@ -391,10 +333,26 @@ max CHM value.
 	#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
 	
 
+Once we have our summarized insitu data, we can `merge` it into the centroids data.frame. Merge requires two data.frames and the names of the columns containing the unique ID that we will merge the data on. In this case, we will merge the data on the plot_id column. Notice that it's spelled slightly differently in both data.frames so we'll need to tell R what it's called in each data.frame.
+
+	#merge the insitu data into the centroids data.frame
+	centroids<-merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
+	head(centroids)
+
 ### Plot Data (CHM vs Measured)
 Let's create a plot that illustrates the relationship between in situ measured 
 max canopy height values and lidar derived max canopy height values.
 
+We can make a simple plot using the base R `plot` function:
+	
+	#create basic plot
+	plot(x = centroids$chmMaxHeight, y=centroids$insitu_maxHt)
+
+
+Or we can use ggplot:
+
+	library(ggplot2)
+	#create plot
 	ggplot(centroids,aes(x=chmMax, y =insitu )) + 
 		geom_point() + 
 		theme_bw() + 

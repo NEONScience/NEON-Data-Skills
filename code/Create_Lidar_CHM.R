@@ -49,15 +49,23 @@ points(centroids$easting,centroids$northing, pch=22, cex = 4,col = 2)
 points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 
-# Create a spatial points object using the CRS (coordinate reference system) from the CHM 
+# Create a spatial points data frame using the CRS (coordinate reference system) from the CHM 
 # Apply the CRS to our plot centroid data.
-centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =CRS(as.character(chm@crs)) )
+centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
 
-# Insitu sampling took place within 40m x 40m plots at SJER.  
-# Note that below will return a list, so we can extract via lapply
-#buffer =- radius, not diameter
-cent_ovr <- extract(chm,centroid_sp,buffer = 20)
+#extract pixels, we can apply a summary FUNction to grab the max value
+#we can also ask R to return the data as a data.frame (df=TRUE)
+#the one downside of this method is that we can't look at the distribution of pixel
+#values unless we return 
+cent_ovr <- extract(chm,centroid_spdf,buffer=20, fun=max,df=TRUE)
+#grab the names of the plots from the centroid_spdf
+cent_ovr$plot_id <- centroid_spdf$Plot_ID  
+#fix the column names
+names(cent_ovr) <- c('ID','chmMaxHeight','plot_id')
+
+#merge the chm data into the centroids data.frame
+centroids <- merge(centroids, cent_ovr, by.x = 'Plot_ID', by.y = 'plot_id')
 
 
 ## VARIATION 2 -- Extract CHM Values using a shapefile
@@ -71,18 +79,10 @@ squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp
 cent_ovr2 <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
 
-#extract the max CHM value for each plot within the 10 m buffer defined above. Add it to the centroids object
-centroids$chmMax <- unlist(lapply(cent_ovr,max))
-
-
-
-#now, there are two ways to do the next part. Let's start with writing each line out.
-
-#first slelect plots that are also represented in our centroid layer. Quick test - how many plots are in the centroid folder?
-insitu_inCentroid <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID)
+#summarize In Situ data using DPLYR
 
 #list out plot id results. how many are there?
-unique(insitu_inCentroid$plotid) 
+unique(insitu_dat$plotid) 
 
 
 #find the max stem height value for each plot. We will compare this value to the max CHM value.
@@ -91,16 +91,23 @@ insitu_maxStemHeight <- insitu_inCentroid %>% group_by(plotid) %>% summarise(max
 
 #NOTE -- we can be super tricky and combine the above steps into one line of code. See below how this is done.
 #this string is taking full advantage of the dplyr package.
-insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% group_by(plotid) %>% summarise(quant = quantile(stemheight,.95), max = max(stemheight))
+insitu <- insitu_dat %>% group_by(plotid) %>% summarise(insitu_95Ht = quantile(stemheight,.95), insitu_maxHt = max(stemheight))
 
-#add the max height value to the centroids object.
-centroids$insitu <- insitu_maxStemHeight$max
+
+########################
+
+#merge the insitu data into the centroids data.frame
+centroids<-merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
+head(centroids)
+
+#create basic plot
+plot(x = centroids$chmMaxHeight, y=centroids$insitu_maxHt)
 
 
 #Now let's plot our data. We will use the GGPLOT libraries to create our plot
 #the plot below has a 1:1 line.
 library(ggplot2)
-ggplot(centroids,aes(x=chmMax, y =insitu )) + 
+ggplot(centroids,aes(x=chmMaxHeight, y =insitu_maxHt )) + 
   geom_point() + theme_bw() + ylab("Maximum Measured Height") + 
   xlab("Maximum LiDAR Height")+geom_abline(intercept = 0, slope=1)+
   xlim(0, max(centroids[,6:7])) + ylim(0,max(centroids[,6:7])) 
