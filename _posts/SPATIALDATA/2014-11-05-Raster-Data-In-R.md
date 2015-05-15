@@ -111,12 +111,10 @@ also install. Also install the `rgdal` library"
 	setwd("~/yourWorkingDirectoryHere")  
 	
 
-Next, let's load the raster into R. Notice that we're using some clever code 
-that tells R to paste the working directory into the path, and then it tells it 
-to add the location of the raster layer.
+Next, let's load the raster into R.
 
 	#load raster in an R object called 'DEM'
-	DEM <- raster("CHM_InSitu_Data/DigitalTerrainModel/SJER2013_DTM.tif")  
+	DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
 	#next, let's look at the attributes of the raster. 
 	DEM
 	
@@ -138,12 +136,7 @@ Notice a few things about this raster.
 *  **Extent** this is the spatial extent of the raster. this value will be coordinate units associated with the coordinate reference system of the raster.
 *  **Coord ref** this is the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
-If you do not see the min and max cell values in the output above, try this:
 
-	#Get min and max cell values from raster
-	cellStats(DEM, min)
-	cellStats(DEM, max)
-	cellStats(DEM, range)
 
 ##About UTM
 
@@ -153,6 +146,13 @@ If you do not see the min and max cell values in the output above, try this:
 "></a>
  <figcaption>The UTM coordinate reference system breaks the world into 60 latitude zones.</figcaption>
 </figure>
+
+You can query the raster to determine the min, max values and the range.
+
+	#Get min and max cell values from raster
+	cellStats(DEM, min)
+	cellStats(DEM, max)
+	cellStats(DEM, range)
 
 ##Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key metadata.
@@ -196,17 +196,22 @@ better for rendering larger rasters.
 	col <- terrain.colors(5)
 	image(DEM, zlim=c(250,300), col=col)
 
+In the above example. `terrain.colors()` tells r to create a palette of colors within the `terrain.colors` color ramp. There are other palettes that you can use as well include `rainbow` and `heat.colors`. [More on color palettes in R here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on color palettes.")
+
+* [Another good post on colors.](http://www.r-bloggers.com/color-palettes-in-r/)
+
+* [RColorBrewer is another powerful tool to create sets of colors.](http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
 
 ## Challenge Yourself
 
-1. What happens if you change the number of colors in the terrain.colors command?
-
-[More on colors here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on colors.")
-
-[Another good post on colors.](http://www.r-bloggers.com/color-palettes-in-r/)
+<i class="fa fa-star"></i> ** 1**  What happens if you change the number of colors in the terrain.colors command?
+{: .notice}
 
 2. What happens if you change the zlim values in the image command?
 3. What are the other attributes that you can specify when using the image command?
+
+
+
 
 ## Breaks and Colorbars in R
 A digital elevation model (DEM) is an example of a continuous raster. It contains elevation values for a range. For example, elevations values in a DEM might include any set of values between 200 m and 500 m. Given this range, you can plot DEM pixels using a gradient of colors. Like this:
@@ -285,7 +290,10 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
 	plot(DEMcrop2)
 
 
-## Working with multiple rasters within Raster Stacks and Raster Bricks
+# Bands & Images in R
+
+## Working with multiple rasters using Raster Stacks and Raster Bricks
+
 We've now loaded a raster into R. We've also made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
 attributes. Next, let's create a raster stack from 3 raster images.
@@ -332,13 +340,22 @@ achieve the same results as above by looking for all files with a '.tif' extensi
  <figcaption>All rasters in the rasterstack plotted.</figcaption>
 </figure>
 
-You can plot an RGB image from the stack. You need to specify the order of the bands when you do this. In our raster stack, band 19 which is the blue band, is first in the list, whereas band 58 which is the red band is last. Thus the order is 3,2,1 to ensure the red band is rendered first as red. 
+
+## Plot an RGB Image
+
+You can plot an RGB image from a raster `stack`. You need to specify the order of the bands when you do this. In our raster stack, band 19 which is the blue band, is first in the list, whereas band 58 which is the red band is last. Thus the order is 3,2,1 to ensure the red band is rendered first as red. 
 
 	#plot an RGB version of the stack
 	plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
 
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"><img src="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"></a>
+<figcaption>To plot an RGB image in R, you need to specify which rasters to render on the red, green and blue bands. </figcaption>
+</figure>
 
 
+
+## Explore Raster Values - Histograms
 You can also explore the data.
 
 
@@ -364,7 +381,7 @@ You can also explore the data.
 
 
 ##Raster Bricks in R
-Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images!
+Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images. Raster bricks are more efficient objects to use when processing larger datasets.
 
 	#create raster brick
 	RGBbrick <- brick(rgbRaster)
@@ -382,4 +399,5 @@ We can write out the raster in tiff format as well. When we do this it will copy
 
 ## Challenge 
 
-1. Open band 90 in the rasters folder. You might want to look at it in QGIS first compared to the other rasters. Look closely at the extent and pixel size. Does anything look off? Fix what's missing. Export a new geotiff. Do things line up?
+1. You can set the CRS and extent of a raster using the syntax `rasterWithoutReference@crs <- rasterWithReference@crs` and `rasterWithoutReference@extent <- rasterWithReference@extent`. Open band 90 in the band90 folder. You might want to look at it in QGIS first compared to the other rasters. Does it line up? Look closely at the extent and pixel size. Does anything look off? Fix what's missing. Export a new geotiff. Do things line up in QGIS?
+2. A color infrared image is a combination of the gree, red and near-infrared bands. In our case gree <- band 34, red <- band 58 and near-infrared <- band90. Using the same band90 raster that you fixed in step one above, create a color infrared image. HINT: when you use the plotRGB function, you'll map the bands as follows: blue=band34, green=band58, red=band90. Export your results as a geotiff.
