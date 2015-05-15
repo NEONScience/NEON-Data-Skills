@@ -190,7 +190,8 @@ Let's get started!
 	#Overlay the centroid points and the stem locations on the CHM plot
 
 	#for example, cex = point size 
-    points(centroids$easting,centroids$northing, pch=19, cex = 2, col = 2)
+	#pch 0 = square
+    points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
     points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 > HINT: type in `help(points)` to read about the options for plotting points.
@@ -303,7 +304,8 @@ In this case, we'll use the `sapply` command to return the `max` height value fo
 Given we are working with lidar data, the max value will represent the tallest trees in the plot.
 
 	centroids$chmMax <- sapply(cent_ovr, max)
- 	# look at the centroids dataframe structure
+ 	
+ 	#look at the centroids dataframe structure
  	head(centroids$chmMax)
 
 
@@ -327,14 +329,14 @@ requires the `rgeos` package. Be sure to install them first:
 	centroids$chmMaxShape <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
 
-###Variation 3: Derive Square Plot boundaries, then CHM values Using a Shapefile
+###Variation 3: Derive Square Plot boundaries, then CHM values around a point
 For see how to extract square plots using a plot centroid value, check out the
  [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
 
 
 
 
-##Extracting descriptive stats from Insitu Data 
+##Extract descriptive stats from Insitu Data 
 In our final step, we will extract summary height values from our field data. We can use base R or the 
 `dplyr` library to do this. We'll demonstrate both below
 
