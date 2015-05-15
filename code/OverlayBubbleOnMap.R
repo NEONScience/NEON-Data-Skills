@@ -1,3 +1,7 @@
+---
+  output: html_document
+-----
+  
 #this code will take some data and will plot it using a "bubble" approach 
 #it will overlay the bubbles on top of a base map. For it to work, layers should be in 
 #WGS84 (geographic) CRS with lat long x,y values. then reproject the map as you see fit.
@@ -19,7 +23,7 @@ devtools::source_gist("33baa3a79c5cfef0f6df")
 #us <- readOGR(dsn="http://eric.clst.org/wupl/Stuff/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
 
 #this is now a local layer for all to use!
-us <- readOGR("C:/Users/lwasser/Documents/GitHub/NEON_HigherEd/code/BubbleMapData/gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
+us <- readOGR("gz_2010_us_040_00_500k.json", layer="OGRGeoJSON")
 
 #canada layer is one i found, downloaded and reprojected to WGS84 geographic
 #this dataset is on my home mac as i processed it there- need to push it to GIT.

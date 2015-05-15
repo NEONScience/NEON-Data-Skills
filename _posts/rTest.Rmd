@@ -47,6 +47,7 @@ library(ggplot2)
 
 Still testing this
 
+```{r}
 # for theme_map
 devtools::source_gist("33baa3a79c5cfef0f6df")
 
@@ -81,6 +82,7 @@ us <- us[!us$NAME %in% c("Alaska", "Hawaii", "Puerto Rico", "District of Columbi
 #This function turns a map into a data frame that can more easily be plotted with ggplot2.
 map <- fortify(us, region="NAME")
 #canMap <- fortify(can, region="NAME")
+
 
 #NOTE: if you run into errors running fortify, make sure install.packages('gpclib', type='source')
 #then make sure gpclibPermitStatus() is true when you type it into the console.
@@ -124,7 +126,7 @@ gg <- gg + theme_map() +
   ylab("") +
   theme(plot.title=element_text(size=16))
 gg
-
+```
 
 library(plotly)
 #set user credentials

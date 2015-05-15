@@ -4,7 +4,7 @@ title: "Raster Data in R - The Basics"
 date:   2015-1-26 20:49:52
 authors: Leah A. Wasser
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-05-08 14:30:52
+lastModified: 2015-05-14 19:28:52
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
@@ -204,11 +204,10 @@ In the above example. `terrain.colors()` tells r to create a palette of colors w
 
 ## Challenge Yourself
 
-<i class="fa fa-star"></i> ** 1**  What happens if you change the number of colors in the terrain.colors command?
+<i class="fa fa-star"></i> What happens if you change the number of colors in the terrain.colors command?
+<i class="fa fa-star"></i> What happens if you change the zlim values in the image command?
+<i class="fa fa-star"></i> What are the other attributes that you can specify when using the image command?
 {: .notice}
-
-2. What happens if you change the zlim values in the image command?
-3. What are the other attributes that you can specify when using the image command?
 
 
 
