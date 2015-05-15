@@ -343,10 +343,10 @@ In our final step, we will extract summary height values from our field data. We
 First select plots that are also represented in our centroid layer. Quick test - how many 
 plots are in the centroid folder?
 
+	#extract only the field data that have plot id's that are in our centroids layer
     insitu_inCentroid <- insitu_dat[insitu_dat$plotid %in% centroids$Plot_ID,] 
 
-Next, list out plot id results. how many are there?
-
+	# How many plots are there?
     unique(insitu_inCentroid$plotid) 
 
 Finally, find the max stem height value for each plot. We will compare this value to the 
@@ -361,13 +361,9 @@ max CHM value.
     #And make the dataframe prettier by assigning names to the columns
     names(insitu_maxStemHeight) <- c('plotid','max')
 
-    
-
-### Nesting Commands: Extracting Data Using one Line of Code
-We can combine the above steps into one line of code that takes care of the data aggregation and summary components.
-	
+    #OPTIONAL - combine the above steps into one line of code.
 	#add the max and 95th percentile height value for all trees within each plot
-    insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
+    #insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
          insitu_inCentroid$plotid, quantile, prob = 0.95))
 
 
