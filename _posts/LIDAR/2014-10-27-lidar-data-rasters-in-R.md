@@ -212,7 +212,8 @@ In this case, we know these data are all in the same projection.
 
 	#make spatial points data.frame using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
-	centroid_sp <- SpatialPoints(centroids[,4:3],proj4string =chm@crs,centroids)
+	centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
+
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
