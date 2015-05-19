@@ -287,7 +287,7 @@ For see how to extract square plots using a plot centroid value, check out the
 In our final step, we will extract summary height values from our field data. We can use base R or the 
 `dplyr` library to do this. We'll demonstrate both below
 
-### Extract stats from our data.frame using Base R
+### Extract stats from our data.frame using DPLYR
 
 First let's see how many plots are in the centroid folder.
 
@@ -296,28 +296,8 @@ First let's see how many plots are in the centroid folder.
 
 Next, find the max stem height value for each plot. We will compare this value to the 
 max CHM value.
- 
-    #Use the aggregate function, the arguments of which are: 
-    #      the data on which you want to calculate something ~ the grouping variable
-    #      the FUNction
-    insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
-         insitu_inCentroid$plotid, FUN = max )  
- 
-    #Assign cleaner names to the columns
-    names(insitu_maxStemHeight) <- c('plotid','max')
 
-    #OPTIONAL - combine the above steps into one line of code.
-	#add the max and 95th percentile height value for all trees within each plot
-    #insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
-    #     insitu_inCentroid$plotid, quantile, prob = 0.95))
-
-
-	#assign the final output to a column in our centroids object
-	centroids$insitu <- insitu$max
-	
-## Option 2 - Use DPLYR to achieve the same results
-
-	library(dplyr)
+    library(dplyr)
     
     #get list of unique plot id's 
     unique(insitu_inCentroid$plotid) 
@@ -332,6 +312,26 @@ max CHM value.
 	#	      group_by(plotid) %>% 
 	#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
 	
+	
+## Option 2 - Use Base R to achieve the same results
+
+If you don't want to use DPLYR, you can also achieve the same results using base R. However, DPLYR better mimics a typical database approach so we recommend that method! 
+
+    #Use the aggregate function, the arguments of which are: 
+    #      the data on which you want to calculate something ~ the grouping variable
+    #      the FUNction
+    insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
+         insitu_inCentroid$plotid, FUN = max )  
+ 
+    #Assign cleaner names to the columns
+    names(insitu_maxStemHeight) <- c('plotid','max')
+
+    #OPTIONAL - combine the above steps into one line of code.
+	#add the max and 95th percentile height value for all trees within each plot
+    #insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
+    #     insitu_inCentroid$plotid, quantile, prob = 0.95))	
+
+### Merge the data into the centroids data.frame
 
 Once we have our summarized insitu data, we can `merge` it into the centroids data.frame. Merge requires two data.frames and the names of the columns containing the unique ID that we will merge the data on. In this case, we will merge the data on the plot_id column. Notice that it's spelled slightly differently in both data.frames so we'll need to tell R what it's called in each data.frame.
 
