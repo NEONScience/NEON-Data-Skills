@@ -64,7 +64,7 @@ Both ui.R and server.R must be in a single folder together, along with any input
 
 3. Before we make the app actually do anything, we'll put in the code on the server side that will make the app run. In server.R, write the Shiny server function, empty:
 
-:
+:.
 
 	shinyServer(function(input,output){
     
