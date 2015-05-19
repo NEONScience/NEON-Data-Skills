@@ -94,8 +94,8 @@ Download Script to Install Packages in R</a>
 
 | Time      | Topic         | 		   | 
 |-----------|---------------|------------|
-| 12:00     | [Brief Introduction to Raster Data]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/) |          |
-| 12:15     | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
+| 12:00     | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
+| 12:45     | [Working With Image Formatted Rasters in R]({{ site.baseurl }}/R/Image-Raster-Data-In-R/)     |            |
 | 1:15     | [Brief Overview of Lidar Data & Lidar derived rasters]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)     |            |
 | 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/lidar-data/online-data-viewer/ "Working With Lidar Point Clouds")          |     |
 | 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/ "Working with Lidar Rasters in R")        |         |
