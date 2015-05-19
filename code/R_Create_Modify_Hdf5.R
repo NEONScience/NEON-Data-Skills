@@ -8,9 +8,10 @@ library("rhdf5")
 
 #create hdf5 file
 h5createFile("sensorData.h5")
+#create a group called location1 within the H5 file
 h5createGroup("sensorData.h5", "location1")
 
-#let's check out what we've created so far
+#view the structure of the h5 we've created
 h5ls("sensorData.h5")
 
 #create loops that populate the hdf5 structure 
