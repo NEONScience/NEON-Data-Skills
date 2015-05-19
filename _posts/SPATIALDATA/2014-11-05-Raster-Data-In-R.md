@@ -306,3 +306,6 @@ Code Sample:
 	r[]  <- 1
 	r[]  <- sample(0:50,25)
 	r
+
+### Image Data in R
+[Click here to learn more about working with image formatted rasters in R.]({{ site.baseurl }}/R/Image-Raster-Data-In-R/) 
