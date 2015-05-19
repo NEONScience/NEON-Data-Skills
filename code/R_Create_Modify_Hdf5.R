@@ -2,16 +2,50 @@
 #special thanks to Edmund Hart for generating this code!
 #adapted from submission in Software Carpentry Materials
 
+#Call the R HDF5 Library
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 library("rhdf5")
 
-#create hdf5 file
+################ PART 1 #####################
+
+# Create hdf5 file
 h5createFile("sensorData.h5")
+# Create a group within the H5 file
 h5createGroup("sensorData.h5", "location1")
 
 #let's check out what we've created so far
 h5ls("sensorData.h5")
+
+# let's create some sample, numeric data
+someData <- matrix(rnorm(300,2,1),ncol=3,nrow=100)
+
+# add some sample data to the H5 file located in the location1 group
+# we'll call the dataset "precip_data" in the H5 file
+h5write(someData, file = "sensorData.h5", name="precip_data2")
+
+# let's check out the data again
+h5ls("sensorData.h5")
+
+#next let's add an attribute to the data that describes it
+
+#open the file, create a class
+fid <- H5Fopen("sensorData.h5")
+#open up the dataset to add attributes to as a class
+did <- H5Dopen(fid, "precip_data2")
+
+# Provide the NAME and the ATTR (what the attribute says) 
+# for the attribute.
+h5writeAttribute(did, attr="Here is a description of the data",
+                 name="Description")
+h5writeAttribute(did, attr="Meters",
+                 name="Units")
+
+#close the file and the dataset when you're done writing to them
+H5Dclose(did)
+H5Fclose(fid)
+
+
 
 #create loops that populate the hdf5 structure 
 #for 2 other locations
