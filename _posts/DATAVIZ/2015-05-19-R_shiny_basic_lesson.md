@@ -73,7 +73,7 @@ Both ui.R and server.R must be in a single folder together, along with any input
 4. On the user interface side, we'll make a title for the app.
 In ui.R, enter:
 
-:
+:.
 
 	shinyUI(
 		fluidPage(
