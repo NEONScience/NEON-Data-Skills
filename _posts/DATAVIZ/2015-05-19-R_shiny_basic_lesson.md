@@ -64,27 +64,27 @@ Both ui.R and server.R must be in a single folder together, along with any input
 
 3. Before we make the app actually do anything, we'll put in the code on the server side that will make the app run. In server.R, write the Shiny server function, empty:
 
-    ```
-    shinyServer(function(input,output){
+:
+
+	shinyServer(function(input,output){
     
     })
-    ```
 
 4. On the user interface side, we'll make a title for the app.
 In ui.R, enter:
 
-    ```
-    shinyUI(
-    	fluidPage(
-    		titlePanel("This app is awesome"),
-    		mainPanel(
+:
+
+	shinyUI(
+		fluidPage(
+			titlePanel("This app is awesome"),
+    			mainPanel(
     			wellPanel(
     				p("We're going to put some content here.")
     			)
     		)
     	)
     )
-    ```
 
 5. Save both files, then click on the "Run App" button. Look what you made!
 
