@@ -3,7 +3,7 @@ layout: post
 title: "R: Creating HDF5 Files in the R"
 date:   2015-1-29 15:22:52
 dateCreated: 2014-11-18 20:49:52
-lastModified: 2014-11-18 20:49:52
+lastModified: 2015-05-19 20:49:52
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: RHDF5
 authors: Ted Hart, Leah Wasser - Adapted from Software Carpentry Materials by Leah A. Wasser
@@ -52,7 +52,7 @@ After completing this activity, you will:
 ### A Brief Review - About HDF5
 The HDF5 file can store large, heterogeneous datasets that include metadata. It also supports efficient `data slicing`, or extraction of particular subsets of a dataset which means that you don't have to read  large files read into the computers memory / RAM in their entirety in order work with them. This saves a lot of time when working with with HDF5 data in `R`. When HDF5 files contain spatial data, they can also be read directly into GIS programs such as `QGiS`.  
 
-Remember that the HDF5 format is a self-contained directory structure. We can compare this structure to the folders and files located on your computer. However, in HDF5 files  "directories" are called `groups` and files are called `datasets`. The HDF5 element itself is a file. Each element in an HDF5 file can have metadata attached to it making HDF5 files "self-describing".
+The HDF5 format is a self-contained directory structure. We can compare this structure to the folders and files located on your computer. However, in HDF5 files  "directories" are called `groups` and files are called `datasets`. The HDF5 element itself is a file. Each element in an HDF5 file can have metadata attached to it making HDF5 files "self-describing".
 
 [Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
 
