@@ -34,7 +34,6 @@ Shiny has been called 'an R wrapper for JavaScript', but this doesn't quite capt
 ## What kinds of applications can I build with Shiny?
 There are many options! Here are a few ways we have used Shiny:
 
-* <a href="https://cklunch.shinyapps.io/terms_app/">Keep track of NEON data product numbers and related information, like terms and units</a>
 * <a href="http://www.neoninc.org/data-resources/get-data/data-product-availability">Display the upcoming availability of NEON data products</a>
 * Create applications to read in files and output data sheets for NEON field crews
 * Visualize NEON data
