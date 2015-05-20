@@ -23,3 +23,13 @@ The map below was created using small mammal data downloded from the NEON data p
 
 
 
+#testing fences
+
+```ruby
+    # ...ruby code
+```
+
+```r
+# ...ruby code
+sdf <- read.vdf("sdf")
+```
