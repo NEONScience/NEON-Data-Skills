@@ -34,7 +34,6 @@ Shiny has been called 'an R wrapper for JavaScript', but this doesn't quite capt
 ## What kinds of applications can I build with Shiny?
 There are many options! Here are a few ways we have used Shiny:
 
-* <a href="https://cklunch.shinyapps.io/terms_app/">Keep track of NEON data product numbers and related information, like terms and units</a>
 * <a href="http://www.neoninc.org/data-resources/get-data/data-product-availability">Display the upcoming availability of NEON data products</a>
 * Create applications to read in files and output data sheets for NEON field crews
 * Visualize NEON data
@@ -78,9 +77,9 @@ In ui.R, enter:
 	shinyUI(
 		fluidPage(
 			titlePanel("This app is awesome"),
-    			mainPanel(
-    			wellPanel(
-    				p("We're going to put some content here.")
+    				mainPanel(
+    				wellPanel(
+    					p("We're going to put some content here.")
     			)
     		)
     	)
@@ -120,26 +119,28 @@ For learning purposes, it is always great to start from scratch, but using this 
 1. We're going to start by graphing a dummy variable. Most of the action will be on the server side, all we have to do on the user interface side is create a place to put the graph.
 2. Add the dummy variable to your server.R code:
 
-    ```
+:
+
     shinyServer(function(input,output){
     	dummy <- rnorm(100)
     })
-    ```
 
 3. The plot command ("hist" here for a histogram) is nested inside a renderPlot function to create the output object. output$fig is the output object.
 
-    ```
+:
+
     shinyServer(function(input,output){
     	dummy <- rnorm(100)
     	output$fig <- renderPlot(
     		hist(dummy)
     	)
     })
-    ```
+
 
 4. In ui.R we need to make a place for the output object to go. Here we just use the name of the output object, "fig":
 
-    ```
+:
+
     shinyUI(
     	fluidPage(
     		titlePanel("This app is awesome"),
@@ -151,7 +152,7 @@ For learning purposes, it is always great to start from scratch, but using this 
     		)
     	)
     )
-    ```
+
 
 5. Note one very important thing in the ui.R code - there is now a comma after the p() text. Commas separate different panels in the UI, and different commands within the same panel.
 6. Run the app. Look, it's a histogram!
@@ -162,7 +163,8 @@ For learning purposes, it is always great to start from scratch, but using this 
 2. Above, we made the dummy variable in server.R using the rnorm() function. Instead, we can have the UI offer a choice of distributions to sample from, and then plot a histogram of the one we choose.
 3. In ui.R, let's first make a sidebar panel to put the input drop-down menu in:
 
-    ```
+:
+
     shinyUI(
     	fluidPage(
     		titlePanel("This app is awesome"),
@@ -178,12 +180,13 @@ For learning purposes, it is always great to start from scratch, but using this 
     		)
     	)
     )
-    ```
+
 
 4. Note that both mainPanel() and sidebarPanel() are nested in sidebarLayout(). If you run the app at this point, you'll see it runs the same but now has a empty grey box on the side.
 5. Now add the input function to the sidebar:
 
-    ```
+:
+
     shinyUI(
     	fluidPage(
     		titlePanel("This app is awesome"),
@@ -202,11 +205,12 @@ For learning purposes, it is always great to start from scratch, but using this 
     		)
     	)
     )
-    ```
+
 
 6. Now the server.R side needs to know what to do with each option:
 
-    ```
+:
+
     shinyServer(function(input,output){
     	dummy <- reactive({
     		if(input$dist=="Normal")
@@ -220,7 +224,7 @@ For learning purposes, it is always great to start from scratch, but using this 
     		hist(dummy())
     	)
     })
-    ```
+
 
 7. The dummy variable is now a reactive object. Note that in the hist() function we now call hist(dummy()) instead of hist(dummy)
 8. Run the app and cycle through the options!
@@ -230,7 +234,8 @@ For learning purposes, it is always great to start from scratch, but using this 
 1. I made the app generate 100 instances of a random variable by default; let's make the number of instances into a user input.
 2. First we need to make an input entry field on the UI:
 
-    ```
+:
+
     shinyUI(
     	fluidPage(
     		titlePanel("This app is awesome"),
@@ -250,12 +255,13 @@ For learning purposes, it is always great to start from scratch, but using this 
     		)
     	)
     )
-    ```
+
 
 3. value=100 sets the initial value of input$num to 100; if we don't set an initial value the app can't run because it doesn't know what to do with the input.
 4. Now replace the default 100 on the server side with input$num:
 
-    ```
+:
+
     shinyServer(function(input,output){
     	dummy <- reactive({
     		if(input$dist=="Normal")
@@ -269,7 +275,7 @@ For learning purposes, it is always great to start from scratch, but using this 
     		hist(dummy())
     	)
     })
-    ```
+
 
 
 
