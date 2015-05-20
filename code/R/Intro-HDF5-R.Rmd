@@ -1,0 +1,95 @@
+---
+title: "Intro-Create-Read-HDF5"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+
+#Call the R HDF5 Library
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("rhdf5")
+library("rhdf5")
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+#Call the R HDF5 Library
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("rhdf5")
+library("rhdf5")
+
+
+# Create hdf5 file
+h5createFile("vegData.h5")
+
+#create a group called location1 within the H5 file
+h5createGroup("vegData.h5", "testData")
+
+#view the structure of the h5 we've created
+h5ls("vegData.h5")
+
+# create some sample, numeric data
+a <- rnorm(n=40, m=1, sd=1) 
+someData <- matrix(a,nrow=20,ncol=2)
+
+# add some sample data to the H5 file located in the location1 group
+# we'll call the dataset "precip_data" and store it 
+#in the location1 group within the H5 file
+h5write(someData, file = "vegData.h5", name="testData/new2")
+
+# let's check out the data again
+h5ls("vegData.h5")
+
+# Add MetaData
+#next let's add some attribute to the data that describes it
+```
+
+
+## Next let's add some attributes to our data
+
+```{r}
+
+#open the file, create a class
+fid <- H5Fopen("vegData.h5")
+#open up the dataset to add attributes to as a class
+did <- H5Dopen(fid, "testData/new2")
+
+# Provide the NAME and the ATTR (what the attribute says) 
+# for the attribute.
+h5writeAttribute(did, attr="Here is a description of the data",
+                 name="Description")
+h5writeAttribute(did, attr="Meters",
+                 name="Units")
+
+#close the file and the dataset when you're done writing to them
+H5Dclose(did)
+H5Fclose(fid)
+
+#look at the attributes of the precip_data dataset
+h5readAttributes(file = "vegData.h5", 
+                 name = "testData/new2")
+
+# let's grab some data
+precip <- h5read(file = "vegData.h5", 
+                 name = "testData/new")
+
+precip2 <- h5read(file = "vegData.h5", 
+                 name = "testData/new",
+                 index=list(NULL,1))
+H5close()
+
+ #we could subset the data too
+#h5read(file = "sensorData.h5", name = "location1/precip_data",index = list(1:100,1) )
+
+H5close()
+
+#create a quick plot of the data
+plot(precip[,2])
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
