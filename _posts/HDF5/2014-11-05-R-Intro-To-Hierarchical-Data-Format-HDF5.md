@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: A Gentle Introduction to HDF5 Files in R"
+title: "R: Introduction to HDF5 Files in R"
 date:   2015-05-20 15:22:52
 dateCreated: 2015-05-20 15:22:52
 lastModified: 2015-05-20 15:22:52
