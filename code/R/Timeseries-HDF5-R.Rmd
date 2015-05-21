@@ -12,11 +12,12 @@ output: html_document
 
 library("rhdf5")
 library("ggplot2")
+library("dplyr")
 ```
 
 Let's begin by opening up a H5 file
 
-```{r, echo=FALSE}
+```{r}
 
 f <- 'NEON_TowerDataD3_D10.hdf5'
 h5ls(f)
@@ -83,10 +84,6 @@ OSBS$LatLon
 library(dplyr)
 library(ggplot2)
 
-#we could do the next part in a few ways
-
-# Set the path string
-#s <- fiu_struct[4,1]
 
 #use dplyr to subset data by dataset name (temperature)
 # and site / 1 minute average
