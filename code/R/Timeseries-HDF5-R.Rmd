@@ -1,0 +1,125 @@
+---
+title: "r-TimeSeries-HDF5"
+author: "Leah A Wasser"
+date: "Wednesday, May 20, 2015"
+output: html_document
+---
+
+
+
+```{r}
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("rhdf5")
+
+
+library("rhdf5")
+library("ggplot2")
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+f <- 'NEON_TowerDataD3_D10.hdf5'
+h5ls(f)
+
+# HDF5 allows us to quickly extract parts of a dataset or even groups.
+# extract temperature data from one site (Ordway Swisher, Florida) and plot it
+
+temp <- h5read(f,"/Domain_03/OSBS/min_1/boom_1/temperature")
+#view the header and the first 6 rows of the dataset
+head(temp)
+#generate a quick plot, type - l for line 
+plot(temp$mean,type='l')
+
+#let's fix up the plot above a bit. We can first add dates to the x axis. 
+#in order to list dates, we need to specify the format that the date field is in.
+temp$date <- as.POSIXct(temp$date ,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
+
+ordwayPlot <- qplot (date,mean,data=temp,geom="line", title="ordwayData",
+                 main="Mean Temperature - Ordway Swisher", xlab="Date", 
+                 ylab="Mean Temperature (Degrees C)")
+
+#let's check out the plot
+ordwayPlot
+
+####################
+#more info on customizing plots
+#http://www.statmethods.net/advgraphs/ggplot2.html
+######################
+```
+
+```{r}
+
+## View the groups and datasets in our file, 
+#we will grab the nested structure, 4 'levels' down
+fiu_struct <- h5ls(f,recursive=5)
+
+## have a look at the structure.
+fiu_struct
+
+#now we can use this object to pull group paths from our file!
+fiu_struct[3,1]
+
+## Let's view the metadata for the OSBS group
+OSBS  <- h5readAttributes(f,fiu_struct[3,1])
+
+#grab the lat and long from the data
+#note we might want to format the lat and long differently 
+#this format is more difficult to extract from R!
+OSBS$LatLon
+
+```
+
+#Challenge
+
+1. How would you rewrite the metadata for each site to make it more user friendly? Discuss with your neighbor. Map out an H5 file that might contain more useful information.
+
+
+```{r}
+
+#r compare temperature data for different booms at the Ordway Swisher site.
+library(dplyr)
+library(ggplot2)
+
+#we could do the next part in a few ways
+
+# Set the path string
+#s <- fiu_struct[4,1]
+
+# create a list of paths for the temperature datasets 
+newStruct <- subset(fiu_struct,fiu_struct$name=="temperature")
+# from that list, let's just grab the sites that contain OSBS and min_1
+newStruct2 <- filter(newStruct, grepl("OSBS/min_1",group))
+
+dat <- h5read(f,newStruct2[1,1])
+dat <- h5read(f,i, compoundAsDataFrame = TRUE)
+
+# Loop through the paths, to create a dataframe
+for(i in newStruct2$group) { 
+  print(i)
+  #read in each dataset in the H5 list
+  dat <- h5read(f,i)
+  ord_temp <- rbind(ord_temp,dat)
+  }
+
+#create a new data.frame
+ord_temp <- data.frame()
+
+#this loops through and creates a final dataframe
+for (i in paths$path) {
+  boom <-  strsplit(i,"/")[[1]][5]
+  dat <- h5read(f,i)
+  dat$boom <- rep(boom,dim(dat)[1])
+  ord_temp <- rbind(ord_temp,dat)
+}
+
+
+#fix the dates
+ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
+
+#plot the data
+ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
+
+
+```
+

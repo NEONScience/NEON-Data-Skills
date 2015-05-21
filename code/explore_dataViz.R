@@ -6,9 +6,10 @@
 
 
 library("rhdf5")
+library("ggplot2")
 
-f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
-h5ls(f,all=T)
+f <- 'NEON_TowerDataD3_D10.hdf5'
+h5ls(f)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.
 # extract temperature data from one site (Ordway Swisher, Florida) and plot it
@@ -16,6 +17,7 @@ h5ls(f,all=T)
 temp <- h5read(f,"/Domain_03/OSBS/min_1/boom_1/temperature")
 #view the header and the first 6 rows of the dataset
 head(temp)
+#generate a quick plot, type - l for line 
 plot(temp$mean,type='l')
 
 #let's fix up the plot above a bit. We can first add dates to the x axis. 
@@ -47,7 +49,7 @@ h5readAttributes(f,g)
 
 
 
-#r compare temperatuer data for different booms at the Ordway Swisher site.
+#r compare temperature data for different booms at the Ordway Swisher site.
 library(dplyr)
 library(ggplot2)
 # Set the path string

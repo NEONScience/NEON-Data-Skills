@@ -20,7 +20,7 @@ We'll start by creating a new HDF5 file. Let's call it vegData.
 # Create hdf5 file
 h5createFile("vegData.h5")
 
-#create a group called testData within the H5 file
+#create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")
 
 #view the structure of the h5 we've created
@@ -30,9 +30,8 @@ h5ls("vegData.h5")
 a <- rnorm(n=40, m=1, sd=1) 
 someData <- matrix(a,nrow=20,ncol=2)
 
-# add some sample data to the H5 file located in the location1 group
-# we'll call the dataset "precip_data" and store it 
-# in the location1 group within the H5 file
+# add some sample data to the H5 file located in the aNEONSite group
+# we'll call the dataset "temperature"
 h5write(someData, file = "vegData.h5", name="aNEONSite/temperature")
 
 # let's check out the H5 structure again
@@ -41,7 +40,6 @@ h5ls("vegData.h5")
 # we can look at everything too 
 # but be cautious using this command!
 h5dump("vegData.h5")
-
 
 ```
 
