@@ -19,7 +19,7 @@ KnitPost(input)
 file <- "2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5.Rmd"
 
 require(knitr)
-base.url="{{ site.baseurl }}"
+base.url="{{ site.baseurl }}/"
 input=file
 opts_knit$set(base.url = base.url)
 fig.path <- paste0("images/rfigs/", sub(".Rmd$", "", basename(input)), "/")

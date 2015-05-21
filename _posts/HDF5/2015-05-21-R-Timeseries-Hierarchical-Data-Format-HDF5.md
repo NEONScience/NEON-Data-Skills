@@ -90,17 +90,6 @@ It might also be useful to install [HDFview](http://www.hdfgroup.org/products/ja
     library("ggplot2")
     library("dplyr")
 
-    ## 
-    ## Attaching package: 'dplyr'
-    ## 
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-    ## 
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
 
 ###HDF5 Quick Review
 The HDF5 format is a self-contained directory structure. In HDF5 files though "directories" are called "**groups**" and "**files**" are called "datasets". Each element in an hdf5 file can have metadata attached to it making HDF5 files "self-describing".
@@ -230,9 +219,9 @@ Take note that there are 4 groups and one dataset called temperature in this par
     	#generate a quick plot of the data, type=l for "line"
     	plot(temp$mean,type='l')
 
-![ ]({{ site.baseurl }}images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/unnamed-chunk-1-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/readPlotData-1.png) 
 
-![image]({{ site.baseurl }}/images/TempData.png)
+
 
 We can make our plot look nicer by adding date values to the x axis. However, in order to list dates o the X axis, we need to assign the date field a date format so that R knows how to read and organize the labels on the axis.
 
@@ -248,7 +237,7 @@ We can make our plot look nicer by adding date values to the x axis. However, in
     #let's check out the plot
     ordwayPlot
 
-![ ]({{ site.baseurl }}images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/unnamed-chunk-2-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/ggplotData-1.png) 
 
 
 Your plot should look something like this plot created in `plotly`:
@@ -444,7 +433,7 @@ Once the dates have been formatted we can create a plot with cleaner X axis labe
       ggtitle("3 Days of temperature data at Ordway Swisher")+
       scale_x_datetime(breaks=pretty_breaks(n=4))
 
-![ ]({{ site.baseurl }}images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/unnamed-chunk-6-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/plotBoomData-1.png) 
 
 ##Data from different sites
 
@@ -484,5 +473,5 @@ Next, let's compare temperature at two different sites: Ordway Swisher Biologica
       ggtitle("Comparison of Ordway-Swisher Biological Station (FL) vs North Sterling (CO)") +
       scale_x_datetime( breaks=pretty_breaks(n=4))
 
-![ ]({{ site.baseurl }}images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/unnamed-chunk-7-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5/compareGroupData-1.png) 
 
