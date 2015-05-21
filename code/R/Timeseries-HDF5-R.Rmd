@@ -5,8 +5,6 @@ date: "Wednesday, May 20, 2015"
 output: html_document
 ---
 
-
-
 ```{r}
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
@@ -16,9 +14,10 @@ library("rhdf5")
 library("ggplot2")
 ```
 
-You can also embed plots, for example:
+Let's begin by opening up a H5 file
 
 ```{r, echo=FALSE}
+
 f <- 'NEON_TowerDataD3_D10.hdf5'
 h5ls(f)
 
@@ -51,7 +50,8 @@ ordwayPlot
 ```{r}
 
 ## View the groups and datasets in our file, 
-#we will grab the nested structure, 4 'levels' down
+#we will grab the nested structure, 5 'levels' down
+#5 levels gets us to the temperature dataset
 fiu_struct <- h5ls(f,recursive=5)
 
 ## have a look at the structure.
@@ -62,6 +62,8 @@ fiu_struct[3,1]
 
 ## Let's view the metadata for the OSBS group
 OSBS  <- h5readAttributes(f,fiu_struct[3,1])
+#view the attributes
+OSBS
 
 #grab the lat and long from the data
 #note we might want to format the lat and long differently 
@@ -86,30 +88,26 @@ library(ggplot2)
 # Set the path string
 #s <- fiu_struct[4,1]
 
-# create a list of paths for the temperature datasets 
-newStruct <- subset(fiu_struct,fiu_struct$name=="temperature")
-# from that list, let's just grab the sites that contain OSBS and min_1
-newStruct2 <- filter(newStruct, grepl("OSBS/min_1",group))
+#use dplyr to subset data by dataset name (temperature)
+# and site / 1 minute average
+newStruct <- fiu_struct %>% filter(grepl("temperature",name),
+                                   grepl("OSBS/min_1",group))
 
-dat <- h5read(f,newStruct2[1,1])
-dat <- h5read(f,i, compoundAsDataFrame = TRUE)
+#create final paths
+paths <- paste(newStruct$group,newStruct$name,sep="/")
 
-# Loop through the paths, to create a dataframe
-for(i in newStruct2$group) { 
-  print(i)
-  #read in each dataset in the H5 list
-  dat <- h5read(f,i)
-  ord_temp <- rbind(ord_temp,dat)
-  }
-
-#create a new data.frame
+#create a new, empty data.frame
 ord_temp <- data.frame()
 
-#this loops through and creates a final dataframe
-for (i in paths$path) {
-  boom <-  strsplit(i,"/")[[1]][5]
-  dat <- h5read(f,i)
-  dat$boom <- rep(boom,dim(dat)[1])
+#loop through each temp dataset and add to data.frame
+for(i in paths){
+  datasetName <- i
+  print(datasetName) 
+  #read in each dataset in the H5 list
+  dat <- h5read(f,datasetName)
+  # add boom name to data.frame
+  print(strsplit(i,"/")[[1]][5]) 
+  dat$boom <- strsplit(i,"/")[[1]][5]
   ord_temp <- rbind(ord_temp,dat)
 }
 
@@ -118,8 +116,51 @@ for (i in paths$path) {
 ord_temp$date <- as.POSIXct(ord_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
 
 #plot the data
-ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+geom_path()+ylab("Mean temperature") + xlab("Date")+theme_bw()+ggtitle("3 Days of temperature data at Ordway Swisher")
+ggplot(ord_temp,aes(x=date,y=mean,group=boom,colour=boom))+
+  geom_path()+
+  ylab("Mean temperature") + xlab("Date")+
+  theme_bw()+
+  ggtitle("3 Days of temperature data at Ordway Swisher")+
+  scale_x_datetime( breaks=pretty_breaks(n=4))
 
+
+```
+
+Create a summary plot comparing temperature at two sites.
+
+```{r}
+#grab just the paths to temperature data, 30 minute average
+pathStrux <- fiu_struct %>% filter(grepl("temperature",name), 
+                                   grepl("min_30",group)) 
+#create final paths
+paths <- paste(pathStrux$group,pathStrux$name,sep="/")
+
+#create empty dataframe
+temp_30 <- data.frame()
+
+for(i in paths){
+  #create columns for boom name and site name
+  boom <-  strsplit(i,"/")[[1]][5]
+  site <- strsplit(i,"/")[[1]][3]
+  dat <- h5read(f,i)
+  dat$boom <- boom
+  dat$site <- site
+ temp_30 <- rbind(temp_30,dat)
+}
+
+#Assign the date field to a "date" format in R
+temp_30$date <- as.POSIXct(temp_30$date,format = "%Y-%m-%d %H:%M:%S")
+
+# generate a mean temperature for every date across booms
+temp30_sum <- temp_30 %>% group_by(date,site) %>% summarise(mean = mean(mean))
+
+#Create plot!
+ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + 
+  geom_path()+ylab("Mean temperature, 30 Minute Average") + 
+  xlab("Date")+
+  theme_bw()+
+  ggtitle("Comparison of Ordway-Swisher Biological Station (FL) vs North Sterling (CO)") +
+  scale_x_datetime( breaks=pretty_breaks(n=4))
 
 ```
 
