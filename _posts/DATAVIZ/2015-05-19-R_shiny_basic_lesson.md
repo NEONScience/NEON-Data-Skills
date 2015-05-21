@@ -88,6 +88,8 @@ In ui.R, enter:
 5. Save both files, then click on the "Run App" button. Look what you made!
 
 6. If you're used to using R Studio, you'll notice the "Run App" button used to be the "Run" button. This means you can't use that button to try out single lines of code when you're writing shiny apps. The keyboard shortcuts, command-enter or ctrl-enter, still work the normal way.
+* If the "Run" button still appears as usual, first check that you've installed and then loaded the shiny package.
+* If you still don't have a "Run App" button, you may need to close and re-open RStudio.
 
 7. What some of this code is doing:
 * server.R sets up a basic framework that does nothing for now except allow the app to run!
