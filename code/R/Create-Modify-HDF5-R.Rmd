@@ -1,13 +1,21 @@
-#this R code introduces HDF5 file formats.
-#special thanks to Edmund Hart for generating this code!
-#adapted from submission in Software Carpentry Materials
+---
+title: "R_Create_Modify_Hdf5.R"
+author: "Leah A Wasser"
+date: "Tuesday, May 19, 2015"
+output: html_document
+---
+
+This R code introduces HDF5 file formats.Special thanks to Edmund Hart for generating this code! Adapted from Software Carpentry Materials
+
+##Part One
+
+```{r}
 
 #Call the R HDF5 Library
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 library("rhdf5")
 
-################ PART 1 #####################
 
 # Create hdf5 file
 h5createFile("sensorData.h5")
@@ -52,7 +60,24 @@ H5Fclose(fid)
 h5readAttributes(file = "sensorData.h5", 
                  name = "location1/precip_data")
 
+# let's grab some data
+precip <- h5read(file = "sensorData.h5", 
+                 name = "location1/precip_data")
 
+
+#we could subset the data too
+#h5read(file = "sensorData.h5", name = "location1/precip_data",index = list(1:100,1) )
+
+H5close()
+
+#create a quick plot of the data
+plot(precip[,2])
+
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
 #create loops that populate the hdf5 structure 
 #for 2 other locations
 l1 <- c("location2","location3")
@@ -84,4 +109,6 @@ attr(p1,"units") <- "millimeters"
 l1p1 <- h5read("sensorData.h5","location1/precip",read.attributes=T)
 #read in just the first 10 lines 
 l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
+```
 
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

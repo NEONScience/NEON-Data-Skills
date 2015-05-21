@@ -1,5 +1,5 @@
 ---
-layout: post-index_ByTag
+layout: post_by_tag
 permalink: /activities-by-tag/
 title: All Activities
 tagline: A List of Posts
