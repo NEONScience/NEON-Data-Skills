@@ -74,12 +74,12 @@ In ui.R, enter:
 
 :
 
-	shinyUI(
-		fluidPage(
-			titlePanel("This app is awesome"),
-    				mainPanel(
-    				wellPanel(
-    					p("We're going to put some content here.")
+    shinyUI(
+	fluidPage(
+		titlePanel("This app is awesome"),
+    			mainPanel(
+    			wellPanel(
+    				p("We're going to put some content here.")
     			)
     		)
     	)
