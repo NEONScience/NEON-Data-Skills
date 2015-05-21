@@ -74,12 +74,12 @@ In ui.R, enter:
 
 :
 
-	shinyUI(
-		fluidPage(
-			titlePanel("This app is awesome"),
-    				mainPanel(
-    				wellPanel(
-    					p("We're going to put some content here.")
+    shinyUI(
+    	fluidPage(
+    		titlePanel("This app is awesome"),
+    		mainPanel(
+    			wellPanel(
+    				p("We're going to put some content here.")
     			)
     		)
     	)
@@ -88,6 +88,8 @@ In ui.R, enter:
 5. Save both files, then click on the "Run App" button. Look what you made!
 
 6. If you're used to using R Studio, you'll notice the "Run App" button used to be the "Run" button. This means you can't use that button to try out single lines of code when you're writing shiny apps. The keyboard shortcuts, command-enter or ctrl-enter, still work the normal way.
+* If the "Run" button still appears as usual, first check that you've installed and then loaded the shiny package.
+* If you still don't have a "Run App" button, you may need to close and re-open RStudio.
 
 7. What some of this code is doing:
 * server.R sets up a basic framework that does nothing for now except allow the app to run!
@@ -276,7 +278,80 @@ For learning purposes, it is always great to start from scratch, but using this 
     	)
     })
 
+5. Extra credit: Right now the plot title says "Histogram of dummy()" no matter what you select. Make the plot title reactive!
 
+
+## Using an existing (local) data file
+1. Plotting random variables is pretty boring, let's plot real data.
+2. Choose a data file from your computer - it can be anything, as long as you know how to load it into R. I'll be using small mammal data from CPER.
+3. First, take the data file and copy it into the awesome_app folder. Remember, Shiny looks for everything it needs in this folder.
+4. Add the command to read in the file to the server script:
+
+:
+
+    shinyServer(function(input,output){
+    	input.data <- read.csv("NEON.D10.CPER.DP1.10072.001.mam_capturedata.csv")
+    	dummy <- reactive({
+    		if(input$dist=="Normal")
+    			return(rnorm(input$num))
+    		if(input$dist=="Cauchy")
+    			return(rcauchy(input$num))
+    		if(input$dist=="Uniform")
+    			return(runif(input$num))
+    	})
+    	output$fig <- renderPlot(
+    		hist(dummy())
+    	)
+    })
+
+5. Now add an option to the reactive object to choose your input data (in my case, I'm plotting mammal weight):
+
+:
+
+    shinyServer(function(input,output){
+    	input.data <- read.csv("NEON.D10.CPER.DP1.10072.001.mam_capturedata.csv")
+    	dummy <- reactive({
+    		if(input$dist=="Normal")
+    			return(rnorm(input$num))
+    		if(input$dist=="Cauchy")
+    			return(rcauchy(input$num))
+    		if(input$dist=="Uniform")
+    			return(runif(input$num))
+    		if(input$dist=="My data")
+    			return(input.data$weight)
+    	})
+    	output$fig <- renderPlot(
+    		hist(dummy())
+    	)
+    })
+    
+6. And finally, add an option to the select list on the UI side:
+
+:
+
+    shinyUI(
+    	fluidPage(
+    		titlePanel("This app is awesome"),
+    		sidebarLayout(
+    			sidebarPanel(
+    				selectInput("dist", 
+    				label="Choose a distribution",
+    				choices=list("Normal","Cauchy","Uniform","My data")),
+    				numericInput("num", label="Input number of samples", value=100)
+    			),
+    			mainPanel(
+    				wellPanel(
+    					p("We're going to put some content here."),
+    					plotOutput("fig")
+    				)
+    			)
+    		)
+    	)
+    )
+
+7. Extra credit: Instead of reading in the data locally, out of the awesome_app folder, make a data upload widget on your app so the user can load their own data.
+* Hint: fileInput() is sufficient on the UI side, but the server side requires a series of commands. See <a href="http://shiny.rstudio.com/gallery/file-upload.html">example code here</a>.
+* And keep in mind things like file type and column names will be very important!
 
 
 
