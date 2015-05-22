@@ -32,7 +32,8 @@ comments: true
 </div>
 </section><!-- /#table-of-contents -->
 
-## About This Tutorial 
+##About This Tutorial 
+
 In this activity, we'll work with <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> by  
 <a href="http://www.neoninc.org" target="_blank">the National 
@@ -83,7 +84,8 @@ biocLite("rhdf5")</code>
 </ul>
 
 <h3>Data to Download:</h3>
-<a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE </a>. <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
+<a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> 
+<a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
 
 </div>
 
