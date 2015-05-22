@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Working With Time Series Data Within a Nested HDF5 File in R"
+title: "Working With Time Series Data In a Nested HDF5 File in R"
 date:   2015-1-28 20:49:52
-dateCreated:   2014-11-17 20:49:52
+dateCreated:   2015-05-19 20:49:52
 lastModified:   2015-05-21 20:49:52
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, ggplot2, dplyr
@@ -13,12 +13,12 @@ category: coding-and-informatics
 tags: [HDF5,R]
 mainTag: HDF5
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
-code1: R/HDF5/2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5.Rmd
+code1: 
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
-permalink: /HDF5/Explore-HDF5-Using-R/
+permalink: /HDF5/TimeSeries-Data-In-HDF5-Using-R/
 comments: true
 ---
 
