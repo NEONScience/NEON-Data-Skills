@@ -17,6 +17,7 @@ KnitPost(input)
 #http://www.jonzelner.net/jekyll/knitr/r/2014/07/02/autogen-knitr/
 
 file <- "2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5.Rmd"
+#file <- "testThis.Rmd"
 
 require(knitr)
 base.url="{{ site.baseurl }}/"

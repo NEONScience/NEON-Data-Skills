@@ -14,11 +14,23 @@ library("devtools")
 #to upgrade tools -- 
 #devtools::install_github("ropensci/plotly")
 
+install.packages("devtools")
+library("devtools")
+devtools::install_github("ropensci/plotly")
+
+library(plotly)
+
+#https://plot.ly/ggplot2/getting-started/
 library(plotly)
 
 set_credentials_file("leahawasser", "tpdjz2b8pu")
 
 p <- plotly(username="leahawasser", key="tpdjz2b8pu")
+
+py <- plotly()
+
+r <- py$ggplotly(ordwayPlot)
+r$response$url
 
 
 x0 = rnorm(500)
