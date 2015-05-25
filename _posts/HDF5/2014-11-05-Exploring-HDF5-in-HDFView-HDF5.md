@@ -147,9 +147,9 @@ Let's open some hyperspectral imagery stored in HDF5 format to see what the file
 - Finally, click on the reflectance dataset. Note that in the metadata for the dataset that the structure of the dataset is 426 x 501 x 477 (wavelength, line, sample). 
 - Right click on the reflectance dataset and select `open as`.
 - Click Image in the "display as" settings on the left hand side of the popup. 
-- In this case, the image data are in the second and third dimensions of this dataset. however, HDFview will default to selecting the first and second dimensions. Let's fix that. 
+- In this case, the image data are in the second and third dimensions of this dataset. However, HDFview will default to selecting the first and second dimensions. Please note that the HDF5 file uses 0-based indexing so the first dimension is called dim-0, and the second is called dim-1. Let's tell the HDF viewer to use dimensions 1 and 2 to  view the image. 
 	- Under height, make sure dim 1 is selected.
-	- Under width, make sure dim 3 is selected.  
+	- Under width, make sure dim 2 is selected.  
 	- Notice an image preview appears on the left of the pop-up window.
 - Hit OK to open the image. You may have to play with the brightness and contrast settings in the viewer to see the data properly. 
 
