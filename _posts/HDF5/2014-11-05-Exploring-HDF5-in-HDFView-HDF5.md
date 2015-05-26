@@ -46,7 +46,7 @@ After completing this activity, you will:
 <h3>Data to Download</h3>
 <ul>
 <li><a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> </li>
-<li>Download the <a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success">NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a> </li>
+<li><a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success">Download the NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a> </li>
 </ul>
 NOTE: The second file downloaded above has an ".h5" extension while the first has an HDF5 extension. Both extensions represent the HDF5 data type.
 </div>
