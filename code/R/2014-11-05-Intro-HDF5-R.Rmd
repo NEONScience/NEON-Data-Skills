@@ -50,7 +50,7 @@ After completing this activity, you will:
 </ul>
 </div>
 
-### A Brief Review - About HDF5
+###A Brief Review - About HDF5
 The HDF5 file can store large, heterogeneous datasets that include metadata. It also supports efficient `data slicing`, or extraction of particular subsets of a dataset which means that you don't have to read  large files read into the computers memory / RAM in their entirety in order work with them. 
 
 [Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
