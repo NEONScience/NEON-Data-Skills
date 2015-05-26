@@ -12,7 +12,7 @@ categories: [coding-and-informatics]
 category: coding-and-informatics
 tags: [HDF5,R]
 mainTag: HDF5
-description: "Learn how to build a HDF5 file in R from scratch! Add groups,  datasets and attributes. Read data out from the file."
+description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
 code1: R/2014-11-05-Intro-HDF5-R.Rmd
 image:
   feature: hierarchy_folder_purple.png
@@ -33,8 +33,6 @@ comments: true
 </section>
 <!-- /#table-of-contents -->
 
-another test 
-
 <div id="objectives">
 <strong>R Skill Level: </strong> intermediate
 
@@ -53,7 +51,6 @@ After completing this activity, you will:
 </ul>
 </div>
 
-test
 
 ###A Brief Review - About HDF5
 The HDF5 file can store large, heterogeneous datasets that include metadata. It also supports efficient `data slicing`, or extraction of particular subsets of a dataset which means that you don't have to read  large files read into the computers memory / RAM in their entirety in order work with them. 
