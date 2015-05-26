@@ -48,7 +48,7 @@ After completing this activity, you will:
 
 ##About Hierarchical Data Formats - HDF5
 
-The Hierarchical Data Format version 5 (HDF5), is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize data within the file in many different structured ways as you might do with files on your computer. The HDF5 format also allows for embedding of metadata making it *self-describing*. 
+The Hierarchical Data Format version 5 (HDF5), is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize data within the file in many different structured ways, as you might do with files on your computer. The HDF5 format also allows for embedding of metadata making it *self-describing*. 
 
 <i class="fa fa-star"></i> **Data Tip:** HDF5 is one hierarchical data format, that builds upon both HDF4 and NetCDF (two other hierarchical data formats). <a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 Here.</a>
 {: .notice}
@@ -75,7 +75,7 @@ The HDF5 format can  be thought of as a file system contained and described with
 </figure> 
 
 
-An HDF5 file containing data, might be structured like this:  
+An HDF5 file containing datasets, might be structured like this:  
 
 <figure>
     <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"></a>
@@ -85,15 +85,15 @@ An HDF5 file containing data, might be structured like this:
 
 ##HDF5 is a Self Describing Format
 
-HDF5 format is self describing. This means that each file, group and dataset can have associated metadata that describes exactly what the data are. Following the example above, we can embed information about each site to the file such as
+HDF5 format is self describing. This means that each file, group and dataset can have associated metadata that describes exactly what the data are. Following the example above, we can embed information about each site to the file, such as:
 
 * The full name and X,Y location of the site
 * Description of the site
-* Another other documentation of interest.
+* Any documentation of interest
 
-Similarly, we might add information describing the sensor used to collect the temperature data. We can attach information about both how the averaging was performed to each dataset within the site group and to describe the time period for which data are available. 
+Similarly, we might add information about how the data in the dataset were collected, such as descriptions of the sensor used to collect the temperature data. We can also attach information, to each dataset within the site group, about how the averaging was performed and over what time period data are available. 
 
-One key benefit of metadata attached to each file, group and dataset, is that it facilitates automation without needing an additional metadata document. Using a programming language, like `R` or `Python`, we can grab information from the metadata that we might need to process the data.
+One key benefit of having metadata that are attached to each file, group and dataset, is that this facilitates automation without the need for a separate (and additional) metadata document. Using a programming language, like `R` or `Python`, we can grab information from the metadata that are already associated with the dataset, and which we might need to process the dataset.
 
 <figure>
     <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"><img src="{{ site.baseurl }}/images/HDf5/hdf5_structure2.jpg"></a>
@@ -101,28 +101,28 @@ One key benefit of metadata attached to each file, group and dataset, is that it
 </figure> 
 
 ## Compressed & Efficient subsetting
-The HDF5 format is a compressed format. The size of all data contained within HDF5 is optimized which makes the overall file size smaller. However, HDF5 files, even when compressed can be quite large given they often contain big data. Another powerful attribute of HDF5 is `data slicing`. Data slicing refers to extracting particular subsets of a dataset stored within the HDF5 file. This means that the entire dataset doesn't have to be read into memory (RAM). It allows us to more efficiently work with very large (gigabytes or more) datasets. 
+The HDF5 format is a compressed format, with the size of all data contained within HDF5 being optimized to make the overall file size smaller. Even when compressed, however, HDF5 files often contain big data and can thus still be quite large. A powerful attribute of HDF5 is `data slicing`, by which a particular subsets of a dataset can be extracted for processing. This means that the entire dataset doesn't have to be read into memory (RAM); very helpful in allowing us to more efficiently work with very large (gigabytes or more) datasets! 
 
 ## Heterogeneous Data Storage
-HDF5 files can store many different types of data within in the same file. For example, one group may contain a set of datasets to contain integer (numeric) and text (string) formatted data. One dataset can also contain heterogeneous information (combining text and numeric data). This means that HDF5 can store any of the following (and more) in one file:
+HDF5 files can store many different types of data within in the same file. For example, one group may contain a set of datasets to contain integer (numeric) and text (string) data. Or, one dataset can contain heterogeneous data types (e.g., both text and numeric data in one dataset). This means that HDF5 can store any of the following (and more) in one file:
 
 - Temperature, precipitation and PAR (photosynthetic active radiation) data for a site or for many sites 
-- A set of images that cover one or more areas (each image can have specific spatial information associated with it - all in the same file)
-- A multi or hyperspectral spatial dataset that contains thousands of bands.
-- Field data for several sites characterizing insects, mammals, vegetation and climate.
+- A set of images that cover one or more areas (each image can have unique spatial information associated with it)
+- A multi or hyperspectral spatial dataset that contains thousands of bands
+- Field data for several sites characterizing insects, mammals, vegetation and climate
 - And much more!
 
 ## Open Format 
-The HDF5 format is open and free to use. The supporting libraries (and a free viewer), can be downloaded from the <a href="http://www.hdfgroup.org" target="_blank">HDF Group </a> website.  As such, it has wide support in a host of programs including open source programming languages like `R` and `Python`, commercial programming tools like `Matlab` and `IDL`. Spatial data, stored in HDF5 format can be used in GIS and imaging programs including `QGIS`, `ArcGIS`, and `ENVI`.
+The HDF5 format is open and free to use. The supporting libraries (and a free viewer), can be downloaded from the <a href="http://www.hdfgroup.org" target="_blank">HDF Group </a> website.  As such, HDF5 is widely supported in a host of programs, including open source programming languages like `R` and `Python`, and commercial programming tools like `Matlab` and `IDL`. Spatial data that are stored in HDF5 format can be used in GIS and imaging programs including `QGIS`, `ArcGIS`, and `ENVI`.
 
 
 ## Summary Points - Benefits of HDF5 
 
-- **Self-Describing** The data with an HDF5 file are self describing. This allows us to efficiently extract metadata without needing an additional metadata document.
-- **Supporta Heterogeneous Data**: Different types of data can be contained within one HDF5 file. 
-- **Supports Large, Complex Data**: HDF5 is a compressed format that is designed to support  large, heterogeneous, and complex datasets. 
-- **Supports Data Slicing:** "Data slicing" or extracting portions of the dataset as needed to be used in analysis means large files don't need to be completely read into the computers memory or RAM.
-- **Open Format -  wide support in the many tools**: Because the HDF5 format is open, it is supported by a host of programming languages and tools including open source languages like `R` and `Python` and open GIS tools like `QGIS`.
+- **Self-Describing** The datasets with an HDF5 file are self describing. This allows us to efficiently extract metadata without needing an additional metadata document.
+- **Supporta Heterogeneous Data**: Different types of datasets can be contained within one HDF5 file. 
+- **Supports Large, Complex Data**: HDF5 is a compressed format that is designed to support large, heterogeneous, and complex datasets. 
+- **Supports Data Slicing:** "Data slicing", or extracting portions of the dataset as needed for  analysis, means large files don't need to be completely read into the computers memory or RAM.
+- **Open Format -  wide support in the many tools**: Because the HDF5 format is open, it is supported by a host of programming languages and tools, including open source languages like `R` and `Python` and open GIS tools like `QGIS`.
 
 You'll see what this looks like when [we open an HDF5 file in the HDFviewer]( {{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
 
