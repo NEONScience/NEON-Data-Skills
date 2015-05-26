@@ -63,8 +63,8 @@ We learned previously that the Hierarchical Data Format version 5 (HDF5), is an 
 -  One HDF5 file may contain several heterogeneous data types (e.g. images, numeric data, data stored as strings) 
 
 
-##About This Activity - 
-In this activity, we will explore two different types of data, saved in HDF5. This will allow us to better understand how one file can store multiple different types of data, in different ways.
+##About This Activity 
+In this activity, we will explore two different types of HDF5 data. This will allow us to better understand how one file can store multiple different types of data, in different ways.
 
 #Part 1. Exploring Temperature Data in HDF5 Format in HDFView
 
@@ -84,11 +84,11 @@ The first thing that we will do is open an HDF5 file in the viewer to get a bett
 
 Notice that there is metadata associated with each group.
 
-- Double click on the "ORD" group located within the Domain_03 group. Notice in the metadata window that Ord contains data collected from the <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON Ordway-Swisher Biological Station Field Site</a>.
+- Double click on the "OSBS" group located within the Domain_03 group. Notice in the metadata window that OSBS contains data collected from the <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON Ordway-Swisher Biological Station Field Site</a>.
 
-Within the Ord group there are two more groups - Min_1 and Min_30. What data are contained within these groups? 
+Within the OSBS group there are two more groups - Min_1 and Min_30. What data are contained within these groups? 
 
-- Expand the "min_1" group wtihin the Ord site in Domain_03. Notice that there are 5 more nested groups named "Boom_1, 2, etc". A boom refers to an arm that contains sensors, at a particular height on the tower. In this case, we are working with data collected using temperature sensors, mounted on the tower booms.
+- Expand the "min_1" group within the OSBS site in Domain_03. Notice that there are 5 more nested groups named "Boom_1, 2, etc". A boom refers to an arm on a tower, which sits at a particular height and to which are attached sensors for collecting data on such variables as temperature, wind speed, precipitation, etc. In this case, we are working with data collected using temperature sensors, mounted on the tower booms.
 
 <i class="fa fa-star"></i> **Note:** The data used in this activity were collected by a temperature sensor mounted on a National Ecological Observatory Network (NEON) "flux tower". 
 <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
@@ -105,9 +105,8 @@ Speaking of temperature - what type of sensor is collected the data within the b
 - Expand the "Boom_1" folder by double clicking it. Finally, we have arrived at a dataset! Have a look at the metadata associated with the temperature dataset within the boom_1 group. Notice that there is metadata describing each attribute in the temperature dataset. 
 - Double click on the group name to open up the table in a tabular format. Notice that these data are temporal.
 
-So this is one example of how an hdf5 file could be structured. This particular file contains data from multiple sites, collected from different sensors (from different booms on the tower) and collected over time. Take some time to explore this HDF5 dataset within the HDF viewer. 
+So this is one example of how an HDF5 file could be structured. This particular file contains data from multiple sites, collected from different sensors (mounted on different booms on the tower) and over time. Take some time to explore this HDF5 dataset within the HDF viewer. 
 
-Next, we will look at a spatial data stored in HDF5 format.
 
 #Part 2. Exploring Hyperspectral Imagery stored in HDF5
 
@@ -116,13 +115,13 @@ Next, we will look at a spatial data stored in HDF5 format.
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
-Next, we will explore a hyperspectral dataset, collected by the <a href="http://neoninc.org/science-design/collection-methods/airborne-remote-sensing">NEON Airborne Observation Platform (AOP)</a> and saved in HDF5 format. Hyperspectral data are naturally hierarchical as each pixel in the data set contains reflectance values for hundreds of bands collected by the sensor. The NEON sensor (imaging spectrometer) collected data within 428 bands.
+Next, we will explore a hyperspectral dataset, collected by the <a href="http://neoninc.org/science-design/collection-methods/airborne-remote-sensing">NEON Airborne Observation Platform (AOP)</a> and saved in HDF5 format. Hyperspectral data are naturally hierarchical, as each pixel in the dataset contains reflectance values for hundreds of bands collected by the sensor. The NEON sensor (imaging spectrometer) collected data within 428 bands.
 
 A few notes about hyperspectral imagery:
 
 - An imaging spectrometer, which collects hyperspectral imagery, records light energy reflected off objects on the earth's surface.
 - The data are inherently spatial. Each "pixel" in the image is located spatially and represents an area of ground on the earth.
-- Similar to an R,G,B camera, an imaging spectrometer records  
+- Similar to an R,G,B camera, an imaging spectrometer records [*LEAH - What did you mean to add here?*]
 - Each pixel will contain several hundred bands worth of reflectance data.
 
 <figure>
@@ -141,15 +140,14 @@ Read more about hyperspectral data:
 Let's open some hyperspectral imagery stored in HDF5 format to see what the file structure can like for a different type of data.
 
 - Open the file. Notice that it is structured differently. This file is composed of 3 datasets: Reflectance, fwhm, and wavelength. It also contains some text information called "map info". Finally it contains a group called spatial info.
-
 - Let's first look at the metadata stored in the spatialinfo group. This group contains all of the spatial information that a GIS program would need to project the data spatially.
 - Next double click on the wavelength dataset. Note that this dataset contains the central wavelength value for each band in the dataset. 
-- Finally, click on the reflectance dataset. Note that in the metadata for the dataset that the structure of the dataset is 426 x 501 x 477 (wavelength, line, sample). 
+- Finally, click on the reflectance dataset. Note that the structure of the dataset is 426 x 501 x 477 (wavelength, line, sample), as indicated in the metadata. 
 - Right click on the reflectance dataset and select `open as`.
 - Click Image in the "display as" settings on the left hand side of the popup. 
-- In this case, the image data are in the second and third dimensions of this dataset. however, HDFview will default to selecting the first and second dimensions. Let's fix that. 
+- In this case, the image data are in the second and third dimensions of this dataset. However, HDFView will default to selecting the first and second dimensions (NOTE HDF5 files use 0-based indexing so the first dimension is called dim 0, and the second is called dim 1). Let’s tell the HDF viewer to use the second and third dimensions to view the image: 
 	- Under height, make sure dim 1 is selected.
-	- Under width, make sure dim 3 is selected.  
+	- Under width, make sure dim 2 is selected.  
 	- Notice an image preview appears on the left of the pop-up window.
 - Hit OK to open the image. You may have to play with the brightness and contrast settings in the viewer to see the data properly. 
 
