@@ -39,12 +39,16 @@ After completing this activity, you will:
 <li>Know how to explore HDF5 files using the free HDF Viewer</li>
 </ol>
 
-<h3>What you'll Need</h3>
+<h3>Tools you'll Need</h3>
 <ul>
 <li>Install the free HDFview application. This application allows you to explore the contents of an HDF5 file easily. <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click HERE to go to the download page. </a></li>
-<li>Data: <a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> </li>
-<li>Download the <a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5">NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a> NOTE that this second file has an ".h5" extension while the first has an HDF5 extension. Both extensions represent the HDF5 data type.</li>
 </ul>
+<h3></h3>
+<ulL
+<li>Data: <a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> </li>
+<li>Download the <a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success">NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a> </li>
+</ul>
+NOTE: The second file downloaded above has an ".h5" extension while the first has an HDF5 extension. Both extensions represent the HDF5 data type.
 </div>
 
 ###About Installing HDFView
