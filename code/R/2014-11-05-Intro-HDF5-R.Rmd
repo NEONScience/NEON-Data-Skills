@@ -30,7 +30,8 @@ comments: true
 *  Auto generated table of contents
 {:toc}
 </div>
-</section><!-- /#table-of-contents -->
+</section>
+<!-- /#table-of-contents -->
 
 <div id="objectives">
 <strong>R Skill Level: </strong> intermediate
