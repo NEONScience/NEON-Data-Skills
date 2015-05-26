@@ -3,19 +3,31 @@ title: "Intro-Create-Read-HDF5"
 output: html_document
 ---
 
-First, let's get R setup. We will use the RHDF5 library.
+##Goals / Objectives
+After completing this activity, you will:
 
-```{r}
+1. Understand how HDF5 files can be created and structured in R using the rhfd5 libraries.
+2. Understand the 3 key HDF5 elements: the HDF5 file itself and groups and datasets.
+3. Understand how to add and read attributes from an HDF5 file.
+
+###First, let's get R setup. We will use the RHDF5 library.
+
+```{r load libraries}
+
+# To access HDF5 files in R, we will use the rhdf5 library which is part of the Bioconductor suite of R libraries.
+
+#Install the R HDF5 Library
+# source("http://bioconductor.org/biocLite.R")
+# biocLite("rhdf5")
 
 #Call the R HDF5 Library
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("rhdf5")
 library("rhdf5")
+
 ```
 
-We'll start by creating a new HDF5 file. Let's call it vegData.
+###We'll start by creating a new HDF5 file. Let's call it vegData.
 
-```{r}
+```{r create new hdf5 file}
 
 # Create hdf5 file
 h5createFile("vegData.h5")
@@ -41,12 +53,15 @@ h5ls("vegData.h5")
 # but be cautious using this command!
 h5dump("vegData.h5")
 
+#Close the file.
+H5close()
+
 ```
 
 
-## Next let's add some attributes to our data
+###Next let's add some Metadata (attributes) to our data
 
-```{r}
+```{r add attributes to file}
 
 #open the file, create a class
 fid <- H5Fopen("vegData.h5")
@@ -62,7 +77,7 @@ h5writeAttribute(did, attr="Meters",
 
 #let's add some attributes to the group
 did2 <- H5Gopen(fid, "aNEONSite/")
-h5writeAttribute(did2, attr="San Joachin Experimental Range",
+h5writeAttribute(did2, attr="San Joaquin Experimental Range",
                  name="SiteName")
 h5writeAttribute(did2, attr="Southern California",
                  name="Location")
@@ -71,6 +86,10 @@ h5writeAttribute(did2, attr="Southern California",
 H5Dclose(did)
 H5Gclose(did2)
 H5Fclose(fid)
+
+```
+
+```{r read & review attributes}
 
 #look at the attributes of the precip_data dataset
 h5readAttributes(file = "vegData.h5", 
@@ -91,20 +110,21 @@ H5close()
 
 
 #create a quick plot of the data
-hist(testSubset2[])
+hist(testSubset2)
+
 ```
 
-## Challenge -- 
-Open up the D17_2013_vegStr.csv in R. 
-Create a new H5 file called vegStructure.
-
-Add a group in your h5 file called SJER. Add the veg structure data to that folder!
-Add some attributes the data. Do the same with the SOAP csv.
+###Challenge -- 
+ 1. Open up the D17_2013_vegStr.csv in R. 
+ 2. Create a new H5 file called vegStructure.
+ 3. Add a group in your h5 file called SJER. Add the veg structure data to that folder!
+ 4. Add some attributes the data. Do the same with the SOAP csv.
 NOTE: R is not good at subsetting compound datasets. 
 
-```{r}
-options(stringsAsFactors = FALSE)
-newData <- read.csv("D17_2013_vegStr.csv")
+```{r challenge step 1 help}
+
+#options(stringsAsFactors = FALSE)
+#newData <- read.csv("D17_2013_vegStr.csv")
 
 ```
 
