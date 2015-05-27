@@ -59,10 +59,14 @@ print(paste0(filepath,"/_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md")
 #knit(input, output = paste0(filepath,"/_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md"), envir = parent.frame())
 #knit the markdown doc
 knit(input, output = paste0("_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md"), envir = parent.frame())
+paste0(wd,"/_posts")
 
 #copy markdown directory over
-file.copy(list.dirs("~/Documents/1_Workshops/R_HDF5Intr_NEON/_posts", full.names = TRUE), "~/Documents/1_Workshops/", recursive=TRUE)
+#note: this should all become variables
+
+file.copy(list.dirs("~/Documents/1_Workshops/R_HDF5Intr_NEON/_posts/HDF5", full.names = TRUE), "~/Documents/GitHub_Lwasser/NEON_DataSkills/_posts", recursive=TRUE)
 #copy image directory over
+file.copy(list.dirs("~/Documents/1_Workshops/R_HDF5Intr_NEON/images/rfigs", full.names = TRUE), "~/Documents/GitHub_Lwasser/NEON_DataSkills/images/", recursive=TRUE)
 
 #copy rmd file to the rmd directory on git
 
