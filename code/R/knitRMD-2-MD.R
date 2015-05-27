@@ -30,7 +30,8 @@ if(.Platform$OS.type == "windows") {
 
 #specify the file to be knit
 #
-file <- "2014-11-05-Intro-HDF5-R.Rmd"
+#file <- "2014-11-05-Intro-HDF5-R.Rmd"
+file <- "2015-05-21-R-Timeseries-HDF5.Rmd"
 
 #specify where should the file go within the GH repo
 postsDir <- ("_posts/HDF5/")
@@ -90,6 +91,8 @@ paste0(wd,"/_posts")
 file.copy(paste0(wd,"/",imagePath), paste0(gitRepoPath,"images/"), recursive=TRUE)
 #copy rmd file to the rmd directory on git
 file.copy(paste0(wd,"/",file), paste0(gitRepoPath,"code/R/rmdFiles"), recursive=TRUE)
+
+#delete local repo copies of RMD files just so things are cleaned up??
 
 ## OUTPUT STUFF TO R ##
 #output code in R format
