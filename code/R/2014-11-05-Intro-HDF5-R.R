@@ -1,6 +1,7 @@
 ## ----load libraries------------------------------------------------------
 
-# To access HDF5 files in R, we will use the rhdf5 library which is part of the Bioconductor suite of R libraries.
+# To access HDF5 files in R, we will use the rhdf5 library which is part of the 
+#Bioconductor suite of R libraries.
 
 #install rhdf5 package
 #source("http://bioconductor.org/biocLite.R")
@@ -14,6 +15,7 @@ library("rhdf5")
 
 # Create hdf5 file
 h5createFile("vegData.h5")
+h5createFile()
 
 #create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")

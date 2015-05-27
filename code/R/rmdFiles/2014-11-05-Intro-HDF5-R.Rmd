@@ -5,7 +5,7 @@ date:   2015-05-20 15:22:52
 dateCreated: 2015-05-20 15:22:52
 lastModified: 2015-05-20 15:22:52
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: RHDF5
+packagesLibraries: rhdf5
 authors: Leah A. Wasser
 contributors:
 categories: [coding-and-informatics]
@@ -13,7 +13,7 @@ category: coding-and-informatics
 tags: [HDF5,R]
 mainTag: HDF5
 description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
-code1: R/2014-11-05-Intro-HDF5-R.Rmd
+code1: R/2014-11-05-Intro-HDF5-R.R
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
@@ -39,8 +39,10 @@ comments: true
 <h3>Goals / Objectives</h3>
 After completing this activity, you will:
 <ol>
-<li>Understand how HDF5 files can be created and structured in R using the rhdf5 libraries. </li>
-<li>Understand the 3 key HDF5 elements: the HDF5 file itself and groups and datasets.</li>
+<li>Understand how HDF5 files can be created and structured in R using the 
+rhdf5 libraries. </li>
+<li>Understand the 3 key HDF5 elements: the HDF5 file itself and groups and 
+datasets.</li>
 <li>Understand how to add and read attributes from an HDF5 file.</li>
 </ol>
 
@@ -49,17 +51,30 @@ After completing this activity, you will:
 <li>R or R studio installed.</li>
 <li>Recommended Background: Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 libraries</a></li>
 </ul>
+<h3>Data to Download</h3>
+We will use the file below in the optional challenge activity at the end of this 
+tutorial.
+<a href="http://neonhighered.org/Data/D17_2013_SJER_vegStr.zip" class="btn btn-success">
+Download the sample NEON vegetation structure data from California.</a>
 </div>
 
 
 ###A Brief Review - About HDF5
-The HDF5 file can store large, heterogeneous datasets that include metadata. It also supports efficient `data slicing`, or extraction of particular subsets of a dataset which means that you don't have to read  large files read into the computers memory / RAM in their entirety in order work with them. 
+The HDF5 file can store large, heterogeneous datasets that include metadata. It 
+also supports efficient `data slicing`, or extraction of particular subsets of a 
+dataset which means that you don't have to read  large files read into the 
+computers memory / RAM in their entirety in order work with them. 
 
 [Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
 
 ##HDF5 in R
 
-To access HDF5 files in `R`, we will use the `rhdf5` library which is part of the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of `R` libraries. It might also be useful to install <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the free HDF5 viewer</a> which will allow you to explore the contents of an HDF5 file using a graphic interface.
+To access HDF5 files in `R`, we will use the `rhdf5` library which is part of 
+the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
+suite of `R` libraries. It might also be useful to install 
+<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
+free HDF5 viewer</a> which will allow you to explore the contents of an HDF5 file 
+using a graphic interface.
 
 [More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
 
@@ -68,7 +83,8 @@ To access HDF5 files in `R`, we will use the `rhdf5` library which is part of th
 
 ```{r load libraries}
 
-# To access HDF5 files in R, we will use the rhdf5 library which is part of the Bioconductor suite of R libraries.
+# To access HDF5 files in R, we will use the rhdf5 library which is part of the 
+#Bioconductor suite of R libraries.
 
 #install rhdf5 package
 #source("http://bioconductor.org/biocLite.R")
@@ -89,6 +105,7 @@ First, let's create a basic H5 file with one group and one dataset in it.
 
 # Create hdf5 file
 h5createFile("vegData.h5")
+h5createFile()
 
 #create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")
@@ -208,8 +225,8 @@ hist(testSubset2)
 
 Time to test your skills. Open up the D17_2013_SJER_vegStr.csv in R. 
 
-* Create a new H5 file called vegStructure.
-* Add a group in your h5 file called SJER. 
+* Create a new HDF5 file called vegStructure.
+* Add a group in your HDF5 file called SJER. 
 * Add the veg structure data to that folder.
 * Add some attributes the SJER group and to the data. 
 * Now, repeat the above with the D17_2013_SOAP_vegStr csv.
