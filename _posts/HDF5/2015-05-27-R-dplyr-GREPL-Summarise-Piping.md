@@ -74,22 +74,26 @@ There are several elements of `dplyr` that are unique to the library, and that
 do very cool things!
 
 ##Functions for manipulating data
-_excerpted from <http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html>_
+
+The text below was excerpted from 
+<a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank">
+R Cran DPLYR vignettes.</a>
+
 `dplyr` aims to provide a function for each basic verb of data manipulating, like:
 
- * filter() (and slice())
+ * `filter()` (and `slice()`)
       * filter rows based on values in specified columns
- * arrange()
+ * `arrange()`
       * sort data by values in specified columns 
- * select() (and rename())
+ * `select()` (and `rename()`)
       * view and work with data from only specified columns
- * distinct()
+ * `distinct()`
       * view and work with only unique values from specified columns
- * mutate() (and transmute())
+ * `mutate()` (and `transmute()`)
       * add new data to the data frame
- * summarise()
+ * `summarise()`
       * calculate specified summary statistics on data
- * sample_n() and sample_frac()
+ * `sample_n()` and `sample_frac()`
       * return a random sample of rows
  
 ##Format of function calls
