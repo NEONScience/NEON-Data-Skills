@@ -90,7 +90,7 @@ paste0(wd,"/_posts")
 #copy image directory over
 file.copy(paste0(wd,"/",imagePath), paste0(gitRepoPath,"images/"), recursive=TRUE)
 #copy rmd file to the rmd directory on git
-file.copy(paste0(wd,"/",file), paste0(gitRepoPath,"code/R/rmdFiles"), recursive=TRUE)
+file.copy(paste0(wd,"/",file), paste0(gitRepoPath,"code/R"), recursive=TRUE)
 
 #delete local repo copies of RMD files just so things are cleaned up??
 
