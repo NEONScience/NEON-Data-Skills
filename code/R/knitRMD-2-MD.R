@@ -72,9 +72,9 @@ file.copy("~/Documents/1_Workshops/R_HDF5Intr_NEON/images/rfigs", "~/Documents/G
 #copy rmd file to the rmd directory on git
 file.copy(paste0("~/Documents/1_Workshops/R_HDF5Intr_NEON/",file), "~/Documents/GitHub_Lwasser/NEON_DataSkills/code/R/rmdFiles", recursive=TRUE)
 
-
+## OUTPUT STUFF TO R ##
 #output code in R format
-rCodeOutput <- paste0(filepath,"/code/R/", sub(".Rmd$", "", basename(input)), ".R")
+rCodeOutput <- paste0(filepath, sub(".Rmd$", "", basename(input)), ".R")
 
 #purl the code to R
 purl(file, output = rCodeOutput)
