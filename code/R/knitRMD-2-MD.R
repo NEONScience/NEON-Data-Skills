@@ -16,17 +16,20 @@ KnitPost(input)
 
 #http://www.jonzelner.net/jekyll/knitr/r/2014/07/02/autogen-knitr/
 
-filepath <- "~/Documents/GitHub_Lwasser/NEON_DataSkills"
+
+
+#this is the path to the github repo
+filepath <- "~/Documents/GitHub_Lwasser/NEON_DataSkills/code/R/"
 
 #file <- "2015-05-21-R-Timeseries-Hierarchical-Data-Format-HDF5.Rmd"
 #specify the file to be knit
-file <- "~/Documents/GitHub_Lwasser/NEON_DataSkills/code/R/2014-11-05-Intro-HDF5-R.Rmd"
+file <- "2014-11-05-Intro-HDF5-R.Rmd"
 #get the working dir where the data are stored
 wd <- getwd()
 imagePath <- "images/rfigs/"
 
 #copy .Rmd file to local working directory where the data are located
-file.copy(from = file, to=wd, overwrite = TRUE)
+file.copy(from = (paste0(filepath,file)), to=wd, overwrite = TRUE)
 require(knitr)
 
 #set the base url for images and links in the md file
@@ -35,28 +38,34 @@ input=file
 opts_knit$set(base.url = base.url)
 #setup path to images
 print(paste0(imagePath, sub(".Rmd$", "", basename(input)), "/"))
-#check to see if image folders exist
 
 #make sure image directory exists
+#if it doesn't exist, create it
 if (file.exists(imagePath)){
     print("image dir exists - all good")
   } else {
     #create image directory structure
     dir.create(file.path(wd, "images"))
     dir.create(file.path(wd, "images/rfigs"))
+    print("image directories created!")
   }
 
-fig.path <- paste0("/images/rfigs/", sub(".Rmd$", "", basename(input)), "/")
+fig.path <- paste0("images/rfigs/", sub(".Rmd$", "", basename(input)), "/")
 opts_chunk$set(fig.path = fig.path)
 opts_chunk$set(fig.cap = " ")
 #render_jekyll()
 render_markdown(strict = TRUE)
 print(paste0(filepath,"/_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md"))
 #knit(input, output = paste0(filepath,"/_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md"), envir = parent.frame())
+#knit the markdown doc
 knit(input, output = paste0("_posts/HDF5/", sub(".Rmd$", "", basename(input)), ".md"), envir = parent.frame())
 
-#copy image directory over
+#copy markdown directory over
 file.copy(list.dirs("~/Documents/1_Workshops/R_HDF5Intr_NEON/_posts", full.names = TRUE), "~/Documents/1_Workshops/", recursive=TRUE)
+#copy image directory over
+
+#copy rmd file to the rmd directory on git
+
 
 #output code in R format
 rCodeOutput <- paste0(filepath,"/code/R/", sub(".Rmd$", "", basename(input)), ".R")
