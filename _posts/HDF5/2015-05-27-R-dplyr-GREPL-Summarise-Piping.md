@@ -4,7 +4,7 @@ title: "GREPL, Filter and Piping Using R DPLYR - An Intro"
 date:   2015-1-28 20:49:52
 dateCreated:   2015-05-27 14:49:52
 lastModified:   2015-05-28 20:49:52
-estimatedTime: 1.0 - 1.5 Hours
+estimatedTime: 1.0 Hour
 packagesLibraries: dplyr
 authors: Natalie Robinson, Kate Thibault
 contributors: 
@@ -13,7 +13,7 @@ category: coding-and-informatics
 tags: [R]
 mainTag: R
 description: "Learn how to use the GREPL, Summarise and piping functions in R dplyr."
-code1: 2015-05-27-R-dplyr-GREPL-Summarise-Piping.R
+code1: R/2015-05-27-R-dplyr-GREPL-Summarise-Piping.R
 image:
   feature:  
   credit:  
@@ -21,6 +21,45 @@ image:
 permalink: /R/GREPL-Filter-Piping-in-DPLYR-Using-R/
 comments: true
 ---
+
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3 >Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
+**R Skill Level:** intermediate
+
+<div id="objectives">
+<h3>Goals / Objectives</h3>
+
+After completing this activity, you will:
+<ol>
+<li> Be able to filter data, alone and combined with simple pattern matching (grepl)</li>
+<li> Use the group_by function in `dplyr`.</li>
+<li> Use the summarise function in `dplyr`.</li>
+<li> You will also know how to pipe functions..</li>
+</ol>
+
+<h3>You will need:</h3>
+<ul>
+<li>R or R studio running on your computer. </li>
+</ul>
+
+<h3>R Packages to Install:</h3>
+<ul>
+<li><strong>dplyr for data manipulation:</strong> <code>install.packages("dplyr")</code></li>
+</ul>
+
+<h3>Data to Download:</h3>
+<a href="{{ site.baseurl }}/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="btn btn-success">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a> 
+<a href="http://www.neoninc.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
+
+</div>
 
 #Intro to dplyr
 When working with data frames in R, it is often useful to manipulate and 
@@ -36,7 +75,7 @@ do very cool things!
 
 ##Functions for manipulating data
 _excerpted from <http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html>_
-Dplyr aims to provide a function for each basic verb of data manipulating, like:
+`dplyr` aims to provide a function for each basic verb of data manipulating, like:
 
  * filter() (and slice())
       * filter rows based on values in specified columns
@@ -95,13 +134,7 @@ weight):
                summarise (mean_weight = mean(weight))
                       
 
-#Goals/Objectives of this lesson
-After completing this activity, you be able to use the following dplry functions:
- 1. filter, alone and combined with simple pattern matching (grepl)
- 2. group_by
- 3. Summarise
- 
-You will also know how to pipe functions.
+
 
 
     #install dplyr library
@@ -111,27 +144,34 @@ You will also know how to pipe functions.
     library('dplyr')
     
     #setwd('insert path to data files here')
-    #download example data - NEON small mammal capture data from D01 Harvard Forest - a site located in the heart of the Lyme disease epidemic.
-    myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', header = T, 
+    #download example data - NEON small mammal capture data from D01 Harvard Forest
+    #- a site located in the heart of the Lyme disease epidemic.
+    myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', 
+                           header = T, 
                            stringsAsFactors = FALSE, strip.white = TRUE, 
                            na.strings = '')
 
 #filter
- * function to extract only a subset of rows from a data frame according to specified conditions
- * similar to the base function subset, but with simpler syntax
-  * inputs: data object, any number of conditional statements on the named columns of the data object
-  * outputs: a data object of the same class as the input object (e.g., data.frame in, data.frame out) with only those rows that meet the conditions
+
+* function to extract only a subset of rows from a data frame according to specified conditions
+* similar to the base function subset, but with simpler syntax
+* inputs: data object, any number of conditional statements on the named columns of the data object
+* outputs: a data object of the same class as the input object (e.g., data.frame in, data.frame out) with only those rows that meet the conditions.
 
 
-    #for example, let's create a new data frame that contains only female Peromyscus mainculatus, 
-    # one of the key small mammal players in the life cycle of Lyme disease-causing bacterium.
+
+    #for example, let's create a new data frame that contains only female 
+    #Peromyscus mainculatus, one of the key small mammal players in the life cycle 
+    #of Lyme disease-causing bacterium.
     
     data_PeroManicFemales <- filter(myData, scientificName == 'Peromyscus maniculatus', sex == 'F')
     
-    #Note that we were able to put multiple conditions into the filter statement, pretty cool!
+    #Note that we were able to put multiple conditions into the filter statement, 
+    #pretty cool!
     
     #how many female P. maniculatus are in the dataset
-    print(paste('In 2014, NEON technicians captured', nrow(data_PeroManicFemales), 'female Peromyscus maniculatus at Harvard Forest.', sep = ' '))
+    print(paste('In 2014, NEON technicians captured', nrow(data_PeroManicFemales), 
+                'female Peromyscus maniculatus at Harvard Forest.', sep = ' '))
 
     ## [1] "In 2014, NEON technicians captured 85 female Peromyscus maniculatus at Harvard Forest."
 
