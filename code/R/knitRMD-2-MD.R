@@ -30,9 +30,9 @@ if(.Platform$OS.type == "windows") {
 
 #specify the file to be knit
 #
-#file <- "2014-11-05-Intro-HDF5-R.Rmd"
+file <- "2014-11-05-Intro-HDF5-R.Rmd"
 #file <- "2015-05-21-R-Timeseries-HDF5.Rmd"
-file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
+#file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
 
 #copy .Rmd file to local working directory where the data are located
 #file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)

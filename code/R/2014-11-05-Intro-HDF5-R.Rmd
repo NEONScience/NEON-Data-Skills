@@ -18,7 +18,7 @@ image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
-permalink: 
+permalink: /HDF5/Intro-To-HDF5-In-R/
 comments: true
 ---
 
