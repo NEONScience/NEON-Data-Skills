@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GREPL, Filter and Piping Using R DPLYR - An Intro"
-date:   2015-1-28 20:49:52
+date:   2015-05-28 20:49:52
 dateCreated:   2015-05-27 14:49:52
 lastModified:   2015-05-28 20:49:52
 estimatedTime: 1.0 Hour
