@@ -27,27 +27,28 @@ if(.Platform$OS.type == "windows") {
     gitRepoPath <- "~/Documents/GitHub_Lwasser/NEON_DataSkills/"
     }
 
-
+#repoCodePath <- "code/R/rmdFiles"
+repoCodePath <- "code/R/"
+#get the working dir where the data are stored
+wd <- getwd()
 #specify the file to be knit
 #
-file <- "2014-11-05-Intro-HDF5-R.Rmd"
+#file <- "2014-11-05-Intro-HDF5-R.Rmd"
 #file <- "2015-05-21-R-Timeseries-HDF5.Rmd"
-#file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
+file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
 
 #copy .Rmd file to local working directory where the data are located
-#file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)
+file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)
 
 #specify where should the file go within the GH repo
 postsDir <- ("_posts/HDF5/")
 #define the file path
 imagePath <- "images/rfigs/"
 # poth to RMD files
-#repoCodePath <- "code/R/rmdFiles"
-repoCodePath <- "code/R/"
 
 
-#get the working dir where the data are stored
-wd <- getwd()
+
+
 
 
 

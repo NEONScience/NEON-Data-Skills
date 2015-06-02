@@ -7,10 +7,12 @@
 library('dplyr')
 
 #setwd('insert path to data files here')
-#download example data - NEON small mammal capture data from D01 Harvard Forest - a site located in the heart of the Lyme disease epidemic.
-myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', header = T, 
-                       stringsAsFactors = FALSE, strip.white = TRUE, 
-                       na.strings = '')
+#download example data - NEON small mammal capture data from D01 Harvard Forest 
+#- a site located in the heart of the Lyme disease epidemic.
+myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', 
+                   header = T, 
+                   stringsAsFactors = FALSE, strip.white = TRUE, 
+                   na.strings = '')
 
 
 ## ----dplyr filter function-----------------------------------------------

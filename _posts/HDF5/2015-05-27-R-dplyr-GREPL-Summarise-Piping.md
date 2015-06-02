@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "GREPL, Filter and Piping Using R DPLYR - An Intro"
+title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
 date:   2015-1-28 20:49:52
 dateCreated:   2015-05-27 14:49:52
 lastModified:   2015-05-28 20:49:52
-estimatedTime: 1.0 Hour
+estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: dplyr
 authors: Natalie Robinson, Kate Thibault
 contributors: 
@@ -12,8 +12,8 @@ categories: [coding-and-informatics]
 category: coding-and-informatics
 tags: [R]
 mainTag: R
-description: "Learn how to use the GREPL, Summarise and piping functions in R dplyr."
-code1: R/2015-05-27-R-dplyr-GREPL-Summarise-Piping.R
+description: "Learn how to use the Filter, GREPL and piping functions in R dplyr."
+code1: 2015-05-27-R-dplyr-GREPL-Summarise-Piping.R
 image:
   feature:  
   credit:  
@@ -21,6 +21,7 @@ image:
 permalink: /R/GREPL-Filter-Piping-in-DPLYR-Using-R/
 comments: true
 ---
+
 
 <section id="table-of-contents" class="toc">
   <header>
@@ -61,6 +62,7 @@ After completing this activity, you will:
 
 </div>
 
+
 #Intro to dplyr
 When working with data frames in R, it is often useful to manipulate and 
 summarize data. The `dplyr` library in `R` offers one of the most comprehensive 
@@ -75,11 +77,11 @@ do very cool things!
 
 ##Functions for manipulating data
 
-The text below was excerpted from 
+The text below was exerpted from the
 <a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank">
-R Cran DPLYR vignettes.</a>
+R Cran DPLYR vignettes</a>
 
-`dplyr` aims to provide a function for each basic verb of data manipulating, like:
+Dplyr aims to provide a function for each basic verb of data manipulating, like:
 
  * `filter()` (and `slice()`)
       * filter rows based on values in specified columns
@@ -99,14 +101,14 @@ R Cran DPLYR vignettes.</a>
 ##Format of function calls
 The single table verb functions share these features:
 
-  * The first argument is a data frame (or a dplyr special class tbl_df).
-      * dplyr can work with data frames as is, but if you'??re dealing with large
-        data it'??s worthwhile to convert them to a tbl_df, to avoid printing 
+  * The first argument is a `data.frame` (or a dplyr special class tbl_df).
+      * `dplyr` can work with data.frames as is, but if you're dealing with large
+        data it's worthwhile to convert them to a tbl_df, to avoid printing 
         a lot of data to the screen.
   * The subsequent arguments describe how to manipulate the data (e.g., based on
     which columns, using which summary statistics), and you can refer to columns
     directly (without using $).
-  * The result is a new data frame
+  * The result is a new `data.frame`.
   * Function calls do not generate 'side-effects'; you always have to assign the
     results to an object
   
@@ -121,11 +123,12 @@ We often need to get a subset of data using one function, and then use
 another function to do something with that subset (and we may do this multiple 
 times). This leads to nesting functions, which can get messy and hard to keep 
 track of. Enter 'piping', dplyr's way of feeding the output of one function into 
-another, and so on, without the hassleof parentheses and brackets. Piping looks like:
+another, and so on, without the hassleof parentheses and brackets. Piping looks 
+like:
 
-  * data frame %>%
-         function to apply first %>%
-               function to apply second %>%
+  * data frame `%>%`
+         function to apply first `%>%`
+               function to apply second `%>%`
                      function to apply third
 
 
@@ -133,12 +136,14 @@ For example, if we want to find the mean body weight of male mice, we'd do this
 (read as 'for data frame myMammalData, select only males and return the mean
 weight):
 
-  * myMammalData %>%
-         filter(sex=='m') %>%
-               summarise (mean_weight = mean(weight))
+`myMammalData %>%`
+         `filter(sex=='m') %>%`
+               `summarise (mean_weight = mean(weight))`
                       
 
 
+ 
+You will also know how to pipe functions.
 
 
     #install dplyr library
@@ -146,36 +151,42 @@ weight):
     
     #load library
     library('dplyr')
-    
+
+    ## 
+    ## Attaching package: 'dplyr'
+    ## 
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+    ## 
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
     #setwd('insert path to data files here')
-    #download example data - NEON small mammal capture data from D01 Harvard Forest
+    #download example data - NEON small mammal capture data from D01 Harvard Forest 
     #- a site located in the heart of the Lyme disease epidemic.
     myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', 
-                           header = T, 
-                           stringsAsFactors = FALSE, strip.white = TRUE, 
-                           na.strings = '')
+                       header = T, 
+                       stringsAsFactors = FALSE, strip.white = TRUE, 
+                       na.strings = '')
 
 #filter
-
-* function to extract only a subset of rows from a data frame according to specified conditions
-* similar to the base function subset, but with simpler syntax
-* inputs: data object, any number of conditional statements on the named columns of the data object
-* outputs: a data object of the same class as the input object (e.g., data.frame in, data.frame out) with only those rows that meet the conditions.
-
+ * function to extract only a subset of rows from a data frame according to specified conditions
+ * similar to the base function subset, but with simpler syntax
+  * inputs: data object, any number of conditional statements on the named columns of the data object
+  * outputs: a data object of the same class as the input object (e.g., data.frame in, data.frame out) with only those rows that meet the conditions
 
 
-    #for example, let's create a new data frame that contains only female 
-    #Peromyscus mainculatus, one of the key small mammal players in the life cycle 
-    #of Lyme disease-causing bacterium.
+    #for example, let's create a new data frame that contains only female Peromyscus mainculatus, 
+    # one of the key small mammal players in the life cycle of Lyme disease-causing bacterium.
     
     data_PeroManicFemales <- filter(myData, scientificName == 'Peromyscus maniculatus', sex == 'F')
     
-    #Note that we were able to put multiple conditions into the filter statement, 
-    #pretty cool!
+    #Note that we were able to put multiple conditions into the filter statement, pretty cool!
     
     #how many female P. maniculatus are in the dataset
-    print(paste('In 2014, NEON technicians captured', nrow(data_PeroManicFemales), 
-                'female Peromyscus maniculatus at Harvard Forest.', sep = ' '))
+    print(paste('In 2014, NEON technicians captured', nrow(data_PeroManicFemales), 'female Peromyscus maniculatus at Harvard Forest.', sep = ' '))
 
     ## [1] "In 2014, NEON technicians captured 85 female Peromyscus maniculatus at Harvard Forest."
 

@@ -13,7 +13,7 @@ category: coding-and-informatics
 tags: [HDF5,R]
 mainTag: HDF5
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
-code1: R/HDF5/2015-05-21-R-Timeseries-HDF5.R
+code1: R/2015-05-21-R-Timeseries-HDF5.R
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
@@ -115,7 +115,6 @@ library("rhdf5")
 #also load ggplot2 and dplyr
 library("ggplot2")
 library("dplyr")
-library("scales")
 ```
 
 
@@ -251,14 +250,14 @@ can use the `attributes` function to set the time zone.
 ```{r fix-time-zone}
 
 #convert to local time for pretty plotting
-attributes(temp$date)$tzone <- "America/New_York"
+attributes(temp$date)$tzone <- "US/Eastern"
 
+#now, plot the data!
 ordwayPlot2 <- ggplot(temp,aes(x=date,y=mean))+
   geom_path()+
   ylab("Mean temperature") + xlab("Date in Eastern Standard Time")+
   theme_bw()+
-  ggtitle("3 Days of Temperature Data at Ordway Swisher")+
-  scale_x_datetime(breaks=pretty_breaks(n=4))
+  ggtitle("3 Days of Temperature Data at Ordway Swisher")
 
 #let's check out the plot
 ordwayPlot2
