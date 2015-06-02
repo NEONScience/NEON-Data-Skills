@@ -2,6 +2,8 @@
 layout: post
 title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
 date:   2015-1-28 20:49:52
+title: "GREPL, Filter and Piping Using R DPLYR - An Intro"
+date:   2015-05-28 20:49:52
 dateCreated:   2015-05-27 14:49:52
 lastModified:   2015-05-28 20:49:52
 estimatedTime: 1.0 - 1.5 Hours
@@ -142,9 +144,9 @@ weight):
                       
 
 
- 
 You will also know how to pipe functions.
 
+Let's start by loading the `dplyr` package.
 
     #install dplyr library
     #install.packages('dplyr')
@@ -181,6 +183,9 @@ You will also know how to pipe functions.
     #for example, let's create a new data frame that contains only female Peromyscus mainculatus, 
     # one of the key small mammal players in the life cycle of Lyme disease-causing bacterium.
     
+Let's create a new data frame that contains only female Peromyscus mainculatus, one of the key small mammal players in the life cycle of Lyme disease-causing bacterium.
+
+    #filter out data that represent the Peromyscus mainculatus
     data_PeroManicFemales <- filter(myData, scientificName == 'Peromyscus maniculatus', sex == 'F')
     
     #Note that we were able to put multiple conditions into the filter statement, pretty cool!
@@ -196,7 +201,8 @@ This is a function in the base package that is part of the suite of Regular Expr
 * outputs: a logical vector indicating whether the pattern was found within each element of the input character vector
 
 
-    #In reality, all species of Peromyscus are viable players in Lyme disease transmission, so we really should be looking at all species of Peromyscus. Since we don't have genera split out as a separate field, we have to search within the scientific name string for the genus -- this is a simple example of pattern matching - 
+In reality, all species of Peromyscus are viable players in Lyme disease transmission, so we really should be looking at all species of Peromyscus. Since we don't have genera split out as a separate field, we have to search within the scientific name string for the genus -- this is a simple example of pattern matching.
+
     
     #we will use the dplyr function filter in combination with the base function grepl to accomplish this
     
@@ -208,6 +214,7 @@ This is a function in the base package that is part of the suite of Regular Expr
     ## [1] "In 2014, NEON technicians captured 612 female Peromyscus spp. at Harvard Forest."
 
 #group_by + summarise
+
 An alternative to using the filter function to subset the data (and make a new data object in the process),
 is to calculate summary statistics based on some grouping factor. We'll use group_by, which does basically the same thing as SQL or other tools for interacting with relational databases. For those unfamiliar with SQL, no worries - dplyr provides lots of additional functionality for working with databases (local and remote) that does not require knowledge of SQL. Handy! 
 
