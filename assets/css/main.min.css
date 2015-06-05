@@ -13,7 +13,7 @@ display:none
 }
 html {
 	/* font-family: sans-serif; */
-	font-family: "Source Sans Pro",Helvetica,Arial,sans-serif
+	font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%
 }
@@ -2852,7 +2852,8 @@ input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focu
 	margin-left: 0
 }
 body {
-	font-family: 'PT Serif', serif;
+	/* font-family: 'PT Serif', serif; */
+	font-family:"Source Sans Pro",Helvetica,Arial,sans-serif
 	color: #333332;
 	background-color: #fff
 }
