@@ -12,7 +12,8 @@ audio:not([controls]) {
 display:none
 }
 html {
-	font-family: sans-serif;
+	/* font-family: sans-serif; */
+	font-family: "Source Sans Pro",Helvetica,Arial,sans-serif
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%
 }
@@ -2899,7 +2900,7 @@ body {
 	margin-right: 4.166666666666667%;
 	margin-left: 4.166666666666667%;
 	font-size: 16px;
-	font-size: 1rem
+	font-size: 1.2rem
 }
 }
 @media only screen and (min-width:86.375em) {
@@ -3304,9 +3305,9 @@ font-size:.875rem;
 }
 .article-author-side .bio-photo {
 	max-width: 110px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px
 }
 @media only screen and (min-width:37.5em) {
 .article-author-side {
