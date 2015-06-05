@@ -1,4 +1,4 @@
-title: 		Work with Data - NEON Education
+title: 		NEON Work With Data
 description: 	A test development site that will host education materials that support the use of big data in science.
 #Comment out url when working locally to resolve base urls correctly ok
 #use this when pushing to git for live version
@@ -18,7 +18,7 @@ disqus_shortname: neondataskills
 # Owner/author information
 owner: 		
   name: NEON EDUCATION
-  avatar: profilePic_circle.png
+  avatar: profilePic.png
   bio: "Devoted to open data and open source in science and education."
   email: "lwasser@neoninc.org"
   twitter: "leahawasser"

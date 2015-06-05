@@ -4,9 +4,10 @@ description: "A site devoted to open science and open data. Maintained by Leah W
 Tags: []
 image:
   feature: texture-feature-07.png
-  credit: NEON
+  credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neoninc.org
 ---
 
-Welcome! This site contains activities that teach core programming and data literacy skills and knowledge. It highlights data collected by the National Ecological Observatory Network, a project funded by the NSF. If you have ideas for other topics, 
-please get in touch via any of the links on the left hand side of this page! 
+##Welcome to the NEON #WorkWithData Portal! 
+
+This site contains data lessons, background materials and other resources that support working with large spatio-temporal datasets, like those offered by the <a href="http://www.neoninc.org" target="_blank">NEON project</a>. We welcome any comments and feedback that you have and also materials that support or expand upon what's available on this site!.  

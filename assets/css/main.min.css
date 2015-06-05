@@ -3357,9 +3357,9 @@ font-size:.875rem;
 	float: left;
 	max-width: 100px;
 	margin-right: 25px;
-	-webkit-border-radius: 150px;
-	-moz-border-radius: 150px;
-	border-radius: 150px
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px
 }
 .article-author-bottom .author-social {
 	display: inline-block;
@@ -4466,6 +4466,17 @@ img.load {
     background-color: #e3e8e8;
     border-color: transparent;
     text-decoration: none;
+}
+
+/* ############## NEON Styles ########### */
+
+.navigation-wrapper {
+	border-top:5px solid #1ea0c1
+}
+
+/* make top bar link teal */
+.site-name > a {
+    color: #1ea0c1;
 }
 	
 
