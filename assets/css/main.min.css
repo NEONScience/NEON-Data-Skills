@@ -4485,5 +4485,5 @@ img.load {
 	background-color:#1ea0c1;
 	background-image: url("{{ site.baseurl }}/images/banners/topBar_tree.png");
 	background-repeat: no-repeat;
-	height:10px
+	height:0px
 	}
