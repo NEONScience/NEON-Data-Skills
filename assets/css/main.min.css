@@ -4481,4 +4481,9 @@ img.load {
     color: #1ea0c1;
 }
 	
-
+.NEON-header {
+	background-color:#1ea0c1;
+	background-image: url("{{ site.baseurl }}/images/banners/topBar_tree.png");
+	background-repeat: no-repeat;
+	height:10px
+	}
