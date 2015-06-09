@@ -3,7 +3,7 @@ layout: workshop
 title: "NEON Working With Hyperspectral Imagery in HDF5 Format (R)"
 estimatedTime: 3.0 Hours
 packagesLibraries: RHDF5, DPLYR
-date:   2015-1-15 20:49:52
+date:   2015-06-08 20:49:52
 dateCreated:   2015-2-23 10:49:52
 lastModified: 2015-2-23 22:11:52
 authors: Leah A. Wasser
@@ -60,7 +60,7 @@ After completing this workshop, you will:
 | 2:00     | [Working with Rasters - general overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/) |          |
 | 2:30     | [Raster Data in R - the skinny]({{ site.baseurl }}/R/Raster-Data-In-R/ "What is HDF5")      |            |
 | 3:00 | [about Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "What is HDF5")          |      |
-| 4:00 | [Working with Hyperspectral Remote Sensing Data in R - P1]({{ site.baseurl }}HDF5/Imaging-Spectroscopy-HDF5-In-R/ "What is HDF5")        | ??         |
+| 4:00 | [Working with Hyperspectral Remote Sensing Data in R - P1]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/ "What is HDF5")        | ??         |
 | 4:00 | [Raster Stacks in R - Working with Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ "What is HDF5")          |      |
 
 
@@ -96,6 +96,8 @@ DOWNLOAD
 
  <a href ="http://www.qgis.org/en/site/forusers/index.html#download" target="_blank">QGIS</a> is a cross-platform Open Source Geographic Information system.
  
+
+
 ##Online LiDAR Data Viewer (las viewer)
 
 [http://plas.io](http://plas.io) is a Open Source LiDAR data viewer developed by Martin Isenberg of Las Tools and several of his colleagues.
