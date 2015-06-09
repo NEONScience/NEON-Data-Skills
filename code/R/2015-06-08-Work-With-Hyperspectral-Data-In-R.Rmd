@@ -106,11 +106,18 @@ stored within a HDF5 file using `R`. Please be sure that you have *atleast*
 version 2.10 of `rhdf5` installed. Use: `packageVersion("rhdf5")` to check the 
 package version. If you need to update `rhdf5`, use the following code:
 
-```{r install-rhdf5-library}
+```{r install-load-library, echo=FALSE}
 
 #use the code below to install the rhdf5 library if it's not already installed.
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
+
+#r Load `raster` and `rhdf5` packages and read NIS data into R
+library(raster)
+library(rhdf5)
+library(rgdal)
+
+
 
 ```
 
@@ -118,16 +125,12 @@ package version. If you need to update `rhdf5`, use the following code:
 {: .notice}
 
 ##1. Read HDF5 data into R
-We will use the `raster` and `rhdf5` packages to read in the HDF5 file that 
+We will use the `raster` and `rhdf5` libraries to read in the HDF5 file that 
 contains hyperspectral data for the <a href="http://neoninc.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
 the needed libraries and reading in our NEON HDF5 file.  
 
-```{r load-required-libraries}
+```{r set-wd-view-file-strux }
 
-#r Load `raster` and `rhdf5` packages and read NIS data into R
-library(raster)
-library(rhdf5)
-library(rgdal)
 
 #be sure to set the working directory to the location where you saved your
 # the SJER_120123_chip.h5 file
@@ -299,7 +302,6 @@ band 34 data. Plotting spatial data as a visual "data check" is a good idea to
 make sure processing is being performed correctly and all is well with the image. 
 
     
-
     
 ```{r read-attributes-plot}
     
@@ -485,7 +487,10 @@ extent(b34r) <- rasExt
 #look at raster attributes
 b34r
 
-image(log(b34r))
+image(log(b34r), 
+      xlab = "UTM Easting", 
+      ylab = "UTM Northing",
+      main= "Properly Positioned Raster")
 
 ```
 

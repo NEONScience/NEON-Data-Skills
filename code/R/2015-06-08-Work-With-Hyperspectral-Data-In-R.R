@@ -1,16 +1,19 @@
-## ----install-rhdf5-library-----------------------------------------------
+## ----install-load-library, echo=FALSE------------------------------------
 
 #use the code below to install the rhdf5 library if it's not already installed.
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 
-
-## ----load-required-libraries---------------------------------------------
-
 #r Load `raster` and `rhdf5` packages and read NIS data into R
 library(raster)
 library(rhdf5)
 library(rgdal)
+
+
+
+
+## ----set-wd-view-file-strux----------------------------------------------
+
 
 #be sure to set the working directory to the location where you saved your
 # the SJER_120123_chip.h5 file
@@ -114,7 +117,10 @@ extent(b34r) <- rasExt
 #look at raster attributes
 b34r
 
-image(log(b34r))
+image(log(b34r), 
+      xlab = "UTM Easting", 
+      ylab = "UTM Northing",
+      main= "Properly Positioned Raster")
 
 
 ## ----write-raster,  echo=FALSE-------------------------------------------

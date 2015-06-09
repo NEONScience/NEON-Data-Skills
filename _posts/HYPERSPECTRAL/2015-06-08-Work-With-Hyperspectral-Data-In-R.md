@@ -107,24 +107,6 @@ version 2.10 of `rhdf5` installed. Use: `packageVersion("rhdf5")` to check the
 package version. If you need to update `rhdf5`, use the following code:
 
 
-    #use the code below to install the rhdf5 library if it's not already installed.
-    #source("http://bioconductor.org/biocLite.R")
-    #biocLite("rhdf5")
-
-<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
-{: .notice}
-
-##1. Read HDF5 data into R
-We will use the `raster` and `rhdf5` packages to read in the HDF5 file that 
-contains hyperspectral data for the <a href="http://neoninc.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
-the needed libraries and reading in our NEON HDF5 file.  
-
-
-    #r Load `raster` and `rhdf5` packages and read NIS data into R
-    library(raster)
-    library(rhdf5)
-    library(rgdal)
-
     ## rgdal: version: 0.9-3, (SVN revision 530)
     ##  Geospatial Data Abstraction Library extensions to R successfully loaded
     ##  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
@@ -133,6 +115,15 @@ the needed libraries and reading in our NEON HDF5 file.
     ##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
     ##  Path to PROJ.4 shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/proj
     ##  Linking to sp version: 1.1-1
+
+<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
+{: .notice}
+
+##1. Read HDF5 data into R
+We will use the `raster` and `rhdf5` libraries to read in the HDF5 file that 
+contains hyperspectral data for the <a href="http://neoninc.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
+the needed libraries and reading in our NEON HDF5 file.  
+
 
     #be sure to set the working directory to the location where you saved your
     # the SJER_120123_chip.h5 file
@@ -310,7 +301,6 @@ band 34 data. Plotting spatial data as a visual "data check" is a good idea to
 make sure processing is being performed correctly and all is well with the image. 
 
     
-
     
 
     # look at the metadata for the reflectance dataset
@@ -521,7 +511,10 @@ Next we define the extents of our raster. The extents will be used to calculate 
     ## names       : layer 
     ## values      : 116, 15677  (min, max)
 
-    image(log(b34r))
+    image(log(b34r), 
+          xlab = "UTM Easting", 
+          ylab = "UTM Northing",
+          main= "Properly Positioned Raster")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/define-extent-1.png) 
 
