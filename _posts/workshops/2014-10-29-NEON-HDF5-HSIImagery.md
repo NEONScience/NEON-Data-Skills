@@ -31,7 +31,7 @@ This workshop will providing hands on experience with working with hyperspectral
 After completing this workshop, you will:
 <ol>
 <li>Know what the hyperspectral remote sensing data are</li>
-<li>Know How to create and read from HDF5 files containing spatial data in R.</li>
+<li>Know how to create and read from HDF5 files containing spatial data in R.</li>
 <li>Know they key attributes of raster data that you need to spatially locate raster data in R.</li>
 </ol>
 
@@ -40,10 +40,12 @@ After completing this workshop, you will:
 
 <a href="##" class="btn btn-success"> Eventual Download Data Link</a>
 
-<p>Install Packages using this script. Package list includes:</p>
+<h3>R Libraries to Install</h3>
 <ul>
-<li>GDAL</li>
-<li>RHDF5 </li>
+<li>rhdf5: <code>source("http://bioconductor.org/biocLite.R") ;
+biocLite("rhdf5")</code></li>
+<li>raster: <code>install.packages('raster')</code></li>
+<li>rgdal: <code>install.packages('rgdal')</code></li>
 </ul>
 
 </div>
