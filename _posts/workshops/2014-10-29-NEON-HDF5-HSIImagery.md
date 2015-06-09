@@ -5,7 +5,7 @@ estimatedTime: 3.0 Hours
 packagesLibraries: RHDF5, DPLYR
 date:   2015-06-08 20:49:52
 dateCreated:   2015-2-23 10:49:52
-lastModified: 2015-2-23 22:11:52
+lastModified: 2015-06-09 17:11:52
 authors: Leah A. Wasser
 tags: [Data-Workshops]
 mainTag: Data-Workshops
@@ -35,10 +35,15 @@ After completing this workshop, you will:
 <li>Know they key attributes of raster data that you need to spatially locate raster data in R.</li>
 </ol>
 
-<h3>Before the Workshop Please</h3>
-<p>Download All Data Here</p>
+<h4>Things to do, before the workshop:</h4>
 
-<a href="##" class="btn btn-success"> Eventual Download Data Link</a>
+<h3>Data to Download</h3>
+<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
+DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
+<p>The data in this HDF5 file were collected over the San Joachim field site 
+located in California (NEON Domain 17) and processed at NEON headquarters. The 
+entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+</p>  
 
 <h3>R Libraries to Install</h3>
 <ul>
@@ -46,6 +51,14 @@ After completing this workshop, you will:
 biocLite("rhdf5")</code></li>
 <li>raster: <code>install.packages('raster')</code></li>
 <li>rgdal: <code>install.packages('rgdal')</code></li>
+</ul>
+
+<h3>Background Materials to Read</h3>
+<ul>
+<li><a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/">Working with Rasters in Non Gui Tools.</a></li>
+<li><a href="{{ site.baseurl }}/R/Raster-Data-In-R/">The basics of raster data in R.</a></li>
+<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">The basics of hyperspectral
+remote sensing data.</a></li>
 </ul>
 
 </div>
@@ -59,11 +72,10 @@ biocLite("rhdf5")</code></li>
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
-| 2:00     | [Working with Rasters - general overview]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/) |          |
-| 2:30     | [Raster Data in R - the skinny]({{ site.baseurl }}/R/Raster-Data-In-R/ "What is HDF5")      |            |
-| 3:00 | [about Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "What is HDF5")          |      |
-| 4:00 | [Working with Hyperspectral Remote Sensing Data in R - P1]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/ "What is HDF5")        | ??         |
-| 4:00 | [Raster Stacks in R - Working with Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ "What is HDF5")          |      |
+| 12:00     | [Raster Data in R - the skinny]({{ site.baseurl }}/R/Raster-Data-In-R/ "What is HDF5")      |            |
+| 12:30 | [About Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "What is HDF5")          |      |
+| 1:00 | [Working with Hyperspectral Remote Sensing Data in R - P1]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/ "What is HDF5")        |          |
+| 2:30 | [Raster Stacks in R - Working with Hyperspectral Remote Sensing Data]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ "What is HDF5")          |      |
 
 
 ##Setup
