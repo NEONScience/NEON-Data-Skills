@@ -1,4 +1,4 @@
-## ----install-load-library, echo=FALSE------------------------------------
+## ----install-load-library, results="hide"--------------------------------
 
 #use the code below to install the rhdf5 library if it's not already installed.
 #source("http://bioconductor.org/biocLite.R")
