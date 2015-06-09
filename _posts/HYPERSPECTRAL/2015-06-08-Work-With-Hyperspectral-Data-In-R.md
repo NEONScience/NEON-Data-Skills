@@ -529,8 +529,8 @@ as a raster, using the `writeRaster` command.
 ###Extra Credit
 If you get done early, experiment with 
 
-
 1. Creating rasters from other bands in the dataset.
-2. Varying the distribution of values in the image to mimic an image stretch. e.g. `b34[b34 > 6000 ] <- 1`
+2. Varying the distribution of values in the image to mimic an image stretch. 
+e.g. `b34[b34 > 6000 ] <- 10000`
 
  
