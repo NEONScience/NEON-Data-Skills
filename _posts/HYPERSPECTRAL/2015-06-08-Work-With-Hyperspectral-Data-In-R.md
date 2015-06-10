@@ -116,6 +116,15 @@ package version. If you need to update `rhdf5`, use the following code:
     library(rhdf5)
     library(rgdal)
 
+    ## rgdal: version: 0.9-3, (SVN revision 530)
+    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
+    ##  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
+    ##  Path to GDAL shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/gdal
+    ##  GDAL does not use iconv for recoding strings.
+    ##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+    ##  Path to PROJ.4 shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/proj
+    ##  Linking to sp version: 1.1-1
+
 <i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
 {: .notice}
 
@@ -144,7 +153,7 @@ the needed libraries and reading in our NEON HDF5 file.
     ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP
     ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
     ##   num_attrs  dclass          dtype  stype rank             dim
-    ## 0         5 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426
+    ## 0         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426
     ## 1         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
     ## 2         1  STRING     HST_STRING SIMPLE    1               1
     ## 3        11                                  0                
@@ -184,8 +193,10 @@ HDF5 file. Let's start by reading in the spatial information.
 
 
     #r get spatial info and map info using the h5readAttributes function 
-    #notes - this function was developed by the infamous Ted Hart.
     spinfo <- h5readAttributes(f,"spatialInfo")
+    
+    #r get attributes for the Reflectance dataset
+    reflInfo <- h5readAttributes(f,"Reflectance")
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
 file. Which wavelength is band 19 associated with? (hint: look at the wavelengths 
@@ -241,11 +252,18 @@ with band 34? hint `wavelengths[34]`. How do we know this band is a green band
 in the visible portion of the spectrum?
 
 
-    #get the dimensions of the reflectance dataset in the H5 file
-    shapeRefl<-dim(h5read(f,"Reflectance"))
-    #Note that the data come in columns, rows and then wavelengths
+    #note that we can grab tne dimensions of the dataset from the attributes
+    #we can then use that information to slice out our band data
+    nRows <- reflInfo$row_col_band[1]
+    nCols <- reflInfo$row_col_band[2]
+    nBands <- reflInfo$row_col_band[3]
+    
+    #The HDF5 read function reads data in the order: Cols, Rows and bands
+    #This is different from how R reads data (rows, columns, bands). We'll adjust for 
+    #this later
+    
     #Extract or "slice" data for band 34 from the HDF5 file
-    b34<- h5read(f,"Reflectance",index=list(1:shapeRefl[1],1:shapeRefl[2],34))
+    b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
 
 ###A Note About Data Slicing in HDF5
 Data slicing allows us to extract and work with subsets of the data rather than 
@@ -313,13 +331,16 @@ make sure processing is being performed correctly and all is well with the image
     ## [1] "Atmospherically corrected reflectance."
     ## 
     ## $`Scale Factor`
-    ## [1] 1000
+    ## [1] 10000
     ## 
     ## $Unit
     ## [1] "unitless. Valid range 0-1."
     ## 
     ## $`data ignore value`
     ## [1] "15000"
+    ## 
+    ## $row_col_band
+    ## [1] 502 477 426
 
     #plot the image
     
