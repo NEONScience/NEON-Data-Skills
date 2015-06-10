@@ -344,8 +344,8 @@ What type of image do you get when you change the band values?
 
 ###Challenge
 
-> Use differen band combinations to create other "RGB" images. Some band combinations
-> are below: 
+> Use different band combinations to create other "RGB" images. Suggested band 
+> combinations are below: 
 >
 > * Color Infrared / False Color: rgb: (90,34,19)
 > * SWIR, NIR,Red Band -- rgb (152,90,58)
@@ -429,10 +429,11 @@ the best way to calculate NDVI from hyperspectral data!
 <figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
 </figure>
 	
-## Extra Credit
-IF you get done early, try any of the following:
-
-1. Calculate EVI using the following formula : EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))
-2. Calculate NDNI using the following equation: log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
-3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple red and NIR bands and then calculate NDVI?
+> ### Challenge
+> Try any of the following:
+>
+> 1. Calculate EVI using the following formula : EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))
+> 2. Calculate NDNI using the following equation: log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
+> 3. Explore the bands in the hyperspectral data. What happens if you average 
+> reflectance values across multiple red and NIR bands and then calculate NDVI?
 
