@@ -199,7 +199,15 @@ HDF5 file. Let's start by reading in the spatial information.
     reflInfo <- h5readAttributes(f,"Reflectance")
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
-file. Which wavelength is band 19 associated with? (hint: look at the wavelengths 
+file. 
+
+
+
+    #read in the wavelength information from the Hdf5 file
+    wavelengths<- h5read(f,"wavelength")
+
+
+Which wavelength is band 19 associated with? (hint: look at the wavelengths 
 vector that we just imported and check out the data located at index 19 - 
 `wavelengths[19]`).
 
@@ -212,10 +220,6 @@ vector that we just imported and check out the data located at index 19 -
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. 
 This value equates to 472.44 nanometers (nm) which is in the visible blue portion 
 of the electromagnetic spectrum (~ 400-700 nm). 
-
-
-    #read in the wavelength information from the Hdf5 file
-    wavelengths<- h5read(f,"wavelength")
 
 
 <i class="fa fa-star"></i> **Data Tip: Bands and Wavelengths** A *band* represents 
