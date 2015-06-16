@@ -224,8 +224,8 @@ for each band.
     ## [[1]]
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1.052411, 0.9501992  (x, y)
-    ## extent      : 256521, 257023, 4112571, 4113048  (xmin, xmax, ymin, ymax)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
@@ -235,8 +235,8 @@ for each band.
     ## [[2]]
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1.052411, 0.9501992  (x, y)
-    ## extent      : 256521, 257023, 4112571, 4113048  (xmin, xmax, ymin, ymax)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
@@ -246,8 +246,8 @@ for each band.
     ## [[3]]
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1.052411, 0.9501992  (x, y)
-    ## extent      : 256521, 257023, 4112571, 4113048  (xmin, xmax, ymin, ymax)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
@@ -277,8 +277,8 @@ Next, add the names of the bands to the raster so we can easily keep track of th
 
     ## class       : RasterStack 
     ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
-    ## resolution  : 1.052411, 0.9501992  (x, y)
-    ## extent      : 256521, 257023, 4112571, 4113048  (xmin, xmax, ymin, ymax)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## names       : Band_58, Band_34, Band_19 
     ## min values  :     123,     116,      84 
@@ -330,12 +330,10 @@ Once you've created your raster, you can export it as a geotiff.
 
 
     #write out final raster	
-    #note - you should be able to bring this tiff into any GIS program!
+    #note - you can bring this tiff into any GIS program!
     #note: if you set overwrite to TRUE, then you will overwite or lose the older
     #version of the tif file! keep this in mind.
-    writeRaster(rgb_stack, file="rgbImage.tif", overwrite=TRUE)
-
-    ## Error in writeRaster(rgb_stack, file = "rgbImage.tif", overwrite = TRUE): error in evaluating the argument 'x' in selecting a method for function 'writeRaster': Error: object 'rgb_stack' not found
+    writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
 
 <i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.

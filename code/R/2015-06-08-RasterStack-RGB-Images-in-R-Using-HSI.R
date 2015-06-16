@@ -125,10 +125,10 @@ plotRGB(hsiStack,
 ## ----save-raster-geotiff-------------------------------------------------
 
 #write out final raster	
-#note - you should be able to bring this tiff into any GIS program!
+#note - you can bring this tiff into any GIS program!
 #note: if you set overwrite to TRUE, then you will overwite or lose the older
 #version of the tif file! keep this in mind.
-writeRaster(rgb_stack, file="rgbImage.tif", overwrite=TRUE)
+writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
 
 
 ## ----create-location-map-------------------------------------------------
