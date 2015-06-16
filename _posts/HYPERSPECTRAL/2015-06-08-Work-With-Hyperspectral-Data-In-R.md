@@ -116,15 +116,6 @@ package version. If you need to update `rhdf5`, use the following code:
     library(rhdf5)
     library(rgdal)
 
-    ## rgdal: version: 0.9-3, (SVN revision 530)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
-    ##  Path to GDAL shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/gdal
-    ##  GDAL does not use iconv for recoding strings.
-    ##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
-    ##  Path to PROJ.4 shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/proj
-    ##  Linking to sp version: 1.1-1
-
 <i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
 {: .notice}
 
@@ -203,7 +194,7 @@ file.
 
 
 
-    #read in the wavelength information from the Hdf5 file
+    #read in the wavelength information from the HDF5 file
     wavelengths<- h5read(f,"wavelength")
 
 

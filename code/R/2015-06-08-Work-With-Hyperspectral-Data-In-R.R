@@ -38,7 +38,7 @@ reflInfo <- h5readAttributes(f,"Reflectance")
 
 ## ----read-band-wavelengths-----------------------------------------------
 
-#read in the wavelength information from the Hdf5 file
+#read in the wavelength information from the HDF5 file
 wavelengths<- h5read(f,"wavelength")
 
 
