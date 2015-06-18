@@ -181,9 +181,9 @@ band2rast <- function(f,band){
     out <-  raster(getBandMat(f,band),crs=(spinfo$projdef))
     #define extents of the data using metadata and matrix attributes
     xMN=as.numeric(mapInfo[4])
-    xMX=(xMN+(ncol(b34)))
+    xMX=(xMN+(ncol(band)))
     yMN=as.numeric(mapInfo[5]) 
-    yMX=(yMN+(nrow(b34)))
+    yMX=(yMN+(nrow(band)))
     #set raster extent
     rasExt <- extent(xMN,xMX,yMN,yMX)
     #assign extent to raster

@@ -189,9 +189,9 @@ reference system) for the raster. The call for this function would be
         out <-  raster(getBandMat(f,band),crs=(spinfo$projdef))
         #define extents of the data using metadata and matrix attributes
         xMN=as.numeric(mapInfo[4])
-        xMX=(xMN+(ncol(b34)))
+        xMX=(xMN+(ncol(band)))
         yMN=as.numeric(mapInfo[5]) 
-        yMX=(yMN+(nrow(b34)))
+        yMX=(yMN+(nrow(band)))
         #set raster extent
         rasExt <- extent(xMN,xMX,yMN,yMX)
         #assign extent to raster
@@ -215,7 +215,9 @@ for each band.
     rgb <- list(58,34,19)
     #lapply tells R to apply the function to each element in the list
     rgb_rast <- lapply(rgb,band2rast, f = f)
-    
+
+    ## Error in extent(xMN, xMX, yMN, yMX): insufficient number of elements (should be 4)
+
     #check out the properties or rgb_rast
     #note that it displays properties of 3 rasters.
     
@@ -391,6 +393,9 @@ the best way to calculate NDVI from hyperspectral data!
     
     #create raster list and then a stack using those two bands
     ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
+
+    ## Error in extent(xMN, xMX, yMN, yMX): insufficient number of elements (should be 4)
+
     ndvi_stack <- stack(ndvi_rast)
     
     #make the names pretty
