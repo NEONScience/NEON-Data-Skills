@@ -14,11 +14,16 @@ h5ls(f,all=T)
 
 #r get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
+myCRS<-spInfo$projdef
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
+
+#grab the utms of the lower left corner
+xMN<-as.numeric(mapInfo[4])
+yMN<-as.numeric(mapInfo[5]) 
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
@@ -35,15 +40,15 @@ nBands <- reflInfo$row_col_band[3]
 #f: the hdf file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
-getBandMat <- function(f, band){
+getBandMat <- function(f, band, noDataValue){
 	  out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
 	  #Convert from array to matrix
 	  out <- (out[,,1])
 	  #transpose data to fix flipped row and column order 
 	  out <-t(out)
     #assign data ignore values to NA
-    #note, you might chose to assign values > 14999 to NA
-	  out[out > 10000] <- NA
+    #note, you might chose to assign values of 15000 to NA
+	  out[out == noDataValue] <- NA
     #return a single band's worth of reflectance data
 	  return(out)
 }
@@ -51,14 +56,12 @@ getBandMat <- function(f, band){
 
 ## ----fun-create-raster---------------------------------------------------
 
-band2rast <- function(f,band){
+band2rast <- function(f,band, noDataValue, xMN, yMN, crs){
 	  #Get band from HDF5 file, assign CRS (taken from SPINFO)
-    out <-  raster(getBandMat(f,band),crs=(spinfo$projdef))
+    out <-  raster(getBandMat(f,band, noDataValue),crs=myCRS)
     #define extents of the data using metadata and matrix attributes
-    xMN=as.numeric(mapInfo[4])
-    xMX=(xMN+(ncol(band)))
-    yMN=as.numeric(mapInfo[5]) 
-    yMX=(yMN+(nrow(band)))
+    xMX<-xMN+out@ncols
+    yMX<-yMN+out@nrows
     #set raster extent
     rasExt <- extent(xMN,xMX,yMN,yMX)
     #assign extent to raster
@@ -73,7 +76,8 @@ band2rast <- function(f,band){
 #create a list of the bands we want in our stack
 rgb <- list(58,34,19)
 #lapply tells R to apply the function to each element in the list
-rgb_rast <- lapply(rgb,band2rast, f = f)
+rgb_rast <- lapply(rgb,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                   crs=myCRS)
 
 #check out the properties or rgb_rast
 #note that it displays properties of 3 rasters.
