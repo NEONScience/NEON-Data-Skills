@@ -95,7 +95,7 @@ hsiStack <- stack(rgb_rast)
 #Add the band numbers as names to each raster in the raster list
 
 #Create a list of band names
-bandNames=paste("Band_",unlist(rgb),sep="")
+bandNames<-paste("Band_",unlist(rgb),sep="")
 
 names(hsiStack) <- bandNames
 #check properties of the raster list - note the band names
@@ -140,7 +140,7 @@ writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
 #Create a Map showing the location of our dataset in R
 library(maps)
 map(database="state",region="california")
-points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
+points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
 #add title to map.
 title(main="NEON San Joaquin Field Site - Southern California")
 
@@ -153,7 +153,8 @@ ndvi_bands <- c(58,90)
 
 
 #create raster list and then a stack using those two bands
-ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
+ndvi_rast <- lapply(ndvi_bands,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                    crs=myCRS)
 ndvi_stack <- stack(ndvi_rast)
 
 #make the names pretty
@@ -171,7 +172,7 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 #play with breaks and colors to create a meaningful map
 
 #add a color map with 5 colors
-col=terrain.colors(3)
+col <- terrain.colors(3)
 #add breaks to the colormap (6 breaks = 5 segments)
 brk <- c(0, .4, .7, .9)
 
