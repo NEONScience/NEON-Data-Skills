@@ -14,11 +14,16 @@ h5ls(f,all=T)
 
 #r get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
+myCRS<-spInfo$projdef
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
+
+#grab the utms of the lower left corner
+xMN<-as.numeric(mapInfo[4])
+yMN<-as.numeric(mapInfo[5]) 
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
@@ -35,15 +40,15 @@ nBands <- reflInfo$row_col_band[3]
 #f: the hdf file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
-getBandMat <- function(f, band){
+getBandMat <- function(f, band, noDataValue){
 	  out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
 	  #Convert from array to matrix
 	  out <- (out[,,1])
 	  #transpose data to fix flipped row and column order 
 	  out <-t(out)
     #assign data ignore values to NA
-    #note, you might chose to assign values > 14999 to NA
-	  out[out > 10000] <- NA
+    #note, you might chose to assign values of 15000 to NA
+	  out[out == noDataValue] <- NA
     #return a single band's worth of reflectance data
 	  return(out)
 }
@@ -51,14 +56,12 @@ getBandMat <- function(f, band){
 
 ## ----fun-create-raster---------------------------------------------------
 
-band2rast <- function(f,band){
+band2rast <- function(f,band, noDataValue, xMN, yMN, crs){
 	  #Get band from HDF5 file, assign CRS (taken from SPINFO)
-    out <-  raster(getBandMat(f,band),crs=(spinfo$projdef))
+    out <-  raster(getBandMat(f,band, noDataValue),crs=myCRS)
     #define extents of the data using metadata and matrix attributes
-    xMN=as.numeric(mapInfo[4])
-    xMX=(xMN+(ncol(band)))
-    yMN=as.numeric(mapInfo[5]) 
-    yMX=(yMN+(nrow(band)))
+    xMX<-xMN+out@ncols
+    yMX<-yMN+out@nrows
     #set raster extent
     rasExt <- extent(xMN,xMX,yMN,yMX)
     #assign extent to raster
@@ -73,7 +76,8 @@ band2rast <- function(f,band){
 #create a list of the bands we want in our stack
 rgb <- list(58,34,19)
 #lapply tells R to apply the function to each element in the list
-rgb_rast <- lapply(rgb,band2rast, f = f)
+rgb_rast <- lapply(rgb,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                   crs=myCRS)
 
 #check out the properties or rgb_rast
 #note that it displays properties of 3 rasters.
@@ -91,7 +95,7 @@ hsiStack <- stack(rgb_rast)
 #Add the band numbers as names to each raster in the raster list
 
 #Create a list of band names
-bandNames=paste("Band_",unlist(rgb),sep="")
+bandNames<-paste("Band_",unlist(rgb),sep="")
 
 names(hsiStack) <- bandNames
 #check properties of the raster list - note the band names
@@ -136,7 +140,7 @@ writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
 #Create a Map showing the location of our dataset in R
 library(maps)
 map(database="state",region="california")
-points(spinfo$LL_lat~spinfo$LL_lon,pch = 15)
+points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
 #add title to map.
 title(main="NEON San Joaquin Field Site - Southern California")
 
@@ -149,7 +153,8 @@ ndvi_bands <- c(58,90)
 
 
 #create raster list and then a stack using those two bands
-ndvi_rast <- lapply(ndvi_bands,band2rast, f = f)
+ndvi_rast <- lapply(ndvi_bands,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                    crs=myCRS)
 ndvi_stack <- stack(ndvi_rast)
 
 #make the names pretty
@@ -167,7 +172,7 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 #play with breaks and colors to create a meaningful map
 
 #add a color map with 5 colors
-col=terrain.colors(3)
+col <- terrain.colors(3)
 #add breaks to the colormap (6 breaks = 5 segments)
 brk <- c(0, .4, .7, .9)
 
