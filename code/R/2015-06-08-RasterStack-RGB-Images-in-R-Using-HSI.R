@@ -14,7 +14,7 @@ h5ls(f,all=T)
 
 #r get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
-myCRS<-spInfo$projdef
+myCRS <- spInfo$projdef
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
@@ -24,6 +24,7 @@ mapInfo<-unlist(strsplit(mapInfo, ","))
 #grab the utms of the lower left corner
 xMN<-as.numeric(mapInfo[4])
 yMN<-as.numeric(mapInfo[5]) 
+
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
@@ -48,7 +49,7 @@ getBandMat <- function(f, band, noDataValue){
 	  out <-t(out)
     #assign data ignore values to NA
     #note, you might chose to assign values of 15000 to NA
-	  out[out == noDataValue] <- NA
+    out[out == noDataValue] <- NA
     #return a single band's worth of reflectance data
 	  return(out)
 }
@@ -95,7 +96,7 @@ hsiStack <- stack(rgb_rast)
 #Add the band numbers as names to each raster in the raster list
 
 #Create a list of band names
-bandNames<-paste("Band_",unlist(rgb),sep="")
+bandNames <- paste("Band_",unlist(rgb),sep="")
 
 names(hsiStack) <- bandNames
 #check properties of the raster list - note the band names
@@ -154,7 +155,7 @@ ndvi_bands <- c(58,90)
 
 #create raster list and then a stack using those two bands
 ndvi_rast <- lapply(ndvi_bands,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
-                    crs=myCRS)
+                   crs=myCRS)
 ndvi_stack <- stack(ndvi_rast)
 
 #make the names pretty
