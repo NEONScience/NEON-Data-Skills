@@ -116,15 +116,6 @@ package version. If you need to update `rhdf5`, use the following code:
     library(rhdf5)
     library(rgdal)
 
-    ## rgdal: version: 0.9-3, (SVN revision 530)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
-    ##  Path to GDAL shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/gdal
-    ##  GDAL does not use iconv for recoding strings.
-    ##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
-    ##  Path to PROJ.4 shared files: C:/Users/lwasser/Documents/R/win-library/3.2/rgdal/proj
-    ##  Linking to sp version: 1.1-1
-
 <i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
 {: .notice}
 
@@ -199,7 +190,15 @@ HDF5 file. Let's start by reading in the spatial information.
     reflInfo <- h5readAttributes(f,"Reflectance")
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
-file. Which wavelength is band 19 associated with? (hint: look at the wavelengths 
+file. 
+
+
+
+    #read in the wavelength information from the HDF5 file
+    wavelengths<- h5read(f,"wavelength")
+
+
+Which wavelength is band 19 associated with? (hint: look at the wavelengths 
 vector that we just imported and check out the data located at index 19 - 
 `wavelengths[19]`).
 
@@ -212,10 +211,6 @@ vector that we just imported and check out the data located at index 19 -
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. 
 This value equates to 472.44 nanometers (nm) which is in the visible blue portion 
 of the electromagnetic spectrum (~ 400-700 nm). 
-
-
-    #read in the wavelength information from the Hdf5 file
-    wavelengths<- h5read(f,"wavelength")
 
 
 <i class="fa fa-star"></i> **Data Tip: Bands and Wavelengths** A *band* represents 
