@@ -365,7 +365,7 @@ Remember that the metadata for the `Reflectance` dataset designated 15,000 as
 
 ```{r set-values-NA}
 #set all values greater than 15000
-b34[b34 = 15000] <- NA
+b34[b34 == 15000] <- NA
 
 ```
 
@@ -505,13 +505,23 @@ image(log(b34r),
       ylab = "UTM Northing",
       main= "Properly Positioned Raster")
 
+
+```
+
+We can adjust the colors too
+
+```{r  plot-colors-raster }
+
+#let's change the colors of our raster and adjust the zlims 
+col=terrain.colors(25)
+image(b34r, main="Band 58", col=col, zlim=c(0,3000))
 ```
 
 
 We've now created a raster from band 34 reflectance data. We can export the data
 as a raster, using the `writeRaster` command. 
 
-```{r  write-raster,  echo=FALSE}
+```{r  write-raster,  eval=FALSE}
 
 #write out the raster as a geotiff
 

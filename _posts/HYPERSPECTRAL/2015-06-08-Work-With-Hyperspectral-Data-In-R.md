@@ -389,7 +389,7 @@ Remember that the metadata for the `Reflectance` dataset designated 15,000 as
 
 
     #set all values greater than 15000
-    b34[b34 = 15000] <- NA
+    b34[b34 == 15000] <- NA
 
 	
 	
@@ -534,11 +534,27 @@ Next we define the extents of our raster. The extents will be used to calculate 
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/define-extent-1.png) 
 
+We can adjust the colors too
+
+
+    #let's change the colors of our raster and adjust the zlims 
+    col=terrain.colors(25)
+    image(b34r, main="Band 58", col=col, zlim=c(0,3000))
+
+![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/plot-colors-raster-1.png) 
+
 
 We've now created a raster from band 34 reflectance data. We can export the data
 as a raster, using the `writeRaster` command. 
 
 
+    #write out the raster as a geotiff
+    
+    writeRaster(b34r,file="band34.tif",overwrite=TRUE)
+    
+    
+    #close the H5 file
+    H5close()
 
 
 	

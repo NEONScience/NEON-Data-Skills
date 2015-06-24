@@ -90,7 +90,7 @@ hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
 ## ----set-values-NA-------------------------------------------------------
 #set all values greater than 15000
-b34[b34 = 15000] <- NA
+b34[b34 == 15000] <- NA
 
 
 ## ----plot-log------------------------------------------------------------
@@ -132,14 +132,21 @@ image(log(b34r),
       main= "Properly Positioned Raster")
 
 
-## ----write-raster,  echo=FALSE-------------------------------------------
 
-#write out the raster as a geotiff
+## ----plot-colors-raster--------------------------------------------------
 
-writeRaster(b34r,file="band34.tif",overwrite=TRUE)
+#let's change the colors of our raster and adjust the zlims 
+col=terrain.colors(25)
+image(b34r, main="Band 58", col=col, zlim=c(0,3000))
 
-
-#close the H5 file
-H5close()
-
+## ----write-raster,  eval=FALSE-------------------------------------------
+## 
+## #write out the raster as a geotiff
+## 
+## writeRaster(b34r,file="band34.tif",overwrite=TRUE)
+## 
+## 
+## #close the H5 file
+## H5close()
+## 
 
