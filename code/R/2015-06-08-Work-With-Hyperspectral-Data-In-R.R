@@ -137,12 +137,14 @@ image(log(b34r),
 
 #let's change the colors of our raster and adjust the zlims 
 col=terrain.colors(25)
-image(b34r, main="Band 34", 
+
+image(b34r,  
       xlab = "UTM Easting", 
       ylab = "UTM Northing",
       main= "Raster w Custom Colors",
       col=col, 
       zlim=c(0,3000))
+
 
 ## ----write-raster,  eval=FALSE-------------------------------------------
 ## 

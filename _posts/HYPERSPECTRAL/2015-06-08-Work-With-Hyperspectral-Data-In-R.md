@@ -539,14 +539,15 @@ We can adjust the colors too
 
     #let's change the colors of our raster and adjust the zlims 
     col=terrain.colors(25)
-    image(b34r, main="Band 34", 
+    
+    image(b34r,  
           xlab = "UTM Easting", 
           ylab = "UTM Northing",
           main= "Raster w Custom Colors",
           col=col, 
           zlim=c(0,3000))
 
-    ## Error in plot.default(xlim, ylim, xlim = xlim, ylim = ylim, type = "n", : formal argument "main" matched by multiple actual arguments
+![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/plot-colors-raster-1.png) 
 
 
 We've now created a raster from band 34 reflectance data. We can export the data
