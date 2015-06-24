@@ -131,7 +131,7 @@ mapInfo<-h5read(f,"map info")
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
-#grab the utms of the lower left corner
+#grab the utm coordinates of the lower left corner
 xMN<-as.numeric(mapInfo[4])
 yMN<-as.numeric(mapInfo[5]) 
 

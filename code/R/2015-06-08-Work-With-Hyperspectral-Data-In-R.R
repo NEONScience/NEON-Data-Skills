@@ -1,159 +1,184 @@
-## ----install-load-library, results="hide"--------------------------------
+## ----load-libraries, results='hide'--------------------------------------
 
-#use the code below to install the rhdf5 library if it's not already installed.
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("rhdf5")
-
-#r Load `raster` and `rhdf5` packages and read NIS data into R
-library(raster)
-library(rhdf5)
-library(rgdal)
+#Load required packages
+  library(raster)
+	library(rhdf5)
 
 
+## ----read-in-file--------------------------------------------------------
 
-
-## ----set-wd-view-file-strux----------------------------------------------
-
-
-#be sure to set the working directory to the location where you saved your
-# the SJER_120123_chip.h5 file
-#setwd('pathToDataHere')
-getwd()
-
-#Define the file name to be opened
+#Read in H5 file
 f <- 'SJER_140123_chip.h5'
-#look at the HDF5 file structure 
-h5ls(f,all=T) 
+#View HDF5 file structure 
+h5ls(f,all=T)
 
+#r get spatial info and map info using the h5readAttributes function
+spInfo <- h5readAttributes(f,"spatialInfo")
+myCRS <- spInfo$projdef
 
-## ----read-spatial-attributes---------------------------------------------
+#Populate the raster image extent value. 
+mapInfo<-h5read(f,"map info")
+# split out the individual components of the mapinfo string
+mapInfo<-unlist(strsplit(mapInfo, ","))
 
-#r get spatial info and map info using the h5readAttributes function 
-spinfo <- h5readAttributes(f,"spatialInfo")
+#grab the utm coordinates of the lower left corner
+xMN<-as.numeric(mapInfo[4])
+yMN<-as.numeric(mapInfo[5]) 
+
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
 
-
-
-## ----read-band-wavelengths-----------------------------------------------
-
-#read in the wavelength information from the HDF5 file
-wavelengths<- h5read(f,"wavelength")
-
-
-## ----get-reflectance-shape-----------------------------------------------
-
-#note that we can grab tne dimensions of the dataset from the attributes
-#we can then use that information to slice out our band data
+#create objects represents the dimensions of the Reflectance dataset
 nRows <- reflInfo$row_col_band[1]
 nCols <- reflInfo$row_col_band[2]
 nBands <- reflInfo$row_col_band[3]
 
-#The HDF5 read function reads data in the order: Cols, Rows and bands
-#This is different from how R reads data (rows, columns, bands). We'll adjust for 
-#this later
 
-#Extract or "slice" data for band 34 from the HDF5 file
-b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
- 
-
-## ----convert-to-matrix---------------------------------------------------
-
-#Convert from array to matrix
-b34 <- b34[,,1]
+## ----function-read-refl-data---------------------------------------------
 
 
-## ----read-attributes-plot------------------------------------------------
-    
-# look at the metadata for the reflectance dataset
-h5readAttributes(f,"Reflectance")
-#plot the image
-
-image(b34)
-
-#what happens if we plot a log of the data?
-image(log(b34))
-#note - when R brings in the matrix, the dimensions are read in reverse order
-    
-
-
-## ----hist-data-----------------------------------------------------------
-
-#Plot range of reflectance values as a histogram to view range
-#and distribution of values.
-hist(b34,breaks=40,col="darkmagenta")
-#View values between 0 and 5000
-hist(b34,breaks=40,col="darkmagenta",xlim = c(0, 5000))
-hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
+#f: the hdf file
+# band: the band you want to process
+# returns: a matrix containing the reflectance data for the specific band
+getBandMat <- function(f, band, noDataValue){
+	  out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
+	  #Convert from array to matrix
+	  out <- (out[,,1])
+	  #transpose data to fix flipped row and column order 
+	  out <-t(out)
+    #assign data ignore values to NA
+    #note, you might chose to assign values of 15000 to NA
+    out[out == noDataValue] <- NA
+    #return a single band's worth of reflectance data
+	  return(out)
+}
 
 
-## ----set-values-NA-------------------------------------------------------
-#set all values greater than 15000
-b34[b34 == 15000] <- NA
+## ----fun-create-raster---------------------------------------------------
 
-
-## ----plot-log------------------------------------------------------------
-
-image(log(b34))
-
-
-## ----transpose-data------------------------------------------------------
-
-#We need to transpose x and y values in order for our final image to plot properly
-b34<-t(b34)
-image(log(b34))
+band2rast <- function(f,band, noDataValue, xMN, yMN, crs){
+	  #Get band from HDF5 file, assign CRS (taken from SPINFO)
+    out <-  raster(getBandMat(f,band, noDataValue),crs=myCRS)
+    #define extents of the data using metadata and matrix attributes
+    xMX<-xMN+out@ncols
+    yMX<-yMN+out@nrows
+    #set raster extent
+    rasExt <- extent(xMN,xMX,yMN,yMX)
+    #assign extent to raster
+    extent(out) <- rasExt
+    return(out)
+  }
 
 
 
-## ----define-extent-------------------------------------------------------
+## ----create-raster-stack-------------------------------------------------
 
-#define extents of the data using metadata and matrix attributes
-xMN=as.numeric(mapInfo[4])
-xMX=(xMN+(ncol(b34)))
-yMX=as.numeric(mapInfo[5]) 
-yMN=(yMX-(nrow(b34)))     
-rasExt <- extent(xMN,xMX,yMN,yMX)
+#create a list of the bands we want in our stack
+rgb <- list(58,34,19)
+#lapply tells R to apply the function to each element in the list
+rgb_rast <- lapply(rgb,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                   crs=myCRS)
 
-#define final raster with projection info 
-#note that capitalization will throw errors on a MAC.
-#if UTM is all caps it might cause an error!
-b34r<-raster(b34, 
-      crs=(spinfo$projdef))
+#check out the properties or rgb_rast
+#note that it displays properties of 3 rasters.
 
-#assign the spatial extent to the raster
-extent(b34r) <- rasExt
-#look at raster attributes
-b34r
+rgb_rast
 
-image(log(b34r), 
-      xlab = "UTM Easting", 
-      ylab = "UTM Northing",
-      main= "Properly Positioned Raster")
+#finally, create a raster stack from our list of rasters
+hsiStack <- stack(rgb_rast)
+
+
+## ----plot-raster-stack---------------------------------------------------
 
 
 
-## ----plot-colors-raster--------------------------------------------------
+#Add the band numbers as names to each raster in the raster list
 
-#let's change the colors of our raster and adjust the zlims 
+#Create a list of band names
+bandNames <- paste("Band_",unlist(rgb),sep="")
+
+names(hsiStack) <- bandNames
+#check properties of the raster list - note the band names
+hsiStack
+### Plot one raster in the stack to make sure things look OK.
+plot(hsiStack$Band_58, main="Band 58")
+
+	
+
+## ----plot-HSI-raster-----------------------------------------------------
+
+#change the colors of our raster 
 col=terrain.colors(25)
+image(hsiStack$Band_58, main="Band 58", col=col)
 
-image(b34r,  
-      xlab = "UTM Easting", 
-      ylab = "UTM Northing",
-      main= "Raster w Custom Colors",
-      col=col, 
-      zlim=c(0,3000))
+#adjust the zlims or the stretch of the image
+col=terrain.colors(25)
+image(hsiStack$Band_58, main="Band 58", col=col, zlim = c(0,3000))
+
+#try a different color palette
+col=topo.colors(15, alpha = 1)
+image(hsiStack$Band_58, main="Band 58", col=col, zlim=c(0,3000))
+
+# create a 3 band RGB image
+plotRGB(hsiStack,
+        r=1,g=2,b=3, scale=300, 
+        stretch = "Lin")
 
 
-## ----write-raster,  eval=FALSE-------------------------------------------
-## 
-## #write out the raster as a geotiff
-## 
-## writeRaster(b34r,file="band34.tif",overwrite=TRUE)
-## 
-## 
-## #close the H5 file
-## H5close()
-## 
+
+## ----save-raster-geotiff-------------------------------------------------
+
+#write out final raster	
+#note - you can bring this tiff into any GIS program!
+#note: if you set overwrite to TRUE, then you will overwite or lose the older
+#version of the tif file! keep this in mind.
+writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
+
+
+## ----create-location-map-------------------------------------------------
+
+#Create a Map showing the location of our dataset in R
+library(maps)
+map(database="state",region="california")
+points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
+#add title to map.
+title(main="NEON San Joaquin Field Site - Southern California")
+
+
+## ----create-NDVI---------------------------------------------------------
+
+#Calculate NDVI
+#select bands to use in calculation (red, NIR)
+ndvi_bands <- c(58,90)
+
+
+#create raster list and then a stack using those two bands
+ndvi_rast <- lapply(ndvi_bands,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
+                   crs=myCRS)
+ndvi_stack <- stack(ndvi_rast)
+
+#make the names pretty
+bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
+names(ndvi_stack) <- bandNDVINames
+
+
+#calculate NDVI
+NDVI <- function(x) {
+	  (x[,2]-x[,1])/(x[,2]+x[,1])
+}
+ndvi_calc <- calc(ndvi_stack,NDVI)
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
+
+#play with breaks and colors to create a meaningful map
+
+#add a color map with 5 colors
+col <- terrain.colors(3)
+#add breaks to the colormap (6 breaks = 5 segments)
+brk <- c(0, .4, .7, .9)
+
+#plot the image using breaks
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=col, breaks=brk)
+
+
 

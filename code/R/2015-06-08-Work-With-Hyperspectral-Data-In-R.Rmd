@@ -145,10 +145,10 @@ h5ls(f,all=T)
 ```
 
 When you look at the structure of the data, take note of the `map info dataset`, 
-the `spatial info` group, and the `wavelengths` and `reflectance` datasets. The 
-`spatial info` folder contains the spatial attributes of the data including its 
+the `spatialInfo` group, and the `wavelength` and `Reflectance` datasets. The 
+`spatialInfo` folder contains the spatial attributes of the data including its 
 Coordinate Reference System (CRS). The CRS documents how the data are physically 
-location on the earth. The `wavelengths` dataset contains the middle wavelength 
+location on the earth. The `wavelength` dataset contains the middle wavelength 
 values for each band in the data. The reflectance dataset contains the image data 
 that we will use for both data processing and visualization. 
 
@@ -156,7 +156,7 @@ More Information on raster metadata:
 
 * [Metadata to understand when working with raster data](http://neondataskills.org/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
 
-* [Metadata and importa concepts associated with multi-band (multi and hyperspectral) rasters](http://neondataskills.org/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
+* [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters](http://neondataskills.org/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
 
 <i class="fa fa-star"></i> **Data Tip - HDF5 Structure:** Note that the structure 
 of individual HDF5 files may vary depending on who produced the data. In this 
@@ -172,7 +172,7 @@ HDF5 file. Let's start by reading in the spatial information.
 
 ```{r read-spatial-attributes}
 
-#r get spatial info and map info using the h5readAttributes function 
+#r get spatialInfo using the h5readAttributes function 
 spinfo <- h5readAttributes(f,"spatialInfo")
 
 #r get attributes for the Reflectance dataset
@@ -360,11 +360,11 @@ Notice in the data that there are some larger reflectance values (>5,000) that
 represent a smaller number of pixels. These pixels are skewing how the image renders.   
    
 Remember that the metadata for the `Reflectance` dataset designated 15,000 as 
-`data ignore value`. Thus, let's set all pixels with a value > 14,999 to `NA` 
+`data ignore value`. Thus, let's set all pixels with a value == 15,000 to `NA` 
 (no value). If we do this, R won't try to render these pixels.
 
 ```{r set-values-NA}
-#set all values greater than 15000
+#set all values greater than 15,000 to NA
 b34[b34 == 15000] <- NA
 
 ```
@@ -399,7 +399,7 @@ Images have a distribution of reflectance values. A typical image viewing progra
 will render the values by distributing the entire range of reflectance values  
 across a range of "shades" that the monitor can render - between 0 and 255. 
 However, often the distribution of reflectance values is not linear. For example, 
-in the case of ur data, most of the reflectance values fall between 0 and 0.5. 
+in the case of our data, most of the reflectance values fall between 0 and 0.5. 
 Yet there are a few values >1 that are heavily impacting the way the image is 
 drawn on our monitor. Imaging processing programs like ENVI, QGIS and ArcGIS (and 
 even Adobe Photoshop) allow you to adjust the stretch of the image. This is similar 
