@@ -17,7 +17,7 @@ image:
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Imaging-Spectroscopy-HDF5-In-R/
-code1: hyperspectral_HDF5_Data_R.R
+code1: /R/hyperspectral_HDF5_Data_R.R
 comments: true
 ---
 
