@@ -3,7 +3,7 @@ layout: post
 title: "About Hyperspectral Remote Sensing Data"
 date:   2015-1-15 20:49:52
 createdDate:   2014-1-10 20:49:52
-lastModified: 2015-2-9 20:49:52
+lastModified: 2015-06-24 20:49:52
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 authors: Leah A. Wasser
@@ -82,19 +82,19 @@ The full width half max (FWHM) will also often be reported in a multi or hypersp
 This means that a band that covers 800 nm-805 nm might have a FWHM of 2.5 nm. While a general spectral resolution of the sensor is often  provided, not all sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below:
 
 
-| Band | Wavelength range | Spatial Resolution | Spectral Width |
+| Band | Wavelength range | Spatial Resolution | Spectral Width (microns)|
 |-------------------------------------|------------------|--------------------|----------------|
-| Band 1 - Coastal aerosol | 0.43 - 0.45 | 30 | 0.02 nm |
-| Band 2 - Blue | 0.45 - 0.51 | 30 | 0.06 nm |
-| Band 3 - Green | 0.53 - 0.59 | 30 | 0.06 nm |
-| Band 4 - Red | 0.64 - 0.67 | 30 | 0.03 nm |
-| Band 5 - Near Infrared (NIR) | 0.85 - 0.88 | 30 | 0.03 nm |
-| Band 6 - SWIR 1 | 1.57 - 1.65 | 30 | 0.08 nm  |
-| Band 7 - SWIR 2 | 2.11 - 2.29 | 30 | 0.18 nm |
-| Band 8 - Panchromatic | 0.50 - 0.68 | 15 | 0.18 nm |
-| Band 9 - Cirrus | 1.36 - 1.38 | 30 | 0.02 nm |
+| Band 1 - Coastal aerosol | 0.43 - 0.45 | 30 | 0.02 |
+| Band 2 - Blue | 0.45 - 0.51 | 30 | 0.06 |
+| Band 3 - Green | 0.53 - 0.59 | 30 | 0.06 |
+| Band 4 - Red | 0.64 - 0.67 | 30 | 0.03 |
+| Band 5 - Near Infrared (NIR) | 0.85 - 0.88 | 30 | 0.03 |
+| Band 6 - SWIR 1 | 1.57 - 1.65 | 30 | 0.08  |
+| Band 7 - SWIR 2 | 2.11 - 2.29 | 30 | 0.18 |
+| Band 8 - Panchromatic | 0.50 - 0.68 | 15 | 0.18 |
+| Band 9 - Cirrus | 1.36 - 1.38 | 30 | 0.02 |
 
 
-Above: Source - landsat.usgs.gov
+Above: Source - <a href="http://landsat.usgs.gov" target="_blank">http://landsat.usgs.gov</a>
 
 
