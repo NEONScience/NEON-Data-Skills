@@ -60,7 +60,7 @@ biocLite("rhdf5")</code></li>
 <li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">The basics of hyperspectral
 remote sensing data.</a></li>
 </ul>
-
+<h3><a href="https://etherpad.mozilla.org/NEON-Hyperspectral" target="_blank">Click here for the Etherpad</a></h3>
 </div>
 
 ##Please also watch this video prior to the workshop
