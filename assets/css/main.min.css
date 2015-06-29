@@ -2883,7 +2883,6 @@ body {
 }
 .site-name {
 	display: inline;
-	display: block;
 	float: left;
 	float: none;
 	width: 83.33333333333334%;
@@ -2891,7 +2890,8 @@ body {
 	margin-bottom: 1em;
 	margin-left: 8.333333333333334%;
 	font-size: 24px;
-	font-size: 1.5rem
+	font-size: 1.5rem;
+	padding: 1em 0 0 0;
 }
 @media only screen and (min-width:37.5em) {
 .site-name {
@@ -2901,7 +2901,8 @@ body {
 	margin-right: 4.166666666666667%;
 	margin-left: 4.166666666666667%;
 	font-size: 16px;
-	font-size: 1.2rem
+	font-size: 1.2rem;
+	padding: 1em 0 0 0;
 }
 }
 @media only screen and (min-width:86.375em) {
@@ -2921,7 +2922,8 @@ body {
 	margin-right: 8.333333333333334%;
 	padding-bottom: 2em;
 	margin-left: 8.333333333333334%;
-	background: url("http://www.neondataskills.org/images/solely_NSF.png") no-repeat right 5% top;
+	/* background: url("http://www.neondataskills.org/images/solely_NSF.png") no-repeat right 5% top; */
+	padding: 1em 0 0 0;
 }
 @media only screen and (min-width:37.5em) {
 .top-navigation {
@@ -2929,7 +2931,8 @@ body {
 	float: left;
 	width: 75%;
 	margin-right: 0;
-	margin-left: 0
+	margin-left: 0;
+	padding: 1em 0 0 0;
 }
 }
 @media only screen and (min-width:86.375em) {
