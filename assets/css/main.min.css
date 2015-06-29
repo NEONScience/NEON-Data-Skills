@@ -2859,7 +2859,7 @@ body {
 }
 .navigation-wrapper {
 	width: 100%;
-	padding: 2em 0 0;
+	padding: 0 0 8em 0;
 	margin: 0 auto;
 	font-family: 'PT Sans Narrow', sans-serif;
 	font-weight: 700;
@@ -4488,5 +4488,5 @@ img.load {
 	/*background-image: url("{{ site.baseurl }}/images/banners/topBar_tree.png");
 	background-repeat: no-repeat; */
 	height:0px;
-	margin:0 0 2em;
+	margin:0 0 10em 0;
 	}
