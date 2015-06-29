@@ -4493,3 +4493,14 @@ img.load {
 	height:0px;
 	margin:0 0 10em 0;
 	}
+
+/* trying to clear for the next line */
+
+.NEON-header:before, .NEON-header:after {
+	display: table;
+	line-height: 0;
+	content: ""
+}
+.NEON-header:after {
+	clear: both
+}
