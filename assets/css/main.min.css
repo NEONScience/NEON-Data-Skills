@@ -3212,7 +3212,9 @@ font-size:.875rem
 }
 .image-wrap {
 	position: relative;
-	margin-bottom: 2em
+	margin-bottom: 2em;
+	margin-left: 16%;
+	margin-right: 16%;
 }
 .image-wrap:after {
 	position: absolute;
@@ -3221,9 +3223,9 @@ font-size:.875rem
 	display: block;
 	width: 0;
 	height: 0;
-	border: 20px solid transparent;
+	/* border: 20px solid transparent;
 	border-bottom-color: #fff;
-	content: " "
+	content: " " */
 }
 @media only screen and (min-width:37.5em) {
 .image-wrap:after {
