@@ -142,12 +142,6 @@ image(hsiStack$Band_58, main="Band 58", col=myCol, zlim = c(0,.5))
 myCol=topo.colors(15, alpha = 1)
 image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
 
-# create a 3 band RGB image
-plotRGB(hsiStack,
-        r=1,g=2,b=3, scale=300, 
-        stretch = "Lin")
-
-
 
 ## ----plot-RGB-Image------------------------------------------------------
 

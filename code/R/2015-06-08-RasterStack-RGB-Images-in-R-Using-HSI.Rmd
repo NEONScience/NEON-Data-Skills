@@ -180,17 +180,18 @@ a raster and returns a spatially corrected raster for the specified band.
 
 The function requires the following variables:
 
-* f: the file
+* file: the file
 * band: the band number we wish to extract
 * noDataValue: the noDataValue for the raster
 * xMin, yMin: the X,Y coordinate left hand corner locations for the raster.
 * res: the resolution of the raster
 * crs: the Coordinate Reference System for the raster
 
+The function output is a spatially referenced, `r` raster object.
+
 ```{r function-read-refl-data }
 
-
-#f: the hdf file
+# file: the hdf file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
 
@@ -226,7 +227,6 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
     return(outr)
 }
 
-
 ```
 
 
@@ -241,7 +241,7 @@ for each band.
 {: .notice}
 
 
-```{r create-raster-stack}
+```{r create-raster-stack }
 
 #create a list of the bands we want in our stack
 rgb <- list(58,34,19)
@@ -307,12 +307,6 @@ image(hsiStack$Band_58, main="Band 58", col=myCol, zlim = c(0,.5))
 #try a different color palette
 myCol=topo.colors(15, alpha = 1)
 image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
-
-# create a 3 band RGB image
-plotRGB(hsiStack,
-        r=1,g=2,b=3, scale=300, 
-        stretch = "Lin")
-
 
 ```
 

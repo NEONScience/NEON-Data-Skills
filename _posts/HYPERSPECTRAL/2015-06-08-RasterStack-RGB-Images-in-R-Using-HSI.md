@@ -355,13 +355,6 @@ We can play with the color ramps too if we want:
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/plot-HSI-raster-3.png) 
 
-    # create a 3 band RGB image
-    plotRGB(hsiStack,
-            r=1,g=2,b=3, scale=300, 
-            stretch = "Lin")
-
-![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/plot-HSI-raster-4.png) 
-
 
 The `plotRGB` function allows you to combine three bands to create an image. 
 <a href="http://www.inside-r.org/packages/cran/raster/docs/plotRGB" target="_blank">
