@@ -191,15 +191,17 @@ a raster and returns a spatially corrected raster for the specified band.
 
 The function requires the following variables:
 
-* f: the file
+* file: the file
 * band: the band number we wish to extract
 * noDataValue: the noDataValue for the raster
 * xMin, yMin: the X,Y coordinate left hand corner locations for the raster.
 * res: the resolution of the raster
 * crs: the Coordinate Reference System for the raster
 
+The function output is a spatially referenced, `r` raster object.
 
-    #f: the hdf file
+
+    # file: the hdf file
     # band: the band you want to process
     # returns: a matrix containing the reflectance data for the specific band
     

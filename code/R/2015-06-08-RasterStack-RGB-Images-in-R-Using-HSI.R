@@ -51,8 +51,7 @@ nBands <- reflInfo$row_col_band[3]
 
 ## ----function-read-refl-data---------------------------------------------
 
-
-#f: the hdf file
+# file: the hdf file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
 
@@ -87,7 +86,6 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
     #return the raster object
     return(outr)
 }
-
 
 
 ## ----create-raster-stack-------------------------------------------------
