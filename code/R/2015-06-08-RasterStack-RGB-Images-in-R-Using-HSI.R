@@ -12,27 +12,41 @@ f <- 'SJER_140123_chip.h5'
 #View HDF5 file structure 
 h5ls(f,all=T)
 
+## ----get-spatial-attributes----------------------------------------------
+
 #r get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
-myCRS <- spInfo$projdef
+#define coordinate reference system
+myCrs <- spInfo$projdef
+#define the resolution
+res <- spInfo$xscale
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
+#the map info string contains the lower left hand coordinates of our raster
+#let's grab those next
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
-#grab the utms of the lower left corner
-xMN<-as.numeric(mapInfo[4])
-yMN<-as.numeric(mapInfo[5]) 
-
+#grab the utm coordinates of the lower left corner
+xMin<-as.numeric(mapInfo[4])
+yMin<-as.numeric(mapInfo[5]) 
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
 
 #create objects represents the dimensions of the Reflectance dataset
+#note that there are several ways to access the size of the raster contained
+#within the H5 file
 nRows <- reflInfo$row_col_band[1]
 nCols <- reflInfo$row_col_band[2]
 nBands <- reflInfo$row_col_band[3]
+
+#grab the no data value
+#noDataValue <- reflInfo$data ignore value
+
+#grab the resolution for the data
+#scaleFactor <- reflInfo[3]
 
 
 ## ----function-read-refl-data---------------------------------------------
@@ -41,34 +55,38 @@ nBands <- reflInfo$row_col_band[3]
 #f: the hdf file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
-getBandMat <- function(f, band, noDataValue){
-	  out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
+
+band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
+    #first read in the raster
+    out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
 	  #Convert from array to matrix
 	  out <- (out[,,1])
 	  #transpose data to fix flipped row and column order 
+    #depending upon how your data are formated you might not have to perform this
+    #step.
 	  out <-t(out)
     #assign data ignore values to NA
     #note, you might chose to assign values of 15000 to NA
     out[out == noDataValue] <- NA
-    #return a single band's worth of reflectance data
-	  return(out)
+	  
+    #turn the out object into a raster
+    outr <- raster(out,crs=myCrs)
+ 
+    # define the extents for the raster
+    #note that you need to multiple the size of the raster by the resolution 
+    #(the size of each pixel) in order for this to work properly
+    xMax <- xMin + (outr@ncols * res)
+    yMax <- yMin + (outr@nrows * res)
+ 
+    #create extents class
+    rasExt  <- extent(xMin,xMax,yMin,yMax)
+   
+    #assign the extents to the raster
+    extent(outr) <- rasExt
+   
+    #return the raster object
+    return(outr)
 }
-
-
-## ----fun-create-raster---------------------------------------------------
-
-band2rast <- function(f,band, noDataValue, xMN, yMN, crs){
-	  #Get band from HDF5 file, assign CRS (taken from SPINFO)
-    out <-  raster(getBandMat(f,band, noDataValue),crs=myCRS)
-    #define extents of the data using metadata and matrix attributes
-    xMX<-xMN+out@ncols
-    yMX<-yMN+out@nrows
-    #set raster extent
-    rasExt <- extent(xMN,xMX,yMN,yMX)
-    #assign extent to raster
-    extent(out) <- rasExt
-    return(out)
-  }
 
 
 
@@ -77,8 +95,10 @@ band2rast <- function(f,band, noDataValue, xMN, yMN, crs){
 #create a list of the bands we want in our stack
 rgb <- list(58,34,19)
 #lapply tells R to apply the function to each element in the list
-rgb_rast <- lapply(rgb,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
-                   crs=myCRS)
+rgb_rast <- lapply(rgb,band2Raster, file = f, 
+                   noDataValue=15000, 
+                   xMin=xMin, yMin=yMin, res=1,
+                   crs=myCrs)
 
 #check out the properties or rgb_rast
 #note that it displays properties of 3 rasters.
@@ -101,6 +121,10 @@ bandNames <- paste("Band_",unlist(rgb),sep="")
 names(hsiStack) <- bandNames
 #check properties of the raster list - note the band names
 hsiStack
+
+#scale the data as specified in the reflInfo$Scale Factor
+hsiStack <- hsiStack/10000
+
 ### Plot one raster in the stack to make sure things look OK.
 plot(hsiStack$Band_58, main="Band 58")
 
@@ -109,16 +133,26 @@ plot(hsiStack$Band_58, main="Band 58")
 ## ----plot-HSI-raster-----------------------------------------------------
 
 #change the colors of our raster 
-col=terrain.colors(25)
-image(hsiStack$Band_58, main="Band 58", col=col)
+myCol=terrain.colors(25)
+image(hsiStack$Band_58, main="Band 58", col=myCol)
 
 #adjust the zlims or the stretch of the image
-col=terrain.colors(25)
-image(hsiStack$Band_58, main="Band 58", col=col, zlim = c(0,3000))
+myCol=terrain.colors(25)
+image(hsiStack$Band_58, main="Band 58", col=myCol, zlim = c(0,.5))
 
 #try a different color palette
-col=topo.colors(15, alpha = 1)
-image(hsiStack$Band_58, main="Band 58", col=col, zlim=c(0,3000))
+myCol=topo.colors(15, alpha = 1)
+image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
+
+# create a 3 band RGB image
+plotRGB(hsiStack,
+        r=1,g=2,b=3, scale=300, 
+        stretch = "Lin")
+
+
+
+## ----plot-RGB-Image------------------------------------------------------
+
 
 # create a 3 band RGB image
 plotRGB(hsiStack,
@@ -154,14 +188,16 @@ ndvi_bands <- c(58,90)
 
 
 #create raster list and then a stack using those two bands
-ndvi_rast <- lapply(ndvi_bands,band2rast, f = f, noDataValue=15000, xMN=xMN, yMN=yMN,
-                   crs=myCRS)
+ndvi_rast <- lapply(ndvi_bands,band2Raster, file = f, noDataValue=15000, 
+                    xMin=xMin, yMin=yMin,
+                    crs=myCRS,res=1)
 ndvi_stack <- stack(ndvi_rast)
 
 #make the names pretty
 bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
 names(ndvi_stack) <- bandNDVINames
 
+ndvi_stack
 
 #calculate NDVI
 NDVI <- function(x) {
@@ -173,12 +209,12 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 #play with breaks and colors to create a meaningful map
 
 #add a color map with 5 colors
-col <- terrain.colors(3)
+myCol <- terrain.colors(3)
 #add breaks to the colormap (6 breaks = 5 segments)
 brk <- c(0, .4, .7, .9)
 
 #plot the image using breaks
-plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=col, breaks=brk)
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 
 
