@@ -2902,7 +2902,7 @@ body {
 	margin-left: 4.166666666666667%;
 	font-size: 16px;
 	font-size: 1.2rem;
-	padding: 1em 0 0 0;
+	padding: .2em 0 0 0;
 }
 }
 @media only screen and (min-width:86.375em) {
@@ -2923,7 +2923,7 @@ body {
 	padding-bottom: 2em;
 	margin-left: 8.333333333333334%;
 	/* background: url("http://www.neondataskills.org/images/solely_NSF.png") no-repeat right 5% top; */
-	padding: 1em 0 0 0;
+	padding: .2em 0 0 0;
 }
 @media only screen and (min-width:37.5em) {
 .top-navigation {
