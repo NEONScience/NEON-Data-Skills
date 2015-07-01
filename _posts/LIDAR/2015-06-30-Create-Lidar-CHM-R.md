@@ -78,12 +78,14 @@ Please make sure the following packages are installed:
 
 
 
-    #load the required R libraries
-    install.packages('raster')
-    install.packages('sp')
-    install.packages('dplyr')
-    install.packages('rgdal')
-    install.packages('ggplot2')
+```r
+#load the required R libraries
+install.packages('raster')
+install.packages('sp')
+install.packages('dplyr')
+install.packages('rgdal')
+install.packages('ggplot2')
+```
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -97,73 +99,82 @@ To create the CHM, we will call the raster libraries in R and import the lidar
 derived digital surface model (DSM) and the digital terrain model (DTM). 
 
 
-    #Make sure your working directory is set properly!
-    #The working directory will determine where data are saved. 
-    #If you already have an R studio project setup then you can skip this step!
-    #setwd("yourPathHere")    
-    
-    #Import DSM into R 
-    library(raster)
-    
-    # If the code below doesn't work, check your working directory path!  
-    dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
-    
-    dsm <- raster(dsm_f)
-    # View info about the raster. Then plot it.
-    dsm
+```r
+#Make sure your working directory is set properly!
+#The working directory will determine where data are saved. 
+#If you already have an R studio project setup then you can skip this step!
+#setwd("yourPathHere")    
 
-    ## class       : RasterLayer 
-    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalSurfaceModel/SJER2013_DSM.tif 
-    ## names       : SJER2013_DSM
+#Import DSM into R 
+library(raster)
 
-    plot(dsm, main="LiDAR Digital Surface Model")
+# If the code below doesn't work, check your working directory path!  
+dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
 
-![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/import-plot-DSM-1.png) 
+dsm <- raster(dsm_f)
+# View info about the raster. Then plot it.
+dsm
+```
+
+```
+## class       : RasterLayer 
+## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+## resolution  : 1, 1  (x, y)
+## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalSurfaceModel/SJER2013_DSM.tif 
+## names       : SJER2013_DSM
+```
+
+```r
+plot(dsm, main="LiDAR Digital Surface Model")
+```
+
+![plot of chunk import-plot-DSM](figure/import-plot-DSM-1.png) 
 
 Next, we will import the Digital Terrain Model (DTM). The [DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
 
 
-    #import the digital terrain model
-    dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
-    dtm <- raster(dtm_f)
-    plot(dtm, main="LiDAR Digital Terrain Model")
+```r
+#import the digital terrain model
+dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
+dtm <- raster(dtm_f)
+plot(dtm, main="LiDAR Digital Terrain Model")
+```
 
-![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/plot-DTM-1.png) 
+![plot of chunk plot-DTM](figure/plot-DTM-1.png) 
 
 Finally, we can create the Canopy Height Model (CHM). The [CHM represents the difference between the DSM and the DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/). 
 We can perform some basic raster math to calculate the CHM. You can perform the 
 SAME raster math in a GIS program like [QGIS](http://www.qgis.org/en/site/ "QGIS").
 
 
-    # Create a function that subtracts one raster from another
-    canopyCalc <- function(x, y) {
-      return(x - y)
-      }
-        
-    #use the function to create the final CHM
-    #then plot it.
-    #You could use the overlay function here 
-    #chm <- overlay(dsm,dtm,fun = canopyCalc) 
-    #but you can also perform matrix math to get the same output.
-    chm <- canopyCalc(dsm,dtm)
+```r
+# Create a function that subtracts one raster from another
+canopyCalc <- function(x, y) {
+  return(x - y)
+  }
     
-    image(chm)
+#use the function to create the final CHM
+#then plot it.
+#You could use the overlay function here 
+#chm <- overlay(dsm,dtm,fun = canopyCalc) 
+#but you can also perform matrix math to get the same output.
+chm <- canopyCalc(dsm,dtm)
 
-![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/calculate-plot-CHM-1.png) 
+image(chm)
+```
+
+![plot of chunk calculate-plot-CHM](figure/calculate-plot-CHM-1.png) 
 
 
 
-    #write out the CHM in tiff format. We can look at this in any GIS software.
-    #NOTE: the code below places the output in an "outputs" folder. 
-    #you need to create this folder or else you will get an error.
-    writeRaster(chm,"outputs/chm.tiff","GTiff")
-
-    ## Error in .local(x, filename, ...): Attempting to write a file to a path that does not exist:
-    ##   outputs
+```r
+#write out the CHM in tiff format. We can look at this in any GIS software.
+#NOTE: the code below places the output in an "outputs" folder. 
+#you need to create this folder or else you will get an error.
+writeRaster(chm,"outputs/chm.tiff","GTiff")
+```
 
 We've now successfully created a canopy height model using basic raster math - in 
 R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at it.  
@@ -187,7 +198,7 @@ do the height values extracted from the CHM compare to our laboriously collected
 field measured canopy height data? Let's find out.
 
 For this activity, we have two csv (comma separate value) files located in the
-`InSitu` folder. The first file contains plot centroid location information (X,Y) 
+`InSitu_Data` folder. The first file contains plot centroid location information (X,Y) 
 where we measured trees. The second file contains our vegetation structure data 
 for each plot. Let's start by plotting the plot locations where we measured trees
  (in red) on a map. 
@@ -201,37 +212,27 @@ NOTE: the `sp` library typically installs when you install the raster package.
 Let's get started!
 
 
-    #load libraries
-    library(sp)
-    library(dplyr)
-    
-    #import the centroid data and the vegetation structure data
-    options(stringsAsFactors=FALSE)
-    centroids <- read.csv("InSitu/SJERPlotCentroids.csv")
+```r
+#load libraries
+library(sp)
+library(dplyr)
 
-    ## Warning in file(file, "rt"): cannot open file 'InSitu/
-    ## SJERPlotCentroids.csv': No such file or directory
+#import the centroid data and the vegetation structure data
+options(stringsAsFactors=FALSE)
+centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
+insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
 
-    ## Error in file(file, "rt"): cannot open the connection
+#Overlay the centroid points and the stem locations on the CHM plot
+#plot the chm
+myCol=terrain.colors(25)
+plot(chm,col=myCol)
+#for example, cex = point size 
+#pch 0 = square
+points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
+points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
+```
 
-    insitu_dat <- read.csv("InSitu/D17_2013_vegStr.csv")
-
-    ## Warning in file(file, "rt"): cannot open file 'InSitu/D17_2013_vegStr.csv':
-    ## No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    #Overlay the centroid points and the stem locations on the CHM plot
-    
-    #for example, cex = point size 
-    #pch 0 = square
-    points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
-
-    ## Error in points(centroids$easting, centroids$northing, pch = 0, cex = 2, : object 'centroids' not found
-
-    points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
-
-    ## Error in points(insitu_dat$easting, insitu_dat$northing, pch = 19, cex = 0.5): object 'insitu_dat' not found
+![plot of chunk read-plot-data](figure/read-plot-data-1.png) 
 
 > HINT: type in `help(points)` to read about the options for plotting points.
  
@@ -249,10 +250,12 @@ In this case, we know these data are all in the same projection.
 
 > HINT: to find out what projection our CHM is in, Type `chm@crs`
 
+
+```r
 	#make spatial points data.frame using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
 	centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
-
+```
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
@@ -262,32 +265,33 @@ will do the job!
 ### Variation 1: Extract Plot Data Using Circle: 20m Radius Plots
 
 
-    # Insitu sampling took place within 40m x 40m square plots so we use a 20m radius.	
-    # Note that below will return a dataframe containing the max height
-    # calculated from all pixels in the buffer for each plot
-    cent_ovr <- extract(chm,centroid_sp,buffer = 20, fun=max, df=true)
+```r
+# Insitu sampling took place within 40m x 40m square plots so we use a 20m radius.	
+# Note that below will return a dataframe containing the max height
+# calculated from all pixels in the buffer for each plot
+cent_ovr <- extract(chm,centroid_spdf,buffer = 20, fun=max, df=TRUE)
 
-    ## Error in extract(chm, centroid_sp, buffer = 20, fun = max, df = true): error in evaluating the argument 'y' in selecting a method for function 'extract': Error: object 'centroid_sp' not found
+#grab the names of the plots from the centroid_spdf
+cent_ovr$plot_id <- centroid_spdf$Plot_ID  
+#fix the column names
+names(cent_ovr) <- c('ID','chmMaxHeight','plot_id')
 
-    #grab the names of the plots from the centroid_spdf
-    cent_ovr$plot_id <- centroid_spdf$Plot_ID  
+#merge the chm data into the centroids data.frame
+centroids <- merge(centroids, cent_ovr, by.x = 'Plot_ID', by.y = 'plot_id')
 
-    ## Error in eval(expr, envir, enclos): object 'centroid_spdf' not found
+#have a look at the centroids dataFrame
+head(centroids)
+```
 
-    #fix the column names
-    names(cent_ovr) <- c('ID','chmMaxHeight','plot_id')
-
-    ## Error in names(cent_ovr) <- c("ID", "chmMaxHeight", "plot_id"): object 'cent_ovr' not found
-
-    #merge the chm data into the centroids data.frame
-    centroids <- merge(centroids, cent_ovr, by.x = 'Plot_ID', by.y = 'plot_id')
-
-    ## Error in merge(centroids, cent_ovr, by.x = "Plot_ID", by.y = "plot_id"): error in evaluating the argument 'x' in selecting a method for function 'merge': Error: object 'centroids' not found
-
-    #have a look at the centroids dataFrame
-    head(centroids)
-
-    ## Error in head(centroids): error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'centroids' not found
+```
+##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
+## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
+## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
+## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
+## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
+## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
+## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
+```
 
 #### If you want to explore The Data Distribution
 
@@ -296,12 +300,12 @@ extracted for each plot. Then you could generate a histogram for each plot `hist
 `for loop`.
 
 
-    # create histograms for the first 5 plots of data
-    for (i in 1:5) {
-      hist(cent_ovrList[[i]], main=(paste("plot",i)))
-      }
-
-    ## Error in hist(cent_ovrList[[i]], main = (paste("plot", i))): error in evaluating the argument 'x' in selecting a method for function 'hist': Error: object 'cent_ovrList' not found
+```r
+# create histograms for the first 5 plots of data
+#for (i in 1:5) {
+#  hist(cent_ovrList[[i]], main=(paste("plot",i)))
+#  }
+```
 
 # Challenge
 
@@ -319,15 +323,17 @@ using the code below, you'll need to have the `maptools` package installed which
 requires the `rgeos` package. Be sure to install them first:
 
 
-    #install needed packages
-    #install.packages(rgeos)
-    #install.packages(maptools)
-    
-    #call the maptools package
-    #library(maptools)
-    #extract CHM data using polygon boundaries from a shapefile
-    #squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
-    #centroids$chmMaxShape <- extract(chm, squarePlot, weights=FALSE, fun=max)
+```r
+#install needed packages
+#install.packages(rgeos)
+#install.packages(maptools)
+
+#call the maptools package
+#library(maptools)
+#extract CHM data using polygon boundaries from a shapefile
+#squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
+#centroids$chmMaxShape <- extract(chm, squarePlot, weights=FALSE, fun=max)
+```
 
 ###Variation 3: Derive Square Plot boundaries, then CHM values around a point
 For see how to extract square plots using a plot centroid value, check out the
@@ -343,34 +349,76 @@ We will use the `dplyr` library to do this efficiently. We'll demonstrate both b
 
 First let's see how many plots are in the centroid folder.
 
-    # How many plots are there?
-    unique(insitu_dat$plotid) 
+```r
+# How many plots are there?
+unique(insitu_dat$plotid) 
+```
 
-    ## Error in unique(insitu_dat$plotid): error in evaluating the argument 'x' in selecting a method for function 'unique': Error: object 'insitu_dat' not found
+```
+##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
+##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
+## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
+## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+```
 
 
 Next, find the max stem height value for each plot. We will compare this value to the 
 max CHM value.
 
 
-    library(dplyr)
-    
-    #get list of unique plot id's 
-    unique(insitu_inCentroid$plotid) 
+```r
+library(dplyr)
 
-    ## Error in unique(insitu_inCentroid$plotid): error in evaluating the argument 'x' in selecting a method for function 'unique': Error: object 'insitu_inCentroid' not found
+#get list of unique plot id's 
+unique(insitu_dat$plotid) 
+```
 
-    #find the max stem height for each plot
-    insitu_maxStemHeight <- insitu_inCentroid %>% 
-      group_by(plotid) %>% 
-      summarise(max = max(stemheight))
+```
+##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
+##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
+## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
+## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+```
 
-    ## Error in eval(expr, envir, enclos): object 'insitu_inCentroid' not found
+```r
+#looks like we have data for two sites
+unique(insitu_dat$siteid) 
+```
 
-    # Optional - do this all in one line of nested commands
-    #insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
-    #	      group_by(plotid) %>% 
-    #	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
+```
+## [1] "SOAP" "SJER"
+```
+
+```r
+#we've got some plots for SOAP which is a different region.
+#let's just select plots with SJER data
+plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
+
+#how many unique siteids do we have now?
+unique(plotsSJER$siteid) 
+```
+
+```
+## [1] "SJER"
+```
+
+```r
+#find the max stem height for each plot
+insitu_maxStemHeight <- plotsSJER %>% 
+  group_by(plotid) %>% 
+  summarise(max = max(stemheight))
+
+names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
+
+# Optional - do this all in one line of nested commands
+#insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
+#	      group_by(plotid) %>% 
+#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
+```
 
 ## Option 2 - Use Base R to achieve the same results
 
@@ -379,20 +427,22 @@ R. However, the DPLYR workflow is more similar to a typical database approach.
 
 
 
-    #Use the aggregate function, the arguments of which are: 
-    #      the data on which you want to calculate something ~ the grouping variable
-    #      the FUNction
-    
-    #insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
-    #                                     insitu_inCentroid$plotid, FUN = max )  
-    
-    #Assign cleaner names to the columns
-    #names(insitu_maxStemHeight) <- c('plotid','max')
-    
-    #OPTIONAL - combine the above steps into one line of code.
-    #add the max and 95th percentile height value for all trees within each plot
-    #insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
-    #     insitu_inCentroid$plotid, quantile, prob = 0.95))	
+```r
+#Use the aggregate function, the arguments of which are: 
+#      the data on which you want to calculate something ~ the grouping variable
+#      the FUNction
+
+#insitu_maxStemHeight <- aggregate( insitu_inCentroid$stemheight ~ 
+#                                     insitu_inCentroid$plotid, FUN = max )  
+
+#Assign cleaner names to the columns
+#names(insitu_maxStemHeight) <- c('plotid','max')
+
+#OPTIONAL - combine the above steps into one line of code.
+#add the max and 95th percentile height value for all trees within each plot
+#insitu <- cbind(insitu_maxStemHeight,'quant'=tapply(insitu_inCentroid		$stemheight, 
+#     insitu_inCentroid$plotid, quantile, prob = 0.95))	
+```
 
 ### Merge the data into the centroids data.frame
 
@@ -403,14 +453,21 @@ merge the data on the plot_id column. Notice that it's spelled slightly differen
 in both data.frames so we'll need to tell R what it's called in each data.frame.
 
 
-    #merge the insitu data into the centroids data.frame
-    centroids<-merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
+```r
+#merge the insitu data into the centroids data.frame
+centroids <- merge(centroids, insitu_maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
+head(centroids)
+```
 
-    ## Error in merge(centroids, insitu, by.x = "Plot_ID", by.y = "plotid"): error in evaluating the argument 'x' in selecting a method for function 'merge': Error: object 'centroids' not found
-
-    head(centroids)
-
-    ## Error in head(centroids): error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'centroids' not found
+```
+##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight insituMaxHt
+## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002        19.3
+## 2  SJER112 center  4111299 257407.0      NA  2    24.189972        23.9
+## 3  SJER116 center  4110820 256838.8      NA  3    13.299988        16.0
+## 4  SJER117 center  4108752 256176.9      NA  4    10.989990        11.0
+## 5  SJER120 center  4110476 255968.4      NA  5     5.690002         8.8
+## 6  SJER128 center  4111389 257078.9      NA  6    19.079987        18.2
+```
 
 ### Plot Data (CHM vs Measured)
 Let's create a plot that illustrates the relationship between in situ measured 
@@ -419,51 +476,70 @@ max canopy height values and lidar derived max canopy height values.
 We can make a simple plot using the base R `plot` function:
 
 
-    #create basic plot
-    plot(x = centroids$chmMaxHeight, y=centroids$insitu_maxHt)
+```r
+#create basic plot
+plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHt)
+```
 
-    ## Error in plot(x = centroids$chmMaxHeight, y = centroids$insitu_maxHt): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'centroids' not found
+![plot of chunk plot-data](figure/plot-data-1.png) 
 
 Or we can use ggplot:
 
 
-    library(ggplot2)
-    #create plot
-    ggplot(centroids,aes(x=chmMax, y =insitu )) + 
-      geom_point() + 
-      theme_bw() + 
-      ylab("Maximum measured height") + 
-      xlab("Maximum LiDAR pixel")+
-      geom_abline(intercept = 0, slope=1)+
-      xlim(0, max(centroids[,6:7])) + 
-      ylim(0,max(centroids[,6:7]))
+```r
+library(ggplot2)
+#create plot
+ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+  geom_point() + 
+  theme_bw() + 
+  ylab("Maximum measured height") + 
+  xlab("Maximum LiDAR pixel")+
+  geom_abline(intercept = 0, slope=1)+
+  xlim(0, max(centroids[,6:7])) + 
+  ylim(0,max(centroids[,6:7]))
+```
 
-    ## Error in ggplot(centroids, aes(x = chmMax, y = insitu)): object 'centroids' not found
+```
+## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
+## (geom_point).
+```
+
+![plot of chunk plot-w-ggplot](figure/plot-w-ggplot-1.png) 
 
 
 We can also add a regression fit to our plot. Explore the GGPLOT options and 
 customize your plot.
 
 
-    #plot with regression fit
-    p <- ggplot(centroids,aes(x=chmMax, y =insitu )) + 
-      geom_point() + 
-      ylab("Maximum Measured Height") + 
-      xlab("Maximum LiDAR Height")+
-      geom_abline(intercept = 0, slope=1)+
-      geom_smooth(method=lm) +
-      xlim(0, max(centroids[,6:7])) + 
-      ylim(0,max(centroids[,6:7])) 
+```r
+#plot with regression fit
+p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+  geom_point() + 
+  ylab("Maximum Measured Height") + 
+  xlab("Maximum LiDAR Height")+
+  geom_abline(intercept = 0, slope=1)+
+  geom_smooth(method=lm) +
+  xlim(0, max(centroids[,6:7])) + 
+  ylim(0,max(centroids[,6:7])) 
 
-    ## Error in ggplot(centroids, aes(x = chmMax, y = insitu)): object 'centroids' not found
+p + theme(panel.background = element_rect(colour = "grey")) + 
+  ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
+  theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
+  theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
+  theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+```
 
-    p + theme(panel.background = element_rect(colour = "grey")) + 
-      ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
-      theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-      theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-      theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+```
+## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
+## (stat_smooth).
+```
 
-    ## Error in eval(expr, envir, enclos): object 'p' not found
+```
+## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
+## (geom_point).
+```
+
+![plot of chunk ggplot-data](figure/ggplot-data-1.png) 
 
 
 Your final plot should look something like this:
@@ -491,27 +567,16 @@ site to make the code below work.
 
 
 
-    library(plotly)
+```r
+library(plotly)
+#setup your plot.ly credentials
+set_credentials_file("yourUserName", "yourKey")
+p <- plotly(username="yourUserName", key="yourKey")
 
-    ## Error in library(plotly): there is no package called 'plotly'
-
-    #setup your plot.ly credentials
-    set_credentials_file("yourUserName", "yourKey")
-
-    ## Error in eval(expr, envir, enclos): could not find function "set_credentials_file"
-
-    p <- plotly(username="yourUserName", key="yourKey")
-
-    ## Error in eval(expr, envir, enclos): could not find function "plotly"
-
-    #generate the plot
-    py <- plotly()
-
-    ## Error in eval(expr, envir, enclos): could not find function "plotly"
-
-    py$ggplotly()
-
-    ## Error in eval(expr, envir, enclos): object 'py' not found
+#generate the plot
+py <- plotly()
+py$ggplotly()
+```
 
 Check out the results! 
 

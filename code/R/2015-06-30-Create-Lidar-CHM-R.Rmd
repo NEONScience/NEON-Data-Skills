@@ -153,7 +153,7 @@ image(chm)
 ```
 
 
-```{r write-raster-to-geotiff }
+```{r write-raster-to-geotiff, eval=FALSE }
 
 #write out the CHM in tiff format. We can look at this in any GIS software.
 #NOTE: the code below places the output in an "outputs" folder. 
@@ -184,7 +184,7 @@ do the height values extracted from the CHM compare to our laboriously collected
 field measured canopy height data? Let's find out.
 
 For this activity, we have two csv (comma separate value) files located in the
-`InSitu` folder. The first file contains plot centroid location information (X,Y) 
+`InSitu_Data` folder. The first file contains plot centroid location information (X,Y) 
 where we measured trees. The second file contains our vegetation structure data 
 for each plot. Let's start by plotting the plot locations where we measured trees
  (in red) on a map. 
@@ -205,11 +205,13 @@ library(dplyr)
 
 #import the centroid data and the vegetation structure data
 options(stringsAsFactors=FALSE)
-centroids <- read.csv("InSitu/SJERPlotCentroids.csv")
-insitu_dat <- read.csv("InSitu/D17_2013_vegStr.csv")
+centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
+insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
 
 #Overlay the centroid points and the stem locations on the CHM plot
-
+#plot the chm
+myCol=terrain.colors(25)
+plot(chm,col=myCol)
 #for example, cex = point size 
 #pch 0 = square
 points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
@@ -233,10 +235,13 @@ In this case, we know these data are all in the same projection.
 
 > HINT: to find out what projection our CHM is in, Type `chm@crs`
 
+```{r createSpatialDf}
+
 	#make spatial points data.frame using the CRS (coordinate 
 	#reference system) from the CHM and apply it to our plot centroid data.
 	centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
+```
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
@@ -250,7 +255,7 @@ will do the job!
 # Insitu sampling took place within 40m x 40m square plots so we use a 20m radius.	
 # Note that below will return a dataframe containing the max height
 # calculated from all pixels in the buffer for each plot
-cent_ovr <- extract(chm,centroid_sp,buffer = 20, fun=max, df=true)
+cent_ovr <- extract(chm,centroid_spdf,buffer = 20, fun=max, df=TRUE)
 
 #grab the names of the plots from the centroid_spdf
 cent_ovr$plot_id <- centroid_spdf$Plot_ID  
@@ -272,12 +277,12 @@ If you want to explore the data distribution of pixel height values in each plot
 extracted for each plot. Then you could generate a histogram for each plot `hist(cent_ovrList[[2]])`. If we wanted, we could loop through several plots and create histograms using a 
 `for loop`.
 
-```{r explore-data-distribution }
+```{r explore-data-distribution, eval=FALSE }
 
 # create histograms for the first 5 plots of data
-for (i in 1:5) {
-  hist(cent_ovrList[[i]], main=(paste("plot",i)))
-  }
+#for (i in 1:5) {
+#  hist(cent_ovrList[[i]], main=(paste("plot",i)))
+#  }
 
 ```
 
@@ -339,12 +344,24 @@ max CHM value.
 library(dplyr)
 
 #get list of unique plot id's 
-unique(insitu_inCentroid$plotid) 
+unique(insitu_dat$plotid) 
+#looks like we have data for two sites
+unique(insitu_dat$siteid) 
+
+#we've got some plots for SOAP which is a different region.
+#let's just select plots with SJER data
+plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
+
+#how many unique siteids do we have now?
+unique(plotsSJER$siteid) 
+
 
 #find the max stem height for each plot
-insitu_maxStemHeight <- insitu_inCentroid %>% 
+insitu_maxStemHeight <- plotsSJER %>% 
   group_by(plotid) %>% 
   summarise(max = max(stemheight))
+
+names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
 
 # Optional - do this all in one line of nested commands
 #insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
@@ -389,7 +406,7 @@ in both data.frames so we'll need to tell R what it's called in each data.frame.
 ```{r merge-dataframe}
 
 #merge the insitu data into the centroids data.frame
-centroids<-merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
+centroids <- merge(centroids, insitu_maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
 head(centroids)
 
 ```
@@ -403,7 +420,7 @@ We can make a simple plot using the base R `plot` function:
 ```{r plot-data }
 
 #create basic plot
-plot(x = centroids$chmMaxHeight, y=centroids$insitu_maxHt)
+plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHt)
 
 ```
 
@@ -413,7 +430,7 @@ Or we can use ggplot:
 
 library(ggplot2)
 #create plot
-ggplot(centroids,aes(x=chmMax, y =insitu )) + 
+ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
   geom_point() + 
   theme_bw() + 
   ylab("Maximum measured height") + 
@@ -431,7 +448,7 @@ customize your plot.
 ```{r ggplot-data }
 
 #plot with regression fit
-p <- ggplot(centroids,aes(x=chmMax, y =insitu )) + 
+p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
   geom_point() + 
   ylab("Maximum Measured Height") + 
   xlab("Maximum LiDAR Height")+
@@ -473,7 +490,7 @@ an account. Once you've setup an account, you can get your key from the plot.ly
 site to make the code below work.
 
 
-```{r create-plotly }
+```{r create-plotly, eval=FALSE }
 
 library(plotly)
 #setup your plot.ly credentials
