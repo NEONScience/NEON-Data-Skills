@@ -133,7 +133,7 @@ plotRGB(hsiStack,
 #note - you can bring this tiff into any GIS program!
 #note: if you set overwrite to TRUE, then you will overwite or lose the older
 #version of the tif file! keep this in mind.
-writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
+writeRaster(hsiStack, file="rgbImage.tif", format="GTiff",overwrite=TRUE)
 
 
 ## ----create-location-map-------------------------------------------------

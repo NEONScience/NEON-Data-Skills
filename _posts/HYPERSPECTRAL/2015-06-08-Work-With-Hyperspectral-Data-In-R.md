@@ -556,7 +556,7 @@ as a raster, using the `writeRaster` command.
 
     #write out the raster as a geotiff
     
-    writeRaster(b34r,file="band34.tif",overwrite=TRUE)
+    writeRaster(b34r,file="band34.tif",format="GTiff",overwrite=TRUE)
     
     
     #close the H5 file

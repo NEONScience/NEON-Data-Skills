@@ -379,9 +379,9 @@ Once you've created your raster, you can export it as a geotiff.
     #note - you can bring this tiff into any GIS program!
     #note: if you set overwrite to TRUE, then you will overwite or lose the older
     #version of the tif file! keep this in mind.
-    writeRaster(hsiStack, file="rgbImage.tif", overwrite=TRUE)
+    writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
-    ## Error in .requireRgdal(): package 'rgdal' is not available
+
 
 <i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.
