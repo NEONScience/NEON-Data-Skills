@@ -81,25 +81,20 @@ the image represents a 1 m x 1 m area.
 </figure>
 
 
+```{r View-raster-attributes }
 
-    #load raster library
-    library(raster)
-    
-    # Load raster in an R object called 'DEM'
-    DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
-    
-    # View raster attributes 
-    # Note that this raster (in geotiff format) already has an extent, resolution, 
-    # CRS defined
-    DEM
+#load raster library
+library(raster)
 
-    ## class       : RasterLayer 
-    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : C:\Users\lwasser\Documents\1_Workshops\05-14-2015_NEON_Raster_R\DigitalTerrainModel\SJER2013_DTM.tif 
-    ## names       : SJER2013_DTM
+# Load raster in an R object called 'DEM'
+DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
+
+# View raster attributes 
+# Note that this raster (in geotiff format) already has an extent, resolution, 
+# CRS defined
+DEM
+
+```
 
 
 ##Spatial Extent
@@ -110,19 +105,16 @@ in 2 dimensional space.  Tools like `R`, using supporting packages such as `rgda
 and associated raster tools often have comments that allow you to define the 
 extent of a raster that is created within the tool. 
 
+```{r set-raster-extent }
 
-    # View the extent of the raster
-    DEM@extent
+# View the extent of the raster
+DEM@extent
 
-    ## class       : Extent 
-    ## xmin        : 254570 
-    ## xmax        : 258869 
-    ## ymin        : 4107302 
-    ## ymax        : 4112362
+# Set raster extent (R Code)
+# xMN = minimum x value, xMX=maximum x value, yMN - minimum Y value, yMX=maximum Y value
+#rasExt <- extent(xMN,xMX,yMN,yMX)
 
-    # Set raster extent (R Code)
-    # xMN = minimum x value, xMX=maximum x value, yMN - minimum Y value, yMX=maximum Y value
-    #rasExt <- extent(xMN,xMX,yMN,yMX)
+```
 
 ###Calculating Raster Extent
 Extent and spatial resolution are closely connected. To calculate the extent of a 
@@ -133,41 +125,25 @@ location of the raster, multiplied by the resolution (the pixel size) of the ras
 
 Let's explore that next.
 
+```{r calculate-extent }
 
-    newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
-    
-    #create a raster from the matrix
-    myRaster <- raster(newMatrix)
-    
-    #view attributes of the raster
-    myRaster
+newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
 
-    ## class       : RasterLayer 
-    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
-    ## resolution  : 0.05, 0.1  (x, y)
-    ## extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : NA 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 8  (min, max)
+#create a raster from the matrix
+myRaster <- raster(newMatrix)
 
-    #is the CRS defined?
-    myRaster@crs
+#view attributes of the raster
+myRaster
 
-    ## CRS arguments: NA
+#is the CRS defined?
+myRaster@crs
 
-    #what are the data extents?
-    myRaster@extent
+#what are the data extents?
+myRaster@extent
 
-    ## class       : Extent 
-    ## xmin        : 0 
-    ## xmax        : 1 
-    ## ymin        : 0 
-    ## ymax        : 1
+plot(myRaster)
 
-    plot(myRaster)
-
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/calculate-extent-1.png) 
+```
 
 ### Define the extent
 
@@ -180,56 +156,37 @@ modify the extent. We'll use the x,y values:
 to define the extent. The resolution of this dataset is `1 meter` and we will be working
 in UTM (meters).
 
+```{r define-extent}
 
-    #Define the xmin and y min (the lower left hand corner of the raster)
-    xMin = 254570
-    yMin = 4107302
-    
-    # we can grab the cols and rows for the raster using @ncols and @nrows
-    myRaster@ncols
+#Define the xmin and y min (the lower left hand corner of the raster)
+xMin = 254570
+yMin = 4107302
 
-    ## [1] 20
+# we can grab the cols and rows for the raster using @ncols and @nrows
+myRaster@ncols
+myRaster@nrows
 
-    myRaster@nrows
+# define the resolution
+res=1.0
 
-    ## [1] 10
+# If we add the numbers of cols and rows to the x,y corner location, we get the
+#bounds of our raster extent. 
+xMax <- xMin + (myRaster@ncols * res)
+yMax <- yMin + (myRaster@nrows * res)
 
-    # define the resolution
-    res=1.0
-    
-    # If we add the numbers of cols and rows to the x,y corner location, we get the
-    #bounds of our raster extent. 
-    xMax <- xMin + (myRaster@ncols * res)
-    yMax <- yMin + (myRaster@nrows * res)
-    
-    #create a raster extent class
-    rasExt <- extent(xMin,xMax,yMin,yMax)
-    rasExt
+#create a raster extent class
+rasExt <- extent(xMin,xMax,yMin,yMax)
+rasExt
 
-    ## class       : Extent 
-    ## xmin        : 254570 
-    ## xmax        : 254590 
-    ## ymin        : 4107302 
-    ## ymax        : 4107312
+#finally apply the extent to our raster
+myRaster@extent <- rasExt
 
-    #finally apply the extent to our raster
-    myRaster@extent <- rasExt
-    
-    #Now we have an extent associated with our raster which places it in space!
-    myRaster
+#Now we have an extent associated with our raster which places it in space!
+myRaster
 
-    ## class       : RasterLayer 
-    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : NA 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 8  (min, max)
+plot(myRaster)
 
-    plot(myRaster)
-
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/define-extent-1.png) 
+```
 
 ###Challenge
 * What happens to the extent if you change the resolution to 1.5 when calculating 
@@ -302,53 +259,31 @@ that information and retain it when you process / analyze the data.
 
 #http://spatialreference.org/ref/epsg/
 
+```{r define-raster-projection }
 
-    #let's define the projection for our data using the DEM raster that already has 
-    #defined CRS.
-    
-    #view the crs of our DEM object.
-    DEM@crs
+#let's define the projection for our data using the DEM raster that already has 
+#defined CRS.
 
-    ## CRS arguments:
-    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
-    ## +towgs84=0,0,0
+#view the crs of our DEM object.
+DEM@crs
 
-    #define the CRS using a CRS of another raster
-    myRaster@crs  <- DEM@crs
-    #look at the attributes
-    myRaster
+#define the CRS using a CRS of another raster
+myRaster@crs  <- DEM@crs
+#look at the attributes
+myRaster
 
-    ## class       : RasterLayer 
-    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 8  (min, max)
+```
 
 ## CRS Strings
 
+```{r view-CRS-strings }
 
-    library('rgdal')
-    epsg = make_EPSG()
-    #View(epsg)
-    head(epsg)
+library('rgdal')
+epsg = make_EPSG()
+#View(epsg)
+head(epsg)
 
-    ##   code                                               note
-    ## 1 3819                                           # HD1909
-    ## 2 3821                                            # TWD67
-    ## 3 3824                                            # TWD97
-    ## 4 3889                                             # IGRS
-    ## 5 3906                                         # MGI 1901
-    ## 6 4001 # Unknown datum based upon the Airy 1830 ellipsoid
-    ##                                                                                            prj4
-    ## 1 +proj=longlat +ellps=bessel +towgs84=595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408 +no_defs
-    ## 2                                                         +proj=longlat +ellps=aust_SA +no_defs
-    ## 3                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-    ## 4                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-    ## 5                            +proj=longlat +ellps=bessel +towgs84=682,-203,480,0,0,0,0 +no_defs
-    ## 6                                                            +proj=longlat +ellps=airy +no_defs
+```
 
 
 ##Reprojecting Data
@@ -357,38 +292,24 @@ always **reproject** the data so that they are all in the same projection. Pytho
 and R both have reprojection tools that perform this task.
 
 
+```{r reproject-data }
 
-    # reproject raster data to CRS of dataset2 in R
-    
-    # use nearest neighbor to ensure that the values stay the same
-    reprojectedData1 <- projectRaster(myRaster, 
-                                     crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
-    #note the range of values in the output data
-    reprojectedData1
 
-    ## class       : RasterLayer 
-    ## dimensions  : 13, 22, 286  (nrow, ncol, ncell)
-    ## resolution  : 1.12e-05, 9e-06  (x, y)
-    ## extent      : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 0.6476699, 8.641977  (min, max)
+# reproject raster data to CRS of dataset2 in R
 
-    # use nearest neighbor interpolation  method to ensure that the values stay the same
-    reprojectedData2 <- projectRaster(myRaster, 
-                                     crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
-                                     method = "ngb")
-    
-    #http://www.inside-r.org/packages/cran/raster/docs/projectRaster
-    reprojectedData2
+# use nearest neighbor to ensure that the values stay the same
+reprojectedData1 <- projectRaster(myRaster, 
+                                 crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
+#note the range of values in the output data
+reprojectedData1
 
-    ## class       : RasterLayer 
-    ## dimensions  : 13, 22, 286  (nrow, ncol, ncell)
-    ## resolution  : 1.12e-05, 9e-06  (x, y)
-    ## extent      : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 8  (min, max)
+# use nearest neighbor interpolation  method to ensure that the values stay the same
+reprojectedData2 <- projectRaster(myRaster, 
+                                 crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
+                                 method = "ngb")
+
+#http://www.inside-r.org/packages/cran/raster/docs/projectRaster
+reprojectedData2
+
+```
 

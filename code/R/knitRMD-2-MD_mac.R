@@ -38,13 +38,15 @@ wd <- getwd()
 #file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
 #file  <- "2015-06-08-Work-With-Hyperspectral-Data-In-R.Rmd"
 #file <- "2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.Rmd"
-file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
+#file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
+file <- "2014-11-03-Working-With-Rasters-in-R-Python-GIS.Rmd"
+
 
 #copy .Rmd file to local working directory where the data are located
 #file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)
 
 #specify where should the file go within the GH repo
-postsDir <- ("_posts/LIDAR/")
+postsDir <- ("_posts/SPATIALDATA/")
 #define the file path
 imagePath <- "images/rfigs/"
 # poth to RMD files
