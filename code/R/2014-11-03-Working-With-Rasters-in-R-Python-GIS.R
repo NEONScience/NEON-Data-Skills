@@ -9,6 +9,9 @@ DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")
 # View raster attributes 
 # Note that this raster (in geotiff format) already has an extent, resolution, 
 # CRS defined
+#note that the resolution in both x and y directions is 1. The CRS tells us that
+#the units of the data are meters (m)
+
 DEM
 
 
@@ -17,59 +20,59 @@ DEM
 # View the extent of the raster
 DEM@extent
 
-# Set raster extent (R Code)
-# xMN = minimum x value, xMX=maximum x value, yMN - minimum Y value, yMX=maximum Y value
-#rasExt <- extent(xMN,xMX,yMN,yMX)
 
 
-## ----calculate-extent----------------------------------------------------
 
-newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
+## ----create-raster-------------------------------------------------------
+
 
 #create a raster from the matrix
-myRaster <- raster(newMatrix)
+myRaster1 <- raster(nrow=4, ncol=4)
+
+#assign some random data to the raster
+myRaster1[]<- 1:ncell(myRaster1)
 
 #view attributes of the raster
-myRaster
+myRaster1
 
 #is the CRS defined?
-myRaster@crs
+myRaster1@crs
 
 #what are the data extents?
-myRaster@extent
+myRaster1@extent
 
-plot(myRaster)
+plot(myRaster1, main="Raster with 16 pixels")
 
 
-## ----define-extent-------------------------------------------------------
 
-#Define the xmin and y min (the lower left hand corner of the raster)
-xMin = 254570
-yMin = 4107302
+## ----resample-raster-----------------------------------------------------
 
-# we can grab the cols and rows for the raster using @ncols and @nrows
-myRaster@ncols
-myRaster@nrows
+myRaster2 <- raster(nrow=8, ncol=8)
+myRaster2 <- resample(myRaster1, myRaster2, method='bilinear')
+myRaster2
+plot(myRaster2, main="Raster with 32 pixels")
 
-# define the resolution
-res=1.0
 
-# If we add the numbers of cols and rows to the x,y corner location, we get the
-#bounds of our raster extent. 
-xMax <- xMin + (myRaster@ncols * res)
-yMax <- yMin + (myRaster@nrows * res)
+myRaster3 <- raster(nrow=2, ncol=2)
+myRaster3 <- resample(myRaster1, myRaster3, method='bilinear')
+myRaster3
+plot(myRaster3, main="Raster with 4 pixels")
 
-#create a raster extent class
-rasExt <- extent(xMin,xMax,yMin,yMax)
-rasExt
+myRaster4 <- raster(nrow=1, ncol=1)
+myRaster4 <- resample(myRaster1, myRaster4, method='bilinear')
 
-#finally apply the extent to our raster
-myRaster@extent <- rasExt
+myRaster4
+plot(myRaster4, main="Raster with 1 pixels")
 
-#Now we have an extent associated with our raster which places it in space!
-myRaster
 
-plot(myRaster)
+#let's create a layout with 4 rasters in it
+#notice that each raster has the SAME extent but is of different resolution
+#because it has a different number of pixels spread out over the same extent.
+par(mfrow=c(2,2))
+plot(myRaster2, main="Raster with 32 pixels")
+plot(myRaster1, main="Raster with 16 pixels")
+plot(myRaster3, main="Raster with 4 pixels")
+plot(myRaster4, main="Raster with 2 pixels")
 
 
 ## ----define-raster-projection--------------------------------------------
@@ -81,9 +84,9 @@ plot(myRaster)
 DEM@crs
 
 #define the CRS using a CRS of another raster
-myRaster@crs  <- DEM@crs
+myRaster1@crs  <- DEM@crs
 #look at the attributes
-myRaster
+myRaster1
 
 
 ## ----view-CRS-strings----------------------------------------------------
@@ -94,8 +97,40 @@ epsg = make_EPSG()
 head(epsg)
 
 
-## ----reproject-data------------------------------------------------------
+## ----define-extent-------------------------------------------------------
 
+
+
+#Define the xmin and y min (the lower left hand corner of the raster)
+xMin = 254570
+yMin = 4107302
+
+# we can grab the cols and rows for the raster using @ncols and @nrows
+myRaster1@ncols
+myRaster1@nrows
+
+# define the resolution
+res=1.0
+
+# If we add the numbers of cols and rows to the x,y corner location, we get the
+#bounds of our raster extent. 
+xMax <- xMin + (myRaster1@ncols * res)
+yMax <- yMin + (myRaster1@nrows * res)
+
+#create a raster extent class
+rasExt <- extent(xMin,xMax,yMin,yMax)
+rasExt
+
+#finally apply the extent to our raster
+myRaster1@extent <- rasExt
+
+#Now we have an extent associated with our raster which places it in space!
+myRaster1
+par(mfrow=c(1,1))
+plot(myRaster1, main="Raster in UTM coordinates, 1 m resolution")
+
+
+## ----reproject-data------------------------------------------------------
 
 # reproject raster data to CRS of dataset2 in R
 
