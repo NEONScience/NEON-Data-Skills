@@ -46,6 +46,8 @@ extent, coordinate reference system and spatial resolution.</li>
 <h3>R Libraries to Install:</h3>
 <ul>
 <li><strong>raster:</strong> <code> install.packages("raster")</code></li>
+<li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
+
 </ul>
 </div>
 
@@ -94,6 +96,7 @@ the image represents a 1 m x 1 m area.
 
     #load raster library
     library(raster)
+    library(rgdal)
     
     # Load raster in an R object called 'DEM'
     DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  

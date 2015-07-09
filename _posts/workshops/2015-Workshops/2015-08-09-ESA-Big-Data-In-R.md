@@ -95,7 +95,7 @@ Or you can download the script below and run it to install all libraries at once
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 8:00     | Welcome / Introductions / Logistics |          |
-| 9:00     | Getting Started with Raster Data in R       |            |
+| 9:00     | [Raster Resolution, Extent & CRS in R](http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)       |            |
 | 10:15 | ------- BREAK ------- |      |
 | 10:30 | LiDAR Data Derived Rasters in R |      |
 | 12:00 - 1:00 PM     | Lunch on Your Own |          |

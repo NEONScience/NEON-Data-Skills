@@ -2,6 +2,7 @@
 
 #load raster library
 library(raster)
+library(rgdal)
 
 # Load raster in an R object called 'DEM'
 DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
