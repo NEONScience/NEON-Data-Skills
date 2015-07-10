@@ -86,10 +86,11 @@ the image represents a 1 m x 1 m area.
 </figure>
 
 <figure>
-    <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Cell_size_of_raster_data/009t00000004000000/">
-    <img src="http://help.arcgis.com/en/arcgisdesktop/10.0/help/009t/GUID-0285C0DB-669C-4651-94CA-7617CC2DEB8E-web.gif"></a>
-    <figcaption>A graphic from ESRI demonstrating the a raster that has the same
-    extent but varying resolutions.</figcaption>
+    <img src="{{ site.baseurl }}/images/spatialdata/cropRaster.png">">
+    <figcaption>A raster at the same extent with more pixels will have a higher
+    resolution (it looks more "crisp"). A raster that is stretched over the same
+    extent with fewer pixels will look more blury and will be of lower resolution.
+    </figcaption>
 </figure>
 
 
@@ -127,6 +128,13 @@ extent of a new raster.
 DEM@extent
 
 ```
+
+<figure>
+    <img src="{{ site.baseurl }}/images/spatialdata/cropRaster2.png">">
+    <figcaption>If you double the extent value of a raster - the pixels will be
+    stretched over the larger area making it look more "blury".
+    </figcaption>
+</figure>
 
 ###Calculating Raster Extent
 Extent and spatial resolution are closely connected. To calculate the extent of a 
