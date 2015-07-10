@@ -96,10 +96,10 @@ Or you can download the script below and run it to install all libraries at once
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 8:00     | Welcome / Introductions / Logistics |          |
-| 9:00     | [Getting Started with Rasters in R](http://neondataskills.org/R/Raster-Data-In-R/) |          |
-| 9:30     | [Raster Resolution, Extent & CRS in R](http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)       |            |
+| 9:00     | [Getting Started with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R/) |          |
+| 9:30     | [Raster Resolution, Extent & CRS in R]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)       |            |
 | 10:15 | ------- BREAK ------- |      |
-| 10:30 | LiDAR Data Derived Rasters in R |      |
+| 10:30 | [LiDAR Data Derived Rasters in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/) |      |
 | 12:00 - 1:00 PM     | Lunch on Your Own |          |
 | 1:15     | Introduction to HDF5 in R |          |
 | 2:30 | ------- BREAK ------- |      |
