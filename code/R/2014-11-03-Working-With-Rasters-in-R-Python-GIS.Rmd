@@ -341,6 +341,15 @@ resolution plot. use: `par(mfrow=c(1,2))` to create side by side plots.
 * What happens to the extent if you change the resolution to 1.5 when calculating 
 the raster's extent properties??
 
+## Define projection of a raster
+
+We can define the projection of a raster that has a KNOWN CRS already. Sometimes
+we download data that have projection information associated with them BUT the CRS
+is not defined either in the Geotiff tags or in the raster itself. If this is the 
+case, we can simply assign the raster the correct projection. 
+
+Be CAREFUL doing this - it is not the same thing as REPROJECTING your data.
+
 ```{r define-raster-projection }
 
 #let's define the projection for our data using the DEM raster that already has 
