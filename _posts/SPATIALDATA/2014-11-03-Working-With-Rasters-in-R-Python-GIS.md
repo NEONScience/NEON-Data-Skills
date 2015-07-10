@@ -140,7 +140,7 @@ extent of a new raster.
 
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialData/raster2.png>
+    <img src="{{ site.baseurl }}/images/spatialData/raster2.png">
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
