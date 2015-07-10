@@ -86,7 +86,7 @@ the image represents a 1 m x 1 m area.
 </figure>
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialdata/cropRaster.png">">
+    <img src="{{ site.baseurl }}/images/spatialData/raster2.png">">
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
     extent with fewer pixels will look more blury and will be of lower resolution.
@@ -138,7 +138,7 @@ extent of a new raster.
     ## ymax        : 4112362
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialdata/cropRaster2.png">">
+    <img src="{{ site.baseurl }}/images/spatialData/raster1.png">">
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
