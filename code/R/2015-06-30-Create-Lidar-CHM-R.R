@@ -1,11 +1,11 @@
 ## ----load-libraries, eval=FALSE------------------------------------------
 ## 
 ## #load the required R libraries
-## install.packages('raster')
-## install.packages('sp')
-## install.packages('dplyr')
-## install.packages('rgdal')
-## install.packages('ggplot2')
+## #install.packages('raster')
+## #install.packages('sp')
+## #install.packages('dplyr')
+## #install.packages('rgdal')
+## #install.packages('ggplot2')
 ## 
 
 ## ----import-plot-DSM-----------------------------------------------------
@@ -24,7 +24,9 @@ dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
 dsm <- raster(dsm_f)
 # View info about the raster. Then plot it.
 dsm
-plot(dsm, main="LiDAR Digital Surface Model")
+#plot the DSM
+myColor=terrain.colors(200)
+plot(dsm, col = myColor, main="LiDAR Digital Surface Model")
 
 
 ## ----plot-DTM------------------------------------------------------------
@@ -32,24 +34,28 @@ plot(dsm, main="LiDAR Digital Surface Model")
 #import the digital terrain model
 dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
 dtm <- raster(dtm_f)
-plot(dtm, main="LiDAR Digital Terrain Model")
+plot(dtm, col=myColor, main="LiDAR Digital Terrain Model")
 
 
 ## ----calculate-plot-CHM--------------------------------------------------
 
+#use raster math to create CHM
+chm <- dsm - dtm
+
 # Create a function that subtracts one raster from another
-canopyCalc <- function(x, y) {
-  return(x - y)
-  }
+#canopyCalc <- function(x, y) {
+#  return(x - y)
+#  }
     
 #use the function to create the final CHM
 #then plot it.
 #You could use the overlay function here 
 #chm <- overlay(dsm,dtm,fun = canopyCalc) 
 #but you can also perform matrix math to get the same output.
-chm <- canopyCalc(dsm,dtm)
+#chm <- canopyCalc(dsm,dtm)
 
-image(chm)
+
+plot(chm, main="LiDAR Canopy Height Model")
 
 
 ## ----write-raster-to-geotiff, eval=FALSE---------------------------------
@@ -57,7 +63,7 @@ image(chm)
 ## #write out the CHM in tiff format. We can look at this in any GIS software.
 ## #NOTE: the code below places the output in an "outputs" folder.
 ## #you need to create this folder or else you will get an error.
-## writeRaster(chm,"outputs/chm.tiff","GTiff")
+## writeRaster(chm,"chm.tiff","GTiff")
 ## 
 
 ## ----read-plot-data------------------------------------------------------
@@ -73,8 +79,8 @@ insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
 
 #Overlay the centroid points and the stem locations on the CHM plot
 #plot the chm
-myCol=terrain.colors(25)
-plot(chm,col=myCol)
+myCol=terrain.colors(6)
+plot(chm,col=myCol, main="Plot Locations", breaks=c(-5,0,5,10,40))
 #for example, cex = point size 
 #pch 0 = square
 points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
@@ -83,9 +89,9 @@ points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
 
 ## ----createSpatialDf-----------------------------------------------------
 
-	#make spatial points data.frame using the CRS (coordinate 
-	#reference system) from the CHM and apply it to our plot centroid data.
-	centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
+#make spatial points data.frame using the CRS (coordinate 
+#reference system) from the CHM and apply it to our plot centroid data.
+centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
 
 ## ----extract-plot-data---------------------------------------------------
@@ -110,6 +116,7 @@ head(centroids)
 
 ## ----explore-data-distribution, eval=FALSE-------------------------------
 ## 
+## #cent_ovrList <- extract(chm,centroid_sp,buffer = 20)
 ## # create histograms for the first 5 plots of data
 ## #for (i in 1:5) {
 ## #  hist(cent_ovrList[[i]], main=(paste("plot",i)))
@@ -141,15 +148,18 @@ library(dplyr)
 
 #get list of unique plot id's 
 unique(insitu_dat$plotid) 
+
 #looks like we have data for two sites
 unique(insitu_dat$siteid) 
 
+plotsSJER <- insitu_dat
+
 #we've got some plots for SOAP which is a different region.
 #let's just select plots with SJER data
-plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
+#plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
 
 #how many unique siteids do we have now?
-unique(plotsSJER$siteid) 
+#unique(plotsSJER$siteid) 
 
 
 #find the max stem height for each plot
@@ -157,8 +167,11 @@ insitu_maxStemHeight <- plotsSJER %>%
   group_by(plotid) %>% 
   summarise(max = max(stemheight))
 
-names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
+head(insitu_maxStemHeight)
 
+
+names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
+head(insitu_maxStemHeight)
 # Optional - do this all in one line of nested commands
 #insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
 #	      group_by(plotid) %>% 
@@ -206,8 +219,8 @@ ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) +
   ylab("Maximum measured height") + 
   xlab("Maximum LiDAR pixel")+
   geom_abline(intercept = 0, slope=1)+
-  xlim(0, max(centroids[,6:7])) + 
-  ylim(0,max(centroids[,6:7]))
+  xlim(0, max(centroids[,7:8])) + 
+  ylim(0,max(centroids[,7:8]))
 
 
 ## ----ggplot-data---------------------------------------------------------
@@ -219,8 +232,8 @@ p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) +
   xlab("Maximum LiDAR Height")+
   geom_abline(intercept = 0, slope=1)+
   geom_smooth(method=lm) +
-  xlim(0, max(centroids[,6:7])) + 
-  ylim(0,max(centroids[,6:7])) 
+  xlim(0, max(centroids[,7:8])) + 
+  ylim(0,max(centroids[,7:8])) 
 
 p + theme(panel.background = element_rect(colour = "grey")) + 
   ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
