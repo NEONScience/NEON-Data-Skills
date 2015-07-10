@@ -322,29 +322,6 @@ For a library of CRS information:
 library of CRS information.</a>
 
 
-    #let's define the projection for our data using the DEM raster that already has 
-    #defined CRS.
-    
-    #view the crs of our DEM object.
-    DEM@crs
-
-    ## CRS arguments:
-    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
-    ## +towgs84=0,0,0
-
-    #define the CRS using a CRS of another raster
-    myRaster1@crs  <- DEM@crs
-    #look at the attributes
-    myRaster1
-
-    ## class       : RasterLayer 
-    ## dimensions  : 4, 4, 16  (nrow, ncol, ncell)
-    ## resolution  : 90, 45  (x, y)
-    ## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 16  (min, max)
 
 ## CRS Strings
 
@@ -387,18 +364,34 @@ to define the extent. The resolution of this dataset is `1 meter` and we will be
 in UTM (meters).
 
 
+    #create a raster from the matrix
+    newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
+    
+    #create a raster from the matrix
+    rasterNoProj <- raster(newMatrix)
+    rasterNoProj
+
+    ## class       : RasterLayer 
+    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
+    ## resolution  : 0.05, 0.1  (x, y)
+    ## extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : NA 
+    ## data source : in memory
+    ## names       : layer 
+    ## values      : 1, 8  (min, max)
+
     #Define the xmin and y min (the lower left hand corner of the raster)
     xMin = 254570
     yMin = 4107302
     
     # we can grab the cols and rows for the raster using @ncols and @nrows
-    myRaster1@ncols
+    rasterNoProj@ncols
 
-    ## [1] 4
+    ## [1] 20
 
-    myRaster1@nrows
+    rasterNoProj@nrows
 
-    ## [1] 4
+    ## [1] 10
 
     # define the resolution
     res=1.0
@@ -419,22 +412,41 @@ in UTM (meters).
     ## ymax        : 4107306
 
     #finally apply the extent to our raster
-    myRaster1@extent <- rasExt
-    
-    #Now we have an extent associated with our raster which places it in space!
-    myRaster1
+    rasterNoProj@extent <- rasExt
+    rasterNoProj
 
     ## class       : RasterLayer 
-    ## dimensions  : 4, 4, 16  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
+    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
+    ## resolution  : 0.2, 0.4  (x, y)
     ## extent      : 254570, 254574, 4107302, 4107306  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## coord. ref. : NA 
     ## data source : in memory
     ## names       : layer 
-    ## values      : 1, 16  (min, max)
+    ## values      : 1, 8  (min, max)
+
+    #view extent only
+    rasterNoProj@extent
+
+    ## class       : Extent 
+    ## xmin        : 254570 
+    ## xmax        : 254574 
+    ## ymin        : 4107302 
+    ## ymax        : 4107306
+
+    #Now we have an extent associated with our raster which places it in space!
+    rasterNoProj
+
+    ## class       : RasterLayer 
+    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
+    ## resolution  : 0.2, 0.4  (x, y)
+    ## extent      : 254570, 254574, 4107302, 4107306  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : NA 
+    ## data source : in memory
+    ## names       : layer 
+    ## values      : 1, 8  (min, max)
 
     par(mfrow=c(1,1))
-    plot(myRaster1, main="Raster in UTM coordinates, 1 m resolution")
+    plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/define-extent-1.png) 
 
@@ -445,6 +457,44 @@ resolution plot. use: `par(mfrow=c(1,2))` to create side by side plots.
 the raster's extent properties??
 
 
+    #let's define the projection for our data using the DEM raster that already has 
+    #defined CRS.
+    #NOTE: in this case we have to KNOW that our raster is in this projection already!
+    rasterNoProj@crs
+
+    ## CRS arguments: NA
+
+    #view the crs of our DEM object.
+    DEM@crs
+
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
+    ## +towgs84=0,0,0
+
+    #define the CRS using a CRS of another raster
+    rasterNoProj@crs  <- DEM@crs
+    #look at the attributes
+    rasterNoProj
+
+    ## class       : RasterLayer 
+    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
+    ## resolution  : 0.2, 0.4  (x, y)
+    ## extent      : 254570, 254574, 4107302, 4107306  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : in memory
+    ## names       : layer 
+    ## values      : 1, 8  (min, max)
+
+    #view just the crs
+    rasterNoProj@crs
+
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
+    ## +towgs84=0,0,0
+
+IMPORTANT: the above code does NOT REPROJECT the raster. It simply defines the
+Coordinate Reference System based upon the CRS of another raster. If you want to
+actually CHANGE the CRS of a raster, you need to use the `projectRaster` function.
 
 ##Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 
@@ -453,40 +503,50 @@ and R both have reprojection tools that perform this task.
 
 
 
-    # reproject raster data to CRS of dataset2 in R
+    # reproject raster data from UTM to CRS of Lat/Long WGS84
     
-    # use nearest neighbor to ensure that the values stay the same
-    reprojectedData1 <- projectRaster(myRaster, 
+    reprojectedData1 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
+    
+    #note that the extent has been adjusted to account for the NEW crs
+    reprojectedData1@crs
 
-    ## Error in projectRaster(myRaster, crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "): input projection is NA
+    ## CRS arguments:
+    ##  +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0
+
+    reprojectedData1@extent
+
+    ## class       : Extent 
+    ## xmin        : -119.761 
+    ## xmax        : -119.7609 
+    ## ymin        : 37.07989 
+    ## ymax        : 37.07993
 
     #note the range of values in the output data
     reprojectedData1
 
     ## class       : RasterLayer 
-    ## dimensions  : 13, 22, 286  (nrow, ncol, ncell)
-    ## resolution  : 1.12e-05, 9e-06  (x, y)
-    ## extent      : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+    ## dimensions  : 12, 25, 300  (nrow, ncol, ncell)
+    ## resolution  : 2.25e-06, 3.6e-06  (x, y)
+    ## extent      : -119.761, -119.7609, 37.07989, 37.07993  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
-    ## values      : 0.6476699, 8.641977  (min, max)
+    ## values      : 0.6920572, 10.2188  (min, max)
 
     # use nearest neighbor interpolation  method to ensure that the values stay the same
-    reprojectedData2 <- projectRaster(myRaster, 
+    reprojectedData2 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
                                      method = "ngb")
-
-    ## Error in projectRaster(myRaster, crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", : input projection is NA
-
+    
     #http://www.inside-r.org/packages/cran/raster/docs/projectRaster
+    #note that the min and max values have now been forced to stay within the same range.
     reprojectedData2
 
     ## class       : RasterLayer 
-    ## dimensions  : 13, 22, 286  (nrow, ncol, ncell)
-    ## resolution  : 1.12e-05, 9e-06  (x, y)
-    ## extent      : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+    ## dimensions  : 12, 25, 300  (nrow, ncol, ncell)
+    ## resolution  : 2.25e-06, 3.6e-06  (x, y)
+    ## extent      : -119.761, -119.7609, 37.07989, 37.07993  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 

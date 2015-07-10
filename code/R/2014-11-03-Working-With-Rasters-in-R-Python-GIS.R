@@ -22,8 +22,6 @@ DEM
 DEM@extent
 
 
-
-
 ## ----create-raster-------------------------------------------------------
 
 
@@ -76,20 +74,6 @@ plot(myRaster3, main="Raster with 4 pixels")
 plot(myRaster4, main="Raster with 2 pixels")
 
 
-## ----define-raster-projection--------------------------------------------
-
-#let's define the projection for our data using the DEM raster that already has 
-#defined CRS.
-
-#view the crs of our DEM object.
-DEM@crs
-
-#define the CRS using a CRS of another raster
-myRaster1@crs  <- DEM@crs
-#look at the attributes
-myRaster1
-
-
 ## ----view-CRS-strings----------------------------------------------------
 
 library('rgdal')
@@ -100,15 +84,19 @@ head(epsg)
 
 ## ----define-extent-------------------------------------------------------
 
+#create a raster from the matrix
+newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
 
-
+#create a raster from the matrix
+rasterNoProj <- raster(newMatrix)
+rasterNoProj
 #Define the xmin and y min (the lower left hand corner of the raster)
 xMin = 254570
 yMin = 4107302
 
 # we can grab the cols and rows for the raster using @ncols and @nrows
-myRaster1@ncols
-myRaster1@nrows
+rasterNoProj@ncols
+rasterNoProj@nrows
 
 # define the resolution
 res=1.0
@@ -123,30 +111,53 @@ rasExt <- extent(xMin,xMax,yMin,yMax)
 rasExt
 
 #finally apply the extent to our raster
-myRaster1@extent <- rasExt
-
+rasterNoProj@extent <- rasExt
+rasterNoProj
+#view extent only
+rasterNoProj@extent
 #Now we have an extent associated with our raster which places it in space!
-myRaster1
+rasterNoProj
 par(mfrow=c(1,1))
-plot(myRaster1, main="Raster in UTM coordinates, 1 m resolution")
+plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
+
+
+## ----define-raster-projection--------------------------------------------
+
+#let's define the projection for our data using the DEM raster that already has 
+#defined CRS.
+#NOTE: in this case we have to KNOW that our raster is in this projection already!
+rasterNoProj@crs
+#view the crs of our DEM object.
+DEM@crs
+
+#define the CRS using a CRS of another raster
+rasterNoProj@crs  <- DEM@crs
+#look at the attributes
+rasterNoProj
+#view just the crs
+rasterNoProj@crs
 
 
 ## ----reproject-data------------------------------------------------------
 
-# reproject raster data to CRS of dataset2 in R
+# reproject raster data from UTM to CRS of Lat/Long WGS84
 
-# use nearest neighbor to ensure that the values stay the same
-reprojectedData1 <- projectRaster(myRaster, 
+reprojectedData1 <- projectRaster(rasterNoProj, 
                                  crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
+
+#note that the extent has been adjusted to account for the NEW crs
+reprojectedData1@crs
+reprojectedData1@extent
 #note the range of values in the output data
 reprojectedData1
 
 # use nearest neighbor interpolation  method to ensure that the values stay the same
-reprojectedData2 <- projectRaster(myRaster, 
+reprojectedData2 <- projectRaster(rasterNoProj, 
                                  crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
                                  method = "ngb")
 
 #http://www.inside-r.org/packages/cran/raster/docs/projectRaster
+#note that the min and max values have now been forced to stay within the same range.
 reprojectedData2
 
 
