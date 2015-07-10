@@ -79,11 +79,11 @@ Please make sure the following packages are installed:
 
 
     #load the required R libraries
-    install.packages('raster')
-    install.packages('sp')
-    install.packages('dplyr')
-    install.packages('rgdal')
-    install.packages('ggplot2')
+    #install.packages('raster')
+    #install.packages('sp')
+    #install.packages('dplyr')
+    #install.packages('rgdal')
+    #install.packages('ggplot2')
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -117,20 +117,23 @@ derived digital surface model (DSM) and the digital terrain model (DTM).
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalSurfaceModel/SJER2013_DSM.tif 
+    ## data source : C:\Users\lwasser\Documents\1_Workshops\05-14-2015_NEON_Raster_R\DigitalSurfaceModel\SJER2013_DSM.tif 
     ## names       : SJER2013_DSM
 
-    plot(dsm, main="LiDAR Digital Surface Model")
+    #plot the DSM
+    myColor=terrain.colors(200)
+    plot(dsm, col = myColor, main="LiDAR Digital Surface Model")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/import-plot-DSM-1.png) 
 
-Next, we will import the Digital Terrain Model (DTM). The [DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
+Next, we will import the Digital Terrain Model (DTM). The 
+[DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
 
 
     #import the digital terrain model
     dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
     dtm <- raster(dtm_f)
-    plot(dtm, main="LiDAR Digital Terrain Model")
+    plot(dtm, col=myColor, main="LiDAR Digital Terrain Model")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/plot-DTM-1.png) 
 
@@ -139,33 +142,41 @@ We can perform some basic raster math to calculate the CHM. You can perform the
 SAME raster math in a GIS program like [QGIS](http://www.qgis.org/en/site/ "QGIS").
 
 
+    #use raster math to create CHM
+    chm <- dsm - dtm
+    
     # Create a function that subtracts one raster from another
-    canopyCalc <- function(x, y) {
-      return(x - y)
-      }
+    #canopyCalc <- function(x, y) {
+    #  return(x - y)
+    #  }
         
     #use the function to create the final CHM
     #then plot it.
     #You could use the overlay function here 
     #chm <- overlay(dsm,dtm,fun = canopyCalc) 
     #but you can also perform matrix math to get the same output.
-    chm <- canopyCalc(dsm,dtm)
+    #chm <- canopyCalc(dsm,dtm)
     
-    image(chm)
+    
+    plot(chm, main="LiDAR Canopy Height Model")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/calculate-plot-CHM-1.png) 
+
+We can write out the raster as a geoTiff using the `writeRaster` function.
+
 
 
 
     #write out the CHM in tiff format. We can look at this in any GIS software.
     #NOTE: the code below places the output in an "outputs" folder. 
     #you need to create this folder or else you will get an error.
-    writeRaster(chm,"outputs/chm.tiff","GTiff")
+    writeRaster(chm,"chm.tiff","GTiff")
 
 We've now successfully created a canopy height model using basic raster math - in 
 R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at it.  
 
 
+###CHALLENGES
 
 > 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color 
 > map of 3 colors. Add a title to your plot.
@@ -173,7 +184,7 @@ R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at i
 > sense than 0, 10, 20 and 30 meters? Experiment with producing a final map that 
 > provides useful information.
 
-### CHALLENGE EXTRA CREDIT!
+### EXTRA CREDIT!
 Share your output map from the challenge above in the comments section at the 
 bottom of the page. 
 
@@ -181,7 +192,10 @@ bottom of the page.
 
 We now have a canopy height model for our study area in California. However, how 
 do the height values extracted from the CHM compare to our laboriously collected, 
-field measured canopy height data? Let's find out.
+field measured canopy height data? To figure tihs out, we will user manually collected
+tree height data, measured within circular plots across our study area. We will compare
+the maximum measured tree height value to the maximum lidar derived height value 
+for each circular plot using regression.
 
 For this activity, we have two csv (comma separate value) files located in the
 `InSitu_Data` folder. The first file contains plot centroid location information (X,Y) 
@@ -209,8 +223,8 @@ Let's get started!
     
     #Overlay the centroid points and the stem locations on the CHM plot
     #plot the chm
-    myCol=terrain.colors(25)
-    plot(chm,col=myCol)
+    myCol=terrain.colors(6)
+    plot(chm,col=myCol, main="Plot Locations", breaks=c(-5,0,5,10,40))
     #for example, cex = point size 
     #pch 0 = square
     points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
@@ -230,19 +244,29 @@ QGIS to determine where the data are located, in the world.
 <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">
 Read more about CRS here</a>
 
-In this case, we know these data are all in the same projection.
+In this case, we know these data are all in the same projection. Remember that 
+we can quickly figure out what projection our CHM is in, using `chm@crs`.
 
-> HINT: to find out what projection our CHM is in, Type `chm@crs`
 
-
-    	#make spatial points data.frame using the CRS (coordinate 
-    	#reference system) from the CHM and apply it to our plot centroid data.
-    	centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
+    #make spatial points data.frame using the CRS (coordinate 
+    #reference system) from the CHM and apply it to our plot centroid data.
+    centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
 ###Extract CMH data within 20 m radius of each plot centroid.
 
-There are a few ways to go about this task. If your plots are circular, then the extract tool 
-will do the job! 
+There are a few ways to go about this task. If your plots are circular, then the 
+extract tool will do the job! Our plots are circular so that is what we'll use.
+
+
+<figure>
+    <img src="{{ site.baseurl }}/images/spatialData/BufferCircular.png">
+    <figcaption>The extract function in R allows you to specify a circular buffer 
+    radius around an x,y point location. Values for all pixels in the specified 
+    raster that fall within the circular buffer are extracted. In this case, we
+    will tell R to extract the maximum value of all pixels using the fun=max
+    command.
+    </figcaption>
+</figure>
 
 ### Variation 1: Extract Plot Data Using Circle: 20m Radius Plots
 
@@ -273,11 +297,15 @@ will do the job!
 
 #### If you want to explore The Data Distribution
 
-If you want to explore the data distribution of pixel height values in each plot, you could remove the `fun` call to max and generate a list. `cent_ovrList <- extract(chm,centroid_sp,buffer = 20)`. It's good to look at the distribution of values we've 
-extracted for each plot. Then you could generate a histogram for each plot `hist(cent_ovrList[[2]])`. If we wanted, we could loop through several plots and create histograms using a 
-`for loop`.
+If you want to explore the data distribution of pixel height values in each plot, 
+you could remove the `fun` call to max and generate a list. 
+`cent_ovrList <- extract(chm,centroid_sp,buffer = 20)`. It's good to look at the 
+distribution of values we've extracted for each plot. Then you could generate a 
+histogram for each plot `hist(cent_ovrList[[2]])`. If we wanted, we could loop 
+through several plots and create histograms using a `for loop`.
 
 
+    #cent_ovrList <- extract(chm,centroid_sp,buffer = 20)
     # create histograms for the first 5 plots of data
     #for (i in 1:5) {
     #  hist(cent_ovrList[[i]], main=(paste("plot",i)))
@@ -312,6 +340,13 @@ requires the `rgeos` package. Be sure to install them first:
 ###Variation 3: Derive Square Plot boundaries, then CHM values around a point
 For see how to extract square plots using a plot centroid value, check out the
  [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
+ 
+ <figure>
+    <img src="{{ site.baseurl }}/images/spatialData/BufferSquare.png">
+    <figcaption>If you had square shaped plots, the code in the link above would
+    extract pixel values within a square shaped buffer.
+    </figcaption>
+</figure>
 
 
 
@@ -326,16 +361,13 @@ First let's see how many plots are in the centroid folder.
     # How many plots are there?
     unique(insitu_dat$plotid) 
 
-    ##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
-    ##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
-    ## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
-    ## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
-    ## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
-    ## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+    ##  [1] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+    ##  [7] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+    ## [13] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
 
 
-Next, find the max stem height value for each plot. We will compare this value to the 
-max CHM value.
+Next, find the maximum MEASURED stem height value for each plot. We will compare 
+this value to the max CHM value.
 
 
     library(dplyr)
@@ -343,34 +375,55 @@ max CHM value.
     #get list of unique plot id's 
     unique(insitu_dat$plotid) 
 
-    ##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
-    ##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
-    ## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
-    ## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
-    ## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
-    ## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+    ##  [1] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+    ##  [7] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+    ## [13] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
 
     #looks like we have data for two sites
     unique(insitu_dat$siteid) 
 
-    ## [1] "SOAP" "SJER"
-
-    #we've got some plots for SOAP which is a different region.
-    #let's just select plots with SJER data
-    plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
-    
-    #how many unique siteids do we have now?
-    unique(plotsSJER$siteid) 
-
     ## [1] "SJER"
 
+    plotsSJER <- insitu_dat
+    
+    #we've got some plots for SOAP which is a different region.
+    #let's just select plots with SJER data
+    #plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
+    
+    #how many unique siteids do we have now?
+    #unique(plotsSJER$siteid) 
+    
+    
     #find the max stem height for each plot
     insitu_maxStemHeight <- plotsSJER %>% 
       group_by(plotid) %>% 
       summarise(max = max(stemheight))
     
+    head(insitu_maxStemHeight)
+
+    ## Source: local data frame [6 x 2]
+    ## 
+    ##     plotid  max
+    ## 1 SJER1068 19.3
+    ## 2  SJER112 23.9
+    ## 3  SJER116 16.0
+    ## 4  SJER117 11.0
+    ## 5  SJER120  8.8
+    ## 6  SJER128 18.2
+
     names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
-    
+    head(insitu_maxStemHeight)
+
+    ## Source: local data frame [6 x 2]
+    ## 
+    ##     plotid insituMaxHt
+    ## 1 SJER1068        19.3
+    ## 2  SJER112        23.9
+    ## 3  SJER116        16.0
+    ## 4  SJER117        11.0
+    ## 5  SJER120         8.8
+    ## 6  SJER128        18.2
+
     # Optional - do this all in one line of nested commands
     #insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
     #	      group_by(plotid) %>% 
@@ -442,11 +495,8 @@ Or we can use ggplot:
       ylab("Maximum measured height") + 
       xlab("Maximum LiDAR pixel")+
       geom_abline(intercept = 0, slope=1)+
-      xlim(0, max(centroids[,6:7])) + 
-      ylim(0,max(centroids[,6:7]))
-
-    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
-    ## (geom_point).
+      xlim(0, max(centroids[,7:8])) + 
+      ylim(0,max(centroids[,7:8]))
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/plot-w-ggplot-1.png) 
 
@@ -462,8 +512,8 @@ customize your plot.
       xlab("Maximum LiDAR Height")+
       geom_abline(intercept = 0, slope=1)+
       geom_smooth(method=lm) +
-      xlim(0, max(centroids[,6:7])) + 
-      ylim(0,max(centroids[,6:7])) 
+      xlim(0, max(centroids[,7:8])) + 
+      ylim(0,max(centroids[,7:8])) 
     
     p + theme(panel.background = element_rect(colour = "grey")) + 
       ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
@@ -471,18 +521,9 @@ customize your plot.
       theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
       theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
-    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
-    ## (stat_smooth).
-
-    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
-    ## (geom_point).
-
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-30-Create-Lidar-CHM-R/ggplot-data-1.png) 
 
 
-Your final plot should look something like this:
-
-![CHM Plot]({{ site.baseurl }}/images/chmPlot.png)
 
 You have now successfully created a canopy height model using lidar data AND compared lidar 
 derived vegetation height, within plots, to actual measured tree height data!
