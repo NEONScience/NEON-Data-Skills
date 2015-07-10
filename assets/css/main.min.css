@@ -3393,14 +3393,14 @@ font-size:.875rem;
 @media only screen and (min-width:37.5em) {
 .toc {
 	position: absolute;
-	top: 5.5em;
+	top: 38.5em;
 	right: 0;
 	display: block;
 	display: inline;
 	float: left;
 	width: 16.666666666666668%;
 	margin-right: 4.166666666666667%;
-	margin-left: 4.166666666666667%;
+	margin-left: 6.166666666666667%;
 	background-color: #fff
 }
 }
