@@ -101,9 +101,9 @@ Or you can download the script below and run it to install all libraries at once
 | 10:15 | ------- BREAK ------- |      |
 | 10:30 | [LiDAR Data Derived Rasters in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/) |      |
 | 12:00 - 1:00 PM     | Lunch on Your Own |          |
-| 1:15     | Introduction to HDF5 in R |          |
+| 1:15     | [Introduction to HDF5 in R]( {{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/) |          |
 | 2:30 | ------- BREAK ------- |      |
-| 2:45     | Hyperspectral Imagery in R  |          |
+| 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }})/HDF5/Imaging-Spectroscopy-HDF5-In-R/  |          |
 | 3:45 | ------- BREAK ------- |      |
 | 4:00     | Hands On Activity?? |          |
 
