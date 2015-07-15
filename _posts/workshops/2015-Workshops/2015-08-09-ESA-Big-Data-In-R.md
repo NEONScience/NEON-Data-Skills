@@ -82,17 +82,14 @@ Or you can download the script below and run it to install all libraries at once
 
 <h3>Please review the following:</h3>
 <ul>
-<li><a href="http://neondataskills.org/HDF5/About/">What is HDF5? A general overview.</a></li>
 <li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
 <li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
-<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf">Documentation for the <code>raster</code> package in R.</a><</li>
+<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf">Documentation for the <code>raster</code> package in R.</a></li>
 <li><a href="{{ site.baseurl }}/HDF5/About/">An brief intro to the Hierarchical Data Format (HDF5) 
 format. </a></li>
-
 <li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">An brief intro to Hyperspectral Remote Sensing data
 format. </a></li>
 </ul>
-
 
 </div>
 
