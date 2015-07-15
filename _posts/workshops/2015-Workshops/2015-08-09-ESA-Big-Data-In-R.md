@@ -104,6 +104,7 @@ Or you can download the script below and run it to install all libraries at once
 | 1:15     | [Introduction to HDF5 in R]( {{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/) |          |
 | 2:30 | ------- BREAK ------- |      |
 | 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }})/HDF5/Imaging-Spectroscopy-HDF5-In-R/  |          |
+| Done Early?     | [Create Raster Stacks & NDVI in R]({{ site.baseurl }})/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/  |          |
 | 3:45 | ------- BREAK ------- |      |
 | 4:00     | Hands On Activity?? |          |
 
