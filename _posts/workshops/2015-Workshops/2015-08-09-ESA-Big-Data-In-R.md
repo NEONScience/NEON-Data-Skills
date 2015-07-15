@@ -23,6 +23,7 @@ comments: true
 ###A NEON #WorkWithData Event
 
 **Date:** 09 August 2015 - Ecological Society of America Meeting
+
 **Location:** Baltimore, Maryland
 
 Ecologists working across scales and integrating disparate datasets face new data management and analysis challenges that demand tools beyond the spreadsheet. This workshop will overview three key data formats: ASCII, HDF5 and las and several key data types including temperature data from a tower, vegetation structure data, hyperspectral imagery and lidar data, that are often encountered when working with ‘Big Data’.  It will provide an introduction to available tools in R for working with these formats and types.
@@ -82,7 +83,16 @@ Or you can download the script below and run it to install all libraries at once
 <h3>Please review the following:</h3>
 <ul>
 <li><a href="http://neondataskills.org/HDF5/About/">What is HDF5? A general overview.</a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
+<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf">Documentation for the <code>raster</code> package in R.</a><</li>
+<li><a href="{{ site.baseurl }}/HDF5/About/">An brief intro to the Hierarchical Data Format (HDF5) 
+format. </a></li>
+
+<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">An brief intro to Hyperspectral Remote Sensing data
+format. </a></li>
 </ul>
+
 
 </div>
 
