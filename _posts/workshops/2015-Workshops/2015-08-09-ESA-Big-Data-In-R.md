@@ -54,13 +54,13 @@ You can chose to install each library individually if you already have some inst
 Or you can download the script below and run it to install all libraries at once.
 
 <ul>
-<li>raster - install.packages("raster")</li>
-<li>sp (installs with the raster library) - install.packages("sp") </li>
-<li>rgdal - install.packages("rgdal")</li>
-<li>maptools - install.packages("maptools")</li>
-<li>ggplot2 - install.packages("ggplot2")</li>
-<li>rgeos - install.packages("rgeos")</li>
-<li>dplyr - install.packages("dplyr")</li>
+<li>raster - <code>install.packages("raster")</code></li>
+<li>sp (installs with the raster library) - <code>install.packages("sp") </code></li>
+<li>rgdal - <code>install.packages("rgdal")</code></li>
+<li>maptools - <code>install.packages("maptools")</code></li>
+<li>ggplot2 - <code>install.packages("ggplot2")</code></li>
+<li>rgeos - <code>install.packages("rgeos")</code></li>
+<li>dplyr - <code>install.packages("dplyr")</code></li>
 <li>rhdf5 - <code>source("http://bioconductor.org/biocLite.R") ; biocLite("rhdf5")</code></li>
 </ul>
 
