@@ -6,11 +6,11 @@ packagesLibraries: RHDF5, raster
 language: [R]
 date: 2015-08-09 10:49:52
 dateCreated:   2015-6-29 10:49:52
-lastModified: 2015-6-29 22:11:52
+lastModified: 2015-07-15 22:11:52
 authors: Leah Wasser, Natalie Robinson, Claire Lunch, Kate Thibault, Sarah Elmendorf
 tags: [Data-Workshops]
 mainTag: Data-Workshops
-description: "This workshop will providing hands on experience with working hierarchical data formats (HDF5), and lidar data in R. It will also cover spatial data analysis in R."
+description: "This workshop will providing hands on experience with working hierarchical data formats (HDF5), and (lidar derived) raster data in R. It will also cover spatial data analysis in R."
 code1: 
 image:
   feature: hierarchy_folder_green.png
@@ -22,7 +22,8 @@ comments: true
 
 ###A NEON #WorkWithData Event
 
-**Date:** 09 August 2015
+**Date:** 09 August 2015 - Ecological Society of America Meeting
+**Location:** Baltimore, Maryland
 
 Ecologists working across scales and integrating disparate datasets face new data management and analysis challenges that demand tools beyond the spreadsheet. This workshop will overview three key data formats: ASCII, HDF5 and las and several key data types including temperature data from a tower, vegetation structure data, hyperspectral imagery and lidar data, that are often encountered when working with ‘Big Data’.  It will provide an introduction to available tools in R for working with these formats and types.
 
@@ -103,8 +104,8 @@ Or you can download the script below and run it to install all libraries at once
 | 12:00 - 1:00 PM     | Lunch on Your Own |          |
 | 1:15     | [Introduction to HDF5 in R]( {{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/) |          |
 | 2:30 | ------- BREAK ------- |      |
-| 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }})/HDF5/Imaging-Spectroscopy-HDF5-In-R/  |          |
-| Done Early?     | [Create Raster Stacks & NDVI in R]({{ site.baseurl }})/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/  |          |
+| 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/  |          |
+| Done Early?     | [Create Raster Stacks & NDVI in R]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/  |          |
 | 3:45 | ------- BREAK ------- |      |
 | 4:00     | Hands On Activity?? |          |
 
