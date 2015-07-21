@@ -93,6 +93,25 @@ format. </a></li>
 
 </div>
 
+
+###Workshop Instructors
+* **Leah Wasser**, Supervising Scientist, NEON, Inc @leahawasser
+* **Natalie Robinson**, Staff Scientist, NEON, Inc
+
+###Workshop Fearless Instruction Assistants
+
+* **Claire Lunch @dr_lunch**, Staff Scientist 
+* **Kate Thibault @fluby**, Senior Staff Scientist 
+* **Christine Laney  @cmlaney**, Staff Scientist, NEON, Inc
+
+* **Mike Smorul @msmorul**, Associate Director of Cyberinfrastructure SESYNC
+* ??
+
+## Workshop Hashtag
+  
+We are on twitter! Please tweet at hashtag:
+  "#WorkWithData"
+
 ##Setting Up Your Working Directory
 
 
@@ -104,15 +123,16 @@ format. </a></li>
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 8:00     | Welcome / Introductions / Logistics |          |
-| 9:00     | [Getting Started with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R/) |          |
-| 9:30     | [Raster Resolution, Extent & CRS in R]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)       |            |
+| 8:05     | <a href="{{ site.baseurl }}/R/Raster-Data-In-R/" target="_blank">Getting Started with Rasters in R</a> |          |
+| 9:30     | <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">Raster Resolution, Extent & CRS in R</a>       |            |
 | 10:15 | ------- BREAK ------- |      |
-| 10:30 | [LiDAR Data Derived Rasters in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/) |      |
-| 12:00 - 1:00 PM     | Lunch on Your Own |          |
-| 1:15     | [Introduction to HDF5 in R]( {{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/) |          |
+| 10:30 | <a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">LiDAR Data Derived Rasters in R</a> |      |
+| 11:45 - 1:00 PM     | Lunch on Your Own |          |
+| 1:00     | <a href="{{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/" target="_blank">Introduction to HDF5 in R</a> |          |
 | 2:30 | ------- BREAK ------- |      |
-| 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/ ) |          |
-| Done Early?     | [Create Raster Stacks & NDVI in R]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ ) |          |
+| 2:45     |<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank">Hyperspectral Imagery in R</a> |          |
+| Done Early?     | <a href="{{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/" target="_blank">Create Raster Stacks & NDVI in R</a> |          |
 | 3:45 | ------- BREAK ------- |      |
 | 4:00     | Hands On Activity?? |          |
+
 
