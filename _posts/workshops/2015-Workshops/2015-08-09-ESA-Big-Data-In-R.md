@@ -95,7 +95,7 @@ format. </a></li>
 
 
 ###Workshop Instructors
-* **Leah Wasser**, Supervising Scientist, NEON, Inc @leahawasser
+* **Leah Wasser @leahawasser**, Supervising Scientist, NEON, Inc 
 * **Natalie Robinson**, Staff Scientist, NEON, Inc
 
 ###Workshop Fearless Instruction Assistants
@@ -117,7 +117,7 @@ We are on twitter! Please tweet at hashtag:
 
 ##TENTATIVE SCHEDULE
 
-* Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
+Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
 
 
 | Time        | Topic         | Instructor | 
