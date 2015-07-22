@@ -39,7 +39,8 @@ wd <- getwd()
 #file <- "2015-06-08-Work-With-Hyperspectral-Data-In-R.Rmd"
 #file <- "2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.Rmd"
 #file <- "2014-11-03-Working-With-Rasters-in-R-Python-GIS.Rmd"
-file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
+#file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
+file <- "2015-07-22-Introduction-to-Raster-Data-In-R.R"
 
 #copy .Rmd file to local working directory where the data are located
 #file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)

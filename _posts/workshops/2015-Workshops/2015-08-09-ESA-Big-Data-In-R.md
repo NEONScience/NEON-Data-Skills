@@ -55,10 +55,18 @@ that specializes in statistical computing. It is a powerful tool for exploratory
 <a href="http://www.rstudio.com/">RStudio</a>, an interactive development 
 environment (IDE). 
 
+<h4>If You Already Have R / RStudio -- please update</h4>
+
+If you already have R / RStudio installed on your laptop, please be sure that
+you are running the most current version of both AND the most current version
+of the associated packages that we'll be using in the workshop (listed below).
 
 <h4>Install R Packages</h4>
 You can chose to install each library individually if you already have some installed.
 Or you can download the script below and run it to install all libraries at once.
+
+In RStudio, you can go to `Tools --> Check for package updates` to update already
+installed libraries on your computer!
 
 <ul>
 <li><strong>raster:</strong> <code>install.packages("raster")</code></li>
