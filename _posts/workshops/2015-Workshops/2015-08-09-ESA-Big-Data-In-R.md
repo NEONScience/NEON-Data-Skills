@@ -35,16 +35,17 @@ Ecologists working across scales and integrating disparate datasets face new dat
 <h3>Things to Do Before the Workshop</h3>
 <h4>Download The Data</h4>
 
-<a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
- DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
-DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
+* <a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
+ REQUIRED DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
+* <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
+REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
 
 OPTIONAL DOWNLOAD
-<strong>Note:</strong> We won't be working with the raw lidar point cloud data in this workshop. However the data will be demo-ed!
-
-<a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
-Download NEON Lidar Point Cloud Data</a>
+<strong>Note:</strong> We won't be working with the raw lidar point cloud data in 
+this workshop. However we will explore the data via a demo during the workshop.
+ 
+* <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
+OPTIONAL: Download NEON LiDAR Point Cloud Data</a>
 
 <h4>Setup RStudio</h4>
 To participate in the workshop, we recommend that you come with R and RSTUDIO 
@@ -84,15 +85,15 @@ Or you can download the script below and run it to install all libraries at once
 <a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
  viewer here</a>
 
-<h3>Please review the following:</h3>
+<h3>Please review the following prior to the workshop:</h3>
 <ul>
 
-<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
-<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
-<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf">Documentation for the <code>raster</code> package in R.</a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About/">An brief intro to the Hierarchical Data Format (HDF5) 
+<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank" >A brief introduction to Lidar Data </a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/"  target="_blank" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
+<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Documentation for the <code>raster</code> package in R.</a></li>
+<li><a href="{{ site.baseurl }}/HDF5/About/"  target="_blank">An brief intro to the Hierarchical Data Format (HDF5) 
 format. </a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">An brief intro to Hyperspectral Remote Sensing data
+<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/"  target="_blank">An brief intro to Hyperspectral Remote Sensing data
 format. </a></li>
 </ul>
 
@@ -137,6 +138,17 @@ Please note that we are still developing the agenda for this workshop. The sched
 | 2:45     |<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank">Hyperspectral Imagery in R</a> |  Leah      |
 | Done Early?     | <a href="{{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/" target="_blank">Create Raster Stacks & NDVI in R</a> |   Leah       |
 | 3:45 | ------- BREAK ------- |      |
-| 4:00     | Hands On Activity?? |   Leah    |
+| 4:00     | Hands On Activity?? |       |
 
 
+## Related Materials
+
+### Morning Session - Working with Rasters in R
+
+* <a href="{{ site.baseurl }}/R/Image-Raster-Data-In-R/" target="_blank">Imagery in raster format, in R</a>
+
+
+### Afternoon Session - Working with HDF5 files
+
+* <a href="{{ site.baseurl }}/HDF5/Create-HDF5-In-R/" target="_blank">Create HDF5 Files using Loops in R</a>
+* <a href="{{ site.baseurl }}/HDF5/TimeSeries-Data-In-HDF5-Using-R/" target="_blank">Working With Time Series Data Within a Nested HDF5 File in R</a>

@@ -30,7 +30,6 @@ comments: true
 </section><!-- /#table-of-contents -->
 
 
-
 <div id="objectives">
 
 <h3>Goals / Objectives</h3>
@@ -47,7 +46,6 @@ extent, coordinate reference system and spatial resolution.</li>
 <ul>
 <li><strong>raster:</strong> <code> install.packages("raster")</code></li>
 <li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
-
 </ul>
 </div>
 

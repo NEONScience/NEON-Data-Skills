@@ -47,6 +47,12 @@ After completing this activity, you will know:
 
 <h3>Things You'll Need To Complete This Lesson</h3>
 
+<h3>R Libraries to Install:</h3>
+<ul>
+<li><strong>raster:</strong> <code> install.packages("raster")</code></li>
+<li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
+
+</ul>
 <h4>Tools & Libraries To Install</h4>
 <ul>
 <li>R or R studio to write your code.</li>
