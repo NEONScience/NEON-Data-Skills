@@ -323,7 +323,13 @@ plot(DEMcrop2)
 
 ## Challenge 
 
-
+<i class="fa fa-star"></i> Open up file: `DigitalSurfaceModel/SJER2013_DSM.tif`. Save
+it to an R object called `DSM`. Convert the raster data to feet.<br>
+<i class="fa fa-star"></i> Plot the `DSM` in feet that you created above. Use a custom
+color map. Create numeric breaks that make sense given the distribution of the data.
+Hint:  your breaks might represent `high elevation`, `medium elevation`, 
+`low elevation`. <br>
+{: .notice}
 
 ### Image Data in R
 [Click here to learn more about working with image formatted rasters in R.]({{ site.baseurl }}/R/Image-Raster-Data-In-R/) 
