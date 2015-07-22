@@ -71,7 +71,7 @@ headquarters. The entire dataset can be accessed by request from the NEON websit
 <ul>
 <li>
 <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/">
-Please read "Working With Rasters in R, Python and other NON gui tools.</a>
+The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 </li>
 <li>
 <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
