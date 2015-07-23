@@ -13,7 +13,7 @@ library(rgdal)
 ## ----load-raster---------------------------------------------------------
 #load raster in an R object called 'DEM'
 DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
-#next, let's look at the attributes of the raster. 
+# look at the raster attributes. 
 DEM
 
 
@@ -27,10 +27,13 @@ cellStats(DEM, range)
 
 ## ----view-crs-plot-------------------------------------------------------
 
+#view coordinate reference system
 DEM@crs
+#view raster extent
 DEM@extent
 #plot the raster
-plot(DEM)
+#note that this raster represents a small region of the NEON SJER field site
+plot(DEM, main="Digital Elevation Model, NEON Field Site")
 
 
 ## ----histogram-----------------------------------------------------------
@@ -51,9 +54,10 @@ DEM2
 plot(DEM2, main="DEM with all values doubled")
 
 
+
 ## ----PlotRaster----------------------------------------------------------
 
-#let's create a plot of our raster
+#create a plot of our raster
 image(DEM)
 #specify the range of values that you want to plot in the DEM
 #just plot pixels between 250 and 300 m in elevation
@@ -72,6 +76,16 @@ col=terrain.colors(5)
 brk <- c(250, 300, 350, 400,450,500)
 plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
+# Expand right side of clipping rect to make room for the legend
+par(xpd=T, mar=par()$mar+c(0,0,0,6))
+
+#with a custom legend
+plot(DEM, col=col, breaks=brk, main="DEM with more breaks",legend = FALSE)
+#add a legend - but make it appear outside of the plot
+#NOTE - this doesn't work properly!
+legend(258400,4110000,
+       legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
+       fill = col)
 
 ## ----add-color-map-------------------------------------------------------
 

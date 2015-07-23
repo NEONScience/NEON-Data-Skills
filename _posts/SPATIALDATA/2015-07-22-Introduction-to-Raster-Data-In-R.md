@@ -4,7 +4,7 @@ title: "Raster Data in R - The Basics"
 date:   2015-1-26 20:49:52
 authors: Leah A. Wasser
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-07-22 14:28:52
+lastModified: 2015-07-23 14:28:52
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
@@ -35,7 +35,7 @@ comments: true
 This activity will walk you through the fundamental principles of working 
 with raster data in R.
 
-**R Skill Level:** Intermediate
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
 
 <div id="objectives">
 
@@ -43,8 +43,8 @@ with raster data in R.
 After completing this activity, you will know:
 <ol>
 <li>What a raster dataset is and its fundamental attributes.</li>
-<li>How to work with the raster package to import rasters into R.</li>
-<li>How to perform basic calculations using rasters in R.</li>
+<li>How to import rasters into `R` using the raster library.</li>
+<li>How to perform raster calculations in `R`.</li>
 </ol>
 
 <h3>Things You'll Need To Complete This Lesson</h3>
@@ -55,19 +55,18 @@ After completing this activity, you will know:
 <li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
 
 </ul>
-<h4>Tools & Libraries To Install</h4>
-<ul>
-<li>R or R studio to write your code.</li>
-<li>R packages `raster` and `rgdal` </li>
-</ul>
+<h4>Tools To Install</h4>
+
+Please be sure you have the most current version of `R` and preferably
+R studio to write your code.
 
 
 <h4>Data to Download</h4>
 
 Download the raster and *in situ* collected vegetation structure data:
 <ul>
-<li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD NEON  Sample NEON LiDAR Data</a></li>
-<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
+<li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR data in Raster Format & Vegetation Sampling Data</a></li>
+<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain 17 (D17)</a></li>
 </ul>
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
@@ -78,7 +77,7 @@ headquarters. The entire dataset can be accessed by request from the NEON websit
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>
 <li>
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/">
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">
 The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 </li>
 <li>
@@ -98,16 +97,16 @@ rasters here</a>.
 
 <figure>
   <img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
-   <figcaption>The National Land Cover dataset is an example of a commonly used 
+   <figcaption>The National Land Cover dataset (NLCD) is an example of a commonly used 
 raster dataset. Each pixel in the Landsat derived raster represents a landcover
 class.</figcaption>
 </figure>
 
 To work with rasters in R, we need two key libraries, `sp` and `raster`. 
-Let's start by loading these into R. To install the raster library you can use 
-`install.packages('raster')`. When you install the raster library, `sp` should 
-also install. Also install the `rgdal` library" 
-`install.packages('rgdal')`.
+To install the raster library you can use `install.packages('raster')`. 
+When you install the raster library, `sp` should also install. Also install the 
+`rgdal` library" `install.packages('rgdal')`. Among other things, `rgdal` will 
+allow us to export rasters to geotiff format.
 
 
     #load the raster, sp, and rgdal packages
@@ -119,12 +118,12 @@ also install. Also install the `rgdal` library"
     #need to set the working directory as it's part of the project.
     #setwd("~/yourWorkingDirectoryHere")  
 
-Next, let's load the raster into R.
+Next, let's load a raster containing elevation data into R.
 
 
     #load raster in an R object called 'DEM'
     DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
-    #next, let's look at the attributes of the raster. 
+    # look at the raster attributes. 
     DEM
 
     ## class       : RasterLayer 
@@ -132,17 +131,17 @@ Next, let's load the raster into R.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : C:\Users\lwasser\Documents\1_Workshops\05-14-2015_NEON_Raster_R\DigitalTerrainModel\SJER2013_DTM.tif 
+    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
 
 Notice a few things about this raster. 
 
-* **Nrow, Ncol** is the number of rows and columns data. 
-* **Ncells** is the total number of pixels that make up the raster.
-*  **Resolution** is the size of each pixel (in meters in this case)
-*  **Extent** this is the spatial extent of the raster. this value will be coordinate units associated with the coordinate reference system of the raster.
-*  **Coord ref** this is the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
+* **Nrow, Ncol:** the number of rows and columns in the data (imagine a spreadsheet or a matrix). 
+* **Ncells:** the total number of pixels or cells that make up the raster.
+*  **Resolution:** the size of each pixel (in meters in this case). 1 meter pixels means that each pixel represents a 1m x 1m area on the earth's surface.
+*  **Extent:** the spatial extent of the raster. This value will be in the same coordinate units as the coordinate reference system of the raster.
+*  **Coord ref:** the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
 
 
@@ -155,7 +154,9 @@ Notice a few things about this raster.
  <figcaption>The UTM coordinate reference system breaks the world into 60 latitude zones.</figcaption>
 </figure>
 
-You can query the raster to determine the min, max values and the range.
+You can also view the rasters min and max values and the range of values containes
+within the pixels.
+
 
     #Get min and max cell values from raster
     cellStats(DEM, min)
@@ -171,15 +172,17 @@ You can query the raster to determine the min, max values and the range.
     ## [1] 228.10 518.66
 
 ##Working with Rasters in R
-Now that we have the raster loaded into R, let's grab some key metadata.
+Now that we have the raster loaded into R, let's grab some key raster attributes.
 
 
+    #view coordinate reference system
     DEM@crs
 
     ## CRS arguments:
     ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
     ## +towgs84=0,0,0
 
+    #view raster extent
     DEM@extent
 
     ## class       : Extent 
@@ -189,7 +192,8 @@ Now that we have the raster loaded into R, let's grab some key metadata.
     ## ymax        : 4112362
 
     #plot the raster
-    plot(DEM)
+    #note that this raster represents a small region of the NEON SJER field site
+    plot(DEM, main="Digital Elevation Model, NEON Field Site")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/view-crs-plot-1.png) 
 
@@ -234,13 +238,13 @@ all values within the raster by 2.
  
 ## Plotting Raster Data
 
-R has an `image` function that allows you to better control the way a raster is
+R has an `image` function that allows you to control the way a raster is
 rendered on the screen. The `plot` command in R has a base setting for the number
 of pixels that it will plot (100,000 pixels). The image command thus might be 
 better for rendering larger rasters.
 
 
-    #let's create a plot of our raster
+    #create a plot of our raster
     image(DEM)
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/PlotRaster-1.png) 
@@ -257,17 +261,17 @@ better for rendering larger rasters.
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/PlotRaster-3.png) 
 
-In the above example. `terrain.colors()` tells r to create a palette of colors within the `terrain.colors` color ramp. There are other palettes that you can use as well include `rainbow` and `heat.colors`. [More on color palettes in R here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on color palettes.")
+In the above example. `terrain.colors()` tells `R` to create a palette of colors within the `terrain.colors` color ramp. There are other palettes that you can use as well include `rainbow` and `heat.colors`. 
 
+*[More on color palettes in R here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on color palettes.")
 * [Another good post on colors.](http://www.r-bloggers.com/color-palettes-in-r/)
-
 * [RColorBrewer is another powerful tool to create sets of colors.](http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
 
 ## Challenge Yourself
 
-<i class="fa fa-star"></i> What happens if you change the number of colors in the terrain.colors command?<br>
-<i class="fa fa-star"></i> What happens if you change the zlim values in the image command?<br>
-<i class="fa fa-star"></i> What are the other attributes that you can specify when using the image command?
+<i class="fa fa-star"></i> What happens if you change the number of colors in the `terrain.colors` command?<br>
+<i class="fa fa-star"></i> What happens if you change the `zlim` values in the image command?<br>
+<i class="fa fa-star"></i> What are the other attributes that you can specify when using the `image` command?
 {: .notice}
 
 
@@ -285,6 +289,19 @@ By default, R will assign the gradient of colors uniformly across the full range
     plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/plot-with-breaks-1.png) 
+
+    # Expand right side of clipping rect to make room for the legend
+    par(xpd=T, mar=par()$mar+c(0,0,0,6))
+    
+    #with a custom legend
+    plot(DEM, col=col, breaks=brk, main="DEM with more breaks",legend = FALSE)
+    #add a legend - but make it appear outside of the plot
+    #NOTE - this doesn't work properly!
+    legend(258400,4110000,
+           legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
+           fill = col)
+
+![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/plot-with-breaks-2.png) 
 
 We can add a custom color map with breaks as well.
 
@@ -311,8 +328,8 @@ A discrete dataset has a set of unique categories or classes. One example could 
 #Cropping Rasters in R
 
 You can crop rasters in R using different methods. You can crop the raster directly 
-in the plot area. To do this, first plot the raster. Then define the crop extent 
-by clicking twice: 
+drawing a box in the plot area. To do this, first plot the raster. Then define 
+the crop extent by clicking twice: 
 
 1. Click in the UPPER LEFT hand corner where you want the crop 
 box to begin. 
