@@ -3,7 +3,7 @@ layout: post
 title: "The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R"
 date:   2015-1-15 20:49:52
 dateCreated:   2014-11-03 20:49:52
-lastModified: 2015-06-09 17:11:52
+lastModified: 2015-07-23 17:11:52
 authors: Leah A. Wasser
 categories: [GIS-Spatial-Data]
 category: remote-sensing
@@ -30,6 +30,7 @@ comments: true
 </section><!-- /#table-of-contents -->
 
 
+
 <div id="objectives">
 
 <h3>Goals / Objectives</h3>
@@ -38,34 +39,29 @@ After completing this activity, you will:
 <ol>
 <li>Know the key attributes required to work with raster data including: spatial 
 extent, coordinate reference system and spatial resolution.</li>
-<li>Understand what a spatial extent is.</li>
-<li>Generally understand the basics of coordinate reference systems.</li>
+<li>Understand what a spatial extent is and how it relates to resolution.</li>
+<li>Understand the basics of coordinate reference systems.</li>
 </ol>
 
 <h3>R Libraries to Install:</h3>
 <ul>
 <li><strong>raster:</strong> <code> install.packages("raster")</code></li>
 <li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
+
 </ul>
 </div>
 
 ###Getting Started
-This activity will overview the key attributes of a raster object, that you need to 
-to work with it in tools like `R`, `Python` and `QGIS` - but with a focus
-on the `R` programming language, including:
-
-1. Spatial Resolution
-2. Coordinate Reference System / Projection Information
-3. Raster Extent
+This activity will overview the key attributes of a raster object, including spatial extent, resolution and coordinate reference system. When working within
+a GIS system often these attributes are accounted for. However, it is important
+to be more familiar with them when working in non-gui environments such as 
+ `R` or even `Python`.
 
 In order to correctly spatially refence a raster that is not already georeferenced,
-you will additional need:
+you will also need to identify:
 
-1. The lower left hand corner of the raster.
+1. The lower left hand corner coordinates of the raster.
 2. The number of columns and rows that the raster dataset contains.
-
-This post will overview the key components of hyperspectral remote sensing data 
-that are required to begin working with the data in a tool like `R` or `Python`.
  
 ##Spatial Resolution
 A raster consists of a series of pixels, each with the same dimensions 
@@ -91,6 +87,7 @@ the image represents a 1 m x 1 m area.
     </figcaption>
 </figure>
 
+Let's open up a raster in `R` to see how the attributes are stored.
 
 
     #load raster library
@@ -113,7 +110,7 @@ the image represents a 1 m x 1 m area.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : C:\Users\lwasser\Documents\1_Workshops\05-14-2015_NEON_Raster_R\DigitalTerrainModel\SJER2013_DTM.tif 
+    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
 
@@ -149,7 +146,8 @@ Extent and spatial resolution are closely connected. To calculate the extent of 
 raster, we first need the bottom LEFT HAND (X,Y) coordinate of the raster. In 
 the case of the UTM coordinate system which is in meters, to calculate
 the raster's extent, we can add the number of columns and rows to the X,Y corner 
-location of the raster, multiplied by the resolution (the pixel size) of the raster.
+coordinate location of the raster, multiplied by the resolution (the pixel size) 
+of the raster.
 
 Let's explore that next.
 
@@ -368,8 +366,8 @@ is:
 * xmin = 254570
 * ymin = 4107302
 
-to define the extent. The resolution of this dataset is `1 meter` and we will be working
-in UTM (meters).
+The resolution of this dataset is `1 meter` and we will be working
+in UTM (meters). Let's define the rasters extent.
 
 
     #create a raster from the matrix
@@ -459,8 +457,8 @@ in UTM (meters).
 ![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/define-extent-1.png) 
 
 ###Challenges
-* Resample myRaster 1 to 10 meter resolution and plot it next to the 1 m 
-resolution plot. use: `par(mfrow=c(1,2))` to create side by side plots.
+* Resample `rasterNoProj` from 1 meter to 10 meter resolution. Plot it next to the 1 m 
+resolution raster. Use: `par(mfrow=c(1,2))` to create side by side plots.
 * What happens to the extent if you change the resolution to 1.5 when calculating 
 the raster's extent properties??
 
