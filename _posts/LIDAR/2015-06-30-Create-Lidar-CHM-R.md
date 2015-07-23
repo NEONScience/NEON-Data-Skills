@@ -3,8 +3,8 @@ layout: post
 title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
 date:   2014-7-18 20:49:52
 createdDate:   2014-07-21 20:49:52
-lastModified:   2015-5-11 19:33:52
-estimatedTime: 3.0 - 3.5 Hours
+lastModified:   2015-07-23 19:33:52
+estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: raster, sp, dplyr, maptools, rgeos
 authors: Edmund Hart, Leah A. Wasser
 category: remote-sensing
@@ -37,8 +37,8 @@ image:
 NEON (National Ecological Observatory Network) will provide derived LiDAR products as one 
 of its many free ecological data products. These products will come in a
  [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which 
-is simply a raster format, that is spatially located on the earth. Geotiffs 
-can be easily accessed using the `raster` package in R.
+is a `tif` raster format that is spatially located on the earth. Geotiffs 
+can be accessed using the `raster` package in R.
 
 A common first analysis using LiDAR data is to derive top of the canopy height values from 
 the LiDAR data. These values are often used to track changes in forest structure over time, 
@@ -48,11 +48,21 @@ to run the code below.
 
 <div id="objectives">
 <h3>What you'll need</h3>
-<ol>
-<li>R or R studio loaded on your computer </li>
-<li><strong>R Libraries:</strong> rgdal, dplyr, raster, maptools, ggplot2 libraries 
-installed on you computer.</li>
-</ol>
+
+You will need the most current version of R or R studio loaded on your computer 
+to complete this lesson.
+
+<h3>R Libraries to Install:</h3>
+<ul>
+<li><strong>raster:</strong> <code> install.packages("raster")</code></li>
+<li><strong>sp:</strong> <code> install.packages("sp")</code></li>
+<li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
+<li><strong>dplyr:</strong> <code> install.packages("dplyr")</code></li>
+<li><strong>ggplot2:</strong> <code> install.packages("ggplot2")</code></li>
+</ul>
+
+<a href="{{ site.baseurl }}/R/Packages-In-R/" target="_blank"> 
+More on Packages in R - Adapted from Software Carpentry.</a>
 
 <h2>Data to Download</h2>
 
@@ -62,28 +72,14 @@ Download the raster and <i>insitu</i> collected vegetation structure data:
 DOWNLOAD NEON  Sample NEON LiDAR Data</a>
 
 <h3>Recommended Reading</h3>
-<a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">Overview of DSM, DTM and CHM discussion in the Raster LiDAR Data here.</a>
+<a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 </div>
 
 > NOTE: The data used in this tutorial were collected by the National Ecological 
 > Observatory Network in their <a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
 > Domain 17 California field site</a>. The data are available in full, for 
 > no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
-
-
-###Required R Packages
-Please make sure the following packages are installed: 
-
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R")
-
-
-
-    #load the required R libraries
-    #install.packages('raster')
-    #install.packages('sp')
-    #install.packages('dplyr')
-    #install.packages('rgdal')
-    #install.packages('ggplot2')
 
 
 ##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
@@ -93,7 +89,7 @@ model]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/), represe
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
 
-To create the CHM, we will call the raster libraries in R and import the lidar 
+To create the CHM, we will use the `raster` library in `R` and import the lidar 
 derived digital surface model (DSM) and the digital terrain model (DTM). 
 
 
@@ -104,6 +100,7 @@ derived digital surface model (DSM) and the digital terrain model (DTM).
     
     #Import DSM into R 
     library(raster)
+    library(rgdal)
     
     # If the code below doesn't work, check your working directory path!  
     dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
@@ -117,7 +114,7 @@ derived digital surface model (DSM) and the digital terrain model (DTM).
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : C:\Users\lwasser\Documents\1_Workshops\05-14-2015_NEON_Raster_R\DigitalSurfaceModel\SJER2013_DSM.tif 
+    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalSurfaceModel/SJER2013_DSM.tif 
     ## names       : SJER2013_DSM
 
     #plot the DSM
@@ -168,8 +165,7 @@ We can write out the raster as a geoTiff using the `writeRaster` function.
 
 
     #write out the CHM in tiff format. We can look at this in any GIS software.
-    #NOTE: the code below places the output in an "outputs" folder. 
-    #you need to create this folder or else you will get an error.
+    #note that you need the rdgal library to use this function.
     writeRaster(chm,"chm.tiff","GTiff")
 
 We've now successfully created a canopy height model using basic raster math - in 
@@ -183,6 +179,8 @@ R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at i
 > 2. Look at a histogram of your data. Are there sets of breaks that make more 
 > sense than 0, 10, 20 and 30 meters? Experiment with producing a final map that 
 > provides useful information.
+> 3. Convert the CHM from meters to feet. Plot it using breaks that make sense for
+> the data. Then export is as a geotiff.
 
 ### EXTRA CREDIT!
 Share your output map from the challenge above in the comments section at the 
@@ -192,12 +190,12 @@ bottom of the page.
 
 We now have a canopy height model for our study area in California. However, how 
 do the height values extracted from the CHM compare to our laboriously collected, 
-field measured canopy height data? To figure tihs out, we will user manually collected
+field measured canopy height data? To figure this out, we will use manually collected
 tree height data, measured within circular plots across our study area. We will compare
 the maximum measured tree height value to the maximum lidar derived height value 
 for each circular plot using regression.
 
-For this activity, we have two csv (comma separate value) files located in the
+For this activity, we have two `csv` (comma separate value) files located in the
 `InSitu_Data` folder. The first file contains plot centroid location information (X,Y) 
 where we measured trees. The second file contains our vegetation structure data 
 for each plot. Let's start by plotting the plot locations where we measured trees
@@ -215,7 +213,22 @@ Let's get started!
     #load libraries
     library(sp)
     library(dplyr)
-    
+
+    ## 
+    ## Attaching package: 'dplyr'
+    ## 
+    ## The following objects are masked from 'package:raster':
+    ## 
+    ##     intersect, select, union
+    ## 
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+    ## 
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
     #import the centroid data and the vegetation structure data
     options(stringsAsFactors=FALSE)
     centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
@@ -253,6 +266,10 @@ we can quickly figure out what projection our CHM is in, using `chm@crs`.
     centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
 ###Extract CMH data within 20 m radius of each plot centroid.
+
+Next, we will create a boundary region (called a buffer) representing the spatial
+extent of each plot (where trees were measured). We will then extract all CHM pixels
+that fall within the plot boundary to use to estimate tree height for that plot.
 
 There are a few ways to go about this task. If your plots are circular, then the 
 extract tool will do the job! Our plots are circular so that is what we'll use.
@@ -361,9 +378,12 @@ First let's see how many plots are in the centroid folder.
     # How many plots are there?
     unique(insitu_dat$plotid) 
 
-    ##  [1] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
-    ##  [7] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
-    ## [13] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+    ##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
+    ##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
+    ## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
+    ## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+    ## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+    ## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
 
 
 Next, find the maximum MEASURED stem height value for each plot. We will compare 
@@ -375,14 +395,17 @@ this value to the max CHM value.
     #get list of unique plot id's 
     unique(insitu_dat$plotid) 
 
-    ##  [1] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
-    ##  [7] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
-    ## [13] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
+    ##  [1] "SOAP43"   "SOAP331"  "SOAP139"  "SOAP1343" "SOAP143"  "SOAP63"  
+    ##  [7] "SOAP1563" "SOAP1695" "SOAP255"  "SOAP1611" "SOAP283"  "SOAP1515"
+    ## [13] "SOAP223"  "SOAP555"  "SOAP299"  "SOAP991"  "SOAP95"   "SOAP187" 
+    ## [19] "SJER128"  "SJER2796" "SJER272"  "SJER112"  "SJER1068" "SJER916" 
+    ## [25] "SJER361"  "SJER3239" "SJER824"  "SJER8"    "SJER952"  "SJER116" 
+    ## [31] "SJER117"  "SJER37"   "SJER4"    "SJER192"  "SJER36"   "SJER120"
 
     #looks like we have data for two sites
     unique(insitu_dat$siteid) 
 
-    ## [1] "SJER"
+    ## [1] "SOAP" "SJER"
 
     plotsSJER <- insitu_dat
     
