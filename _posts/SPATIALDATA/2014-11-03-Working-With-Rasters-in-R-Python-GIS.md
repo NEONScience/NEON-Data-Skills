@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Working With Rasters in R, Python, QGIS and Other Tools"
+title: "The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R"
 date:   2015-1-15 20:49:52
 dateCreated:   2014-11-03 20:49:52
 lastModified: 2015-06-09 17:11:52
@@ -30,7 +30,6 @@ comments: true
 </section><!-- /#table-of-contents -->
 
 
-
 <div id="objectives">
 
 <h3>Goals / Objectives</h3>
@@ -47,7 +46,6 @@ extent, coordinate reference system and spatial resolution.</li>
 <ul>
 <li><strong>raster:</strong> <code> install.packages("raster")</code></li>
 <li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
-
 </ul>
 </div>
 
