@@ -1,13 +1,3 @@
-## ----load-libraries, eval=FALSE------------------------------------------
-## 
-## #load the required R libraries
-## #install.packages('raster')
-## #install.packages('sp')
-## #install.packages('dplyr')
-## #install.packages('rgdal')
-## #install.packages('ggplot2')
-## 
-
 ## ----import-plot-DSM-----------------------------------------------------
 
 #Make sure your working directory is set properly!
@@ -17,6 +7,7 @@
 
 #Import DSM into R 
 library(raster)
+library(rgdal)
 
 # If the code below doesn't work, check your working directory path!  
 dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
@@ -61,8 +52,7 @@ plot(chm, main="LiDAR Canopy Height Model")
 ## ----write-raster-to-geotiff, eval=FALSE---------------------------------
 ## 
 ## #write out the CHM in tiff format. We can look at this in any GIS software.
-## #NOTE: the code below places the output in an "outputs" folder.
-## #you need to create this folder or else you will get an error.
+## #note that you need the rdgal library to use this function.
 ## writeRaster(chm,"chm.tiff","GTiff")
 ## 
 
