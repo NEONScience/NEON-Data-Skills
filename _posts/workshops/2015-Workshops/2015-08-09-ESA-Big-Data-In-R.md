@@ -35,12 +35,17 @@ Ecologists working across scales and integrating disparate datasets face new dat
 <h3>Things to Do Before the Workshop</h3>
 <h4>Download The Data</h4>
 
-<a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
- DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
-DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
-<a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
-Download NEON Lidar Point Cloud Data</a>
+* <a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
+ REQUIRED DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
+* <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
+REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
+
+OPTIONAL DOWNLOAD
+<strong>Note:</strong> We won't be working with the raw lidar point cloud data in 
+this workshop. However we will explore the data via a demo during the workshop.
+ 
+* <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
+OPTIONAL: Download NEON LiDAR Point Cloud Data</a>
 
 <h4>Setup RStudio</h4>
 To participate in the workshop, we recommend that you come with R and RSTUDIO 
@@ -50,20 +55,28 @@ that specializes in statistical computing. It is a powerful tool for exploratory
 <a href="http://www.rstudio.com/">RStudio</a>, an interactive development 
 environment (IDE). 
 
+<h4>If You Already Have R / RStudio -- please update</h4>
+
+If you already have R / RStudio installed on your laptop, please be sure that
+you are running the most current version of both AND the most current version
+of the associated packages that we'll be using in the workshop (listed below).
 
 <h4>Install R Packages</h4>
 You can chose to install each library individually if you already have some installed.
 Or you can download the script below and run it to install all libraries at once.
 
+In RStudio, you can go to `Tools --> Check for package updates` to update already
+installed libraries on your computer!
+
 <ul>
-<li>raster - <code>install.packages("raster")</code></li>
-<li>sp (installs with the raster library) - <code>install.packages("sp") </code></li>
-<li>rgdal - <code>install.packages("rgdal")</code></li>
-<li>maptools - <code>install.packages("maptools")</code></li>
-<li>ggplot2 - <code>install.packages("ggplot2")</code></li>
-<li>rgeos - <code>install.packages("rgeos")</code></li>
-<li>dplyr - <code>install.packages("dplyr")</code></li>
-<li>rhdf5 - <code>source("http://bioconductor.org/biocLite.R") ; biocLite("rhdf5")</code></li>
+<li><strong>raster:</strong> <code>install.packages("raster")</code></li>
+<li><strong>sp:</strong> (installs with the raster library) <code>install.packages("sp") </code></li>
+<li><strong>rgdal:</strong> <code>install.packages("rgdal")</code></li>
+<li><strong>maptools:</strong> <code>install.packages("maptools")</code></li>
+<li><strong>ggplot2:</strong> <code>install.packages("ggplot2")</code></li>
+<li><strong>rgeos:</strong> <code>install.packages("rgeos")</code></li>
+<li><strong>dplyr:</strong> <code>install.packages("dplyr")</code></li>
+<li><strong>rhdf5:</strong> <code>source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5")</code></li>
 </ul>
 
 <h2>Download the Free H5 Viewer</h2>
@@ -80,39 +93,70 @@ Or you can download the script below and run it to install all libraries at once
 <a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
  viewer here</a>
 
-<h3>Please review the following:</h3>
+<h3>Please review the following prior to the workshop:</h3>
 <ul>
-<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
-<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
-<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf">Documentation for the <code>raster</code> package in R.</a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About/">An brief intro to the Hierarchical Data Format (HDF5) 
+
+<li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank" >A brief introduction to Lidar Data </a></li>
+<li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/"  target="_blank" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
+<li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Documentation for the <code>raster</code> package in R.</a></li>
+<li><a href="{{ site.baseurl }}/HDF5/About/"  target="_blank">An brief intro to the Hierarchical Data Format (HDF5) 
 format. </a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/">An brief intro to Hyperspectral Remote Sensing data
+<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/"  target="_blank">An brief intro to Hyperspectral Remote Sensing data
 format. </a></li>
 </ul>
 
 </div>
+
+
+###Workshop Instructors
+* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
+* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**, Staff Scientist, NEON, Inc
+
+####Workshop Fearless Instruction Assistants
+
+* **[Claire Lunch](http://www.neoninc.org/about/staff/claire-lunch) @dr_lunch**, Staff Scientist 
+* **[Kate Thibault](http://www.neoninc.org/about/staff/kate-thibault) @fluby**, Senior Staff Scientist 
+* **[Christine Laney](http://www.neoninc.org/about/staff/christine-laney)  @cmlaney**, Staff Scientist, NEON, Inc
+* **[Mike Smorul](https://www.sesync.org/users/msmorul) @msmorul**, Associate Director of Cyberinfrastructure, SESYNC
+* **[Philippe Marchand](https://www.sesync.org/users/pmarchand)**, Scientific Support Specialist, SESYNC
+
+## #WorkWithData Hashtag
+  
+Please tweet using the hashtag:
+  "#WorkWithData" during this workshop!
 
 ##Setting Up Your Working Directory
 
 
 ##TENTATIVE SCHEDULE
 
-* Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
+Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
 
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 8:00     | Welcome / Introductions / Logistics |          |
-| 9:00     | [Getting Started with Rasters in R]({{ site.baseurl }}/R/Raster-Data-In-R/) |          |
-| 9:30     | [Raster Resolution, Extent & CRS in R]({{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/)       |            |
+| 8:05     | <a href="{{ site.baseurl }}/R/Raster-Data-In-R/" target="_blank">Getting Started with Rasters in R</a> | Natalie          |
+| 9:30     | <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">Raster Resolution, Extent & CRS in R</a>       | Natalie           |
 | 10:15 | ------- BREAK ------- |      |
-| 10:30 | [LiDAR Data Derived Rasters in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/) |      |
-| 12:00 - 1:00 PM     | Lunch on Your Own |          |
-| 1:15     | [Introduction to HDF5 in R]( {{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/) |          |
+| 10:30 | <a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">LiDAR Data Derived Rasters in R</a> | Leah     |
+| 11:45 - 1:00 PM     | Lunch on Your Own |          |
+| 1:00     | <a href="{{ site.baseurl }}/HDF5/Intro-To-HDF5-In-R/" target="_blank">Introduction to HDF5 in R</a> | Leah         |
 | 2:30 | ------- BREAK ------- |      |
-| 2:45     | [Hyperspectral Imagery in R]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/ ) |          |
-| Done Early?     | [Create Raster Stacks & NDVI in R]({{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/ ) |          |
+| 2:45     |<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank">Hyperspectral Imagery in R</a> |  Leah      |
+| Done Early?     | <a href="{{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/" target="_blank">Create Raster Stacks & NDVI in R</a> |   Leah       |
 | 3:45 | ------- BREAK ------- |      |
-| 4:00     | Hands On Activity?? |          |
+| 4:00     | Hands On Activity?? |       |
 
+
+## Related Materials
+
+### Morning Session - Working with Rasters in R
+
+* <a href="{{ site.baseurl }}/R/Image-Raster-Data-In-R/" target="_blank">Imagery in raster format, in R</a>
+
+
+### Afternoon Session - Working with HDF5 files
+
+* <a href="{{ site.baseurl }}/HDF5/Create-HDF5-In-R/" target="_blank">Create HDF5 Files using Loops in R</a>
+* <a href="{{ site.baseurl }}/HDF5/TimeSeries-Data-In-HDF5-Using-R/" target="_blank">Working With Time Series Data Within a Nested HDF5 File in R</a>
