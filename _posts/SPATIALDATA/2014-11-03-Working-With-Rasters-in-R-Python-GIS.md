@@ -511,6 +511,32 @@ IMPORTANT: the above code does NOT REPROJECT the raster. It simply defines the
 Coordinate Reference System based upon the CRS of another raster. If you want to
 actually CHANGE the CRS of a raster, you need to use the `projectRaster` function.
 
+
+##Challenge
+1. You can set the CRS and extent of a raster using the syntax 
+`rasterWithoutReference@crs <- rasterWithReference@crs` and 
+`rasterWithoutReference@extent <- rasterWithReference@extent`. Open band 90 in the 
+band90 folder. You might want to look at it in QGIS first compared to the other rasters. 
+Does it line up? Look closely at the extent and pixel size. Does anything look off? 
+Fix what's missing. Export a new geotiff. Do things line up in 
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS?</a>
+2. The code below creates a raster and seeds it with some data. Experiment with the code. 
+What happens to the resulting raster's resolution when you change the range of lat and 
+long values to 5 instead of 10? Try 20, 50 and 100? What is the relationship between the 
+extent and the raster resolution?
+
+**Code Sample:**
+
+    latLong <- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
+    #make spatial points dataframe, which will have a spatial extent
+    sp <- SpatialPoints( latLong[ c("longitude" , "latitude") ], proj4string = CRS("+proj=longlat +datum=WGS84") )
+	
+    #make raster based on the extent of your data
+    r <- raster(nrow=5, ncol=5, extent( sp ) )
+    r[]  <- 1
+    r[]  <- sample(0:50,25)
+    r
+
 ##Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 
 always **reproject** the data so that they are all in the same projection. Python 
