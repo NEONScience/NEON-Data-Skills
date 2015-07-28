@@ -54,9 +54,9 @@ this workshop. However we will explore the data via a demo during the workshop.
 <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
 OPTIONAL: Download NEON LiDAR Point Cloud Data</a>
 
-##Setting Up Your Working Directory
+<h4>Set Up Your Working Directory</h4>
 
-Please setup your workshop working directory as follows:
+Please setup your workshop working directory, which will contain all of the data downloaded above, as follows:
 
 <ol>
 <li>Create a folder somewhere on your computer called ESA2015. this is where we will save all of the data.</li>
@@ -86,8 +86,11 @@ environment (IDE).
 <h4>If You Already Have R / RStudio -- please update</h4>
 
 If you already have R / RStudio installed on your laptop, please be sure that
-you are running the most current version of both AND the most current version
-of the associated packages that we'll be using in the workshop (listed below).
+you are running the most current version of R-Studio, R AND all packages that 
+we'll be using in the workshop (listed below).
+
+HINT: you can use <code>update.packages()</code> to update all packages that are 
+installed in R automatically. 
 
 <h4>Install R Packages</h4>
 You can chose to install each library individually if you already have some installed.
