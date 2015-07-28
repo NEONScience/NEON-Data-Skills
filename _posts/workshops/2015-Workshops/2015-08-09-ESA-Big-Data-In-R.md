@@ -35,6 +35,8 @@ Ecologists working across scales and integrating disparate datasets face new dat
 <h3>Things to Do Before the Workshop</h3>
 <h4>Download The Data</h4>
 
+Please save your data in a directory called ESA2015. 
+
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
 REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
 <br>
@@ -51,6 +53,26 @@ this workshop. However we will explore the data via a demo during the workshop.
 <br> 
 <a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
 OPTIONAL: Download NEON LiDAR Point Cloud Data</a>
+
+##Setting Up Your Working Directory
+
+Please setup your workshop working directory as follows:
+
+<ol>
+<li>Create a folder somewhere on your computer called ESA2015. this is where we will save all of the data.</li>
+<li>Copy all of the data downloaded above to this directory. It should look like the image below.</li>
+
+<figure>
+    <a href="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"></a>
+    <figcaption>Your working directory should look like the above image. </figcaption>
+</figure>
+
+We will be setting up an R-Studio project within this working directory. <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" target=_blank">Read more about R-Studio projects, here.</a> In R studio, your working directory space will look like this:
+
+<figure>
+    <a href="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"></a>
+    <figcaption>Your working directory in R should look like the above image. </figcaption>
+</figure>
 
 <h4>Setup RStudio</h4>
 To participate in the workshop, we recommend that you come with R and RSTUDIO 
@@ -130,25 +152,8 @@ format. </a></li>
 Please tweet using the hashtag:
   "#WorkWithData" during this workshop!
 
-##Setting Up Your Working Directory
 
-Please setup your workshop working directory as follows:
 
-1. Create a folder somewhere on your computer called ESA2015. this is where we will save all of the data.
-2. Copy all of the data downloaded above to this directory. It should look like the image below.  
-
-<figure>
-    <a href="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"></a>
-    <figcaption>Your working directory should look like the above image. </figcaption>
-</figure>
-
-We will be setting up an R-Studio project within this working directory. <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" target=_blank">Read more about R-Studio projects, here.</a> In R studio, your working directory space will look like this:
-
-<figure>
-    <a href="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"></a>
-    <figcaption>Your working directory in R should look like the above image. </figcaption>
-</figure>
-  
 
 
 ##TENTATIVE SCHEDULE
