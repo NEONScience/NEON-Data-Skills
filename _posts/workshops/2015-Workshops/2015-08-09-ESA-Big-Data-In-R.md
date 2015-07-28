@@ -121,7 +121,7 @@ installed libraries on your computer!
 </li>
 </ul>
 
-<a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
+<a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the HDF
  viewer here</a>
 
 <h3>Please review the following prior to the workshop:</h3>
@@ -130,9 +130,9 @@ installed libraries on your computer!
 <li><a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank" >A brief introduction to Lidar Data </a></li>
 <li><a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/"  target="_blank" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
 <li><a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Documentation for the <code>raster</code> package in R.</a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About/"  target="_blank">An brief intro to the Hierarchical Data Format (HDF5) 
+<li><a href="{{ site.baseurl }}/HDF5/About/"  target="_blank">A brief intro to the Hierarchical Data Format (HDF5) 
 format. </a></li>
-<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/"  target="_blank">An brief intro to Hyperspectral Remote Sensing data
+<li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/"  target="_blank">A brief intro to Hyperspectral Remote Sensing data
 format. </a></li>
 </ul>
 
