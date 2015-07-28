@@ -38,7 +38,7 @@ Ecologists working across scales and integrating disparate datasets face new dat
 <a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
 REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
 <br>
-<a href="{{ site.baseurl }}/Data/LidarActivity/CanopyHeightModel.zip" class="btn btn-success">
+<a href="http://www.neonhighered.org/Data/LidarActivity/CanopyHeightModel.zip" class="btn btn-success">
  REQUIRED DOWNLOAD NEON Lidar Canopy Height Model California Domain D17</a>
 <br>
 <a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
