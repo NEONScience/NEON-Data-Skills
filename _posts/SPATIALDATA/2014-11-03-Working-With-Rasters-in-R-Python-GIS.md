@@ -515,8 +515,9 @@ actually CHANGE the CRS of a raster, you need to use the `projectRaster` functio
 ##Challenge
 1. You can set the CRS and extent of a raster using the syntax 
 `rasterWithoutReference@crs <- rasterWithReference@crs` and 
-`rasterWithoutReference@extent <- rasterWithReference@extent`. Open band 90 in the 
-band90 folder. You might want to look at it in QGIS first compared to the other rasters. 
+`rasterWithoutReference@extent <- rasterWithReference@extent`. Open `band90.tif` in the 
+`rasterLayers_tif` folder of your working directory. You might want to look at it in 
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a> first compared to the other rasters. 
 Does it line up? Look closely at the extent and pixel size. Does anything look off? 
 Fix what's missing. Export a new geotiff. Do things line up in 
 <a href="http://www.qgis.org/en/site/" target="_blank">QGIS?</a>
