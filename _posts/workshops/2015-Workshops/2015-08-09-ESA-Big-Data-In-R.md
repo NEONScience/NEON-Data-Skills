@@ -61,17 +61,18 @@ Please setup your workshop working directory as follows:
 <ol>
 <li>Create a folder somewhere on your computer called ESA2015. this is where we will save all of the data.</li>
 <li>Copy all of the data downloaded above to this directory. It should look like the image below.</li>
+</ol>
 
 <figure>
     <a href="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_Directory.png"></a>
-    <figcaption>Your working directory should look like the above image. </figcaption>
+    <figcaption>Your working directory should look like the above image. NOTE: we will setup the ESA2015.Rproj file together at the beginning of the workshop.</figcaption>
 </figure>
 
-We will be setting up an R-Studio project within this working directory. <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" target=_blank">Read more about R-Studio projects, here.</a> In R studio, your working directory space will look like this:
+We will be setting up an R-Studio project within this working directory. <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" target="_blank">Read more about R-Studio projects, here.</a> In R studio, your working directory space will look like this:
 
 <figure>
     <a href="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"></a>
-    <figcaption>Your working directory in R should look like the above image. </figcaption>
+    <figcaption>Your working directory in R should look like the above image. NOTE: we will setup the ESA2015.Rproj file together at the beginning of the workshop.</figcaption>
 </figure>
 
 <h4>Setup RStudio</h4>
