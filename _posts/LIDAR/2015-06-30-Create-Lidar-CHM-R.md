@@ -181,6 +181,12 @@ R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at i
 > provides useful information.
 > 3. Convert the CHM from meters to feet. Plot it using breaks that make sense for
 > the data. Then export is as a geotiff.
+> 4. In the `CanopyHeightModel` folder, you will find an already processed CHM called 
+> `SJER2013_CHM.tif`. The processing that was used to create this CHM, is different from
+> what we did above in this tutorial. Import that file in `R` and call it `CHM_NEON`. 
+> Calculate the difference between the CHM that you created above and this already 
+> created raster. Do you notice any differences between the 2 rasters? How significant
+> are the differences?
 
 ### EXTRA CREDIT!
 Share your output map from the challenge above in the comments section at the 
