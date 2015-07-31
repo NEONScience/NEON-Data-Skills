@@ -58,7 +58,7 @@ Download the raster and <i>insitu</i> collected vegetation structure data:
 <a href="http://neondataskills.org/Data-Workshops/NEON-lidar-Rasters-R/">All of hte topics and concepts you need to complete this capstone were covered in the links on this page.</a>
 </div>
 
-> NOTE: The data used in this activity were extracted from a hyperspectral dataset collected in California by the NEON airborne observation platform. The full versions of the data used in this activity are freely available by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
+> NOTE: The data used in this activity were extracted from a hyperspectral dataset collected in California by the NEON airborne observation platform. The full versions of the data used in this activity are freely available by request, [from the NEON data portal](http://www.neoninc.org/data-resources/get-data/request-airborne-data "AOP data").
 
 
 
