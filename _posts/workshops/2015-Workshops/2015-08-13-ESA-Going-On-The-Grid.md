@@ -331,7 +331,7 @@ NOT AS GOOD FOR:
 
 * Points that are close together and have large value differences. Slope calculations
 can yield over and underestimation.
-* data with large, sudden changes in values that need to be represented (eg fault
+* Data with large, sudden changes in values that need to be represented (eg fault
 lines, extreme vertical topographic changes, etc). IDW allows for breaklines. NOTE:
 some tools like ARCGIS have introduces a spline with barriers function in recent
 years.
@@ -339,5 +339,5 @@ years.
 
 ### More on Spline
 
-* < a href="http://help.arcgis.com/EN/arcgisdesktop/10.0/help/index.html#//009z00000078000000.htm" target="_blank">ESRI background on spline 
-interpolation </a>
+* <a href="http://help.arcgis.com/EN/arcgisdesktop/10.0/help/index.html#//009z00000078000000.htm" target="_blank">ESRI background on spline 
+interpolation.</a>
