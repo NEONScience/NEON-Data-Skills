@@ -70,6 +70,11 @@ Data to Be posted soon...</a>
 <h3>Useful Background Materials:</h3>
 <ul>
 
+
+
+
+<li><a href="http://webapps.fundp.ac.be/geotp/SIG/interpolating.pdf" target="_blank" >An Overview Presentation on Spatial Interpolation by ESRI. </a></li>
+
 <li><a href="http://webapps.fundp.ac.be/geotp/SIG/InterpolMethods.pdf" target="_blank" >An Overview Presentation on Spatial Interpolation Principles. </a></li>
 
 <li><a href="http://resources.arcgis.com/en/help/main/10.2/index.html#/Understanding_interpolation_analysis/009z0000006w000000/" target="_blank" >ESRI 
