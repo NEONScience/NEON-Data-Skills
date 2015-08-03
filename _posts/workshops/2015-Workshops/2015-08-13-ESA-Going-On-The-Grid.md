@@ -152,6 +152,13 @@ points (nodes) are connected by a series of edges creating a triangulated surfac
 The TIN remains the most true to the point distribution, density and spacing of a 
 dataset. It also may yield the largest file size!
 
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/tin.png"><img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
+    
+    <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
+	the NEON San Joachiun SJER Field site.</figcaption>
+</figure>
+
 **More on TINs*
 
 * <a href="http://resources.arcgis.com/en/help/main/10.1/index.html#//006000000001000000" target="_blank">ESRI overview of TINs</a>
