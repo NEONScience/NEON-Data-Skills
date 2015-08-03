@@ -39,17 +39,16 @@ comments: true
 
 **Location:** Baltimore, Maryland
 
-As ecologists we often need to create seamless maps, in raster or gridded format, 
-of biomass, carbon, vegetation height or other metrics from points sampled on the 
+Scientists often need to create continuous datasets, in raster or gridded format, 
+of biomass, carbon, vegetation height and other metrics from points sampled on the 
 landscape. However, when converting points to pixels, there are many processing 
-choices that can impact the uncertainty of derived products. Incomplete 
+choices that can impact the uncertainty of derived raster datasets. Incomplete 
 understanding of the uncertainty in derived products, in turn, impacts downstream 
 analytical and model results and can lead to erroneous conclusions drawn from the 
-data. This lunchtime power workshop will demonstrate, on the fly, the impacts of 
-selecting various  methods of interpolation for converting points to pixels (e.g. 
-Kriging, IDW, TIN), as well as non-interpolated mathematical methods. We will use 
-a height normalized LiDAR point cloud, which represents canopy height values, to 
-create several raster grids of canopy height (known as a canopy height model), 
+data. This lunchtime brown-bag workshop will explore how different gridding methods
+and associated settings  can impact rasters derived from sample points. We will use 
+a LiDAR point cloud, which represents canopy height values, to 
+create several raster grids 
 using different point-to-pixel conversion methods. We will then quantify and 
 assess differences in height values derived using these different methods.
 
@@ -58,7 +57,8 @@ point-to-pixel conversion methods (interpolators and other gridding methods), ho
  to interpret the resulting pixel values, how to perform basic raster math, and 
 some of the key questions we should ask ourselves before creating a seamless grid 
 from a point-based dataset. ArcGIS will be the primary demonstration tool used 
-in this workshop however all concepts can be applied to any interpolation toolset.
+in this workshop however all concepts can be applied using any program with gridding 
+capabilities.
 
 <div id="objectives">
 
@@ -96,46 +96,85 @@ Background Materials - Understanding Spatial interpolation</a></li>
 </div>
 
 
-###Workshop Instructors
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
+###Workshop Instructor
+* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, 
+Supervising Scientist, NEON, Inc 
 
 
 ####Workshop Fearless Instruction Assistants
 
-* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**, Staff Scientist, NEON, Inc
+* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**, 
+Staff Scientist, NEON, Inc
+* **[Claire Lunch](http://www.neoninc.org/about/staff/claire-lunch) @dr_lunch**, 
+Staff Scientist 
+* **[Kate Thibault](http://www.neoninc.org/about/staff/kate-thibault) @fluby**, 
+Senior Staff Scientist 
 
 ## #WorkWithData Hashtag
   
 Please tweet using the hashtag:
-  "#WorkWithData" during this workshop!
+<a href="https://twitter.com/search?q=%23workwithdata&src=typd" target="_blank">
+#WorkWithData"</a> during this workshop!
 
-Also you can tweet at @neoninc !
+Also you can tweet at <a href="https://twitter.com/neoninc" target="_blank">
+@neoninc</a>!
 
 
 ##TENTATIVE SCHEDULE
 
-Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
+Please note that we are still developing the agenda for this workshop. The 
+schedule below is subject to change.
 
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 11:30     | Spatial Gridding vs. Interpolation |          |
 | 12:00     |  |           |
-| 12:30     |        | Natalie           |
+| 12:30     |        |            |
 | 1:00 | ------- Wrap Up! ------- |      |
 
 
 ##About Rasters
 
-A raster is a dataset made up of cells or pixels. Each pixel represents a value associated with a region on the earth’s surface. We can create a raster from points through a process sometimes called gridding. Gridding is the process of taking a set of points and using them to create a surface composed of a regular grid. 
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
+    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <figcaption>The spatial resolution of a raster refers the size of each cell 
+    in meters. This size in turn relates to the area on the ground that the pixel 
+    represents.</figcaption>
+</figure>
+
+A raster is a dataset made up of cells or pixels. Each pixel represents a value 
+associated with a region on the earth’s surface. We can create a raster from points 
+through a process sometimes called gridding. Gridding is the process of taking a 
+set of points and using them to create a surface composed of a regular grid. 
 
 
 {% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
+## Triangulated Irregular Network (TIN)
+
+The Triangulated Irregular Network (TIN) is a vector based surface where sample
+points (nodes) are connected by a series of edges creating a triangulated surface.
+The TIN format remains the most true to the point distribution, density and spacing of a 
+dataset. It also may yield the largest file size!
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/tin.png"><img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
+    
+    <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
+	the NEON San Joachiun (SJER) field site.</figcaption>
+</figure>
+
+**More on the TIN Format**
+
+* <a href="http://resources.arcgis.com/en/help/main/10.1/index.html#//006000000001000000" target="_blank">ESRI overview of TINs</a>
+
 ## Grid vs. Interpolate
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/Grid_Outline.png"><img src="{{ site.baseurl }}/images/spatialData/Grid_Outline.png"></a>
+    <a href="{{ site.baseurl }}/images/spatialData/Grid_Outline.png">
+	<img src="{{ site.baseurl }}/images/spatialData/Grid_Outline.png"></a>
     
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered.</figcaption>
@@ -156,41 +195,26 @@ This means that you calculate one value for every cell in the raster where there
 are sample points. This value may be a mean of all points, a max, min or some other
 mathematical function. All other cells will then have `no data` values associated with
 them. This means you may have gaps in your data if the point spacing is not well 
-distributed.
+distributed with atleast one data point within the spatial coverage of each raster 
+cell.
 
-## Interpolating Points
+## Spatial Interpolation
 
-Spatial **interpolation** involves calculating the value for a cell with an unknown 
-value from a set of known sample point values that are distributed across an area. 
-There is a general assumption that points closer to the location of the unknown cell, are more strongly related to that cell than those further away. However this general
-assumption is applied differently across different interpolation functions.
+Spatial **interpolation** involves calculating the value for a  query point (or 
+a raster cell) with an unknown value from a set of known sample point values that 
+are distributed across an area. There is a general assumption that points closer 
+to the query point, are more strongly related to that cell than those further away.
+ However this general assumption is applied differently across different 
+interpolation functions.
 
-## Triangulated Irregular Network (TIN)
 
-The Triangulated Irregular Network (TIN) is a vector based surface where sample
-points (nodes) are connected by a series of edges creating a triangulated surface.
-The TIN remains the most true to the point distribution, density and spacing of a 
-dataset. It also may yield the largest file size!
-
-<figure>
-    <a href="{{ site.baseurl }}/images/spatialData/tin.png"><img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
-    
-    <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
-	the NEON San Joachiun (SJER) field site.</figcaption>
-</figure>
-
-**More on the TIN Format**
-
-* <a href="http://resources.arcgis.com/en/help/main/10.1/index.html#//006000000001000000" target="_blank">ESRI overview of TINs</a>
-* 
 
 ## Deterministic vs. Probabilistic Interpolators
 
 There are two main types of interpolation approaches:
 
-* **Deterministic**: create surfaces from measured points, based on either the 
- extent of similarity (inverse distance weighted) or the degree of smoothing 
- (radial basis functions).  
+* **Deterministic**: create surfaces from measured points using a weighted distance
+ or area function.
 * **Probabilistic (Geostatistical)**: utilize the statistical properties of the 
  measured points. Probabilistic techniques quantify the spatial auto-correlation 
  among measured points and account for the spatial configuration of the sample 
@@ -200,29 +224,35 @@ We will focus on deterministic methods in this workshop.
 
 ## Deterministic Interpolation Methods
 
-Let's look at a few different deterministic interpolation methods to begin to 
-understand HOW the decisions that we make when gridding our sample points, can 
-impact the final raster produced.
+Let's look at a few different deterministic interpolation methods to understand 
+how different methods can affect an output raster.
 
 ### Inverse Distance Weighted (IDW) 
 
+Inverse distance weighted interpolation (IDW) calculates the values of a query point
+(a cell with an unknown value)  using a linearly weighted combination of values 
+from nearby points. 
 
 <figure>
-    <a href="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png"><img src="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png"></a>
+    <a href="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png">
+	<img src="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png"></a>
     
     <figcaption>
-	IDW interpolation calculates the value of an unknown cell using
-	surrounding points with the assumption that closest points will be the most
-	similar to the value of interest.
+	IDW interpolation calculates the value of an unknown cell center value (a 
+	query point) using 	surrounding points with the assumption that closest points 
+	will be the most similar to the value of interest.
 </figcaption>
 
 </figure>
 
 
-* Raster is derived based upon an assumed linear relationship between the location of interest and the distance to surrounding sample points.
+**Key Attributes of IDW Interpolation:**
+
+* Raster is derived based upon an assumed linear relationship between the 
+location of interest and the distance to surrounding sample points.
 * Sample points closest to the cell of interest are assumed to be more related
 to its value than those further away.
-* Exact - Grid is forced through actual sample points (when they fall in the cell center).
+* Exact - Grid is forced through actual sample points.
 * Can only estimate within the range of EXISTING sample point values - this can 
 yield "flattened" peaks and valleys" especially if the data didn't capture those 
 high and low points.
@@ -243,8 +273,6 @@ trend / relationship between points and does not accommodate trends within the d
 </figcaption>
 
 </figure>
-
-
 
 
 #### Power
@@ -285,22 +313,20 @@ distance. The output cell values become more localized and less averaged.
 
 ### IDW Summary Take Home Points
 
-GOOD FOR: 
+**GOOD FOR: **
 
-* good for data whose distribution is strongly (and linearly) correlated with 
+* Data whose distribution is strongly (and linearly) correlated with 
 distance. For example, noise falls off very predictably with distance. 
-
-* Provides explicit control over the influence of distance; (compared to 
-* 
-*  
+* Provides explicit control over the influence of distance; (compared to Spline
 or Kriging). 
 
-NOT AS GOOD FOR:
+**NOT AS GOOD FOR:**
 
 * Not as good for data whose distribution depends on more complex sets of variables
  because it can account only for the effects of distance. 
 
-OTHER FEATURES:
+**OTHER FEATURES:**
+
 * You can create a smoother surface by decreasing the power, increasing the 
 number of sample points used, or increasing the search radius. 
 * Create a surface that more closely represents the peaks and dips of your sample
@@ -308,7 +334,7 @@ points by decreasing the number of sample points used / decreasing the search
 radius, increasing the power.
 * Increase IDW surface accuracy by adding breaklines to the interpolation process
 that serve as barriers. Breaklines represent abrupt changes in elevation, such 
-as cliffs
+as cliffs.
 
 
 
@@ -317,8 +343,8 @@ as cliffs
 Spline interpolation fits a curved surface through the sample points of your 
 dataset. Imagine stretching a rubber sheet across your points and glueing it to 
 each sample point along the way. Unlike IDW, spline can estimate values above and 
-below the min and max values of your sample points. thus it is good for estimating 
-hight and low values not already represented in your data.
+below the min and max values of your sample points. Thus it is good for estimating 
+high and low values not already represented in your data.
  
 <figure>
     <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif">
@@ -347,10 +373,10 @@ There are two types of curved surfaces that can be fit when using spline interpo
 	</figcaption>
 </figure>
 
-1. Tension spline: a flatter surface that forces estimated values to stay closer
+1. **Tension spline:** a flatter surface that forces estimated values to stay closer
 to the known sample points.
 
-2. Regularized spline: a more elastic surface that is more likely to estimate above
+2. **Regularized spline:** a more elastic surface that is more likely to estimate above
 and below the known sample points.
 
 
@@ -405,5 +431,19 @@ Notes about Natural Neighbor
 
 * Local Interpolator
 * Interpolated values fall within the range of values of the sample data
-* Surface passes through input samples EXACT?
+* Surface passes through input samples EXACT
 * Supports breaklines
+
+
+**Natural Neighbor is good for:**
+
+* Data who's spatial distribution is variable (AND data that are equally distributed).
+* Categorical data
+* Providing a smoother output raster.
+
+**Natural Neighbor is not as good for:**
+
+* Data where the interpolation needs to be spatially constrained (to a particular
+number of points of distance). 
+* Data where sample points further away from or beyond the immediate "neighbor points"
+need to be considered in the estimation.
