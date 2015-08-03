@@ -190,6 +190,15 @@ dataset. It also may yield the largest file size!
 | Natural neighbor | Deterministic                 |                     | Yes                                          | Yes                  |                                     |
 
 ## Gridding Points
+
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/gridded.png">
+    <img src="{{ site.baseurl }}/images/spatialData/gridded.png"></a>
+    <figcaption>When you directly grid a dataset, values will only be calculated
+	for cells that overlap with data points. Thus, data gaps will not be filled.
+	</figcaption>
+</figure>
+
 When creating a raster, you may chose to perform a direct **gridding** of the data.
 This means that you calculate one value for every cell in the raster where there
 are sample points. This value may be a mean of all points, a max, min or some other
