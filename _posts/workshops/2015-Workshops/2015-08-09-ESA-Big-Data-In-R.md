@@ -6,7 +6,7 @@ packagesLibraries: RHDF5, raster
 language: [R]
 date: 2015-08-09 10:49:52
 dateCreated:   2015-6-29 10:49:52
-lastModified: 2015-07-15 22:11:52
+lastModified: 2015-08-03 22:11:52
 authors: Leah Wasser, Natalie Robinson, Claire Lunch, Kate Thibault, Sarah Elmendorf
 tags: [Data-Workshops]
 mainTag: Data-Workshops
@@ -179,7 +179,7 @@ Please note that we are still developing the agenda for this workshop. The sched
 | 2:45     |<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank">Hyperspectral Imagery in R</a> |  Leah      |
 | Done Early?     | <a href="{{ site.baseurl }}/HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/" target="_blank">Create Raster Stacks & NDVI in R</a> |   Leah       |
 | 3:45 | ------- BREAK ------- |      |
-| 4:00     | Hands On Activity?? |       |
+| 4:00     | <a href="{{ site.baseurl }}/R/ESA2015-Capstone-R/" target="_blank">Hands On Activity Options</a> |       |
 
 
 ## Related Materials

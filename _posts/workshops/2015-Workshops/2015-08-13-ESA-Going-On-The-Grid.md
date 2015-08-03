@@ -261,7 +261,7 @@ from nearby points.
 location of interest and the distance to surrounding sample points.
 * Sample points closest to the cell of interest are assumed to be more related
 to its value than those further away.
-* Exact - Grid is forced through actual sample points.
+* Exact - Can not interpolate beyond the min/max range of data point values.
 * Can only estimate within the range of EXISTING sample point values - this can 
 yield "flattened" peaks and valleys" especially if the data didn't capture those 
 high and low points.
@@ -440,7 +440,7 @@ Notes about Natural Neighbor
 
 * Local Interpolator
 * Interpolated values fall within the range of values of the sample data
-* Surface passes through input samples EXACT
+* Surface passes through input samples
 * Supports breaklines
 
 
