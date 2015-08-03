@@ -22,6 +22,17 @@ permalink: /Data-Workshops/ESA15-Going-On-The-Grid-Spatial-Interpolation-Basics
 comments: true 
 ---
 
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3 >Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
+
 ###A NEON #WorkWithData Event
 
 **Date:** 13 August 2015 - Ecological Society of America Meeting
@@ -130,7 +141,16 @@ A raster is a dataset made up of cells or pixels. Each pixel represents a value 
 	different approaches that should be considered.</figcaption>
 </figure>
 
-### Gridding Points
+
+
+| Gridding Method  | Deterministic / Probabilistic | Exact / Approximate | Values Constrained  to Range of  Sample Data | Supports  Breaklines | Good For  Irregularly Spaced Points |
+|------------------|-------------------------------|---------------------|----------------------------------------------|----------------------|-------------------------------------|
+| Kriging          | Probablistic                  |                     | No                                           |                      |                                     |
+| IDW              | Deterministic                 | Exact               | Yes                                          | Yes                  |                                     |
+| Spline           | Deterministic                 |                     | No                                           | Yes                  |                                     |
+| Natural neighbor | Deterministic                 |                     | Yes                                          | Yes                  |                                     |
+
+## Gridding Points
 When creating a raster, you may chose to perform a direct **gridding** of the data.
 This means that you calculate one value for every cell in the raster where there
 are sample points. This value may be a mean of all points, a max, min or some other
@@ -138,14 +158,14 @@ mathematical function. All other cells will then have `no data` values associate
 them. This means you may have gaps in your data if the point spacing is not well 
 distributed.
 
-### Interpolating Points
+## Interpolating Points
 
 Spatial **interpolation** involves calculating the value for a cell with an unknown 
 value from a set of known sample point values that are distributed across an area. 
 There is a general assumption that points closer to the location of the unknown cell, are more strongly related to that cell than those further away. However this general
 assumption is applied differently across different interpolation functions.
 
-### Triangulated Irregular Network (TIN)
+## Triangulated Irregular Network (TIN)
 
 The Triangulated Irregular Network (TIN) is a vector based surface where sample
 points (nodes) are connected by a series of edges creating a triangulated surface.
@@ -156,37 +176,35 @@ dataset. It also may yield the largest file size!
     <a href="{{ site.baseurl }}/images/spatialData/tin.png"><img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
     
     <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
-	the NEON San Joachiun SJER Field site.</figcaption>
+	the NEON San Joachiun (SJER) field site.</figcaption>
 </figure>
 
-**More on TINs*
+**More on the TIN Format**
 
 * <a href="http://resources.arcgis.com/en/help/main/10.1/index.html#//006000000001000000" target="_blank">ESRI overview of TINs</a>
 * 
 
-## Determinstic vs. Probablistic Interpolators
+## Deterministic vs. Probabilistic Interpolators
 
 There are two main types of interpolation approaches:
 
 * **Deterministic**: create surfaces from measured points, based on either the 
  extent of similarity (inverse distance weighted) or the degree of smoothing 
  (radial basis functions).  
-* **Probablistic (Geostatistical)**: utilize the statistical properties of the 
- measured points. Probablistic techniques quantify the spatial autocorrelation 
+* **Probabilistic (Geostatistical)**: utilize the statistical properties of the 
+ measured points. Probabilistic techniques quantify the spatial auto-correlation 
  among measured points and account for the spatial configuration of the sample 
  points around the prediction location.
 
 We will focus on deterministic methods in this workshop.
 
-## Deterministic Interpolation Examples
+## Deterministic Interpolation Methods
 
 Let's look at a few different deterministic interpolation methods to begin to 
-understand HOW the deecisions that we make when gridding our sample points, can 
+understand HOW the decisions that we make when gridding our sample points, can 
 impact the final raster produced.
 
 ### Inverse Distance Weighted (IDW) 
-
-
 
 
 <figure>
@@ -272,7 +290,9 @@ GOOD FOR:
 * good for data whose distribution is strongly (and linearly) correlated with 
 distance. For example, noise falls off very predictably with distance. 
 
-* Provides explicit control over the influence of distance; (compared to Spline 
+* Provides explicit control over the influence of distance; (compared to 
+* 
+*  
 or Kriging). 
 
 NOT AS GOOD FOR:
@@ -349,7 +369,41 @@ some tools like ARCGIS have introduces a spline with barriers function in recent
 years.
 
 
-### More on Spline
+#### More on Spline
 
 * <a href="http://help.arcgis.com/EN/arcgisdesktop/10.0/help/index.html#//009z00000078000000.htm" target="_blank">ESRI background on spline 
 interpolation.</a>
+
+
+### Natural Neighbor Interpolation
+
+Natural neighbor interpolation  finds the closest subset of data points, to the 
+query point of interest. It then applies weights to those points, to calculate an 
+average estimated value based upon their proportionate areas derived from their 
+corresponding voronoi polygons. The natural neighbor interpolator adapts locally
+to the input data, using points surrounding the query point of interest. Thus there
+are no radius, number of points or other settings needed when using this approach.
+
+This interpolation method works equally well on regular vs irregularly spaced data.
+
+<figure>
+    <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png">
+	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png">
+	</a>
+    
+    <figcaption>
+	A Voronoi diagram is created by taking pairs of points that are close together 
+	and drawing a line that is equidistant between them and perpendicular to the 
+	line connecting them. Natural Neighbor interpolation uses the area of each
+	polygon associated with the surrounding points to derive a weight that is then 
+	used to calculate an estimated value for the query point of interest. 
+	Source: Wikipedia
+	</figcaption>
+</figure>
+
+Notes about Natural Neighbor
+
+* Local Interpolator
+* Interpolated values fall within the range of values of the sample data
+* Surface passes through input samples EXACT?
+* Supports breaklines
