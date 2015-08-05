@@ -28,6 +28,9 @@ comments: true
 
 Ecologists working across scales and integrating disparate datasets face new data management and analysis challenges that demand tools beyond the spreadsheet. This workshop will overview three key data formats: ASCII, HDF5 and las and several key data types including temperature data from a tower, vegetation structure data, hyperspectral imagery and lidar data, that are often encountered when working with ‘Big Data’.  It will provide an introduction to available tools in R for working with these formats and types.
 
+<a href="https://etherpad.mozilla.org/ESA2015-bigData" class="btn btn-info" target="_blank"> 
+Visit the Workshop Etherpad</a>
+
 <div id="objectives">
 
 <h2>Background Materials</h2>
