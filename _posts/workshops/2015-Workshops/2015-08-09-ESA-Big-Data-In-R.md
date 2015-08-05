@@ -137,6 +137,7 @@ installed libraries on your computer!
 format. </a></li>
 <li><a href="{{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/"  target="_blank">A brief intro to Hyperspectral Remote Sensing data
 format. </a></li>
+<li><a href="{{ site.baseurl }}/Remote-Sensing/Mapping-The-Invisible-Hyperspectral-and-Optical-Sensors/"  target="_blank">A 5 minute video on imagery / optical remote sensing. </a></li>
 </ul>
 
 </div>
