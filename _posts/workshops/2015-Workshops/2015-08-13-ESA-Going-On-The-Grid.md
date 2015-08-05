@@ -173,8 +173,8 @@ dataset. It also may yield the largest file size!
 ## Grid vs. Interpolate
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/Grid_Outline.png">
-	<img src="{{ site.baseurl }}/images/spatialData/Grid_Outline.png"></a>
+    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png">
+	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
     
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered.</figcaption>
@@ -182,12 +182,13 @@ dataset. It also may yield the largest file size!
 
 
 
-| Gridding Method  | Deterministic / Probabilistic | Exact / Approximate | Values Constrained  to Range of  Sample Data | Supports  Breaklines | Good For  Irregularly Spaced Points |
-|------------------|-------------------------------|---------------------|----------------------------------------------|----------------------|-------------------------------------|
-| Kriging          | Probablistic                  |                     | No                                           |                      |                                     |
-| IDW              | Deterministic                 | Exact               | Yes                                          | Yes                  |                                     |
-| Spline           | Deterministic                 |                     | No                                           | Yes                  |                                     |
-| Natural neighbor | Deterministic                 |                     | Yes                                          | Yes                  |                                     |
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png">
+	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
+    
+    <figcaption>A gridding cheatsheet.</figcaption>
+</figure>
+                       |
 
 ## Gridding Points
 
