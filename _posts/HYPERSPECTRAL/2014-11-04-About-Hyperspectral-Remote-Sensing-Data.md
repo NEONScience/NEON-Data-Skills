@@ -50,6 +50,11 @@ A working thinking cap. This is an overview / background activity.
 Please consider reading the post on working with rasters prior to reading this post. 
 </div>
 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Above: a video overview of optical remote sensing.
+
 ##About Hyperspectral Remote Sensing Data
 
 The electromagnetic spectrum is composed of thousands of bands representing different types of light energy. Imaging spectrometers (instruments that collect hyperspectral data) break the electromagnetic spectrum into groups of bands that support classification of objects by their spectral properties on the earth's surface. Hyperspectral data consists of many bands - up to hundreds of bands - that cover the electromagnetic spectrum.
