@@ -217,7 +217,12 @@ to the query point, are more strongly related to that cell than those further aw
  However this general assumption is applied differently across different 
 interpolation functions.
 
-
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/grid.png">
+    <img src="{{ site.baseurl }}/images/spatialData/grid.png"></a>
+    <figcaption>Interpolation methods will estimate values for cells where no known values exist.
+	</figcaption>
+</figure>
 
 ## Deterministic vs. Probabilistic Interpolators
 
