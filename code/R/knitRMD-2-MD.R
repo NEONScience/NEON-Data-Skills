@@ -51,6 +51,8 @@ postsDir <- ("_posts/SPATIALDATA/")
 imagePath <- "images/rfigs/"
 # poth to RMD files
 
+figDir <- print(paste0("images/", sub(".Rmd$", "", basename(input)), "/"))
+
 require(knitr)
 
 #set the base url for images and links in the md file

@@ -17,9 +17,18 @@ DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")
 DEM
 
 
+## ----set-min-max---------------------------------------------------------
+
+#calculate and save the min and max values of the raster to the raster object
+DEM <- setMinMax(DEM)
+#view raster attributes
+DEM
+
+
 ## ----get-min-max---------------------------------------------------------
 
 #Get min and max cell values from raster
+#NOTE: this code may fail if the raster is too large
 cellStats(DEM, min)
 cellStats(DEM, max)
 cellStats(DEM, range)
@@ -77,15 +86,32 @@ brk <- c(250, 300, 350, 400,450,500)
 plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
 # Expand right side of clipping rect to make room for the legend
-par(xpd=T, mar=par()$mar+c(0,0,0,6))
+par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+#DEM with a custom legend
+plot(DEM, col=col, breaks=brk, main="DEM with a Custom (buf flipped) Legend",legend = FALSE)
 
-#with a custom legend
-plot(DEM, col=col, breaks=brk, main="DEM with more breaks",legend = FALSE)
+#turn xpd back on to force the legend to fit next to the plot.
+par(xpd = TRUE)
 #add a legend - but make it appear outside of the plot
-#NOTE - this doesn't work properly!
-legend(258400,4110000,
-       legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
-       fill = col)
+legend( par()$usr[2], 4110600,
+        legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
+        fill = col)
+
+
+## ----plot-with-legend----------------------------------------------------
+
+
+# Expand right side of clipping rect to make room for the legend
+par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+#DEM with a custom legend
+plot(DEM, col=col, breaks=brk, main="DEM with a Custom Fixed Legend",legend = FALSE)
+#turn xpd back on to force the legend to fit next to the plot.
+par(xpd = TRUE)
+#add a legend - but make it appear outside of the plot
+legend( par()$usr[2], 4110600,
+        legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
+        fill = rev(col))
+
 
 ## ----add-color-map-------------------------------------------------------
 

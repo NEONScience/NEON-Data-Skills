@@ -131,7 +131,7 @@ Next, let's load a raster containing elevation data into R.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## data source : C:\Users\lwasser\Documents\1_Workshops\ESA2015\DigitalTerrainModel\SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
 
@@ -139,10 +139,33 @@ Notice a few things about this raster.
 
 * **Nrow, Ncol:** the number of rows and columns in the data (imagine a spreadsheet or a matrix). 
 * **Ncells:** the total number of pixels or cells that make up the raster.
-*  **Resolution:** the size of each pixel (in meters in this case). 1 meter pixels means that each pixel represents a 1m x 1m area on the earth's surface.
-*  **Extent:** the spatial extent of the raster. This value will be in the same coordinate units as the coordinate reference system of the raster.
-*  **Coord ref:** the coordinate reference system string for the raster. This raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
+*  **Resolution:** the size of each pixel (in meters in this case). 1 meter pixels 
+means that each pixel represents a 1m x 1m area on the earth's surface.
+*  **Extent:** the spatial extent of the raster. This value will be in the same 
+coordinate units as the coordinate reference system of the raster.
+*  **Coord ref:** the coordinate reference system string for the raster. This 
+raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. 
+<a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
+##Defining Min/Max Values
+
+By default the raster doesn't have the min / max values associated with it's attributes
+Let's change that.
+
+
+    #calculate and save the min and max values of the raster to the raster object
+    DEM <- setMinMax(DEM)
+    #view raster attributes
+    DEM
+
+    ## class       : RasterLayer 
+    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : C:\Users\lwasser\Documents\1_Workshops\ESA2015\DigitalTerrainModel\SJER2013_DTM.tif 
+    ## names       : SJER2013_DTM 
+    ## values      : 228.1, 518.66  (min, max)
 
 
 ##About UTM
@@ -159,6 +182,7 @@ within the pixels.
 
 
     #Get min and max cell values from raster
+    #NOTE: this code may fail if the raster is too large
     cellStats(DEM, min)
 
     ## [1] 228.1
@@ -291,19 +315,37 @@ By default, R will assign the gradient of colors uniformly across the full range
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/plot-with-breaks-1.png) 
 
     # Expand right side of clipping rect to make room for the legend
-    par(xpd=T, mar=par()$mar+c(0,0,0,6))
+    par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+    #DEM with a custom legend
+    plot(DEM, col=col, breaks=brk, main="DEM with a Custom (buf flipped) Legend",legend = FALSE)
     
-    #with a custom legend
-    plot(DEM, col=col, breaks=brk, main="DEM with more breaks",legend = FALSE)
+    #turn xpd back on to force the legend to fit next to the plot.
+    par(xpd = TRUE)
     #add a legend - but make it appear outside of the plot
-    #NOTE - this doesn't work properly!
-    legend(258400,4110000,
-           legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
-           fill = col)
+    legend( par()$usr[2], 4110600,
+            legend = c("lowest", "a bit higher", "middle ground", "higher yet", "Highest"), 
+            fill = col)
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/plot-with-breaks-2.png) 
 
-We can add a custom color map with breaks as well.
+Notice that the legend is in reverse order in the previous plot.
+Let's fix that.
+
+
+    # Expand right side of clipping rect to make room for the legend
+    par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+    #DEM with a custom legend
+    plot(DEM, col=col, breaks=brk, main="DEM with a Custom Fixed Legend",legend = FALSE)
+    #turn xpd back on to force the legend to fit next to the plot.
+    par(xpd = TRUE)
+    #add a legend - but make it appear outside of the plot
+    legend( par()$usr[2], 4110600,
+            legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
+            fill = rev(col))
+
+![ ]({{ site.baseurl }}/images/rfigs/2015-07-22-Introduction-to-Raster-Data-In-R/plot-with-legend-1.png) 
+
+We can add a custom color map with fewer breaks as well.
 
 
     #add a color map with 4 colors
