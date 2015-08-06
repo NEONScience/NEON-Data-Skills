@@ -442,6 +442,18 @@ This interpolation method works equally well on regular vs irregularly spaced da
 	</figcaption>
 </figure>
 
+
+<figure>
+    <a href="http://neondataskills.org/Data-Workshops/ESA15-Going-On-The-Grid-Spatial-Interpolation-Basics/">
+	<img src="http://neondataskills.org/Data-Workshops/ESA15-Going-On-The-Grid-Spatial-Interpolation-Basics/">
+	</a>
+    
+    <figcaption>
+	To calculate the weighted area around a query point, a secondary Voronoi diagram is created using the immediately neighboring points and mapped on top of the original Voronoi diagram created using the known sample points.
+	Image Source: ESRI
+	</figcaption>
+</figure>
+
 Notes about Natural Neighbor
 
 * Local Interpolator
