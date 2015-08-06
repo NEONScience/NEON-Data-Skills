@@ -12,6 +12,7 @@ image:
 ##Data lesson hackathon!
 
 We are hosting a spatio-temporal data lesson hackathon in Boulder, CO, October 21-23. Funding is available to support travel.
+<br><br>
 <a href="http://www.neoninc.org/updates-events/events/hackathon-spatio-temporal-data-lesson-building" target="_blank" class="btn btn-info"> Learn more & apply now for the Data lesson hackathon!</a>
 
 ##Welcome to the NEON #WorkWithData Portal! 
