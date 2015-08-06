@@ -133,24 +133,24 @@ schedule below is subject to change.
 | 12:30     |        |            |
 | 1:00 | ------- Wrap Up! ------- |      |
 
-
-##About Rasters
+##Creating Surfaces From Points
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
-    <figcaption>The spatial resolution of a raster refers the size of each cell 
-    in meters. This size in turn relates to the area on the ground that the pixel 
-    represents.</figcaption>
+    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png">
+	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
+    
+    <figcaption>When converting a set of sample points to a grid, there are many
+	different approaches that should be considered.</figcaption>
 </figure>
 
-A raster is a dataset made up of cells or pixels. Each pixel represents a value 
-associated with a region on the earth’s surface. We can create a raster from points 
-through a process sometimes called gridding. Gridding is the process of taking a 
-set of points and using them to create a surface composed of a regular grid. 
 
 
-{% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+<figure>
+    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png">
+	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
+    
+    <figcaption>A gridding cheatsheet.</figcaption>
+</figure>
 
 ## Triangulated Irregular Network (TIN)
 
@@ -170,24 +170,27 @@ dataset. It also may yield the largest file size!
 
 * <a href="http://resources.arcgis.com/en/help/main/10.1/index.html#//006000000001000000" target="_blank">ESRI overview of TINs</a>
 
-## Grid vs. Interpolate
+
+
+##About Rasters
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png">
-	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
-    
-    <figcaption>When converting a set of sample points to a grid, there are many
-	different approaches that should be considered.</figcaption>
+    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
+    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <figcaption>The spatial resolution of a raster refers the size of each cell 
+    in meters. This size in turn relates to the area on the ground that the pixel 
+    represents.</figcaption>
 </figure>
 
+A raster is a dataset made up of cells or pixels. Each pixel represents a value 
+associated with a region on the earth’s surface. We can create a raster from points 
+through a process sometimes called gridding. Gridding is the process of taking a 
+set of points and using them to create a surface composed of a regular grid. 
 
 
-<figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png">
-	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
-    
-    <figcaption>A gridding cheatsheet.</figcaption>
-</figure>
+{% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+
+
                        |
 
 ## Gridding Points
