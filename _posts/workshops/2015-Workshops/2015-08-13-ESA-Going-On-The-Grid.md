@@ -126,12 +126,10 @@ Please note that we are still developing the agenda for this workshop. The
 schedule below is subject to change.
 
 
-| Time        | Topic         | Instructor | 
-|-------------|---------------|------------|
-| 11:30     | Spatial Gridding vs. Interpolation |          |
-| 12:00     |  |           |
-| 12:30     |        |            |
-| 1:00 | ------- Wrap Up! ------- |      |
+| Time        | Topic         | 
+|-------------|---------------|
+| 11:30     | Spatial Gridding vs. Interpolation |
+| 1:00 | ------- Wrap Up! ------- |
 
 
 #NOTE: we will not cover geostatistical methods in this brown bag!
