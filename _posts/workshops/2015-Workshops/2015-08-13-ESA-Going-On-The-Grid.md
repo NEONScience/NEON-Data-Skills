@@ -444,8 +444,8 @@ This interpolation method works equally well on regular vs irregularly spaced da
 
 
 <figure>
-    <a href="http://neondataskills.org/Data-Workshops/ESA15-Going-On-The-Grid-Spatial-Interpolation-Basics/">
-	<img src="http://neondataskills.org/Data-Workshops/ESA15-Going-On-The-Grid-Spatial-Interpolation-Basics/">
+    <a href="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png">
+	<img src="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png">
 	</a>
     
     <figcaption>
