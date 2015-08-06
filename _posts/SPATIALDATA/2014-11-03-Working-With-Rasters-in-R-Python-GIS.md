@@ -10,7 +10,7 @@ category: remote-sensing
 tags: [R, hyperspectral-remote-sensing,GIS-Spatial-Data]
 mainTag: GIS-Spatial-Data
 description: "Learn about the key attributes needed to work with raster data in tools like R, Python and QGIS."
-code1: 
+code1: /R/2014-11-03-Working-With-Rasters-in-R-Python-GIS.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
