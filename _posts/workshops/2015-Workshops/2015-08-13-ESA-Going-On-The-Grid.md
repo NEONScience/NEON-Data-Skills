@@ -132,7 +132,31 @@ schedule below is subject to change.
 | 1:00 | ------- Wrap Up! ------- |
 
 
-#NOTE: we will not cover geostatistical methods in this brown bag!
+>NOTE: we will not cover geostatistical methods in this brown bag!
+
+#About the Data
+The LiDAR data that we will use for this brown-bag were collected over the 
+<a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
+NEON San Joaquin field site located in California</a>. The data are natively in 
+a point cloud format with X,Y and Z (elevation) values associated with each point. 
+In this case, most points above the group represent vegetation.
+
+The data as gridded, create a Digital Surface Model (DSM) which represents the top of 
+the canopy (or buildings and other objects) elevation values. 
+
+* <a href="http://neondataskills.org/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank">More about Lidar Data</a>.
+* <a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" target="_blank">More about Digital Surface Models, Canopy Height Models and Digital Terrain Models here</a>.
+
+
+####A Short Video - How LiDAR Works
+<iframe width="560" height="315" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
+
+##Workshop Approach
+In this brown-bag we will work with a dessimated (thinned) version of the lidar 
+point clouds to see
+how interpolation impacts a lidar dataset gridded at its native resolution with 
+all of the available points present compared to a thinned dataset gridding using
+various interpolation methods. 
 
 ##Creating Surfaces From Points
 
