@@ -457,6 +457,10 @@ This interpolation method works equally well on regular vs irregularly spaced da
 	</figcaption>
 </figure>
 
+FROM THE ESRI HELP:
+> By comparison, a distance-based interpolator tool such as IDW (inverse distance weighted) would assign similar weights to the northernmost point and to the northeastern point based on their similar distance from the interpolation point. Natural neighbor interpolation, however, assigns weights of 19.12 percent and 0.38 percent, respectively, which is based on the percentage of overlap.
+> 
+
 Notes about Natural Neighbor
 
 * Local Interpolator
