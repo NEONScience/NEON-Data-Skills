@@ -133,6 +133,9 @@ schedule below is subject to change.
 | 12:30     |        |            |
 | 1:00 | ------- Wrap Up! ------- |      |
 
+
+#NOTE: we will not cover geostatistical methods in this brown bag!
+
 ##Creating Surfaces From Points
 
 <figure>
