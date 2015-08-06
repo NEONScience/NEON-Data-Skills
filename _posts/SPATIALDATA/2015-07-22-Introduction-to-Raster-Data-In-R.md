@@ -10,7 +10,6 @@ category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
 mainTag: GIS-Spatial-Data
 description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
-code1: 
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
