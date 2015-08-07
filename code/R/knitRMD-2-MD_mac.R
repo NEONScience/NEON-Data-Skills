@@ -24,7 +24,8 @@ if(.Platform$OS.type == "windows") {
 } else {
     print("defining MAC paths")
     #this is the MAC path to the github repo
-    gitRepoPath <- "~/Documents/GitHub_Lwasser/NEON_DataSkills/"
+    #gitRepoPath <- "~/Documents/GitHub_Lwasser/NEON_DataSkills/"
+    gitRepoPath <- "~/Documents/GitHub/NEON-Data-Skills/"
     }
 
 #repoCodePath <- "code/R/rmdFiles"
@@ -47,7 +48,9 @@ file  <- "2015-06-08-Work-With-Hyperspectral-Data-In-R.Rmd"
 #file.copy(from = (paste0(gitRepoPath,repoCodePath,file)), to=wd, overwrite = TRUE)
 
 #specify where should the file go within the GH repo
-postsDir <- ("_posts/SPATIALDATA/")
+#postsDir <- ("_posts/SPATIALDATA/")
+postsDir <- ("_posts/HYPERSPECTRAL/")
+
 #define the file path
 imagePath <- "images/rfigs/"
 # poth to RMD files

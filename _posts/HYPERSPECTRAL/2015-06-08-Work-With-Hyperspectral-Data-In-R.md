@@ -6,7 +6,7 @@ dateCreated:  2014-11-26 20:49:52
 lastModified: 2015-08-07 14:30:52
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
-authors: Edmund Hart, Leah A. Wasser
+authors: Leah A. Wasser, Edmund Hart
 categories: [remote-sensing]
 category: remote-sensing
 tags: [hyperspectral-remote-sensing,R,HDF5]
@@ -184,7 +184,7 @@ HDF5 file. Let's start by reading in the spatial information.
 
 
     #r get spatialInfo using the h5readAttributes function 
-    spinfo <- h5readAttributes(f,"spatialInfo")
+    spInfo <- h5readAttributes(f,"spatialInfo")
     
     #r get attributes for the Reflectance dataset
     reflInfo <- h5readAttributes(f,"Reflectance")
@@ -247,18 +247,35 @@ with band 34? hint `wavelengths[34]`. How do we know this band is a green band
 in the visible portion of the spectrum?
 
 
-    #note that we can grab tne dimensions of the dataset from the attributes
+    #note that we can grab the dimensions of the dataset from the attributes
     #we can then use that information to slice out our band data
     nRows <- reflInfo$row_col_band[1]
     nCols <- reflInfo$row_col_band[2]
     nBands <- reflInfo$row_col_band[3]
     
+    nRows
+
+    ## [1] 502
+
+    nCols
+
+    ## [1] 477
+
+    nBands
+
+    ## [1] 426
+
     #The HDF5 read function reads data in the order: Cols, Rows and bands
     #This is different from how R reads data (rows, columns, bands). We'll adjust for 
     #this later
     
     #Extract or "slice" data for band 34 from the HDF5 file
     b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
+     
+    #what type of object is b34?
+    class(b34)
+
+    ## [1] "array"
 
 ###A Note About Data Slicing in HDF5
 Data slicing allows us to extract and work with subsets of the data rather than 
@@ -275,7 +292,6 @@ Next, let's convert our data from an array (more than 2 dimensions) to a matrix
     b34 <- b34[,,1]
 
 
-    
 
 <i class="fa fa-star"></i> **Data Tip: Arrays vs. Matrices** Arrays are matrices 
 with more than 2 dimensions. When we say dimension, we are talking about the "z" 
@@ -338,7 +354,6 @@ make sure processing is being performed correctly and all is well with the image
     ## [1] 502 477 426
 
     #plot the image
-    
     image(b34)
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/read-attributes-plot-1.png) 
@@ -388,8 +403,14 @@ Remember that the metadata for the `Reflectance` dataset designated 15,000 as
 (no value). If we do this, R won't try to render these pixels.
 
 
+    #there is a no data value in our raster - let's define it
+    noDataValue <- as.numeric(reflInfo$`data ignore value`)
+    noDataValue
+
+    ## [1] 15000
+
     #set all values greater than 15,000 to NA
-    b34[b34 == 15000] <- NA
+    b34[b34 == noDataValue] <- NA
 
 	
 	
@@ -500,19 +521,72 @@ Next we define the extents of our raster. The extents will be used to calculate 
 
 
 
-    #define extents of the data using metadata and matrix attributes
-    xMN=as.numeric(mapInfo[4])
-    xMX=(xMN+(ncol(b34)))
-    yMX=as.numeric(mapInfo[5]) 
-    yMN=(yMX-(nrow(b34)))     
-    rasExt <- extent(xMN,xMX,yMN,yMX)
+    #create resolution of raster as an object
+    res <- spInfo$xscale
+    res
+
+    ## [1] 1
+
+    #Grab the UTM coordinates of the upper left hand corner of the 
+    #raster for later
+    #grab the left hand corner coordinate
+    xMin <- as.numeric(mapInfo[4]) 
+    #grab the top corner coordinate
+    yMax <- as.numeric(mapInfo[5])
     
+    xMin
+
+    ## [1] 256521
+
+    yMax
+
+    ## [1] 4112571
+
+    #Calculate the upper right hand corner to define the full extent of the 
+    #raster. To do this we need the number of columns and rows in the raster
+    #and the resolution.
+    #xMN=as.numeric(mapInfo[4])
+    #note that you need to multiple the columns and rows by the resolution of 
+    #the data to calculate the proper extent!
+    xMax=(xMN+(ncol(b34))*res)
+    #yMX=as.numeric(mapInfo[5]) 
+    yMin=(yMX-(nrow(b34))*res)     
+    
+    xMax
+
+    ## [1] 256998
+
+    yMin
+
+    ## [1] 4112069
+
+    #define the extent (left, right, top, bottom)
+    rasExt <- extent(xMin,xMax,yMin,yMax)
+    
+    
+    #Create the projection in as object
+    myCRS <- spInfo$projdef
+    myCRS
+
+    ## [1] "+proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84"
+
     #define final raster with projection info 
     #note that capitalization will throw errors on a MAC.
     #if UTM is all caps it might cause an error!
     b34r<-raster(b34, 
-          crs=(spinfo$projdef))
+          crs=myCRS)
     
+    b34r
+
+    ## class       : RasterLayer 
+    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
+    ## resolution  : 0.002096436, 0.001992032  (x, y)
+    ## extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
+    ## data source : in memory
+    ## names       : layer 
+    ## values      : 116, 15677  (min, max)
+
     #assign the spatial extent to the raster
     extent(b34r) <- rasExt
     #look at raster attributes

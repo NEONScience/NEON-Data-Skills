@@ -29,7 +29,7 @@ h5ls(f,all=T)
 ## ----read-spatial-attributes---------------------------------------------
 
 #r get spatialInfo using the h5readAttributes function 
-spinfo <- h5readAttributes(f,"spatialInfo")
+spInfo <- h5readAttributes(f,"spatialInfo")
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
@@ -44,11 +44,15 @@ wavelengths<- h5read(f,"wavelength")
 
 ## ----get-reflectance-shape-----------------------------------------------
 
-#note that we can grab tne dimensions of the dataset from the attributes
+#note that we can grab the dimensions of the dataset from the attributes
 #we can then use that information to slice out our band data
 nRows <- reflInfo$row_col_band[1]
 nCols <- reflInfo$row_col_band[2]
 nBands <- reflInfo$row_col_band[3]
+
+nRows
+nCols
+nBands
 
 #The HDF5 read function reads data in the order: Cols, Rows and bands
 #This is different from how R reads data (rows, columns, bands). We'll adjust for 
@@ -57,6 +61,9 @@ nBands <- reflInfo$row_col_band[3]
 #Extract or "slice" data for band 34 from the HDF5 file
 b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
  
+#what type of object is b34?
+class(b34)
+
 
 ## ----convert-to-matrix---------------------------------------------------
 
@@ -68,8 +75,8 @@ b34 <- b34[,,1]
     
 # look at the metadata for the reflectance dataset
 h5readAttributes(f,"Reflectance")
-#plot the image
 
+#plot the image
 image(b34)
 
 #what happens if we plot a log of the data?
@@ -89,8 +96,13 @@ hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
 
 ## ----set-values-NA-------------------------------------------------------
+
+#there is a no data value in our raster - let's define it
+noDataValue <- as.numeric(reflInfo$`data ignore value`)
+noDataValue
+
 #set all values greater than 15,000 to NA
-b34[b34 == 15000] <- NA
+b34[b34 == noDataValue] <- NA
 
 
 ## ----plot-log------------------------------------------------------------
@@ -108,18 +120,49 @@ image(log(b34))
 
 ## ----define-extent-------------------------------------------------------
 
-#define extents of the data using metadata and matrix attributes
-xMN=as.numeric(mapInfo[4])
-xMX=(xMN+(ncol(b34)))
-yMX=as.numeric(mapInfo[5]) 
-yMN=(yMX-(nrow(b34)))     
-rasExt <- extent(xMN,xMX,yMN,yMX)
+#create resolution of raster as an object
+res <- spInfo$xscale
+res
+
+#Grab the UTM coordinates of the upper left hand corner of the 
+#raster for later
+#grab the left hand corner coordinate
+xMin <- as.numeric(mapInfo[4]) 
+#grab the top corner coordinate
+yMax <- as.numeric(mapInfo[5])
+
+xMin
+yMax
+
+
+#Calculate the upper right hand corner to define the full extent of the 
+#raster. To do this we need the number of columns and rows in the raster
+#and the resolution.
+#xMN=as.numeric(mapInfo[4])
+#note that you need to multiple the columns and rows by the resolution of 
+#the data to calculate the proper extent!
+xMax=(xMN+(ncol(b34))*res)
+#yMX=as.numeric(mapInfo[5]) 
+yMin=(yMX-(nrow(b34))*res)     
+
+xMax
+yMin
+
+#define the extent (left, right, top, bottom)
+rasExt <- extent(xMin,xMax,yMin,yMax)
+
+
+#Create the projection in as object
+myCRS <- spInfo$projdef
+myCRS
 
 #define final raster with projection info 
 #note that capitalization will throw errors on a MAC.
 #if UTM is all caps it might cause an error!
 b34r<-raster(b34, 
-      crs=(spinfo$projdef))
+      crs=myCRS)
+
+b34r
 
 #assign the spatial extent to the raster
 extent(b34r) <- rasExt
