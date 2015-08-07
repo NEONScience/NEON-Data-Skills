@@ -48,6 +48,11 @@ REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling 
 <br>
 <a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
  REQUIRED DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
+ 
+Just added: this data will be useful for the extra activity in the Intro to HDF5 tutorial.
+
+<a href="http://neonhighered.org/Data/D17_2013_SJER_vegStr.zip" class="btn btn-success">
+Download the sample NEON vegetation structure data from California.</a>
 
 
 OPTIONAL DOWNLOAD
