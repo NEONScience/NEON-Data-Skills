@@ -36,9 +36,9 @@ wd <- getwd()
 #file <- "2014-11-05-Intro-HDF5-R.Rmd"
 #file <- "2015-05-21-R-Timeseries-HDF5.Rmd"
 #file <- "2015-05-27-R-dplyr-GREPL-Summarise-Piping.Rmd"
-#file  <- "2015-06-08-Work-With-Hyperspectral-Data-In-R.Rmd"
+file  <- "2015-06-08-Work-With-Hyperspectral-Data-In-R.Rmd"
 #file <- "2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.Rmd"
-file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
+#file <- "2015-06-30-Create-Lidar-CHM-R.Rmd"
 #file <- "2014-11-03-Working-With-Rasters-in-R-Python-GIS.Rmd"
 #file <- "2015-07-22-Introduction-to-Raster-Data-In-R.Rmd"
 

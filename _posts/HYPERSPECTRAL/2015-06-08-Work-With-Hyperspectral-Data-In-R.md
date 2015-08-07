@@ -3,7 +3,7 @@ layout: post
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 date:   2015-1-14 20:49:52
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-06-09 14:30:52
+lastModified: 2015-08-07 14:30:52
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
 authors: Edmund Hart, Leah A. Wasser
@@ -130,7 +130,7 @@ the needed libraries and reading in our NEON HDF5 file.
     #setwd('pathToDataHere')
     getwd()
 
-    ## [1] "C:/Users/lwasser/Documents/1_Workshops/05-18-2015_NEON_Hyperspect_R"
+    ## [1] "/Users/lwasser/Documents/1_Workshops/ESA2015_BigData"
 
     #Define the file name to be opened
     f <- 'SJER_140123_chip.h5'

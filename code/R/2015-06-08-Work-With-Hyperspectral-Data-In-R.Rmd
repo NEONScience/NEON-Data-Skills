@@ -3,7 +3,7 @@ layout: post
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 date:   2015-1-14 20:49:52
 dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-06-09 14:30:52
+lastModified: 2015-08-07 14:30:52
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
 authors: Edmund Hart, Leah A. Wasser
@@ -17,7 +17,7 @@ image:
   credit: The Artistry of Colin Williams, NEON
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Imaging-Spectroscopy-HDF5-In-R/
-code1: hyperspectral_HDF5_Data_R.R
+code1: R/2015-06-08-Work-With-Hyperspectral-Data-In-R.R
 comments: true
 ---
 
