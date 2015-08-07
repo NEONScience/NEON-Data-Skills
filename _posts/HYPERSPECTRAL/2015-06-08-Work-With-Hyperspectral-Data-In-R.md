@@ -499,15 +499,20 @@ To create a raster in R, we need a few pieces of information, including:
 * The location of the first pixel (located in the lower left hand corner of the raster). 
 * The resolution or size of each pixel in the data. 
 
-First let's grab the spatial information that we need from the HDF5 file. The CRS and associated information that is needed is stored in the `map info` dataset. The map info string looks something like this: `"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,`
-`1.000000e+000,11,North,WGS-84,units=Meters" `. Notice that this information is separated by commas. We can use the `strsplit` command in R to extract each element into a vector. The elements are position 4 and 5 represent the lower left hand corner of the raster. We need this information to define the raster's extent.
+First let's grab the spatial information that we need from the HDF5 file. The CRS and associated information that is needed is stored in the `map info` dataset. The map info string looks something like this:
+<br>
+`"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,`
+`1.000000e+000,11,North,WGS-84,units=Meters" `. 
+<br>
+Notice that this information is separated by commas. We can use the `strsplit` command in R to extract each element into a vector. The elements are position 4 and 5 represent the lower left hand corner of the raster. We need this information to define the raster's extent.
 
-	#Populate the raster image extent value. 
-	#get the map info, split out elements
-	mapInfo<-h5read(f,"map info")
-	#Extract each element of the map info information 
-	#so we can extract the lower left hand corner coordinates.
-	mapInfo<-unlist(strsplit(mapInfo, ","))
+
+    #Populate the raster image extent value. 
+    #get the map info, split out elements
+    mapInfo<-h5read(f,"map info")
+    #Extract each element of the map info information 
+    #so we can extract the lower left hand corner coordinates.
+    mapInfo<-unlist(strsplit(mapInfo, ","))
 
 Next we define the extents of our raster. The extents will be used to calculate the raster's resolution. The lower left hand corner is located at mapInfo[4:5]. We can define the final raster dataset extent by adding the number of rows to the Y lower left hand corner coordinate and the number of columns in the `Reflectance` dataset to the X lower left hand corner coordinate.   
 
@@ -528,10 +533,11 @@ Next we define the extents of our raster. The extents will be used to calculate 
     ## [1] 1
 
     #Grab the UTM coordinates of the upper left hand corner of the 
-    #raster for later
-    #grab the left hand corner coordinate
+    #raster for later 
+    
+    #grab the left side x coordinate (xMin)
     xMin <- as.numeric(mapInfo[4]) 
-    #grab the top corner coordinate
+    #grab the top corner coordinate (yMax)
     yMax <- as.numeric(mapInfo[5])
     
     xMin
@@ -563,7 +569,14 @@ Next we define the extents of our raster. The extents will be used to calculate 
     #define the extent (left, right, top, bottom)
     rasExt <- extent(xMin,xMax,yMin,yMax)
     
-    
+    rasExt
+
+    ## class       : Extent 
+    ## xmin        : 256521 
+    ## xmax        : 256998 
+    ## ymin        : 4112069 
+    ## ymax        : 4112571
+
     #Create the projection in as object
     myCRS <- spInfo$projdef
     myCRS
@@ -604,7 +617,7 @@ Next we define the extents of our raster. The extents will be used to calculate 
     image(log(b34r), 
           xlab = "UTM Easting", 
           ylab = "UTM Northing",
-          main= "Properly Positioned Raster")
+          main = "Properly Positioned Raster")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-Work-With-Hyperspectral-Data-In-R/define-extent-1.png) 
 
@@ -630,7 +643,10 @@ as a raster, using the `writeRaster` command.
 
     #write out the raster as a geotiff
     
-    writeRaster(b34r,file="band34.tif",format="GTiff",overwrite=TRUE)
+    writeRaster(b34r,
+                file="band34.tif",
+                format="GTiff",
+                overwrite=TRUE)
     
     
     #close the H5 file

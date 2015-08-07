@@ -118,6 +118,16 @@ image(log(b34))
 
 
 
+## ----read-map-info-------------------------------------------------------
+
+#Populate the raster image extent value. 
+#get the map info, split out elements
+mapInfo<-h5read(f,"map info")
+#Extract each element of the map info information 
+#so we can extract the lower left hand corner coordinates.
+mapInfo<-unlist(strsplit(mapInfo, ","))
+
+
 ## ----define-extent-------------------------------------------------------
 
 #create resolution of raster as an object
@@ -125,10 +135,11 @@ res <- spInfo$xscale
 res
 
 #Grab the UTM coordinates of the upper left hand corner of the 
-#raster for later
-#grab the left hand corner coordinate
+#raster for later 
+
+#grab the left side x coordinate (xMin)
 xMin <- as.numeric(mapInfo[4]) 
-#grab the top corner coordinate
+#grab the top corner coordinate (yMax)
 yMax <- as.numeric(mapInfo[5])
 
 xMin
@@ -151,6 +162,7 @@ yMin
 #define the extent (left, right, top, bottom)
 rasExt <- extent(xMin,xMax,yMin,yMax)
 
+rasExt
 
 #Create the projection in as object
 myCRS <- spInfo$projdef
@@ -172,7 +184,7 @@ b34r
 image(log(b34r), 
       xlab = "UTM Easting", 
       ylab = "UTM Northing",
-      main= "Properly Positioned Raster")
+      main = "Properly Positioned Raster")
 
 
 
@@ -193,7 +205,10 @@ image(b34r,
 ## 
 ## #write out the raster as a geotiff
 ## 
-## writeRaster(b34r,file="band34.tif",format="GTiff",overwrite=TRUE)
+## writeRaster(b34r,
+##             file="band34.tif",
+##             format="GTiff",
+##             overwrite=TRUE)
 ## 
 ## 
 ## #close the H5 file
