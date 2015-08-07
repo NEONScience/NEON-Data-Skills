@@ -551,11 +551,10 @@ Next we define the extents of our raster. The extents will be used to calculate 
     #Calculate the upper right hand corner to define the full extent of the 
     #raster. To do this we need the number of columns and rows in the raster
     #and the resolution.
-    #xMN=as.numeric(mapInfo[4])
+    
     #note that you need to multiple the columns and rows by the resolution of 
     #the data to calculate the proper extent!
     xMax=(xMN+(ncol(b34))*res)
-    #yMX=as.numeric(mapInfo[5]) 
     yMin=(yMX-(nrow(b34))*res)     
     
     xMax
