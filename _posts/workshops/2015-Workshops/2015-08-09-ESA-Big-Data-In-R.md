@@ -49,6 +49,15 @@ REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling 
 <a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
  REQUIRED DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
  
+
+Just added: this data will be required for the afternoon lessons.
+
+<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
+DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
+<p>The data in this HDF5 file were collected over the San Joachim field site 
+located in California (NEON Domain 17) and processed at NEON headquarters. The 
+entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+</p>  
 Just added: this data will be useful for the extra activity in the Intro to HDF5 tutorial.
 
 <a href="http://neonhighered.org/Data/D17_2013_SJER_vegStr.zip" class="btn btn-success">
