@@ -18,7 +18,7 @@ image:
   credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/
-code1: 2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: R/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
 comments: true
 ---
 

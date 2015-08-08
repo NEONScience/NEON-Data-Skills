@@ -114,7 +114,7 @@ image(log(b34))
 
 #We need to transpose x and y values in order for our final image to plot properly
 b34<-t(b34)
-image(log(b34))
+image(log(b34), main="Transposed image")
 
 
 
@@ -127,15 +127,18 @@ mapInfo<-h5read(f,"map info")
 #so we can extract the lower left hand corner coordinates.
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
+#view the attributes in the map dataset
+mapInfo
+
 
 ## ----define-extent-------------------------------------------------------
 
-#create resolution of raster as an object
+#grab resolution of raster as an object
 res <- spInfo$xscale
 res
 
 #Grab the UTM coordinates of the upper left hand corner of the 
-#raster for later 
+#raster
 
 #grab the left side x coordinate (xMin)
 xMin <- as.numeric(mapInfo[4]) 
@@ -146,9 +149,9 @@ xMin
 yMax
 
 
-#Calculate the upper right hand corner to define the full extent of the 
+#Calculate the lower right hand corner to define the full extent of the 
 #raster. To do this we need the number of columns and rows in the raster
-#and the resolution.
+#and the resolution of the raster.
 
 #note that you need to multiple the columns and rows by the resolution of 
 #the data to calculate the proper extent!
@@ -163,6 +166,17 @@ rasExt <- extent(xMin,xMax,yMin,yMax)
 
 rasExt
 
+
+
+#assign the spatial extent to the raster
+extent(b34r) <- rasExt
+
+#look at raster attributes
+b34r
+
+
+## ----define-CRS----------------------------------------------------------
+
 #Create the projection in as object
 myCRS <- spInfo$projdef
 myCRS
@@ -175,10 +189,8 @@ b34r<-raster(b34,
 
 b34r
 
-#assign the spatial extent to the raster
-extent(b34r) <- rasExt
-#look at raster attributes
-b34r
+#let's have a look at our properly positioned raster. Take note of the 
+#coordinates on the x and y axis.
 
 image(log(b34r), 
       xlab = "UTM Easting", 
@@ -209,7 +221,7 @@ image(b34r,
 ##             format="GTiff",
 ##             overwrite=TRUE)
 ## 
-## 
+## #It's always good practice to close the H5 connection before moving on!
 ## #close the H5 file
 ## H5close()
 ## 
