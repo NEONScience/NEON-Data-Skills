@@ -411,21 +411,12 @@ than UTM coordinates.
 
     #Create a Map showing the location of our dataset in R
     library(maps)
-
-    ## Error in library(maps): there is no package called 'maps'
-
     map(database="state",region="california")
-
-    ## Error in eval(expr, envir, enclos): could not find function "map"
-
     points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
-
-    ## Error in plot.xy(xy.coords(x, y), type = type, ...): plot.new has not been called yet
-
     #add title to map.
     title(main="NEON San Joaquin Field Site - Southern California")
 
-    ## Error in title(main = "NEON San Joaquin Field Site - Southern California"): plot.new has not been called yet
+![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/create-location-map-1.png) 
 
 ## 3. Raster Math - Creating NDVI and other Vegetation Indices in R
 In this last part, we will calculate some vegetation indices using raster math 
