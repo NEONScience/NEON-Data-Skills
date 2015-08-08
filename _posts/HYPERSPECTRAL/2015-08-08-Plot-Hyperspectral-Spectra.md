@@ -122,6 +122,9 @@ file.
 
     #read in the wavelength information from the HDF5 file
     wavelengths<- h5read(f,"wavelength")
+    #convert wavelength to nanometers (nm)
+    #NOTE: this is optional!
+    wavelengths <- wavelengths*1000
 ##Extract Z-dimension data slice
 
 Next, we will extract all reflectance values for one pixel. This makes up the 
@@ -146,12 +149,12 @@ function.
     head(aPixeldf)
 
     ##    V1 Wavelength
-    ## 1 237    0.38227
-    ## 2 240    0.38728
-    ## 3 298    0.39229
-    ## 4 278    0.39730
-    ## 5 207    0.40231
-    ## 6 235    0.40732
+    ## 1 237     382.27
+    ## 2 240     387.28
+    ## 3 298     392.29
+    ## 4 278     397.30
+    ## 5 207     402.31
+    ## 6 235     407.32
 
 ##Scale Factor
 
@@ -173,12 +176,12 @@ by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the dat
     head(aPixeldf)
 
     ##   Reflectance Wavelength ScaledReflectance
-    ## 1         237    0.38227            0.0237
-    ## 2         240    0.38728            0.0240
-    ## 3         298    0.39229            0.0298
-    ## 4         278    0.39730            0.0278
-    ## 5         207    0.40231            0.0207
-    ## 6         235    0.40732            0.0235
+    ## 1         237     382.27            0.0237
+    ## 2         240     387.28            0.0240
+    ## 3         298     392.29            0.0298
+    ## 4         278     397.30            0.0278
+    ## 5         207     402.31            0.0207
+    ## 6         235     407.32            0.0235
 
 ##Plot Spectral Profile
 

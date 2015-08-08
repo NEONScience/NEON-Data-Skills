@@ -28,6 +28,9 @@ reflInfo <- h5readAttributes(f,"Reflectance")
 
 #read in the wavelength information from the HDF5 file
 wavelengths<- h5read(f,"wavelength")
+#convert wavelength to nanometers (nm)
+#NOTE: this is optional!
+wavelengths <- wavelengths*1000
 
 
 ## ----extract-spectra-----------------------------------------------------
