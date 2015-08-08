@@ -18,7 +18,7 @@ image:
   credit: Colin Williams NEON, Inc.
   creditlink: http://www.neoninc.org
 permalink: /HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/
-code1: 2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: R/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
 comments: true
 ---
 
@@ -163,7 +163,7 @@ We'll begin by grabbing these key attributes from the H5 file.
     
     #grab the utm coordinates of the lower left corner
     xMin<-as.numeric(mapInfo[4])
-    yMin<-as.numeric(mapInfo[5]) 
+    yMax<-as.numeric(mapInfo[5]) 
     
     #r get attributes for the Reflectance dataset
     reflInfo <- h5readAttributes(f,"Reflectance")
@@ -176,10 +176,10 @@ We'll begin by grabbing these key attributes from the H5 file.
     nBands <- reflInfo$row_col_band[3]
     
     #grab the no data value
-    #noDataValue <- reflInfo$data ignore value
-    
-    #grab the resolution for the data
-    #scaleFactor <- reflInfo[3]
+    myNoDataValue <- reflInfo$`data ignore value`
+    myNoDataValue
+
+    ## [1] "15000"
 
 Next, we'll write a function that will perform the processing that we did step by 
 step in the [intro to working with hyperspectral data activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/). This will allow us to process multiple bands 
@@ -216,7 +216,7 @@ The function output is a spatially referenced, `r` raster object.
     	  out <-t(out)
         #assign data ignore values to NA
         #note, you might chose to assign values of 15000 to NA
-        out[out == noDataValue] <- NA
+        out[out == myNoDataValue] <- NA
     	  
         #turn the out object into a raster
         outr <- raster(out,crs=myCrs)
@@ -225,7 +225,7 @@ The function output is a spatially referenced, `r` raster object.
         #note that you need to multiple the size of the raster by the resolution 
         #(the size of each pixel) in order for this to work properly
         xMax <- xMin + (outr@ncols * res)
-        yMax <- yMin + (outr@nrows * res)
+        yMin <- yMax - (outr@nrows * res)
      
         #create extents class
         rasExt  <- extent(xMin,xMax,yMin,yMax)
@@ -254,7 +254,7 @@ for each band.
     rgb <- list(58,34,19)
     #lapply tells R to apply the function to each element in the list
     rgb_rast <- lapply(rgb,band2Raster, file = f, 
-                       noDataValue=15000, 
+                       noDataValue=myNoDataValue, 
                        xMin=xMin, yMin=yMin, res=1,
                        crs=myCrs)
     
@@ -267,8 +267,8 @@ for each band.
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
     ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84 
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
     ## values      : 123, 15453  (min, max)
@@ -278,8 +278,8 @@ for each band.
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
     ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84 
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
     ## values      : 116, 15677  (min, max)
@@ -289,8 +289,8 @@ for each band.
     ## class       : RasterLayer 
     ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
     ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84 
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## data source : in memory
     ## names       : layer 
     ## values      : 84, 13805  (min, max)
@@ -320,14 +320,15 @@ Next, add the names of the bands to the raster so we can easily keep track of th
     ## class       : RasterStack 
     ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
     ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84 
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## names       : Band_58, Band_34, Band_19 
     ## min values  :     123,     116,      84 
     ## max values  :   15453,   15677,   13805
 
     #scale the data as specified in the reflInfo$Scale Factor
-    hsiStack <- hsiStack/10000
+    
+    hsiStack <- hsiStack/reflInfo$`Scale Factor`
     
     ### Plot one raster in the stack to make sure things look OK.
     plot(hsiStack$Band_58, main="Band 58")
@@ -381,8 +382,6 @@ Once you've created your raster, you can export it as a geotiff.
     #version of the tif file! keep this in mind.
     writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
-
-
 <i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.
 What type of image do you get when you change the band values?
@@ -412,12 +411,21 @@ than UTM coordinates.
 
     #Create a Map showing the location of our dataset in R
     library(maps)
+
+    ## Error in library(maps): there is no package called 'maps'
+
     map(database="state",region="california")
+
+    ## Error in eval(expr, envir, enclos): could not find function "map"
+
     points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
+
+    ## Error in plot.xy(xy.coords(x, y), type = type, ...): plot.new has not been called yet
+
     #add title to map.
     title(main="NEON San Joaquin Field Site - Southern California")
 
-![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/create-location-map-1.png) 
+    ## Error in title(main = "NEON San Joaquin Field Site - Southern California"): plot.new has not been called yet
 
 ## 3. Raster Math - Creating NDVI and other Vegetation Indices in R
 In this last part, we will calculate some vegetation indices using raster math 
@@ -452,8 +460,8 @@ the best way to calculate NDVI from hyperspectral data!
     ## class       : RasterStack 
     ## dimensions  : 502, 477, 239454, 2  (nrow, ncol, ncell, nlayers)
     ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112571, 4113073  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm  +zone=11N +ellps=WGS84 +datum=WGS84 
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
     ## names       : Band_58, Band_90 
     ## min values  :     123,     315 
     ## max values  :   15453,   15293

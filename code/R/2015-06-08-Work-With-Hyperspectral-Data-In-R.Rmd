@@ -190,6 +190,7 @@ file.
 #read in the wavelength information from the HDF5 file
 wavelengths<- h5read(f,"wavelength")
 
+
 ```
 
 
@@ -372,11 +373,11 @@ Remember that the metadata for the `Reflectance` dataset designated 15,000 as
 ```{r set-values-NA}
 
 #there is a no data value in our raster - let's define it
-noDataValue <- as.numeric(reflInfo$`data ignore value`)
-noDataValue
+myNoDataValue <- as.numeric(reflInfo$`data ignore value`)
+myNoDataValue
 
 #set all values greater than 15,000 to NA
-b34[b34 == noDataValue] <- NA
+b34[b34 == myNoDataValue] <- NA
 
 ```
 
@@ -526,8 +527,8 @@ yMax
 
 #note that you need to multiple the columns and rows by the resolution of 
 #the data to calculate the proper extent!
-xMax=(xMN+(ncol(b34))*res)
-yMin=(yMX-(nrow(b34))*res)     
+xMax <- (xMin + (ncol(b34))*res)
+yMin <- (yMax - (nrow(b34))*res) 
 
 xMax
 yMin
@@ -562,8 +563,8 @@ myCRS
 #define final raster with projection info 
 #note that capitalization will throw errors on a MAC.
 #if UTM is all caps it might cause an error!
-b34r<-raster(b34, 
-      crs=myCRS)
+b34r <- raster(b34, 
+        crs=myCRS)
 
 b34r
 
@@ -627,7 +628,7 @@ e.g. `b34[b34 > 6000 ] <- 10000`
 3. Extra tricky -- use what you know to extract ALL of the reflectance values for
 ONE pixel rather than for an entire band. HINT: this will require you to pick
 an x and y value and then all values in the z dimension:
-'aPixel<- >h5read(f,"Reflectance",index=list(54,36,NULL))'. Plot the spectra output.
+`aPixel<- h5read(f,"Reflectance",index=list(54,36,NULL))`. Plot the spectra output.
 {: .notice}
 
  

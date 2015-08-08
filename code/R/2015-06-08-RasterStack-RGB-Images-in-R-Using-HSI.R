@@ -12,6 +12,7 @@ f <- 'SJER_140123_chip.h5'
 #View HDF5 file structure 
 h5ls(f,all=T)
 
+
 ## ----get-spatial-attributes----------------------------------------------
 
 #r get spatial info and map info using the h5readAttributes function
@@ -30,7 +31,7 @@ mapInfo<-unlist(strsplit(mapInfo, ","))
 
 #grab the utm coordinates of the lower left corner
 xMin<-as.numeric(mapInfo[4])
-yMin<-as.numeric(mapInfo[5]) 
+yMax<-as.numeric(mapInfo[5]) 
 
 #r get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
@@ -43,10 +44,8 @@ nCols <- reflInfo$row_col_band[2]
 nBands <- reflInfo$row_col_band[3]
 
 #grab the no data value
-#noDataValue <- reflInfo$data ignore value
-
-#grab the resolution for the data
-#scaleFactor <- reflInfo[3]
+myNoDataValue <- reflInfo$`data ignore value`
+myNoDataValue
 
 
 ## ----function-read-refl-data---------------------------------------------
@@ -66,7 +65,7 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
 	  out <-t(out)
     #assign data ignore values to NA
     #note, you might chose to assign values of 15000 to NA
-    out[out == noDataValue] <- NA
+    out[out == myNoDataValue] <- NA
 	  
     #turn the out object into a raster
     outr <- raster(out,crs=myCrs)
@@ -75,7 +74,7 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
     #note that you need to multiple the size of the raster by the resolution 
     #(the size of each pixel) in order for this to work properly
     xMax <- xMin + (outr@ncols * res)
-    yMax <- yMin + (outr@nrows * res)
+    yMin <- yMax - (outr@nrows * res)
  
     #create extents class
     rasExt  <- extent(xMin,xMax,yMin,yMax)
@@ -94,7 +93,7 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
 rgb <- list(58,34,19)
 #lapply tells R to apply the function to each element in the list
 rgb_rast <- lapply(rgb,band2Raster, file = f, 
-                   noDataValue=15000, 
+                   noDataValue=myNoDataValue, 
                    xMin=xMin, yMin=yMin, res=1,
                    crs=myCrs)
 
@@ -121,7 +120,8 @@ names(hsiStack) <- bandNames
 hsiStack
 
 #scale the data as specified in the reflInfo$Scale Factor
-hsiStack <- hsiStack/10000
+
+hsiStack <- hsiStack/reflInfo$`Scale Factor`
 
 ### Plot one raster in the stack to make sure things look OK.
 plot(hsiStack$Band_58, main="Band 58")

@@ -42,6 +42,7 @@ reflInfo <- h5readAttributes(f,"Reflectance")
 wavelengths<- h5read(f,"wavelength")
 
 
+
 ## ----get-reflectance-shape-----------------------------------------------
 
 #note that we can grab the dimensions of the dataset from the attributes
@@ -98,11 +99,11 @@ hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 ## ----set-values-NA-------------------------------------------------------
 
 #there is a no data value in our raster - let's define it
-noDataValue <- as.numeric(reflInfo$`data ignore value`)
-noDataValue
+myNoDataValue <- as.numeric(reflInfo$`data ignore value`)
+myNoDataValue
 
 #set all values greater than 15,000 to NA
-b34[b34 == noDataValue] <- NA
+b34[b34 == myNoDataValue] <- NA
 
 
 ## ----plot-log------------------------------------------------------------
@@ -155,8 +156,8 @@ yMax
 
 #note that you need to multiple the columns and rows by the resolution of 
 #the data to calculate the proper extent!
-xMax=(xMN+(ncol(b34))*res)
-yMin=(yMX-(nrow(b34))*res)     
+xMax <- (xMin + (ncol(b34))*res)
+yMin <- (yMax - (nrow(b34))*res) 
 
 xMax
 yMin
@@ -184,8 +185,8 @@ myCRS
 #define final raster with projection info 
 #note that capitalization will throw errors on a MAC.
 #if UTM is all caps it might cause an error!
-b34r<-raster(b34, 
-      crs=myCRS)
+b34r <- raster(b34, 
+        crs=myCRS)
 
 b34r
 

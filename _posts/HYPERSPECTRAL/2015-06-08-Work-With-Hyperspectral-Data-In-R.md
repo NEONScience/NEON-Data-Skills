@@ -404,13 +404,13 @@ Remember that the metadata for the `Reflectance` dataset designated 15,000 as
 
 
     #there is a no data value in our raster - let's define it
-    noDataValue <- as.numeric(reflInfo$`data ignore value`)
-    noDataValue
+    myNoDataValue <- as.numeric(reflInfo$`data ignore value`)
+    myNoDataValue
 
     ## [1] 15000
 
     #set all values greater than 15,000 to NA
-    b34[b34 == noDataValue] <- NA
+    b34[b34 == myNoDataValue] <- NA
 
 	
 	
@@ -561,8 +561,8 @@ Next we define the extents of our raster. The extents will be used to calculate 
     
     #note that you need to multiple the columns and rows by the resolution of 
     #the data to calculate the proper extent!
-    xMax=(xMN+(ncol(b34))*res)
-    yMin=(yMX-(nrow(b34))*res)     
+    xMax <- (xMin + (ncol(b34))*res)
+    yMin <- (yMax - (nrow(b34))*res) 
     
     xMax
 
@@ -614,8 +614,8 @@ string from the HDF5 attributes. Then we can assign that CRS to the raster objec
     #define final raster with projection info 
     #note that capitalization will throw errors on a MAC.
     #if UTM is all caps it might cause an error!
-    b34r<-raster(b34, 
-          crs=myCRS)
+    b34r <- raster(b34, 
+            crs=myCRS)
     
     b34r
 
