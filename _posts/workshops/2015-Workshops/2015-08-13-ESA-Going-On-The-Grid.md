@@ -40,7 +40,7 @@ Visit the Workshop Etherpad</a>
 
 **Date:** 13 August 2015 - Ecological Society of America Meeting
 
-**Location:** Baltimore, Maryland
+**Location:** Baltimore, Maryland - Baltimore Convention Center Rm 311
 
 Scientists often need to create continuous datasets, in raster or gridded format, 
 of biomass, carbon, vegetation height and other metrics from points sampled on the 
