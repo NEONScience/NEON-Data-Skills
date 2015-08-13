@@ -543,6 +543,7 @@ via command line.
 ###R commands
 
 The commands below can be used to create grids in R. 
+
 * `gstat::idw()`
 * `stats::loess()`
 * `akima::interp()`
