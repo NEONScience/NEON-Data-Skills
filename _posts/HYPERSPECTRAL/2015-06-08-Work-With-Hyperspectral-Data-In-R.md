@@ -682,8 +682,7 @@ e.g. `b34[b34 > 6000 ] <- 10000`
 
 3. Extra tricky -- use what you know to extract ALL of the reflectance values for
 ONE pixel rather than for an entire band. HINT: this will require you to pick
-an x and y value and then all values in the z dimension:
-`aPixel<- h5read(f,"Reflectance",index=list(54,36,NULL))`. Plot the spectra output.
+an x and y value and then all values in the z dimension. Plot the spectra output.
 {: .notice}
 
  
