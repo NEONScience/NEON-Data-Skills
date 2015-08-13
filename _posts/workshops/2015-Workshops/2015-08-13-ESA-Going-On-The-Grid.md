@@ -120,7 +120,7 @@ Also you can tweet at <a href="https://twitter.com/neoninc" target="_blank">
 @neoninc</a>!
 
 
-##TENTATIVE SCHEDULE
+## SCHEDULE
 
 Please note that we are still developing the agenda for this workshop. The 
 schedule below is subject to change.
@@ -133,6 +133,8 @@ schedule below is subject to change.
 
 
 >NOTE: we will not cover geostatistical methods in this brown bag!
+
+
 
 #About the Data
 The LiDAR data that we will use for this brown-bag were collected over the 
@@ -157,6 +159,9 @@ point clouds to see
 how interpolation impacts a lidar dataset gridded at its native resolution with 
 all of the available points present compared to a thinned dataset gridding using
 various interpolation methods. 
+
+
+
 
 ##Creating Surfaces From Points
 
@@ -506,3 +511,39 @@ Notes about Natural Neighbor
 number of points of distance). 
 * Data where sample points further away from or beyond the immediate "neighbor points"
 need to be considered in the estimation.
+
+
+#Additional Resources
+
+Please find some additional resources associated with gridding in `R`, `GRASS GIS` and
+`QGIS`.
+
+### QGIS tools
+
+* Interpolation plugin
+* Rasterize (Vector to Raster)
+
+The QGIS processing toolbox provides easy access to Grass commands. 
+
+###Grass commands
+
+* `v.surf.idw` - Surface interpolation from vector point data by Inverse Distance Squared Weighting
+* `v.surf.bspline` - Bicubic or bilinear spline interpolation with Tykhonov regularization
+* `v.surf.rst` - Spatial approximation and topographic analysis using regularized spline with tension
+* `v.to.rast.value `- Converts (rasterize) a vector layer into a raster layer
+* `v.delaunay` - Creates a Delaunay triangulation from an input vector map containing points or centroids
+* `v.voronoi` - Creates a Voronoi diagram from an input vector layer containing points 
+
+The above commands are just a few that support grinding in GRASS. You can also access GRASS
+via command line.
+
+###R commands
+
+The commands below can be used to create grids in R. 
+* `gstat::idw()`
+* `stats::loess()`
+* `akima::interp()`
+* `fields::Tps()`
+* `fields::splint()`
+* `spatial::surf.ls()`
+* `geospt::rbf()`
