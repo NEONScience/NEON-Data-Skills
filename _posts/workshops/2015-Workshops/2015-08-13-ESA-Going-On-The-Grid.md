@@ -35,6 +35,9 @@ comments: true
 
 ###A NEON #WorkWithData Event
 
+<a href="https://etherpad.mozilla.org/gridding-ESA2015" class="btn btn-info" target="_blank"> 
+Visit the Workshop Etherpad</a>
+
 **Date:** 13 August 2015 - Ecological Society of America Meeting
 
 **Location:** Baltimore, Maryland
