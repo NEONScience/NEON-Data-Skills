@@ -9,7 +9,9 @@ categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
 mainTag: GIS-Spatial-Data
-description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
+description: "This post explains the fundamental principles, functions and metadata that 
+you need to work with raster data, in image format in R. Topics include raster stacks, raster bricks
+plotting RGB images and exporting an RGB image to a Geotiff."
 code1: 
 image:
   feature: lidar_GrandMesa.png
