@@ -166,7 +166,7 @@ that we will use for both data processing and visualization.
 
 More Information on raster metadata:
 
-* [Metadata to understand when working with raster data](http://neondataskills.org/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
+* [Metadata to understand when working with raster data](http://neondataskills.org/R/Image-Raster-Data-In-R/ "Key Attributes of Raster Data")
 
 * [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters](http://neondataskills.org/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
 
