@@ -740,7 +740,7 @@ See that it is actually a special list:
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |
 | 1-D | atomic vector | list |
-| 2_D | matrix | data frame |
+| 2-D | matrix | data frame |
 
 ### Indexing
 
