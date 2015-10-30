@@ -236,7 +236,7 @@ You can create an empty vector with `vector()`. (By default the mode is `logical
 `OUTPUT: [1] FALSE FALSE FALSE FALSE FALSE`
 
 
-Some othe examples of creating objects in R follow:
+Some other examples of creating objects in R follow:
 
 
 	x <- c(1, 2, 3)
