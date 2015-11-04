@@ -23,7 +23,8 @@ comments: true
 {% include _toc.html %}
 
 
-###A NEON #WorkWithData Event
+**A NEON #WorkWithData Event**
+
 ##About the NEON / Data Carpentry Hackathon 
 
 
@@ -35,17 +36,13 @@ The National Ecological Observatory Network (NEON) is hosting a 3-day lesson-bui
 
 The data used for the lesson building includes NEON and other complementary data.
 
-[Spatio-Temporal Data / Sample Code]( {{base.url }} /R/spatio-temporal/ )
-
-http://neondataskills.org/R/spatio-temporal/
+[Spatio-Temporal Data / Sample Code]({{base.url }}/R/spatio-temporal/)
 
 ##Outcomes - Data Lesson Development
 
-Hackathon efforts resulted in draft content for TWO workshops as described below:
+Hackathon efforts resulted in draft content for TWO workshops as described below. Final lesson content, when complete, will be posted on the [NEONdataskills.org](http://www.neondataskills.org) website!
 
-Intro to Spatio-Temporal Data in R
-
-https://github.com/data-lessons/NEON-R-Spatial-Data-Intro
+###Intro to Spatio-Temporal Data in R
 
 * <a href="https://github.com/data-lessons/NEON-R-Spatial-Data-Intro" target="_blank">Introduction to Spatio
 temporal data.</a>
@@ -53,3 +50,7 @@ temporal data.</a>
 * <a href="http://data-lessons.github.io/NEON-R-Spatial-Vector/" target="_blank">Vector data (shapefiles) in R</a>
 * <a href="http://data-lessons.github.io/NEON-R-Tabular-Time-Series/" target="_blank">Time series data in R</a>
 * <a href="https://github.com/data-lessons/NEON-R-Make-Pretty-Maps-Plots" target="_blank">Maps & Advanced Data Visualization in R</a>
+
+###Introduction to Hyperspectral Remote Sensing & Lidar Data in R
+
+* <a href="https://github.com/data-lessons/NEON-R-Remote-Sensing" target="_blank">Introduction to Remote Sensing data in R</a>
