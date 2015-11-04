@@ -44,6 +44,8 @@ Hackathon efforts resulted in draft content for TWO workshops as described below
 
 ###Intro to Spatio-Temporal Data in R
 
+NOTE: all content below is under development and in ROUGH DRAFT form!
+
 * <a href="https://github.com/data-lessons/NEON-R-Spatial-Data-Intro" target="_blank">Introduction to Spatio
 temporal data.</a>
 * <a href="http://data-lessons.github.io/NEON-R-Spatial-Raster/" target="_blank">Raster data & raster time series in R</a>
@@ -52,5 +54,8 @@ temporal data.</a>
 * <a href="https://github.com/data-lessons/NEON-R-Make-Pretty-Maps-Plots" target="_blank">Maps & Advanced Data Visualization in R</a>
 
 ###Introduction to Hyperspectral Remote Sensing & Lidar Data in R
+
+NOTE: all content below is under development and in ROUGH DRAFT form!
+
 
 * <a href="https://github.com/data-lessons/NEON-R-Remote-Sensing" target="_blank">Introduction to Remote Sensing data in R</a>
