@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Spatio-Temporal / NEON Data Workshop "
-date:   2015-10-15
+date:   2015-10-15R
 permalink: /R/spatio-temporal/
 ---
 
