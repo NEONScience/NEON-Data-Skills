@@ -63,6 +63,12 @@ entire dataset and data for other field sites can be accessed from the <a href="
 <p>.</p>
 </div>
 
+
+```{r load-libraries}
+
+library("ggplot2")
+```
+
 ##Import Our Data
 First, let's import the csv that contains the time series data.
 
@@ -82,10 +88,10 @@ disArik <- read.csv("streamDischarge/NEON.D02.POSE.DP1.20048.001.dsc_fieldData.c
 disArik$collectDate <- gsub("T", " ", disArik$collectDate)
 
 #remove the z
-disArik$collectDate <- gsub("Z", " ",  a)
+disArik$collectDate <- gsub("Z", " ",  disArik$collectDate)
 
 #set the field to be a date field
-disArik$collectDate <- as.POSIXct(b,format = "%Y-%m-%d %H:%M:%S", 
+disArik$collectDate <- as.POSIXct(disArik$collectDate,format = "%Y-%m-%d %H:%M:%S", 
                         tz = "GMT")
 
 #list of time zones
