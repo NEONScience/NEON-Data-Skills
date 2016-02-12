@@ -1,33 +1,26 @@
 ---
 layout: post
 title: "HDFView: Exploring HDF5 Files in the Free HDFview Tool"
-date:   2015-1-30 20:49:52
-lastModified:   2015-1-10 20:49:52
-createdDate:   2014-11-19 20:49:52
+date:   2015-05-28
+lastModified:   2015-1-10
+createdDate:   2014-11-19
 estimatedTime: 0.25 - 0.5 Hours
-packagesLibraries: HDFview
-authors: Leah A. Wasser
-categories: [coding-and-informatics]
-category: coding-and-informatics
+packagesLibraries:
+authors: [Leah A. Wasser]
+categories: [self-paced-tutorial]
 tags: [HDF5]
 mainTag: HDF5
+tutorialSeries: [intro-hdf5-r-series]
 description: "Explore HDF5 files and the groups and datasets contained within, using the free HDFview tool. See how HDF5 files can be structured and explore metadata. Explore both spatial and temporal data stored in HDF5!"
 code1: 
 image:
   feature: hierarchy_folder_green.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/Exploring-Data-HDFView
 ---
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+
+{% include _toc.html %}
 
 
 <div id="objectives">
@@ -55,14 +48,14 @@ NOTE: The second file downloaded above has an ".h5" extension while the first
 has an HDF5 extension. Both extensions represent the HDF5 data type.
 </div>
 
-###About Installing HDFView
+### About Installing HDFView
 Select the HDFView download option that matches the operating system and computer
  setup (32 bit vs 64 bit) that you have. If you are using a windows machine, you 
 can click on the VS 2012 version. Click on the operating system name (ie Windows 
 or Mac).
 
 
-##Review: Hierarchical Data Format 5 - HDF5
+## Review: Hierarchical Data Format 5 - HDF5
 
 We learned previously that the Hierarchical Data Format version 5 (HDF5), is an 
 open file format that supports large, complex, heterogeneous data. Some key 
@@ -76,12 +69,12 @@ points about HDF5:
 -  numeric data, data stored as strings) 
 
 
-##About This Activity - 
+## About This Activity - 
 In this activity, we will explore two different types of data, saved in HDF5. 
 This will allow us to better understand how one file can store multiple different 
 types of data, in different ways.
 
-#Part 1. Exploring Temperature Data in HDF5 Format in HDFView
+###Part 1. Exploring Temperature Data in HDF5 Format in HDFView
 
 The first thing that we will do is open an HDF5 file in the viewer to get a
  better idea of how HDF5 files can be structured.
@@ -150,7 +143,7 @@ explore this HDF5 dataset within the HDF viewer.
 
 Next, we will look at a spatial data stored in HDF5 format.
 
-#Part 2. Exploring Hyperspectral Imagery stored in HDF5
+### Part 2. Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
     <a href="{{ site.baseurl }}/images/aop_0.jpg"><img src="{{ site.baseurl }}/images/aop_0.jpg"></a>

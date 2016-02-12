@@ -1,15 +1,15 @@
 ---
 layout: post
 title: "Mapping the Invisible - About Optical Remote Sensing Sensors"
-date:   2015-3-23 20:49:52
-createdDate:   2015-3-23 20:49:52
-lastModified: 2015-3-23 20:49:52
+date: 2015-3-23
+createdDate: 2015-3-23
+lastModified: 2015-3-23
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 authors: Leah A. Wasser
-categories: [remote-sensing]
-category: remote-sensing
-tags: [hyperspectral-remote-sensing]
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [hyperspectral-remote-sensing, remote-sensing]
 mainTag: hyperspectral-remote-sensing
 description: "Learn how optical sensors like cameras and remote sensing sensors like Landsat and MODIS work."
 code1: 

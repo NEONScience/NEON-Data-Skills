@@ -1,36 +1,28 @@
 ---
 layout: post
 title: "R: Creating HDF5 Files in R Using Loops"
-date:   2015-1-29 15:22:52
-dateCreated: 2014-11-18 20:49:52
-lastModified: 2015-05-19 20:49:52
+date:   2015-1-29
+dateCreated: 2014-11-18
+lastModified: 2015-05-19
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: RHDF5
-authors: Ted Hart, Leah Wasser - Adapted from Software Carpentry Materials by Leah A. Wasser
-contributors: Elizabeth Webb
-categories: [coding-and-informatics]
-category: coding-and-informatics
-tags: [HDF5,R]
+packagesLibraries: [rhdf5]
+authors: [Ted Hart, Leah Wasser, Adapted From Software Carpentry ]
+contributors: [Elizabeth Webb]
+categories: [self-paced-tutorial]
+tags: [HDF5, R]
 mainTag: HDF5
+tutorialSeries: [intro-hdf5-r-series]
 description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files in the HDFviewer."
 code1: R_Create_Modify_Hdf5.R
 image:
   feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/Create-HDF5-In-R/
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 <div id="objectives">
 <strong>R Skill Level: </strong> intermediate
@@ -65,7 +57,7 @@ attached to it making HDF5 files "self-describing".
 
 [Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
 
-##HDF5 in R
+## HDF5 in R
 
 To access HDF5 files in `R`, you need base <a href="http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain" target="_blank">HDF5 libraries</a> installed on your computer. 
 It might also be useful to install <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the free HDF5 viewer</a> which will allow you to explore the 
@@ -204,7 +196,7 @@ could be composed of all strings (characters). A group can contain a mix of stri
 and number based datasets.  However a dataset can also be mixed within the dataset 
 containing a combination of numbers and strings. 
 
-##Add Metdata to HDF5 Files
+## Add Metdata to HDF5 Files
 
 Some metadata can be added to an HDF5 file in R by creating attributes in R objects before adding them to the HDF5 file. Let's look at an example of how we do this. We'll add the units of our data as an attribute of the R matrix before adding it to the HDF5 file. Note that `write.attributes = TRUE` is needed when you write to the HDF5 file, in order to add metadata to the dataset.
 
@@ -227,7 +219,7 @@ We just learned how to create an HDF5 file and write information to the file. We
 	l1p1s <- h5read("sensorData.h5","location1/precip",read.attributes = T,index = list(1:10,NULL))
 
 
-###Extra Credit If you get done early...###
+### Extra Credit If you get done early...###
 
 * Think about an application for HDF5 that you might have. Create a new HDF5 File that would support the data that you need to store. 
 *  Open the sensordata.H5 file in the HDFviewer.

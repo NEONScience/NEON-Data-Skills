@@ -1,12 +1,14 @@
 ---
 layout: post
 title: "R Shiny basics"
-date:   2015-05-19 15:42:00
-authors: Claire K. Lunch, Christine M. Laney
-categories: [R Training]
-category: coding-and-informatics
+date:   2015-05-19
+createdDate: 2015-05-19
+lastModified: 2015-05-19
+authors: [Claire K. Lunch, Christine M. Laney]
+categories: [self-paced-tutorial]
 tags: [R, data-viz]
 mainTag: data-viz
+librariesPackages: [shiny, shinyBS]
 description: "This lesson will guide you through making a simple shiny app."
 code1: 
 image:

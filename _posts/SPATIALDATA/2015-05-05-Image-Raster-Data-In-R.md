@@ -1,14 +1,15 @@
 ---
 layout: post
 title: "Image Raster Data in R - An Intro"
-date:   2015-05-18 20:49:52
-authors: Leah A. Wasser
-dateCreated:  2015-05-18 20:49:52
-lastModified: 2015-05-18 20:49:52
-categories: [Coding and Informatics]
-category: coding-and-informatics
-tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
-mainTag: GIS-Spatial-Data
+date:   2015-05-18
+authors: [Leah A. Wasser]
+dateCreated:  2015-05-18
+lastModified: 2015-05-18
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [hyperspectral-remote-sensing, R, spatial-data-gis, remote-sensing]
+packagesLibraries: [raster, sp, rgdal]
+mainTag: spatial-data-gis
 description: "This post explains the fundamental principles, functions and metadata that 
 you need to work with raster data, in image format in R. Topics include raster stacks, raster bricks
 plotting RGB images and exporting an RGB image to a Geotiff."
@@ -16,23 +17,15 @@ code1:
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink:
 permalink: /R/Image-Raster-Data-In-R/
 code1: R/image-rasters-R.R
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
-###About
+### About
 This activity will walk you through the fundamental principles of working 
 with image raster data in R.
 **R Skill Level:** Intermediate
@@ -70,7 +63,7 @@ headquarters. The entire dataset can be accessed by request from the NEON websit
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>
 <li>
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/">
+<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/">
 Please read "Working With Rasters in R, Python and other NON gui tools.</a>
 </li>
 <li>
@@ -84,7 +77,7 @@ Read more about the `raster` package in R.</a>
 </ul>
 </div>
 
-###Review - Raster Data
+### Review - Raster Data
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
 each pixel represents an area on the Earth's surface. An color image raster, is a bit different from other rasters in that it has multiple bands. Each band represents reflectance values for a particular color or type of light. If the image is RGB, then the bands are in the red, green and blue portions of the spectrum. These colors together create what we know as a full color image.
 
@@ -197,7 +190,7 @@ You can also explore the data.
 </figure>
 
 
-##Raster Bricks in R
+## Raster Bricks in R
 Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images. Raster bricks are more efficient objects to use when processing larger datasets. This is because the computer doesn't have to spend energy finding the data - it is contained within the object.
 
 	#create raster brick
@@ -232,7 +225,7 @@ We can write out the raster in tiff format as well. When we do this it will copy
 	#write the geotiff - change overwrite=TRUE to overwrite=FALSE if you want to make sure you don't overwrite your files!
 	writeRaster(finalRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
 
-##Import A Multi-Band Image into R
+## Import A Multi-Band Image into R
 You can import a multi-band image into R too. To do this, you import the file as a stack rather than a raster (which brings in just one band). Let's import the raster than we just created above.
 
 	#Import Multi-Band raster

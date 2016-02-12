@@ -1,25 +1,26 @@
 ---
 layout: post
 title:  "Activity: Free Online Data Viz to Explore LiDAR Data"
-date:   2014-7-19 11:00:52
-createdDate:   2014-07-21 20:49:52
-lastModified:   2015-1-06 22:33:52
+date:   2014-7-19 
+createdDate:   2014-07-21 
+lastModified:   2015-1-06 
 estimatedTime: 0.25 - 0.5 Hours
-packagesLibraries: plas.io website
-category: remote-sensing
-categories: [Remote Sensing]
-tags : [lidar]
+packagesLibraries:
+categories: [self-paced-tutorial]
+tags: [lidar, remote-sensing, data-viz]
 mainTag: lidar
-authors: leah a wasser
+tutorialSeries: [intro-lidar-r-series]
+authors: [Leah A. Wasser]
 permalink: /lidar-data/online-data-viewer/
 description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink:
 comments: true
 ---
 
+{% include _toc.html %}
 
 ## Overview ##
 
@@ -39,7 +40,7 @@ airborne observation platform). <a href="http://www.neonhighered.org/Data/LidarA
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
-##Quick Review -- LiDAR File Formats
+## Quick Review -- LiDAR File Formats
 LiDAR data are most often available as discrete points. Although, remember that these data 
 can be collected by the lidar instrument, in either discrete or full waveform, formats. 
 A collection of discrete return LiDAR points is known as a LiDAR point cloud.
@@ -48,7 +49,7 @@ A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
 In this activity, you will open a .las file, in the plas.io free online lidar data viewer. You will then explore some of the attributes associated with a lidar data point cloud.
 
-###LiDAR Attribute Data 
+### LiDAR Attribute Data 
 Remember that not all lidar data are created equally. Different lidar data may have different attributes. In this activity, we will look at data that contain both intensity values and a ground vs non ground classification.
 
 
@@ -82,7 +83,7 @@ You might prefer to use a mouse to explore your data in plas.io. Let's test the 
 2. Right click on the screen and drag noticing that this moves the entire dataset around
 3. Use the scroll bar on your mouse to zoom in and out. 
 
-###How The Points are Colored - Why is everything grey when the data are loaded? 
+### How The Points are Colored - Why is everything grey when the data are loaded? 
 Notice that the data, upon initial view, are colored in a black - white color scheme. These colors represent the data's intensity values. Remember that the intensity value, for each LiDAR point, represents the amount of light energy that reflected off of an object and returned to the sensor. In this case, darker colors represent LESS light energy returned. Lighter colors represent MORE light returned.
 
 {% include _images_nolink.html url="../../images/Lidar_Intensity.png" description="Lidar intensity values represent the amount of light energy that reflected off of an object and returned to the sensor." %}
@@ -121,7 +122,7 @@ In this case, these data are classified as either ground, or non-ground. To view
 ## 4. Spend Some Time Exploring - Do you See Any Trees?
 Finally, spend some time exploring the data. what features do you see in this dataset? What does the topography look like? Is the site flat? Hilly? Mountainous? What do the lidar data tell you, just upon initial inspection?
 
-##Summary
+## Summary
 *	The plas.io online point cloud viewer allows you to quickly view and explore lidar data point clouds.
 *	Each lidar data point will have an associated set of attributes. You can check the metadata to determine which attributes the dataset contains. NEON data, provided above, contain both classification and intensity values. 
 *	Classification values represent the type of object that the light energy reflected off of. Classification values are often ground vs non ground. Some lidar data files might have buildings, water bodies and other natural and man made elements classified.
@@ -132,7 +133,7 @@ Finally, spend some time exploring the data. what features do you see in this da
 ----------
 
 
-###Additional Resources:
+### Additional Resources:
 *	What is the <a href="http://www.asprs.org/Committee" target="_blank"> las file format</a>?
 *	<a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank"> Las: python ingest</a>
 *	<a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank"> las v1.3 specifications</a>
@@ -145,5 +146,5 @@ Finally, spend some time exploring the data. what features do you see in this da
 
 
 
-#THE END 
+
 

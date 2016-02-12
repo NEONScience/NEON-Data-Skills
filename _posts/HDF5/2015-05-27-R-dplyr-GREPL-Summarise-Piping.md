@@ -1,19 +1,17 @@
 ---
 layout: post
 title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
-date:   2015-1-28 20:49:52
-title: "GREPL, Filter and Piping Using R DPLYR - An Intro"
-date:   2015-05-28 20:49:52
-dateCreated:   2015-05-27 14:49:52
-lastModified:   2015-05-28 20:49:52
+date:   2015-1-28
+dateCreated:   2015-05-27
+lastModified:   2015-05-28
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: dplyr
-authors: Natalie Robinson, Kate Thibault
+packagesLibraries: [dplyr]
+authors: [Natalie Robinson, Kate Thibault]
 contributors: 
-categories: [coding-and-informatics]
-category: coding-and-informatics
+categories: [self-paced-tutorial]
 tags: [R]
 mainTag: R
+tutorialSeries: []
 description: "Learn how to use the Filter, GREPL and piping functions in R dplyr."
 code1: 2015-05-27-R-dplyr-GREPL-Summarise-Piping.R
 image:
@@ -24,16 +22,7 @@ permalink: /R/GREPL-Filter-Piping-in-DPLYR-Using-R/
 comments: true
 ---
 
-
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 **R Skill Level:** intermediate
 
@@ -65,7 +54,8 @@ After completing this activity, you will:
 </div>
 
 
-#Intro to dplyr
+## Intro to dplyr
+
 When working with data frames in R, it is often useful to manipulate and 
 summarize data. The `dplyr` library in `R` offers one of the most comprehensive 
 library of functions to perform common manipulative tasks. In addition, the dplyr 
@@ -73,11 +63,12 @@ functions are often of a simpler syntax than most other data manipulation
 functions in R.
 
 
-#Elements of dplyr
+## Elements of dplyr
+
 There are several elements of `dplyr` that are unique to the library, and that
 do very cool things!
 
-##Functions for manipulating data
+## Functions for manipulating data
 
 The text below was exerpted from the
 <a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank">
@@ -100,7 +91,7 @@ Dplyr aims to provide a function for each basic verb of data manipulating, like:
  * `sample_n()` and `sample_frac()`
       * return a random sample of rows
  
-##Format of function calls
+### Format of function calls
 The single table verb functions share these features:
 
   * The first argument is a `data.frame` (or a dplyr special class tbl_df).
@@ -114,13 +105,13 @@ The single table verb functions share these features:
   * Function calls do not generate 'side-effects'; you always have to assign the
     results to an object
   
-##Grouped operations
+## Grouped operations
 Certain functions (e.g., group_by, summarise, and other 'aggregate functions')
 allow you to get information for groups of data, in one fell swoop. This is like 
 performing database functions with knowing SQL or any other db specific code. 
 Powerful stuff!
 
-##Piping
+## Piping
 We often need to get a subset of data using one function, and then use 
 another function to do something with that subset (and we may do this multiple 
 times). This leads to nesting functions, which can get messy and hard to keep 

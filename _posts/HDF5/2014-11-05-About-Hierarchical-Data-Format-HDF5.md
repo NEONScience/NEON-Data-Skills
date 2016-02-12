@@ -1,35 +1,29 @@
 ---
 layout: post
 title: "About: Hierarchical Data Formats - What is HDF5?"
-date:   2015-1-31 20:49:52
-dateCreated:   2014-11-27 20:49:52
-lastModified:  2015-2-06 14:49:52
+date:   2015-05-30
+dateCreated:   2014-11-27
+lastModified:  2015-2-06
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 authors: Leah A. Wasser
 contributors: Elizabeth Webb
-categories: [coding-and-informatics]
-category: coding-and-informatics
+categories: [self-paced-tutorial]
 tags: [HDF5]
 mainTag: HDF5
+packagesLibraries: []
+tutorialSeries: [intro-hdf5-r-series]
 description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file / data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 code1: 
 image:
   feature: hierarchy_folder.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/About
 comments: true
 ---
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+
+{% include _toc.html %}
 
 <div id="objectives">
 
@@ -46,7 +40,7 @@ After completing this activity, you will:
 
 </div>
 
-##About Hierarchical Data Formats - HDF5
+## About Hierarchical Data Formats - HDF5
 
 The Hierarchical Data Format version 5 (HDF5), is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize data within the file in many different structured ways, as you might do with files on your computer. The HDF5 format also allows for embedding of metadata making it *self-describing*. 
 
@@ -59,7 +53,7 @@ The Hierarchical Data Format version 5 (HDF5), is an open source file format tha
     <figcaption>Why Use HDF5. Image Source: http://www.hdfgroup.org/why_hdf/</figcaption>
 </figure>
 
-##Hierarchical Structure - A file directory within a file
+## Hierarchical Structure - A file directory within a file
 
 The HDF5 format can  be thought of as a file system contained and described within one single file. Think about the files and folders stored on your computer. You might have a data directory with some temperature data for multiple field sites. This temperature data is collected every minute and summarized on an hourly, daily and weekly basis. Within **ONE** HDF5 file, you can store a similar set of data organized in the same way that you might organize files and folders on your computer. However in a HDF5 file, what we call "directories" or "folders" on our computers, are called `groups` and what we call files on our computer are called `datasets`. 
 
@@ -83,7 +77,7 @@ An HDF5 file containing datasets, might be structured like this:
 </figure> 
 
 
-##HDF5 is a Self Describing Format
+## HDF5 is a Self Describing Format
 
 HDF5 format is self describing. This means that each file, group and dataset can have associated metadata that describes exactly what the data are. Following the example above, we can embed information about each site to the file, such as:
 
@@ -130,7 +124,7 @@ The HDF5 format is open and free to use. The supporting libraries (and a free vi
 You'll see what this looks like when [we open an HDF5 file in the HDFviewer]( {{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
 
 
-##Additional Resources About HDF5
+## Additional Resources About HDF5
 
 - <a href="{{ site.baseurl }}/documents/HDF5-Intro.pdf">About HDF5 - Presentation from the HDF5 Group</a>
 

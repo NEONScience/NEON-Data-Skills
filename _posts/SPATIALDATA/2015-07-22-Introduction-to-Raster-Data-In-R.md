@@ -1,36 +1,28 @@
 ---
 layout: post
 title: "Raster Data in R - The Basics"
-date:   2015-1-26 20:49:52
-authors: Leah A. Wasser
-dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-07-23 14:28:52
-categories: [Coding and Informatics]
-category: coding-and-informatics
-tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
-mainTag: GIS-Spatial-Data
+date:   2015-1-26 
+authors: [Leah A. Wasser]
+dateCreated:  2014-11-26 
+lastModified: 2015-07-23 
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [hyperspectral-remote-sensing, R, spatial-data-gis, remote-sensing]
+mainTag: spatial-data-gis
 description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
 image:
   feature: lidar_GrandMesa.png
-  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /R/Raster-Data-In-R/
 code1: /R/2015-07-22-Introduction-to-Raster-Data-In-R.R
 comments: true
 
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
-##About
+## About
 This activity will walk you through the fundamental principles of working 
 with raster data in R.
 
@@ -76,7 +68,7 @@ headquarters. The entire dataset can be accessed by request from the NEON websit
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>
 <li>
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">
+<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">
 The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 </li>
 <li>
@@ -86,12 +78,12 @@ Read more about the `raster` package in R.</a>
 </ul>
 </div>
 
-#About Raster Data
+# About Raster Data
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
 each pixel represents an area on the Earth's surface. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
 that location in the real world. 
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/"> More on 
+<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/"> More on 
 rasters here</a>. 
 
 <figure>
@@ -146,7 +138,7 @@ coordinate units as the coordinate reference system of the raster.
 raster is in UTM (Universal Trans mercator) zone 11 with a datum of WGS 84. 
 <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
-##Defining Min/Max Values
+## Defining Min/Max Values
 
 By default the raster doesn't have the min / max values associated with it's attributes
 Let's change that.
@@ -167,7 +159,7 @@ Let's change that.
     ## values      : 228.1, 518.66  (min, max)
 
 
-##About UTM
+## About UTM
 
 <figure>
    <a href="http://upload.wikimedia.org/wikipedia/en/thumb/5/57/Utm-zones.svg/720px-Utm-zones.svg.png
@@ -194,7 +186,7 @@ within the pixels.
 
     ## [1] 228.10 518.66
 
-##Working with Rasters in R
+## Working with Rasters in R
 Now that we have the raster loaded into R, let's grab some key raster attributes.
 
 
@@ -366,7 +358,7 @@ A discrete dataset has a set of unique categories or classes. One example could 
 </figure>
 
 
-#Cropping Rasters in R
+# Cropping Rasters in R
 
 You can crop rasters in R using different methods. You can crop the raster directly 
 drawing a box in the plot area. To do this, first plot the raster. Then define 

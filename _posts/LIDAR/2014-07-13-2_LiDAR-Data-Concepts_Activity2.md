@@ -1,32 +1,24 @@
 ---
 layout: post
 title:  "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"
-date:   2014-07-20 20:49:52
-createdDate:   2014-07-21 20:49:52
-lastModified:   2015-1-6 22:33:52
+date:   2014-07-20 
+createdDate:   2014-07-21 
+lastModified:   2015-1-6 
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
-category: remote-sensing
-categories: [Remote Sensing]
-tags : [lidar]
+categories: [self-paced-tutorial]
+tags : [lidar, remote-sensing]
 mainTag: lidar
+tutorialSeries: [intro-lidar-r-series]
 description: "Understand two common LiDAR data product formats: raster and vector and learn the basics of how a LiDAR data are processed."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink:
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 
 ### Three Common LiDAR Data Products ###

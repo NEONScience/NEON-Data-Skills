@@ -1,32 +1,25 @@
 ---
 layout: post
-title: "Working With Functions in R"
-date:   2014-10-29 20:49:52
-authors: Adapted from Software Carpentry Materials by Leah A. Wasser
-categories: [Coding and Informatics]
-category: coding-and-informatics
+title: "Build & Work With Functions in R"
+date:   2014-10-29
+authors: [Leah A. Wasser, Adapted from Software Carpentry]
+category: self-paced-tutorial
 tags : [R]
+librariesPackages:
 description: "This activity will provide the basics of creating a function in R."
 code1: 
 image:
   feature: codedFieldJournal.png
   credit: NEON staff working in the field
-  creditlink: http://www.neoninc.org
+  creditlink: 
 permalink: /Using-R/Working-With-Functions
 ---
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+
+{% include _toc.html %}
 
 # Creating Functions
 
-Sometimes we need to perform a calculation or a set of calculations, multiple times in our code. For example, we might need to convert units from Celcius to Kelvin, across multiple datasets and through time. 
+Sometimes we need to perform a calculation or a set of calculations, multiple times in our code. For example, we might need to convert units from Celsius to Kelvin, across multiple datasets and through time. 
  
 We could write out the equation over and over in our code. OR we could chose to build a function that allows us to repeat several operations with a single command. This activity will focus on creating functions in R.
 
@@ -39,7 +32,7 @@ We could write out the equation over and over in our code. OR we could chose to 
 * Explain why we should divide programs into small, single-purpose functions.
 * Learn how to define a Function
 
-##Getting Started
+## Getting Started
 Let's start by defining a function `fahr_to_kelvin` that converts temperature values from Fahrenheit to Kelvin:
 
 
@@ -113,6 +106,6 @@ This is our first taste of how larger programs are built: we define basic operat
 Real-life functions will usually be larger than the ones shown here—typically half a dozen to a few dozen lines—but they shouldn't ever be much longer than that, or the next person who reads it won't be able to understand what's going on. 
 
 
-##Let's Build a Function
+## Let's Build a Function
 
 So now we've learned the basics of building functions in R. Let's create one of our own. The function that we will build, 

@@ -1,36 +1,28 @@
 ---
 layout: post
 title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
-date:   2014-7-18 20:49:52
-createdDate:   2014-07-21 20:49:52
-lastModified:   2015-07-23 19:33:52
+date:   2014-7-18
+createdDate:   2014-07-21
+lastModified:   2015-07-23
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: raster, sp, dplyr, maptools, rgeos
-authors: Edmund Hart, Leah A. Wasser
-category: remote-sensing
-categories: [Remote Sensing]
-tags : [lidar, R]
+packagesLibraries: [raster, sp, dplyr, maptools, rgeos, ggplot2]
+authors: [Edmund Hart, Leah A. Wasser]
+categories: [self-paced-tutorial]
+tags : [lidar, R, remote-sensing]
 mainTag: lidar
+tutorialSeries: [intro-lidar-r-series]
 description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
 permalink: /lidar-data/lidar-data-rasters-in-R/
 comments: true
 code1: /R/2015-06-30-Create-Lidar-CHM-R.R
 image:
   feature: textur2_pointsProfile.png
-  credit: National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 ---
 
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 
 ## Background ##
@@ -82,7 +74,7 @@ What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 > no charge, but by request, [from the NEON data portal](http://data.neoninc.org/airborne-data-request "AOP data").
 
 
-##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
+## Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
 In this lesson, we will create a Canopy Height Model. The [canopy height 
 model]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/), represents
  the actual heights of the trees on the ground. And we can derive the CHM 
@@ -172,7 +164,7 @@ We've now successfully created a canopy height model using basic raster math - i
 R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at it.  
 
 
-###CHALLENGES
+### CHALLENGES
 
 > 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color 
 > map of 3 colors. Add a title to your plot.
@@ -256,7 +248,7 @@ Let's get started!
 To see a list of pch values (symbols), check out 
 <a href="http://www.endmemo.com/program/R/pchsymbols.php" target="_blank">this website.</a>
 
-###Spatial Data Need a Coordinate Reference System - CRS
+### Spatial Data Need a Coordinate Reference System - CRS
 
 Next, assign a CRS to our insitu data. The CRS is information that allows a program like 
 QGIS to determine where the data are located, in the world. 
@@ -271,7 +263,7 @@ we can quickly figure out what projection our CHM is in, using `chm@crs`.
     #reference system) from the CHM and apply it to our plot centroid data.
     centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
 
-###Extract CMH data within 20 m radius of each plot centroid.
+### Extract CMH data within 20 m radius of each plot centroid.
 
 Next, we will create a boundary region (called a buffer) representing the spatial
 extent of each plot (where trees were measured). We will then extract all CHM pixels
@@ -341,7 +333,7 @@ through several plots and create histograms using a `for loop`.
 > `for loop` above to plot all 18 histograms. Improve upon the plot's final 
 > appearance to make a readable final figure. 
 
-###Variation 2: Extract CHM values Using a Shapefile
+### Variation 2: Extract CHM values Using a Shapefile
 
 If your plot boundaries are saved in a shapefile, you can use the code below. 
 There are two shapefiles in the folder named "PlotCentroid_Shapefile" within the 
@@ -360,7 +352,7 @@ requires the `rgeos` package. Be sure to install them first:
     #squarePlot <- readShapePoly("PlotCentroid_Shapefile/SJERPlotCentroids_Buffer.shp")
     #centroids$chmMaxShape <- extract(chm, squarePlot, weights=FALSE, fun=max)
 
-###Variation 3: Derive Square Plot boundaries, then CHM values around a point
+### Variation 3: Derive Square Plot boundaries, then CHM values around a point
 For see how to extract square plots using a plot centroid value, check out the
  [extracting square shapes activity.]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons")
  
@@ -373,7 +365,7 @@ For see how to extract square plots using a plot centroid value, check out the
 
 
 
-##Extract descriptive stats from Insitu Data 
+## Extract descriptive stats from Insitu Data 
 In our final step, we will extract summary height values from our field data. 
 We will use the `dplyr` library to do this efficiently. We'll demonstrate both below
 
@@ -558,7 +550,7 @@ You have now successfully created a canopy height model using lidar data AND com
 derived vegetation height, within plots, to actual measured tree height data!
 
 
-#Challenge 
+## Challenge 
 
 > Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or Lidar 95th 
 > percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the

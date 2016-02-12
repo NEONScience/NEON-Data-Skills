@@ -1,33 +1,25 @@
 ---
 layout: post
 title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
-date:   2014-07-21 20:49:52
-createdDate:   2014-07-21 20:49:52
-lastModified:   2014-12-11 22:33:52
+date:   2014-07-21
+createdDate:   2014-07-21
+lastModified:   2014-12-11
 estimatedTime: 0.25 - .5 Hours
 packagesLibraries:
-category: remote-sensing
-categories: [Remote Sensing]
-authors: leah a wasser
-tags : [lidar, R]
+categories: [self-paced-tutorial]
+authors: [Leah A. Wasser]
+tags : [lidar, R, remote-sensing]
 mainTag: lidar
+tutorialSeries: [intro-lidar-r-series]
 description: "Explore the basics of how a LiDAR system works and what a LiDAR system measures."
 image:
   feature: codedpoints2.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org 
+  credit:
+  creditlink:
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 
 ## Overview ##
@@ -41,13 +33,13 @@ LiDAR or **Li**ght **D**etection **a**nd **R**anging is an active remote sensing
 {% include _images.html url="https://farm4.staticflickr.com/3913/14532371197_a17d52e010.jpg" description="LiDAR data collected at the Soaproot Saddle site by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP) - available on https://www.flickr.com/photos/126239263@N04/sets" %}
 
 
-#Lidar Background
+# Lidar Background
 
 
-###The Story of LiDAR Data video - On YouTube
+### The Story of LiDAR Data video - On YouTube
 <iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
 
-###How LiDAR Works ##
+### How LiDAR Works ##
 <iframe width="560" height="315" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
@@ -72,7 +64,7 @@ A LiDAR system measures the time it takes for emitted light to travel  to the gr
 <iframe width="560" height="315" src="//www.youtube.com/embed/uSESVm59uDQ?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
-###How Light Energy Is Used to Measure Trees ###
+### How Light Energy Is Used to Measure Trees ###
 
 Light energy is a collection of photons. As photon that make up light moves towards the ground, they hit objects such as branches on a tree. Some of the light reflects off of those objects and returns to the sensor. If the object is small, and there are gaps surrounding it that allow light to pass through, some light continues down towards the ground. Because some photons reflect off of things like branches but others continue down towards the ground, multiple reflections may be recorded from one pulse of light. 
 
@@ -104,7 +96,7 @@ A waveform or distribution of light energy is what returns to the LiDAR sensor. 
 1. A **Discrete Return LiDAR System** records individual (discrete) points for the peaks in the waveform curve. Discrete return LiDAR systems, identify peaks and record a point at each peak location in the waveform curve. These discrete or individual points are called returns. A discrete system may record 1-4 (and sometimes more) returns from each laser pulse.
 2. A **Full Waveform LiDAR System** records a distribution of returned light energy. Full waveform LiDAR data are thus more complex to process however they can often capture more information compared to discrete return LiDAR systems.
 
-##LiDAR File Formats **
+## LiDAR File Formats **
 Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
 The commonly used file format to store LIDAR point cloud data is called .las which is a format supported by the Americal Society of Photogrammetry and Remote Sensing (ASPRS). Recently, the [.laz](http://www.laszip.org/) format has been  developed by Martin isenberg of LasTools. Laz is a highly compressed version of .las.
@@ -121,7 +113,7 @@ Some lidar data  will be classified as "ground / non ground". Some datasets will
 [Check out our activity that uses a free online lidar data viewer to view NEON LiDAR data!](http://neondataskills.org/remote-sensing/2_Lidar-Point-Cloud-Online-Data-Viz-Activity/). The Plas.io viewer used in this activity was developed by Martin Isenberg of Las Tools and his colleagues.
 
 
-##Summary
+## Summary
 *	A LiDAR system uses a laser + a gps and IMU to estimate the heights of objects on the ground.
 *	Discrete LiDAR data is generated from waveforms - and each point represent peak energy points along the returned energy.
 *	Discrete LiDAR points contain an x, y and z value. the z value is what is used to generate height.
@@ -131,7 +123,7 @@ Some lidar data  will be classified as "ground / non ground". Some datasets will
 ----------
 
 
-##Additional Resources:
+## Additional Resources:
 *	What is the  [las file format](http://www.asprs.org/Committee "las file format: ")-*
 *	General/LASer-LAS-File-Format-Exchange-Activities.html
 *	What is Discrete Return lidar (ppt)

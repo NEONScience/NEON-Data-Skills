@@ -1,37 +1,29 @@
 ---
 layout: post
-title: "Activity: Creating A Square Buffer Around a Plot Centroid in R"
-date:   2015-1-05 20:49:52
-createdDate:   2014-10-29 20:49:52
-lastModified:   2014-11-15 20:49:52
+title: "Create A Square Buffer Around a Plot Centroid in R"
+date:   2015-1-05
+createdDate:   2014-10-29
+lastModified:   2014-11-15
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: sp, rgdal
-authors: Leah A. Wasser, Natalie Robinson, Sarah Elmendorf
-categories: [Coding and Informatics]
-category: coding-and-informatics
-mainTag: GIS-Spatial-Data
-tags : [R, GIS-Spatial-Data]
+packagesLibraries: [sp, rgdal]
+authors: [Leah A. Wasser, Natalie Robinson, Sarah Elmendorf]
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+mainTag: spatial-data-gis
+tags : [R, spatial-data-gis]
 description: "This activity walks you through creating square polygons from a plot centroid (x,y format) in R."
 code1: final_PlotBoundaryCode.R
 image:
   feature: textur2_FieldWork.png
   credit: Ordway Swisher Biological Station, NEON, thx to Courtney Meier
-  creditlink: http://www.neoninc.org
+  creditlink:
 permalink: /working-with-field-data/Field-Data-Polygons-From-Centroids
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
-#About This Activity
+# About This Activity
 Sometimes we have a set of plot centroid (marking the center of a plot) values in x,y format. We need to derive the plot boundaries or edges of the plot, from the centroids. If the plot is a circle, we can generate the plot boundary using a buffer function in R or a GIS package. However, creating a SQUARE boundary around a centroid requires an alternate approach. This activity presents a way to create square polygons of a given radius (referring to half of the plots width), for each plot centroid location in a dataset.
 
 This activity requires a ".csv" (Comma Separated Value) file that contains the plot centroids in X,Y format and preferably some sort of unique plot ID. The data used in this activity were collected at the National Ecological Observatory Network field site in San Joaquin Experimental Range, California. 
@@ -48,7 +40,7 @@ Special thanks to <a href="http://stackoverflow.com/users/489704/jbaums" target=
 - Quick Hint: You need to first install the sp and rgdal packages before calling them in your code. Make sure they are installed or else calling them as a library won't work.
 	
 
-##REVIEW: How to Install Packages
+## REVIEW: How to Install Packages
 Use the code below to install the sp and rgdal packages. NOTE: you can just type this into the command line to install each package. Once a package is installed, you don't have to install it again! <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Read more about installing packages in R by R-bloggers.</a>
 
 {% highlight r %}
@@ -56,7 +48,7 @@ install.packages(‘sp’)
 install.packages(‘rgdal’)
 {% endhighlight %}
 
-##Part 1 - Load CSV, Setup Plots 
+## Part 1 - Load CSV, Setup Plots 
 
 {% highlight r %}
 
@@ -108,7 +100,7 @@ NOTE: When calculating the coordinates for the vertices, it is important to CLOS
 	square=cbind(xMinus,yPlus, xPlus,yPlus, xPlus,yMinus, xMinus,yMinus,xMinus,yPlus,xMinus,yPlus)
 
 
-##Part 2 - Create Spatial Polygons
+## Part 2 - Create Spatial Polygons
 Next, create Spatial Polygons. NOTE: this particular step is somewhat confusing. Please consider reading up on the SpatialPolygon object
 in R. or check out the stack overflow thread that helped us sort out how this works. <a href="http://stackoverflow.com/questions/26620373/spatialpolygons-creating-a-set-of-polygons-in-r-from-coordinates" target="_blank">Stack Overflow Thread</a>
 
@@ -140,7 +132,7 @@ The code below uses simpler R code contained within a loop. Please keep in mind 
 	polys<-SpatialPolygons(a,proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
 
-##Part 3 - Export to Shapefile
+## Part 3 - Export to Shapefile
 Before you can export a shapefile, you need to convert the spatialpolygons to a spatial polygon data frame. Note: this is the step where you could add additional attribute data if you wanted to!
 
 	# Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
