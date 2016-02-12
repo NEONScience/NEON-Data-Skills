@@ -1,12 +1,12 @@
 ---
 layout: post_by_tag
-title: 'Articles by tag: Data Visualization'
+title: 'Tutorials Tagged with Data Visualization'
 tag: data-viz
 permalink: data-viz/
 image:
   feature: planeBanner.png
-  credit: Colin Williams NEON, Inc.
+  credit:
   creditlink: 
 ---
 
-This will list all pages with a data viz theme.
+Tutorials that cover data visualization techniques are listed below.
