@@ -1,34 +1,26 @@
 ---
 layout: post
 title: "The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R"
-date:   2015-1-15 20:49:52
-dateCreated:   2014-11-03 20:49:52
-lastModified: 2015-07-23 17:11:52
-authors: Leah A. Wasser
-categories: [GIS-Spatial-Data]
-category: remote-sensing
-tags: [R, hyperspectral-remote-sensing,GIS-Spatial-Data]
-mainTag: GIS-Spatial-Data
+date: 2015-1-15 
+dateCreated: 2014-11-03 
+lastModified: 2015-07-23 
+authors: [Leah A. Wasser]
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [R, hyperspectral-remote-sensing, spatial-data-gis, remote-sensing]
+mainTag: spatial-data-gis
+librariesPackages: [raster, rgdal]
 description: "Learn about the key attributes needed to work with raster data in tools like R, Python and QGIS."
 code1: /R/2014-11-03-Working-With-Rasters-in-R-Python-GIS.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
-permalink: /GIS-Spatial-Data/Working-With-Rasters/
+  creditlink: 
+permalink: /GIS-spatial-data/Working-With-Rasters/
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
-
+{% include _toc.html %}
 
 
 <div id="objectives">
@@ -51,7 +43,7 @@ extent, coordinate reference system and spatial resolution.</li>
 </ul>
 </div>
 
-###Getting Started
+### Getting Started
 This activity will overview the key attributes of a raster object, including spatial extent, resolution and coordinate reference system. When working within
 a GIS system often these attributes are accounted for. However, it is important
 to be more familiar with them when working in non-gui environments such as 
@@ -63,7 +55,7 @@ you will also need to identify:
 1. The lower left hand corner coordinates of the raster.
 2. The number of columns and rows that the raster dataset contains.
  
-##Spatial Resolution
+## Spatial Resolution
 A raster consists of a series of pixels, each with the same dimensions 
 and shape. In the case of rasters derived from airborne sensors, each pixel 
 represents an area of space on the Earth's surface. The size of the area on the 
@@ -114,7 +106,7 @@ Let's open up a raster in `R` to see how the attributes are stored.
     ## names       : SJER2013_DTM
 
 
-##Spatial Extent
+## Spatial Extent
 The spatial extent of a raster, represents the "X, Y" coordinates of the corners 
 of the raster in geographic space. This information, in addition to the cell 
 size or spatial resolution, tells the program how to place or render each pixel 
@@ -141,7 +133,7 @@ extent of a new raster.
     </figcaption>
 </figure>
 
-###Calculating Raster Extent
+### Calculating Raster Extent
 Extent and spatial resolution are closely connected. To calculate the extent of a 
 raster, we first need the bottom LEFT HAND (X,Y) coordinate of the raster. In 
 the case of the UTM coordinate system which is in meters, to calculate
@@ -275,7 +267,7 @@ within the same extent.
     that the file is in (see below). </figcaption>
 </figure>
 
-##Coordinate Reference System / Projection Information
+## Coordinate Reference System / Projection Information
 
 > A spatial reference system (SRS) or coordinate reference system (CRS) is a 
 coordinate-based local, regional or global system used to locate geographical 
@@ -308,13 +300,13 @@ line up correctly when rendered together.
 
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
-####How Map Projections Can Fool the Eye
+#### How Map Projections Can Fool the Eye
 Check out this short video highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
 
-##What Makes Spatial Data Line Up On A Map?
+## What Makes Spatial Data Line Up On A Map?
 There are lots of great resources that describe coordinate reference systems and 
 projections in greater detail. However, for the purposes of this activity, what 
 is important to understand is that data from the same location but saved in 
@@ -456,7 +448,7 @@ in UTM (meters). Let's define the rasters extent.
 
 ![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/define-extent-1.png) 
 
-###Challenges
+### Challenges
 * Resample `rasterNoProj` from 1 meter to 10 meter resolution. Plot it next to the 1 m 
 resolution raster. Use: `par(mfrow=c(1,2))` to create side by side plots.
 * What happens to the extent if you change the resolution to 1.5 when calculating 
@@ -512,7 +504,7 @@ Coordinate Reference System based upon the CRS of another raster. If you want to
 actually CHANGE the CRS of a raster, you need to use the `projectRaster` function.
 
 
-##Challenge
+## Challenge
 1. You can set the CRS and extent of a raster using the syntax 
 `rasterWithoutReference@crs <- rasterWithReference@crs` and 
 `rasterWithoutReference@extent <- rasterWithReference@extent`. Open `band90.tif` in the 
@@ -538,7 +530,7 @@ extent and the raster resolution?
     r[]  <- sample(0:50,25)
     r
 
-##Reprojecting Data
+## Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 
 always **reproject** the data so that they are all in the same projection. Python 
 and R both have reprojection tools that perform this task.

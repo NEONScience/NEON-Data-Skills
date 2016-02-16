@@ -1,36 +1,28 @@
 ---
 layout: post
-title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
-date:   2015-1-13 20:49:52
-lastModified: 2015-06-30 14:49:52
-createddate:   2014-11-26 20:49:52
+title: "Create a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
+date:   2015-1-13 
+lastModified: 2015-06-30 
+createdDate:   2014-11-26 
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, raster, maps
-authors: Edmund Hart, Leah A. Wasser
-categories: [remote-sensing]
-category: remote-sensing
-tags: [hyperspectral-remote-sensing,R,HDF5]
+packagesLibraries: [rhdf5, raster, maps]
+authors: [Edmund Hart, Leah A. Wasser]
+categories: [self-paced-tutorial]
+tags: [hyperspectral-remote-sensing, R, HDF5, remote-sensing]
 mainTag: hyperspectral-remote-sensing
+tutorialSeries: [intro-hsi-r-series]
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/Create-Raster-Stack-Spectroscopy-HDF5-In-R/
 code1: R/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 <div id="objectives">
 <strong>R Skill Level:</strong> Intermediate
@@ -70,7 +62,7 @@ hyperspectral data in R activity before moving on to this activity.</p>
 </div>
 
 
-##About 
+## About 
 We often want to generate a 3 band image from multi or hyperspectral data. The 
 most commonly recognized band combination is RGB which stands for Red, Green and 
 Blue. RGB images are just like the images that your camera takes. But there are 
@@ -91,13 +83,13 @@ on the ground.
 
 
 
-##About This Activity
+## About This Activity
 In this activity, we will learn how to create multi (3) band images. We will also 
 learn how to perform some basic raster calculations (known as raster math in the 
 GIS world).
 
 
-##1. Creating a Raster Stack in R
+## Creating a Raster Stack in R
 
 In the [previous activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/), 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
@@ -330,7 +322,7 @@ Next, add the names of the bands to the raster so we can easily keep track of th
     
     hsiStack <- hsiStack/reflInfo$`Scale Factor`
     
-    ### Plot one raster in the stack to make sure things look OK.
+    ##  Plot one raster in the stack to make sure things look OK.
     plot(hsiStack$Band_58, main="Band 58")
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/plot-raster-stack-1.png) 
@@ -387,7 +379,7 @@ Use the band combinations listed at the top of this page to modify the raster li
 What type of image do you get when you change the band values?
 {: .notice}
 
-###Challenge
+## Challenge
 
 > Use different band combinations to create other "RGB" images. Suggested band 
 > combinations are below: 
@@ -401,7 +393,7 @@ More on Band Combinations:
 
 
 
-##2. Plotting spectral data on a map.
+## Plotting spectral data on a map.
 
 We can plot the location of our image on a map of the US. For this we'll use the 
 lower left coordinates of the raster, extracted from the SPINFO group. Note that 
@@ -418,7 +410,7 @@ than UTM coordinates.
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI/create-location-map-1.png) 
 
-## 3. Raster Math - Creating NDVI and other Vegetation Indices in R
+## Raster Math - Creating NDVI and other Vegetation Indices in R
 In this last part, we will calculate some vegetation indices using raster math 
 in R! We will start by creating NDVI or Normalized Difference Vegetation Index. 
 
@@ -486,7 +478,7 @@ the best way to calculate NDVI from hyperspectral data!
 <figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
 </figure>
 	
-> ### Challenge
+> ## Challenge
 > Try any of the following:
 >
 > 1. Calculate EVI using the following formula : EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))

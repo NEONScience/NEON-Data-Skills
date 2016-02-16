@@ -1,38 +1,30 @@
 ---
 layout: post
 title: "Working With Time Series Data Within a Nested HDF5 File in R"
-date:   2015-1-28 20:49:52
-dateCreated:   2014-11-17 20:49:52
-lastModified:   2015-05-27 20:49:52
+date:   2015-1-28
+dateCreated:   2014-11-17
+lastModified:   2015-05-27
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, ggplot2, dplyr
-authors: Leah A Wasser, Ted Hart
-contributors: Elizabeth Webb
-categories: [coding-and-informatics]
-category: coding-and-informatics
-tags: [HDF5,R]
+packagesLibraries: [rhdf5, ggplot2, dplyr]
+authors: [Leah A Wasser, Ted Hart]
+contributors: [Elizabeth Webb]
+categories: [self-paced-tutorial]
+tags: [HDF5, R]
 mainTag: HDF5
+tutorialSeries: [intro-hdf5-r-series]
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
 code1: R/2015-05-21-R-Timeseries-HDF5.R
 image:
   feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/TimeSeries-Data-In-HDF5-Using-R/
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
-##About This Tutorial 
+## About This Tutorial 
 
 In this activity, we'll work with <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> by  
@@ -96,7 +88,7 @@ Observatory Network (NEON) flux tower at the <a href="http://neoninc.org/science
 data here.</a>
 {: .notice}
 
-###Getting Started
+### Getting Started
 To access HDF5 files in R, we'll use `rhdf5` which is part of the 
 <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of 
 `R` packages.
@@ -117,7 +109,7 @@ graphic interface.
     library("scales")
 
 
-###HDF5 Quick Review
+### HDF5 Quick Review
 The HDF5 format is a self-contained directory structure. In HDF5 files though 
 "directories" are called "**groups**" and "**files**" are called "**datasets**". 
 Each element in an hdf5 file can have metadata attached to it making HDF5 files 
@@ -170,7 +162,7 @@ the number of nested levels that the command returns. Give it a try.
     ## 6 /Domain_10/STER     min_1 H5I_GROUP           
     ## 7 /Domain_10/STER    min_30 H5I_GROUP
 
- ##About the structure
+ ## About the structure
  
 Looking at the `h5ls` output, we see this H5 file has a nested group and dataset 
 structure. Below, we will slice out temperature data which is located within the 
@@ -508,7 +500,7 @@ Once the dates have been formatted we can create a plot with cleaner X axis labe
 
 ![ ]({{ site.baseurl }}/images/rfigs/2015-05-21-R-Timeseries-HDF5/plotBoomData-1.png) 
 
-##Data from different sites
+## Data from different sites
 
 Next, let's compare temperature at two different sites: Ordway Swisher Biological 
 Station located in Florida and North Sterling located in Central Colorado. This 

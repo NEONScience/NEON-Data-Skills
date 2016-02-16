@@ -6,8 +6,8 @@ dateCreated:   2015-03-20 17:49:52
 lastModified:   2015-03-20 17:49:52
 authors: Leah A Wasser
 contributors:
-categories: [coding-and-informatics]
-category: coding-and-informatics
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
 tags: [HDF5,R]
 mainTag: R
 description: "This post contains a running list of cheat sheets that i've found useful for both R-stats and Python."
@@ -20,15 +20,7 @@ permalink: /R-Python/Cheatsheets/
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 # Coding Cheatsheets
 I'll admit it, i'm a huge fan of cheat sheets. I am often jumping between programs and languages and it's insanely easy to get syntax mixed up. A running list is below. If you have others, share them in the comments below and i'll add them to the list! Cheers!

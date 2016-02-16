@@ -1,12 +1,14 @@
 ---
 layout: post
 title: "Species Occurence maps"
-date:   2014-12-06 20:49:52
-authors: Leah A. Wasser,Edmund Hart
-categories: [coding-and-informatics]
-category: coding-and-informatics
+date:   2014-12-06
+createdDate: 2014-12-06
+lastModified: 2014-12-06
+authors: [Leah A. Wasser, Sarah Elmendorf]
+categories: [self-paced-tutorial]
 tags: [R, data-viz]
 mainTag: data-viz
+packagesLibraries: []
 description: "Explore some provisional NEON data that characterizes small mammal abundance and soil N:P ratio data at several NEON sites. Maps created using ESRI ArcGIS online. "
 code1: 
 image:
@@ -22,14 +24,3 @@ The map below was created using small mammal data downloded from the NEON data p
 <iframe width="800px" height="600px" src="https://neon.maps.arcgis.com/apps/MapSeries/?appid=969c8bd2aa5a4e4c97f808b78dfd093f" frameborder="0" scrolling="no"></iframe>
 
 
-
-#testing fences
-
-~~~
-    # ...ruby code
-~~~
-
-~~~
-# ...ruby code
-sdf <- read.vdf("sdf")
-~~~

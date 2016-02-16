@@ -1,15 +1,15 @@
 ---
 layout: post
 title: "Rasters In R: Capstone Exercise - Create NDVI in R"
-date:   2015-5-11 20:49:52
-createdDate:   2015-5-11 20:49:52
-lastModified:   2015-5-11 20:49:52
+date:   2015-5-11 
+createdDate:   2015-5-11 
+lastModified:   2015-5-11 
 estimatedTime: 0.5 - 1.0 Hours
-packagesLibraries: raster, maptools, rgeos
+packagesLibraries: [raster, maptools, rgeos]
 authors: Leah A. Wasser
-category: remote-sensing
-categories: [Remote Sensing]
-tags : [lidar, R]
+category: self-paced-tutorial
+categories: [self-paced-tutorial]
+tags : [lidar, R, remote-sensing]
 mainTag: lidar
 description: "This capstone activity brings together skills learned about rasters in R, from tutorials on this site."
 permalink: /R/create-NDVI-in-R/
@@ -17,20 +17,12 @@ comments: true
 code1: 
 image:
   feature: textur2_pointsProfile.png
-  credit: National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 ---
 
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 
 ## Background ##

@@ -1,35 +1,27 @@
 ---
 layout: post
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-date:   2015-1-14 20:49:52
-dateCreated:  2014-11-26 20:49:52
-lastModified: 2015-08-07 14:30:52
+date: 2015-1-14 
+dateCreated: 2014-11-26 
+lastModified: 2015-08-07 
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, raster, rgdal
-authors: Leah A. Wasser, Edmund Hart
-categories: [remote-sensing]
-category: remote-sensing
-tags: [hyperspectral-remote-sensing,R,HDF5]
+packagesLibraries: [rhdf5, raster, rgdal]
+authors: [Leah A. Wasser, Edmund Hart]
+categories: [self-paced-tutorial]
+tags: [hyperspectral-remote-sensing, R, HDF5, remote-sensing]
 mainTag: hyperspectral-remote-sensing
+tutorialSeries: [intro-hsi-r-series]
 description: "Open up and explore a hyperspectral dataset stored in HDF5 format in R. Learn about the power of data slicing in HDF5. Slice our band subsets of the data and create and visualize one band." 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/Imaging-Spectroscopy-HDF5-In-R/
 code1: R/2015-06-08-Work-With-Hyperspectral-Data-In-R.R
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 <div id="objectives">
 <strong>R Skill Level:</strong> Intermediate
@@ -71,7 +63,7 @@ entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-da
 </div> 
 
 
-##About Hyperspectral Remote Sensing Data
+## About Hyperspectral Remote Sensing Data
 
 The electromagnetic spectrum is composed of thousands of bands representing 
 different types of light energy. Imaging spectrometers (instruments that collect 
@@ -100,7 +92,7 @@ features in addition to the ability to support spatial data and associated
 metadata make it ideal for working with large data cubes such as those generated 
 by imaging spectrometers.
 
-##About This Activity
+## About This Activity
 In this activity we will explore reading and extracting spatial raster data 
 stored within a HDF5 file using `R`. Please be sure that you have *atleast* 
 version 2.10 of `rhdf5` installed. Use: `packageVersion("rhdf5")` to check the 
@@ -119,7 +111,7 @@ package version. If you need to update `rhdf5`, use the following code:
 <i class="fa fa-star"></i> **Data Tip:** To update all packages installed in `R`, use `update.packages()`.
 {: .notice}
 
-##1. Read HDF5 data into R
+## Read HDF5 data into R
 We will use the `raster` and `rhdf5` libraries to read in the HDF5 file that 
 contains hyperspectral data for the <a href="http://neoninc.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
 the needed libraries and reading in our NEON HDF5 file.  
@@ -166,7 +158,7 @@ that we will use for both data processing and visualization.
 
 More Information on raster metadata:
 
-* [Metadata to understand when working with raster data](http://neondataskills.org/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
+* [Metadata to understand when working with raster data](http://neondataskills.org/R/Image-Raster-Data-In-R/ "Key Attributes of Raster Data")
 
 * [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters](http://neondataskills.org/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
 
@@ -277,7 +269,7 @@ in the visible portion of the spectrum?
 
     ## [1] "array"
 
-###A Note About Data Slicing in HDF5
+## A Note About Data Slicing in HDF5
 Data slicing allows us to extract and work with subsets of the data rather than 
 reading in the entire dataset into memory. Thus, in this case, we can extract and 
 plot the green band without reading in all 426 bands of information. The ability 
@@ -484,7 +476,7 @@ command in `R`.
 The orientation is rotated in our log adjusted image. This is because `R` reads in matrices starting from the upper left hand corner. Whereas, most rasters read pixels starting from the lower left hand corner. In the next section, we will deal with this issue by creating a proper georeferenced (spatiall located) raster in R. The raster format will read in pixels following the same methods as other GIS and imaging processing software like QGIS and ENVI do.
 
 
-##2. Create a Georeferenced Raster
+## Create a Georeferenced Raster
 Next, we will create a proper raster using the `b34` matrix. The raster format will allow us to define and manage:
 
 * Image stretch
@@ -598,7 +590,7 @@ Next we define the extents of our raster. The extents will be used to calculate 
     ## names       : layer 
     ## values      : 116, 15677  (min, max)
 
-###Define Raster CRS
+## Define Raster CRS
 
 We have defined the extent of our raster but we still need to define the Coordinate 
 reference system (`CRS`) of the raster. To do that, we can first grab the CRS
@@ -671,7 +663,7 @@ as a raster, using the `writeRaster` command.
 
 
 	
-###Extra Credit
+## Extra Credit
 
 If you get done early, consider trying the following: 
 

@@ -1,11 +1,11 @@
 ---
 layout: post_by_tag
-title: 'Articles by tag: R'
+title: 'Tutorials Tagged with R (#rstats)'
 tag: R
 permalink: R/
 image:
   feature: RBanner.png
-  credit: Colin Williams NEON, Inc.
+  credit: 
 ---
 
-This will list all pages with r code.
+Tutorials on this page use the `R` programming language.

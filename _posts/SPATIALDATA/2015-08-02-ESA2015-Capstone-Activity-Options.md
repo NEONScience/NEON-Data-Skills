@@ -1,14 +1,13 @@
 ---
 layout: post
 title: "ESA 2015 Capstone Activity"
-date:   2015-5-11 20:49:52
-createdDate:   2015-08-01 20:49:52
-lastModified:   2015-08-01 20:49:52
+date:   2015-5-11
+createdDate:   2015-08-01
+lastModified:   2015-08-01
 estimatedTime: 0.5 - 1.0 Hours
-packagesLibraries: raster, rhdf5, rgdal
-authors: Leah A. Wasser, Claire Lunch, Kate Thibault, Natalie Robinson
-category: remote-sensing
-categories: [Remote Sensing]
+packagesLibraries: [raster, rhdf5, rgdal]
+authors: [Leah A. Wasser, Claire Lunch, Kate Thibault, Natalie Robinson]
+categories: [self-paced-tutorial]
 tags : [lidar, R]
 mainTag: lidar
 description: "This lesson contains two option capstone activities that complement the ESA 2015 workshop materials."
@@ -17,20 +16,12 @@ comments: true
 code1: 
 image:
   feature: textur2_pointsProfile.png
-  credit: National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 ---
 
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 
 ## Background ##

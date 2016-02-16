@@ -34,25 +34,23 @@ google_analytics:   UA-52746937-1
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 #bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
 
-category: [using lidar data, working with field data, zcarbon links]
-categories: [using lidar data, working with field data, zcarbon links]
 # Links to include in top navigation
 # For external links add external: true
 links:  
-  - title: Data Tutorials
-    url: /activities/
-  
-  - title: About
-    url: /about/
-
-  - title: Data Workshops
-    url: /Data-Workshops/
+  - title: Data Tutorial Series
+    url: /tutorial-series/
     
-  - title: R & Python Cheatsheets
-    url: /cheatsheets/
+  - title: Events
+    url: /workshop-event/
+
+  - title: Science Videos
+    url: /science-video/ 
+        
+  - title: About
+    url: /about/ 
     
   - title: NEON Website
-    url: http://www.neoninc.org
+    url: http://neonscience.org
     external: true
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -75,7 +73,7 @@ kramdown:
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..2
-  use_coderay: false
+  enable_coderay: false
 
   coderay:
     coderay_line_numbers: 

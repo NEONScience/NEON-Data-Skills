@@ -13,22 +13,7 @@
 
 {% include _navigation.html %}
 
-{% if page.image.feature %}
-  <div class="image-wrap">
-  <img src=
-    {% if page.image.feature contains 'http://' %}
-      "{{ page.image.feature }}"
-    {% elsif page.image.feature contains 'https://' %}
-      "{{ page.image.feature }}"
-    {% else %}
-      "{{ site.url }}/images/{{ page.image.feature }}"
-    {% endif %}
-  alt="{{ page.title }} feature image">
-  {% if page.image.credit %}
-    <span class="image-credit">Photo Credit: <a href="{{ page.image.creditlink }}">{{ page.image.credit }}</a></span>
-  {% endif %}
-  </div><!-- /.image-wrap -->
-{% endif %}
+{% include _imageFeature.html %}
 
 <div class="article-author-side">
   {% include _author-bio.html %}
@@ -56,6 +41,11 @@
   {% if post.categories contains t %}
   <article>
     <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+    <span class="post-date">
+				{% if post.lastModified %}Last modified: {{ post.lastModified | date: "%b %-d, %Y" }}{% endif %}
+				{% if post.time %}Time: {{ post.time }}{% endif %}
+				{% if post.catalog-entry-type %}, Type: {{ post.catalog-entry-type }} {% endif %}
+	</span>
     <p>{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 120 }}{% endif %}</p>
   </article>         
    <!-- <span class="date">{{ post.date | date: "%B %-d, %Y"  }}</span> -->

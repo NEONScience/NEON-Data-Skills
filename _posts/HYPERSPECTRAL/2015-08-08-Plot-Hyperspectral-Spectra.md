@@ -1,35 +1,27 @@
 ---
 layout: post
-title: "Plotting Spectral Profiles derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
-date:   2015-08-08 20:49:52
-dateCreated:  2015-08-08 20:49:52
-lastModified: 2015-08-08 20:49:52
+title: "Plot Spectral Profiles derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
+date:   2015-01-01
+dateCreated:  2015-08-08
+lastModified: 2015-08-08
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, raster, rgdal, plyr
-authors: Leah A. Wasser
-categories: [remote-sensing]
-category: remote-sensing
-tags: [hyperspectral-remote-sensing,R,HDF5]
+packagesLibraries: [rhdf5, raster, rgdal, plyr]
+authors: [Leah A. Wasser]
+categories: [self-paced-tutorial]
+tags: [hyperspectral-remote-sensing, R, HDF5, remote-sensing]
 mainTag: hyperspectral-remote-sensing
+tutorialSeries: [intro-hsi-r-series]
 description: "Extract a single pixel's worth of spectra from a a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
 image:
   feature: hierarchy_folder_purple.png
-  credit: The Artistry of Colin Williams, NEON
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /HDF5/Plot-Hyperspectral-Pixel-Spectral-Profile-In-R/
 code1: R/2015-08-08-Plot-Hyperspectral-Spectra.R
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 <div id="objectives">
 <strong>R Skill Level:</strong> Intermediate
@@ -113,7 +105,7 @@ Next, we can read the spatial attributes of the file.
     #r get attributes for the Reflectance dataset
     reflInfo <- h5readAttributes(f,"Reflectance")
 
-##Read Wavelength Values
+## Read Wavelength Values
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
 file. 
@@ -125,7 +117,7 @@ file.
     #convert wavelength to nanometers (nm)
     #NOTE: this is optional!
     wavelengths <- wavelengths*1000
-##Extract Z-dimension data slice
+## Extract Z-dimension data slice
 
 Next, we will extract all reflectance values for one pixel. This makes up the 
 spectral signature or profile of the pixel. To do that, we'll use the `h5read` 
@@ -156,7 +148,7 @@ function.
     ## 5 207     402.31
     ## 6 235     407.32
 
-##Scale Factor
+## Scale Factor
 
 Then, we can pull the spatial attributes that we'll need to adjust the reflectance 
 values. Often, large raster data contain floating point (values with decimals) information.
@@ -183,7 +175,7 @@ by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the dat
     ## 5         207     402.31            0.0207
     ## 6         235     407.32            0.0235
 
-##Plot Spectral Profile
+## Plot Spectral Profile
 
 Now we're ready to plot our spectral profile!
 

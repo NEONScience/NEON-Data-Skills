@@ -1,30 +1,23 @@
 ---
 layout: post
 title: "Activity: Getting Started with the R Programming Language"
-date:   2014-11-04 20:49:52
+date:   2014-11-04
+dateCreated:   2014-11-04
+lastModified:   2014-11-04
 authors: Adapted from Software Carpentry Materials by Leah A. Wasser
-categories: [Coding and Informatics]
-category: coding-and-informatics
+categories: [self-paced-tutorial]
 tags : [R]
+librariesPackages:
 description: "This activity will present the basics of using R."
 code1: 
 image:
   feature: codedpoints2.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit:
+  creditlink:
 permalink: /R-Programming/Getting-Started-With-R/
-
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
 **R Skill Level:** beginner
 
@@ -41,9 +34,9 @@ R is:
 * Not just for statistics, but also general purpose programming.   
 * Supported by a large and growing community of peers.  
 
-#Basic Syntax
+# Basic Syntax
 
-##Comments in R
+## Comments in R
 Use `#` signs to comment. Comment liberally in your R scripts. Anything to the right of a `#` is ignored by R.  
 
     #this is a comment. there is a line of code below it.
@@ -74,7 +67,7 @@ You can use R or RStudio to write your code. Some people prefer R studio as it p
 > * Code and workflow is more reproducible if we can document everything that we do.
 > * Our end goal is not just to "do stuff" but to do it in a way that anyone can easily and exactly replicate our workflow and results.
 
-##Basic Operations in R
+## Basic Operations in R
 Let's take a few moments to play with R. You can get output from R simply by typing in math
 
     3 + 5
@@ -369,7 +362,7 @@ You can also glean other attribute-like information such as length (works on vec
 [1] 18
 
 
-####What happens when you mix types?
+#### What happens when you mix types?
 
 When you mix types, R will create a resulting vector that is the least common denominator. The coercion will move towards the one that's easiest to __coerce__ to.
 

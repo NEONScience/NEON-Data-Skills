@@ -11,8 +11,94 @@
 <h3>{{ site.owner.name }}</h3>
 <p>{{ site.owner.bio }}</p>
 
+<h4><a href="{{ site.baseurl }}/self-paced-tutorial/">View All Tutorials</a></h4>
 
-<h3>Activities By Topic</h3>
+<!-- If the page is a tutorial but it's a part of a series-->
+{% if page.tutorialSeries and page.layout contains 'post' %}
+
+<h3 style="color:#1ea0c1">This tutorial is a part of a series! </h3>
+<p>Click below to view all lessons in the series!</p>
+{% for member in site.data.tutorialSeries %}
+	{% if page.tutorialSeries contains  member.slug %}
+	  <div id="workshopLink">
+		<h4>
+			<a href="{{ site.baseurl }}/tutorial-series/{{ member.slug }}" alt="{{ member.description }}" title="{{ member.description }}" class="post-link">
+			<div>{{ member.name  }}
+			 </div>
+			</a>
+		</h4>
+	   </div>         
+	{% endif %}
+{% endfor %}
+
+
+{% if page.tutorialSeriesName and page.layout contains 'tutorial-series-landing' %}
+
+<h5>Other Data Series</h5>
+{% for member in site.data.tutorialSeries %}
+  <div id="workshopLink">
+	<h4>	
+        <a href="{{ site.baseurl }}/tutorial-series/{{ member.slug }}" class="post-link">
+        <div>{{ member.name  }}
+         </div>
+        </a>
+	</h4>
+   </div>         
+{% endfor %}
+	{% endif %}
+
+
+
+
+{% for post in site.posts %}
+	{% if post.workshopSeries contains page.mainTag %}
+	 	<div id="workshopLink">
+        <h4>
+		<a href="{{ site.baseurl }}{{ post.url }}" class="post-link" ><div>{{ post.title }}</div></a>
+		</h4>
+		</div>
+	{% endif %}
+{% endfor %}
+{% endif %}
+
+
+{% if page.workshopSeries %}
+
+<h5>Workshop: <br>{{ page.mainTag }}</h5>
+{% for post in site.posts %}
+	{% if post.workshopSeries contains page.mainTag %}
+	 	<div id="workshopLink">
+        <h4>
+		<a href="{{ site.baseurl }}{{ post.url }}" class="post-link" ><div>{{ post.title }}</div></a>
+		</h4>
+		</div>
+	{% endif %}
+{% endfor %}
+
+{% else %}
+
+<!-- commenting this out for now 
+<h3>Workshops</h3>
+-->
+{% comment %}
+{% for member in site.data.workshopSeries %}
+{% assign counter = 0 %}
+<!-- this code counts the number of posts associated with the member -->
+{% for post in site.posts %}
+	{% if post.workshopSeries contains member.slug %}
+	{% assign counter = counter | plus: 1 %}
+	{% endif %}
+{% endfor %}	
+  <h5>
+  <a href="{{ site.baseurl }}/data-workshop/{{ member.slug }}">{{ member.name }} ({{ counter }})</a>
+  </h5> 
+{% endfor %}
+
+{% endcomment %}
+
+
+<h3>Tags</h3>
+
 {% for tag in site.tags %}
 {% assign t = tag | first %}
   {% for atag in site.data.tags %}
@@ -24,16 +110,33 @@
      </a></h5>
 {% endfor %} 
 
+<h3>Tutorial by R Package</h3>
 
-<h4><a href="{{ site.baseurl }}/activities/">View ALL Activities</a></h4>
-<h4><a href="{{ site.baseurl }}/activities-by-tag/">Activities by Tag</a></h4>
+{% for member in site.data.packagesLibraries %}
+{% assign counter = 0 %}
+<!-- this code counts the number of posts associated with the member -->
+{% for post in site.posts %}
+	{% if post.packagesLibraries contains member.slug %}
+	{% assign counter = counter | plus: 1 %}
+	{% endif %}
+{% endfor %}	
+  <h5><a href="{{ site.baseurl }}/R-package/{{ member.slug }}">{{ member.name }} ({{ counter }})</h5>
+  	
+
+{% endfor %}
+
+{% endif %}
+
+
+<h4><a href="{{ site.baseurl }}/tutorial-series/">View ALL Tutorial Series</a></h4>
+<!-- <h4><a href="{{ site.baseurl }}/activities-by-tag/">Activities by Tag</a></h4> -->
 
 <br><br><br>
 
 
 {% if site.owner.twitter %}<a href="http://twitter.com/{{ site.owner.twitter }}" class="author-social" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a>{% endif %}
 {% if site.owner.facebook %}<a href="http://facebook.com/{{ site.owner.facebook }}" class="author-social" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a>{% endif %}
-{% if site.owner.youtube %}<a href="https://youtube.com/user/{{ author.youtube }}" class="author-social" target="_blank"><i class="fa fa-fw fa-youtube-square"></i> Youtube</a>{% endif %}
+{% if site.owner.youtube %}<a href="https://youtube.com/user/{{ author.youtube }}" class="author-social" target="_blank"><i class="fa fa-youtube-square"></i> Youtube</a>{% endif %}
 {% if site.owner.google_plus %}<a href="http://plus.google.com/+{{ site.owner.google_plus }}" class="author-social" target="_blank"><i class="fa fa-google-plus-square"></i> Google+</a>{% endif %}
 {% if site.owner.linkedin %}<a href="http://linkedin.com/in/{{ site.owner.linkedin }}" class="author-social" target="_blank"><i class="fa fa-linkedin-square"></i> LinkedIn</a>{% endif %}
 {% if site.owner.instagram %}<a href="http://instagram.com/{{ site.owner.instagram }}" class="author-social" target="_blank"><i class="fa fa-instagram"></i> Instagram</a>{% endif %}

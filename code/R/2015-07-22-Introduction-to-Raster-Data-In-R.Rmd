@@ -7,8 +7,8 @@ dateCreated:  2014-11-26 20:49:52
 lastModified: 2015-07-23 14:28:52
 categories: [Coding and Informatics]
 category: coding-and-informatics
-tags: [hyperspectral-remote-sensing,R,GIS-Spatial-Data]
-mainTag: GIS-Spatial-Data
+tags: [hyperspectral-remote-sensing,R,GIS-spatial-data]
+mainTag: GIS-spatial-data
 description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
 image:
   feature: lidar_GrandMesa.png
@@ -76,7 +76,7 @@ headquarters. The entire dataset can be accessed by request from the NEON websit
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>
 <li>
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">
+<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">
 The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 </li>
 <li>
@@ -91,7 +91,7 @@ Raster or "gridded" data are data that are saved in pixels. In the spatial world
 each pixel represents an area on the Earth's surface. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
 that location in the real world. 
-<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/"> More on 
+<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/"> More on 
 rasters here</a>. 
 
 <figure>

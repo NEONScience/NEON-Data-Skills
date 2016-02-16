@@ -1,12 +1,12 @@
 ---
 layout: post_by_tag
-title: 'Articles by tag: HDF5'
+title: 'Tutorials Tagged with HDF5'
 tag: HDF5
 permalink: HDF5/
 image:
   feature: hierarchy_folder_blue.png
-  credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  credit: 
+  creditlink: 
 
 ---
 
@@ -18,4 +18,3 @@ The Hierarchical Data Format version 5 (HDF5), is an open file format that suppo
 4. How to work with HDF5 files in the R programming language - step by step including sample code
 5. How to create HDF5 files.
 
-Examples using the Python programming language to come...

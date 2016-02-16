@@ -1,0 +1,27 @@
+---
+layout: post
+title: "Science Video - How We Measure Photosynthesis"
+description: "A NEON science video on How We Measure Photosynthesis"
+date: 2016-01-26
+dateCreated: 2014-10-22
+lastModified: 2016-01-01
+estimatedTime: 6 minutes 
+packagesLibraries:
+authors: [Leah Wasser, David Moore, Pat Morgan, Ankur Desai, Tristan Quaif, Claire Lunch, Derek Smith, Shelley Petroy, Colin Williams]
+contributors:
+categories: [science-video]
+tags: []
+videoThumb: photo_thumbnail.jpg
+code1: 
+image:
+  feature: videoBanner_1150x288.jpg
+  credit:
+  creditlink:
+permalink: /photosynthesis-video/
+comments: false
+---
+
+
+Did you ever wonder how scientists measure the rate of photosynthesis? This video will walk you though how photosynthesis is measured, at the leaf level, using an infra red gas analyzer. A very similar method is used on towers, to measure CO2 over entire forests and landscapes. NEON, (National Ecological Observatory Network) has a network of these tower systems that will be providing free, ecological data for 30 years. (www.neoninc.org)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PlEzyZadA90" frameborder="0" allowfullscreen></iframe>
