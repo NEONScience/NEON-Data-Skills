@@ -2,11 +2,11 @@
 layout: post
 title: "Vector 03: When Vector Data Don't Line Up - Handling Spatial
 Projection & CRS in R"
-date:   2015-10-24
+date:   2015-10-25
 authors: [Joseph Stachelek, Leah Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
-lastModified: 2016-02-09
+lastModified: 2016-02-16
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
