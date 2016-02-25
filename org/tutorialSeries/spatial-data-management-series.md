@@ -1,6 +1,6 @@
 ---
 layout: tutorial-series-landing
-title: 'Self-Paced Tutorial Series: Introduction to Working With Spatio-Temporal Data and Data Management'
+title: 'Introduction to Working With Spatio-Temporal Data and Data Management'
 categories: [tutorial-series]
 tutorialSeriesName: spatial-data-management-series
 permalink: tutorial-series/spatial-data-management-series/
@@ -22,8 +22,15 @@ worked with temporal or spatial data in `R` before.
 # Series Goals / Objectives
 After completing this series, you will:
 
+* know where to find external data
+* understand the fundamentals of projection, coordinate reference system, and 
+other spatial metadata to be able to work with spatial data 
+* know the scientific background material to ask questions related to 
+phenological data, including: 
+	+ NDVI (Normalized Difference Vegetation Index)
+	+ PAR (Photosynthetically-active Radiation) 
 
-## Things You’ll Need To Complete This Lesson
+## Things You’ll Need To Complete This Series
 
 ### Setup RStudio
 To complete the tutorial series you will need an updated version of `R` and,
@@ -41,7 +48,6 @@ an interactive development environment (IDE).
 You can chose to install packages with each lesson or you can download all 
 of the necessary `R` Packages now. 
 
-
 [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
 
 *****
@@ -52,7 +58,7 @@ part of a larger
 [spatio-temporal tutorial series and Data Carpentry workshop.]({{ site.baseurl }}tutorial-series/neon-dc-phenology-series/)
 Included series are
 [introduction to spatio-temporal data and data management]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
-[working with raster time-series data in R]({{ site.baseurl }}tutorial-series/raster-time-series/), 
+[working With raster data in R]({{ site.baseurl }}tutorial-series/raster-data-series/), 
 [working with vector data in R ]({{ site.baseurl }}tutorial-series/vector-data-series/)
 and
 [working with tabular time series in R]({{ site.baseurl }}tutorial-series/tabular-time-series/).

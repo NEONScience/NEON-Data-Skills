@@ -1,6 +1,6 @@
 ---
 layout: tutorial-series-landing
-title: 'NEON Self-Paced Tutorial Series & Data Carpentry Workshop -- Work with Spatio-temporal Data in R -- Data Theme: Phenology'
+title: 'Work with Spatio-temporal Data in R -- Data Theme: Phenology'
 categories: [tutorial-series]
 tutorialSeriesName: neon-dc-phenology-series
 permalink: tutorial-series/neon-dc-phenology-series/
@@ -16,16 +16,16 @@ In the tutorials in this
 we will learn important skills and concepts that support working with external 
 spatio-temporal data including:
 
-* Understanding metadata formats.
-* Finding critical information about data using metadata.
-* Dealing with null/NoData and missing data values.
+* Understanding metadata formats
+* Finding critical information about data using metadata
+* Dealing with null/NoData and missing data values
 * Importing and plotting time series data
-* Working with and manipulating data/time formats.
-* Importing and plotting raster data in `Geotiff` format.
-* Importing and plotting vector (`shapefile` and `.csv` format) data.
-* Working with raster time series data.
+* Working with and manipulating data/time formats
+* Importing and plotting raster data in `Geotiff` format
+* Importing and plotting vector (`shapefile` and `.csv` format) data
+* Working with raster time series data
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down but haven't
+**R Skill Level:** Beginner - you've got the basics of `R` down but haven't
 worked with spatial data in `R` before.
 
 <div id="objectives" markdown="1">
@@ -41,7 +41,7 @@ After completing the workshop, you will:
 * Be able to import and plot vector data in `shapefile` and `.csv` formats.
 * Know how to work with raster time series data.
 
-## Things You’ll Need To Complete This Lesson
+## Things You’ll Need To Complete This Series
 To complete this lesson: you will need the most current version of R, and 
 preferably RStudio, loaded on your computer.
 
@@ -61,15 +61,15 @@ them all now.
 *****
 
 {% include/_greyBox-wd-rscript.html %}
-**Working with Spatio-temporal Phenology Data Series:** This tutorial series is
-part of a
-[NEON / Data Carpentry workshop series]({{ site.baseurl }}/tutorial-series/neon-dc-phenology-series/)
-The workshop includes series on
-[introduction to spatial data and data management]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
-[raster time-series data in R]({{ site.baseurl }}tutorial-series/raster-time-series/), 
-[vector data in R ]({{ site.baseurl }}tutorial-series/vector-data-series/)
+**Working with Spatio-temporal Data in R Series:** This tutorial series is
+part of a larger
+[spatio-temporal tutorial series and Data Carpentry workshop.]({{ site.baseurl }}tutorial-series/neon-dc-phenology-series/)
+Included series are
+[introduction to spatio-temporal data and data management]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
+[working With raster data in R]({{ site.baseurl }}tutorial-series/raster-data-series/), 
+[working with vector data in R ]({{ site.baseurl }}tutorial-series/vector-data-series/)
 and
-[tabular time series in R ]({{ site.baseurl }}tutorial-series/tabular-time-series/).
+[working with tabular time series in R]({{ site.baseurl }}tutorial-series/tabular-time-series/).
 
 </div> 
 
