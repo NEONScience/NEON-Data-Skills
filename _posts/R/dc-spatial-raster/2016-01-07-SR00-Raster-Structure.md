@@ -23,7 +23,7 @@ image:
   credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
   creditlink:
 permalink: R/Introduction-to-Raster-Data-In-R
-comments: false
+comments: true
 ---
 
 {% include _toc.html %}

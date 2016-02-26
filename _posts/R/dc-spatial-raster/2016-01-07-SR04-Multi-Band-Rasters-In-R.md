@@ -20,7 +20,7 @@ image:
   credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
   creditlink:
 permalink: R/Multi-Band-Rasters-In-R
-comments: false
+comments: true
 ---
 
 {% include _toc.html %}
