@@ -196,11 +196,10 @@ We will set up an R-Studio project within this working directory. <a href="https
 
 ### Workshop Instructors
 * **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
-* 
+* **Michael Heeremans**
+* **Anne Claire Fouilloux **
 
-#### Workshop Instruction Assistants
-
-* 
+Please get in touch with the instructors prior to the workshop with any questions.
 
 ## #WorkWithData Hashtag
   
@@ -209,41 +208,36 @@ Please tweet using the hashtag:
 
 
 
-## TENTATIVE SCHEDULE
+## Workshop SCHEDULE
 
-Please note that we are still developing the agenda for this workshop. The schedule below is subject to change.
+Please note that the schedule listed below may change depending upon the pace of the workshop! 
 
 ## Day One
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
-| 8:00     | Welcome / Introductions / Logistics |          |
-| 9:00     | <a href="{{ site.baseurl }}" target="_blank">Set Up</a> | Leah, Michael Anne          |
-| 9:30     | <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">Getting Started with Spatial Formats </a>       | Michael?            |
-| 10:15 | ------- BREAK ------- |      |
-| 10:30 | <a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">Intro to Coordinate Reference Systems</a> | Michael?     |
-| 11:45 - 1:00 PM     | Lunch on Your Own |          |
-| 1:00     | <a href="{{ site.baseurl }}/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
-| 2:30 | ------- BREAK ------- |      |
-| 2:45     |<a href="{{ site.baseurl }}//" target="_blank">Vector Data Visualization &  Processing in R</a> |  Leah      |
-| Done Early?     | <a href="{{ site.baseurl }}/ /" target="_blank"></a> |   Leah       |
-| 3:45 | ------- BREAK ------- |      |
-| 4:00     | <a href="{{ site.baseurl }}/R/ESA2015-Capstone-R/" target="_blank">Wrap-Up </a> |       |
+| 8:00     | Please come early if you have any setup / installation issues |          |
+| 9:00     | <a href="{{ site.baseurl }}" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
+| 10:30 | ------- Coffee / Tea BREAK ------- |      |
+| 10:45 | <a href="http://data-lessons.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Spatial Data Formats </a> | Michael?     |
+| 11:30 | <a href="http://data-lessons.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Coordinate Reference Systems</a> | Michael     |
+| 12:00 - 1:00 PM     | Lunch |          |
+| 1:00     | <a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
+| 3:00 | ------- BREAK ------- |      |
+| 3:15     |<a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
+| 4:45     | Wrap-Up Day 1 |       |
 
 ## Day Two
 
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 9:00     | Questions From Previous Day |          |
-| 8:05     | <a href="{{ site.baseurl }}/R/Raster-Data-In-R/" target="_blank">Getting Started with Raster Data in R</a> | Leah          |
-| 9:30     | <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">Raster Resolution, Extent & CRS in R</a>       | Natalie           |
-| 10:15 | ------- BREAK ------- |      |
+| 9:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> | Leah          |
+| 10:30 | ------- BREAK ------- |      |
 | 10:30 | <a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">Raster Data in R</a> | Leah     |
 | 11:30 - 12:00 PM     | Metadata / Data Management |    Michael (this could be longer)      |
 | 12:00 - 1:00 PM     | Lunch on Your Own |          |
-| 1:00     | <a href="{{ site.baseurl }}//" target="_blank">Raster Time Series in R</a> | Leah         |
-| 2:30 | ------- BREAK ------- |      |
-| 2:45     |<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank">Raster Time Series Continued </a> |  Leah      |
-| Done Early?     | <a href="{{ site.baseurl }}//" target="_blank">Create Raster Stacks & NDVI in R</a> |   Leah       |
-| 3:45 | ------- BREAK ------- |      |
-| 4:00     | <a href="{{ site.baseurl }}/R/ESA2015-Capstone-R/" target="_blank">Hands On Activity Options</a> |       |
+| 1:00     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
+| 3:00 | ------- BREAK ------- |      |
+| 3:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
+| 4:45     | Wrap-Up Day Two!</a> |       |
