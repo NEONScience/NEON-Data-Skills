@@ -1,26 +1,26 @@
 ---
 layout: workshop-event
-title: "NEON - Data Carpentry - Spatio-Temporal Workshop - Mar 15-16 - OSLO, Norway"
+title: "NEON/Data Carpentry - Spatio-Temporal Workshop - March 15-16, 2016 in Oslo, Norway"
 estimatedTime: 2 Day Workshop
 packagesLibraries: []
-date:   2016-03-15
-dateCreated:   2016-03-01
-lastModified: 2016-02-12
+date: 2016-03-15
+dateCreated: 2016-03-01
+lastModified: 2016-03-02
 startDate: 2016-03-15
 endDate: 2016-03-16
-authors: [Leah A. Wasser, Michael Heeremans, Anne Alaire Fouilloux]
+authors: [Leah A. Wasser, Michael Heeremans, Anne Claire Fouilloux, Arnstein Orten, Hans Peter Verne]
 tags: []
 mainTag: workshop-event
 categories: [workshop-event]
-description: "This two day workshop, taught at the University of Oslo - March 15-16, Norway, will cover shell, and patio-temporal
-data in R."
+description: "This two day workshop, taught at the University of Oslo on 
+March 15-16, 2016, will cover shell and spatio-temporal data in R."
 code1: 
 image:
   feature: 
   credit:
   creditlink: 
 permalink: /workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15
-comments: false 
+comments: true 
 ---
 
 
@@ -195,9 +195,11 @@ We will set up an R-Studio project within this working directory. <a href="https
 ***
 
 ### Workshop Instructors
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
+* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser)**; @leahawasser, Supervising Scientist, NEON, Inc 
 * **Michael Heeremans**
-* **Anne Claire Fouilloux **
+* **Anne Claire Fouilloux**
+* **Arnstein Orten**
+* **Hans Peter Verne**
 
 Please get in touch with the instructors prior to the workshop with any questions.
 
