@@ -23,107 +23,122 @@ permalink: /workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15
 comments: true 
 ---
 
+<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#workshop-schedule">Click here to view workshop schedule. </a>
 
 <div id="objectives" markdown="1">
 
-## Things You’ll Need To For The Workshop
-
-To participant in this workshop, you will need the most current version of R, and 
-preferably RStudio, loaded on your computer.
-
-### Install R Packages
-
-You can chose to install each library individually if you already have some installed.
-
-In RStudio, you can go to `Tools --> Check for package updates` to update already
-installed libraries on your computer!
-
-* **raster:** `install.packages("raster")`
-* **rgdal:** `install.packages("rgdal")`
-* **rasterVis:** `install.packages("rasterVis")`
-* **ggplot2:** `install.packages("ggplot2")`
-* **sp:** `install.packages("sp")`
-
-
-### Make Sure R Packages Are Current 
-
-You can use <code>update.packages()</code> to update all packages that are 
-installed in R automatically. 
-
-[More on Packages in R.]({{site.baseurl}}R/Packages-In-R/)
-
+# Things You’ll Need To For The Workshop
 
 ### Download Data
+
+To be prepared for this workshop, please download the following files in advance:
 
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
 {% include/dataSubsets/_data_Landsat-NDVI.html %}
 
-*****
+***
+Optional - you can download the global boundary files below if you wish to follow along 
+with the data management lesson on Coordinate Reference Systems.
 
-### Setup RStudio 
+<a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/" target="_blank"  class="btn btn-success">
+Download "land" - Natural Earth Global Continent Boundary Layer</a>
 
-To participate in the workshop, we recommend that you come with R and RSTUDIO 
+<a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-graticules/" target="_blank" class="btn btn-success">
+Download all Graticules - Natural Earth Global Graticules Layer</a>
+
+***
+
+### Set Working Directory
+
+Once you have downloaded the data, setup your working directory.
+<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#set-working-directory">Click here to view working directory setup.</a>
+
+****
+
+## Software Installation
+
+Next, you will need:
+access to the software described below (R, R studio, required R packages
+and Bash). In addition, you will need an up-to-date web browser.
+  
+
+### Install R & R Studio
+
+To participate in the workshop, we recommend that you come with **R** and **RStudio** 
 installed. <a href = "http://cran.r-project.org/">R</a> is a programming language 
 that specializes in statistical computing. It is a powerful tool for exploratory
  data analysis. To interact with R, we STRONGLY recommend 
 <a href="http://www.rstudio.com/">RStudio</a>, an interactive development 
 environment (IDE). 
 
-#### Windows R / RStudio Setup
-
-*  Download R from
-      <a href="http://cran.r-project.org/bin/windows/base/release.htm">here</a>
-* Run the .exe file that was just downloaded
-* Go to the <a href="http://www.rstudio.com/ide/download/desktop">RStudio Download page</a>
-* Under <i>Installers</i> select <b>RStudio 0.98.1103 - Windows XP/Vista/7/8</b>
-* Double click the file to install it
-
-
-Once R and R studio are installed, open RStudio to make sure it works and you don't get any error messages.
-
-#### MAC R / RStudio Setup
-
-
-*If your Mac is set up for UiO use, you can install R from 
-    <a href="https://www.uio.no/tjenester/it/maskin/macosx/drift/munki-overview.html">Managed Software Center</a>
-  
-* Go to <a href=http://cran.r-project.org>CRAN</a> and click on <i>Download
-R for (Mac) OS X</i>
-* Select the .pkg file for the version of OS X that you have and the file
-will download.
-* Double click on the file that was downloaded and R will install
-* Go to the <a href="http://www.rstudio.com/ide/download/desktop">RStudio Download page</a>
-* Under <i>Installers</i> select <b>RStudio 0.98.1103 - Mac OS X 10.6+ (64-bit)</b> to download it.
-* Once it's downloaded, double click the file to install it
-
-Once R and R studio are installed, open RStudio to make sure it works and you don't get any error messages.
-
-
-#### Linux R / RStudio Setup
-
-* R is available through most Linux package managers. 
-You can download the binary files for your distribution
-        from <a href="http://cran.r-project.org/index.html">CRAN</a>. Or
-        you can use your package manager (e.g. for Debian/Ubuntu
-        run <code>sudo apt-get install r-base</code> and for Fedora run
-        <code>sudo yum install R</code>). 
-* To install RStudi, go to the <a href="http://www.rstudio.com/ide/download/desktop">RStudio Download page</a>
-* Under <i>Installers</i> select the version for your distribution.
-* Once it's downloaded, double click the file to install it
-
-Once R and R studio are installed, open RStudio to make sure it works and you don't get any error messages.
-
-
-### If You Already Have R / RStudio -- please update
+#### If You Already Have R / RStudio Installed -- please update
 
 If you already have R / RStudio installed on your laptop, please be sure that
 you are running the most current version of R-Studio, R AND all packages that 
 we'll be using in the workshop (listed below).
 
+#### If you don't have R / Rstudio installed - Please follow the instructions below:
+
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#R-mac">Mac Installation of R and R studio</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#R-windows">Windows Installation of R and R studio</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#R-linux">Linux Installation of R and R studio</a>
+
+
+**** 
+
+## Install R Packages
+
+You can chose to install each library individually if you already have some installed.
+
+* **raster:** `install.packages("raster")`
+* **rgdal (windows):** `install.packages("rgdal")`
+* **rgdal (mac):** `install.packages("rgdal",configure.args="--with-proj-include=/Library/Frameworks/PROJ.framework/unix/include --with-gdal-config=/Library/Frameworks/GDAL.framework/unix/bin/gdal-config --with-proj-lib=/Library/Frameworks/PROJ.framework/unix/lib")`
+* **rasterVis:** `install.packages("rasterVis")`
+* **ggplot2:** `install.packages("ggplot2")`
+* **sp:** `install.packages("sp")`
+
+### GDAL installation for MAC
+
+You may need to install GDAL in order for rgdal to work properly. <a href="https://www.youtube.com/watch?v=G6r46OhNlqw" target="_blank">Click here to watch a video on installing gdal
+using homebrew on your mac.</a> <a href="http://www.kyngchaos.com/software/frameworks" target="_blank">Or, you can visit THIS LINK to install GDAL 1.11 complete.</a>
+
+### Make Sure R Packages Are Current 
+
+In RStudio, you can go to `Tools --> Check for package updates` to update already
+installed libraries on your computer! Or, you can use <code>update.packages()</code> 
+to update all packages that are installed in R automatically. 
+
+[More on Packages in R.]({{site.baseurl}}R/Packages-In-R/)
+
+**** 
+
+## Install Bash
+
+Bash is a commonly-used shell that gives you the power to do simple
+tasks more quickly.
+  
+ We maintain a list of common issues that occur during installation as a reference for instructors
+  that may be useful on the
+  <a href = "https://github.com/swcarpentry/workshop-template/wiki/Configuration-Problems-and-Solutions" target="_blank">Configuration Problems and Solutions wiki page</a>.
+  
+#### If you don't have Bash installed - Please follow the instructions below:
+
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#shell-macosx">Mac Installation of Bash</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#shell-windows">Windows Installation of Bash</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#shell-linux">Linux Installation of Bash</a>
+
 </div>
 
-### Setup 
+
+
+{% include/wkSetup/_setup_R_Rstudio.html %}
+
+***
+
+{% include/wkSetup/_setup_bash.html %}
+
+***
 
 ### Set Working Directory
 
