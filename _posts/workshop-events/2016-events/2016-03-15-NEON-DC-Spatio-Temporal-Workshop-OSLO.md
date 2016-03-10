@@ -52,7 +52,7 @@ Download all Graticules - Natural Earth Global Graticules Layer</a>
 ### Set Working Directory
 
 Once you have downloaded the data, setup your working directory.
-<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#set-working-directory">Click here to view working directory setup.</a>
+<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#set-working-directory-1">Click here to view working directory setup.</a>
 
 ****
 
