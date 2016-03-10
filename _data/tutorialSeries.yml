@@ -4,7 +4,7 @@
   basic calculations on raster data in R. It also covers key spatial attributes associated
   with raster data include extent, projection and resolution. Finally we cover dealing with
   missing and bad data when working with remote sensing imagery."
-  lastModified:  2015-10-15
+  lastModified:  2016-03-10
   
 - slug: vector-data-series
   name: Intro to Vector Data in R 
@@ -12,7 +12,7 @@
   vector-format spatial data (points, lines and polygons) in R. Additional, 
   topics include working with spatial metadata (extent and coordinate reference 
   system), working with spatial attributes and plotting data by attributes."  
-  lastModified:  2015-10-15
+  lastModified:  2016-03-10
   
 - slug: tabular-time-series
   name: Tabular Time Series Data in R 
