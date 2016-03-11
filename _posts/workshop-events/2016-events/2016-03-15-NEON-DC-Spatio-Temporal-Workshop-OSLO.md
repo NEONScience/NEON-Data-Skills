@@ -220,10 +220,11 @@ We will set up an R-Studio project within this working directory. <a href="https
 <figure>
     <a href="{{ site.baseurl }}/images/set-working-dir/r-studio-spatial-files.png">
     <img src="{{ site.baseurl }}/images/set-working-dir/r-studio-spatial-files.png"></a>
-    <figcaption>Your working directory in R should look like the above image. NOTE: we will setup an OSLO2015.Rproj file 
-    together at the beginning of the workshop.</figcaption>
+    <figcaption>Your working directory in R should look like the above image. It is OK if you don't have the "Global" directory
+    setup. The data in this directory is OPTIONAL to download. </figcaption>
 </figure>
 
+NOTE: we will setup an OSLO2015.Rproj file together at the beginning of the workshop.
 
 ***
 
