@@ -189,7 +189,10 @@ downloaded from the internet, if so, the .zip file will download there.
 
 #### 3) Move to **data** directory
 Third, move the data files to a directory called **data** directory within the
-**Documents** directory on your computer. 
+**Documents** directory on your computer. If you have other files in this data
+directory, you may decide to create a sub-directory in your data directory called 
+spatial-workshop. However you set it up, your final working directory should look 
+similar to the graphic below. 
 
 <figure>
 	 <a href="{{ site.baseurl }}/images/set-working-dir/spatial-file-structure.png">
@@ -199,6 +202,10 @@ Third, move the data files to a directory called **data** directory within the
 	 Observatory Network (NEON) 
 	 </figcaption>
 </figure> 
+
+Note that the "Global/boundaries" directory is optional!
+If you downloaded the optional global layers, we suggestion you place them in a directory
+called Global/boundaries.
 
 #### 4) Unzip/uncompress
 
