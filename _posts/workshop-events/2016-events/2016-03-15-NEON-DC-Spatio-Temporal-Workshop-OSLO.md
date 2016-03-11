@@ -192,8 +192,8 @@ Third, move the data files to a directory called **data** directory within the
 **Documents** directory on your computer. 
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/Raster_Vector_UnZipped.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/Raster_Vector_UnZipped.png"></a>
+	 <a href="{{ site.baseurl }}/images/set-working-dir/spatial-file-structure.png">
+	 <img src="{{ site.baseurl }}/images/set-working-dir/spatial-file-structure.png"></a>
 	 <figcaption> Screenshot of the computer's Downloads folder containing the
 	 new <b>NEONDSMetTimeSeries.zip </b> file. Source: National Ecological
 	 Observatory Network (NEON) 
