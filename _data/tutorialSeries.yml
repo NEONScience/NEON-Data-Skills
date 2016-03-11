@@ -20,7 +20,7 @@
   phenology-related micrometeorological data in R.  Additional topics include
   working with time and date classes (e.g., POSIXct, POSIXlt, and Date), 
   subsetting time series data by date and time and created facetted or tiles 
-  sets of plots. NOTE: These lessons will be published SOON!"  
+  sets of plots."  
   lastModified:  2015-12-15
   
 - slug: raster-time-series
