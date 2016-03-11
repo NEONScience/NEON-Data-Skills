@@ -218,8 +218,10 @@ we will use in this workshop.
 We will set up an R-Studio project within this working directory. <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" target="_blank">Read more about R-Studio projects, here.</a> In R studio, your working directory space will look like this:
 
 <figure>
-    <a href="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"><img src="{{ site.baseurl }}/images/workshops/ESA2015_RStudio_Directory.png"></a>
-    <figcaption>Your working directory in R should look like the above image. NOTE: we will setup the ESA2015.Rproj file together at the beginning of the workshop.</figcaption>
+    <a href="{{ site.baseurl }}/images/set-working-dir/r-studio-spatial-files.png">
+    <img src="{{ site.baseurl }}/images/set-working-dir/r-studio-spatial-files.png"></a>
+    <figcaption>Your working directory in R should look like the above image. NOTE: we will setup an OSLO2015.Rproj file 
+    together at the beginning of the workshop.</figcaption>
 </figure>
 
 
