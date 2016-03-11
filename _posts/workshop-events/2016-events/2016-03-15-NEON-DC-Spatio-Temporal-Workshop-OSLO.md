@@ -97,6 +97,22 @@ You can chose to install each library individually if you already have some inst
 * **rasterVis:** `install.packages("rasterVis")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **sp:** `install.packages("sp")`
+*  **rgeos** `install.packages`("rgeos")
+
+OPTIONAL installation
+If you want to work through the metadata lesson which includes a section on the Ecological Metadata Language (EML), 
+please install the following:
+
+* **devtools:** `install.packages("devtools")`
+
+NOTE: You have to run the devtools library `library(devtools)` first, and then `install_github` will work.
+the EML package is under development which is why the install occurs from GitHub and not can!
+
+* **eml** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
+
+
+
+
 
 ### GDAL installation for MAC
 
