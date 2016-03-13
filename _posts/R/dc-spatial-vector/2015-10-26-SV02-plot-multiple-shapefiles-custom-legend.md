@@ -6,7 +6,7 @@ date:   2015-10-25
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2016-02-09
-lastModified: 2016-03-09
+lastModified: 2016-03-12
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -335,9 +335,9 @@ it might be more useful to use line symbols in our legend
 rather than squares to represent the line data. We can create line symbols, 
 using `lty = ()`. We have a total of 6 elements in our legend:
 
-1.   Tower Location
-2.   AOI
-3. -6. Road levels (categories)
+1. A Tower Location
+2. An Area of Interest (AOI)
+3. and **4** Road types (levels)
 
 The `lty` list designates, in order, which of those elements should be
 designated as a line (`1`) and which should be designated as a symbol (`NA`).

@@ -5,7 +5,7 @@ date:   2015-10-23
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
-lastModified: 2016-03-09
+lastModified: 2016-03-12
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -121,7 +121,7 @@ locations at the NEON Harvard Forest Field Site (`HARV_PlotLocations.csv`) in
     # look at the data structure
     str(plot.locations_HARV)
 
-    ## 'data.frame':	21 obs. of  16 variables:
+    ## 'data.frame':	21 obs. of  15 variables:
     ##  $ easting   : num  731405 731934 731754 731724 732125 ...
     ##  $ northing  : num  4713456 4713415 4713115 4713595 4713846 ...
     ##  $ geodeticDa: chr  "WGS84" "WGS84" "WGS84" "WGS84" ...
@@ -133,7 +133,6 @@ locations at the NEON Harvard Forest Field Site (`HARV_PlotLocations.csv`) in
     ##  $ domainID  : chr  "D01" "D01" "D01" "D01" ...
     ##  $ siteID    : chr  "HARV" "HARV" "HARV" "HARV" ...
     ##  $ plotType  : chr  "distributed" "tower" "tower" "tower" ...
-    ##  $ subtype   : chr  "basePlot" "basePlot" "basePlot" "basePlot" ...
     ##  $ plotSize  : int  1600 1600 1600 1600 1600 1600 1600 1600 1600 1600 ...
     ##  $ elevation : num  332 342 348 334 353 ...
     ##  $ soilTypeOr: chr  "Inceptisols" "Inceptisols" "Inceptisols" "Histosols" ...
@@ -158,8 +157,7 @@ Let's check out the column `names` of our file.
 
     ##  [1] "easting"    "northing"   "geodeticDa" "utmZone"    "plotID"    
     ##  [6] "stateProvi" "county"     "domainName" "domainID"   "siteID"    
-    ## [11] "plotType"   "subtype"    "plotSize"   "elevation"  "soilTypeOr"
-    ## [16] "plotdim_m"
+    ## [11] "plotType"   "plotSize"   "elevation"  "soilTypeOr" "plotdim_m"
 
 ## Identify X,Y Location Columns
 

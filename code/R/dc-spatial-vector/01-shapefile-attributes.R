@@ -65,6 +65,9 @@ point_HARV@data  # C Country
 # view all attributes in the lines shapefile within the TYPE field
 lines_HARV$TYPE
 
+# view unique values within the "TYPE" attributes
+levels(lines_HARV@data$TYPE)
+
 
 ## ----Subsetting-shapefiles-----------------------------------------------
 # select features that are of TYPE "footpath"
@@ -73,7 +76,7 @@ lines_HARV$TYPE
 lines_HARV[lines_HARV$TYPE == "footpath",]
 
 # save an object with only footpath lines
-footpath_HARV<-lines_HARV[lines_HARV$TYPE == "footpath",]
+footpath_HARV <- lines_HARV[lines_HARV$TYPE == "footpath",]
 footpath_HARV
 
 # how many features are in our new object
@@ -177,12 +180,14 @@ plot(lines_HARV,
 ## ----line-width-unique---------------------------------------------------
 class(lines_HARV$TYPE)
 levels(lines_HARV$TYPE)
+# create vector of line widths
+lineWidths <- (c(1,2,3,4))[lines_HARV$TYPE]
 # adjust line width by level
 # in this case, boardwalk (the first level) is the widest.
 plot(lines_HARV, 
      col=roadColors,
      main="NEON Harvard Forest Field Site\n Roads & Trails \n Line width varies by TYPE Attribute Value",
-     lwd=lines_HARV$TYPE)
+     lwd=lineWidths)
 
 ## ----bicycle-map, include=TRUE, results="hide", echo=FALSE---------------
 
@@ -281,7 +286,7 @@ legend("bottomright",
        levels(lines_HARV$BicyclesHo), 
        fill=challengeColors, 
        bty="n", # turn off border
-       cex=.7) # adjust font size
+       cex=.8) # adjust font size
 
 
 ## ----challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE----

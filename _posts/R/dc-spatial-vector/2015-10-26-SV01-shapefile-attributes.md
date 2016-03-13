@@ -6,7 +6,7 @@ date:   2015-10-26
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
-lastModified: 2016-03-09
+lastModified: 2016-03-12
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -286,6 +286,11 @@ the attribute: `objectName$attributeName`.
     ## [13] woods road
     ## Levels: boardwalk footpath stone wall woods road
 
+    # view unique values within the "TYPE" attributes
+    levels(lines_HARV@data$TYPE)
+
+    ## [1] "boardwalk"  "footpath"   "stone wall" "woods road"
+
 Notice that two of our TYPE attribute values consist of two separate words: 
 stone wall and woods road. There are really four unique TYPE values, not six 
 TYPE values.  
@@ -310,7 +315,7 @@ from a spatial object in `R`.
     ## max values  :         41,      106, footpath,    NA,        NA,      6,       NA,   676.7180,    NA,         Y,         R2,      Y,   676.7181, R2 - 4WD/High Clearance Vehicles Only, Bicycles and Horses Allowed
 
     # save an object with only footpath lines
-    footpath_HARV<-lines_HARV[lines_HARV$TYPE == "footpath",]
+    footpath_HARV <- lines_HARV[lines_HARV$TYPE == "footpath",]
     footpath_HARV
 
     ## class       : SpatialLinesDataFrame 
@@ -365,7 +370,7 @@ Now, we see that there are in fact two features in our plot!
 
 
 <div id="challenge" markdown="1">
-## Challenge: Subset Spatial Line Objects Practice
+## Challenge: Subset Spatial Line Objects
 Subset out all:
 
 1. `Boardwalks` from the lines layer and plot it.
@@ -486,10 +491,9 @@ to be thicker or thinner using `lwd=`.
 ### Adjust Line Width by Attribute
 
 If we want a unique line width for each factor level or attribute category
-in our spatial object, we can set the line width in our plot - `lwd=` to the 
-spatial object attribute of interest like so:
+in our spatial object, we can use the same syntax that we used for colors, above.
 
-`lwd=lines_HARV$TYPE`
+`lwd=c("widthOne", "widthTwo","widthThree")[object$factor]`
 
 Note that this requires the attribute to be of class `factor`. Let's give it a 
 try.
@@ -503,17 +507,19 @@ try.
 
     ## [1] "boardwalk"  "footpath"   "stone wall" "woods road"
 
+    # create vector of line widths
+    lineWidths <- (c(1,2,3,4))[lines_HARV$TYPE]
     # adjust line width by level
     # in this case, boardwalk (the first level) is the widest.
     plot(lines_HARV, 
          col=roadColors,
          main="NEON Harvard Forest Field Site\n Roads & Trails \n Line width varies by TYPE Attribute Value",
-         lwd=lines_HARV$TYPE)
+         lwd=lineWidths)
 
 ![ ]({{ site.baseurl }}/images/rfigs/dc-spatial-vector/01-shapefile-attributes/line-width-unique-1.png)
 
 <div id="challenge" markdown="1">
-## Challenge: Plot Line Width by Specific Attribute 
+## Challenge: Plot Line Width by Attribute 
 We can customize the width of each line, according to specific attribute value,
 too. To do this, we create a vector of line width values, and map that vector
 to the factor levels - using the same syntax that we used above for colors.
@@ -639,19 +645,20 @@ other lines can be grey.
 <div id="challenge" markdown="1">
 ## Challenge: Plot Polygon by Attribute
 
-1. Create a map of the State boundaries in the United States - using the data
+1. Create a map of the State boundaries in the United States using the data
 located in your downloaded data folder: `NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014`. 
-Each state should be colored by it's `region` value. Add a legend.
+Apply a fill color to teach state using its `region` value. Add a legend.
 
 2. Using the `NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp` shapefile, 
 create a map of study plot locations, with each point colored by the soil type
 (`soilTypeOr`).  **Question:** How many different soil types are there at this particular field site? 
 
-3. BONUS -- modify the field site plot above. Tell `R` to plot each point,
-using a different symbol of `pch` value. HINT: To do this, create a vector
-object of symbols by factor level using the syntax described above for line
-width: 
-`c(15,17)[lines_HARV$soilTypeOr]`
+3. BONUS -- modify the field site plot above. Plot each point,
+using a different symbol. HINT: you can assign the symbol using `pch=` value. 
+You can create a vector object of symbols by factor level using the syntax
+syntax that we used above to create a vector of lines widths and colors:
+`pch=c(15,17)[lines_HARV$soilTypeOr]`. Type `?pch` to learn more about pch or 
+use google to find a list of pch symbols that you can use in `R`.
 
 </div>
 
