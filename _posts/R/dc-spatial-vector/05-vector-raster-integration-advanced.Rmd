@@ -175,7 +175,7 @@ If you have completed the Vector 00-04 tutorials in this
 [Introduction to Working with Vector Data in R]({{site.baseurl}}/tutorial-series/vector-data-series/)
 series, you can skip this code as you have already created these object.)
 
-```{r load-libraries-data }
+```{r load-libraries-data, results="hide", warning=FALSE }
 # load necessary packages
 library(rgdal)  # for vector work; sp package should always load with rgdal. 
 library (raster)
@@ -348,8 +348,12 @@ CHM_HARV_manualCrop <- crop(x = chm_HARV, y = new.extent)
 # plot extent boundary and newly cropped raster
 plot(aoiBoundary_HARV, 
      main = "Manually Cropped Raster\n NEON Harvard Forest Field Site")
-plot(new.extent, col="brown", lwd=4,add = TRUE)
-plot(CHM_HARV_manualCrop, add = TRUE)
+plot(new.extent, 
+     col="brown", 
+     lwd=4,
+     add = TRUE)
+plot(CHM_HARV_manualCrop, 
+     add = TRUE)
 
 ```
 
@@ -360,12 +364,13 @@ object.
 See the documentation for the `extent()` function for more ways
 to create an `extent` object. 
 
-* `help.search("extent", package = "raster")`
+* `??raster::extent`
 * More on the 
 <a href="http://www.inside-r.org/packages/cran/raster/docs/extent" target="_blank">
 extent class in `R`</a>.
 
-##Extract Raster Pixels Values Using Vector Polygons
+## Extract Raster Pixels Values Using Vector Polygons
+
 Often we want to extract values from a raster layer for particular locations - 
 for example, plot locations that we are sampling on the ground. 
 
@@ -434,7 +439,7 @@ summary(tree_height$HARV_chmCrop)
 ```
 
 * Check out the documentation for the `extract()` function for more details 
-(`help.search("extract", package = "raster")`).
+(`??raster::extract`).
 
 ## Summarize Extracted Raster Values 
 
@@ -507,7 +512,8 @@ Use the plot location points shapefile `HARV/plot.locations_HARV.shp` or spatial
 object `plot.locationsSp_HARV` to extract an average tree height value for the
 area within 20m of each vegetation plot location in the study area.
 
-Create a simple plot showing the mean tree height of each plot.
+Create a simple plot showing the mean tree height of each plot using the `plot()`
+function in base-R.
 </div>
 
 

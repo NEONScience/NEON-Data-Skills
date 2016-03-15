@@ -6,7 +6,7 @@ date:   2015-10-26
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
-lastModified: 2016-03-12
+lastModified: 2016-03-15
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -373,7 +373,7 @@ Now, we see that there are in fact two features in our plot!
 ## Challenge: Subset Spatial Line Objects
 Subset out all:
 
-1. `Boardwalks` from the lines layer and plot it.
+1. `boardwalk` from the lines layer and plot it.
 2. `stone wall` features from the lines layer and plot it. 
 
 For each plot, color each feature using a unique color.

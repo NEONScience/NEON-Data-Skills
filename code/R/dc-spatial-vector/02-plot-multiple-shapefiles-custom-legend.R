@@ -4,7 +4,7 @@
 # rgdal: for vector work; sp package should always load with rgdal. 
 library(rgdal)  
 # raster: for metadata/attributes- vectors or rasters
-library (raster)   
+library(raster)   
 
 # set working directory to data folder
 # setwd("pathToDirHere")

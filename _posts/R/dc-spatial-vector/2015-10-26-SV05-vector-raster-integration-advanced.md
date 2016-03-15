@@ -6,7 +6,7 @@ date:   2015-10-22
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
-lastModified: 2016-03-12
+lastModified: 2016-03-15
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -124,30 +124,13 @@ series, you can skip this code as you have already created these object.)
     # shapefile 
     aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
                                 "HarClip_UTMZ18")
-
-    ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "NEON-DS-Site-Layout-Files/HARV/", layer: "HarClip_UTMZ18"
-    ## with 1 features
-    ## It has 1 fields
-
     # Import a line shapefile
     lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV/",
                            "HARV_roads")
-
-    ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "NEON-DS-Site-Layout-Files/HARV/", layer: "HARV_roads"
-    ## with 13 features
-    ## It has 15 fields
-
     # Import a point shapefile 
     point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
                           "HARVtower_UTM18N")
-
-    ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "NEON-DS-Site-Layout-Files/HARV/", layer: "HARVtower_UTM18N"
-    ## with 1 features
-    ## It has 14 fields
-
+    
     # Imported in  Vector 02: .csv to Shapefile in R
     # import raster Canopy Height Model (CHM)
     chm_HARV <- 
@@ -272,8 +255,12 @@ raster.
     # plot extent boundary and newly cropped raster
     plot(aoiBoundary_HARV, 
          main = "Manually Cropped Raster\n NEON Harvard Forest Field Site")
-    plot(new.extent, col="brown", lwd=4,add = TRUE)
-    plot(CHM_HARV_manualCrop, add = TRUE)
+    plot(new.extent, 
+         col="brown", 
+         lwd=4,
+         add = TRUE)
+    plot(CHM_HARV_manualCrop, 
+         add = TRUE)
 
 ![ ]({{ site.baseurl }}/images/rfigs/dc-spatial-vector/05-vector-raster-integration-advanced/crop-using-drawn-extent-1.png)
 
@@ -284,12 +271,13 @@ object.
 See the documentation for the `extent()` function for more ways
 to create an `extent` object. 
 
-* `help.search("extent", package = "raster")`
+* `??raster::extent`
 * More on the 
 <a href="http://www.inside-r.org/packages/cran/raster/docs/extent" target="_blank">
 extent class in `R`</a>.
 
-##Extract Raster Pixels Values Using Vector Polygons
+## Extract Raster Pixels Values Using Vector Polygons
+
 Often we want to extract values from a raster layer for particular locations - 
 for example, plot locations that we are sampling on the ground. 
 
@@ -369,7 +357,7 @@ site.
     ##    2.03   21.36   22.81   22.43   23.97   38.17
 
 * Check out the documentation for the `extract()` function for more details 
-(`help.search("extract", package = "raster")`).
+(`??raster::extract`).
 
 ## Summarize Extracted Raster Values 
 
@@ -450,7 +438,8 @@ Use the plot location points shapefile `HARV/plot.locations_HARV.shp` or spatial
 object `plot.locationsSp_HARV` to extract an average tree height value for the
 area within 20m of each vegetation plot location in the study area.
 
-Create a simple plot showing the mean tree height of each plot.
+Create a simple plot showing the mean tree height of each plot using the `plot()`
+function in base-R.
 </div>
 
 

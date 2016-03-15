@@ -57,8 +57,8 @@ lines_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",layer = "HARV_roads")
 point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV", layer="HARVtower_UTM18N")
 
 # 1
-class (lines_HARV)
-class (point_HARV)
+class(lines_HARV)
+class(point_HARV)
 
 # 2
 crs(lines_HARV)

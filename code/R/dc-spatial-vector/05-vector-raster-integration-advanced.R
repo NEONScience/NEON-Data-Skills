@@ -63,7 +63,7 @@ legend("topright",
 # reset par
 dev.off()
 
-## ----load-libraries-data-------------------------------------------------
+## ----load-libraries-data, results="hide", warning=FALSE------------------
 # load necessary packages
 library(rgdal)  # for vector work; sp package should always load with rgdal. 
 library (raster)
@@ -179,8 +179,12 @@ CHM_HARV_manualCrop <- crop(x = chm_HARV, y = new.extent)
 # plot extent boundary and newly cropped raster
 plot(aoiBoundary_HARV, 
      main = "Manually Cropped Raster\n NEON Harvard Forest Field Site")
-plot(new.extent, col="brown", lwd=4,add = TRUE)
-plot(CHM_HARV_manualCrop, add = TRUE)
+plot(new.extent, 
+     col="brown", 
+     lwd=4,
+     add = TRUE)
+plot(CHM_HARV_manualCrop, 
+     add = TRUE)
 
 
 ## ----extract-from-raster-------------------------------------------------

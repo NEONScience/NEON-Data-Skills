@@ -6,7 +6,7 @@ date:   2015-10-25
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2016-02-09
-lastModified: 2016-03-12
+lastModified: 2016-03-15
 packagesLibraries: [rgdal, raster]
 categories: [self-paced-tutorial]
 mainTag: vector-data-series
@@ -83,7 +83,7 @@ location. These latter two we worked with in the
     # rgdal: for vector work; sp package should always load with rgdal. 
     library(rgdal)  
     # raster: for metadata/attributes- vectors or rasters
-    library (raster)   
+    library(raster)   
     
     # set working directory to data folder
     # setwd("pathToDirHere")
