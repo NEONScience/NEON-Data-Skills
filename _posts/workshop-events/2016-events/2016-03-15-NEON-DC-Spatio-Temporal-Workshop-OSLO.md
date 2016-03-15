@@ -23,6 +23,7 @@ permalink: /workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15
 comments: true 
 ---
 
+<a href="http://pad.software-carpentry.org/2016-03-15-oslo-geo" target="_blank" class="btn">Click here to visit workshop Etherpad</a>
 <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#workshop-schedule">Click here to view workshop schedule. </a>
 
 <div id="objectives" markdown="1">
