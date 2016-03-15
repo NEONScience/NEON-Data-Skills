@@ -23,6 +23,7 @@ permalink: /workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15
 comments: true 
 ---
 
+<a href="http://pad.software-carpentry.org/2016-03-15-oslo-geo" target="_blank" class="btn">Click here to visit workshop Etherpad</a>
 <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#workshop-schedule">Click here to view workshop schedule. </a>
 
 <div id="objectives" markdown="1">
@@ -260,7 +261,7 @@ Please note that the schedule listed below may change depending upon the pace of
 | Time        | Topic         | Instructor | 
 |-------------|---------------|------------|
 | 8:00     | Please come early if you have any setup / installation issues |          |
-| 9:00     | <a href="{{ site.baseurl }}" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
+| 9:00     | <a href="http://arnsteio.github.io/short-shell-novice/" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
 | 10:30 | ------- Coffee / Tea BREAK ------- |      |
 | 10:45 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> | Michael    |
 | 11:30 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> | Michael     |
