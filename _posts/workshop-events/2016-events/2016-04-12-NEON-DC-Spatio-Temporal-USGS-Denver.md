@@ -3,7 +3,7 @@ layout: workshop-event
 title: "NEON/Data Carpentry - Spatio-Temporal Workshop - April 12-13, 2016"
 estimatedTime: 2 Day Workshop
 packagesLibraries: [raster, sp, rgdal, rgeos, rasterVis, ggplot2]
-date: 2016-04-11
+date: 2016-04-12
 dateCreated: 2016-03-31
 lastModified: 2016-04-01
 startDate: 2016-04-12
@@ -26,6 +26,7 @@ comments: true
 
 ## Quick Links
 
+
 * [ Workshop Schedule ]({{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#workshop-schedule)
 * <a href="http://pad.software-carpentry.org/gqkzFs2w9Q" target="_blank">Workshop Etherpad</a>
 
@@ -40,7 +41,7 @@ To participate in this workshop, you will need:
 
 For step-by-step details on installing or setting up R or RStudio in Mac, PC,
 or Linux Operating Systems, please see 
-[the details at the bottom of this page]({{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#additional-set-up-information). 
+[the details at the bottom of this page]({{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#additional-set-up-information). 
 
 If you already have R & RStudio installed on your laptop, please be sure that
 you are running the most current version of RStudio, R and all packages that 
@@ -71,7 +72,7 @@ Download all Graticules - Natural Earth Global Graticules Layer</a>
 
 Once you have downloaded the data, set the R working directory to the
 uncompressed files.
-[View complete directions and images of the R working directory setup here.]({{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#set-r-working-directory)
+[View complete directions and images of the R working directory setup here.]({{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#set-r-working-directory)
 
 ****
 
@@ -194,7 +195,6 @@ various topics.
 
 * <a href="http://pad.software-carpentry.org/gqkzFs2w9Q" target="_blank">NEON/DC USGS Spatio-Temporal Workshop Etherpad</a>
 
-
 ***
 
 ## Additional Set Up Information
@@ -211,9 +211,9 @@ environment (IDE).
 
 #### If You Don't Have R or Rstudio Installed - Please Follow These Instructions:
 
-* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#R-mac">Mac Installation of R and RStudio</a>
-* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#R-windows">Windows Installation of R and RStudio</a>
-* <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#R-linux">Linux Installation of R and RStudio</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#R-mac">Mac Installation of R and RStudio</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#R-windows">Windows Installation of R and RStudio</a>
+* <a href="{{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#R-linux">Linux Installation of R and RStudio</a>
 
 
 #### If You Already Have R & RStudio Installed -- Please Update
