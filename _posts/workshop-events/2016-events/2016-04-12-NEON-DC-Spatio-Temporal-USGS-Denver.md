@@ -27,7 +27,7 @@ comments: true
 ## Quick Links
 
 
-* [ Workshop Schedule ]({{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#workshop-schedule)
+* [ Workshop Schedule ]({{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#workshop-schedule)
 * <a href="http://pad.software-carpentry.org/gqkzFs2w9Q" target="_blank">Workshop Etherpad</a>
 
 <div id="objectives" markdown="1">
