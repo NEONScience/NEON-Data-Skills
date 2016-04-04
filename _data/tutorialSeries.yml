@@ -21,7 +21,7 @@
   working with time and date classes (e.g., POSIXct, POSIXlt, and Date), 
   subsetting time series data by date and time and created facetted or tiles 
   sets of plots."  
-  lastModified:  2015-12-15
+  lastModified:  2015-03-09
   
 - slug: raster-time-series
   name: Raster Time Series in R Series
