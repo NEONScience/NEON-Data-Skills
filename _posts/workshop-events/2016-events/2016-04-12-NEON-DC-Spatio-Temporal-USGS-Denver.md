@@ -27,7 +27,7 @@ comments: true
 ## Quick Links
 
 
-* [ Workshop Schedule ]({{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-USGS-Denver-04-2016#workshop-schedule)
+* [ Workshop Schedule ]({{ site.baseurl }}/workshop-event/NEON-DC-Spatial-04-12-2016#workshop-schedule)
 * <a href="http://pad.software-carpentry.org/gqkzFs2w9Q" target="_blank">Workshop Etherpad</a>
 
 <div id="objectives" markdown="1">
@@ -100,8 +100,8 @@ Ecological Metadata Language (EML) is presented with a focus on the conceptual
 understanding of metadata and includes a demonstration of the `eml` package in 
 `R`. If you wish to follow along with the code, please install the following:
 
-* **devtools:** install.packages("devtools")
-* **eml:** install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
+* **devtools:** `install.packages("devtools")`
+* **eml:** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
 
 NOTE: You have to run the `devtools` package (`library(devtools)`) first, and
 then `install_github()` will work. The `eml` package is under development which 
