@@ -1,6 +1,6 @@
 ---
 layout: tutorial-series-landing
-title: 'Self-Paced Tutorial Series: Introduction to Working With Vector Data in R'
+title: 'Introduction to Working With Vector Data in R'
 categories: [tutorial-series]
 tutorialSeriesName: vector-data-series
 permalink: tutorial-series/vector-data-series/
@@ -11,10 +11,10 @@ image:
 ---
 
 ## About
-The data tutorials in this series cover how to open, work with and plot with 
-vector-format spatial data (points, lines and polygons) in `R`. Additional, 
+The data tutorials in this series cover how to open, work with and plot 
+vector-format spatial data (points, lines and polygons) in `R`. Additional 
 topics include working with spatial metadata (extent and coordinate reference 
-system), working with spatial attributes and plotting data by attributes. 
+system), working with spatial attributes and plotting data by attribute. 
 
 Data used in this series cover NEON Harvard Forest Field Site and are in 
 shapefile and .csv formats.
@@ -55,7 +55,7 @@ Coordinate System (Latitude, Longitude) to a projected coordinate system (UTM).
 	+ Be able to crop a raster to the extent of a vector layer.
 	+ Be able to extract values from raster that correspond to a vector file overlay.
 
-## Things You’ll Need To Complete This Lesson
+## Things You’ll Need To Complete This Series
 
 ### Setup RStudio
 To complete the tutorial series you will need an updated version of `R` and,
@@ -71,6 +71,10 @@ an interactive development environment (IDE).
 ### Install R Packages
 You can chose to install packages with each lesson or you can download all 
 of the necessary `R` packages now. 
+
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rgdal")`
+* **sp:** `install.packages("sp")`
 
 [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
 
@@ -88,7 +92,7 @@ part of a larger
 [spatio-temporal tutorial series and Data Carpentry workshop.]({{ site.baseurl }}tutorial-series/neon-dc-phenology-series/)
 Included series are
 [introduction to spatio-temporal data and data management]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
-[working with raster time-series data in R]({{ site.baseurl }}tutorial-series/raster-time-series/), 
+[working With raster data in R]({{ site.baseurl }}tutorial-series/raster-data-series/), 
 [working with vector data in R ]({{ site.baseurl }}tutorial-series/vector-data-series/)
 and
 [working with tabular time series in R]({{ site.baseurl }}tutorial-series/tabular-time-series/).
