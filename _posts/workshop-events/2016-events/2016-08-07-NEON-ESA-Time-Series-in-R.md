@@ -99,7 +99,7 @@ If you would like further instruction please see the bottom of this page
 ### Workshop Instructors
 
 * **[Megan A. Jones](http://www.neonscience.org/about/staff/megan-jones)**; @meganahjones, Staff Scientist/Science Educator; NEON program, Battelle
-* **[Samantha Weintraub](http://www.neonscience.org/about/staff/samantha-weintraub)**; Staff Scientist, Terrestrial Biogeochemist; NEON program, Battelle 
+* **[Samantha Weintraub](http://www.neonscience.org/about/staff/samantha-weintraub)**; @sr_weino, Staff Scientist, Terrestrial Biogeochemist; NEON program, Battelle 
 
 Please get in touch with the instructors prior to the workshop with any 
 questions.
