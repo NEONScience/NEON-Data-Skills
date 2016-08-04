@@ -106,8 +106,8 @@ harMetDaily.09.11 <- read.csv(
   stringsAsFactors = FALSE
   )
 
-# covert date to POSIXct date-time class
-harMetDaily.09.11$date <- as.POSIXct(harMetDaily.09.11$date)
+# covert date to Date  class
+harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 ```
 
@@ -126,14 +126,18 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
            ggtitle("Daily Air Temperature\n NEON Harvard Forest\n 2009-2011") +
            xlab("Date") + ylab("Temperature (C)") +
-           scale_x_datetime(labels=date_format ("%m-%y"))+
+           scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))
 
 AirTempDaily
 ```
- 
+
+<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
+{: .notice }
+
 This plot tells us a lot about the annual increase and decrease of temperature
 at the NEON Harvard Forest field site. However, what if we want to plot each
 year's worth of data individually?
@@ -176,7 +180,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
            ggtitle("Daily Air Temperature\n NEON Harvard Forest") +
             xlab("Date") + ylab("Temperature (C)") +
-            scale_x_datetime(labels=date_format ("%m-%y"))+
+            scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))
@@ -194,7 +198,7 @@ Our plots would be easier to visually compare if the days were formatted in
 Julian or year days rather than date. We have Julian days stored in our
 `data_frame` (`harMetDaily.09.11`) as `jd`.
 
-<i class="fa fa-star"></i> **Data Tip:** If you are unfamiliar with Julian or
+<i class="fa fa-star"></i> **Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
 [Convert to Julian Day tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
 {: .notice}

@@ -5,7 +5,7 @@ date:   2015-10-24
 authors: [Leah A. Wasser, Megan A. Jones, Marisa Guarinello]
 contributors: []
 dateCreated:  2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [eml, ggmap]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -287,15 +287,17 @@ load.
     # import EML from Harvard Forest Met Data
     # note, for this particular tutorial, we will work with an abridged version of the file
     # that you can access directly on the harvard forest website. (see comment below)
-    # eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
-    
+    eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+
+    ## Found more than one class "connection" in cache; using the first, from namespace 'EML'
+
     # import a truncated version of the eml file for quicker demonstration
-    eml_HARV <- read_eml("http://neon-workwithdata.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
+    # eml_HARV <- read_eml("http://neon-workwithdata.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
     
     # view size of object
     object.size(eml_HARV)
 
-    ## 5602744 bytes
+    ## 54474184 bytes
 
     # view the object class
     class(eml_HARV)
@@ -380,7 +382,7 @@ We need the extent to properly geolocate and process the data.
       geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
                  color="darkred", size=6, pch=18)
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/01-Time-Series-Metadata/map-location-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/01-Time-Series-Metadata/map-location-1.png)
 
 * Learn more about `ggmap`:
 <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf" target="_blank"> A nice cheatsheet created by NCEAS</a>

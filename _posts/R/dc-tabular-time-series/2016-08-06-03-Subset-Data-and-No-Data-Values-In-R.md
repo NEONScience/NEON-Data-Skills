@@ -5,7 +5,7 @@ date: 2015-10-22
 authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser]
 contributors: [Leah A. Wasser]
 dateCreated: 2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [ggplot2, lubridate]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -182,7 +182,7 @@ Forest.  Be sure to label x and y axes. Also be sure to give your plot a title.
 2. Create a plot of dew point (`dewp`) for the year, 2011 at Harvard Forest.
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-1.png)![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-2.png)
 
 ## Managing Missing Data: NoData values
 
@@ -365,4 +365,4 @@ and y-axes. Also give the plot a title!
 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/Challenge-code-harMet.daily-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/Challenge-code-harMet.daily-1.png)

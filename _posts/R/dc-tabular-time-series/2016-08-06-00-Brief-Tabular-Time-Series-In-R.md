@@ -6,7 +6,7 @@ date:   2015-10-25
 authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser]
 contributors: []
 dateCreated:  2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [ggplot2]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -383,7 +383,7 @@ object that the variables are stored in.
           data=harMet.daily,
           main="Daily Air Temperature\nNEON Harvard Forest Field Site")
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/plot-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/plot-data-1.png)
 
 We have successfully plotted some data. However, what is happening on the 
 x-axis?
@@ -439,7 +439,7 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
           data=harMet.daily,
           main="Daily Air Temperature w/ Date Assigned\nNEON Harvard Forest Field Site")  
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/qplot-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/qplot-data-1.png)
 
 
 <div id="challenge" markdown="1">
@@ -454,5 +454,5 @@ Hint: you can modify the X and Y axis labels using `xlab="label text"` and
 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/challenge-code-plotting-1.png)![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/challenge-code-plotting-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/challenge-code-plotting-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/challenge-code-plotting-2.png)
 

@@ -14,8 +14,8 @@ harMetDaily.09.11 <- read.csv(
   file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
   stringsAsFactors = FALSE)
 
-# covert date to POSIXct date-time class
-harMetDaily.09.11$date <- as.POSIXct(harMetDaily.09.11$date)
+# covert date to Date class
+harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 # monthly HARV temperature data, 2009-2011
 harTemp.monthly.09.11<-read.csv(
@@ -23,8 +23,11 @@ harTemp.monthly.09.11<-read.csv(
   stringsAsFactors=FALSE
   )
 
-# convert datetime from chr to datetime class & rename date for clarification
-harTemp.monthly.09.11$datetime <- as.POSIXct(harTemp.monthly.09.11$datetime)
+# datetime field is actually just a date 
+#str(harTemp.monthly.09.11) 
+
+# convert datetime from chr to date class & rename date for clarification
+harTemp.monthly.09.11$date <- as.Date(harTemp.monthly.09.11$datetime)
 
 ## ----qplot---------------------------------------------------------------
 # plot air temp
@@ -34,19 +37,19 @@ qplot(x=date, y=airt,
       xlab="Date", ylab="Temperature (°C)")
 
 ## ----basic-ggplot2-------------------------------------------------------
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE)
 
 
 ## ----basic-ggplot2-colors------------------------------------------------
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=3, pch=18)
 
 
 ## ----basic-ggplot2-labels------------------------------------------------
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=1) + 
            ggtitle("Air Temperature 2009-2011\n NEON Harvard Forest Field Site") +
@@ -54,7 +57,7 @@ ggplot(harMetDaily.09.11, aes(date, airt)) +
 
 
 ## ----basic-ggplot2-labels-named------------------------------------------
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="purple", size=1) + 
            ggtitle("Air Temperature\n 2009-2011\n NEON Harvard Forest") +
@@ -67,21 +70,21 @@ AirTempDaily
 ## ----format-x-axis-labels------------------------------------------------
 # format x-axis: dates
 AirTempDailyb <- AirTempDaily + 
-  (scale_x_datetime(labels=date_format("%b %y")))
+  (scale_x_date(labels=date_format("%b %y")))
 
 AirTempDailyb
 
 ## ----format-x-axis-label-ticks-------------------------------------------
 # format x-axis: dates
 AirTempDaily_6mo <- AirTempDaily + 
-    (scale_x_datetime(breaks=date_breaks("6 months"),
+    (scale_x_date(breaks=date_breaks("6 months"),
       labels=date_format("%b %y")))
 
 AirTempDaily_6mo
 
 # format x-axis: dates
 AirTempDaily_1y <- AirTempDaily + 
-    (scale_x_datetime(breaks=date_breaks("1 year"),
+    (scale_x_date(breaks=date_breaks("1 year"),
       labels=date_format("%b %y")))
 
 AirTempDaily_1y
@@ -90,8 +93,8 @@ AirTempDaily_1y
 ## ----subset-ggplot-time--------------------------------------------------
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.POSIXct("2011-01-01 00:00:00")
-endTime <- as.POSIXct("2012-01-01 00:00:00")
+startTime <- as.Date("2011-01-01")
+endTime <- as.Date("2012-01-01")
 
 # create a start and end time R object
 start.end <- c(startTime,endTime)
@@ -103,7 +106,7 @@ AirTempDaily_2011 <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="purple", size=1) + 
            ggtitle("Air Temperature\n 2011\n NEON Harvard Forest") +
            xlab("Date") + ylab("Air Temperature (C)")+ 
-           (scale_x_datetime(limits=start.end,
+           (scale_x_date(limits=start.end,
                              breaks=date_breaks("1 year"),
                              labels=date_format("%b %y")))
 
@@ -149,7 +152,7 @@ PrecipDaily <- ggplot(harMetDaily.09.11, aes(date, prec)) +
            geom_point() +
            ggtitle("Daily Precipitation Harvard Forest\n 2009-2011") +
             xlab("Date") + ylab("Precipitation (mm)") +
-            scale_x_datetime(labels=date_format ("%m-%y"))+
+            scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))
@@ -162,28 +165,28 @@ PrecipDailyBarA <- ggplot(harMetDaily.09.11, aes(date, prec)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Daily Precipitation\n Harvard Forest") +
     xlab("Date") + ylab("Precipitation (mm)") +
-    scale_x_datetime(labels=date_format ("%b %y"), breaks=date_breaks("1 year")) +
+    scale_x_date(labels=date_format ("%b %y"), breaks=date_breaks("1 year")) +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
 
 PrecipDailyBarA
 
 ## ----ggplot-geom_bar-subset, results="hide", include=TRUE, echo=FALSE----
-# Define Start and end times for the subset as R objects that are the time class
-startTime2 <- as.POSIXct("2010-01-01 00:00:00")
-endTime2 <- as.POSIXct("2011-01-01 00:00:00")
+# Define Start and end times for the subset as R objects that are the date class
+startTime2 <- as.Date("2010-01-01")
+endTime2 <- as.Date("2011-01-01")
 
-# create a start and end time R object
+# create a start and end times R object
 start.end2 <- c(startTime2,endTime2)
 start.end2
 
 # plot of precipitation
-# subset just the 2011 data by using scale_x_datetime(limits)
+# subset just the 2011 data by using scale_x_date(limits)
 ggplot(harMetDaily.09.11, aes(date, prec)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Daily Precipitation\n 2010\n Harvard Forest") +
     xlab("") + ylab("Precipitation (mm)") +
-    scale_x_datetime(labels=date_format ("%B"),
+    scale_x_date(labels=date_format ("%B"),
     								 breaks=date_breaks("4 months"), limits=start.end2) +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
@@ -202,7 +205,7 @@ AirTempDaily_line <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_line(na.rm=TRUE) +  
            ggtitle("Air Temperature Harvard Forest\n 2009-2011") +
            xlab("Date") + ylab("Air Temperature (C)") +
-           scale_x_datetime(labels=date_format ("%b %y")) +
+           scale_x_date(labels=date_format ("%b %y")) +
            theme(plot.title = element_text(lineheight=.8, face="bold", 
                                           size = 20)) +
            theme(text = element_text(size=18))
@@ -223,19 +226,19 @@ ggplot(harMetDaily.09.11, aes(date, prec)) +
       geom_bar(stat="identity", colour="darkorchid4") + #dark orchid 4 = #68228B
       ggtitle("Daily Precipitation with Linear Trend\n Harvard Forest") +
       xlab("Date") + ylab("Precipitation (mm)") +
-      scale_x_datetime(labels=date_format ("%b %y"))+
+      scale_x_date(labels=date_format ("%b %y"))+
       theme(plot.title = element_text(lineheight=.8, face="italic", size = 20)) +
       theme(text = element_text(size=18))+
       stat_smooth(method="lm", colour="grey")
 
 ## ----plot-airtemp-Monthly, echo=FALSE------------------------------------
-AirTempMonthly <- ggplot(harTemp.monthly.09.11, aes(datetime, mean_airt)) +
+AirTempMonthly <- ggplot(harTemp.monthly.09.11, aes(date, mean_airt)) +
     geom_point() +
     ggtitle("Average Monthly Air Temperature\n 2009-2011\n NEON Harvard Forest") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18)) +
     xlab("Date") + ylab("Air Temperature (C)") +
-    scale_x_datetime(labels=date_format ("%b%y"))
+    scale_x_date(labels=date_format ("%b%y"))
 
 AirTempMonthly
 

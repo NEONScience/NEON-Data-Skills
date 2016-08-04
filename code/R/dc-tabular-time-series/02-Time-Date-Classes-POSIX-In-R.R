@@ -25,10 +25,10 @@ head(harMet_15Min$datetime)
 ## ----as-date-only--------------------------------------------------------
 
 # convert column to date class
-har_dateOnly <- as.Date(harMet_15Min$datetime)
+dateOnly_HARV <- as.Date(harMet_15Min$datetime)
 
 # view data
-head(har_dateOnly)
+head(dateOnly_HARV)
 
 
 ## ----explore-as_date-----------------------------------------------------

@@ -115,8 +115,8 @@ harMetDaily.09.11 <- read.csv(
   file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
   stringsAsFactors = FALSE)
 
-# covert date to POSIXct date-time class
-harMetDaily.09.11$date <- as.POSIXct(harMetDaily.09.11$date)
+# covert date to Date class
+harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 # monthly HARV temperature data, 2009-2011
 harTemp.monthly.09.11<-read.csv(
@@ -124,8 +124,11 @@ harTemp.monthly.09.11<-read.csv(
   stringsAsFactors=FALSE
   )
 
-# convert datetime from chr to datetime class & rename date for clarification
-harTemp.monthly.09.11$datetime <- as.POSIXct(harTemp.monthly.09.11$datetime)
+# datetime field is actually just a date 
+#str(harTemp.monthly.09.11) 
+
+# convert datetime from chr to date class & rename date for clarification
+harTemp.monthly.09.11$date <- as.Date(harTemp.monthly.09.11$datetime)
 ```
 
 ## Plot with qplot
@@ -168,7 +171,7 @@ this case, we want to create a scatterplot so we can add `+ geom_point()`.
 Let's create an air temperature scatterplot. 
 
 ``` {r basic-ggplot2}
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE)
 
@@ -182,7 +185,7 @@ element.
 `geom_point(na.rm=TRUE, color="blue", size=1)`
 
 ``` {r basic-ggplot2-colors}
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=3, pch=18)
 
@@ -194,7 +197,7 @@ For example, we can add a title by using `+ ggtitle="TEXT",` and axis
 labels using `+ xlab("TEXT") + ylab("TEXT")`.  
 
 ``` {r basic-ggplot2-labels }
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=1) + 
            ggtitle("Air Temperature 2009-2011\n NEON Harvard Forest Field Site") +
@@ -215,7 +218,7 @@ Assigning plots to an `R` object allows us to effectively add on to,
 and modify the plot later. Let's create a new plot and call it `AirTempDaily`.
 
 ``` {r basic-ggplot2-labels-named }
-# plot Air Temperature Data across 2009-2011 using 15-minute data
+# plot Air Temperature Data across 2009-2011 using daily data
 AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="purple", size=1) + 
            ggtitle("Air Temperature\n 2009-2011\n NEON Harvard Forest") +
@@ -228,33 +231,37 @@ AirTempDaily
 
 ### Format Dates in Axis Labels
 We can adjust the date display format (e.g. 2009-07 vs. Jul 09) and the number 
-of major and minor ticks for axis date values using `scale_x_datetime`. Let's
+of major and minor ticks for axis date values using `scale_x_date`. Let's
 format the axis ticks so they read "month year" (`%b %y`). To do this, we will 
 use the syntax:
 
-`scale_x_datetime(labels=date_format("%b %y")`
+`scale_x_date(labels=date_format("%b %y")`
 
-Rather than re-coding the entire plot, we can add the `scale_x_datetime` element
+Rather than re-coding the entire plot, we can add the `scale_x_date` element
 to the plot object `AirTempDaily` that we just created. 
 
 <i class="fa fa-star"></i> **Data Tip:** You can type `?strptime` into the `R` 
 console to find a list of date format conversion specifications (e.g. %b = month).
-Type `scale_x_datetime` for a list of parameters that allow you to format dates 
-on the x axis.
+Type `scale_x_date` for a list of parameters that allow you to format dates 
+on the x-axis.
 {: .notice }
 
 ```{r format-x-axis-labels }
 # format x-axis: dates
 AirTempDailyb <- AirTempDaily + 
-  (scale_x_datetime(labels=date_format("%b %y")))
+  (scale_x_date(labels=date_format("%b %y")))
 
 AirTempDailyb
 ```
 
+<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
+{: .notice }
+
 ### Adjust Date Ticks
 We can adjust the date ticks too. In this instance, having 1 tick per year may 
 be enough. If we have the `scales` package loaded, we can use 
-`breaks=date_breaks("1 year")` within the `scale_x_datetime` element to create 
+`breaks=date_breaks("1 year")` within the `scale_x_date` element to create 
 a tick for every year. We can adjust this as needed (e.g. 10 days, 30 days, 1 
 month).
 
@@ -265,14 +272,14 @@ month).
 ```{r format-x-axis-label-ticks }
 # format x-axis: dates
 AirTempDaily_6mo <- AirTempDaily + 
-    (scale_x_datetime(breaks=date_breaks("6 months"),
+    (scale_x_date(breaks=date_breaks("6 months"),
       labels=date_format("%b %y")))
 
 AirTempDaily_6mo
 
 # format x-axis: dates
 AirTempDaily_1y <- AirTempDaily + 
-    (scale_x_datetime(breaks=date_breaks("1 year"),
+    (scale_x_date(breaks=date_breaks("1 year"),
       labels=date_format("%b %y")))
 
 AirTempDaily_1y
@@ -288,16 +295,16 @@ various x and y scale options)
 ## ggplot - Subset by Time
 Sometimes we want to scale the x- or y-axis to a particular time subset without 
 subsetting the entire `data_frame`. To do this, we can define start and end 
-times. We can then define the `limits` in the `scale_x_datetime` object as 
+times. We can then define the `limits` in the `scale_x_date` object as 
 follows:
 
-`scale_x_datetime(limits=start.end) +`
+`scale_x_date(limits=start.end) +`
 
 ```{r subset-ggplot-time }
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.POSIXct("2011-01-01 00:00:00")
-endTime <- as.POSIXct("2012-01-01 00:00:00")
+startTime <- as.Date("2011-01-01")
+endTime <- as.Date("2012-01-01")
 
 # create a start and end time R object
 start.end <- c(startTime,endTime)
@@ -309,7 +316,7 @@ AirTempDaily_2011 <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="purple", size=1) + 
            ggtitle("Air Temperature\n 2011\n NEON Harvard Forest") +
            xlab("Date") + ylab("Air Temperature (C)")+ 
-           (scale_x_datetime(limits=start.end,
+           (scale_x_date(limits=start.end,
                              breaks=date_breaks("1 year"),
                              labels=date_format("%b %y")))
 
@@ -394,7 +401,7 @@ PrecipDaily <- ggplot(harMetDaily.09.11, aes(date, prec)) +
            geom_point() +
            ggtitle("Daily Precipitation Harvard Forest\n 2009-2011") +
             xlab("Date") + ylab("Precipitation (mm)") +
-            scale_x_datetime(labels=date_format ("%m-%y"))+
+            scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))
@@ -419,7 +426,7 @@ PrecipDailyBarA <- ggplot(harMetDaily.09.11, aes(date, prec)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Daily Precipitation\n Harvard Forest") +
     xlab("Date") + ylab("Precipitation (mm)") +
-    scale_x_datetime(labels=date_format ("%b %y"), breaks=date_breaks("1 year")) +
+    scale_x_date(labels=date_format ("%b %y"), breaks=date_breaks("1 year")) +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
 
@@ -432,7 +439,7 @@ spaced to improve readability. If we zoom into the plot, all of the bars are
 black.
 
 <div id="challenge" markdown="1">
-## Challenge: Plot with scale_x_datatime()
+## Challenge: Plot with scale_x_data()
 Without creating a subsetted dataframe, plot the precipitation data for 
 *2010 only*.  Customize the plot with:
 
@@ -441,28 +448,28 @@ Without creating a subsetted dataframe, plot the precipitation data for
 * x-axis labels as only the full month (spelled out).
 
 HINT: you will need to rebuild the precipitation plot as you will have to 
-specify a new `scale_x_datatime()` element. 
+specify a new `scale_x_data()` element. 
 
 Bonus: Style your plot with a `ggtheme` of choice. 
 
 </div>
 
 ``` {r ggplot-geom_bar-subset, results="hide", include=TRUE, echo=FALSE}
-# Define Start and end times for the subset as R objects that are the time class
-startTime2 <- as.POSIXct("2010-01-01 00:00:00")
-endTime2 <- as.POSIXct("2011-01-01 00:00:00")
+# Define Start and end times for the subset as R objects that are the date class
+startTime2 <- as.Date("2010-01-01")
+endTime2 <- as.Date("2011-01-01")
 
-# create a start and end time R object
+# create a start and end times R object
 start.end2 <- c(startTime2,endTime2)
 start.end2
 
 # plot of precipitation
-# subset just the 2011 data by using scale_x_datetime(limits)
+# subset just the 2011 data by using scale_x_date(limits)
 ggplot(harMetDaily.09.11, aes(date, prec)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Daily Precipitation\n 2010\n Harvard Forest") +
     xlab("") + ylab("Precipitation (mm)") +
-    scale_x_datetime(labels=date_format ("%B"),
+    scale_x_date(labels=date_format ("%B"),
     								 breaks=date_breaks("4 months"), limits=start.end2) +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
@@ -488,7 +495,6 @@ PrecipDailyBarB
 
 ```
 
-
 <i class="fa fa-star"></i> **Data Tip:**  For more information on color,
 including color blind friendly color palettes, checkout the 
 <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/" target="_blank">
@@ -505,7 +511,7 @@ AirTempDaily_line <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_line(na.rm=TRUE) +  
            ggtitle("Air Temperature Harvard Forest\n 2009-2011") +
            xlab("Date") + ylab("Air Temperature (C)") +
-           scale_x_datetime(labels=date_format ("%b %y")) +
+           scale_x_date(labels=date_format ("%b %y")) +
            theme(plot.title = element_text(lineheight=.8, face="bold", 
                                           size = 20)) +
            theme(text = element_text(size=18))
@@ -544,9 +550,9 @@ statistical method as follows:
 For this tutorial, we will use the default trend line model. The `gam` method will 
 be used with given we have 1,095 measurements.
 
-<i class="fa fa-star"></i> **Data Tip:**  Remember a trend line is a statistical transformation of the data, so prior to
-adding the line one must understand if a particular statistical transformation
-is appropriate for the data.  
+<i class="fa fa-star"></i> **Data Tip:**  Remember a trend line is a statistical
+transformation of the data, so prior to adding the line one must understand if a 
+particular statistical transformation is appropriate for the data. 
 {: .notice } 
 
 ``` {r ggplot-trend-line}
@@ -564,7 +570,7 @@ Create a bar plot of total daily precipitation. Add a:
 * Trend line for total daily precipitation. 
 * Make the bars purple (or your favorite color!). 
 * Make the trend line grey (or your other favorite color). 
-* Adjust the tick spacing and format the dates to appear as Jan 2009.
+* Adjust the tick spacing and format the dates to appear as "Jan 2009".
 * Render the title in *italics*.
 
 </div>
@@ -574,7 +580,7 @@ ggplot(harMetDaily.09.11, aes(date, prec)) +
       geom_bar(stat="identity", colour="darkorchid4") + #dark orchid 4 = #68228B
       ggtitle("Daily Precipitation with Linear Trend\n Harvard Forest") +
       xlab("Date") + ylab("Precipitation (mm)") +
-      scale_x_datetime(labels=date_format ("%b %y"))+
+      scale_x_date(labels=date_format ("%b %y"))+
       theme(plot.title = element_text(lineheight=.8, face="italic", size = 20)) +
       theme(text = element_text(size=18))+
       stat_smooth(method="lm", colour="grey")
@@ -590,13 +596,13 @@ label axes and adjust the plot ticks as you see fit.
 </div>
 
 ``` {r plot-airtemp-Monthly, echo=FALSE}
-AirTempMonthly <- ggplot(harTemp.monthly.09.11, aes(datetime, mean_airt)) +
+AirTempMonthly <- ggplot(harTemp.monthly.09.11, aes(date, mean_airt)) +
     geom_point() +
     ggtitle("Average Monthly Air Temperature\n 2009-2011\n NEON Harvard Forest") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18)) +
     xlab("Date") + ylab("Air Temperature (C)") +
-    scale_x_datetime(labels=date_format ("%b%y"))
+    scale_x_date(labels=date_format ("%b%y"))
 
 AirTempMonthly
 

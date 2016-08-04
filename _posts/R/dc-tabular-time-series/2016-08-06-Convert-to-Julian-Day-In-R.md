@@ -5,7 +5,7 @@ date:   2015-10-17
 authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser]
 contributors: [ ] 
 dateCreated: 2015-10-18
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [lubridate]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
