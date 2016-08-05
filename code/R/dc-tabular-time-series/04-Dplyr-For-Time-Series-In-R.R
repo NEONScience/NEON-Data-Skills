@@ -71,7 +71,7 @@ tally(HARV.grp.year)
 # what is the mean airt value per year?
 summarize(HARV.grp.year, 
           mean(airt)   # calculate the annual mean of airt
-					) 
+          ) 
 
 
 ## ----check-data----------------------------------------------------------
@@ -87,7 +87,7 @@ HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
 # calculate mean but remove NA values
 summarize(HARV.grp.year, 
           mean(airt, na.rm = TRUE)
-					)
+          )
 
 
 ## ----using-pipes---------------------------------------------------------

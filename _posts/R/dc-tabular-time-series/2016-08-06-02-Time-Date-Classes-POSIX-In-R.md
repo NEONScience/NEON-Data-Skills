@@ -5,7 +5,7 @@ date: 2015-10-23
 authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser]
 contributors: [Leah A. Wasser]
 dateCreated: 2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [lubridate]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -95,7 +95,7 @@ aggregated at 15-minute intervals.
 
 
     # Load csv file of 15 min meteorological data from Harvard Forest
-    # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
+    # Factors=FALSE so strings, series of letters/words/numerals, remain characters
     harMet_15Min <- read.csv(
       file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
       stringsAsFactors = FALSE)
@@ -124,10 +124,10 @@ tutorial?
 
 
     # convert column to date class
-    har_dateOnly <- as.Date(harMet_15Min$datetime)
+    dateOnly_HARV <- as.Date(harMet_15Min$datetime)
     
     # view data
-    head(har_dateOnly)
+    head(dateOnly_HARV)
 
     ## [1] "2005-01-01" "2005-01-01" "2005-01-01" "2005-01-01" "2005-01-01"
     ## [6] "2005-01-01"

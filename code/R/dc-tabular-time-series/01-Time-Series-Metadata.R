@@ -49,10 +49,10 @@ library(ggmap)
 # import EML from Harvard Forest Met Data
 # note, for this particular tutorial, we will work with an abridged version of the file
 # that you can access directly on the harvard forest website. (see comment below)
-# eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
 
 # import a truncated version of the eml file for quicker demonstration
-eml_HARV <- read_eml("http://neon-workwithdata.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
+# eml_HARV <- read_eml("http://neon-workwithdata.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
 
 # view size of object
 object.size(eml_HARV)

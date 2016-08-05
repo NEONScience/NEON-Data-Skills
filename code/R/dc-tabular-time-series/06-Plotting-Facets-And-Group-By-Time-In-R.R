@@ -18,8 +18,8 @@ harMetDaily.09.11 <- read.csv(
   stringsAsFactors = FALSE
   )
 
-# covert date to POSIXct date-time class
-harMetDaily.09.11$date <- as.POSIXct(harMetDaily.09.11$date)
+# covert date to Date  class
+harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 
 ## ----plot-airt-----------------------------------------------------------
@@ -28,7 +28,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
            ggtitle("Daily Air Temperature\n NEON Harvard Forest\n 2009-2011") +
            xlab("Date") + ylab("Temperature (C)") +
-           scale_x_datetime(labels=date_format ("%m-%y"))+
+           scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))
@@ -55,7 +55,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
            ggtitle("Daily Air Temperature\n NEON Harvard Forest") +
             xlab("Date") + ylab("Temperature (C)") +
-            scale_x_datetime(labels=date_format ("%m-%y"))+
+            scale_x_date(labels=date_format ("%m-%y"))+
            theme(plot.title = element_text(lineheight=.8, face="bold",
                  size = 20)) +
            theme(text = element_text(size=18))

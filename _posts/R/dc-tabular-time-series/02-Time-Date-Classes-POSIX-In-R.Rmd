@@ -98,7 +98,7 @@ aggregated at 15-minute intervals.
 
 ```{r read-data-csv }
 # Load csv file of 15 min meteorological data from Harvard Forest
-# Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
+# Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min <- read.csv(
   file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
   stringsAsFactors = FALSE)
@@ -126,10 +126,10 @@ tutorial?
 ```{r as-date-only }
 
 # convert column to date class
-har_dateOnly <- as.Date(harMet_15Min$datetime)
+dateOnly_HARV <- as.Date(harMet_15Min$datetime)
 
 # view data
-head(har_dateOnly)
+head(dateOnly_HARV)
 
 ```
 

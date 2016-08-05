@@ -5,7 +5,7 @@ date:   2015-10-18
 authors: [Megan A. Jones, Leah A. Wasser]
 contributors: []
 dateCreated: 2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [ggplot2, scales, gridExtra, grid, dplyr, reshape2]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -246,7 +246,7 @@ These NDVI data were derived from a raster and are now integers in a
             plot.title = element_text(lineheight=.8, face="bold",size = 20),
             text = element_text(size=20))
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-NDVI-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-NDVI-1.png)
 
 ## Two y-axes or Side-by-Side Plots?
 When we have different types of data like NDVI (scale: 0-1 index units),
@@ -275,7 +275,7 @@ back to
 [Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/R/time-series-plot-ggplot/ "Learn ggplot")
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-PAR-NDVI-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-PAR-NDVI-1.png)
 
 The figures from this Challenge are nice but a bit confusing as the dates on the
 x-axis don't exactly line up. To fix this we can **assign the same min and max 
@@ -309,7 +309,7 @@ We can also assign the date format for the x-axis and clearly label both axes.
     # Output with both plots
     grid.arrange(plot2.par.2011, plot2.NDVI.2011) 
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-same-xaxis-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-same-xaxis-1.png)
 
 <div id="challenge" markdown="1">
 ## Challenge: Plot Air Temperature and NDVI
@@ -320,4 +320,4 @@ Second, plot PAR, air temperature and NDVI in a single pane for ease of
 comparison.  
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/challengeplot-same-xaxis-1.png)![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/challengeplot-same-xaxis-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/challengeplot-same-xaxis-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/challengeplot-same-xaxis-2.png)

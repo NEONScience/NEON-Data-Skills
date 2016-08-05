@@ -5,7 +5,7 @@ date:   2015-10-21
 authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser]
 contributors: [Michael Patterson]
 dateCreated: 2015-10-22
-lastModified: 2016-03-09
+lastModified: 2016-08-04
 packagesLibraries: [ggplot2, dplyr, lubridate]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series
@@ -68,8 +68,7 @@ your computer to complete this tutorial.
 ### Additional Resources
 
 * NEON Data Skills tutorial on 
-<a href="http://neondataskills.org/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> spatial data and piping with dplyr</a> 
-or 
+<a href="http://neondataskills.org/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> spatial data and piping with dplyr</a>  
 * Data Carpentry lesson's on 
 <a href="http://www.datacarpentry.org/R-ecology/04-dplyr.html" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
 * <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> `dplyr` package description</a>.
@@ -122,7 +121,7 @@ air temperature, precipitation, and PAR (photosynthetic active radiation - or
 the amount of visible light). Using the 15-minute averaged data, we could easily
 plot each of these variables.  
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/15-min-plots-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/15-min-plots-1.png)
 
 However, summarizing the data at a coarser scale (e.g., daily, weekly, by
 season, or by year) may be easier to visually interpret during initial stages of
@@ -186,10 +185,9 @@ the mean air temperature value each year.
     # how many measurements were made each year?
     tally(HARV.grp.year)
 
-    ## Source: local data frame [3 x 2]
-    ## 
+    ## # A tibble: 3 x 2
     ##    year     n
-    ##   (dbl) (int)
+    ##   <dbl> <int>
     ## 1  2009 35036
     ## 2  2010 35036
     ## 3  2011 35036
@@ -199,10 +197,9 @@ the mean air temperature value each year.
               mean(airt)   # calculate the annual mean of airt
               ) 
 
-    ## Source: local data frame [3 x 2]
-    ## 
+    ## # A tibble: 3 x 2
     ##    year mean(airt)
-    ##   (dbl)      (dbl)
+    ##   <dbl>      <dbl>
     ## 1  2009         NA
     ## 2  2010         NA
     ## 3  2011   8.746906
@@ -220,10 +217,9 @@ values for both years. Let's check our data for `NoData` values.
     # just view the first 6 columns of data
     HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
 
-    ## Source: local data frame [2 x 6]
-    ## 
+    ## # A tibble: 2 x 6
     ##        X            datetime    jd  airt f.airt    rh
-    ##    (int)              (time) (int) (dbl)  (chr) (int)
+    ##    <int>              <time> <int> <dbl>  <chr> <int>
     ## 1 158360 2009-07-08 14:15:00   189    NA      M    NA
     ## 2 203173 2010-10-18 09:30:00   291    NA      M    NA
 
@@ -238,10 +234,9 @@ the final mean value.
               mean(airt, na.rm = TRUE)
               )
 
-    ## Source: local data frame [3 x 2]
-    ## 
+    ## # A tibble: 3 x 2
     ##    year mean(airt, na.rm = TRUE)
-    ##   (dbl)                    (dbl)
+    ##   <dbl>                    <dbl>
     ## 1  2009                 7.630758
     ## 2  2010                 9.026040
     ## 3  2011                 8.746906
@@ -284,10 +279,9 @@ Let's try it!
       group_by(year) %>%  # group by year
       tally() # count measurements per year
 
-    ## Source: local data frame [3 x 2]
-    ## 
+    ## # A tibble: 3 x 2
     ##    year     n
-    ##   (dbl) (int)
+    ##   <dbl> <int>
     ## 1  2009 35036
     ## 2  2010 35036
     ## 3  2011 35036
@@ -308,10 +302,9 @@ We can use pipes to summarize data by year too:
     # what is the class of the output?
     year.sum
 
-    ## Source: local data frame [3 x 2]
-    ## 
+    ## # A tibble: 3 x 2
     ##    year mean(airt, na.rm = TRUE)
-    ##   (dbl)                    (dbl)
+    ##   <dbl>                    <dbl>
     ## 1  2009                 7.630758
     ## 2  2010                 9.026040
     ## 3  2011                 8.746906
@@ -331,7 +324,7 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/pipe-demo-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/pipe-demo-1.png)
 
 <i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
@@ -381,7 +374,7 @@ year day) using the `group_by()` function and pipes.
     ## Groups: year [?]
     ## 
     ##     year    jd     n
-    ##    (dbl) (int) (int)
+    ##    <dbl> <int> <int>
     ## 1   2009     1    96
     ## 2   2009     2    96
     ## 3   2009     3    96
@@ -392,7 +385,7 @@ year day) using the `group_by()` function and pipes.
     ## 8   2009     8    96
     ## 9   2009     9    96
     ## 10  2009    10    96
-    ## ..   ...   ...   ...
+    ## # ... with 1,086 more rows
 
 The output shows we have 96 values for each day. Is that what we expect? 
 
@@ -423,7 +416,7 @@ temperature for each Julian day per year. Note that we are still using
     ## Groups: year [?]
     ## 
     ##     year    jd  mean_airt
-    ##    (dbl) (int)      (dbl)
+    ##    <dbl> <int>      <dbl>
     ## 1   2009     1 -15.128125
     ## 2   2009     2  -9.143750
     ## 3   2009     3  -5.539583
@@ -434,7 +427,7 @@ temperature for each Julian day per year. Note that we are still using
     ## 8   2009     8  -3.227083
     ## 9   2009     9  -9.915625
     ## 10  2009    10 -11.131250
-    ## ..   ...   ...        ...
+    ## # ... with 1,086 more rows
 
 <div id="challenge" markdown="1">
 ## Challenge: Summarization & Calculations with dplyr
@@ -450,7 +443,7 @@ data_frame `total.prec`.
 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-answer-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-answer-1.png)
 
 ### Mutate - Add data_frame Columns to dplyr Output
 We can use the `mutate()` function of `dplyr` to add additional columns of
@@ -474,7 +467,7 @@ data_frame.
     ## Groups: year2 [?]
     ## 
     ##    year2    jd  mean_airt
-    ##    (dbl) (int)      (dbl)
+    ##    <dbl> <int>      <dbl>
     ## 1   2009     1 -15.128125
     ## 2   2009     2  -9.143750
     ## 3   2009     3  -5.539583
@@ -485,7 +478,7 @@ data_frame.
     ## 8   2009     8  -3.227083
     ## 9   2009     9  -9.915625
     ## 10  2009    10 -11.131250
-    ## ..   ...   ...        ...
+    ## # ... with 1,086 more rows
 
 <i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
 `transform()` in base `R`. However,`mutate()` allows us to create and 
@@ -508,7 +501,7 @@ plotting.
     ## Groups: year2 [1]
     ## 
     ##   year2    jd  mean_airt
-    ##   (dbl) (int)      (dbl)
+    ##   <dbl> <int>      <dbl>
     ## 1  2009     1 -15.128125
     ## 2  2009     2  -9.143750
     ## 3  2009     3  -5.539583
@@ -561,7 +554,7 @@ Let's try it!
     ## Groups: year3 [1]
     ## 
     ##   year3    jd  mean_airt            datetime
-    ##   (dbl) (int)      (dbl)              (time)
+    ##   <dbl> <int>      <dbl>              <time>
     ## 1  2009     1 -15.128125 2009-01-01 00:15:00
     ## 2  2009     2  -9.143750 2009-01-02 00:15:00
     ## 3  2009     3  -5.539583 2009-01-03 00:15:00
@@ -580,5 +573,5 @@ Name the new data frame `harTemp.monthly.09.11`. Plot your output.
 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-code-dplyr-1.png)![ ]({{ site.baseurl }}/images/rfigs/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-code-dplyr-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-code-dplyr-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/challenge-code-dplyr-2.png)
 
