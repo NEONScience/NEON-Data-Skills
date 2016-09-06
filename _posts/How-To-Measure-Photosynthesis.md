@@ -42,21 +42,4 @@ Another image
  
 
 
-----------
-----------
-
-
-
-###Additional Resources:
-*	
-
-
-
-## Check out our gallery on Flikr! ##
-
-
-<iframe width="100%" height="500px" frameborder="0" scrolling="no" src="http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157648530274367&caption=true&theme=1&thumbnails=1&transition=1&layoutType=responsive&sort=0" ></iframe>
-
-
-#THE END 
-
+-
