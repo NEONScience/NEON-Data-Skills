@@ -26,9 +26,9 @@ comments: true
 
 ## About This Tutorial 
 
-In this activity, we'll work with <a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements"> 
+In this activity, we'll work with <a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> by  
-<a href="http://www.neoninc.org" target="_blank">the National 
+<a href="http://www.neonscience.org" target="_blank">the National 
 Ecological Observatory Network (NEON) </a>. NEON will provide 30 years 
 of open ecological data.
 
@@ -77,14 +77,14 @@ biocLite("rhdf5")</code>
 
 <h3>Data to Download:</h3>
 <a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> 
-<a href="http://neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
+<a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
 
 </div>
 
 
 <i class="fa fa-star"></i> **The Data:** The temperature data used in this 
 tutorial were collected by a temperature sensor mounted on a National Ecological 
-Observatory Network (NEON) flux tower at the <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. Learn more about flux <a href="http://www.neoninc.org/science-design/collection-methods/flux-tower-measurements" target="_blank">
+Observatory Network (NEON) flux tower at the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. Learn more about flux <a href="http://www.neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank">
 data here.</a>
 {: .notice}
 
@@ -173,8 +173,8 @@ Take note that this path is 4 groups "deep" and leads to one dataset called
 temperature in this part of the HDF5 file as follows:
 
 * **Domain_03** - A NEON domain is an ecologically unique region. Domain 3 is 
-one of 20 regions that <a href="http://neoninc.org/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
-* **OSBS** - a group representing data from the <a href="http://neoninc.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank"> Ordway Swisher Biological Station.</a>
+one of 20 regions that <a href="http://neonscience.org/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
+* **OSBS** - a group representing data from the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank"> Ordway Swisher Biological Station.</a>
 * **min_1** - A group representing the mean temperature data value for every for 
 one minute in time. Temperature data is often collected at high frequencies (20 hz 
 or 20 measurements a second) or more. A typical data product derived from high 

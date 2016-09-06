@@ -19,7 +19,7 @@ code1: /R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R.R
 image:
   feature: NEONCarpentryHeader_2.png
   credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/time-series-plot-ggplot/
 comments: true
 ---

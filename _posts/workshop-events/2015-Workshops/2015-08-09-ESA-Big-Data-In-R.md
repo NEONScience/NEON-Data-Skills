@@ -57,7 +57,7 @@ Just added: this data will be required for the afternoon lessons
 REQUIRED: DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>
 <p>The data in this HDF5 file were collected over the San Joachim field site 
 located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
 </p>  
 Just added: this data will be useful for the extra activity in the Intro to HDF5 tutorial.
 
@@ -159,14 +159,14 @@ format. </a></li>
 
 
 ### Workshop Instructors
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
-* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**, Staff Scientist, NEON, Inc
+* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser) @leahawasser**, Supervising Scientist, NEON, Inc 
+* **[Natalie Robinson](http://www.neonscience.org/about/staff/natalie-robinson)**, Staff Scientist, NEON, Inc
 
 #### Workshop Fearless Instruction Assistants
 
-* **[Claire Lunch](http://www.neoninc.org/about/staff/claire-lunch) @dr_lunch**, Staff Scientist 
-* **[Kate Thibault](http://www.neoninc.org/about/staff/kate-thibault) @fluby**, Senior Staff Scientist 
-* **[Christine Laney](http://www.neoninc.org/about/staff/christine-laney)  @cmlaney**, Staff Scientist, NEON, Inc
+* **[Claire Lunch](http://www.neonscience.org/about/staff/claire-lunch) @dr_lunch**, Staff Scientist 
+* **[Kate Thibault](http://www.neonscience.org/about/staff/kate-thibault) @fluby**, Senior Staff Scientist 
+* **[Christine Laney](http://www.neonscience.org/about/staff/christine-laney)  @cmlaney**, Staff Scientist, NEON, Inc
 * **[Mike Smorul](https://www.sesync.org/users/msmorul) @msmorul**, Associate Director of Cyberinfrastructure, SESYNC
 * **[Philippe Marchand](https://www.sesync.org/users/pmarchand)**, Scientific Support Specialist, SESYNC
 

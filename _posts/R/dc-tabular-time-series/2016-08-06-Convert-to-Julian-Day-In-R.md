@@ -17,7 +17,7 @@ code1: /R/dc-tabular-time-series/Convert-to-Julian-Day-In-R.R
 image:
   feature: NEONCarpentryHeader_2.png
   credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/julian-day-conversion/
 comments: true
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: "Raster 02: When Rasters Don't Line Up - Reproject Raster Data in R"
 date:   2015-10-27
-authors: [Leah A. Wasser, Megan A. Jones, Zack Bryn, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul]
+authors: [Leah A. Wasser, Megan A. Jones, Zack Bryn, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul]
 contributors: [ ]
 packagesLibraries: [raster, rgdal]
 dateCreated:  2015-10-23
@@ -12,7 +12,7 @@ tags: [R, raster, spatial-data-gis]
 tutorialSeries: [raster-data-series]
 mainTag: raster-data-series
 description: "This tutorial explores issues associated with working with rasters
-in different Coordinate Reference Systems (CRS) / projections. When two rasters 
+in different Coordinate Reference Systems (CRS) & projections. When two rasters 
 are in different CRS, they will not plot nicely together on a map. We will learn
 how to reproject a raster in R using the projectRaster function in the raster 
 package."
@@ -251,7 +251,7 @@ hillshade to produce a nice looking, textured map!
 <div id="challenge" markdown="1">
 ## Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
-<a href="http://www.neoninc.org/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
+<a href="http://www.neonscience.org/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
 field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files. 
 
 Reproject the data as necessary to make things line up!

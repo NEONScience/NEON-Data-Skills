@@ -55,7 +55,7 @@ biocLite("rhdf5")</code></li>
 DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
 <p>The data in this HDF5 file were collected over the San Joachim field site 
 located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
 </p>  
 </div> 
 

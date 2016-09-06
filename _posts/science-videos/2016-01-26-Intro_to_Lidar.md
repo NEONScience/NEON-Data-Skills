@@ -22,6 +22,6 @@ comments: false
 ---
 
 
-This video presents LiDAR of light detection and ranging, an active remote sensing system that uses laser energy, to measure the heights of objects like trees and buildings and even the ground. This video was developed by the National Ecological Observatory Network (www.neoninc.org).
+This video presents LiDAR of light detection and ranging, an active remote sensing system that uses laser energy, to measure the heights of objects like trees and buildings and even the ground. This video was developed by the National Ecological Observatory Network (www.neonscience.org).
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/m7SXoFv6Sdc" frameborder="0" allowfullscreen></iframe>

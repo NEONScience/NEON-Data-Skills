@@ -17,7 +17,7 @@ code1: R/2014-11-05-Intro-HDF5-R.R
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /HDF5/Intro-To-HDF5-In-R/
 comments: true
 ---

@@ -14,7 +14,7 @@ code1: /R/2014-11-03-Working-With-Rasters-in-R-Python-GIS.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /GIS-spatial-data/Working-With-Rasters/
 comments: true
 ---

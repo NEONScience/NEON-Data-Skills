@@ -101,17 +101,17 @@ Background Materials - Understanding Spatial interpolation</a></li>
 
 
 ### Workshop Instructor
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser) @leahawasser**, 
+* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser) @leahawasser**, 
 Supervising Scientist, NEON, Inc 
 
 
 #### Workshop Fearless Instruction Assistants
 
-* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**, 
+* **[Natalie Robinson](http://www.neonscience.org/about/staff/natalie-robinson)**, 
 Staff Scientist, NEON, Inc
-* **[Claire Lunch](http://www.neoninc.org/about/staff/claire-lunch) @dr_lunch**, 
+* **[Claire Lunch](http://www.neonscience.org/about/staff/claire-lunch) @dr_lunch**, 
 Staff Scientist 
-* **[Kate Thibault](http://www.neoninc.org/about/staff/kate-thibault) @fluby**, 
+* **[Kate Thibault](http://www.neonscience.org/about/staff/kate-thibault) @fluby**, 
 Senior Staff Scientist 
 
 ## #WorkWithData Hashtag
@@ -142,7 +142,7 @@ schedule below is subject to change.
 
 # About the Data
 The LiDAR data that we will use for this brown-bag were collected over the 
-<a href="http://www.neoninc.org/science-design/field-sites/san-joaquin" target="_blank">
+<a href="http://www.neonscience.org/science-design/field-sites/san-joaquin" target="_blank">
 NEON San Joaquin field site located in California</a>. The data are natively in 
 a point cloud format with X,Y and Z (elevation) values associated with each point. 
 In this case, most points above the group represent vegetation.

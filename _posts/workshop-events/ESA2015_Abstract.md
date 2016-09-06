@@ -12,7 +12,7 @@ code1:
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /Data-Workshops/ESA2015R
 comments: true
 ---

@@ -22,6 +22,6 @@ comments: false
 ---
 
 
-Did you ever wonder how scientists measure the rate of photosynthesis? This video will walk you though how photosynthesis is measured, at the leaf level, using an infra red gas analyzer. A very similar method is used on towers, to measure CO2 over entire forests and landscapes. NEON, (National Ecological Observatory Network) has a network of these tower systems that will be providing free, ecological data for 30 years. (www.neoninc.org)
+Did you ever wonder how scientists measure the rate of photosynthesis? This video will walk you though how photosynthesis is measured, at the leaf level, using an infra red gas analyzer. A very similar method is used on towers, to measure CO2 over entire forests and landscapes. NEON, (National Ecological Observatory Network) has a network of these tower systems that will be providing free, ecological data for 30 years. (www.neonscience.org)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PlEzyZadA90" frameborder="0" allowfullscreen></iframe>

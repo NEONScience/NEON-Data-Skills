@@ -122,11 +122,11 @@ automatically.
 
 
 ### Workshop Instructors
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser)**; 
+* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser)**; 
 @leahawasser; Supervising Scientist, NEON 
-* **[Megan A. Jones](http://www.neoninc.org/about/staff/megan-jones)**; 
+* **[Megan A. Jones](http://www.neonscience.org/about/staff/megan-jones)**; 
 @meganahjones; Staff Scientists/Science Educator, NEON
-* **[Natalie Robinson](http://www.neoninc.org/about/staff/natalie-robinson)**; 
+* **[Natalie Robinson](http://www.neonscience.org/about/staff/natalie-robinson)**; 
 Staff Scientist, NEON
 
 Please get in touch with the instructors prior to the workshop with any 

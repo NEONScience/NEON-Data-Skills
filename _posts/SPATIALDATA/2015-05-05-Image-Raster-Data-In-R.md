@@ -57,7 +57,7 @@ Download the raster data:
 
 <p>The imagery data used to create the rasters in this dataset were 
 collected over the San Joaquin field site located in California (NEON Domain 17) 
-and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
+and processed at <a href="http://www.neonscience.org" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
 
 <h4>Recommended Pre-Lesson Reading</h4>

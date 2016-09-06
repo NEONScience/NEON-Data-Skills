@@ -17,7 +17,7 @@ code1: /R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R
 image:
   feature: NEONCarpentryHeader_2.png
   credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/Work-With-NDVI-and-Met-Data-In-R/
 comments: true
 ---

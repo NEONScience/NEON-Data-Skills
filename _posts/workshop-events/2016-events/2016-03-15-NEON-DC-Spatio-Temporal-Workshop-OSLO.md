@@ -237,7 +237,7 @@ NOTE: we will setup an OSLO2015.Rproj file together at the beginning of the work
 ***
 
 ### Workshop Instructors
-* **[Leah Wasser](http://www.neoninc.org/about/staff/leah-wasser)**; @leahawasser, Supervising Scientist, NEON, Inc 
+* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser)**; @leahawasser, Supervising Scientist, NEON, Inc 
 * **Michael Heeremans**
 * **Anne Claire Fouilloux**
 * **Arnstein Orten**
