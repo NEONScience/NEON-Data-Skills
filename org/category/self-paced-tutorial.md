@@ -1,6 +1,6 @@
 ---
 layout: post_by_category
-title: 'All Self-paced #WorkWithData Tutorials'
+title: 'All Self-paced Data Skills Tutorials'
 category: self-paced-tutorial
 permalink: self-paced-tutorial/
 image:
@@ -8,5 +8,5 @@ image:
   credit: 
 ---
 
-Below you will find a list of self-paced-data-tutorials that you can complete on your own
+Below you will find a list of self-paced data tutorials that you can complete on your own
 time.

@@ -1,6 +1,6 @@
 ---
 layout: workshop-event-list
-title: '#WorkWithData Events List'
+title: 'NEON Data Skills Events'
 category: workshop-event
 permalink: workshop-event/
 image:
@@ -8,6 +8,6 @@ image:
   credit: 
 ---
 
-The NEONDataSkills team supports and lead data-intensive workshops several times each year. 
+The NEON Data Skills team supports and lead data intensive workshops several times each year. 
 We often collaborate with Software Carpentry and Data Carpentry to give workshops.
 Previous and upcoming workshop events are listed below.
