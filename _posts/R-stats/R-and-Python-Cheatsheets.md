@@ -15,7 +15,7 @@ code1:
 image:
   feature: codedpoints2.png
   credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R-Python/Cheatsheets/
 comments: true
 ---

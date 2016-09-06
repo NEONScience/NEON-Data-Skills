@@ -109,7 +109,7 @@ In addition to intensity values, these lidar data also have a classification val
 - 5 High Vegetation
 - 6 Building
 
-{% include _images_nolink.html url="../../images/plasio_ColorsKendra.png" description="Blue and Orange gradient color scheme submitted by Kendra Sand. Which color scheme is your favorite? email screenshots to: lwasser at neoninc.org" %}
+{% include _images_nolink.html url="../../images/plasio_ColorsKendra.png" description="Blue and Orange gradient color scheme submitted by Kendra Sand. Which color scheme is your favorite? email screenshots to: lwasser at neonscience.org" %}
 
 In this case, these data are classified as either ground, or non-ground. To view the points, colored by class:
 

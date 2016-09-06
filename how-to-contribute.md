@@ -22,7 +22,7 @@ code1: Create_Lidar_CHM.R
 image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 --- 
 
 1. Save your file in the _posts directory. Please get in touch if you are unsure of what directory to save your file in!

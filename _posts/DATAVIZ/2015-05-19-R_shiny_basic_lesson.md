@@ -14,7 +14,7 @@ code1:
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/Create-Basic-Shiny-App-In-R/
 code1:
 comments: true
@@ -36,7 +36,7 @@ Shiny has been called 'an R wrapper for JavaScript', but this doesn't quite capt
 ## What kinds of applications can I build with Shiny?
 There are many options! Here are a few ways we have used Shiny:
 
-* <a href="http://www.neoninc.org/data-resources/get-data/data-product-availability">Display the upcoming availability of NEON data products</a>
+* <a href="http://www.neonscience.org/data-resources/get-data/data-product-availability">Display the upcoming availability of NEON data products</a>
 * Create applications to read in files and output data sheets for NEON field crews
 * Visualize NEON data
 * Write data analysis programs

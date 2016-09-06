@@ -16,7 +16,7 @@ code1:
 image:
   feature: hierarchy_folder_purple.png
   credit: Colin Williams NEON, Inc.
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/StreamDischarge-TimeSeries-R/
 code1: R/2015-09-15-StreamDischarge-TimeSeries-R.Rmd
 comments: true
@@ -54,9 +54,9 @@ date formated field.</li>
 <a href="{{ site_baseurl }}/data/streamDischarge.zip" class="btn btn-success"> 
 DOWNLOAD NEON Stream Discharge Data for Posey Creek</a>. 
 <p>The data in this csv file were collected at 
-<a href="http://www.neoninc.org/science-design/field-sites/posey-creek" target="_blank"> 
+<a href="http://www.neonscience.org/science-design/field-sites/posey-creek" target="_blank"> 
 Posey Creek field site located in Virginia (NEON Domain 02)</a> and processed at NEON headquarters. The 
-entire dataset and data for other field sites can be accessed from the <a href="http://neoninc.orgdata.neoninc.org" target="_blank">NEON data portal.</a>
+entire dataset and data for other field sites can be accessed from the <a href="http://neonscience.orgdata.neonscience.org" target="_blank">NEON data portal.</a>
 </p>  
 
 <h3>Pre-reqs</h3>

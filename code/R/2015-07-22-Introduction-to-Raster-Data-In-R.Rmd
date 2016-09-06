@@ -13,7 +13,7 @@ description: "This post explains the fundamental principles, functions and metad
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: http://www.neoninc.org
+  creditlink: http://www.neonscience.org
 permalink: /R/Raster-Data-In-R/
 code1: /R/2015-07-22-Introduction-to-Raster-Data-In-R.R
 comments: true
@@ -70,7 +70,7 @@ Download the raster and *in situ* collected vegetation structure data:
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
 collected over the San Joaquin field site located in California (NEON Domain 17) 
-and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a> 
+and processed at <a href="http://www.neonscience.org" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
 
 <h4>Recommended Pre-Lesson Reading</h4>

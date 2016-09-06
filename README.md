@@ -24,7 +24,7 @@ ability to work with heterogeneous ecological data.
 ## Questions?
 
 Having a problem getting something to work or want to know why the repo is setup 
-in a certain way? Email us **neondataskills@neoninc.org** or 
+in a certain way? Email us **neondataskills -AT- BattelleEcology.org** or 
 [file a GitHub Issue](https://github.com/neoninc/NEON-Data-Skills/issues). And 
 if you have a cool resource that you think would add to the site, please let us 
 know!

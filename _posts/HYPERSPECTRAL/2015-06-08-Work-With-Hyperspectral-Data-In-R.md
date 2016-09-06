@@ -58,7 +58,7 @@ biocLite("rhdf5")</code></li>
 DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
 <p>The data in this HDF5 file were collected over the San Joachim field site 
 located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neoninc.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
 </p>  
 </div> 
 
@@ -113,7 +113,7 @@ package version. If you need to update `rhdf5`, use the following code:
 
 ## Read HDF5 data into R
 We will use the `raster` and `rhdf5` libraries to read in the HDF5 file that 
-contains hyperspectral data for the <a href="http://neoninc.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
+contains hyperspectral data for the <a href="http://neonscience.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin field site</a>. Let's start by calling 
 the needed libraries and reading in our NEON HDF5 file.  
 
 

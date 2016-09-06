@@ -49,7 +49,7 @@ After completing this activity, you will:
 
 <h3>Data to Download:</h3>
 <a href="{{ site.baseurl }}/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="btn btn-success">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a> 
-<a href="http://www.neoninc.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
+<a href="http://www.neonscience.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
 
 </div>
 

@@ -49,7 +49,7 @@ Download the raster and <i>insitu</i> collected vegetation structure data:
 <a href="http://neondataskills.org/Data-Workshops/NEON-lidar-Rasters-R/">All of hte topics and concepts you need to complete this capstone were covered in the links on this page.</a>
 </div>
 
-> NOTE: The data used in this activity were extracted from a hyperspectral dataset collected in California by the NEON airborne observation platform. The full versions of the data used in this activity are freely available by request, [from the NEON data portal](http://www.neoninc.org/data-resources/get-data/airborne-data "AOP data").
+> NOTE: The data used in this activity were extracted from a hyperspectral dataset collected in California by the NEON airborne observation platform. The full versions of the data used in this activity are freely available by request, [from the NEON data portal](http://www.neonscience.org/data-resources/get-data/airborne-data "AOP data").
 
 
 
@@ -70,7 +70,7 @@ in the data downloads for this workshop.
 	- one for the San Joaquin field site
 	- one for the Soaproot saddle field site.
 3. Attribute each of the above groups with information about the field sites. HINT
-you can explore the < a href="http://www.neoninc.org/science-design/field-sites/" target=_blank">
+you can explore the < a href="http://www.neonscience.org/science-design/field-sites/" target=_blank">
 NEON field site page</a> for more information about each site. 
 4.Extract the vegetation structure data for San Joaquin and add it as a dataset to the
 San Joaquin group. Do the same for the Soaproot dataset. 

@@ -31,7 +31,7 @@ comments: true
 
 The National Ecological Observatory Network (NEON) is hosting a 3-day lesson-building hackathon to develop a suite of NEON/ Data Carpentry data tutorials. The tutorials will be used to teach fundamental big data skills needed to work efficiently with large spatio-temporal data using open tools. Data lessons were initially developed in R.
 
-<a href="http://www.neoninc.org/updates-events/events/hackathon-spatio-temporal-data-lesson-building" target="_blank">Learn more about the Hackathon on the NEON website.</a>
+<a href="http://www.neonscience.org/updates-events/events/hackathon-spatio-temporal-data-lesson-building" target="_blank">Learn more about the Hackathon on the NEON website.</a>
 
 ## The Spatio-Temporal Data
 
