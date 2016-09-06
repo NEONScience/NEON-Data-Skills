@@ -85,8 +85,3 @@ A different approach is to interpolate the value for each cell. Interpolation co
 {% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
-## Use Images From The LiDAR Data Image Gallery In Your Presentations & Teaching! ##
-
-
-<iframe width="100%" height="500px" frameborder="0" scrolling="no" src="http://flickrit.com/slideshowholder.php?height=75&size=big&setId=72157648481541867&caption=true&theme=1&thumbnails=1&transition=1&layoutType=responsive&sort=0" ></iframe>
-
