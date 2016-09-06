@@ -12,7 +12,8 @@ mainTag: lidar
 tutorialSeries: [intro-lidar-r-series]
 authors: [Leah A. Wasser]
 permalink: /lidar-data/online-data-viewer/
-description: "Learn the basics of how a LiDAR works and what a LiDAR system measures. Explore some LiDAR data using free online tools."
+description: "Learn the basics of how a LiDAR works and what a LiDAR system 
+measures. Explore some LiDAR data using free online tools."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
@@ -109,7 +110,7 @@ In addition to intensity values, these lidar data also have a classification val
 - 5 High Vegetation
 - 6 Building
 
-{% include _images_nolink.html url="../../images/plasio_ColorsKendra.png" description="Blue and Orange gradient color scheme submitted by Kendra Sand. Which color scheme is your favorite? email screenshots to: lwasser at neonscience.org" %}
+{% include _images_nolink.html url="../../images/plasio_ColorsKendra.png" description="Blue and Orange gradient color scheme submitted by Kendra Sand. Which color scheme is your favorite? Email screenshots to neondataskills -AT- BattelleEcology.org" %}
 
 In this case, these data are classified as either ground, or non-ground. To view the points, colored by class:
 
