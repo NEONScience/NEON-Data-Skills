@@ -162,8 +162,8 @@ Let's change that.
 ## About UTM
 
 <figure>
-   <a href="http://upload.wikimedia.org/wikipedia/en/thumb/5/57/Utm-zones.svg/720px-Utm-zones.svg.png
-"><img src="http://upload.wikimedia.org/wikipedia/en/thumb/5/57/Utm-zones.svg/720px-Utm-zones.svg.png
+   <a href="https://upload.wikimedia.org/wikipedia/commons/8/8d/Utm-zones-USA.svg
+"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Utm-zones-USA.svg
 "></a>
  <figcaption>The UTM coordinate reference system breaks the world into 60 latitude zones.</figcaption>
 </figure>
