@@ -43,15 +43,15 @@ comments: true
 After completing this activity, you will:
 <ol>
 <li> Be able to filter data, alone and combined with simple pattern matching
-`grepl()`</li>
-<li> Use the group_by function in `dplyr`.</li>
-<li> Use the summarise function in `dplyr`.</li>
+grepl()</li>
+<li> Use the group_by function in dplyr.</li>
+<li> Use the summarise function in dplyr.</li>
 <li> You will also know how to pipe functions..</li>
 </ol>
 
 <h3>You will need:</h3>
 <ul>
-<li>R or R studio running on your computer. </li>
+<li>R and, preferably RStudio running on your computer. </li>
 </ul>
 
 <h3>R Packages to Install:</h3>
@@ -131,15 +131,15 @@ another, and so on, without the hassleof parentheses and brackets. Piping looks
 like:
 
 	data frame %>%
-				function to apply first %>%
-							function to apply second %>%
-										function to apply third
+		function to apply first %>%
+			function to apply second %>%
+				function to apply third
 
 For example, if we want to find the mean body weight of male mice, we'd do this:
 
 	myMammalData %>%
 		filter(sex=='m') %>%
-				summarise (mean_weight = mean(weight))
+			summarise (mean_weight = mean(weight))
 
 This is read as "from data frame `myMammalData`, select only males and return 
 the mean weight as a new list `mean_weight`".                   
@@ -178,13 +178,11 @@ For the rest of this tutorial, we are only going to be working with:
 ## filter()
 This function: 
 
- * extracts only a subset of rows from a data frame according to specified
- conditions
- * is similar to the base function `subset()`, but with simpler syntax
- * inputs: 
-			+ data object, 
-			+ any number of conditional statements on the named columns of the data object
-  * output: a data object of the same class as the input object (e.g., 
+* extracts only a subset of rows from a data frame according to specified
+conditions
+* is similar to the base function `subset()`, but with simpler syntax
+* inputs: data object, any number of conditional statements on the named columns of the data object
+* output: a data object of the same class as the input object (e.g., 
   data.frame in, data.frame out) with only those rows that meet the conditions
 
 For example, let's create a new dataframe that contains only female *Peromyscus 
@@ -228,9 +226,7 @@ and therefore are a challenge to learn, but well worth it!
 
 Here, we present a very simple example.
 
-* inputs: 
-			+ pattern to match, 
-			+ character vector to search for a match
+* inputs: pattern to match, character vector to search for a match
 * output: a logical vector indicating whether the pattern was found within 
 each element of the input character vector
 
@@ -245,7 +241,8 @@ We can use the `dplyr` function `filter()` in combination with the base function
 `grepl()` to accomplish this.
 
 
-    # combine filter & grepl to get all Peromyscus (a part of the scientificName string)
+    # combine filter & grepl to get all Peromyscus (a part of the 
+    # scientificName string)
     data_PeroFemales <- filter(myData,
                        grepl('Peromyscus', scientificName),
                        sex == 'F')
