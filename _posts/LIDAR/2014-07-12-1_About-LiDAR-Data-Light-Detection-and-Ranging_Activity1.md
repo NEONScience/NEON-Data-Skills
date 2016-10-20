@@ -199,16 +199,16 @@ location and Z (elevation values). Most lidar data points will have an intensity
 value, representing the amount of light energy recorded by the sensor.
 
 Some LiDAR data will also be "classified" -- not top secret, but with specifications
-about what the date are. Classification of LiDAR point clouds is an additional 
+about what the data are. Classification of LiDAR point clouds is an additional 
 processing step. Classification simply represents the type of object that the 
 laser return reflected off of. So if the light energy reflected off of a tree, 
 it might be classified as "vegetation". And if it reflected off of the ground, 
 it might be classified as "ground".
 
-Some LiDAR products will be classified as "ground/non ground". Some datasets 
+Some LiDAR products will be classified as "ground/non-ground". Some datasets 
 will be further processed to determine which points reflected off of buildings 
 and other infrastructure. Some LiDAR data will be classified according to the 
-vegetation type.   
+vegetation type. 
 
 
 ## Exploring 3D LiDAR data in a free Online Viewer
