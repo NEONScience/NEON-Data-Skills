@@ -24,15 +24,16 @@ owner:
   twitter: "NEON_sci"
   github: "NEONInc"
   youtube: "neonbetaedu"
-# instagram:      "mmistakes"
+# instagram:    " "
 # For Google Authorship https://plus.google.com/authorship
-# google_plus:    "MichaelRoseDesign"
+# google_plus:    " "
 
 # Analytics and webmaster tools stuff goes here
 google_analytics:   UA-52746937-1
 #google_verify:      UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 #bing_verify:        D81F4C18A6CB3018F64D7C827D953DFD
+
 
 # Links to include in top navigation
 # For external links add external: true
@@ -45,10 +46,13 @@ links:
 
   - title: Science Videos
     url: /science-video/ 
-        
+
+  - title: Teaching Data Subsets  
+    url: /teaching-data-subsets/
+
   - title: About
     url: /about/ 
-    
+
   - title: NEON Website
     url: http://neonscience.org
     external: true
