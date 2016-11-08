@@ -404,7 +404,9 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
 
 ```
 
-In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't render pixels that contain a specified `NoDataValue`. `R` assigns missing data with the `NoDataValue` as `NA`.
+In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't 
+render pixels that contain a specified `NoDataValue`. `R` assigns missing data 
+with the `NoDataValue` as `NA`.
 
 ```{r demonstrate-no-data, echo=FALSE}
 # reassign cells with 0,0,0 to NA
@@ -474,12 +476,12 @@ hist(DSM_HARV,
 
 ```
 
-Notice that an error message is thrown when `R` creates the histogram. 
+Notice that a warning message is shown when `R` creates the histogram. 
 
 `Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4%  
 of the raster cells were used. 100000 values used.`
 
-This error is caused by the default maximum pixels value of 100,000 associated 
+This warning is caused by the default maximum pixels value of 100,000 associated 
 with the `hist` function. This maximum value is to ensure processing efficiency
 as our data become larger!
 
@@ -582,7 +584,7 @@ following about the  `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif`
 5. Is the file a multi- or single-band raster?
 
 Notice: this file is a `hillshade`. We will learn about hillshades in
-<a href="{{ site.baseurl }}/R/Multi-Band-Rasters-In-R/" target="_blank">  Work with Multi-band Rasters: Images in R</a>.
+<a href="{{ site.baseurl }}/R/Multi-Band-Rasters-In-R/" target="_blank"> *Work with Multi-band Rasters: Images in R*</a>.
  
 </div>
 
