@@ -127,7 +127,7 @@ class such as a landcover type (e.g., "forest" or "grassland") rather than a
 continuous value such as elevation or temperature. Some examples of classified
 maps include:
 
-1. Landcover / land-use maps.
+1. Landcover/land-use maps.
 2. Tree height maps classified as short, medium, tall trees.
 3. Elevation maps classified as low, medium and high elevation.
 
@@ -404,7 +404,9 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
 
 ```
 
-In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't render pixels that contain a specified `NoDataValue`. `R` assigns missing data with the `NoDataValue` as `NA`.
+In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't 
+render pixels that contain a specified `NoDataValue`. `R` assigns missing data 
+with the `NoDataValue` as `NA`.
 
 ```{r demonstrate-no-data, echo=FALSE}
 # reassign cells with 0,0,0 to NA
@@ -473,6 +475,7 @@ hist(DSM_HARV,
      col="wheat")
 
 ```
+
 
 Notice that a warning is shown when `R` creates the histogram. 
 
@@ -582,7 +585,7 @@ following about the  `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif`
 5. Is the file a multi- or single-band raster?
 
 Notice: this file is a `hillshade`. We will learn about hillshades in
-<a href="{{ site.baseurl }}/R/Multi-Band-Rasters-In-R/" target="_blank">  Work with Multi-band Rasters: Images in R</a>.
+<a href="{{ site.baseurl }}/R/Multi-Band-Rasters-In-R/" target="_blank"> *Work with Multi-band Rasters: Images in R*</a>.
  
 </div>
 
