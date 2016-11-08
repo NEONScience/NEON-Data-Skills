@@ -48,7 +48,7 @@ These materials were designed to be used in the context of the workshop with an 
 |--| 27 May - 2 June|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/pre-institute1/" target="_blank"> Intro to NEON & Reproducible Science</a>|
 |--| 3-9 June |<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/pre-institute2-git/" target="_blank"> Version Control & Collaborative Science with Git & GitHub</a>|
 |--| 10-16 June |<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/pre-institute3-rmd/" target="_blank"> Documentation of Your Workflow with RMarkdown</a>|
-|--| 20-26 June| **Date Institute**|
+|--| 20-26 June| **Data Institute**|
 |7:50am - 10:00pm| Monday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day1/" target="_blank"> Intro to NEON, Intro to HDF5 & Hyperspectral RS</a>|
 |8:00am - 6:30pm| Tuesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day2/" target="_blank"> Intro to LiDAR data, Automated Workflows</a>|
 |8:00am - 6:30pm| Wednesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day3/" target="_blank"> Remote Sensing Uncertainty</a>|
