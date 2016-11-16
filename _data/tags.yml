@@ -29,7 +29,7 @@
   name: Metadata
   
 - slug: informatics
-  name: Informatics       
+  name: Informatics
   
 - slug: Data-Workshops
   name: Data Workshops
@@ -39,3 +39,6 @@
   
 - slug: phenology
   name: Phenology
+
+- slug: disturb-events-co13
+  name: Disturbance Events Teaching Module

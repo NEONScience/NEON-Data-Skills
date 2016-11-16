@@ -11,13 +11,12 @@ mainTag: data-viz
 librariesPackages: [ggplot, plotly]
 description: "Learn the basics of how to use the plotly package to create 
 interactive plots and use the Plotly API in R to share these plots."
-code1: 
+code1: /DATAVIZ/DataVis-plotly-R.R
 image:
-  feature: lidar_GrandMesa.png
+  feature: laptopCode.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
 permalink: /R/Plotly
-code1:
 comments: true
 ---
 
@@ -29,7 +28,7 @@ comments: true
 bills itself as "a collaborative platform for modern data science". You can use
 it to build  interactive plots that can easily be shared with others (like
 the
-<a href="http://{{ site.baseurl }}/teaching-module/disturb-event-co13/detailed-lesson#drought" target="_blank"> Disturbance Events lessons</a>). 
+<a href="{{ site.baseurl }}/teaching-modules/disturb-events-co13/detailed-lesson#drought" target="_blank"> Disturbance Events lessons</a>). 
 
 You will need an free online Plotly account to post & share you plots online. But
 you can create the plots and use them on your local computer without an account.
@@ -65,8 +64,18 @@ Sys.setenv("plotly_api_key"="YOUR_api_key")
 
 ```
 
+```{r load-libraries-hidden, echo=FALSE, results="hide"}
+# this package is only added to get the webpage derived from this code to render
+# the plotly graphs.  It is NOT needed for any of the analysis or data 
+# visualizations.
+
+# install.packages("webshot")
+# webshot::install_phantomjs() 
+library(webshot) # embed the plotly plots
+```
+
 ### Step 3: Create Plotly plot
-There are lots of ways to plot with the plotly package. We breifly describe two 
+There are lots of ways to plot with the plotly package. We briefly describe two 
 basic functions `plotly()` and `ggplotly()`. For more information on plotting in
 R with Plotly, check out the 
 <a href="https://plot.ly/r/" target="_blank"> Plotly R library page. 
@@ -74,9 +83,6 @@ R with Plotly, check out the
 Here we use the example dataframe `economics` that comes with the package. 
 
 ```{r create-plotly-plot}
-# Set working directory to the data directory
-# setwd("YourFullPathToDataDirectory")
-
 
 # load packages
 library(plotly)  # to create interactive plots
@@ -90,6 +96,7 @@ unempPerCapita <- plot_ly(economics, x = date, y = unemploy/pop)
 unempPerCapita 
 
 ```
+
 Note: This plot is interactive within the R environment but is not as posted on
 this website. 
 
@@ -105,6 +112,8 @@ unemployment
 ggplotly(unemployment)
 
 ```
+
+
 Note: This plot is interactive within the R environment but is not as posted on
 this website. 
 

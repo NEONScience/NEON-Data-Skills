@@ -9,5 +9,5 @@ image:
   credit: 
 ---
 
-NEONDataSkills self-paced tutorial series are sets of data themed self-paced tutorials that
- can be worked through on your own time. 
+NEON Data Skills self-paced tutorial series are sets of data themed self-paced 
+tutorials that can be worked through on your own time. 

@@ -16,12 +16,13 @@
   data."
   color: '#1abc9c'
   
-- slug: teaching-module
+- slug: teaching-modules
   name: Teaching Modules
-  description: "A teaching activity with a science focus that utilizes data to explore a particular
-  science topic. These modules often include associated data tutorials for advanced classes
-  and include data visualizations for classes that will not incorporate coding or other
-  hands-on data manipulation tasks."
+  description: "A lesson or lesson series with a science focus that utilizes 
+  data to explore a particular science topic. These modules often include 
+  associated data tutorials for advanced classes and include data visualizations
+  for classes that will not incorporate coding or other hands-on data 
+  manipulation tasks."
   color: '#1abc9c' 
   
 - slug: tutorial-series
