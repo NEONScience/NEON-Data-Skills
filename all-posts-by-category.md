@@ -5,8 +5,10 @@ title: Data Tutorials & Workshop Groupings
 tagline: A List of Posts
 tags: [R,hdf5,lidar]
 image:
-  feature: /banners/activitiesXtag.png
+  feature: /banners/chalkboard.png
   credit: 
 ---
 
-Below you will find a list of data tutorials using R and other Open Source tools. You will also find theme related content that has been used or is being developed for upcoming NEON workshops.
+Below you will find a list of data tutorials using R and other Open Source tools. 
+You will also find theme related content that has been used or is being developed 
+for upcoming NEON workshops.

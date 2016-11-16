@@ -1,4 +1,4 @@
-title: 		NEON Work With Data
+title: 		NEON Data Skills
 description: 	A site to host education materials that support the use of big data in science.
 #Comment out url when working locally to resolve base urls correctly ok
 #use this when pushing to git for live version
@@ -44,15 +44,18 @@ links:
   - title: Events
     url: /workshop-event/
 
-  - title: Science Videos
-    url: /science-video/ 
-
+  - title: Teaching Modules
+    url: /teaching-modules/
+    
   - title: Teaching Data Subsets  
     url: /teaching-data-subsets/
 
+  - title: Science Videos
+    url: /science-video/ 
+        
   - title: About
     url: /about/ 
-
+    
   - title: NEON Website
     url: http://neonscience.org
     external: true
