@@ -29,7 +29,7 @@ Colorado in 2013. In this data activity, we explore and visualize the data for
 precipitation (rainfall) data collected by the National Weather Service's 
 Cooperative Observer Program. The tutorial is part of the Data Activities that 
 can be used with the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/overview" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
+<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
 
 <div id="objectives" markdown="1">
 
