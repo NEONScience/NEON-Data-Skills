@@ -373,10 +373,9 @@ extensive effort by land surveyors to visit each location and collect a large
 number of points to precisely map the region. This method can be very time intensive. 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_CreditHarriBlomberg.jpg">
-   <img src="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_CreditHarriBlomberg.jpg"></a>
-   <figcaption>Survey of an archaeological site done with a total station Source:
-   <a href="https://commons.wikimedia.org/wiki/File:GPS-m%C3%A4tning_p%C3%A5_j%C3%A4rn%C3%A5ldersboplats_i_Ytterby_sn,_Bohusl%C3%A4n,_den_28_april_2006._Bild_1.JPG" target="_blank"> HarriBlomberg on WikiCommons</a>.  
+   <a href="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg">
+   <img src="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg"></a>
+   <figcaption>Survey of a NEON field site done with a total station Source: Michael Patterson</a>.  
     </figcaption>
 </figure>
 
