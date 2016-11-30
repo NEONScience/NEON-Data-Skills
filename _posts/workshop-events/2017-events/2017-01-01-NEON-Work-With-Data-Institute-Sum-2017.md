@@ -47,7 +47,7 @@ instructor. In 2016 the primary **programming language was R**.
 * **Notification of Acceptance:** early April 2017
 * **Tuition payment due by:** mid April 2017 
 * **Pre-institute online activities:** June 1-17, 2017 
-* **Institute Dates:** June 19-24, 2016
+* **Institute Dates:** June 19-24, 2017
 
 More information about the NEON Data Institutes can be found on the 
 <a href="http://www.neonscience.org/learn-experience/data-institutes" target="_blank"> NEON website</a>. 
