@@ -4,8 +4,8 @@ title: "NEON Data Institute 2017"
 date:   2017-06-19
 dateCreated:   2017-01-01
 lastModified: 2016-11-30
-startDate: 2016-06-19
-endDate: 2016-06-24
+startDate: 2017-06-19
+endDate: 2017-06-24
 authors: [Megan A. Jones]
 tags: []
 mainTag: workshop-event
@@ -35,7 +35,7 @@ be Python**. This Institute will be held at NEON headquarters in June 2017.
 The teaching materials from the 2017 Data Institute will be available as 
 self-paced online tutorials after the Institute. In the meantime, you can access 
 the 
-<a href="{{ site.baseurl}}/workshop-event/NEON-Work-With-Data-Insitute-2016/" target="_blank">2016 Data Institute materials here</a>.
+<a href="{{ site.baseurl}}/workshop-event/NEON-Work-With-Data-Insitute-2016" target="_blank">2016 Data Institute materials here</a>.
 These 2016 materials were designed to be used in the context of the workshop with an 
 instructor. In 2016 the primary **programming language was R**.
 
