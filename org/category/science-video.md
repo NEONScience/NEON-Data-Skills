@@ -8,4 +8,7 @@ image:
   credit: 
 ---
 
-Below you will find a list of science videos that NEONDataSkills has produced.
+Below you will find a list of science videos produced by NEON Data Skills. 
+
+These and other NEON-related videos are also available for viewing on our 
+<a href="https://www.youtube.com/user/NEONBetaEDU" target="_blank"> YouTube channel</a>. 
