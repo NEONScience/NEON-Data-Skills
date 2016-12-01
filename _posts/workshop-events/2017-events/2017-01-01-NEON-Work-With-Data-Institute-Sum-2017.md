@@ -35,7 +35,7 @@ be Python**. This Institute will be held at NEON headquarters in June 2017.
 The teaching materials from the 2017 Data Institute will be available as 
 self-paced online tutorials after the Institute. In the meantime, you can access 
 the 
-<a href="{{ site.baseurl}}/workshop-event/NEON-Work-With-Data-Insitute-2016/" target="_blank">2016 Data Institute materials here</a>.
+<a href="{{ site.baseurl}}/workshop-event/NEON-Work-With-Data-Insitute-2016" target="_blank">2016 Data Institute materials here</a>.
 These 2016 materials were designed to be used in the context of the workshop with an 
 instructor. In 2016 the primary **programming language was R**.
 
