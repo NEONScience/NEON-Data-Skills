@@ -40,7 +40,7 @@ elements. Finally, it introduces the GeoTiff file format.
 
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+# Goals/Objectives
 
 After completing this activity, you will:
 
