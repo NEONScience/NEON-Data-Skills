@@ -15,7 +15,7 @@ open source tools to promote reproducible science. The primary computing languag
 of this Institute is Python.  This Institute will be held at NEON headquarters in 
 June 2017."
 image:
-  feature: 
+  feature: data-institute-rs.png
   credit:
   creditlink: 
 permalink: /workshop-event/NEON-Data-Insitute-2017
