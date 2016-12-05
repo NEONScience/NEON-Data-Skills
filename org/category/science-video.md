@@ -16,4 +16,4 @@ These and other NEON-related videos are also available for viewing on our
 If you would like to use these videos, please give proper attribution. Suggested citations are 
 provide in the YouTube description for each video, or follow the format: 
 
->  National Ecological Observatory Network. (year month day released). Title of video [Video]. Courtesy: Battelle. Retrieved from <URL here>. 
+>  National Ecological Observatory Network. (year month day released). Title of video [Video]. Courtesy: Battelle. Retrieved from < URL here >. 
