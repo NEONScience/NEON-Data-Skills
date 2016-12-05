@@ -31,3 +31,14 @@ There is a comments section at the bottom of this page:
 * Please comment on any of the data subsets that you think need to be clarified,
 fixed, or adjusted. 
 * Please share ideas you have for other data activities with us. 
+
+## Licensing & Usage
+
+We encourage you to use these Teaching Data Subsets in your educational setting 
+with the provided tutorials or as a basis for developing your own lessons. All content 
+is covered by this 
+<a href="http://www.neonscience.org/about/terms-of-use" target="_blank">Terms of Use</a>.
+
+* Teaching Data Subsets downloaded from NEONDataSkills.org: National Ecological Observatory Network (Year) Teaching Data Subset:File Name. Courtesy: Battelle. URL. Retrieval date.
+* Teaching Data Subsets downloaded from <a href="http://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets/834136" target="_blank"> fig**share**</a>: National Ecological Observatory Network (Year) Teaching Data Subset:Title. Courtesy: Battelle. DOI. Retrieval date.  
+  
