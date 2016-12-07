@@ -20,7 +20,7 @@ promote reproducible science. This Institute was held at NEON headquarters in
 June 2016."
 code1: 
 image:
-  feature: 
+  feature: data-institute-2016.png
   credit:
   creditlink: 
 permalink: /workshop-event/NEON-Work-With-Data-Insitute-2016

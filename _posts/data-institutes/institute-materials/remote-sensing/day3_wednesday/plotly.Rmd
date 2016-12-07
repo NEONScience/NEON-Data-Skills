@@ -1,0 +1,154 @@
+---
+layout: post
+title: "Create Interactive Plot.ly plots from R"
+date:   2016-05-16
+createdDate:   2016-05-17
+lastModified:   `r format(Sys.time(), "%Y-%m-%d")`
+time:
+packagesLibraries: [plotly]
+authors: [Leah A. Wasser, Kyla Dahlin]
+instructors: [Leah, Naupaka, Kyla]
+contributors: [Megan A. Jones]
+category: remote-sensing
+categories: [Remote Sensing]
+tags : [lidar, R]
+mainTag: institute-day3
+tutorialSeries: institute-day3
+description: "."
+permalink: /plotly-plots-R/
+comments: true
+code1: institute-materials/day3_wednesday/plotly.R
+image:
+  feature:
+  credit:
+  creditlink:
+---
+
+
+
+
+```{r import-plot-DSM, echo=FALSE, results='hide', message=FALSE}
+
+# load libraries
+library(ggplot2)
+library(dplyr)
+
+options(stringsAsFactors = FALSE)
+
+# set working directory
+# setwd("~/Documents/data/NEONDI-2016") # Mac
+# setwd("~/data/NEONDI-2016")  # Windows
+```
+
+After completing the [previous tutorial]({{site.baseurl}}/compare-lidar-to-field-data-R/),
+you have an R object `p` that contains a
+ggplot plot. We'll now make an interactive plot.ly plot.
+
+If you have not completed the previous tutorial, the code for `p` can be found
+in the downloadable R code for this lesson, or complete the previous tutorial.
+
+```{r import-chm, echo=FALSE, results='hide', message=FALSE }
+
+# import canopy height model (CHM).
+SJER_chm <- raster("NEONdata/D17-California/SJER/2013/lidar/SJER_lidarCHM.tif")
+SJER_chm
+
+# set values of 0 to NA as these are not trees
+SJER_chm[SJER_chm==0] <- NA
+
+# import plot centroids
+SJER_plots <- readOGR("NEONdata/D17-California/SJER/vector_data",
+                      "SJER_plot_centroids")
+
+# In situ sampling took place within 40m x 40m square plots so we use a 20m radius.
+# Note that below will return a dataframe containing the max height
+# calculated from all pixels in the buffer for each plot
+SJER_height <- extract(SJER_chm,
+                    SJER_plots,
+                    buffer = 20,
+                    fun=max,
+                    sp=TRUE,
+                    stringsAsFactors=FALSE)
+
+
+# import the centroid data and the vegetation structure data
+SJER_insitu <- read.csv("NEONdata/D17-California/SJER/2013/insitu/veg_structure/D17_2013_SJER_vegStr.csv",
+                        stringsAsFactors = FALSE)
+
+
+#find the max stem height for each plot
+insitu_maxStemHeight <- SJER_insitu %>%
+  group_by(plotid) %>%
+  summarise(max = max(stemheight))
+
+
+names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
+
+# merge to create a new spatial df
+SJER_height@data <- data.frame(SJER_height@data,
+                               insitu_maxStemHeight[match(SJER_height@data[,"Plot_ID"], insitu_maxStemHeight$plotid),])
+
+#plot with regression fit
+p <- ggplot(SJER_height@data, aes(x=SJER_lidarCHM, y = insituMaxHt)) +
+  geom_point() +
+  ylab("Maximum Measured Height") +
+  xlab("Maximum LiDAR Height")+
+  ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
+  geom_abline(intercept = 0, slope=1)+
+  geom_smooth(method=lm)
+
+```
+
+Now we can create an interactive plot.ly plot from the `p` R object.
+
+## Create Plot.ly Interactive Plot
+
+Plot.ly is a free to use, online interactive data viz site. If you have the
+plot.ly library installed, you can quickly export a ggplot graphic into plot.ly!
+ (NOTE: it also works for python matplotlib)!! To use plotly, you need to setup
+an account. Once you've setup an account, you can get your key from the plot.ly
+site to make the code below work.
+
+<a href="https://plot.ly/r/getting-started/" target="_blank">Plotly R Documentation</a>
+
+```{r create-local-plot}
+
+# install.packages("plotly")
+library(plotly)
+
+# your ggplot - object
+p
+```
+
+Create a local version of a plotly plot!
+
+```{r plot-ly-local, eval=FALSE}
+# plot your plot using plot_ly locally
+ggplotly(p)
+
+```
+
+Push a plot plot to your plotly account! Feel free to use NEON's credentials
+for this week!
+
+```{r create-plotly, eval=FALSE }
+
+
+# setup your plot.ly credentials
+Sys.setenv("plotly_username"="yourUserName")
+Sys.setenv("plotly_api_key"="yourAPIkey")
+
+# generate the plot
+plotly_POST(p,
+            filename='NEON SJER CHM vs Insitu Tree Height') # let anyone in the world see the plot!
+
+```
+
+Check out the results!
+
+NEON Remote Sensing Data compared to NEON Terrestrial Measurements for the SJER field site.
+
+<div>
+    <a href="https://plot.ly/~NEONDataSkills/0/" target="_blank" title="&lt;b&gt; LiDAR CHM Derived vs Measured Tree Height &lt;/b&gt;" style="display: block; text-align: center;"><img src="https://plot.ly/~NEONDataSkills/0.png" alt="&lt;b&gt; LiDAR CHM Derived vs Measured Tree Height &lt;/b&gt;" style="max-width: 100%;width: 1103px;"  width="1103" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+    <script data-plotly="NEONDataSkills:0"  src="https://plot.ly/embed.js" async></script>
+</div>

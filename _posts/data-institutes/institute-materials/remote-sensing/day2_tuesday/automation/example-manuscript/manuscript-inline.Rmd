@@ -1,0 +1,135 @@
+```{r setup, echo = FALSE, results='hide', message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r author-info}
+first_name <- "your first name"
+last_name <- "your last name"
+affiliation <- "your affiliation"
+address <- "your address"
+email <- "your email"
+```
+
+```{r manuscript_options}
+break_year <- 1985
+```
+
+# Increase in life expectancy through time: a continental analysis
+
+> By `r last_name`, `r first_name`
+>
+> Affiliation: `r affiliation`, `r address`
+>
+> Email: `r email`
+
+In this paper, we will examine the change in life expectancy through time across
+the five continents.
+
+
+```{r prepare-data}
+split_gdp_files <- list.files(path = "data-raw", pattern = "gdp-percapita\\.csv$", full.names = TRUE)
+split_gdp_list <- lapply(split_gdp_files, read.csv)
+gdp <- do.call("rbind", split_gdp_list)
+```
+
+## The situation
+
+```{r mean-lifeExp-per-continent}
+mean_lifeExp_by_cont <- gdp %>% group_by(continent, year) %>%
+  summarize(mean_lifeExp = mean(lifeExp)) %>% as.data.frame
+```
+
+```{r summary-statistics}
+latest_lifeExp <- gdp %>% filter(year == max(gdp$year)) %>%
+  group_by(continent) %>%
+  summarize(latest_lifeExp = mean(lifeExp)) %>%
+  as.data.frame
+```
+
+There are important disparities in life expectancy across the five
+continents. It ranges from `r min(latest_lifeExp[["latest_lifeExp"]])`
+in `r latest_lifeExp[["continent"]][which.min(latest_lifeExp$latest_lifeExp)]`,
+to `r max(latest_lifeExp[["latest_lifeExp"]])`
+in `r latest_lifeExp[["continent"]][which.max(latest_lifeExp$latest_lifeExp)]`.
+
+These disparities are also reflected in the increases in life expectancy between
+`r min(gdp$year)` and `r max(gdp$year)`.
+
+```{r lifeExp-trends-per-continent}
+ggplot(mean_lifeExp_by_cont, aes(x = year, y = mean_lifeExp, colour = continent)) +
+  geom_line() + facet_wrap(~ continent) + theme(legend.position = "top")
+```
+
+To investigate these differences in more detail, we compared the rate of increase
+for the periods `r min(gdp$year)`-`r break_year` and `r break_year`-`r max(gdp$year)`.
+
+```{r before-after-1985}
+mdl_before_afr <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                     subset = (continent == "Africa" & year <= break_year))
+mdl_after_afr <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                    subset = (continent == "Africa" & year > break_year))
+coef_before_after_afr <- rbind(c("Africa", "before", coef(mdl_before_afr)[2]),
+                               c("Africa", "after", coef(mdl_after_afr)[2]))
+
+mdl_before_asi <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                     subset = (continent == "Asia" & year <= break_year))
+mdl_after_asi <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                    subset = (continent == "Asia" & year > break_year))
+coef_before_after_asi <- rbind(c("Asia", "before", coef(mdl_before_asi)[2]),
+                               c("Asia", "after", coef(mdl_after_asi)[2]))
+
+mdl_before_ame <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                     subset = (continent == "Americas" & year <= break_year))
+mdl_after_ame <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                    subset = (continent == "Americas" & year > break_year))
+coef_before_after_ame <- rbind(c("Americas", "before", coef(mdl_before_ame)[2]),
+                               c("Americas", "after", coef(mdl_after_ame)[2]))
+
+mdl_before_eur <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                     subset = (continent == "Europe" & year <= break_year))
+mdl_after_eur <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                    subset = (continent == "Europe" & year > break_year))
+coef_before_after_eur <- rbind(c("Europe", "before", coef(mdl_before_eur)[2]),
+                               c("Europe", "after", coef(mdl_after_eur)[2]))
+
+mdl_before_oce <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                     subset = (continent == "Oceania" & year <= break_year))
+mdl_after_oce <- lm(mean_lifeExp ~ year, data = mean_lifeExp_by_cont,
+                    subset = (continent == "Oceania" & year > break_year))
+coef_before_after_oce <- rbind(c("Oceania", "before", coef(mdl_before_oce)[2]),
+                               c("Oceania", "after", coef(mdl_after_oce)[2]))
+
+coef_before_after <- rbind(
+    coef_before_after_afr,
+    coef_before_after_ame,
+    coef_before_after_asi,
+    coef_before_after_eur,
+    coef_before_after_oce)
+coef_before_after <- as.data.frame(coef_before_after)
+names(coef_before_after) <- c("continent", "period", "trend")
+coef_before_after$trend <- as.numeric(levels(coef_before_after$trend)[coef_before_after$trend])
+coef_before_after$period <- factor(coef_before_after$period, levels = c("before", "after"))
+```
+
+```{r change-trend-plot}
+ggplot(coef_before_after, aes(x = period, y = trend, colour = continent, group = continent)) +
+  geom_point() + geom_path()
+```
+
+```{r change-trend}
+change_trend <- coef_before_after %>% group_by(continent) %>% summarize(diff = trend[2] - trend[1])
+largest_neg_change_index <- which.min(change_trend$diff)
+largest_pos_change_index <- which.max(change_trend$diff)
+least_change_index <- which.min(abs(change_trend$diff))
+```
+
+The largest negative change is observed for `r change_trend$continent[largest_neg_change_index]` with a
+decrease of `r change_trend$diff[largest_neg_change_index]`.year<sup>-1</sup>
+between the two time periods; while `r change_trend$continent[largest_pos_change_index]`
+experienced the largest increase with a difference of
+`r change_trend$diff[largest_pos_change_index]`.year<sup>-1</sup> during the
+same interval.
+`r change_trend$continent[least_change_index]` stayed the most constant between the
+two time periods.

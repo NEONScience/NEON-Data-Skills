@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Plotting stream discharge data for a NEON field site in R"
-date:   2015-07-15 20:49:52
-lastModified: 2015-09-30 14:49:52
-createddate:   2015-07-15 20:49:52
+date:   2015-07-15
+lastModified: 2015-09-30
+createddate:   2015-07-15
 estimatedTime: 1.0 Hour
 packagesLibraries: 
 authors: Leah A. Wasser

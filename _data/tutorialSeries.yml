@@ -57,3 +57,9 @@
   Finally we explore extracting a hyperspectral - spectral signature from one pixel using R" 
   lastModified:  2016-12-15 
   
+- slug: R-basics
+  name: Basic R Skills
+  description: "This series is not intended for full learning how to use R. However, 
+  it does provide tutorials on key skills needed to complete more complex tasks
+  in R." 
+  lastModified:  2016-12-5 
