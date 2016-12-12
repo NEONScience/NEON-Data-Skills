@@ -375,7 +375,7 @@ number of points to precisely map the region. This method can be very time inten
 <figure>
    <a href="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg">
    <img src="{{ site.baseurl }}/images/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg"></a>
-   <figcaption>Survey of a NEON field site done with a total station Source: Michael Patterson</a>.  
+   <figcaption>Survey of a NEON field site done with a total station Source: Michael Patterson.  
     </figcaption>
 </figure>
 
