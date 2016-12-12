@@ -175,6 +175,8 @@ command line.
 * `ls()`: to list objects in your current environment. 
 * `rm()`: remove objects from your current environment.  
 
+Now try them in the console.  
+
 ``` {r ls-rm-funcs}
 
 # assign value "5" to object "x"
@@ -363,9 +365,6 @@ str(z)
 
 ```
 
-
-**Question:** Do you see a property that's common to all these vectors above?
-
 You can also add to a list
 
 ``` {r add-list}
@@ -399,6 +398,8 @@ You can also get non-numeric outputs.
 
 * `Inf` is infinity. You can have either positive or negative infinity.
 * `NaN` means Not a Number. It's an undefined value.
+
+Try it out in the console. 
 
 ``` {r }
 # infinity return
@@ -439,6 +440,7 @@ denominator. The coercion will move towards the one that's easiest to **coerce**
 to.
 
 Guess what the following do:
+
 * m <- c(1.7, "a")
 * n <- c(TRUE, 2)
 * o <- c("a", TRUE)
@@ -455,7 +457,7 @@ p
 ```
 
 This is called implicit coercion. You can also coerce vectors explicitly using 
-the `as.<class_name>`. Example
+the `as.<class_name>`.
 
 ``` {r coercion}
 # making values numeric
@@ -558,6 +560,8 @@ Questions:
 1. What is the class of `x[1]`?
 1. What about `x[[1]]`?
 
+Try it out.
+
 ``` {r analytics }
 
 xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
@@ -628,7 +632,6 @@ as.character(x)
 
 To convert a factor to a numeric vector, go via a character. Compare
 
-
 ``` {r conv-facor }
 
 f <- factor(c(1, 5, 10, 2))
@@ -647,11 +650,11 @@ is to use the function `relevel()`).
 
 ``` {r name}
 
-	x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
-	x
+x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
+x
 ```
 
-### Data frame
+### Data Frame
 
 A data frame is a very important data type in R. It's pretty much the *de facto*
 data structure for most tabular data and what we use for statistics.  
@@ -673,12 +676,14 @@ Some additional information on data frames:
 respectively.
 * Rownames are usually 1, 2, ..., n.
 
-#### Creating data frames by hand
+#### Manually Create Data Frames
+
+You can manually create a data frame using `data.frame`. 
 
 ``` {r dataframes}
+# create a dataframe
 dat <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
 dat
-
 
 ```
 
@@ -697,24 +702,29 @@ See that it is actually a special list:
 
 ``` {r list2}
 
-list()is.list(iris)
+list()
+
+is.list(iris)
 
 class(iris)
 
 ```
 
+A recap of the different data types
 
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |
 | 1-D | atomic vector | list |
 | 2-D | matrix | data frame |
+| none| array| |
 
 ### Indexing
 
-Vectors have positions, these positions are ordered and can be called using `object[index]`
+Vectors have positions, these positions are ordered and can be called using 
+`object[index]`
 
 ``` {r indexing}
-
+# index
 letters[2]
 
 ```
@@ -727,10 +737,12 @@ Functions take in information and may return desired outputs.
 `output <- name_of_function(inputs)`
 
 ``` {r funct}
+# create a list of 1 to 10
+x <- 1:10 
 
-	x <- 1:10
-	y <- sum(x)
-
+# the sum of all x
+y <- sum(x)
+y
 ```
 
 
@@ -749,7 +761,7 @@ help.start()
 ?? ggplot2
 
 # help for a function
-? xyplot
+? sum()
 
 ```
 
