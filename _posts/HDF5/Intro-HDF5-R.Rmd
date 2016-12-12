@@ -54,8 +54,7 @@ datasets.</li>
 <h3>Data to Download</h3>
 We will use the file below in the optional challenge activity at the end of this 
 tutorial.
-<a href="http://neonhighered.org/Data/D17_2013_SJER_vegStr.zip" class="btn btn-success">
-Download the sample NEON vegetation structure data from California.</a>
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 </div>
 
 

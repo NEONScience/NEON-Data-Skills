@@ -3,10 +3,10 @@ layout: post
 title: "Time Series 06: Create Plots with Multiple Panels, Grouped by Time Using ggplot
 Facets"
 date:   2015-10-19
-authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah Wasser]
-contributors: [ ]
 dateCreated: 2015-10-22
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+authors: [Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah Wasser]
+contributors: [ ]
 packagesLibraries: [ggplot2, scales, gridExtra, grid, dplyr, reshape2]
 categories: [self-paced-tutorial]
 mainTag: tabular-time-series

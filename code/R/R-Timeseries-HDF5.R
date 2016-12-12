@@ -15,7 +15,7 @@ library("scales")
 
 #NOTE: be sure to adjust the path to match your file structure!
 # Identify file path
-f <- "NEON_TowerDataD3_D10.hdf5"
+f <- "NEON-DS-Tower-Temperature-Data.hdf5"
 # View structure of file
 h5ls(f)
 

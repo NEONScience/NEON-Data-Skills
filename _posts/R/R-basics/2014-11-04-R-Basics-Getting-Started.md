@@ -3,7 +3,7 @@ layout: post
 title: "Getting Started with the R Programming Language"
 date:   2014-11-04
 dateCreated: 2014-11-04
-lastModified: 2016-12-07
+lastModified: 2016-12-12
 authors: [Leah A. Wasser - Adapted from Software Carpentry]
 contributors: [ ]
 categories: [self-paced-tutorial]
@@ -14,7 +14,7 @@ librariesPackages:
 description: "This tutorial presents the basics of using R."
 code1: /R/R-Basics-Getting-Started.R
 image:
-  feature: coding_R.png
+  feature: coding_R.jpg
   credit: National Ecological Observatory Network
   creditlink:
 permalink: /R/Getting-Started-With-R/
@@ -33,6 +33,15 @@ can get overwhelming if you are brand new to R.
 **R Skill Level:** beginner or intermediate -- a refresher on basics
 
 <div id="objectives" markdown="1">
+
+# Objectives
+After completing this tutorial, you will be able to: 
+
+* Use basic R syntax
+* Explain the concepts of objects and assignment
+* Explain the concepts of vector and data types
+* Describe why you would or would not use *factors*
+* Use basic few functions
 
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of `R` and, preferably, `RStudio` loaded
@@ -65,10 +74,10 @@ contributed packages (as of 2014) and is widely used both in academia and indust
 
 ## Introduction to R
 
-You can use R or a user interace like RStudio to write your code. Some people 
-prefer RStudio as it provides a graphic interface where you can see what objects 
-have been created and you can also set variables like your working directory, 
-using menu options.
+You can use R alone or with a user interace like RStudio to write your code. 
+Some people prefer RStudio as it provides a graphic interface where you can see 
+what objects have been created and you can also set variables like your working
+directory, using menu options.
 
 Learn more about <a href="https://www.rstudio.com/online-learning/" target="_blank"> RStudio with thier online learning materials</a>.
 
@@ -169,9 +178,12 @@ command line.
     ls()
 
     ##  [1] "a"           "add.date"    "b"           "base.url"    "codeDir"    
-    ##  [6] "dir"         "dirs"        "fig.path"    "files"       "gitRepoPath"
-    ## [11] "hours"       "imagePath"   "input"       "mdFile"      "postsDir"   
-    ## [16] "rmd.files"   "subDir"      "temp_HARV"   "wd"          "x"
+    ##  [6] "dat"         "dir"         "dirs"        "doneWith"    "f"          
+    ## [11] "fig.path"    "files"       "gitRepoPath" "hours"       "imagePath"  
+    ## [16] "input"       "m"           "m2"          "m2_row"      "m3"         
+    ## [21] "mdFile"      "n"           "o"           "p"           "postsDir"   
+    ## [26] "rCodeOutput" "rmd.files"   "subDir"      "temp_HARV"   "wd"         
+    ## [31] "x"           "x1"          "x2"          "y"           "z"
 
     # remove x
     rm(x)
@@ -180,9 +192,12 @@ command line.
     ls()
 
     ##  [1] "a"           "add.date"    "b"           "base.url"    "codeDir"    
-    ##  [6] "dir"         "dirs"        "fig.path"    "files"       "gitRepoPath"
-    ## [11] "hours"       "imagePath"   "input"       "mdFile"      "postsDir"   
-    ## [16] "rmd.files"   "subDir"      "temp_HARV"   "wd"
+    ##  [6] "dat"         "dir"         "dirs"        "doneWith"    "f"          
+    ## [11] "fig.path"    "files"       "gitRepoPath" "hours"       "imagePath"  
+    ## [16] "input"       "m"           "m2"          "m2_row"      "m3"         
+    ## [21] "mdFile"      "n"           "o"           "p"           "postsDir"   
+    ## [26] "rCodeOutput" "rmd.files"   "subDir"      "temp_HARV"   "wd"         
+    ## [31] "x1"          "x2"          "y"           "z"
 
     # remove all objects
     rm(list = ls())

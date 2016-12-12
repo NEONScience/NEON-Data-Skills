@@ -14,7 +14,7 @@ librariesPackages:
 description: "This tutorial presents the basics of using R."
 code1: /R/R-Basics-Getting-Started.R
 image:
-  feature: coding_R.png
+  feature: coding_R.jpg
   credit: National Ecological Observatory Network
   creditlink:
 permalink: /R/Getting-Started-With-R/
@@ -33,6 +33,15 @@ can get overwhelming if you are brand new to R.
 **R Skill Level:** beginner or intermediate -- a refresher on basics
 
 <div id="objectives" markdown="1">
+
+# Objectives
+After completing this tutorial, you will be able to: 
+
+* Use basic R syntax
+* Explain the concepts of objects and assignment
+* Explain the concepts of vector and data types
+* Describe why you would or would not use *factors*
+* Use basic few functions
 
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of `R` and, preferably, `RStudio` loaded
@@ -65,10 +74,10 @@ contributed packages (as of 2014) and is widely used both in academia and indust
 
 ## Introduction to R
 
-You can use R or a user interace like RStudio to write your code. Some people 
-prefer RStudio as it provides a graphic interface where you can see what objects 
-have been created and you can also set variables like your working directory, 
-using menu options.
+You can use R alone or with a user interace like RStudio to write your code. 
+Some people prefer RStudio as it provides a graphic interface where you can see 
+what objects have been created and you can also set variables like your working
+directory, using menu options.
 
 Learn more about <a href="https://www.rstudio.com/online-learning/" target="_blank"> RStudio with thier online learning materials</a>.
 
@@ -717,7 +726,7 @@ Functions take in information and may return desired outputs.
 
 `output <- name_of_function(inputs)`
 
-``` {r }
+``` {r funct}
 
 	x <- 1:10
 	y <- sum(x)
@@ -729,12 +738,30 @@ Functions take in information and may return desired outputs.
 
 All functions come with a help screen. It is critical that you learn to read the
 help screens since they provide important information on what the function does, 
-how it works, and usually sample examples at the very bottom.
+how it works, and usually sample examples at the very bottom. You can use `help()`
+or more simply `??()` 
 
+``` {r help}
+# call up a help search
+help.start()
+
+# help (documentation) for a package
+?? ggplot2
+
+# help for a function
+? xyplot
+
+```
 
 You can't ever learn all of R as it is ever changing with new packages and new 
 tools, but once you have the basics and know how to find help to do the things 
 that you want to do, you'll be able to use R in your science. 
+
+### Sample Data
+
+R comes with sample data sets. You will often find these as the date sets in 
+documentation files or responses to inquires on public forums like *StackOverflow*. 
+To see all available sample data sets you can type in `data()` to the console.  
 
 ### Packages in R
 

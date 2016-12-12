@@ -38,12 +38,10 @@ temperature data.
 Please review, download and setup the following, prior to attending the brownbag.
 <h3>Data to Download</h3>
 
-<ul>
-<li><a href="http://neondataskills.org/data/HDF_AOPSampleOSBS/NEON_TowerDataD3_D10.hdf5" class="btn btn-success"> NEON Temperature Data: Sample H5 
-Structure</a></li>
-<li><a href="http://neonhighered.org/Data/HDF5/HDF_AOPSampleOSBS/NIS1_20140507_143910_atmcor.h5" class="btn btn-success"> NEON Hyperspectral Data: Sample Data
-</a></li>
-<li><a href="http://neonhighered.org/Data/HDF5/1B.GPM.GMI.TB2014.20150325-S175130-E192403.006085.V03C.HDF5" class="btn btn-success"> EOS Sample Data</a></li>
+{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
+
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
+
 
 </ul>
 
@@ -85,7 +83,7 @@ Structure</a></li>
 * [A set of data tutorials on working with HDF5 in R](http://neondataskills.org/HDF5/ "Working with HDF5 in R")
 
 ## Python resources for HDF5:
-1. [Downloads, docs, etc on GitHub]( http://www.h5py.org/ )
+1. [H5 Python Documentation]( http://www.h5py.org/ )
 2. [O’Reilly book on Python and HDF5! The modern stamp of legitimacy for programming.](https://www.hdfgroup.org/HDF5/examples/api18-py.html) 
 3. [Python examples from the HDF5 people themselves!](https://www.hdfgroup.org/HDF5/examples/api18-py.html)
 
@@ -102,7 +100,7 @@ The code below is starter code to create an H5 file in Python.
 		import matplotlib.pyplot as plt
     
 		# Read H5 file
-		f = h5.File("NIS1_20130615_155109_atmcor.h5", "r")
+		f = h5.File("NEON-DS-Imaging-Spectrometer-Data.h5", "r")
 		# Get and print list of datasets within the H5 file
 		datasetNames = [n for n in f.keys()]
 		for n in datasetNames:

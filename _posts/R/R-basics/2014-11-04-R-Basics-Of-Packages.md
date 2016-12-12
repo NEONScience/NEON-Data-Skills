@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Installing & Updating Packages in R"
-date:   2014-10-29
+date:   2014-10-27
 dateCreated: 2014-10-27
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+lastModified: 2016-12-12
 authors: Leah A. Wasser - Modified From Data Carpentry and Software Carpentry 
 contributors: [ ]
 categories: [self-paced-tutorial]
@@ -72,10 +72,9 @@ you'd like to install your packages.
 To install any package from CRAN, you use `install.packages()`.  You only need to 
 install packages the first time you use R (or after updating to a new version). 
 
-``` {r install-packages, eval=FALSE}
-# install the ggplot2 package
-install.packages("ggplot2")  
-```
+
+    # install the ggplot2 package
+    install.packages("ggplot2")  
 
 <i class="fa fa-star"></i> **R Tip:** You can just type this into the command 
 line of R to install each package. Once a package is installed, you don't have 
@@ -95,21 +94,18 @@ When you want to call a package, use `library(PackageNameHere)`. You may also
 see some people using `require()` -- while that works in most cases, it does 
 function slightly differently and best practice is to use `library()`.  
 
-``` {r load-package}
-# load the package
-library(ggplot2)
-```
+
+    # load the package
+    library(ggplot2)
  
 ## What Packages are Installed Now? 
 
 If you want to use a package, but aren't sure if you've installed it before,
 you can check! In code you, can use `installed.packages()`.  
 
-``` {r installed-packages, eval=FALSE}
 
-# check installed packages
-installed.packages()
-```
+    # check installed packages
+    installed.packages()
 
 If you are using RStudio, you can also check out the Packages tab. It will list
 all the currently installed packages and have a check mark next to them if they 
@@ -137,21 +133,18 @@ everything without any user intervention, use the `ask = FALSE` argument.
 If you only want to update a single package, the best way to do it is using
 `install.packages()` again.
 
-``` {r update-packages, eval=FALSE}
 
-# list all packages where an update is available
-old.packages()
-
-# update all available packages
-update.packages()
-
-# update, without prompts for permission/clarification
-update.packages(ask = FALSE)
-
-# update only a specific package use install.packages()
-install.packages("plotly")
-
-```
+    # list all packages where an update is available
+    old.packages()
+    
+    # update all available packages
+    update.packages()
+    
+    # update, without prompts for permission/clarification
+    update.packages(ask = FALSE)
+    
+    # update only a specific package use install.packages()
+    install.packages("plotly")
 
 In <a href="http://www.rstudio.com/" target="_blank">RStudio</a>, you can also 
 manage packages using Tools -> Install Packages.
@@ -169,17 +162,6 @@ you.
 
 </div>
 
-``` {r challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE}
 
-# check installed packages for dplyr
-installed.packages()
-
-# If found, is it up to date? 
-old.packages()
-
-# If not found, install it. 
-install.packages("dplyr")
-
-```
 
 

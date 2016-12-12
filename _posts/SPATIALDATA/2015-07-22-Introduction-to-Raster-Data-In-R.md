@@ -54,16 +54,7 @@ R studio to write your code.
 
 <h4>Data to Download</h4>
 
-Download the raster and *in situ* collected vegetation structure data:
-<ul>
-<li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR data in Raster Format & Vegetation Sampling Data</a></li>
-<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain 17 (D17)</a></li>
-</ul>
-
-<p>The LiDAR and imagery data used to create the rasters in this dataset were 
-collected over the San Joaquin field site located in California (NEON Domain 17) 
-and processed at <a href="http://www.neonscience.org" target="_blank" >NEON </a> 
-headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
 <h4>Recommended Pre-Lesson Reading</h4>
 <ul>

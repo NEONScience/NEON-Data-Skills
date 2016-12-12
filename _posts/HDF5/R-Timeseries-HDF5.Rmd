@@ -84,9 +84,7 @@ biocLite("rhdf5")</code>
 </ul>
 
 <h3>Data to Download:</h3>
-<a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" target="_blank" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data HERE.</a> 
-<a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank">Read more about NEON towers, here. </a>
-
+{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
 </div>
 
 
@@ -137,7 +135,7 @@ Let's first explore an HDF5 file that we know nothing about using the R function
 
 #NOTE: be sure to adjust the path to match your file structure!
 # Identify file path
-f <- "NEON_TowerDataD3_D10.hdf5"
+f <- "NEON-DS-Tower-Temperature-Data.hdf5"
 # View structure of file
 h5ls(f)
 

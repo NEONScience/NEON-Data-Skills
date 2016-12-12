@@ -37,4 +37,8 @@ formats:
 
 * **Tutorials**: Authors (Year) Title. National Ecological Observatory Network, courtesy: Battelle. Retrieved on: Date.  
 * **Videos**: National Ecological Observatory Network. (year month day released). Title of video [Video]. Courtesy: Battelle. Retrieved from  < URL >.
+<<<<<<< HEAD
 * **Data Teaching Subsets**: National Ecological Observatory Network (Year) Teaching Data Subset:File Name. Courtesy: Battelle. URL. Retrieval date.  
+=======
+* **Data Teaching Subsets**: National Ecological Observatory Network (Year) Teaching Data Subset:File Name. Courtesy: Battelle. URL. Retrieval date.  
+>>>>>>> 3ca27358cdf0fdfb7fcf2fc7842fd86126764965

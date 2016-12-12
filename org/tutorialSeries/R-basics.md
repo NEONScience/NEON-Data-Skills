@@ -5,33 +5,42 @@ categories: [tutorial-series]
 tutorialSeriesName: R-basics
 permalink: tutorial-series/R-basics/
 image:
-  feature: coding_R.png
+  feature: coding_R.jpg
   credit: National Ecological Observatory Network
   creditlink: 
 ---
 
+This series is provides tutorials and references on key skills 
+needed to complete more complex tasks in R. It is not intended as an guide for
+the introduction to or initial learning of how to use R.
 
-  description: "" 
-
-
-## About
-The data tutorials in this series This series is not intended for full learning how to use R. However, 
-  it does provide tutorials on key skills needed to complete more complex tasks
-  in R.
 **R Skill Level:** Beginner - you're learning, or refreshing on, the basics!
 
 <div id="objectives" markdown="1">
 
 # Series Goals/Objectives
-After completing the series you will:
+After completing the series, you will be able to:
+
+* **Getting Started with the R Programming Language**
+	+ Use basic R syntax
+	+ Explain the concepts of objects and assignment
+	+ Explain the concepts of vector and data types
+	+ Describe why you would or would not use *factors*
+	+ Use basic few functions
+
+* **Installing & Updating Packages in R**
+	+ Describe the basics of an R package
+	+ Install a package in R
+	+ Call (use) an installed R package
+	+ Update a package in R
+	+ View the packages installed on your computer 
 
 * **Build & Work With Functions in R**
-	+ Explain why we should divide programs into small, single-purpose functions.
-	+ Use a function that takes parameters (input values).
-	+ Return a value from a function.
-	+ Set default values for function parameters.
-	+ Write, or define, a function.
-	+ Test and debug a function. (This section in construction).
+	+ Explain why we should divide programs into small, single-purpose functions
+	+ Use a function that takes parameters (input values)
+	+ Return a value from a function
+	+ Set default values for function parameters
+	+ Write, or define, a function
 
 
 ## Things You’ll Need To Complete This Series
@@ -46,17 +55,6 @@ powerful tool for exploratory data analysis. To interact with `R`, we strongly
 recommend 
 <a href="http://www.rstudio.com/">RStudio</a>,
 an interactive development environment (IDE). 
-
-### Install R Packages
-You can chose to install packages with each lesson or you can download all 
-of the necessary `R` packages now. 
-
-* **raster:** `install.packages("raster")`
-* **rgdal:** `install.packages("rgdal")`
-* **sp:** `install.packages("sp")`
-
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
-
 
 *****
 

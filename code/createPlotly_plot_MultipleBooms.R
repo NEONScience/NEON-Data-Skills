@@ -4,7 +4,7 @@ library(dplyr)
 library(ggplot2)
 library(rhdf5)
 
-f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
+f <- 'data/NEON-DS-Tower-Temperature-Data.hdf5'
 ## Get names of elements in our file
 fiu_struct <- h5ls(f,all=T)
 ## Concatenate the second element.

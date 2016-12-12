@@ -22,31 +22,27 @@ code1: R/2015-06-08-RasterStack-RGB-Images-in-R-Using-HSI.R
 comments: true
 ---
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+{% include _toc.html %}
 
-<div id="objectives">
 <strong>R Skill Level:</strong> Intermediate
 
-<h3>Goals / Objectives</h3>
-After completing this activity, you will:
-<ol>
-<li>Extract a "slice" of data from a hyperspectral data cube.</li>
-<li>Create a rasterstack in R which can then be used to create RGB images from 
-bands in a hyperspectral data cube.</li>
-<li>Plot data spatially on a map.</li>
-<li>Create basic vegetation indices like NDVI using raster  based calculations in 
-R.</li>
-</ol>
+<div id="objectives" markdown="1">
 
-<h3>R Libraries to Install</h3>
+# Goals / Objectives
+
+After completing this activity, you will be able to:
+
+* Extract a "slice" of data from a hyperspectral data cube.
+* Create a rasterstack in R which can then be used to create RGB images from 
+bands in a hyperspectral data cube.</li>
+* Plot data spatially on a map.</li>
+* Create basic vegetation indices like NDVI using raster  based calculations in 
+R.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded on your computer to complete this tutorial.
+
+### R Libraries to Install
 <ul>
 <li>rhdf5: <code>source("http://bioconductor.org/biocLite.R") ;
 biocLite("rhdf5")</code></li>
@@ -55,22 +51,19 @@ biocLite("rhdf5")</code></li>
 <li>maps: <code>install.packages('maps')</code></li>
 </ul>
 
-<h3>Data to Download</h3>
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
-DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
-<p>The data in this HDF5 file were collected over the San Joachim field site 
-located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">
-by request from the NEON website.</a>
-</p>  
+### Data to Download
 
-<h3>Pre-reqs</h3>
-<p>We highly recommend you work through the - Introduction to Working with 
-hyperspectral data in R activity before moving on to this activity.</p>
+{% include/dataSubsets/_data_Met-Time-Series.html %}
+
+### Recommended Skills
+We highly recommend you work through the 
+<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+ before moving on to this tutorial.
+
 </div>
 
 
-##About 
+## About 
 We often want to generate a 3 band image from multi or hyperspectral data. The 
 most commonly recognized band combination is RGB which stands for Red, Green and 
 Blue. RGB images are just like the images that your camera takes. But there are 
@@ -91,13 +84,13 @@ on the ground.
 
 
 
-##About This Activity
+## About This Activity
 In this activity, we will learn how to create multi (3) band images. We will also 
 learn how to perform some basic raster calculations (known as raster math in the 
 GIS world).
 
 
-##1. Creating a Raster Stack in R
+## 1. Creating a Raster Stack in R
 
 In the [previous activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/), 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
@@ -109,7 +102,7 @@ the file structure.
 
 ```{r load-libraries, results='hide'}
 
-#Load required packages
+# Load required packages
   library(raster)
 	library(rhdf5)
 
@@ -117,8 +110,8 @@ the file structure.
 
 ```{r read-in-file }
 
-#Read in H5 file
-f <- 'SJER_140123_chip.h5'
+# Read in H5 file
+f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
 #View HDF5 file structure 
 h5ls(f,all=T)
 
@@ -135,25 +128,25 @@ We'll begin by grabbing these key attributes from the H5 file.
 
 ```{r get-spatial-attributes }
 
-#r get spatial info and map info using the h5readAttributes function
+# R get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
-#define coordinate reference system
+# define coordinate reference system
 myCrs <- spInfo$projdef
-#define the resolution
+# define the resolution
 res <- spInfo$xscale
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
-#the map info string contains the lower left hand coordinates of our raster
-#let's grab those next
+# the map info string contains the lower left hand coordinates of our raster
+# let's grab those next
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
-#grab the utm coordinates of the lower left corner
+# grab the utm coordinates of the lower left corner
 xMin<-as.numeric(mapInfo[4])
 yMax<-as.numeric(mapInfo[5]) 
 
-#r get attributes for the Reflectance dataset
+# R get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
 
 #create objects represents the dimensions of the Reflectance dataset

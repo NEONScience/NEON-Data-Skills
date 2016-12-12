@@ -8,7 +8,7 @@
 ## ----read-in-file--------------------------------------------------------
 
 #Read in H5 file
-f <- 'SJER_140123_chip.h5'
+f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
 #View HDF5 file structure 
 h5ls(f,all=T)
 

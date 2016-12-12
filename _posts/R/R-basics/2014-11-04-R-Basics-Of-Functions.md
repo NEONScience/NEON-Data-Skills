@@ -2,34 +2,33 @@
 layout: post
 title: "Build & Work With Functions in R"
 date:   2014-10-29
-authors: [Leah A. Wasser, Adapted from Software Carpentry]
-contributors: [ ]
 dateCreated: 2015-10-23
-lastModified: 2016-12-05
+lastModified: 2016-12-12
+authors: [Leah A. Wasser - Adapted from Software Carpentry]
+contributors: [ ]
 categories:  [self-paced-tutorial]
+tutorialSeries: [R-basics]
+mainTag: R-basics
 tags : [R]
-description: "This activity teaches the basics of creating a function in R."
-code1: /R-stats/R-Basics-Of-Functions.R
+description: "This tutorial teaches the basics of creating a function in R."
+code1: /R/R-Basics-Of-Functions.R
 image:
-  feature: codedFieldJournal.png
-  credit: NEON staff working in the field. National Ecological Observatory Network
+  feature: coding_R.jpg
+  credit: National Ecological Observatory Network
   creditlink: 
-permalink: /Using-R/Working-With-Functions
+permalink: /R/Working-With-Functions
 ---
 
 {% include _toc.html %}
 
-## Creating Functions
 
 Sometimes we want to perform a calculation, or a set of calculations, multiple 
-times in our code. For example, we might need to convert units from Celsius to 
-Kelvin, across multiple datasets and save if for future use. 
- 
-We could write out the equation over and over in our code -- OR -- we could chose to 
-build a function that allows us to repeat several operations with a single 
-command. This activity will focus on creating functions in R.
+times in our code.  We could write out the equation over and over in our code -- 
+OR -- we could chose to build a function that allows us to repeat several 
+operations with a single command. This tutorial will focus on creating functions 
+in R.
 
-**R Skill Level:** Beginner - you're learning `R`.
+**R Skill Level:** Beginner - you're learning R
 
 <div id="objectives" markdown="1">
 
@@ -52,6 +51,16 @@ on your computer to complete this tutorial.
 {% include/_greyBox-wd-rscript.html %}
 
 </div>
+
+## Creating Functions
+
+Sometimes we want to perform a calculation, or a set of calculations, multiple 
+times in our code. For example, we might need to convert units from Celsius to 
+Kelvin, across multiple datasets and save if for future use. 
+ 
+We could write out the equation over and over in our code -- OR -- we could chose to 
+build a function that allows us to repeat several operations with a single 
+command. This tutorial will focus on creating functions in R.
 
 ## Getting Started
 Let's start by defining a function `fahr_to_kelvin` that converts temperature 
@@ -148,13 +157,13 @@ object "a" and calling "a".
 We can see that even though there was no output from the function, the function 
 was still operational. 
 
- <div id="challenge" markdown="1">
+<div id="challenge" markdown="1">
 ## Challenge: Writing Functions
 
 Now that we've seen how to turn Fahrenheit into Kelvin, try your hand at converting
 Kelvin to Celsius. Remember, for the same temperature Kelvin is 273.15 degrees 
 less than Celsius. 
- </div>
+</div>
 
 
 

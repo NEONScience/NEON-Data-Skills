@@ -10,7 +10,9 @@ authors: [Leah A. Wasser]
 tags: []
 mainTag: Data-Workshops
 categories: [workshop-event]
-description: "This workshop introduces remote sensing hyperspectral imagery. We will review the background of the data, how to open it in R and how to perform basic raster calculations. We will also explore raster data in R."
+description: "This workshop introduces remote sensing hyperspectral imagery. We 
+will review the background of the data, how to open it in R and how to perform 
+basic raster calculations. We will also explore raster data in R."
 code1: 
 image:
   feature: hierarchy_folder_purple.png
@@ -24,7 +26,8 @@ comments: true
 
 **Date:** Spring 2015
 
-This workshop will providing hands on experience with working with hyperspectral imagery in hierarchical data formats(HDF5), in R. It will also cover raster data analysis in R.
+This workshop will providing hands on experience with working with hyperspectral 
+imagery in hierarchical data formats(HDF5), in R. It will also cover raster data analysis in R.
 
 <div id="objectives">
 
@@ -39,11 +42,7 @@ After completing this workshop, you will:
 <h4>Things to do, before the workshop:</h4>
 
 <h3>Data to Download</h3>
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
-DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
-<p>The data in this HDF5 file were collected over the San Joachim field site 
-located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
 </p>  
 
 <h3>R Libraries to Install</h3>

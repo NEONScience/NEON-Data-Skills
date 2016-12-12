@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Build & Work With Functions in R"
-date:   2014-10-29
+date:   2014-10-27
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
 authors: [Leah A. Wasser - Adapted from Software Carpentry]
@@ -13,7 +13,7 @@ tags : [R]
 description: "This tutorial teaches the basics of creating a function in R."
 code1: /R/R-Basics-Of-Functions.R
 image:
-  feature: coding_R.png
+  feature: coding_R.jpg
   credit: National Ecological Observatory Network
   creditlink: 
 permalink: /R/Working-With-Functions
@@ -129,7 +129,7 @@ paste('boiling point of water (212 Farenheit) in Kelvin:', fahr_to_kelvin(212))
 We've successfully called the function that we defined, and we have access to 
 the value that we returned. 
 
-**Question**: What would happen if we instead wrote our function as: 
+**Question**: What would happen if we instead wrote our function as:
 
 ``` {r funct-test}
 fahr_to_kelvin_test <- function(temp) {

@@ -30,27 +30,27 @@
   lastModified:  2015-10-15
   
 - slug: spatial-data-management-series
-  name: Getting Started With Spatial Data in R   
+  name: Getting Started With Spatial Data in R
   description: "This series covers core data literacy concepts needed to work with spatial data
   in both a gui and non gui environment. These lessons are currently under development." 
   lastModified:  2016-12-15 
   
 - slug: intro-hdf5-r-series
-  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFview & R    
+  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFview & R
   description: "In this series we cover what a HDF5 format is, and how to open, read, create
   HDF5 files in R. We also cover extracting and plotting data from HDF5 files." 
   lastModified:  2016-12-15 
   
 - slug: intro-lidar-r-series
-  name: Introduction to LiDAR Data - Explore Point Clouds and Work with LiDAR Raster Data in R   
+  name: Introduction to LiDAR Data - Explore Point Clouds and Work with LiDAR Raster Data in R
   description: "In this series we cover the basics of lidar data including 3 key lidar data
   products - the Canopy Height Model, Digital Surface Model (DSM) and the Digital Terrain
   Model (DTM). We explore lidar point clouds using the free, online 3d point cloud viewer.
   Finally, we cover working with LiDAR derived rasters in R." 
-  lastModified:  2016-12-15     
+  lastModified:  2016-12-15
 
 - slug: intro-hsi-r-series
-  name: Introduction to Hyperspectral Remote Sensing Data - (in R)   
+  name: Introduction to Hyperspectral Remote Sensing Data - (in R)
   description: "In this series, we cover the basics of working with NEON hyperspectral remote
   sensing data. We cover the principles of hyperspectral data, how to open hyperspectral data
   stored in HDF5 format in R and how to extract bands and create rasters in GeoTiff format.
@@ -59,7 +59,7 @@
   
 - slug: R-basics
   name: Basic R Skills
-  description: "This series is not intended for full learning how to use R. However, 
-  it does provide tutorials on key skills needed to complete more complex tasks
-  in R." 
+  description: "This series is provides tutorials and references on key skills 
+  needed to complete more complex tasks in R. It is not intended as an guide for
+  the introduction to or initial learning of how to use R." 
   lastModified:  2016-12-5 
