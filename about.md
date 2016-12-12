@@ -21,12 +21,20 @@ change.
 
 ## About Our Materials
 
-* All materials posted on this site are designed for instruction & self-paced 
-education use. Please feel free to use them for non-commercial purposes! 
 * There is a comments section below each tutorial/page on this site. Please 
 comment on things that you think need to be clarified, fixed, or adjusted. 
 * Please share ideas you have for other data activities with us. 
 * We welcome resources that you think might be useful additions to our 
 materials. Please share them with us.
 
+## Licensing & Usage
 
+We encourage you to use these resources for educational purposes. All content is 
+covered by this 
+<a href="http://www.neonscience.org/about/terms-of-use" target="_blank">Terms of Use</a>. 
+If you use the content elsewhere, please cite appropriately. We suggest the following citation
+formats: 
+
+* **Tutorials**: Authors (Year) Title. National Ecological Observatory Network, courtesy: Battelle. Retrieved on: Date.  
+* **Videos**: National Ecological Observatory Network. (year month day released). Title of video [Video]. Courtesy: Battelle. Retrieved from  < URL >.
+* **Data Teaching Subsets**: National Ecological Observatory Network (Year) Teaching Data Subset:File Name. Courtesy: Battelle. URL. Retrieval date.  
