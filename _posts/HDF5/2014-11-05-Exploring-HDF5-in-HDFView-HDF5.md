@@ -51,8 +51,8 @@ NOTE: The first file downloaded has an .HDF5 file extension, the second file
 downloaded above has an .h5 extension. Both extensions represent the HDF5 data 
 type.
 
-<a href="{{ site.baseurl }}/data/NEON_TowerDataD3_D10.hdf5" class="btn btn-success">Download the National Ecological Observatory Network (NEON) Flux Tower Temperature data here.</a>
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success">Download the NEON Airborne Observation Platform Spectrometer Data HDF5 File.</a>
+{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
 
 </div>
 

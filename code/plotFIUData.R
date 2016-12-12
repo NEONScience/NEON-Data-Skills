@@ -9,8 +9,8 @@ l <- plotly(username="leahawasser", key="tpdjz2b8pu")
 
 #REAL WORLD DATA EXAMPLE
 #r load file (make sure the path is correct!!)
-#MAC f <- "/Users/law/Documents/GitHub_Lwasser/NEON_HigherEd/data/fiuTestFile.hdf5"
-f <- '/Users/lwasser/Documents/GitHub/NEON_HigherEd/data/NEON_TowerDataD3_D10.hdf5'
+#MAC f <- "data/fiuTestFile.hdf5"
+f <- 'data/NEON-DS-Tower-Temperature-Data.hdf5'
 h5ls(f,all=T)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.

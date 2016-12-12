@@ -19,7 +19,12 @@ permalink: /GIS/ArcGISOnline/
 code1:
 comments: true
 ---
-The map below was created using small mammal data downloded from the NEON data portal. The last map represents soil N:P ratio derived using the NEON soil megapit data. Learn more about NEON <a href="http://neonscience.org/science-design/collection-methods/soil-sensors-measurements" target="_blank">soils</a> and <a href="http://neonscience.org/science-design/collection-methods/terrestrial-organism-sampling" target="_blank">terrestrial </a>sampling.
+The first map below was created using small mammal data downloded from the NEON data 
+portal. The last map represents soil N:P ratio derived using the NEON soil 
+pit data. 
+
+Learn more about NEON 
+<a href="http://neonscience.org/science-design/collection-methods/soil-sensors-measurements" target="_blank">soils</a> and <a href="http://neonscience.org/science-design/collection-methods/terrestrial-organism-sampling" target="_blank">terrestrial sampling</a>.
 
 <iframe width="800px" height="600px" src="https://neon.maps.arcgis.com/apps/MapSeries/?appid=969c8bd2aa5a4e4c97f808b78dfd093f" frameborder="0" scrolling="no"></iframe>
 

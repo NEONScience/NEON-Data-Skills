@@ -222,7 +222,7 @@ through a process sometimes called gridding. Gridding is the process of taking a
 set of points and using them to create a surface composed of a regular grid. 
 
 
-{% include _images_nolink.html url="http://neondataskills.org/images/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
+{% include _images_nolink.html url="http://neondataskills.org/images/lidar/gridding.gif" description="Animation Showing the general process of taking lidar point clouds and converting them to a Raster Format. Credits: Tristan Goulden, National Ecological Observatory Network" %}
 
 
                        |

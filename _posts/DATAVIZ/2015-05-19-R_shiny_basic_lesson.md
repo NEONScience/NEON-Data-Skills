@@ -21,22 +21,34 @@ comments: true
 ---
 
 ## What is Shiny?
-Shiny is an R package, developed by the RStudio team, that provides a web framework for building web applications. 
+Shiny is an R package, developed by the RStudio team, that provides a web 
+framework for building web applications. 
 
-Most web applications are written using at least three basic web programming languages:
+Most web applications are written using at least three basic web programming 
+languages:
 
 * Hypertext Markup Language (HTML) for the main content and layout of a webpage
 * Cascading Style Sheets (CSS) to add styles like font type and background colors
-* JavaScript (NOT to be confused with Java!) allows users to 'interact' with web content.
+* JavaScript (NOT to be confused with Java!) allows users to 'interact' with 
+web content.
 
-Instead of needing to learn these languages (though at least some knowledge is very helpful!) you can write code in R and end up with an interactive webpage or website. Shiny will read your script and write out the HTML, CSS, and JavaScript necessary to run your application in a web browser. If you run a shiny app in your browser (see the examples below), take a look at the source code for the webpage!
+Instead of needing to learn these languages (though at least some knowledge is 
+very helpful!), you can write code in R and end up with an interactive webpage 
+or website. Shiny will read your script and write out the HTML, CSS, and 
+JavaScript necessary to run your application in a web browser. If you run a 
+Shiny app in your browser (see the examples below), take a look at the source 
+code for the webpage!
 
-Shiny has been called 'an R wrapper for JavaScript', but this doesn't quite capture Shiny's power!
+Shiny has been called "an R wrapper for JavaScript", but this doesn't quite 
+capture Shiny's power!
 
-## What kinds of applications can I build with Shiny?
-There are many options! Here are a few ways we have used Shiny:
+## What can I build with Shiny?
 
-* <a href="http://www.neonscience.org/data-resources/get-data/data-product-availability">Display the upcoming availability of NEON data products</a>
+There are many types of applications that you can build! Here at NEON are a 
+few ways we have used Shiny:
+
+* <a href="http://www.neonscience.org/data-resources/get-data/data-product-availability">
+Display the upcoming availability of NEON data products</a>
 * Create applications to read in files and output data sheets for NEON field crews
 * Visualize NEON data
 * Write data analysis programs

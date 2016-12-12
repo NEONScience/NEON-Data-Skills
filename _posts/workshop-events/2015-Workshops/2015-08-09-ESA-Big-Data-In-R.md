@@ -41,36 +41,11 @@ Visit the Workshop Etherpad</a>
 
 Please save your data in a directory called ESA2015. 
 
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
-REQUIRED DOWNLOAD Sample NEON LiDAR Data in Raster Format & Vegetation Sampling data</a>
-<br>
-<a href="http://www.neonhighered.org/Data/LidarActivity/CanopyHeightModel.zip" class="btn btn-success">
- REQUIRED DOWNLOAD NEON Lidar Canopy Height Model California Domain D17</a>
-<br>
-<a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success">
- REQUIRED DOWNLOAD NEON imagery data (tiff format) California Domain D17</a>
- 
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
-Just added: this data will be required for the afternoon lessons
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
 
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
-REQUIRED: DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>
-<p>The data in this HDF5 file were collected over the San Joachim field site 
-located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
-</p>  
-Just added: this data will be useful for the extra activity in the Intro to HDF5 tutorial.
-
-<a href="http://neonhighered.org/Data/D17_2013_SJER_vegStr.zip" class="btn btn-success">
-Download the sample NEON vegetation structure data from California.</a>
-
-
-OPTIONAL DOWNLOAD
-<strong>Note:</strong> We won't be working with the raw lidar point cloud data in 
-this workshop. However we will explore the data via a demo during the workshop.
-<br> 
-<a href="http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> 
-OPTIONAL: Download NEON LiDAR Point Cloud Data</a>
+{% include/dataSubsets/_data_Sample-LiDAR-Point-Cloud.html %}
 
 <h4>Set Up Your Working Directory</h4>
 

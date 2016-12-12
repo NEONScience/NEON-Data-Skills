@@ -51,12 +51,9 @@ biocLite("rhdf5")</code></li>
 </ul>
 
 <h3>Data to Download</h3>
-<a href="http://neonhighered.org/Data/HDF5/SJER_140123_chip.h5" class="btn btn-success"> 
-DOWNLOAD the NEON Imaging Spectrometer Data (HDF5) Format</a>. 
-<p>The data in this HDF5 file were collected over the San Joachim field site 
-located in California (NEON Domain 17) and processed at NEON headquarters. The 
-entire dataset can be accessed <a href="http://neonscience.org/data-resources/get-data/airborne-data" target="_blank">by request from the NEON website.</a>
-</p>  
+
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
+
 </div> 
 
 
@@ -73,7 +70,7 @@ First, we need to access the H5 file.
 
 
     #Define the file name to be opened
-    f <- 'SJER_140123_chip.h5'
+    f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
     #look at the HDF5 file structure 
     h5ls(f,all=T) 
 

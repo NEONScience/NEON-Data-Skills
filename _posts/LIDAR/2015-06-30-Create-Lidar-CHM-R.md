@@ -58,20 +58,13 @@ More on Packages in R - Adapted from Software Carpentry.</a>
 
 <h2>Data to Download</h2>
 
-Download the raster and <i>insitu</i> collected vegetation structure data:
-
-<a href="http://www.neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> 
-DOWNLOAD NEON  Sample NEON LiDAR Data</a>
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
 <h3>Recommended Reading</h3>
 <a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 </div>
 
-> NOTE: The data used in this tutorial were collected by the National Ecological 
-> Observatory Network in their <a href="http://www.neonscience.org/science-design/field-sites/san-joaquin" target="_blank">
-> Domain 17 California field site</a>. The data are available in full, for 
-> no charge, but by request, [from the NEON data portal](http://data.neonscience.org/airborne-data-request "AOP data").
 
 
 ## Part 1. Creating a LiDAR derived Canopy Height Model (CHM)

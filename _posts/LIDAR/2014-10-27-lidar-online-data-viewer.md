@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Activity: Free Online Data Viz to Explore LiDAR Data"
+title:  "Plas.io: Free Online Data Viz to Explore LiDAR Data"
 date:   2014-7-19 
 createdDate:   2014-07-21 
 lastModified:   2015-1-06 
@@ -11,21 +11,22 @@ tags: [lidar, remote-sensing, data-viz]
 mainTag: lidar
 tutorialSeries: [intro-lidar-r-series]
 authors: [Leah A. Wasser]
-permalink: /lidar-data/online-data-viewer/
 description: "Learn the basics of how a LiDAR works and what a LiDAR system 
 measures. Explore some LiDAR data using free online tools."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
+permalink: /lidar-data/online-data-viewer/
 comments: true
 ---
 
 {% include _toc.html %}
 
-## Overview ##
+In this tutorial, we will explore LiDAR point cloud data using the free, online 
+<a href="http://plas.io" target="_blank"> Plas.io viewer </a>.  
 
-In this activity, we will explore lidar data point clouds and learn:
+and learn:
 
 1. How to visualize lidar point clouding using a free online data viewer 
 2. About some of the attributes associated with discrete return lidar points including 
@@ -33,11 +34,13 @@ intensity, classification and RGB values.
 3. About the .las and .laz lidar file formats (standard lidar point cloud formats).
 
 ## What you Need  ##
-1. Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io 
+
+* Access to the internet so you can  the <a href="http://plas.io" target="_blank"> plas.io 
 website.</a>
-2. Your very own, sparking personality.
-3. Download lidar data collected by NEON AOP (National ecological observatory network, 
-airborne observation platform). <a href="http://www.neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR Point Cloud Data</a>
+
+## Download the Data 
+
+{% include/dataSubsets/_data_Sample-LiDAR-Point-Cloud.html %}
 
 {% include _images.html url="https://farm4.staticflickr.com/3932/15408420007_3176835b51.jpg" description="LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network Airborne Observation Platform (NEON AOP)." link="https://www.flickr.com/photos/128087132@N06/sets/72157648481541867/" %}
 
@@ -67,9 +70,9 @@ Enough reading, let's open some NEON LiDAR data!
  
 ## 1. Open a .las file in plas.io ###
 
-1. Download the NEON prepackaged lidar dataset [-->RIGHT CLICK Here to download<--](http://neonhighered.org/Data/LidarActivity/r_filtered_256000_4111000.las "SAMPLE NEON LiDAR Data") if you haven't already.
-2. The file is named: r_filtered_256000_4111000.las 
-2. When the download is complete, drag the file r_filtered_256000_4111000.las into the <a href="http://plas.io" target="_blank"> plas.io website.</a> window.
+1. Download the NEON prepackaged lidar dataset (above in **Download the Data**) if you haven't already.
+2. The file is named: `NEON-DS-Sample-LiDAR-Point-Cloud.las`
+2. When the download is complete, drag the file `NEON-DS-Sample-LiDAR-Point-Cloud.las` into the <a href="http://plas.io" target="_blank"> plas.io website.</a> window.
 3. Zoom and pan around the data
 4. Use the particle size slider to adjust the size of each individual lidar point. NOTE: the particle size slider is located a little more than half way down the plas.io toolbar in the "Data" section.
 

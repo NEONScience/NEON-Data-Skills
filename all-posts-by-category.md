@@ -3,7 +3,7 @@ layout: post-index
 permalink: /activities/
 title: Data Tutorials & Workshop Groupings
 tagline: A List of Posts
-tags: [R,hdf5,lidar]
+tags: 
 image:
   feature: /banners/chalkboard.png
   credit: 

@@ -41,17 +41,11 @@ This activity will utilize the skills that you learned in the previous lessons. 
 
 <h2>Data to Download</h2>
 
-Download the raster and <i>insitu</i> collected vegetation structure data:
-
-<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain D17</a></li>
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
 <h3>Recommended Reading</h3>
-<a href="http://neondataskills.org/Data-Workshops/NEON-lidar-Rasters-R/">All of hte topics and concepts you need to complete this capstone were covered in the links on this page.</a>
+<a href="http://neondataskills.org/Data-Workshops/NEON-lidar-Rasters-R/">All of the topics and concepts you need to complete this capstone were covered in the links on this page.</a>
 </div>
-
-> NOTE: The data used in this activity were extracted from a hyperspectral dataset collected in California by the NEON airborne observation platform. The full versions of the data used in this activity are freely available by request, [from the NEON data portal](http://www.neonscience.org/data-resources/get-data/airborne-data "AOP data").
-
-
 
 
 # Build Your Own Adventure! 

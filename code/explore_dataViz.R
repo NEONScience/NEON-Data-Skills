@@ -8,7 +8,7 @@
 library("rhdf5")
 library("ggplot2")
 
-f <- 'NEON_TowerDataD3_D10.hdf5'
+f <- 'NEON-DS-Tower-Temperature-Data.hdf5'
 h5ls(f)
 
 # HDF5 allows us to quickly extract parts of a dataset or even groups.
