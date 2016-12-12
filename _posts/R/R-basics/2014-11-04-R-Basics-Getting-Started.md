@@ -172,18 +172,20 @@ command line.
 * `ls()`: to list objects in your current environment. 
 * `rm()`: remove objects from your current environment.  
 
+Now try them in the console.  
+
 
     # assign value "5" to object "x"
     x <- 5
     ls()
 
     ##  [1] "a"           "add.date"    "b"           "base.url"    "codeDir"    
-    ##  [6] "dat"         "dir"         "dirs"        "doneWith"    "f"          
-    ## [11] "fig.path"    "files"       "gitRepoPath" "hours"       "imagePath"  
-    ## [16] "input"       "m"           "m2"          "m2_row"      "m3"         
-    ## [21] "mdFile"      "n"           "o"           "p"           "postsDir"   
-    ## [26] "rCodeOutput" "rmd.files"   "subDir"      "temp_HARV"   "wd"         
-    ## [31] "x"           "x1"          "x2"          "y"           "z"
+    ##  [6] "dat"         "dir"         "dirs"        "f"           "fig.path"   
+    ## [11] "files"       "gitRepoPath" "hours"       "imagePath"   "input"      
+    ## [16] "m"           "m2"          "m2_row"      "m3"          "mdFile"     
+    ## [21] "n"           "o"           "p"           "postsDir"    "rmd.files"  
+    ## [26] "subDir"      "temp_HARV"   "wd"          "x"           "x1"         
+    ## [31] "x2"          "y"           "z"
 
     # remove x
     rm(x)
@@ -192,12 +194,12 @@ command line.
     ls()
 
     ##  [1] "a"           "add.date"    "b"           "base.url"    "codeDir"    
-    ##  [6] "dat"         "dir"         "dirs"        "doneWith"    "f"          
-    ## [11] "fig.path"    "files"       "gitRepoPath" "hours"       "imagePath"  
-    ## [16] "input"       "m"           "m2"          "m2_row"      "m3"         
-    ## [21] "mdFile"      "n"           "o"           "p"           "postsDir"   
-    ## [26] "rCodeOutput" "rmd.files"   "subDir"      "temp_HARV"   "wd"         
-    ## [31] "x1"          "x2"          "y"           "z"
+    ##  [6] "dat"         "dir"         "dirs"        "f"           "fig.path"   
+    ## [11] "files"       "gitRepoPath" "hours"       "imagePath"   "input"      
+    ## [16] "m"           "m2"          "m2_row"      "m3"          "mdFile"     
+    ## [21] "n"           "o"           "p"           "postsDir"    "rmd.files"  
+    ## [26] "subDir"      "temp_HARV"   "wd"          "x1"          "x2"         
+    ## [31] "y"           "z"
 
     # remove all objects
     rm(list = ls())
@@ -421,9 +423,6 @@ Finally, you can have character vectors.
 
     ##  chr [1:3] "Sarah" "Tracy" "Jon"
 
-
-**Question:** Do you see a property that's common to all these vectors above?
-
 You can also add to a list
 
 
@@ -469,6 +468,8 @@ You can also get non-numeric outputs.
 
 * `Inf` is infinity. You can have either positive or negative infinity.
 * `NaN` means Not a Number. It's an undefined value.
+
+Try it out in the console. 
 
 
     # infinity return
@@ -516,6 +517,7 @@ denominator. The coercion will move towards the one that's easiest to **coerce**
 to.
 
 Guess what the following do:
+
 * m <- c(1.7, "a")
 * n <- c(TRUE, 2)
 * o <- c("a", TRUE)
@@ -539,7 +541,7 @@ Were you correct?
     ## [1] "a"    "TRUE"
 
 This is called implicit coercion. You can also coerce vectors explicitly using 
-the `as.<class_name>`. Example
+the `as.<class_name>`.
 
 
     # making values numeric
@@ -692,6 +694,8 @@ Questions:
 1. What is the class of `x[1]`?
 1. What about `x[[1]]`?
 
+Try it out.
+
 
     
     xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
@@ -765,7 +769,6 @@ If you need to convert a factor to a character vector, simply use
 To convert a factor to a numeric vector, go via a character. Compare
 
 
-
     f <- factor(c(1, 5, 10, 2))
     
     as.numeric(f)  ## wrong!
@@ -783,13 +786,13 @@ order of elements. You can change this by speciying the `levels` (another option
 is to use the function `relevel()`).
 
 
-    	x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
-    	x
+    x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
+    x
 
     ## [1] yes no  yes
     ## Levels: yes no
 
-### Data frame
+### Data Frame
 
 A data frame is a very important data type in R. It's pretty much the *de facto*
 data structure for most tabular data and what we use for statistics.  
@@ -811,9 +814,12 @@ Some additional information on data frames:
 respectively.
 * Rownames are usually 1, 2, ..., n.
 
-#### Creating data frames by hand
+#### Manually Create Data Frames
+
+You can manually create a data frame using `data.frame`. 
 
 
+    # create a dataframe
     dat <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
     dat
 
@@ -843,27 +849,33 @@ column names.
 See that it is actually a special list:
 
 
-    
-    list()is.list(iris)
-    
+    list()
+
+    ## list()
+
+    is.list(iris)
+
+    ## [1] TRUE
+
     class(iris)
 
-    ## Error: <text>:2:7: unexpected symbol
-    ## 1: 
-    ## 2: list()is.list
-    ##          ^
+    ## [1] "data.frame"
 
+A recap of the different data types
 
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |
 | 1-D | atomic vector | list |
 | 2-D | matrix | data frame |
+| none| array| |
 
 ### Indexing
 
-Vectors have positions, these positions are ordered and can be called using `object[index]`
+Vectors have positions, these positions are ordered and can be called using 
+`object[index]`
 
 
+    # index
     letters[2]
 
     ## [1] "b"
@@ -876,20 +888,42 @@ Functions take in information and may return desired outputs.
 `output <- name_of_function(inputs)`
 
 
-    	x <- 1:10
-    	y <- sum(x)
+    # create a list of 1 to 10
+    x <- 1:10 
+    
+    # the sum of all x
+    y <- sum(x)
+    y
+
+    ## [1] 55
 
 
 ### Help
 
 All functions come with a help screen. It is critical that you learn to read the
 help screens since they provide important information on what the function does, 
-how it works, and usually sample examples at the very bottom.
+how it works, and usually sample examples at the very bottom. You can use `help()`
+or more simply `??()` 
 
+
+    # call up a help search
+    help.start()
+    
+    # help (documentation) for a package
+    ?? ggplot2
+    
+    # help for a function
+    ? sum()
 
 You can't ever learn all of R as it is ever changing with new packages and new 
 tools, but once you have the basics and know how to find help to do the things 
 that you want to do, you'll be able to use R in your science. 
+
+### Sample Data
+
+R comes with sample data sets. You will often find these as the date sets in 
+documentation files or responses to inquires on public forums like *StackOverflow*. 
+To see all available sample data sets you can type in `data()` to the console.  
 
 ### Packages in R
 
