@@ -7,6 +7,8 @@ language: []
 date: 2015-11-03
 dateCreated:   2015-11-03
 lastModified: 2015-11-03
+startDate: 2015-10-21
+endDate: 2015-10-23
 authors: [Leah A. Wasser]
 tags: []
 mainTag: Data-Workshops
@@ -28,11 +30,11 @@ comments: true
 
 **A NEON #WorkWithData Event**
 
-## About the NEON / Data Carpentry Hackathon 
+## The NEON & Data Carpentry Hackathon 
 
 
 The National Ecological Observatory Network (NEON) hosted a 3-day 
-lesson building hackathon to develop a suite of NEON/Data Carpentry data 
+lesson building hackathon to develop a suite of NEON and Data Carpentry data 
 tutorials. The tutorials will be used to teach fundamental big data skills 
 needed to work efficiently with large spatio-temporal data using open tools. 
 Data lessons were initially developed in R.
@@ -47,14 +49,14 @@ site and the Data Carpentry site. .
 
 NEON Data Skills Tutorials
 
-* <a href="{{ site.baseurl }}/tutorial-series/spatial-data-management-series" target=_blank> Introduction to Working With Spatio-Temporal Data and Data Management </a>
-* <a href="{{ site.baseurl }}/tutorial-series/vector-data-series" target=_blank> Introduction to Working with Vector Data in R</a>
-* <a href="{{ site.baseurl }}/tutorial-series/raster-data-series" target=_blank> Introduction to Working with Raster Data in R</a>
-* <a href="{{ site.baseurl }}/tutorial-series/tabular-time-series" target=_blank> Introduction to Working with Time Series Data in Text format in R</a>
+* <a href="{{ site.baseurl }}/tutorial-series/spatial-data-management-series" target="_blank"> Introduction to Working With Spatio-Temporal Data and Data Management </a>
+* <a href="{{ site.baseurl }}/tutorial-series/vector-data-series" target="_blank"> Introduction to Working with Vector Data in R</a>
+* <a href="{{ site.baseurl }}/tutorial-series/raster-data-series" target="_blank"> Introduction to Working with Raster Data in R</a>
+* <a href="{{ site.baseurl }}/tutorial-series/tabular-time-series" target="_blank"> Introduction to Working with Time Series Data in Text format in R</a>
 
 
 For the overview of the <a href="http://www.datacarpentry.org/lessons/#geospatial-data-workshop" target="_blank"> 
-Data Carpentry Geo-spatial Data Workshop click here</a>. 
+Data Carpentry Geospatial Data Workshop click here</a>. 
 
 
 The hackathon also resulted in several lesson outlines that have not yet been 
