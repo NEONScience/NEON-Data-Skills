@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Data tutorials about Metadata'
+title: 'Tutorials about Metadata'
 tag: metadata
 permalink: metadata/
 image:

@@ -9,4 +9,5 @@ image:
   creditlink: 
 ---
 
-Tutorials that discuss phenology and the data skills needed to ask phenology-related questions are listed below.
+Tutorials that discuss phenology and the data skills needed to ask 
+phenology-related questions are listed below.

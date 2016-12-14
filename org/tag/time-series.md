@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Tutorials Tagged with Time Series Data'
+title: 'Tutorials on working with Time Series Data'
 tag: time-series
 permalink: time-series/
 image:

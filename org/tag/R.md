@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Tutorials Tagged with R (#rstats)'
+title: 'Tutorials Using the R Programming Language'
 tag: R
 permalink: R/
 image:
