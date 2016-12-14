@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Tutorials Using  Python'
+title: 'Tutorials Using Python'
 tag: python
 permalink: /python/
 image:

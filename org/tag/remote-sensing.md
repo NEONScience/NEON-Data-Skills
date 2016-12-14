@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Tutorials Tagged with Remote Sensing'
+title: 'Tutorials About Remote Sensing'
 tag: remote-sensing
 permalink: remote-sensing/
 image:
