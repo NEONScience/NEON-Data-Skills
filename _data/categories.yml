@@ -6,7 +6,7 @@
   
 - slug: self-paced-tutorial
   name: Self Paced Data Tutorials
-  description: "Individual data tutorials / lessons that focus on a specific data type and
+  description: "Individual data tutorials that focus on a specific data type and
   associated skill or set of skills."
   color: '#1abc9c'
    
@@ -27,7 +27,7 @@
   
 - slug: tutorial-series
   name: Self Paced Tutorial Series
-  description: "sets of themed, self paced lessons that can be worked through in order"
+  description: "Sets of themed, self-paced lessons that can be worked through in a progression."
   color: '#1abc9c'    
 
 

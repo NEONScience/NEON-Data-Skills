@@ -1,17 +1,29 @@
 - slug: data-viz
   name: Data Visualization 
 
-- slug: lidar
-  name: LiDAR
-  
-- slug: spatial-data-gis
-  name: Spatial Data & GIS
+- slug: git
+  name: Git & GitHub
 
 - slug: HDF5
   name: Hierarchical Data Formats (HDF5)
-  
+
 - slug: hyperspectral-remote-sensing
   name: Hyperspectral Remote Sensing  
+
+- slug: informatics
+  name: Informatics
+
+- slug: lidar
+  name: LiDAR
+
+- slug: metadata
+  name: Metadata
+
+- slug: phenology
+  name: Phenology
+
+- slug: python
+  name: Python programming
   
 - slug: R
   name: R programming
@@ -22,23 +34,12 @@
 - slug: remote-sensing
   name: Remote Sensing  
 
+- slug: spatial-data-gis
+  name: Spatial Data & GIS
+
 - slug: time-series
   name: Time Series
   
-- slug: metadata
-  name: Metadata
-  
-- slug: informatics
-  name: Informatics
-  
-- slug: Data-Workshops
-  name: Data Workshops
-   
 - slug: vector-data
   name: Vector Data 
-  
-- slug: phenology
-  name: Phenology
 
-- slug: disturb-events-co13
-  name: Disturbance Events Teaching Module

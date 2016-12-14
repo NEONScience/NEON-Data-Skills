@@ -29,12 +29,6 @@
   multi-band raster data and raster time series data in R  using both plot and rasterVis levelPlot."
   lastModified:  2015-10-15
   
-- slug: spatial-data-management-series
-  name: Getting Started With Spatial Data in R
-  description: "This series covers core data literacy concepts needed to work with spatial data
-  in both a gui and non gui environment. These lessons are currently under development." 
-  lastModified:  2016-12-15 
-  
 - slug: intro-hdf5-r-series
   name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFview & R
   description: "In this series we cover what a HDF5 format is, and how to open, read, create
@@ -63,3 +57,22 @@
   needed to complete more complex tasks in R. It is not intended as an guide for
   the introduction to or initial learning of how to use R." 
   lastModified:  2016-12-5 
+
+- slug: GitHub
+  name: Version Control with GitHub
+  description: "This series teaches why version control is important and how to 
+  use a common version control tool, GitHub. GitHub also allows for collaboration
+  within the environment." 
+  lastModified:  2016-06-20 
+
+- slug: RMarkdown
+  name: Reproducible Workflows with RMarkdown
+  description: "This series teaches you to use the R Markdown file format to 
+  document code and efficiently publish code results & outputs." 
+  lastModified:  2016-06-20 
+
+- slug: spatial-data-management-series
+  name: Getting Started With Spatial Data in R 
+  description: "This series covers core data literacy concepts needed to work with spatial data
+  in both a gui and non gui environment. These lessons are currently under development." 
+  lastModified:  2016-12-15 
