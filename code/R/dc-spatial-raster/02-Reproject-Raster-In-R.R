@@ -92,7 +92,7 @@ plot(DTM_HARV,
 ## ----challenge-code-reprojection, echo=FALSE-----------------------------
 
 # import DTM
-DSM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmcrop.tif")
+DSM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # import DTM hillshade
 DSM_hill_SJER_WGS <- 
   raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill_WGS84.tif")
