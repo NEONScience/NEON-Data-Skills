@@ -1,6 +1,6 @@
 ---
 layout: post_by_tag
-title: 'Tutorials About the HDF5 or using HDF5/HF5 format
+title: 'Tutorials About the HDF5 or using HDF5/HF5 format'
 tag: HDF5
 permalink: HDF5/
 image:
@@ -18,6 +18,5 @@ activities that focus on teaching key concepts surrounding:
 2. The potential benefits of using HDF5 to store your data.
 3. What HDF5 files look like.
 4. How to work with HDF5 files in the R programming language - step-by-step 
-including sample code
+including sample code.
 5. How to create HDF5 files.
-
