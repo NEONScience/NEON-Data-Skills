@@ -120,8 +120,8 @@ Please tweet using the hashtag:
 <a href="https://twitter.com/search?q=%23workwithdata&src=typd" target="_blank">
 #WorkWithData"</a> during this workshop!
 
-Also you can tweet at <a href="https://twitter.com/neoninc" target="_blank">
-@neoninc</a>!
+Also you can tweet at <a href="https://twitter.com/neon_sci target="_blank">
+@NEON_Sci</a>!
 
 
 ## SCHEDULE

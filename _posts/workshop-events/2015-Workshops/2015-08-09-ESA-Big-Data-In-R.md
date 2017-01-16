@@ -150,7 +150,7 @@ format. </a></li>
 Please tweet using the hashtag:
   "#WorkWithData" during this workshop!
 
-Also you can tweet at @neoninc !
+Also you can tweet at @NEON_Sci !
 
 
 
