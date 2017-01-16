@@ -237,7 +237,7 @@ of NEON's.
 
 ```bash
 $ git config --global user.name "NEON Science"
-$ git config --global user.email "neon@neoninc.org"
+$ git config --global user.email "neon@BattelleEcology.org"
 $ git config --global color.ui "auto"
 ```
 
