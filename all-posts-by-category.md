@@ -4,11 +4,9 @@ permalink: /activities/
 title: Data Tutorials & Workshop Groupings
 tagline: A List of Posts
 tags: 
-image:
-  feature: /banners/chalkboard.png
-  credit: 
+
 ---
 
-Below you will find a list of data tutorials using R and other Open Source tools. 
-You will also find theme related content that has been used or is being developed 
-for upcoming NEON workshops.
+Below you will find a complete list of data tutorials, workshop and science videos
+hosted on this website. The tutorials use R and other open source tools. 
+
