@@ -33,8 +33,8 @@ spatio-temporal data to address ecological questions.
 
 ## June 2016: Remote Sensing with Reproducible Workflows
 Our 2016 Institute focused on remote sensing of vegetation using open source 
-tools and reproducible science workflows. This Institute was held at NEON 
-headquarters in June 2016.
+tools and reproducible science workflows. The programming language of instruction
+in 2016 was **R**. This Institute was held at NEON headquarters in June 2016.
 
 ### Online Resources
 The teaching materials from the 2016 Data Institute will be converted into 
