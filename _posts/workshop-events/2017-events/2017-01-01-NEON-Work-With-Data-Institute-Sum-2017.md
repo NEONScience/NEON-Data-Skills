@@ -10,9 +10,9 @@ authors: [Megan A. Jones]
 tags: []
 mainTag: workshop-event
 categories: [workshop-event]
-description: "Our 2016 Institute focuses on remote sensing of vegetation using 
+description: "Our 2017 Institute focuses on remote sensing of vegetation using 
 open source tools to promote reproducible science. The primary computing language
-of this Institute is Python.  This Institute will be held at NEON headquarters in 
+of this Institute is Python.  This Institute will be held Boulder, CO 19-24 
 June 2017."
 image:
   feature: data-institute-rs.png
@@ -21,6 +21,8 @@ image:
 permalink: /workshop-event/NEON-Data-Insitute-2017
 comments: true 
 ---
+
+**Application Now Open:** <a href="http://www.neonscience.org/learn-experience/data-institutes" target="_blank"> http://www.neonscience.org/learn-experience/data-institutes</a>
 
 NEON's Data Institutes provide critical skills and foundational knowledge for 
 graduate students and early career scientists working with heterogeneous 
@@ -42,9 +44,9 @@ instructor. In 2016 the primary **programming language was R**.
 
 ### Key 2017 Dates 
 
-* **Applications Open:** early January 2017
-* **Application Deadline:** mid March 2017 
-* **Notification of Acceptance:** early April 2017
+* **Applications Open:** 17 January 2017
+* **Application Deadline:** 10 March 2017 
+* **Notification of Acceptance:** late March 2017
 * **Tuition payment due by:** mid April 2017 
 * **Pre-institute online activities:** June 1-17, 2017 
 * **Institute Dates:** June 19-24, 2017
