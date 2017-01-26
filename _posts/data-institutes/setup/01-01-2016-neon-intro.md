@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Introduction to the Introduction to the National Ecological Observatory Network (NEON) "
+title: "Introduction to the National Ecological Observatory Network (NEON) "
 description: "This page provides an overview of NEON and the data provided by NEON."
 date: 2016-05-19
 dateCreated: 2014-05-06
