@@ -20,7 +20,7 @@ image:
   feature: data-institute-2016.png
   credit:
   creditlink:
-permalink: /tutorial-series/capstone
+permalink: /data-institute/capstone
 comments: true
 ---
 
@@ -28,7 +28,7 @@ comments: true
 
 ## About
 
-The goals of the 2016 NEON data institute are to:
+The goals of the NEON Data Institute are to:
 
 1. Provide hands-on experience with and knowledge needed to work with NEON remote
 sensing data. and,
@@ -36,17 +36,20 @@ sensing data. and,
 
 ## About The Capstone Project
 
-As a capstone for this Institute, you will break up into small groups, to work on addressing
-a science question using NEON and other data.
+As a capstone for this Institute, you will break up into small groups, to work 
+on addressing a science question using NEON and other data.
 
-Important: As you think about this project, consider what may be feasible to explore in a short (~1 days worth) amount of time. You may consider a small pilot project that could potentially be expanded, after you leave the Institute.  
+Important: As you think about this project, consider what may be feasible to 
+explore in a short (~1 days worth) amount of time. You may consider a small 
+pilot project that could potentially be expanded, after you leave the Institute.  
 
 
 ## The Data
-You have been given a hard drive containing NEON remote sensing data. You can
-also learn more about what NEON data are currently available on our website:
+You are welcome to use any data you choose for this project. Combining NEON data
+with external data is highly encouraged. You can learn more about what NEON 
+data are currently available on our website:
 
- <a class="btn btn-inverse" href="http://www.neonscience.org/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
+<a class="btn btn-inverse" href="http://www.neonscience.org/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
 
 ## Document Your Work
 
@@ -54,31 +57,31 @@ also learn more about what NEON data are currently available on our website:
  This includes:
 
  * Organize your project data, code and outputs.
- * Write your code in RMD so you can clearly document the steps.
+ * Write your code in a shareable format (RMD or Jupyter Notebooks) you can 
+clearly document the steps.
 
-You will submit the code used to work with and process your data, via github.
+You will submit the code used to work with and process your data, via Github.
 Please consider:
 
 1. The organization of your working directory
 2. The structure, organization and documentation of your code.
 
-We encourage you to do all of your work in .Rmd files!
+We encourage you to do all of your work in Rmd or Jypyter Notebook files!
 
 ## Project Presentation
 
- You will present your project to the group on Saturday, 25 June 2016.
- You might consider creating a presentation using RMD <a href="http://rmarkdown.rstudio.com/revealjs_presentation_format.html" target="_blank">Create reveal.js presentations using R and R Studio</a>.
+ You will present your project to the group on Saturday.
 
 ## Thursday Afternoon - Get started
 
 On Thursday of the Institute, we will spend some time discussing projects and you
-will have time to figure out who you'd like to work with. Note: it is OK if you
-would rather work independently, however a goal of this institute is to practice
+will have time to figure out who you'd like to work with. Note: It is OK if you
+would rather work independently, however a goal of this Institute is to practice
 efficient collaboration skills, so we encourage you to work in groups!
 
 Let's get started:
 
 1. Figure out your group.
-2. Figure out what data you will need and how much time you will need / have.
-3. Run your idea past one of the Data Institute faculty (Kyla, Naupaka, Leah, Tristan, Dave, etc)
+2. Figure out what data you will need and how much time you will need/have.
+3. Run your idea past one of the Data Institute faculty. 
 4. Get to work!
