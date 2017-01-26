@@ -54,7 +54,7 @@ These materials were designed to be used in the context of the workshop with an 
 |8:00am - 6:30pm| Tuesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day2/" target="_blank"> Intro to LiDAR data, Automated Workflows</a>|
 |8:00am - 6:30pm| Wednesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day3/" target="_blank"> Remote Sensing Uncertainty</a>|
 |8:00am - 6:30pm| Thursday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day4/" target="_blank"> LiDAR & Hyperspectral Data Fusion</a>|
-|8:00am - 6:30pm| Friday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day5/" target="_blank"> Group projects</a>|
+|8:00am - 6:30pm| Friday|<a href="{{ site.baseurl }}/data-institute/capstone" target="_blank"> Group projects</a>|
 |9:00am - 2:00pm| Saturday| Group project presentations|
 
 ### Presentation Videos
