@@ -62,7 +62,7 @@ Please read the following page about NEON's Mission:
 * <a href="http://www.neonscience.org/about" target="_blank">Read about NEON’s mission</a>
 {: .readme }
 
-<i class="fa fa-star"></i> **Thought Questions:** How might/does the NEON project
+<i class="fa fa-star"></i> **Data Institute Participants Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
 {: .notice .thought }
 
@@ -104,7 +104,7 @@ domain or state.
 have online documentation. We are working on this!
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Thought Questions:**
+<i class="fa fa-star"></i> ** Data Institute Participant Thought Questions:**
 Use the map above to answer
 these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
@@ -156,7 +156,7 @@ hyperspectral remote sensing data, checkout this
 {: .notice}
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Thought Questions:** Consider either your current
+<i class="fa fa-star"></i> **Data Institute Participant Thought Questions:** Consider either your current
 or future research or the question you’d like to address at the Institute.
 
 * Which types of data may be more useful to address these questions?
@@ -222,8 +222,8 @@ desirable one that does have data available.
 Because NEON is still in construction, NEON data are not currently available for
 every field site.
 
-<a class="btn btn-info" href="http://www.neonscience.org/neon-glance" target="_blank">
-Check out the NEON At-a-Glance page to view construction progress.</a>
+<a class="btn btn-info" href="http://data.neonscience.org/data-product-catalog" target="_blank">
+Check out the NEON Data Products Catalog.</a>
 
 <i class="fa fa-star"></i> **Data Tip:** NEON also provides to support your own research including
 proposals to fly the AOP over other study sites, a mobile tower/instrumentation
