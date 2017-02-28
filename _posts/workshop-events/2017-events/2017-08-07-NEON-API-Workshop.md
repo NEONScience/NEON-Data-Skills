@@ -6,7 +6,7 @@ date: 2017-08-07
 dateCreated: 2017-02-28
 lastModified: 2017-02-28
 startDate: 2017-08-07
-endDate: 2017-08-07
+endDate: 
 authors: [Megan A. Jones]
 tags: []
 mainTag: workshop-event
