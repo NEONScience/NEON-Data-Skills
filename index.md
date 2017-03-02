@@ -18,7 +18,7 @@ support working with large spatio-temporal datasets, like those offered by the
 We welcome any comments and feedback that you have and also materials that support 
 or expand upon what's available on this site! 
 
-## Join the NEON Data Skills Team Now!
+### Join the NEON Data Skills Team Now!
 Do you enjoy training scientists and students use large, ecological datasets? Do 
 you want to help create these web-based data science tutorials, lead workshops and 
 Data Institutes, and create other informational resources and tools with NEON and 
