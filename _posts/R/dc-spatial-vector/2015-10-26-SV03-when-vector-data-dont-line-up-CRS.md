@@ -87,8 +87,8 @@ For instance, many states prefer to use a **State Plane** projection customized
 for that state.
 
 <figure>
-    <a href="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
-    <img src="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
+    <a href="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     </a>
     
     <figcaption>Maps of the United States using data in different projections. 
@@ -97,7 +97,9 @@ for that state.
     the data onto a 2-dimensional map. Often data are stored purposefully in a
     particular projection that optimizes the relative shape and size of
     surrounding geographic boundaries (states, counties, countries, etc). 
-    Source: opennews.org</figcaption>
+    Source: M. Corey, 
+    <a href="https://source.opennews.org/articles/choosing-right-map-projection/" target="_blank"> opennews.org</a> 
+    </figcaption>
 </figure>
 
 Check out this short video highlighting how map projections can make continents 

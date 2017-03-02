@@ -2,7 +2,7 @@
 layout: post
 title: "Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects by
 Attribute Value in R"
-date:   2015-10-26
+date: 2015-10-26
 authors: [Joseph Stachelek, Leah A. Wasser, Megan A. Jones]
 contributors: [Sarah Newman]
 dateCreated:  2015-10-23
