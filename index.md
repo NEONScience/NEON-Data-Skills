@@ -24,4 +24,4 @@ you want to help create these web-based data science tutorials, lead workshops a
 Data Institutes, and create other informational resources and tools with NEON and 
 community scientists? We currently have an opening for a Data Science Educator Lead. 
 Find the full posting on the 
-<a href="https://jobs.battelle.org/ShowJob/Id/1127946/Data-Science-Lead/" target="_blank"> Battelle-NEON careers page </a>. 
+<a href="https://jobs.battelle.org/ShowJob/Id/1127946/Data-Science-Lead/" target="_blank"> Battelle-NEON careers page</a>. 
