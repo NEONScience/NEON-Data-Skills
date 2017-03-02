@@ -3,7 +3,7 @@ layout: home
 description: "A site devoted to open science and open data."
 Tags: []
 image:
-  feature: texture-feature-07.png
+  feature: laptopCode.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 ---
