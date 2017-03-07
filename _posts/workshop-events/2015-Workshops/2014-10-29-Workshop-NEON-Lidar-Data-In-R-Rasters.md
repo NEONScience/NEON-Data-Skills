@@ -2,7 +2,7 @@
 layout: workshop-event
 title: "Work With Lidar Derived Rasters in R"
 estimatedTime: 3.0 Hours
-date:   2015-1-15
+date:   2015-05-14
 dateCreated:   2015-2-23
 lastModified: 2015-5-08
 startDate: 2015-05-14
