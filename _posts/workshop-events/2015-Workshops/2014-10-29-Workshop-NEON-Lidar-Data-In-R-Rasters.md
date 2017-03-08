@@ -2,11 +2,10 @@
 layout: workshop-event
 title: "Work With Lidar Derived Rasters in R"
 estimatedTime: 3.0 Hours
-date:   2015-1-15
+date:   2015-05-14
 dateCreated:   2015-2-23
 lastModified: 2015-5-08
 startDate: 2015-05-14
-endDate:  2015-05-14
 authors: [Leah A. Wasser]
 tags: []
 mainTag: Data-Workshops
@@ -15,9 +14,8 @@ packagesLibraries: [raster, sp]
 description: "This workshop will present how to work with Lidar Data derived 
 rasters in R. Learn how to import rasters into R. Learn associated key metadata 
 attributed needed to work with raster formats. Analyzing the data performing basic 
-raster math  to create a canopy height model. Export raster results as a (
-spatially located) geotiff."
-
+raster math  to create a canopy height model. Export raster results as a 
+(spatially located) GeoTIFF."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
@@ -77,9 +75,8 @@ Download Script to Install Packages in R</a>
 
 ## Read Background Materials
 
-* <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" >The basics of working with Rasters in tools like R and Python</a></li>
-* <a href="{{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" >A brief introduction to Lidar Data </a></li>
-* <a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" >About the basic Lidar Derived Data Products - CHM, DEM, DSM </a></li>
+* <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/"> The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* <a href="{{ site.baseurl }}/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/"> What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data </a>
 
 </div>
 
@@ -95,7 +92,7 @@ Download Script to Install Packages in R</a>
 |-----------|---------------|------------|
 | 12:00    | [Working with Raster Data in R]({{ site.baseurl }}/R/Raster-Data-In-R) |          |
 | 12:45    | [Working With Image Formatted Rasters in R]({{ site.baseurl }}/R/Image-Raster-Data-In-R/)     |            |
-| 1:15     | [Brief Overview of Lidar Data & Lidar derived rasters]({{ site.baseurl }}/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)     |            |
+| 1:15     | [The Basics of LiDAR - Light Detection and Ranging - Remote Sensing]({{ site.baseurl }}/self-paced-tutorial/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/)     |            |
 | 1:20     | [Explore with Lidar Point Clouds in a free online viewer: plas.io]({{ site.baseurl }}/lidar-data/online-data-viewer/ "Working With Lidar Point Clouds")          |     |
 | 1:45     | [Working with Lidar Derived raster products in R]({{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/ "Working with Lidar Rasters in R")        |         |
 | 2:30     | [Capstone - Create NDVI from Geotiffs in R]({{ site.baseurl }}/R/create-NDVI-in-R/ "Create NDVI in R")  |         |

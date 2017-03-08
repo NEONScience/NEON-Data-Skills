@@ -3,7 +3,6 @@ layout: post
 title: "Raster 00: Intro to Raster Data in R"
 date:   2015-10-29
 authors: [Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul]
-contributors: [ ]
 dateCreated: 2015-10-23
 lastModified: 2016-03-15
 packagesLibraries: [raster, rgdal]
