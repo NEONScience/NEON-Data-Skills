@@ -145,8 +145,8 @@ returned.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/Lidar_Intensity.png">
-	<img src="{{ site.baseurl }}/images/Lidar_Intensity.png"></a>
+	<a href="{{ site.baseurl }}/images/Lidar_Intensity.jpg">
+	<img src="{{ site.baseurl }}/images/Lidar_Intensity.jpg"></a>
 	<figcaption> Lidar intensity values represent the amount of light energy that
 	reflected off of an object and returned to the sensor. 
 	</figcaption>
