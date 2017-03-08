@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "Working With Hyperspectral Imagery in HDF5 Format in R"
+title: "NEON Brownbag: Working With Hyperspectral Imagery in HDF5 Format in R"
 estimatedTime: 3.0 Hours
 packagesLibraries: [rhdf5, dplyr]
 date:   2015-06-08

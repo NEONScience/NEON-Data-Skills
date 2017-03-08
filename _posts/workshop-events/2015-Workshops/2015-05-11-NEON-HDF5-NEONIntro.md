@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "NEON Brownbag: Intro to HDF5 Workshop"
+title: "NEON Brownbag: Intro to HDF5 Workshop, Part 2"
 estimatedTime: 1.0 Hours
 packagesLibraries: [rhdf5, h5py]
 language: [python, R]
@@ -12,7 +12,7 @@ authors: [David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden]
 tags: []
 mainTag: Data-Workshops
 categories: [workshop-event]
-description: "This NEON brownbag introduces the concept of 
+description: "This NEON Brownbag increases participants understanding of 
 Hierarchical Data Formats in the context of developing the NEON HDF5 operational 
 file format. Look here to discover resources on HDF5, code snippets in R, Python 
 and Matlab to use H5 files and some example H5 files for Remote Sensing 
@@ -69,11 +69,11 @@ The free H5 viewer will allow you to explore H5 data, using a graphic interface.
 ## SCHEDULE
 
 
-| Time        | Topic         | Instructor | 
-|-------------|---------------|------------|
-| 12:00     | Hand-on exploration of the HDF5 Data Format |          |
-| 12:20     | Working with HDF5 in Python - live demo.      |            |
-| ~12:30 | NEON HDF5 Format - what's next     |      |
+| Time        | Topic         | | 
+|-------------|---------------| |
+| 12:00 | Hand-on exploration of the HDF5 Data Format |          |
+| 12:20 | Working with HDF5 in Python - live demo.      |            |
+| 12:30 | NEON HDF5 Format - what's next     |      |
 
  
 ## Useful HDF5 Resources
