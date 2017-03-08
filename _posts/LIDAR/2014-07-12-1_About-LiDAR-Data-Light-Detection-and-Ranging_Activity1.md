@@ -2,12 +2,13 @@
 layout: post
 title:  "The Basics of LiDAR - Light Detection and Ranging - Remote Sensing"
 date:   2014-07-21
+authors: [Leah A. Wasser]
 createdDate:   2014-07-21
 lastModified:   2016-10-20
 estimatedTime: 0.25 - .5 Hours
 packagesLibraries:
 categories: [self-paced-tutorial]
-authors: [Leah A. Wasser]
+
 tags : [lidar, R, remote-sensing]
 mainTag: lidar
 tutorialSeries: [intro-lidar-r-series]
