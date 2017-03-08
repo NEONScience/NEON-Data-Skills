@@ -1,13 +1,13 @@
 ---
 layout: workshop-event
-title: "NEON Brownbag: Intro to HDF5 Workshop, Part 2"
+title: "NEON Brownbag: Intro to HDF5 at NEON"
 estimatedTime: 1.0 Hours
 packagesLibraries: [rhdf5, h5py]
 language: [python, R]
-date: 2015-5-08
+date: 2015-06-04
 dateCreated:   2015-5-08 
 lastModified: 2015-5-08
-endDate: 11 May 2015
+endDate: 2015-06-04
 authors: [David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden]
 tags: []
 mainTag: Data-Workshops
