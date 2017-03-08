@@ -3,9 +3,10 @@ layout: workshop-event
 title: "NEON Brownbag: Working With Hyperspectral Imagery in HDF5 Format in R"
 estimatedTime: 3.0 Hours
 packagesLibraries: [rhdf5, dplyr]
-date:   2015-06-08
+date:   2015-06-25
 dateCreated:   2015-2-23
 lastModified: 2015-06-09
+endDate: 2015-06-25
 authors: [Leah A. Wasser]
 tags: []
 mainTag: Data-Workshops
@@ -21,8 +22,6 @@ image:
 permalink: /workshop-event/NEON-HDF5-HyperspectralImagery-In-R
 comments: true 
 ---
-
-**Date:** Spring 2015
 
 This workshop will providing hands on experience with working with hyperspectral 
 imagery in hierarchical data formats(HDF5) in R. It will also cover basic raster 
