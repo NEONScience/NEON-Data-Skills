@@ -7,11 +7,16 @@ language: [python, R]
 date: 2015-5-08
 dateCreated:   2015-5-08 
 lastModified: 2015-5-08
+endDate: 11 May 2015
 authors: [David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden]
 tags: []
 mainTag: Data-Workshops
 categories: [workshop-event]
-description: "This NEON internal brownbag introduces the concept of Hierarchical Data Formats in the context of developing the NEON HDF5 operational file format. Look here to discover resources on HDF5, code snippets in R, Python and Matlab to use H5 files and some example H5 files for Remote Sensing Hyperspectral data and time series temperature data."
+description: "This NEON brownbag introduces the concept of 
+Hierarchical Data Formats in the context of developing the NEON HDF5 operational 
+file format. Look here to discover resources on HDF5, code snippets in R, Python 
+and Matlab to use H5 files and some example H5 files for Remote Sensing 
+Hyperspectral data and time series temperature data."
 code1: 
 image:
   feature: hierarchy_folder_green.png
@@ -23,19 +28,18 @@ comments: true
 
 ### Explore the Operational NEON HDF5 Format
 
-**Date:** 11 May 2015
-
 This NEON internal brownbag introduces the concept of Hierarchical Data Formats 
 in the context of developing the NEON HDF5 operational file format. Look here to 
 discover resources on HDF5, code snippets in R, Python and Matlab to use H5 files 
 and some example H5 files for Remote Sensing Hyperspectral data and time series 
 temperature data.
 
-<div id="objectives">
+<div id="objectives" markdown="1">
 
 <h2>Background Materials</h2>
 
 Please review, download and setup the following, prior to attending the brownbag.
+
 <h3>Data to Download</h3>
 
 {% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
@@ -43,25 +47,19 @@ Please review, download and setup the following, prior to attending the brownbag
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
 
 
-</ul>
-
 <h2>Download the Free H5 Viewer</h2>
 
-<p>The free H5 viewer will allow you to explore H5 data, using a graphic interface. 
-</p>
+The free H5 viewer will allow you to explore H5 data, using a graphic interface. 
 
-<ul>
-<li>
+
 <a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank" class="btn btn-success"> HDF5 viewer can be downloaded from this page.</a>
-</li>
-</ul>
 
-<a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView/">More on the
- viewer here</a>
+<a href="http://neondataskills.org/HDF5/Exploring-Data-HDFView">Click here to read more on the
+ viewer in the *HDFView: Exploring HDF5 Files in the Free HDFview Tool* tutorial.</a>
 
 <h3>Please review the following:</h3>
 <ul>
-<li><a href="http://neondataskills.org/HDF5/About/">What is HDF5? A general overview.</a></li>
+<li><a href="http://neondataskills.org/HDF5/About">What is HDF5? A general overview.</a></li>
 </ul>
 
 </div>
@@ -75,7 +73,7 @@ Please review, download and setup the following, prior to attending the brownbag
 |-------------|---------------|------------|
 | 12:00     | Hand-on exploration of the HDF5 Data Format |          |
 | 12:20     | Working with HDF5 in Python - live demo.      |            |
-| ~12:30 | NEON HDf5 Format - what's next     |      |
+| ~12:30 | NEON HDF5 Format - what's next     |      |
 
  
 ## Useful HDF5 Resources
@@ -84,63 +82,12 @@ Please review, download and setup the following, prior to attending the brownbag
 
 ## Python resources for HDF5:
 1. [H5 Python Documentation]( http://www.h5py.org/ )
-2. [O’Reilly book on Python and HDF5! The modern stamp of legitimacy for programming.](https://www.hdfgroup.org/HDF5/examples/api18-py.html) 
+2. [O’Reilly book on Python and HDF5! The modern stamp of legitimacy for programming.](http://shop.oreilly.com/product/0636920030249.do) 
 3. [Python examples from the HDF5 people themselves!](https://www.hdfgroup.org/HDF5/examples/api18-py.html)
 
 
+## Python Code to Open HDF5 files
 
-### Python Code to Open HDF5 files
+For sample python code to open HDF5 files, see the 
+<a href="{{ site.baseurl }}/self-paced-tutorial/Python-HDF5-basics"> *Opening HDF5 files with Python Sample Code* tutorial </a>. 
 
-The code below is starter code to create an H5 file in Python.
-
-    if __name__ == '__main__':
-		#import required libraries
-		import h5py as h5
-		import numpy as np
-		import matplotlib.pyplot as plt
-    
-		# Read H5 file
-		f = h5.File("NEON-DS-Imaging-Spectrometer-Data.h5", "r")
-		# Get and print list of datasets within the H5 file
-		datasetNames = [n for n in f.keys()]
-		for n in datasetNames:
-			print(n)
-		
-		#extract reflectance data from the H5 file
-		reflectance = f['Reflectance']
-		#extract one pixel from the data
-		reflectanceData = reflectance[:,49,392]
-		reflectanceData = reflectanceData.astype(float)
-
-		#divide the data by the scale factor
-		#note: this information would be accessed from the metadata
-		scaleFactor = 10000.0
-		reflectanceData /= scaleFactor
-		wavelength = f['wavelength']
-		wavelengthData = wavelength[:]
-		#transpose the data so wavelength values are in one column
-		wavelengthData = np.reshape(wavelengthData, 426)
-    
-		# Print the attributes (metadata):
-		print("Data Description : ", reflectance.attrs['Description'])
-		print("Data dimensions : ", reflectance.shape, reflectance.attrs['DIMENSION_LABELS'])
-		#print a list of attributes in the H5 file
-		for n in reflectance.attrs:
-		print(n)
-		#close the h5 file
-		f.close()
-    
-		# Plot
-		plt.plot(wavelengthData, reflectanceData)
-		plt.title("Vegetation Spectra")
-		plt.ylabel('Reflectance')
-		plt.ylim((0,1))
-		plt.xlabel('Wavelength [$\mu m$]')
-		plt.show()
-	    
-		# Write a new HDF file containing this spectrum
-		f = h5.File("VegetationSpectra.h5", "w")
-		rdata = f.create_dataset("VegetationSpectra", data=reflectanceData)
-		attrs = rdata.attrs
-		attrs.create("Wavelengths", data=wavelengthData)
-		f.close()
