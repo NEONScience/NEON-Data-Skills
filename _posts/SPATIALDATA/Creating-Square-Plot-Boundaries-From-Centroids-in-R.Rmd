@@ -72,7 +72,7 @@ The other data files in the downloaded data directory are used for related tutor
 </div>
 
 Our x,y coordinate centroids come in a ".csv" (Comma Separated Value) file with 
-the plot ID that goes with the data. The data we areusing today were collected 
+the plot ID that goes with the data. The data we are using today were collected 
 at the National Ecological Observatory Network field site at the 
 San Joaquin Experimental Range (SJER) in California. 
 
@@ -108,7 +108,7 @@ str(centroids)
 We can see that our data consists of five distinct types of data:
 
 * Plot_ID: denotes the plot
-* Point: denotes where the point is taken -- all are centoids
+* Point: denotes where the point is taken -- all are centroids
 * northing: northing coordinate for point
 * easting: easting coordinate for point
 * Remarks: any other remarks from those collecting the data
@@ -127,10 +127,10 @@ This radius will later be used to calculate vertex locations that define the plo
 perimeter. 
 
 In this case, let's use a **radius of 20m**. This means that the edge of each plot 
-(not the corner) is 20m from the centoid. Overall this will create a 40 m x 40 m 
+(not the corner) is 20m from the centroid. Overall this will create a 40 m x 40 m 
 square plot. 
 
-Units: Radius is in meters, matching the UTM CRS. If you're coorindates were in 
+Units: Radius is in meters, matching the UTM CRS. If you're coordinates were in 
 lat/long or some other CRS than you'd need to modify the code. 
 
 Plot Orientation: Our code is based on simple geometry and assumes that plots 
@@ -155,9 +155,9 @@ polygon. This means that a square will have 5 instead of 4 vertices. The fifth
 vertex is identical to the first vertex. Thus, by repeating the first vertex 
 coordinate (xMinus,yPlus) the polygon will be closed. 
 
-The `cbind()` fuction allows use to combine or bind together data by column. Make
+The `cbind()` function allows use to combine or bind together data by column. Make
 sure to create the vertices in an order that makes sense. We recommend starting 
-at the NE and proceding clockwise. 
+at the NE and proceeding clockwise. 
 
 ``` {r create-perimeter}
 # calculate polygon coordinates for each plot centroid. 
@@ -205,7 +205,7 @@ or check out this
 Two general consideration: 
 
 First, spatial polygons require a list of lists. Each list contains the xy 
-coordinates of each vertex in the polygon - in order. It is alsways important 
+coordinates of each vertex in the polygon - in order. It is always important 
 to include the closing vertex as we discussed above -- you'll have to repeat the 
 first vertex coordinate.
 
@@ -216,7 +216,7 @@ To do this, we'd use the syntax:
 
 `proj4string =CRS(as.character(FILE-NAME@crs))` 
 
-For example, if we imported a GeoTiff file called "canopy" that was in a 
+For example, if we imported a GeoTIFF file called "canopy" that was in a 
 UTM coordinate system, we could type `proj4string-CRS(as.character(canopy@crs))`. 
 
 ### Method 1: mapply function
@@ -250,7 +250,7 @@ Yay! We created polygons for all of our plots!
 Let's do the process again with simpler R code so that we understand how the 
 process works. Keep in mind that loops are less efficient to process your data 
 but don't hide as much under the box. Once you understand how this works, we 
-recommend the `mapply()` fuction for your actual data processing. 
+recommend the `mapply()` function for your actual data processing. 
 
 ``` {r looping-it}
 # First, initialize a list tha will later be populated
