@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "NEON @ ESA: Working with Time Series in R using NEON Data - 6 August 2017"
+title: "NEON @ ESA: Working with Time Series in R using NEON Data"
 estimatedTime: 5-hour workshop
 date: 2017-08-06
 dateCreated: 2017-02-28

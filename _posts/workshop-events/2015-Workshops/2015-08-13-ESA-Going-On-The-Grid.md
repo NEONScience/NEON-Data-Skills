@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "ESA 2015: Going On The Grid - Gridding & Spatial Interpolation - An Intro"
+title: "NEON @ ESA: Going On The Grid - Gridding & Spatial Interpolation - An Intro"
 estimatedTime: 1.75 Hours
 packagesLibraries: 
 language: []
