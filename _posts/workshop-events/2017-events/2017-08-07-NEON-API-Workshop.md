@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "NEON @ ESA: Using the NEON API - 7 August 2017"
+title: "NEON @ ESA: Using the NEON API"
 estimatedTime: 1.75-hour workshop
 date: 2017-08-07
 dateCreated: 2017-02-28

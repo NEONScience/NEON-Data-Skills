@@ -1,11 +1,10 @@
 ---
 layout: workshop-event
-title: "NEON @ ESA: Work with Ecological Time Series Data in R - 7 August 2016"
+title: "NEON @ ESA: Work with Ecological Time Series Data in R"
 estimatedTime: 3.5-hour workshop
 date: 2016-08-07
 dateCreated: 2016-03-01
 lastModified: 2016-03-01
-startDate: 2016-08-07
 endDate: 2016-08-07
 authors: [Megan A. Jones]
 tags: []

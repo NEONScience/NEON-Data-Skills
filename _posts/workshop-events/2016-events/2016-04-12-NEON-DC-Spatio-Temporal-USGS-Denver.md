@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "NEON/Data Carpentry - Spatio-Temporal Workshop - April 12-13, 2016"
+title: "NEON/Data Carpentry - Spatio-Temporal Workshop"
 estimatedTime: 2 Day Workshop
 packagesLibraries: [raster, sp, rgdal, rgeos, rasterVis, ggplot2]
 date: 2016-04-12
@@ -122,7 +122,7 @@ automatically.
 
 
 ### Workshop Instructors
-* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser)**; 
+* **Leah Wasser**; 
 @leahawasser; Supervising Scientist, NEON 
 * **[Megan A. Jones](http://www.neonscience.org/about/staff/megan-jones)**; 
 @meganahjones; Staff Scientists/Science Educator, NEON

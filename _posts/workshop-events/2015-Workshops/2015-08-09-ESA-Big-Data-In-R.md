@@ -1,17 +1,20 @@
 ---
 layout: workshop-event
-title: "ESA 2015: A Hands-On Primer for Working with Big Data in R: Introduction to Hierarchical Data Formats, Lidar Data & Efficient Data Visualization"
+title: "NEON @ ESA: A Hands-On Primer for Working with Big Data in R: Introduction to Hierarchical Data Formats, Lidar Data & Efficient Data Visualization"
 estimatedTime: 8.0 Hours
 packagesLibraries: [rhdf5, raster]
 language: [R]
 date: 2015-08-09
 dateCreated:   2015-6-29
 lastModified: 2015-08-03
+endDate: 2015-08-09
 authors: [Leah A. Wasser, Natalie Robinson, Claire Lunch, Kate Thibault, Sarah Elmendorf]
 tags: []
 mainTag: Data-Workshop
 categories: [workshop-event]
-description: "This workshop will providing hands on experience with working hierarchical data formats (HDF5), and (lidar derived) raster data in R. It will also cover spatial data analysis in R."
+description: "This workshop will providing hands on experience with working 
+hierarchical data formats (HDF5), and (lidar derived) raster data in R. It will 
+also cover spatial data analysis in R."
 code1: 
 image:
   feature: hierarchy_folder_green.png
@@ -23,11 +26,17 @@ comments: true
 
 ### A NEON #WorkWithData Event
 
-**Date:** 09 August 2015 - Ecological Society of America Meeting
+**Ecological Society of America Meeting**
 
 **Location:** Baltimore, Maryland
 
-Ecologists working across scales and integrating disparate datasets face new data management and analysis challenges that demand tools beyond the spreadsheet. This workshop will overview three key data formats: ASCII, HDF5 and las and several key data types including temperature data from a tower, vegetation structure data, hyperspectral imagery and lidar data, that are often encountered when working with ‘Big Data’.  It will provide an introduction to available tools in R for working with these formats and types.
+Ecologists working across scales and integrating disparate datasets face new 
+data management and analysis challenges that demand tools beyond the spreadsheet. 
+This workshop will overview three key data formats: ASCII, HDF5 and las and 
+several key data types including temperature data from a tower, vegetation 
+structure data, hyperspectral imagery and lidar data, that are often encountered 
+when working with ‘Big Data’.  It will provide an introduction to available tools 
+in R for working with these formats and types.
 
 <a href="https://etherpad.mozilla.org/ESA2015-bigData" class="btn btn-info" target="_blank"> 
 Visit the Workshop Etherpad</a>

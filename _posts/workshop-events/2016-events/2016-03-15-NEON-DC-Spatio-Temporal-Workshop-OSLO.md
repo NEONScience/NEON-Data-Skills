@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "NEON/Data Carpentry - Spatio-Temporal Workshop - March 15-16, 2016 in Oslo, Norway"
+title: "NEON/Data Carpentry - Spatio-Temporal Workshop - Oslo, Norway"
 estimatedTime: 2 Day Workshop
 packagesLibraries: []
 date: 2016-03-15
@@ -24,6 +24,7 @@ comments: true
 ---
 
 <a href="http://pad.software-carpentry.org/2016-03-15-oslo-geo" target="_blank" class="btn">Click here to visit workshop Etherpad</a>
+
 <a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#workshop-schedule">Click here to view workshop schedule. </a>
 
 <div id="objectives" markdown="1">
@@ -50,10 +51,8 @@ Download all Graticules - Natural Earth Global Graticules Layer</a>
 
 ***
 
-### Set Working Directory
-
 Once you have downloaded the data, setup your working directory.
-<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#set-working-directory-1">Click here to view working directory setup.</a>
+<a href="{{ site.baseurl }}/workshop-event/NEON-Data-Carpentry-Spatio-Temporal-Oslo-03-15#set-working-directory">Click here to view working directory setup.</a>
 
 ****
 
@@ -73,7 +72,7 @@ that specializes in statistical computing. It is a powerful tool for exploratory
 <a href="http://www.rstudio.com/">RStudio</a>, an interactive development 
 environment (IDE). 
 
-#### If You Already Have R / RStudio Installed -- please update
+#### If You Already Have R/RStudio Installed -- please update
 
 If you already have R / RStudio installed on your laptop, please be sure that
 you are running the most current version of R-Studio, R AND all packages that 
@@ -111,15 +110,6 @@ the EML package is under development which is why the install occurs from GitHub
 
 * **eml** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
 
-
-
-
-
-### GDAL installation for MAC
-
-You may need to install GDAL in order for rgdal to work properly. <a href="https://www.youtube.com/watch?v=G6r46OhNlqw" target="_blank">Click here to watch a video on installing gdal
-using homebrew on your mac.</a> <a href="http://www.kyngchaos.com/software/frameworks" target="_blank">Or, you can visit THIS LINK to install GDAL 1.11 complete.</a>
-
 ### Make Sure R Packages Are Current 
 
 In RStudio, you can go to `Tools --> Check for package updates` to update already
@@ -127,8 +117,7 @@ installed libraries on your computer! Or, you can use <code>update.packages()</c
 to update all packages that are installed in R automatically. 
 
 [More on Packages in R.]({{site.baseurl}}R/Packages-In-R/)
-
-**** 
+***
 
 ## Install Bash
 
@@ -149,11 +138,76 @@ tasks more quickly.
 
 
 
+### Workshop Instructors
+* **Leah Wasser**; @leahawasser, Supervising Scientist, NEON, Inc 
+* **Michael Heeremans**
+* **Anne Claire Fouilloux**
+* **Arnstein Orten**
+* **Hans Peter Verne**
+
+Please get in touch with the instructors prior to the workshop with any questions.
+
+## #WorkWithData Hashtag
+  
+Please tweet using the hashtag:  **#WorkWithData**
+
+
+
+## SCHEDULE
+
+Please note that the schedule listed below may change depending upon the pace of the workshop! 
+
+## Day One
+
+| Time        | Topic         | Instructor | 
+|-------------|---------------|------------|
+| 8:00     | Please come early if you have any setup / installation issues |          |
+| 9:00     | <a href="http://arnsteio.github.io/short-shell-novice/" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
+| 10:30 | ------- Coffee / Tea BREAK ------- |      |
+| 10:45 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> | Michael    |
+| 11:30 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> | Michael     |
+| 12:00 - 1:00 PM     | Lunch |          |
+| 1:00     | <a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
+| 3:00 | ------- BREAK ------- |      |
+| 3:15     |<a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
+| 4:45     | Wrap-Up Day 1 |       |
+
+## Day Two
+
+| Time        | Topic         | Instructor | 
+|-------------|---------------|------------|
+| 9:00     | Questions From Previous Day |          |
+| 9:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> | Leah          |
+| 10:30 | ------ BREAK ------ |      |
+| 10:45 | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> | Leah |
+| 12:00 - 1:00 PM     | Lunch  |          |
+| 1:00 - 1:30 PM     | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data Management: Understanding Metadata  </a> |    Michael     |
+| 1:00     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
+| 3:00 | ------ BREAK ------ |      |
+| 3:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
+| 4:45     | Wrap-Up Day Two! |       |
+
+***
+
+## Additional Set Up Instructions
+
+
 {% include/wkSetup/_setup_R_Rstudio.html %}
 
 ***
 
 {% include/wkSetup/_setup_bash.html %}
+
+***
+
+### GDAL installation for MAC
+
+You may need to install GDAL in order for rgdal to work properly. Click 
+<a href="https://www.youtube.com/watch?v=G6r46OhNlqw" target="_blank">here to watch a video on installing gdal
+using homebrew on your Mac.</a>
+Or, you can visit 
+<a href="http://www.kyngchaos.com/software/frameworks" target="_blank">this link to install GDAL 1.11 complete.</a>
+
 
 ***
 
@@ -235,54 +289,3 @@ We will set up an R-Studio project within this working directory. <a href="https
 NOTE: we will setup an OSLO2015.Rproj file together at the beginning of the workshop.
 
 ***
-
-### Workshop Instructors
-* **[Leah Wasser](http://www.neonscience.org/about/staff/leah-wasser)**; @leahawasser, Supervising Scientist, NEON, Inc 
-* **Michael Heeremans**
-* **Anne Claire Fouilloux**
-* **Arnstein Orten**
-* **Hans Peter Verne**
-
-Please get in touch with the instructors prior to the workshop with any questions.
-
-## #WorkWithData Hashtag
-  
-Please tweet using the hashtag:
-  "#WorkWithData" during this workshop!
-
-
-
-## Workshop SCHEDULE
-
-Please note that the schedule listed below may change depending upon the pace of the workshop! 
-
-## Day One
-
-| Time        | Topic         | Instructor | 
-|-------------|---------------|------------|
-| 8:00     | Please come early if you have any setup / installation issues |          |
-| 9:00     | <a href="http://arnsteio.github.io/short-shell-novice/" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
-| 10:30 | ------- Coffee / Tea BREAK ------- |      |
-| 10:45 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> | Michael    |
-| 11:30 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> | Michael     |
-| 12:00 - 1:00 PM     | Lunch |          |
-| 1:00     | <a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
-| 3:00 | ------- BREAK ------- |      |
-| 3:15     |<a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
-| 4:45     | Wrap-Up Day 1 |       |
-
-## Day Two
-
-| Time        | Topic         | Instructor | 
-|-------------|---------------|------------|
-| 9:00     | Questions From Previous Day |          |
-| 9:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> | Leah          |
-| 10:30 | ------- BREAK ------- |      |
-| 10:45 | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> 
-| 12:00 - 1:00 PM     | Lunch  |          |
-Raster Data in R</a> | Leah     |
-| 1:00 - 1:30 PM     | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data Management: Understanding Metadata  </a> |    Michael     |
-| 1:00     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
-| 3:00 | ------- BREAK ------- |      |
-| 3:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
-| 4:45     | Wrap-Up Day Two!</a> |       |

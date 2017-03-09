@@ -1,11 +1,10 @@
 ---
 layout: workshop-event
-title: "NEON @ ESA: Work With Spatial Raster Data & Time Series in R - 7 August 2016"
+title: "NEON @ ESA: Work With Spatial Raster Data & Time Series in R"
 estimatedTime: 5-hour workshop
 date: 2016-08-07
 dateCreated: 2016-03-01
 lastModified: 2016-03-01
-startDate: 2016-08-07
 endDate: 2016-08-07
 authors: [Megan A. Jones]
 tags: []
@@ -104,7 +103,7 @@ If you would like further instruction please see the bottom of this page
 
 ### Workshop Instructors
 * **[Megan A. Jones](http://www.neonscience.org/about/staff/megan-jones)**; @meganahjones, Staff Scientist/Science Educator; NEON program, Battelle
-* **[Mike Patterson](http://www.neonscience.org/about/staff/mike-patterson)**; Science Technician & Geospatial Analyst; NEON program, Battelle
+* **Mike Patterson**; Science Technician & Geospatial Analyst; NEON program, Battelle
 * **[Tristan Goulden](http://www.neonscience.org/about/staff/tristan-goulden)**; Associate Scientist, Airborne Platform; NEON program, Battelle
 
 Please get in touch with the instructors prior to the workshop with any questions.
