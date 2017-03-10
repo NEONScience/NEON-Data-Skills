@@ -10,7 +10,7 @@ library(rgdal)
 
 # read in the NEON plot centroid data 
 # `stringsAsFactors=F` ensures character strings don't import as factors
-centroids <- read.csv("SJERPlotCentroids.csv", stringsAsFactors=FALSE)
+centroids <- read.csv("PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE)
 
 ## ----view-data-----------------------------------------------------------
 # view data structure

@@ -1,55 +1,72 @@
 ---
 layout: post
-title: "The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R"
-date: 2015-1-15 
-dateCreated: 2014-11-03 
-lastModified: 2015-07-23 
-authors: [Leah A. Wasser]
-categories: [self-paced-tutorial]
-category: self-paced-tutorial
-tags: [R, hyperspectral-remote-sensing, spatial-data-gis, remote-sensing]
-mainTag: spatial-data-gis
-librariesPackages: [raster, rgdal]
-description: "Learn about the key attributes needed to work with raster data in tools like R, Python and QGIS."
-code1: /R/2014-11-03-Working-With-Rasters-in-R-Python-GIS.R
+title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R"
+date:   2015-1-15
+dateCreated:   2014-11-03
+lastModified: 2017-03-09
+authors: Leah A. Wasser
+categories: [GIS-spatial-data]
+category: remote-sensing
+tags: [R, hyperspectral-remote-sensing,GIS-spatial-data]
+mainTag: GIS-spatial-data
+description: "Learn about the key attributes needed to work with raster data in 
+non-GUI programs. Examples in R."
+code1: /R/Raster-Res-Extent-Pixels.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
-  creditlink: 
+  creditlink: http://www.neonscience.org
 permalink: /GIS-spatial-data/Working-With-Rasters/
 comments: true
 ---
 
 {% include _toc.html %}
 
+<div id="objectives" markdown="1">
 
-<div id="objectives">
+# Tutorial Objectives:
 
-<h3>Goals / Objectives</h3>
+After completing this activity, you will be able to:
 
-After completing this activity, you will:
-<ol>
-<li>Know the key attributes required to work with raster data including: spatial 
-extent, coordinate reference system and spatial resolution.</li>
-<li>Understand what a spatial extent is and how it relates to resolution.</li>
-<li>Understand the basics of coordinate reference systems.</li>
-</ol>
+* Explain the key attributes required to work with raster data including: spatial 
+extent, coordinate reference system and spatial resolution.
+* Describe what a spatial extent is and how it relates to resolution.
+* Explain the basics of coordinate reference systems.
 
-<h3>R Libraries to Install:</h3>
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
 <ul>
 <li><strong>raster:</strong> <code> install.packages("raster")</code></li>
 <li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
-
 </ul>
+
+### Data to Download
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+<p>The LiDAR and imagery data used to create the rasters in this dataset were 
+collected over the San Joaquin field site located in California (NEON Domain 17) 
+and processed at <a href="http://www.neonscience.org" target="_blank" >NEON </a> 
+headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
+
+This data download contains several files used in related tutorials. The path to 
+the files we will be using in this tutorial is:
+NEON-DS-Field-Site-Spatial-Data/SJER/.  
+You should set this `SJER` directory as your working directory. 
+
 </div>
 
-### Getting Started
+
 This activity will overview the key attributes of a raster object, including spatial extent, resolution and coordinate reference system. When working within
 a GIS system often these attributes are accounted for. However, it is important
-to be more familiar with them when working in non-gui environments such as 
+to be more familiar with them when working in non-GUI environments such as 
  `R` or even `Python`.
 
-In order to correctly spatially refence a raster that is not already georeferenced,
+In order to correctly spatially reference a raster that is not already georeferenced,
 you will also need to identify:
 
 1. The lower left hand corner coordinates of the raster.
@@ -68,33 +85,37 @@ the image represents a 1 m x 1 m area.
     <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell 
     in meters. This size in turn relates to the area on the ground that the pixel 
-    represents.</figcaption>
+    represents. Source: National Ecological Observatory Network (NEON) </figcaption>
 </figure>
 
 <figure>
     <img src="{{ site.baseurl }}/images/spatialData/raster1.png">
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
-    extent with fewer pixels will look more blury and will be of lower resolution.
+    extent with fewer pixels will look more blury and will be of lower resolution. 
+    Source: National Ecological Observatory Network (NEON)
     </figcaption>
 </figure>
 
-Let's open up a raster in `R` to see how the attributes are stored.
+## Load the Data
+
+Let's open up a raster in `R` to see how the attributes are stored. We are 
+going to work with a Digital Terrain Model from the San Joaquin Experimental 
+Range in California. 
 
 
-    #load raster library
-    library(raster)
+    # load packages 
+    library(raster)  
     library(rgdal)
     
     # Load raster in an R object called 'DEM'
     DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
     
+    # set working directory to data folder
+    #setwd("pathToDirHere")
+
+
     # View raster attributes 
-    # Note that this raster (in geotiff format) already has an extent, resolution, 
-    # CRS defined
-    #note that the resolution in both x and y directions is 1. The CRS tells us that
-    #the units of the data are meters (m)
-    
     DEM
 
     ## class       : RasterLayer 
@@ -102,9 +123,12 @@ Let's open up a raster in `R` to see how the attributes are stored.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/law/Documents/1_Workshops/ESA_2015/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
+Note that this raster (in GeoTIFF format) already has an extent, resolution, and 
+CRS defined. The resolution in both x and y directions is 1. The CRS tells us 
+that the x,y units of the data are meters (m). 
 
 ## Spatial Extent
 The spatial extent of a raster, represents the "X, Y" coordinates of the corners 
@@ -179,7 +203,7 @@ Let's explore that next.
 
     plot(myRaster1, main="Raster with 16 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/create-raster-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/create-raster-1.png)
 
 We can resample the raster as well to adjust the resolution. If want a higher
 resolution raster, we will apply a grid with MORE pixels within the same extent.
@@ -202,7 +226,7 @@ within the same extent.
 
     plot(myRaster2, main="Raster with 32 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/resample-raster-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-1.png)
 
     myRaster3 <- raster(nrow=2, ncol=2)
     myRaster3 <- resample(myRaster1, myRaster3, method='bilinear')
@@ -219,7 +243,7 @@ within the same extent.
 
     plot(myRaster3, main="Raster with 4 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/resample-raster-2.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-2.png)
 
     myRaster4 <- raster(nrow=1, ncol=1)
     myRaster4 <- resample(myRaster1, myRaster4, method='bilinear')
@@ -237,7 +261,7 @@ within the same extent.
 
     plot(myRaster4, main="Raster with 1 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/resample-raster-3.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-3.png)
 
     #let's create a layout with 4 rasters in it
     #notice that each raster has the SAME extent but is of different resolution
@@ -248,7 +272,7 @@ within the same extent.
     plot(myRaster3, main="Raster with 4 pixels")
     plot(myRaster4, main="Raster with 2 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/resample-raster-4.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-4.png)
 
 
 <figure>
@@ -267,7 +291,7 @@ within the same extent.
     that the file is in (see below). </figcaption>
 </figure>
 
-## Coordinate Reference System / Projection Information
+## Coordinate Reference System & Projection Information
 
 > A spatial reference system (SRS) or coordinate reference system (CRS) is a 
 coordinate-based local, regional or global system used to locate geographical 
@@ -446,7 +470,7 @@ in UTM (meters). Let's define the rasters extent.
     par(mfrow=c(1,1))
     plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
-![ ]({{ site.baseurl }}/images/rfigs/2014-11-03-Working-With-Rasters-in-R-Python-GIS/define-extent-1.png) 
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/define-extent-1.png)
 
 ### Challenges
 * Resample `rasterNoProj` from 1 meter to 10 meter resolution. Plot it next to the 1 m 
@@ -503,7 +527,6 @@ IMPORTANT: the above code does NOT REPROJECT the raster. It simply defines the
 Coordinate Reference System based upon the CRS of another raster. If you want to
 actually CHANGE the CRS of a raster, you need to use the `projectRaster` function.
 
-
 ## Challenge
 1. You can set the CRS and extent of a raster using the syntax 
 `rasterWithoutReference@crs <- rasterWithReference@crs` and 
@@ -529,6 +552,7 @@ extent and the raster resolution?
     r[]  <- 1
     r[]  <- sample(0:50,25)
     r
+
 
 ## Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 

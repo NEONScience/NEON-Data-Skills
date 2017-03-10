@@ -4,7 +4,7 @@ title: "Raster Data in R - The Basics"
 date:   2015-1-26
 authors: Leah A. Wasser
 dateCreated:  2014-11-26
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+lastModified: 2017-03-09
 categories: [Coding and Informatics]
 category: coding-and-informatics
 tags: [hyperspectral-remote-sensing,R,GIS-spatial-data]
@@ -99,29 +99,32 @@ allow us to export rasters to GeoTIFF format.
 
 Once installed we can load the packages and start working with raster data. 
 
-```{r load-libraries }
 
-# load the raster, sp, and rgdal packages
-library(raster)
-library(sp)
-library(rgdal)
-
-# set working directory to data folder
-#setwd("pathToDirHere")
-
-```	
+    # load the raster, sp, and rgdal packages
+    library(raster)
+    library(sp)
+    library(rgdal)
+    
+    # set working directory to data folder
+    #setwd("pathToDirHere")
 
 Next, let's load a raster containing elevation data into our environment. And
 look at the attributes. 
 
-```{r load-raster}
-# load raster in an R object called 'DEM'
-DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")
 
-# look at the raster attributes. 
-DEM
+    # load raster in an R object called 'DEM'
+    DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")
+    
+    # look at the raster attributes. 
+    DEM
 
-```	
+    ## class       : RasterLayer 
+    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## names       : SJER2013_DTM
 
 Notice a few things about this raster. 
 
@@ -145,15 +148,21 @@ Now that we have the raster loaded into R, let's grab some key raster attributes
 By default this raster doesn't have the min or max values associated with it's attributes
 Let's change that by using the `setMinMax()` function. 
 
-```{r set-min-max}
 
-# calculate and save the min and max values of the raster to the raster object
-DEM <- setMinMax(DEM)
+    # calculate and save the min and max values of the raster to the raster object
+    DEM <- setMinMax(DEM)
+    
+    # view raster attributes
+    DEM
 
-# view raster attributes
-DEM
-
-```
+    ## class       : RasterLayer 
+    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## names       : SJER2013_DTM 
+    ## values      : 228.1, 518.66  (min, max)
 
 Notice the `values` is now part of the attributes and shows the min and max values
 for the pixels in the raster. What these min and max values represent depends on
@@ -162,23 +171,31 @@ what is represented by each pixel in the raster.
 You can also view the rasters min and max values and the range of values contained
 within the pixels.
 
-```{r get-min-max}
 
-#Get min and max cell values from raster
-#NOTE: this code may fail if the raster is too large
-cellStats(DEM, min)
-cellStats(DEM, max)
-cellStats(DEM, range)
+    #Get min and max cell values from raster
+    #NOTE: this code may fail if the raster is too large
+    cellStats(DEM, min)
 
-```
+    ## [1] 228.1
+
+    cellStats(DEM, max)
+
+    ## [1] 518.66
+
+    cellStats(DEM, range)
+
+    ## [1] 228.10 518.66
 
 ### View CRS
 First, let's consider the Coordinate Reference System (CRS). 
 
-``` {r crs}
-#view coordinate reference system
-DEM@crs
-```
+
+    #view coordinate reference system
+    DEM@crs
+
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
+    ## +towgs84=0,0,0
 
 This raster is located in UTM Zone 11. 
 
@@ -193,11 +210,15 @@ This raster is located in UTM Zone 11.
 If you want to know the exact boundaries of your raster that is in the `extent` 
 slot. 
 
-``` {r view-extent}
-# view raster extent
-DEM@extent
 
-```
+    # view raster extent
+    DEM@extent
+
+    ## class       : Extent 
+    ## xmin        : 254570 
+    ## xmax        : 258869 
+    ## ymin        : 4107302 
+    ## ymax        : 4112362
 
 ### Raster Pixel Values
 
@@ -211,14 +232,13 @@ elevation data about our area of interest. In this case the units are meters.
 
 This is an easy and quick data checking tool. Are there any totally weird values?
 
-```{r histogram}
 
-# the distribution of values in the raster
-hist(DEM, main="Distribution of elevation values", 
-     col= "purple", 
-     maxpixels=22000000)
+    # the distribution of values in the raster
+    hist(DEM, main="Distribution of elevation values", 
+         col= "purple", 
+         maxpixels=22000000)
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/histogram-1.png)
 
 It looks like we have a lot of land around 325m and 425m. 
 
@@ -227,33 +247,36 @@ It looks like we have a lot of land around 325m and 425m.
 Let's take a look at our raster now that we know a bit more about it. We can do
 a simple plot with the `plot()` function. 
 
-```{r plot-raster}
 
-# plot the raster
-# note that this raster represents a small region of the NEON SJER field site
-plot(DEM, 
-		 main="Digital Elevation Model, SJER") # add title with main
-```
+    # plot the raster
+    # note that this raster represents a small region of the NEON SJER field site
+    plot(DEM, 
+    		 main="Digital Elevation Model, SJER") # add title with main
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/plot-raster-1.png)
 
 R has an `image()` function that allows you to control the way a raster is
 rendered on the screen. The `plot()` function in R has a base setting for the number
 of pixels that it will plot (100,000 pixels). The image command thus might be 
 better for rendering larger rasters.
 
-```{r PlotRaster}
 
-# create a plot of our raster
-image(DEM)
+    # create a plot of our raster
+    image(DEM)
 
-# specify the range of values that you want to plot in the DEM
-# just plot pixels between 250 and 300 m in elevation
-image(DEM, zlim=c(250,300))
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-1.png)
 
-# we can specify the colors too
-col <- terrain.colors(5)
-image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
+    # specify the range of values that you want to plot in the DEM
+    # just plot pixels between 250 and 300 m in elevation
+    image(DEM, zlim=c(250,300))
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-2.png)
+
+    # we can specify the colors too
+    col <- terrain.colors(5)
+    image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-3.png)
 
 ### Plotting with Colors
 
@@ -289,53 +312,54 @@ range of values in the data. In our case, our DEM has values between 250 and 500
 However, we can adjust the "breaks" which represent the numeric locations where 
 the colors change if we want too.
 
-```{r plot-with-breaks }
 
-# add a color map with 5 colors
-col=terrain.colors(5)
+    # add a color map with 5 colors
+    col=terrain.colors(5)
+    
+    # add breaks to the colormap (6 breaks = 5 segments)
+    brk <- c(250, 300, 350, 400,450,500)
+    
+    plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
-# add breaks to the colormap (6 breaks = 5 segments)
-brk <- c(250, 300, 350, 400,450,500)
-
-plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/plot-with-breaks-1.png)
 
 We can also customize the legend appearance. 
 
-``` {r legend-play}
-# First, expand right side of clipping rectangle to make room for the legend
-# turn xpd off
-par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
 
-# Second, plot w/ no legend
-plot(DEM, col=col, breaks=brk, main="DEM with a Custom (but flipped) Legend", legend = FALSE)
+    # First, expand right side of clipping rectangle to make room for the legend
+    # turn xpd off
+    par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
+    
+    # Second, plot w/ no legend
+    plot(DEM, col=col, breaks=brk, main="DEM with a Custom (but flipped) Legend", legend = FALSE)
+    
+    # Third, turn xpd back on to force the legend to fit next to the plot.
+    par(xpd = TRUE)
+    
+    # Fourth, add a legend - & make it appear outside of the plot
+    legend(par()$usr[2], 4110600,
+            legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
+            fill = col)
 
-# Third, turn xpd back on to force the legend to fit next to the plot.
-par(xpd = TRUE)
-
-# Fourth, add a legend - & make it appear outside of the plot
-legend(par()$usr[2], 4110600,
-        legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
-        fill = col)
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/legend-play-1.png)
 
 Notice that the legend is in reverse order in the previous plot. Let’s fix that.
 We need to both reverse the order we have the legend laid out and reverse the 
 the color fill with the `rev()` colors. 
 
-``` {r flip-legend}
-# Expand right side of clipping rect to make room for the legend
-par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
-#DEM with a custom legend
-plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
-#turn xpd back on to force the legend to fit next to the plot.
-par(xpd = TRUE)
-#add a legend - but make it appear outside of the plot
-legend( par()$usr[2], 4110600,
-        legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
-        fill = rev(col))
-```
+
+    # Expand right side of clipping rect to make room for the legend
+    par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+    #DEM with a custom legend
+    plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
+    #turn xpd back on to force the legend to fit next to the plot.
+    par(xpd = TRUE)
+    #add a legend - but make it appear outside of the plot
+    legend( par()$usr[2], 4110600,
+            legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
+            fill = rev(col))
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/flip-legend-1.png)
 
 Try the code again but only make one of the changes -- reverse order or reverse
 colors-- what happens? 
@@ -346,15 +370,14 @@ slope or some other error.
 
 We can add a custom color map with fewer breaks as well.
 
-```{r add-color-map }
 
-#add a color map with 4 colors
-col=terrain.colors(4)
-#add breaks to the colormap (6 breaks = 5 segments)
-brk <- c(200, 300, 350, 400,500)
-plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
+    #add a color map with 4 colors
+    col=terrain.colors(4)
+    #add breaks to the colormap (6 breaks = 5 segments)
+    brk <- c(200, 300, 350, 400,500)
+    plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/add-color-map-1.png)
 
 A discrete dataset has a set of unique categories or classes. One example could 
 be land use classes. The example below shows elevation zones generated using the 
@@ -371,16 +394,25 @@ same DEM.
 We can also perform calculations on our raster. For instance, we could multiply
 all values within the raster by 2.
 
-```{r raster-math}
 
-#multiple each pixel in the raster by 2
-DEM2 <- DEM * 2
+    #multiple each pixel in the raster by 2
+    DEM2 <- DEM * 2
+    
+    DEM2
 
-DEM2
-#plot the new DEM
-plot(DEM2, main="DEM with all values doubled")
+    ## class       : RasterLayer 
+    ## dimensions  : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : in memory
+    ## names       : SJER2013_DTM 
+    ## values      : 456.2, 1037.32  (min, max)
 
-```
+    #plot the new DEM
+    plot(DEM2, main="DEM with all values doubled")
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/raster-math-1.png)
 
 
 ## Cropping Rasters in R
@@ -396,34 +428,30 @@ box to begin.
 You'll see a red box on the plot. NOTE that this is a manual process that can be
 used to quickly define a crop extent.
 
-```{r cropDEM, eval=FALSE}
 
-#plot the DEM
-plot(DEM)
-#Define the extent of the crop by clicking on the plot
-cropbox1 <- drawExtent()
-#crop the raster, then plot the new cropped raster
-DEMcrop1 <- crop(DEM, cropbox1)
-
-#plot the cropped extent
-plot(DEMcrop1)
-
-```
+    #plot the DEM
+    plot(DEM)
+    #Define the extent of the crop by clicking on the plot
+    cropbox1 <- drawExtent()
+    #crop the raster, then plot the new cropped raster
+    DEMcrop1 <- crop(DEM, cropbox1)
+    
+    #plot the cropped extent
+    plot(DEMcrop1)
 
 You can also manually assign the extent coordinates to be used to crop a raster. 
 We'll need the extent defined as (`xmin`, `xmax`, `ymin` , `ymax`) to do this. 
 This is how we'd crop using a GIS shapefile (with a rectangular shape)
 
-```{r cropDEMManual}
 
-#define the crop extent
-cropbox2 <-c(255077.3,257158.6,4109614,4110934)
-#crop the raster
-DEMcrop2 <- crop(DEM, cropbox2)
-#plot cropped DEM
-plot(DEMcrop2)
+    #define the crop extent
+    cropbox2 <-c(255077.3,257158.6,4109614,4110934)
+    #crop the raster
+    DEMcrop2 <- crop(DEM, cropbox2)
+    #plot cropped DEM
+    plot(DEMcrop2)
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/cropDEMManual-1.png)
  
 
 
@@ -440,25 +468,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 `low elevation`. 
 </div>
 
-```  {r challenge-code-name, include=TRUE, results="hide", echo=FALSE}
-
-# load raster in an R object called 'DEM'
-DSM <- raster("DigitalSurfaceModel/SJER2013_DSM.tif")
-
-# convert from m to ft
-DSM2 <- DSM * 3.3
-
-DSM2
-
-#add a color map with 3 colors
-col=terrain.colors(3)
-
-
-#add breaks to the colormap (6 breaks = 5 segments)
-brk <- c(700, 1050, 1450, 1800)
-plot(DSM2, col=col, breaks=brk, main="Digital Surface Model, SJER (ft)")
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/challenge-code-name-1.png)
 
 
 ## Image (RGB) Data in R
