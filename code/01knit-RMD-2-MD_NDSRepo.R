@@ -23,7 +23,7 @@ gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
 add.date <- "2014-10-29-"
 
 # set working dir - this is where the data are located
-wd <- "~/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids"
+wd <- "~/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/"
 
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
