@@ -3,20 +3,20 @@ layout: post
 title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R"
 date:   2015-1-15
 dateCreated:   2014-11-03
-lastModified: 2017-03-09
+lastModified: 2017-03-10
 authors: Leah A. Wasser
-categories: [GIS-spatial-data]
-category: remote-sensing
-tags: [R, hyperspectral-remote-sensing,GIS-spatial-data]
-mainTag: GIS-spatial-data
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [R, hyperspectral-remote-sensing,spatial-data-gis]
+mainTag: spatial-data-gis
 description: "Learn about the key attributes needed to work with raster data in 
 non-GUI programs. Examples in R."
-code1: /R/Raster-Res-Extent-Pixels.R
+code1: /SPATIALDATA/Raster-Res-Extent-Pixels.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
-permalink: /GIS-spatial-data/Working-With-Rasters/
+permalink: /GIS-spatial-data/Working-With-Rasters
 comments: true
 ---
 
@@ -149,32 +149,42 @@ extent of a new raster.
     ## ymax        : 4112362
 
 
-
 <figure>
     <img src="{{ site.baseurl }}/images/spatialData/raster2.png">
     <figcaption>If you double the extent value of a raster - the pixels will be
-    stretched over the larger area making it look more "blury".
+    stretched over the larger area making it look more "blury".  Source: National
+    Ecological Observatory Network (NEON)
     </figcaption>
 </figure>
 
 ### Calculating Raster Extent
 Extent and spatial resolution are closely connected. To calculate the extent of a 
-raster, we first need the bottom LEFT HAND (X,Y) coordinate of the raster. In 
+raster, we first need the bottom **left hand** (X,Y) coordinate of the raster. In 
 the case of the UTM coordinate system which is in meters, to calculate
 the raster's extent, we can add the number of columns and rows to the X,Y corner 
 coordinate location of the raster, multiplied by the resolution (the pixel size) 
 of the raster.
 
-Let's explore that next.
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png">
+    <img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
+   
+    <figcaption>To be located geographically, a raster's location needs to be 
+    defined in geographic space (i.e., on a spatial grid). The spatial extent 
+    defines the four corners of a raster within a given coordinate reference 
+    system. Source: National Ecological Observatory Network. </figcaption>
+</figure>
+
+Let's explore that next, using a blank raster that we create. 
 
 
-    #create a raster from the matrix
+    # create a raster from the matrix - a "blank" raster of 4x4
     myRaster1 <- raster(nrow=4, ncol=4)
     
-    #assign some random data to the raster
+    # assign "data" to raster: 1 to n based on the number of cells in the raster
     myRaster1[]<- 1:ncell(myRaster1)
     
-    #view attributes of the raster
+    # view attributes of the raster
     myRaster1
 
     ## class       : RasterLayer 
@@ -186,13 +196,19 @@ Let's explore that next.
     ## names       : layer 
     ## values      : 1, 16  (min, max)
 
-    #is the CRS defined?
+    # is the CRS defined?
     myRaster1@crs
 
     ## CRS arguments:
     ##  +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0
 
-    #what are the data extents?
+Wait, why is the CRS defined on this new raster? This is the default values
+for something created with the `raster()` function if nothing is defined. 
+
+Let's get back to looking at more attributes. 
+
+
+    # what is the raster extent?
     myRaster1@extent
 
     ## class       : Extent 
@@ -201,18 +217,33 @@ Let's explore that next.
     ## ymin        : -90 
     ## ymax        : 90
 
+    # plot raster
     plot(myRaster1, main="Raster with 16 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/create-raster-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/create-raster-cont-1.png)
 
-We can resample the raster as well to adjust the resolution. If want a higher
-resolution raster, we will apply a grid with MORE pixels within the same extent.
-If we want a LOWER resolution raster, we will apply a grid with LESS pixels
+Here we see our raster with the value of 1 to 16 in each pixel. 
+
+We can resample the raster as well to adjust the resolution. If we want a **higher
+resolution** raster, we will apply a grid with **more pixels** within the same extent.
+If we want a **lower resolution** raster, we will apply a grid with **fewer pixels**
 within the same extent.
 
+One way to do this is to create a raster of the resolution you want and then 
+`resample()` your original raster. The resampling will be done for either
+nearest neighbor assignments (for categorical data) or bilinear interpolation (for
+numerical data). 
 
+
+    ## HIGHER RESOLUTION
+    # Create 32 pixel raster
     myRaster2 <- raster(nrow=8, ncol=8)
+    
+    # resample 16 pix raster with 32 pix raster
+    # use bilinear interpolation with our numeric data
     myRaster2 <- resample(myRaster1, myRaster2, method='bilinear')
+    
+    # notice new dimensions, resolution, & min/max 
     myRaster2
 
     ## class       : RasterLayer 
@@ -224,10 +255,12 @@ within the same extent.
     ## names       : layer 
     ## values      : -0.25, 17.25  (min, max)
 
+    # plot 
     plot(myRaster2, main="Raster with 32 pixels")
 
 ![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-1.png)
 
+    ## LOWER RESOLUTION
     myRaster3 <- raster(nrow=2, ncol=2)
     myRaster3 <- resample(myRaster1, myRaster3, method='bilinear')
     myRaster3
@@ -245,9 +278,9 @@ within the same extent.
 
 ![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-2.png)
 
+    ## SINGLE PIXEL RASTER
     myRaster4 <- raster(nrow=1, ncol=1)
     myRaster4 <- resample(myRaster1, myRaster4, method='bilinear')
-    
     myRaster4
 
     ## class       : RasterLayer 
@@ -259,36 +292,36 @@ within the same extent.
     ## names       : layer 
     ## values      : 7.666667, 7.666667  (min, max)
 
-    plot(myRaster4, main="Raster with 1 pixels")
+    plot(myRaster4, main="Raster with 1 pixel")
 
 ![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-3.png)
 
-    #let's create a layout with 4 rasters in it
-    #notice that each raster has the SAME extent but is of different resolution
-    #because it has a different number of pixels spread out over the same extent.
+To more easily compare them, let's create a graphic layout with 4 rasters in it. 
+Notice that each raster has the same extent but each a different resolution 
+because it has a different number of pixels spread out over the same extent.
+
+
+    # change graphical parameter to 2x2 grid
     par(mfrow=c(2,2))
+    
+    # arrange plots in order you wish to see them
     plot(myRaster2, main="Raster with 32 pixels")
     plot(myRaster1, main="Raster with 16 pixels")
     plot(myRaster3, main="Raster with 4 pixels")
     plot(myRaster4, main="Raster with 2 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-4.png)
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/quad-layout-1.png)
 
+    # change graphical parameter back to 1x1 
+    par(mfrow=c(1,1))
 
-<figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/sat_image_corners.png"></a>
-   
-    <figcaption>To be located geographically, the image's location needs to be 
-    defined in geographic space (on a spatial grid). The spatial extent defines 
-    the 4 corners of a raster within a given coordinate reference system.</figcaption>
-</figure>
+#### Extent & Coordinate Reference Systems
+
 <figure>
   <a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png">
   <img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
-    
     <figcaption>The X and Y min and max values relate to the coordinate system 
-    that the file is in (see below). </figcaption>
+    that the file is in, see below. </figcaption>
 </figure>
 
 ## Coordinate Reference System & Projection Information
@@ -312,14 +345,12 @@ have the same dataset saved in two different projections, these two files won't
 line up correctly when rendered together.
 
 <figure>
-    <a href="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
-    <img src="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
-    </a>
-    
+    <a href="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg"></a>
     <figcaption>Maps of the United States in different projections. Notice the 
     differences in shape associated with each different projection. These 
     differences are a direct result of the calculations used to "flatten" the 
-    data onto a 2 dimensional map. Source: opennews.org</figcaption>
+    data onto a 2 dimensional map. Source: M. Corey, opennews.org</figcaption>
 </figure>
 
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
@@ -343,54 +374,60 @@ For a library of CRS information:
 <a href="http://spatialreference.org/ref/epsg/" target="_blank">A great online 
 library of CRS information.</a>
 
+## CRS proj4 Strings
+
+The rgdal package has all the common ESPG codes with proj4string built in. We 
+can see them by creating an object of the function `make_ESPG()`. 
 
 
-## CRS Strings
-
-
-    library('rgdal')
+    # make sure you loaded rgdal package at the top of your script
+    
+    # create an object with all ESPG codes
     epsg = make_EPSG()
+    
+    # use View(espg) to see the full table - doesn't render on website well
     #View(epsg)
-    head(epsg)
+    
+    # View top 5 entries
+    head(epsg, 5)
 
-    ##   code                                               note
-    ## 1 3819                                           # HD1909
-    ## 2 3821                                            # TWD67
-    ## 3 3824                                            # TWD97
-    ## 4 3889                                             # IGRS
-    ## 5 3906                                         # MGI 1901
-    ## 6 4001 # Unknown datum based upon the Airy 1830 ellipsoid
+    ##   code       note
+    ## 1 3819   # HD1909
+    ## 2 3821    # TWD67
+    ## 3 3824    # TWD97
+    ## 4 3889     # IGRS
+    ## 5 3906 # MGI 1901
     ##                                                                                            prj4
     ## 1 +proj=longlat +ellps=bessel +towgs84=595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408 +no_defs
     ## 2                                                         +proj=longlat +ellps=aust_SA +no_defs
     ## 3                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
     ## 4                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
     ## 5                            +proj=longlat +ellps=bessel +towgs84=682,-203,480,0,0,0,0 +no_defs
-    ## 6                                                            +proj=longlat +ellps=airy +no_defs
 
 
 ### Define the extent
 
-In the above example, we created a raster object in R. R defaulted to a global
-lat/long extent. We can define the exact extent that we need to use too. Let's
-modify the extent. 
+In the above raster example, we created several simple raster objects in R. 
+R defaulted to a global lat/long extent. We can define the exact extent that we 
+need to use too. 
 
-In this example, we know that our data are in UTM zone 11N just like our DEM that
-we imported above was. We also know that the left hand corner coordinate of the raster
-is:  
+Let's create a new raster with the same projection as our original DEM. We know 
+that our data are in UTM zone 11N. For the sake of this exercise, let say we 
+want to create a raster with the left hand corner coordinate at:  
 
 * xmin = 254570
 * ymin = 4107302
 
-The resolution of this dataset is `1 meter` and we will be working
-in UTM (meters). Let's define the rasters extent.
+The resolution of this new raster will be `1 meter` and we will be working
+in UTM (meters). Let's define the new raster's extent.
 
 
-    #create a raster from the matrix
+    # create the base matrix
     newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
     
     #create a raster from the matrix
     rasterNoProj <- raster(newMatrix)
+    
     rasterNoProj
 
     ## class       : RasterLayer 
@@ -402,11 +439,13 @@ in UTM (meters). Let's define the rasters extent.
     ## names       : layer 
     ## values      : 1, 8  (min, max)
 
-    #Define the xmin and y min (the lower left hand corner of the raster)
+    ## Define the xmin and y min (the lower left hand corner of the raster)
+    
+    # 1. define xMin & yMin objects.
     xMin = 254570
     yMin = 4107302
     
-    # we can grab the cols and rows for the raster using @ncols and @nrows
+    # 2. grab the cols and rows for the raster using @ncols and @nrows
     rasterNoProj@ncols
 
     ## [1] 20
@@ -415,15 +454,15 @@ in UTM (meters). Let's define the rasters extent.
 
     ## [1] 10
 
-    # define the resolution
-    res=1.0
+    # 3. define the resolution
+    res <- 1.0
     
-    # If we add the numbers of cols and rows to the x,y corner location, we get the
-    #bounds of our raster extent. 
+    # 4. add the numbers of cols and rows to the x,y corner location, 
+    # result = we get the bounds of our raster extent. 
     xMax <- xMin + (myRaster1@ncols * res)
     yMax <- yMin + (myRaster1@nrows * res)
     
-    #create a raster extent class
+    # 5.create a raster extent class
     rasExt <- extent(xMin,xMax,yMin,yMax)
     rasExt
 
@@ -433,8 +472,10 @@ in UTM (meters). Let's define the rasters extent.
     ## ymin        : 4107302 
     ## ymax        : 4107306
 
-    #finally apply the extent to our raster
+    # 6. apply the extent to our raster
     rasterNoProj@extent <- rasExt
+    
+    # Did it work? 
     rasterNoProj
 
     ## class       : RasterLayer 
@@ -446,7 +487,7 @@ in UTM (meters). Let's define the rasters extent.
     ## names       : layer 
     ## values      : 1, 8  (min, max)
 
-    #view extent only
+    # or view extent only
     rasterNoProj@extent
 
     ## class       : Extent 
@@ -455,56 +496,59 @@ in UTM (meters). Let's define the rasters extent.
     ## ymin        : 4107302 
     ## ymax        : 4107306
 
-    #Now we have an extent associated with our raster which places it in space!
-    rasterNoProj
+Now we have an extent associated with our raster which places it in space!
 
-    ## class       : RasterLayer 
-    ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
-    ## resolution  : 0.2, 0.4  (x, y)
-    ## extent      : 254570, 254574, 4107302, 4107306  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : NA 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 1, 8  (min, max)
 
-    par(mfrow=c(1,1))
+    # plot new raster
     plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/define-extent-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/plot-raster-our-extent-1.png)
 
-### Challenges
+Notice that the coordinates show up on our plot now. 
+
+<div id="challenge" markdown="1">
+## Challenges: Resample Rasters
+
+Now apply your skills in a new way! 
+
 * Resample `rasterNoProj` from 1 meter to 10 meter resolution. Plot it next to the 1 m 
 resolution raster. Use: `par(mfrow=c(1,2))` to create side by side plots.
 * What happens to the extent if you change the resolution to 1.5 when calculating 
 the raster's extent properties??
 
-## Define projection of a raster
+</div>
 
-We can define the projection of a raster that has a KNOWN CRS already. Sometimes
-we download data that have projection information associated with them BUT the CRS
-is not defined either in the Geotiff tags or in the raster itself. If this is the 
+## Define Projection of a Raster
+
+We can define the projection of a raster that has a known CRS already. Sometimes
+we download data that have projection information associated with them but the CRS
+is not defined either in the GeoTIFF tags or in the raster itself. If this is the 
 case, we can simply assign the raster the correct projection. 
 
-Be CAREFUL doing this - it is not the same thing as REPROJECTING your data.
+**Be careful doing this** - it is **not** the same thing as reprojecting your data.
+
+Let's define the projection for our newest raster using the DEM raster that 
+already has defined CRS. NOTE: in this case we have to know that our raster is 
+in this projection already so we don't run the risk of assigning the wrong projection
+to the data.
 
 
-    #let's define the projection for our data using the DEM raster that already has 
-    #defined CRS.
-    #NOTE: in this case we have to KNOW that our raster is in this projection already!
+    # view CRS from raster of interest
     rasterNoProj@crs
 
     ## CRS arguments: NA
 
-    #view the crs of our DEM object.
+    # view the CRS of our DEM object.
     DEM@crs
 
     ## CRS arguments:
     ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
     ## +towgs84=0,0,0
 
-    #define the CRS using a CRS of another raster
-    rasterNoProj@crs  <- DEM@crs
-    #look at the attributes
+    # define the CRS using a CRS of another raster
+    rasterNoProj@crs <- DEM@crs
+    
+    # look at the attributes
     rasterNoProj
 
     ## class       : RasterLayer 
@@ -516,43 +560,65 @@ Be CAREFUL doing this - it is not the same thing as REPROJECTING your data.
     ## names       : layer 
     ## values      : 1, 8  (min, max)
 
-    #view just the crs
+    # view just the crs
     rasterNoProj@crs
 
     ## CRS arguments:
     ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
     ## +towgs84=0,0,0
 
-IMPORTANT: the above code does NOT REPROJECT the raster. It simply defines the
+IMPORTANT: the above code **does not reproject** the raster. It simply defines the
 Coordinate Reference System based upon the CRS of another raster. If you want to
-actually CHANGE the CRS of a raster, you need to use the `projectRaster` function.
+actually change the CRS of a raster, you need to use the `projectRaster` function.
 
-## Challenge
-1. You can set the CRS and extent of a raster using the syntax 
+
+<div id="challenge" markdown="1">
+
+## Challenge: Assign CRS
+
+You can set the CRS and extent of a raster using the syntax 
 `rasterWithoutReference@crs <- rasterWithReference@crs` and 
-`rasterWithoutReference@extent <- rasterWithReference@extent`. Open `band90.tif` in the 
-`rasterLayers_tif` folder of your working directory. You might want to look at it in 
-<a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a> first compared to the other rasters. 
-Does it line up? Look closely at the extent and pixel size. Does anything look off? 
-Fix what's missing. Export a new geotiff. Do things line up in 
-<a href="http://www.qgis.org/en/site/" target="_blank">QGIS?</a>
-2. The code below creates a raster and seeds it with some data. Experiment with the code. 
-What happens to the resulting raster's resolution when you change the range of lat and 
-long values to 5 instead of 10? Try 20, 50 and 100? What is the relationship between the 
-extent and the raster resolution?
+`rasterWithoutReference@extent <- rasterWithReference@extent`. Using this information: 
 
-**Code Sample:**
+* open `band90.tif` in the `rasterLayers_tif` folder and plot it. (You could consider looking
+at it in <a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a> first 
+to compare it to the other rasters.)  
+* Does it line up with our DEM? Look closely at the extent and pixel size. Does anything look off? 
+* Fix what is missing. 
+* (Advanced step) Export a new GeoTIFF Do things line up in 
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS?</a>
+
+The code below creates a raster and seeds it with some data. Experiment with the 
+code. 
+
+* What happens to the resulting raster's resolution when you change the range 
+of lat and long values to 5 instead of 10? Try 20, 50 and 100? 
+* What is the relationship between the extent and the raster resolution?
+
 
     latLong <- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
-    #make spatial points dataframe, which will have a spatial extent
+    
+    # make spatial points dataframe, which will have a spatial extent
     sp <- SpatialPoints( latLong[ c("longitude" , "latitude") ], proj4string = CRS("+proj=longlat +datum=WGS84") )
-	
-    #make raster based on the extent of your data
+    
+    # make raster based on the extent of your data
     r <- raster(nrow=5, ncol=5, extent( sp ) )
+    
     r[]  <- 1
     r[]  <- sample(0:50,25)
     r
 
+    ## class       : RasterLayer 
+    ## dimensions  : 5, 5, 25  (nrow, ncol, ncell)
+    ## resolution  : 2, 2  (x, y)
+    ## extent      : 0, 10, 0, 10  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : NA 
+    ## data source : in memory
+    ## names       : layer 
+    ## values      : 0, 49  (min, max)
+
+</div>
+</div>
 
 ## Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 
@@ -560,13 +626,11 @@ always **reproject** the data so that they are all in the same projection. Pytho
 and R both have reprojection tools that perform this task.
 
 
-
     # reproject raster data from UTM to CRS of Lat/Long WGS84
-    
     reprojectedData1 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
     
-    #note that the extent has been adjusted to account for the NEW crs
+    # note that the extent has been adjusted to account for the NEW crs
     reprojectedData1@crs
 
     ## CRS arguments:
@@ -580,7 +644,7 @@ and R both have reprojection tools that perform this task.
     ## ymin        : 37.07989 
     ## ymax        : 37.07993
 
-    #note the range of values in the output data
+    # note the range of values in the output data
     reprojectedData1
 
     ## class       : RasterLayer 
@@ -592,13 +656,13 @@ and R both have reprojection tools that perform this task.
     ## names       : layer 
     ## values      : 0.6920572, 10.2188  (min, max)
 
-    # use nearest neighbor interpolation  method to ensure that the values stay the same
+    # use nearest neighbor interpolation method to ensure that the values stay the same
     reprojectedData2 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
                                      method = "ngb")
     
-    #http://www.inside-r.org/packages/cran/raster/docs/projectRaster
-    #note that the min and max values have now been forced to stay within the same range.
+    
+    # note that the min and max values have now been forced to stay within the same range.
     reprojectedData2
 
     ## class       : RasterLayer 

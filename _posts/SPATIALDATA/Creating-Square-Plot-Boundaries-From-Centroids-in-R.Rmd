@@ -13,7 +13,7 @@ mainTag: spatial-data-gis
 tags : [R, spatial-data-gis]
 description: "This tutorial walks you through creating square polygons from a 
 plot centroid (x,y format) in R."
-code1: PlotBoundaryCode.R
+code1: SPATIALDATA/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 image:
   feature: textur2_FieldWork.png
   credit: National Ecological Observatory Network (NEON)

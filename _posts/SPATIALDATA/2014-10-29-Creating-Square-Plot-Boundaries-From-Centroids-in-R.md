@@ -3,7 +3,7 @@ layout: post
 title: "Create A Square Buffer Around a Plot Centroid in R"
 date:   2015-1-05
 createdDate:   2014-10-29
-lastModified: 2017-03-09
+lastModified: 2017-03-10
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: [sp, rgdal]
 authors: [Leah A. Wasser, Natalie Robinson, Sarah Elmendorf, Megan A. Jones]
@@ -13,7 +13,7 @@ mainTag: spatial-data-gis
 tags : [R, spatial-data-gis]
 description: "This tutorial walks you through creating square polygons from a 
 plot centroid (x,y format) in R."
-code1: PlotBoundaryCode.R
+code1: SPATIALDATA/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 image:
   feature: textur2_FieldWork.png
   credit: National Ecological Observatory Network (NEON)
