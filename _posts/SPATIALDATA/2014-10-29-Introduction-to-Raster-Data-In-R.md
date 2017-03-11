@@ -3,12 +3,13 @@ layout: post
 title: "Raster Data in R - The Basics"
 date:   2015-1-26
 authors: Leah A. Wasser
+contributors: [Megan A. Jones]
 dateCreated:  2014-11-26
-lastModified: 2017-03-09
-categories: [Coding and Informatics]
-category: coding-and-informatics
-tags: [hyperspectral-remote-sensing,R,GIS-spatial-data]
-mainTag: GIS-spatial-data
+lastModified: 2017-03-10
+categories: [self-paced-tutorial]
+category: self-paced-tutorial
+tags: [hyperspectral-remote-sensing,R,spatial-data-gis]
+mainTag: spatial-data-gis
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data in R."
 image:
@@ -16,7 +17,7 @@ image:
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 permalink: /R/Raster-Data-In-R/
-code1: /R/Raster-Data-In-R.R
+code1: /SPATIALDATA/Introduction-to-Raster-Data-In-R.R
 comments: true
 
 ---
