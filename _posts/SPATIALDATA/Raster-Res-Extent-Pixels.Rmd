@@ -16,7 +16,7 @@ image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
-permalink: /GIS-spatial-data/Working-With-Rasters
+permalink: /GIS-spatial-data/Working-With-Rasters/
 comments: true
 ---
 
