@@ -16,7 +16,7 @@ image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
-permalink: /GIS-spatial-data/Working-With-Rasters
+permalink: /GIS-spatial-data/Working-With-Rasters/
 comments: true
 ---
 
@@ -595,7 +595,11 @@ code.
 of lat and long values to 5 instead of 10? Try 20, 50 and 100? 
 * What is the relationship between the extent and the raster resolution?
 
+</div>
 
+    ## Challenge Example Code 
+
+    # set latLong
     latLong <- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
     
     # make spatial points dataframe, which will have a spatial extent
@@ -617,8 +621,8 @@ of lat and long values to 5 instead of 10? Try 20, 50 and 100?
     ## names       : layer 
     ## values      : 0, 49  (min, max)
 
-</div>
-</div>
+
+
 
 ## Reprojecting Data
 If you run into multiple spatial datasets with varying projections, you can 
