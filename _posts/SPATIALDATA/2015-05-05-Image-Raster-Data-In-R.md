@@ -2,235 +2,375 @@
 layout: post
 title: "Image Raster Data in R - An Intro"
 date:   2015-05-18
-authors: [Leah A. Wasser]
+authors: [Leah A. Wasser, Megan A. Jones]
 dateCreated:  2015-05-18
-lastModified: 2015-05-18
+lastModified: 2017-03-16
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing, R, spatial-data-gis, remote-sensing]
 packagesLibraries: [raster, sp, rgdal]
 mainTag: spatial-data-gis
-description: "This post explains the fundamental principles, functions and metadata that 
-you need to work with raster data, in image format in R. Topics include raster stacks, raster bricks
-plotting RGB images and exporting an RGB image to a Geotiff."
+description: "This tutorial explains the fundamental principles, functions and 
+metadata that you need to work with raster data, in image format, in R. Topics 
+include raster stacks, raster bricks, plotting RGB images and exporting an RGB 
+image to a GeoTIFF."
 code1: 
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
 permalink: /R/Image-Raster-Data-In-R/
-code1: R/image-rasters-R.R
+code1: R/Image-Raster-Data-In-R.R
 comments: true
 ---
 
 {% include _toc.html %}
 
-### About
-This activity will walk you through the fundamental principles of working 
+
+This tutorial will walk you through the fundamental principles of working 
 with image raster data in R.
+
 **R Skill Level:** Intermediate
 
-<div id="objectives">
+<div id="objectives" markdown="1">
 
-<h3>Goals / Objectives</h3>
-After completing this activity, you will know:
-<ol>
-<li>How to import multiple image rasters and create a stack of rasters.</li>
-<li>How to plot 3 band, RGB images in R.</li>
-<li>How to export single band and multiple band image rasters in R.</li>
-</ol>
+# Tutorial Objectives
+After completing this activity, you will be able to:
 
-<h3>Things You'll Need To Complete This Lesson</h3>
-
-<h4>Tools & Libraries To Install</h4>
-<ul>
-<li>R or R studio to write your code.</li>
-<li>R packages <code>raster</code>, <code>sp</code> and <code>rgdal</code> </li>
-</ul>
+* Import multiple image rasters and create a stack of rasters.
+* Plot three band RGB images in R.
+* Export single band and multiple band image rasters in R.
 
 
-<h4>Data to Download</h4>
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded
+on your computer to complete this tutorial.
 
-Download the raster data:
+### Install R Packages
+
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rgdal")`
+* **sp:** `install.packages("sp")`
+
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+
+### Download Data
 
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
+This data download contains several files. You will only need the RGB .tif files
+for this tutorial. The path to this file is: NEON-DS-Field-Site-Spatial-Data/SJER/RGB/* . 
+The other data files in the downloaded data directory are used for related tutorials. 
+You should set your working directory to the SJER directory to follow the code 
+exactly. 
 
-<h4>Recommended Pre-Lesson Reading</h4>
-<ul>
-<li>
-<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/">
-Please read "Working With Rasters in R, Python and other NON gui tools.</a>
-</li>
-<li>
-<a href="{{ site.baseurl }}/R/Raster-Data-In-R/">
-Please read "Raster Data in R - the basics.</a>
-</li>
-<li>
-<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the `raster` package in R.</a>
-</li>
-</ul>
+## Recommended Reading
+
+You may benefit from reviewing these related tutorials prior to this tutorial: 
+
+* <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/">
+The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
+* <a href="{{ site.baseurl }}/R/Raster-Data-In-R/">
+Please read "Raster Data in R - The Basics.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
+The `raster` R package documentation.</a>
+
 </div>
 
-### Review - Raster Data
+## Raster Data
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
-each pixel represents an area on the Earth's surface. An color image raster, is a bit different from other rasters in that it has multiple bands. Each band represents reflectance values for a particular color or type of light. If the image is RGB, then the bands are in the red, green and blue portions of the spectrum. These colors together create what we know as a full color image.
+each pixel represents an area on the Earth's surface. An color image raster is 
+a bit different from other rasters in that it has multiple bands. Each band 
+represents reflectance values for a particular color or spectra of light. If the 
+image is RGB, then the bands are in the red, green and blue portions of the 
+electromagnetic spectrum. These colors together create what we know as a full 
+color image.
 
 <figure>
-	<img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png">
-   <figcaption>A color image at the NEON San Joachin site in california. Each pixel in the image represents reflectance in the red, green and blue portions of the electromagnetic spectrum.</figcaption>
+   <img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png">
+   <figcaption>A color image at the NEON San Joaquin Experimental Range (SJER) 
+   field site in California. Each pixel in the image represents the combined
+   reflectance in the red, green and blue portions of the electromagnetic spectrum.
+   Source: National Ecological Observatory Network (NEON)</figcaption>
 </figure>
 
+## Work with Multiple Rasters
 
-# Bands & Images in R
-
-## Working with multiple rasters using Raster Stacks and Raster Bricks
-
-In [a previous post]({{ site.baseurl }}/R/Raster-Data-In-R/), we loaded a single raster into R. We've also made sure we knew the `CRS` 
+In [a previous tutorial]({{ site.baseurl }}/R/Raster-Data-In-R/), we loaded a 
+single raster into R. We made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
-attributes. Next, let's create a raster stack from 3 raster images.
+attributes. This raster was a Digital Elevation Model so there was only a single
+raster that represented the ground elevation in each pixel. When we work with 
+color images, there are multiple rasters to represent each band. Here we'll learn
+to work with multiple rasters together. 
 
-A raster stack is a collection of raster layers. Each raster layer in the stack 
-needs to be in the same projection (CRS), spatial extent and resolution. You 
-might use raster stacks for different reasons. For instance, you might want to 
+### Raster Stacks
+
+A raster stack is a collection of raster layers. Each raster layer in the raster 
+stack needs to have the same 
+
+* projection (CRS), 
+* spatial extent and 
+* resolution. 
+
+You might use raster stacks for different reasons. For instance, you might want to 
 group a time series of rasters representing precipitation or temperature into 
-one R object. Or, you might want to create a color images from red, green and blue band derived rasters.
+one R object. Or, you might want to create a color images from red, green and 
+blue band derived rasters.
 
-In this lesson, we will stack 3 bands from a multi-band image together to create 
-a final RGB image.
+In this tutorial, we will stack three bands from a multi-band image together to 
+create a composite RGB image.
 
-First let's load up the libraries that we need: `sp` and `raster`. To install the raster library you can use 
-`install.packages(‘raster’)`. When you install the raster library, `sp` should 
-also install. Also install the `rgdal` library" 
-`install.packages(‘rgdal’)`.
+First let's load the R packages that we need: `sp` and `raster`. 
 
-	#load the raster, sp, and rgdal packages
-	library(raster)
-	library(sp)
-	library(rgdal)
-	#Set your working directory to the folder where your data for this workshop
-	#are stored. NOTE: if you created a project file in R studio, then you don't
-	#need to set the working directory as it's part of the project.
-	setwd("~/yourWorkingDirectoryHere")  
-	
 
-Next, let's create a raster stack. The difficult way to do this is to load our rasters one at a time. But that takes
- a good bit of effort. 
+    # load the raster, sp, and rgdal packages
+    library(raster)
+    library(sp)
+    library(rgdal)
+    
+    # set the working directory to the data
+    #setwd("pathToDirHere")
 
-	#import tiffs
-	band19 <- "rasterLayers_tif/band19.tif"
-	band34 <- "rasterLayers_tif/band34.tif"
-	band58 <- "rasterLayers_tif/band58.tif"
+Next, let's create a raster stack with bands representing 
 
-We can also use the list.files command to grab all of the files in a directory.
-We can use `full.names=TRUE` to ensure that R will store the directory path in our list of
+* blue: band 19, 473.8nm
+* green: band 34, 548.9nm 
+* red; band 58, 669.1nm (Red)
+
+This can be done by individually assigning each file path as an object. 
+
+
+    # import tiffs
+    band19 <- "RGB/band19.tif"
+    band34 <- "RGB/band34.tif"
+    band58 <- "RGB/band58.tif"
+
+Note that if we wanted to create a stack from all the files in a directory (folder)
+you can easily do this with the `list.files()` function. We would use 
+`full.names=TRUE` to ensure that R will store the directory path in our list of
 rasters.
 
-	#create list of files to make raster stack
-	rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE)
 
-NOTE: If your list of rasters is located in your main R working directory, you can
-achieve the same results as above by looking for all files with a '.tif' extension:
- `rasterlist <-  list.files('rasterLayers_tif', full.names=TRUE, pattern="tif")`. 
+    # create list of files to make raster stack
+    rasterlist1 <-  list.files('RGB', full.names=TRUE)
 
-	#create raster stack
-	rgbRaster <- stack(rasterlist)
+Or if your directory is consistes of some .tif files and other file types you 
+don't want in your stack you can ask R to only list those files with a .tif 
+extension.
 
-	#check to see that you've created a raster stack and plot the layers
-	rgbRaster
-	plot(rgbRaster)
 
-<figure>
-   <a href="{{ site.baseurl }}/images/spatialData/rgbStackPlot.png"><img src="{{ site.baseurl }}/images/spatialData/rgbStackPlot.png"></a>
- <figcaption>All rasters in the rasterstack plotted.</figcaption>
-</figure>
+    rasterlist2 <-  list.files('RGB', full.names=TRUE, pattern="tif") 
 
+Back to creating our raster stack with three bands.  We only want three of the 
+bands in the RGB directory and not the fourth `band90`, so will create the stack
+from the bands we loaded individually. We do this with the `stack()` function. 
+
+
+    # create raster stack
+    rgbRaster <- stack(band19,band34,band58)
+    
+    # example syntax for stack from a list
+    #rstack1 <- stack(rasterlist1)
+
+This has now created a stack of rasters three thick. Let's view them. 
+
+
+    # check attributes
+    rgbRaster
+
+    ## class       : RasterStack 
+    ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## names       : band19, band34, band58 
+    ## min values  :     84,    116,    123 
+    ## max values  :  13805,  15677,  14343
+
+    # plot stack
+    plot(rgbRaster)
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/view-stack-1.png)
+
+From the attributes we see the CRS, resolution, and extent of all three rasters. 
+The we can see each raster plotted. Notice the different shading between the 
+different bands. This is because the landscape relects in the red, green, and 
+blue spectra differently. 
+
+Check out the scale bars. What do they represent? 
+
+This reflectance data is radiance corrected for atmospheric effects. The data 
+are typically unitless and ranges from 0-1. NEON Airborne Observation Platform
+data, where these rasters come from, has a scale factor of 10,000. 
 
 ## Plot an RGB Image
 
-You can plot an RGB image from a raster `stack`. You need to specify the order of the bands when you do this. In our raster stack, band 19 which is the blue band, is first in the list, whereas band 58 which is the red band is last. Thus the order is 3,2,1 to ensure the red band is rendered first as red. 
+You can plot a composite RGB image from a raster stack. You need to specify the 
+order of the bands when you do this. In our raster stack, band 19, which is the 
+blue band, is first in the stack, whereas band 58, which is the red band, is last. 
+Thus the order for a RGB image is 3,2,1 to ensure the red band is rendered first 
+as red. 
 
-	#plot an RGB version of the stack
-	plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
+Thinking ahead to next time: If you know you want to create composite RGB images, 
+think about the order of your rasters when you make the stack so the RGB=1,2,3. 
 
-<figure>
-    <a href="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"><img src="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"></a>
-<figcaption>To plot an RGB image in R, you need to specify which rasters to render on the red, green and blue bands. </figcaption>
-</figure>
+We will plot the raster with the `rgbRaster()` function and the need these 
+following arguments: 
+
+* R object to plot
+* which layer of the stack is which color
+* stretch: allows for increased contrast. Options are "lin" & "hist".
+
+Let's try it. 
 
 
+    # plot an RGB version of the stack
+    plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/plot-rgb-1.png)
+
+Note: read the `raster` package documentation for other arguments that can be 
+added (like `scale`) to improve or modify the image. 
 
 ## Explore Raster Values - Histograms
-You can also explore the data.
+
+You can also explore the data. Histograms allow us to view the distrubiton of 
+values in the pixels. 
 
 
-	#look at histogram of reflectance values for all rasters
-	hist(rgbRaster)
+    # view histogram of reflectance values for all rasters
+    hist(rgbRaster)
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/hist-1.png)
+
+Note about the warning messages: R defaults to only showing the first 100,000 
+values in the histogram so if you have a large raster you may not be seeing all 
+the values. This saves your from long waits, or crashing R, if you have large
+datasets. 
+
+## Crop Rasters
+
+You can crop all rasters within a raster stack the same way you'd do it with a 
+single raster. 
 
 
-<figure>
-   <a href="{{ site.baseurl }}/images/spatialData/RGBhist.png"><img src="{{ site.baseurl }}/images/spatialData/RGBhist.png"></a>
- <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
-</figure>
+    # determine the desired extent
+    rgbCrop <- c(256770.7,256959,4112140,4112284)
+    
+    # crop to desired extent
+    rgbRaster_crop <- crop(rgbRaster, rgbCrop)
+    
+    # view cropped stack
+    plot(rgbRaster_crop)
 
-	#remember that crop function? You can crop all rasters within a raster stack too
-	#finally you can crop all rasters within a raster stack!
-	rgbCrop <- c(256770.7,256959,4112140,4112284)
-	rgbRaster_crop <- crop(rgbRaster, rgbCrop)
-	plot(rgbRaster_crop)
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/stack-crop-1.png)
 
-<figure>
-   <a href="{{ site.baseurl }}/images/spatialData/cropRaster2.png"><img src="{{ site.baseurl }}/images/spatialData/cropRaster2.png"></a>
- <figcaption>Cropped rasters in the raster stack.</figcaption>
-</figure>
+ <div id="challenge" markdown="1">
+## Challenge: Plot Cropped RGB
+Plot this new cropped stack as an RGB image. 
+</div>
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/challenge-code-plot-crop-rgb-1.png)
+
 
 
 ## Raster Bricks in R
-Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images. Raster bricks are more efficient objects to use when processing larger datasets. This is because the computer doesn't have to spend energy finding the data - it is contained within the object.
+In our `rgbRaster` object we have a list of rasters in a stack. These rasters 
+are all the same extent, CRS and resolution. By creating a **raster brick** we 
+will create one raster object that contains all of the rasters so that we can 
+use this object to quickly create RGB images. Raster bricks are more efficient 
+objects to use when processing larger datasets. This is because the computer 
+doesn't have to spend energy finding the data - it is contained within the object.
 
-	#create raster brick
-	RGBbrick <- brick(rgbRaster)
-	plotRGB(RGBbrick,r=3,g=2,b=1, scale=800, stretch = "Lin")
-	
-While the brick might seem similar to the stack, we can see that it's very different when we look at the size of the object.	
-	
-	#the brick contains ALL of the data stored in one object
-	#the stack contains links or references to the files stored on your computer
-	object.size(rgbBrick)
-	
-Output
 
-	> 5759448 bytes	
-	
-View the size of the stack:
-	
-	object.size(rgbRaster)
+    # create raster brick
+    rgbBrick <- brick(rgbRaster)
+    
+    # check attributes
+    rgbBrick
 
-Output:
+    ## class       : RasterBrick 
+    ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : in memory
+    ## names       : band19, band34, band58 
+    ## min values  :     84,    116,    123 
+    ## max values  :  13805,  15677,  14343
 
-	> 40408 bytes
+While the brick might seem similar to the stack (see attributes above), we can see that it's very 
+different when we look at the size of the object.
+
+* the brick contains **all of the data** stored in one object
+* the stack contains links or references to the files stored on your computer
+
+
+    # view object size
+    object.size(rgbBrick)
+
+    ## 5759448 bytes
+
+    object.size(rgbRaster)
+
+    ## 40408 bytes
+
+    # view raster brick
+    plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/rBrick-size-1.png)
+
+Notice the faster plotting? For a smaller raster like this the difference is 
+slight, but for larger raster it can be considerable. 
 	
-	
-## Write a raster to a Geotiff File in R
+## Write to GeoTIFF
 
-We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack with the rasters in the proper order - red, green and blue format.
+We can write out the raster in GeoTIFF format as well. When we do this it will 
+copy the CRS, extent and resolution information so the data will read properly 
+into a GIS program as well. Note that this writes the raster in the order they 
+are in. In our case, the blue (band 19) is first but most programs expect the 
+red band first (RGB). 
 
-	#Make a new stack in the order we want the data in: 
-	finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
-	#write the geotiff - change overwrite=TRUE to overwrite=FALSE if you want to make sure you don't overwrite your files!
-	writeRaster(finalRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
+One way around this is to generate a new raster stack with the rasters in the 
+proper order - red, green and blue format. Or, just always create your stacks
+R->G->B to start!!!
+
+
+    # Make a new stack in the order we want the data in 
+    orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
+    
+    # write the geotiff
+    # change overwrite=TRUE to FALSE if you want to make sure you don't overwrite your files!
+    writeRaster(orderRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
+
 
 ## Import A Multi-Band Image into R
-You can import a multi-band image into R too. To do this, you import the file as a stack rather than a raster (which brings in just one band). Let's import the raster than we just created above.
-
-	#Import Multi-Band raster
-	newRaster <- stack("rgbRaster.tif") 
-	#then plot it
-	plot(newRaster)
-	plotRGB(newRaster,r=1,g=2,b=3, scale=800, stretch="lin")
-
-## Challenge 
+You can import a multi-band image into R too. To do this, you import the file as 
+a stack rather than a raster (which brings in just one band). Let's import the 
+raster than we just created above.
 
 
-1. A color infrared image is a combination of the gree, red and near-infrared bands. In our case gree <- band 34, red <- band 58 and near-infrared <- band90. Using the same band90 raster that you fixed in step one above, create a color infrared image. HINT: when you use the plotRGB function, you'll map the bands as follows: blue=band34, green=band58, red=band90. Export your results as a geotiff.
+    # import multi-band raster as stack
+    multiRasterS <- stack("rgbRaster.tif") 
+    
+    # import multi-band raster direct to brick
+    multiRasterB <- brick("rgbRaster.tif") 
+    
+    # view raster
+    plot(multiRasterB)
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/import-multi-raster-1.png)
+
+    plotRGB(multiRasterB,r=1,g=2,b=3, stretch="lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Image-Raster-Data-In-R/import-multi-raster-2.png)

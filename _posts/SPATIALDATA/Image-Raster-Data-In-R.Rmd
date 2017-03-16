@@ -2,7 +2,7 @@
 layout: post
 title: "Image Raster Data in R - An Intro"
 date:   2015-05-18
-authors: [Leah A. Wasser]
+authors: [Leah A. Wasser, Megan A. Jones]
 dateCreated:  2015-05-18
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
 categories: [self-paced-tutorial]
@@ -134,8 +134,13 @@ library(rgdal)
 #setwd("pathToDirHere")
 ```
 
-Next, let's create a raster stack with bands representing red (`band19`), green 
-(`band34`) and blue (`band58`). This can be done individually: 
+Next, let's create a raster stack with bands representing 
+
+* blue: band 19, 473.8nm
+* green: band 34, 548.9nm 
+* red; band 58, 669.1nm (Red)
+
+This can be done by individually assigning each file path as an object. 
 
 ``` {r import-tiffs}
 
@@ -187,93 +192,162 @@ plot(rgbRaster)
 ```
 
 From the attributes we see the CRS, resolution, and extent of all three rasters. 
-The we can see each raster plotted. 
+The we can see each raster plotted. Notice the different shading between the 
+different bands. This is because the landscape relects in the red, green, and 
+blue spectra differently. 
 
+Check out the scale bars. What do they represent? 
+
+This reflectance data is radiance corrected for atmospheric effects. The data 
+are typically unitless and ranges from 0-1. NEON Airborne Observation Platform
+data, where these rasters come from, has a scale factor of 10,000. 
 
 ## Plot an RGB Image
 
-You can plot an RGB image from a raster `stack`. You need to specify the order of the bands when you do this. In our raster stack, band 19 which is the blue band, is first in the list, whereas band 58 which is the red band is last. Thus the order is 3,2,1 to ensure the red band is rendered first as red. 
+You can plot a composite RGB image from a raster stack. You need to specify the 
+order of the bands when you do this. In our raster stack, band 19, which is the 
+blue band, is first in the stack, whereas band 58, which is the red band, is last. 
+Thus the order for a RGB image is 3,2,1 to ensure the red band is rendered first 
+as red. 
 
-	#plot an RGB version of the stack
-	plotRGB(rgbRaster,r=3,g=2,b=1, scale=800, stretch = "Lin")
+Thinking ahead to next time: If you know you want to create composite RGB images, 
+think about the order of your rasters when you make the stack so the RGB=1,2,3. 
 
-<figure>
-    <a href="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"><img src="{{ site.baseurl }}/images/spatialData/RGBRaster_SJER.png"></a>
-<figcaption>To plot an RGB image in R, you need to specify which rasters to render on the red, green and blue bands. </figcaption>
-</figure>
+We will plot the raster with the `rgbRaster()` function and the need these 
+following arguments: 
 
+* R object to plot
+* which layer of the stack is which color
+* stretch: allows for increased contrast. Options are "lin" & "hist".
 
+Let's try it. 
+
+``` {r plot-rgb}
+# plot an RGB version of the stack
+plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
+
+```
+
+Note: read the `raster` package documentation for other arguments that can be 
+added (like `scale`) to improve or modify the image. 
 
 ## Explore Raster Values - Histograms
-You can also explore the data.
 
+You can also explore the data. Histograms allow us to view the distrubiton of 
+values in the pixels. 
 
-	#look at histogram of reflectance values for all rasters
-	hist(rgbRaster)
+``` {r hist}
+# view histogram of reflectance values for all rasters
+hist(rgbRaster)
+```
 
+Note about the warning messages: R defaults to only showing the first 100,000 
+values in the histogram so if you have a large raster you may not be seeing all 
+the values. This saves your from long waits, or crashing R, if you have large
+datasets. 
 
-<figure>
-   <a href="{{ site.baseurl }}/images/spatialData/RGBhist.png"><img src="{{ site.baseurl }}/images/spatialData/RGBhist.png"></a>
- <figcaption>Histogram of reflectance values for each raster in the raster stack.</figcaption>
-</figure>
+## Crop Rasters
 
-	#remember that crop function? You can crop all rasters within a raster stack too
-	#finally you can crop all rasters within a raster stack!
-	rgbCrop <- c(256770.7,256959,4112140,4112284)
-	rgbRaster_crop <- crop(rgbRaster, rgbCrop)
-	plot(rgbRaster_crop)
+You can crop all rasters within a raster stack the same way you'd do it with a 
+single raster. 
 
-<figure>
-   <a href="{{ site.baseurl }}/images/spatialData/cropRaster2.png"><img src="{{ site.baseurl }}/images/spatialData/cropRaster2.png"></a>
- <figcaption>Cropped rasters in the raster stack.</figcaption>
-</figure>
+``` {r stack-crop}
+
+# determine the desired extent
+rgbCrop <- c(256770.7,256959,4112140,4112284)
+
+# crop to desired extent
+rgbRaster_crop <- crop(rgbRaster, rgbCrop)
+
+# view cropped stack
+plot(rgbRaster_crop)
+
+```
+
+ <div id="challenge" markdown="1">
+## Challenge: Plot Cropped RGB
+Plot this new cropped stack as an RGB image. 
+</div>
+
+``` {r challenge-code-plot-crop-rgb, echo=FALSE}
+# plot an RGB version of the cropped stack
+plotRGB(rgbRaster_crop,r=3,g=2,b=1, stretch = "lin")
+
+```
+
 
 
 ## Raster Bricks in R
-Now we have a list of rasters in a stack. These rasters are all the same extent CRS and resolution but a raster brick will create one raster object in R that contains all of the rasters we can use this object to quickly create RGB images. Raster bricks are more efficient objects to use when processing larger datasets. This is because the computer doesn't have to spend energy finding the data - it is contained within the object.
+In our `rgbRaster` object we have a list of rasters in a stack. These rasters 
+are all the same extent, CRS and resolution. By creating a **raster brick** we 
+will create one raster object that contains all of the rasters so that we can 
+use this object to quickly create RGB images. Raster bricks are more efficient 
+objects to use when processing larger datasets. This is because the computer 
+doesn't have to spend energy finding the data - it is contained within the object.
 
-	#create raster brick
-	RGBbrick <- brick(rgbRaster)
-	plotRGB(RGBbrick,r=3,g=2,b=1, scale=800, stretch = "Lin")
-	
-While the brick might seem similar to the stack, we can see that it's very different when we look at the size of the object.	
-	
-	#the brick contains ALL of the data stored in one object
-	#the stack contains links or references to the files stored on your computer
-	object.size(rgbBrick)
-	
-Output
+``` {r create-r-brick}
+# create raster brick
+rgbBrick <- brick(rgbRaster)
 
-	> 5759448 bytes	
-	
-View the size of the stack:
-	
-	object.size(rgbRaster)
+# check attributes
+rgbBrick
 
-Output:
+```
 
-	> 40408 bytes
+While the brick might seem similar to the stack (see attributes above), we can see that it's very 
+different when we look at the size of the object.
+
+* the brick contains **all of the data** stored in one object
+* the stack contains links or references to the files stored on your computer
+
+``` {r rBrick-size}
+# view object size
+object.size(rgbBrick)
+object.size(rgbRaster)
+
+# view raster brick
+plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
+```
+
+Notice the faster plotting? For a smaller raster like this the difference is 
+slight, but for larger raster it can be considerable. 
 	
-	
-## Write a raster to a Geotiff File in R
+## Write to GeoTIFF
 
-We can write out the raster in tiff format as well. When we do this it will copy the CRS, extent and resolution information so the data will read properly into a GIS as well. Note that this writes the raster in the order they are in - in the stack. In this case, the blue (band 19) is first but it's looking for the red band first (RGB). One way around this is to generate a new raster stack with the rasters in the proper order - red, green and blue format.
+We can write out the raster in GeoTIFF format as well. When we do this it will 
+copy the CRS, extent and resolution information so the data will read properly 
+into a GIS program as well. Note that this writes the raster in the order they 
+are in. In our case, the blue (band 19) is first but most programs expect the 
+red band first (RGB). 
 
-	#Make a new stack in the order we want the data in: 
-	finalRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
-	#write the geotiff - change overwrite=TRUE to overwrite=FALSE if you want to make sure you don't overwrite your files!
-	writeRaster(finalRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
+One way around this is to generate a new raster stack with the rasters in the 
+proper order - red, green and blue format. Or, just always create your stacks
+R->G->B to start!!!
+
+``` {r rgb-order-stack}
+# Make a new stack in the order we want the data in 
+orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
+
+# write the geotiff
+# change overwrite=TRUE to FALSE if you want to make sure you don't overwrite your files!
+writeRaster(orderRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
+```
+
 
 ## Import A Multi-Band Image into R
-You can import a multi-band image into R too. To do this, you import the file as a stack rather than a raster (which brings in just one band). Let's import the raster than we just created above.
+You can import a multi-band image into R too. To do this, you import the file as 
+a stack rather than a raster (which brings in just one band). Let's import the 
+raster than we just created above.
 
-	#Import Multi-Band raster
-	newRaster <- stack("rgbRaster.tif") 
-	#then plot it
-	plot(newRaster)
-	plotRGB(newRaster,r=1,g=2,b=3, scale=800, stretch="lin")
+``` {r import-multi-raster}
 
-## Challenge 
+# import multi-band raster as stack
+multiRasterS <- stack("rgbRaster.tif") 
 
+# import multi-band raster direct to brick
+multiRasterB <- brick("rgbRaster.tif") 
 
-1. A color infrared image is a combination of the gree, red and near-infrared bands. In our case gree <- band 34, red <- band 58 and near-infrared <- band90. Using the same band90 raster that you fixed in step one above, create a color infrared image. HINT: when you use the plotRGB function, you'll map the bands as follows: blue=band34, green=band58, red=band90. Export your results as a geotiff.
+# view raster
+plot(multiRasterB)
+plotRGB(multiRasterB,r=1,g=2,b=3, stretch="lin")
+```
