@@ -44,7 +44,7 @@
   lastModified:  2016-12-15
 
 - slug: intro-hsi-r-series
-  name: Introduction to Hyperspectral Remote Sensing Data - (in R)
+  name: Introduction to Hyperspectral Remote Sensing Data - in R
   description: "In this series, we cover the basics of working with NEON hyperspectral remote
   sensing data. We cover the principles of hyperspectral data, how to open hyperspectral data
   stored in HDF5 format in R and how to extract bands and create rasters in GeoTiff format.
@@ -76,3 +76,8 @@
   description: "This series covers core data literacy concepts needed to work with spatial data
   in both a gui and non gui environment. These lessons are currently under development." 
   lastModified:  2016-12-15 
+
+- slug: primer-raster-data-R
+  name: Primer on Raster Spatial Data in R 
+  description: "This series provides a brief primer on raster spatial data in R." 
+  lastModified:  2017-03-17 
