@@ -58,12 +58,12 @@
   the introduction to or initial learning of how to use R." 
   lastModified:  2016-12-5 
 
-- slug: GitHub
+- slug: git-github
   name: Version Control with GitHub
   description: "This series teaches why version control is important and how to 
   use a common version control tool, GitHub. GitHub also allows for collaboration
   within the environment." 
-  lastModified:  2016-06-20 
+  lastModified:  2017-03-15 
 
 - slug: RMarkdown
   name: Reproducible Workflows with RMarkdown

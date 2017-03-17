@@ -2,7 +2,7 @@
 layout: tutorial-series-landing
 title: 'Version Control with GitHub'
 categories: [tutorial-series]
-tutorialSeriesName: GitHub
+tutorialSeriesName: git-github
 permalink: tutorial-series/GitHub/
 image:
   feature: codingInformatics.png
