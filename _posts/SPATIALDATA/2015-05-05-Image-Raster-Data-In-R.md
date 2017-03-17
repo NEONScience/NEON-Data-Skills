@@ -20,7 +20,7 @@ image:
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
 permalink: /R/Image-Raster-Data-In-R/
-code1: R/Image-Raster-Data-In-R.R
+code1: SPATIALDATA/Image-Raster-Data-In-R.R
 comments: true
 ---
 
@@ -136,7 +136,7 @@ Next, let's create a raster stack with bands representing
 
 * blue: band 19, 473.8nm
 * green: band 34, 548.9nm 
-* red; band 58, 669.1nm (Red)
+* red; band 58, 669.1nm 
 
 This can be done by individually assigning each file path as an object. 
 
@@ -155,8 +155,8 @@ rasters.
     # create list of files to make raster stack
     rasterlist1 <-  list.files('RGB', full.names=TRUE)
 
-Or if your directory is consistes of some .tif files and other file types you 
-don't want in your stack you can ask R to only list those files with a .tif 
+Or, if your directory is consistes of some .tif files and other file types you 
+don't want in your stack, you can ask R to only list those files with a .tif 
 extension.
 
 
@@ -315,6 +315,7 @@ different when we look at the size of the object.
 * the brick contains **all of the data** stored in one object
 * the stack contains links or references to the files stored on your computer
 
+Use `object.size()` to see the size of an R object. 
 
     # view object size
     object.size(rgbBrick)
