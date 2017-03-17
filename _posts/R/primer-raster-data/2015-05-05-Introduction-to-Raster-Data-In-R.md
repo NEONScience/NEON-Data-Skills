@@ -9,7 +9,8 @@ lastModified: 2017-03-17
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing,R,spatial-data-gis]
-mainTag: spatial-data-gis
+mainTag: primer-raster-data-R
+tutorialSeries: [primer-raster-data-R]
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data in R."
 code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R

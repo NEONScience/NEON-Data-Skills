@@ -1,15 +1,15 @@
 ---
 layout: tutorial-series-landing
-title: 'Introduction to Hierarchical Data Format (HDF5) - Using HDFview and R'
+title: 'Introduction to Hierarchical Data Format (HDF5) - Using HDFView and R'
 categories: [tutorial-series]
 tutorialSeriesName: intro-hdf5-r-series
 permalink: tutorial-series/intro-hdf5-r-series/
 image:
   feature: hierarchy_folder.png
-  credit: 
+  credit: National Ecological Observatory Network
   creditlink: 
 ---
-## About
+
 In this series we cover what a HDF5 format is and how to open, read, and create
 HDF5 files in R. We also cover extracting and plotting data from HDF5 files. 
 

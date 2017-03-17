@@ -9,7 +9,8 @@ categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing, R, spatial-data-gis, remote-sensing]
 packagesLibraries: [raster, sp, rgdal]
-mainTag: spatial-data-gis
+mainTag: primer-raster-data-R
+tutorialSeries: [primer-raster-data-R]
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data, in image format, in R. Topics 
 include raster stacks, raster bricks, plotting RGB images and exporting an RGB 

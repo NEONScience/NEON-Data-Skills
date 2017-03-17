@@ -30,7 +30,7 @@
   lastModified:  2015-10-15
   
 - slug: intro-hdf5-r-series
-  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFview & R
+  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R
   description: "In this series we cover what a HDF5 format is, and how to open, read, create
   HDF5 files in R. We also cover extracting and plotting data from HDF5 files." 
   lastModified:  2016-12-15 
@@ -72,7 +72,7 @@
   lastModified:  2016-06-20 
 
 - slug: spatial-data-management-series
-  name: Getting Started With Spatial Data in R 
+  name: Introduction to Spatial Data and Spatial Data Management 
   description: "This series covers core data literacy concepts needed to work with spatial data
   in both a gui and non gui environment. These lessons are currently under development." 
   lastModified:  2016-12-15 

@@ -1,37 +1,30 @@
 ---
 layout: tutorial-series-landing
-title: 'Introduction to Light Detection and Ranging (LiDAR)'
+title: 'Primer on Raster Data in R'
 categories: [tutorial-series]
-tutorialSeriesName: intro-lidar-r-series
-permalink: tutorial-series/intro-lidar-r-series/
+tutorialSeriesName: primer-raster-data-R
+permalink: tutorial-series/primer-raster-data/
 image:
   feature: lidarBanner.png
   credit: 
   creditlink: 
 ---
-## About
-The tutorials in this series introduces Light Detection and Ranging (LiDAR).  
-Concepts covered include how LiDAR data is collected, LiDAR as gridded, raster
-data and an introduction to digital models derived from LiDAR data (Canopy 
-Height Models (CHM), Digital Surface Models (DSM), and Digital Terrain Models
-(DTM)). The series introduces the concepts through videos, graphical examples, 
-and text. The series continues with visualization of LiDAR-derived raster data
-using plas.io, plot.ly and R, three free, open-source tools.  
+
+The tutorials in this series introduces working with raster data in R.  
+The series introduces the concepts through videos, graphical examples, 
+and text. 
 
 Data used in this series are from the National Ecological Observatory Network (NEON) 
-and are in .las, GeoTiff and .csv formats.
+and are in GeoTiff and .csv formats.
+
+If you enjoy this series, we also recommend the more in depth 
+<a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank"> *Introduction to Working With Raster Data in R* series</a>. 
+The 
+<a href="{{ site.baseurl }}/tutorial-series/spatial-data-management-series/" target="_blank"> *Introduction to Working With Spatio-Temporal Data and Data Management* series</a>
+provides more background and foundational information on understanding and working
+with spatial data. 
 
 <div id="objectives" markdown="1">
-
-# Series Goals / Objectives
-After completing the series you will:
-
-* Know what LiDAR data are
-* Understand key attributes of LiDAR data
-* Know what LiDAR-derived DTM, DSM, and CHM digital models are
-* Be able to visualize LiDAR-derived data in .las format using plas.io
-* Be able to create a Canopy Height Model in R
-* Be able to create an interactive plot.ly map of LiDAR-derived data
 
 ## Things You’ll Need To Complete This Series
 
@@ -48,13 +41,14 @@ an interactive development environment (IDE).
 
 
 ### Download Data
-Data is available for download in those tutorials that focus on teaching data
-skills. 
+All tutorials in this series use data from the San Joaquin Experimental Range, a
+NEON field site. 
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
 *****
 
 {% include/_greyBox-wd-rscript.html %}
-
 
 </div> 
 

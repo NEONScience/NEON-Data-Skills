@@ -9,7 +9,8 @@ packagesLibraries: [sp, rgdal]
 authors: [Leah A. Wasser, Natalie Robinson, Sarah Elmendorf, Megan A. Jones]
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
-mainTag: spatial-data-gis
+mainTag: primer-raster-data-R
+tutorialSeries: [primer-raster-data-R]
 tags : [R, spatial-data-gis]
 description: "This tutorial walks you through creating square polygons from a 
 plot centroid (x,y format) in R."

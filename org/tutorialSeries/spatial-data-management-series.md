@@ -1,6 +1,6 @@
 ---
 layout: tutorial-series-landing
-title: 'Introduction to Working With Spatio-Temporal Data and Data Management'
+title: 'Introduction to Spatial Data and Spatial Data Management'
 categories: [tutorial-series]
 tutorialSeriesName: spatial-data-management-series
 permalink: tutorial-series/spatial-data-management-series/
@@ -10,7 +10,6 @@ image:
   creditlink: 
 ---
 
-## About
 This tutorial series explain the background and necessary information for
 working with temporal and spatial data in `R`.  
 
@@ -19,7 +18,7 @@ worked with temporal or spatial data in `R` before.
 
 <div id="objectives" markdown="1">
 
-# Series Goals / Objectives
+# Series Objectives
 After completing this series, you will:
 
 * know where to find external data
@@ -53,15 +52,15 @@ of the necessary `R` Packages now.
 *****
 
 {% include/_greyBox-wd-rscript.html %}
+
 **Working with Spatio-temporal Data in R Series:** This tutorial series is
-part of a larger
-[spatio-temporal tutorial series and Data Carpentry workshop.]({{ site.baseurl }}tutorial-series/neon-dc-phenology-series/)
+part of a larger spatio-temporal metaseries and Data Carpentry workshop.
 Included series are
-[introduction to spatio-temporal data and data management]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
-[working With raster data in R]({{ site.baseurl }}tutorial-series/raster-data-series/), 
-[working with vector data in R ]({{ site.baseurl }}tutorial-series/vector-data-series/)
+[*Introduction to Spatial Data and Spatial Data Management*]({{ site.baseurl }}tutorial-series/spatial-data-management-series/),
+[*Introduction to Working With Raster Data in R*]({{ site.baseurl }}tutorial-series/raster-data-series/), 
+[*Introduction to Working With Vector Data in R* ]({{ site.baseurl }}tutorial-series/vector-data-series/)
 and
-[working with tabular time series in R]({{ site.baseurl }}tutorial-series/tabular-time-series/).
+[*Introduction to Working With Time Series Data in Text Formats in R*]({{ site.baseurl }}tutorial-series/tabular-time-series/).
 
 </div> 
 
