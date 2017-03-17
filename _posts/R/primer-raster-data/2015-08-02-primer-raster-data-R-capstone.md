@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spatial Data Series Capstone Challenges"
-date:   2015-5-11
+date:   2015-01-07
 createdDate:   2015-08-01
 lastModified:   2017-03-17
 estimatedTime: 0.5 - 1.0 Hours

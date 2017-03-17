@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Create A Square Buffer Around a Plot Centroid in R"
-date:   2015-1-05
+date:   2015-1-09
 createdDate:   2014-10-29
 lastModified: 2017-03-17
 estimatedTime: 1.0 - 1.5 Hours

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Image Raster Data in R - An Intro"
-date:   2015-05-18
+date:   2015-01-11
 authors: [Leah A. Wasser, Megan A. Jones]
 dateCreated:  2015-05-18
 lastModified: 2017-03-17

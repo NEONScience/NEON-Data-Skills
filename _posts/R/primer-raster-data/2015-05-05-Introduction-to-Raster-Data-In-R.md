@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Raster Data in R - The Basics"
-date:   2015-1-26
+date:   2015-1-13
 authors: Leah A. Wasser
 contributors: [Megan A. Jones]
 dateCreated:  2014-11-26
