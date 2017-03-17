@@ -3,11 +3,11 @@ layout: tutorial-series-landing
 title: 'Primer on Raster Data in R'
 categories: [tutorial-series]
 tutorialSeriesName: primer-raster-data-R
-permalink: tutorial-series/primer-raster-data/
+permalink: tutorial-series/primer-raster-data-R/
 image:
-  feature: lidarBanner.png
-  credit: 
-  creditlink: 
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: http://www.neonscience.org
 ---
 
 The tutorials in this series introduces working with raster data in R.  
