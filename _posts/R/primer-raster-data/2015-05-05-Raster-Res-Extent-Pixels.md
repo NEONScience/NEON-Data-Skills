@@ -3,7 +3,7 @@ layout: post
 title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R"
 date:   2015-1-15
 dateCreated:   2014-11-03
-lastModified: 2017-03-10
+lastModified: 2017-03-17
 authors: Leah A. Wasser
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
@@ -11,7 +11,7 @@ tags: [R, hyperspectral-remote-sensing,spatial-data-gis]
 mainTag: spatial-data-gis
 description: "Learn about the key attributes needed to work with raster data in 
 non-GUI programs. Examples in R."
-code1: /SPATIALDATA/Raster-Res-Extent-Pixels.R
+code1: R/primer-raster-data/Raster-Res-Extent-Pixels.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
@@ -123,7 +123,7 @@ Range in California.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## data source : /Users/mjones01/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
 Note that this raster (in GeoTIFF format) already has an extent, resolution, and 
@@ -220,7 +220,7 @@ Let's get back to looking at more attributes.
     # plot raster
     plot(myRaster1, main="Raster with 16 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/create-raster-cont-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/create-raster-cont-1.png)
 
 Here we see our raster with the value of 1 to 16 in each pixel. 
 
@@ -258,7 +258,7 @@ numerical data).
     # plot 
     plot(myRaster2, main="Raster with 32 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/resample-raster-1.png)
 
     ## LOWER RESOLUTION
     myRaster3 <- raster(nrow=2, ncol=2)
@@ -276,7 +276,7 @@ numerical data).
 
     plot(myRaster3, main="Raster with 4 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/resample-raster-2.png)
 
     ## SINGLE PIXEL RASTER
     myRaster4 <- raster(nrow=1, ncol=1)
@@ -294,7 +294,7 @@ numerical data).
 
     plot(myRaster4, main="Raster with 1 pixel")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/resample-raster-3.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/resample-raster-3.png)
 
 To more easily compare them, let's create a graphic layout with 4 rasters in it. 
 Notice that each raster has the same extent but each a different resolution 
@@ -310,7 +310,7 @@ because it has a different number of pixels spread out over the same extent.
     plot(myRaster3, main="Raster with 4 pixels")
     plot(myRaster4, main="Raster with 2 pixels")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/quad-layout-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/quad-layout-1.png)
 
     # change graphical parameter back to 1x1 
     par(mfrow=c(1,1))
@@ -502,7 +502,7 @@ Now we have an extent associated with our raster which places it in space!
     # plot new raster
     plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Raster-Res-Extent-Pixels/plot-raster-our-extent-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Raster-Res-Extent-Pixels/plot-raster-our-extent-1.png)
 
 Notice that the coordinates show up on our plot now. 
 
@@ -573,7 +573,6 @@ actually change the CRS of a raster, you need to use the `projectRaster` functio
 
 
 <div id="challenge" markdown="1">
-
 ## Challenge: Assign CRS
 
 You can set the CRS and extent of a raster using the syntax 
@@ -597,8 +596,9 @@ of lat and long values to 5 instead of 10? Try 20, 50 and 100?
 
 </div>
 
-    ## Challenge Example Code 
 
+    ## Challenge Example Code 
+    
     # set latLong
     latLong <- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
     
@@ -619,9 +619,7 @@ of lat and long values to 5 instead of 10? Try 20, 50 and 100?
     ## coord. ref. : NA 
     ## data source : in memory
     ## names       : layer 
-    ## values      : 0, 49  (min, max)
-
-
+    ## values      : 5, 50  (min, max)
 
 
 ## Reprojecting Data

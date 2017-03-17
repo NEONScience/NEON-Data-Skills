@@ -3,7 +3,7 @@ layout: post
 title: "Create A Square Buffer Around a Plot Centroid in R"
 date:   2015-1-05
 createdDate:   2014-10-29
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+lastModified: 2017-03-17
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: [sp, rgdal]
 authors: [Leah A. Wasser, Natalie Robinson, Sarah Elmendorf, Megan A. Jones]
@@ -13,7 +13,7 @@ mainTag: spatial-data-gis
 tags : [R, spatial-data-gis]
 description: "This tutorial walks you through creating square polygons from a 
 plot centroid (x,y format) in R."
-code1: SPATIALDATA/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
+code1: /R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 image:
   feature: textur2_FieldWork.png
   credit: National Ecological Observatory Network (NEON)
@@ -84,28 +84,41 @@ To work with our spatial data in `R`, we can use the `rgdal` package and the
 `sp` package. Once we've loaded these packages and set the working directory to
 the where our .csv file with the data is located, we can load our data. 
 
-``` {r load-data}
-# load the sp and rgdal packages
 
-library(sp)
-library(rgdal)
+    # load the sp and rgdal packages
+    
+    library(sp)
+    library(rgdal)
 
-# set working directory to data folder
-#setwd("pathToDirHere")
+    ## rgdal: version: 1.1-10, (SVN revision 622)
+    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
+    ##  Loaded GDAL runtime: GDAL 1.11.4, released 2016/01/25
+    ##  Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.3/Resources/library/rgdal/gdal
+    ##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+    ##  Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.3/Resources/library/rgdal/proj
+    ##  Linking to sp version: 1.2-3
 
-
-# read in the NEON plot centroid data 
-# `stringsAsFactors=F` ensures character strings don't import as factors
-centroids <- read.csv("PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE)
-```
+    # set working directory to data folder
+    #setwd("pathToDirHere")
+    
+    
+    # read in the NEON plot centroid data 
+    # `stringsAsFactors=F` ensures character strings don't import as factors
+    centroids <- read.csv("PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE)
 
 Let's look at our data. This can be done several ways but one way is to view 
 the structure (`str()`) of the data. 
 
-``` {r view-data}
-# view data structure
-str(centroids)
-```
+
+    # view data structure
+    str(centroids)
+
+    ## 'data.frame':	18 obs. of  5 variables:
+    ##  $ Plot_ID : chr  "SJER1068" "SJER112" "SJER116" "SJER117" ...
+    ##  $ Point   : chr  "center" "center" "center" "center" ...
+    ##  $ northing: num  4111568 4111299 4110820 4108752 4110476 ...
+    ##  $ easting : num  255852 257407 256839 256177 255968 ...
+    ##  $ Remarks : logi  NA NA NA NA NA NA ...
 
 We can see that our data consists of five distinct types of data:
 
@@ -139,18 +152,16 @@ Plot Orientation: Our code is based on simple geometry and assumes that plots
 are oriented North-South. If you wanted a different orientation, 
 adjust the math accordingly to find the corners. 
 
-``` {r set-radius}
-# set the radius for the plots
-radius <- 20 # radius in meters
 
-# define the plot edges based upon the plot radius. 
-
-yPlus <- centroids$northing+radius
-xPlus <- centroids$easting+radius
-yMinus <- centroids$northing-radius
-xMinus <- centroids$easting-radius
-
-```
+    # set the radius for the plots
+    radius <- 20 # radius in meters
+    
+    # define the plot edges based upon the plot radius. 
+    
+    yPlus <- centroids$northing+radius
+    xPlus <- centroids$easting+radius
+    yMinus <- centroids$northing-radius
+    xMinus <- centroids$easting-radius
 
 When combining the coordinates for the vertices, it is important to close the 
 polygon. This means that a square will have 5 instead of 4 vertices. The fifth 
@@ -161,15 +172,13 @@ The `cbind()` function allows use to combine or bind together data by column. Ma
 sure to create the vertices in an order that makes sense. We recommend starting 
 at the NE and proceeding clockwise. 
 
-``` {r create-perimeter}
-# calculate polygon coordinates for each plot centroid. 
-square=cbind(xMinus,yPlus,  # NW corner
-	xPlus, yPlus,  # NE corner
-	xPlus,yMinus,  # SE corner
-	xMinus,yMinus, # SW corner
-	xMinus,yPlus)  # NW corner again - close ploygon
 
-```
+    # calculate polygon coordinates for each plot centroid. 
+    square=cbind(xMinus,yPlus,  # NW corner
+    	xPlus, yPlus,  # NE corner
+    	xPlus,yMinus,  # SE corner
+    	xMinus,yMinus, # SW corner
+    	xMinus,yPlus)  # NW corner again - close ploygon
 
 Next, we will associate the centroid plot ID, from the .csv file, with the plot 
 perimeter polygon that we create below. First, we extract the Plot_ID from our 
@@ -178,12 +187,9 @@ extract the Plot_IDs using the code below. If we hadn't do that, our IDs would
 come in as factors and we'd thus have to use the code
 `ID=as.character(centroids$Plot_ID)`. 
 
-``` {r get-id}
 
-# Extract the plot ID information
-ID=centroids$Plot_ID
-
-```
+    # Extract the plot ID information
+    ID=centroids$Plot_ID
 
 We are now left with two key "groups" of data:
 
@@ -226,24 +232,23 @@ We'll do this in two different ways. The first, using the `mapply()` function
 is far more efficient. However, the function hides a bit of what is going on so
 next we'll show how it is done without the function so you understand it.
 
-``` {r mapply}
-# create spatial polygons from coordinates
-polys <- SpatialPolygons(mapply(function(poly, id) 
-		{
-	  xy <- matrix(poly, ncol=2, byrow=TRUE)
-	  Polygons(list(Polygon(xy)), ID=id)
-	  }, 
-	split(square, row(square)), ID),
-	proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
-```
+
+    # create spatial polygons from coordinates
+    polys <- SpatialPolygons(mapply(function(poly, id) 
+    		{
+    	  xy <- matrix(poly, ncol=2, byrow=TRUE)
+    	  Polygons(list(Polygon(xy)), ID=id)
+    	  }, 
+    	split(square, row(square)), ID),
+    	proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
 
 Let's create a simple plot to see our new SpatialPolygon data. 
 
-``` {r polys-plot}
-# plot the new polygons
-plot(polys)
 
-```
+    # plot the new polygons
+    plot(polys)
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R/polys-plot-1.png)
 
 Yay! We created polygons for all of our plots! 
 
@@ -254,30 +259,28 @@ process works. Keep in mind that loops are less efficient to process your data
 but don't hide as much under the box. Once you understand how this works, we 
 recommend the `mapply()` function for your actual data processing. 
 
-``` {r looping-it}
-# First, initialize a list tha will later be populated
-# a, as a placeholder, since this is temporary
-a <- vector('list', length(2))
 
-# loop through each centroid value and create a polygon
-# this is where we match the ID to the new plot coordinates
-for (i in 1:nrow(centroids)) {  # for each for in object centroids
-	  a[[i]]<-Polygons(list(Polygon(matrix(square[i, ], ncol=2, byrow=TRUE))), ID[i]) 
-	  # make it an Polygon object with the Plot_ID from object ID
-	}
-
-# convert a to SpatialPolygon and assign CRS
-polysB<-SpatialPolygons(a,proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
-
-```
+    # First, initialize a list tha will later be populated
+    # a, as a placeholder, since this is temporary
+    a <- vector('list', length(2))
+    
+    # loop through each centroid value and create a polygon
+    # this is where we match the ID to the new plot coordinates
+    for (i in 1:nrow(centroids)) {  # for each for in object centroids
+    	  a[[i]]<-Polygons(list(Polygon(matrix(square[i, ], ncol=2, byrow=TRUE))), ID[i]) 
+    	  # make it an Polygon object with the Plot_ID from object ID
+    	}
+    
+    # convert a to SpatialPolygon and assign CRS
+    polysB<-SpatialPolygons(a,proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
 
 Let's see if it worked with another simple plot. 
 
-``` {r polysB-plot}
-# plot the new polygons
-plot(polysB)
 
-```
+    # plot the new polygons
+    plot(polysB)
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R/polysB-plot-1.png)
 
 Good. The two methods return the same plots. We now have our new plots saved as 
 a SpatialPolygon but how do we share that with our colleagues? One way is to turn
@@ -290,17 +293,16 @@ Before you can export a shapefile, you need to convert the `SpatialPolygons` to 
 `SpatialPolygonDataFrame`. Note that in this step you could add additional 
 attribute data if you wanted to! 
 
-``` {r create-spdf}
 
-# Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
-polys.df <- SpatialPolygonsDataFrame(polys, data.frame(id=ID, row.names=ID))
-```
+    # Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
+    polys.df <- SpatialPolygonsDataFrame(polys, data.frame(id=ID, row.names=ID))
 
 Let's check out the results before we export. And we can add color this time. 
 
-```{r polysdf-plot}
-plot(polys.df, col=rainbow(50, alpha=0.5))
-```
+
+    plot(polys.df, col=rainbow(50, alpha=0.5))
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R/polysdf-plot-1.png)
 
 When we want to export a spatial object from R as a shapefile, `writeOGR()` is a 
 nice function. It writes not only the shapefile, but also the associated 
@@ -318,11 +320,9 @@ to save our shapefile. If we want it in our current directory we can simply use 
 
 We can now export the spatial object as a shapefile.
 
-``` {r write-ogr}
 
-# write the shapefiles 
-writeOGR(polys.df, '.', '2014Plots_SJER', 'ESRI Shapefile')
-```
+    # write the shapefiles 
+    writeOGR(polys.df, '.', '2014Plots_SJER', 'ESRI Shapefile')
 
 And there you have it -- a shapefile with a square plot boundary around your
 centroids. Bring this shapefile into QGIS or whatever GIS package you prefer 

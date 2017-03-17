@@ -5,19 +5,20 @@ date:   2015-1-26
 authors: Leah A. Wasser
 contributors: [Megan A. Jones]
 dateCreated:  2014-11-26
-lastModified: 2017-03-10
+lastModified: 2017-03-17
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing,R,spatial-data-gis]
 mainTag: spatial-data-gis
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data in R."
+code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 permalink: /R/Raster-Data-In-R/
-code1: /SPATIALDATA/Introduction-to-Raster-Data-In-R.R
+
 comments: true
 
 ---
@@ -124,7 +125,7 @@ look at the attributes.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## data source : /Users/mjones01/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM
 
 Notice a few things about this raster. 
@@ -161,7 +162,7 @@ Let's change that by using the `setMinMax()` function.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## data source : /Users/mjones01/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
     ## names       : SJER2013_DTM 
     ## values      : 228.1, 518.66  (min, max)
 
@@ -239,7 +240,7 @@ This is an easy and quick data checking tool. Are there any totally weird values
          col= "purple", 
          maxpixels=22000000)
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/histogram-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/histogram-1.png)
 
 It looks like we have a lot of land around 325m and 425m. 
 
@@ -254,7 +255,7 @@ a simple plot with the `plot()` function.
     plot(DEM, 
     		 main="Digital Elevation Model, SJER") # add title with main
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/plot-raster-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/plot-raster-1.png)
 
 R has an `image()` function that allows you to control the way a raster is
 rendered on the screen. The `plot()` function in R has a base setting for the number
@@ -265,19 +266,19 @@ better for rendering larger rasters.
     # create a plot of our raster
     image(DEM)
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/PlotRaster-1.png)
 
     # specify the range of values that you want to plot in the DEM
     # just plot pixels between 250 and 300 m in elevation
     image(DEM, zlim=c(250,300))
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/PlotRaster-2.png)
 
     # we can specify the colors too
     col <- terrain.colors(5)
     image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/PlotRaster-3.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/PlotRaster-3.png)
 
 ### Plotting with Colors
 
@@ -322,7 +323,7 @@ the colors change if we want too.
     
     plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/plot-with-breaks-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/plot-with-breaks-1.png)
 
 We can also customize the legend appearance. 
 
@@ -342,7 +343,7 @@ We can also customize the legend appearance.
             legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
             fill = col)
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/legend-play-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/legend-play-1.png)
 
 Notice that the legend is in reverse order in the previous plot. Let’s fix that.
 We need to both reverse the order we have the legend laid out and reverse the 
@@ -360,7 +361,7 @@ the color fill with the `rev()` colors.
             legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
             fill = rev(col))
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/flip-legend-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/flip-legend-1.png)
 
 Try the code again but only make one of the changes -- reverse order or reverse
 colors-- what happens? 
@@ -378,7 +379,7 @@ We can add a custom color map with fewer breaks as well.
     brk <- c(200, 300, 350, 400,500)
     plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/add-color-map-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/add-color-map-1.png)
 
 A discrete dataset has a set of unique categories or classes. One example could 
 be land use classes. The example below shows elevation zones generated using the 
@@ -413,7 +414,7 @@ all values within the raster by 2.
     #plot the new DEM
     plot(DEM2, main="DEM with all values doubled")
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/raster-math-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/raster-math-1.png)
 
 
 ## Cropping Rasters in R
@@ -452,7 +453,7 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
     #plot cropped DEM
     plot(DEMcrop2)
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/cropDEMManual-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/cropDEMManual-1.png)
  
 
 
@@ -469,7 +470,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 `low elevation`. 
 </div>
 
-![ ]({{ site.baseurl }}/images/rfigs/SPATIALDATA/Introduction-to-Raster-Data-In-R/challenge-code-name-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Introduction-to-Raster-Data-In-R/challenge-code-name-1.png)
 
 
 ## Image (RGB) Data in R

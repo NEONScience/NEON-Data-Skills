@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "ESA 2015 Capstone Activity"
+title: "Primer on Raster Data Series Capstone Challenges"
 date:   2015-5-11
 createdDate:   2015-08-01
-lastModified:   2015-08-01
+lastModified:   2017-03-17
 estimatedTime: 0.5 - 1.0 Hours
 packagesLibraries: [raster, rhdf5, rgdal]
 authors: [Leah A. Wasser, Claire Lunch, Kate Thibault, Natalie Robinson]
 categories: [self-paced-tutorial]
 tags : [lidar, R]
 mainTag: lidar
-description: "This lesson contains two option capstone activities that complement the ESA 2015 workshop materials."
-permalink: /R/ESA2015-Capstone-R/
+description: "This page contains capstone activities that complement the Primer on Spatial Data Types tutorial series."
+permalink: /R/Spatial-Data-Primer-Capstones
 comments: true
 code1: 
 image:
@@ -23,37 +23,35 @@ image:
 
 {% include _toc.html %}
 
+These capstone challenges utilize the skills that you learned in the previous 
+tutorials in the *Primer on Spatial Data Types* series. 
 
-## Background ##
-This activity will utilize the skills that you learned in the previous lessons. You will 
+<div id="objectives" markdown="1">
 
-1. Import several rasters into R
-2. Perform raster math to calculate NDVI (Normalized Difference Vegetation Index) 
-3. Create a color coded plot of NDVI 
-4. Export the NDVI file as a georeferenced tiff.
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded
+on your computer to complete this tutorial.
 
-<div id="objectives">
-<h3>What you'll need</h3>
-<ol>
-<li>R or R studio loaded on your computer </li>
-<li>rgdal, raster, sp libraries installed on you computer.</li>
-</ol>
+### Install R Packages
 
-<h2>Data to Download</h2>
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rgdal")`
+* **sp:** `install.packages("sp")`
+
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+
+### Download Data
 
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
-<h3>Recommended Reading</h3>
-<a href="http://neondataskills.org/Data-Workshops/NEON-lidar-Rasters-R/">All of the topics and concepts you need to complete this capstone were covered in the links on this page.</a>
+## Tutorial Series 
+These capstone activities rely on skills learned in the 
+<a href="{{ site.baseurl }}/tutorial-series/spatial-data-types-primer/" target="_blank">Primer on Spatial Data Types series</a>. 
 </div>
 
 
-# Build Your Own Adventure! 
 
-The last hour of this workshop will be on your own! Please select one of the optional
-activities below to work on!
-
-## Option One - Create an HDF5 file
+## Capstone One: Create an HDF5 file
 
 If you have some of your own data that you'd like to explore for this activity,
 feel free to do so. Otherwise, use the vegetation structure data that we've provided
@@ -77,25 +75,25 @@ think about the following:
 1. Is there a better way to provide / store these metadata?
 2. Is there a way to automate adding the metadata to the H5 file?
 
-## Option Two - Calculate NDVI for the SJER field sites
+## Capstone Two: Calculate NDVI for the SJER field sites
 
 
-The Normalized Difference Vegetation Index is calculated using the following equation: (NIR - Red) / (NIR + Red) where:
+The Normalized Difference Vegetation Index is calculated using the following 
+equation: (NIR - Red) / (NIR + Red) where:
 
 1. NIR is the near infrared band in an image
 2. Red is the red band in an image.
  
  
-Use the Red (Band 58 in the tiff files) and the NIR (band 90 in the tiff files) tiff files to 
+Use the Red (Band 58 in the tiff files) and the NIR (band 90 in the tiff files) 
+tiff files to 
 
 1. Calculate NDVI in R.
-2. Plot NDVI. Make sure your plot has a title and a legend. Assign a colormap to the plot and specify the breaks for the colors to represent NDVI values that make sense to you. For instance, you might chose to color the data using breaks at .25,.5, .75 and 1. 
+2. Plot NDVI. Make sure your plot has a title and a legend. Assign a colormap 
+to the plot and specify the breaks for the colors to represent NDVI values that 
+make sense to you. For instance, you might chose to color the data using breaks 
+at .25,.5, .75 and 1. 
 3. Expore your final NDVI dataset as a geotiff. Make sure the CRS is correct. 
-4. To test your work, bring it into QGIS. Does it line up with the other tiffs (for example the band 19 tiff). Did it import properly? 
-
-
-
-## Option Three - Guided -- Working with Imagery in R
-
-[Work through the lesson on imagery in R.]({{ site.baseurl }}/R/Image-Raster-Data-In-R/)
+4. To test your work, bring it into QGIS. Does it line up with the other tiffs 
+(for example the band 19 tiff). Did it import properly? 
 

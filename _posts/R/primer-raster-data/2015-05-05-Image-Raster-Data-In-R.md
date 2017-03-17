@@ -4,7 +4,7 @@ title: "Image Raster Data in R - An Intro"
 date:   2015-05-18
 authors: [Leah A. Wasser, Megan A. Jones]
 dateCreated:  2015-05-18
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+lastModified: 2017-03-17
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing, R, spatial-data-gis, remote-sensing]
@@ -14,13 +14,12 @@ description: "This tutorial explains the fundamental principles, functions and
 metadata that you need to work with raster data, in image format, in R. Topics 
 include raster stacks, raster bricks, plotting RGB images and exporting an RGB 
 image to a GeoTIFF."
-code1: 
+code1: R/primer-raster-data/Image-Raster-Data-In-R.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
 permalink: /R/Image-Raster-Data-In-R/
-code1: SPATIALDATA/Image-Raster-Data-In-R.R
 comments: true
 ---
 
@@ -123,16 +122,14 @@ create a composite RGB image.
 
 First let's load the R packages that we need: `sp` and `raster`. 
 
-``` {r set-up}
 
-# load the raster, sp, and rgdal packages
-library(raster)
-library(sp)
-library(rgdal)
-
-# set the working directory to the data
-#setwd("pathToDirHere")
-```
+    # load the raster, sp, and rgdal packages
+    library(raster)
+    library(sp)
+    library(rgdal)
+    
+    # set the working directory to the data
+    #setwd("pathToDirHere")
 
 Next, let's create a raster stack with bands representing 
 
@@ -142,54 +139,58 @@ Next, let's create a raster stack with bands representing
 
 This can be done by individually assigning each file path as an object. 
 
-``` {r import-tiffs}
 
-# import tiffs
-band19 <- "RGB/band19.tif"
-band34 <- "RGB/band34.tif"
-band58 <- "RGB/band58.tif"
-```
+    # import tiffs
+    band19 <- "RGB/band19.tif"
+    band34 <- "RGB/band34.tif"
+    band58 <- "RGB/band58.tif"
 
 Note that if we wanted to create a stack from all the files in a directory (folder)
 you can easily do this with the `list.files()` function. We would use 
 `full.names=TRUE` to ensure that R will store the directory path in our list of
 rasters.
 
-``` {r list-files}
-# create list of files to make raster stack
-rasterlist1 <-  list.files('RGB', full.names=TRUE)
-```
+
+    # create list of files to make raster stack
+    rasterlist1 <-  list.files('RGB', full.names=TRUE)
 
 Or, if your directory is consistes of some .tif files and other file types you 
 don't want in your stack, you can ask R to only list those files with a .tif 
 extension.
 
-```{r list-files-tif}
-rasterlist2 <-  list.files('RGB', full.names=TRUE, pattern="tif") 
-```
+
+    rasterlist2 <-  list.files('RGB', full.names=TRUE, pattern="tif") 
 
 Back to creating our raster stack with three bands.  We only want three of the 
 bands in the RGB directory and not the fourth `band90`, so will create the stack
 from the bands we loaded individually. We do this with the `stack()` function. 
 
-``` {r r-stack}
-# create raster stack
-rgbRaster <- stack(band19,band34,band58)
 
-# example syntax for stack from a list
-#rstack1 <- stack(rasterlist1)
-```
+    # create raster stack
+    rgbRaster <- stack(band19,band34,band58)
+    
+    # example syntax for stack from a list
+    #rstack1 <- stack(rasterlist1)
 
 This has now created a stack of rasters three thick. Let's view them. 
 
-``` {r view-stack}
-# check attributes
-rgbRaster
 
-# plot stack
-plot(rgbRaster)
+    # check attributes
+    rgbRaster
 
-```
+    ## class       : RasterStack 
+    ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## names       : band19, band34, band58 
+    ## min values  :     84,    116,    123 
+    ## max values  :  13805,  15677,  14343
+
+    # plot stack
+    plot(rgbRaster)
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/view-stack-1.png)
 
 From the attributes we see the CRS, resolution, and extent of all three rasters. 
 The we can see each raster plotted. Notice the different shading between the 
@@ -222,11 +223,11 @@ following arguments:
 
 Let's try it. 
 
-``` {r plot-rgb}
-# plot an RGB version of the stack
-plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
 
-```
+    # plot an RGB version of the stack
+    plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/plot-rgb-1.png)
 
 Note: read the `raster` package documentation for other arguments that can be 
 added (like `scale`) to improve or modify the image. 
@@ -236,10 +237,20 @@ added (like `scale`) to improve or modify the image.
 You can also explore the data. Histograms allow us to view the distrubiton of 
 values in the pixels. 
 
-``` {r hist}
-# view histogram of reflectance values for all rasters
-hist(rgbRaster)
-```
+
+    # view histogram of reflectance values for all rasters
+    hist(rgbRaster)
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+    ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main =
+    ## main[y[i]], : 42% of the raster cells were used. 100000 values used.
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/hist-1.png)
 
 Note about the warning messages: R defaults to only showing the first 100,000 
 values in the histogram so if you have a large raster you may not be seeing all 
@@ -251,29 +262,24 @@ datasets.
 You can crop all rasters within a raster stack the same way you'd do it with a 
 single raster. 
 
-``` {r stack-crop}
 
-# determine the desired extent
-rgbCrop <- c(256770.7,256959,4112140,4112284)
+    # determine the desired extent
+    rgbCrop <- c(256770.7,256959,4112140,4112284)
+    
+    # crop to desired extent
+    rgbRaster_crop <- crop(rgbRaster, rgbCrop)
+    
+    # view cropped stack
+    plot(rgbRaster_crop)
 
-# crop to desired extent
-rgbRaster_crop <- crop(rgbRaster, rgbCrop)
-
-# view cropped stack
-plot(rgbRaster_crop)
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/stack-crop-1.png)
 
  <div id="challenge" markdown="1">
 ## Challenge: Plot Cropped RGB
 Plot this new cropped stack as an RGB image. 
 </div>
 
-``` {r challenge-code-plot-crop-rgb, echo=FALSE}
-# plot an RGB version of the cropped stack
-plotRGB(rgbRaster_crop,r=3,g=2,b=1, stretch = "lin")
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/challenge-code-plot-crop-rgb-1.png)
 
 
 
@@ -285,14 +291,22 @@ use this object to quickly create RGB images. Raster bricks are more efficient
 objects to use when processing larger datasets. This is because the computer 
 doesn't have to spend energy finding the data - it is contained within the object.
 
-``` {r create-r-brick}
-# create raster brick
-rgbBrick <- brick(rgbRaster)
 
-# check attributes
-rgbBrick
+    # create raster brick
+    rgbBrick <- brick(rgbRaster)
+    
+    # check attributes
+    rgbBrick
 
-```
+    ## class       : RasterBrick 
+    ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## data source : in memory
+    ## names       : band19, band34, band58 
+    ## min values  :     84,    116,    123 
+    ## max values  :  13805,  15677,  14343
 
 While the brick might seem similar to the stack (see attributes above), we can 
 see that it's very different when we look at the size of the object.
@@ -302,14 +316,20 @@ see that it's very different when we look at the size of the object.
 
 Use `object.size()` to see the size of an R object. 
 
-``` {r rBrick-size}
-# view object size
-object.size(rgbBrick)
-object.size(rgbRaster)
 
-# view raster brick
-plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
-```
+    # view object size
+    object.size(rgbBrick)
+
+    ## 5759448 bytes
+
+    object.size(rgbRaster)
+
+    ## 40408 bytes
+
+    # view raster brick
+    plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/rBrick-size-1.png)
 
 Notice the faster plotting? For a smaller raster like this the difference is 
 slight, but for larger raster it can be considerable. 
@@ -326,14 +346,13 @@ One way around this is to generate a new raster stack with the rasters in the
 proper order - red, green and blue format. Or, just always create your stacks
 R->G->B to start!!!
 
-``` {r rgb-order-stack}
-# Make a new stack in the order we want the data in 
-orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
 
-# write the geotiff
-# change overwrite=TRUE to FALSE if you want to make sure you don't overwrite your files!
-writeRaster(orderRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
-```
+    # Make a new stack in the order we want the data in 
+    orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
+    
+    # write the geotiff
+    # change overwrite=TRUE to FALSE if you want to make sure you don't overwrite your files!
+    writeRaster(orderRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
 
 
 ## Import A Multi-Band Image into R
@@ -341,15 +360,18 @@ You can import a multi-band image into R too. To do this, you import the file as
 a stack rather than a raster (which brings in just one band). Let's import the 
 raster than we just created above.
 
-``` {r import-multi-raster}
 
-# import multi-band raster as stack
-multiRasterS <- stack("rgbRaster.tif") 
+    # import multi-band raster as stack
+    multiRasterS <- stack("rgbRaster.tif") 
+    
+    # import multi-band raster direct to brick
+    multiRasterB <- brick("rgbRaster.tif") 
+    
+    # view raster
+    plot(multiRasterB)
 
-# import multi-band raster direct to brick
-multiRasterB <- brick("rgbRaster.tif") 
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/import-multi-raster-1.png)
 
-# view raster
-plot(multiRasterB)
-plotRGB(multiRasterB,r=1,g=2,b=3, stretch="lin")
-```
+    plotRGB(multiRasterB,r=1,g=2,b=3, stretch="lin")
+
+![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/import-multi-raster-2.png)

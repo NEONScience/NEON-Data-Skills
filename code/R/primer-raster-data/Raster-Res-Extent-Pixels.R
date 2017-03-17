@@ -166,7 +166,9 @@ rasterNoProj@crs
 
 
 ## ----challenge-example-code----------------------------------------------
+## Challenge Example Code 
 
+# set latLong
 latLong <- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
 
 # make spatial points dataframe, which will have a spatial extent

@@ -12,12 +12,13 @@ tags: [hyperspectral-remote-sensing,R,spatial-data-gis]
 mainTag: spatial-data-gis
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data in R."
+code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 permalink: /R/Raster-Data-In-R/
-code1: /SPATIALDATA/Introduction-to-Raster-Data-In-R.R
+
 comments: true
 
 ---
