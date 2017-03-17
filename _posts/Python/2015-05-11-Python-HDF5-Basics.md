@@ -5,8 +5,8 @@ authors: [David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden]
 date: 2015-5-08
 dateCreated:   2015-5-08 
 lastModified: 2017-02-08
-packagesLibraries: [rhdf5, h5py]
-language: [python, R]
+packagesLibraries: [h5py, numpy, matplotlib]
+language: [python]
 categories:  [self-paced-tutorial]
 tags: [HDF5]
 mainTag: 
@@ -14,8 +14,8 @@ description: "This tutorial provides basic code for opening an HDF5 file in Pyth
 using the h5py, numpy, and matplotlib libraries."
 code1: 
 image:
-  feature: NEONCarpentryHeader_2.png
-  credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
+  feature: activitiesBanner.png
+  credit: National Ecological Observatory Network (NEON)
   creditlink:
 permalink: /self-paced-tutorial/Python-HDF5-basics
 comments: true
@@ -44,7 +44,7 @@ At the end of this tutorial you will be able to
 The code below is starter code to create an H5 file in Python.
 
     if __name__ == '__main__':
-		#import required libraries
+		# import required libraries
 		import h5py as h5
 		import numpy as np
 		import matplotlib.pyplot as plt
@@ -56,14 +56,14 @@ The code below is starter code to create an H5 file in Python.
 		for n in datasetNames:
 			print(n)
 		
-		#extract reflectance data from the H5 file
+		# extract reflectance data from the H5 file
 		reflectance = f['Reflectance']
-		#extract one pixel from the data
+		# extract one pixel from the data
 		reflectanceData = reflectance[:,49,392]
 		reflectanceData = reflectanceData.astype(float)
 
-		#divide the data by the scale factor
-		#note: this information would be accessed from the metadata
+		# divide the data by the scale factor
+		# note: this information would be accessed from the metadata
 		scaleFactor = 10000.0
 		reflectanceData /= scaleFactor
 		wavelength = f['wavelength']
@@ -74,10 +74,10 @@ The code below is starter code to create an H5 file in Python.
 		# Print the attributes (metadata):
 		print("Data Description : ", reflectance.attrs['Description'])
 		print("Data dimensions : ", reflectance.shape, reflectance.attrs['DIMENSION_LABELS'])
-		#print a list of attributes in the H5 file
+		# print a list of attributes in the H5 file
 		for n in reflectance.attrs:
 		print(n)
-		#close the h5 file
+		# close the h5 file
 		f.close()
     
 		# Plot
