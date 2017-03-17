@@ -2,8 +2,8 @@
 layout: tutorial-series-landing
 title: 'Version Control with GitHub'
 categories: [tutorial-series]
-tutorialSeriesName: GitHub
-permalink: tutorial-series/GitHub/
+tutorialSeriesName: git-github
+permalink: tutorial-series/git-github/
 image:
   feature: codingInformatics.png
   credit: National Ecological Observatory Network

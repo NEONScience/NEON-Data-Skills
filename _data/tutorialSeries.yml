@@ -56,7 +56,7 @@
   HDF5 files in R. We also cover extracting and plotting data from HDF5 files." 
   lastModified:  2016-12-15 
   
-- slug: GitHub
+- slug: git-github
   name: Version Control with GitHub
   description: "This series teaches why version control is important and how to 
   use a common version control tool, GitHub. GitHub also allows for collaboration
