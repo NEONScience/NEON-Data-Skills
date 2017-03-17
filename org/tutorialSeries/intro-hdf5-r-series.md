@@ -28,12 +28,9 @@ and HDF5 files
 * Know how to work with HDF5 files in R
 * Know how to work with time-series data within a nested HDF5 file
 
-
 ## Things You’ll Need To Complete This Series
-
-### Setup RStudio
-To complete some of the tutorials in this series, you will need an updated 
-version of `R` and, preferably, RStudio installed on your computer.
+You will need the most current version of `R` and, preferably, `RStudio` loaded
+on your computer to complete this tutorial.
 
  <a href = "http://cran.r-project.org/">R</a> 
 is a programming language that specializes in statistical computing. It is a 
@@ -52,4 +49,5 @@ skills.
 
 
 </div> 
+
 ## Tutorials in Workshop Series

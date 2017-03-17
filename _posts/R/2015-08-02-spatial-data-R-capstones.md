@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spatial Data Series Capstone Challenges"
-date:   2015-01-07
+date:   2014-01-07
 createdDate:   2015-08-01
 lastModified:   2017-03-17
 estimatedTime: 0.5 - 1.0 Hours
@@ -27,7 +27,7 @@ image:
 These capstone challenges utilize the skills that you learned in the previous 
 tutorials in the:
 
-* <a href="{{ site.baseurl }}/tutorial-series/primer-raster-data/" target="_blank"> *Primer on Raster Data in R* series</a>,
+* <a href="{{ site.baseurl }}/tutorial-series/primer-raster-data-r/" target="_blank"> *Primer on Raster Data in R* series</a>,
 * <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
 * <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
 
