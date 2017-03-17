@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Raster Data in R - The Basics"
-date:   2015-1-26
+date:   2015-1-13
 authors: Leah A. Wasser
 contributors: [Megan A. Jones]
 dateCreated:  2014-11-26
@@ -9,7 +9,8 @@ lastModified: 2017-03-17
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [hyperspectral-remote-sensing,R,spatial-data-gis]
-mainTag: spatial-data-gis
+mainTag: primer-raster-data-R
+tutorialSeries: [primer-raster-data-R]
 description: "This tutorial explains the fundamental principles, functions and 
 metadata that you need to work with raster data in R."
 code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R

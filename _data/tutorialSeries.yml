@@ -29,12 +29,11 @@
   multi-band raster data and raster time series data in R  using both plot and rasterVis levelPlot."
   lastModified:  2015-10-15
   
-- slug: intro-hdf5-r-series
-  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFview & R
-  description: "In this series we cover what a HDF5 format is, and how to open, read, create
-  HDF5 files in R. We also cover extracting and plotting data from HDF5 files." 
-  lastModified:  2016-12-15 
-  
+- slug: primer-raster-data-R
+  name: Primer on Raster Spatial Data in R 
+  description: "This series provides a brief primer on raster spatial data in R." 
+  lastModified:  2017-03-17 
+
 - slug: intro-lidar-r-series
   name: Introduction to LiDAR Data - Explore Point Clouds and Work with LiDAR Raster Data in R
   description: "In this series we cover the basics of lidar data including 3 key lidar data
@@ -42,7 +41,7 @@
   Model (DTM). We explore lidar point clouds using the free, online 3d point cloud viewer.
   Finally, we cover working with LiDAR derived rasters in R." 
   lastModified:  2016-12-15
-
+  
 - slug: intro-hsi-r-series
   name: Introduction to Hyperspectral Remote Sensing Data - in R
   description: "In this series, we cover the basics of working with NEON hyperspectral remote
@@ -51,13 +50,12 @@
   Finally we explore extracting a hyperspectral - spectral signature from one pixel using R" 
   lastModified:  2016-12-15 
   
-- slug: R-basics
-  name: Basic R Skills
-  description: "This series is provides tutorials and references on key skills 
-  needed to complete more complex tasks in R. It is not intended as an guide for
-  the introduction to or initial learning of how to use R." 
-  lastModified:  2016-12-5 
-
+- slug: intro-hdf5-r-series
+  name: Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R
+  description: "In this series we cover what a HDF5 format is, and how to open, read, create
+  HDF5 files in R. We also cover extracting and plotting data from HDF5 files." 
+  lastModified:  2016-12-15 
+  
 - slug: GitHub
   name: Version Control with GitHub
   description: "This series teaches why version control is important and how to 
@@ -72,12 +70,14 @@
   lastModified:  2016-06-20 
 
 - slug: spatial-data-management-series
-  name: Getting Started With Spatial Data in R 
+  name: Introduction to Spatial Data and Spatial Data Management 
   description: "This series covers core data literacy concepts needed to work with spatial data
   in both a gui and non gui environment. These lessons are currently under development." 
   lastModified:  2016-12-15 
 
-- slug: primer-raster-data-R
-  name: Primer on Raster Spatial Data in R 
-  description: "This series provides a brief primer on raster spatial data in R." 
-  lastModified:  2017-03-17 
+- slug: R-basics
+  name: Basic R Skills
+  description: "This series provides tutorials and references on key skills 
+  needed to complete more complex tasks in R. It is not intended as an guide for
+  the introduction to or initial learning of how to use R." 
+  lastModified:  2016-12-5 

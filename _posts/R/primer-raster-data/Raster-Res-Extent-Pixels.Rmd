@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R"
+title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels"
 date:   2015-1-15
 dateCreated:   2014-11-03
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
@@ -8,7 +8,8 @@ authors: Leah A. Wasser
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
 tags: [R, hyperspectral-remote-sensing,spatial-data-gis]
-mainTag: spatial-data-gis
+mainTag: primer-raster-data-R
+tutorialSeries: [primer-raster-data-R]
 description: "Learn about the key attributes needed to work with raster data in 
 non-GUI programs. Examples in R."
 code1: R/primer-raster-data/Raster-Res-Extent-Pixels.R
