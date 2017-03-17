@@ -53,4 +53,4 @@ NEON field site.
 </div> 
 
 
-## Tutorials in Workshop Series
+## Tutorials in the Series

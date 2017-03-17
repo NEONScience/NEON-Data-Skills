@@ -50,4 +50,4 @@ skills.
 
 </div> 
 
-## Tutorials in Workshop Series
+## Tutorials in Series
