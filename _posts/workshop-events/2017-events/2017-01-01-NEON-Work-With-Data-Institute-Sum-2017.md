@@ -22,8 +22,6 @@ permalink: /workshop-event/NEON-Data-Insitute-2017
 comments: true 
 ---
 
-**Application Now Open:** <a href="http://www.neonscience.org/learn-experience/data-institutes" target="_blank"> http://www.neonscience.org/learn-experience/data-institutes</a>
-
 NEON's Data Institutes provide critical skills and foundational knowledge for 
 graduate students and early career scientists working with heterogeneous 
 spatio-temporal data to address ecological questions. 
