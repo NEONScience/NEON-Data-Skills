@@ -38,7 +38,7 @@ be Python**. This Institute will be held at NEON headquarters in June 2017.
 |--| 2-8 June |Version Control & Collaborative Science with Git & GitHub|
 |--| 9-15 June | Documentation of Your Workflow with iPython/Jupyter Notebooks|
 |--| 19-35 June| **Data Institute**|
-|7:50am - 6:30 pm| Monday Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing|
+|7:50am - 6:30 pm| Monday |Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing|
 |8:00am - 6:30pm| Tuesday|Reproducible & Automated Workflows, Intro to LiDAR data|
 |8:00am - 6:30pm| Wednesday|Remote Sensing Uncertainty|
 |8:00am - 6:30pm| Thursday| Hyperspectral Data & Vegetation|
