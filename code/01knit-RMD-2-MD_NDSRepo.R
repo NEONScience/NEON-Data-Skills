@@ -7,7 +7,7 @@
 ##################
 
 require(knitr)
-dirs <- c("SPATIALDATA",
+dirs <- c("R/primer-raster-data",
           "R/dc-tabular-time-series",
           "R/tutorial-setup")
 
@@ -20,10 +20,10 @@ dir <- dirs[1]
 gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
 
 # jekyll will only render md posts that begin with a date. Add one.
-add.date <- "2014-10-29-"
+add.date <- "2015-05-05-"
 
 # set working dir - this is where the data are located
-wd <- "~/Documents/data/NotInCurrentUse/NEON-DS-Field-Site-Spatial-Data/SJER/"
+wd <- "~/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/"
 
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########

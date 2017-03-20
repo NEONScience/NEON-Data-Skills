@@ -1,256 +1,313 @@
 ---
 layout: post
-title: "R: Create a Canopy Height Model from LiDAR derived Rasters (grids) in R"
-date:   2014-7-18 20:49:52
-createdDate:   2014-07-21 20:49:52
-lastModified:   2015-07-23 19:33:52
+title: "Create a Canopy Height Model from LiDAR-derived Rasters in R"
+date:   2014-7-18
+createdDate:   2014-07-21
+lastModified:`r format(Sys.time(), "%Y-%m-%d")`
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: raster, sp, dplyr, maptools, rgeos
+packagesLibraries: [raster, sp, dplyr, maptools, rgeos]
 authors: Edmund Hart, Leah A. Wasser
-category: remote-sensing
-categories: [Remote Sensing]
-tags : [lidar, R]
-mainTag: lidar
-description: "Bring LiDAR-derived raster data (DSM and DTM) into R to create a final canopy height model representing the actual vegetation height with the influence of elevation removed. Then compare lidar derived height (CHM) to field measured tree height to estimate uncertainty in lidar estimates."
+categories: [self-paced-tutorial]
+mainTag: intro-lidar-r-series
+tags: [lidar, R, raster, remote-sensing, spatial-data-gis]
+tutorialSeries: [intro-lidar-r-series]
+description: "In this tutorial, you will bring LiDAR-derived raster data 
+(DSM and DTM) into R to create a  canopy height model (CHM) and then compare 
+LiDAR derived height (CHM) to field measured tree height to estimate uncertainty 
+in LiDAR estimates."
 permalink: /lidar-data/lidar-data-rasters-in-R/
 comments: true
-code1: /R/2015-06-30-Create-Lidar-CHM-R.R
+code1: /R/intro-lidar-r/Create-Lidar-CHM-R.R
 image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 ---
 
+A common analysis using LiDAR data is to derive top of the canopy height values 
+from the LiDAR data. These values are often used to track changes in forest 
+structure over time, to calculate biomass, and even leaf area index (LAI). Let's 
+dive into the basics of working with raster formatted LiDAR data in R! 
 
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3 >Contents</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
+<div id="objectives" markdown="1">
 
+# Goals / Objectives
+After completing this activity, you will be able to:
 
-## Background ##
-NEON (National Ecological Observatory Network) will provide derived LiDAR products as one 
-of its many free ecological data products. These products will come in a
- [geotiff](http://trac.osgeo.org/geotiff/ "geotiff (read more)") format, which 
-is a `tif` raster format that is spatially located on the earth. Geotiffs 
-can be accessed using the `raster` package in R.
+* Work with digital terrain model (DTM) & digital surface model (DSM) raster files. 
+* Create a canopy height model (CHM) raster from DTM & DSM rasters. 
+* 
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
 
-A common first analysis using LiDAR data is to derive top of the canopy height values from 
-the LiDAR data. These values are often used to track changes in forest structure over time, 
-to calculate biomass, and even LAI. Let's dive into the basics of working with raster 
-formatted lidar data in R! Before we begin, make sure you've downloaded the data required 
-to run the code below.
+### Install R Packages
 
-<div id="objectives">
-<h3>What you'll need</h3>
+* **raster:** `install.packages("raster")`
+* **sp:** `install.packages("sp")`
+* **rgdal:** `install.packages("rgdal")`
+* **rgdal:** `install.packages("dplyr")`
+* **rgdal:** `install.packages("ggplot2")`
 
-You will need the most current version of R or R studio loaded on your computer 
-to complete this lesson.
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
 
-<h3>R Libraries to Install:</h3>
-<ul>
-<li><strong>raster:</strong> <code> install.packages("raster")</code></li>
-<li><strong>sp:</strong> <code> install.packages("sp")</code></li>
-<li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
-<li><strong>dplyr:</strong> <code> install.packages("dplyr")</code></li>
-<li><strong>ggplot2:</strong> <code> install.packages("ggplot2")</code></li>
-</ul>
-
-<a href="{{ site.baseurl }}/R/Packages-In-R/" target="_blank"> 
-More on Packages in R - Adapted from Software Carpentry.</a>
-
-<h2>Data to Download</h2>
-
+## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
 
-<h3>Recommended Reading</h3>
-<a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+This tutorial is designed for you to set your working directory to the directory
+created by unzipping this file.
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+***
+
+## Recommended Reading
+<a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
+
 </div>
 
+## Part 1: Create a LiDAR derived Canopy Height Model (CHM)
 
+The National Ecological Observatory Network (NEON) will provide LiDAR-derived 
+data products as one of its many free ecological data products. These products 
+will come in the 
+[GeoTIFF](http://trac.osgeo.org/geotiff/ "geotiff (read more)") 
+format, which is a .tif raster format that is spatially located on the earth. 
 
-##Part 1. Creating a LiDAR derived Canopy Height Model (CHM)
-In this lesson, we will create a Canopy Height Model. The [canopy height 
-model]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/), represents
- the actual heights of the trees on the ground. And we can derive the CHM 
+In this tutorial, we will create a Canopy Height Model. The 
+[canopy height model (CHM)]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/),
+represents the heights of the trees on the ground. We can derive the CHM 
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
 
-To create the CHM, we will use the `raster` library in `R` and import the lidar 
-derived digital surface model (DSM) and the digital terrain model (DTM). 
+We will use the `raster` R package to work with the the lidar derived digital surface model (DSM) and the digital terrain model (DTM). 
 
-```{r import-plot-DSM}
+```{r set-up}
 
-#Make sure your working directory is set properly!
-#The working directory will determine where data are saved. 
-#If you already have an R studio project setup then you can skip this step!
-#setwd("yourPathHere")    
-
-#Import DSM into R 
+# Load needed packages
 library(raster)
 library(rgdal)
 
-# If the code below doesn't work, check your working directory path!  
-dsm_f <- "DigitalSurfaceModel/SJER2013_DSM.tif"
-
-dsm <- raster(dsm_f)
-# View info about the raster. Then plot it.
-dsm
-#plot the DSM
-myColor=terrain.colors(200)
-plot(dsm, col = myColor, main="LiDAR Digital Surface Model")
-
-```
-
-Next, we will import the Digital Terrain Model (DTM). The 
-[DTM represents the ground (terrain) elevation]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/).
-
-```{r plot-DTM }
-
-#import the digital terrain model
-dtm_f <- "DigitalTerrainModel/SJER2013_DTM.tif"
-dtm <- raster(dtm_f)
-plot(dtm, col=myColor, main="LiDAR Digital Terrain Model")
-
-```
-
-Finally, we can create the Canopy Height Model (CHM). The [CHM represents the difference between the DSM and the DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/). 
-We can perform some basic raster math to calculate the CHM. You can perform the 
-SAME raster math in a GIS program like [QGIS](http://www.qgis.org/en/site/ "QGIS").
-
-```{r calculate-plot-CHM }
-
-#use raster math to create CHM
-chm <- dsm - dtm
-
-# Create a function that subtracts one raster from another
-#canopyCalc <- function(x, y) {
-#  return(x - y)
-#  }
-    
-#use the function to create the final CHM
-#then plot it.
-#You could use the overlay function here 
-#chm <- overlay(dsm,dtm,fun = canopyCalc) 
-#but you can also perform matrix math to get the same output.
-#chm <- canopyCalc(dsm,dtm)
-
-
-plot(chm, main="LiDAR Canopy Height Model")
-
-```
-
-We can write out the raster as a geoTiff using the `writeRaster` function.
-
-
-
-```{r write-raster-to-geotiff, eval=FALSE }
-
-#write out the CHM in tiff format. We can look at this in any GIS software.
-#note that you need the rdgal library to use this function.
-writeRaster(chm,"chm.tiff","GTiff")
-
-```
-
-We've now successfully created a canopy height model using basic raster math - in 
-R! We can bring the `chm.tiff` file into QGIS (or any GIS program) and look at it.  
-
-
-###CHALLENGES
-
-> 1. Adjust your plot - add breaks at 0, 10, 20 and 30 meters and assign a color 
-> map of 3 colors. Add a title to your plot.
-> 2. Look at a histogram of your data. Are there sets of breaks that make more 
-> sense than 0, 10, 20 and 30 meters? Experiment with producing a final map that 
-> provides useful information.
-> 3. Convert the CHM from meters to feet. Plot it using breaks that make sense for
-> the data. Then export is as a geotiff.
-> 4. In the `CanopyHeightModel` folder, you will find an already processed CHM called 
-> `SJER2013_CHM.tif`. The processing that was used to create this CHM, is different from
-> what we did above in this tutorial. Import that file in `R` and call it `CHM_NEON`. 
-> Calculate the difference between the CHM that you created above and this already 
-> created raster. Do you notice any differences between the 2 rasters? How significant
-> are the differences?
-
-### EXTRA CREDIT!
-Share your output map from the challenge above in the comments section at the 
-bottom of the page. 
-
-## Part 2. How does our CHM data compare to field measured tree heights?
-
-We now have a canopy height model for our study area in California. However, how 
-do the height values extracted from the CHM compare to our laboriously collected, 
-field measured canopy height data? To figure this out, we will use manually collected
-tree height data, measured within circular plots across our study area. We will compare
-the maximum measured tree height value to the maximum lidar derived height value 
-for each circular plot using regression.
-
-For this activity, we have two `csv` (comma separate value) files located in the
-`InSitu_Data` folder. The first file contains plot centroid location information (X,Y) 
-where we measured trees. The second file contains our vegetation structure data 
-for each plot. Let's start by plotting the plot locations where we measured trees
- (in red) on a map. 
-
-We will need to convert the plot centroids to a spatial points dataset in R. To do this 
-we'll need two additional packages - the spatial package - 
-[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
-and [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr").
-NOTE: the `sp` library typically installs when you install the raster package. 
-
-Let's get started!
-
-```{r read-plot-data }
-
-#load libraries
+# packages needed only in Part 2
 library(sp)
 library(dplyr)
 
-#import the centroid data and the vegetation structure data
-options(stringsAsFactors=FALSE)
-centroids <- read.csv("InSitu_Data/SJERPlotCentroids.csv")
-insitu_dat <- read.csv("InSitu_Data/D17_2013_vegStr.csv")
+# set working directory to data folder
+#setwd("pathToDirHere")
+```
 
-#Overlay the centroid points and the stem locations on the CHM plot
-#plot the chm
-myCol=terrain.colors(6)
-plot(chm,col=myCol, main="Plot Locations", breaks=c(-5,0,5,10,40))
-#for example, cex = point size 
-#pch 0 = square
-points(centroids$easting,centroids$northing, pch=0, cex = 2, col = 2)
-points(insitu_dat$easting,insitu_dat$northing, pch=19, cex=.5)
+First, we will import the Digital Surface Model (DSM). The 
+[DSM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+represents the elevation of the top of the objects on the ground (trees, 
+buildings, etc).
+
+``` {r import-dsm}
+
+# assign raster to object
+dsm <- raster("SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
+
+# view info about the raster.
+dsm
+
+# plot the DSM
+plot(dsm, main="LiDAR Digital Surface Model \n SJER, California")
 
 ```
 
-> HINT: type in `help(points)` to read about the options for plotting points.
- 
-To see a list of pch values (symbols), check out 
+Note the resolution, extent, and coordinate reference system (CRS) of the raster. 
+To do later steps, our DTM will need to be the same. 
+
+Next, we will import the Digital Terrain Model (DTM) for the same area. The 
+[DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+represents the ground (terrain) elevation.
+
+```{r plot-DTM }
+
+# import the digital terrain model
+dtm <- raster("SJER/DigitalTerrainModel/SJER2013_DTM.tif")
+
+plot(dtm, main="LiDAR Digital Terrain Model \n SJER, California")
+
+```
+
+With both of these rasters now loaded, we can create the Canopy Height Model 
+(CHM). The 
+[CHM ]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+represents the difference between the DSM and the DTM or the height of all objects
+on the surface of the earth. 
+
+To do this we perform some basic raster math to calculate the CHM. You can 
+perform the same raster math in a GIS program like 
+[QGIS](http://www.qgis.org/en/site/ "QGIS").
+
+When you do the math, make sure to subtract the DTM from the DSM or you'll get 
+trees with negative heights!
+
+
+```{r calculate-plot-CHM }
+
+# use raster math to create CHM
+chm <- dsm - dtm
+
+# view CHM attributes
+chm
+
+plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+
+```
+
+We've now created a CHM from our DSM and DTM. What do you notice about the 
+canopy cover at this location in the San Joaquin Experimental Range? 
+
+<div id="challenge" markdown="1">
+## Challenge: Basic Raster Math 
+
+Convert the CHM from meters to feet. Plot it. 
+</div>
+
+``` {r challenge-code-raster-math, include=TRUE, results="hide", echo=FALSE}
+# conversion 1m = 3.28084 ft
+chm_ft <- chm*3.28084
+
+# plot 
+plot(chm_ft, main="LiDAR Canopy Height Model \n in feet")
+
+```
+
+If, in your work you need to create lots of CHMs from different rasters, an 
+efficient way to do this would be to create a function to create your CHMs. 
+
+``` {r canopy-function}
+# Create a function that subtracts one raster from another
+# 
+canopyCalc <- function(DTM, DSM) {
+  return(DSM -DTM)
+  }
+    
+# use the function to create the final CHM
+chm2 <- canopyCalc(dsm,dtm)
+chm2
+
+# or use the overlay function
+chm3 <- overlay(dsm,dtm,fun = canopyCalc) 
+chm3 
+
+```
+
+As with any raster, we can write out the CHM as a GeoTiff using the 
+`writeRaster()` function. 
+
+```{r write-raster-to-geotiff, eval=FALSE }
+#write out the CHM in tiff format. 
+writeRaster(chm,"chm_SJER.tiff","GTiff")
+
+```
+
+We've now successfully created a canopy height model using basic raster math -- in 
+R! We can bring the `chm_SJER.tiff` file into QGIS (or any GIS program) and look 
+at it. 
+
+## Part 2. Groundtruth CHM
+
+We now have a canopy height model (CHM) for our study area in California. 
+However, how do the height values extracted from the CHM compare to our 
+laboriously collected, field measured canopy height data? To figure this out, we 
+will use manually collected tree height data, measured within circular plots 
+across our study area. We will compare the maximum measured tree height value to 
+the maximum LiDAR derived height value for each circular plot using regression.
+
+For this analysis, we need two .csv (comma separate value) files. One, 
+`SJER/VegetationData/D17_2013_vegStr.csv`, contains our vegetation structure data 
+for each plot. The other, `SJER/PlotCentroids/SJERPlotCentroids.csv`, contains the
+plot centroid location information (X,Y) where we measured trees. Let's start by 
+plotting the plot locations where we measured trees (in red) on a map. 
+
+We will need to convert the plot centroids to a spatial points dataset in R. This
+is why we loaded the two additional packages at the beginning - the spatial package 
+[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
+and a data manipulation package 
+[dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr").
+
+NOTE: the `sp` library typically installs when you install the raster package. 
+
+Let's get started with the plotting!
+
+```{r read-veg }
+
+# import the centroid data and the vegetation structure data
+# this means all strings of letter coming in will remain character
+options(stringsAsFactors=FALSE)
+
+centroids <- read.csv("SJER/PlotCentroids/SJERPlotCentroids.csv")
+str(centroids)
+
+vegStr <- read.csv("SJER/VegetationData/D17_2013_vegStr.csv")
+str(centroids)
+```
+
+Since both files have eastings and northings we can use this data to plot onto 
+our existing raster. 
+
+``` {r plot-veg}
+
+## overlay the centroid points and the stem locations on the CHM plot
+# plot the chm
+myCol=terrain.colors(6)
+plot(chm,col=myCol, main="Plot & Tree Locations", breaks=c(-2,0,2,10,40))
+
+## plotting details: cex = point size, pch 0 = square
+# plot square around the centroid
+points(centroids$easting,centroids$northing, pch=0, cex = 2 )
+# plot location of each tree measured
+points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
+
+```
+
+Now we have a  plot of our CHM showing trees of different (categorical) heights. 
+Why might we have chosen these breaks? On this CHM we've marked teh locations of
+the plot centers (note the black box isn't the plot boundary, but determined by the plot marker
+we chose) and the locations of individual trees we measured (red overlapping circles). 
+
+Plotting Tips: type in `help(points)` to read about the options for plotting points.
+Or to see a list of `pch` values (symbols), check out 
 <a href="http://www.endmemo.com/program/R/pchsymbols.php" target="_blank">this website.</a>
 
-###Spatial Data Need a Coordinate Reference System - CRS
+## Spatial Data Need a Coordinate Reference System
 
-Next, assign a CRS to our insitu data. The CRS is information that allows a program like 
-QGIS to determine where the data are located, in the world. 
+We could plot the easting and northing of the points, but our data doesn't yet 
+have a specific Coordinate Reference System attached to it. The CRS is 
+information that allows a program like QGIS to determine where the data are 
+located, in the world. 
 <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">
 Read more about CRS here</a>
 
-In this case, we know these data are all in the same projection. Remember that 
-we can quickly figure out what projection our CHM is in, using `chm@crs`.
+We need to assign a Coordinate Reference System to our insitu data. In this case, 
+we know these data are all in the same projection as our original CHM. Remember that 
+we can quickly figure out what projection an object is in, using `object@crs`.
 
-```{r createSpatialDf}
+```{r check-CRS}
+# check CHM CRS
+chm@crs
+```
 
-#make spatial points data.frame using the CRS (coordinate 
-#reference system) from the CHM and apply it to our plot centroid data.
-centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],proj4string=chm@crs, centroids)
+So our data is in UTM Zone 11 which is correct for California. We can use this 
+CRS to make our data points into a Spatial Points Data Frame which then allows 
+the points to be treated as spatial objects. 
+
+``` {r createSpatialDf}
+## create SPDF
+# specify the northing (columns 4) & easting (column 3) in order
+# specify CRS proj4string: borrow CRS from chm 
+# specify raster
+centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], proj4string=chm@crs, centroids)
 
 ```
 
-###Extract CMH data within 20 m radius of each plot centroid.
+### Extract CMH data within 20 m radius of each plot centroid.
 
 Next, we will create a boundary region (called a buffer) representing the spatial
 extent of each plot (where trees were measured). We will then extract all CHM pixels
@@ -452,7 +509,7 @@ head(centroids)
 
 ### Plot Data (CHM vs Measured)
 Let's create a plot that illustrates the relationship between in situ measured 
-max canopy height values and lidar derived max canopy height values.
+max canopy height values and LiDAR derived max canopy height values.
 
 We can make a simple plot using the base R `plot` function:
 
@@ -506,13 +563,13 @@ p + theme(panel.background = element_rect(colour = "grey")) +
 
 
 
-You have now successfully created a canopy height model using lidar data AND compared lidar 
+You have now successfully created a canopy height model using LiDAR data AND compared LiDAR 
 derived vegetation height, within plots, to actual measured tree height data!
 
 
 #Challenge 
 
-> Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or Lidar 95th 
+> Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
 > percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the
 > colors, fonts and the look of your plot. If you are happy with the outcome, share
 > your plot in the comments below! 
