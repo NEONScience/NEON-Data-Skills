@@ -27,7 +27,6 @@ comments: true
 
 {% include _toc.html %}
 
-## About
 In this tutorial, we will review the fundamental principles, packages and 
 metadata/raster attributes that are needed to work with raster data in `R`. 
 We discuss the three core metadata elements that we need to understand to work 
@@ -202,9 +201,7 @@ we'll use a naming convention of `datatype_HARV`.
 
 ![ ]({{ site.baseurl }}/images/rfigs/dc-spatial-raster/00-Raster-Structure/open-raster-1.png)
 
-Here is a map showing the elevation of our site in Harvard Forest. Is the max
-elevation value within this raster greater than 400 meters or 400 feet? Perhaps 
-we need to learn more about the data attributes from the metadata!
+Here is a map showing the elevation of our site in Harvard Forest. 
 
 ## Coordinate Reference System
 The Coordinate Reference System or `CRS` tells `R` where the raster is located
@@ -212,14 +209,14 @@ in geographic space. It also tells `R` what method should be used to "flatten"
 or project the raster in geographic space. 
 
 <figure>
-    <a href="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
-    <img src="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
+    <a href="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     </a>
     
     <figcaption> Maps of the United States in different projections. Notice the 
     differences in shape associated with each different projection. These 
     differences are a direct result of the calculations used to "flatten" the 
-    data onto a 2-dimensional map. Source: opennews.org</figcaption>
+    data onto a 2-dimensional map. Source: M. Corey, opennews.org</figcaption>
 </figure>
 
 ### What Makes Spatial Data Line Up On A Map?
