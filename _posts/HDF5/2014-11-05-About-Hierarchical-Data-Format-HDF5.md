@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "About: Hierarchical Data Formats - What is HDF5?"
+title: "Hierarchical Data Formats - What is HDF5?"
 date:   2015-05-30
 dateCreated:   2014-11-27
 lastModified:  2015-2-06
@@ -13,7 +13,9 @@ tags: [HDF5]
 mainTag: HDF5
 packagesLibraries: []
 tutorialSeries: [intro-hdf5-r-series]
-description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file / data model. Learn about how HDF5 is structured and the benefits of using HDF5."
+description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) 
+file/data model. Learn about how HDF5 is structured and the benefits of using 
+HDF5."
 code1: 
 image:
   feature: hierarchy_folder.png

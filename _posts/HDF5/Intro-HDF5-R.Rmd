@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "R: Introduction to HDF5 Files in R"
+title: "Introduction to HDF5 Files in R"
 date:   2015-05-20 15:22:52
 dateCreated: 2015-05-20 15:22:52
 lastModified: 2015-05-20 15:22:52
@@ -16,7 +16,7 @@ description: "Learn how to build a HDF5 file in R from scratch! Add groups, data
 code1: R/2014-11-05-Intro-HDF5-R.R
 image:
   feature: hierarchy_folder_purple.png
-  credit: Colin Williams NEON, Inc.
+  credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 permalink: /HDF5/Intro-To-HDF5-In-R/
 comments: true
