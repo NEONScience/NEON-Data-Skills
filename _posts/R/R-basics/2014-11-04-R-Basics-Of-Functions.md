@@ -67,7 +67,7 @@ Let's start by defining a function `fahr_to_kelvin` that converts temperature
 values from Fahrenheit to Kelvin:
 
 
-    	fahr_to_kelvin <- function(temp) {
+    fahr_to_kelvin <- function(temp) {
     	    kelvin <- ((temp - 32) * (5/9)) + 273.15
     	    kelvin
     	}
@@ -120,9 +120,9 @@ function that you are familiar with.  Let's try running our function.
     ## [1] 273.15
 
     # We could use `paste()` to create a sentence with the answer
-    paste('boiling point of water (212 Farenheit) in Kelvin:', fahr_to_kelvin(212))
+    paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
 
-    ## [1] "boiling point of water (212 Farenheit) in Kelvin: 373.15"
+    ## [1] "The boiling point of water (212 Farenheit) is 373.15 degrees Kelvin."
 
 We've successfully called the function that we defined, and we have access to 
 the value that we returned. 

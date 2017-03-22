@@ -11,7 +11,7 @@ tutorialSeries: [R-basics]
 mainTag: R-basics
 tags : [R]
 description: "This tutorial teaches the basics of creating a function in R."
-code1: /R/R-Basics-Of-Functions.R
+code1: /R/R-basics/R-Basics-Of-Functions.R
 image:
   feature: coding_R.jpg
   credit: National Ecological Observatory Network
@@ -67,9 +67,9 @@ Let's start by defining a function `fahr_to_kelvin` that converts temperature
 values from Fahrenheit to Kelvin:
 
 ``` {r function-farKelv}
-	fahr_to_kelvin <- function(temp) {
-	    kelvin <- ((temp - 32) * (5/9)) + 273.15
-	    kelvin
+fahr_to_kelvin <- function(temp) {
+	kelvin <- ((temp - 32) * (5/9)) + 273.15
+	kelvin
 	}
 
 ```
@@ -81,7 +81,7 @@ Notice the syntax used to define this function:
 FunctionNameHere <- function(Input-variable-here){
 	what-to-do-here
 	what-to-return-here
-  }
+	}
 
 ```
 
@@ -123,8 +123,9 @@ function that you are familiar with.  Let's try running our function.
 fahr_to_kelvin(32)
 
 # We could use `paste()` to create a sentence with the answer
-paste('boiling point of water (212 Farenheit) in Kelvin:', fahr_to_kelvin(212))
-````
+paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
+
+```
 
 We've successfully called the function that we defined, and we have access to 
 the value that we returned. 

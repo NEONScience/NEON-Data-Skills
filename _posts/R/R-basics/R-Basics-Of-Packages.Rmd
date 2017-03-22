@@ -10,7 +10,8 @@ categories: [self-paced-tutorial]
 tutorialSeries: [R-basics]
 mainTag: R-basics
 tags : [R]
-description: "This tutorial provides the basics of installing and working with packages in R"
+description: "This tutorial provides the basics of installing and working with packages in R."
+code1: /R/R-Basics/R-Basics-Of-Packages.R
 image:
   feature: coding_R.jpg
   credit: National Ecological Observatory Network

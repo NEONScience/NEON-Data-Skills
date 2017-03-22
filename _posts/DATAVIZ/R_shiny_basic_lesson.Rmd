@@ -16,7 +16,6 @@ image:
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 permalink: /R/Create-Basic-Shiny-App-In-R/
-code1:
 comments: true
 ---
 
@@ -111,7 +110,7 @@ shinyServer(function(input,output){
 4. On the user interface side, we'll make a title for the app.
 In ui.R, enter:
 
-``` {r }
+``` {r shiny-input}
 
     shinyUI(
     	fluidPage(

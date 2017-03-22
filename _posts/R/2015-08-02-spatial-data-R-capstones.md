@@ -51,10 +51,11 @@ on your computer to complete this tutorial.
 
 ## Tutorial Series 
 These capstone activities rely on skills learned in the 
-<a href="{{ site.baseurl }}/tutorial-series/spatial-data-types-primer/" target="_blank"> *Primer on Raster Data* series</a>,
-<a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
-*<a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
-. 
+
+* <a href="{{ site.baseurl }}/tutorial-series/spatial-data-types-primer/" target="_blank"> *Primer on Raster Data* series</a>,
+* <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
+* <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
+ 
 </div>
 
 ## Capstone One: Calculate NDVI for the SJER field sites

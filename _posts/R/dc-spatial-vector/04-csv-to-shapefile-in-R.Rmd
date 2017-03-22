@@ -316,8 +316,8 @@ crs(plot.locationsSp_HARV)
 ```
 
 When we attempt to plot the two layers together, we can see that the plot
-locations are not rendered. We can see that our data are in the same projection
-- so what is going on?
+locations are not rendered. We can see that our data are in the same projection, 
+so what is going on?
 
 ```{r compare-extents}
 # view extent of each

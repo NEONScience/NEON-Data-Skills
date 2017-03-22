@@ -156,8 +156,9 @@ Let's import our AOI.
 
 # Import a polygon shapefile: readOGR("path","fileName")
 # no extension needed as readOGR only imports shapefiles
-aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-                            "HarClip_UTMZ18")
+aoiBoundary_HARV <- readOGR(dsn=path.expand("NEON-DS-Site-Layout-Files/HARV"),
+                            layer="HarClip_UTMZ18")
+
 
 ```
 

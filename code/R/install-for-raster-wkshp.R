@@ -1,6 +1,0 @@
-install.packages("raster")
-install.packages("rgdal")
-install.packages("maps")
-install.packages("mapproj")
-install.packages("ggplot2")
-install.packages("dplyr")
