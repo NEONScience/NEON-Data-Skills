@@ -12,8 +12,9 @@ categories: [self-paced-tutorial]
 tags: [HDF5, R]
 mainTag: HDF5
 tutorialSeries: [intro-hdf5-r-series]
-description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files in the HDFviewer."
-code1: R_Create_Modify_Hdf5.R
+description: "Create a HDF5 in R from scratch! Add groups and datasets. View the
+files in HDFViewer."
+code1: /HDF5/create-HDF5-In-R.R
 image:
   feature: hierarchy_folder_purple.png
   credit:
@@ -25,7 +26,6 @@ comments: true
 {% include _toc.html %}
 
 <div id="objectives">
-<strong>R Skill Level: </strong> intermediate
 
 <h3>Goals / Objectives</h3>
 After completing this activity, you will:
@@ -69,6 +69,7 @@ The package we'll be using is `rhdf5` which is part of the
  `R` packages. If you haven't installed this package before, you can use the first 
 two lines of code below to install the package. Then use the library command to 
 call the `library("rhdf5")` library.
+
 
 	#install rhdf5 package
 	source("http://bioconductor.org/biocLite.R")
