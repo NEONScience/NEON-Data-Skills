@@ -121,9 +121,6 @@ In a multi-band dataset, the rasters will always have the same *extent*,
 *CRS* and *resolution*.  
 
 
-    ## Error in par(original_par): (converted from warning) graphical parameter "cin" cannot be set
-
-
 ## Other Types of Multi-band Raster Data
 
 Multi-band raster data might also contain:
