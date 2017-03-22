@@ -11,7 +11,7 @@ tutorialSeries: [R-basics]
 mainTag: R-basics
 tags : [R]
 description: "This tutorial teaches the basics of creating a function in R."
-code1: /R/R-Basics-Of-Functions.R
+code1: /R/R-basics/R-Basics-Of-Functions.R
 image:
   feature: coding_R.jpg
   credit: National Ecological Observatory Network
@@ -124,7 +124,8 @@ fahr_to_kelvin(32)
 
 # We could use `paste()` to create a sentence with the answer
 paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
-````
+
+```
 
 We've successfully called the function that we defined, and we have access to 
 the value that we returned. 

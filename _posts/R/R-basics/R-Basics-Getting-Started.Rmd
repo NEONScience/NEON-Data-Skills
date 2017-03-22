@@ -12,7 +12,7 @@ mainTag: R-basics
 tags : [R]
 librariesPackages:
 description: "This tutorial presents the basics of using R."
-code1: /R/R-Basics-Getting-Started.R
+code1: /R/R-basics/R-Basics-Getting-Started.R
 image:
   feature: coding_R.jpg
   credit: National Ecological Observatory Network
