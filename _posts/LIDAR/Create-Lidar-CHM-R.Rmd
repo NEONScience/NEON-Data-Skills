@@ -84,7 +84,8 @@ represents the heights of the trees on the ground. We can derive the CHM
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
 
-We will use the `raster` R package to work with the the lidar derived digital surface model (DSM) and the digital terrain model (DTM). 
+We will use the `raster` R package to work with the the lidar derived digital 
+surface model (DSM) and the digital terrain model (DTM). 
 
 ```{r set-up}
 
