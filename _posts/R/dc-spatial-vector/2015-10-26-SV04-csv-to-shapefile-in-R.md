@@ -373,8 +373,8 @@ To begin, let's plot our `aoiBoundary` object with our vegetation plots.
     ## +towgs84=0,0,0
 
 When we attempt to plot the two layers together, we can see that the plot
-locations are not rendered. We can see that our data are in the same projection
-- so what is going on?
+locations are not rendered. We can see that our data are in the same projection, 
+so what is going on?
 
 
     # view extent of each
