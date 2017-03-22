@@ -94,9 +94,8 @@ SOAP vegetation data).
 	- one for the San Joaquin (SJER) field site
 	- one for the Soaproot Saddle (SOAP) field site.
 3. Attribute each of the above groups with information about the field sites. 
-HINT: you can explore the 
-<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank">
-NEON field site page</a> for more information about each site. 
+HINT: you can explore the <a href="http://www.neonscience.org/science-design/field-sites/" target="_blank">
+NEON field sites page</a> for more information about each site. 
 4. Extract the vegetation structure data for San Joaquin and add it as a dataset 
 to the San Joaquin group. Do the same for the Soaproot Saddle dataset. 
 5. Add the plot centroids data to the SJER group. Include relevant attributes for 
