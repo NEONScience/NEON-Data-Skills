@@ -1,0 +1,32 @@
+---
+layout: workshop-event
+title: 'Setup Up Your Laptop'
+categories:
+tutorialSeriesName: 
+permalink: /workshop-event/NEON-DI-2016/setup
+image:
+  feature: data-institute-2016.png
+  credit: 
+  creditlink: 
+---
+
+## Get Started
+
+It is important that you have your computer setup, prior to diving into the 
+pre-institute materials!
+Please review the links below to setup the **laptop you will be bringing to the 
+Data Institute**. Get in touch with any questions by emailing: 
+neondataskills-AT-BattelleEcology.org
+
+
+## Let's Get Your Computer Setup!
+
+Go to each page in this list and complete the directions to set your computer up 
+for the Data Institute. 
+
+* <a href="{{ site.baseurl }}/setup/setup-git-bash-R">Install Git, Bash Shell, R, & RStudio</a>.
+* <a href="{{ site.baseurl }}/setup/bash-setup-git"> Setup GitHub Working Directory - Quick Intro to Bash
+* <a href="{{ site.baseurl }}/setup/install-R-packages">Install Required R Packages
+* <a href="{{ site.baseurl }}/setup/setup-qgis-h5view">Install QGIS, HDF5 view
+* <a href="{{ site.baseurl }}/setup/download-data-DI16">Download the Data
+
