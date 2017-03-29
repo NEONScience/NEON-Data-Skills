@@ -1,0 +1,647 @@
+---
+layout: post
+title: "Extract Values from a Raster in R"
+date:   2014-7-18
+createdDate:   2014-07-21
+lastModified:`r format(Sys.time(), "%Y-%m-%d")`
+estimatedTime: 0.5 Hours
+packagesLibraries: [raster, sp]
+authors: Edmund Hart, Leah A. Wasser
+categories: [self-paced-tutorial]
+mainTag: intro-lidar-r-series
+tags: [lidar, R, raster, remote-sensing, spatial-data-gis]
+tutorialSeries: [intro-lidar-r-series]
+description: "Learn to extract data from a raster using circular or square 
+buffers created around a x,y location or from a shapefile. With this will 
+will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame
+so that they can be "
+permalink: /R/extract-raster-data-R/
+comments: true
+code1: /R/extract-raster-data-R.R
+image:
+  feature: textur2_pointsProfile.png
+  credit: National Ecological Observatory Network (NEON)
+  creditlink: http://www.neonscience.org
+---
+
+In this tutorial, we go through three methods for extracting data from a raster
+in R: 
+
+* from circular buffers around points,
+* from square buffers around points, and
+* from shapefiles. 
+
+In doing so, we will also learn to convert x,y locations in tabluar format 
+(.csv, .xls, .txt) into SpatialPointsDataFrames which can be used with other
+spatial data. 
+
+<div id="objectives" markdown="1">
+
+# Goals / Objectives
+After completing this activity, you will be able to:
+
+* Convert x,y point locations to SpatialPointsDataFrames
+* Assign a Coordinate Reference System (CRS) to a SpatialPointsDataFrame
+* Extract values from raster files. 
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** `install.packages("raster")`
+* **sp:** `install.packages("sp")`
+* **rgdal:** `install.packages("rgdal")`
+* **maptools:** `install.packages("maptools")`
+* **rgeos:** `install.packages("rgeos")`
+* **dplyr:** `install.packages("dplyr")`
+
+* **rgdal:** `install.packages("ggplot2")`
+
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+
+## Download Data
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+This tutorial is designed for you to set your working directory to the directory
+created by unzipping this file.
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+***
+
+## Recommended Reading
+<a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
+
+</div>
+
+Let's say we are studying canopy structure at San Joaquin Experimental Range in 
+California. Last year we went out and laboriously collected field measured 
+height of several trees surrounding each of several randomly collected points. 
+It took many sweaty days to complete, now we find out the NEON is collecting 
+lidar data over this same area and will be doing to for the duration of our study!
+Using this data will save us tons of time and $ -- but how do the data compare. 
+
+Let's extract the data from the NEON provided raster (learning three different 
+methods) and then compare them to our ground measured tree heights. 
+
+## Convert x,y Locations to Spatial Data
+
+Let's say we have our *insitu* data in two seperate .csv (comma separate value) files: 
+
+* `SJER/VegetationData/D17_2013_vegStr.csv`: contains our vegetation structure data 
+for each plot. 
+* `SJER/PlotCentroids/SJERPlotCentroids.csv`: contains the plot centroid location 
+information (x,y) where we measured trees. 
+
+Let's start by plotting the plot locations where we measured trees (in red) on a map. 
+
+We will need to convert the plot centroids to a spatial points dataset in R. This
+is why we need to loaded two packages - the spatial package 
+[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
+and a data manipulation package 
+[dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr") -- in 
+addition to working with the raster package.
+
+NOTE: the `sp` library typically installs when you install the raster package. 
+
+```{r set-up}
+
+# Load needed packages
+library(raster)
+library(rgdal)
+library(dplyr)
+
+# Method 3:shapefiles
+library(maptools)
+
+# set working directory to data folder
+#setwd("pathToDirHere")
+```
+
+Let's get started with the *insitu* vegetation data!
+
+```{r read-veg }
+
+# import the centroid data and the vegetation structure data
+# this means all strings of letter coming in will remain character
+options(stringsAsFactors=FALSE)
+
+# read in plot centroids
+centroids <- read.csv("SJER/PlotCentroids/SJERPlotCentroids.csv")
+str(centroids)
+
+# read in vegetation heights
+vegStr <- read.csv("SJER/VegetationData/D17_2013_vegStr.csv")
+str(vegStr)
+
+```
+
+Now let's load the Canopy Height Model raster. Note, if you completed the
+<a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">*Create a Canopy Height Model from LiDAR-derived Rasters in R*> 
+tutorial this is the same object `chm` you can created. You do not need to reload
+the data. 
+
+```{r plot-CHM }
+
+# import the digital terrain model
+chm <- raster("SJER/CHM_SJER.tif")
+
+# plot raster
+plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+
+```
+
+
+Since both files have eastings and northings we can use this data to plot onto 
+our existing raster. 
+
+``` {r plot-veg}
+
+## overlay the centroid points and the stem locations on the CHM plot
+# plot the chm
+myCol=terrain.colors(6)
+plot(chm,col=myCol, main="Plot & Tree Locations", breaks=c(-2,0,2,10,40))
+
+## plotting details: cex = point size, pch 0 = square
+# plot square around the centroid
+points(centroids$easting,centroids$northing, pch=0, cex = 2 )
+# plot location of each tree measured
+points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
+
+```
+
+Now we have a plot of our CHM showing trees of different (categorical) heights. 
+Why might we have chosen these breaks? 
+
+On this CHM plot we've marked the locations of the plot centers. Note the black 
+box isn't the plot boundary, but determined by the plot marker we chose so that 
+we can see the centroids that would otherwise be "under" the tree height points.
+We've also plotted the locations of individual trees we measured (red overlapping 
+circles). 
+
+Plotting Tips: use `help(points)` to read about the options for plotting points.
+Or to see a list of `pch` values (symbols), check out 
+<a href="http://www.endmemo.com/program/R/pchsymbols.php" target="_blank">this website.</a>
+
+## Spatial Data Need a Coordinate Reference System
+
+We plotted the easting and northing of the points accurately on the map, but 
+our data doesn't yet 
+have a specific Coordinate Reference System attached to it. The CRS is 
+information that allows a program like QGIS to determine where the data are 
+located, in the world. 
+<a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">
+Read more about CRS here</a>
+
+We need to assign a Coordinate Reference System to our insitu data. In this case, 
+we know these data are all in the same projection as our original CHM. We can 
+quickly figure out what projection an object is in, using `object@crs`.
+
+```{r check-CRS}
+# check CHM CRS
+chm@crs
+
+```
+
+So our data is in UTM Zone 11 which is correct for California. We can use this 
+CRS to make our data points into a Spatial Points Data Frame which then allows 
+the points to be treated as spatial objects. 
+
+``` {r createSpatialDf}
+## create SPDF: SpatialPointsDataFrame()
+# specify the northing (columns 4) & easting (column 3) in order
+# specify CRS proj4string: borrow CRS from chm 
+# specify raster
+centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
+																			 proj4string=chm@crs, 
+																			 centroids)
+
+# check centroid CRS
+# note SPDFs don't have a crs slot so `object@crs` won't work
+centroid_spdf
+
+```
+
+We now have our centoid data as a spatial points data frame. This will allow us
+to work with them as spatial data along with other spatial data -- like rasters. 
+
+
+## Extract CMH Data from Buffer Area
+
+In order to accomplish a goal of comparing the CHM with our ground data, we 
+want to extract the CHM height at the point for each tree we measured. To do this,
+we will create a boundary region (called a buffer) representing the spatial
+extent of each plot (where trees were measured). We will then extract all CHM pixels
+that fall within the plot boundary to use to estimate tree height for that plot.
+
+<figure>
+    <img src="{{ site.baseurl }}/images/spatialData/BufferCircular.png">
+    <figcaption>When a circular buffer is applied to a raster, some pixels fall 
+    fully within the buffer but some are partially excluded. Values for all 
+    pixels in the specified raster that fall within the circular buffer are 
+    extracted.
+    </figcaption>
+</figure>
+
+There are a few ways to go about this task. As our plots are circular, we'll use
+the extract function in R allows you 
+to specify a circular buffer with a given radius around an x,y point location. 
+Values for all pixels in the specified raster that fall within the circular 
+buffer are extracted. In this case, we can tell R to extract the maximum value 
+of all pixels using the `fun=max` command.
+
+### Method 1: Extract Data From a Cirular Buffer
+
+In the first, example we'll presume our insitu sampling took place within a 
+circular plot with a 20m radius. Therefore, we will use a buffer of 20m. 
+
+When we use the `extract()` fuction with `fun=max`, R returns a dataframe 
+containing the max height calculated from all pixels in the buffer for each plot
+
+```{r extract-plot-data }
+
+# extract circular, 20m buffer
+
+cent_max <- extract(chm,             # raster layer
+	centroid_spdf,   # SPDF with centroids for buffer
+	buffer = 20,     # buffer size, units depend on CRS
+	fun=max,         # what to value to extract
+	df=TRUE)         # return a dataframe? 
+
+# view
+cent_max
+
+```
+
+Ack! We've lost our PlotIDs, how will we match them up?
+
+``` {r fix-ID}
+
+# grab the names of the plots from the centroid_spdf
+cent_max$plot_id <- centroid_spdf$Plot_ID
+
+#fix the column names
+names(cent_max) <- c('ID','chmMaxHeight','plot_id')
+
+# view again - we have plot_ids
+cent_max
+
+# merge the chm data into the centroids data.frame
+centroids <- merge(centroids, cent_max, by.x = 'Plot_ID', by.y = 'plot_id')
+
+# have a look at the centroids dataFrame
+head(centroids)
+
+```
+
+Excellent. We now have the maximum "tree" height for each plot based on the CHM. 
+
+#### Extract All Pixel Heights
+
+If we want to explore the data distribution of pixel height values in each plot, 
+we could remove the `fun` call to max and generate a list. 
+
+It's good to look at the distribution of values we've extracted for each plot. 
+Then you could generate a histogram for each plot `hist(cent_ovrList[[2]])`. If we wanted, we could loop 
+through several plots and create histograms using a `for loop`.
+
+```{r explore-data-distribution}
+# extract all
+cent_heightList <- extract(chm,centroid_spdf,buffer = 20)
+
+# create histograms for the first 5 plots of data
+# using a for loop
+
+for (i in 1:5) {
+  hist(cent_heightList[[i]], main=(paste("plot",i)))
+  }
+
+```
+
+Looking at these distributions, the area has some pretty short trees -- plot 5 
+(really, SJER120 since we didn't match up the plotIDs) looks almost bare!
+
+<div id="challenge" markdown="1">
+## Challenge: For Loops & Plotting Parameters
+This code will give you 6 rows of plots with 3 plots in each row. Modify the 
+`for loop` above to plot all 18 histograms. 
+
+Improve upon the plot's final appearance to make a readable final figure. 
+Hint: one way to setup a layout with multiple plots in R is: `par(mfrow=c(2,3))` 
+which gives a 2 rows, 3 columns layout. 
+</div> 
+
+```{r challenge-code-loops, include=TRUE, results="hide", echo=FALSE}
+# set parameters for graphics
+par(mfrow=c(6,3))
+
+# create histograms for the first 5 plots of data
+# using a for loop
+
+for (i in 1:18) {
+  hist(cent_heightList[[i]], main=(paste("plot",i)))
+  }
+
+# return par to normal 
+par(mfrow=c(1,1))
+
+```
+
+
+## Method 2: Square Plots 
+
+For how to create square plots around a point, check out the
+ [Create A Square Buffer Around a Plot Centroid in R]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons") 
+tutorial. 
+
+Once you have a SpatialPolygon object, you can use the same `extract()` function
+as we did for the circular plots, but this time with no buffer since we already 
+have a polygon to use. 
+
+``` {r square-plot, eval=FALSE}
+square_max <- extract(chm,             # raster layer
+	polys,   # spatial polygon for extraction
+	fun=max,         # what to value to extract
+	df=TRUE)         # return a dataframe? 
+
+```
+
+However, if you're going this route with your data, we recommend using the next
+method! 
+
+<div id="challenge" markdown="1">
+## Challenge: Circles vs Squares
+
+Compare the values from `cent_max` and `square_max`. Are they the same? Why 
+might they differ? 
+
+</div>
+
+## Method 3: Extract Values Using a Shapefile
+
+If our plot boundaries are saved in a shapefile, we can use them to extract the 
+data.
+
+In our data, we have two different shapefiles (SJER/PlotCentroids) for this area
+
+* SJERPlotCentroids_Buffer
+* SJERPlotCentroids_BuffSquare
+
+To import a shapefile into R we must have the `maptools` package, which 
+requires the `rgeos` package, installed.
+
+
+
+```{r read-shapefile }
+# load shapefile data
+centShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp")
+
+plot(centShape)
+
+```
+
+Then we can simple use the extract function again. Here we specify not weighting
+the values returned and we directly add the data to our centroids file instead
+of having it be a seperate data frame that we later have to match up. 
+
+```{r extract-w-shapefile }
+# extract max from chm for shapefile buffers
+centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
+
+# view
+head(centroids)
+
+```
+
+Which was faster, extracting from a SpatialPolgygon object (`polys`) or extracting 
+with a SpatialPolygonsDataFrame (`centShape`)? Keep this in mind when doing future
+work--the SpatialPolgyonsDataFrame is more efficient. 
+
+<div id="challenge" markdown="1">
+## Challenge: Square Shapefile Plots
+
+Compare the values from `cent_max` and `square_max`. Are they the same? Why 
+might they differ? 
+
+</div>
+
+``` {r challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE}
+# load shapefile data
+squareShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp")
+
+plot(squareShape)
+
+# extract max from chm for shapefile buffers
+centroids$chmMaxSquareShape <- extract(chm, squareShape, weights=FALSE, fun=max)
+
+# view
+head(centroids)
+
+```
+
+
+## Extract Descriptive Stats from Insitu Data 
+In our final step, we will extract summary height values from our field data 
+(`vegStr`). We can do this using the base R packages (Method 1) or more 
+efficiently, using the `dplyr` package (Method 2).
+
+
+## Method 1: Use base R
+
+We'll start by find the maximum ground measured stem height value for each plot. 
+We will compare this value to the max CHM value.
+
+First, use the `aggregate()` function to summarize our data of interest `stemheight`.
+The arguments of which are: 
+
+* the data on which you want to calculate something ~ the grouping variable
+* the **FUN**ction we want from the data
+
+Then we'll assign cleaner names to the new data. 
+
+```{r analyze-base-r }
+# find max stemheight
+maxStemHeight <- aggregate( vegStr$stemheight ~ vegStr$plotid, 
+														FUN = max )  
+
+# view
+head(maxStemHeight)
+
+#Assign cleaner names to the columns
+names(maxStemHeight) <- c('plotid','maxHeight')
+
+# view
+head(maxStemHeight)
+
+```
+
+Bonus: Add in 95% height, while combining the above steps into one line of code.
+
+``` {r trees-95}
+# add the max and 95th percentile height value for all trees within each plot
+insitu <- cbind(maxStemHeight,'quant'=tapply(vegStr$stemheight, 
+	vegStr$plotid, quantile, prob = 0.95))
+
+# view
+head(insitu)
+
+```
+
+
+### Method 2: Extract using DPLYR
+
+
+If you don't want to use DPLYR, you can also achieve the same results using base 
+R. However, the DPLYR workflow is more similar to a typical database approach.
+
+```{r analyze-plot-dplyr }
+
+# get list of unique plot id's 
+unique(insitu_dat$plotid) 
+
+#looks like we have data for two sites
+unique(insitu_dat$siteid) 
+
+plotsSJER <- insitu_dat
+
+#we've got some plots for SOAP which is a different region.
+#let's just select plots with SJER data
+#plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
+
+#how many unique siteids do we have now?
+#unique(plotsSJER$siteid) 
+
+
+#find the max stem height for each plot
+insitu_maxStemHeight <- plotsSJER %>% 
+  group_by(plotid) %>% 
+  summarise(max = max(stemheight))
+
+head(insitu_maxStemHeight)
+
+
+names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
+head(insitu_maxStemHeight)
+# Optional - do this all in one line of nested commands
+#insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
+#	      group_by(plotid) %>% 
+#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
+	
+```
+
+
+### Merge the data into the centroids data.frame
+
+Once we have our summarized insitu data, we can `merge` it into the centroids 
+`data.frame`. Merge requires two data.frames and the names of the columns 
+containing the unique ID that we will merge the data on. In this case, we will
+merge the data on the plot_id column. Notice that it's spelled slightly differently 
+in both data.frames so we'll need to tell R what it's called in each data.frame.
+
+```{r merge-dataframe}
+
+#merge the insitu data into the centroids data.frame
+centroids <- merge(centroids, insitu_maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
+head(centroids)
+
+```
+
+### Plot Data (CHM vs Measured)
+Let's create a plot that illustrates the relationship between in situ measured 
+max canopy height values and LiDAR derived max canopy height values.
+
+We can make a simple plot using the base R `plot` function:
+
+```{r plot-data }
+
+#create basic plot
+plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHt)
+
+```
+
+Or we can use ggplot:
+
+```{r plot-w-ggplot}
+
+library(ggplot2)
+#create plot
+ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+  geom_point() + 
+  theme_bw() + 
+  ylab("Maximum measured height") + 
+  xlab("Maximum LiDAR pixel")+
+  geom_abline(intercept = 0, slope=1)+
+  xlim(0, max(centroids[,7:8])) + 
+  ylim(0,max(centroids[,7:8]))
+
+```
+
+
+We can also add a regression fit to our plot. Explore the GGPLOT options and 
+customize your plot.
+
+```{r ggplot-data }
+
+#plot with regression fit
+p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+  geom_point() + 
+  ylab("Maximum Measured Height") + 
+  xlab("Maximum LiDAR Height")+
+  geom_abline(intercept = 0, slope=1)+
+  geom_smooth(method=lm) +
+  xlim(0, max(centroids[,7:8])) + 
+  ylim(0,max(centroids[,7:8])) 
+
+p + theme(panel.background = element_rect(colour = "grey")) + 
+  ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
+  theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
+  theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
+  theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+
+```
+
+
+
+You have now successfully created a canopy height model using LiDAR data AND compared LiDAR 
+derived vegetation height, within plots, to actual measured tree height data!
+
+
+#Challenge 
+
+> Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
+> percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the
+> colors, fonts and the look of your plot. If you are happy with the outcome, share
+> your plot in the comments below! 
+
+## Create Plot.ly Interactive Plot
+
+Plot.ly is a free to use, online interactive data viz site. If you have the 
+plot.ly library installed, you can quickly export a ggplot graphic into plot.ly!
+ (NOTE: it also works for python matplotlib)!! To use plotly, you need to setup 
+an account. Once you've setup an account, you can get your key from the plot.ly 
+site to make the code below work.
+
+
+```{r create-plotly, eval=FALSE }
+
+library(plotly)
+#setup your plot.ly credentials
+set_credentials_file("yourUserName", "yourKey")
+p <- plotly(username="yourUserName", key="yourKey")
+
+#generate the plot
+py <- plotly()
+py$ggplotly()
+
+```
+
+Check out the results! 
+
+NEON Remote Sensing Data compared to NEON Terrestrial Measurements for the SJER Field Site
+
+<iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
