@@ -3,7 +3,7 @@ layout: post
 title: "Extract Values from a Raster in R"
 date:   2014-7-18
 createdDate:   2014-07-21
-lastModified:2017-03-29
+lastModified:  2017-03-29
 estimatedTime: 0.5 Hours
 packagesLibraries: [raster, sp, rgdal, maptools, rgeos, dplyr, ggplot]
 authors: Edmund Hart, Leah A. Wasser

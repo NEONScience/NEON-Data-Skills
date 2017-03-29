@@ -3,7 +3,7 @@ layout: post
 title: "Create a Canopy Height Model from LiDAR-derived Rasters in R"
 date:   2014-7-18
 createdDate:  2014-07-21
-lastModified:`r format(Sys.time(), "%Y-%m-%d")`
+lastModified:  `r format(Sys.time(), "%Y-%m-%d")`
 estimatedTime: 0.5 Hours
 packagesLibraries: [raster, rgdal]
 authors: Edmund Hart, Leah A. Wasser
