@@ -8,14 +8,14 @@ estimatedTime: 0.25 - 0.5 Hours
 authors: [Leah A. Wasser]
 categories: [self-paced-tutorial]
 tags : [lidar, remote-sensing]
-mainTag: lidar
+mainTag: intro-lidar-r-series
 tutorialSeries: [intro-lidar-r-series]
 description: "Understand LiDAR data product formats and learn the basics of how a LiDAR data are processed."
 image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
-permalink:/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/
+permalink: /self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/
 comments: true
 ---
 
@@ -71,7 +71,7 @@ are often associated with LiDAR data point clouds.
 
 For more on viewing LiDAR point cloud data using the Plas.io online
 viewer, see our tutorial 
-<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/ target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 
 
 #### Gridded, or Raster, LiDAR Data Products
