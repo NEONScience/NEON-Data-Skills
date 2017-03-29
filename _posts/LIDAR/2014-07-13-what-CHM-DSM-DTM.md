@@ -21,7 +21,7 @@ comments: true
 
 {% include _toc.html %}
 
-### Three Common LiDAR Data Products
+## Common LiDAR Data Products
 
 * [Digital Terrain Model](http://www.neonscience.org/3d/SJER_DTM_3d.html) - This 
 product represents the elevation of the ground.
@@ -139,7 +139,7 @@ There are different ways to create a raster from LiDAR point clouds.
 ### Point to Raster Methods - Basic Gridding
 Let's look one of the most basic ways to create a raster file points - basic gridding. 
 When you perform a gridding algorithm, you are simply calculating a value, using 
-point data, for each pixels in your raster dataset. To do this:
+point data, for each pixels in your raster dataset. 
 
 1. To begin, a grid is placed on top of the LiDAR data in space. Each cell in 
 the grid has the same spatial dimensions. These dimensions represent that 
@@ -152,20 +152,30 @@ the 1m cell. If we use this approach, we might have cells in the raster that
 don't contains any lidar points. These cells will have a "no data" value if we 
 process our raster in this way. 
 
-### Point to Raster Methods - Interpolation
-A different approach is to interpolate the value for each cell. Interpolation 
-considers the values of points outside of the cell in addition to points within 
-the cell to calculate a value. Interpolation is useful because it can provide us 
-with some ability to predict or calculate cell values in areas where there are 
-no data (or no points). And to quantify the error associated with those 
-predictions which is useful to know, if you are doing research. 
-
 <figure>
     <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif">
     <img src="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
-    clouds and converting them to a Raster Format. 
+    clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
+### Point to Raster Methods - Interpolation
+
+A different approach is to interpolate the value for each cell. 
+
+1. In this approach we still start with placing the grid on top of the LiDAR 
+data in space. 
+2. Interpolation considers the values of points outside of the cell in addition
+to points within the cell to calculate a value. Interpolation is useful because 
+it can provide us with some ability to predict or calculate cell values in areas 
+where there are no data (or no points). And to quantify the error associated with those 
+predictions which is useful to know, if you are doing research. 
+
+
+***
+
+For learning more on how to work with LiDAR data, consider going through the 
+<a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">*Introduction to Working With Raster Data in R*</a>
+tutorial series.  
