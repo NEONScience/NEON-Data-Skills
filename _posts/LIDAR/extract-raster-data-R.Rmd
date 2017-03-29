@@ -5,7 +5,7 @@ date:   2014-7-18
 createdDate:   2014-07-21
 lastModified:`r format(Sys.time(), "%Y-%m-%d")`
 estimatedTime: 0.5 Hours
-packagesLibraries: [raster, sp]
+packagesLibraries: [raster, sp, rgdal, maptools, rgeos, dplyr, ggplot]
 authors: Edmund Hart, Leah A. Wasser
 categories: [self-paced-tutorial]
 mainTag: intro-lidar-r-series
@@ -56,8 +56,7 @@ on your computer to complete this tutorial.
 * **maptools:** `install.packages("maptools")`
 * **rgeos:** `install.packages("rgeos")`
 * **dplyr:** `install.packages("dplyr")`
-
-* **rgdal:** `install.packages("ggplot2")`
+* **ggplot2:** `install.packages("ggplot2")`
 
 [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
 
@@ -119,6 +118,9 @@ library(dplyr)
 # Method 3:shapefiles
 library(maptools)
 
+# plotting
+library(ggplot2)
+
 # set working directory to data folder
 #setwd("pathToDirHere")
 ```
@@ -160,7 +162,7 @@ plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
 Since both files have eastings and northings we can use this data to plot onto 
 our existing raster. 
 
-``` {r plot-veg}
+```{r plot-veg }
 
 ## overlay the centroid points and the stem locations on the CHM plot
 # plot the chm
@@ -212,7 +214,7 @@ So our data is in UTM Zone 11 which is correct for California. We can use this
 CRS to make our data points into a Spatial Points Data Frame which then allows 
 the points to be treated as spatial objects. 
 
-``` {r createSpatialDf}
+```{r createSpatialDf}
 ## create SPDF: SpatialPointsDataFrame()
 # specify the northing (columns 4) & easting (column 3) in order
 # specify CRS proj4string: borrow CRS from chm 
@@ -280,7 +282,7 @@ cent_max
 
 Ack! We've lost our PlotIDs, how will we match them up?
 
-``` {r fix-ID}
+```{r fix-ID}
 
 # grab the names of the plots from the centroid_spdf
 cent_max$plot_id <- centroid_spdf$Plot_ID
@@ -430,7 +432,7 @@ might they differ?
 
 </div>
 
-``` {r challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE}
+```{r challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE}
 # load shapefile data
 squareShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp")
 
@@ -445,13 +447,13 @@ head(centroids)
 ```
 
 
-## Extract Descriptive Stats from Insitu Data 
+## Extract Summary Data from Ground Measures 
 In our final step, we will extract summary height values from our field data 
 (`vegStr`). We can do this using the base R packages (Method 1) or more 
 efficiently, using the `dplyr` package (Method 2).
 
 
-## Method 1: Use base R
+### Method 1: Use Base R
 
 We'll start by find the maximum ground measured stem height value for each plot. 
 We will compare this value to the max CHM value.
@@ -473,7 +475,7 @@ maxStemHeight <- aggregate( vegStr$stemheight ~ vegStr$plotid,
 head(maxStemHeight)
 
 #Assign cleaner names to the columns
-names(maxStemHeight) <- c('plotid','maxHeight')
+names(maxStemHeight) <- c('plotid','insituMaxHeight')
 
 # view
 head(maxStemHeight)
@@ -482,7 +484,7 @@ head(maxStemHeight)
 
 Bonus: Add in 95% height, while combining the above steps into one line of code.
 
-``` {r trees-95}
+```{r trees-95}
 # add the max and 95th percentile height value for all trees within each plot
 insitu <- cbind(maxStemHeight,'quant'=tapply(vegStr$stemheight, 
 	vegStr$plotid, quantile, prob = 0.95))
@@ -493,109 +495,115 @@ head(insitu)
 ```
 
 
-### Method 2: Extract using DPLYR
+### Method 2: Extract using dplyr
 
+You can also achieve the same results in a more efficient manner using the R 
+package **dplyr**. Additionally, the **dplyr** workflow is more similar to a 
+typical database approach.
 
-If you don't want to use DPLYR, you can also achieve the same results using base 
-R. However, the DPLYR workflow is more similar to a typical database approach.
+For more on using the **dplyr** package see our tutorial, 
+<a href="{{ site.baseurl }}/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> *Filter, Piping and GREPL Using R DPLYR - An Intro*</a>. 
 
 ```{r analyze-plot-dplyr }
 
-# get list of unique plot id's 
-unique(insitu_dat$plotid) 
-
-#looks like we have data for two sites
-unique(insitu_dat$siteid) 
-
-plotsSJER <- insitu_dat
-
-#we've got some plots for SOAP which is a different region.
-#let's just select plots with SJER data
-#plotsSJER <- filter(insitu_dat, grepl('SJER', siteid))
-
-#how many unique siteids do we have now?
-#unique(plotsSJER$siteid) 
-
-
-#find the max stem height for each plot
-insitu_maxStemHeight <- plotsSJER %>% 
+# find the max stem height for each plot
+maxStemHeight_d <- vegStr %>% 
   group_by(plotid) %>% 
   summarise(max = max(stemheight))
 
-head(insitu_maxStemHeight)
+# view
+head(maxStemHeight_d)
 
+# fix names
+names(maxStemHeight_d) <- c("plotid","insituMaxHeight")
+head(maxStemHeight_d)
 
-names(insitu_maxStemHeight) <- c("plotid","insituMaxHt")
-head(insitu_maxStemHeight)
-# Optional - do this all in one line of nested commands
-#insitu <- insitu_dat %>% filter(plotid %in% centroids$Plot_ID) %>% 
-#	      group_by(plotid) %>% 
-#	      summarise(max = max(stemheight), quant = quantile(stemheight,.95))
-	
+```
+
+And the bonus code with dplyr. 
+
+```{r bonus-dplyr}
+
+# one line of nested commands, 95% height value
+insitu_d <- vegStr %>%
+	filter(plotid %in% centroids$Plot_ID) %>% 
+	group_by(plotid) %>% 
+	summarise(max = max(stemheight), quant = quantile(stemheight,.95))
+
+# view
+head(insitu_d)
+
 ```
 
 
-### Merge the data into the centroids data.frame
+## Combine Ground & Remote Sensed Data
 
-Once we have our summarized insitu data, we can `merge` it into the centroids 
-`data.frame`. Merge requires two data.frames and the names of the columns 
-containing the unique ID that we will merge the data on. In this case, we will
-merge the data on the plot_id column. Notice that it's spelled slightly differently 
-in both data.frames so we'll need to tell R what it's called in each data.frame.
+Once we have our summarized insitu data, we can merge it into the `centroids` 
+data.frame. The `merge()` function requires two data.frames and the names of the 
+columns containing the unique ID that we will merge the data on. In this case, 
+we will merge the data on the Plot ID (`plotid`, `Plot_ID`) column. Notice that 
+it's spelled slightly differently in both data.frames so we'll need to tell R 
+what it's called in each data.frame.
+
+If you plan you data collection, entry, and analyses ahead of time you can 
+standardize your names to avoid potential confusion like this!
 
 ```{r merge-dataframe}
 
-#merge the insitu data into the centroids data.frame
-centroids <- merge(centroids, insitu_maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
+# merge the insitu data into the centroids data.frame
+centroids <- merge(centroids, maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
+
+# view
 head(centroids)
 
 ```
 
-### Plot Data (CHM vs Measured)
-Let's create a plot that illustrates the relationship between in situ measured 
-max canopy height values and LiDAR derived max canopy height values.
+## Plot Remote Sensed vs Ground Data
 
-We can make a simple plot using the base R `plot` function:
+Now we can create a plot that illustrates the relationship between in situ 
+measured tree height values and LiDAR-derived max canopy height values.
+
+We can make a simple plot using the base R `plot()` function:
 
 ```{r plot-data }
 
 #create basic plot
-plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHt)
+plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHeight)
 
 ```
 
-Or we can use ggplot:
+Or we can use the `ggplot()` function from the **ggplot2** package. For more on 
+using the **ggplot2** package see our tutorial, 
+<a href="{{ site.baseurl }}/R/time-series-plot-ggplot/" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
 
 ```{r plot-w-ggplot}
 
-library(ggplot2)
-#create plot
-ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+# create plot
+
+ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
   geom_point() + 
   theme_bw() + 
   ylab("Maximum measured height") + 
   xlab("Maximum LiDAR pixel")+
-  geom_abline(intercept = 0, slope=1)+
-  xlim(0, max(centroids[,7:8])) + 
-  ylim(0,max(centroids[,7:8]))
+  xlim(0, max(centroids[,7:10])) + 
+  ylim(0,max(centroids[,7:10]))
 
 ```
 
 
-We can also add a regression fit to our plot. Explore the GGPLOT options and 
+We can also add a regression fit to our plot. Explore the `ggplot()` options and 
 customize your plot.
 
 ```{r ggplot-data }
 
 #plot with regression fit
-p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHt )) + 
+p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
   geom_point() + 
   ylab("Maximum Measured Height") + 
   xlab("Maximum LiDAR Height")+
-  geom_abline(intercept = 0, slope=1)+
   geom_smooth(method=lm) +
-  xlim(0, max(centroids[,7:8])) + 
-  ylim(0,max(centroids[,7:8])) 
+  xlim(0, max(centroids[,7:10])) + 
+  ylim(0,max(centroids[,7:10])) 
 
 p + theme(panel.background = element_rect(colour = "grey")) + 
   ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
@@ -605,43 +613,39 @@ p + theme(panel.background = element_rect(colour = "grey")) +
 
 ```
 
+You have now successfully compared LiDAR derived vegetation height, within plots, 
+to actual measured tree height data!
+
+If you want to make this an interactive plot, you could use Plotly to do so. 
+For more on using the **plotly** package to create interactive plots, see our tutorial 
+<a href="{{ site.baseurl }}/R/Plotly" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>. 
 
 
-You have now successfully created a canopy height model using LiDAR data AND compared LiDAR 
-derived vegetation height, within plots, to actual measured tree height data!
+<div id="challenge" markdown="1">
+## Challenge: Plot Data
 
+Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
+percentile vs *insitu* 95th percentile. 
 
-#Challenge 
+Compare this plot to the previous one with max height. Which would you prefer to 
+use for your analysis? Why? 
 
-> Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
-> percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the
-> colors, fonts and the look of your plot. If you are happy with the outcome, share
-> your plot in the comments below! 
+</div>
 
-## Create Plot.ly Interactive Plot
+```{r challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE}
+# 1. Add 95 data to centroids df
+centroids_c <- merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
 
-Plot.ly is a free to use, online interactive data viz site. If you have the 
-plot.ly library installed, you can quickly export a ggplot graphic into plot.ly!
- (NOTE: it also works for python matplotlib)!! To use plotly, you need to setup 
-an account. Once you've setup an account, you can get your key from the plot.ly 
-site to make the code below work.
+# 2. Plot 95 data vs insitu data
+ggplot(centroids_c,aes(x=quant, y =insituMaxHeight.x )) + 
+  geom_point() + 
+  ylab("Maximum Measured Height") + 
+  xlab("95% quantile LiDAR Height")+
+  geom_smooth(method=lm) +
+  xlim(0, max(centroids[,7:10])) + 
+  ylim(0,max(centroids[,7:10])) 
 
-
-```{r create-plotly, eval=FALSE }
-
-library(plotly)
-#setup your plot.ly credentials
-set_credentials_file("yourUserName", "yourKey")
-p <- plotly(username="yourUserName", key="yourKey")
-
-#generate the plot
-py <- plotly()
-py$ggplotly()
 
 ```
 
-Check out the results! 
 
-NEON Remote Sensing Data compared to NEON Terrestrial Measurements for the SJER Field Site
-
-<iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
