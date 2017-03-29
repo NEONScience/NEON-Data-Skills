@@ -3,7 +3,7 @@ layout: post
 title:  "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"
 date:   2014-07-20 
 createdDate:   2014-07-21 
-lastModified:   2015-1-6 
+lastModified:   2017-03-29
 estimatedTime: 0.25 - 0.5 Hours
 authors: [Leah A. Wasser]
 categories: [self-paced-tutorial]
@@ -15,6 +15,7 @@ image:
   feature: lidar_GrandMesa.png
   credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
   creditlink:
+permalink:/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/
 comments: true
 ---
 
@@ -36,26 +37,26 @@ Model and gives you the height of the objects (in a forest, the trees) that are
 on the surface of the earth.
 
 <figure class="third">
-    <a href="http://www.neonscience.org/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
     <a href="http://www.neonscience.org/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
+    <a href="http://www.neonscience.org/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
     <a href="http://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
     
-    <figcaption> 3D models of a LiDAR-derived Digital Surface Model (DSM;left), 
-     Digital Terrain Model (DTM; middle), and Canopy Height Model (CHM; right). 
+    <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
+     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
      Click on the images to view interactive 3D models. </figcaption>
 </figure>
 
 
-## LiDAR Point Clouds -- The Basics 
+## LiDAR Point Clouds 
 Each point in a LiDAR dataset has a X, Y, Z value and other attributes. The 
 points may be located anywhere in space are not aligned within any particular 
 grid. <image: LiDAR data point spacing>.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/flyThrough.png">
-	<img src="{{ site.baseurl }}/images/lidar/flyThrough.png"></a>
-	<figcaption> Point cloud data from LiDAR.   
-	Source: National Ecological Observatory Network (NEON)  
+	<a href="{{ site.baseurl }}/images/lidar/Lidar_points.png">
+	<img src="{{ site.baseurl }}/images/lidar/Lidar_points.png"></a>
+	<figcaption> Representative point cloud data. Source: National Ecological 
+	Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
@@ -63,8 +64,17 @@ LiDAR point clouds are typically available in a .las file format. The .las file
 format is a compressed format that can better handle the millions of points that 
 are often associated with LiDAR data point clouds.
 
+### Free Point Cloud Viewers for LiDAR Point Clouds
+- [Fusion: US Forest Service RSAC](http://www.fs.fed.us/eng/rsac/fusion/)
+- [Cloud compare](http://www.danielgm.net/cc/)
+- [Plas.io website](http://plas.io) 
 
-#### Gridded or Raster LiDAR Data Products
+For more on viewing LiDAR point cloud data using the Plas.io online
+viewer, see our tutorial 
+<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/ target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+
+
+#### Gridded, or Raster, LiDAR Data Products
 LiDAR data products are most often worked within a gridded or raster data format. 
 A raster file is a regular grid of cells, all of which are the same size. 
 
@@ -76,23 +86,35 @@ A few notes about rasters:
 on the ground. So, for instance if the raster is 1 m resolution, that simple 
 means that each pixel represents a 1m by 1m area on the ground.
 
-Raster data can have attributes associated with it as well. For instance in a 
+
+ <figure>
+	<a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png">
+	<img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png"></a>
+	<figcaption> Raster or “gridded” data are stored as a grid of values which 
+	are rendered on a map as pixels. Each pixel value represents an area on the 
+	Earth’s surface.  Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
+</figure>
+
+
+Raster data can have attributes associated with them as well. For instance in a 
 LiDAR-derived digital elevation model (DEM), each cell might represent a 
-particular elevation value.  In a LIDAR-derived intensity image, each cell 
+particular elevation value. In a LIDAR-derived intensity image, each cell 
 represents a LIDAR intensity value.
 
-## What To Look for In The Metadata
+## LiDAR Related Metadata
 In short, when you go to download LiDAR data the first question you should ask 
 is what format the data are in. Are you downloading point clouds that you might 
 have to process? Or rasters that are already processed for you. How do you know?
 
-1. Check out the metadata
+1. Check out the metadata! 
 2. Look at the file format - if you are downloading a .las file, then you are 
-getting points. 
+getting points. If it is .tif, then it is a post-processing raster file. 
 
-## Creating Useful Data Products from LiDAR Data
+## Create Useful Data Products from LiDAR Data
 
-### Classifying LiDAR point clouds
+### Classify LiDAR Point Clouds
+
 LiDAR data points are vector data. LiDAR point clouds are useful because they 
 tell us something about the heights of objects on the ground. However, how do 
 we know whether a point reflected off of a tree, a bird, a building or the 
@@ -110,12 +132,8 @@ as lastools, fusion and terrascan are often used to perform this classification.
 Once the points are classified, they can be used to derive various LiDAR data 
 products. 
 
-## Free Point Cloud Viewers for LiDAR Point Clouds
-- [Fusion: US Forest Service RSAC](http://www.fs.fed.us/eng/rsac/fusion/)
-- [Cloud compare](http://www.danielgm.net/cc/)
-- [Plas.io website](http://plas.io) 
 
-## Creating A Raster From LiDAR Point Clouds
+### Create A Raster From LiDAR Point Clouds
 There are different ways to create a raster from LiDAR point clouds. 
 
 ### Point to Raster Methods - Basic Gridding
