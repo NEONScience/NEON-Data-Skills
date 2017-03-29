@@ -161,8 +161,8 @@ no data (or no points). And to quantify the error associated with those
 predictions which is useful to know, if you are doing research. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/lidar/gridding.gif">
-    <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
+    <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif">
+    <img src="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a Raster Format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
