@@ -31,13 +31,19 @@ Our 2017 Institute focused on remote sensing of vegetation using open source
 tools and reproducible science workflows -- the primary **programming language will 
 be Python**. This Institute will be held at NEON headquarters in June 2017.
 
+In addition to the 6 day institute there are three weeks of pre-institute materials is
+to ensure that everyone comes to the Institute ready to work in a collaborative 
+research environment. Pre-institute materials are online & individually paced, expect to
+spend 1-5 hrs/week depending on your familiarity with the topic. 
+
+
 |Time | Day | Description
 |---|---|---|
 |--|   |  Computer Setup Materials
 |--| 25 May - 1 June|Intro to NEON & Reproducible Science|
 |--| 2-8 June |Version Control & Collaborative Science with Git & GitHub|
 |--| 9-15 June | Documentation of Your Workflow with iPython/Jupyter Notebooks|
-|--| 19-35 June| **Data Institute**|
+|--| 19-24 June| **Data Institute**|
 |7:50am - 6:30 pm| Monday |Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing|
 |8:00am - 6:30pm| Tuesday|Reproducible & Automated Workflows, Intro to LiDAR data|
 |8:00am - 6:30pm| Wednesday|Remote Sensing Uncertainty|
