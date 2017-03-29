@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Extract Values from a Raster in R"
-date:   2014-7-18
+date:   2014-7-17
 createdDate:   2014-07-21
 lastModified:  2017-03-29
 estimatedTime: 0.5 Hours
@@ -17,12 +17,14 @@ will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame
 so that they can be "
 permalink: /R/extract-raster-data-R/
 comments: true
-code1: /R/extract-raster-data-R.R
+code1: /LIDAR/extract-raster-data-R.R
 image:
-  feature: textur2_pointsProfile.png
+  feature: codedPoints2.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 ---
+
+{% include _toc.html %}
 
 In this tutorial, we go through three methods for extracting data from a raster
 in R: 
@@ -37,7 +39,7 @@ spatial data.
 
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+# Tutorial Objectives
 After completing this activity, you will be able to:
 
 * Convert x,y point locations to SpatialPointsDataFrames
@@ -174,7 +176,7 @@ Let's get started with the *insitu* vegetation data!
     ##  $ stemmapqf            : int  0 0 0 0 0 0 0 0 0 0 ...
 
 Now let's load the Canopy Height Model raster. Note, if you completed the
-<a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank">*Create a Canopy Height Model from LiDAR-derived Rasters in R*> 
+<a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank"> *Create a Canopy Height Model from LiDAR-derived Rasters in R*</a> 
 tutorial this is the same object `chm` you can created. You do not need to reload
 the data. 
 
@@ -418,7 +420,6 @@ which gives a 2 rows, 3 columns layout.
 </div> 
 
 
-    ## Error in plot.new(): figure margins too large
 
 
 ## Method 2: Square Plots 

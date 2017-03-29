@@ -15,12 +15,14 @@ description: "In this tutorial, you will bring LiDAR-derived raster data
 (DSM and DTM) into R to create a  canopy height model (CHM). "
 permalink: /lidar-data/lidar-data-rasters-in-R/
 comments: true
-code1: /R/intro-lidar-r/Create-Lidar-CHM-R.R
+code1: /LIDAR/Create-Lidar-CHM-R.R
 image:
   feature: textur2_pointsProfile.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 ---
+
+{% include _toc.html %}
 
 A common analysis using LiDAR data is to derive top of the canopy height values 
 from the LiDAR data. These values are often used to track changes in forest 
@@ -205,5 +207,5 @@ at it.
 ***
 
 Consider going onto the next tutorial 
-<a href="{{ site.baseurl }}/R/extract-raster-data-R/" target="_blank">*Extract Values from a Raster in R*> to compare this lidar-derived CHM with data taken from in ground!
+<a href="{{ site.baseurl }}/R/extract-raster-data-R/" target="_blank">*Extract Values from a Raster in R*</a> to compare this lidar-derived CHM with data taken from in ground!
 

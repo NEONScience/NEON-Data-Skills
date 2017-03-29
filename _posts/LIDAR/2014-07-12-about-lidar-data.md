@@ -9,14 +9,14 @@ estimatedTime: 0.25 Hours
 packagesLibraries:
 categories: [self-paced-tutorial]
 tags : [lidar, R, remote-sensing]
-mainTag: lidar
+mainTag: intro-lidar-r-series
 tutorialSeries: [intro-lidar-r-series]
 description: "Explore the basics of how a LiDAR system works and what a LiDAR system measures."
 image:
   feature: codedpoints2.png
   credit:
   creditlink:
-permalink:/self-paced-tutorial/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/
+permalink: /self-paced-tutorial/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/
 comments: true
 ---
 
@@ -149,10 +149,10 @@ structure including
 	- Species identification (if a less dense forests with high point density LiDAR)
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/Treeline_ScannedPoints.png">
-   <img src="{{ site.baseurl }}/images/lidar/Treeline_ScannedPoints.png"></a>
-   <figcaption>Cross section showing LiDAR point cloud data (above) and the 
-   corresponding landscape profile (below). Source: National Ecological Observatory 
+   <a href="{{ site.baseurl }}/images/lidar/Lidar_points.png">
+   <img src="{{ site.baseurl }}/images/lidar/Lidar_points.png"></a>
+   <figcaption>Cross section showing LiDAR point cloud data superimposed on the 
+   corresponding landscape profile. Source: National Ecological Observatory 
    Network</a>.
    </figcaption>
 </figure>
@@ -212,7 +212,7 @@ vegetation type.
 
 Check out our tutorial on viewing LiDAR point cloud data using the Plas.io online
 viewer: 
-<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/ target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 The Plas.io viewer used in this tutorial was developed by Martin Isenberg of 
 Las Tools and his colleagues.
 

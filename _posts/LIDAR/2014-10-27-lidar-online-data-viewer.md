@@ -8,7 +8,7 @@ estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 categories: [self-paced-tutorial]
 tags: [lidar, remote-sensing, data-viz]
-mainTag: lidar
+mainTag: intro-lidar-r-series
 tutorialSeries: [intro-lidar-r-series]
 authors: [Leah A. Wasser]
 description: "Learn about LiDAR point cloud file formats .las and .laz. 
@@ -24,7 +24,7 @@ comments: true
 {% include _toc.html %}
 
 In this tutorial, we will explore LiDAR point cloud data using the free, online 
-<a href="http://plas.io" target="_blank"> Plas.io viewer </a>. 
+<a href="http://plas.io" target="_blank"> Plas.io viewer</a>. 
 
 <div id="objectives" markdown="1">
 
