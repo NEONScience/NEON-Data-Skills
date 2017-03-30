@@ -14,7 +14,7 @@ tutorialSeries: [intro-hsi-r-series]
 description: "Learn about the fundamental principles of hyperspectral remote sensing data."
 code1: 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: codedpoints2.png
   credit:
   creditlink:
 permalink: /HDF5/About-Hyperspectral-Remote-Sensing-Data/
