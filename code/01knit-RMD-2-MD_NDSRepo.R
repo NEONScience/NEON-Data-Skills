@@ -16,7 +16,7 @@ dirs <- c("R/primer-raster-data",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[2]
+dir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
