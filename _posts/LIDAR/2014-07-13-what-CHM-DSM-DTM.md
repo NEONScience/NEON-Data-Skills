@@ -50,7 +50,7 @@ on the surface of the earth.
 ## LiDAR Point Clouds 
 Each point in a LiDAR dataset has a X, Y, Z value and other attributes. The 
 points may be located anywhere in space are not aligned within any particular 
-grid. <image: LiDAR data point spacing>.
+grid.
 
  <figure>
 	<a href="{{ site.baseurl }}/images/lidar/Lidar_points.png">
@@ -74,7 +74,7 @@ viewer, see our tutorial
 <a href="{{ site.baseurl }}/lidar-data/online-data-viewer/" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 
 
-#### Gridded, or Raster, LiDAR Data Products
+### Gridded, or Raster, LiDAR Data Products
 LiDAR data products are most often worked within a gridded or raster data format. 
 A raster file is a regular grid of cells, all of which are the same size. 
 
@@ -136,7 +136,7 @@ products.
 ### Create A Raster From LiDAR Point Clouds
 There are different ways to create a raster from LiDAR point clouds. 
 
-### Point to Raster Methods - Basic Gridding
+#### Point to Raster Methods - Basic Gridding
 Let's look one of the most basic ways to create a raster file points - basic gridding. 
 When you perform a gridding algorithm, you are simply calculating a value, using 
 point data, for each pixels in your raster dataset. 
@@ -161,7 +161,7 @@ process our raster in this way.
 	</figcaption>
 </figure>
 
-### Point to Raster Methods - Interpolation
+#### Point to Raster Methods - Interpolation
 
 A different approach is to interpolate the value for each cell. 
 
