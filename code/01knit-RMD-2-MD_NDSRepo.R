@@ -9,6 +9,7 @@
 require(knitr)
 dirs <- c("R/primer-raster-data",
           "LIDAR",
+					"HDF5",
           "R/dc-tabular-time-series",
           "R/tutorial-setup")
 
