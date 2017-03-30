@@ -19,7 +19,7 @@ permalink: /R/extract-raster-data-R/
 comments: true
 code1: /LIDAR/extract-raster-data-R.R
 image:
-  feature: codedPoints2.png
+  feature: codedpoints2.png
   credit: National Ecological Observatory Network (NEON)
   creditlink: http://www.neonscience.org
 ---
@@ -75,7 +75,7 @@ created by unzipping this file.
 ***
 
 ## Recommended Reading
-<a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+<a href="{{ site.baseurl }}/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/">
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
@@ -425,7 +425,7 @@ which gives a 2 rows, 3 columns layout.
 ## Method 2: Square Plots 
 
 For how to create square plots around a point, check out the
- [Create A Square Buffer Around a Plot Centroid in R]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons") 
+ [Create A Square Buffer Around a Plot Centroid in R]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids "Polygons") 
 tutorial. 
 
 Once you have a SpatialPolygon object, you can use the same `extract()` function
