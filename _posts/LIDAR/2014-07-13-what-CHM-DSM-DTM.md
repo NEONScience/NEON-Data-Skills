@@ -154,7 +154,7 @@ process our raster in this way.
 
 <figure>
     <a href="http://www.neonscience.org/gridding-interpolation-spatial-data-gif">
-    <img src="http://www.neonscience.org/gridding-interpolation-spatial-data-gif"></a>
+    <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
