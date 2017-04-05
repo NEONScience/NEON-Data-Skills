@@ -131,7 +131,7 @@ Instructors may also choose to download text, figures, graphics or video from
 this site and present the lesson in the medium of their choice. 
 
 ## Teaching Modules Collection
-This lesson plan is part of larger collection of lessons utilizing data 
+This lesson page is part of larger collection of lessons utilizing data 
 collected during the 2013 Colorado Floods that are designed for undergraduate 
 and graduate students. All lessons and related materials can be found on the 
 <a href="http://www.neondataskills.org/" target="_blank"> NEON Data Skills portal</a>.
