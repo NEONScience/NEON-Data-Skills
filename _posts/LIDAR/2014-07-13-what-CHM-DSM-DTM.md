@@ -153,8 +153,8 @@ don't contains any lidar points. These cells will have a "no data" value if we
 process our raster in this way. 
 
 <figure>
-    <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif">
-    <img src="https://github.com/NEONScience/NEON-Data-Skills/blob/gh-pages/images/lidar/gridding.gif"></a>
+    <a href="http://www.neonscience.org/gridding-interpolation-spatial-data-gif">
+    <img src="http://www.neonscience.org/gridding-interpolation-spatial-data-gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
