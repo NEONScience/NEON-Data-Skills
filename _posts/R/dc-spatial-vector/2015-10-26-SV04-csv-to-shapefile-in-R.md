@@ -237,6 +237,10 @@ easier to simply assign the `crs()` in `proj4` format from that object to our
 new spatial object. Let's import the roads layer from Harvard forest and check 
 out its CRS.
 
+Note: if you do not have a CRS to borrow from another raster, see Option 2 in 
+the next section for how to convert to a spatial object and assign a 
+CRS. 
+
 
     # Import the line shapefile
     lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV/", "HARV_roads")
@@ -289,12 +293,19 @@ Next, let's convert our `data.frame` into a `SpatialPointsDataFrame`. To do
 this, we need to specify:
 
 1. The columns containing X (`easting`) and Y (`northing`) coordinate values
-2. The CRS that the column coordinate represent (units are included in the CRS) -
-stored in our `utmCRS` object.
-3. optional: the other columns stored in the data frame that you wish to append
+2. The CRS that the column coordinate represent (units are included in the CRS).
+3. Optional: the other columns stored in the data frame that you wish to append
 as attributes to your spatial object
 
-We will use the `SpatialPointsDataFrame()` function to perform the conversion.
+We can add the CRS in two ways; borrow the CRS from another raster that 
+already has it assigned (Option 1) or to add it directly using the `proj4string`
+ (Option 2).
+
+#### Option 1: Borrow CRS
+
+We will use the `SpatialPointsDataFrame()` function to perform the conversion 
+and add the CRS from our `utm18nCRS` object. 
+
 
 
     # note that the easting and northing columns are in columns 1 and 2
@@ -308,6 +319,25 @@ We will use the `SpatialPointsDataFrame()` function to perform the conversion.
     ## CRS arguments:
     ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84
     ## +towgs84=0,0,0
+
+#### Option 2: Assigning CRS
+
+If we didn't have a raster from which to borrow the CRS, we can directly assign 
+it using either of two equivalent but slightly different syntaxes. 
+
+
+    # first, convert the data.frame to spdf
+    r <- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
+                        plot.locations_HARV)
+    
+    # second, assign the CRS in one of two ways
+    r <- crs("+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
+                        +ellps=WGS84 +towgs84=0,0,0" )
+    # or
+    
+    crs(r) <- "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
+                        +ellps=WGS84 +towgs84=0,0,0"
+
 
 ## Plot Spatial Object 
 We now have a spatial `R` object, we can plot our newly created spatial object.
