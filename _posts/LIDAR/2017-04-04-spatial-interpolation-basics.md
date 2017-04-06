@@ -1,17 +1,15 @@
 ---
-layout: post
-title: "Going On The Grid -- An Intro to Gridding & Spatial Interpolation "
-language: [R]
-date: 2014-7-15
-dateCreated:   2015-08-13
-lastModified: 2017-04-03
-endDate: 2015-08-13
-authors: [Leah Wasser, Tristan Goulden]
+layout:  post
+title:  "Going On The Grid -- An Intro to Gridding & Spatial Interpolation"
+date:  2014-7-15
+createdDate:   2015-08-13
+lastModified:  2017-04-03
+authors: Leah Wasser, Tristan Goulden
 categories: [self-paced-tutorial]
 mainTag: intro-lidar-r-series
 tags: [lidar, R, raster, remote-sensing, spatial-data-gis]
 tutorialSeries: [intro-lidar-r-series]
-description: "An overview of the basic knowledge needed to begin to exploring 
+description: "An overview of the basics needed to begin to exploring 
 converting point data into raster or gridding format."
 code1: 
 image:
@@ -21,6 +19,8 @@ image:
 permalink: /spatial-data/spatial-interpolation-basics
 comments: true 
 ---
+
+{% include _toc.html %}
 
 ## Tutorial Approach
 In this tutorial was originally created for an ESA brown-bag workshop. Here we
