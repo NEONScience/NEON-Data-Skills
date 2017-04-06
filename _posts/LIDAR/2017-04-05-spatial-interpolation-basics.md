@@ -2,7 +2,7 @@
 layout: post
 title: "Going On The Grid -- An Intro to Gridding & Spatial Interpolation "
 language: [R]
-date: 2015-08-13
+date: 2014-7-15
 dateCreated:   2015-08-13
 lastModified: 2017-04-03
 endDate: 2015-08-13
