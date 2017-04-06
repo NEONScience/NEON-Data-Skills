@@ -3,7 +3,7 @@ layout: post
 title: "The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels"
 date:   2015-1-15
 dateCreated:   2014-11-03
-lastModified: 2017-03-17
+lastModified: 2017-04-06
 authors: Leah A. Wasser
 categories: [self-paced-tutorial]
 category: self-paced-tutorial
@@ -420,15 +420,15 @@ want to create a raster with the left hand corner coordinate at:
 * ymin = 4107302
 
 The resolution of this new raster will be `1 meter` and we will be working
-in UTM (meters). Let's define the new raster's extent.
+in UTM (meters). First, let's set up the raster. 
 
 
     # create the base matrix
     newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
     
-    #create a raster from the matrix
+    # create a raster from the matrix
     rasterNoProj <- raster(newMatrix)
-    
+
     rasterNoProj
 
     ## class       : RasterLayer 
@@ -439,6 +439,10 @@ in UTM (meters). Let's define the new raster's extent.
     ## data source : in memory
     ## names       : layer 
     ## values      : 1, 8  (min, max)
+
+Now we can define the new raster's extent by defining the lower left corner of
+the raster.
+
 
     ## Define the xmin and y min (the lower left hand corner of the raster)
     
@@ -460,8 +464,8 @@ in UTM (meters). Let's define the new raster's extent.
     
     # 4. add the numbers of cols and rows to the x,y corner location, 
     # result = we get the bounds of our raster extent. 
-    xMax <- xMin + (myRaster1@ncols * res)
-    yMax <- yMin + (myRaster1@nrows * res)
+    xMax <- xMin + (rasterNoProj@ncols * res)
+    yMax <- yMin + (rasterNoProj@nrows * res)
     
     # 5.create a raster extent class
     rasExt <- extent(xMin,xMax,yMin,yMax)
@@ -469,9 +473,9 @@ in UTM (meters). Let's define the new raster's extent.
 
     ## class       : Extent 
     ## xmin        : 254570 
-    ## xmax        : 254574 
+    ## xmax        : 254590 
     ## ymin        : 4107302 
-    ## ymax        : 4107306
+    ## ymax        : 4107312
 
     # 6. apply the extent to our raster
     rasterNoProj@extent <- rasExt
@@ -481,8 +485,8 @@ in UTM (meters). Let's define the new raster's extent.
 
     ## class       : RasterLayer 
     ## dimensions  : 10, 20, 200  (nrow, ncol, ncell)
-    ## resolution  : 0.2, 0.4  (x, y)
-    ## extent      : 254570, 254574, 4107302, 4107306  (xmin, xmax, ymin, ymax)
+    ## resolution  : 1, 1  (x, y)
+    ## extent      : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
     ## coord. ref. : NA 
     ## data source : in memory
     ## names       : layer 
@@ -493,9 +497,9 @@ in UTM (meters). Let's define the new raster's extent.
 
     ## class       : Extent 
     ## xmin        : 254570 
-    ## xmax        : 254574 
+    ## xmax        : 2545790
     ## ymin        : 4107302 
-    ## ymax        : 4107306
+    ## ymax        : 4107312
 
 Now we have an extent associated with our raster which places it in space!
 
