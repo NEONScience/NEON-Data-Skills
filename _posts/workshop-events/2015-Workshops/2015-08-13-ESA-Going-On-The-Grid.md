@@ -61,7 +61,7 @@ ArcGIS Help Documentation - Understanding Interpolation Analysis</a>.
 
 
 ### Workshop Instructor
-* **Leah Wasser @leahawasser**, Supervising Scientist, NEON,Inc 
+* **Leah Wasser** @leahawasser, Supervising Scientist, NEON,Inc 
 
 ### Workshop Assistants
 
@@ -73,7 +73,7 @@ ArcGIS Help Documentation - Understanding Interpolation Analysis</a>.
   
 Please tweet using the hashtag **#WorkWithData** during this workshop!
 
-Also you can tweet at <a href="https://twitter.com/neon_sci" target="_blank">
+Also, you can tweet at <a href="https://twitter.com/neon_sci" target="_blank">
 @NEON_Sci</a>!
 
 
@@ -85,8 +85,8 @@ Also you can tweet at <a href="https://twitter.com/neon_sci" target="_blank">
 
 | Time        | Topic         | 
 |-------------|---------------|
-| 11:30     | <a href="{{ site.baseurl }}/spatial-data/spatial-interpolation-basics" target="_blank"> Spatial Gridding vs. Interpolation </a>|
-| 1:00 | ------- Wrap Up! ------- |
+| 11:30     | <a href="{{ site.baseurl }}/spatial-data/spatial-interpolation-basics" target="_blank"> Spatial Gridding & Interpolation </a>|
+| 1:00 | ------ Wrap Up! ------ |
 
 
 *Note: We will not cover geostatistical methods in this brown bag!*
