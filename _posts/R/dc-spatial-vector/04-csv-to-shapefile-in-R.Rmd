@@ -267,7 +267,6 @@ and add the CRS from our `utm18nCRS` object.
 
 ```{r convert-csv-shapefile}
 # note that the easting and northing columns are in columns 1 and 2
-# see Data Tip below if NOT borrowing CRS from other
 plot.locationsSp_HARV <- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
                     plot.locations_HARV,    #the R object to convert
                     proj4string = utm18nCRS)   # assign a CRS 
