@@ -1,17 +1,15 @@
 ---
-layout: post
-title: "Going On The Grid -- An Intro to Gridding & Spatial Interpolation "
-language: [R]
-date: 2014-7-15
-dateCreated:   2015-08-13
-lastModified: 2017-04-03
-endDate: 2015-08-13
-authors: [Leah Wasser, Tristan Goulden]
+layout:  post
+title:  "Going On The Grid -- An Intro to Gridding & Spatial Interpolation"
+date:  2014-7-15
+createdDate:   2015-08-13
+lastModified:  2017-04-03
+authors: Leah Wasser, Tristan Goulden
 categories: [self-paced-tutorial]
 mainTag: intro-lidar-r-series
 tags: [lidar, R, raster, remote-sensing, spatial-data-gis]
 tutorialSeries: [intro-lidar-r-series]
-description: "An overview of the basic knowledge needed to begin to exploring 
+description: "An overview of the basics needed to begin to exploring 
 converting point data into raster or gridding format."
 code1: 
 image:
@@ -21,6 +19,8 @@ image:
 permalink: /spatial-data/spatial-interpolation-basics
 comments: true 
 ---
+
+{% include _toc.html %}
 
 ## Tutorial Approach
 In this tutorial was originally created for an ESA brown-bag workshop. Here we
@@ -104,7 +104,14 @@ We can create a raster from points through a process called gridding.
 Gridding is the process of taking a set of points and using them to create a 
 surface composed of a regular grid. 
 
-{% include _images_nolink.html url="{{ site.baseurl  }}/images/lidar/gridding.gif" description="Animation showing the general process of taking lidar point clouds and converting them to a raster format. Source: Tristan Goulden, National Ecological Observatory Network" %}
+<figure>
+    <a href="{{ site.baseurl }}/images/lidar/gridding.gif">
+    <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
+    <figcaption>Animation showing the general process of taking lidar point 
+    clouds and converting them to a raster format. Source: Tristan Goulden, 
+    National Ecological Observatory Network
+	</figcaption>
+</figure>
 
 
 ## Spatial Interpolation
@@ -189,7 +196,7 @@ data(e.g. east to west, elevational, etc).
     <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif">
 	<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif"></a>
     <figcaption>IDW interpolation looks at the linear distance between the unknown value
-	and surrounding points. Source: <a href="<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif"> J. Abrecht, CUNY</a> </figcaption>
+	and surrounding points. Source: J. Abrecht, CUNY </figcaption>
 </figure>
 
 
@@ -212,7 +219,7 @@ the cell's calculated value.
 	power. The greater the power, the more localized an affect a sample point's 
 	value has on the resulting surface. A smaller power value yields a smoothed 
 	or more averaged surface. 
-	Source: <a href="<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif"> J. Abrecht, CUNY</a></figcaption>
+	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif"> J. Abrecht, CUNY</a></figcaption>
 </figure>
 
 The impacts of power:
@@ -229,20 +236,20 @@ more localized and less averaged.
 
 #### IDW Take Home Points
 
-**IDW is good for:**
+IDW is good for:
 
 * Data whose distribution is strongly (and linearly) correlated with 
 distance. For example, noise falls off very predictably with distance. 
 * Providing explicit control over the influence of distance (compared to Spline
 or Kriging). 
 
-**IDW is not so good for:**
+IDW is not so good for:
 
 * Data whose distribution depends on more complex sets of variables
  because it can account only for the effects of distance. 
 
 
-**Other features:**
+Other features:
 
 * You can create a smoother surface by decreasing the power, increasing the 
 number of sample points used or increasing the search (sample points) radius. 
@@ -270,7 +277,7 @@ high and low values not already represented in your data.
     <figcaption>
 	Spline interpolation fits a surface between the sample points of known values
 	to estimate a value for the unknown cell. 
-	Source: <a href="<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif"> J. Abrecht, CUNY</a></figcaption>
+	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif"> J. Abrecht, CUNY</a></figcaption>
 </figure>
 
 
@@ -301,12 +308,12 @@ For more on spline interpolation, see ESRI's
 
 #### Spline Take Home Points
 
-**Spline is good for:**
+Spline is good for:
 
 * Estimating values outside of the range of sample input data.
 * Creating a smooth continuous surface.
 
-**Spline is not so good for:**
+Spline is not so good for:
 
 * Points that are close together and have large value differences. Slope 
 calculations can yield over and underestimation.
@@ -361,21 +368,23 @@ original Voronoi diagram created using the known sample points (Image below).
 	</figcaption>
 </figure>
 
+#### Natural Neighbor Take Home Points
 
-**Natural Neighbor is good for:**
+
+Natural Neighbor is good for:
 
 * Data where spatial distribution is variable (and data that are equally distributed).
 * Categorical data.
 * Providing a smoother output raster.
 
-**Natural Neighbor is not as good for:**
+Natural Neighbor is not as good for:
 
 * Data where the interpolation needs to be spatially constrained (to a particular
 number of points of distance). 
 * Data where sample points further away from or beyond the immediate "neighbor 
 points" need to be considered in the estimation.
 
-**Other features:**
+Other features:
 
 * Good as a local Interpolator
 * Interpolated values fall within the range of values of the sample data
