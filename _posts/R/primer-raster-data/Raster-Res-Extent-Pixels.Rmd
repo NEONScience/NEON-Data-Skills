@@ -62,7 +62,8 @@ You should set this `SJER` directory as your working directory.
 </div>
 
 
-This activity will overview the key attributes of a raster object, including spatial extent, resolution and coordinate reference system. When working within
+This activity will overview the key attributes of a raster object, including 
+spatial extent, resolution and coordinate reference system. When working within
 a GIS system often these attributes are accounted for. However, it is important
 to be more familiar with them when working in non-GUI environments such as 
  `R` or even `Python`.
@@ -118,7 +119,7 @@ DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")
 
 ```
 
-``` {r view-raster-attributes}
+```{r view-raster-attributes}
 # View raster attributes 
 DEM
 
@@ -193,7 +194,7 @@ for something created with the `raster()` function if nothing is defined.
 
 Let's get back to looking at more attributes. 
 
-``` {r create-raster-cont}
+```{r create-raster-cont}
 
 # what is the raster extent?
 myRaster1@extent
@@ -357,19 +358,23 @@ want to create a raster with the left hand corner coordinate at:
 * ymin = 4107302
 
 The resolution of this new raster will be `1 meter` and we will be working
-in UTM (meters). Let's define the new raster's extent.
+in UTM (meters). First, let's set up the raster. 
 
-```{r define-extent}
-
-# create the base matrix
+```{r create-raster}
+# create 10x20 matrix with values 1-8. 
 newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
 
-#create a raster from the matrix
+# convert to raster
 rasterNoProj <- raster(newMatrix)
-
 rasterNoProj
 
-## Define the xmin and y min (the lower left hand corner of the raster)
+```
+
+Now we can define the new raster's extent by defining the lower left corner of
+the raster.
+
+```{r define-extent}
+## Define the xmin and ymin (the lower left hand corner of the raster)
 
 # 1. define xMin & yMin objects.
 xMin = 254570
@@ -379,13 +384,13 @@ yMin = 4107302
 rasterNoProj@ncols
 rasterNoProj@nrows
 
-# 3. define the resolution
+# 3. raster resolution
 res <- 1.0
 
 # 4. add the numbers of cols and rows to the x,y corner location, 
 # result = we get the bounds of our raster extent. 
-xMax <- xMin + (myRaster1@ncols * res)
-yMax <- yMin + (myRaster1@nrows * res)
+xMax <- xMin + (rasterNoProj@ncols * res)
+yMax <- yMin + (rasterNoProj@nrows * res)
 
 # 5.create a raster extent class
 rasExt <- extent(xMin,xMax,yMin,yMax)
@@ -398,6 +403,7 @@ rasterNoProj@extent <- rasExt
 rasterNoProj
 # or view extent only
 rasterNoProj@extent
+
 ```
 
 Now we have an extent associated with our raster which places it in space!
