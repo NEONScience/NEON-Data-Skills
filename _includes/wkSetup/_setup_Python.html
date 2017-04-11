@@ -24,12 +24,12 @@ Download and install
 Download the default Python 3 installer.  Use all of the defaults for 
 installation *except* make sure to check **Make Anaconda the default Python**.
 
-<h4 Mac OS X </h4>
+<h4 id="Python-mac">Mac OS X </h4>
 Download and install 
 <a href="https://www.continuum.io/downloads">Anaconda</a>.
 Download the default Python 3 installer. Use all of the defaults for installation.
 
-<h4 Linux </h4>
+<h4 id="Python-linux">Linux </h4>
 We recommend the all-in-one scientific Python installer
 <a href="http://continuum.io/downloads.html">Anaconda</a>.
 Download the installer that matches your operating system and save it in your 
@@ -48,50 +48,30 @@ approve the default location for the files. Type `yes` and press
 enter to prepend Anaconda to your `PATH` (this makes the Anaconda 
 distribution the default Python).
 
-<h3>Installing ggplot Python package</h3>
+<h3 id="Python-packages">Install Python packages</h3>
 
-<a href="https://github.com/yhat/ggplot">ggplot</a> is a Python
-implementation of the R <a href="http://ggplot2.org/">ggplot2</a> graphics
-package. It is not intended to be a feature-for-feature port of ggplot2 but
-provides some of ggplot2 functionality in Python ecosystem.
+You need to have the following packages installed for Python prior to the start
+of the Data Institute. 
 
-The easiest approach to install ggplot is via conda package manager
-provided in Anaconda distribution that you have installed above.
-
-<h4 id="ggplot-windows">Windows</h4>
-Open <em>Anaconda Prompt</em> from windows menu.
-
-In opened prompt window type in
-
-`<code>conda install -c conda-forge ggplot`
-and accept when prompted for feedback.
+* numPy (default with Anaconda install)
+* matPlotlib (default with Anaconda install)
+* gdal
+* osr (typically part of gdal)
+* h5py
+* shapely
 
 
-<h4 Mac OS X</h4>
+<h3 id="Python-check">Checking that your installation worked</h3>
 
-Open <em>Terminal app</em>.
-Type into <em>Terminal</em> window
-<code>conda install -c conda-forge ggplot</code>
-and accept when prompted for feedback.
-
-
-<h4 id="ggplot-linux">Linux</h4>
-Open default *terminal application*
-(on Ubuntu that will be <em>gnome-terminal</em>).
-
-Type into terminal
-<code>conda install -c conda-forge ggplot</code>
-and accept when prompted for feedback.
-
-
-<h3>Checking that your installation worked</h3>
-
-Now it is time to make sure that your Anaconda installation was successful. Download
+Now it is time to make sure that your Anaconda installation was successful. 
+Download the Data Carpentry 
 <a href="https://raw.githubusercontent.com/datacarpentry/python-ecology-lesson/gh-pages/_includes/scripts/check_env.py">check_env.py file</a> 
-which is a Python script that will check if Anaconda has been correctly installed on
-your system. From your terminal, navigate to the directory that contains
-check_env.py and execute the following: 
-<pre>python check_env.py</pre>
-If you receieve an AssertionError, it will inform you how to correct your
+which is a Python script that will check if Anaconda has been correctly installed 
+on your system. From your terminal, navigate to the directory that contains
+`check_env.py` and execute the following: 
+
+`python check_env.py`
+
+If you receieve an `AssertionError`, it will inform you how to correct your
 installation. Otherwise, it will tell you that your system is  good to go
-and ready for Data Carpentry!
+and ready for the Data Institute!
