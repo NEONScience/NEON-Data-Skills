@@ -1,0 +1,77 @@
+
+<h3 id="Python-setup"> Setting Up Python </h3>
+
+<a href="http://python.org">Python</a> is a popular language for
+scientific computing and data science, as well as being a great for 
+general-purpose programming.  Installing all of the scientific packages 
+individually can be a bit difficult, so we recommend using an all-in-one 
+installer, like Anaconda.
+
+Regardless of how you choose to install it, **please make sure you install Python 
+version 3.x** (e.g., 3.4 is fine, but not 2.4).
+
+We will teach using Python in <a href="http://jupyter.org">Jupyter notebooks</a>, 
+a programming environment that runs in a web browser. For this to work you will 
+need a reasonably up-to-date browser. The current versions of the Chrome, Safari 
+and Firefox browsers are all 
+<a href='http://ipython.org/ipython-doc/2/install/install.html#browser-compatibility'>supported</a>
+(some older browsers, including Internet Explorer version 9 and below, are not).
+
+<h4 id="Python-windows"> Windows </h4>
+
+Download and install 
+<a href="https://www.continuum.io/downloads">Anaconda</a>.
+Download the default Python 3 installer.  Use all of the defaults for 
+installation *except* make sure to check **Make Anaconda the default Python**.
+
+<h4 id="Python-mac">Mac OS X </h4>
+Download and install 
+<a href="https://www.continuum.io/downloads">Anaconda</a>.
+Download the default Python 3 installer. Use all of the defaults for installation.
+
+<h4 id="Python-linux">Linux </h4>
+We recommend the all-in-one scientific Python installer
+<a href="http://continuum.io/downloads.html">Anaconda</a>.
+Download the installer that matches your operating system and save it in your 
+home folder. Download the default Python 3 installer.
+
+Open a terminal window. Type 
+
+`bash Anaconda-`
+
+and then press tab. The name of the file you just downloaded should appear.
+
+Press enter. You will follow the text-only prompts.  When there is a colon at 
+the bottom of the screen press the down arrow to move down through the text. 
+Type `yes` and press enter to approve the license. Press enter to 
+approve the default location for the files. Type `yes` and press 
+enter to prepend Anaconda to your `PATH` (this makes the Anaconda 
+distribution the default Python).
+
+<h3 id="Python-packages">Install Python packages</h3>
+
+You need to have the following packages installed for Python prior to the start
+of the Data Institute. 
+
+* numPy (default with Anaconda install)
+* matPlotlib (default with Anaconda install)
+* gdal
+* osr (typically part of gdal)
+* h5py
+* shapely
+
+
+<h3 id="Python-check">Checking that your installation worked</h3>
+
+Now it is time to make sure that your Anaconda installation was successful. 
+Download the Data Carpentry 
+<a href="https://raw.githubusercontent.com/datacarpentry/python-ecology-lesson/gh-pages/_includes/scripts/check_env.py">check_env.py file</a> 
+which is a Python script that will check if Anaconda has been correctly installed 
+on your system. From your terminal, navigate to the directory that contains
+`check_env.py` and execute the following: 
+
+`python check_env.py`
+
+If you receieve an `AssertionError`, it will inform you how to correct your
+installation. Otherwise, it will tell you that your system is  good to go
+and ready for the Data Institute!

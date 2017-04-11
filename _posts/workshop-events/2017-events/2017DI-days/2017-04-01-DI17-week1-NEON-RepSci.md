@@ -1,13 +1,13 @@
 ---
 layout: workshop-event
 title: 'Introduction to NEON and Reproducible Science'
-startDate: 2016-06-28
-endDate: 2016-06-03
+startDate: 2017-05-25
+endDate: 2017-06-01
 categories: 
 tutorialSeriesName: 
-permalink: /workshop-event/NEON-DI-2016/NEON-repSci
+permalink: /workshop-event/NEON-DI-2017/NEON-repSci
 image:
-  feature: data-institute-2016.png
+  feature: data-institute-rs.png
   credit:
   creditlink:
 ---
@@ -25,7 +25,7 @@ Be sure to consider what data you will need (NEON or
 other). You will have time to refine your idea over the next few weeks.
 Save this document as you will submit it next week as a part of week 2 materials!
 
-<i class="fa fa-star"></i> **Deadline:** Please complete this by 11:59 Thursday June 2nd 2016.
+<i class="fa fa-star"></i> **Deadline:** Please complete this by 11:59 Thursday June 1st 2017.
 
 ## Week 1 Materials
 

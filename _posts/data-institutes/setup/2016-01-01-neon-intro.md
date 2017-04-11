@@ -25,7 +25,7 @@ comments: true
 
 
 
-Here, we will provide an overview of the National Ecological Observatory
+Here we will provide an overview of the National Ecological Observatory
 Network (NEON). Please carefully read through these materials and links that
 discuss NEON’s mission and design. 
 
@@ -57,12 +57,12 @@ NEON field site is located within an eco-climatic domain.
 Watch this 3:55 minute video explaining the NEON program.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/38JQXPubMoA" frameborder="0" allowfullscreen></iframe>
 
-Please read the following page about NEON's Mission:
+Please read the following page about NEON's mission:
 
 * <a href="http://www.neonscience.org/about" target="_blank">Read about NEON’s mission</a>
 {: .readme }
 
-<i class="fa fa-star"></i> **Data Institute Participants Thought Questions:** How might/does the NEON project
+<i class="fa fa-star"></i> **Data Institute Participants -- Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
 {: .notice .thought }
 
@@ -104,7 +104,7 @@ domain or state.
 have online documentation. We are working on this!
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> ** Data Institute Participant Thought Questions:**
+<i class="fa fa-star"></i> ** Data Institute Participant -- Thought Questions:**
 Use the map above to answer
 these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
