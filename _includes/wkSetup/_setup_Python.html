@@ -2,31 +2,40 @@
 
 <a href="http://python.org">Python</a> is a popular language for
 scientific computing and data science, as well as being a great for 
-general-purpose programming.  Installing all of the scientific packages 
+general-purpose programming. Installing all of the scientific packages 
 individually can be a bit difficult, so we recommend using an all-in-one 
 installer, like Anaconda.
 
-Regardless of how you choose to install it, **please make sure you install Python 
-version 3.x** (e.g., 3.4 is fine, but not 2.4).
+Regardless of how you choose to install it, **please make sure you install and 
+use Python version 3.x** (e.g., 3.6 is fine, but not 2.4).
 
-We will teach using Python in <a href="http://jupyter.org">Jupyter notebooks</a>, 
+We will teach using Python in the 
+<a href="http://jupyter.org">Jupyter Notebook environment</a>, 
 a programming environment that runs in a web browser. For this to work you will 
 need a reasonably up-to-date browser. The current versions of the Chrome, Safari 
 and Firefox browsers are all 
 <a href='http://ipython.org/ipython-doc/2/install/install.html#browser-compatibility'>supported</a>
 (some older browsers, including Internet Explorer version 9 and below, are not).
+You can choose to not use notebooks in the course, however, we do 
+recommend you download and install the library so that you can explore this tool.
+
 
 <h4 Windows </h4>
-
 Download and install 
 <a href="https://www.continuum.io/downloads">Anaconda</a>.
-Download the default Python 3 installer.  Use all of the defaults for 
+Download the default Python 3 installer. Use all of the defaults for 
 installation *except* make sure to check **Make Anaconda the default Python**.
+
 
 <h4 Mac OS X </h4>
 Download and install 
-<a href="https://www.continuum.io/downloads">Anaconda</a>.
-Download the default Python 3 installer. Use all of the defaults for installation.
+<a href="https://www.continuum.io/downloads">Anaconda</a> from Continuum.
+Download the Python 3.x installer, choosing either the graphical installer or the 
+command-line installer. For the graphical installer, use all of the defaults for 
+installation. For the command-line installer open Terminal, navigate to the
+directory with the download then enter: 
+
+`bash Anaconda3-4.3.1-MacOSX-x86_64.sh` 
 
 <h4 Linux </h4>
 We recommend the all-in-one scientific Python installer
@@ -47,50 +56,82 @@ approve the default location for the files. Type `yes` and press
 enter to prepend Anaconda to your `PATH` (this makes the Anaconda 
 distribution the default Python).
 
-<h3>Installing ggplot Python package</h3>
+<h3 id="package-install">Install Python packages</h3>
 
-<a href="https://github.com/yhat/ggplot">ggplot</a> is a Python
-implementation of the R <a href="http://ggplot2.org/">ggplot2</a> graphics
-package. It is not intended to be a feature-for-feature port of ggplot2 but
-provides some of ggplot2 functionality in Python ecosystem.
+We need to install several packages to the Python environment to be able to work
+with the remote sensing data
 
-The easiest approach to install ggplot is via conda package manager
-provided in Anaconda distribution that you have installed above.
+* gdal 
+* h5py
+* matlabpy
 
-<h4 id="ggplot-windows">Windows</h4>
-Open <em>Anaconda Prompt</em> from windows menu.
+If you are new to working with command line you may wish to complete the next
+setup instructions which provides and intro to command line (bash) prior to 
+completing these package installation instructions. 
 
-In opened prompt window type in
+<h4 id="package-windows">Windows</h4>
 
-`<code>conda install -c conda-forge ggplot`
-and accept when prompted for feedback.
+Create a new Python 3.4 environment by opening Windows Command Prompt and typing 
+
+`conda create –n p34 python=3.4 anaconda`
+
+When prompted, activate the py34 environment in Command Prompt by typing 
+
+`activate py34`
+
+You should see (py34) at the beginning of the command line. You can also test 
+that you are using the correct version by typing `python --version`.
+
+Install Python package(s): 
+
+* gdal: `conda install gdal`
+* h5py: `conda install h5py`
+* matplotlib: `conda install matplotlib`
+
+Note: You may need to only install gdal as the others may be included in the 
+default. 
 
 
-<h4 Mac OS X</h4>
+<h4 id="package-mac">Mac OS X</h4>
 
-Open <em>Terminal app</em>.
-Type into <em>Terminal</em> window
-<code>conda install -c conda-forge ggplot</code>
-and accept when prompted for feedback.
+Create a new Python 3.4 environment by opening Terminal and typing 
+
+`conda create –n p34 python=3.4 anaconda`
+
+When prompted, activate the py34 environment in Command Prompt by typing 
+
+`source activate py34`
+
+You should see (py34) at the beginning of the command line. You can also test 
+that you are using the correct version by typing `python --version`.
+
+Install Python package(s): 
+
+* gdal: `conda install gdal`
+* h5py: `conda install h5py`
+* matplotlib: `conda install matplotlib`
 
 
-<h4 id="ggplot-linux">Linux</h4>
+<h4 id="package-linux">Linux</h4>
 Open default *terminal application*
 (on Ubuntu that will be <em>gnome-terminal</em>).
 
-Type into terminal
-<code>conda install -c conda-forge ggplot</code>
-and accept when prompted for feedback.
+Launch Python. 
 
+Install Python package(s): 
 
-<h3>Checking that your installation worked</h3>
+* gdal: `conda install gdal`
+* h5py: `conda install h5py`
+* matplotlib: `conda install matplotlib`
 
-Now it is time to make sure that your Anaconda installation was successful. Download
-<a href="https://raw.githubusercontent.com/datacarpentry/python-ecology-lesson/gh-pages/_includes/scripts/check_env.py">check_env.py file</a> 
-which is a Python script that will check if Anaconda has been correctly installed on
-your system. From your terminal, navigate to the directory that contains
-check_env.py and execute the following: 
-<pre>python check_env.py</pre>
-If you receieve an AssertionError, it will inform you how to correct your
-installation. Otherwise, it will tell you that your system is  good to go
-and ready for Data Carpentry!
+<h3 id="jupyter-notebook">Install Python packages</h3>
+
+In your terminal application, navigate to the directory (`cd`) that where you
+want the Jupyter Notebooks to be saved (or where they already exist). 
+
+Open Jupyter Notebook with 
+
+`jupyter notebook`
+
+Once the notebook is open, check to make sure the correct Python version is 
+running. 
