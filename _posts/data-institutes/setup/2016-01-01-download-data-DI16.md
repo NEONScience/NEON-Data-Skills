@@ -18,7 +18,7 @@ image:
  feature: data-institute-2016.png
  credit:
  creditlink:
-permalink: /setup/download-data-DI16
+permalink: /setup/download-data-DI
 comments: true
 ---
 
