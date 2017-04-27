@@ -15,7 +15,7 @@ tags: []
 mainTag: 
 code1: 
 image:
- feature: codedpoints2.png
+ feature: data-institute-rs.png
  credit:
  creditlink:
 permalink: /setup/setup-git-bash-Python
