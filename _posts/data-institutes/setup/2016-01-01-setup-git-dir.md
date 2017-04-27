@@ -276,7 +276,8 @@ about version control and how Git & GitHub work.
 <a href="https://desktop.github.com/" target="_blank"> GitDesktop </a>
 is a GUI (one of many) for 
 using GitHub that is free and available for both Mac and Windows operating 
-systems. We will only teach how to use Git through command line, and not 
-support use of GitDesktop (or any other GUI), however, you are welcome to 
-check it out and use it if you would like to. 
+systems. In NEON Data Skills workshops & Data Institutes will only teach how to 
+use Git through command line, and not support use of GitDesktop 
+(or any other GUI), however, you are welcome to check it out and use it if you 
+would like to. 
 {: .notice}
