@@ -22,31 +22,6 @@ comments: true
 
 {% include _toc.html %}
 
-## Install HDFView
-The free HDFView application allows you to explore the contents of an HDF5 file.
-
-To install HDFView:
-
-1. Click
-<a href="https://www.hdfgroup.org/products/java/release/download.html" target="_blank"> to go to the download page</a>.
-
-2. From the section titled **HDF-Java 2.11 Pre-Built Binary Distributions**
-select the HDFView download option that matches the operating system and
-computer setup (32 bit vs 64 bit) that you have. The download will start
-automatically.
-
-3. Open the downloaded file.
-  + Mac - You may want to add the HDFView application to your Applications
-directory.
-  + Windows - Unzip the file, open the folder, run the .exe file, and follow
-directions to complete installation.
-
-4. Open HDFView to ensure that the program installed correctly.
-
-<i class="fa fa-star"></i> **Data Tip:**
-The HDFView application requires JAVA to be up to date. If you are having issues
-opening HDFView, try to update JAVA first!
-{: .notice}
 
 ## Install QGIS
 QGIS is a free, open-source GIS program. To install QGIS:
@@ -56,7 +31,7 @@ Download the QGIS installer on the
 QGIS download page here</a>. Follow the installation directions below for your
 operating system.
 
-### Windows
+#### Windows
 
 1. Select the appropriate **QGIS Standalone Installer Version** for your computer.
 2. The download will automatically start.
@@ -64,7 +39,7 @@ operating system.
 while).
 4. Open QGIS to ensure that it is properly downloaded and installed.
 
-### Mac OS X
+#### Mac OS X
 
 1. Select <a href="http://www.kyngchaos.com/software/qgis/" target="_blank">
 KyngChaos QGIS download page</a>. This will take you to a new page.
@@ -91,7 +66,7 @@ if you want to open the package. Select Open, and the installer will open.
 Once all of the packages are installed, open QGIS to ensure that it is properly
 installed.
 
-### LINUX
+#### LINUX
 
 1. Select the appropriate download for your computer system.
 2. Note: if you have previous versions of QGIS installed on your system, you may
@@ -99,3 +74,31 @@ run into problems. Check out
 <a href="https://www.qgis.org/en/site/forusers/alldownloads.html" target="_blank">
 this page from QGIS for additional information</a>.
 3. Finally, open QGIS to ensure that it is properly downloaded and installed.
+
+
+
+## Install HDFView
+The free HDFView application allows you to explore the contents of an HDF5 file.
+
+To install HDFView:
+
+1. Click
+<a href="https://www.hdfgroup.org/products/java/release/download.html" target="_blank"> to go to the download page</a>.
+
+2. From the section titled **HDF-Java 2.1x Pre-Built Binary Distributions**
+select the HDFView download option that matches the operating system and
+computer setup (32 bit vs 64 bit) that you have. The download will start
+automatically.
+
+3. Open the downloaded file.
+  + Mac - You may want to add the HDFView application to your Applications
+directory.
+  + Windows - Unzip the file, open the folder, run the .exe file, and follow
+directions to complete installation.
+
+4. Open HDFView to ensure that the program installed correctly.
+
+<i class="fa fa-star"></i> **Data Tip:**
+The HDFView application requires Java to be up to date. If you are having issues
+opening HDFView, try to update Java first!
+{: .notice}
