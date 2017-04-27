@@ -31,7 +31,7 @@ Download the QGIS installer on the
 QGIS download page here</a>. Follow the installation directions below for your
 operating system.
 
-### Windows
+#### Windows
 
 1. Select the appropriate **QGIS Standalone Installer Version** for your computer.
 2. The download will automatically start.
@@ -39,7 +39,7 @@ operating system.
 while).
 4. Open QGIS to ensure that it is properly downloaded and installed.
 
-### Mac OS X
+#### Mac OS X
 
 1. Select <a href="http://www.kyngchaos.com/software/qgis/" target="_blank">
 KyngChaos QGIS download page</a>. This will take you to a new page.
@@ -66,7 +66,7 @@ if you want to open the package. Select Open, and the installer will open.
 Once all of the packages are installed, open QGIS to ensure that it is properly
 installed.
 
-### LINUX
+#### LINUX
 
 1. Select the appropriate download for your computer system.
 2. Note: if you have previous versions of QGIS installed on your system, you may

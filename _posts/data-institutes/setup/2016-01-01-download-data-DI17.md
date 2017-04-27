@@ -15,7 +15,7 @@ tutorialSeries:
 mainTag: 
 code1: 
 image:
- feature: data-institutes.png
+ feature: data-institute-rs.png
  credit:
  creditlink:
 permalink: /setup/download-data-DI17
