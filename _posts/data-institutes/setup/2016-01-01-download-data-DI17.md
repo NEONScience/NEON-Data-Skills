@@ -15,7 +15,7 @@ tutorialSeries:
 mainTag: 
 code1: 
 image:
- feature: data-institutes.png
+ feature: data-institute-rs.png
  credit:
  creditlink:
 permalink: /setup/download-data-DI17
@@ -68,7 +68,7 @@ downloaded from the internet, if so, the .zip file will download there.
 	 <a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute0-setup/DI16-Download_AllSets.png">
 	 <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute0-setup/DI16-Download_AllSets.png"></a>
 	 <figcaption> Screenshot of the computer's Downloads folder containing the
-	 newly downloaded file (note: this figure indicates the 2016 data not the 2017 data). Source: National Ecological
+	 newly downloaded file. Source: National Ecological
 	 Observatory Network (NEON) 
 	 </figcaption>
 </figure> 
@@ -113,7 +113,7 @@ SJER, and SOAP data subsets within the **NEONdata** subdirectory.
 	 <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute0-setup/AllSets_FileStructureScreenShot.png"></a>
 	 <figcaption> Screenshot of the <b></b> directory structure: nested 
 	 <b>Documents</b>, <b>data</b>, <b>NEONDI-2017</b>, and other 
-	 directories. Source: National Ecological Observatory Network
+	 directories.(Note: this figure indicates the 2016 data not the 2017 data). Source: National Ecological Observatory Network
 	 (NEON) 
 	 </figcaption>
 </figure> 
