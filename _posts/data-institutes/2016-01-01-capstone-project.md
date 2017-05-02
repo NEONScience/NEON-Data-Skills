@@ -70,6 +70,8 @@ We encourage you to do all of your work in Rmd or Jypyter Notebook files!
 
  You will present your project to the group on Saturday.
 
+***
+
 ## Thursday Afternoon - Get started
 
 On Thursday of the Institute, we will spend some time discussing projects and you
@@ -83,3 +85,5 @@ Let's get started:
 2. Figure out what data you will need and how much time you will need/have.
 3. Run your idea past one of the Data Institute faculty. 
 4. Get to work!
+
+***

@@ -31,7 +31,7 @@ discuss NEON’s mission and design.
 
 **Data Institute participants**: As you review this information, please
 consider the
-<a href="{{site.baseurl}}/tutorial-series/capstone" target="_blank">capstone project </a>
+<a href="{{site.baseurl}}/data-institute/capstone" target="_blank">capstone project </a>
 that you may want to work on at the Institute. At the end of week one, you will 
 document an initial research question or idea and associated data needed to 
 address that question, that you may want to explore while at the NEON Data Institute.
@@ -75,9 +75,10 @@ Watch this 4:22 minute video exploring the spatial design of NEON field sites.
 
 Please read the following page about NEON's Spatial Design:
 
-* <a href="http://www.neonscience.org/updates-events/update/primer-neon-sampling-design" target="_blank">
+<a class="btn btn-info" href="http://www.neonscience.org/updates-events/update/primer-neon-sampling-design" target="_blank">
 Read this primer on NEON's Sampling Design</a>
-* <a href="http://www.neonscience.org/science-design/spatiotemporal-design" target="_blank">
+
+<a class="btn btn-info" href="http://www.neonscience.org/science-design/spatiotemporal-design" target="_blank">
 Read about the different types of field sites - core and relocatable</a>
 {: .readme }
 
@@ -93,9 +94,10 @@ Click here to view the NEON Field Site Map</a>
 
 Explore the NEON field site map. Do the following:
 
-* Zoom in on a study area of interest to see if there are any NEON field sites that are nearby.
-* Click the "More" button in the upper RIGHT HAND corner of the map to filter sites by name, site host,
-domain or state.
+* Zoom in on a study area of interest to see if there are any NEON field sites 
+that are nearby.
+* Click the "More" button in the **upper right hand** corner of the map to 
+filter sites by name, site host, domain or state.
 * Select one field site of interest.
   * Click on the marker in the map.
   * Then click on the name of the field site to jump to the field site landing page.
@@ -104,9 +106,8 @@ domain or state.
 have online documentation. We are working on this!
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> ** Data Institute Participant -- Thought Questions:**
-Use the map above to answer
-these questions. Consider the research question that you may explore as your
+<i class="fa fa-star"></i> **Data Institute Participant -- Thought Questions:**
+Use the map above to answer these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
 working on and answer the following questions:
 
@@ -135,18 +136,18 @@ Read the
 page to learn more about the different types of data that NEON collects and
 provides. Then, follow the links below to learn more about each collection method:
 
-* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-observations" target="_blank">Aquatic Observations </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-sensor-measurements" target="_blank">Aquatic Sensor Measurements </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> Atmospheric Measurements  (Flux Tower) </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/soil-sensors-and-measurements" target="_blank"> Soil Sensors and Measurements </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal Sampling </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank"> Airborne Remote Sensing </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-observations" target="_blank">Aquatic Observation System (AOS) </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-sensor-measurements" target="_blank">Aquatic Instrument System (AIS) </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> Terrestrial Instrument System  (TIS) -- Flux Tower </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/soil-sensors-and-measurements" target="_blank"> Terrestrial Instrument System (TIS) -- Soil Sensors and Measurements </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal System (TOS) </a>
+* <a href="http://www.neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank"> Airborne Observation Platform (AOP) </a>
 {: .readme }
 
 ### Airborne Remote Sensing
 
 Watch this 5 minute video to better understand the NEON Airborne Observation
-Platform (AOP).
+Platform (AOP), if you didn't already on the AOP page.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
 
@@ -156,7 +157,8 @@ hyperspectral remote sensing data, checkout this
 {: .notice}
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Data Institute Participant Thought Questions:** Consider either your current
+<i class="fa fa-star"></i> **Data Institute Participant – Thought Questions:** 
+Consider either your current
 or future research or the question you’d like to address at the Institute.
 
 * Which types of data may be more useful to address these questions?
@@ -166,8 +168,8 @@ data?
 
 ## Get NEON Data
 
-NEON data are processed and quality controlled, at NEON headquarters in Boulder, CO.
-NEON carefully documents every aspect of it’s design, data collection,
+NEON data are processed and quality control checked at NEON headquarters in Boulder, CO.
+NEON carefully documents every aspect of sampling design, data collection,
 processing and delivery. This documentation is freely available through the
 NEON data portal.
 
@@ -178,14 +180,10 @@ Read more about NEON data processing.</a>
 * <a class="readme" href="http://www.neonscience.org/science-design/data-processing/product-documentation" target="_blank">
 Read more about NEON methods documentation.</a>
 * <a class="readme" href="http://data.neonscience.org/home" target="_blank">
-Get Data: Visit the NEON Data Portal.</a>
+Visit the NEON Data Portal - data.neonscience.org </a>
 * <a class="readme" href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Product Catalog to see what will be available.</a>
 {: .readme }
-
-NOTE: Because NEON is still in the construction phase, not all data
-products are available at this time. Data are always coming online so be sure
-to check back for updates!
 
 
 ### Data By Request & Through Other Online Portals
@@ -203,7 +201,7 @@ documentation can always be found on the
 <a href="http://www.neonscience.org/data-resources/get-data" target="_blank">Get Data page</a>.
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Thought Questions:**
+<i class="fa fa-star"></i> **Data Institute Participant – Thought Questions:** 
 
 Use the Data Portal tools to investigate the data availability for the field
 sites you’ve already identified in the previous Thought Questions. If your
@@ -225,10 +223,10 @@ every field site.
 <a class="btn btn-info" href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Products Catalog.</a>
 
-<i class="fa fa-star"></i> **Data Tip:** NEON also provides to support your own research including
-proposals to fly the AOP over other study sites, a mobile tower/instrumentation
-setup and others. Learn more here the
-<a href="http://www.neonscience.org/data-resources/information-for-researchers" target="_blank">Assignable Assets programs </a>.
+<i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
+research including proposals to fly the AOP over other study sites, a mobile 
+tower/instrumentation setup and others. Learn more here the
+<a href="http://www.neonscience.org/assignable-assets" target="_blank">Assignable Assets programs </a>.
 {: .notice }
 
 

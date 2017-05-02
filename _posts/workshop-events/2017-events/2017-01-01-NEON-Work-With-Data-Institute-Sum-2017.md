@@ -59,6 +59,67 @@ the
 These 2016 materials were designed to be used in the context of the workshop with an 
 instructor. In 2016, the primary **programming language was R**.
 
+### Instructors
+
+**Dr. Tristan Goulden**, Associate Scientist-Airborne Platform, Battelle-NEON: 
+Tristan is a remote sensing scientist with NEON specializing in LiDAR. 
+He also co-lead NEON’s Remote Sensing IPT (integrated product team) which focusses 
+on developing algorithms and associated documentation for all of NEON’s remote 
+sensing data products.  His past research focus has been on characterizing 
+uncertainty in LiDAR observations/processing and propagating the uncertainty into 
+downstream data products. During his PhD, he focused on developing uncertainty 
+models for topographic attributes (elevation, slope, aspect), hydrological products 
+such as watershed boundaries, stream networks, as well as stream flow and erosion 
+at the watershed scale. His past experience in LiDAR has included all aspects of 
+the LIDAR workflow including; mission planning, airborne operations, processing 
+of raw data, and development of higher level data products. During his graduate 
+research he applied these skills on LiDAR flights over several case study 
+watersheds of study as well as some amazing LiDAR flights over the Canadian 
+Rockies for monitoring change of alpine glaciers. His software experience for 
+LiDAR processing includes Applanix’s POSPac MMS, Optech’s LMS software, Riegl’s 
+LMS software, LAStools, Pulsetools,  TerraScan, QT Modeler, ArcGIS, QGIS, 
+Surfer, and self-written scripts in Matlab for point-cloud, raster, and 
+waveform processing.
+
+<a href="http://naupaka.net/" target="_blank">**Dr. Naupaka Zimmerman**, Assistant Professor of Biology, University of San Francisco:</a> 
+Naupaka’s research focuses on the microbial ecology of plant-fungal interactions. 
+Naupaka brings to the course experience and enthusiasm for reproducible workflows 
+developed after discovering how challenging it is to keep track of complex analyses 
+in his own dissertation and postdoctoral work. As a co-founder of the International 
+Network of Next-Generation Ecologists and an instructor and lesson maintainer for 
+Software Carpentry and Data Carpentry, Naupaka is very interested in providing and 
+improving training experiences in open science and reproducible research methods.
+
+**Bridget Hass**, Remote Sensing Data Processing Technician, Battelle-NEON: 
+Bridget’s daily work includes processing LiDAR and hyperspectral data collected 
+by NEON's Aerial Observation Platform (AOP).  Prior to joining NEON, Bridget 
+worked in marine geophysics as a shipboard technician and research assistant. 
+She is excited to be a part of producing NEON's AOP data and to share techniques 
+for working with this data during the 2017 Data Institute.
+
+<a href="https://faculty.eng.ufl.edu/computing-for-life/" target="_blank">**Dr. Paul Gader**, Professor, University of Florida:</a> 
+Paul is a Professor of Computer & Information Science & Engineering (CISE) 
+at the Engineering School of Sustainable Infrastructure and the Environment 
+(ESSIE) at the University of Florida(UF). Paul received his Ph.D. in Mathematics 
+for parallel image processing and applied mathematics research in 1986 from UF, 
+spent 5 years in industry,  and has been teaching at various universities since 
+1991. His first research in image processing was in 1984 focused on algorithms 
+for detection of bridges in Forward Looking Infra-Red (FLIR) imagery. He has 
+investigated algorithms for land mine research since 1996, leading a team that 
+produced new algorithms and  real-time software for a sensor system currently 
+operational in Afghanistan. His landmine detection projects involve algorithm 
+development for data generated from hand-held, vehicle-based, and airborne 
+sensors, including ground penetrating radar, acoustic/seismic, broadband IR 
+(emissive and reflective bands), emissive and reflective hyperspectral imagery, 
+and wide-band electro-magnetic sensors.  In the past few years, he focused on  
+algorithms for imaging spectroscopy. He is currently researching nonlinear 
+unmixing for object and material detection, classification and segmentation, and 
+estimating plant traits. He has given tutorials on nonlinear unmixing at 
+International Conferences. He is a Fellow of the Institute of Electrical and 
+Electronic Engineers, an Endowed Professor at the University of Florida, was 
+selected for a 3-year term as a UF Research Foundation Professor, and has over 
+100 refereed journal articles and over 300 conference articles.
+
 ### Key 2017 Dates 
 
 * **Applications Open:** 17 January 2017
