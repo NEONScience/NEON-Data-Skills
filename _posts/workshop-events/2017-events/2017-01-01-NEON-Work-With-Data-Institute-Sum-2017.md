@@ -102,8 +102,8 @@ Paul is a Professor of Computer & Information Science & Engineering (CISE)
 at the Engineering School of Sustainable Infrastructure and the Environment 
 (ESSIE) at the University of Florida(UF). Paul received his Ph.D. in Mathematics 
 for parallel image processing and applied mathematics research in 1986 from UF, 
-spent 5 years in industry,  and has been teaching at various universities since 
-1991. His first research in image processing was in 1984 focused on algorithms 
+spent 5 years in industry, and has been teaching at various universities since 1991. 
+His first research in image processing was in 1984 focused on algorithms 
 for detection of bridges in Forward Looking Infra-Red (FLIR) imagery. He has 
 investigated algorithms for land mine research since 1996, leading a team that 
 produced new algorithms and  real-time software for a sensor system currently 
