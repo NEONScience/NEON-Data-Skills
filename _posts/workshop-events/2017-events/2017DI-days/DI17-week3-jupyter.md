@@ -13,7 +13,7 @@ image:
 
 In week 3, you will use the Jupyter Notebook file format to document code and efficiently
 publish code results & outputs. You will practice your Git skills by publishing
-your work in the **NEON-WorkWithData/DI16-NEON-participants** GitHub repository.
+your work in the **NEON-WorkWithData/DI-NEON-participants** GitHub repository.
 
 Please complete the activity and submit your work to the GitHub repo by
 **11:59 Thursday June 16th.**

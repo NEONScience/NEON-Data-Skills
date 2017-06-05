@@ -30,7 +30,7 @@ assignment without working through the tutorials.
 
 # Deadlines
 **Due:** Please submit your activity R Markdown and HTML files to the
-**NEON-WorkWithData/DI16-NEON-participants** GitHub repo as a **pull request**
+**NEON-WorkWithData/DI-NEON-participants** GitHub repo as a **pull request**
 by 11:59pm on 16 June 2016.
 
 ## Download Data
@@ -95,7 +95,7 @@ Once you have completed the steps above:
 * Knit your .Rmd file to HTML. 
 * Submit both the .Rmd and the .html documents to the 
 **/participants/pre-institute3-rmd** directory in the 
-**NEON-WorkWithData/DI16-NEON-participants** GitHub repository.
+**NEON-WorkWithData/DI-NEON-participants** GitHub repository.
 
 ## Supporting Materials
 

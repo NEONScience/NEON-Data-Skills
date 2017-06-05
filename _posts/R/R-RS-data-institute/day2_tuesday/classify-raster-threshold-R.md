@@ -188,6 +188,6 @@ document.
 
 When you are done, knit your outputs to HTML. Save the file as
 LastName_Tues_classifyThreshold.html. Add these to the Tuesday directory in your
-**DI16-NEON-participants** Git direcotry and push them to your fork in GitHub.
+**DI-NEON-participants** Git direcotry and push them to your fork in GitHub.
 Merge with the central repository using a pull request.
 </div>

@@ -7,8 +7,10 @@ general-purpose programming. Installing all of the scientific packages
 individually can be a bit difficult, so we recommend using an all-in-one 
 installer, like Anaconda.
 
-Regardless of how you choose to install it, **please make sure you install and 
-use Python version 3.x** (e.g., 3.6 is fine, but not 2.4).
+Regardless of how you choose to install it, **please make sure your environment 
+is set up with Python version 3.4 (at the time of writing, `gdal` did not work 
+with the newest Python version 3.6). Python 2.x is quite different from Python 3.x
+so you do need to install 3.x and set up with the 3.4 environment. 
 
 We will teach using Python in the 
 <a href="http://jupyter.org">Jupyter Notebook environment</a>, 
@@ -25,7 +27,8 @@ recommend you download and install the library so that you can explore this tool
 
 Download and install 
 <a href="https://www.continuum.io/downloads">Anaconda</a>.
-Download the default Python 3 installer. Use all of the defaults for 
+Download the default Python 3 installer (3.6 -- and yes you can later set up the 
+3.4 environment from this). Use all of the defaults for 
 installation *except* make sure to check **Make Anaconda the default Python**.
 
 
@@ -34,7 +37,8 @@ installation *except* make sure to check **Make Anaconda the default Python**.
 Download and install 
 <a href="https://www.continuum.io/downloads">Anaconda</a> from Continuum.
 Download the Python 3.x installer, choosing either the graphical installer or the 
-command-line installer. For the graphical installer, use all of the defaults for 
+command-line installer (3.6 -- and yes you can later set up the 
+3.4 environment from this). For the graphical installer, use all of the defaults for 
 installation. For the command-line installer open Terminal, navigate to the
 directory with the download then enter: 
 
@@ -115,7 +119,7 @@ Install Python package(s):
 
 
 <h4 id="package-linux">Linux</h4>
-Open default *terminal application*
+Open default terminal application
 (on Ubuntu that will be <em>gnome-terminal</em>).
 
 Launch Python. 
@@ -126,7 +130,7 @@ Install Python package(s):
 * h5py: `conda install h5py`
 * matplotlib: `conda install matplotlib`
 
-<h3 id="jupyter-notebook">Open Jupyter Notebooks</h3>
+<h3 id="jupyter-notebook">Set up Jupyter Notebook Environment</h3>
 
 In your terminal application, navigate to the directory (`cd`) that where you
 want the Jupyter Notebooks to be saved (or where they already exist). 
@@ -135,14 +139,15 @@ Open Jupyter Notebook with
 
 `jupyter notebook`
 
-Once the notebook is open, import your set up with. 
+Once the notebook is open, check which version of Python you are in. 
 
-`import sys`
-
-Now check to make sure the correct Python version is 
-running by typing into the top of the notebook: 
-
-` sys.version`
+ <figure>
+	<a href="{ { site.baseurl }}/images/Python/setup/check-python-env.png">
+	<img src="{ { site.baseurl }}/images/Python/setup/check-python-env.png"></a>
+	<figcaption> Check which Python environment is running. 
+	Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
+</figure>
 
 You should now be able to work in the notebook. 
 
@@ -151,7 +156,7 @@ Therefore test out loading it using
 
 `import gdal`.  
 
-## Additional Resources
+<h3 id="additional-resources"> Additional Resources</h3>
 
 * <a href="https://sites.google.com/site/pythonbootcamp/preparation" target="_blank"> Setting up the Python Environment section from the Python Bootcamp</a>
 * <a href="https://conda.io/docs/using/envs.html" target="_blank"> Conda Help: setting up an environment</a>
