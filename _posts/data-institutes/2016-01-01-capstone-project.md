@@ -63,7 +63,7 @@ Please consider:
 1. The organization of your working directory
 2. The structure, organization and documentation of your code.
 
-We encourage you to do all of your work in RMarkdown or Jypyter Notebook files!
+We encourage you to do all of your work in RMarkdown or Jupyter Notebook files!
 
 ## Project Presentation
 
