@@ -6,7 +6,6 @@ participant will develop and implement during the Institute."
 date: 2016-05-19
 dateCreated: 2014-05-06
 lastModified: 2016-05-18
-time: "8:00"
 estimatedTime:
 packagesLibraries:
 categories: [tutorial-series]
@@ -55,7 +54,7 @@ data are currently available on our website:
  This includes:
 
  * Organize your project data, code and outputs.
- * Write your code in a shareable format (RMD or Jupyter Notebooks) you can 
+ * Write your code in a shareable format (RMarkdown or Jupyter Notebooks) you can 
 clearly document the steps.
 
 You will submit the code used to work with and process your data, via Github.
@@ -64,7 +63,7 @@ Please consider:
 1. The organization of your working directory
 2. The structure, organization and documentation of your code.
 
-We encourage you to do all of your work in Rmd or Jypyter Notebook files!
+We encourage you to do all of your work in RMarkdown or Jypyter Notebook files!
 
 ## Project Presentation
 
