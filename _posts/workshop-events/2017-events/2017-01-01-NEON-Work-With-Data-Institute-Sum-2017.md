@@ -3,7 +3,7 @@ layout: workshop-event
 title: "NEON Data Institute 2017"
 date:   2017-06-19
 dateCreated:   2017-01-01
-lastModified: 2016-11-30
+lastModified: 2017-06-05
 startDate: 2017-06-19
 endDate: 2017-06-24
 authors: [Megan A. Jones]
@@ -31,7 +31,7 @@ Our 2017 Institute focused on remote sensing of vegetation using open source
 tools and reproducible science workflows -- the primary **programming language will 
 be Python**. This Institute will be held at NEON headquarters in June 2017.
 
-In addition to the 6 day institute there are three weeks of pre-institute materials is
+In addition to the six day institute there are three weeks of pre-institute materials is
 to ensure that everyone comes to the Institute ready to work in a collaborative 
 research environment. Pre-institute materials are online & individually paced, expect to
 spend 1-5 hrs/week depending on your familiarity with the topic. 
@@ -39,22 +39,22 @@ spend 1-5 hrs/week depending on your familiarity with the topic.
 
 |Time | Day | Description
 |---|---|---|
-|--|   |  <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/setup" target="_blank"> Computer Setup Materials</a>
+|--|   |  <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/setup" target="_blank"> Computer Setup Materials</a>|
 |--| 25 May - 1 June| <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/NEON-repSci" target="_blank"> Intro to NEON & Reproducible Science|
 |--| 2-8 June | <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/intro-git" target="_blank"> Version Control & Collaborative Science with Git & GitHub|
 |--| 9-15 June | Documentation of Your Workflow with iPython/Jupyter Notebooks|
 |--| 19-24 June| **Data Institute**|
-|7:50am - 6:30 pm| Monday |Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing|
-|8:00am - 6:30pm| Tuesday|Reproducible & Automated Workflows, Intro to LiDAR data|
-|8:00am - 6:30pm| Wednesday|Remote Sensing Uncertainty|
-|8:00am - 6:30pm| Thursday| Hyperspectral Data & Vegetation|
-|8:00am - 6:30pm| Friday|Individual/Group Applications|
+|7:50am - 6:30 pm| Monday | <a href="{{ site.baseurl }}/data-institute-17/day1/" target="_blank"> Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing </a>|
+|8:00am - 6:30pm| Tuesday| <a href="{{ site.baseurl }}/data-institute-17/day2/" target="_blank"> Reproducible & Automated Workflows, Intro to LiDAR data </a>|
+|8:00am - 6:30pm| Wednesday| <a href="{{ site.baseurl }}/data-institute-17/day3/" target="_blank"> Remote Sensing Uncertainty </a>|
+|8:00am - 6:30pm| Thursday| <a href="{{ site.baseurl }}/data-institute-17/day4/" target="_blank"> Hyperspectral Data & Vegetation </a>|
+|8:00am - 6:30pm| Friday|<a href="{{ site.baseurl }}/data-institute-17/day5/" target="_blank"> Individual/Group Applications </a>|
 |9:00am - 1:00pm| Saturday| Group Application Presentations|
 
 ### Online Resources
 The teaching materials from the 2017 Data Institute will be available as 
-self-paced online tutorials after the Institute. In the meantime, you can access 
-the 
+self-paced online tutorials after the Institute. 
+You can also access the 
 <a href="{{ site.baseurl}}/workshop-event/NEON-Work-With-Data-Insitute-2016" target="_blank">2016 Data Institute materials here</a>.
 These 2016 materials were designed to be used in the context of the workshop with an 
 instructor. In 2016, the primary **programming language was R**.
@@ -81,6 +81,13 @@ LMS software, LAStools, Pulsetools,  TerraScan, QT Modeler, ArcGIS, QGIS,
 Surfer, and self-written scripts in Matlab for point-cloud, raster, and 
 waveform processing.
 
+**Bridget Hass**, Remote Sensing Data Processing Technician, Battelle-NEON: 
+Bridget’s daily work includes processing LiDAR and hyperspectral data collected 
+by NEON's Aerial Observation Platform (AOP).  Prior to joining NEON, Bridget 
+worked in marine geophysics as a shipboard technician and research assistant. 
+She is excited to be a part of producing NEON's AOP data and to share techniques 
+for working with this data during the 2017 Data Institute.
+
 <a href="http://naupaka.net/" target="_blank">**Dr. Naupaka Zimmerman**, Assistant Professor of Biology, University of San Francisco:</a> 
 Naupaka’s research focuses on the microbial ecology of plant-fungal interactions. 
 Naupaka brings to the course experience and enthusiasm for reproducible workflows 
@@ -89,13 +96,6 @@ in his own dissertation and postdoctoral work. As a co-founder of the Internatio
 Network of Next-Generation Ecologists and an instructor and lesson maintainer for 
 Software Carpentry and Data Carpentry, Naupaka is very interested in providing and 
 improving training experiences in open science and reproducible research methods.
-
-**Bridget Hass**, Remote Sensing Data Processing Technician, Battelle-NEON: 
-Bridget’s daily work includes processing LiDAR and hyperspectral data collected 
-by NEON's Aerial Observation Platform (AOP).  Prior to joining NEON, Bridget 
-worked in marine geophysics as a shipboard technician and research assistant. 
-She is excited to be a part of producing NEON's AOP data and to share techniques 
-for working with this data during the 2017 Data Institute.
 
 <a href="https://faculty.eng.ufl.edu/computing-for-life/" target="_blank">**Dr. Paul Gader**, Professor, University of Florida:</a> 
 Paul is a Professor of Computer & Information Science & Engineering (CISE) 
@@ -119,6 +119,7 @@ International Conferences. He is a Fellow of the Institute of Electrical and
 Electronic Engineers, an Endowed Professor at the University of Florida, was 
 selected for a 3-year term as a UF Research Foundation Professor, and has over 
 100 refereed journal articles and over 300 conference articles.
+
 
 ### Key 2017 Dates 
 
