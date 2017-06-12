@@ -83,13 +83,9 @@ Open Jupyter Notebook with
 
 Once the notebook is open, check which version of Python you are in. 
 
- <figure>
-	<a href="{{ site.baseurl }}/images/Python/setup/check-python-env.png">
-	<img src="{{ site.baseurl }}/images/Python/setup/check-python-env.png"></a>
-	<figcaption> Check which Python version is running. 
-	Source: National Ecological Observatory Network (NEON)  
-	</figcaption>
-</figure>
+	 # Check what version of Python.  Should be 3.4. 
+	 import sys
+	 sys.version
 
 To ensure that the correct kernel will operate, navigate to **Kernel** in the menu, 
 select **Restart/ClearOutlook**. 
