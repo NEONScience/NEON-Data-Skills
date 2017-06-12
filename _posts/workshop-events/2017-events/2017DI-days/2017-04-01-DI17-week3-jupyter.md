@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: 'Documentation of Your Workflow with R Markdown'
+title: 'Documentation of Your Workflow with Jupyter Notebooks'
 categories: 
 tutorialSeriesName: 
 permalink: /workshop-event/NEON-DI-2017/intro-jupyter
