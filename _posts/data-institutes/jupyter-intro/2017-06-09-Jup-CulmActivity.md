@@ -2,9 +2,9 @@
 layout: post
 title: "Pre-Institute Week 3 Assignment"
 description: "This page details how to complete the assignment for pre-Institute week 3."
-date: 2017-06-10
-dateCreated: 2017-06-10
-lastModified: 2017-06-10
+date: 2017-06-08
+dateCreated: 2017-06-12
+lastModified: 2017-06-12
 estimatedTime:
 packagesLibraries:
 authors:

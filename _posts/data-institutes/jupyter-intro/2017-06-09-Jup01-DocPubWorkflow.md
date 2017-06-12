@@ -4,8 +4,8 @@ title: "Document & Publish Your Workflow: Jupyter Notebooks"
 description: "This tutorial introduces the importance of tools supporting 
 documenting & publishing a workflow using the Python kernel of Jupyter Notebooks."
 date: 2017-06-10
-dateCreated: 2017-06-10
-lastModified: 2017-06-10
+dateCreated: 2017-06-12
+lastModified: 2017-06-12
 estimatedTime:
 packagesLibraries:
 authors: Megan A. Jones
@@ -18,7 +18,7 @@ image:
  feature: coding_R.jpg
  credit:
  creditlink:
-permalink: /reproducible-research/jup-py01
+permalink: /reproducible-research/jupPy01
 comments: true
 ---
 
