@@ -172,7 +172,7 @@ We will be rendering an HTML file.
 
 </div>
 
-### R Markdown Text / Markdown Blocks
+### R Markdown Text/Markdown Blocks
 
 An RMD document contains a mixture of code chunks and markdown blocks where 
 you can describe aspects of your processing workflow. The markdown blocks use the 
