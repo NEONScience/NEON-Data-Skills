@@ -10,8 +10,8 @@ packagesLibraries:
 authors: Megan A. Jones
 categories:
 tags:
-mainTag: JupNBPy
-tutorialSeries: JupNBPy
+mainTag: JupPy
+tutorialSeries: JupPy
 code1:
 image:
  feature: data-institute-rs.png

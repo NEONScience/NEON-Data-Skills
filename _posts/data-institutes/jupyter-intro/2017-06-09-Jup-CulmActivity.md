@@ -34,9 +34,6 @@ assignment without working through the tutorials. Specifically you will use a
 **NEON-WorkWithData/DI-NEON-participants** GitHub repo as a **pull request**
 by 11:59pm on 16 June 2017.
 
-
-
-
 </div>
 
 

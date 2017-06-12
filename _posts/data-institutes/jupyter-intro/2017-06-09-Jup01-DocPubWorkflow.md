@@ -9,10 +9,10 @@ lastModified: 2017-06-10
 estimatedTime:
 packagesLibraries:
 authors: Megan A. Jones
-categories: 
+categories: self-paced-tutorial
 tags:
-mainTag: JupNBPy
-tutorialSeries: JupNBPy
+mainTag: JupPy
+tutorialSeries: JupPy
 code1:
 image:
  feature: coding_R.jpg

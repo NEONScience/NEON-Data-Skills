@@ -81,3 +81,9 @@
   needed to complete more complex tasks in R. It is not intended as an guide for
   the introduction to or initial learning of how to use R." 
   lastModified:  2016-12-5 
+
+- slug: JupPy
+  name: Reproducible Workflows with Jupyter Notebooks
+  description: "This series teaches you to use Jupyter Notebooks formats to 
+  document code and efficiently publish code results & outputs." 
+  lastModified:  2017-06-10
