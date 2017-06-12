@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Document Code with Jupyter Notebooks"
+title: "Introduction to using Jupyter Notebooks"
 description: "This tutorial cover how to use Jupyter Notebooks to document code."
 date: 2017-06-09
 dateCreated: 2017-06-12
