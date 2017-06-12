@@ -3,7 +3,7 @@ layout: tutorial-series-landing
 title: 'Document Your Code with Jupyter Notebooks'
 categories: [tutorial-series]
 tutorialSeriesName: JupPy
-permalink: tutorial-series/jupyter-python/
+permalink: tutorial-series/JupPy/ 
 image:
   feature: codingInformatics.png
   credit: National Ecological Observatory Network
