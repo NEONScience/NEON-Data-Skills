@@ -2,9 +2,9 @@
 layout: post
 title: "Document Code with Jupyter Notebooks"
 description: "This tutorial cover how to use Jupyter Notebooks to document code."
-date: 2017-06-10
-dateCreated: 2017-06-10
-lastModified: 2017-06-10
+date: 2017-06-09
+dateCreated: 2017-06-12
+lastModified: 2017-06-12
 estimatedTime:
 packagesLibraries:
 authors: Megan A. Jones
@@ -17,7 +17,7 @@ image:
  feature: data-institute-rs.png
  credit:
  creditlink:
-permalink: /workshop-event/NEON-DI-2016/rmd-assignment
+permalink: /reproducible-research/jupPy02
 comments: true
 ---
 
