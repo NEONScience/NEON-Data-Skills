@@ -87,7 +87,11 @@ When prompted, activate the py34 environment in Command Prompt by typing
 `activate py34`
 
 You should see (py34) at the beginning of the command line. You can also test 
-that you are using the correct version by typing `python --version`.
+that you are using the correct version by typing 
+
+`python --version`.
+
+It should be Python version 3.4. 
 
 Install Python package(s): 
 
@@ -95,8 +99,17 @@ Install Python package(s):
 * h5py: `conda install h5py`
 * matplotlib: `conda install matplotlib`
 
+When installing `gdal` you will be prompted that the anaconda package will be 
+updated and that several packages will be downgraded due to dependency conflicts. 
+When asked whether to 
+
+`>Proceed ([y]/n)?` 
+
+type `y` to continue. 
+
 Note: You may need to only install gdal as the others may be included in the 
 default. 
+
 
 <h4 id="package-mac">Mac OS X</h4>
 
@@ -109,13 +122,25 @@ When prompted, activate the py34 environment in Terminal by typing
 `source activate py34`
 
 You should see (py34) at the beginning of the command line. You can also test 
-that you are using the correct version by typing `python --version`.
+that you are using the correct version by typing 
+
+`python --version`.
+
+It should be Python version 3.4. 
 
 Install Python package(s): 
 
 * gdal: `conda install gdal`
 * h5py: `conda install h5py`
 * matplotlib: `conda install matplotlib`
+
+When installing `gdal` you will be prompted that the anaconda package will be 
+updated and that several packages will be downgraded due to dependency conflicts. 
+When asked whether to 
+
+`>Proceed ([y]/n)?` 
+
+type `y` to continue. 
 
 
 <h4 id="package-linux">Linux</h4>
@@ -132,6 +157,13 @@ Install Python package(s):
 
 <h3 id="jupyter-notebook">Set up Jupyter Notebook Environment</h3>
 
+First, we need to create a new Jupyter kernel for the Python 3.4 conda 
+environment (py34) that Jupyter Notebooks will use. 
+
+In your Command Prompt/Terminal, type: 
+
+`python -m ipykernel install --user --name py34 --display-name "Python 3.4 NEON-RSDI"`
+
 In your terminal application, navigate to the directory (`cd`) that where you
 want the Jupyter Notebooks to be saved (or where they already exist). 
 
@@ -144,10 +176,13 @@ Once the notebook is open, check which version of Python you are in.
  <figure>
 	<a href="{{ site.baseurl }}/images/Python/setup/check-python-env.png">
 	<img src="{{ site.baseurl }}/images/Python/setup/check-python-env.png"></a>
-	<figcaption> Check which Python environment is running. 
+	<figcaption> Check which Python version is running. 
 	Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
+
+To ensure that the correct kernel will operate, navigate to **Kernel** in the menu, 
+select **Restart/ClearOutlook**. 
 
 You should now be able to work in the notebook. 
 

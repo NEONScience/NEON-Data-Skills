@@ -150,6 +150,9 @@ There are two other useful keyboard shortcuts for running code:
 * `Alt + Enter` runs the current cell and inserts a new one below
 * `Ctrl + Enter` run the current cell and enters command mode.
 
+For more keyboard shortcuts, check out weidadeyue's 
+<a href="https://www.cheatography.com/weidadeyue/cheat-sheets/jupyter-notebook/" target="_blank">Shortcut cheatsheet</a>. 
+
 <i class="fa fa-star"></i> **Data Tip:**  Code cells can be executed in any 
 order. This means that you can overwrite your current variables by running 
 things out of order. When coding in notebooks, be cautions of the order in 
