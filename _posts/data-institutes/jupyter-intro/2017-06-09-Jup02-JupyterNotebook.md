@@ -14,17 +14,12 @@ mainTag: JupPy
 tutorialSeries: JupPy
 code1:
 image:
- feature: data-institute-rs.png
+ feature: codingInformatics.png
  credit:
  creditlink:
 permalink: /reproducible-research/jupPy02
 comments: true
 ---
-
-
-There are lots of available resources for learning to use Jupyter Notebooks with 
-Python. Instead of duplicating efforts, this tutorial is a directed guide to 
-materials created by others so that you become a proficient user of Jupyter Notebooks. 
 
 ## Setting up Jupyter Notebooks
 

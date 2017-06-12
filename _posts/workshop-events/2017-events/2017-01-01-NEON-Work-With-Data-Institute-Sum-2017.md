@@ -42,7 +42,7 @@ spend 1-5 hrs/week depending on your familiarity with the topic.
 |--|   |  <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/setup" target="_blank"> Computer Setup Materials</a>|
 |--| 25 May - 1 June| <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/NEON-repSci" target="_blank"> Intro to NEON & Reproducible Science|
 |--| 2-8 June | <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/intro-git" target="_blank"> Version Control & Collaborative Science with Git & GitHub|
-|--| 9-15 June | Documentation of Your Workflow with iPython/Jupyter Notebooks|
+|--| 9-15 June | <a href="{{ site.baseurl }}/workshop-event/NEON-DI-2017/intro-jupyter" target="_blank"> Documentation of Your Workflow with iPython/Jupyter Notebooks|
 |--| 19-24 June| **Data Institute**|
 |7:50am - 6:30 pm| Monday | <a href="{{ site.baseurl }}/data-institute-17/day1/" target="_blank"> Intro to NEON, Intro to HDF5 & Hyperspectral Remote Sensing </a>|
 |8:00am - 6:30pm| Tuesday| <a href="{{ site.baseurl }}/data-institute-17/day2/" target="_blank"> Reproducible & Automated Workflows, Intro to LiDAR data </a>|
