@@ -14,17 +14,12 @@ mainTag: JupPy
 tutorialSeries: JupPy
 code1:
 image:
- feature: data-institute-rs.png
+ feature: codingInformatics.png
  credit:
  creditlink:
 permalink: /reproducible-research/jupPy02
 comments: true
 ---
-
-
-There are lots of available resources for learning to use Jupyter Notebooks with 
-Python. Instead of duplicating efforts, this tutorial is a directed guide to 
-materials created by others so that you become a proficient user of Jupyter Notebooks. 
 
 ## Setting up Jupyter Notebooks
 
@@ -54,7 +49,7 @@ pip3 install jupyter
 
 ## Using Jupyter Notebooks
 
-## Launching the Application 
+### Launching the Application 
 
 To launch the application either launch it from the Anaconda Navigator or by 
 typing `jupyter notebook` into your terminal or command window. 
@@ -67,7 +62,7 @@ jupyter notebook
 More information can be found in the **Read the Docs** 
 <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/execute.html" target="_blank"> Running the Jupyter Notebook</a>. 
 
-## Navigating the Jupyter Python Interface
+### Navigating the Jupyter Python Interface
 
 *The following information is adapted from Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>*
 
@@ -76,8 +71,8 @@ something like this.  Note that the home directory will be whatever directory yo
 have navigated to in your terminal before launching Jupyter Notebooks.  
 
  <figure>
-	<a href="{ { site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
-	<img src="{ { site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">"></a>
+	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">"></a>
 	<figcaption> Upon opening the application, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
@@ -93,8 +88,8 @@ Python kernels and one Matlab kernel. When starting a notebook, you should choos
 Once you start a new notebook, you will be brought to the following screen.
 
  <figure>
-	<a href="{ { site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
-	<img src="{ { site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">"></a>
+	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">"></a>
 	<figcaption> Upon opening a new Python notebook, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
@@ -191,7 +186,7 @@ removed.
 * Review the <a href="{{ site.baseurl }}/reproducible-research/git04" target="_blank"> Pre-Institute Week 2 materials on the basics of Markdown files</a>
 * Adam Pritchard's <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Markdown Cheatsheet </a>
 
-## Saving, quitting, and going home
+## Saving & Quitting
 
 *The following information is adapted from Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>*
 
@@ -241,6 +236,7 @@ Much of the material above is adapted from
 
 
 ### Using Python 
+
 * Software Carpentry's <href="http://swcarpentry.github.io/python-novice-inflammation/" target="_blank"> Programming with Python workshop </a>
 * Data Carpentry's <href="http://www.datacarpentry.org/python-ecology-lesson/" target="_blank"> Python for Ecologists workshop </a>
 * Many, many others that a simple web search will bring up...

@@ -15,7 +15,7 @@ mainTag: JupPy
 tutorialSeries: JupPy
 code1:
 image:
- feature: coding_R.jpg
+ feature: codingInformatics.png
  credit:
  creditlink:
 permalink: /reproducible-research/jupPy01
@@ -108,5 +108,5 @@ resource to learn other skills associated with using Python and Jupyter Notebook
 
 
 In the
-[next tutorial]({{site.baseurl}}/reproducible-research/jup02)
+[next tutorial]({{site.baseurl}}/reproducible-research/jupPy02)
 we will learn more about working with Jupyter Notebooks.
