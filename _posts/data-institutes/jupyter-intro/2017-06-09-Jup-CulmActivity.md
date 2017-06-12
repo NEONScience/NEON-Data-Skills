@@ -39,8 +39,21 @@ by 11:59pm on 16 June 2017.
 
 </div>
 
+## Assignment: Open a Tiff File in Jupyter Notebook 
 
-## Set up Environment 
+Download the NEON GeoTiFF file of the 
+<a href="https://neondata.sharefile.com/d-s9297db4154a4dceb"> digital terrain model (DTM) </a> 
+from San Joaquin Experimental Range collected in 2017.   
+. 
+Open this file in Jupyter Notebooks, determine the size of the raster, and 
+(optional extension) plot the raster. Add in both code chunks and text (markdown) chunks
+to fully explain what is done. 
+When finished, submit the .ipynb file to the 
+**NEON-WorkWithData/DI-NEON-participants** GitHub repo 
+
+## Detailed Directions
+
+### Set up Environment 
 
 First, we will set up the environment as you would need for each of the live 
 coding sections of the Data Institute. The following directions are copied over
@@ -70,13 +83,9 @@ Open Jupyter Notebook with
 
 Once the notebook is open, check which version of Python you are in. 
 
- <figure>
-	<a href="{{ site.baseurl }}/images/Python/setup/check-python-env.png">
-	<img src="{{ site.baseurl }}/images/Python/setup/check-python-env.png"></a>
-	<figcaption> Check which Python version is running. 
-	Source: National Ecological Observatory Network (NEON)  
-	</figcaption>
-</figure>
+	 # Check what version of Python.  Should be 3.4. 
+	 import sys
+	 sys.version
 
 To ensure that the correct kernel will operate, navigate to **Kernel** in the menu, 
 select **Restart/ClearOutlook**. 
@@ -88,17 +97,13 @@ Therefore test out loading it using
 
 `import gdal`.  
 
-## Open a Tiff File in Jupyter Notebook 
+### Download Data 
 
 Download the NEON GeoTiFF file of the 
 <a href="https://neondata.sharefile.com/d-s9297db4154a4dceb"> digital terrain model (DTM) </a> 
 from San Joaquin Experimental Range collected in 2017.   
-. 
-Open this file in Jupyter Notebooks, determine the size of the raster, and 
-(optional extension) plot the raster. Add in both code chunks and text (markdown) chunks
-to fully explain what is done. 
 
-#### Detailed Directions
+### Open the TIFF
 
 As you complete the steps add 1 or 2 markdown sections explaining what you are 
 doing with this simple code. 
@@ -121,7 +126,7 @@ If you'd like to also plot the file, feel free to do so.
 Save your file. 
 
 
-## Push .ipynb to GitHub.  
+### Push .ipynb to GitHub.  
 
 Submit you file using the GitHub `participants/2017-RemoteSensing/pre-institute3-Jupyter` 
 directory. Review the week 2 materials if you have would like a refresher on 
