@@ -33,4 +33,4 @@ tutorials.
 When finished complete the Week 3 Assignment: 
 
 <a class="btn btn-info" href="{{ site.baseurl}}/reproducible-research/jup-py-activity">
-Pre-Institute Week 3 Assignment</a>. 
+Pre-Institute Week 3 Assignment</a> 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Document Code with Jupyter Notebooks"
+title: "Introduction to using Jupyter Notebooks"
 description: "This tutorial cover how to use Jupyter Notebooks to document code."
 date: 2017-06-09
 dateCreated: 2017-06-12
@@ -72,9 +72,9 @@ have navigated to in your terminal before launching Jupyter Notebooks.
 
  <figure>
 	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">"></a>
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png"></a>
 	<figcaption> Upon opening the application, you should see a screen similar to this one. 
-	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
+	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ Once you start a new notebook, you will be brought to the following screen.
 
  <figure>
 	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">"></a>
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png"></a>
 	<figcaption> Upon opening a new Python notebook, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
@@ -237,6 +237,6 @@ Much of the material above is adapted from
 
 ### Using Python 
 
-* Software Carpentry's <href="http://swcarpentry.github.io/python-novice-inflammation/" target="_blank"> Programming with Python workshop </a>
-* Data Carpentry's <href="http://www.datacarpentry.org/python-ecology-lesson/" target="_blank"> Python for Ecologists workshop </a>
+* Software Carpentry's <a href="http://swcarpentry.github.io/python-novice-inflammation/" target="_blank"> Programming with Python workshop </a>
+* Data Carpentry's <a href="http://www.datacarpentry.org/python-ecology-lesson/" target="_blank"> Python for Ecologists workshop </a>
 * Many, many others that a simple web search will bring up...
