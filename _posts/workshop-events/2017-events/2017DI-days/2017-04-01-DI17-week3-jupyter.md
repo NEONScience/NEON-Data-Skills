@@ -37,7 +37,8 @@ Pre-Institute Week 3 Assignment</a>
 
 Second, on Monday of the Data Institute we will be working with hyperspectral data. Various indices, 
 including the Normalized Difference Vegetation Index (NDVI), are common data products from hyperspectral
-data.  In preparation for this content, please watch this video of David Hulslander explaining different 
-indices.  
+data.  In preparation for this content, please watch this video of David Hulslander discussing NEON 
+remote sensing vegetation indices & data products.  
 
+#### NEON Remote Sensing Vegetation Indices, Data Products, & Uncertainty Measurements 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4_EYPNI-A5g?list=PLLWiknuNGd53uVuiXTn8QS3y6PUY0rHEW" frameborder="0" allowfullscreen></iframe>
