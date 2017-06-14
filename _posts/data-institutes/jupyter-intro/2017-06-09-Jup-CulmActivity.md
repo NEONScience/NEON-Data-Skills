@@ -90,6 +90,16 @@ Once the notebook is open, check which version of Python you are in.
 To ensure that the correct kernel will operate, navigate to **Kernel** in the menu, 
 select **Restart/ClearOutlook**. 
 
+ <figure>
+	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
+	<figcaption> To ensure that the correct kernel will operate, navigate to 
+	Kernel in the menu, select Restart/ClearOutlook.. 
+	Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
+</figure>
+
+
 You should now be able to work in the notebook. 
 
 The `gdal` package that occasionally has problems with some versions of Python. 
