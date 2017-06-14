@@ -22,7 +22,7 @@ After completing the series, you will be able to:
 	+ Explain why documenting and publishing one's code is important.
 	+ Describe two tools that enable ease of publishing code & output: Jupyter Notebook application. 
 
-* **Document Code with Jupyter Notebooks**
+* **Introduction to Using Jupyter Notebooks**
 	+ Know how to create a notebook using the Jupyter application.
 	+ Be able to write a script with text and code chunks.
 
