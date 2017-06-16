@@ -1,17 +1,98 @@
+---
+layout: post
+title: "Calculate NDVI in Python"
+date: 2017-06-19 
+dateCreated: 2017-06-19 
+lastModified: 2017-06-19 
+estimatedTime: 
+packagesLibraries: 
+authors: [Bridget Hass]
+categories: [self-paced-tutorial]
+tags: [hyperspectral-remote-sensing, Python, HDF5, remote-sensing]
+mainTag: intro-hsi-py-series
+tutorialSeries: [intro-hsi-py-series]
+description: "" 
+image:
+  feature: hierarchy_folder_purple.png
+  credit:
+  creditlink:
+permalink: /HDF5/calc-ndvi-python/
+code1: 
+comments: true
 
-# Calculate NDVI
+---
 
-The Normalized Difference Vegetation Index (NDVI) is a standard band-ratio calculation frequently used to analyze ecological remote sensing data. NDVI indicates whether the remotely-sensed target contains live green vegetation. When sunlight strikes objects, certain wavelengths of this spectrum are absorbed and other wavelengths are reflected. The pigment chlorophyll in plant leaves strongly absorbs visible light (with wavelengths in the range of 400-700 nm) for use in photosynthesis. The cell structure of the leaves, however, strongly reflects near-infrared light (wavelengths ranging from 700 - 1100 nm). Plants reflect up to 60% more light in the near infrared portion of the spectrum than they do in the green portion of the spectrum. By comparing the ratio of Near Infrared (NIR) to Visible (VIS) bands in hyperspectral data, we can obtain a quick look at vegetation in the region of interest. NDVI is a normalized measure of the difference between reflectance at near infrared and visible bands of the electromagnetic spectrum. 
+{% include _toc.html %}
 
-The formula for NDVI is: $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
+In this tutorial, we will calculate the Normalized Difference Vegetation Index 
+(NDVI). 
 
-<p>
-<img src="files/ndvi_tree.png" style="width: 250px;"/>
-<center><font size="2">Figure: (Wu et al. 2014)</font></center>
-<center><font size="2">https://www.researchgate.net/figure/266947355_fig1_Figure-1-Green-vegetation-left-absorbs-visible-light-and-reflects-near-infrared-light</font></center>
-</p>
 
-Start by setting plot preferences and loading the neon_aop_refl_hdf5_functions module:
+<div id="objectives" markdown="1">
+
+# Objectives
+After completing this tutorial, you will be able to:
+
+* Calculate NDVI.
+* Write Python script to create other vegetation and water indices. 
+
+### Install Python Packages
+
+* **numpy**
+* **pandas**
+* **gdal** 
+* **matplotlib** 
+* **h5py**
+
+
+### Download Data
+
+{% include/dataSubsets/_data_DI17.html %}
+
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-functions-rgb-images/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
+Download the neon_aop_refl_hdf5_functions module</a>
+
+</div>
+
+
+The Normalized Difference Vegetation Index (NDVI) is a standard band-ratio 
+calculation frequently used to analyze ecological remote sensing data. NDVI 
+indicates whether the remotely-sensed target contains live green vegetation. 
+When sunlight strikes objects, certain wavelengths of this spectrum are 
+absorbed and other wavelengths are reflected. The pigment chlorophyll in 
+plant leaves strongly absorbs visible light (with wavelengths in the range of 
+400-700 nm) for use in photosynthesis. The cell structure of the leaves, 
+however, strongly reflects near-infrared light (wavelengths ranging from 700 - 
+1100 nm). Plants reflect up to 60% more light in the near infrared portion of 
+the spectrum than they do in the green portion of the spectrum. By comparing 
+the ratio of Near Infrared (NIR) to Visible (VIS) bands in hyperspectral data, 
+we can obtain a quick look at vegetation in the region of interest. NDVI is a 
+normalized measure of the difference between reflectance at near infrared and 
+visible bands of the electromagnetic spectrum. 
+
+The formula for NDVI is: 
+
+$$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
+
+<figure>
+ <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
+ <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+    <figcaption>NDVI is calculated from the visible and near-infrared light
+    reflected by vegetation. Healthy vegetation (left) absorbs most of the
+    visible light that hits it, and reflects a large portion of
+    near-infrared light. Unhealthy or sparse vegetation (right) reflects more
+    visible light and less near-infrared light. Image & Caption Source: NASA 
+    </figcaption>
+</figure>
+
+* <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/measuring_vegetation_2.php" target="_blank">
+More on NDVI from NASA</a>
+
+
+## Set up Environment 
+
+Start by setting plot preferences and loading the neon_aop_refl_hdf5_functions 
+module. 
 
 
 ```python
@@ -24,9 +105,6 @@ warnings.filterwarnings('ignore')
 ```python
 %load neon_aop_refl_hdf5_functions.py
 ```
-
-
-![png](output_2_0.png)
 
 
 ## Read in SERC Flightline & Subset
@@ -89,8 +167,8 @@ plot_band_array(ndvi,clipExtent,(0,np.max(ndvi)),\
                 title='SERC Subset NDVI \n (VIS = Band 58, NIR = Band 90)',cmap_title='NDVI',colormap='seismic')
 ```
 
+![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks/output_8_0.png)
 
-![png](output_8_0.png)
 
 
 # Extract Spectra Using Masks
@@ -113,11 +191,12 @@ plot_band_array(ndvi_gtpt6,clipExtent,(0.6,1),title='SERC Subset NDVI > 0.6 \n (
     Mean NDVI > 0.6: 0.87
     
 
+![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks/output_10_1.png)
 
-![png](output_10_1.png)
 
 
-# Function to calculate the mean spectra for reflectance values thresholed by NDVI using `numpy.ma`:
+# Function to calculate the mean spectra for reflectance values thresholed by 
+NDVI using `numpy.ma`:
 
 
 ```python
@@ -144,7 +223,10 @@ def calculate_mean_masked_spectra(reflArray,ndvi,ndvi_threshold,ineq='>'):
     return mean_masked_refl
 ```
 
-We can test out this function for various NDVI thresholds. We'll test two together, and you can try out different values on your own. Let's look at the average spectra for healthy vegetation (NDVI > 0.6), and for a lower threshold (NDVI < 0.3).
+We can test out this function for various NDVI thresholds. We'll test two 
+together, and you can try out different values on your own. Let's look at 
+the average spectra for healthy vegetation (NDVI > 0.6), and for a lower 
+threshold (NDVI < 0.3).
 
 
 ```python
@@ -186,9 +268,7 @@ ax.set_xlabel("Wavelength, nm"); ax.set_ylabel("Reflectance")
 ax.grid('on'); 
 ```
 
-
-![png](output_16_0.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks/output_16_0.png)
 
 ## References
 

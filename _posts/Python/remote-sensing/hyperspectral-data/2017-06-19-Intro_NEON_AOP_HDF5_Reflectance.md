@@ -11,23 +11,24 @@ categories: [self-paced-tutorial]
 tags: [hyperspectral-remote-sensing, Python, HDF5, remote-sensing]
 mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
-description: "" 
+description: "Learn how to read NEON AOP hyperspectral HDF5 dataset using 
+Python and develop skills to manipulate and visualize spectral data." 
 image:
   feature: hierarchy_folder_purple.png
   credit:
   creditlink:
 permalink: /HDF5/neon-aop-hdf5-py
-code1: 
+code1: Python/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance.ipynb
 comments: true
 
 ---
 
 {% include _toc.html %}
 
-In this introductory tutorial we cover how to read NEON AOP hyperspectral HDF5 
-dataset using Python. We develop and practice some tools to manipulate and 
+In this introductory tutorial, we discuss how to read NEON AOP hyperspectral HDF5 
+datasets using Python. We develop and practice skills and use several tools to manipulate and 
 visualize the spectral data. By the end of this tutorial, you will become 
-familiar with the Jupyter Notebook platform and Python syntax.
+familiar with the Python syntax (and Jupyter Notebook platform, if using).
 
 
 <div id="objectives">
