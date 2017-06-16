@@ -11,13 +11,13 @@ categories: [self-paced-tutorial]
 tags: [hyperspectral-remote-sensing, Python, HDF5, remote-sensing]
 mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
-description: "" 
+description: "Learn to calculate Normalized Difference Vegetation Index (NDVI) with Python." 
 image:
   feature: planeBanner.png
   credit:
   creditlink:
 permalink: /HDF5/calc-ndvi-python/
-code1: 
+code1: Python/hyperspectral-data/Calculate_NDVI_Extract_Spectra_Masks.ipynb
 comments: true
 
 ---
@@ -81,7 +81,7 @@ $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
     near-infrared light. Unhealthy or sparse vegetation (right) reflects more
-    visible light and less near-infrared light. Image & Caption Source: NASA 
+    visible light and less near-infrared light. Source: NASA 
     </figcaption>
 </figure>
 
@@ -270,9 +270,3 @@ ax.grid('on');
 
 ![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks/output_16_0.png)
 
-## References
-
-Wu C-D, McNeely E, Cedeño-Laurent JG, Pan W-C, Adamkiewicz G, Dominici F, et al. 
-(2014) Linking Student Performance in Massachusetts Elementary Schools with 
-the “Greenness” of School Surroundings Using Remote Sensing. PLoS ONE 9(10): 
-e108548. doi:10.1371/journal.pone.0108548

@@ -1,4 +1,4 @@
-def RGBplot_widget(R,G,B):
+updef RGBplot_widget(R,G,B):
     
     #Pre-allocate array  size
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')

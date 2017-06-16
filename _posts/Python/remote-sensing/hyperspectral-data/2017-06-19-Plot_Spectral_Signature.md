@@ -17,7 +17,7 @@ image:
   credit:
   creditlink:
 permalink: /HDF5/plot-spec-sig-python/
-code1: 
+code1: Python/hyperspectral-data/Plot_Spectral_Signature.ipynb
 comments: true
 
 ---
@@ -32,7 +32,10 @@ from a single pixel of a reflectance band in a NEON hyperspectral hdf5 file.
 # Objectives
 After completing this tutorial, you will be able to:
 
-* plot a spectral signature. 
+* Plot the spectral signature of a single pixel 
+* Remove bad band windows from a spectra
+* Use a widget to interactively look at spectra of various pixels
+* Calculate the mean spectra over a multiple pixels
 
 ### Install Python Packages
 
@@ -49,7 +52,10 @@ After completing this tutorial, you will be able to:
 {% include/dataSubsets/_data_DI17.html %}
 
  <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
-Download the neon_aop_refl_hdf5_functions module</a>
+Download the neon_aop_refl_hdf5_functions Module</a>
+
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/spectraPlot_widget.py" class="btn btn-success">
+Download the spectraPlot Module</a>
 
 
 </div>
@@ -567,7 +573,7 @@ interact(spectraPlot, pixel_x = (0,refl.shape[1]-1,1),pixel_y=(0,refl.shape[0]-1
 
  <div id="challenge" markdown="1">
 
-## Challenge: Explore the Data
+## Challenge: Calculate Mean Spectra Over A Subset of Pixels
 
 Now try it on a different area. Move around the pixel to different parts of the 
 reflectance image. Look at the spectra of water, trees, grass, and concrete. 
@@ -719,7 +725,7 @@ Molero, José M., Garzón, Ester M. Inmaculada García and Antonio Plaza "Anoma
 
 ### Challenge Code Solutions
 
-#### Challenge: False Color Image 
+#### Challenge: Calculate Mean Spectra Over A Subset of Pixels
 
 ```python
 refl = copy.copy(sercRefl_subset)

@@ -57,8 +57,10 @@ After completing this tutorial, you will be able to:
 {% include/dataSubsets/_data_DI17.html %}
 
  <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
-Download the neon_aop_refl_hdf5_functions module</a>
+Download the neon_aop_refl_hdf5_functions Module</a>
 
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/RGBplot_widget.py" class="btn btn-success">
+Download the RGBplot Module</a>
 
 </div>
 

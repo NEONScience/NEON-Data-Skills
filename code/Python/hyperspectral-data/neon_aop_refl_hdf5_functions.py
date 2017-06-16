@@ -1,3 +1,4 @@
+# %load neon_aop_refl_hdf5_functions
 """
 Created on Mon Feb  6 16:36:10 2017
 
@@ -30,7 +31,8 @@ extract_clean_band(reflArray,reflArray_metadata,band_ind):
 
 plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='', \
 cmap_title='',colormap='spectral'):
-    reads in and plots a single band of a reflectance array
+    reads in and plots a single band of a reflectance array, or plots three 
+    bands as an RGB image
 
 array2raster(newRaster,reflBandArray,reflArray_metadata): 
     reads in a reflectance array and associated metadata and returns a geotif 
@@ -40,13 +42,17 @@ calc_clip_index(clipExtent, h5Extent, xscale=1, yscale=1):
     calculates the indices relative to a full flight line extent of a subset 
     given a clip extent in UTM m (x,y)
     
-subset_clean_band(reflArray,reflArray_metadata,clipIndex,bandIndex):
-    extracts a band from a reflectance array, subsets it to the specified 
-    clipIndex, and applies the no data value and scale factor 
+subset_clean_refl(reflArray,reflArray_metadata,clipIndex):
+    subsets a reflectance array to the specified clipIndex, and applies the no 
+    data value and scale factor
 
 stack_clean_bands(reflArray,reflArray_metadata,bands):
-    generates an array of three bands, and applies the data ignore value and 
+    generates an array of multiple bands, and applies the data ignore value and 
     scale factor to each band
+    
+subset_clean_band(reflArray,reflArray_metadata,clipIndex,bandIndex):
+    extracts a band from a reflectance array, subsets it to the specified 
+    clipIndex, and applies the no data value and scale factor
     
 stack_subset_bands(reflArray,reflArray_metadata,bands,clipIndex):
     subsets, cleans, and stacks specified bands from a reflectance array
@@ -60,8 +66,7 @@ import h5py, gdal, osr, copy
 
 def list_dataset(name,node):
     
-    """list_dataset lists the name and location of each dataset stored in an 
-    hdf5 file.
+    """list_dataset lists the name and location of each dataset stored in an hdf5 file.
     --------
     See Also
     --------
@@ -93,7 +98,7 @@ def ls_dataset(name,node):
         print(node)
 
 def h5refl2array(refl_filename):
-    """h5refl2array reads in a NEON AOP reflectance hdf5 file and returns the
+    """h5refl2array reads in a NEON AOP reflectance hdf5 file and returns 
     reflectance array, select metadata, and wavelength dataset.
     --------
     Parameters
@@ -113,25 +118,24 @@ def h5refl2array(refl_filename):
             mapInfo: string of map information 
             *noDataVal: -9999.0
             projection: string of projection information
-            *res: dictionary containing 'pixelWidth' and 'pixelHeight' values 
+            *res: dictionary containing 'pixelWidth' and 'pixelHeight' values (floats)
             *scaleFactor: 10000.0
             shape: tuple of reflectance shape (y, x, # of bands)
-        * Asterixed values are the same for all NEON AOP hyperspectral 
-        reflectance files processed 2016 & after.
+        * Asterixed values are the same for all NEON AOP hyperspectral reflectance 
+        files processed 2016 & after.
     wavelengths:
         Wavelengths dataset. This is the same for all NEON AOP reflectance hdf5 files.
         wavelengths.value[n-1] gives the center wavelength for band n 
     --------
     This function applies to the NEON hdf5 format implemented in 2016, which 
     applies to data acquired in 2016 & 2017 as of June 2017. Data in earlier 
-    NEON hdf5 format is will be re-processed after the 2017 flight season. 
+    NEON hdf5 format is expected to be re-processed after the 2017 flight season. 
     --------
     Example
     --------
     sercRefl, sercRefl_md, wavelengths = h5refl2array('NEON_D02_SERC_DP1_20160807_160559_reflectance.h5') """
     
-    #Read in reflectance hdf5 file 
-    #include full or relative path if data is located in a different directory
+    #Read in reflectance hdf5 file (include full or relative path if data is located in a different directory)
     hdf5_file = h5py.File(refl_filename,'r')
 
     #Get the site name
@@ -190,17 +194,15 @@ def h5refl2array(refl_filename):
     
 def extract_raw_band(reflArray,reflArray_metadata,band_ind):
     
-    """extract_raw_band extracts a single band from a reflectance array without 
-    applying the scale factor or data ignore value.
+    """extract_raw_band extracts a single band from a reflectance array without applying the scale factor or data ignore value.
      --------
     Parameters
     --------
-        reflArray: array of reflectance values, created by h5refl2array function
-        reflArray_metadata: reflectance metadata values, created by h5refl2array 
+        reflArray: array of reflectance values, created from h5refl2array function
+        reflArray_metadata: reflectance metadata values, created from h5refl2array function
         band_ind: index of wavelength band to be extracted
     --------
     Returns 
-    --------
         bandArray: array of single band, without scale factor or data ignore value applied. 
     --------
     See Also
@@ -226,7 +228,6 @@ def clean_band(bandArray,reflArray_metadata):
         reflArray_metadata: reflectance metadata values, created from h5refl2array function
     --------
     Returns 
-    --------
         band_clean: array of single band, with scale factor applied and data ignore value set to NaN.
     --------
     See Also
@@ -246,24 +247,26 @@ def clean_band(bandArray,reflArray_metadata):
 
 def extract_clean_band(reflArray,reflArray_metadata,band_ind):
     
-    """extract_clean_band extracts a single band from a reflectance array, applies the scale factor and sets the data ignore value to NaN.
+    """extract_clean_band extracts a single band from a reflectance array, 
+    applies the scale factor and sets the data ignore value to NaN.
     --------
     Parameters
     --------
-        reflArray: array of reflectance values, created from h5refl2array function
-        reflArray_metadata: reflectance metadata values, created from h5refl2array function
+        reflArray: array of reflectance values, created by h5refl2array function
+        reflArray_metadata: reflectance metadata values, created by h5refl2array 
         band_ind: index of wavelength band to be extracted
     --------
     Returns 
-    --------
         bandCleaned: array of single band, with scale factor applied and data ignore value set to NaN. 
     --------
     See Also
     --------
     extract_raw_band:
-        Extracts a single band of data from a reflectance array and applies the data ignore value and scale factor.
+        Extracts a single band of data from a reflectance array and applies the 
+        data ignore value and scale factor.
     clean_band:
-        Applies the scale factor and sets the data ignore value to NaN for a single reflectance band. 
+        Applies the scale factor and sets the data ignore value to NaN for a 
+        single reflectance band. 
     Example:
     --------
     SERC_b56_clean = extract_clean_band(sercRefl,sercRefl_md,56) """
@@ -289,7 +292,6 @@ def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar
         colormap: string, optional; see https://matplotlib.org/examples/color/colormaps_reference.html for list of colormaps
     --------
     Returns 
-    --------
         plots flightline array of single band of reflectance data
     --------
     See Also
@@ -319,7 +321,6 @@ def array2raster(newRaster,reflBandArray,reflArray_metadata):
         reflArray_metadata: reflectance metadata associated with reflectance array (generated by h5refl2array function)
     --------
     Returns 
-    --------
         newRaster.tif: geotif raster created from reflectance array and associated metadata
     --------
     See Also
@@ -359,7 +360,6 @@ def calc_clip_index(clipExtent, h5Extent, xscale=1, yscale=1):
         yscale: optional, pixel size in the y-dimension, default is 1m (applicable to NEON reflectance data)
     --------
     Returns 
-    --------
         newRaster.tif: geotif raster created from reflectance array and associated metadata
     --------
     Notes
@@ -372,37 +372,29 @@ def calc_clip_index(clipExtent, h5Extent, xscale=1, yscale=1):
     clipExtent = {'xMax': 368100.0, 'xMin': 367400.0, 'yMax': 4306350.0, 'yMin': 4305750.0}
     calc_clip_index(clipExtent, sercRefl, xscale=1, yscale=1) ''' 
     
-    #Check to make sure clipExtent lies within h5Extent range
-    if clipExtent['xMin'] < h5Extent['xMin'] or clipExtent['xMax'] > h5Extent['xMax'] \
-    or clipExtent['yMin'] < h5Extent['yMin'] or clipExtent['yMax'] > h5Extent['yMax']:
-        print('ERROR: clip extent exceeds full reflectance file extent.')
-        return
-    else:
-        h5rows = h5Extent['yMax'] - h5Extent['yMin']
-        h5cols = h5Extent['xMax'] - h5Extent['xMin']    
-
-        ind_ext = {}
-        ind_ext['xMin'] = round((clipExtent['xMin']-h5Extent['xMin'])/xscale)
-        ind_ext['xMax'] = round((clipExtent['xMax']-h5Extent['xMin'])/xscale)
-        ind_ext['yMax'] = round(h5rows - (clipExtent['yMin']-h5Extent['yMin'])/xscale)
-        ind_ext['yMin'] = round(h5rows - (clipExtent['yMax']-h5Extent['yMin'])/yscale)
+    h5rows = h5Extent['yMax'] - h5Extent['yMin']
+    h5cols = h5Extent['xMax'] - h5Extent['xMin']    
     
-        return ind_ext
-
-def subset_clean_band(reflArray,reflArray_metadata,clipIndex,bandIndex):
+    ind_ext = {}
+    ind_ext['xMin'] = round((clipExtent['xMin']-h5Extent['xMin'])/xscale)
+    ind_ext['xMax'] = round((clipExtent['xMax']-h5Extent['xMin'])/xscale)
+    ind_ext['yMax'] = round(h5rows - (clipExtent['yMin']-h5Extent['yMin'])/xscale)
+    ind_ext['yMin'] = round(h5rows - (clipExtent['yMax']-h5Extent['yMin'])/yscale)
     
-    '''subset_clean_band extracts a band from a reflectance array, subsets it to the specified clipIndex, and applies the no data value and scale factor
+    return ind_ext
+
+def subset_clean_refl(reflArray,reflArray_metadata,clipIndex):
+    
+    '''subset_clean_refl subsets a reflectance array to the specified clipIndex, and applies the no data value and scale factor
     --------
     Parameters
     --------
         reflArray: reflectance array of dimensions (y,x,426) from which multiple bands (typically 3) are extracted
         reflArray_metadata: reflectance metadata associated with reflectance array (generated by h5refl2array function)
         clipIndex: ditionary; indices relative to a full flight line extent of a subset given a clip extent (generated by calc_clip_index function)
-        bandIndex: band number to be extracted (integer between 1-426)
     --------
     Returns 
-    --------
-        bandCleaned: array of subsetted band with no data value set to NaN and scale factor applied
+        reflSubCleaned: array of subsetted reflectance with no data value set to NaN and scale factor applied
     --------
     See Also
     --------
@@ -417,13 +409,12 @@ def subset_clean_band(reflArray,reflArray_metadata,clipIndex,bandIndex):
     clipExtent = {'xMax': 368100.0, 'xMin': 367400.0, 'yMax': 4306350.0, 'yMin': 4305750.0}
     serc_subInd = calc_clip_index(clipExtent,sercRefl_md['ext_dict']) 
     
-    serc_b58_subset = sercRGBarray = subset_clean_band(sercRefl,sercRefl_md,serc_subInd,58) '''
+    serc_subset = subset_clean_band(sercRefl,sercRefl_md,serc_subInd) '''
     
-    bandCleaned = reflArray[clipIndex['yMin']:clipIndex['yMax'],clipIndex['xMin']:clipIndex['xMax'],bandIndex-1].astype(np.float)
-    bandCleaned[bandCleaned==int(reflArray_metadata['noDataVal'])]=np.nan
-    bandCleaned = bandCleaned/reflArray_metadata['scaleFactor']
-    
-    return bandCleaned 
+    reflSubCleaned = reflArray[clipIndex['yMin']:clipIndex['yMax'],clipIndex['xMin']:clipIndex['xMax'],:].astype(np.float)
+    reflSubCleaned[reflSubCleaned==int(reflArray_metadata['noDataVal'])]=np.nan
+    reflSubCleaned = reflSubCleaned/reflArray_metadata['scaleFactor']
+    return reflSubCleaned
 
 def stack_clean_bands(reflArray,reflArray_metadata,bands):
         
@@ -436,8 +427,9 @@ def stack_clean_bands(reflArray,reflArray_metadata,bands):
         bands: indices of bands to be stacked; bands must be between 0-426 (eg. bands=(60,30,20))
     --------
     Returns 
-    --------
         stackedArray: array of stacked bands
+    --------
+    Notes
     --------
     See Also
     --------
@@ -462,6 +454,41 @@ def stack_clean_bands(reflArray,reflArray_metadata,bands):
                         
     return stackedArray
 
+def subset_clean_band(reflArray,reflArray_metadata,clipIndex,bandIndex):
+    
+    '''subset_clean_band extracts a band from a reflectance array, subsets it to the specified clipIndex, and applies the no data value and scale factor
+    --------
+    Parameters
+    --------
+        reflArray: reflectance array of dimensions (y,x,426) from which multiple bands (typically 3) are extracted
+        reflArray_metadata: reflectance metadata associated with reflectance array (generated by h5refl2array function)
+        clipIndex: ditionary; indices relative to a full flight line extent of a subset given a clip extent (generated by calc_clip_index function)
+        bandIndex: band number to be extracted (integer between 1-426)
+    --------
+    Returns 
+        bandCleaned: array of subsetted band with no data value set to NaN and scale factor applied
+    --------
+    See Also
+    --------
+    h5refl2array: 
+        reads in a NEON hdf5 reflectance file and returns the reflectance array, select metadata, and the wavelength dataset
+    calc_clip_index:
+        calculates the indices relative to a full flight line extent of a subset given a clip extent in UTM m (x,y)
+    --------
+    Example:
+    --------
+    sercRefl, sercRefl_md, wavelengths = h5refl2array('NEON_D02_SERC_DP1_20160807_160559_reflectance.h5')
+    clipExtent = {'xMax': 368100.0, 'xMin': 367400.0, 'yMax': 4306350.0, 'yMin': 4305750.0}
+    serc_subInd = calc_clip_index(clipExtent,sercRefl_md['ext_dict']) 
+    
+    serc_b58_subset = subset_clean_band(sercRefl,sercRefl_md,serc_subInd,58) '''
+    
+    bandCleaned = reflArray[clipIndex['yMin']:clipIndex['yMax'],clipIndex['xMin']:clipIndex['xMax'],bandIndex-1].astype(np.float)
+    bandCleaned[bandCleaned==int(reflArray_metadata['noDataVal'])]=np.nan
+    bandCleaned = bandCleaned/reflArray_metadata['scaleFactor']
+    
+    return bandCleaned 
+
 def stack_subset_bands(reflArray,reflArray_metadata,bands,clipIndex):
     
     '''stack_subset_bands subsets, cleans, and stacks specified bands from a reflectance array
@@ -474,7 +501,6 @@ def stack_subset_bands(reflArray,reflArray_metadata,bands,clipIndex):
         clipIndex: indices relative to a full flight line extent of a subset given a clip extent, (generated by calc_clip_index function)
     --------
     Returns 
-    --------
         stackedArray: array of subsetted, stacked bands with no data value set to NaN and scale factor applied
     --------
     See Also
