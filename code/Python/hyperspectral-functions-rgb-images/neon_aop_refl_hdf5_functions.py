@@ -1,5 +1,5 @@
 """
-Created on Mon Feb 6 16:36:10 2017
+Created on Mon Feb  6 16:36:10 2017
 
 @author: bhass
 
@@ -53,7 +53,7 @@ stack_subset_bands(reflArray,reflArray_metadata,bands,clipIndex):
 
 """
 
-# Import Required Packages:
+#Import Required Packages:
 import numpy as np
 import matplotlib.pyplot as plt
 import h5py, gdal, osr, copy
@@ -130,55 +130,55 @@ def h5refl2array(refl_filename):
     --------
     sercRefl, sercRefl_md, wavelengths = h5refl2array('NEON_D02_SERC_DP1_20160807_160559_reflectance.h5') """
     
-    # Read in reflectance hdf5 file 
-    # include full or relative path if data is located in a different directory
+    #Read in reflectance hdf5 file 
+    #include full or relative path if data is located in a different directory
     hdf5_file = h5py.File(refl_filename,'r')
 
-    # Get the site name
+    #Get the site name
     file_attrs_string = str(list(hdf5_file.items()))
     file_attrs_string_split = file_attrs_string.split("'")
     sitename = file_attrs_string_split[1]
     
-    # Extract the reflectance & wavelength datasets
+    #Extract the reflectance & wavelength datasets
     refl = hdf5_file[sitename]['Reflectance']
     reflArray = refl['Reflectance_Data']
     refl_shape = reflArray.shape
     wavelengths = refl['Metadata']['Spectral_Data']['Wavelength']
     
-    # Create dictionary containing relevant metadata information
+    #Create dictionary containing relevant metadata information
     metadata = {}
     metadata['shape'] = reflArray.shape
     metadata['mapInfo'] = refl['Metadata']['Coordinate_System']['Map_Info'].value
 
-    # Extract no data value & set no data value to NaN
+    #Extract no data value & set no data value to NaN
     metadata['noDataVal'] = float(reflArray.attrs['Data_Ignore_Value'])
     metadata['scaleFactor'] = float(reflArray.attrs['Scale_Factor'])
     
-    # Extract bad band windows
+    #Extract bad band windows
     metadata['bad_band_window1'] = (refl.attrs['Band_Window_1_Nanometers'])
     metadata['bad_band_window2'] = (refl.attrs['Band_Window_2_Nanometers'])
     
-    # Extract projection information
+    #Extract projection information
     metadata['projection'] = refl['Metadata']['Coordinate_System']['Proj4'].value
     metadata['epsg'] = int(refl['Metadata']['Coordinate_System']['EPSG Code'].value)
     
-    # Extract map information: spatial extent & resolution (pixel size)
+    #Extract map information: spatial extent & resolution (pixel size)
     mapInfo = refl['Metadata']['Coordinate_System']['Map_Info'].value
     mapInfo_string = str(mapInfo); 
     mapInfo_split = mapInfo_string.split(",")
     
-    # Extract the resolution & convert to floating decimal number
+    #Extract the resolution & convert to floating decimal number
     metadata['res'] = {}
     metadata['res']['pixelWidth'] = float(mapInfo_split[5])
     metadata['res']['pixelHeight'] = float(mapInfo_split[6])
     
-    # Extract the upper left-hand corner coordinates from mapInfo
+    #Extract the upper left-hand corner coordinates from mapInfo
     xMin = float(mapInfo_split[3]) #convert from string to floating point number
     yMax = float(mapInfo_split[4])
-    # Calculate the xMax and yMin values from the dimensions
-    xMax = xMin + (refl_shape[1]*metadata['res']['pixelWidth']) # xMax = left edge + (# of columns * resolution)",
-    yMin = yMax - (refl_shape[0]*metadata['res']['pixelHeight']) # yMin = top edge - (# of rows * resolution)",
-    metadata['extent'] = (xMin,xMax,yMin,yMax) # useful format for plotting
+    #Calculate the xMax and yMin values from the dimensions
+    xMax = xMin + (refl_shape[1]*metadata['res']['pixelWidth']) #xMax = left edge + (# of columns * resolution)",
+    yMin = yMax - (refl_shape[0]*metadata['res']['pixelHeight']) #yMin = top edge - (# of rows * resolution)",
+    metadata['extent'] = (xMin,xMax,yMin,yMax) #useful format for plotting
     metadata['ext_dict'] = {}
     metadata['ext_dict']['xMin'] = xMin
     metadata['ext_dict']['xMax'] = xMax

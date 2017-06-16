@@ -17,7 +17,7 @@ image:
   credit:
   creditlink:
 permalink: /HDF5/hyperspectral-HDF5-python/
-code1: 
+code1: Python/hyperspectral-functions-rgb-images/neon_aop_refl_hdf5_functions.py
 comments: true
 
 ---
@@ -33,12 +33,10 @@ interactively.
 <div id="objectives" markdown="1">
 
 # Objectives
-After completing this activity, you will be able to:
+After completing this tutorial, you will be able to:
 
-* read data in the HDF5 format using the h5py
-* plot a single band of a NEON flightline of reflectance data 
-* subset a NEON fightline reflectance file
-* plot a single band of the subsetted reflectance. 
+* upload a Python module
+* more efficiently work with NEON hyperspectral data using functions. 
 
 ### Install Python Packages
 
@@ -82,7 +80,7 @@ hyperspectral data collects information from 426 bands!
 ### Further Reading
 
 * Check out the NASA Earth Observatory article 
-<a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank">How to Interpret a False-Color Satellite Image</a>.  
+<a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank">How to Interpret a False-Color Satellite Image</a>. 
 * Read the supporting article for the video above, 
 <a href="https://svs.gsfc.nasa.gov//vis/a010000/a011400/a011491/index.html" target="_blank"> Landsat 8 Onion Skin</a>. 
 
@@ -186,12 +184,16 @@ Let's use some functions from the module to start:
 ```python
 # Define the RGB bands 
 # use HDFViewer for which wavelengths = bands)
-RGBbands = (58,34,19) #These indexes correspond to R,G,B bands in the visible range of the EM spectrum 
+# These indexes correspond to R,G,B bands in the visible range of the EM spectrum 
+RGBbands = (58,34,19) 
 
 # Print the center wavelengths corresponding to these three bands:
-print('Band 58 Center Wavelength = %.2f' %(wavelengths.value[57]),'nm') #Red
-print('Band 34 Center Wavelength = %.2f' %(wavelengths.value[33]),'nm') #Green
-print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[18]),'nm') #Blue
+# Red
+print('Band 58 Center Wavelength = %.2f' %(wavelengths.value[57]),'nm') 
+# Green
+print('Band 34 Center Wavelength = %.2f' %(wavelengths.value[33]),'nm') 
+# Blue
+print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[18]),'nm') 
 ```
 
     Band 58 Center Wavelength = 669.10 nm
@@ -217,7 +219,7 @@ electromagnetic spectrum (400-700 nm).
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg"></a>
-	<figcaption> Red, Band 58 = 669 nm 
+	<figcaption> Green, Band 34 = 549 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
 Public Outreach </a>
 	</figcaption>
@@ -228,7 +230,7 @@ Public Outreach </a>
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg"></a>
-	<figcaption> Red, Band 58 = 669 nm 
+	<figcaption> Blue, Band 19 = 474 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
 Public Outreach </a>
 	</figcaption>
