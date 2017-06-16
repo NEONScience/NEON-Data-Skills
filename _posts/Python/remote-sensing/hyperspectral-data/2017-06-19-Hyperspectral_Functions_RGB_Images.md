@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Python"
-date: 2017-06-19 
+date: 2017-06-09 
 dateCreated: 2017-06-19 
 lastModified: 2017-06-19 
 estimatedTime: 
@@ -13,7 +13,7 @@ mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
 description: "" 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: planeBanner.png
   credit:
   creditlink:
 permalink: /HDF5/hyperspectral-HDF5-python/
@@ -35,8 +35,13 @@ interactively.
 # Objectives
 After completing this tutorial, you will be able to:
 
-* upload a Python module
-* more efficiently work with NEON hyperspectral data using functions. 
+* Upload a Python module
+* Mre efficiently work with NEON hyperspectral data using functions, including: 
+	+ Read in NEON AOP reflectance hdf5 data and associated metadata
+	+ Subset a flightline to a smaller region
+	+ Stack and plot 3-band combinations (eg. RGB, Color Infrared, False Color Images)
+* Use IPython widgets to explore RGB band combinations interactively 
+* Understand how to write and use functions and loops to automate repeated processes
 
 ### Install Python Packages
 
@@ -50,6 +55,10 @@ After completing this tutorial, you will be able to:
 ### Download Data
 
 {% include/dataSubsets/_data_DI17.html %}
+
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
+Download the neon_aop_refl_hdf5_functions module</a>
+
 
 </div>
 

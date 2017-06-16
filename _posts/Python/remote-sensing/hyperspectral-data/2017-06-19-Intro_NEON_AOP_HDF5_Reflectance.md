@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "NEON AOP Hyperspectral Data in HDF5 format with Python"
-date: 2017-06-19 
+date: 2017-06-10 
 dateCreated: 2017-06-19 
 lastModified: 2017-06-19 
 estimatedTime: 
@@ -14,7 +14,7 @@ tutorialSeries: [intro-hsi-py-series]
 description: "Learn how to read NEON AOP hyperspectral HDF5 dataset using 
 Python and develop skills to manipulate and visualize spectral data." 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: planeBanner.png
   credit:
   creditlink:
 permalink: /HDF5/neon-aop-hdf5-py
@@ -31,7 +31,7 @@ visualize the spectral data. By the end of this tutorial, you will become
 familiar with the Python syntax (and Jupyter Notebook platform, if using).
 
 
-<div id="objectives">
+<div id="objectives" markdown="1">
 
 # Objectives
 After completing this tutorial, you will be able to:
@@ -83,7 +83,8 @@ For this tutorial, we will use Python version 3.4.
 
 
 ```python
-#Check that you are using the correct version of Python (should be 3.4, otherwise gdal won't work)
+# Check that you are using the correct version of Python 
+# As of May 2017, should be 3.4, otherwise gdal won't work)
 import sys
 sys.version
 ```
