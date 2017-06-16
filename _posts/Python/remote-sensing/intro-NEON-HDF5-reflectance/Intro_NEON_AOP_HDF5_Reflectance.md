@@ -1,22 +1,80 @@
+---
+layout: post
+title: "NEON AOP Hyperspectral Data in HDF5 format with Python"
+date: 2017-06-19 
+dateCreated: 2017-06-19 
+lastModified: 2017-06-19 
+estimatedTime: 
+packagesLibraries: 
+authors: [Bridget Hass]
+categories: [self-paced-tutorial]
+tags: [hyperspectral-remote-sensing, Python, HDF5, remote-sensing]
+mainTag: intro-hsi-py-series
+tutorialSeries: [intro-hsi-py-series]
+description: "" 
+image:
+  feature: hierarchy_folder_purple.png
+  credit:
+  creditlink:
+permalink: /HDF5/neon-aop-hdf5-py
+code1: 
+comments: true
 
-# Working with NEON AOP Hyperspectral Data in Python Jupyter Notebooks
+---
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this afternoon's lesson's we will explore how to extract information from NEON AOP hyperspectral reflectance data, stored in hdf5 format. If you don't have a strong background in hyperspectral imaging, or would like a quick review, we encourage you to watch the following video: 
+{% include _toc.html %}
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=3iaFzafWJQE
-" target="_blank"><img src="http://img.youtube.com/vi/3iaFzafWJQE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="400" height="300" border="10" /></a>
+In this introductory tutorial we cover how to read NEON AOP hyperspectral HDF5 
+dataset using Python. We develop and practice some tools to manipulate and 
+visualize the spectral data. By the end of this tutorial, you will become 
+familiar with the Jupyter Notebook platform and Python syntax.
 
-## Objectives
-This first tutorial will cover how to read NEON AOP hyperspectral hdf5 dataset using Python. We will develop and practice some tools to manipulate and visualize the spectral data. By the end of this tutorial, you will become familiar with the Jupyter Notebook platform and Python syntax, and learn how to:
 
-1. Import and use Python packages `numpy, pandas, matplotlib, h5py, and gdal`.
-2. Use the package `h5py` and the `visititems` functionality to read an hdf5 file and view data attributes.
-3. Read the data ignore value and scaling factor and apply these values to produce a cleaned reflectance array.
-4. Extract and plot a single band of reflectance data
-5. Plot a histogram of reflectance values to visualize the range and distribution of values.
-6. Optional: Subset an hdf5 reflectance file from the full flightline to a smaller region of interest. 
-7. Optional: Apply a histogram stretch and adaptive equalization to improve the contrast of an image.  
+<div id="objectives">
+
+# Objectives
+After completing this activity, you will be able to:
+
+*  Import and use Python packages `numpy, pandas, matplotlib, h5py, and gdal`.
+* Use the package `h5py` and the `visititems` functionality to read an HDF5 file 
+and view data attributes.
+* Read the data ignore value and scaling factor and apply these values to produce 
+a cleaned reflectance array.
+* Extract and plot a single band of reflectance data
+* Plot a histogram of reflectance values to visualize the range and distribution 
+of values.
+* Subset an hdf5 reflectance file from the full flightline to a smaller region 
+of interest (if you complete the optional extension). 
+* Apply a histogram stretch and adaptive equalization to improve the contrast 
+of an image (if you complete the optional extension) . 
+
+
+### Install Python Packages
+
+* **numpy**
+* **pandas**
+* **gdal** 
+* **matplotlib** 
+* **h5py**
+
+
+### Download Data
+
+{% include/dataSubsets/_data_DI17.html %}
+
+</div>
+
+Hyperspectral remote sensing data is a useful tool for measuring changes to our 
+environment at the Earth’s surface. In this tutorial we explore how to extract 
+information from NEON AOP hyperspectral reflectance data, stored in HDF5 format. 
+
+#### Mapping the Invisible: Introduction to Spectral Remote Sensing
+
+For more information on spectral remote sensing watch this video. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
+
+
 
 Before we start coding, make sure you are using the correct version of Python. The `gdal` package is compatible with Python versions 3.4 and earlier. For these lessons we will use Python version 3.4. 
 

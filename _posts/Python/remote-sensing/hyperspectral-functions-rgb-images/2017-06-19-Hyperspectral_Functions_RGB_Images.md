@@ -42,18 +42,16 @@ After completing this activity, you will be able to:
 
 ### Install Python Packages
 
+* **numpy**
+* **pandas**
 * **gdal** 
 * **matplotlib** 
-* **matplotlib**
+* **h5py**
 
 
 ### Download Data
 
-To complete this tutorial, you will need data available from the NEON 2017 Data
-Institute teaching data set available for download.  
-
-<a href="" class="btn btn-success">
-Download NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
+{% include/dataSubsets/_data_DI17.html %}
 
 </div>
 
@@ -244,18 +242,18 @@ indices using the `calc_clip_index`function:
 
 
 ```python
-#Define the clip extent dictionary:
+# Define the clip extent dictionary:
 clipExtent = {}
 clipExtent['xMin'] = 367400. #the decimal point at the end sets the data to floating point
 clipExtent['xMax'] = 368100.
 clipExtent['yMin'] = 4305750.
 clipExtent['yMax'] = 4306350.
 
-#Calculate the pixel indices corresponding to the extent defined above using calc_clip_index:
+# Calculate the pixel indices corresponding to the extent defined above using calc_clip_index:
 serc_subInd = calc_clip_index(clipExtent,sercRefl_md['ext_dict']) 
 print('SERC Subset Indices:',serc_subInd)
 
-#Stack these subsetted bands using stack_subset_bands:
+# Stack these subsetted bands using stack_subset_bands:
 sercSubset_RGB = stack_subset_bands(sercRefl,sercRefl_md,RGBbands,serc_subInd)
 ```
 
@@ -317,11 +315,9 @@ of a displayed image, as we will show how to do below.
 	</figcaption>
 </figure>
 
-http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_histograms/py_histogram_equalization/py_histogram_equalization.html
 
-These tutorials were adapted from a `skikit-image` tutorial:
-
-http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py
+*The following tutorial section is adapted from skikit-image's tutorial
+<a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
 
 Let's start with trying a 2% and 5% linear contrast stretch:
 
@@ -345,17 +341,14 @@ interact(linearStretch,percent=(0,20,1))
 ```
 
 
-
-
     <function __main__.linearStretch>
-
 
 
 ![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_18_1.png)
 
 
 ```python
-#Adaptive Equalized Histogram
+# Adaptive Equalized Histogram
 
 def adaptEqualizeHist(clip):
     img_nonan = np.ma.masked_invalid(rgbArray) #first mask the image to ignore the NaN values
@@ -396,7 +389,7 @@ interact(adaptEqualizeHist,clip=(0,1,.05))
 ## Color Infrared (CIR) Image
 Finally, we'll make a color-infrared (CIR) image, where we will use the same 
 Green and Blue bands as in the RGB array, but we'll replace the Red band with 
-one in the Infrared range of the electromagnetic spectrum (): 
+one in the Infrared range of the electromagnetic spectrum: 
 
 
 ```python
@@ -417,37 +410,21 @@ plot_band_array(sercSubset_CIR,clipExt,(0,0.5),title='SERC Subset CIR Image',cba
 ![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_21_1.png)
 
 
-## On Your Own: False Color Image 
+ <div id="challenge" markdown="1">
+
+## Challenge: False Color Image 
 We can also create an image from bands outside of the visible spectrum. An image 
 containing one or more bands outside of the visible range is called a 
 **false color image**. Here we'll use bands with wavelengths in two Short Wave 
 Infrared (SWIR) bands (1100-3000 nm) and one red band (669 nm). 
 
+One possible solution is given at the end of the lesson, if you get stuck. 
+</div>
+
 For more information about non-visible wavelengths, false color images, and 
-some frequently used false-color band combinations, refer to 
-NASA's Earth Observatory page:
-
-https://earthobservatory.nasa.gov/Features/FalseColor/
-
-Example solution below:
-
-
-```python
-FCIbands = (363,246,58)
-print('Band 90 Center Wavelength = %.2f' %(wavelengths.value[362]),'nm')
-print('Band 34 Center Wavelength = %.2f' %(wavelengths.value[246]),'nm')
-print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[58]),'nm')
-
-sercSubset_FCI = stack_subset_bands(sercRefl,sercRefl_md,FCIbands,serc_subInd)
-plot_band_array(sercSubset_FCI,clipExt,(0,0.5),title='SERC Subset CIR Image',cbar='off')
-```
-
-    Band 90 Center Wavelength = 2196.45 nm
-    Band 34 Center Wavelength = 1615.56 nm
-    Band 19 Center Wavelength = 674.11 nm
-    
-
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_23_1.png)
+some frequently used false-color band combinations, refer to information provided
+by the 
+<a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank">NASA Earth Observatory</a>.
 
 
 ## Try out Different RGB Band Combinations Interactively
@@ -460,7 +437,8 @@ non-visible portions of the spectrum.
 ```python
 from IPython.html.widgets import *
 
-#Subset the SERC reflectance array using the indices determined from calc_clip_index
+# Subset the SERC reflectance array 
+# using the indices determined from calc_clip_index
 serc_subArray = sercRefl[serc_subInd['yMin']:serc_subInd['yMax'],serc_subInd['xMin']:serc_subInd['xMax'],:]
 ```
 
@@ -474,7 +452,7 @@ Refl_md = copy.copy(sercRefl_md)
 ```python
 def RGBplot_widget(R,G,B):
     
-    #Pre-allocate array  size
+    # Pre-allocate array size
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')
     
     Rband = array[:,:,R-1].astype(np.float)
@@ -520,3 +498,24 @@ Riebeek, Holli.
 <a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank"> "Why is that Forest Red and that Cloud Blue? How to Interpret a False-Color Satellite Image" </a> 
 https://earthobservatory.nasa.gov/Features/FalseColor/ 
 
+
+### Challenge Code Solutions
+
+#### Challenge: False Color Image 
+
+```python
+FCIbands = (363,246,58)
+print('Band 90 Center Wavelength = %.2f' %(wavelengths.value[362]),'nm')
+print('Band 34 Center Wavelength = %.2f' %(wavelengths.value[246]),'nm')
+print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[58]),'nm')
+
+sercSubset_FCI = stack_subset_bands(sercRefl,sercRefl_md,FCIbands,serc_subInd)
+plot_band_array(sercSubset_FCI,clipExt,(0,0.5),title='SERC Subset CIR Image',cbar='off')
+```
+
+    Band 90 Center Wavelength = 2196.45 nm
+    Band 34 Center Wavelength = 1615.56 nm
+    Band 19 Center Wavelength = 674.11 nm
+    
+
+![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_23_1.png)
