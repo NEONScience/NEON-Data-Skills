@@ -30,7 +30,7 @@ combinations of bands, and learn how to create widgets to look at data more
 interactively. 
 
 
-<div id="objectives">
+<div id="objectives" markdown="1">
 
 # Objectives
 After completing this activity, you will be able to:
@@ -84,8 +84,10 @@ hyperspectral data collects information from 426 bands!
 * Check out the NASA Earth Observatory article 
 <a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank">How to Interpret a False-Color Satellite Image</a>.  
 * Read the supporting article for the video above, 
-<a href="https://svs.gsfc.nasa.gov//vis/a010000/a011400/a011491/index.html" target="_blank"> Landsat 8 Onion Skin </a>. 
+<a href="https://svs.gsfc.nasa.gov//vis/a010000/a011400/a011491/index.html" target="_blank"> Landsat 8 Onion Skin</a>. 
 
+
+## Load Function Module
 
 Before we get started, let's set up our plot and warning preferences:
 
@@ -132,6 +134,7 @@ you will have to first type `neon.`, eg. `neon.plot_band_array`.
 %load neon_aop_refl_hdf5_functions
 ```
 
+## Functions & Loops
 
 We can use the `h5refl2array` function to read in the SERC reflectance 
 flightline from Lesson 1. For a quick look at how to run this function, type 
@@ -146,7 +149,7 @@ one of the following in the next code cell:
 sercRefl, sercRefl_md, wavelengths = h5refl2array('../data/SERC/hyperspectral/NEON_D02_SERC_DP1_20160807_160559_reflectance.h5')
 ```
 
-We can write a `for` loop to list the metadata values that this function reads in:
+We can write a 'for' loop to list the metadata values that this function reads in
 
 
 ```python
@@ -168,6 +171,7 @@ for item in sorted(sercRefl_md):
     
 
 ## Subset and Stack Bands
+
 It is often useful to look at several bands together. We can extract and stack 
 three bands in the red, green, and blue (RGB) spectrums to produce a color image 
 that looks similar to what we see with our eyes. In the next part of this 
@@ -180,7 +184,8 @@ Let's use some functions from the module to start:
 
 
 ```python
-# Define the RGB bands (use HDFViewer for a quick look at the wavelengths corresponding to the bands)
+# Define the RGB bands 
+# use HDFViewer for which wavelengths = bands)
 RGBbands = (58,34,19) #These indexes correspond to R,G,B bands in the visible range of the EM spectrum 
 
 # Print the center wavelengths corresponding to these three bands:
@@ -195,46 +200,42 @@ print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[18]),'nm') #Blue
     
 
 We selected these bands so that they fall within the visible range of the 
-electromagnetic spectrum (400-700 nm), where:
+electromagnetic spectrum (400-700 nm).
 
-#### Band 58 = 669 nm  --> Red 
+**Band 58 = 669 nm  --> Red**
 
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Red_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Red_Spectrum.jpg"></a>
 	<figcaption> Red, Band 58 = 669 nm 
-	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
-Public Outreach 
+	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank"> NASA Langley Research Center’s Science Directorate Education and Public Outreach </a>
 	</figcaption>
 </figure>
 
-#### Band 34 = 549 nm --> Green 
+**Band 34 = 549 nm --> Green**
 
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg"></a>
 	<figcaption> Red, Band 58 = 669 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
-Public Outreach 
+Public Outreach </a>
 	</figcaption>
 </figure>
 
-#### Band 19 = 474 nm --> Blue 
-<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg">
+**Band 19 = 474 nm --> Blue** 
 
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg"></a>
 	<figcaption> Red, Band 58 = 669 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
-Public Outreach 
+Public Outreach </a>
 	</figcaption>
 </figure>
 
 For more, see NASA's article
 <a href="https://science-edu.larc.nasa.gov/EDDOCS/Wavelengths_for_Colors.html" target="_blank"> What Wavelength Goes With a Color? </a>.
-
-
 
 We can use the `stack_subset_bands` function to subset and stack these three 
 bands. First we need to define the subset extent and determine the corresponding 
@@ -387,6 +388,7 @@ interact(adaptEqualizeHist,clip=(0,1,.05))
 
 
 ## Color Infrared (CIR) Image
+
 Finally, we'll make a color-infrared (CIR) image, where we will use the same 
 Green and Blue bands as in the RGB array, but we'll replace the Red band with 
 one in the Infrared range of the electromagnetic spectrum: 
