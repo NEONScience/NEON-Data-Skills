@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Plot a Spectral Signature in Python"
-date: 2017-06-19 
+date: 2017-06-08
 dateCreated: 2017-06-19 
 lastModified: 2017-06-19 
 estimatedTime: 
@@ -13,7 +13,7 @@ mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
 description: "" 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: planeBanner.png
   credit:
   creditlink:
 permalink: /HDF5/plot-spec-sig-python/
@@ -47,6 +47,10 @@ After completing this tutorial, you will be able to:
 ### Download Data
 
 {% include/dataSubsets/_data_DI17.html %}
+
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
+Download the neon_aop_refl_hdf5_functions module</a>
+
 
 </div>
 

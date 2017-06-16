@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Calculate NDVI in Python"
-date: 2017-06-19 
+date: 2017-06-07 
 dateCreated: 2017-06-19 
 lastModified: 2017-06-19 
 estimatedTime: 
@@ -13,7 +13,7 @@ mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
 description: "" 
 image:
-  feature: hierarchy_folder_purple.png
+  feature: planeBanner.png
   credit:
   creditlink:
 permalink: /HDF5/calc-ndvi-python/
@@ -49,7 +49,7 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI17.html %}
 
- <a href="{{ site.baseurl }}/code/Python/hyperspectral-functions-rgb-images/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
+ <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
 Download the neon_aop_refl_hdf5_functions module</a>
 
 </div>
@@ -272,4 +272,7 @@ ax.grid('on');
 
 ## References
 
-Wu C-D, McNeely E, Cedeño-Laurent JG, Pan W-C, Adamkiewicz G, Dominici F, et al. (2014) Linking Student Performance in Massachusetts Elementary Schools with the “Greenness” of School Surroundings Using Remote Sensing. PLoS ONE 9(10): e108548. doi:10.1371/journal.pone.0108548
+Wu C-D, McNeely E, Cedeño-Laurent JG, Pan W-C, Adamkiewicz G, Dominici F, et al. 
+(2014) Linking Student Performance in Massachusetts Elementary Schools with 
+the “Greenness” of School Surroundings Using Remote Sensing. PLoS ONE 9(10): 
+e108548. doi:10.1371/journal.pone.0108548
