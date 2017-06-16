@@ -17,7 +17,7 @@ image:
   credit:
   creditlink:
 permalink: /HDF5/hyperspectral-HDF5-python/
-code1: Python/hyperspectral-functions-rgb-images/neon_aop_refl_hdf5_functions.py
+code1: Python/hyperspectral-data/Hyperspectral_Functions_RGB_Images.ipynb
 comments: true
 
 ---
