@@ -217,7 +217,7 @@ electromagnetic spectrum (400-700 nm).
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg"></a>
-	<figcaption> Red, Band 58 = 669 nm 
+	<figcaption> Green, Band 34 = 549 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
 Public Outreach </a>
 	</figcaption>
@@ -228,7 +228,7 @@ Public Outreach </a>
  <figure>
 	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg">
 	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg"></a>
-	<figcaption> Red, Band 58 = 669 nm 
+	<figcaption> Blue, Band 19 = 474 nm 
 	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
 Public Outreach </a>
 	</figcaption>

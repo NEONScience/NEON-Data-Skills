@@ -76,7 +76,9 @@ For more information on spectral remote sensing watch this video.
 
 
 
-Before we start coding, make sure you are using the correct version of Python. The `gdal` package is compatible with Python versions 3.4 and earlier. For these lessons we will use Python version 3.4. 
+Before we start coding, make sure you are using the correct version of Python. 
+The `gdal` package is currently compatible with Python versions 3.4 and earlier (May 2017). 
+For this tutorial, we will use Python version 3.4. 
 
 
 ```python
@@ -85,14 +87,11 @@ import sys
 sys.version
 ```
 
-
-
-
     '3.4.5 |Anaconda custom (64-bit)| (default, Jul  5 2016, 14:53:07) [MSC v.1600 64 bit (AMD64)]'
 
 
-
-First let's import the required packages and set our display preferences so that plots are inline and plot warnings are off:
+First, let's import the required packages and set our display preferences so 
+that plots are inline and plot warnings are off. 
 
 
 ```python
@@ -105,9 +104,15 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-## Read hdf5 file into Python
+## Read HDF5 file into Python
 
-```f = h5py.File('file.h5','r')``` reads in an h5 file to the variable f. If the h5 file is stored in a different directory, make sure to include the relative path to that directory (In this example, the path is ../data/SERC/hypserspectral)
+We can use the following command to read in an h5 file to the variable "f".
+
+`f = h5py.File('file.h5','r')`
+
+ If the h5 file is stored in a different directory, make sure to include the 
+relative path to that directory. For example, if our data were in the directory
+ ../data/SERC/hypserspectral, we would load the data like this.
 
 
 ```python
@@ -116,7 +121,9 @@ f = h5py.File('../data/SERC/hyperspectral/NEON_D02_SERC_DP1_20160807_160559_refl
 
 ## Explore NEON AOP HDF5 Reflectance Files
 
-We can look inside the HDF5 dataset with the ```h5py visititems``` function. The ```list_dataset``` function defined below displays all datasets stored in the hdf5 file and their locations within the hdf5 file:
+We can look inside the HDF5 dataset with the `h5py visititems` function. The 
+`list_dataset` function defined below displays all datasets stored in the hdf5 
+file and their locations within the hdf5 file. 
 
 
 ```python
@@ -160,7 +167,8 @@ f.visititems(list_dataset)
     SERC/Reflectance/Reflectance_Data
     
 
-We can display the name, shape, and type of each of these datasets using the ```ls_dataset``` function defined below, which is also called with ```visititems```: 
+We can display the name, shape, and type of each of these datasets using the 
+`ls_dataset` function defined below, which is also called with `visititems`. 
 
 
 ```python
@@ -204,7 +212,9 @@ f.visititems(ls_dataset)
     <HDF5 dataset "Reflectance_Data": shape (10852, 1106, 426), type "<i2">
     
 
-Now that we see the general structure of the hdf5 file, let's take a look at some of the information that is stored inside. Let's start by extracting the reflectance data, which is nested under SERC/Reflectance/Reflectance_Data.  
+Now that we see the general structure of the HDF5 file, let's take a look at 
+some of the information that is stored inside. Let's start by extracting the 
+reflectance data, which is nested under SERC/Reflectance/Reflectance_Data.  
 
 
 ```python
@@ -215,7 +225,8 @@ print(serc_refl)
     <HDF5 group "/SERC/Reflectance" (2 members)>
     
 
-The two members of the HDF5 group /SERC/Reflectance are *Metadata* and *Reflectance_Data*. Let's save the reflectance data as the variable serc_reflArray:
+The two members of the HDF5 group /SERC/Reflectance are *Metadata* and 
+*Reflectance_Data*. Let's save the reflectance data as the variable `serc_reflArray`. 
 
 
 ```python
@@ -226,7 +237,7 @@ print(serc_reflArray)
     <HDF5 dataset "Reflectance_Data": shape (10852, 1106, 426), type "<i2">
     
 
-We can extract the shape as follows: 
+We can extract the shape as follows
 
 
 ```python
@@ -237,7 +248,9 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
     SERC Reflectance Data Dimensions: (10852, 1106, 426)
     
 
-This corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels (1m x 1m). All NEON hyperspectral data contains 426 wavelength bands. Let's take a look at the wavelength values:
+This corresponds to (y,x, # of bands), where (x,y) are the dimensions of the 
+reflectance array in pixels (1m x 1m). All NEON hyperspectral data 
+contains 426 wavelength bands. Let's take a look at the wavelength values.
 
 
 ```python
@@ -262,7 +275,9 @@ print('band width =',(wavelengths.value[-1]-wavelengths.value[-2]),'nm')
     band width = 5.0078 nm
     
 
-The wavelengths recorded range from 383.66 - 2511.94 nm, and each band covers a range of ~5 nm. Now let's extract spatial information, which is stored under SERC/Reflectance/Metadata/Coordinate_System/Map_Info:
+The wavelengths recorded range from 383.66 - 2511.94 nm, and each band covers a 
+range of ~5 nm. Now let's extract spatial information, which is stored under 
+SERC/Reflectance/Metadata/Coordinate_System/Map_Info:
 
 
 ```python
@@ -274,13 +289,20 @@ print('SERC Map Info:\n',serc_mapInfo.value)
      b'UTM, 1.000, 1.000, 367167.000, 4310980.000, 1.0000000000e+000, 1.0000000000e+000, 18, North, WGS-84, units=Meters'
     
 
-**Notes:**
-- The 4th and 5th columns of map info signify the coordinates of the map origin, which refers to the upper-left corner of the image  (xMin, yMax). 
-- The letter **b** appears before UTM. This appears because the variable-length string data is stored in **b**inary format when it is written to the hdf5 file. Don't worry about it for now, as we will convert the numerical data we need in to floating point numbers. 
+**Understanding the output:**
 
-For more information on hdf5 strings, you can refer to: http://docs.h5py.org/en/latest/strings.html
+* The 4th and 5th columns of map info signify the coordinates of the map origin, 
+which refers to the upper-left corner of the image  (xMin, yMax). 
+* The letter **b** appears before UTM. This appears because the variable-length 
+string data is stored in **b**inary format when it is written to the hdf5 file. 
+Don't worry about it for now, as we will convert the numerical data we need in 
+to floating point numbers. 
 
-Let's extract relevant information from the Map_Info metadata to define the spatial extent of this dataset:
+Learn more about HDF5 strings, on the 
+<a href="http://docs.h5py.org/en/latest/strings.html" target="_blank">h5py Read the Docs</a>.
+
+Let's extract relevant information from the Map_Info metadata to define the 
+spatial extent of this dataset:
 
 
 ```python
@@ -293,7 +315,9 @@ print(mapInfo_split)
     ["b'UTM", ' 1.000', ' 1.000', ' 367167.000', ' 4310980.000', ' 1.0000000000e+000', ' 1.0000000000e+000', ' 18', ' North', ' WGS-84', " units=Meters'"]
     
 
-Now we can extract the spatial information we need from the map info values, convert them to the appropriate data types (eg. float) and store it in a way that will enable us to access and apply it later: 
+Now we can extract the spatial information we need from the map info values, 
+convert them to the appropriate data types (eg. float) and store it in a way 
+that will enable us to access and apply it later: 
 
 
 ```python
@@ -353,7 +377,17 @@ print('Band 56 Reflectance:\n',b56)
 
 ## Apply the scale factor and data ignore value
 
-This array represents the unscaled reflectance for band 56. Recall from exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and the Scale_Factor=10000.0.
+This array represents the unscaled reflectance for band 56. Recall from 
+exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and 
+the Scale_Factor=10000.0.
+
+ <figure>
+	<a href="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png"></a>
+	<figcaption> Screenshot of the NEON 
+	Source: <a href="https://en.wikipedia.org/wiki/Talk%3AHistogram_equalization#/media/File:Histogrammspreizung.png"> Wikipedia - Public Domain </a>
+	</figcaption>
+</figure>
 
 <p>
 <img src="hdfview_SERCrefl.png" style="width: 650px;"/>
