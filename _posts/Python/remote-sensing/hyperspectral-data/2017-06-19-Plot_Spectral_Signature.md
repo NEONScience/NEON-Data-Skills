@@ -72,12 +72,6 @@ of distinctly different shapes.
 	</figcaption>
 </figure>
 
-<p>
-<center><strong>Example Spectral Signatures of Atmosphere, Soil, Water, and Vegetation</strong></center>
-<img src="{{ site.baseurl }}/images/hyperspectral/spectralSignatures_MoleroGarzo" style="width: 400px;"/>
-<center><font size="2">Figure: (Molero and Garzón, 2012)</font></center>
-<center><font size="2">http://remotesensing.spiedigitallibrary.org/article.aspx?articleid=1352329</font></center>
-</p>
 
 
 Vegetation has a unique spectral signature characterized by high reflectance in 
@@ -85,13 +79,13 @@ the near infrared (NIR) wavelengths, and much lower reflectance in the green por
 of the visible spectrum. We can extract reflectance values in the NIR and 
 visible spectrums from hyperspectral data in order to map vegetation on the 
 earth's surface. We will explore this more in another tutorial, 
-<a href={{ site.baseurl }}/HDF5/calc-ndvi-python/> *Calculate NDVI with Python*, 
+<a href={{ site.baseurl }}/HDF5/calc-ndvi-python/> *Calculate NDVI with Python* </a>, 
 where we will caluclate a Vegetation Index.  
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/spectralSignatures_MoleroGarzo">
-	<img src="{{ site.baseurl }}/images/hyperspectral/spectralSignatures_MoleroGarzo"></a>
+	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum.png"></a>
 	<figcaption> Details of an example vegetation spectral signature.
 	Source: <a href="http://www.markelowitz.com/Hyperspectral.html"> Mark Elowitz </a>
 	</figcaption>
