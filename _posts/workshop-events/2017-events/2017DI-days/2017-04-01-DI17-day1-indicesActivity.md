@@ -1,5 +1,5 @@
 ---
-layout: tutorial-series-landing
+layout: post
 title: 'Activity: Calculate Index of Interest'
 categories:
 mainTag: 
@@ -10,19 +10,6 @@ image:
   creditlink:
 ---
 
-
-
-
-<div id="objectives" markdown="1">
-
-# Learning Objectives
-
-After completing these activities, you will be able to:
-
-* calculate the 
-
-
-</div>
 
 ## Many Indices
 
