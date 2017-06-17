@@ -503,8 +503,8 @@ dataset. This time, our classifications will be:
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015">
-	<img src="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015"></a>
+	<a href="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg">
+	<img src="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>
