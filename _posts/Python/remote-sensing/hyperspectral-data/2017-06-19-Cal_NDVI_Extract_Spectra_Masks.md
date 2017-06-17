@@ -72,7 +72,7 @@ visible bands of the electromagnetic spectrum.
 
 The formula for NDVI is: 
 
-$$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
+**NDVI = (NIR - VIS)/(NIR+ VIS)**
 
 <figure>
  <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
@@ -130,7 +130,10 @@ sercReflSubset = subset_clean_refl(sercRefl,sercRefl_md,clipIndex)
 
 Now that we have uploaded all the required functions, we can calculate NDVI and plot it. 
 We will compute NDVI using bands 58 and 90. These correspond to wavelength ranges of:
-$$band 58: \lambda_{VIS} = 666.6-671.6 nm$$ $$band 90: \lambda_{NIR} = 826.8-831.9 nm$$.
+
+**band 58: lambda_NIR = 666.6-671.6 nm**
+
+**band 90: lambda_NIR = 826.8-831.9 nm**
 
 
 ```python

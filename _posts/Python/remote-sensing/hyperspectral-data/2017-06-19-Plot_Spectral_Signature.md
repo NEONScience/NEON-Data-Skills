@@ -11,7 +11,8 @@ categories: [self-paced-tutorial]
 tags: [hyperspectral-remote-sensing, Python, HDF5, remote-sensing]
 mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
-description: "" 
+description: "Learn how to extract and plot a spectral profile 
+from a single pixel of a reflectance band." 
 image:
   feature: planeBanner.png
   credit:
@@ -25,7 +26,7 @@ comments: true
 {% include _toc.html %}
 
 In this tutorial, we will learn how to extract and plot a spectral profile 
-from a single pixel of a reflectance band in a NEON hyperspectral hdf5 file. 
+from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
 <div id="objectives" markdown="1">
 
