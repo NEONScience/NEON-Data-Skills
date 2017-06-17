@@ -89,15 +89,6 @@ a different directory (e.g., not in **~/Documents/data/RSDI-2017**), modify
 the directions below with the appropriate file path to your **RSDI-2017** 
 directory. 
 
-
-<i class="fa fa-star"></i> **Data Tip:** All NEON Data Skills tutorials are
-written assuming the working directory is the parent directory to the 
-uncompressed .zip file of downloaded data -- **RSDI-2017**. This allows for multiple data 
-subsets to be accessed in the tutorial without resetting the working directory. 
-If you choose to put your data elsewhere, you must remember to modify the working 
-directory and/or file paths when going through the tutorials. 
-{: .notice}
-
 #### 4) Unzip/uncompress
 Fourth, we need to unzip/uncompress the file so that the data files can be 
 accessed. Use your favorite tool that can unpackage/open .zip files (e.g.,
