@@ -46,8 +46,7 @@ Subset: Data Institute 2017**.
 Caution: This file set includes hyperspectral and lidar data sets and is therefore
 a large file (12 GB).  Ensure that you have sufficient space on your hard drive 
 before you begin the download.  If not, download to an external hard drive and 
-
-
+make sure to correct for the change in file path when working through the scripts.
 
 <div id="objectives" markdown="1">
 
