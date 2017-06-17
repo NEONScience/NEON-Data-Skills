@@ -11,7 +11,7 @@ categories: [self-paced-tutorial]
 tags: [lidar, Python, raster, remote-sensing]
 mainTag: intro-lidar-py-series
 tutorialSeries: [intro-lidar-py-series]
-description: "learn how to read NEON LiDAR Raster Geotifs (e.g., CHM, Slope, 
+description: "learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, Slope, 
 Aspect) into Python numpy arrays with gdal and create a classified raster object." 
 image:
   feature: planeBanner.png
@@ -25,7 +25,7 @@ comments: true
 
 {% include _toc.html %}
 
-In this tutorial, we will learn how to read NEON ldiar raster GeoTIFFS 
+In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS 
 (e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a classified raster object.
 
 <div id="objectives" markdown="1">
@@ -39,7 +39,6 @@ After completing this tutorial, you will be able to:
 ### Install Python Packages
 
 * **numpy**
-* **pandas**
 * **gdal** 
 * **matplotlib** 
 
@@ -239,8 +238,6 @@ def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_18_0.png)
-
 
 ```python
 plot_band_array(chm_array,chm_ext,(0,80),title='SERC Canopy Height',cmap_title='Canopy Height, m')
@@ -265,7 +262,7 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
     <matplotlib.text.Text at 0x95a12e8>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_12_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_21_1.png)
 
 
 We can see that most of the values are zero. In SERC, many of the zero CHM 
@@ -311,7 +308,7 @@ plot_band_array(chm_array,chm_ext,(0,45),title='SERC Canopy Height',cmap_title='
 ![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_25_0.png)
 
 
-### Automate conversition with `raster2array`
+### Automate conversition with raster2array
 
 Now that we have a basic understanding of how GDAL reads in a GeoTIFF file, we 
 can write a function to read in a NEON geotif, convert it to a numpy array, and 
@@ -507,7 +504,7 @@ dataset. This time, our classifications will be:
 
  <figure>
 	<a href="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015">
-	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum.png"></a>
+	<img src="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>
@@ -515,8 +512,9 @@ dataset. This time, our classifications will be:
 </figure>
 
 
-**Further Reading:** There are a range of applications for aspect classificaiton. 
-</a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html" target="_blank">Boz et al. (2015) </a> 
+**Further Reading:** 
+There are a range of applications for aspect classificaiton. 
+<a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html" target="_blank">Boz et al. (2015) </a> 
 provide an example of classifying LiDAR aspect data to determine suitability of 
 roofs for PV (photovoltaic) systems. Can you think of any other applications 
 where aspect classification might be useful?
