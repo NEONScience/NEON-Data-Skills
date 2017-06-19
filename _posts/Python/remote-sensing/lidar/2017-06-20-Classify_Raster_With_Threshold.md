@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Classify a Raster Using Threshold Values"
-date: 2017-06-08
+title: "Classify a Raster Using Threshold Values in Python"
+date: 2017-06-10
 dateCreated: 2017-06-20 
 lastModified: 2017-06-19 
 estimatedTime: 
@@ -11,7 +11,7 @@ categories: [self-paced-tutorial]
 tags: [lidar, Python, raster, remote-sensing]
 mainTag: intro-lidar-py-series
 tutorialSeries: [intro-lidar-py-series]
-description: "learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, Slope, 
+description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, Slope, 
 Aspect) into Python numpy arrays with gdal and create a classified raster object." 
 image:
   feature: planeBanner.png
