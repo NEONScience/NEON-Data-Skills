@@ -239,6 +239,8 @@ print(serc_reflArray)
     <HDF5 dataset "Reflectance_Data": shape (10852, 1106, 426), type "<i2">
     
 
+
+
 We can extract the shape as follows
 
 
@@ -251,12 +253,15 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
     
 
 This corresponds to (y,x, # of bands), where (x,y) are the dimensions of the 
-reflectance array in pixels (1m x 1m). All NEON hyperspectral data 
+reflectance array in pixels (1m x 1m). Shape, in Python, is read Y, X, and 
+number of bands so we see we have a flight path is 10852 pixels long and 1106 
+pixels wide. Note that some programs are row, column; not column, row and will
+give a reverse output.  The number of bands is 426 bands. All NEON hyperspectral data 
 contains 426 wavelength bands. Let's take a look at the wavelength values.
 
 
 ```python
-#View wavelength information and values
+# View wavelength information and values
 
 wavelengths = serc_refl['Metadata']['Spectral_Data']['Wavelength']
 print(wavelengths)
@@ -265,7 +270,7 @@ print(wavelengths)
 print('min wavelength:', np.amin(wavelengths),'nm')
 print('max wavelength:', np.amax(wavelengths),'nm')
 
-#show the band width 
+# show the band width 
 print('band width =',(wavelengths.value[1]-wavelengths.value[0]),'nm')
 print('band width =',(wavelengths.value[-1]-wavelengths.value[-2]),'nm')
 ```
