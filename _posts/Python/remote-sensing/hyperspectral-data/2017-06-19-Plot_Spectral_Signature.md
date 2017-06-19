@@ -86,13 +86,13 @@ the near infrared (NIR) wavelengths, and much lower reflectance in the green por
 of the visible spectrum. We can extract reflectance values in the NIR and 
 visible spectrums from hyperspectral data in order to map vegetation on the 
 earth's surface. We will explore this more in another tutorial, 
-<a href={{ site.baseurl }}/HDF5/calc-ndvi-python/> *Calculate NDVI with Python* </a>, 
+<a href="{{ site.baseurl }}/HDF5/calc-ndvi-python/" target="_blank"> *Calculate NDVI with Python* </a>, 
 where we will caluclate a Vegetation Index.  
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum.png"></a>
+	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
 	<figcaption> Details of an example vegetation spectral signature.
 	Source: <a href="http://www.markelowitz.com/Hyperspectral.html"> Mark Elowitz </a>
 	</figcaption>
