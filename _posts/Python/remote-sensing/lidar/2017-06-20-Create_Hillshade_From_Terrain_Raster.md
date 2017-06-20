@@ -182,7 +182,8 @@ For more information about how hillshades work, refer to the
 
 We can define a hillshade function. 
 
-*The function below comes from the <a href="https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py"> target="_blank"> Roger Veciana i Roviera's github repo.*
+*The function below comes from the 
+<a href="https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py"> target="_blank"> Roger Veciana i Roviera's github repo</a>.*
 
 
 
