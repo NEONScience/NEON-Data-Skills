@@ -18,7 +18,7 @@ image:
   credit:
   creditlink:
 permalink: /lidar/mask-raster-py/
-code1: 
+code1: Python/lidar/Mask_Raster.ipynb
 comments: true
 
 ---
