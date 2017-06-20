@@ -17,7 +17,7 @@ image:
   credit:
   creditlink:
 permalink: /lidar/create-hillshade-py/
-code1: 
+code1: Python/lidar/Create_Hillshade_From_Terrain_Raster.ipynb
 comments: true
 
 ---
