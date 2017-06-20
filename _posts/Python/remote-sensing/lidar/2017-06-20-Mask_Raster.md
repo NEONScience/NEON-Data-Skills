@@ -46,6 +46,7 @@ After completing this tutorial, you will be able to:
 {% include/dataSubsets/_data_DI17.html %}
 
 
+
 </div>
 
 In this tutorial, we will learn how to remove parts of a raster based on pixel 

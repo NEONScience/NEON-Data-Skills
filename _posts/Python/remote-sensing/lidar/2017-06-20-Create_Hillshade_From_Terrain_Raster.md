@@ -51,8 +51,8 @@ arrays with gdal.
 {% include/dataSubsets/_data_DI17.html %}
 
 
- <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
-Download the neon_aop_refl_hdf5_functions Module</a>
+ <a href="{{ site.baseurl }}/code/Python/lidar/neon_aop_lidar_raster_functions.py" class="btn btn-success">
+Download the neon_aop_lidar_raster_functions Module</a>
 
 </div>
 
