@@ -52,12 +52,15 @@ repository on your computer.
 		+ `git commit`
 		+ `git push`
 
-* **Git 06: Sync GitHub Repos with Pull Requests**
+* **Git 06: Pull Request to Add Changes to a Central Repo**
 	+ Explain the concept of base fork and head fork.
-	+ Know how to transfer changes (sync) between repos in GitHub.
-	+ Explain why it is important to update a local repo before beginning edits.
-	+ Update your local repository from your fork on GitHub.
+	+ Know how to transfer changes between a fork & a central repo in GitHub.
 	+ Create a Pull Request on the GitHub.com website.
+
+
+* **Git 07: Updating Your Repo by Setting Up a Remote**
+	+ Explain why it is important to update a local repo before beginning edits.
+	+ Update your local repository from a remote (upstream) central repo. 
 
 
 ## Things You’ll Need To Complete This Series
