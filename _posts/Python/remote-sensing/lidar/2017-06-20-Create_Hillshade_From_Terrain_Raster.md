@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Classify a Raster Using Threshold Values"
+title: "Create a Hillshade from a Terrain Raster in Python"
 date: 2017-06-08
 dateCreated: 2017-06-20 
 lastModified: 2017-06-19 
@@ -11,29 +11,31 @@ categories: [self-paced-tutorial]
 tags: [lidar, Python, raster, remote-sensing]
 mainTag: intro-lidar-py-series
 tutorialSeries: [intro-lidar-py-series]
-description: "learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, Slope, 
-Aspect) into Python numpy arrays with gdal and create a classified raster object." 
+description: "Learn how to create a hillshade from a terrain raster in Python." 
 image:
   feature: planeBanner.png
   credit:
   creditlink:
-permalink: /lidar/classify-raster-thresholds-py/
-code1: Python/lidar/Classify_Raster_With_Threshold.ipynb
+permalink: /lidar/create-hillshade-py/
+code1: 
 comments: true
 
 ---
 
 {% include _toc.html %}
 
-In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS 
-(e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a classified raster object.
+In this tutorial, we will learn how to create a hillshade from a terrain 
+raster in Python. We will then overlay the hillshade, canopy height model, and 
+digital terrain model to better visulize a tile of the NEON Teakettle (TEAK) field
+site's LiDAR dataset. 
 
 <div id="objectives" markdown="1">
 
 # Objectives
 After completing this tutorial, you will be able to:
 
-* Read NEON ldiar raster GeoTIFFS (e.g., CHM, slope aspect) into Python numpy arrays with gdal.
+* Read NEON ldiar raster GeoTIFFS (e.g., CHM, slope aspect) into Python numpy 
+arrays with gdal.
 * Create a classified raster object.
 
 ### Install Python Packages
@@ -41,19 +43,20 @@ After completing this tutorial, you will be able to:
 * **numpy**
 * **gdal** 
 * **matplotlib** 
+* **warnings** 
+
 
 ### Download Data
 
 {% include/dataSubsets/_data_DI17.html %}
 
 
+ <a href="{{ site.baseurl }}/code/Python/lidar/neon_aop_lidar_raster_functions.py" class="btn btn-success">
+Download the neon_aop_lidar_raster_functions Module</a>
+
 </div>
-# Create a Hillshade from a Terrain Raster in Python 
 
-In this tutorial, we will learn how to create a hillshade from a terrain raster in Python. We will then overlay the hillshade, canopy height model, and digital terrain model to better visulize a tile of the TEAK LiDAR dataset. 
-
-First, let's import the required packages and set plot display to inline:
-
+First, let's import the required packages and set plot display to inline.
 
 ```python
 from osgeo import gdal
@@ -64,7 +67,8 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-We also need to load the `neon_aop_lidar_raster_functions` module that you downloaded in Lesson 1. 
+We also need to load the `neon_aop_lidar_raster_functions` module that you 
+downloaded in Lesson 1. 
 
 
 ```python
@@ -136,7 +140,8 @@ def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
     outband.FlushCache()
 ```
 
-Modify the plot_band_array function to enable transparency, using the variable alpha, which ranges from 0 (transparent) to 1 (opaque).
+Modify the plot_band_array function to enable transparency, using the variable 
+alpha, which ranges from 0 (transparent) to 1 (opaque).
 
 
 ```python
@@ -151,21 +156,35 @@ def plot_band_array(band_array,refl_extent,title,cbar_label,colormap='spectral',
 
 ###  Calculate Hillshade
 
-<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif" style="width: 250px;"/>
-<center><font size="2">http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade.htm</font></center>
 
 
-Hillshade is used to visualize the hypothetical illumination value (from 0-255) of each pixel on a surface given a specified light source. To calculate hillshade, we need the zenith (altitude) and azimuth of the illumination source, as well as the slope and aspect of the terrain. The formula for hillshade is:
+ <figure>
+	<a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif">
+	<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif"></a>
+	<figcaption> Hillshades are the created to show "shaded" areas from a specific
+	illumination source's zenith and azimuth.   
+	Source: Jochen Albrecht 
+	</figcaption>
+</figure>
 
-$$Hillshade = 255.0 * (( cos(zenith_I)*cos(slope_T))+(sin(zenith_I)*sin(slope_T)*cos(azimuth_I-aspect_T))$$
+Hillshade is used to visualize the hypothetical illumination value (from 0-255) 
+of each pixel on a surface given a specified light source. To calculate hillshade,
+ we need the zenith (altitude) and azimuth of the illumination source, as well 
+as the slope and aspect of the terrain. The formula for hillshade is:
 
-Where all angles are in radians. 
+Hillshade = 255.0 * (( cos(zenith_I)*cos(slope_T))+(sin(zenith_I)*sin(slope_T)*cos(azimuth_I-aspect_T))
 
-For more information about how hillshades work, refer to the ESRI ArcGIS Help page: http://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-analyst-toolbox/how-hillshade-works.htm. 
+where all angles are in radians. 
 
-We can define a hillshade function. The function below comes from the following github repo:
+For more information about how hillshades work, refer to the 
+<a href="http://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-analyst-toolbox/how-hillshade-works.htm" target="_blank"> ESRI ArcGIS Help page. </a>.
 
-https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
+
+We can define a hillshade function. 
+
+*The function below comes from the <a href="https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py"> target="_blank"> Roger Veciana i Roviera's github repo.*
+
+
 
 
 ```python
@@ -183,7 +202,10 @@ def hillshade(array,azimuth,angle_altitude):
     return 255*(shaded + 1)/2
 ```
 
-Now that we have a function to generate hillshade, we need to read in the NEON LiDAR Digital Terrain Model (DTM) geotif using the ```raster2array``` function and then calculate hillshade using the ```hillshade``` function. We can then plot both using the ```plot_band_array``` function. 
+Now that we have a function to generate hillshade, we need to read in the NEON 
+LiDAR Digital Terrain Model (DTM) geotif using the `raster2array` function 
+and then calculate hillshade using the `hillshade` function. We can then plot 
+both using the `plot_band_array` function. 
 
 
 ```python
@@ -193,11 +215,11 @@ plot_band_array(teak_dtm_array,teak_dtm_md['extent'],'TEAK DTM','Elevation, m',c
 ax = plt.gca(); plt.grid('on')
 ```
 
+![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_9_0.png)
 
-![png](output_9_0.png)
 
-
-Use the hillshade function on the TEAK DTM array, with an aspect of 225° and 80% opacity.
+Use the hillshade function on the TEAK DTM array, with an aspect of 225° and 
+80% opacity.
 
 
 ```python
@@ -208,9 +230,7 @@ plot_band_array(teak_hillshade_array,teak_dtm_md['extent'],'TEAK Hillshade, Aspe
 ax = plt.gca(); plt.grid('on') 
 ```
 
-
-![png](output_11_0.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_11_0.png)
 
 Next, overlay this transparent hillshade on the DTM:
 
@@ -227,14 +247,11 @@ plt.title('TEAK Hillshade + DTM')
 ```
 
 
-
-
     <matplotlib.text.Text at 0xc3b49e8>
 
 
 
-
-![png](output_13_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_13_1.png)
 
 
 ### Calculate CHM & Overlay on Top of Hillshade
@@ -250,8 +267,7 @@ plot_band_array(teak_chm_array,teak_dtm_md['extent'],'TEAK Canopy Height Model',
 ax = plt.gca(); plt.grid('on')
 ```
 
-
-![png](output_15_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_15_0.png)
 
 
 Overlay the transparent hillshade, canophy height model, and DTM:
@@ -278,20 +294,9 @@ plt.title('TEAK 2013 \n Terrain, Hillshade, & Canopy Height')
 ```
 
 
-
-
     <matplotlib.text.Text at 0xdb4ebe0>
 
 
+![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_17_1.png)
 
 
-![png](output_17_1.png)
-
-
-## Referenced Webpages:
-
-http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade.htm
-
-https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
-
-http://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-analyst-toolbox/how-hillshade-works.htm

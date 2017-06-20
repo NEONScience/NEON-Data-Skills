@@ -46,6 +46,8 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI17.html %}
 
+ <a href="{{ site.baseurl }}/code/Python/lidar/neon_aop_lidar_raster_functions.py" class="btn btn-success">
+Download the neon_aop_lidar_raster_functions Module</a>
 
 </div>
 
@@ -308,7 +310,7 @@ plot_band_array(chm_array,chm_ext,(0,45),title='SERC Canopy Height',cmap_title='
 ![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_25_0.png)
 
 
-### Automate conversition with raster2array
+### Read in a GeoTIFF raster and associated metadata
 
 Now that we have a basic understanding of how GDAL reads in a GeoTIFF file, we 
 can write a function to read in a NEON geotif, convert it to a numpy array, and 
@@ -606,5 +608,36 @@ ax.legend(handles=[blue_box,red_box],handlelength=0.7,bbox_to_anchor=(1.05, 0.45
 
 
 ![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_34_2.png)
+
+
+ <div id="challenge" markdown="1">
+## Challenge: Add docstrings
+
+Clear code is important -- with this in mind add docstrings to the neon_aop_lidar_raster_functions.py 
+module. 
+
+1. Include a description of the module and a list of the functions it contains. 
+1. Include the following information for each function. (Refer to 
+<a href="http://www.python.org/dev/peps/pep-0257/" target="_blank"> the Python Developer's Guide on documentstrings</a> 
+for more information.) Use triple quotes to start and end a doc string ( """ docstring here """)
+
+* description of the function 
+* parameters (inputs)
+* returns (outputs)
+* See also ( list & briefly describe related functions)
+* Notes
+* Examples (how to execute the function. 
+
+ 
+1. Save the updated commented module to a python .py file from Jupyter using the 
+magic command: %%writefile neon_aop_lidar_raster_fucntions.py.  Alternatively, you 
+can copy it into a text editor or Spyder (a Python IDE) and save it as a .py file. 
+1. Once saved and re-loaded, use the `help(function)` or `function?` to view the 
+docstrings you wrote. 
+
+</div>
+
+
+
 
 
