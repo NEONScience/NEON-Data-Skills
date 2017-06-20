@@ -49,17 +49,27 @@ After completing this tutorial, you will be able to:
 </div>
 
 In this tutorial, we will learn how to remove parts of a raster based on pixel 
-values using a mask we create. As an example, we'll use the NEON TEAK CHM and 
-Aspect LiDAR data products, and create a raster containing South Facing pixels 
-where Canopy Height > 20m. 
+values using a mask we create. As an example, we'll use the NEON Teakettle field
+site (TEAK) canopy height model (CHM) and Aspect LiDAR data products, and create 
+a raster containing only **south facing** pixels where **canopy height > 20m.** 
 
 The graphic below illustrates raster masking.
 
-<img src="http://neon-workwithdata.github.io/neon-data-institute-2016/images/spatialData/raster_masks.jpg" style="width: 750px;"/>
+ <figure>
+	<a href="{{ site.baseurl }}images/spatialData/raster_masks.jpg">
+	<img src="{{ site.baseurl }}images/spatialData/raster_masks.jpg"></a>
+	<figcaption> Masks can be used to highlight desired parameters. 
+	Source: National Ecological Observatory Network (NEON) 
+	</figcaption>
+</figure>
+
+
 
 ## Import LiDAR Data
 
-To start, we will open the NEON LiDAR Digital Surface and Digital Terrain Models (DSM and DTM) which are in Geotiff (.tif) format. For this exercise we will continue working with the TEAK data subset. 
+To start, we will open the NEON LiDAR Digital Surface and Digital Terrain Models 
+(DSM and DTM) which are in Geotiff (.tif) format. For this exercise we will 
+continue working with the TEAK data subset. 
 
 
 ```python
@@ -83,10 +93,6 @@ def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar
     ax.ticklabel_format(useOffset=False, style='plain'); #do not use scientific notation #
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
 ```
-
-
-![png](output_3_0.png)
-
 
 
 ```python
@@ -141,14 +147,15 @@ def raster2array(geotif_file):
         print('More than one band ... need to modify function for case of multiple bands')
 ```
 
-Let's use this function to read in the classified TEAK Aspect raster created in the previous lesson. 
+Let's use this function to read in the classified TEAK Aspect raster created in 
+the previous lesson. 
 
 
 ```python
 teak_ns_array,teak_ns_md = raster2array('./Outputs/TEAK_NS_Classification.tif')
 ```
 
-Plot to check that it looks correct:
+Plot to check that it looks correct.
 
 
 ```python
@@ -177,8 +184,8 @@ ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(
 
 
 
+![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_8_1.png)
 
-![png](output_8_1.png)
 
 
 Now read in the TEAK CHM geotif array using the `raster2array` function from the module:
@@ -189,7 +196,8 @@ Now read in the TEAK CHM geotif array using the `raster2array` function from the
 teak_chm_array,teak_chm_md = raster2array('../data/TEAK/lidar/2013_TEAK_1_326000_4103000_pit_free_CHM.tif')
 ```
 
-Display the metadata. To get an idea of the range of canopy height values, look at the bandstats.
+Display the metadata. To get an idea of the range of canopy height values, look 
+at the band stats.
 
 
 ```python
@@ -212,7 +220,8 @@ for item in sorted(teak_chm_md):
     scaleFactor: 1.0
     
 
-To get a better idea of the distribution of the canopy heights, plot a histogram, first removing the zero and NaN values:
+To get a better idea of the distribution of the canopy heights, plot a 
+histogram, first removing the zero and NaN values.
 
 
 ```python
@@ -230,14 +239,9 @@ plt.xlabel('Canopy Height (m)'); plt.ylabel('Relative Frequency')
 ```
 
 
-
-
     <matplotlib.text.Text at 0x8d79908>
 
-
-
-
-![png](output_14_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_14_1.png)
 
 
 Now plot, setting the extent to 60m.
@@ -249,12 +253,13 @@ plot_band_array(teak_chm_array,teak_chm_md['extent'],(0,60), \
                 title='TEAK Canopy Height',cmap_title='Canopy Height, m',colormap='BuGn')
 ```
 
-
-![png](output_16_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_16_0.png)
 
 
 ## Mask Data by Aspect and NDVI
-Now that we have imported and converted the TEAK classified aspect and CHM rasters to arrays, we can use information from these to create a new raster consisting of pixels that are South facing and have a canopy height > 20m.
+Now that we have imported and converted the TEAK classified aspect and CHM 
+rasters to arrays, we can use information from these to create a new raster 
+consisting of pixels that are south facing and have a canopy height > 20m.
 
 
 ```python
@@ -285,11 +290,11 @@ plot_band_array(teak_chm_gt20,teak_chm_md['extent'],(20,60), \
                nan]]
     
 
+![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_18_1.png)
 
-![png](output_18_1.png)
 
-
-Now include the additional requirement that slope is South-facing (i.e. aspectNS_array = class 2)
+Now include the additional requirement that slope is south-facing (i.e., 
+aspectNS_array = class 2)
 
 
 ```python
@@ -300,15 +305,20 @@ plot_band_array(teak_chm_gt20_S,teak_chm_md['extent'],(20,60), \
                 title='TEAK Canopy Height > 20m \n South Facing',cmap_title='Canopy Height, m',colormap='Greens')
 ```
 
+![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_8_1.png)
 
-![png](output_20_0.png)
 
 
-# Practice Exercises - On Your Own
+ <div id="challenge" markdown="1">
+## Challenge #1: Export Masked Raster to Geotiff
 
-## Exercise #1: Export Masked Raster to Geotiff
+Use the array2raster function to export this masked raster to a geotiff. Pull it 
+into QGIS to make sure it looks reasonable. 
 
-Use the array2raster function to export this masked raster to a geotiff. Pull it into QGIS to make sure it looks reasonable. 
+## Challenge #2: Masking with other CHM LiDAR L2 products. 
+Choose thresholds for two (or more) of the TEAK LiDAR geotifs (DTM, DSM, CHM, 
+Slope, Aspect) and create a masked raster based on the criteria you chose. First 
+read in the GeoTIFFs as arrays and look at the statistics and histograms to 
+choose reasonable threshold values. 
 
-## Exercise #2: Try out masking with other CHM LiDAR L2 products. 
-Choose thresholds for two (or more) of the TEAK LiDAR geotifs (DTM, DSM, CHM, Slope, Aspect) and create a masked raster based on the criteria you chose. First read in the geotifs as arrays and look at the statistics and histograms to choose reasonable threshold values. 
+</div>
