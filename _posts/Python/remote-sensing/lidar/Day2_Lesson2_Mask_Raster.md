@@ -11,30 +11,29 @@ categories: [self-paced-tutorial]
 tags: [lidar, Python, raster, remote-sensing]
 mainTag: intro-lidar-py-series
 tutorialSeries: [intro-lidar-py-series]
-description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, Slope, 
-Aspect) into Python numpy arrays with gdal and create a classified raster object." 
+description: "In this tutorial, we will learn how to remove parts of a raster 
+based on pixel values using a mask we create." 
 image:
   feature: planeBanner.png
   credit:
   creditlink:
 permalink: /lidar/mask-raster-py/
-code1: Python/lidar/Classify_Raster_With_Threshold.ipynb
+code1: Python/lidar/Classify_Raster_With_Threshold.ipynb FIX
 comments: true
 
 ---
 
 {% include _toc.html %}
 
-In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS 
-(e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a classified raster object.
+In this tutorial, we will learn how to remove parts of a raster based on pixel 
+values using a mask we create.
 
 <div id="objectives" markdown="1">
 
 # Objectives
 After completing this tutorial, you will be able to:
 
-* Read NEON ldiar raster GeoTIFFS (e.g., CHM, slope aspect) into Python numpy arrays with gdal.
-* Create a classified raster object.
+* Remove parts of a raster using a mask.
 
 ### Install Python Packages
 
@@ -49,7 +48,10 @@ After completing this tutorial, you will be able to:
 
 </div>
 
-In this tutorial, we will learn how to remove parts of a raster based on pixel values using a mask we create. As an example, we'll use the NEON TEAK CHM and Aspect LiDAR data products, and create a raster containing South Facing pixels where Canopy Height > 20m. 
+In this tutorial, we will learn how to remove parts of a raster based on pixel 
+values using a mask we create. As an example, we'll use the NEON TEAK CHM and 
+Aspect LiDAR data products, and create a raster containing South Facing pixels 
+where Canopy Height > 20m. 
 
 The graphic below illustrates raster masking.
 
