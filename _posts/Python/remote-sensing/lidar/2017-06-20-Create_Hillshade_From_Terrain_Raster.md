@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Create a Hillshade from a Terrain Raster in Python "
+title: "Create a Hillshade from a Terrain Raster in Python"
 date: 2017-06-08
 dateCreated: 2017-06-20 
 lastModified: 2017-06-19 
@@ -16,8 +16,8 @@ image:
   feature: planeBanner.png
   credit:
   creditlink:
-permalink: /lidar/classify-raster-thresholds-py/
-code1: Python/lidar/Classify_Raster_With_Threshold.ipynb
+permalink: /lidar/create-hillshade-py/
+code1: 
 comments: true
 
 ---

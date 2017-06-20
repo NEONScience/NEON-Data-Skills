@@ -18,7 +18,7 @@ image:
   credit:
   creditlink:
 permalink: /lidar/mask-raster-py/
-code1: Python/lidar/Classify_Raster_With_Threshold.ipynb FIX
+code1: 
 comments: true
 
 ---
