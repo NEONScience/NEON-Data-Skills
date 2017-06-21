@@ -39,9 +39,9 @@
     <div class="article-wrap">
     <!-- List authors at the top of the lesson -->
     <span class="post-date">
-    Authors: {{ page.authors | join: ', ' %}}<br>
+    Authors: {{ page.authors | join: ', ' }}<br>
     {% if page.contributors %}
-    Reviewers: {{ page.contributors | join: ', ' %}}
+    Reviewers: {{ page.contributors | join: ', ' }}
     {% endif %}   
      </span>
       {{ content }}
@@ -155,11 +155,6 @@ workshop pages rather than tagged pages -->
 
 {% include _scripts.html %}
 
-<!-- This jQuery line finds any span that contains code highlighting classes and then selects the parent <pre> tag and adds a border. 
-This is done as a workaround to visually distinguish the code inputs and outputs -->
-<script>
-    $( ".hll, .n, .c, .err, .s1, .ss, .bp, .vc, .vg, .vi, .il" ).parent( "pre" ).css( "border", "1px solid #DEDEDE" );
-</script>
 
 </body>
 </html>
