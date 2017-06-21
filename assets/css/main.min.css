@@ -404,7 +404,7 @@ pre {
 }
 .highlight .k {
 	font-weight: bold;
-	color: #424242
+	color: #000
 }
 .highlight .o {
 	font-weight: bold;
@@ -524,7 +524,7 @@ pre {
 	color: #900
 }
 .highlight .nn {
-	color: #555
+	color: #919191
 }
 .highlight .nt {
 	color: #000080
