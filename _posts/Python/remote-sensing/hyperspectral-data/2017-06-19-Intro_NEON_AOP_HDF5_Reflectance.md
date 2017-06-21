@@ -797,8 +797,6 @@ in the linearly-stretched images.
 
 
 
-
-
 ### Challenge Code Solutions
 
 ## Challenge: Plot options to visualize the data
