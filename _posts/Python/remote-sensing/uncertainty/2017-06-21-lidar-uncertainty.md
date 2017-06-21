@@ -145,7 +145,8 @@ mapinfo_dsm1 = dsm1_dataset.GetGeoTransform()
 Using the mapping information, we will determine the partial extents of the data 
 by adding the number of columns and rows to the UTM northing and easting of the 
 upper left corner. Since we know all the data is from the same tile, this data 
-will be valid for all tiles. 
+will be valid for all tiles. However, if you have tiles that are the same you 
+would need to ensure that you are able to 
 
 
 ```python
@@ -155,6 +156,12 @@ xMax = xMin + chm_dataset.RasterXSize/mapinfo_dsm1[1]
 yMin = yMax + chm_dataset.RasterYSize/mapinfo_dsm1[5]
 image_extent = (xMin,xMax,yMin,yMax)
 ```
+
+```python
+print mapinfo_dsm1
+```
+     (607000.0, 1.0, 0.0, 3697000.0, 0.0, -1.0) 
+
 
 We will now read in the meta data for the remaining tiles
 
@@ -329,7 +336,7 @@ let's take a look at the histogram and map for the difference in DTMs.
 diff_dtm_array_mean = np.nanmean(diff_dtm_array)
 diff_dtm_array_std = np.nanstd(diff_dtm_array)
 print('Mean difference in DTMs: ',round(diff_dtm_array_mean,3),' (m)')
-print('Standard deviations of difference in DTMs: ',round(diff_dtm_array_std,3),' (m)')          
+print('Standard deviations of difference in DTMs: ',round(diff_dtm_array_std,3),' (m)') 
 
 plt.figure(4)
 plt.hist(diff_dtm_array.flatten()[~np.isnan(diff_dtm_array.flatten())],100,range=[diff_dtm_array_mean-2*diff_dtm_array_std, diff_dtm_array_mean+2*diff_dtm_array_std])
@@ -360,7 +367,7 @@ height to get a good color variation.
 
 
 ```python
-chm_array_mean = np.nanmean(chm_array)
+chm_array_mean = np.nanmean(chm_array [ chm_array!=0])
 chm_array_std = np.nanstd(chm_array)
 plt.figure(6)
 plot_band_array(chm_array,image_extent,'Canopy height Model','Canopy height (m)','Greens',[0, chm_array_mean])
