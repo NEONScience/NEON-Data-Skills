@@ -298,9 +298,9 @@ Next we will perfrom the watershed segmentation, which produces a raster of labe
 labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 ```
 
- <figure>
-	<a href="{{ site.baseurl }}/images/lidar/segments.jpg">
-	<img src="{{ site.baseurl }}/images/lidar/segments.jpg"></a>
+<figure>
+	<a href="{{ site.baseurl }}/images/lidar/Segments.jpg">
+	<img src="{{ site.baseurl }}/images/lidar/Segments.jpg"></a>
 	<figcaption> A raster classified based on watershed segmentation. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
