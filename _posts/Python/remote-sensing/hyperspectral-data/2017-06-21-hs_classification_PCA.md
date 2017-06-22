@@ -53,8 +53,14 @@ Download the spectral classification teaching data subset</a>
 This tutorial was prepared in conjunction with a presentation on spectral classification
 that can be downloaded. 
 
- <a href="https://ndownloader.figshare.com/files/8730613" class="btn btn-success">
-Download Dr. Paul Gader's Classification PPT</a>
+<a href="https://ndownloader.figshare.com/files/8730613" class="btn btn-success">
+Download Dr. Paul Gader's Classification 1 PPT</a>
+
+<a href="https://ndownloader.figshare.com/files/8731960" class="btn btn-success">
+Download Dr. Paul Gader's Classification 2 PPT</a>
+
+<a href="https://ndownloader.figshare.com/files/8731963" class="btn btn-success">
+Download Dr. Paul Gader's Classification 3 PPT</a>
 
 </div>
 
