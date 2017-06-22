@@ -18,7 +18,7 @@ image:
   credit:
   creditlink:
 permalink: /lidar/calc-biomass-py/
-code1: Python/lidar/Calc_biomass.ipynb
+code1: Python/lidar/Calc_Biomass.ipynb
 comments: true
 
 ---
