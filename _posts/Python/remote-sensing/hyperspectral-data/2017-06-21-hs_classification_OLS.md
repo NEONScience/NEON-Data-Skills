@@ -1,4 +1,4 @@
---
+---
 layout: post
 title: "Classification of Hyperspectral Data with Ordinary Least Squares in Python"
 date: 2017-06-06 
@@ -11,12 +11,12 @@ categories: [self-paced-tutorial]
 tags: [hyperspectral-remote-sensing, Python, remote-sensing]
 mainTag: intro-hsi-py-series
 tutorialSeries: [intro-hsi-py-series]
-description: "Learn to classify spectral data using the Ordinary Least Squares method. ." 
+description: "Learn to classify spectral data using the Ordinary Least Squares method." 
 image:
   feature: planeBanner.png
   credit:
   creditlink:
-permalink: /hs/classify-ols-python/
+permalink: /remote-sensing/classify-ols-python/
 code1: Python/hyperspectral-data/Classification_OLS.ipynb
 comments: true
 

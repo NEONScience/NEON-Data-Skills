@@ -1,4 +1,4 @@
---
+---
 layout: post
 title: "Classification of Hyperspectral Data with Principal Components Analysis in Python"
 date: 2017-06-05 
@@ -16,7 +16,7 @@ image:
   feature: planeBanner.png
   credit:
   creditlink:
-permalink: /hs/classify-pca-python/
+permalink: /remote-sensing/classify-pca-python/
 code1: Python/hyperspectral-data/Classification_PCA.ipynb
 comments: true
 
