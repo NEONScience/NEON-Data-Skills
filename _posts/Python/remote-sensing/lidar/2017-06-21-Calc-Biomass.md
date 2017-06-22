@@ -299,8 +299,8 @@ labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 ```
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/Segments.jpg">
-	<img src="{{ site.baseurl }}/images/lidar/Segments.jpg"></a>
+	<a href="{{ site.baseurl }}/images/lidar/Segments.png">
+	<img src="{{ site.baseurl }}/images/lidar/Segments.png"></a>
 	<figcaption> A raster classified based on watershed segmentation. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
