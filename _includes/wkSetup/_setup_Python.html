@@ -191,6 +191,20 @@ Therefore test out loading it using
 
 `import gdal`.  
 
+
+Note, if you are on a Mac/OSX operating system and get an error related to not
+being able to find `libjpeg` like: 
+
+ImportError: [...] Library not loaded: @rpath/libjpeg.8.dylib Referenced from: [...]
+
+return the Terminal and type in 
+
+`brew install libjpeg` 
+
+this should resolve the issue. Then restart notebooks and attempt to import gdal 
+again.  
+
+
 <h3 id="additional-resources"> Additional Resources</h3>
 
 * <a href="https://sites.google.com/site/pythonbootcamp/preparation" target="_blank"> Setting up the Python Environment section from the Python Bootcamp</a>
