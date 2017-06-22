@@ -299,10 +299,9 @@ labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 ```
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/max_filtered_non_filtered.jpg">
-	<img src="{{ site.baseurl }}/images/lidar/max_filtered_non_filtered.jpg"></a>
-	<figcaption> The difference in finding local maximums for a filtered vs. 
-	non-filtered CHM. 
+	<a href="{{ site.baseurl }}/images/lidar/segments.jpg">
+	<img src="{{ site.baseurl }}/images/lidar/segments.jpg"></a>
+	<figcaption> A raster classified based on watershed segmentation. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
 </figure>
