@@ -1,25 +1,20 @@
 ---
-syncID: d3f52facdd2e4ed9862a56f28217f5cb
-title: "Raster 03: Raster Calculations in R - Subtract One Raster from Another and Extract Pixel Values For Defined Locations"	
-description: "This tutorial covers how to subtract one raster from another using
-efficient methods - the overlay function compared to basic subtraction. We also 
-cover how to extract pixel values from a set of locations - for example a buffer
-region around plot locations at a field site. Finally, it explains the basic 
-principles of writing functions in R."	
+syncID: 24572ddda7fa41edbba407d040d87ea0
+title: Raster 00: Intro to Raster Data in R
+description: This tutorial reviews the fundamental principles, packages, metadata, and raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work withrasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format.
 dateCreated: 2015-10-23
-authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul
+authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
 estimatedTime:	
 packagesLibraries: raster, rgdal
-topics: data-manipulation
+topics: data-analysis
 subtopics: raster, spatial-data-gis
 languagesTool: R
-dataProduct:
-code1: /R/dc-spatial-raster/03-Raster-Calculations-In-R.R	
+dataProduct: 
+code1: tutorials/R/dc-spatial-raster/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 ---
 
-{% include _toc.html %}
 
 ## About
 In this tutorial, we will review the fundamental principles, packages and 
@@ -29,11 +24,9 @@ with rasters in `R`: **CRS**, **extent** and **resolution**. It also explores
 missing and bad data values as stored in a raster and how `R` handles these
 elements. Finally, it introduces the GeoTiff file format.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
-
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+## Tutorial Objectives
 
 After completing this activity, you will:
 
@@ -195,7 +188,7 @@ we'll use a naming convention of `datatype_HARV`.
     ## resolution  : 1, 1  (x, y)
     ## extent      : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## names       : HARV_dsmCrop 
     ## values      : 305.07, 416.07  (min, max)
 

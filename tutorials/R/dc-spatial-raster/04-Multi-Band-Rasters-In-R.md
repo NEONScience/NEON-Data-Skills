@@ -1,9 +1,7 @@
 ---
 syncID: 1c45b4a12e2a47f081c86f167059fad5
-title: "Raster 04: Work With Multi-Band Rasters - Image Data in R"	
-description: "This tutorial explores how to import and plot a multi-band raster in
-R. It also covers how to plot a three-band color image using the plotRGB
-function in R."	
+title: Raster 04: Work With Multi-Band Rasters - Image Data in R
+description: This tutorial explores how to import and plot a multi-band raster in R. It also covers how to plot a three-band color image using the plotRGB function in R.
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	
@@ -13,22 +11,19 @@ topics:  data-analysis, data-manipulation
 subtopics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
-code1: /R/dc-spatial-raster/04-Multi-Band-Rasters-In-R.R	
+code1: tutorials/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R.R	
 tutorialSeries: raster-data-series, raster-time-series
 ---
 
-{% include _toc.html %}
 
 ## About
 This tutorial explores how to import and plot a multi-band raster in
 R. It also covers how to plot a three-band color image using the `plotRGB()`
 function in `R`.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
-
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+## Tutorial Objectives
 After completing this activity, you will:
 
 * Know how to identify a single vs. a multi-band raster file.
@@ -185,7 +180,7 @@ in the first band. We can plot this band using the plot function.
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho 
     ## values      : 0, 255  (min, max)
 
@@ -252,7 +247,7 @@ want to work with). To import the green band, we would use `band=2`.
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho 
     ## values      : 0, 255  (min, max)
 
@@ -307,7 +302,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho.1 
     ## values      : 0, 255  (min, max)
     ## 
@@ -319,7 +314,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho.2 
     ## values      : 0, 255  (min, max)
     ## 
@@ -331,7 +326,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho.3 
     ## values      : 0, 255  (min, max)
 
@@ -344,7 +339,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## resolution  : 0.25, 0.25  (x, y)
     ## extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
     ## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## data source : /Users/mjones01/Documents/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+    ## data source : /Users/mjones01/Documents/data/NotInCurrentUse/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names       : HARV_RGB_Ortho.1 
     ## values      : 0, 255  (min, max)
 
