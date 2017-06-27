@@ -1,9 +1,7 @@
 ---
 syncID: cdeed1d7546a4a179c0cd83b17a4938c
-title: "Raster 01: Plot Raster Data in R"	
-description: "This tutorial explains how to plot a raster in R using R's base plot
-function. It also covers how to layer a raster on top of a hillshade to produce 
-an eloquent map."
+title: Raster 01: Plot Raster Data in R
+description: This tutorial explains how to plot a raster in R using R's base plot function. It also covers how to layer a raster on top of a hillshade to produce an eloquent map.
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
@@ -13,22 +11,19 @@ topics: data-visualization
 subtopics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
-code1: /R/dc-spatial-raster/01-Plot-Raster.R	
+code1: tutorials/R/dc-spatial-raster/01-Plot-Raster.R	
 tutorialSeries: raster-data-series
 ---
 
-{% include _toc.html %}
 
 ## About
 This tutorial reviews how to plot a raster in `R` using the `plot()` 
 function. It also covers how to layer a raster on top of a hillshade to produce 
 an eloquent map.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
-
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+## Tutorial Objectives
 
 After completing this activity, you will:
 

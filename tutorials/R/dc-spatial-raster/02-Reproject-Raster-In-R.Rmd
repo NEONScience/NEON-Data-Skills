@@ -1,12 +1,8 @@
 ---
 
 syncID: 31a20612d6b54b41b0f63b524b19839d
-title: "Raster 02: When Rasters Don't Line Up - Reproject Raster Data in R"	
-description: "This tutorial explores issues associated with working with rasters
-in different Coordinate Reference Systems (CRS) & projections. When two rasters 
-are in different CRS, they will not plot nicely together on a map. We will learn
-how to reproject a raster in R using the projectRaster function in the raster 
-package."
+title: Raster 02: When Rasters Don't Line Up - Reproject Raster Data in R
+description: This tutorial explores issues associated with working with rasters in different Coordinate Reference Systems (CRS) & projections. When two rasters are in different CRS, they will not plot nicely together on a map. We will learn how to reproject a raster in R using the projectRaster function in the raster package.
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	
@@ -16,11 +12,9 @@ topics: data-manipulation
 subtopics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
-code1: /R/dc-spatial-raster/02-Reproject-Raster-In-R.R	
+code1: tutorials/R/dc-spatial-raster/02-Reproject-Raster-In-R.R	
 tutorialSeries: raster-data-series
 ---
-
-{% include _toc.html %}
 
 ## About
 Sometimes we encounter raster datasets that do not "line up" when plotted or 
@@ -31,11 +25,9 @@ This tutorial explains how to deal with rasters in different, known CRSs. It
 will walk though reprojecting rasters in `R` using the `projectRaster()`
 function in the `raster` package.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
-
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+## Tutorial Objectives
 
 After completing this activity, you will:
 
