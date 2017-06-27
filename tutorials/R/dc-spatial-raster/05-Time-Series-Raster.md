@@ -336,10 +336,6 @@ Let's next view some temperature data for our field site to see whether there
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.
 
-
-    ## Want to understand how all the pieces fit together? Buy the
-    ## ggplot2 book: http://ggplot2.org/book/
-
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/05-Time-Series-Raster/view-temp-data-1.png)
 
 There are no significant peaks or dips in the temperature during the late summer
