@@ -1,9 +1,7 @@
 ---
 syncID: 53641e3826d3401abc682d5896010539
-title: "Data Activity: Visualize Precipitation Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize
-precipitation data in R to better understand the drivers and impacts of the 2013 
-Colorado floods."	
+title: Data Activity: Visualize Precipitation Data in R to Better Understand the 2013 Colorado Floods
+description: This lesson walks through the steps need to download and visualize precipitation data in R to better understand the drivers and impacts of the 2013 Colorado floods.
 dateCreated: 2016-05-18
 authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
 contributors:	
@@ -13,11 +11,9 @@ topics: data-visualization, data-manipulation
 subtopics: time-series
 languagesTool: R
 dataProduct:
-code1: /teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
+code1: tutorials/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
 tutorialSeries:
 ---
-
-{% include _toc.html %}
 
 Several factors contributed to extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 
@@ -28,7 +24,7 @@ can be used with the
 
 <div id="objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download precipitation data from 
@@ -41,9 +37,6 @@ After completing this tutorial, you will be able to:
 ### Things You'll Need To Complete This Lesson
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
-
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
 
 ### R Libraries to Install:
 
@@ -200,7 +193,11 @@ nteractive plots.
     library(ggplot2) # create efficient, professional plots
     library(plotly) # create cool interactive plots
 
+    ## Error: package or namespace load failed for 'plotly' in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+    ##  there is no package called 'DBI'
 
+
+    ## Error in library(webshot): there is no package called 'webshot'
 
 ## Import Precipitation Data
 
@@ -314,7 +311,7 @@ values, are labelled with the placeholder `999.99`. Do we have any NoData values
     # or other "weird" values that might be NA if we didn't know the NA value
     hist(precip.boulder$HPCP)
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/no-data-values-hist-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/no-data-values-hist-1.png)
 
 Looking at the histogram, it looks like we have mostly low values (which makes sense) but a few values
 up near 1000 -- likely 999.99. We can assign these entries to be `NA`, the value that
@@ -361,7 +358,7 @@ Now that we've cleaned up the data, we can view it. To do this we will plot usin
 
     ## Warning: Removed 94 rows containing missing values (position_stack).
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/plot-precip-hourly-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/plot-precip-hourly-1.png)
 
 As we can see, plots of hourly date lead to very small numbers and is difficult
 to represent all information on a figure. Hint: If you can't see any bars on your
@@ -387,7 +384,7 @@ with only dates (no time) and then re-plot.
     # double check conversion
     str(precip.boulder$DATE)
 
-    ##  Date[1:1840], format: "2003-01-01" "2003-02-01" "2003-02-03" "2003-02-03" ...
+    ##  Date[1:1840], format: "2003-01-01" "2003-02-01" "2003-02-03" "2003-02-03" "2003-02-03" ...
 
     precPlot_daily1 <- ggplot(data=precip.boulder,  # the data frame
           aes(DATE, HPCP)) +   # the variables of interest
@@ -399,7 +396,7 @@ with only dates (no time) and then re-plot.
 
     ## Warning: Removed 94 rows containing missing values (position_stack).
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/daily-summaries-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/daily-summaries-1.png)
 
 R will automatically combine all data from the same day and plot it as one entry.  
 
@@ -460,7 +457,7 @@ Now we can plot the daily data.
     
     precPlot_daily
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/daily-prec-plot-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/daily-prec-plot-1.png)
 
 Compare this plot to the plot we created using the first method. Are they the same? 
 
@@ -497,7 +494,7 @@ scale on the x-axis with `scale_x_date()`.
 
     ## Warning: Removed 770 rows containing missing values (position_stack).
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/plot-Aug-Oct-2013-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/plot-Aug-Oct-2013-1.png)
 
 Now we can easily see the dramatic rainfall event in mid-September! 
 
@@ -531,7 +528,7 @@ Now let's create a subset of the data and plot it.
     
     precPlot_flood2 
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/subset-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R/subset-data-1.png)
 
 
 ## Interactive Plots - Plotly
@@ -547,16 +544,9 @@ Let's turn our plot into an interactive Plotly plot.
     #view plotly plot in R
     ggplotly(precPlot_flood2)
 
-![ ]({{ site.baseurl }}/images/rfigs/disturb-events-co13/COOP-NEIS-Precipitation-In-R/plotly-precip-data-1.png)
-
     #publish plotly plot to your plot.ly online account when you are happy with it
     plotly_POST(precPlot_flood2)
 
-    ## No encoding supplied: defaulting to UTF-8.
-
-    ## Success! Modified your plotly here -> https://plot.ly/~NEONDataSkills/4
-
-<iframe src="https://plot.ly/~NEONDataSkills/4.embed" width="800" height="600" id="igraph" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 <div id="challenge" markdown="1">
 
@@ -570,44 +560,5 @@ As an added challenge, aggregate the data by month instead of by day.
 
 
 
-</div>
 
-
-## Additional Resources
-
-### Units & Scale
-If you are using a dataset downloaded before 2016, the units were in 
-**hundredths of an inch**, this isn't the most useful measure. You might want to
-create a new column `PRECIP` that contains the data from `HPCP` converted to 
-inches.  
-
-
-    # convert from 100th inch by dividing by 100
-    precip.boulder$PRECIP<-precip.boulder$HPCP/100
-    
-    # view & check to make sure conversion occured
-    head(precip.boulder)
-
-    ##       STATION    STATION_NAME ELEVATION LATITUDE LONGITUDE       DATE HPCP
-    ## 1 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-01-01  0.0
-    ## 2 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-02-01  0.0
-    ## 3 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-02-03  0.2
-    ## 4 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-02-03  0.1
-    ## 5 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-02-03  0.1
-    ## 6 COOP:050843 BOULDER 2 CO US    1650.5 40.03389 -105.2811 2003-02-05  0.1
-    ##   Measurement.Flag Quality.Flag            DateTime PRECIP
-    ## 1                g              2003-01-01 01:00:00  0.000
-    ## 2                g              2003-02-01 01:00:00  0.000
-    ## 3                               2003-02-02 19:00:00  0.002
-    ## 4                               2003-02-02 22:00:00  0.001
-    ## 5                               2003-02-03 02:00:00  0.001
-    ## 6                               2003-02-05 02:00:00  0.001
-
-#### Question
-Compare `HPCP` and `PRECIP`. Did we do the conversion correctly?  
-
-
-***
-Return to the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/detailed-lesson"> *Ecological Disturbance Teaching Module* by clicking here</a>.
 

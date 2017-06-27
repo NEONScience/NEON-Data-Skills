@@ -1,9 +1,7 @@
 ---
 syncID: 53641e3826d3401abc682d5896010539
-title: "Data Activity: Visualize Precipitation Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize
-precipitation data in R to better understand the drivers and impacts of the 2013 
-Colorado floods."	
+title: Data Activity: Visualize Precipitation Data in R to Better Understand the 2013 Colorado Floods
+description: This lesson walks through the steps need to download and visualize precipitation data in R to better understand the drivers and impacts of the 2013 Colorado floods.
 dateCreated: 2016-05-18
 authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
 contributors:	
@@ -13,11 +11,9 @@ topics: data-visualization, data-manipulation
 subtopics: time-series
 languagesTool: R
 dataProduct:
-code1: /teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
+code1: tutorials/teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
 tutorialSeries:
 ---
-
-{% include _toc.html %}
 
 Several factors contributed to extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 
@@ -28,7 +24,7 @@ can be used with the
 
 <div id="objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download precipitation data from 
@@ -41,9 +37,6 @@ After completing this tutorial, you will be able to:
 ### Things You'll Need To Complete This Lesson
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
-
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
 
 ### R Libraries to Install:
 

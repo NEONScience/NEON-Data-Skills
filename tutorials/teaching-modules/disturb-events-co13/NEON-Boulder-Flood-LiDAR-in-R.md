@@ -1,6 +1,6 @@
 ---
 syncID: f578b1b20ef9483183a8c0abbf417440
-title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods"
+title: Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods
 description:	
 dateCreated: 2016-05-18
 authors: Leah A. Wasser, Megan A. Jones
@@ -11,11 +11,10 @@ topics: data-visualization, data-manipulation
 subtopics: time-series, lidar
 languagesTool: R
 dataProduct:
-code1: /teaching-modules/disturb-events-co13/NEON-Boulder-Flood-LiDAR-in-R.R	
+code1: tutorials/teaching-modules/disturb-events-co13/NEON-Boulder-Flood-LiDAR-in-R.R	
 tutorialSeries:
 ---
 
-{% include _toc.html %}
 
 This tutorial focuses on how to visualize digital elevation models derived from
 LiDAR data in R. The tutorial is part of the Data Activities that can be used 
@@ -36,9 +35,6 @@ to raster objects in R)
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
 
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
-
 ### R Libraries to Install:
 
 * **raster:** `install.packages("raster")`
@@ -55,7 +51,7 @@ entire unzipped directory in the `data` directory you just created. If you choos
 elsewhere you will need to modify the directions below to set your working 
 directory accordingly.
 
-</div>
+</div>ß
 
 
  
