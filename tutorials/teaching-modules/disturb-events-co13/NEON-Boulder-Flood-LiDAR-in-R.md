@@ -1,7 +1,7 @@
 ---
 syncID: f578b1b20ef9483183a8c0abbf417440
-title: Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods
-description:	
+title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods"
+description: "This tutorial walks through how to work with NEON lidar data. The data specifically downloaded for this activity allows one to to better understand the impacts of the 2013 Colorado floods."
 dateCreated: 2016-05-18
 authors: Leah A. Wasser, Megan A. Jones
 contributors:	
@@ -51,7 +51,7 @@ entire unzipped directory in the `data` directory you just created. If you choos
 elsewhere you will need to modify the directions below to set your working 
 directory accordingly.
 
-</div>ß
+</div>
 
 
  

@@ -1,7 +1,7 @@
 ---
 syncID: 24572ddda7fa41edbba407d040d87ea0
-title: Raster 00: Intro to Raster Data in R
-description: This tutorial reviews the fundamental principles, packages, metadata, and raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work withrasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format.
+title: "Raster 00: Intro to Raster Data in R"
+description: "This tutorial reviews the fundamental principles, packages, metadata, and raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work withrasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format."
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
