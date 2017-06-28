@@ -1,7 +1,7 @@
 ---
 syncID: d3f52facdd2e4ed9862a56f28217f5cb
-title: Raster 03: Raster Calculations in R - Subtract One Raster from Another and Extract Pixel Values For Defined Locations	
-description: This tutorial covers how to subtract one raster from another using efficient methods - the overlay function compared to basic subtraction. We also cover how to extract pixel values from a set of locations - for example a buffer region around plot locations at a field site. Finally, it explains the basic  principles of writing functions in R.
+title: "Raster 03: Raster Calculations in R - Subtract One Raster from Another and Extract Pixel Values For Defined Locations"
+description: "This tutorial covers how to subtract one raster from another using efficient methods - the overlay function compared to basic subtraction. We also cover how to extract pixel values from a set of locations - for example a buffer region around plot locations at a field site. Finally, it explains the basic  principles of writing functions in R."
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul
 contributors:	

@@ -1,7 +1,7 @@
 ---
 syncID: 1c45b4a12e2a47f081c86f167059fad5
-title: Raster 04: Work With Multi-Band Rasters - Image Data in R
-description: This tutorial explores how to import and plot a multi-band raster in R. It also covers how to plot a three-band color image using the plotRGB function in R.
+title: "Raster 04: Work With Multi-Band Rasters - Image Data in R"
+description: "This tutorial explores how to import and plot a multi-band raster in R. It also covers how to plot a three-band color image using the plotRGB function in R."
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	

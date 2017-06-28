@@ -1,7 +1,7 @@
 ---
 syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
-title: Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods
-description: This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods.
+title: "Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods"
+description: "This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods."
 dateCreated: 2016-05-18
 authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon	
 contributors:	
