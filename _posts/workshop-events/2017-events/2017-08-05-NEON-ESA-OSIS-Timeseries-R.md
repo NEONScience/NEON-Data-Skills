@@ -67,14 +67,16 @@ To participant in this workshop, you will need a **laptop** with the most
 current version of R, and preferably RStudio, loaded on your computer. 
 
 For details on setting up RStudio in Mac, PC, or Linux operating systems please
-see [the instructions below]({{ site.baseurl }}/workshop-event/ESA2016-raster-time-workshop#additional-set-up-resources).
+see [the instructions below]({{ site.baseurl }}/workshop-event/ESA2017-NEON-timeseries-workshop#additional-set-up-resources).
 
 ### Install R Packages
 
 Please have these packages *installed* and *updated* **prior** to the start of 
 the workshop.
 
-TBD: Workshop materials will be posted by July 2017
+* **dplyr:** `install.packages("dplyr")`
+* **ggplot2:** `install.packages("ggplot2")`
+* **lubridate:** `install.packages("lubridate")`
 
 #### Updating R Packages
 
@@ -88,7 +90,7 @@ installed in R automatically.
 
 ### Download Data
 
-TBD: Workshop materials will be posted by July 2017
+{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
 
 Once you have downloaded the data, please set up a "data" directory as a parent 
 directory to these three **uncompressed** directories. Set your R working 
@@ -108,12 +110,12 @@ Please get in touch with the instructors prior to the workshop with any question
 
 ## #WorkWithData Hashtag
   
-Please tweet using the hashtag **#WorkWithData** during this workshop!
+Please tweet using the hashtag **#WorkWithData** & **@NEON_Sci** during this workshop!
 
 ## Workshop Schedule
 
-**Location**: TBD 
-Please double check the conference schedule as rooms may change!
+**Location**: C125-126, Oregon Convention Center
+Please double check the conference schedule as rooms can change!
 
 Please note that the schedule listed below may change depending upon the pace of
 the workshop! 
@@ -122,11 +124,11 @@ the workshop!
 | Time	| Topic	
 |-------------|---------------
 | 11:45	| Please come early if you have any setup or installation issues.
-| 12:00	| Workshop Materials will be linked to by July 2017
+| 12:00	| Working With NEON Phenology Data - Discrete Time Series
 | 13:30	|  --------- BREAK 1 --------- 
-| 13:45	|  Workshop Materials will be linked to by July 2017
+| 13:45	|  Working with NEON Temperature Data - Continuous Time Series
 | 15:00	| --------- BREAK 2 --------- 
-| 15:15	|Workshop Materials will be linked to by July 2017
+| 15:15	|  Combining Discrete & Continuous Time Series in Plotting 
 | 16:30	| Final Questions & Evaluation
 
 
@@ -156,7 +158,9 @@ downloaded from the internet, if so, the .zip file will download there.
 
 #### 3) Move to **data** directory
 Third, move the data files to a directory called **data** directory within the
-**Documents** directory on your computer. 
+**Documents** directory on your computer. You can choose to place the directory
+in other locations, however, you will need to remember to set your R Working 
+Directory to that location and not as we demonstrate in the workshop. 
 
 
 #### 4) Unzip/uncompress
