@@ -1,0 +1,94 @@
+---
+layout: post
+title: "Use the neonDataStackR package to access NEON data"
+date:   2017-08-01
+authors: [Megan A. Jones ]
+contributors: [ ] 
+dateCreated: 2017-08-01
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+packagesLibraries: [neonDataStackR]
+category: [self-paced-tutorial]
+tags: [ ]
+mainTag: R
+tutorialSeries: [ ]
+description: "Convert data downloaded from the NEON Data Portal in zipped month-by-site files into a table with all data of interest. Temperature data is used as an example. "
+code1: neonDataStackR-temp.R
+image:
+  feature: laptopCode.png
+  credit: National Ecological Observatory Network (NEON)
+  creditlink: 
+permalink: /R/neonDataStackR-temp
+comments: true
+---
+
+This tutorial goes over how to convert data downloaded from the NEON Data Portal 
+in zipped month-by-site files into individual files with all data from the 
+given site(s) and months. Temperature data is used as an example.
+
+## Download the Data
+To start, you must have your data of interest downloaded from the 
+<a href="data.neonscience.org" target="_blank"> NEON Data Portal</a>.  
+
+The stacking function will only work on Comma Seperated Value (.csv) files and 
+not the NEON data stored in other formats (HDF5, etc). 
+
+Your data will download in a single zipped file. 
+
+The example data is any single-aspirated air temperature available from 
+1 January 2015 to 31 December 2016. 
+
+## neonDataStackR package
+
+This package was written to stack data downloaded in month-by-site files into a 
+full table with all the data of interest from all sites in the downloaded date
+range.  
+
+More information on the package see the README in the associated GitHub repo 
+<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonDataStackR" target="_blank"> NEONScience/NEON-utilities</a>. 
+
+First, install the package from the GitHub repo. You must have the **devtools** 
+package installed to do this. Then load the package. 
+
+```{r loadStuff}
+
+library(devtools)
+install_github("NEONScience/NEON-utilities/neonDataStackR", dependencies=TRUE)
+library (neonDataStackR)
+
+```
+
+Now there is a single function to run in this package `stackByTable()`. The output
+will yield data grouped into new files by table name.  For example the single 
+aspirated air temperature data product contains 1 minute and 30 minute interval
+data. The output from this function is one .csv with 1 minute data and one .csv 
+with 30 minute data. 
+
+Depending on your file size this function may run for a while. The 2015 and 2016
+single aspirated air temperature from two sites that I used for the example took
+about 25 minutes to complete.  
+
+
+```{r run-function, eval = FALSE}
+stackByTable("data/NEON_temp-air-single.zip")
+
+```
+
+```{r sample-output, eval=FALSE}
+
+Unpacked  2016-02-SERC-DP1.00002.001-basic-20160708035158.zip
+Unpacked  2016-03-SERC-DP1.00002.001-basic-20160708035642.zip
+Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
+Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
+Stacked  SAAT_1min
+Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
+Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
+Stacked  SAAT_30min
+Finished: All of the data are stacked into  2  tables!
+
+```
+
+From the single-aspirated air temperature data we are given two final tables. 
+One with 1 minute intervals: **SAAT_1min** and one for 30 minute intervals: **SAAT_30min**.  
+
+These .csv files are now ready for use.  
+

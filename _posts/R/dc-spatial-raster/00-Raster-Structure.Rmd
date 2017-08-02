@@ -72,7 +72,7 @@ on your computer to complete this tutorial.
 
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
 Read more about the `raster` package in `R`.</a>
-* <a href="http://neondataskills.org/R/Raster-Data-In-R/" target="_blank" >
+* <a href="{{ site.baseurl }}/R/Raster-Data-In-R/" target="_blank" >
 NEON Data Skills: Raster Data in R - The Basics</a>
 * <a href="http://neondataskills.org/R/Image-Raster-Data-In-R/" target="_blank" >
 NEON Data Skills: Image Raster Data in R - An Intro</a>
@@ -84,8 +84,8 @@ Raster or "gridded" data are stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth's surface.
 
 <figure>
-    <a href="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
-    <img src="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
+    <a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png">
+    <img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
