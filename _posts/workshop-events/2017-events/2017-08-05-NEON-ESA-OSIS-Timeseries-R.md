@@ -40,10 +40,10 @@ will work with temperature and phenology data to explore working with and
 visualizing data with different time scale intervals. Key skills learned will 
 include:  
 
-1. working with data.frames in R, 
-2. converting timestamps stored as text strings to R date or datetime (e.g. POSIX) classes, 
+1. working with data.frames in R (dplyr package), 
+2. converting timestamps stored as text strings to R date or datetime (e.g. POSIX) classes (lubridate package), 
 3. aggregating data across different time scales (day vs month) and 
-4. plotting time series data. 
+4. plotting time series data (ggplot2 package). 
 
 ### Required Prior Knowledge
 
@@ -142,36 +142,7 @@ Data Skills portal</a>.
 
 ## Additional Set Up Resources
 
-### Set Working Directory to Downloaded Data
-
-#### 1) Download Data
-
-After clicking on the **Download Data** button, the data will automatically 
-download to the computer. 
-
-#### 2) Locate .zip file
-Second, find the downloaded .zip file. Many browsers default to 
-downloading to the **Downloads** directory on your computer. 
-Note: You may have previously specified a specific directory (folder) for files
-downloaded from the internet, if so, the .zip file will download there.
-
-
-#### 3) Move to **data** directory
-Third, move the data files to a directory called **data** directory within the
-**Documents** directory on your computer. You can choose to place the directory
-in other locations, however, you will need to remember to set your R Working 
-Directory to that location and not as we demonstrate in the workshop. 
-
-
-#### 4) Unzip/uncompress
-
-Fourth, we need to unzip/uncompress the file so that the data files can be 
-accessed. Use your favorite tool that can unpackage/open .zip files (e.g.,
-winzip, Archive Utility, etc). The files will now be accessible in three directories:
-
-These directories contain all of the subdirectories and files that
-we will use in this workshop. 
-
+{% include wkSetup/_setup_data.html %}
 
 ***
 
