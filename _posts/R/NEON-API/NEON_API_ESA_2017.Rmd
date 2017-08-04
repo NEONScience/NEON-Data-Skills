@@ -1,0 +1,402 @@
+---
+layout: post
+title: "Using the NEON API in R"
+description: "Tutorial for getting data from the NEON API, using R and the R package httr"
+date:   2017-08-07
+dateCreated:  2017-07-07
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+estimatedTime: 1 - 1.5 hours
+packagesLibraries: [httr, jsonlite, devtools, geoNEON, neonDataStackR]
+authors: [Claire K. Lunch]
+contributors: [Christine Laney, Megan A. Jones]
+categories: [self-paced-tutorial]
+mainTag: API
+tags: [R, API]
+code1: 
+image:
+  feature:
+  credit:
+  creditlink:
+permalink: /R/neon-api/
+comments: false
+---
+
+{% include _toc.html %}
+
+## About
+This is a lesson in pulling data from the NEON API. The lesson uses R 
+and the R package httr, but the core information about the API is applicable 
+to other languages and approaches.
+
+There are 3 basic categories of NEON data:
+
+1. Observational - Data collected by a human in the field, or in an analytical laboratory, e.g. beetle identification, foliar isotopes
+1. Instrumentation - Data collected by an automated, streaming sensor, e.g. net radiation, soil carbon dioxide
+1. Remote sensing - Data collected by the airborne observation platform, e.g. LIDAR, surface reflectance
+
+This lesson covers the first two types of data. NEON remote sensing data are not currently available through the API.
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
+**API Skill Level:** Beginner - you have little to no experience with APIs.
+
+<div id="objectives" markdown="1">
+
+# Goals / Objectives
+After completing this activity, you will:
+
+* Be able to pull observational, instrumentation, and geolocation data from the NEON API.
+* Be able to transform API-accessed data from JSON to tabular format for analyses.
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **httr:** `install.packages("httr")`
+* **jsonlite:** `install.packages("jsonlite")`
+* **dplyr:** `install.packages("dplyr")`
+* **devtools:** `install.packages("devtools")`
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
+* **neonDataStackR:** `devtools::install_github("NEONScience/NEON-utilities/neonDataStackR")`
+
+### Additional Resources
+
+* [Website for the NEON API](http://data.neonscience.org/data-api)
+* [GitHub repository for the NEON API](https://github.com/NEONScience/neon-data-api)
+* [ROpenSci wrapper for the NEON API](https://github.com/ropenscilabs/nneo) (not covered in this tutorial)
+
+</div>
+
+## Anatomy of an API call
+
+An example API call: http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07
+
+This includes the base URL, endpoint, and target.
+
+### Base URL: 
+<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#C6C5C5">/data/DP1.10003.001/WOOD/2015-07</span>
+
+Specifics are appended to this in order to get the data or 
+metadata you're looking for, but all calls to this API will include 
+the base URL. For the NEON API, this is http://data.neonscience.org/api/v0 
+(not clickable, because the base URL by itself will take you nowhere!)
+
+### Endpoints: 
+<span style="color:#C6C5C5">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#C6C5C5">/DP1.10003.001/WOOD/2015-07</span>
+
+What type of data or metadata are you looking for?
+
+* **~/products**
+  Information about one or all of NEON's data products
+
+* **~/sites**
+  Information about data availability at the site specified in the call
+
+* **~/locations**
+  Spatial data for the NEON locations specified in the call
+
+* **~/data**
+  Data! By product, site, and date (in monthly chunks).
+
+### Targets:
+<span style="color:#C6C5C5">http://data.neonscience.org/api/v0/data</span><span style="color:#A00606;font-weight:bold">/DP1.10003.001/WOOD/2015-07</span>
+
+The specific data product, site, or location you want to get data for.
+
+
+## Observational data
+Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>.
+
+We'll pick Breeding landbird point counts, DP1.10003.001
+
+First query the products endpoint of the API to find out which sites and dates 
+have data available. In the products endpoint, the target is the numbered 
+identifier for the data product:
+
+``` {r os-avail-query}
+
+library(httr)
+library(jsonlite)
+library(dplyr, quietly=T)
+req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
+
+```
+
+The object returned from `GET()` has many layers of information. Entering the name of 
+the object gives you some basic information about what you downloaded. The `content()` 
+function returns the contents in the form of a highly nested list. This is typical of 
+JSON-formatted data returned by APIs:
+
+``` {r os-query-contents}
+
+req
+req.content <- content(req, as="parsed")
+req.content
+
+```
+
+To get a more accessible view of which sites have data for which months, you'll 
+need to extract data from the nested list. There are a variety of ways to do this, 
+in this tutorial we'll explore a couple of them. Here we'll use `fromJSON()`, in the 
+`jsonlite` package, which doesn't fully flatten the nested list, but gets us the part 
+we need. To use it, we need a text version of the content:
+
+``` {r os-query-fromJSON}
+
+req.text <- content(req, as="text")
+avail <- fromJSON(req.text, simplifyDataFrame=T, flatten=T)
+avail
+
+```
+
+The object contains a lot of information about the data product, including 
+keywords under `$data$keywords`, references for documentation under `$data$specs`, 
+and data availability by site and month under `$data$siteCodes`, 
+which is what we need to tell us what we can download. The specific 
+URLs for the API calls for each site and month are listed under 
+`$data$siteCodes$availableDataUrls`, so we don't even have to write the calls 
+ourselves in the next steps.
+
+``` {r os-query-avail-data}
+
+bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
+bird.urls
+
+```
+
+These are the URLs showing us what files are available for each month where 
+there are data. For simplicity, we'll just query the single month of data 
+available at the Woodworth (WOOD) site.
+
+``` {r os-query-bird-data-urls}
+
+brd <- GET(bird.urls[grep("WOOD", bird.urls)])
+brd.files <- fromJSON(content(brd, as="text"))
+brd.files$data$files
+
+```
+
+And now we have the names of the files available for this site and 
+month, and URLs where we can get the files. We'll use 
+the file names to pick which ones we want.
+
+The available files include both data and metadata, and both the basic and 
+expanded data packages. Metadata are described by file name below. Basic 
+and expanded data packages are available for most NEON data products 
+(some only have basic). Typically the expanded package includes additional 
+quality or uncertainty data, either in additional files or additional 
+fields in the basic files.
+
+The format for most of the file names is 
+NEON.[domain number].[site code].[data product ID].[file-specific name].
+[date of file creation] 
+
+Some files omit the domain and site, since they're not specific to a 
+location, like the data product readme. The date of file creation, in 
+this case 20170720T182547Z, can be used to determine whether data have 
+been updated since the last time you downloaded.
+
+Leaving off NEON.D09.WOOD.10003.001, available files in our query for 
+July 2015 at Woodworth are all of the following: 
+
+* **~.2015-07.expanded.20170720T182547Z.zip:** zip of all files in the expanded package
+  
+* **~.brd_countdata.2015-07.expanded.20170720T182547Z.csv:** count data table, expanded package version: counts of birds at each point
+  
+* **~.brd_perpoint.2015-07.expanded.20170720T182547Z.csv:** point data table, expanded package version: metadata at each observation point
+  
+* **NEON.Bird Conservancy of the Rockies.brd_personnel.csv:** personnel data table: accuracy scores for bird observers
+  
+* **~.2015-07.basic.20170720T182547Z.zip:** zip of all files in the basic package
+  
+* **~.brd_countdata.2015-07.basic.20170720T182547Z.csv:** count data table, basic package version: counts of birds at each point
+  
+* **~.brd_perpoint.2015-07.basic.20170720T182547Z.csv:** point data table, basic package version: metadata at each observation point
+  
+* **NEON.DP1.10003.001_readme.txt:** readme for the data product (not specific to dates or location). Appears twice in the list, since it's in both the basic and expanded package
+  
+* **~.20150101-20160613.xml:** Ecological Metadata Language (EML) file. Appears twice in the list, since it's in both the basic and expanded package
+  
+* **~.validation.20170720T182547Z.csv:** validation file for the data product: lists input data and data entry rules. Appears twice in the list, since it's in both the basic and expanded package
+  
+* **~.variables.20170720T182547Z.csv:** variables file for the data product: lists data fields in downloaded tables. Appears twice in the list, since it's in both the basic and expanded package
+
+
+We'll get the data tables for the point data and count data in the basic 
+package. The list of files doesn't return in the same order every time, so we 
+won't use position in the list to select. Plus, we want code we can re-use 
+when getting data from other sites and other months. So we select files 
+based on the data table name and the package name:
+
+``` {r os-get-bird-data}
+
+brd.count <- read.delim(brd.files$data$files$url
+                        [intersect(grep("countdata", brd.files$data$files$name),
+                                    grep("basic", brd.files$data$files$name))], sep=",")
+
+brd.point <- read.delim(brd.files$data$files$url
+                        [intersect(grep("perpoint", brd.files$data$files$name),
+                                    grep("basic", brd.files$data$files$name))], sep=",")
+
+```
+
+Just to prove the files we pulled have actual data in them, a quick graphic:
+
+``` {r os-plot-bird-data}
+
+clusterBySp <- brd.count %>% group_by(scientificName) %>% 
+  summarize(total=sum(clusterSize))
+clusterBySp <- clusterBySp[order(clusterBySp$total, decreasing=T),]
+barplot(clusterBySp$total, names.arg=clusterBySp$scientificName, 
+        ylab="Total", cex.names=0.5, las=2)
+
+```
+
+
+## Instrumentation data
+The process is essentially the same for sensor data. We'll do the same series of 
+queries for Soil temperature, DP1.00041.001, and get data from Moab in March.
+
+``` {r soil-data}
+
+req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
+avail.soil <- fromJSON(content(req.soil, as="text"), simplifyDataFrame=T, flatten=T)
+temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
+tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
+tmp.files <- fromJSON(content(tmp, as="text"))
+tmp.files$data$files$name
+
+```
+
+These file names start out the same as the observational files, then 
+are a little more cryptic. The structure is: NEON.[domain number].
+[site code].[data product ID].00000.[soil plot number].[depth].
+[averaging interval].[data table name]
+
+So NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.csv is 
+the 30-minute mean of soil temperature at Moab in soil plot 2, 
+4th depth below the surface.
+
+Each file name is listed twice, for the basic and expanded packages. 
+We'll pull out the URL for the plot and depth above by selecting the 
+file name and the word "basic" in the URL.
+
+Go get it:
+
+``` {r os-get-soil-data}
+
+soil.temp <- read.delim(tmp.files$data$files$url
+                        [intersect(grep("002.504.030", tmp.files$data$files$name),
+                                   grep("basic", tmp.files$data$files$url))], sep=",")
+
+```
+
+And again, a plot to show we've downloaded something with data in it:
+
+``` {r os-plot-soil-data}
+
+plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab="T")
+
+```
+
+Note: the file names for instrumentation data products will be changing in 
+the very near future, and will be more similar to the observational file 
+names above. See Dust and particulate size distribution (DP1.00017.001) 
+for an example.
+
+
+## Geolocation data
+You may have noticed some of the spatial data referenced above is a bit vague, 
+e.g. "soil plot 2, 4th depth below the surface."
+
+How to get spatial data and what to do with it depends on which type of 
+data you're working with.
+
+### Instrumentation data (either aquatic or terrestrial)
+Stay tuned - spatial data for instruments are in the process of entry into 
+the NEON database.
+
+### Observational data - Aquatic
+Latitude, longitude, elevation, and associated uncertainties are included in 
+data downloads. Most products also include an "additional coordinate uncertainty" 
+that should be added to the provided uncertainty. Additional spatial data, such 
+as northing and easting, can be downloaded from the API.
+
+### Observational data - Terrestrial
+Latitude, longitude, elevation, and associated uncertainties are included in 
+data downloads. These are the coordinates and uncertainty of the sampling plot; 
+for many protocols it is possible to calculate a more precise location. 
+Instructions for doing this are in the data product user guides, and code is 
+in the `geoNEON` package on GitHub.
+
+### Querying a single named location
+Let's look at the named locations in the bird data we downloaded. To do this, 
+look for the field called `namedLocation`, which is present in all observational 
+data products, both aquatic and terrestrial.
+
+```{r get-bird-NLs}
+
+head(brd.point$namedLocation)
+
+```
+
+Query the locations endpoint of the API for the first named location, 
+WOOD_013.birdGrid.brd
+
+```{r brd-ex-NL}
+
+req.loc <- GET("http://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd")
+brd.WOOD_013 <- fromJSON(content(req.loc, as="text"))
+brd.WOOD_013
+
+```
+
+Note spatial information under `$data` and under `$data$locationProperties`.
+Also note `$data$locationChildren`: these are the finer scale locations that 
+can be used to calculate precise spatial data for bird observations.
+
+For convenience, we'll use the `geoNEON` package to make the calculations. 
+First we'll use `def.extr.geo.os()` to get the additional spatial information 
+available through the API, and look at the spatial resolution available in the 
+initial download:
+
+```{r brd-extr-NL}
+
+library(geoNEON)
+brd.point.loc <- def.extr.geo.os(brd.point)
+
+symbols(brd.point.loc$easting, brd.point.loc$northing, 
+        circles=brd.point.loc$uncorr.coordinateUncertainty, 
+        xlab="Easting", ylab="Northing", tck=0.01, inches=F)
+
+```
+
+And use `def.calc.geo.os()` to calculate the point locations of 
+observations:
+
+```{r brd-calc-NL}
+
+brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
+
+symbols(brd.point.pt$easting, brd.point.pt$northing, 
+        circles=brd.point.pt$coordinateUncertainty, 
+        xlab="Easting", ylab="Northing", tck=0.01, inches=F)
+
+```
+
+
+## Coming soon
+At the top of this tutorial, we installed the `neonDataStackR` package. 
+This is a custom R package that stacks the monthly files provided by 
+the NEON data portal into a single continuous file for each type of 
+data table in the download. It currently handles files downloaded from 
+the data portal, but not files pulled from the API. That functionality 
+will be added soon!
+
+For a guide to using `neonDataStackR` on data downloaded from the portal, 
+look <a href="http://neondataskills.org/R/neonDataStackR-temp" target="_blank">here</a>.
+
+
+
