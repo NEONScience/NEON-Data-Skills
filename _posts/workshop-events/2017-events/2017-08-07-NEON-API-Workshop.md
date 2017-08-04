@@ -45,8 +45,7 @@ needed. The demonstration materials will also be made available online.
 
 This 1.5-hr workshop will be taught at the 2017 meeting of the Ecological
 Society of America (ESA) in Portland, OR. You must be a registered 
-attendee of the conference **and register for this workshop with your ESA 
-registration** to participate in this workshop. For more information, visit the 
+attendee of the conference. For more information, visit the 
 <a href="http://www.esa.org/portland/" target="_blank">ESA 2017 annual meeting website</a>.
 
 <div id="objectives" markdown="1">
@@ -86,24 +85,21 @@ installed in R automatically.
 
 Please get in touch with the instructors prior to the workshop with any questions.
 
-## #WorkWithData Hashtag
-  
-Please tweet using the hashtag **#WorkWithData** during this workshop!
+## Tweet?  
+Please tweet using the hashtag **#WorkWithData** and **@NEON_Sci** during this 
+workshop!
 
 ## Workshop Schedule
 
-**Location**: TBA
+**Location**: B115, Oregon Convention Center
 Please double check the conference schedule as rooms may change!
-
-Please note that the schedule listed below may change depending upon the pace of
-the workshop! 
 
 
 | Time	| Topic	
 |-------------|---------------
 | 11:15	| Please come early if you have any setup or installation issues.
 | 11:30	| Begin workshop
-| 	| Workshop Materials will be linked to at a later date.  
+| 	| <a href="{{ site.baseurl }}/R/neon-api/" target="_blank"> Using the NEON API in R tutorial </a>   
 | 13:15	| End workshop
 
 
