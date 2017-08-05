@@ -36,7 +36,7 @@ labels, colors and overall plot appearance using `ggthemes`.
 
 <div id="objectives" markdown="1">
 
-# Goals / Objectives
+# Objectives
 After completing this tutorial, you will:
 
  * Be able to create basic time series plots using `ggplot()` in `R`.
