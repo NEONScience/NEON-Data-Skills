@@ -97,7 +97,6 @@ Please double check the conference schedule as rooms may change!
 
 | Time	| Topic	
 |-------------|---------------
-| 11:15	| Please come early if you have any setup or installation issues.
 | 11:30	| Begin workshop
 | 	| <a href="{{ site.baseurl }}/R/neon-api/" target="_blank"> Using the NEON API in R tutorial </a>   
 | 13:15	| End workshop
