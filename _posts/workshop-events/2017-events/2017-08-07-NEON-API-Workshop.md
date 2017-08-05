@@ -65,6 +65,10 @@ Please have these packages *installed* and *updated* **prior** to the start of
 the workshop.
 
 * **httr:** `install.packages("httr")`
+* **jsonlite:** `install.packages("jsonlite")`
+* **dplyr:** `install.packages("dplyr")`
+* **devtools:** `install.packages("devtools")`
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
 
 #### Updating R Packages
 
