@@ -36,7 +36,7 @@ demonstrate how to use the API, focusing on access via the R package `httr`, but
 also covering the general API structure. Attendees are encouraged to bring 
 laptops and code along with the demonstration. 
 
-### Required Prior Knowledge
+#### Required Prior Knowledge
 
 Basic familiarity with R is recommended; no previous experience with APIs 
 needed. The demonstration materials will also be made available online. 
@@ -50,14 +50,14 @@ attendee of the conference. For more information, visit the
 
 <div id="objectives" markdown="1">
 
-## Things You’ll Need For The Workshop
+# Things You’ll Need For The Workshop
 
 To fully participant in this workshop, we recommend you bring a **laptop** with 
 the most current version of R loaded on your computer. You can still participate
 in the workshop without bringing a laptop. 
 
 For details on setting up R & RStudio in Mac, PC, or Linux operating systems, 
-please see [the instructions below]({{ site.baseurl }}/workshop-event/ESA2016-raster-time-workshop#additional-set-up-resources).
+please see [the instructions below]({{ site.baseurl }}/workshop-event/ESA2017-API-workshop/#additional-set-up-resources).
 
 ### Install R Packages
 
