@@ -50,8 +50,7 @@ on your computer to complete this tutorial.
 
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-* **ggplot2:** `install.packages("ggplot2")`
-
+* **lubridate:** `install.packages("lubridate")`
 
 [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
 

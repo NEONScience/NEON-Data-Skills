@@ -77,6 +77,9 @@ the workshop.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **lubridate:** `install.packages("lubridate")`
+* **scales:** `install.packages("scales")`
+* **tidyr:** `install.packages("tidyr")`
+* **gridExtra:** `install.packages("gridExtra")`
 
 #### Updating R Packages
 
