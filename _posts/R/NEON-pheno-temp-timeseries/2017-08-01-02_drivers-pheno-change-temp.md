@@ -114,7 +114,7 @@ above ground level. Air temperature for this data product is provided as
 one- and thirty-minute averages of 1 Hz observations. Temperature observations 
 are made using platinum resistance thermometers, which are housed in a fan 
 aspirated shield to reduce radiative bias. The temperature is measured in Ohms 
-and subsequently converted to degrees celcius. Details on the conversion can be
+and subsequently converted to degrees Celsius. Details on the conversion can be
 found in the associated Algorithm Theoretic Basis Document (ATBD). 
 
 #### Available Data Tables
