@@ -132,6 +132,12 @@ the workshop!
 | 16:30	| Final Questions & Evaluation
 
 
+### Charging Station
+ESA has informed us there will not be power available at each table. However, 
+there will be a charging station in the room. If you are concerned about battery 
+during the workshop, consider reducing your screen brightness at the start of the 
+workshop. 
+
 ## Online Tutorials
 
 All NEON workshops and self-paced tutorials can be accessed via the 
