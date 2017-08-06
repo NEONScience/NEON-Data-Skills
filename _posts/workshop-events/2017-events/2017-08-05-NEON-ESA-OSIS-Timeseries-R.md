@@ -124,11 +124,11 @@ the workshop!
 | Time	| Topic	
 |-------------|---------------
 | 11:45	| Please come early if you have any setup or installation issues.
-| 12:00	| Working With NEON Phenology Data - Discrete Time Series
+| 12:00	| <a href="{{ site.baseurl }}/R/plant-pheno-data" target="_blank">Working With NEON Phenology Data - Discrete Time Series</a>
 | 13:30	|  --------- BREAK 1 --------- 
-| 13:45	|  Working with NEON Temperature Data - Continuous Time Series
+| 13:45	|  <a href="{{ site.baseurl }}/R/neon-SAAT-temp" target="_blank">Working with NEON Temperature Data - Continuous Time Series</a>
 | 15:00	| --------- BREAK 2 --------- 
-| 15:15	|  Combining Discrete & Continuous Time Series in Plotting 
+| 15:15	|  <a href="{{ site.baseurl }}/R/neon-pheno-temp-plot" target="_blank">Combining Discrete & Continuous Time Series in Plotting </a>
 | 16:30	| Final Questions & Evaluation
 
 
