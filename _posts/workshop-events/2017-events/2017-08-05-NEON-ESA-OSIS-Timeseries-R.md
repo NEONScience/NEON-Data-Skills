@@ -111,7 +111,7 @@ If you would like further instruction please see the bottom of this page
 
 Please get in touch with the instructors prior to the workshop with any questions.
 
-## #WorkWithData Hashtag
+## Twitter?
   
 Please tweet using the hashtag **#WorkWithData** & **@NEON_Sci** during this workshop!
 
