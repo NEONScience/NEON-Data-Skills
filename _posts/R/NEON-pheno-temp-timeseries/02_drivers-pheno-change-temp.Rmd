@@ -99,11 +99,11 @@ need to consult the
 Temperature is continuously monitored by NEON a by two methods. At terrestrial 
 sites temperature for the top of the tower will be derived from the triple 
 redundant aspirated air temperature sensor. This is provided as NEON data 
-product **NEON.DP1.100XXX**.  Single Aspirated Air Temperature 
+product **NEON.DP1.00003**.  Single Aspirated Air Temperature 
 Sensors (SAATS) are deployed to develop temperature profiles at the tower at NEON
 terrestrial sites and on the micromet station at NEON aquatic sites. This is 
 provided as NEON data product 
-**NEON.DP1.100XXX**.
+**NEON.DP1.00002**.
 
 #### Single-aspirated Air Temperature
 
