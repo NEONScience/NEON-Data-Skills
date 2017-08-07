@@ -83,7 +83,7 @@ installed in R automatically.
 </div>
 
 ### Workshop Instructors
-* **[Claire Lunch](http://www.neonscience.org/about/staff/claire-lunch)**; Staff Scientist, Plant Physiology; NEON program, Battelle
+* **[Claire Lunch](http://www.neonscience.org/about/staff/claire-lunch)**; @dr_lunch, Staff Scientist, Plant Physiology; NEON program, Battelle
 * **[Megan A. Jones](http://www.neonscience.org/about/staff/megan-jones)**; @meganahjones, Staff Scientist/Science Educator; NEON program, Battelle
 * **[Christine Laney](http://www.neonscience.org/about/staff/christine-laney)**; Staff Scientist; NEON program, Battelle
 
