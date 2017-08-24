@@ -49,6 +49,11 @@ on your computer to complete this tutorial.
 #### Data to Download
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
 
+### TEST NEW BUTTON STYLING
+
+<div><a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download NEON Teaching Data Subset: Airborne Remote Sensing Data</a>
+</div>
+
 ****
 
 {% include/_greyBox-wd-rscript.html %}
