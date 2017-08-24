@@ -1,0 +1,11 @@
+- slug: git
+  name: Git & GitHub
+
+- slug: python
+  name: Python programming
+  
+- slug: R
+  name: R programming
+
+- slug: spreadsheet
+  name: Spreadsheets
