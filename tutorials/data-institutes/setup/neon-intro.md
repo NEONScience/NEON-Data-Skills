@@ -1,14 +1,13 @@
 ---
 syncID: 43d571dbf6dc4dbb9c8f7bdaaed526a2
 title: "Introduction to the National Ecological Observatory Network (NEON)"
-description: "This page provides an overview of NEON and the data provided by NEON."
+description: "This page provides an overview of NEON and the data provided by NEON for use with NEON workshops and Data Institutes."
 dateCreated: 2014-05-06
 authors:
 contributors:
 estimatedTime: 1.0 Hour
 packagesLibraries:
 topics: data-management
-subtopics:
 languagesTool:
 dataProduct:
 code1:
@@ -65,10 +64,10 @@ Watch this 4:22 minute video exploring the spatial design of NEON field sites.
 
 Please read the following page about NEON's Spatial Design:
 
-<a class="btn btn-info" href="http://www.neonscience.org/updates-events/update/primer-neon-sampling-design" target="_blank">
+<a class="link--button link--arrow" href="http://www.neonscience.org/updates-events/update/primer-neon-sampling-design" target="_blank">
 Read this primer on NEON's Sampling Design</a>
 
-<a class="btn btn-info" href="http://www.neonscience.org/science-design/spatiotemporal-design" target="_blank">
+<a class="link--button link--arrow" href="http://www.neonscience.org/science-design/spatiotemporal-design" target="_blank">
 Read about the different types of field sites - core and relocatable</a>
 {: .readme }
 
@@ -79,7 +78,7 @@ Explore the NEON Field Site map taking note of the locations of
 1. Aquatic & terrestrial field sites.
 2. Core & relocatable field sites.
 
-<a class="btn btn-info" href="http://www.neonscience.org/science-design/field-sites" target="_blank">
+<a class="link--button link--arrow" href="http://www.neonscience.org/science-design/field-sites" target="_blank">
 Click here to view the NEON Field Site Map</a>
 
 Explore the NEON field site map. Do the following:
@@ -210,7 +209,7 @@ desirable one that does have data available.
 Because NEON is still in construction, NEON data are not currently available for
 every field site.
 
-<a class="btn btn-info" href="http://data.neonscience.org/data-product-catalog" target="_blank">
+<a class="link--button link--arrow" href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Products Catalog.</a>
 
 <i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 

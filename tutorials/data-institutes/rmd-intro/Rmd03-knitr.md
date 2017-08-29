@@ -8,7 +8,6 @@ contributors:
 estimatedTime:
 packagesLibraries: [knitr, rmarkdown]
 topics: data-management
-subtopics: [R,RMarkdown]
 languagesTool: R
 dataProducts:
 code1:

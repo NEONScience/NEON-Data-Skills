@@ -8,7 +8,6 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics: data-management, data-analysis
-subtopics: 
 languagesTool: git-github
 dataProduct:
 code1:

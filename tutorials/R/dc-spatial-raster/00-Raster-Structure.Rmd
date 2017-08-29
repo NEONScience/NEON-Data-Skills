@@ -1,17 +1,22 @@
 ---
 syncID: 24572ddda7fa41edbba407d040d87ea0
 title: "Raster 00: Intro to Raster Data in R"
-description: "This tutorial reviews the fundamental principles, packages, metadata, and raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work withrasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format."
+description: "This tutorial reviews the fundamental principles, packages and 
+metadata/raster attributes that are needed to work with raster data in R. It 
+covers the three core metadata elements that we need to understand to work with
+rasters in R: CRS, Extent and Resolution. It also explores missing and bad data 
+values as stored in a raster and how R handles these elements. Finally, it 
+introduces the GeoTiff file format."	
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
 estimatedTime:	
 packagesLibraries: raster, rgdal
-topics: data-analysis
+topics:
 subtopics: raster, spatial-data-gis
 languagesTool: R
-dataProduct: 
-code1: tutorials/R/dc-spatial-raster/00-Raster-Structure.R
+dataProduct:
+code1: /R/dc-spatial-raster/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 ---
 
@@ -24,11 +29,13 @@ with rasters in `R`: **CRS**, **extent** and **resolution**. It also explores
 missing and bad data values as stored in a raster and how `R` handles these
 elements. Finally, it introduces the GeoTiff file format.
 
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
 <div id="objectives" markdown="1">
 
-## Tutorial Objectives
+## Objectives
 
-After completing this activity, you will:
+After completing this tutorial, you will be able to:
 
 * Understand what a raster dataset is and its fundamental attributes.
 * Know how to explore raster attributes in `R`.

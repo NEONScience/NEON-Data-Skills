@@ -8,7 +8,6 @@ contributors:
 estimatedTime:
 packagesLibraries: [knitr, rmarkdown]
 topics: data-management
-subtopics: [R,RMarkdown]
 languagesTool: R
 dataProduct:
 code1:
@@ -176,7 +175,7 @@ the outputs.
 When you render your document to HTML, this markdown will appear as text on the 
 output HTML document. 
 
-<a class="btn btn-info" href="http://rmarkdown.rstudio.com/authoring_basics.html" target="_blank"> Learn More about RStudio Markdown Basics</a>
+<a class="link--button link--arrow" href="http://rmarkdown.rstudio.com/authoring_basics.html" target="_blank"> Learn More about RStudio Markdown Basics</a>
 
 ### Explore Your R Markdown File
 

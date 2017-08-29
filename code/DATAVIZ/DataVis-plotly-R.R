@@ -5,10 +5,16 @@
 ## Sys.setenv("plotly_api_key"="YOUR_api_key")
 ## 
 
-## ----create-plotly-plot--------------------------------------------------
-# Set working directory to the data directory
-# setwd("YourFullPathToDataDirectory")
+## ----load-libraries-hidden, echo=FALSE, results="hide"-------------------
+# this package is only added to get the webpage derived from this code to render
+# the plotly graphs.  It is NOT needed for any of the analysis or data 
+# visualizations.
 
+# install.packages("webshot")
+# webshot::install_phantomjs() 
+library(webshot) # embed the plotly plots
+
+## ----create-plotly-plot--------------------------------------------------
 
 # load packages
 library(plotly)  # to create interactive plots
@@ -18,7 +24,7 @@ library(ggplot2) # to create plots and feed to ggplotly()
 str(economics)
 
 # plot with the plot_ly function
-unempPerCapita <- plot_ly(economics, x = date, y = unemploy/pop)
+unempPerCapita <- plot_ly(x =economics$date, y = economics$unemploy/economics$pop)
 unempPerCapita 
 
 
@@ -34,6 +40,6 @@ ggplotly(unemployment)
 ## ----pub-plotly, eval=FALSE----------------------------------------------
 ## 
 ## # publish plotly plot to your plotly online account
-## plotly_POST(unemployment)
+## api_create(unemployment)
 ## 
 

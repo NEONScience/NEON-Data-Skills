@@ -1,8 +1,8 @@
 # Welcome to the NEON Data Skills Git Repo!
 
 NEON Data Skills provides tutorials and resources for working with scientific 
-data. NEON (National Ecological Observatory Network) is an ecological observatory,
-funded by the National Science Foundation and operated by Battelle, that will 
+data. The National Ecological Observatory Network (NEON) is an ecological observatory,
+funded by the National Science Foundation and proudly operated by Battelle, that will 
 collect and provide open data for 30 years. 
 
 Check out the NEON Data Skills portal for the online resources and upcoming events: 
@@ -25,7 +25,7 @@ ability to work with heterogeneous ecological data.
 
 Having a problem getting something to work or want to know why the repo is setup 
 in a certain way? Email us **neondataskills -AT- BattelleEcology.org** or 
-[file a GitHub Issue](https://github.com/neoninc/NEON-Data-Skills/issues). And 
+[file a GitHub Issue](https://github.com/neonscience/NEON-Data-Skills/issues). And 
 if you have a cool resource that you think would add to the site, please let us 
 know!
 

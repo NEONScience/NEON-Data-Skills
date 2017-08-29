@@ -1,13 +1,19 @@
-## ----load-libraries, results='hide'--------------------------------------
+## ----load-libraries------------------------------------------------------
 
-#Load required packages
-  library(raster)
-	library(rhdf5)
+# Load required packages
+library(raster)
+library(rhdf5)
+library(rgdal)
+library(maps)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files
+#setwd("working-dir-path-here")
 
 
 ## ----read-in-file--------------------------------------------------------
 
-#Read in H5 file
+# Read in H5 file
 f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
 #View HDF5 file structure 
 h5ls(f,all=T)
@@ -15,25 +21,25 @@ h5ls(f,all=T)
 
 ## ----get-spatial-attributes----------------------------------------------
 
-#r get spatial info and map info using the h5readAttributes function
+# R get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
-#define coordinate reference system
+# define coordinate reference system
 myCrs <- spInfo$projdef
-#define the resolution
+# define the resolution
 res <- spInfo$xscale
 
 #Populate the raster image extent value. 
 mapInfo<-h5read(f,"map info")
-#the map info string contains the lower left hand coordinates of our raster
-#let's grab those next
+# the map info string contains the lower left hand coordinates of our raster
+# let's grab those next
 # split out the individual components of the mapinfo string
 mapInfo<-unlist(strsplit(mapInfo, ","))
 
-#grab the utm coordinates of the lower left corner
+# grab the utm coordinates of the lower left corner
 xMin<-as.numeric(mapInfo[4])
 yMax<-as.numeric(mapInfo[5]) 
 
-#r get attributes for the Reflectance dataset
+# R get attributes for the Reflectance dataset
 reflInfo <- h5readAttributes(f,"Reflectance")
 
 #create objects represents the dimensions of the Reflectance dataset
@@ -108,8 +114,6 @@ hsiStack <- stack(rgb_rast)
 
 ## ----plot-raster-stack---------------------------------------------------
 
-
-
 #Add the band numbers as names to each raster in the raster list
 
 #Create a list of band names
@@ -156,7 +160,6 @@ plotRGB(hsiStack,
 ## ----save-raster-geotiff-------------------------------------------------
 
 #write out final raster	
-#note - you can bring this tiff into any GIS program!
 #note: if you set overwrite to TRUE, then you will overwite or lose the older
 #version of the tif file! keep this in mind.
 writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
@@ -164,12 +167,11 @@ writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
 ## ----create-location-map-------------------------------------------------
 
-#Create a Map showing the location of our dataset in R
-library(maps)
-map(database="state",region="california")
+# Create a Map showing the location of our dataset in R
+map(database="state", region="california")
 points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
 #add title to map.
-title(main="NEON San Joaquin Field Site - Southern California")
+title(main="NEON San Joaquin (SJER) Field Site - Central California")
 
 
 ## ----create-NDVI---------------------------------------------------------
@@ -207,6 +209,5 @@ brk <- c(0, .4, .7, .9)
 
 #plot the image using breaks
 plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
-
 
 

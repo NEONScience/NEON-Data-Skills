@@ -1,14 +1,15 @@
 ## ----load libraries------------------------------------------------------
 
-# To access HDF5 files in R, we will use the rhdf5 library which is part of the 
-#Bioconductor suite of R libraries.
-
-#install rhdf5 package
+# Install rhdf5 package (only need to run if not already installed)
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("rhdf5")
 
-#Call the R HDF5 Library
+# Call the R HDF5 Library
 library("rhdf5")
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files
+#setwd("working-dir-path-here")
 
 
 ## ----create_new_hdf5_file------------------------------------------------
@@ -17,10 +18,10 @@ library("rhdf5")
 h5createFile("vegData.h5")
 h5createFile()
 
-#create a group called aNEONSite within the H5 file
+# create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")
 
-#view the structure of the h5 we've created
+# view the structure of the h5 we've created
 h5ls("vegData.h5")
 
 ## ----create_sample_data--------------------------------------------------
@@ -44,19 +45,18 @@ h5ls("vegData.h5")
 # but be cautious using this command!
 h5dump("vegData.h5")
 
-#Close the file. This is good practice.
+# Close the file. This is good practice.
 H5close()
 
 
 ## ----add-attributes-to-file----------------------------------------------
 
-#open the file, create a class
+# open the file, create a class
 fid <- H5Fopen("vegData.h5")
-#open up the dataset to add attributes to, as a class
+# open up the dataset to add attributes to, as a class
 did <- H5Dopen(fid, "aNEONSite/temperature")
 
-# Provide the NAME and the ATTR (what the attribute says) 
-# for the attribute.
+# Provide the NAME and the ATTR (what the attribute says) for the attribute.
 h5writeAttribute(did, attr="Here is a description of the data",
                  name="Description")
 h5writeAttribute(did, attr="Meters",
@@ -64,26 +64,30 @@ h5writeAttribute(did, attr="Meters",
 
 
 ## ----group-attributes----------------------------------------------------
-#let's add some attributes to the group
+# let's add some attributes to the group
 did2 <- H5Gopen(fid, "aNEONSite/")
+
 h5writeAttribute(did2, attr="San Joaquin Experimental Range",
                  name="SiteName")
+
 h5writeAttribute(did2, attr="Southern California",
                  name="Location")
 
-#close the files, groups and the dataset when you're done writing to them!
+# close the files, groups and the dataset when you're done writing to them!
 H5Dclose(did)
+
 H5Gclose(did2)
+
 H5Fclose(fid)
 
 
 ## ----read & review attributes--------------------------------------------
 
-#look at the attributes of the precip_data dataset
+# look at the attributes of the precip_data dataset
 h5readAttributes(file = "vegData.h5", 
                  name = "aNEONSite/temperature")
 
-#look at the attributes of the aNEONsite group
+# look at the attributes of the aNEONsite group
 h5readAttributes(file = "vegData.h5", 
                  name = "aNEONSite")
 
@@ -100,13 +104,13 @@ H5close()
 
 ## ----access-plot-data----------------------------------------------------
 
-#create a quick plot of the data
+# create a quick plot of the data
 hist(testSubset2)
 
 
-## ----challenge step 1 help-----------------------------------------------
+## ----challenge-code-HDF5-file, echo=FALSE--------------------------------
 
-#options(stringsAsFactors = FALSE)
-#newData <- read.csv("D17_2013_SJER_vegStr.csv")
+# options(stringsAsFactors = FALSE)
+# newData <- read.csv("D17_2013_SJER_vegStr.csv")
 
 
