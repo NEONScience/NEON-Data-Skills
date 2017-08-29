@@ -5,10 +5,9 @@ description: "This page outlines the tools and resources that you will need to c
 dateCreated: 2014-05-06
 authors:
 contributors:
-estimatedTime: 1.0 - 1.5 Hours
+estimatedTime: 1.0 Hour
 packagesLibraries:
-topics: data-management
-subtopics: [rep-sci]
+topics: data-management, rep-sci
 languageTools:
 dataProduct: 
 code1:
@@ -41,7 +40,7 @@ your own research.
 Please view the online slide-show below which summarizes concepts taught in the
 Reproducible Science Curriculum.
 
-<a  class="btn btn-info" href="http://neon-workwithdata.github.io/slide-shows/intro-reprod-science.html" target="_blank">View Reproducible Science Slideshow</a>
+<a  class="link--button link--arrow" href="http://neon-workwithdata.github.io/slide-shows/intro-reprod-science.html" target="_blank">View Reproducible Science Slideshow</a>
 
 ## A Gap In Understanding
 
@@ -65,7 +64,7 @@ Reproducible Science Curriculum.
 
 How reproducible is your current research?
 
-<a class="btn btn-info" href="https://github.com/Reproducible-Science-Curriculum/rr-intro/blob/master/checklist.md" target="_blank"> View Reproducible Science Checklist </a>
+<a class="link--button link--arrow" href="https://github.com/Reproducible-Science-Curriculum/rr-intro/blob/master/checklist.md" target="_blank"> View Reproducible Science Checklist </a>
 
 <div class="notice thought" markdown="1">
 <i class="fa fa-star"></i> **Thought Questions:** Have a look at the reproducible

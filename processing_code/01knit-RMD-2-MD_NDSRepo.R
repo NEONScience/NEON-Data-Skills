@@ -9,24 +9,24 @@
 require(knitr)
 dirs <- c("R/primer-raster-data",
           "LIDAR",
-					"HDF5",
+					"data-institutes/rmd-intro",
           "R/dc-spatial-raster",
-          "teaching-modules/disturb-events-co13")
+          "dataviz")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[5]
+dir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills/"
 
 # not needed for Drupal site
 # jekyll will only render md posts that begin with a date. Add one.
 #add.date <- "2017-03-29-"
 
 # set working dir - this is where the data are located
-wd <- "~/Documents/data/NotInCurrentUse/disturb-events-co13"
+wd <- "~/Documents/data/"
 
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
@@ -38,9 +38,9 @@ subDir <- paste0(dir,"/")
 
 # subDir <- "institute-materials/day2_tuesday/"
 
-#don't change - this is the posts dir location required by jekyll
+#don't change - this is the tutorials dir location required by jekyll
 postsDir <- file.path("tutorials/", subDir)
-codeDir <- file.path("tutorials/", subDir)
+codeDir <- file.path("code/", subDir)
 
 # images path
 imagePath <- paste0("images/rfigs/", subDir)
@@ -49,16 +49,17 @@ imagePath <- paste0("images/rfigs/", subDir)
 base.url="{{ site.baseurl }}/"
 opts_knit$set(base.url = base.url)
 
-#################### Check For / Set up Image Directories  #############################
-# make sure image directory exists
+#################### Check For/Set up Image Directories  #############################
+# make sure image directory exists within the working directory (will later by 
+# transfered, and deleted)
 # if it doesn't exist, create it
 # note this will fail if the sub dir doesn't exist
 if (file.exists(file.path(wd, imagePath))){
-  print("All Required Image Dirs Exist! ")
+  print("Temp Image Dirs Exists! ")
 } else {
   #create image directory structure
   dir.create(file.path(wd, imagePath), recursive = TRUE)
-  print("image directories created!")
+  print("temp image directory created!")
 }
 
 # NOTE -- delete the image directory at the end!
@@ -68,14 +69,14 @@ if (file.exists(file.path(wd, imagePath))){
 # then clean out image subdir on git if it exists
 # note this will fail if the sub dir doesn't exist
 if (file.exists(file.path(gitRepoPath, imagePath))){
-  print("image dir exists")
+  print("GIT image dir exists")
 } else {
   # create image directory structure
   dir.create(file.path(gitRepoPath, imagePath), recursive = TRUE)
-  print("git image directories created!")
+  print("GIT image directory created!")
 }
 
-################# Check For / Set up / Clean out Code Dir  #################
+################# Check For/Set up/Clean out Code Dir  #################
 
 if (file.exists(file.path(gitRepoPath, codeDir))){
   print("code dir exists - and has been cleaned out")
@@ -85,12 +86,12 @@ if (file.exists(file.path(gitRepoPath, codeDir))){
   print("new code sub dir created.")
 }
 
-################# Clean out posts Dir  #################
+################# Clean out Dirs  #################
 # NOTE: comment this out if you just want to rebuild one lesson
 
-# clean out images dir to avoid the issue of duplicate files
-unlink(paste0(gitRepoPath, postsDir,"*"), recursive = TRUE)
-# clean out images dir to avoid the issue of duplicate files
+# clean out posts dir to avoid the issue of duplicate files -- WHY? this deletes the files?
+#unlink(paste0(gitRepoPath, postsDir,"*"), recursive = TRUE)
+# clean out code dir to avoid the issue of duplicate files
 unlink(paste0(gitRepoPath, codeDir,"*"), recursive = TRUE)
 # clean out images dir to avoid the issue of duplicate files
 unlink(paste0(gitRepoPath, imagePath,"*"), recursive = TRUE)

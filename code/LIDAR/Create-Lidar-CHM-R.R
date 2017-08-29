@@ -10,7 +10,7 @@ library(rgdal)
 ## ----import-dsm----------------------------------------------------------
 
 # assign raster to object
-dsm <- raster("SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
+dsm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
 
 # view info about the raster.
 dsm
@@ -22,7 +22,7 @@ plot(dsm, main="LiDAR Digital Surface Model \n SJER, California")
 ## ----plot-DTM------------------------------------------------------------
 
 # import the digital terrain model
-dtm <- raster("SJER/DigitalTerrainModel/SJER2013_DTM.tif")
+dtm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif")
 
 plot(dtm, main="LiDAR Digital Terrain Model \n SJER, California")
 

@@ -6,7 +6,6 @@ dateCreated: 2014-05-06
 estimatedTime:
 packagesLibraries:
 topics: data-management
-subtopic: 
 languagesTool:
 dataProduct:
 code1:

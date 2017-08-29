@@ -4,12 +4,11 @@ title: "Install Git, Bash Shell, Python"
 description: "This page outlines the tools and resources that you will need to
  complete the Data Institute activities."
 dateCreated: 2017-04-10
-authors: [Materials adapted from Data Carpentry by NEON staff]
+authors: Materials adapted from Data Carpentry by NEON staff
 contributors: 
 estimatedTime:
 packagesLibraries:
 topics: data-management 
-subtopics:
 languagesTool: Git, Bash, Python
 dataProduct: 
 code1: 
@@ -30,8 +29,6 @@ Institute. Detailed directions to accomplish each objective are below.
 * Install Bash shell (or shell of preference) 
 * Install Git 
 * Install Python 3.x
-
-
 
 ## Installation Instructions
 

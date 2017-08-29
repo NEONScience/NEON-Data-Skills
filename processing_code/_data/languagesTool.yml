@@ -1,0 +1,20 @@
+- slug: git
+  name: Git & GitHub
+
+- slug: python
+  name: Python programming
+  
+- slug: R
+  name: R programming
+
+- slug: QGIS
+  name: QGIS
+
+- slug: HDF5View
+  name: HDF5View
+
+- slug: bash
+  name: Bash
+
+- slug: plasio
+  name: Plas.io

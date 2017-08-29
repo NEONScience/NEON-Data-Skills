@@ -3,13 +3,13 @@ syncID: c31429a97db04e868c75bb6866b2a039
 title: "Setup GitHub Working Directory - Quick Intro to Bash"
 description: "This page reviews how to check that github is installed on your computer. It also provides a quick overview of Bash shell. Finally we will setup a working GitHub directory."
 dateCreated: 2014-05-06
-authors: [Materials adapted from Software Carpentry by NEON staff]
+authors: Materials adapted from Software Carpentry by NEON staff
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries:
 topics: data-management
 subtopics: 
-languagesTool: GitHub, Bash
+languagesTool: git, bash
 dataProduct:
 code1: 
 tutorialSeries:

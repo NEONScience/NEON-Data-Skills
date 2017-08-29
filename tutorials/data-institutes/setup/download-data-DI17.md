@@ -8,7 +8,6 @@ contributors:
 estimatedTime: 
 packagesLibraries:
 topics: data-management
-subtopics:
 languagesTool:
 dataProduct:
 code1: 

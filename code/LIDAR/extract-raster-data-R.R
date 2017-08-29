@@ -21,18 +21,18 @@ library(ggplot2)
 options(stringsAsFactors=FALSE)
 
 # read in plot centroids
-centroids <- read.csv("SJER/PlotCentroids/SJERPlotCentroids.csv")
+centroids <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv")
 str(centroids)
 
 # read in vegetation heights
-vegStr <- read.csv("SJER/VegetationData/D17_2013_vegStr.csv")
+vegStr <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv")
 str(vegStr)
 
 
 ## ----plot-CHM------------------------------------------------------------
 
 # import the digital terrain model
-chm <- raster("SJER/CHM_SJER.tif")
+chm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif")
 
 # plot raster
 plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
@@ -139,7 +139,7 @@ par(mfrow=c(1,1))
 
 ## ----read-shapefile------------------------------------------------------
 # load shapefile data
-centShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp")
+centShape <- readShapePoly("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp")
 
 plot(centShape)
 
@@ -239,9 +239,7 @@ ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) +
   geom_point() + 
   theme_bw() + 
   ylab("Maximum measured height") + 
-  xlab("Maximum LiDAR pixel")+
-  xlim(0, max(centroids[,7:10])) + 
-  ylim(0,max(centroids[,7:10]))
+  xlab("Maximum LiDAR pixel")
 
 
 ## ----ggplot-data---------------------------------------------------------
@@ -251,10 +249,11 @@ p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) +
   geom_point() + 
   ylab("Maximum Measured Height") + 
   xlab("Maximum LiDAR Height")+
-  geom_smooth(method=lm) +
-  xlim(0, max(centroids[,7:10])) + 
-  ylim(0,max(centroids[,7:10])) 
+  geom_smooth(method=lm) 
 
+p
+
+# Add labels
 p + theme(panel.background = element_rect(colour = "grey")) + 
   ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
@@ -271,9 +270,7 @@ ggplot(centroids_c,aes(x=quant, y =insituMaxHeight.x )) +
   geom_point() + 
   ylab("Maximum Measured Height") + 
   xlab("95% quantile LiDAR Height")+
-  geom_smooth(method=lm) +
-  xlim(0, max(centroids[,7:10])) + 
-  ylim(0,max(centroids[,7:10])) 
+  geom_smooth(method=lm) 
 
 
 

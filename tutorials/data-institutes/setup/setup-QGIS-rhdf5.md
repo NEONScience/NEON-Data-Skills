@@ -1,6 +1,6 @@
 ---
 syncID: b6c45c8828d5433db516b77608c6163b
-title: "Install QGIS, HDF5 view"
+title: "Install QGIS & HDF5View"
 description:
 dateCreated: 2014-05-06
 authors:
@@ -8,8 +8,7 @@ contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries:
 topics: data-management 
-subtopics: 
-languagesTool: 
+languagesTool: QGIS, HDF5View
 dataProduct:
 code1:
 tutorialSeries:

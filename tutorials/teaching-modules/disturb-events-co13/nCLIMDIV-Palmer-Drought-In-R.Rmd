@@ -1,19 +1,24 @@
 ---
 syncID: f596d3620a6449089341d08bc3375b43
-title: "Data Activity: Visualize Palmer Drought Severity Index Data in R to Better Understand the 2013 Colorado Floods"
-description: "This tutorial walks through how to download and visualize Palmer Drought Severity Index data in R. The data specifically downloaded for this activity allows one to to better understand a driver of the 2013 Colorado floods."
-dateCreated: 2016-05-18
+title: "Data Activity: Visualize Palmer Drought Severity Index Data in R to Better Understand the 2013 Colorado Floods"	
+description: "This tutorial walks through how to download and visualize Palmer
+Drought Severity Index data in R. The data specifically downloaded for 
+this activity allows one to to better understand a driver of the 2013 Colorado
+floods."	
+dateCreated: 2015-05-18
 authors: Leah A. Wasser, Megan A. Jones, Mariela Perignon	
 contributors:	
 estimatedTime:	
 packagesLibraries: ggplot2, plotly
-topics: data-visualization, data-manipulation
+topics:
 subtopics: time-series
 languagesTool: R
 dataProduct:
-code1:  tutorials/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
+code1:  /teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
 tutorialSeries:
 ---
+
+{% include _toc.html %}
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plot.ly. The tutorial is part of the Data Activities that can be used 
@@ -22,7 +27,7 @@ with the
 
 <div id="objectives" markdown="1">
 
-## Learning Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download Palmer Drought Severity Index (and related indices) data from <a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> NOAA's Climate Divisional Database (nCLIMDIV)</a>. 
@@ -34,6 +39,9 @@ After completing this tutorial, you will be able to:
 ### Things You'll Need To Complete This Lesson
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
+
+ **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
+have basic knowledge for use of the R software program.   
 
 #### R Libraries to Install:
 

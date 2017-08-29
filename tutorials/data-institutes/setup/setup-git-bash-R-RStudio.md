@@ -8,8 +8,7 @@ contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries:
 topics: data-management
-subtopics:
-languagesTool: Git, Bash, R
+languagesTool: git, bash, R
 dataProduct:
 code1: 
 tutorialSeries:
