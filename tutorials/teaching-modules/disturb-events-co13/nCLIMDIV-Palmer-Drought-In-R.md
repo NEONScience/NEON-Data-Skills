@@ -170,22 +170,11 @@ Now that we have the data we can start working with it in R.
 We will use `ggplot2` to efficiently plot our data and `plotly` to create 
 interactive plots of our data.
 
-```{r load-libraries}
 
-library(ggplot2)   # create efficient, professional plots
-library(plotly)    # create interactive plots
+    library(ggplot2)   # create efficient, professional plots
+    library(plotly)    # create interactive plots
 
-```
 
-```{r load-libraries-hidden, echo=FALSE, results="hide"}
-# this library is only added to get the webpage derived from this code to render
-# the plotly graphs.  It is NOT needed for any of the analysis or data 
-# visualizations.
-
-# install.packages("webshot")
-# webshot::install_phantomjs() 
-library(webshot) # embed the plotly plots
-```
 
 # Import the Data
 
@@ -196,16 +185,38 @@ Our data have a header (which we saw in the sample file). This first row represe
 variable name for each column. We will use `header=TRUE` when we import the 
 data to tell R to use that first row as a list of column names rather than a row of data.
 
-```{r import-drought-data }
-# Set working directory to the data directory
-#setwd("working-dir-path-here")
 
-# Import CO state-wide nCLIMDIV data
-nCLIMDIV <- read.csv("disturb-events-co13/drought/CDODiv8506877122044_CO.txt", header = TRUE)
+    # Set working directory to the data directory
+    #setwd("working-dir-path-here")
+    
+    # Import CO state-wide nCLIMDIV data
+    nCLIMDIV <- read.csv("disturb-events-co13/drought/CDODiv8506877122044_CO.txt", header = TRUE)
+    
+    # view data structure
+    str(nCLIMDIV)
 
-# view data structure
-str(nCLIMDIV)
-```
+    ## 'data.frame':	300 obs. of  21 variables:
+    ##  $ StateCode: int  5 5 5 5 5 5 5 5 5 5 ...
+    ##  $ Division : int  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ YearMonth: int  199101 199102 199103 199104 199105 199106 199107 199108 199109 199110 ...
+    ##  $ PCP      : num  0.8 0.44 1.98 1.27 1.63 1.88 2.69 2.44 1.36 1.06 ...
+    ##  $ TAVG     : num  21.9 32.5 34.9 41.9 53.5 62.5 66.5 65.5 57.5 47.4 ...
+    ##  $ PDSI     : num  -1.37 -1.95 -1.77 -1.89 -2.11 0.11 0.6 1.03 0.95 0.67 ...
+    ##  $ PHDI     : num  -1.37 -1.95 -1.77 -1.89 -2.11 -1.79 -1.11 1.03 0.95 0.67 ...
+    ##  $ ZNDX     : num  -0.9 -2.17 -0.07 -0.92 -1.25 0.33 1.49 1.5 0.07 -0.54 ...
+    ##  $ PMDI     : num  -0.4 -1.48 -1.28 -1.63 -2.11 -1.57 -0.15 1.03 0.89 0.09 ...
+    ##  $ CDD      : int  0 0 0 0 3 62 95 73 12 0 ...
+    ##  $ HDD      : int  1296 868 900 678 343 113 30 45 227 555 ...
+    ##  $ SP01     : num  -0.4 -1.78 0.89 -0.56 -0.35 0.65 0.96 0.7 -0.01 -0.26 ...
+    ##  $ SP02     : num  -0.47 -1.42 -0.11 0.09 -0.67 0.15 1.01 1.07 0.42 -0.26 ...
+    ##  $ SP03     : num  0.05 -1.28 -0.36 -0.56 -0.19 -0.28 0.55 1.11 0.78 0.13 ...
+    ##  $ SP06     : num  0.42 0.15 0.03 -0.47 -0.86 -0.48 -0.03 0.51 0.24 0.35 ...
+    ##  $ SP09     : num  0.41 0.11 0.85 -0.07 -0.07 -0.19 -0.02 0 0.03 0.01 ...
+    ##  $ SP12     : num  0.69 0.41 0.43 0.08 -0.06 0.39 0.19 0.49 0.21 0.03 ...
+    ##  $ SP24     : num  -0.41 -0.72 -0.49 -0.37 -0.26 -0.24 -0.06 0.12 0.05 0.11 ...
+    ##  $ TMIN     : num  9.5 17.7 22.3 28.4 39.3 48.1 52 51.6 43.1 31.9 ...
+    ##  $ TMAX     : num  34.3 47.4 47.5 55.3 67.7 76.9 81.1 79.5 72 62.9 ...
+    ##  $ X        : logi  NA NA NA NA NA NA ...
 
 Using `head()` or `str()` allows us to view just a sampling of our data. One of the 
 first things we always check is if whether the format that R interpreted the data to be in is the 
@@ -225,11 +236,11 @@ We want to convert these numbers into a date field. We might be able to use the
 `as.Date` function to convert our string of numbers into a date that R will 
 recognize.
 
-```{r convert-year-month }
-# convert to date, and create a new Date column 
-nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 
-```
+    # convert to date, and create a new Date column 
+    nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
+
+    ## Error in as.Date.numeric(nCLIMDIV$YearMonth, format = "%Y%m"): 'origin' must be supplied
 
 Oops, that doesn't work!  R returned an origin error. The date class expects to 
 have day, month, and year data instead of just year and month. `R` needs a day 
@@ -242,16 +253,17 @@ We can add a fake "day" to our `YearMonth` data using the `paste0` function. Let
 add `01` to each field so `R` thinks that each date represents the first of the
 month.
 
-```{r convert-date }
-#add a day of the month to each year-month combination
-nCLIMDIV$Date <- paste0(nCLIMDIV$YearMonth,"01")
 
-#convert to date
-nCLIMDIV$Date <- as.Date(nCLIMDIV$Date, format="%Y%m%d")
+    #add a day of the month to each year-month combination
+    nCLIMDIV$Date <- paste0(nCLIMDIV$YearMonth,"01")
+    
+    #convert to date
+    nCLIMDIV$Date <- as.Date(nCLIMDIV$Date, format="%Y%m%d")
+    
+    # check to see it works
+    str(nCLIMDIV$Date)
 
-# check to see it works
-str(nCLIMDIV$Date)
-```
+    ##  Date[1:300], format: "1991-01-01" "1991-02-01" "1991-03-01" "1991-04-01" "1991-05-01" ...
 
 We've now successfully converted our integer class `YearMonth` column into the 
 `Date` column in a date class. 
@@ -259,19 +271,18 @@ We've now successfully converted our integer class `YearMonth` column into the
 ## Plot the Data
 Next, let's plot the data using `ggplot()`.
 
-```{r create-quick-palmer-plot }
 
-# plot the Palmer Drought Index (PDSI)
-palmer.drought <- ggplot(data=nCLIMDIV,
-			 aes(Date,PDSI)) +  # x is Date & y is drought index
-	     geom_bar(stat="identity",position = "identity") +   # bar plot 
-       xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
-       ggtitle("Palmer Drought Severity Index - Colorado \n 1991-2015")   # title on 2 lines (\n)
+    # plot the Palmer Drought Index (PDSI)
+    palmer.drought <- ggplot(data=nCLIMDIV,
+    			 aes(Date,PDSI)) +  # x is Date & y is drought index
+    	     geom_bar(stat="identity",position = "identity") +   # bar plot 
+           xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
+           ggtitle("Palmer Drought Severity Index - Colorado \n 1991-2015")   # title on 2 lines (\n)
+    
+    # view the plot
+    palmer.drought
 
-# view the plot
-palmer.drought
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/create-quick-palmer-plot-1.png)
 
 Great - we've successfully created a plot! 
 
@@ -285,17 +296,20 @@ Great - we've successfully created a plot!
 These last two questions are a bit hard to determine from this plot. Let's look 
 at a quick summary of our data to help us out.
 
-```{r summary-stats}
-#view summary stats of the Palmer Drought Severity Index
-summary(nCLIMDIV$PDSI)
 
-#view histogram of the data
-hist(nCLIMDIV$PDSI,   # the date we want to use
-     main="Histogram of PDSI",  # title
-		 xlab="Palmer Drought Severity Index (PDSI)",  # x-axis label
-     col="wheat3")  #  the color of the bars
+    #view summary stats of the Palmer Drought Severity Index
+    summary(nCLIMDIV$PDSI)
 
-```
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  -9.090  -1.702   0.180  -0.310   1.705   5.020
+
+    #view histogram of the data
+    hist(nCLIMDIV$PDSI,   # the date we want to use
+         main="Histogram of PDSI",  # title
+    		 xlab="Palmer Drought Severity Index (PDSI)",  # x-axis label
+         col="wheat3")  #  the color of the bars
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/summary-stats-1.png)
 
 Now we can see that the "median" year is slightly wet (0.180) but the 
 "mean" year is slightly dry (-0.310), although both are within the "near-normal" range
@@ -321,26 +335,26 @@ First, we need to connect our R session to our Plotly account. If you only want
 to create interactive plots and not share them on a Plotly account, you can skip
 this step.  
 
-``` {r set-plotly-creds, eval=FALSE}
-# set plotly user name
-Sys.setenv("plotly_username"="YOUR_plotly_username")
 
-# set plotly API key
-Sys.setenv("plotly_api_key"="YOUR_api_key")
-
-```
+    # set plotly user name
+    Sys.setenv("plotly_username"="YOUR_plotly_username")
+    
+    # set plotly API key
+    Sys.setenv("plotly_api_key"="YOUR_api_key")
 
 ### Step 2: Create a Plotly plot
 
 We can create an interactive version of our plot using `plot.ly`. We should simply be able to use our existing ggplot `palmer.drought` with the 
 `ggplotly()` function to create an interactive plot. 
 
-```{r create-ggplotly-drought}
 
-# Use exisitng ggplot plot & view as plotly plot in R
-palmer.drought_ggplotly <- ggplotly(palmer.drought)  
-palmer.drought_ggplotly
-```
+    # Use exisitng ggplot plot & view as plotly plot in R
+    palmer.drought_ggplotly <- ggplotly(palmer.drought)  
+
+
+    palmer.drought_ggplotly
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/create-ggplotly-drought-1.png)
 
 That doesn't look right. The current `plotly` package has a bug! This
 bug has been reported and a fix may come out in future updates to the package.
@@ -349,18 +363,22 @@ Until that happens, we can build our plot again using the `plot_ly()` function.
 In the future, you could just skip the `ggplot()` step and plot directly with 
 `plot_ly()`. 
 
-```{r create-plotly-drought-plot}
-# use plotly function to create plot
-palmer.drought_plotly <- plot_ly(nCLIMDIV,    # the R object dataset
-	type= "bar", # the type of graph desired
-	x=nCLIMDIV$Date,      # our x data 
-	y=nCLIMDIV$PDSI,      # our y data
-	orientation="v",   # for bars to orient vertically ("h" for horizontal)
-	title=("Palmer Drought Severity Index - Colorado 1991-2015"))
 
-palmer.drought_plotly
+    # use plotly function to create plot
+    palmer.drought_plotly <- plot_ly(nCLIMDIV,    # the R object dataset
+    	type= "bar", # the type of graph desired
+    	x=nCLIMDIV$Date,      # our x data 
+    	y=nCLIMDIV$PDSI,      # our y data
+    	orientation="v",   # for bars to orient vertically ("h" for horizontal)
+    	title=("Palmer Drought Severity Index - Colorado 1991-2015"))
+    
+    palmer.drought_plotly
 
-```
+    ## Warning: 'bar' objects don't have these attributes: 'title'
+    ## Valid attributes include:
+    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/create-plotly-drought-plot-1.png)
 
 #### Questions
 Check out the differences between the `ggplot()` and the `plot_ly()` plot.
@@ -383,12 +401,11 @@ Once the plot is built with a Plotly related function (`plot_ly` or `ggplotly`)
 you can post the plot to your online account. Make sure you are signed in to Plotly to
 complete this step. 
 
-``` {r post-plotly, eval=FALSE}
-# publish plotly plot to your plot.ly online account when you are happy with it
-# skip this step if you haven't connected a Plotly account
 
-api_create(palmer.drought_plotly)
-```
+    # publish plotly plot to your plot.ly online account when you are happy with it
+    # skip this step if you haven't connected a Plotly account
+    
+    api_create(palmer.drought_plotly)
 
 #### Questions
 Now that we can see the online Plotly user interface, we can explore our plots
@@ -418,45 +435,7 @@ Colorado that you've already made.
 If you are using the downloaded dataset accompanying this lesson, this data can be 
 found at "drought/CDODiv8868227122048_COdiv04.txt".  
 
-```{r challenge-Div04, include=FALSE, echo=FALSE, results="hide"}
 
-# Import CO state-wide nCLIMDIV data
-nCLIMDIV.co04 <- read.csv("disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt", header = TRUE)
-
-# view data structure
-str(nCLIMDIV.co04)
-
-#add a day of the month to each year-month combination
-nCLIMDIV.co04$Date <- paste0(nCLIMDIV.co04$YearMonth,"01")
-
-#convert to date
-nCLIMDIV.co04$Date <- as.Date(nCLIMDIV.co04$Date, format="%Y%m%d")
-
-# check to see it works
-str(nCLIMDIV.co04$Date)
-
-# plot the Palmer Drought Index (PDSI) w/ ggplot
-palmer.drought.co04 <- ggplot(data=nCLIMDIV.co04,
-			 aes(Date,PDSI)) +  # x is Date & y is drought index
-	     geom_bar(stat="identity",position = "identity") +   # bar plot 
-       xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
-       ggtitle("Palmer Drought Severity Index - Platte River Drainage")   # title on 2 lines (\n)
-
-# view the plot
-palmer.drought.co04
-
-# --OR-- we could use plotly
-# use plotly function to create plot
-palmer.drought.co04_plotly <- plot_ly(nCLIMDIV.co04,    # the R object dataset
-				type= "bar", # the type of graph desired
-				x=nCLIMDIV.co04$Date,      # our x data 
-				y=nCLIMDIV.co04$PDSI,      # our y data
-				orientation="v",   # for bars to orient vertically ("h" for horizontal)
-        title=("Palmer Drought Severity Index - Platte River Drainage"))
-
-palmer.drought.co04_plotly
-
-```
 </div>
 
 <div id="challenge" markdown="1">
@@ -468,38 +447,7 @@ and repeat the steps above to see if a different but related measure shows a
 similar pattern. Make sure to go back to the metadata so that you understand what
 the index or measurement you choose represents.  
 
-``` {r challenge-PHSI, echo=FALSE, results="hide", include=FALSE}
 
-# our example code uses the Palmer Hydrological Drought Index (PHDI)
-
-# Palmer Hydrological Drought Index (PHDI) -- quoted from the metadata
-# "This is the monthly value (index) generated monthly that indicates the
-# severity of a wet or dry spell.  This index is based on the principles of a
-# balance between moisture supply and demand.  Man-made changes such as
-# increased irrigation, new reservoirs, and added industrial water use were not
-# included in the computation of this index.  The index generally ranges from -
-# 6 to +6, with negative values denoting dry spells, and positive values
-# indicating wet spells.  There are a few values in the magnitude of +7 or -7. 
-# PHDI values 0 to -0.5 = normal; -0.5 to -1.0 = incipient drought; -1.0 to -
-# 2.0 = mild drought; -2.0 to -3.0 = moderate drought; -3.0 to -4.0 = severe
-# drought; and greater than -4.0 = extreme drought.  Similar adjectives are
-# attached to positive values of wet spells.  This is a hydrological drought
-# index used to assess long-term moisture supply.
-
-# check format of PHDI
-str(nCLIMDIV)
-
-# plot PHDI using ggplot
-palmer.hydro <- ggplot(data=nCLIMDIV,
-			 aes(Date,PHDI)) +  # x is Date & y is drought index
-	     geom_bar(stat="identity",position = "identity") +   # bar plot 
-       xlab("Date") + ylab("Palmer Hydrological Drought Index") +  # axis labels
-       ggtitle("Palmer Hydrological Drought Index - Colorado")   # title on 2 lines (\n)
-
-# view the plot
-palmer.hydro
-
-```
 
 </div>
 
@@ -510,27 +458,15 @@ If you choose to explore other time frames or spatial scales you may come across
 data that appear as if they have a negative value `-99.99`. If this were real, it would be a *very severe*
 drought!  
 
-```{r palmer-NDV-plot-only, echo=FALSE, results="hide"}
-# NoData Value in the nCLIMDIV data from 1990-199 US spatial scale 
-nCLIMDIV_US <- read.csv("drought/CDODiv5138116888828_US.txt", header = TRUE)
 
-#add a day of the month to each year-month combination
-nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
+    ## Warning in file(file, "rt"): cannot open file 'drought/
+    ## CDODiv5138116888828_US.txt': No such file or directory
 
-#convert to date
-nCLIMDIV_US$Date <- as.Date(nCLIMDIV_US$Date, format="%Y%m%d")
+    ## Error in file(file, "rt"): cannot open the connection
 
-# check to see it works
-str(nCLIMDIV_US$Date)
+    ## Warning: Removed 2 rows containing missing values (geom_bar).
 
-palmer.droughtUS <- ggplot(data=nCLIMDIV_US,
-												 aes(Date,PDSI)) +  # x is Date & y is drought index
-	geom_bar(stat="identity",position = "identity") +   # bar plot 
-       xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
-       ggtitle("Palmer Drought Severity Index - United States")   # title
-
-palmer.droughtUS
-```
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-NDV-plot-only-1.png)
 
 This value is just a common placeholder for a **No Data Value**. 
 
@@ -549,51 +485,61 @@ or plots are created. By defining the placeholders as `NA`, R will correctly int
 Using the nCLIMDIV data set for the entire US, this is how we'd assign the placeholder
 value to NA and plot the data.
 
-```{r palmer-no-data-values}
-# NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
-nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
 
-# add a day of the month to each year-month combination
-nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
+    # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
+    nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
+    
+    # add a day of the month to each year-month combination
+    nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
+    
+    # convert to date
+    nCLIMDIV_US$Date <- as.Date(nCLIMDIV_US$Date, format="%Y%m%d")
+    
+    # check to see it works
+    str(nCLIMDIV_US$Date)
 
-# convert to date
-nCLIMDIV_US$Date <- as.Date(nCLIMDIV_US$Date, format="%Y%m%d")
+    ##  Date[1:312], format: "1990-01-01" "1990-02-01" "1990-03-01" "1990-04-01" "1990-05-01" ...
 
-# check to see it works
-str(nCLIMDIV_US$Date)
+    # view histogram of data -- great way to check the data range
+    hist(nCLIMDIV_US$PDSI,
+         main="Histogram of PDSI values",
+         col="springgreen4")
 
-# view histogram of data -- great way to check the data range
-hist(nCLIMDIV_US$PDSI,
-     main="Histogram of PDSI values",
-     col="springgreen4")
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-no-data-values-1.png)
 
-# easy to see the "wrong" values near 100
-# check for these values using min() - what is the minimum value?
-min(nCLIMDIV_US$PDSI)
+    # easy to see the "wrong" values near 100
+    # check for these values using min() - what is the minimum value?
+    min(nCLIMDIV_US$PDSI)
 
-# assign -99.99 to NA in the PDSI column
-# Note: you may want to do this across the entire data.frame or with other columns
-# but check out the metadata -- there are different NoData Values for each column!
-nCLIMDIV_US[nCLIMDIV_US$PDSI==-99.99,] <-  NA  # == is the short hand for "it is"
+    ## [1] -99.99
 
-#view the histogram again - does the range look reasonable?
-hist(nCLIMDIV_US$PDSI,
-     main="Histogram of PDSI value with NA value assigned",
-     col="springgreen4")
+    # assign -99.99 to NA in the PDSI column
+    # Note: you may want to do this across the entire data.frame or with other columns
+    # but check out the metadata -- there are different NoData Values for each column!
+    nCLIMDIV_US[nCLIMDIV_US$PDSI==-99.99,] <-  NA  # == is the short hand for "it is"
+    
+    #view the histogram again - does the range look reasonable?
+    hist(nCLIMDIV_US$PDSI,
+         main="Histogram of PDSI value with NA value assigned",
+         col="springgreen4")
 
-# that looks better!  
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-no-data-values-2.png)
 
-#plot Palmer Drought Index data
-ggplot(data=nCLIMDIV_US,
-       aes(Date,PDSI)) +
-       geom_bar(stat="identity",position = "identity") +
-       xlab("Year") + ylab("Palmer Drought Severity Index") +
-       ggtitle("Palmer Drought Severity Index - Colorado\n1991 thru 2015")
+    # that looks better!  
+    
+    #plot Palmer Drought Index data
+    ggplot(data=nCLIMDIV_US,
+           aes(Date,PDSI)) +
+           geom_bar(stat="identity",position = "identity") +
+           xlab("Year") + ylab("Palmer Drought Severity Index") +
+           ggtitle("Palmer Drought Severity Index - Colorado\n1991 thru 2015")
 
-# The warning message lets you know that two "entries" will be missing from the
-# graph -- these are the ones we assigned NA. 
+    ## Warning: Removed 2 rows containing missing values (geom_bar).
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-no-data-values-3.png)
+
+    # The warning message lets you know that two "entries" will be missing from the
+    # graph -- these are the ones we assigned NA. 
 
 ### Subsetting Data
 
@@ -615,42 +561,48 @@ To subset, we use the `subset` function, and specify:
 
 Let's subset the data.
 
-```{r subset-decade}
 
-# subset out data between 2005 and 2015 
-nCLIMDIV2005.2015 <- subset(nCLIMDIV,    # our R object dataset 
-                        Date >= as.Date('2005-01-01') &  # start date
-                        Date <= as.Date('2015-12-31'))   # end date
+    # subset out data between 2005 and 2015 
+    nCLIMDIV2005.2015 <- subset(nCLIMDIV,    # our R object dataset 
+                            Date >= as.Date('2005-01-01') &  # start date
+                            Date <= as.Date('2015-12-31'))   # end date
+    
+    # check to make sure it worked
+    head(nCLIMDIV2005.2015$Date)  # head() shows first 6 lines
 
-# check to make sure it worked
-head(nCLIMDIV2005.2015$Date)  # head() shows first 6 lines
-tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
+    ## [1] "2005-01-01" "2005-02-01" "2005-03-01" "2005-04-01" "2005-05-01"
+    ## [6] "2005-06-01"
 
-```
+    tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
+
+    ## [1] "2015-07-01" "2015-08-01" "2015-09-01" "2015-10-01" "2015-11-01"
+    ## [6] "2015-12-01"
 
 Now we can plot this decade of data. Hint, we can copy/paste and edit the 
 previous code.
 
-```{r plotly-decade}
 
-# use plotly function to create plot
-palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
-				type= "bar", # the type of graph desired
-				x=nCLIMDIV2005.2015$Date,      # our x data 
-				y=nCLIMDIV2005.2015$PDSI,      # our y data
-				orientation="v",   # for bars to orient vertically ("h" for horizontal)
-        title=("Palmer Drought Severity Index - Colorado 2005-2015"))
+    # use plotly function to create plot
+    palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
+    				type= "bar", # the type of graph desired
+    				x=nCLIMDIV2005.2015$Date,      # our x data 
+    				y=nCLIMDIV2005.2015$PDSI,      # our y data
+    				orientation="v",   # for bars to orient vertically ("h" for horizontal)
+            title=("Palmer Drought Severity Index - Colorado 2005-2015"))
+    
+    palmer_plotly0515
 
-palmer_plotly0515
-```
+    ## Warning: 'bar' objects don't have these attributes: 'title'
+    ## Valid attributes include:
+    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
 
-```{r plotlyPost, eval=FALSE}
-# publish plotly plot to your plot.ly online account when you are happy with it
-# skip this step if you haven't connected a Plotly account
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/plotly-decade-1.png)
 
-api_create(palmer_plotly0515)
 
-```
+    # publish plotly plot to your plot.ly online account when you are happy with it
+    # skip this step if you haven't connected a Plotly account
+    
+    api_create(palmer_plotly0515)
 
 ***
 Return to the 

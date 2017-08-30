@@ -138,15 +138,13 @@ choice and save as a .csv. Note, you can also download the teaching data set
 
 We will use `ggplot2` to efficiently plot our data and `plotly` to create interactive plots.
 
-```{r load-libraries}
-# set your working directory
-#setwd("working-dir-path-here")
 
-# load packages
-library(ggplot2) # create efficient, professional plots
-library(plotly) # create cool interactive plots
-
-```
+    # set your working directory
+    #setwd("working-dir-path-here")
+    
+    # load packages
+    library(ggplot2) # create efficient, professional plots
+    library(plotly) # create cool interactive plots
 
 ##  Import USGS Stream Discharge Data Into R
 
@@ -180,19 +178,24 @@ Let's import our data.
 and read it in directly using `read.csv()` function and then skip to the **View 
 Data Structure** section).
 
-```{r import-discharge-2 }
 
-#import data
-discharge <- read.csv("disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt",
-                      sep="\t",
-                      skip=24,
-                      header=TRUE,
-                      stringsAsFactors = FALSE)
+    #import data
+    discharge <- read.csv("disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt",
+                          sep="\t",
+                          skip=24,
+                          header=TRUE,
+                          stringsAsFactors = FALSE)
+    
+    #view first few lines
+    head(discharge)
 
-#view first few lines
-head(discharge)
-
-```
+    ##   agency_cd  site_no   datetime X17663_00060_00003 X17663_00060_00003_cd
+    ## 1        5s      15s        20d                14n                   10s
+    ## 2      USGS 06730200 1986-10-01                 30                     A
+    ## 3      USGS 06730200 1986-10-02                 30                     A
+    ## 4      USGS 06730200 1986-10-03                 30                     A
+    ## 5      USGS 06730200 1986-10-04                 30                     A
+    ## 6      USGS 06730200 1986-10-05                 30                     A
 
 When we import these data, we can see that the first row of data is a second
 header row rather than actual data. We can remove the second row of header 
@@ -200,15 +203,16 @@ values by selecting all data beginning at row 2 and ending at the
 total number or rows in the file and re-assigning it to the variable `discharge`. The `nrow` function will count the total
 number of rows in the object.
 
-```{r remove-second-header }
-# nrow: how many rows are in the R object
-nrow(discharge)
 
-# remove the first line from the data frame (which is a second list of headers)
-# the code below selects all rows beginning at row 2 and ending at the total
-# number of rows. 
-discharge <- discharge[2:nrow(discharge),]
-```
+    # nrow: how many rows are in the R object
+    nrow(discharge)
+
+    ## [1] 9955
+
+    # remove the first line from the data frame (which is a second list of headers)
+    # the code below selects all rows beginning at row 2 and ending at the total
+    # number of rows. 
+    discharge <- discharge[2:nrow(discharge),]
 
 ## Metadata 
 We now have an R object that includes only rows containing data values. Each 
@@ -225,44 +229,59 @@ discharge value, as **disValue** and column 6 as **qualFlag** so it is more "hum
 readable" as we work with it 
 in R.
 
-```{r rename-headers }
-#view names
-names(discharge)
 
-#rename the fifth column to disValue representing discharge value
-names(discharge)[4] <- "disValue"
-names(discharge)[5] <- "qualCode"
+    #view names
+    names(discharge)
 
-#view names
-names(discharge)
+    ## [1] "agency_cd"             "site_no"               "datetime"             
+    ## [4] "X17663_00060_00003"    "X17663_00060_00003_cd"
 
-```
+    #rename the fifth column to disValue representing discharge value
+    names(discharge)[4] <- "disValue"
+    names(discharge)[5] <- "qualCode"
+    
+    #view names
+    names(discharge)
+
+    ## [1] "agency_cd" "site_no"   "datetime"  "disValue"  "qualCode"
 
 ## View Data Structure
 
 Let's have a look at the structure of our data. 
 
-```{r view-data-structure }
-#view structure of data
-str(discharge)
 
-```
+    #view structure of data
+    str(discharge)
+
+    ## 'data.frame':	9954 obs. of  5 variables:
+    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
+    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
+    ##  $ datetime : chr  "1986-10-01" "1986-10-02" "1986-10-03" "1986-10-04" ...
+    ##  $ disValue : chr  "30" "30" "30" "30" ...
+    ##  $ qualCode : chr  "A" "A" "A" "A" ...
 
 It appears as if the discharge value is a `character` (`chr`) class. This is 
 likely because we had an additional row in our data. Let's convert the discharge
 column to a `numeric` class. In this case, we can reassign that column to be of
 class: `integer` given there are no decimal places.
 
-```{r adjust-data-structure }
-# view class of the disValue column
-class(discharge$disValue)
 
-# convert column to integer
-discharge$disValue <- as.integer(discharge$disValue)
+    # view class of the disValue column
+    class(discharge$disValue)
 
-str(discharge)
+    ## [1] "character"
 
-```
+    # convert column to integer
+    discharge$disValue <- as.integer(discharge$disValue)
+    
+    str(discharge)
+
+    ## 'data.frame':	9954 obs. of  5 variables:
+    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
+    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
+    ##  $ datetime : chr  "1986-10-01" "1986-10-02" "1986-10-03" "1986-10-04" ...
+    ##  $ disValue : int  30 30 30 30 30 30 30 30 30 31 ...
+    ##  $ qualCode : chr  "A" "A" "A" "A" ...
 
 
 ### Converting Time Stamps
@@ -278,31 +297,40 @@ To learn more about different date/time classes, see the
 <a href="{{ site.baseurl }}/R/time-series-convert-date-time-class-POSIX/" target="_blank" > 
 *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a> tutorial. 
 
-```{r convert-time }
-#view class
-class(discharge$datetime)
 
-#convert to date/time class - POSIX
-discharge$datetime <- as.POSIXct(discharge$datetime)
+    #view class
+    class(discharge$datetime)
 
-#recheck data structure
-str(discharge)
+    ## [1] "character"
 
-```
+    #convert to date/time class - POSIX
+    discharge$datetime <- as.POSIXct(discharge$datetime)
+    
+    #recheck data structure
+    str(discharge)
+
+    ## 'data.frame':	9954 obs. of  5 variables:
+    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
+    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
+    ##  $ datetime : POSIXct, format: "1986-10-01" "1986-10-02" ...
+    ##  $ disValue : int  30 30 30 30 30 30 30 30 30 31 ...
+    ##  $ qualCode : chr  "A" "A" "A" "A" ...
 
 ### No Data Values
 Next, let's query our data to check whether there are no data values in 
 it.  The metadata associated with the data doesn't specify what the values would
 be, `NA` or `-9999` are common values
 
-```{r no-data-values }
-# check total number of NA values
-sum(is.na(discharge$datetime))
 
-# check for "strange" values that could be an NA indicator
-hist(discharge$disValue)
+    # check total number of NA values
+    sum(is.na(discharge$datetime))
 
-```
+    ## [1] 0
+
+    # check for "strange" values that could be an NA indicator
+    hist(discharge$disValue)
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/no-data-values-1.png)
 
 Excellent! The data contains no NoData values.  
 
@@ -311,14 +339,13 @@ Excellent! The data contains no NoData values.
 Finally, we are ready to plot our data. We will use `ggplot` from the `ggplot2`
 package to create our plot.
 
-```{r plot-flood-data }
 
-ggplot(discharge, aes(datetime, disValue)) +
-  geom_point() +
-  ggtitle("Stream Discharge (CFS) for Boulder Creek") +
-  xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
+    ggplot(discharge, aes(datetime, disValue)) +
+      geom_point() +
+      ggtitle("Stream Discharge (CFS) for Boulder Creek") +
+      xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/plot-flood-data-1.png)
 
 #### Questions: 
 
@@ -333,25 +360,28 @@ end times (in a `limits` object) for the x-axis with `scale_x_datetime`. Let's
 plot data for the months directly around the Boulder flood: August 15 2013 - 
 October 15 2013.
 
-```{r define-time-subset }
 
-# Define Start and end times for the subset as R objects that are the time class
-startTime <- as.POSIXct("2013-08-15 00:00:00")
-endTime <- as.POSIXct("2013-10-15 00:00:00")
+    # Define Start and end times for the subset as R objects that are the time class
+    startTime <- as.POSIXct("2013-08-15 00:00:00")
+    endTime <- as.POSIXct("2013-10-15 00:00:00")
+    
+    # create a start and end time R object
+    start.end <- c(startTime,endTime)
+    start.end
 
-# create a start and end time R object
-start.end <- c(startTime,endTime)
-start.end
+    ## [1] "2013-08-15 MDT" "2013-10-15 MDT"
 
-# plot the data - Aug 15-October 15
-ggplot(discharge,
-      aes(datetime,disValue)) +
-      geom_point() +
-      scale_x_datetime(limits=start.end) +
-      xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
-      ggtitle("Stream Discharge (CFS) for Boulder Creek\nAugust 15 - October 15, 2013")
+    # plot the data - Aug 15-October 15
+    ggplot(discharge,
+          aes(datetime,disValue)) +
+          geom_point() +
+          scale_x_datetime(limits=start.end) +
+          xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
+          ggtitle("Stream Discharge (CFS) for Boulder Creek\nAugust 15 - October 15, 2013")
 
-```
+    ## Warning: Removed 9892 rows containing missing values (geom_point).
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/define-time-subset-1.png)
 
 We get a warning message because we are "ignoring" lots of the data in the
 data set.
@@ -372,46 +402,49 @@ package doesn't (yet?) recognize the `limits` method of subsetting.
 
 Here we create a new R object with entries corresponding to just the dates we want and then plot that data. 
 
-```{r plotly-discharge-data}
 
-# subset out some of the data - Aug 15 - October 15
-discharge.aug.oct2013 <- subset(discharge, 
-                        datetime >= as.POSIXct('2013-08-15 00:00',
-                                              tz = "America/Denver") & 
-                        datetime <= as.POSIXct('2013-10-15 23:59', 
-                                              tz = "America/Denver"))
+    # subset out some of the data - Aug 15 - October 15
+    discharge.aug.oct2013 <- subset(discharge, 
+                            datetime >= as.POSIXct('2013-08-15 00:00',
+                                                  tz = "America/Denver") & 
+                            datetime <= as.POSIXct('2013-10-15 23:59', 
+                                                  tz = "America/Denver"))
+    
+    # plot the data
+    disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
+            aes(datetime,disValue)) +
+            geom_point(size=3)     # makes the points larger than default
+    
+    disPlot.plotly
 
-# plot the data
-disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
-        aes(datetime,disValue)) +
-        geom_point(size=3)     # makes the points larger than default
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/plotly-discharge-data-1.png)
 
-disPlot.plotly
-      
-# add title and labels
-disPlot.plotly <- disPlot.plotly + 
-	theme(axis.title.x = element_blank()) +
-	xlab("Time") + ylab("Stream Discharge (CFS)") +
-	ggtitle("Stream Discharge - Boulder Creek 2013")
+    # add title and labels
+    disPlot.plotly <- disPlot.plotly + 
+    	theme(axis.title.x = element_blank()) +
+    	xlab("Time") + ylab("Stream Discharge (CFS)") +
+    	ggtitle("Stream Discharge - Boulder Creek 2013")
+    
+    disPlot.plotly
 
-disPlot.plotly
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/plotly-discharge-data-2.png)
 
-# view plotly plot in R
-ggplotly(disPlot.plotly)
-```
+    # view plotly plot in R
+    ggplotly(disPlot.plotly)
+
+
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/plotly-discharge-data-3.png)
 
 If you are satisfied with your plot you can now publish it to your Plotly account. 
 
-``` {r pub-plotly, eval=FALSE}
-# set username
-Sys.setenv("plotly_username"="yourUserNameHere")
-# set user key
-Sys.setenv("plotly_api_key"="yourUserKeyHere")
 
-# publish plotly plot to your plotly online account if you want. 
-api_create(disPlot.plotly)
-
-```
+    # set username
+    Sys.setenv("plotly_username"="yourUserNameHere")
+    # set user key
+    Sys.setenv("plotly_api_key"="yourUserKeyHere")
+    
+    # publish plotly plot to your plotly online account if you want. 
+    api_create(disPlot.plotly)
 
 ## Additional Resources
 
