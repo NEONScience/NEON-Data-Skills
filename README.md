@@ -9,7 +9,7 @@ Check out the NEON Data Skills portal for the online resources and upcoming even
 [www.neondataskills.org](http://www.neondataskills.org)
 
 Check out our website for more: 
-[http://www.neonscience.org](http://www.neonscience.org "National Ecological Observatory Network")
+[www.neonscience.org](http://www.neonscience.org "National Ecological Observatory Network")
 
 ## About NEON Data Skills 
 
