@@ -1,13 +1,13 @@
 ---
 syncID: 524a4f424e1f43e1ac3b95a3f769c324
-title: "Download the Data"
+title: "Data Institute 2016: Download the Data"
 description: "This tutorial covers the data and set up the data directory you will need for the 2016 NEON Data Institute on Remote Sensing in R."
 dateCreated: 2016-06-09
 authors: Megan A. Jones
 contributors:
 estimatedTime: 
 packagesLibraries:
-topics: data-management
+topics: 
 languagesTool:
 dataProduct:
 code1: 
