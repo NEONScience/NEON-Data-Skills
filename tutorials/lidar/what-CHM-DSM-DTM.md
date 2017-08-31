@@ -17,23 +17,23 @@ tutorialSeries: [intro-lidar-r-series]
 
 ## Common LiDAR Data Products
 
-* [Digital Terrain Model](http://www.neonscience.org/3d/SJER_DTM_3d.html) - This 
+* [Digital Terrain Model](http://{{ site.baseurl }}/3d/SJER_DTM_3d.html) - This 
 product represents the elevation of the ground.
-* [Digital Surface Model](http://www.neonscience.org/3d/SJER_DSM_3d.html) - This 
+* [Digital Surface Model](http://{{ site.baseurl }}/3d/SJER_DSM_3d.html) - This 
 represents the elevation of the tallest surfaces at that point. Imagine draping 
 a sheet over the canopy of a forest, the DEM contours with the heights of the 
 trees where there are trees but the elevation of the ground when there is a 
 clearing in the forest.
 
-* [Canopy Height Model](http://www.neonscience.org/3d/SJER_CHM_3d.html) - This 
+* [Canopy Height Model](http://{{ site.baseurl }}/3d/SJER_CHM_3d.html) - This 
 represents the difference between a Digital Terrain Model and a Digital Surface 
 Model and gives you the height of the objects (in a forest, the trees) that are 
 on the surface of the earth.
 
 <figure class="third">
-    <a href="http://www.neonscience.org/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
-    <a href="http://www.neonscience.org/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
-    <a href="http://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
+    <a href="http://{{ site.baseurl }}/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
+    <a href="http://{{ site.baseurl }}/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
+    <a href="http://{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
     
     <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
      Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
@@ -147,7 +147,7 @@ don't contains any lidar points. These cells will have a "no data" value if we
 process our raster in this way. 
 
 <figure>
-    <a href="http://www.neonscience.org/gridding-interpolation-spatial-data-gif">
+    <a href="http://{{ site.baseurl }}/gridding-interpolation-spatial-data-gif">
     <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
