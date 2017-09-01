@@ -12,6 +12,7 @@ languagesTool: git
 dataProduct:
 code1:
 tutorialSeries: [git-github]
+urlTitle: intro-git-version-control
 ---
 
 In this page, you will be introduced to the importance of version control in
