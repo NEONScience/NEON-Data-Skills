@@ -48,7 +48,7 @@ Watch this 3:55 minute video explaining the NEON program.
 
 Please read the following page about NEON's mission:
 
-* <a href="http://www.neonscience.org/about" target="_blank">Read about NEON’s mission</a>
+* <a href="http://{{ site.baseurl }}/about" target="_blank">Read about NEON’s mission</a>
 {: .readme }
 
 <i class="fa fa-star"></i> **Data Institute Participants -- Thought Questions:** How might/does the NEON project
@@ -64,10 +64,10 @@ Watch this 4:22 minute video exploring the spatial design of NEON field sites.
 
 Please read the following page about NEON's Spatial Design:
 
-<a class="link--button link--arrow" href="http://www.neonscience.org/updates-events/update/primer-neon-sampling-design" target="_blank">
+<a class="link--button link--arrow" href="http://{{ site.baseurl }}/updates-events/update/primer-neon-sampling-design" target="_blank">
 Read this primer on NEON's Sampling Design</a>
 
-<a class="link--button link--arrow" href="http://www.neonscience.org/science-design/spatiotemporal-design" target="_blank">
+<a class="link--button link--arrow" href="http://{{ site.baseurl }}/science-design/spatiotemporal-design" target="_blank">
 Read about the different types of field sites - core and relocatable</a>
 {: .readme }
 
@@ -78,7 +78,7 @@ Explore the NEON Field Site map taking note of the locations of
 1. Aquatic & terrestrial field sites.
 2. Core & relocatable field sites.
 
-<a class="link--button link--arrow" href="http://www.neonscience.org/science-design/field-sites" target="_blank">
+<a class="link--button link--arrow" href="http://{{ site.baseurl }}/science-design/field-sites" target="_blank">
 Click here to view the NEON Field Site Map</a>
 
 Explore the NEON field site map. Do the following:
@@ -111,7 +111,7 @@ interested in? What kind of data are available?
 </div>
 
 <i class="fa fa-star"></i> **Data Tip:** You can download
-<a href="http://www.neonscience.org/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
+<a href="http://{{ site.baseurl }}/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
 {: .notice }
 
 ## The Data that NEON Collects
@@ -121,16 +121,16 @@ Watch this 3:06 minute video exploring the data that NEON collects.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9IbbdQC1N3A" frameborder="0" allowfullscreen></iframe>
 
 Read the
-<a href="http://www.neonscience.org/science-design/data-collection-methods" target="_blank"> Data Collection Methods </a>
+<a href="http://{{ site.baseurl }}/science-design/data-collection-methods" target="_blank"> Data Collection Methods </a>
 page to learn more about the different types of data that NEON collects and
 provides. Then, follow the links below to learn more about each collection method:
 
-* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-observations" target="_blank">Aquatic Observation System (AOS) </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/aquatic-sensor-measurements" target="_blank">Aquatic Instrument System (AIS) </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> Terrestrial Instrument System  (TIS) -- Flux Tower </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/soil-sensors-and-measurements" target="_blank"> Terrestrial Instrument System (TIS) -- Soil Sensors and Measurements </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal System (TOS) </a>
-* <a href="http://www.neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank"> Airborne Observation Platform (AOP) </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/aquatic-observations" target="_blank">Aquatic Observation System (AOS) </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/aquatic-sensor-measurements" target="_blank">Aquatic Instrument System (AIS) </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank"> Terrestrial Instrument System  (TIS) -- Flux Tower </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/soil-sensors-and-measurements" target="_blank"> Terrestrial Instrument System (TIS) -- Soil Sensors and Measurements </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal System (TOS) </a>
+* <a href="http://{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank"> Airborne Observation Platform (AOP) </a>
 {: .readme }
 
 ### Airborne Remote Sensing
@@ -164,9 +164,9 @@ NEON data portal.
 
 **Read the following pages to learn more:**
 
-* <a  href="http://www.neonscience.org/science-design/data-processing" target="_blank">
+* <a  href="http://{{ site.baseurl }}/science-design/data-processing" target="_blank">
 Read more about NEON data processing.</a>
-* <a class="readme" href="http://www.neonscience.org/science-design/data-processing/product-documentation" target="_blank">
+* <a class="readme" href="http://{{ site.baseurl }}/science-design/data-processing/product-documentation" target="_blank">
 Read more about NEON methods documentation.</a>
 * <a class="readme" href="http://data.neonscience.org/home" target="_blank">
 Visit the NEON Data Portal - data.neonscience.org </a>
@@ -178,7 +178,7 @@ Check out the NEON Data Product Catalog to see what will be available.</a>
 ### Data By Request & Through Other Online Portals
 Currently, not all NEON data are accessible through the NEON data portal:
 
-* <a href="http://www.neonscience.org/data-resources/get-data/airborne-data" target="_blank"> NEON AOP Data is available by request</a>.
+* <a href="http://{{ site.baseurl }}/data-resources/get-data/airborne-data" target="_blank"> NEON AOP Data is available by request</a>.
 Data for some sites is now available for download.
 * <a href="http://www.ibol.org/dna-barcodes-for-neons-terrestrial-insects/" target="_blank"> NEON Terrestrial Insect DNA Barcoding Data</a>
 is available through the
@@ -187,7 +187,7 @@ is available through the
 ### Specimens & Samples
 An overview of how to get data, soil or species samples, and supporting
 documentation can always be found on the
-<a href="http://www.neonscience.org/data-resources/get-data" target="_blank">Get Data page</a>.
+<a href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
 
 <div class="notice thought" markdown="1">
 <i class="fa fa-star"></i> **Data Institute Participant – Thought Questions:** 
@@ -215,7 +215,7 @@ Check out the NEON Data Products Catalog.</a>
 <i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
-<a href="http://www.neonscience.org/assignable-assets" target="_blank">Assignable Assets programs </a>.
+<a href="http://{{ site.baseurl }}/assignable-assets" target="_blank">Assignable Assets programs </a>.
 {: .notice }
 
 

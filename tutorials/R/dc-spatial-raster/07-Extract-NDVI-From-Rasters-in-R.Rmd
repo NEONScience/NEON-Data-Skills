@@ -14,14 +14,13 @@ languagesTool: R
 dataProduct:
 code1:  /R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
+urlTitle: dc-ndvi-calc-raster-time-series
 ---
 
 
-## About
 In this tutorial, we will extract NDVI values from a raster time series dataset 
 in `R` and plot them using `ggplot`.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
 
 <div id="objectives" markdown="1">
 
@@ -75,6 +74,9 @@ tutorials so you may be able to skip this first step!).
 library(raster)
 library(rgdal)
 library(ggplot2)
+
+# set working directory to ensure R can find the file we wish to import
+# setwd("working-dir-path-here")
 
 # Create list of NDVI file paths
 all_HARV_NDVI <- list.files("NEON-DS-Landsat-NDVI/HARV/2011/NDVI",
@@ -214,7 +216,7 @@ integer) to the origin date.
 Since the origin date was originally set as a Date class object, the new `Date` 
 column is also stored as class `Date`.
 
-``` {r convert-jd}
+```{r convert-jd}
 # set the origin for the julian date (1 Jan 2011)
 origin <- as.Date("2011-01-01")
 
@@ -248,7 +250,7 @@ error we then subtract 1 to get the correct day, January 05 2011.
 We often want to compare two different sites. The National Ecological
 Observatory Network (NEON) also has a field site in Southern California
 at the
-<a href="http://www.neonscience.org/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range (SJER) </a>.  
+<a href="http://{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range (SJER) </a>.  
 
 For this challenge, compare NDVI values for the NEON Harvard Forest and San
 Joaquin Experimental Range field sites. NDVI data for SJER are located in the
@@ -344,7 +346,7 @@ better, if both sets of data are plotted in the same plot. We can do this by
 binding the two data sets together. The date frames must have the same number
 of columns and exact same column names to be bound.  
 
-``` {r merge-df-single-plot}
+```{r merge-df-single-plot}
 # Merge Data Frames
 NDVI_HARV_SJER <- rbind(avg_NDVI_HARV,avg_NDVI_SJER)  
   
@@ -354,7 +356,7 @@ ggplot(NDVI_HARV_SJER, aes(julianDay, meanNDVI, colour=site)) +
   geom_line(aes(group=site)) +
   ggtitle("Landsat Derived NDVI - 2011\n Harvard Forest vs San Joaquin \n NEON Field Sites") +
   xlab("Julian Day") + ylab("Mean NDVI") +
-  scale_colour_manual(values=c("PeachPuff4", "SpringGreen4"))+   
+  scale_colour_manual(values=c("PeachPuff4", "SpringGreen4"))+
 	# scale_colour : match previous plots
   theme(text = element_text(size=20))
 
@@ -367,7 +369,7 @@ on the x-axis.
 
 </div>
 
-``` {r challenge-code-plot2, echo=FALSE}
+```{r challenge-code-plot2, echo=FALSE}
 # plot NDVI values for both sites
 ggplot(NDVI_HARV_SJER, aes(Date, meanNDVI, colour=site)) +
   geom_point(size=4,aes(group=site)) + 
@@ -475,7 +477,7 @@ avg_NDVI_HARV_clean$meanNDVI<0.1
 
 Now we can create another plot without the suspect data. 
 
-``` {r plot-clean-HARV}
+```{r plot-clean-HARV}
 
 # plot without questionable data
 
@@ -503,7 +505,7 @@ your working directory.
 Before saving our file, let's quickly view the format to make sure it is what we
 want as an output format.
 
-``` {r write-csv }
+```{r head-csv }
 
 # confirm data frame is the way we want it
 
@@ -515,7 +517,7 @@ It looks like we have a series of `row.names` that we do not need given we have
 this information stored in individual columns in our data.frame. Let's remove 
 the row names.
 
-``` {r drop-rownames-write-csv}
+```{r drop-rownames-write-csv}
 
 # create new df to prevent changes to avg_NDVI_HARV
 NDVI_HARV_toWrite<-avg_NDVI_HARV_clean
@@ -526,6 +528,9 @@ row.names(NDVI_HARV_toWrite)<-NULL
 # check data frame
 head(NDVI_HARV_toWrite)
 
+```
+
+```{r write-csv, eval=FALSE}
 # create a .csv of mean NDVI values being sure to give descriptive name
 # write.csv(DateFrameName, file="NewFileName")
 write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
@@ -541,7 +546,7 @@ questionable values before writing any data to a .csv file.
 2. Create a NDVI .csv file that stacks data from both field sites.
 </div>
 
-``` {r challenge-code-write-sjer,  include=TRUE, results="hide", echo=FALSE}
+```{r challenge-code-write-sjer,  include=TRUE, results="hide", echo=FALSE}
 
 # retain only rows with meanNDVI>0.1
 avg_NDVI_SJER_clean<-subset(avg_NDVI_SJER, meanNDVI>0.1)
@@ -557,6 +562,6 @@ head(NDVI_SJER_toWrite)
 
 # create a .csv of mean NDVI values being sure to give descriptive name
 # write.csv(DateFrameName, file="NewFileName")
-write.csv(NDVI_SJER_toWrite, file="meanNDVI_SJER_2011.csv")
+#write.csv(NDVI_SJER_toWrite, file="meanNDVI_SJER_2011.csv")
 
 ```

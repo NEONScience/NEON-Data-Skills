@@ -1,13 +1,13 @@
 ---
 syncID: f7ac2eee32b04c649280251acdc921e0
-title: "Download the Data"
+title: "Data Institute 2017: Download the Data"
 description: "This tutorial covers the data and set up the data directory you will need for the 2017 Institute on Remote Sensing."
 dateCreated: 2017-06-09
 authors: Megan A. Jones
 contributors:
 estimatedTime: 
 packagesLibraries:
-topics: data-management
+topics: 
 languagesTool:
 dataProduct:
 code1: 

@@ -8,10 +8,11 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics: data-management, data-analysis
-languagesTool: git-github
+languagesTool: git
 dataProduct:
 code1:
-tutorialSeries: [git-github]
+tutorialSeries: git-github
+urlTitle: github-forks-repos
 ---
 
 

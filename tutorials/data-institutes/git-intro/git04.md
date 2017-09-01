@@ -8,10 +8,11 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics: data-analysis
-languagesTool: Git, GitHub
+languagesTool: git
 dataProduct:
 code1:
 tutorialSeries: [git-github]
+urlTitle: markdown-files
 ---
 
 

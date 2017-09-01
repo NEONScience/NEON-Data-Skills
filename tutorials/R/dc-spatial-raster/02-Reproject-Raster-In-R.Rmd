@@ -13,15 +13,14 @@ contributors:
 estimatedTime:	
 packagesLibraries: raster, rgdal
 topics: 
-subtopics: raster, spatial-data-gis
+subtopics: data-analysis, raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
 code1: /R/dc-spatial-raster/02-Reproject-Raster-In-R.R	
 tutorialSeries: raster-data-series
+urlTitle: dc-reproject-raster-data-r
 ---
 
-
-## About
 Sometimes we encounter raster datasets that do not "line up" when plotted or 
 analyzed. Rasters that don't line up are most often in different Coordinate
 Reference Systems (CRS).
@@ -30,7 +29,6 @@ This tutorial explains how to deal with rasters in different, known CRSs. It
 will walk though reprojecting rasters in `R` using the `projectRaster()`
 function in the `raster` package.
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
 
 <div id="objectives" markdown="1">
 
@@ -80,6 +78,11 @@ We will use the `raster` and `rgdal` packages in this tutorial.
 # load raster package
 library(raster)
 library(rgdal)
+
+# set working directory to ensure R can find the file we wish to import
+# setwd("working-dir-path-here")
+
+
 ```
 
 Let's create a map of the Harvard Forest Digital Terrain Model 
@@ -245,7 +248,7 @@ hillshade to produce a nice looking, textured map!
 <div id="challenge" markdown="1">
 ## Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
-<a href="http://www.neonscience.org/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
+<a href="http://{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
 field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files. 
 
 Reproject the data as necessary to make things line up!

@@ -12,24 +12,20 @@ authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Willi
 contributors:	
 estimatedTime:	
 packagesLibraries: raster, rgdal
-topics:
-subtopics: raster, spatial-data-gis
+topics: raster, spatial-data-gis
 languagesTool: R
 dataProduct:
 code1: /R/dc-spatial-raster/00-Raster-Structure.R
 tutorialSeries: raster-data-series
+urlTitle: dc-raster-data-r
 ---
 
-
-## About
 In this tutorial, we will review the fundamental principles, packages and 
 metadata/raster attributes that are needed to work with raster data in `R`. 
 We discuss the three core metadata elements that we need to understand to work 
 with rasters in `R`: **CRS**, **extent** and **resolution**. It also explores
 missing and bad data values as stored in a raster and how `R` handles these
 elements. Finally, it introduces the GeoTiff file format.
-
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
 
 <div id="objectives" markdown="1">
 
@@ -93,7 +89,7 @@ range of quantitative values. Some examples of continuous rasters include:
 3. Elevation values for a region. 
 
 A map of elevation for Harvard Forest derived from the 
-<a href="http://www.neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank"> 
+<a href="http://{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank"> 
 NEON AOP LiDAR sensor</a> 
 is below. Elevation is represented as continuous numeric variable in this map. 
 The legend shows the continuous range of values in the data from around 300 to 
@@ -103,6 +99,7 @@ The legend shows the continuous range of values in the data from around 300 to
 
 library(raster)
 library(rgdal)
+
 
 ```
 
@@ -420,7 +417,7 @@ plotRGB(newRGBImage, r = 1, g = 2, b = 3,
 
 The assigned `NoDataValue` varies across disciplines; `-9999` is a common value 
 used in both the remote sensing field and the atmospheric fields. It is also
-the standard used by the <a href="http://www.neonscience.org" target="_blank"> 
+the standard used by the <a href="http://{{ site.baseurl }}" target="_blank"> 
 National Ecological Observatory Network (NEON)</a>. 
 
 If we are lucky, our GeoTIFF file has a tag that tells us what is the

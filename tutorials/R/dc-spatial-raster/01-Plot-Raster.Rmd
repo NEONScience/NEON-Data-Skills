@@ -9,20 +9,18 @@ authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Willi
 contributors:	
 estimatedTime:	
 packagesLibraries: raster, rgdal
-topics:
-subtopics: raster, spatial-data-gis
+topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
 code1: /R/dc-spatial-raster/01-Plot-Raster.R	
 tutorialSeries: raster-data-series
+urlTitle: dc-plot-raster-data-r
 ---
 
-## About
+
 This tutorial reviews how to plot a raster in `R` using the `plot()` 
 function. It also covers how to layer a raster on top of a hillshade to produce 
 an eloquent map.
-
-**R Skill Level:** Intermediate - you've got the basics of `R` down.
 
 <div id="objectives" markdown="1">
 

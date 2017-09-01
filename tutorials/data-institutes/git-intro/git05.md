@@ -8,10 +8,11 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics: data-management
-languagesTool: Git, GitHub
+languagesTool: git
 dataProduct:
 code1:
 tutorialSeries: [git-github]
+urlTitle: github-git-add
 ---
 
 

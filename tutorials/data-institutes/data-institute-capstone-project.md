@@ -5,7 +5,7 @@ description: "This page details the capstone project that each Data Institute pa
 dateCreated: 2014-05-06
 estimatedTime:
 packagesLibraries:
-topics: data-management
+topics:
 languagesTool:
 dataProduct:
 code1:
@@ -35,7 +35,7 @@ You are welcome to use any data you choose for this project. Combining NEON data
 with external data is highly encouraged. You can learn more about what NEON 
 data are currently available on our website:
 
-<a class="btn btn-inverse" href="http://www.neonscience.org/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
+<a class="btn btn-inverse" href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
 
 ## Document Your Work
 

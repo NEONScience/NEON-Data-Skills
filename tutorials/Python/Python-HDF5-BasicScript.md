@@ -35,7 +35,7 @@ In this tutorial, we'll work with
 <a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> 
 by 
-<a href="http://www.neonscience.org" target="_blank">the National 
+<a href="http://{{ site.baseurl }}" target="_blank">the National 
 Ecological Observatory Network (NEON) </a>. Here the data is provided in a HDF5 
 format to allow for the exploration of this format. More on NEON temperature 
 data can be found on the 

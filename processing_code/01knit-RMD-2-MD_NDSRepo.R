@@ -8,7 +8,7 @@
 
 require(knitr)
 dirs <- c("R/primer-raster-data",
-          "LIDAR",
+          "teaching-modules/disturb-events-co13",
 					"data-institutes/rmd-intro",
           "R/dc-spatial-raster",
           "dataviz")
@@ -16,7 +16,7 @@ dirs <- c("R/primer-raster-data",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[3]
+dir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills/"

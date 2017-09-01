@@ -9,10 +9,11 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics: data-management
-languagesTool: git, github
+languagesTool: git
 dataProduct:
 code1:
 tutorialSeries: [git-github]
+urlTitle: github-git-clone
 ---
 
 This tutorial covers how to `clone` a github.com repo to your computer so
