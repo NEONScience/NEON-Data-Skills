@@ -270,18 +270,22 @@ tmp.files$data$files$name
 
 ```
 
-These file names start out the same as the observational files, then 
-are a little more cryptic. The structure is: NEON.[domain number].
-[site code].[data product ID].00000.[soil plot number].[depth].
-[averaging interval].[data table name]
+These file names start and end the same way as the observational 
+files, but the middle is a little more cryptic. The structure 
+from beginning to end is: 
 
-So NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.csv is 
-the 30-minute mean of soil temperature at Moab in soil plot 2, 
-4th depth below the surface.
+NEON.[domain number].[site code].[data product ID].00000.
+[soil plot number].[depth].[averaging interval].[data table name].
+[year]-[month].[data package].[date of file creation]
 
-Each file name is listed twice, for the basic and expanded packages. 
-We'll pull out the URL for the plot and depth above by selecting the 
-file name and the word "basic" in the URL.
+So NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
+2017-03.basic.20170804T063725Z.csv is 
+the basic data package of the 30-minute mean of soil temperature 
+from March 2017 at Moab in soil plot 2, 4th depth below the 
+surface, published on Aug 4, 2017, at 06:37:25 GMT.
+
+We'll pull out the URL for the plot and depth described above by 
+selecting "002.504.030" and the word "basic" in the file name.
 
 Go get it:
 
@@ -289,7 +293,7 @@ Go get it:
 
 soil.temp <- read.delim(tmp.files$data$files$url
                         [intersect(grep("002.504.030", tmp.files$data$files$name),
-                                   grep("basic", tmp.files$data$files$url))], sep=",")
+                                   grep("basic", tmp.files$data$files$name))], sep=",")
 
 ```
 
@@ -301,10 +305,11 @@ plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab=
 
 ```
 
-Note: the file names for instrumentation data products will be changing in 
-the very near future, and will be more similar to the observational file 
-names above. See Dust and particulate size distribution (DP1.00017.001) 
-for an example.
+Note: NEON instrumentation data products are currently being reprocessed 
+on a rolling basis, and as each product is re-deployed, the files will 
+begin to appear in the format described here. Products that haven't yet 
+been reprocessed will return file names like the above, but missing the 
+year, month, package, and date of creation specifications.
 
 
 ## Geolocation data

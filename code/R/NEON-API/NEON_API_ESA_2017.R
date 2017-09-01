@@ -67,7 +67,7 @@ tmp.files$data$files$name
 
 soil.temp <- read.delim(tmp.files$data$files$url
                         [intersect(grep("002.504.030", tmp.files$data$files$name),
-                                   grep("basic", tmp.files$data$files$url))], sep=",")
+                                   grep("basic", tmp.files$data$files$name))], sep=",")
 
 
 ## ----os-plot-soil-data---------------------------------------------------
