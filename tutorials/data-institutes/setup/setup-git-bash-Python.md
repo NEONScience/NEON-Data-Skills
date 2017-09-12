@@ -6,8 +6,8 @@ description: "This page outlines the tools and resources that you will need to
 dateCreated: 2017-04-10
 authors: Materials adapted from Data Carpentry by NEON staff
 contributors: 
-estimatedTime:
-packagesLibraries:
+estimatedTime: 
+packagesLibraries: 
 topics: data-management 
 languagesTool: Git, Bash, Python
 dataProduct: 
