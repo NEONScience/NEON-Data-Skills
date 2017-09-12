@@ -6,14 +6,15 @@ USGS Stream Discharge data in R to better understand the drivers and impacts of
 the 2013 Colorado floods."	
 dateCreated: 2015-05-18
 authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon	
-contributors:	
-estimatedTime:	
+contributors: 
+estimatedTime: 
 packagesLibraries: ggplot2, plotly
 topics: time-series, meteorology, data-viz
 languagesTool: R
 dataProduct:
 code1: /teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R	
-tutorialSeries:
+tutorialSeries: 
+
 ---
 
 {% include _toc.html %}

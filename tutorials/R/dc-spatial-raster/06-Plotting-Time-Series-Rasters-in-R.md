@@ -1,21 +1,22 @@
 ---
 syncID: 6571bb183e98409c971b660784acf93b
 title: "Raster 06: Plot Raster Time Series Data in R Using RasterVis and
-Levelplot"	
+Levelplot"
 description: "This tutorial covers how to efficiently and effectively plot a 
 stack of rasters using rasterVis package in R. Specifically it covers using 
-levelplot and adding meaningful, custom names to band labels in a RasterStack."	
+levelplot and adding meaningful, custom names to band labels in a RasterStack."
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	
-estimatedTime:	
+contributors: 
+estimatedTime: 
 packagesLibraries: raster, rgdal, rasterVis
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: 
 code1: /R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-rastervis-levelplot-r
+
 ---
 
 This tutorial covers how to improve plotting output using the `rasterVis` package
