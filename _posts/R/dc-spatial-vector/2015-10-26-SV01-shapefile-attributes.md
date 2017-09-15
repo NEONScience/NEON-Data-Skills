@@ -96,7 +96,7 @@ tutorial, you can skip this code.
     # setwd("pathToDirHere")
     
     # Import a polygon shapefile 
-    aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
+    aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
                                 "HarClip_UTMZ18")
 
     ## OGR data source with driver: ESRI Shapefile 
@@ -105,7 +105,7 @@ tutorial, you can skip this code.
     ## It has 1 fields
 
     # Import a line shapefile
-    lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV/", "HARV_roads")
+    lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV", "HARV_roads")
 
     ## OGR data source with driver: ESRI Shapefile 
     ## Source: "NEON-DS-Site-Layout-Files/HARV/", layer: "HARV_roads"
@@ -113,7 +113,7 @@ tutorial, you can skip this code.
     ## It has 15 fields
 
     # Import a point shapefile 
-    point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
+    point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
                           "HARVtower_UTM18N")
 
     ## OGR data source with driver: ESRI Shapefile 
