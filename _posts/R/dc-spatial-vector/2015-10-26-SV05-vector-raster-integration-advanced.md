@@ -122,13 +122,13 @@ series, you can skip this code as you have already created these object.)
     
     # Imported in Vector 00: Vector Data in R - Open & Plot Data
     # shapefile 
-    aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
+    aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
                                 "HarClip_UTMZ18")
     # Import a line shapefile
-    lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV/",
+    lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV",
                            "HARV_roads")
     # Import a point shapefile 
-    point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
+    point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
                           "HARVtower_UTM18N")
     
     # Imported in  Vector 02: .csv to Shapefile in R
