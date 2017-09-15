@@ -197,7 +197,7 @@ associated with it.
 
 <i class="fa fa-star"></i> **Data Tip:** The number of bands associated with a 
 raster object can also be determined using the `nbands` slot. Syntax is 
-`ObjectName@file@nbands`, or specifically for our file: `RGB_band1@file@nbands`.
+`ObjectName@file@nbands`, or specifically for our file: `RGB_band1@file_HARV@nbands`.
 {: .notice}
 
 ### Image Raster Data Values
