@@ -91,8 +91,7 @@ workshop!
 
 ## Workshop Schedule
 
-**Location**: B115, Oregon Convention Center
-Please double check the conference schedule as rooms may change!
+**Location**: Battelle's Boulder Office, Classroom
 
 
 | Time	| Topic	
