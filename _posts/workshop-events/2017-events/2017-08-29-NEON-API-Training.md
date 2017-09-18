@@ -1,6 +1,6 @@
 ---
 layout: workshop-event
-title: "Using the NEON API"
+title: "NEON Workshop: Using the NEON API"
 estimatedTime: 1.5-hour workshop
 date: 2017-08-29
 dateCreated: 2017-08-29
