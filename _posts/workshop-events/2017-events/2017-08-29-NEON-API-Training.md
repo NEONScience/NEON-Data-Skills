@@ -85,10 +85,6 @@ installed in R automatically.
 
 Please get in touch with the instructors prior to the workshop with any questions.
 
-## Tweet?  
-Please tweet using the hashtag **#WorkWithData** and **@NEON_Sci** during this 
-workshop!
-
 ## Workshop Schedule
 
 **Location**: Battelle's Boulder Office, Classroom
