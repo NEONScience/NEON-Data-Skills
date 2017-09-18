@@ -2,11 +2,11 @@
 layout: workshop-event
 title: "NEON Workshop: Using the NEON API"
 estimatedTime: 1.5-hour workshop
-date: 2017-08-29
-dateCreated: 2017-08-29
-lastModified: 2017-08-29
+date: 2017-09-29
+dateCreated: 2017-09-18
+lastModified: 2017-09-18
 startDate: 
-endDate: 2017-08-29
+endDate: 2017-09-29
 authors: [Claire Lunch, Megan A. Jones]
 tags: []
 mainTag: workshop-event
