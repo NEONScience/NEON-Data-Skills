@@ -1,10 +1,7 @@
 ---
 syncID: f596d3620a6449089341d08bc3375b43
 title: "Data Activity: Visualize Palmer Drought Severity Index Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This tutorial walks through how to download and visualize Palmer
-Drought Severity Index data in R. The data specifically downloaded for 
-this activity allows one to to better understand a driver of the 2013 Colorado
-floods."
+description: "This tutorial walks through how to download and visualize Palmer Drought Severity Index data in R. The data specifically downloaded for this activity allows one to to better understand a driver of the 2013 Colorado floods."
 dateCreated: 2015-05-18
 authors: Leah A. Wasser, Megan A. Jones, Mariela Perignon	
 contributors: 

@@ -1,7 +1,7 @@
 ---
 syncID: f578b1b20ef9483183a8c0abbf417440
 title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods"
-description:	
+description: This tutorial teaches how to use Digital Terrain Models derived from LiDAR data to create Digital Elevation Models of Differences that allow us to measure the change in elevation of an area after a disturbance event.	
 dateCreated: 2015-05-18
 authors: Leah A. Wasser, Megan A. Jones
 contributors:	

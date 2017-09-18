@@ -1,9 +1,7 @@
 ---
 syncID: 0f5e34fdc92349d4a3e317b83b6e38f6
 title:  "Raster 05: Raster Time Series Data in R"	
-description: "This tutorial covers how to work with and plot a raster time
-series, using an R RasterStack object. It also covers the basics of practical
-data quality assessment of remote sensing imagery."	
+description: "This tutorial covers how to work with and plot a raster time series, using an R RasterStack object. It also covers the basics of practical data quality assessment of remote sensing imagery."	
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
@@ -15,6 +13,7 @@ dataProduct: NEON.DP2.30026, NEON.DP3.30026
 code1: /R/dc-spatial-raster/05-Time-Series-Raster.R	
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-time-series-r
+
 ---
 
 This tutorial covers how to work with and plot a raster time series, using an 
