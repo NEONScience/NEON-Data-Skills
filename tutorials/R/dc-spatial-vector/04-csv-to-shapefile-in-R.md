@@ -1,8 +1,7 @@
 ---
 syncID: c09431a7dabf4b07a11356cb6284b15e
 title: "Vector 04: Convert from .csv to a Shapefile in R"
-description: "This tutorial covers how to convert a .csv file that contains spatial coordinate information into a spatial object in R. We will then export the spatial object as a Shapefile for efficient import into R and other GUI GIS
-applications including QGIS and ArcGIS"
+description: "This tutorial covers how to convert a .csv file that contains spatial coordinate information into a spatial object in R. We will then export the spatial object as a Shapefile for efficient import into R and other GUI GIS applications including QGIS and ArcGIS"
 dateCreated:  2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
 contributors: Sarah Newman
