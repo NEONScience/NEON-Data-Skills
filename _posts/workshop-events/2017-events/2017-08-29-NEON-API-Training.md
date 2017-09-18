@@ -33,8 +33,7 @@ on the NEON data portal and through the NEON Application Programming Interface
 NEON database, enabling automation and instantaneous updating of code and models. 
 Come to this workshop to learn to navigate the NEON API. NEON scientists will 
 demonstrate how to use the API, focusing on access via the R package `httr`, but 
-also covering the general API structure. Attendees are encouraged to bring 
-laptops and code along with the demonstration. 
+also covering the general API structure.
 
 #### Required Prior Knowledge
 
@@ -43,8 +42,9 @@ needed. The demonstration materials will also be made available online.
 
 ***
 
-This 1.5-hr workshop will be taught at Battelle's office in Boulder, CO. A full video 
-of the training will be available within two weeks of the training and posted here. 
+This 1.5-hr workshop will be taught at Battelle's office in Boulder, CO and limited 
+to Battelle employees. A full video of the training will be available within two 
+weeks of the training and posted here. 
 
 <div id="objectives" markdown="1">
 
