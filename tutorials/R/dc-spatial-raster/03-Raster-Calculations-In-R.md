@@ -23,9 +23,9 @@ to extract pixel values from a set of locations - for example a buffer region
 around plot locations at a field site. 
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -219,7 +219,7 @@ Canopy Height Model (CHM).
 Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Explore CHM Raster Values
 It's often a good idea to explore the range of values in a raster dataset just
 like we might explore a dataset that we collected in the field.  
@@ -257,10 +257,11 @@ them using efficient processing methods. The syntax is
 
 `outputRaster <- overlay(raster1, raster2, fun=functionName)`
 
-<i class="fa fa-star"></i> **Data Tip:** If the rasters are stacked and stored 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If the rasters are stacked and stored 
 as `RasterStack` or `RasterBrick` objects in `R`, then we should use `calc()`. 
 `overlay()` will not work on stacked rasters. 
-{: .notice}
+</div>
 
 Let's perform the same subtraction calculation that we calculated above using 
 raster math, using the `overlay()` function.  
@@ -278,7 +279,8 @@ raster math, using the `overlay()` function.
 How do the plots of the CHM created with manual raster math and the `overlay()`
 function compare?  
 
-<i class="fa fa-star"></i> **Data Tip:** A custom function consists of a defined
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** A custom function consists of a defined
 set of commands performed on a input object. Custom functions are particularly 
 useful for tasks that need to be repeated over and over in the code. A
 simplified syntax for writing a custom function in R is:
@@ -312,7 +314,7 @@ name in the specified directory. USE THIS SETTING WITH CAUTION!
 * **NAflag:** set the `geotiff` tag for `NoDataValue` to -9999, the National
 Ecological Observatory Network's (NEON) standard `NoDataValue`. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Explore the NEON San Joaquin Experimental Range Field Site
 
 Data are often more interesting and powerful when we compare them across various 

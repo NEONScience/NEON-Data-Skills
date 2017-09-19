@@ -21,9 +21,9 @@ This tutorial explores how to import and plot a multi-band raster in
 R. It also covers how to plot a three-band color image using the `plotRGB()`
 function in `R`.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Know how to identify a single vs. a multi-band raster file.
@@ -95,7 +95,8 @@ creates the colors that we see in an image.
 
 We can plot each band of a multi-band image individually. 
 
-<i class="fa fa-star"></i> **Data Tip:** In many GIS applications, a single band 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** In many GIS applications, a single band 
 would render as a single image in grayscale. We will therefore use a grayscale 
 palette to render individual bands. 
 {: .notice }
@@ -194,10 +195,11 @@ Notice that when we look at the attributes of RGB_Band1, we see :
 This is `R` telling us that this particular raster object has more bands (3)
 associated with it.
 
-<i class="fa fa-star"></i> **Data Tip:** The number of bands associated with a 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** The number of bands associated with a 
 raster object can also be determined using the `nbands` slot. Syntax is 
 `ObjectName@file@nbands`, or specifically for our file: `RGB_band1@file_HARV@nbands`.
-{: .notice}
+</div>
 
 ### Image Raster Data Values
 Let's next examine the raster's min and max values. What is the value range?
@@ -256,7 +258,7 @@ want to work with). To import the green band, we would use `band=2`.
 
 Notice that band 2 is the second of 3 bands `band: 2  (of  3  bands)`.  
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Making Sense of Single Band Images
 Compare the plots of band 1 (red) and band 2 (green). Is the forested area
 darker or lighter in band 2 (the green band) compared to band 1 (the red band)?  
@@ -434,7 +436,7 @@ In this case, the stretch doesn't enhance the contrast our image significantly
 given the distribution of reflectance (or brightness) values is distributed well
 between 0 and 255.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge - NoData Values
 Let's explore what happens with NoData values when using `RasterStack` and
 `plotRGB`. We will use the `HARV_Ortho_wNA.tif` GeoTIFF in the
@@ -457,11 +459,12 @@ tutorial.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R/challenge-code-NoData-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
 [Raster Time Series Data in R]({{ site.baseurl }}/R/Raster-Times-Series-Data-In-R/)
 for a tutorial on how to do this.  
-{: .notice}
+</div>
 
 ## RasterStack vs RasterBrick in R
 
@@ -507,7 +510,7 @@ You use `plotRGB` to block a `RasterBrick` too.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R/plot-brick-1.png)
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: What Methods Can Be Used on an R Object?
 We can view various methods available to call on an `R` object with 
 `methods(class=class(objectNameHere))`. Use this to figure out:

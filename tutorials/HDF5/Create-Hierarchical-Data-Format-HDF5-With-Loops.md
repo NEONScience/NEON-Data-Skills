@@ -15,9 +15,9 @@ tutorialSeries: intro-hdf5-r-series
 
 ---
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Understand how HDF5 files can be created and structured in R using the rhfd libraries. </li>
@@ -294,10 +294,11 @@ HDF5 file. In this case, the  precipitation and temperature datasets are of type
 'float' and of dimensions 100 x 3 (100 rows by 3 columns).
 
 
-<i class="fa fa-star"></i> **Data Tip:** It's useful to learn about the different 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** It's useful to learn about the different 
 types of data that can be stored within R (and other objects). 
 <a href="http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum" target="_blank">Learn more about float vs integer data here</a>
-{: .notice}
+</div>
 
 
     	# List file structure
@@ -370,14 +371,14 @@ like the first 10 rows of data, rather than loading the entire dataset into R.
 Now you are ready to go onto the other tutorials in the series to explore more 
 about HDF5 files. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Your Own HDF5
 
 Think about an application for HDF5 that you might have. Create a new HDF5 file 
 that would support the data that you need to store. 
 </div>
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: View Data with HDFView
 Open the sensordata.H5 file in the HDFView application and explore the contents.
 

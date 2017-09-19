@@ -19,9 +19,9 @@ In this tutorial, we will learn how to create multi (3) band images from hypersp
 data. We will also learn how to perform some basic raster calculations 
 (known as raster math in the GIS world).
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this activity, you will be able to:
 
@@ -78,11 +78,12 @@ on the ground.
     <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
 </figure>
 
-<i class="fa fa-star"></i> **Data Tip - Band Combinations:** The Biodiversity 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip - Band Combinations:** The Biodiversity 
 Informatics group created a great interactive tool that lets you explore band 
 combinations. Check it out:
 <a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using a great online tool!</a>
-{: .notice}
+</div>
 
 
 ## Create a Raster Stack in R
@@ -237,10 +238,11 @@ specifies which bands (or dimensions in our hyperspectral dataset) we want to
 include in our raster stack. Let's start with a typical RGB (red, green, blue) 
 combination. We will use bands 58, 34, and 19. 
 
-<i class="fa fa-star"></i> **Data Tip - wavelengths and bands:** Remember that 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip - wavelengths and bands:** Remember that 
 you can look at the wavelengths dataset to determine the center wavelength value 
 for each band. 
-{: .notice}
+</div>
 
 
 
@@ -365,7 +367,7 @@ More on plotRGB here.</a>
 
 <i class="fa fa-star"></i>**A note about image stretching:** 
 Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter.
-{: .notice}
+</div>
 
 Once you've created your raster, you can export it as a GeoTIFF. You can bring 
 this GeoTIFF into any GIS program!
@@ -376,12 +378,13 @@ this GeoTIFF into any GIS program!
     #version of the tif file! keep this in mind.
     writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
-<i class="fa fa-star"></i> **Data Tip - False color and near infrared images:** 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.
 What type of image do you get when you change the band values?
-{: .notice}
+</div>
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Other band combinations
 
 Use different band combinations to create other "RGB" images. Suggested band 
@@ -481,7 +484,7 @@ the best way to calculate NDVI from hyperspectral data!
 <figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
 </figure>
 	
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Work with Indices
 
 Try the following:

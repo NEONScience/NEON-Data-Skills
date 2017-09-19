@@ -21,9 +21,9 @@ will walk through how to
 convert a date, stored as a character string, into a date class that `R` can
 recognize and plot efficiently.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
   * Open a `.csv` file in `R` using `read.csv()`and understand why we
@@ -74,7 +74,7 @@ format is also less likely to become obsolete over time.
 <i class="fa fa-star"></i>**Data Tip:**
 <a href="https://en.wikipedia.org/wiki/Comma-separated_values" target="_blank"> 
 For more on .csv format see this Wikipedia article.</a>
-{: .notice}
+</div>
 
 ## Import the Data 
 
@@ -89,7 +89,8 @@ to import a `.csv` file. We will use the `ggplot2` package to plot our data.
     # set working directory to ensure R can find the file we wish to import
     # setwd("working-dir-path-here")
 
-<i class="fa fa-star"></i> **Data Tip:** Good coding practice -- install and 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Good coding practice -- install and 
 load all libraries at top of script.
 If you decide you need another package later on in the script, return to this
 area and add it. That way, with a glance, you can see all packages used in a
@@ -124,7 +125,8 @@ by a number (4 & 3).
 interpretation of non-numerical data but no order to the levels.  
 
  
-<i class="fa fa-star"></i> **Data Tip:** <a href="http://www.stat.berkeley.edu/~s133/factors.html" target="_blank">
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** <a href="http://www.stat.berkeley.edu/~s133/factors.html" target="_blank">
 Read more about factors here.</a>
 {: .notice }
 
@@ -244,7 +246,8 @@ Let's use both to explore our data.
     ##  $ f.s10tmin: chr  "M" "M" "M" "M" ...
 
 
-<i class="fa fa-star"></i> **Data Tip:** You can adjust the number of rows
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can adjust the number of rows
 returned when using the `head()` and `tail()` functions. For example you can use
 `head(harMet.daily, 10)` to display the first 10 rows of your data rather than 6.
 {: .notice }
@@ -427,7 +430,7 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R/qplot-data-1.png)
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Using ggplot2's qplot function 
 1. Create a quick plot of the precipitation. Use the full time frame of data available
 in the `harMet.daily` object. 

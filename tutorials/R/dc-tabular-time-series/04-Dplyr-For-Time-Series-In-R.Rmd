@@ -21,9 +21,9 @@ the NEON Harvard Forest Field Site. We will use pipes to efficiently perform
 multiple tasks within a single chunk of code.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Explain several ways to manipulate data using functions in the `dplyr`
@@ -284,7 +284,7 @@ str(year.sum)
 ```
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Using Pipes
 Use piping to create a `data_frame` called `jday.avg` that contains the average 
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
@@ -306,7 +306,8 @@ qplot(jday.avg$jday, jday.avg$meanAirTemp,
 
 ```
 
-<i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
 {: .notice }
 
@@ -357,7 +358,8 @@ The output shows we have 96 values for each day. Is that what we expect?
 24*4  # 24 hours/day * 4 15-min data points/hour
 ```
 
-<i class="fa fa-star"></i> **Data Tip:**  If Julian days weren't already in our 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
 data, we could use the `yday()` function
 <a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
 from the `lubridate` package to create a new column containing Julian day 
@@ -376,7 +378,7 @@ harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
   summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
 ```
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Summarization & Calculations with dplyr
 We can use `sum` to calculate the total rather than mean value for each Julian
 Day. Using this information, do the following:
@@ -425,7 +427,8 @@ harMet15.09.11 %>%
 
 ```
 
-<i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
 `transform()` in base `R`. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
 {: .notice }
@@ -476,7 +479,7 @@ str(harTemp.daily.09.11)
 head(harTemp.daily.09.11)
 ```
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Combined dplyr Skills
 
 1. Plot daily total precipitation from 2009-2011 as we did in the previous

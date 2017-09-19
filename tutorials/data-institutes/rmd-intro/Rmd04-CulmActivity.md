@@ -19,7 +19,7 @@ This tutorial covers the NEON Pre-Institute Week 3 assignment. If you already
 are familiar with `R Markdown` and `knitr`, you may be able to complete the 
 assignment without working through the tutorials. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 # Deadlines
 **Due:** Please submit your activity R Markdown and HTML files to the

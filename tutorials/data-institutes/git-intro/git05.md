@@ -18,8 +18,8 @@ urlTitle: github-git-add
 
 This tutorial reviews how to add and commit changes to a Git repo.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Add new files or changes to existing files to your repo.
@@ -145,7 +145,8 @@ of your markdown file.
 have been added to the Git tracking system but need to be **committed** as actual changes
 in the git repository history.
 
-<i class="fa fa-star"></i> **Data Tip:** If you want to delete a file from your
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you want to delete a file from your
 repo, you can do so using `git rm file-name-here.fileExtension`. If you delete
 a file in the finder (Mac) or Windows Explorer, you will still have to use
 `git add` at the command line to tell git that a file has been removed from the
@@ -169,7 +170,8 @@ message is helpful to us when we review commit history to see what has changed
 over time and when those changes occurred. Be sure that your message
 covers the change.
 
-<i class="fa fa-star"></i> **Data Tip:** It is good practice to keep commit messages to <50 characters.
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** It is good practice to keep commit messages to <50 characters.
 {: .notice }
 
 
@@ -191,7 +193,8 @@ this commit. You will always be able to track this specific commit (this specifi
 have changed and the number of type of changes made to the files including:
 insertions, and deletions.
 
-<i class="fa fa-star"></i> **Data Tip:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
 It is a good idea to use `git status` frequently as you are working with Git
 in the shell. This allows you to keep track of change that you've made and what
  Git is actually tracking.
@@ -233,7 +236,8 @@ originating repo which in this case - is our fork on github.com which we origina
 cloned to our local computer. `master` is the repo branch that you are
 currently working on.
 
-<i class="fa fa-star"></i> **Data Tip:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
 Note about branches in Git: We won't cover branches in these tutorials, however,
 a Git repo can consist of many branches. You can think about a branch, like
 an additional copy of a repo where you can work on changes and updates. 
@@ -272,10 +276,11 @@ Note that because this repo is a fork, your URL will have your GitHub username
 in it instead of "mjones01".
 
 
-<i class="fa fa-star"></i> **Bonus Tip:** You can use Git and connect to GitHub
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Bonus Tip:** You can use Git and connect to GitHub
 directly in the RStudio interface. If interested, read
 <a href="http://www.r-bloggers.com/rstudio-and-github/" target="_blank">this R-bloggers How-To</a>.
-{: .notice}
+</div>
 
 ## View Commits in GitHub
 

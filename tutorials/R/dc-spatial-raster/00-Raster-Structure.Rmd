@@ -22,9 +22,9 @@ with rasters in `R`: **CRS**, **extent** and **resolution**. It also explores
 missing and bad data values as stored in a raster and how `R` handles these
 elements. Finally, it introduces the GeoTiff file format.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -197,7 +197,8 @@ library(rgdal)
 ## Open a Raster in R
 We can use the `raster("path-to-raster-here")` function to open a raster in R. 
 
-<i class="fa fa-star"></i> **Data Tip:**  OBJECT NAMES! To improve code 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  OBJECT NAMES! To improve code 
 readability, file and object names should be used that make it clear what is in 
 the file. The data for this tutorial were collected over from Harvard Forest so 
 we'll use a naming convention of `datatype_HARV`. 
@@ -554,7 +555,7 @@ Notice a few things in the output:
 It is ideal to use `GDALinfo` to explore your file **before** reading it into 
 `R`.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Challenge: Explore Raster Metadata 
 

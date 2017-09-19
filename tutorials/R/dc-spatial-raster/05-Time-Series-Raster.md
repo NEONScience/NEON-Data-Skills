@@ -21,9 +21,9 @@ This tutorial covers how to work with and plot a raster time series, using an
 remote sensing derived imagery.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -237,7 +237,7 @@ data cover, is the zone which is used for the final CRS. Thus, our field site at
 Harvard Forest is located in UTM Zone 18, but the Landsat data is in a `CRS` of
 UTM Zone 19.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Raster Metadata
 Answer the following questions about our `RasterStack`.
 
@@ -276,7 +276,8 @@ quickly apply this factor using raster math on the entire stack as follows:
 
 `raster_stack_object_name / 10000`
 
-<i class="fa fa-star"></i> **Data Tip:** We can make this plot  
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** We can make this plot  
 even prettier by fixing the individual tile names, adding an plot title and by
 using the (`levelplot`) function. This is covered in the NEON Data Skills 
 [Plot Time Series Rasters in R ]({{ site.baseurl }}/R/Plot-Raster-Times-Series-Data-In-R/)
@@ -349,7 +350,7 @@ What is our next step?
 Let's have a look at the source Landsat imagery that was partially used used to 
 derive our NDVI rasters to try to understand what appears to be outlier NDVI values.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Examine RGB Raster Files
 
 1. View the imagery located in the `/NEON-DS-Landsat-NDVI/HARV/2011` directory. 

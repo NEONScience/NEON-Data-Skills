@@ -18,9 +18,9 @@ tutorialSeries: primer-raster-data-R
 This activity will walk you through the fundamental principles of working 
 with raster data in R.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Tutorial Objectives
+## Learning Objectives
 After completing this activity, you will be able to:
 * Describe what a raster dataset is and its fundamental attributes.
 * Import rasters into R using the raster library.
@@ -274,7 +274,7 @@ use as well include `rainbow` and `heat.colors`.
 * [RColorBrewer is another powerful tool to create sets of colors.](http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
 
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Challenge: Plotting Rasters
 
 Explore colors more: 
@@ -439,7 +439,7 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
  
 
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Challenge: Plot a Digital Surface Model
 
 Use what you've learned to open and plot a Digital Surface Model. 

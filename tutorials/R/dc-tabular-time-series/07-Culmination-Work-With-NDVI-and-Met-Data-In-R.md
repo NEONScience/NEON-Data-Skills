@@ -25,9 +25,9 @@ worked with in the tutorial series
 and 
 [working with raster time-series data in R ]({{ site.baseurl }}/tutorial-series/raster-time-series/).
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Apply `ggplot2` and `dplyr` skills to a new data set.
@@ -197,7 +197,7 @@ the original raster).
 * julianDay: the numeric day of the year
 * Date: a date in format "YYYY-MM-DD"; currently in **chr** class
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Class Conversion & Subset by Time
 The goal of this challenge is to get our data sets ready so that we can work 
 with data from each, within the same plots or analyses.  
@@ -250,7 +250,7 @@ Instead, plots of different types of data can be plotted next to each other to
 allow for comparison.  Depending on how the plots are being viewed, they can
 have a vertical or horizontal arrangement. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Air Temperature and NDVI
 
 Plot the NDVI vs Date (previous plot) and PAR vs Date (create a new plot) in the
@@ -297,7 +297,7 @@ We can also assign the date format for the x-axis and clearly label both axes.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-same-xaxis-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Air Temperature and NDVI
 Create a plot, complementary to those above, showing air temperature (`airt`)
 throughout 2011. Choose colors and symbols that show the data well. 

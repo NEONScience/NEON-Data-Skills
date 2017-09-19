@@ -19,9 +19,9 @@ context, explains why Julian days are useful for analyis and plotting, and
 teaches how to create a Julian day variable from a Date or Data/Time class 
 variable.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Define a Julian day (year day) as used in most ecological 
@@ -51,11 +51,12 @@ Julian days, as most often used in an ecological context, is a continuous count
 of the number of days beginning at Jan 1 each year. Thus each year will have up 
 to 365 (non-leap year) or 366 (leap year) days. 
 
-<i class="fa fa-star"></i> **Data Note:** This format can also be called ordinal
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Note:** This format can also be called ordinal
 day or year day. In some contexts, Julian day can refer specifically to a 
 numeric day count since 1 January 4713 BCE or as a count from some other origin 
 day, instead of an annual count of 365 or 366 days.
-{: .notice}
+</div>
 
 Including a Julian day variable in your data set can be very useful when
 comparing data across years, when plotting data, and when matching your data
@@ -114,7 +115,8 @@ contains the Julian day data.
 
     ## [1] 268 269 270 271 272 273
 
-<i class="fa fa-star"></i> **Data Tip:**  In this tutorial we converted from
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  In this tutorial we converted from
 `Date` class to a Julian day, however, you can convert between any recognized
 date/time class (POSIXct, POSIXlt, etc) and Julian day using `yday`.  
-{: .notice}
+</div>

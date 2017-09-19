@@ -21,9 +21,9 @@ reproject data imported in a shapefile format, and export a shapefile from an
 `R` spatial object and plot raster and vector data as
 layers in the same plot. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Import .csv files containing x,y coordinate locations into `R`.
@@ -75,10 +75,11 @@ allows us to store both the `x,y` values that represent the coordinate location
 of each point and the associated attribute data - or columns describing each
 feature in the spatial object.
 
-<i class="fa fa-star"></i> **Data Tip:** There is a `SpatialPoints` object (not
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** There is a `SpatialPoints` object (not
 `SpatialPointsDataFrame`) in `R` that does not allow you to store associated
 attributes. 
-{: .notice}
+</div>
 
 We will use the `rgdal` and `raster` libraries in this tutorial. 
 
@@ -494,7 +495,7 @@ values from the spatial object that has a larger extent. Let's try it.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/04-csv-to-shapefile-in-R/set-plot-extent-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge - Import & Plot Additional Points
 We want to add two phenology plots to our existing map of vegetation plot
 locations. 

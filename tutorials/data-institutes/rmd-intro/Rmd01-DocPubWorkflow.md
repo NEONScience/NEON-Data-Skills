@@ -18,9 +18,9 @@ This tutorial we will work with the `knitr` and `rmarkdown` packages within
 `RStudio` to learn how to effectively and efficiently document and publish our
 workflows online.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Learning Objectives
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain why documenting and publishing one's code is important.
@@ -62,9 +62,10 @@ We use markdown syntax in R Markdown (.rmd) files to document workflows and
 to share data processing, analysis and visualization outputs. We can also use it
 to create documents that combine R code, output and text.
 
-<i class="fa fa-star"></i> **Data Tip:** Most of the
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Most of the
 <a href="https://github.com/NEONInc/NEON-Data-Skills/" target="_blank">neondataskills.org </a> pages on this site are built using R Markdown files.
-{: .notice}
+</div>
 
 
 ### Why R Markdown?
@@ -80,10 +81,11 @@ code blocks.
 slide shows and more.
 * Code and data can be shared with a colleague to replicate the workflow.
 
-<i class="fa fa-star"></i> **Data Tip:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
 <a href="https://rpubs.com/" target= "_blank ">RPubs</a>
 is a quick way to share and publish code.
-{: .notice}
+</div>
 
 ## Knitr
 

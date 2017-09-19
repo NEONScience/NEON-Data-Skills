@@ -21,9 +21,9 @@ package, how to add trend lines to a scatter plot and how to customize plot
 labels, colors and overall plot appearance using `ggthemes`.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Create basic time series plots using `ggplot()` in `R`.
@@ -192,7 +192,8 @@ labels using `+ xlab("TEXT") + ylab("TEXT")`.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/basic-ggplot2-labels-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:**  Use `help(ggplot2)` to review the many
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  Use `help(ggplot2)` to review the many
 elements that can be defined and added to a `ggplot2` plot.
 {: .notice }
 
@@ -227,7 +228,8 @@ use the syntax:
 Rather than re-coding the entire plot, we can add the `scale_x_date` element
 to the plot object `AirTempDaily` that we just created. 
 
-<i class="fa fa-star"></i> **Data Tip:** You can type `?strptime` into the `R` 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can type `?strptime` into the `R` 
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type `scale_x_date` for a list of parameters that allow you to format dates 
 on the x-axis.
@@ -242,7 +244,8 @@ on the x-axis.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/format-x-axis-labels-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
 {: .notice }
 
@@ -276,7 +279,8 @@ month).
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/format-x-axis-label-ticks-2.png)
 
-<i class="fa fa-star"></i> **Data Tip:**  We can adjust the tick spacing and
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  We can adjust the tick spacing and
 format for x- and y-axes using `scale_x_continuous` or `scale_y_continuous` to
 format a continue variable. Check out `?scale_x_` (tab complete to view the 
 various x and y scale options)
@@ -376,7 +380,7 @@ style.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/increase-font-size-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Total Daily Precipitation
 Create a plot of total daily precipitation using data in the `harMetDaily.09.11` 
 `data_frame`. 
@@ -421,7 +425,7 @@ This is because `R` will do it's best to adjust colors of bars that are closely
 spaced to improve readability. If we zoom into the plot, all of the bars are
 black.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot with scale_x_data()
 Without creating a subsetted dataframe, plot the precipitation data for 
 *2010 only*.  Customize the plot with:
@@ -461,7 +465,8 @@ There are many color cheatsheets out there to help with color selection!
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/ggplot-color-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:**  For more information on color,
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  For more information on color,
 including color blind friendly color palettes, checkout the 
 <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/" target="_blank">
 ggplot2 color information</a> from Winston Chang's *Cookbook* *for* *R* site 
@@ -491,7 +496,7 @@ lines suggest that the connecting points are directly related. It is important
 to consider what type of plot best represents the type of data that you are
 presenting.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Combine Points & Lines
 You can combine geometries within one plot. For example, you can have a
 `geom_line()` and `geom_point` element in a plot. Add `geom_line(na.rm=TRUE)` to
@@ -515,7 +520,8 @@ statistical method as follows:
 For this tutorial, we will use the default trend line model. The `gam` method will 
 be used with given we have 1,095 measurements.
 
-<i class="fa fa-star"></i> **Data Tip:**  Remember a trend line is a statistical
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  Remember a trend line is a statistical
 transformation of the data, so prior to adding the line one must understand if a 
 particular statistical transformation is appropriate for the data. 
 {: .notice } 
@@ -530,7 +536,7 @@ particular statistical transformation is appropriate for the data.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/ggplot-trend-line-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: A Trend in Precipitation? 
 
 Create a bar plot of total daily precipitation. Add a:
@@ -545,7 +551,7 @@ Create a bar plot of total daily precipitation. Add a:
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/challenge-code-linear-trend-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Monthly Air Temperature
 
 Plot the monthly air temperature across 2009-2011 using the
@@ -579,7 +585,7 @@ we'll specify one column..
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/compare-precip-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Create Panel of Plots
 
 Plot `AirTempMonthly` and `AirTempDaily` next to each other rather than stacked

@@ -14,9 +14,9 @@ code1: /HDF5/Intro-HDF5-R.R
 tutorialSeries: intro-hdf5-r-series
 ---
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Understand how HDF5 files can be created and structured in R using the 
@@ -255,7 +255,7 @@ in R.
 
 ![ ]({{ site.baseurl }}/images/rfigs/HDF5/Intro-HDF5-R/access-plot-data-1.png)
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Challenge: Work with HDF5 Files
 
 Time to practice the skills you've learned. Open up the D17_2013_SJER_vegStr.csv 

@@ -84,14 +84,15 @@ $ pwd
 /Users/neon
 ```
 
-<i class="fa fa-star"></i> **Data Tip:** Home Directory Variation - The home 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Home Directory Variation - The home 
 directory path will look different on different operating systems. On Linux it 
 may look like `/home/neon`, and on Windows it will be similar to
  `C:\Documents and Settings\neon` or `C:\Users\neon`. 
 (It may look slightly different for different versions of Windows.) 
 In future examples, we've used Mac output as the default, Linux and Windows 
 output may differ slightly, but should be generally similar. 
-{: .notice}
+</div>
 
 If you are not, by default, in your home directory, you get there by typing: 
 
@@ -117,10 +118,11 @@ system and how you have customized your filesystem.)
 `ls` prints the names of the files and directories in the current directory in
 alphabetical order, arranged neatly into columns.
 
-<i class="fa fa-star"></i> **Data Tip:** What is a directory? That is a folder! Read this section on
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** What is a directory? That is a folder! Read this section on
 <a href="http://neondataskills.org/R/Set-Working-Directory#directory-vs-folder" target="_blank"> Directory & Folder </a>
 if you find the wording confusing.
-{: .notice} 
+</div> 
 
 ### Change directory -- cd
 Now we want to move into our Documents directory where we will create a 
@@ -182,7 +184,7 @@ data/  elements/  GitHub/  animals.txt  planets.txt  sunspot.txt
 <i class="fa fa-star"></i>**Data Tip:** This material is a much abbreviated form of the 
 <a href="http://swcarpentry.github.io/shell-novice/" target="_blank"> Software Carpentry Unix Shell for Novices</a>
 workhop. Want a better understanding of shell? Check out the full series!
-{: .notice}
+</div>
 
 ## Is Git Installed Correctly? 
 
@@ -262,7 +264,8 @@ same commands to choose another editor or update your email address.
 Now that Git is set up, you will be ready to start the Week 2 materials to learn 
 about version control and how Git & GitHub work. 
 
-<i class="fa fa-star"></i> **Data Tip:** 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** 
 <a href="https://desktop.github.com/" target="_blank"> GitDesktop </a>
 is a GUI (one of many) for 
 using GitHub that is free and available for both Mac and Windows operating 
@@ -270,4 +273,4 @@ systems. In NEON Data Skills workshops & Data Institutes will only teach how to
 use Git through command line, and not support use of GitDesktop 
 (or any other GUI), however, you are welcome to check it out and use it if you 
 would like to. 
-{: .notice}
+</div>

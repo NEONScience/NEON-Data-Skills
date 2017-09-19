@@ -18,9 +18,9 @@ tutorialSeries: [intro-lidar-r-series]
 In this tutorial, we will explore LiDAR point cloud data using the free, online 
 <a href="http://plas.io" target="_blank"> Plas.io viewer</a>. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 At the end of this tutorial, you will be able to: 
 
 * visualize lidar point clouding using the free online data viewer plas.io

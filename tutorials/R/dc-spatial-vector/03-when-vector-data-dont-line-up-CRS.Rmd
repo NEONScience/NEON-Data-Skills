@@ -21,9 +21,9 @@ state and country boundary accessed from the
 We will learn how to map vector data that are in different `CRS` and thus 
 don't line up on a map. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Identify the `CRS` of a spatial dataset.
@@ -285,10 +285,11 @@ Note that there are no specified units above. This is because this geographic
 coordinate reference system is in latitude and longitude which is most 
 often recorded in *Decimal Degrees*.
 
-<i class="fa fa-star"></i> **Data Tip:** the last portion of each `proj4` string 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** the last portion of each `proj4` string 
 is `+towgs84=0,0,0 `. This is a conversion factor that is used if a datum 
 conversion is required. We will not deal with datums in this tutorial series.
-{: .notice}
+</div>
 
 ## CRS Units - View Object Extent
 
@@ -336,10 +337,11 @@ The `spTransform()` function requires two inputs:
 use the `crs()` of the `State.Boundary.US` object as follows:
 `crs(State.Boundary.US)`
 
-<i class="fa fa-star"></i> **Data Tip:** `spTransform()` will only work if your 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** `spTransform()` will only work if your 
 original spatial object has a CRS assigned to it AND if that CRS is the 
 correct CRS!
-{: .notice}
+</div>
 
 Next, let's reproject our point layer into the geographic - latitude and
 longitude `WGS84` coordinate reference system (CRS).
@@ -383,7 +385,7 @@ Reprojecting our data ensured that things line up on our map! It will also
 allow us to perform any required geoprocessing (spatial calculations /
 transformations) on our data.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge - Reproject Spatial Data
 
 Create a map of the North Eastern United States as follows:

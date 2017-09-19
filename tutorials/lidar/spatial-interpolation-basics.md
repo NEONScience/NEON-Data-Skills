@@ -18,7 +18,7 @@ tutorialSeries: intro-lidar-r-series
 In this tutorial was originally created for an ESA brown-bag workshop. Here we
 present the main graphics and topics covered in the workshop. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 
 ## Additional Resources

@@ -18,8 +18,8 @@ urlTitle: markdown-files
 
 This tutorial covers how create and format Markdown files.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Create a Markdown (.md) file using a text editor.
@@ -104,14 +104,15 @@ Heading one is 1 pound sign, heading two is 2 pound signs, etc as follows:
 For a more thorough list of markdown syntax, please read this
 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">GitHub Guide on Markdown</a>.
 
-<i class="fa fa-star"></i> **Data Tip:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
 There are many free Markdown editors out there! The
 <a href="http://Atom.io" target="_blank">atom.io</a>
 editor is a powerful text editor package by GitHub, that also has a Markdown
 renderer allowing you to see what your Markdown looks like as you are working.
 {: .notice }
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Activity: Create A Markdown Document
 
 Now that you are familiar with the Markdown syntax, use it to create

@@ -14,9 +14,9 @@ code1:
 tutorialSeries: intro-hsi-r-series
 ---
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Tutorial Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Define hyperspectral remote sensing. 

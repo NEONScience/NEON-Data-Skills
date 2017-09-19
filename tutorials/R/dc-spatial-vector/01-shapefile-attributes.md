@@ -21,9 +21,9 @@ attributes, as well as subset shapefiles by specific attribute values.
 Finally, we will review how to plot a shapefile according to a set of attribute 
 values.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Query shapefile attributes.
@@ -245,7 +245,7 @@ Let's give it a try.
     ##  [6] "RULEID"     "MAPLABEL"   "SHAPE_LENG" "LABEL"      "BIKEHORSE" 
     ## [11] "RESVEHICLE" "RECMAP"     "Shape_Le_1" "ResVehic_1" "BicyclesHo"
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Attributes for Different Spatial Classes
 Explore the attributes associated with the `point_HARV` and `aoiBoundary_HARV` 
 spatial objects. 
@@ -357,7 +357,7 @@ to do this.
 Now, we see that there are in fact two features in our plot! 
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Subset Spatial Line Objects
 Subset out all:
 
@@ -378,10 +378,11 @@ a determined *order*.
 
 By default, `R` will import spatial object attributes as `factors`.
 
-<i class="fa fa-star"></i> **Data Tip:** If our data attribute values are not 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If our data attribute values are not 
 read in as factors, we can convert the categorical 
 attribute values using `as.factor()`.
-{: .notice}
+</div>
 
 
     # view the original class of the TYPE column
@@ -506,7 +507,7 @@ try.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/line-width-unique-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Line Width by Attribute 
 We can customize the width of each line, according to specific attribute value,
 too. To do this, we create a vector of line width values, and map that vector
@@ -524,10 +525,11 @@ Create a plot of roads using the following line thicknesses:
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/bicycle-map-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Given we have a factor with 4 levels, 
 we can create an vector of numbers, each of which specifies the thickness of each
 feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[lines_HARV$TYPE]`
-{: .notice}
+</div>
 
 ## Add Plot Legend
 We can add a legend to our plot too. When we add a legend, we use the following
@@ -608,13 +610,14 @@ Let's try it!
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/plot-different-colors-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can modify the defaul R color palette 
 using the palette method. For example `palette(rainbow(6))` or
 `palette(terrain.colors(6))`. You can reset the palette colors using
 `palette("default")`!
-{: .notice} 
+</div> 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Lines by Attribute
 Create a plot that emphasizes only roads where bicycles and horses are allowed.
 To emphasize this, make the lines where bicycles are not allowed THINNER than
@@ -630,7 +633,7 @@ other lines can be grey.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/bicycle-map-2-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Polygon by Attribute
 
 1. Create a map of the State boundaries in the United States using the data

@@ -22,9 +22,9 @@ In this tutorial, we will extract NDVI values from a raster time series dataset
 in `R` and plot them using `ggplot`.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -216,7 +216,8 @@ Day value:
 
 What class is our `julianDay` column?
 
-<i class="fa fa-star"></i> **Data Tip:** To be efficient, we substituted two
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** To be efficient, we substituted two
 elements in one line of code using the "|". You can often combine commands in `R`
 to improve code efficiency. 
 `avg_NDVI_HARV$julianDay <- gsub("X|_HARV_NDVI_crop", "", row.names(avg_NDVI_HARV))`.
@@ -275,7 +276,7 @@ integer 05 `julianDay` value (indicating 5th of January), we cannot simply add
 `origin + julianDay` because `01 + 05 = 06` or 06 January 2011. To correct, this
 error we then subtract 1 to get the correct day, January 05 2011.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: NDVI for the San Joaquin Experimental Range
 We often want to compare two different sites. The National Ecological
 Observatory Network (NEON) also has a field site in Southern California
@@ -309,7 +310,7 @@ in `ggplot()` see the tutorial on
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R/ggplot-data-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Challenge: Plot San Joaquin Experimental Range Data
 
@@ -341,7 +342,7 @@ of columns and exact same column names to be bound.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R/merge-df-single-plot-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot NDVI with Date
 Plot the SJER and HARV data in one plot but use date, rather than Julian day, 
 on the x-axis. 
@@ -426,7 +427,8 @@ will be removed from our analysis. We will use 0.1 as an example for this
 tutorials. We can then use the subset function to remove outlier datapoints 
 (below our identified threshold).
 
-<i class="fa fa-star"></i> **Data Tip:** Thresholding, or removing outlier data,
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Thresholding, or removing outlier data,
 can be tricky business. In this case, we can be confident that some of our NDVI
 values are not valid due to cloud cover. However, a threshold value may not 
 always be sufficient given 0.1 could be a valid NDVI value in some areas. This
@@ -512,7 +514,7 @@ the row names.
     # write.csv(DateFrameName, file="NewFileName")
     write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Write to .csv
 
 1. Create a NDVI .csv file for the NEON SJER field site that is comparable with

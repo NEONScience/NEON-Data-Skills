@@ -22,9 +22,9 @@ to work with shapefile attributes in `R` and explores how to plot multiple
 shapefiles using base R graphics. It then covers
 how to create a custom legend with colors and symbols that match your plot.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Plot multiple shapefiles using base R graphics.
@@ -128,10 +128,11 @@ plot(lines_HARV,
 
 ```
 
-<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Given we have a factor with 4 levels, 
 we can create a vector of numbers, each of which specifies the thickness of each
 feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[lines_HARV$TYPE]`
-{: .notice}
+</div>
 
 ## Add Plot Legend
 In the 
@@ -259,9 +260,10 @@ element in the plot. It might be better if the lines were symbolized as a line
 and the points, symbolized as a symbol. We can customize this using
 `pch=` in our legend: **16** is a point symbol, **15** is a box. 
 
-<i class="fa fa-star"></i> **Data Tip:** To view a short list of `pch` symbols, 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** To view a short list of `pch` symbols, 
 type `?pch` into the `R` console. 
-{: .notice}
+</div>
 
 
 ```{r custom-symbols }
@@ -326,7 +328,7 @@ legend("bottomright",
 ```
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Polygon by Attribute
 
 1. Using the `NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp` shapefile, 

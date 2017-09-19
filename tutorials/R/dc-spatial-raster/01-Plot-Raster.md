@@ -20,9 +20,9 @@ This tutorial reviews how to plot a raster in `R` using the `plot()`
 function. It also covers how to layer a raster on top of a hillshade to produce 
 an eloquent map.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -150,9 +150,10 @@ We can include as few or many breaks as we'd like.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/plot-with-breaks-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
-{: .notice}
+</div>
 
 ### Format Plot
 If we need to create multiple plots using the same color palette, we can create
@@ -188,7 +189,7 @@ Or we can also turn off the axes altogether.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/turn-off-axes-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Using Custom Breaks
 
 Create a plot of the Harvard Forest Digital Surface Model (DSM) that has:
@@ -222,9 +223,10 @@ above when viewing terrain.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/hillshade-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Turn off, or hide, the legend on 
 a plot using `legend=FALSE`.
-{: .notice}
+</div>
 
 We can layer another raster on top of our hillshade using by using `add=TRUE`.
 Let's overlay `DSM_HARV` on top of the `hill_HARV`.
@@ -253,7 +255,7 @@ transparent, 1 being opaque). Note that here we used the color palette
 * More information in the 
 <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">`R` color palettes documentation</a>. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Create DTM & DSM for SJER
 Use the files in the `NEON_RemoteSensing/SJER/` directory to create a Digital
 Terrain Model map and Digital Surface Model map of the San Joaquin Experimental

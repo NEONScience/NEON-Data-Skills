@@ -22,9 +22,9 @@ R and Plot.ly. The tutorial is part of the Data Activities that can be used
 with the 
 <a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download Palmer Drought Severity Index (and related indices) data from <a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> NOAA's Climate Divisional Database (nCLIMDIV)</a>. 
@@ -415,7 +415,7 @@ be appropriate information to add for this plot?
 plot? 
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Challenge: Does spatial scale affect the pattern? 
 
@@ -436,7 +436,7 @@ found at "drought/CDODiv8868227122048_COdiv04.txt".
 
 </div>
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Do different measures show the same pattern?
 
 The nCLIMDIV dataset includes not only the Palmer Drought Severity Index but 

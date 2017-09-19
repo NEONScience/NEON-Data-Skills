@@ -28,9 +28,9 @@ of the plot's width) for each plot centroid location in a dataset.
 <a href="http://stackoverflow.com/users/489704/jbaums" target="_blank"> jbaums</a>
 from StackOverflow for helping with the SpatialPolygons code!
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Tutorial Objectives
+## Learning Objectives
 After completing this activity, you will be able to: 
 
 * Create square polygons around a centroid point. 

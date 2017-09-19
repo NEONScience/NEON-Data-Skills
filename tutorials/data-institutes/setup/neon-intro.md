@@ -25,8 +25,8 @@ that you may want to work on at the Institute. At the end of week one, you will
 document an initial research question or idea and associated data needed to 
 address that question, that you may want to explore while at the NEON Data Institute.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain the mission of the National Ecological Observatory Network (NEON).
@@ -51,7 +51,8 @@ Please read the following page about NEON's mission:
 * <a href="http://{{ site.baseurl }}/about" target="_blank">Read about NEON’s mission</a>
 {: .readme }
 
-<i class="fa fa-star"></i> **Data Institute Participants -- Thought Questions:** How might/does the NEON project
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Institute Participants -- Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
 {: .notice .thought }
 
@@ -95,7 +96,8 @@ filter sites by name, site host, domain or state.
 have online documentation. We are working on this!
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Data Institute Participant -- Thought Questions:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
 working on and answer the following questions:
@@ -110,7 +112,8 @@ coincide with?
 interested in? What kind of data are available?
 </div>
 
-<i class="fa fa-star"></i> **Data Tip:** You can download
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can download
 <a href="http://{{ site.baseurl }}/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
 {: .notice }
 
@@ -140,13 +143,15 @@ Platform (AOP), if you didn't already on the AOP page.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
 
-<i class="fa fa-star"></i> **Data Tip:** If you are familiar with LiDAR and
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you are familiar with LiDAR and
 hyperspectral remote sensing data, checkout this
 <a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">more technical NEON AOP video</a>.
-{: .notice}
+</div>
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Data Institute Participant – Thought Questions:** 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 Consider either your current
 or future research or the question you’d like to address at the Institute.
 
@@ -190,7 +195,8 @@ documentation can always be found on the
 <a href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Data Institute Participant – Thought Questions:** 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 
 Use the Data Portal tools to investigate the data availability for the field
 sites you’ve already identified in the previous Thought Questions. If your
@@ -212,14 +218,15 @@ every field site.
 <a class="link--button link--arrow" href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Products Catalog.</a>
 
-<i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
 <a href="http://{{ site.baseurl }}/assignable-assets" target="_blank">Assignable Assets programs </a>.
 {: .notice }
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Data Institute Participants: Intro to NEON Culmination Activity
 
 Write up a brief summary of a project that you might want to explore while at the

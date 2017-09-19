@@ -18,9 +18,9 @@ You will need to have the `rmarkdown` and `knitr`
 packages installed on your computer prior to completing this tutorial. Refer to 
 <a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/install-R-packages" target="_blank"> the setup materials</a> to get these installed. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Learning Objectives
+## Learning Objectives
 At the end of this activity, you will:
 
 * Know how to create an R Markdown file in RStudio.
@@ -119,12 +119,13 @@ Next, we'll break down the structure of an R Markdown file.
 	</figcaption>
 </figure>
 
-<i class="fa fa-star"></i> **Data Tip:** Screenshots on this page are
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Screenshots on this page are
 from RStudio with appearance preferences set to `Twilight` with `Monaco` font. You 
 can change the appearance of your RStudio by **Tools** > **Options**
 (or **Global Options** depending on the operating system). For more, see the
 <a href="https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio" target="_blank">Customizing RStudio page</a>.
-{: .notice}
+</div>
 
 Let's next review the structure of an R Markdown (`.Rmd`) file. There are three
 main content types:
@@ -152,7 +153,7 @@ A YAML header may be structured differently depending upon how your are using it
 Learn more on the
 <a href="http://rmarkdown.rstudio.com/authoring_quick_tour.html#output_options" target="_blank"> R Markdown documentation page</a>.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Activity: R Markdown YAML
 Customize the header of your `.Rmd` file as follows: 
 
@@ -189,7 +190,7 @@ Does any of the markdown syntax look familiar?
 
 If you are unsure, the answers are at the bottom of this page.
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Activity: R Markdown Text
 
 1. Remove the template markdown and code chunks added to the RMD file by RStudio. 
@@ -206,10 +207,11 @@ you will be adding the page.
 
 </div>
 
-<i class="fa fa-star"></i> **Data Tip**: You can add code output or an R object
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip**: You can add code output or an R object
 name to markdown segments of an RMD. For more, view this
 <a href="http://rmarkdown.rstudio.com/authoring_quick_tour.html#inline_r_code" target="_blank"> R Markdown documentation</a>.
-{: .notice}
+</div>
 
 ### Code chunks
 
@@ -229,7 +231,7 @@ mandatory. Next to the `{r}`, there is a chunk name. This name is not required
 for basic knitting however, it is good practice to give each chunk a unique 
 name as it is required for more advanced knitting approaches. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Activity: Add Code Chunks to Your R Markdown File
 
@@ -310,7 +312,7 @@ chunk options, read
 or the
 <a href="http://yihui.name/knitr/demo/output/" target="_blank"> knitr documentation</a>.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Activity: Add More Code to Your R Markdown
 
 Update your RMD file as follows:

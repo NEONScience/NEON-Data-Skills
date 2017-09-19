@@ -23,9 +23,9 @@ This tutorial should be seem more as a reference on the basics of R and not a
 tutorial for learning to use R. Here we define many of the basics, however, this 
 can get overwhelming if you are brand new to R. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to: 
 
 * Use basic R syntax
@@ -50,8 +50,9 @@ R is a versatile, open source programming language that was specifically
 designed for data analysis. R is extremely useful for data management, statistics and 
 analyzing data. 
 
-<i class="fa fa-star"></i> **Cool Fact:** R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
-{: .notice}
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Cool Fact:** R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
+</div>
 
 R is:
 
@@ -153,10 +154,11 @@ a <- 1+2
 a = 1+2 
 ```
 
-<i class="fa fa-star"></i> **Typing Tip:** If you are using RStudio, you can use
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Typing Tip:** If you are using RStudio, you can use
 a keyboard shortcut for the assignment operator: **Windows/Linux: "Alt" + "-"** 
 or **Mac: "Option" + "-"**. 
-{: .notice}
+</div>
 
 ### List All Objects in the Environment
 

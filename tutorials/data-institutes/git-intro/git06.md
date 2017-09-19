@@ -18,8 +18,8 @@ urlTitle: github-pull-requests
 This tutorial covers how to sync files between your local copy of a Git repo,
 your forked repo on github.com and a central repo.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain the concept of base fork and head fork.
@@ -118,8 +118,8 @@ sometimes - particularly if you are working on a new document that you know
 no one else is working on. However, it is good practice to ensure your repo is
 in sync with the central repo **before**, you begin editing a repo's content.
 
- <div class="notice" markdown="1">
- <i class="fa fa-star"></i> **Data Tip:**
+ <div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
  A pull request to another repo is similar to a "push". However it allows
  for a few things:
 
@@ -356,7 +356,7 @@ above, however, we switch the base and head so that the transfer of data
 occurs in the other direction - from our fork to the central repo.
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Activity: Submit Pull Request for Week 2 Assignment
 
