@@ -24,7 +24,7 @@ understand the general structure of tabular data.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Import a .csv file and examine the structure of the related `R`

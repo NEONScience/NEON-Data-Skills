@@ -20,7 +20,7 @@ with raster data in R.
 
 <div id="ds-objectives" markdown="1">
 
-## Tutorial Objectives
+## Learning Objectives
 After completing this activity, you will be able to:
 * Describe what a raster dataset is and its fundamental attributes.
 * Import rasters into R using the raster library.

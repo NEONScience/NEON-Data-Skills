@@ -30,7 +30,7 @@ from StackOverflow for helping with the SpatialPolygons code!
 
 <div id="ds-objectives" markdown="1">
 
-## Tutorial Objectives
+## Learning Objectives
 After completing this activity, you will be able to: 
 
 * Create square polygons around a centroid point. 

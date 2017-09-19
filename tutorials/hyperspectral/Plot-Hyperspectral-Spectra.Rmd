@@ -16,7 +16,7 @@ tutorialSeries:
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Extract and plot spectra from an HDF5 file.

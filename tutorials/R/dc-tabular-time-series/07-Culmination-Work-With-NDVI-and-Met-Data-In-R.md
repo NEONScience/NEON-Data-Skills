@@ -27,7 +27,7 @@ and
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Apply `ggplot2` and `dplyr` skills to a new data set.

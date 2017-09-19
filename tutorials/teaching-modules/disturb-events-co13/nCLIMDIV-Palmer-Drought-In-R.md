@@ -24,7 +24,7 @@ with the
 
 <div id="ds-objectives" markdown="1">
 
-#### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download Palmer Drought Severity Index (and related indices) data from <a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> NOAA's Climate Divisional Database (nCLIMDIV)</a>. 

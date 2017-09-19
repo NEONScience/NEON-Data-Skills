@@ -21,7 +21,7 @@ data. We will also learn how to perform some basic raster calculations
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 
 After completing this activity, you will be able to:
 

@@ -25,7 +25,7 @@ This tutorial is part of the Data Activities that can be used with the
 
 <div id="ds-objectives" markdown="1">
 
-#### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download stream gauge data from <a href="http://waterdata.usgs.gov/nwis" target="_blank"> USGS's National Water Information System</a>. 

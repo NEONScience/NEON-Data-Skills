@@ -24,7 +24,7 @@ elements. Finally, it introduces the GeoTiff file format.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 

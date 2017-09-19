@@ -21,7 +21,7 @@ variable.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Define a Julian day (year day) as used in most ecological 

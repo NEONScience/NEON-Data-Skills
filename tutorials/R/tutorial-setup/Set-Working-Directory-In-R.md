@@ -24,7 +24,7 @@ wish to work with in `R` is stored.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Be able to download and uncompress NEON Teaching Data Subsets. 

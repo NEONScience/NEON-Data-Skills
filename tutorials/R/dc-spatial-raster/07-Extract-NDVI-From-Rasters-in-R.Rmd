@@ -24,7 +24,7 @@ in `R` and plot them using `ggplot`.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 

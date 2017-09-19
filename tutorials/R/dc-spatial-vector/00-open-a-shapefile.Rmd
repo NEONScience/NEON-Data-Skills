@@ -20,7 +20,7 @@ stored in shapefile format in `R`.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Explain the difference between point, line, and polygon vector elements.

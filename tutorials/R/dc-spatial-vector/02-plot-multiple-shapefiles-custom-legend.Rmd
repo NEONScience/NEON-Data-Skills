@@ -24,7 +24,7 @@ how to create a custom legend with colors and symbols that match your plot.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Plot multiple shapefiles using base R graphics.

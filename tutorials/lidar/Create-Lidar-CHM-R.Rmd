@@ -23,7 +23,7 @@ dive into the basics of working with raster formatted LiDAR data in R!
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 

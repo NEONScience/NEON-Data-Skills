@@ -23,7 +23,7 @@ don't line up on a map.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Identify the `CRS` of a spatial dataset.

@@ -19,7 +19,7 @@ function (e.g., plot by season) and to plot time series data with NDVI.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Use `facets()` in the `ggplot2` package.

@@ -17,7 +17,7 @@ tutorialSeries: [intro-hdf5-r-series]
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 <ol>
 <li>Understand what the Hierarchical Data Format (HDF5) is.</li>

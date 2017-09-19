@@ -19,7 +19,7 @@ In this page, you will be introduced to the importance of version control in
 scientific workflows.  
 
 <div id="ds-objectives" markdown="1">
-### Learning Objectives
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain what version control is and how it can be used.

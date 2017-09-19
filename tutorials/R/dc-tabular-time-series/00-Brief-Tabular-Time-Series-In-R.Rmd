@@ -23,7 +23,7 @@ recognize and plot efficiently.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
   * Open a `.csv` file in `R` using `read.csv()`and understand why we

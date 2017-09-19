@@ -17,7 +17,7 @@ tutorialSeries: intro-hdf5-r-series
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Understand how HDF5 files can be created and structured in R using the rhfd libraries. </li>

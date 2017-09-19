@@ -22,7 +22,7 @@ export the results to a `.csv` (text) file.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Subset data by date. 

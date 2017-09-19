@@ -23,7 +23,7 @@ names to bands within a `RasterStack`.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Be able to assign custom names to bands in a RasterStack for prettier

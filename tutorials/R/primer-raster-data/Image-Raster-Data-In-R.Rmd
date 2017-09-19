@@ -20,7 +20,7 @@ with image raster data in R.
 
 <div id="ds-objectives" markdown="1">
 
-## Tutorial Objectives
+## Learning Objectives
 After completing this activity, you will be able to:
 
 * Import multiple image rasters and create a stack of rasters.

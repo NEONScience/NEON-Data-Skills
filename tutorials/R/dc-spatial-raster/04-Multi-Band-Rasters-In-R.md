@@ -23,7 +23,7 @@ function in `R`.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Know how to identify a single vs. a multi-band raster file.

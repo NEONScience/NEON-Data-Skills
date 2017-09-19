@@ -19,7 +19,7 @@ stored within a HDF5 file using R.
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Explain how HDF5 data can be used to store spatial data and the associated 
