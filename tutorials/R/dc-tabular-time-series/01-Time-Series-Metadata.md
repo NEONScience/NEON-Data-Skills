@@ -22,9 +22,9 @@ web page format and Ecological Metadata Language (EML).
 **R Skill Level:** Introduction - you've got the basics of `R` down and 
 understand the general structure of tabular data.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Import a .csv file and examine the structure of the related `R`
@@ -96,11 +96,12 @@ downloaded with a data product OR that are available separately for the data.
 * **Directly on a website (HTML / XML):** Sometimes data are documented directly
 in text format, on a web page. 
 
-<i class="fa fa-star"></i> **Data Tip:** When you find metadata for a dataset 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** When you find metadata for a dataset 
 that you are working with, immediately **DOWNLOAD AND SAVE IT** to the directory
 on your computer where you saved the data. It is also a good idea to document
 the URL where you found the metadata and data in a "readme" text file!
-{: .notice}
+</div>
 
 
 ## Metadata Stored on a Web Page
@@ -120,7 +121,7 @@ Scroll down to the **Overview** section on the website. Take note of the
 information provided in that section and answer the questions in the
 Challenge below.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Explore Metadata
 
 Explore the metadata stored on the Harvard Forest LTER web page. Answer the 
@@ -153,7 +154,7 @@ active radiation (PAR). Let's look for descriptions of these variables in the
 metadata and determine several key attributes that we will need prior to working
 with the data.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Metrics of Interest Metadata
 
 View the metadata at the URL above. Answer the following questions about the 

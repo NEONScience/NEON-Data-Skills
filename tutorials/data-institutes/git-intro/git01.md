@@ -18,8 +18,8 @@ urlTitle: intro-git-version-control
 In this page, you will be introduced to the importance of version control in
 scientific workflows.  
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+### Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain what version control is and how it can be used.
@@ -62,11 +62,11 @@ Some better:
 * Git - which we’ll be learning much more about in this series.
 
 
-<i class="fa fa-star"></i> **Thought Question:** Do you currently implement
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Thought Question:** Do you currently implement
 any form of version control in your work?
-{: .notice .thought}
+</div>
 
-<div class="notice" markdown="1">
 ## More Resources:
 
 * <a href="https://en.wikipedia.org/wiki/List_of_version_control_software" target="_blank">
@@ -86,7 +86,8 @@ overwriting something important. It also allows two people working on the same
 document to efficiently combine ideas and changes.
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Thought Questions:** Think of a specific time when
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Thought Questions:** Think of a specific time when
 you weren’t using version control that it would have been useful.
 
 * Why would version control have been helpful to your project & work flow?  
@@ -231,11 +232,12 @@ then you can update your changes to the central NEON repository.
 * **Your local repository** - this is a local version of your fork on your
 own computer. You will most often do all of your work locally on your computer.
 
-<i class="fa fa-star"></i> **Data Tip:** Other Workflows -- There are many other
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Other Workflows -- There are many other
 git workflows.
 <a href="https://ru.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow" target="_blank">Read more about other workflows</a>.
 This resource mentions Bitbucket, another web-based hosting service like GitHub.
-{: .notice}
+</div>
 
 ## Additional Resources:
 Further documentation for and how-to-use direction for Git, is provided by the

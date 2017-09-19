@@ -27,9 +27,9 @@ will walk though reprojecting rasters in `R` using the `projectRaster()`
 function in the `raster` package.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -108,9 +108,10 @@ Our results are curious - the Digital Terrain Model (`DTM_HARV`) did not plot on
 top of our hillshade. The hillshade plotted just fine on it's own. Let's try to 
 plot the DTM on it's own to make sure there are data there.
 
-<i class="fa fa-star"></i> **Code Tip:** For boolean `R` elements, such as
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Code Tip:** For boolean `R` elements, such as
  `add=TRUE`, you can use `T` and `F` in place of `TRUE` and `FALSE`.
-{: .notice}
+</div>
 
 
     # Plot DTM 
@@ -151,10 +152,11 @@ Keep in mind that reprojection only works when you first have a *defined* CRS
 for the raster object that you want to reproject. It cannot be used if *no*
 CRS is defined. Lucky for us, the `DTM_hill_HARV` has a defined CRS. 
 
-<i class="fa fa-star"></i> **Data Tip:** When we reproject a raster, we 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** When we reproject a raster, we 
 move it from one "grid" to another. Thus, we are modifying the data! Keep this 
 in mind as we work with raster data. 
-{: .notice}
+</div>
 
 To use the `projectRaster` function, we need to define two things:
 
@@ -205,7 +207,7 @@ Notice in the output above that the `crs()` of `DTM_hill_UTMZ18N_HARV` is now
 UTM. However, the extent values of `DTM_hillUTMZ18N_HARV` are different from
 `DTM_hill_HARV`.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Extent Change with CRS Change
 Why do you think the two extents differ?  
 </div>
@@ -259,7 +261,7 @@ Let's plot our newly reprojected raster.
 We have now successfully draped the Digital Terrain Model on top of our
 hillshade to produce a nice looking, textured map! 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
 <a href="http://{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
@@ -270,7 +272,7 @@ Reproject the data as necessary to make things line up!
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/02-Reproject-Raster-In-R/challenge-code-reprojection-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 If you completed the San Joaquin plotting challenge in the
 [Plot Raster Data in R]({{ site.baseurl }}/R/Plot-Rasters-In-R#challenge-create-dtm--dsm-for-sjer) 
 tutorial, how does the map you just created compare to that map? 

@@ -14,7 +14,7 @@ code1: R/primer-raster-data/Raster-Res-Extent-Pixels.R
 tutorialSeries: primer-raster-data-R
 ---
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ## Tutorial Objectives:
 
@@ -500,7 +500,7 @@ Now we have an extent associated with our raster which places it in space!
 
 Notice that the coordinates show up on our plot now. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenges: Resample Rasters
 
 Now apply your skills in a new way! 
@@ -566,7 +566,7 @@ Coordinate Reference System based upon the CRS of another raster. If you want to
 actually change the CRS of a raster, you need to use the `projectRaster` function.
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Assign CRS
 
 You can set the CRS and extent of a raster using the syntax 

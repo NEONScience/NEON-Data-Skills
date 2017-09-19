@@ -21,9 +21,9 @@ from the LiDAR data. These values are often used to track changes in forest
 structure over time, to calculate biomass, and even leaf area index (LAI). Let's 
 dive into the basics of working with raster formatted LiDAR data in R! 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -149,7 +149,7 @@ plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
 We've now created a CHM from our DSM and DTM. What do you notice about the 
 canopy cover at this location in the San Joaquin Experimental Range? 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Basic Raster Math 
 
 Convert the CHM from meters to feet. Plot it. 

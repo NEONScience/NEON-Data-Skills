@@ -137,8 +137,9 @@ The plots below were generated using R code that harnesses the power of the
 <iframe width="560" height="420" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/19.embed?width=800&height=600"></iframe>
 
 
-<i class="fa fa-star"></i> **Data Tip** Are you a Python user? Use `matplotlib` 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip** Are you a Python user? Use `matplotlib` 
 to create and publish visualizations.
-{: .notice}
+</div>
 
 

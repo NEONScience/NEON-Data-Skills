@@ -14,9 +14,9 @@ code1: hyperspectral/Plot-Hyperspectral-Spectra.R
 tutorialSeries:
 ---
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Extract and plot spectra from an HDF5 file.

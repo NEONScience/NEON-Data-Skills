@@ -19,8 +19,8 @@ urlTitle: github-git-clone
 This tutorial covers how to `clone` a github.com repo to your computer so
 that you can work locally on files within the repo.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Be able to use the `git clone` command to create a local version of a GitHub
@@ -109,13 +109,14 @@ GitHub directory on your computer.
     # clone the forked repo to our computer
     $ git clone https://github.com/neon/DI-NEON-participants.git
 
-<i class="fa fa-star"></i> **Data Tip:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**
 Are you a Windows user and are having a hard time copying the URL into shell?
 You can copy and paste in the shell environment **after** you
 have the feature turned on. Right click on your bash shell window (at the top)
 and select "properties". Make sure "quick edit" is checked. You should now be
 able to copy and paste within the bash environment.
-{: .notice}
+</div>
 
 
 The output shows you what is being cloned to your computer.
@@ -165,11 +166,12 @@ navigate to the new local repo.
 Using either method, we can see that the file structure of our cloned repo
 exactly mirrors the file structure of our forked GitHub repo.
 
-<i class="fa fa-star"></i> **Thought Question:**
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Thought Question:**
 Is the cloned version of this repo that you just created on your laptop, a
 direct copy of the NEON central repo -OR- of your forked version of the NEON
 central repo?
-{: .notice .thought}
+</div>
 
 
 ## Summary Workflow -- Create a Local Repo

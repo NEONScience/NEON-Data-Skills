@@ -21,9 +21,9 @@ the NEON Harvard Forest Field Site. We will use pipes to efficiently perform
 multiple tasks within a single chunk of code.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Explain several ways to manipulate data using functions in the `dplyr`
@@ -304,7 +304,7 @@ We can use pipes to summarize data by year too:
     ##  $ mean(airt, na.rm = TRUE): num  7.63 9.03 8.75
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Using Pipes
 Use piping to create a `data_frame` called `jday.avg` that contains the average 
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
@@ -313,7 +313,8 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/pipe-demo-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
 {: .notice }
 
@@ -380,7 +381,8 @@ The output shows we have 96 values for each day. Is that what we expect?
 
     ## [1] 96
 
-<i class="fa fa-star"></i> **Data Tip:**  If Julian days weren't already in our 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
 data, we could use the `yday()` function
 <a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
 from the `lubridate` package to create a new column containing Julian day 
@@ -414,7 +416,7 @@ temperature for each Julian day per year. Note that we are still using
     ## 10  2009    10 -11.131250
     ## # ... with 1,086 more rows
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Summarization & Calculations with dplyr
 We can use `sum` to calculate the total rather than mean value for each Julian
 Day. Using this information, do the following:
@@ -464,7 +466,8 @@ data_frame.
     ## 10  2009    10 -11.131250
     ## # ... with 1,086 more rows
 
-<i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
 `transform()` in base `R`. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
 {: .notice }
@@ -543,7 +546,7 @@ Let's try it!
     ## 5  2009     5  -2.414583 2009-01-05 00:15:00
     ## 6  2009     6  -4.915625 2009-01-06 00:15:00
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Combined dplyr Skills
 
 1. Plot daily total precipitation from 2009-2011 as we did in the previous

@@ -22,9 +22,9 @@ in `R`. Specifically it covers using `levelplot()` and adding meaningful custom
 names to bands within a `RasterStack`. 
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Be able to assign custom names to bands in a RasterStack for prettier
@@ -94,7 +94,8 @@ We can use the `plot` function to plot our raster time series data.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R/plot-time-series-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** The range of values for NDVI is 0-1. 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** The range of values for NDVI is 0-1. 
 However, the data stored in our raster ranges from 0 - 10,000. If we view the 
 metadata for the original .tif files, we will see a scale factor of 10,000 is
 defined.
@@ -145,7 +146,8 @@ pixels that are more green, have a higher NDVI value.
 <a href="http://www.datavis.ca/sasmac/brewerpal.html" target="_blank">
 brewerpal page</a>.
 
-<i class="fa fa-star"></i> **Data Tip:** Cynthia Brewer, the creater of 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Cynthia Brewer, the creater of 
 ColorBrewer, offers an online tool to help choose suitable color ramps, or to 
 create your own. <a href="http://colorbrewer2.org/" target="_blank">
 ColorBrewer 2.0; Color Advise for Cartography </a>  
@@ -195,7 +197,8 @@ First let's remove "_HARV_NDVI_crop" from each label.
     ##  [1] "Day 005" "Day 037" "Day 085" "Day 133" "Day 181" "Day 197" "Day 213"
     ##  [8] "Day 229" "Day 245" "Day 261" "Day 277" "Day 293" "Day 309"
 
-<i class="fa fa-star"></i> **Data Tip:** Instead of substituting "x" and
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Instead of substituting "x" and
 "_HARV_NDVI_crop" separately, we could have used use the vertical bar character 
 ( | ) to replace more than one element.
 For example "X|_HARV" tells `R` to replace all instances of both "X" and "_HARV"
@@ -243,7 +246,7 @@ remove the axis ticks from the plot with `scales =list(draw=FALSE)`.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R/remove-axis-ticks-1.png)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Divergent Color Ramps 
 When we used `gsub` to modify the tile labels we replaced the beginning of each 
 tile title with "Day". A more descriptive name could be "Julian Day".

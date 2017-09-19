@@ -18,7 +18,7 @@ tutorialSeries: primer-raster-data-R
 This tutorial will walk you through the fundamental principles of working 
 with image raster data in R.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ## Tutorial Objectives
 After completing this activity, you will be able to:
@@ -261,7 +261,7 @@ single raster.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/stack-crop-1.png)
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Challenge: Plot Cropped RGB
 Plot this new cropped stack as an RGB image. 
 </div>

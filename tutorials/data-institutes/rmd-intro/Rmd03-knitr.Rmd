@@ -17,9 +17,9 @@ tutorialSeries: [RMarkdown]
 In this tutorial, we will cover the R `knitr` package that is used to convert
 R Markdown into a rendered document (HTML, PDF, etc).
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Learning Objectives
+## Learning Objectives
 
 At the end of this activity, you will:
 
@@ -58,12 +58,13 @@ packages, visit
 segments. If you don't have an **.Rmd** file, visit
 <a href="{{site.baseurl}}/R/RMarkdown/rmd02" target="_blank"> the R Markdown tutorial</a> to create one.
 
-<i class="fa fa-star"></i> **When To Knit**: Knitting is a useful exercise
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**When To Knit**: Knitting is a useful exercise
 throughout your scientific workflow. It allows you to see what your outputs
 look like and also to test that your code runs without errors.
 The time required to knit depends on the length and complexity of the script
 and the size of your data.
-{: .notice}
+</div>
 
 ### How to Knit
 
@@ -85,11 +86,12 @@ automatically be saved in the current working directory. If there is an error
 in the code, an error message will appear with a line number in the R Console
 to help you diagnose the problem.
 
-<i class="fa fa-star"></i> **Data Tip:** You can run `knitr` from the command prompt
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can run `knitr` from the command prompt
 using: `render(“input.Rmd”, “all”)`.
-{: .notice}
+</div>
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Activity: Knit Script
 
@@ -114,7 +116,7 @@ Notice that information from the YAML header (title, author, date) is printed
 at the top of the HTML document. Then the HTML shows the text, code, and
 results of the code that you included in the RMD document.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Data Institute Participants: Complete Week 2 Assignment
 
@@ -132,9 +134,10 @@ directory and submitted via a **pull request**.
 
 </div>
 
-<i class="fa fa-star"></i> **Data Tip:** If you are a frequent user of LaTex,
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you are a frequent user of LaTex,
 you might find
 <a href="http://cdn.screenr.com/video/8352c25b-7324-4134-970b-b7c427381adb.mp4" target="_blank">this video from the creator of knitr </a>
 informational. It introduces R Markdown & knitr in conjunction with LaTex and
 other formats.
-{: .notice}
+</div>

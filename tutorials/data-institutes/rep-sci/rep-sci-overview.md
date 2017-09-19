@@ -25,8 +25,8 @@ tutorialSeries:
 > should be apparent.
 From <a href="https://github.com/Reproducible-Science-Curriculum/bosc2015/blob/master/BOSC2015-abstract-ReprSciCurriculum.pdf" target="_blank"> Reproducible Science Curriculum </a>
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Summarize the four facets of reproducibility.
@@ -67,7 +67,8 @@ How reproducible is your current research?
 <a class="link--button link--arrow" href="https://github.com/Reproducible-Science-Curriculum/rr-intro/blob/master/checklist.md" target="_blank"> View Reproducible Science Checklist </a>
 
 <div class="notice thought" markdown="1">
-<i class="fa fa-star"></i> **Thought Questions:** Have a look at the reproducible
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Thought Questions:** Have a look at the reproducible
 science check list linked, above and answer the
 following questions:
 

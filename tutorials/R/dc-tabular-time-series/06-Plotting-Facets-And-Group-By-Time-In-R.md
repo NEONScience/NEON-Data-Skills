@@ -17,9 +17,9 @@ tutorialSeries: tabular-time-series
 This tutorial covers how to plot subsetted time series data using the `facets()`
 function (e.g., plot by season) and to plot time series data with NDVI.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Use `facets()` in the `ggplot2` package.
@@ -116,7 +116,8 @@ object `AirTempDaily`.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/plot-airt-1.png)
 
-<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
 {: .notice }
 
@@ -185,10 +186,11 @@ Our plots would be easier to visually compare if the days were formatted in
 Julian or year days rather than date. We have Julian days stored in our
 `data_frame` (`harMetDaily.09.11`) as `jd`.
 
-<i class="fa fa-star"></i> **Data Tip:** If you are unfamiliar with Julian day or
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
 [Convert to Julian Day tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
-{: .notice}
+</div>
 
 
     AirTempDaily_jd <- ggplot(harMetDaily.09.11, aes(jd, airt)) +
@@ -265,7 +267,7 @@ plot we created above.
 Have a close look at the data. Are there any noticeable min/max temperature 
 differences between the three years?
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Faceted Plot
 
 Create a faceted plot of air temperature vs soil temperature by *month* rather 
@@ -471,7 +473,7 @@ is recognized by `R`. We can experiment with various facet layouts next.
 Once again, `R` is arranging the plots in an alphabetical order not an order
 relevant to the data. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Create Plots by Season
 The goal of this challenge is to create plots that show the relationship between
 air and soil temperature across the different seasons with seasons arranged in
@@ -517,7 +519,7 @@ syntax would be:
 
 `as.Date(as.yearmon(met_monthly_HARV$date))`
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Convert Year-Month Data
 The goal of this challenge is to use both the base `R` and the `zoo` package
 methods for working with year-month data.  
@@ -540,14 +542,15 @@ HINT: be sure to load the `zoo` package, if you have not already.
 Do you prefer to use base `R` or `zoo` to convert these data to a date/time
 class?
 
-<i class="fa fa-star"></i> **Data Tip:** `zoo` date/time classes cannot be used
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** `zoo` date/time classes cannot be used
 directly with ggplot2. If you deal with date formats that make sense to
 primarily use `zoo` date/time classes, you can use ggplot2 with the addition of 
 other functions. For details see the 
 <a href="http://search.r-project.org/library/zoo/html/ggplot2.zoo.html" target="_blank" > ggplot2.zoo documentation.</a>
-{: .notice}
+</div>
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Year-Month Data
 Using the date field `date_base` (or `date_zoo`) that you created in the
 previous challenge, create a faceted plot of annual air temperature for each

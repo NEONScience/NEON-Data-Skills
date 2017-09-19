@@ -20,9 +20,9 @@ within a set of polygons, or in a buffer (surrounding) region around a set of
 points.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
  * Crop a raster to the extent of a vector layer.
@@ -189,7 +189,7 @@ Which object has the largest extent?  Our plot location extent is not the
 largest but is larger than the AOI Boundary. It would be nice to see our
 vegetation plot locations with the Canopy Height Model information.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Crop to Vector Points Extent
 
 1. Crop the Canopy Height Model to the extent of the study plot locations. 
@@ -418,7 +418,7 @@ Let's put this into practice by figuring out the average tree height in the
 
     ## [1] 1
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Extract Raster Height Values For Plot Locations
 
 Use the plot location points shapefile `HARV/plot.locations_HARV.shp` or spatial

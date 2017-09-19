@@ -33,9 +33,9 @@ within datasets in the HDF5 file. We will also use use loops and custom
 functions to efficiently examine data with a complex nested structure 
 using advanced tools like `dplyr`.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 
 After completing this tutorial, you will be able to:
 * Explore an HDF5 file and access groups and datasets 
@@ -116,12 +116,13 @@ Each element in an hdf5 file can have metadata attached to it making HDF5 files
 
 ## Explore the HDF5 File Structure
 
-<i class="fa fa-star"></i> **The Data:** The temperature data used in this 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**The Data:** The temperature data used in this 
 tutorial were collected by a temperature sensor mounted on a National Ecological 
 Observatory Network (NEON) flux tower at the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 
 Learn more about 
 <a href="http://{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">flux data here.</a>
-{: .notice}
+</div>
 
 Let's first explore an HDF5 file that we know nothing about using the R function, 
 `h5ls`.
@@ -305,7 +306,7 @@ OSBS$LatLon
 Note, for continued use we may want to convert the format from decimal degrees 
 to a different format as this format is more difficult to extract from R!
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Further exploration
 
 1. Explore the H5 file further. View attributes for other groups within the file. 
@@ -405,7 +406,7 @@ for path `i`.
 -  `ord_temp <- rbind(ord_temp,dat)`: append dataset to the end of the data.frame
 
     
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Modify Loops
 
 Modify the loop above so that it adds both the boom name, the site name and 

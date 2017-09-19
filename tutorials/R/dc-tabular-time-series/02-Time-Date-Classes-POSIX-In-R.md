@@ -23,9 +23,9 @@ recognized by `R`. This conversion supports efficient plotting, subsetting and
 analysis of time series data.
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Describe various date-time classes and data structure in `R`. 
@@ -186,9 +186,10 @@ computation, processing and conversion to other formats.
 Here we see the number of seconds from 1 January 1970 to 9 October 2015
 (`1445271300`). Also, we see that a time zone (`tzone`) is associated with the value in seconds. 
 
-<i class="fa fa-star"></i> **Data Tip:** The `unclass` method in `R` allows you
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** The `unclass` method in `R` allows you
 to view how a particular `R` object is stored.
-{: .notice}
+</div>
 
 #### POSIXlt
 The `POSIXct` format is optimized for storage and computation. However, humans 
@@ -260,19 +261,21 @@ Years are also stored differently in the `POSIXlt` class. Year values are stored
 using a base index value of 1900. Thus, 2015 is stored as 115 (`$year = 115` 
 - 115 years since 1900).
 
-<i class="fa fa-star"></i> **Data Tip:** To learn more about how `R` stores
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** To learn more about how `R` stores
 information within date-time and other objects check out the `R` documentation
 by using `?` (e.g., `?POSIXlt`). NOTE: you can use this same syntax to learn
 about particular functions (e.g., `?ggplot`).  
-{: .notice}
+</div>
 
 Having dates classified as separate components makes `POSIXlt` computationally
 more resource intensive to use in `data.frames`. This slows things down! We will
 thus use `POSIXct` for this tutorial.  
 
-<i class="fa fa-star"></i> **Data Tip:** There are other `R` packages that
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** There are other `R` packages that
 support date-time data classes, including `readr`, `zoo` and `chron`.  
-{: .notice}
+</div>
 
 ## Convert to Date-time Class
 
@@ -297,7 +300,8 @@ components of the date-time data:
 * %d - day
 * %H:%M - hours:minutes
 
-<i class="fa fa-star"></i> **Data Tip:** A list of options for date-time format
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** A list of options for date-time format
 is available in the `strptime` function help: `help(strptime)`. Check it out!   
 {: .notice }
 
@@ -364,10 +368,11 @@ default to the local time zone that is defined on your computer.
 There are individual designations for different time zones and time zone 
 variants (e.g., does the time occur during daylight savings time). 
 
-<i class="fa fa-star"></i> **Data Tip:** Codes for time zones can be found in this 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Codes for time zones can be found in this 
 <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 target="_blank">time zone table</a>. 
-{: .notice}
+</div>
 
 The code for the Eastern time zone that is the closest match to the NEON Harvard
 Forest field site is `America/New_York`. Let's convert our `datetime` field 

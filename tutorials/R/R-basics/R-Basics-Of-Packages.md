@@ -16,9 +16,9 @@ tutorialSeries: R-basics
 
 This tutorial provides the basics of installing and working with packages in R.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to: 
 
 * Describe the basics of an R package
@@ -70,10 +70,11 @@ install packages the first time you use R (or after updating to a new version).
     # install the ggplot2 package
     install.packages("ggplot2")  
 
-<i class="fa fa-star"></i> **R Tip:** You can just type this into the command 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**R Tip:** You can just type this into the command 
 line of R to install each package. Once a package is installed, you don't have 
 to install it again while using the version of R!
-{: .notice}
+</div>
 
 
 ## Use a Package
@@ -143,7 +144,7 @@ If you only want to update a single package, the best way to do it is using
 In <a href="http://www.rstudio.com/" target="_blank">RStudio</a>, you can also 
 manage packages using Tools -> Install Packages.
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Challenge: Installing Packages
 

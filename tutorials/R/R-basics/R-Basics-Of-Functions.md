@@ -20,9 +20,9 @@ OR -- we could chose to build a function that allows us to repeat several
 operations with a single command. This tutorial will focus on creating functions 
 in R.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to: 
 
 * Explain why we should divide programs into small, single-purpose functions.
@@ -86,10 +86,11 @@ line makes functions easier to read (for the human, the machine doesn't care).
 In many languages, the body of the function - the statements that are executed 
 when it runs - must be indented, typically using 4 spaces. 
 
-<i class="fa fa-star"></i> **Data Tip:** While it is not mandatory in R to indent 
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** While it is not mandatory in R to indent 
 your code 4 spaces within a function, it is  strongly recommended as good 
 practice!
-{: .notice}
+</div>
 
 When we call the function, the values we pass to it are assigned to those 
 variables so that we can use them inside the function. 
@@ -147,7 +148,7 @@ object "a" and calling "a".
 We can see that even though there was no output from the function, the function 
 was still operational. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Writing Functions
 
 Now that we've seen how to turn Fahrenheit into Kelvin, try your hand at converting

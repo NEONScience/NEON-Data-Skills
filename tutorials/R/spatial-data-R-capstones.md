@@ -22,7 +22,7 @@ tutorials in the:
 * <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
 * <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of `R` and, preferably, `RStudio` loaded

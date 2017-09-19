@@ -23,9 +23,9 @@ Cooperative Observer Program. The tutorial is part of the Data Activities that
 can be used with the 
 <a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+#### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download precipitation data from 
@@ -461,9 +461,10 @@ Now we can plot the daily data.
 
 Compare this plot to the plot we created using the first method. Are they the same? 
 
-<i class="fa fa-star"></i> **R Tip:** This manipulation, or aggregation, of data
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**R Tip:** This manipulation, or aggregation, of data
 can also be done with the package `plyr` using the `summarize()` function.
-{: .notice}
+</div>
 
 ## Subset the Data 
 
@@ -498,9 +499,10 @@ scale on the x-axis with `scale_x_date()`.
 
 Now we can easily see the dramatic rainfall event in mid-September! 
 
-<i class="fa fa-star"></i> **R Tip:** If you are using a date-time class, instead
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**R Tip:** If you are using a date-time class, instead
 of just a date class, you need to use `scale_x_datetime()`.
-{: .notice}
+</div>
 
 #### Subset The Data
 
@@ -550,7 +552,7 @@ Let's turn our plot into an interactive Plotly plot.
     # publish plotly plot to your plot.ly online account when you are happy with it
     api_create(precPlot_flood2)
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 ## Challenge: Plot Precip for Boulder Station Since 1948
 

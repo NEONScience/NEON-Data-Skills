@@ -23,9 +23,9 @@ stream discharge data collected by the United States Geological Survey (USGS).
 This tutorial is part of the Data Activities that can be used with the 
 <a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+#### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Download stream gauge data from <a href="http://waterdata.usgs.gov/nwis" target="_blank"> USGS's National Water Information System</a>. 

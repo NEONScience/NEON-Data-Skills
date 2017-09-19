@@ -26,9 +26,9 @@ In doing so, we will also learn to convert x,y locations in tabluar format
 (.csv, .xls, .txt) into SpatialPointsDataFrames which can be used with other
 spatial data. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Learning Objectives
 After completing this activity, you will be able to:
 
 * Convert x,y point locations to SpatialPointsDataFrames
@@ -398,7 +398,7 @@ through several plots and create histograms using a `for loop`.
 Looking at these distributions, the area has some pretty short trees -- plot 5 
 (really, SJER120 since we didn't match up the plotIDs) looks almost bare!
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: For Loops & Plotting Parameters
 This code will give you 6 rows of plots with 3 plots in each row. Modify the 
 `for loop` above to plot all 18 histograms. 
@@ -432,7 +432,7 @@ have a polygon to use.
 However, if you're going this route with your data, we recommend using the next
 method! 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Circles vs Squares
 
 Compare the values from `cent_max` and `square_max`. Are they the same? Why 
@@ -487,7 +487,7 @@ Which was faster, extracting from a SpatialPolgygon object (`polys`) or extracti
 with a SpatialPolygonsDataFrame (`centShape`)? Keep this in mind when doing future
 work--the SpatialPolgyonsDataFrame is more efficient. 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Square Shapefile Plots
 
 Compare the values from `cent_max` and `square_max`. Are they the same? Why 
@@ -732,7 +732,7 @@ For more on using the **plotly** package to create interactive plots, see our tu
 <a href="{{ site.baseurl }}/R/Plotly" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>. 
 
 
-<div id="challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 ## Challenge: Plot Data
 
 Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 

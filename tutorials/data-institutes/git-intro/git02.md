@@ -19,8 +19,8 @@ urlTitle: github-forks-repos
 In this tutorial, we will fork, or create a copy in your github.com account,
 an existing GitHub repository. We will also explore the github.com interface.
 
-<div id="objectives" markdown="1">
-# Learning Objectives
+<div id="ds-objectives" markdown="1">
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Create a GitHub account.
@@ -51,11 +51,12 @@ recognizable, be sure to add a profile picture to your account!
 
 If you already have a GitHub account, simply sign in.
 
-<i class="fa fa-star"></i> **Data Tip:** Are you a student? Sign up for the
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** Are you a student? Sign up for the
 <a href="https://education.github.com/pack" target="_blank" >Student Developer Pack</a>
 and get the Git Personal account free (with unlimited private repos and other
 discounts/options; normally $7/month).
-{: .notice}
+</div>
 
 ## Navigate GitHub
 
@@ -161,7 +162,7 @@ any time by clicking the fork button in the upper right hand corner on github.co
 
 
 
- <div id="challenge" markdown="1">
+ <div id="ds-challenge" markdown="1">
 ## Activity: Fork the NEON Data Institute Participants Repo
 
 Create your own fork of the DI-NEON-participants now.
@@ -169,10 +170,11 @@ Create your own fork of the DI-NEON-participants now.
 </div>
 
 
-<i class="fa fa-star"></i> **Data Tip:** You can change the name of a forked
+<div id="ds-dataTip">
+<i class="fa fa-star"></i>**Data Tip:** You can change the name of a forked
 repo and it will still be connected to the central repo from which it was forked.
 For now, leave it the same.
-{: .notice}
+</div>
 
 ## Check Out Your Data Institute Fork
 
