@@ -114,7 +114,7 @@ Each element in an hdf5 file can have metadata attached to it making HDF5 files
 
 ## Explore the HDF5 File Structure
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**The Data:** The temperature data used in this 
 tutorial were collected by a temperature sensor mounted on a National Ecological 
 Observatory Network (NEON) flux tower at the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 

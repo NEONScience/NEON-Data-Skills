@@ -108,7 +108,7 @@ Our results are curious - the Digital Terrain Model (`DTM_HARV`) did not plot on
 top of our hillshade. The hillshade plotted just fine on it's own. Let's try to 
 plot the DTM on it's own to make sure there are data there.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Code Tip:** For boolean `R` elements, such as
  `add=TRUE`, you can use `T` and `F` in place of `TRUE` and `FALSE`.
 </div>
@@ -152,7 +152,7 @@ Keep in mind that reprojection only works when you first have a *defined* CRS
 for the raster object that you want to reproject. It cannot be used if *no*
 CRS is defined. Lucky for us, the `DTM_hill_HARV` has a defined CRS. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** When we reproject a raster, we 
 move it from one "grid" to another. Thus, we are modifying the data! Keep this 
 in mind as we work with raster data. 

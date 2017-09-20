@@ -51,7 +51,7 @@ recognizable, be sure to add a profile picture to your account!
 
 If you already have a GitHub account, simply sign in.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Are you a student? Sign up for the
 <a href="https://education.github.com/pack" target="_blank" >Student Developer Pack</a>
 and get the Git Personal account free (with unlimited private repos and other
@@ -170,7 +170,7 @@ Create your own fork of the DI-NEON-participants now.
 </div>
 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** You can change the name of a forked
 repo and it will still be connected to the central repo from which it was forked.
 For now, leave it the same.

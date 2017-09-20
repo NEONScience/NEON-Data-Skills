@@ -84,7 +84,7 @@ $ pwd
 /Users/neon
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Home Directory Variation - The home 
 directory path will look different on different operating systems. On Linux it 
 may look like `/home/neon`, and on Windows it will be similar to
@@ -118,7 +118,7 @@ system and how you have customized your filesystem.)
 `ls` prints the names of the files and directories in the current directory in
 alphabetical order, arranged neatly into columns.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** What is a directory? That is a folder! Read this section on
 <a href="http://neondataskills.org/R/Set-Working-Directory#directory-vs-folder" target="_blank"> Directory & Folder </a>
 if you find the wording confusing.
@@ -264,7 +264,7 @@ same commands to choose another editor or update your email address.
 Now that Git is set up, you will be ready to start the Week 2 materials to learn 
 about version control and how Git & GitHub work. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** 
 <a href="https://desktop.github.com/" target="_blank"> GitDesktop </a>
 is a GUI (one of many) for 

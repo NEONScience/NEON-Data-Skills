@@ -105,7 +105,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
     # we want to save our files
     #setwd("working-dir-path-here")
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** To update all packages installed in 
 R, use `update.packages()`.
 </div>
@@ -149,7 +149,7 @@ More Information on raster metadata:
 
 * [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure 
 of individual HDF5 files may vary depending on who produced the data. In this 
 case, the Wavelength and reflectance data within the file are both datasets. 

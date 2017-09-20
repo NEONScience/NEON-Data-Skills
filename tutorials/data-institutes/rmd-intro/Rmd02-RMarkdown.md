@@ -119,7 +119,7 @@ Next, we'll break down the structure of an R Markdown file.
 	</figcaption>
 </figure>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Screenshots on this page are
 from RStudio with appearance preferences set to `Twilight` with `Monaco` font. You 
 can change the appearance of your RStudio by **Tools** > **Options**
@@ -207,7 +207,7 @@ you will be adding the page.
 
 </div>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip**: You can add code output or an R object
 name to markdown segments of an RMD. For more, view this
 <a href="http://rmarkdown.rstudio.com/authoring_quick_tour.html#inline_r_code" target="_blank"> R Markdown documentation</a>.

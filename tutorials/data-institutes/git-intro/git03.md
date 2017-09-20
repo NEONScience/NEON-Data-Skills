@@ -109,7 +109,7 @@ GitHub directory on your computer.
     # clone the forked repo to our computer
     $ git clone https://github.com/neon/DI-NEON-participants.git
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**
 Are you a Windows user and are having a hard time copying the URL into shell?
 You can copy and paste in the shell environment **after** you
@@ -166,7 +166,7 @@ navigate to the new local repo.
 Using either method, we can see that the file structure of our cloned repo
 exactly mirrors the file structure of our forked GitHub repo.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Thought Question:**
 Is the cloned version of this repo that you just created on your laptop, a
 direct copy of the NEON central repo -OR- of your forked version of the NEON

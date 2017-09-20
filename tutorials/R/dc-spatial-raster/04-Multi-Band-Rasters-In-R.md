@@ -95,7 +95,7 @@ creates the colors that we see in an image.
 
 We can plot each band of a multi-band image individually. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** In many GIS applications, a single band 
 would render as a single image in grayscale. We will therefore use a grayscale 
 palette to render individual bands. 
@@ -195,7 +195,7 @@ Notice that when we look at the attributes of RGB_Band1, we see :
 This is `R` telling us that this particular raster object has more bands (3)
 associated with it.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The number of bands associated with a 
 raster object can also be determined using the `nbands` slot. Syntax is 
 `ObjectName@file@nbands`, or specifically for our file: `RGB_band1@file_HARV@nbands`.
@@ -459,7 +459,7 @@ tutorial.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R/challenge-code-NoData-1.png)
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
 [Raster Time Series Data in R]({{ site.baseurl }}/R/Raster-Times-Series-Data-In-R/)

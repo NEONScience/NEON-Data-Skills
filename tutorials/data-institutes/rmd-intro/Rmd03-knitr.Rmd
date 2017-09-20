@@ -58,7 +58,7 @@ packages, visit
 segments. If you don't have an **.Rmd** file, visit
 <a href="{{site.baseurl}}/R/RMarkdown/rmd02" target="_blank"> the R Markdown tutorial</a> to create one.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**When To Knit**: Knitting is a useful exercise
 throughout your scientific workflow. It allows you to see what your outputs
 look like and also to test that your code runs without errors.
@@ -86,7 +86,7 @@ automatically be saved in the current working directory. If there is an error
 in the code, an error message will appear with a line number in the R Console
 to help you diagnose the problem.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** You can run `knitr` from the command prompt
 using: `render(“input.Rmd”, “all”)`.
 </div>
@@ -134,7 +134,7 @@ directory and submitted via a **pull request**.
 
 </div>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are a frequent user of LaTex,
 you might find
 <a href="http://cdn.screenr.com/video/8352c25b-7324-4134-970b-b7c427381adb.mp4" target="_blank">this video from the creator of knitr </a>

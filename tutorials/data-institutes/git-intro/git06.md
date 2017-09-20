@@ -118,7 +118,7 @@ sometimes - particularly if you are working on a new document that you know
 no one else is working on. However, it is good practice to ensure your repo is
 in sync with the central repo **before**, you begin editing a repo's content.
 
- <div id="ds-dataTip">
+ <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**
  A pull request to another repo is similar to a "push". However it allows
  for a few things:

@@ -306,7 +306,7 @@ qplot(jday.avg$jday, jday.avg$meanAirTemp,
 
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
 {: .notice }
@@ -358,7 +358,7 @@ The output shows we have 96 values for each day. Is that what we expect?
 24*4  # 24 hours/day * 4 15-min data points/hour
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
 data, we could use the `yday()` function
 <a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
@@ -427,7 +427,7 @@ harMet15.09.11 %>%
 
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
 `transform()` in base `R`. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).

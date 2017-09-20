@@ -78,7 +78,7 @@ on the ground.
     <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
 </figure>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - Band Combinations:** The Biodiversity 
 Informatics group created a great interactive tool that lets you explore band 
 combinations. Check it out:
@@ -238,7 +238,7 @@ specifies which bands (or dimensions in our hyperspectral dataset) we want to
 include in our raster stack. Let's start with a typical RGB (red, green, blue) 
 combination. We will use bands 58, 34, and 19. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - wavelengths and bands:** Remember that 
 you can look at the wavelengths dataset to determine the center wavelength value 
 for each band. 
@@ -378,7 +378,7 @@ this GeoTIFF into any GIS program!
     #version of the tif file! keep this in mind.
     writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.
 What type of image do you get when you change the band values?

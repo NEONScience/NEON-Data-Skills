@@ -50,7 +50,7 @@ R is a versatile, open source programming language that was specifically
 designed for data analysis. R is extremely useful for data management, statistics and 
 analyzing data. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Cool Fact:** R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
 </div>
 
@@ -151,7 +151,7 @@ to issues down the line.
     # this is NOT preferred syntax
     a = 1+2 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Typing Tip:** If you are using RStudio, you can use
 a keyboard shortcut for the assignment operator: **Windows/Linux: "Alt" + "-"** 
 or **Mac: "Option" + "-"**. 

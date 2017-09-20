@@ -144,7 +144,7 @@ plot(DSM_HARV,
 
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
 </div>
@@ -234,7 +234,7 @@ plot(DSM_hill_HARV,
 
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Turn off, or hide, the legend on 
 a plot using `legend=FALSE`.
 </div>

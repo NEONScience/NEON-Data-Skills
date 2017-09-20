@@ -62,7 +62,7 @@ Some better:
 * Git - which we’ll be learning much more about in this series.
 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Thought Question:** Do you currently implement
 any form of version control in your work?
 </div>
@@ -86,7 +86,7 @@ overwriting something important. It also allows two people working on the same
 document to efficiently combine ideas and changes.
 
 <div class="notice thought" markdown="1">
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Thought Questions:** Think of a specific time when
 you weren’t using version control that it would have been useful.
 
@@ -232,7 +232,7 @@ then you can update your changes to the central NEON repository.
 * **Your local repository** - this is a local version of your fork on your
 own computer. You will most often do all of your work locally on your computer.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Other Workflows -- There are many other
 git workflows.
 <a href="https://ru.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow" target="_blank">Read more about other workflows</a>.

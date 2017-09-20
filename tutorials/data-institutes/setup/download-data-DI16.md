@@ -80,7 +80,7 @@ the directions below with the appropriate file path to your **NEONDI-2016**
 directory. 
 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
 written assuming the working directory is the parent directory to the 
 uncompressed .zip file of downloaded data -- **NEONDI-2016**. This allows for multiple data 

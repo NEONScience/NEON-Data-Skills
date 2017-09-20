@@ -70,7 +70,7 @@ install packages the first time you use R (or after updating to a new version).
     # install the ggplot2 package
     install.packages("ggplot2")  
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**R Tip:** You can just type this into the command 
 line of R to install each package. Once a package is installed, you don't have 
 to install it again while using the version of R!
