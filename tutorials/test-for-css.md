@@ -8,15 +8,21 @@ contributors: Leslie Goldman
 estimatedTime: 
 packagesLibraries: [raster, rhdf5, rgdal]
 topics: data-analysis, data-visualization, HDF5, spatial-data-gis
-languagesTool: R
+languagesTool: R, python
 dataProduct: 
 code1: 
 tutorialSeries: 
-
+urlTitle: styles-css
 ---
 
 This page shows all the NEON stylings as currently shown on the
 <a href="http://neonscience.github.io/NEON-Lesson-Building-Data-Skills/example-post" target="_blank"> NEONDataSkills.org website</a>.  
+
+## Rule
+
+This is a rule (horizontal line) in markdown.
+
+***
 
 ## Basic Markdown Highlighting
 
@@ -24,12 +30,6 @@ This is basic markdown styling and should need special CSS.
 
 The use of the highlight ( `text` ) will be reserve for denoting code when used
 in text. To add emphasis to other text use **bold** or *italics*. 
-
-## Rule
-
-This is a rule (horizontal line) in markdown.
-
-***
 
 # Heading one
 
@@ -39,14 +39,17 @@ This is a rule (horizontal line) in markdown.
 
 #### Heading four
 
+***
 
 Below are the various styles that are used throughout the NEON Data Skills pages. 
 For those that have CSS styles that are not yet resolved I give several options. 
 
+***
 
 ## GreyBox
 
-This is the "Greybox" styling. The div tag is currently (leaving out the < > so it isn't recognized as html): 
+This is the "Greybox" styling. The div tag is currently (leaving out the < > so 
+it isn't recognized as html): 
 
 `div id="ds-objectives" markdown="1"`  
 
@@ -78,8 +81,7 @@ These capstone activities rely on skills learned in the
  
 </div>
 
-
-
+***
 
 ## Code chunks
 
@@ -110,7 +112,6 @@ I could make code chunks look like this if needed. This is designated with:
 
 div id="ds-code-r" markdown="1"
 
-
 <div id="ds-code-r" markdown="1">
 
 	 # add 1 +1
@@ -119,10 +120,13 @@ div id="ds-code-r" markdown="1"
 
 </div>  
 
+
+
+
 ### Python 
 
-However, we also have code in other languages too. Python currently looks like 
-this in the markdown. 
+However, we also have code in other languages too. Python currently looks 
+like this in the Markdown. 
 
 ```python
 #ls_dataset displays the name, shape, and type of datasets in hdf5 file
@@ -153,7 +157,7 @@ f.visititems(ls_dataset)
 </div>  
 
 
-
+***
 
 ## Data Tips
 
@@ -164,9 +168,11 @@ Sometimes it might have some `code` in it. A data tip can include a list or
 links, however, it cannot contain figures, etc. 
 {: .notice}
 
-It was changed to look like this. 
+It was changed to look like this. The div tag for this one is: 
 
-<div id="ds-dataTip">
+`div id="ds-dataTip" markdown="1"`
+
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Here is a block with a data tip. 
 Sometimes it might have some `code` in it. A data tip can include a list or
 links, however, it cannot contain figures, etc. 
@@ -174,16 +180,13 @@ links, however, it cannot contain figures, etc.
 
 Or could be written like this without the class:
 
-<div id="ds-dataTip" >
+<div id="ds-dataTip" markdown="1">
 **Data Tip:** Here is a block with a data tip. 
 Sometimes it might have some `code` in it. A data tip can include a list or
 links, however, it cannot contain figures, etc. 
 </div> 
 
-
-
-
-
+***
 
 ## Challenges
 
@@ -212,7 +215,7 @@ It can have multiple paragraphs too.
 </div>
 
 
-
+***
 
 ## Quote Blocks
 
@@ -229,8 +232,8 @@ It can have multiple paragraphs too.
 ## Image with Caption & Source
 
 <figure>
-	<a href="{{ site.baseurl }}/images/example-post-images/pnt_line_poly.png">
-	<img src="{{ site.baseurl }}/images/example-post-images/pnt_line_poly.png"></a>
+	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
 	<figcaption> Caption here. Source: National Ecological Observatory Network
 	(NEON)  
 	</figcaption>
@@ -240,11 +243,11 @@ It can have multiple paragraphs too.
 ## Two Images Side-by-side with Caption & Source
 
 <figure class="half">
-	<a href="{{ site.baseurl }}/images/example-post-images/600x300.jpg">
-	<img src="{{ site.baseurl }}/images/example-post-images/600x300.jpg">
+	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	<img src="{{ site.baseurl }}/images/lidar/biomass.png">
 	</a>
-	<a href="{{ site.baseurl }}/images/example-post-images/600x300.jpg">
-	<img src="{{ site.baseurl }}/images/example-post-images/600x300.jpg"></a>
+	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
 	<figcaption>Caption describing these two images. Include Source: 
 	</figcaption>
 </figure>
