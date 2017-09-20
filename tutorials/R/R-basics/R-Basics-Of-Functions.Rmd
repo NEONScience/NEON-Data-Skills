@@ -91,7 +91,7 @@ line makes functions easier to read (for the human, the machine doesn't care).
 In many languages, the body of the function - the statements that are executed 
 when it runs - must be indented, typically using 4 spaces. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** While it is not mandatory in R to indent 
 your code 4 spaces within a function, it is  strongly recommended as good 
 practice!

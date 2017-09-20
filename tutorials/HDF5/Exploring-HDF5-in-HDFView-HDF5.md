@@ -123,7 +123,7 @@ collecting data on such variables as temperature, wind speed, precipitation,
 etc. In this case, we are working with data collected using temperature sensors, 
 mounted on the tower booms.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Note:** The data used in this activity were collected 
 by a temperature sensor mounted on a National Ecological Observatory Network (NEON) flux tower. 
 <a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
@@ -219,7 +219,7 @@ side of the popup.
 In this case, the image data are in the second and third dimensions of this 
 dataset. However, HDFView will default to selecting the first and second dimensions 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Note:** HDF5 files use 0-based indexing. Therefore, 
 the first dimension is called `dim 0` and the second is called `dim 1`. 
 </div>

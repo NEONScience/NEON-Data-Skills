@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 
 The Hierarchical Data Format version 5 (HDF5), is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize data within the file in many different structured ways, as you might do with files on your computer. The HDF5 format also allows for embedding of metadata making it *self-describing*. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** HDF5 is one hierarchical data format, that builds upon both HDF4 and NetCDF (two other hierarchical data formats). <a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 Here.</a>
 </div>
 

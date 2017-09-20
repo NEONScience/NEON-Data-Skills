@@ -145,7 +145,7 @@ of your markdown file.
 have been added to the Git tracking system but need to be **committed** as actual changes
 in the git repository history.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you want to delete a file from your
 repo, you can do so using `git rm file-name-here.fileExtension`. If you delete
 a file in the finder (Mac) or Windows Explorer, you will still have to use
@@ -170,7 +170,7 @@ message is helpful to us when we review commit history to see what has changed
 over time and when those changes occurred. Be sure that your message
 covers the change.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** It is good practice to keep commit messages to <50 characters.
 {: .notice }
 
@@ -193,7 +193,7 @@ this commit. You will always be able to track this specific commit (this specifi
 have changed and the number of type of changes made to the files including:
 insertions, and deletions.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**
 It is a good idea to use `git status` frequently as you are working with Git
 in the shell. This allows you to keep track of change that you've made and what
@@ -236,7 +236,7 @@ originating repo which in this case - is our fork on github.com which we origina
 cloned to our local computer. `master` is the repo branch that you are
 currently working on.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**
 Note about branches in Git: We won't cover branches in these tutorials, however,
 a Git repo can consist of many branches. You can think about a branch, like
@@ -276,7 +276,7 @@ Note that because this repo is a fork, your URL will have your GitHub username
 in it instead of "mjones01".
 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Bonus Tip:** You can use Git and connect to GitHub
 directly in the RStudio interface. If interested, read
 <a href="http://www.r-bloggers.com/rstudio-and-github/" target="_blank">this R-bloggers How-To</a>.

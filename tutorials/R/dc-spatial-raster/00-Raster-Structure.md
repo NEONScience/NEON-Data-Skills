@@ -159,7 +159,7 @@ To open rasters in `R`, we will use the `raster` and `rgdal` packages.
 ## Open a Raster in R
 We can use the `raster("path-to-raster-here")` function to open a raster in R. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  OBJECT NAMES! To improve code 
 readability, file and object names should be used that make it clear what is in 
 the file. The data for this tutorial were collected over from Harvard Forest so 

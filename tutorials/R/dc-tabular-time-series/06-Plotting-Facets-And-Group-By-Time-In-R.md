@@ -116,7 +116,7 @@ object `AirTempDaily`.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/plot-airt-1.png)
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
 {: .notice }
@@ -186,7 +186,7 @@ Our plots would be easier to visually compare if the days were formatted in
 Julian or year days rather than date. We have Julian days stored in our
 `data_frame` (`harMetDaily.09.11`) as `jd`.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
 [Convert to Julian Day tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
@@ -542,7 +542,7 @@ HINT: be sure to load the `zoo` package, if you have not already.
 Do you prefer to use base `R` or `zoo` to convert these data to a date/time
 class?
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** `zoo` date/time classes cannot be used
 directly with ggplot2. If you deal with date formats that make sense to
 primarily use `zoo` date/time classes, you can use ggplot2 with the addition of 

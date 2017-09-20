@@ -51,7 +51,7 @@ Please read the following page about NEON's mission:
 * <a href="http://{{ site.baseurl }}/about" target="_blank">Read about NEON’s mission</a>
 {: .readme }
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participants -- Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
 {: .notice .thought }
@@ -96,7 +96,7 @@ filter sites by name, site host, domain or state.
 have online documentation. We are working on this!
 
 <div class="notice thought" markdown="1">
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
@@ -112,7 +112,7 @@ coincide with?
 interested in? What kind of data are available?
 </div>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** You can download
 <a href="http://{{ site.baseurl }}/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
 {: .notice }
@@ -143,14 +143,14 @@ Platform (AOP), if you didn't already on the AOP page.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are familiar with LiDAR and
 hyperspectral remote sensing data, checkout this
 <a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">more technical NEON AOP video</a>.
 </div>
 
 <div class="notice thought" markdown="1">
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 Consider either your current
 or future research or the question you’d like to address at the Institute.
@@ -195,7 +195,7 @@ documentation can always be found on the
 <a href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
 
 <div class="notice thought" markdown="1">
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 
 Use the Data Portal tools to investigate the data availability for the field
@@ -218,7 +218,7 @@ every field site.
 <a class="link--button link--arrow" href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Products Catalog.</a>
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the

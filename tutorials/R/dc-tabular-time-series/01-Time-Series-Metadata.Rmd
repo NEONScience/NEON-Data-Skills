@@ -96,7 +96,7 @@ downloaded with a data product OR that are available separately for the data.
 * **Directly on a website (HTML / XML):** Sometimes data are documented directly
 in text format, on a web page. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** When you find metadata for a dataset 
 that you are working with, immediately **DOWNLOAD AND SAVE IT** to the directory
 on your computer where you saved the data. It is also a good idea to document

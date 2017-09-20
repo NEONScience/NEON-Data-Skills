@@ -51,7 +51,7 @@ Julian days, as most often used in an ecological context, is a continuous count
 of the number of days beginning at Jan 1 each year. Thus each year will have up 
 to 365 (non-leap year) or 366 (leap year) days. 
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Note:** This format can also be called ordinal
 day or year day. In some contexts, Julian day can refer specifically to a 
 numeric day count since 1 January 4713 BCE or as a count from some other origin 
@@ -113,7 +113,7 @@ tail(harMet_DailyNoJD$julian)
 
 ```
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  In this tutorial we converted from
 `Date` class to a Julian day, however, you can convert between any recognized
 date/time class (POSIXct, POSIXlt, etc) and Julian day using `yday`.  

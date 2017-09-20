@@ -75,7 +75,7 @@ allows us to store both the `x,y` values that represent the coordinate location
 of each point and the associated attribute data - or columns describing each
 feature in the spatial object.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** There is a `SpatialPoints` object (not
 `SpatialPointsDataFrame`) in `R` that does not allow you to store associated
 attributes. 

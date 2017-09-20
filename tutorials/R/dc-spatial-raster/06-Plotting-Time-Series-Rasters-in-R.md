@@ -94,7 +94,7 @@ We can use the `plot` function to plot our raster time series data.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R/plot-time-series-1.png)
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The range of values for NDVI is 0-1. 
 However, the data stored in our raster ranges from 0 - 10,000. If we view the 
 metadata for the original .tif files, we will see a scale factor of 10,000 is
@@ -146,7 +146,7 @@ pixels that are more green, have a higher NDVI value.
 <a href="http://www.datavis.ca/sasmac/brewerpal.html" target="_blank">
 brewerpal page</a>.
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Cynthia Brewer, the creater of 
 ColorBrewer, offers an online tool to help choose suitable color ramps, or to 
 create your own. <a href="http://colorbrewer2.org/" target="_blank">
@@ -197,7 +197,7 @@ First let's remove "_HARV_NDVI_crop" from each label.
     ##  [1] "Day 005" "Day 037" "Day 085" "Day 133" "Day 181" "Day 197" "Day 213"
     ##  [8] "Day 229" "Day 245" "Day 261" "Day 277" "Day 293" "Day 309"
 
-<div id="ds-dataTip">
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Instead of substituting "x" and
 "_HARV_NDVI_crop" separately, we could have used use the vertical bar character 
 ( | ) to replace more than one element.
