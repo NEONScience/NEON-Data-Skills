@@ -164,7 +164,7 @@ We can use the `raster("path-to-raster-here")` function to open a raster in R.
 readability, file and object names should be used that make it clear what is in 
 the file. The data for this tutorial were collected over from Harvard Forest so 
 we'll use a naming convention of `datatype_HARV`. 
-{: .notice }
+</div>
 
 
     # Load raster into R

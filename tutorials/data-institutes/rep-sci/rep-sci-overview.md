@@ -66,7 +66,7 @@ How reproducible is your current research?
 
 <a class="link--button link--arrow" href="https://github.com/Reproducible-Science-Curriculum/rr-intro/blob/master/checklist.md" target="_blank"> View Reproducible Science Checklist </a>
 
-<div class="notice thought" markdown="1">
+<div id="ds-dataTip" markdown="1">
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Thought Questions:** Have a look at the reproducible
 science check list linked, above and answer the

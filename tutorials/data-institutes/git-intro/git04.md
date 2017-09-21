@@ -110,7 +110,7 @@ There are many free Markdown editors out there! The
 <a href="http://Atom.io" target="_blank">atom.io</a>
 editor is a powerful text editor package by GitHub, that also has a Markdown
 renderer allowing you to see what your Markdown looks like as you are working.
-{: .notice }
+</div>
 
 <div id="ds-challenge" markdown="1">
 ## Activity: Create A Markdown Document

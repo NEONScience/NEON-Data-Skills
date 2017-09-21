@@ -99,7 +99,7 @@ We can plot each band of a multi-band image individually.
 <i class="fa fa-star"></i>**Data Tip:** In many GIS applications, a single band 
 would render as a single image in grayscale. We will therefore use a grayscale 
 palette to render individual bands. 
-{: .notice }
+</div>
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R/demonstrate-RGB-Image-1.png)
 

@@ -95,7 +95,7 @@ load all libraries at top of script.
 If you decide you need another package later on in the script, return to this
 area and add it. That way, with a glance, you can see all packages used in a
 given script. 
-{: .notice }
+</div>
 
 Once our working directory is set, we can import the file using `read.csv()`. 
 
@@ -128,7 +128,7 @@ interpretation of non-numerical data but no order to the levels.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** <a href="http://www.stat.berkeley.edu/~s133/factors.html" target="_blank">
 Read more about factors here.</a>
-{: .notice }
+</div>
 
 After loading the data it is easy to convert any field that should be a factor by
 using `as.factor()`. Therefore it is often best to read in a file with
@@ -250,7 +250,7 @@ Let's use both to explore our data.
 <i class="fa fa-star"></i>**Data Tip:** You can adjust the number of rows
 returned when using the `head()` and `tail()` functions. For example you can use
 `head(harMet.daily, 10)` to display the first 10 rows of your data rather than 6.
-{: .notice }
+</div>
 
 ### Classes in R
 
@@ -363,7 +363,7 @@ object that the variables are stored in.
 
 <i class="fa fa-star"></i>**Data Tip:** Add a title to the plot using 
 `main="Title string"`.
-{: .notice }
+</div>
 
 
     # quickly plot air temperature

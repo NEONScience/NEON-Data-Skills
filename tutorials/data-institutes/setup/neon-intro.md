@@ -95,7 +95,7 @@ filter sites by name, site host, domain or state.
 **NOTE:** Because NEON is still in it's construction phase, not all field sites 
 have online documentation. We are working on this!
 
-<div class="notice thought" markdown="1">
+<div id="ds-dataTip" markdown="1">
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that you may explore as your
@@ -115,7 +115,7 @@ interested in? What kind of data are available?
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** You can download
 <a href="http://{{ site.baseurl }}/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
-{: .notice }
+</div>
 
 ## The Data that NEON Collects
 
@@ -149,7 +149,7 @@ hyperspectral remote sensing data, checkout this
 <a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">more technical NEON AOP video</a>.
 </div>
 
-<div class="notice thought" markdown="1">
+<div id="ds-dataTip" markdown="1">
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 Consider either your current
@@ -194,7 +194,7 @@ An overview of how to get data, soil or species samples, and supporting
 documentation can always be found on the
 <a href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
 
-<div class="notice thought" markdown="1">
+<div id="ds-dataTip" markdown="1">
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
 
@@ -223,7 +223,7 @@ Check out the NEON Data Products Catalog.</a>
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
 <a href="http://{{ site.baseurl }}/assignable-assets" target="_blank">Assignable Assets programs </a>.
-{: .notice }
+</div>
 
 
 <div id="ds-challenge" markdown="1">
