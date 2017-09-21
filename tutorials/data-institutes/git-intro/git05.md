@@ -151,7 +151,7 @@ repo, you can do so using `git rm file-name-here.fileExtension`. If you delete
 a file in the finder (Mac) or Windows Explorer, you will still have to use
 `git add` at the command line to tell git that a file has been removed from the
 repo, and to track that "change".
-{: .notice }  
+</div>  
 
 ## Commit Changes - git commit
 
@@ -172,7 +172,7 @@ covers the change.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** It is good practice to keep commit messages to <50 characters.
-{: .notice }
+</div>
 
 
     # commit changes with message
@@ -198,7 +198,7 @@ insertions, and deletions.
 It is a good idea to use `git status` frequently as you are working with Git
 in the shell. This allows you to keep track of change that you've made and what
  Git is actually tracking.
-{: .notice }
+</div>
 
 ## Why Add, then Commit?
 
@@ -241,7 +241,7 @@ currently working on.
 Note about branches in Git: We won't cover branches in these tutorials, however,
 a Git repo can consist of many branches. You can think about a branch, like
 an additional copy of a repo where you can work on changes and updates. 
-{: .notice }
+</div>
 
 Let's push the changes that we made to the local version of our Git repo to our
 fork, in our github.com account.

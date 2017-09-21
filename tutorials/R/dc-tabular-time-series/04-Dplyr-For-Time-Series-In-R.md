@@ -316,7 +316,7 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
-{: .notice }
+</div>
 
 ## Other dplyr Functions
 
@@ -387,7 +387,7 @@ data, we could use the `yday()` function
 <a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
 from the `lubridate` package to create a new column containing Julian day 
 values. [More information in this NEON Data Skills tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
-{: .notice }
+</div>
 
 ### Summarize by Group
 We can use `summarize()` function to calculate a summary output value for each
@@ -470,7 +470,7 @@ data_frame.
 <i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
 `transform()` in base `R`. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
-{: .notice }
+</div>
 
 ## Save dplyr Output as data_frame
 We can save output from a `dplyr` pipe as a new `R` object to use for quick

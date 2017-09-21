@@ -282,7 +282,7 @@ even prettier by fixing the individual tile names, adding an plot title and by
 using the (`levelplot`) function. This is covered in the NEON Data Skills 
 [Plot Time Series Rasters in R ]({{ site.baseurl }}/R/Plot-Raster-Times-Series-Data-In-R/)
 tutorial. 
-{: .notice }
+</div>
 
 
     # apply scale factor to data

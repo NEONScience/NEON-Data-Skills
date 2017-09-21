@@ -303,7 +303,7 @@ components of the date-time data:
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** A list of options for date-time format
 is available in the `strptime` function help: `help(strptime)`. Check it out!   
-{: .notice }
+</div>
 
 The "T" inserted into the middle of `datetime` isn't a standard character for 
 date and time, however we can tell `R` where the character is so it can ignore 

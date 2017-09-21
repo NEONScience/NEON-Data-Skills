@@ -285,7 +285,7 @@ set of commands performed on a input object. Custom functions are particularly
 useful for tasks that need to be repeated over and over in the code. A
 simplified syntax for writing a custom function in R is:
 `functionName <- function(variable1, variable2){WhatYouWantDone, WhatToReturn}`
-{: .notice }
+</div>
 
 ## Export a GeoTIFF
 Now that we've created a new raster, let's export the data as a `GeoTIFF` using

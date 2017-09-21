@@ -85,7 +85,7 @@ This means that you don’t have to worry about a collaborator (or your future s
 overwriting something important. It also allows two people working on the same
 document to efficiently combine ideas and changes.
 
-<div class="notice thought" markdown="1">
+<div id="ds-dataTip" markdown="1">
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Thought Questions:** Think of a specific time when
 you weren’t using version control that it would have been useful.

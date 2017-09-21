@@ -119,7 +119,7 @@ object `AirTempDaily`.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
-{: .notice }
+</div>
 
 This plot tells us a lot about the annual increase and decrease of temperature
 at the NEON Harvard Forest field site. However, what if we want to plot each

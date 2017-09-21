@@ -102,7 +102,7 @@ defined.
 Multiplying values with decimal places by a factor of 10, allows the data to be 
 stored in integer format (no decimals) rather than a floating point format 
 (containing decimals). This keeps the file size smaller. 
-{: .notice }
+</div>
 
 Our plot is nice however, it's missing some key elements including, easily
 readable titles. It also contains a legend that is repeated for each image. We
@@ -151,7 +151,7 @@ brewerpal page</a>.
 ColorBrewer, offers an online tool to help choose suitable color ramps, or to 
 create your own. <a href="http://colorbrewer2.org/" target="_blank">
 ColorBrewer 2.0; Color Advise for Cartography </a>  
-{: .notice }
+</div>
 
 ## Refine Plot & Tile Labels
 Next, let's label each raster in our plot with the Julian day that the raster
@@ -204,7 +204,7 @@ First let's remove "_HARV_NDVI_crop" from each label.
 For example "X|_HARV" tells `R` to replace all instances of both "X" and "_HARV"
 in the string. Example code to remove "x" an "_HARV...":
 `gsub("X|_HARV_NDVI_crop"," |  ","rasterNames")` 
-{: .notice }
+</div>
 
 Once the names for each band have been reassigned, we can render our plot with
 the new labels using `names.attr=rasterNames`. 

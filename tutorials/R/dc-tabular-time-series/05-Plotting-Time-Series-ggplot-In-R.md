@@ -195,7 +195,7 @@ labels using `+ xlab("TEXT") + ylab("TEXT")`.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  Use `help(ggplot2)` to review the many
 elements that can be defined and added to a `ggplot2` plot.
-{: .notice }
+</div>
 
 ### Name Plot Objects
 We can create a `ggplot` object by assigning our plot to an object name.
@@ -233,7 +233,7 @@ to the plot object `AirTempDaily` that we just created.
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type `scale_x_date` for a list of parameters that allow you to format dates 
 on the x-axis.
-{: .notice }
+</div>
 
 
     # format x-axis: dates
@@ -247,7 +247,7 @@ on the x-axis.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
-{: .notice }
+</div>
 
 ### Adjust Date Ticks
 We can adjust the date ticks too. In this instance, having 1 tick per year may 
@@ -284,7 +284,7 @@ month).
 format for x- and y-axes using `scale_x_continuous` or `scale_y_continuous` to
 format a continue variable. Check out `?scale_x_` (tab complete to view the 
 various x and y scale options)
-{: .notice }
+</div>
 
 ## ggplot - Subset by Time
 Sometimes we want to scale the x- or y-axis to a particular time subset without 
@@ -471,7 +471,7 @@ including color blind friendly color palettes, checkout the
 <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/" target="_blank">
 ggplot2 color information</a> from Winston Chang's *Cookbook* *for* *R* site 
 based on the _R_ _Graphics_ _Cookbook_ text. 
-{: .notice }
+</div>
  
 ## Figures with Lines
 We can create line plots too using `ggplot`. To do this, we use `geom_line()`
@@ -524,7 +524,7 @@ be used with given we have 1,095 measurements.
 <i class="fa fa-star"></i>**Data Tip:**  Remember a trend line is a statistical
 transformation of the data, so prior to adding the line one must understand if a 
 particular statistical transformation is appropriate for the data. 
-{: .notice } 
+</div> 
 
 
     # adding on a trend lin using loess
