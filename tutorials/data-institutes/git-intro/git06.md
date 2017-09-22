@@ -242,9 +242,9 @@ To switch the head and base:
 	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-PR-compareForks.png">
 	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-PR-compareForks.png"></a>
 	<figcaption> To update your repo you need to set the base fork to
-   `YOUR-USER-NAME/DI-NEON-participants`. Then click the "compare across forks"
-   link. This will allow you to set the head fork to `NEON-WorkWithData/DI-NEON-participants` .
-Source: National Ecological Observatory Network (NEON)  
+	`YOUR-USER-NAME/DI-NEON-participants`. Then click the "compare across forks"
+	link. This will allow you to set the head fork to `NEON-WorkWithData/DI-NEON-participants` .
+	Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 

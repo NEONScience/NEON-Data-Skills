@@ -52,7 +52,7 @@ Please read the following page about NEON's mission:
 {: .readme }
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Institute Participants -- Thought Questions:** How might/does the NEON project
+**Data Institute Participants -- Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
 {: .notice .thought }
 
@@ -96,8 +96,7 @@ filter sites by name, site host, domain or state.
 have online documentation. We are working on this!
 
 <div id="ds-dataTip" markdown="1">
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Institute Participant -- Thought Questions:**
+**Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
 working on and answer the following questions:
@@ -150,8 +149,7 @@ hyperspectral remote sensing data, checkout this
 </div>
 
 <div id="ds-dataTip" markdown="1">
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
+**Data Institute Participant – Thought Questions:** 
 Consider either your current
 or future research or the question you’d like to address at the Institute.
 
@@ -195,9 +193,7 @@ documentation can always be found on the
 <a href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
 
 <div id="ds-dataTip" markdown="1">
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Institute Participant – Thought Questions:** 
-
+**Data Institute Participant – Thought Questions:** 
 Use the Data Portal tools to investigate the data availability for the field
 sites you’ve already identified in the previous Thought Questions. If your
 desired field site doesn’t have data available for it, choose the next most

@@ -87,14 +87,6 @@ These capstone activities rely on skills learned in the
 
 ### R
 
-In RMarkdown code chunks look like this (start with ```{r name-here}, and closed with ```).  
-
-```{r code-chunk}
-
-# add 1 +1
-1+1
-2
-```
 
 In Markdown code chunks look like this (indent only).
 
@@ -161,13 +153,6 @@ f.visititems(ls_dataset)
 
 ## Data Tips
 
-Originally it looked like this: 
-
-<i class="fa fa-star"></i> **Data Tip:** Here is a block with a data tip. 
-Sometimes it might have some `code` in it. A data tip can include a list or
-links, however, it cannot contain figures, etc. 
-{: .notice}
-
 It was changed to look like this. The div tag for this one is: 
 
 `div id="ds-dataTip" markdown="1"`
@@ -178,13 +163,6 @@ Sometimes it might have some `code` in it. A data tip can include a list or
 links, however, it cannot contain figures, etc. 
 </div> 
 
-Or could be written like this without the class:
-
-<div id="ds-dataTip" markdown="1">
-**Data Tip:** Here is a block with a data tip. 
-Sometimes it might have some `code` in it. A data tip can include a list or
-links, however, it cannot contain figures, etc. 
-</div> 
 
 ***
 

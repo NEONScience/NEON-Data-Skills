@@ -108,7 +108,7 @@ on the following 3 for now:
 * **Issues:** Submit discussion topics, or problems that you are having with
 the content in the repo, here.
 * **Pull Requests:** Submit changes to the repo for review /
-acceptance. We will explore pull requests more in the <a href="{{ site.baseurl }}/tutorial-series/pre-institute2/git05" target="_blank">
+acceptance. We will explore pull requests more in the <a href="{{ site.baseurl }}/github-git-add" target="_blank">
 Git 06 tutorial.</a>
 
  <figure>
@@ -133,7 +133,7 @@ A bit further down the page, you'll notice a few other links:
 * **commits:** a commit is a saved and documented change to the content
 or structure of the repo. The commit history contains all changes that
 have been made to that repo. We will discuss commits more in
-<a href="{{ site.baseurl }}/reproducible-research/git05"> Git 05: Git Add Changes -- Commits </a>.
+<a href="{{ site.baseurl }}/github-git-add"> Git 05: Git Add Changes -- Commits </a>.
 
 ## Fork a Repository
 
@@ -166,7 +166,6 @@ any time by clicking the fork button in the upper right hand corner on github.co
 ## Activity: Fork the NEON Data Institute Participants Repo
 
 Create your own fork of the DI-NEON-participants now.
-
 </div>
 
 
