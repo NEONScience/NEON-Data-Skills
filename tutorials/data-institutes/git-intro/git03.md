@@ -167,7 +167,7 @@ Using either method, we can see that the file structure of our cloned repo
 exactly mirrors the file structure of our forked GitHub repo.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Thought Question:**
+**Thought Question:**
 Is the cloned version of this repo that you just created on your laptop, a
 direct copy of the NEON central repo -OR- of your forked version of the NEON
 central repo?

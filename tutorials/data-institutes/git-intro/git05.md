@@ -171,7 +171,9 @@ over time and when those changes occurred. Be sure that your message
 covers the change.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** It is good practice to keep commit messages to <50 characters.
+
+<i class="fa fa-star"></i> **Data Tip:** It is good practice to keep commit messages to <50 characters.
+
 </div>
 
 
@@ -194,7 +196,7 @@ have changed and the number of type of changes made to the files including:
 insertions, and deletions.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 It is a good idea to use `git status` frequently as you are working with Git
 in the shell. This allows you to keep track of change that you've made and what
  Git is actually tracking.
@@ -265,7 +267,7 @@ fork, in our github.com account.
        5022aca..e3cd622  master -> master
 
 
-NOTE: you may be asked for your username and password! This is your github.com
+NOTE: You may be asked for your username and password! This is your github.com
 username and password.
 
 **Understand the output:**
@@ -277,7 +279,7 @@ in it instead of "mjones01".
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Bonus Tip:** You can use Git and connect to GitHub
+<i class="fa fa-star"></i>**Data Tip:** You can use Git and connect to GitHub
 directly in the RStudio interface. If interested, read
 <a href="http://www.r-bloggers.com/rstudio-and-github/" target="_blank">this R-bloggers How-To</a>.
 </div>
@@ -304,7 +306,8 @@ Source: National Ecological Observatory Network (NEON)
 	</figcaption>
 </figure>
 
-## Is Your File in the NEON Central Repo, Yet?
+## Is Your File in the NEON Central Repo Yet?
+
 Next, do the following:
 
 1. Navigate to the NEON central
@@ -323,7 +326,7 @@ is in our individual user account, not NEONS. This fork is
 repos in the next tutorial 
 [Git 06: Syncing GitHub Repos with Pull Requests]({{ site.baseurl}}/reproducible-research/pre-institute2/git06).
 
-## Summary workflow - Committing Changes
+## Summary Workflow - Committing Changes
 
 On your computer, within your local copy of the Git repo:
 

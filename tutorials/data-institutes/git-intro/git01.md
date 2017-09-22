@@ -63,7 +63,7 @@ Some better:
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Thought Question:** Do you currently implement
+**Thought Question:** Do you currently implement
 any form of version control in your work?
 </div>
 
@@ -72,7 +72,6 @@ any form of version control in your work?
 * <a href="https://en.wikipedia.org/wiki/List_of_version_control_software" target="_blank">
 Visit the version control Wikipedia list of version control platforms.</a>
 * <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control" target="_blank"> Read the Git documentation explaining the progression of version control systems.</a>
-</div>
 
 ## Why Version Control is Important
 
@@ -86,8 +85,7 @@ overwriting something important. It also allows two people working on the same
 document to efficiently combine ideas and changes.
 
 <div id="ds-dataTip" markdown="1">
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Thought Questions:** Think of a specific time when
+**Thought Questions:** Think of a specific time when
 you weren’t using version control that it would have been useful.
 
 * Why would version control have been helpful to your project & work flow?  
