@@ -31,7 +31,7 @@ know!
 
 ---
 
-Credits & Acknowledgements
+## Credits & Acknowledgements
 ***
 
 <!-- HTML tags to produce image, resize, add hyperlink. -->
@@ -44,14 +44,14 @@ Any opinions, findings, and conclusions or recommendations expressed in this
 material are those of the author(s) and do not necessarily reflect the views of 
 the National Science Foundation.
 
-License
+## License
 ***
 
 GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
 
 
-Disclaimer
-----------
+## Disclaimer
+***
 
 *Information and documents contained within this repository are available as-is. 
 Codes or documents, or their use, may not be supported or maintained under any 
