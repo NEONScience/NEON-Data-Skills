@@ -9,25 +9,20 @@
 require(knitr)
 dirs <- c("R/primer-raster-data",
           "teaching-modules/disturb-events-co13",
-					"data-institutes/rmd-intro",
-          "R/dc-spatial-raster",
+          "data-institutes/rmd-intro",
+          "R/R-nonSeries-lessons",
           "dataviz")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[2]
+dir <- dirs[4]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills/"
-
-# not needed for Drupal site
-# jekyll will only render md posts that begin with a date. Add one.
-#add.date <- "2017-03-29-"
+gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data/"
-
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir
@@ -36,10 +31,8 @@ setwd(wd)
 # set series subdir
 subDir <- paste0(dir,"/")
 
-# subDir <- "institute-materials/day2_tuesday/"
-
-#don't change - this is the tutorials dir location required by jekyll
-postsDir <- file.path("tutorials/", subDir)
+# don't change - this is the tutorials dir location required by jekyll
+postsDir <- file.path("tutorials", subDir)
 codeDir <- file.path("code/", subDir)
 
 # images path
