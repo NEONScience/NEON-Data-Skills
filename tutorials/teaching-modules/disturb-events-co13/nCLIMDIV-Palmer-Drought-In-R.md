@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
 tutorialSeries: 
-
+urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 ---
 
 {% include _toc.html %}

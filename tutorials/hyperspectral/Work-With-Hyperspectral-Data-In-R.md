@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: hyperspectral/Work-With-Hyperspectral-Data-In-R.R
 tutorialSeries:
+urlTitle: hsi-hdf5-r
 ---
 
 In this tutorial, we will explore reading and extracting spatial raster data 
@@ -41,7 +42,7 @@ preferably, RStudio loaded on your computer.
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 
-[ { { site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 

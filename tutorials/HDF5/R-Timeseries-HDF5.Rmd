@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /HDF5/R-Timeseries-HDF5.R
 tutorialSeries: intro-hdf5-r-series
+urlTitle: time-series-hdf5-r
 ---
 
 In this tutorial, we'll work with 

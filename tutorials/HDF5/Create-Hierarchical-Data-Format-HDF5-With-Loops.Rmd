@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /HDF5/create-HDF5-In-R.R
 tutorialSeries: intro-hdf5-r-series
-
+urlTitle: create-hdf5-loops-r
 ---
 
 <div id="ds-objectives" markdown="1">
@@ -34,7 +34,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5** 
 
-[ { { site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
 
 ## Recommended Background 
 

@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct: 
 code1: /teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R 
 tutorialSeries: 
-
+urlTitle: da-viz-usgs-stream-discharge-data-R
 ---
 
 {% include _toc.html %}

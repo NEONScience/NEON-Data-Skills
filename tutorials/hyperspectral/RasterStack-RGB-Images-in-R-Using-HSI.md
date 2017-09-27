@@ -12,6 +12,7 @@ languagesTool: R
 dataProudct:
 code1: hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
+urlTitle: create-raster-stack-hsi-hdf5-r
 ---
 
 
@@ -43,7 +44,7 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-[ { { site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 

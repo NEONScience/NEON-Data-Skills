@@ -12,6 +12,8 @@ languagesTool:
 dataProduct:
 code1: 
 tutorialSeries: intro-hsi-r-series
+urlTitle: hyper-spec-intro
+
 ---
 
 <div id="ds-objectives" markdown="1">

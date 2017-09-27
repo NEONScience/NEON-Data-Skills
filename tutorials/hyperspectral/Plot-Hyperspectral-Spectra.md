@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: hyperspectral/Plot-Hyperspectral-Spectra.R
 tutorialSeries:
+urlTitle: plot-hsi-spectral-profile-r
 ---
 
 <div id="ds-objectives" markdown="1">
@@ -33,7 +34,7 @@ preferably, RStudio loaded on your computer.
 * **plyr**: `install.packages('plyr')`
 * **ggplot2**: `install.packages('ggplot2')`
 
-[ { { site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{ site.baseurl }}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
