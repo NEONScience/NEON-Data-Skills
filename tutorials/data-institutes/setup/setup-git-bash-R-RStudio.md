@@ -12,6 +12,7 @@ languagesTool: git, bash, R
 dataProduct:
 code1: 
 tutorialSeries:
+urlTitle: setup-git-bash-rstudio
 ---
 
 

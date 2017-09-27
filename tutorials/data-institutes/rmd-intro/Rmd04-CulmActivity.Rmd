@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: 
+urlTitle: di-rmd-activity
 ---
 
 ## About

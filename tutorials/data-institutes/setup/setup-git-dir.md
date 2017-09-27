@@ -13,6 +13,7 @@ languagesTool: git, bash
 dataProduct:
 code1: 
 tutorialSeries:
+urlTitle: bash-setup-git
 ---
 
 ## Checklist

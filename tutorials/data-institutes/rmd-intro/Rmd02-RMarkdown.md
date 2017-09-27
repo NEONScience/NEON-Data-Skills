@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: [RMarkdown]
+urlTitle: rmd-code-intro
 ---
 
 You will need to have the `rmarkdown` and `knitr`
