@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: 
 tutorialSeries:
+urlTitle: sp-occurrence-arcgis
 ---
 
 <a href="https://www.arcgis.com/" target="_blank">ESRI's ArcGIS Online mapping tools </a>

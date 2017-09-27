@@ -12,9 +12,9 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: 
+urlTitle: di-rmd-activity
 ---
 
-## About
 This tutorial covers the NEON Pre-Institute Week 3 assignment. If you already
 are familiar with `R Markdown` and `knitr`, you may be able to complete the 
 assignment without working through the tutorials. 

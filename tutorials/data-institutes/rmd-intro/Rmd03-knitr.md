@@ -12,6 +12,7 @@ languagesTool: R
 dataProducts:
 code1:
 tutorialSeries: [RMarkdown]
+urlTitle: rmd-use-knitr
 ---
 
 In this tutorial, we will cover the R `knitr` package that is used to convert

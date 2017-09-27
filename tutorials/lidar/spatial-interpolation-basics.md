@@ -12,6 +12,7 @@ languagesTool:
 dataProduct:
 code1:
 tutorialSeries: intro-lidar-r-series
+urlTitle: spatial-interpolation-basics
 
 ---
 

@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: [RMarkdown]
+urlTitle: rmd-knitr-intro
 ---
 
 This tutorial we will work with the `knitr` and `rmarkdown` packages within

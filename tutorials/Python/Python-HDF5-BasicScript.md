@@ -1,6 +1,6 @@
 ---
 syncID: a9b616f171be48d7a0ea2d539de11c87
-title: "Opening HDF5 files with Python Sample Code" 
+title: "Open HDF5 files with Python Sample Code" 
 description: "This tutorial provides basic code for opening an HDF5 file in Python using the h5py, numpy, and matplotlib libraries."
 dateCreated:   2015-5-08 
 authors: David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden
@@ -12,11 +12,12 @@ languagesTool: python
 dataProduct:
 code1: 
 tutorialSeries:
+urlTitle: hdf5-intro-python
 ---
 
 <div id="ds-objectives" markdown="1">
 
-## Lesson Objectives 
+## Objectives 
 
 At the end of this tutorial you will be able to
 

@@ -10,9 +10,8 @@ languagesTool:
 dataProduct:
 code1:
 tutorialSeries: institute-day5
+urlTitle: di-rs-capstone
 ---
-
-## About
 
 The goals of the NEON Data Institute are to:
 

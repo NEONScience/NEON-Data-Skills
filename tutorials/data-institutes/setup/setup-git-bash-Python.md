@@ -13,6 +13,7 @@ languagesTool: Git, Bash, Python
 dataProduct: 
 code1: 
 tutorialSeries: 
+urlTitle: setup-git-bash-python
 ---
 
 {% include _toc.html %} 

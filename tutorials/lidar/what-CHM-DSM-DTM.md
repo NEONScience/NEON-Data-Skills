@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: [intro-lidar-r-series]
+urlTitle: chm-dsm-dtm-gridded-lidar-data
 ---
 
 
