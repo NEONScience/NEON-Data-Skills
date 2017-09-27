@@ -47,7 +47,7 @@ an interactive development environment (IDE).
 You can chose to install packages with each lesson or you can download all 
 of the necessary `R` Packages now. 
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
 
 *****
 

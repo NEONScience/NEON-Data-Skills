@@ -48,7 +48,7 @@ on your computer to complete this tutorial.
 * **scales:** `install.packages("scales")`
 
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
 
 ### Download Data 
 
