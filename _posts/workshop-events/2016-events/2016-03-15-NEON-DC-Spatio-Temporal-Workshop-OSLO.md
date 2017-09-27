@@ -116,7 +116,7 @@ In RStudio, you can go to `Tools --> Check for package updates` to update alread
 installed libraries on your computer! Or, you can use <code>update.packages()</code> 
 to update all packages that are installed in R automatically. 
 
-[More on Packages in R.]({{site.baseurl}}R/Packages-In-R/)
+[More on Packages in R.]({{site.baseurl}}/R/Packages-In-R/)
 ***
 
 ## Install Bash

@@ -101,7 +101,7 @@ of the necessary `R` packages now.
 * **reshape2:** `install.packages("reshape2")`
 * **zoo:** `install.packages("zoo")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
 
 ### Download Data
 

@@ -115,7 +115,7 @@ already installed packages on your computer! Or, you can use
 `update.packages()` to update all packages that are installed in R 
 automatically. 
 
-* [More on Packages in R.]({{site.baseurl}}R/Packages-In-R/)
+* [More on Packages in R.]({{site.baseurl}}/R/Packages-In-R/)
 
 
 </div>
