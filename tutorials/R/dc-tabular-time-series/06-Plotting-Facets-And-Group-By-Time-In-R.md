@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R.R
 tutorialSeries: tabular-time-series 
+urlTitle: dc-time-series-plot-facets-ndvi-r
 ---
 
 This tutorial covers how to plot subsetted time series data using the `facets()`
@@ -38,7 +39,7 @@ your computer to complete this tutorial.
 * **reshape2:** `install.packages("reshape2")`
 * **zoo:** `install.packages("zoo")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

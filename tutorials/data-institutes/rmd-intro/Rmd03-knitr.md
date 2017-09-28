@@ -54,7 +54,7 @@ To complete this tutorial you need:
 
 1. The R `knitr` package to complete this tutorial. If you need help installing 
 packages, visit
-<a href="{{ site.baseurl }}/R/Packages-In-R/" target="_blank"> the R packages tutorial</a>.  
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> the R packages tutorial</a>.  
 2. An R Markdown document that contains a YAML header, code chunks and markdown
 segments. If you don't have an **.Rmd** file, visit
 <a href="{{site.baseurl}}/R/RMarkdown/rmd02" target="_blank"> the R Markdown tutorial</a> to create one.

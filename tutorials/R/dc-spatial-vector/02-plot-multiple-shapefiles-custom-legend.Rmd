@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-spatial-vector/02-plot-multiple-shapefiles-custom-legend.R
 tutorialSeries: vector-data-series
-
+urlTitle: dc-plot-shapefiles-r
 ---
 
 
@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}

@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
+urlTitle: raster-data-r
 
 ---
 

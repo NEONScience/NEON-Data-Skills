@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/01-Time-Series-Metadata.R
 tutorialSeries: tabular-time-series
-
+urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
 
 This tutorial covers what metadata are, and why we need to work with

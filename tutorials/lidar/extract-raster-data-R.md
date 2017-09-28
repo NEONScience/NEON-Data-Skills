@@ -50,7 +50,7 @@ on your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}

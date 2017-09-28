@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/primer-raster-data/Image-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
+urlTitle: image-raster-data-r
 ---
 
 
@@ -38,7 +39,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ### Download Data
 

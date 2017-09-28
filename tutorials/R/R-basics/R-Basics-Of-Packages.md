@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/R-Basics/R-Basics-Of-Packages.R
 tutorialSeries: R-basics
+urlTitle: packages-in-r
 ---
 
 This tutorial provides the basics of installing and working with packages in R.

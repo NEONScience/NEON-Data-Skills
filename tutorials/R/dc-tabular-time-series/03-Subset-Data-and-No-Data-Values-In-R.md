@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-subset-data-no-data-values-r
 ---
 
 
@@ -38,7 +39,7 @@ your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

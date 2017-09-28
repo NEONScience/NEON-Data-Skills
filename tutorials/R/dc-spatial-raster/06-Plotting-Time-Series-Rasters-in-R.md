@@ -42,7 +42,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **rasterVis:** `install.packages("rasterVis")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Data to Download
 {% include/dataSubsets/_data_Landsat-NDVI.html %}

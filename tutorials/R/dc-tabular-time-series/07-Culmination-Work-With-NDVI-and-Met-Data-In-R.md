@@ -12,6 +12,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-culm-activity-ndvi-met-data-r
 ---
 
 This tutorial is a culmination activity for the series on 
@@ -46,7 +47,7 @@ your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **reshape2:** `install.packages("reshape2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

@@ -12,6 +12,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-time-series-subset-dplyr-r
 
 ---
 
@@ -42,7 +43,7 @@ your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

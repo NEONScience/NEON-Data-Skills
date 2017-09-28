@@ -42,7 +42,7 @@ preferably, RStudio loaded on your computer.
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 
-[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 

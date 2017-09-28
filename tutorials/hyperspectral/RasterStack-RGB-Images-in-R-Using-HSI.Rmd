@@ -44,7 +44,7 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 

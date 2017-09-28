@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-time-series-plot-ggplot-r
 
 ---
 
@@ -42,7 +43,7 @@ your computer to complete this tutorial.
 * **gridExtra:** `install.packages("gridExtra")`
 * **ggthemes:** `install.packages("ggthemes")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

@@ -251,7 +251,7 @@ in R, and sets the working directory.
  ```</code></pre>
 
 (For help setting the working directory, see the NEON Data Skills tutorial
-<a href="{{ site.baseurl }}/R/Set-Working-Directory" target="_blank">*Set A Working Directory in R*</a>.)
+<a href="{{ site.baseurl }}set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
 
 Then, add another chunk that loads the `TEAK_lidarDSM` raster file.
 

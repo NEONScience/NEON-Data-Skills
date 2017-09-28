@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
-
+urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
 
 This tutorial will demonstrate how to import a time series data set stored in `.csv`
@@ -41,7 +41,7 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 
 * **ggplot2:** `install.packages("ggplot2")`
 
- [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+ [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 {% include/dataSubsets/_data_Met-Time-Series.html %}

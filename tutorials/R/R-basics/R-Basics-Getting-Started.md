@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/R-basics/R-Basics-Getting-Started.R
 tutorialSeries: R-basics
+urlTitle: getting-started-r
 ---
 
 
@@ -927,4 +928,4 @@ R by installing packages that contain suites of functions and compiled code that
 you can also use in your code.  
 
 Go to the next tutorial
-[*Packages in R*]({{ site.baseurl }}/R/Packages-In-R/ "Packages in R").
+[*Packages in R*]({{ site.baseurl }}/packages-in-r "Packages in R").

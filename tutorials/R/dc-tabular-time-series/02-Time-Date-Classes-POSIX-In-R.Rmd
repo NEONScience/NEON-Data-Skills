@@ -12,7 +12,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-tabular-time-series/02-Time-Date-Classes-POSIX-In
 tutorialSeries: tabular-time-series
-
+urlTitle: dc-convert-date-time-POSIX-r
 ---
 
 
@@ -44,7 +44,7 @@ your computer to complete this tutorial.
 ### Install R Packages
 * **lubridate:** `install.packages("lubridate")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
