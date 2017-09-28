@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/R-basics/R-Basics-Of-Functions.R
 tutorialSeries: R-basics
+urlTitle: work-with-functions-r
 ---
 
 Sometimes we want to perform a calculation, or a set of calculations, multiple 

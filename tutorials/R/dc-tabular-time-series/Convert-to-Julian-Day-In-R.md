@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/Convert-to-Julian-Day-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: julian-day-conversion-r
 ---
 
 This tutorial defines Julian (year) day as most often used in an ecological 
@@ -36,7 +37,7 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 
 * **lubridate:** `install.packages("lubridate")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}

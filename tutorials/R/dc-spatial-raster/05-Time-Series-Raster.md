@@ -42,7 +42,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Data to Download
 {% include/dataSubsets/_data_Landsat-NDVI.html %}
@@ -280,7 +280,7 @@ quickly apply this factor using raster math on the entire stack as follows:
 <i class="fa fa-star"></i>**Data Tip:** We can make this plot  
 even prettier by fixing the individual tile names, adding an plot title and by
 using the (`levelplot`) function. This is covered in the NEON Data Skills 
-[Plot Time Series Rasters in R ]({{ site.baseurl }}/R/Plot-Raster-Times-Series-Data-In-R/)
+[Plot Time Series Rasters in R ]({{ site.baseurl }}/dc-raster-rastervis-levelplot-r)
 tutorial. 
 </div>
 
@@ -306,7 +306,7 @@ about the patterns of greening and browning observed in the plots above?
 Hint: the number after the "X" in each tile title is the Julian day which in
 this case represents the number of days into each year. If you are unfamiliar
 with Julian day, check out the NEON Data Skills 
-[Converting to Julian Day ]({{ site.baseurl }}/R/julian-day-conversion/) 
+[Converting to Julian Day ]({{ site.baseurl }}/julian-day-conversion-r) 
 tutorial.
 
 ## View Distribution of Raster Values

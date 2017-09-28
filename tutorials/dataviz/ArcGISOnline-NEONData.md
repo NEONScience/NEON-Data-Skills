@@ -1,6 +1,6 @@
 ---
 syncID: 1aca3293b5b24907b1512fc358e6f50e
-title: "Species Occurence maps"
+title: "Species Occurrence maps"
 description: "Explore provisional NEON data that characterizes small mammal abundance and soil N:P ratio data as an example of maps that can be created using ESRI's ArcGIS online platform. "
 dateCreated: 2014-12-06
 authors: Leah A. Wasser

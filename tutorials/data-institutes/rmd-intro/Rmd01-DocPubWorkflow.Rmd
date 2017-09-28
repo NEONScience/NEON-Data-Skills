@@ -110,5 +110,5 @@ generation with R --
 
 
 In the
-[next tutorial]({{site.baseurl}}/R/RMarkdown/rmd02)
+[next tutorial]({{site.baseurl}}/rmd-code-intro)
 we will learn more about working with the R Markdown format in R Studio.

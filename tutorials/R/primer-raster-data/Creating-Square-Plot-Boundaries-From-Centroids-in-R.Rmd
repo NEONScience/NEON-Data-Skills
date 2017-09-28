@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 tutorialSeries: primer-raster-data-R
+urlTitle: field-data-polygons-centroids
 ---
 
 Want to use plot centroid values (marking the center of a plot) in x,y format 
@@ -45,7 +46,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 

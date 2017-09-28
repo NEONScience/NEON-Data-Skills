@@ -50,7 +50,7 @@ on your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
@@ -136,7 +136,7 @@ str(vegStr)
 ```
 
 Now let's load the Canopy Height Model raster. Note, if you completed the
-<a href="{{ site.baseurl }}/lidar-data/lidar-data-rasters-in-R/" target="_blank"> *Create a Canopy Height Model from LiDAR-derived Rasters in R*</a> 
+<a href="{{ site.baseurl }}/create-chm-rasters-r" target="_blank"> *Create a Canopy Height Model from LiDAR-derived Rasters in R*</a> 
 tutorial this is the same object `chm` you can created. You do not need to reload
 the data. 
 
@@ -352,7 +352,7 @@ par(mfrow=c(1,1))
 To complete this next method, you need to first create square plots around a 
 point to create a R object called `polys`. Directions for how to do this are 
 contained in this tutorial: 
- [*Create A Square Buffer Around a Plot Centroid in R*]({{ site.baseurl }}/working-with-field-data/Field-Data-Polygons-From-Centroids/ "Polygons"). 
+ [*Create A Square Buffer Around a Plot Centroid in R*]({{ site.baseurl }}/field-data-polygons-centroids/ "Polygons"). 
 
 Once you have the SpatialPolygon object `polys`, you can use the same `extract()` function
 as we did for the circular plots, but this time with no buffer since we already 
@@ -565,7 +565,7 @@ plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHeight)
 
 Or we can use the `ggplot()` function from the **ggplot2** package. For more on 
 using the **ggplot2** package see our tutorial, 
-<a href="{{ site.baseurl }}/R/time-series-plot-ggplot/" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
+<a href="{{ site.baseurl }}/dc-time-series-plot-ggplot-r" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
 
 ```{r plot-w-ggplot}
 
@@ -608,7 +608,7 @@ to actual measured tree height data!
 
 If you want to make this an interactive plot, you could use Plotly to do so. 
 For more on using the **plotly** package to create interactive plots, see our tutorial 
-<a href="{{ site.baseurl }}/R/Plotly" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>. 
+<a href="{{ site.baseurl }}/plotly-r" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>. 
 
 
 <div id="ds-challenge" markdown="1">

@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct: 
 code1: R-dplyr-GREPL-Summarise-Piping.R
 tutorialSeries: 
+urlTitle: grepl-filter-piping-dplyr-r
 
 ---
 

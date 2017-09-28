@@ -12,6 +12,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-time-series-subset-dplyr-r
 
 ---
 
@@ -42,7 +43,7 @@ your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -73,7 +74,7 @@ We will need the `lubridate` and the `dplyr` packages to complete this tutorial.
 
 We will also use the 15-minute average atmospheric data subsetted to 2009-2011 
 for the NEON Harvard Forest Field Site. This subset was created in the
-[Subsetting Time Series Data tutorial]({{ site.baseurl }}/R/subset-data-and-no-data-values/ "2009-2011 HarMet Data Subset"). 
+[Subsetting Time Series Data tutorial]({{ site.baseurl }}/dc-subset-data-no-data-values-r "2009-2011 HarMet Data Subset"). 
 
 If this object isn't already created, please load the `.csv` version: 
 `NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv`. Be
@@ -386,7 +387,7 @@ The output shows we have 96 values for each day. Is that what we expect?
 data, we could use the `yday()` function
 <a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
 from the `lubridate` package to create a new column containing Julian day 
-values. [More information in this NEON Data Skills tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
+values. [More information in this NEON Data Skills tutorial ]({{ site.baseurl }}/julian-day-conversion-r). 
 </div>
 
 ### Summarize by Group

@@ -1,6 +1,6 @@
 ---
 syncID: b29c2164e6844a93b9d39961faa9861e
-title: "Interactive Data Vizualization with R and Plotly"
+title: "Interactive Data Visualization with R and Plotly"
 description: "Learn the basics of how to use the plotly package to create interactive plots and use the Plotly API in R to share these plots."
 dateCreated: 2014-12-06
 authors: Megan A. Jones, Leah A. Wasser
@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /dataviz/DataVis-plotly-R.R
 tutorialSeries:
-urlTitle: plotly
+urlTitle: plotly-r
 ---
 
 

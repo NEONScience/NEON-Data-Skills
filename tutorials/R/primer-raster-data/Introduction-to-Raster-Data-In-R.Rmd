@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/primer-raster-data/Introduction-to-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
+urlTitle: raster-data-r
 
 ---
 
@@ -52,7 +53,8 @@ data to follow the code exactly.
 
 
 ## Recommended Reading
-* <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">
+* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r
+" target="_blank">
 The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
 Read more about the raster package in R</a>
@@ -64,7 +66,8 @@ Raster or "gridded" data are data that are saved in pixels. In the spatial world
 each pixel represents an area on the Earth's surface. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
 that location in the real world. 
-<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/"> More on 
+<a href="{{ site.baseurl }}/raster-res-extent-pixels-r
+"> More on 
 rasters in the *The Relationship Between Raster Resolution, Spatial extent & Number of Pixels* tutorial</a>. 
 
 <figure>

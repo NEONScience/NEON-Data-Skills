@@ -250,7 +250,7 @@ in R, and sets the working directory.
  ```</code></pre>
 
 (For help setting the working directory, see the NEON Data Skills tutorial
-<a href="{{ site.baseurl }}/R/Set-Working-Directory" target="_blank">*Set A Working Directory in R*</a>.)
+<a href="{{ site.baseurl }}/set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
 
 Then, add another chunk that loads the `TEAK_lidarDSM` raster file.
 
@@ -329,13 +329,13 @@ that you downloaded. The `TEAK_lidarCHM` is a good raster to plot.
 **markdown syntax** in between the code chunks.
 
 For help opening and plotting raster data in `R`, see the NEON Data Skills tutorial
-<a href="http://neondataskills.org/R/Plot-Rasters-In-R/" target="_blank">*Plot Raster Data in R*</a>. 
+<a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>. 
 
 We will knit this document to HTML in the next tutorial. 
 </div>
 
 Now continue on to the
-[next tutorial]({{site.baseurl}}/R/RMarkdown/rmd03)
+[next tutorial]({{site.baseurl}}rmd-use-knitr)
 to learn how to knit this document into a HTML file.
 
 ## Answers to the Default Text Markdown Syntax Questions

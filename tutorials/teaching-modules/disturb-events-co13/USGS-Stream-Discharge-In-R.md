@@ -97,7 +97,7 @@ This next section explains how to find and locate data through the USGS's
 <a href="http://waterdata.usgs.gov/nwis" target="_blank"> National Water Information System portal</a>.
 If you want to use the pre-compiled dataset downloaded above, you can skip this 
 section and start again at the
-<a href="{{ site.baseurl }}/R/USGS-Stream-Discharge-Data-R/#work-with-stream-gauge-data" target="_blank"> Work With Stream Gauge Data header</a>.
+<a href="{{ site.baseurl }}/da-viz-usgs-stream-discharge-data-R/#work-with-stream-gauge-data" target="_blank"> Work With Stream Gauge Data header</a>.
 
 #### Step 1: Search for the data
 
@@ -293,7 +293,7 @@ and/or time data to a date/time class. As we have both date and time date, we
 will use the class POSIXct. 
 
 To learn more about different date/time classes, see the 
-<a href="{{ site.baseurl }}/R/time-series-convert-date-time-class-POSIX/" target="_blank" > 
+<a href="{{ site.baseurl }}/dc-convert-date-time-POSIX-r" target="_blank" > 
 *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a> tutorial. 
 
 
@@ -391,7 +391,7 @@ We have now successfully created a plot. We can turn that plot into an interacti
 plot using **Plotly**. <a href="https://plot.ly/" target="_blank" >Plotly </a> 
 allows you to create interactive plots that can also be shared online. If
 you are new to Plotly, view the companion mini-lesson 
-<a href="{{ site.baseurl }}/R/Plotly/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
+<a href="{{ site.baseurl }}/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
 to learn how to set up an account and access your username and API key. 
 
 ### Time subsets in plotly

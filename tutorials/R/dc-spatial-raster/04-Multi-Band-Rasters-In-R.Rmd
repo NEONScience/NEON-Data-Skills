@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Data to Download
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -149,12 +149,12 @@ par(original_par) # go back to original par
 Multi-band raster data might also contain:
 
 1. **Time series:** the same variable, over the same area, over time. Check out 
-[Raster Time Series Data in R ]({{site.baseurl}}/R/Raster-Times-Series-Data-In-R/)
+[Raster Time Series Data in R ]({{site.baseurl}}/dc-multiband-rasters-r)
 to learn more about time series stacks.
 2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
 (multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
 Data Skills
-[Imaging Spectroscopy HDF5 in R ]({{site.baseurl}}/HDF5/Imaging-Spectroscopy-HDF5-In-R/)
+[Imaging Spectroscopy HDF5 in R ]({{site.baseurl}}/hsi-hdf5-r)
 tutorial for more about working with hyperspectral data cubes.
 
 ## Getting Started with Multi-Band Data in R
@@ -450,7 +450,7 @@ GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
-[Raster Time Series Data in R]({{ site.baseurl }}/R/Raster-Times-Series-Data-In-R/)
+[Raster Time Series Data in R]({{ site.baseurl }}/dc-multiband-rasters-r)
 for a tutorial on how to do this.  
 </div>
 

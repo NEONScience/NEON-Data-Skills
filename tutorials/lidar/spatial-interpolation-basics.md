@@ -24,9 +24,9 @@ present the main graphics and topics covered in the workshop.
 
 ## Additional Resources
 * Learn more about LiDAR data in our tutorial
-<a href="{{ site.baseurl }}/self-paced-tutorial/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank"> *The Basics of LiDAR - Light Detection and Ranging - Remote Sensing*</a>.
+<a href="{{ site.baseurl }}/lidar-basics" target="_blank"> *The Basics of LiDAR - Light Detection and Ranging - Remote Sensing*</a>.
 * Learn more about Digital Surface Models, Digital Terrain Models and Canopy Height Models in our tutorial 
-<a href="{{ site.baseurl }}/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/" target="_blank">*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>.
+<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>.
 
 </div>
 
@@ -39,7 +39,7 @@ present the main graphics and topics covered in the workshop.
 ## About Rasters
 
 For a full tutorial on rasters & raster data, please go through the 
-<a href="{{ site.baseurl }}/R/Introduction-to-Raster-Data-In-R/" target="_blank">*Intro to Raster Data in R* tutorial</a>
+<a href="{{ site.baseurl }}/dc-raster-data-r" target="_blank">*Intro to Raster Data in R* tutorial</a>
 which provides a foundational concepts even if you aren't working with R.
 
 A raster is a dataset made up of cells or pixels. Each pixel represents a value 
@@ -54,7 +54,8 @@ associated with a region on the earth’s surface.
 </figure>
 
 For more on raster resolution, see our tutorial on 
-<a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
+<a href="{{ site.baseurl }}/raster-res-extent-pixels-r
+" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
 
 
 ## Creating Surfaces (Rasters) From Points

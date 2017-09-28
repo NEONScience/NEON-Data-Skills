@@ -113,7 +113,7 @@ The HDF5 format is a self-contained directory structure. In HDF5 files though
 Each element in an hdf5 file can have metadata attached to it making HDF5 files 
 "self-describing".
 
-[Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
+[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
 
 ## Explore the HDF5 File Structure
 

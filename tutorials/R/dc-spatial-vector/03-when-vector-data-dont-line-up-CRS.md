@@ -10,9 +10,9 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/03-when-vector-data-dont-line-up
+code1: /R/dc-spatial-vector/03-when-vector-data-dont-line-up-CRS.R
 tutorialSeries: vector-data-series
-
+urlTitle: dc-vector-data-reproject-crs-r
 ---
 
 In this tutorial, we will create a base map of our study site using a United States 
@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Data to Download
 {% include/dataSubsets/_data_Site-Layout-Files.html %}

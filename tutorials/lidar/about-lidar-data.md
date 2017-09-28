@@ -204,7 +204,7 @@ vegetation type.
 
 Check out our tutorial on viewing LiDAR point cloud data using the Plas.io online
 viewer: 
-<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="{{ site.baseurl }}/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 The Plas.io viewer used in this tutorial was developed by Martin Isenberg of 
 Las Tools and his colleagues.
 

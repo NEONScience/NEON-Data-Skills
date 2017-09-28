@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/primer-raster-data/Raster-Res-Extent-Pixels.R
 tutorialSeries: primer-raster-data-R
+urlTitle: raster-res-extent-pixels-r
 ---
 
 <div id="ds-objectives" markdown="1">

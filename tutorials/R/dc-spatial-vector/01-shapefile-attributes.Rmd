@@ -11,7 +11,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-spatial-vector/01-shapefile-attributes.R
 tutorialSeries: vector-data-series
-
+urlTitle: dc-shapefile-attributes-r
 ---
 
 
@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -62,12 +62,12 @@ raster and vector files.
 
 We will import three shapefiles. The first is our `AOI` or area of
 interest boundary polygon that we worked with in 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/R/open-shapefiles-in-R/). 
+[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r). 
 The second is a shapefile containing the location of roads and trails within the
 field site. The third is a file containing the Fisher tower location.
 
 If you completed the
-[Open and Plot Shapefiles in R]({{site.baseurl}}/R/open-shapefiles-in-R/) 
+[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r) 
 tutorial, you can skip this code.
 
 ```{r load-packages-data }
@@ -95,7 +95,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 
 ## Query Shapefile Metadata 
 Remember, as covered in 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/R/open-shapefiles-in-R/),
+[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r),
 we can view metadata associated with an `R` object using:
 
 * `class()` - Describes the type of vector data stored in the object.

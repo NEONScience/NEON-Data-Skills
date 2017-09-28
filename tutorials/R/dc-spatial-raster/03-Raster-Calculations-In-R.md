@@ -44,7 +44,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Data to Download
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -85,7 +85,7 @@ buildings, etc. with the influence of ground elevation removed.
 </figure>
 
 * Check out more on LiDAR CHM, DTM and DSM in this NEON Data Skills overview tutorial: 
-<a href="http://neondataskills.org/self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/" target="_blank"> 
+<a href="http://neondataskills.org/chm-dsm-dtm-gridded-lidar-data" target="_blank"> 
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>. 
 
 ### Load the Data 
@@ -333,7 +333,7 @@ keep track of data from different sites!
 
 1. Import the DSM and DTM from the SJER directory (if not aready imported
 in the 
-[Plot Raster Data in R]({{ site.baseurl }}/R/Plot-Rasters-In-R/) 
+[Plot Raster Data in R]({{ site.baseurl }}/dc-plot-raster-data-r) 
 tutorial.) Don't forget to examine the data for `CRS`, bad values, etc. 
 2. Create a `CHM` from the two raster layers and check to make sure the data
 are what you expect. 

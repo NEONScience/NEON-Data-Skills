@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R.R
 tutorialSeries: tabular-time-series
+urlTitle: dc-time-series-plot-ggplot-r
 
 ---
 
@@ -42,7 +43,7 @@ your computer to complete this tutorial.
 * **gridExtra:** `install.packages("gridExtra")`
 * **ggthemes:** `install.packages("ggthemes")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{ site.baseurl }}/packages-in-r)
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -59,7 +60,7 @@ your computer to complete this tutorial.
  <a href="http://www.cookbook-r.com/Graphs/index.html" target="_blank"> 
  _Cookbook for R_</a> site based on his *R Graphics Cookbook* text. 
 * The NEON Data Skills tutorial on 
- <a href="http://neondataskills.org/R/Plotly/" target="_blank"> 
+ <a href="http://neondataskills.org/plotly-r/" target="_blank"> 
  Interactive Data Viz Using R, ggplot2 and PLOTLY</a>.
 * Data Carpentry's 
  <a href="http://www.datacarpentry.org/R-ecology/05-visualization-ggplot2.html"

@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/primer-raster-data/Image-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
+urlTitle: image-raster-data-r
 ---
 
 
@@ -38,7 +39,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ### Download Data
 
@@ -54,9 +55,11 @@ data to follow the code exactly.
 
 You may benefit from reviewing these related tutorials prior to this tutorial: 
 
-* <a href="{{ site.baseurl }}/GIS-spatial-data/Working-With-Rasters/">
+* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r
+">
 The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
-* <a href="{{ site.baseurl }}/R/Raster-Data-In-R/">
+* <a href="{{ site.baseurl }}/raster-data-r
+">
 Please read "Raster Data in R - The Basics.</a>
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
 The `raster` R package documentation.</a>
@@ -82,7 +85,8 @@ color image.
 
 ## Work with Multiple Rasters
 
-In [a previous tutorial]({{ site.baseurl }}/R/Raster-Data-In-R/), we loaded a 
+In [a previous tutorial]({{ site.baseurl }}/raster-data-r
+), we loaded a 
 single raster into R. We made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
 attributes. This raster was a Digital Elevation Model so there was only a single

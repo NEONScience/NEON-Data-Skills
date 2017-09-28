@@ -1,6 +1,6 @@
 ---
 syncID: 40146c0d0d3b43d0a2dc1f14f6c36ade
-title: "Creating HDF5 Files in R Using Loops"
+title: "Create HDF5 Files in R Using Loops"
 description: "Create a HDF5 in R from scratch! Add groups and datasets. View the files with HDFView."
 dateCreated: 2014-11-18
 authors: Ted Hart, Leah Wasser, Adapted From Software Carpentry
@@ -35,7 +35,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5** 
 
-[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
 
 ## Recommended Background 
 
@@ -58,14 +58,14 @@ files  "directories" are called `groups` and files are called `datasets`. The
 HDF5 element itself is a file. Each element in an HDF5 file can have metadata 
 attached to it making HDF5 files "self-describing".
 
-[Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
+[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
 
 ## HDF5 in R
 
 To access HDF5 files in `R`, you need base <a href="http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain" target="_blank">HDF5 libraries</a> installed on your computer. 
 It might also be useful to install <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the free HDF5 viewer</a> which will allow you to explore the 
 contents of an HDF5 file visually using a graphic interface. 
-[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
+[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/explore-data-hdfview/).
 
 The package we'll be using is `rhdf5` which is part of the 
 <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of
@@ -385,7 +385,7 @@ Open the sensordata.H5 file in the HDFView application and explore the contents.
 
 Hint: You may be interested in these tutorials: 
 
-* <a href="{{ site.baseurl }}/HDF5/Exploring-Data-HDFView" target="_blank"> HDFView: Exploring HDF5 Files in the Free HDFview Tool </a>. 
-* <a href="{{ site.baseurl }}/setup/setup-qgis-h5view#install-hdfview" target="_blank"> Install HDF5View </a>. 
+* <a href="{{ site.baseurl }}/explore-data-hdfview" target="_blank"> HDFView: Exploring HDF5 Files in the Free HDFview Tool </a>. 
+* <a href="{{ site.baseurl }}setup-qgis-h5view#install-hdfview" target="_blank"> Install HDF5View </a>. 
 
 </div>

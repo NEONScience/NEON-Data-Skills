@@ -197,7 +197,7 @@ repo. Does it contain your username? Or your colleagues'? Or NEON's?
 Your fork is *an exact copy*, or completely in sync with, the NEON central repo.
 You could confirm this by comparing your fork to the NEON central repository using
 the **pull request** option. We will learn about pull requests in
-<a href="{{ site.baseurl }}/reproducible-research/git06" target="_blank"> Git06: Sync GitHub Repos with Pull Requests.</a>
+<a href="{{ site.baseurl }}/github-pull-requests" target="_blank"> Git06: Sync GitHub Repos with Pull Requests.</a>
 For now, take our word for it.
 
 The fork will remain in sync with the NEON central repo until:

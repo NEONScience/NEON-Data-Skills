@@ -44,7 +44,7 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-[ {{site.baseurl}}/R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
+[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Data to Download
 
@@ -57,7 +57,7 @@ preferably, RStudio loaded on your computer.
 ### Recommended Skills
 
 We highly recommend you work through the 
-<a href="{{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
 
 </div>
@@ -89,11 +89,11 @@ combinations. Check it out:
 
 ## Create a Raster Stack in R
 
-In the [previous activity]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/), 
+In the [previous activity]({{ site.baseurl }}/hsi-hdf5-r), 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-[intro to working with hyperspectral data activity]({{ site.baseurl }}/HDF5/Imaging-Spectroscopy-HDF5-In-R/). 
+[intro to working with hyperspectral data activity]({{ site.baseurl }}/hsi-hdf5-r). 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -178,7 +178,7 @@ We'll begin by grabbing these key attributes from the H5 file.
     ## [1] "15000"
 
 Next, we'll write a function that will perform the processing that we did step by 
-step in the [intro to working with hyperspectral data activity](http://neondataskills.org/HDF5/Imaging-Spectroscopy-HDF5-In-R/). This will allow us to process multiple bands 
+step in the [intro to working with hyperspectral data activity]({{ site.baseurl }}/hsi-hdf5-r). This will allow us to process multiple bands 
 in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and

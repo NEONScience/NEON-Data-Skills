@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Download Data
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -64,7 +64,7 @@ tool to explore raster values. And render categorical plots, using the `breaks` 
 
 We will use the `raster` and `rgdal` packages in this tutorial. If you do not
 have the `DSM_HARV` object from the 
-[Intro To Raster In R tutorial]({{ site.baseurl }}/R/Introduction-to-Raster-Data-In-R/), 
+[Intro To Raster In R tutorial]({{ site.baseurl }}/dc-raster-data-r), 
 please create it now.  
 
 

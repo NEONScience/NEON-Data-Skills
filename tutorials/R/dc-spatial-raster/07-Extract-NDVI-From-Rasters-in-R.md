@@ -43,7 +43,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 #### Data to Download
 {% include/dataSubsets/_data_Landsat-NDVI.html %}
@@ -63,9 +63,9 @@ related metrics to support modeling and further analysis.
 
 ## Get Started 
 In this tutorial, we will work with the same set of rasters used in the
-[Raster Time Series Data in R ]({{ site.baseurl }}/R/Raster-Times-Series-Data-In-R/) 
+[Raster Time Series Data in R ]({{ site.baseurl }}/dc-multiband-rasters-r) 
 and
-[Plot Raster Time Series Data in R Using RasterVis and Levelplot ]({{ site.baseurl }}/R/Plot-Raster-Times-Series-Data-In-R/)
+[Plot Raster Time Series Data in R Using RasterVis and Levelplot ]({{ site.baseurl }}/dc-raster-rastervis-levelplot-r)
 tutorials. To begin, we will create a raster stack (also created in the previous
 tutorials so you may be able to skip this first step!). 
 
@@ -229,7 +229,7 @@ Storing this data as a date object is better - for plotting, data subsetting and
 working with our data. Let's convert.
 
 For more information on date-time classes, see the NEON Data Skills tutorial 
-[Convert Date & Time Data from Character Class to Date-Time Class (POSIX) in R]({{ site.baseurl }}/R/time-series-convert-date-time-class-POSIX/).  
+[Convert Date & Time Data from Character Class to Date-Time Class (POSIX) in R]({{ site.baseurl }}/dc-convert-date-time-POSIX-r).  
 
 To convert a Julian Day number to a date class, we need to set the **origin**
 of the day which "counting" Julian Days began. Our data is from 2011, and we 
@@ -298,7 +298,7 @@ plot our data.
 We will use the `ggplot()` function within the `ggplot2` package for this plot. 
 If you are unfamiliar with `ggplot()` or would like to learn more about plotting
 in `ggplot()` see the tutorial on
-[Plotting Time Series with ggplot in R]({{ site.baseurl }}/R/time-series-plot-ggplot/).
+[Plotting Time Series with ggplot in R]({{ site.baseurl }}/dc-time-series-plot-ggplot-r).
 
 
     # plot NDVI

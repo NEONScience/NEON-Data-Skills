@@ -12,6 +12,7 @@ languagesTool:
 dataProduct:
 code1: /R/dc-spatial-vector/05-vector-raster-integration-advanced.R
 tutorialSeries: vector-data-series
+urlTitle: dc-crop-extract-raster-data-r
 ---
 
 This tutorial explains how to crop a raster using the extent of a vector
@@ -39,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ### Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -196,7 +197,7 @@ vegetation plot locations with the Canopy Height Model information.
 2. Plot the vegetation plot location points on top of the Canopy Height Model. 
 
 If you completed
-[.csv to Shapefile in R]({{site.baseurl}}/R/csv-to-shapefile-R/)
+[.csv to Shapefile in R]({{site.baseurl}}/dc-csv-to-shapefile-r)
 you have these plot locations as the spatial `R` spatial object
 `plot.locationsSp_HARV`. Otherwise, import the locations from the
 `\HARV\PlotLocations_HARV.shp` shapefile in the downloaded data. 

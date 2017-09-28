@@ -21,7 +21,7 @@ discuss NEON’s mission and design.
 
 **Data Institute participants**: As you review this information, please
 consider the
-<a href="{{site.baseurl}}/data-institute/capstone" target="_blank">capstone project </a>
+<a href="{{site.baseurl}}/di-rs-capstone" target="_blank">capstone project </a>
 that you may want to work on at the Institute. At the end of week one, you will 
 document an initial research question or idea and associated data needed to 
 address that question, that you may want to explore while at the NEON Data Institute.

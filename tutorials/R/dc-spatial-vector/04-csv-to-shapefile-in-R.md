@@ -12,6 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-spatial-vector/04-csv-to-shapefile-in-R.R
 tutorialSeries: vector-data-series
+urlTitle: dc-csv-to-shapefile-r
 ---
 
 This tutorial will review how to import spatial points stored in `.csv` (Comma
@@ -42,7 +43,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
 
 ## Data to Download
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -180,7 +181,7 @@ There are several ways to figure out the CRS of spatial data in text format.
 
 1. We can check the file **metadata** in hopes that the CRS was recorded in the
 data. For more information on metadata, check out the
-[Why Metadata Are Important: How to Work with Metadata in Text & EML Format]({{site.baseurl}}/R/why-metadata-are-important/) 
+[Why Metadata Are Important: How to Work with Metadata in Text & EML Format]({{site.baseurl}}/dc-metadata-importance-eml-r) 
 tutorial. 
 2. We can explore the file itself to see if CRS information is embedded in the
 file header or somewhere in the data columns.
@@ -207,7 +208,7 @@ contain the information that helps us determine the CRS:
 * `utmZone`: 18
 
 In 
-[When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R]({{site.baseurl}}/R/vector-data-reproject-crs-R/)
+[When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R]({{site.baseurl}}/dc-vector-data-reproject-crs-r)
 we learned about the components of a `proj4` string. We have everything we need 
 to now assign a CRS to our data.frame.
 
@@ -339,7 +340,7 @@ We now have a spatial `R` object, we can plot our newly created spatial object.
 ## Define Plot Extent
 
 In 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/R/open-shapefiles-in-R/)
+[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r)
 we learned about spatial object `extent`. When we plot several spatial layers in
 `R`, the first layer that is plotted, becomes the extent of the plot. If we add
 additional layers that are outside of that extent, then the data will not be
@@ -512,7 +513,7 @@ the X and Y limits of your plot to ensure that both points are rendered by `R`!
 If you have extra time, feel free to add roads and other layers to your map!
 
 HINT: Refer to
-[When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R]({{site.baseurl}}/R/vector-data-reproject-crs-R/)
+[When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R]({{site.baseurl}}/dc-vector-data-reproject-crs-r)
 for more on working with geographic coordinate systems. You may want to "borrow"
 the projection from the objects used in that tutorial!
 </div>
