@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
 tutorialSeries:
-urlTitle:da-viz-coop-precip-data-R
+urlTitle: da-viz-coop-precip-data-R
 ---
 
 {% include _toc.html %}
