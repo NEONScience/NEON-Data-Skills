@@ -248,7 +248,7 @@ vegetation plot locations with the Canopy Height Model information.
 2. Plot the vegetation plot location points on top of the Canopy Height Model. 
 
 If you completed
-[.csv to Shapefile in R]({{site.baseurl}}/R/csv-to-shapefile-R/)
+[.csv to Shapefile in R]({{site.baseurl}}/dc-csv-to-shapefile-r)
 you have these plot locations as the spatial `R` spatial object
 `plot.locationsSp_HARV`. Otherwise, import the locations from the
 `\HARV\PlotLocations_HARV.shp` shapefile in the downloaded data. 

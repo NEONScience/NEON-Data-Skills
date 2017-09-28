@@ -55,9 +55,9 @@ This tutorial uses both `dplyr` and `ggplot2`. We recommend the following
 tutorials before working through this one, if you are new to either of the 
 above `R` packages.
 
-* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/R/time-series-subset-dplyr/ "Learn dplyr") 
+* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
 
-* [Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/R/time-series-plot-ggplot/ "Learn ggplot")  
+* [Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")  
 
 ***
 </div>
@@ -190,7 +190,7 @@ Julian or year days rather than date. We have Julian days stored in our
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
-[Convert to Julian Day tutorial ]({{ site.baseurl }}/R/julian-day-conversion/). 
+[Convert to Julian Day tutorial ]({{ site.baseurl }}/julian-day-conversion-r). 
 </div>
 
 

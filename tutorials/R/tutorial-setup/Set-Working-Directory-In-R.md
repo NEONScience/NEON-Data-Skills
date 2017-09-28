@@ -66,7 +66,7 @@ subsets to be accessed in the tutorial without resetting the working directory.
 
 * Wondering why we're saying **directory** instead of **folder**?  See our
 discussion of 
-<a href="{{ site.baseurl }}set-working-directory-r#directory-vs-folder"> Directory vs. Folder.</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#directory-vs-folder"> Directory vs. Folder.</a>
 
 ## Download & Uncompress the Data
 
@@ -127,7 +127,7 @@ into the data directory. If the latter happens, they need to be moved into a
 `data/NEON-DS-Met-Time-Series` directory.
 
 * Want to make sure you have these steps down!  Try it with another file in this
-<a href="{{ site.baseurl }}set-working-directory-r#challenge-download-and-unzip-teaching-data-subset"> Challenge activity on Downloading & Unzipping Data Subsets.</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#challenge-download-and-unzip-teaching-data-subset"> Challenge activity on Downloading & Unzipping Data Subsets.</a>
 
 The directory should be the same as in this screenshot (below). Note that 
 `NEON-DS-Site-Lyout-Files` directory will only be in your directory if you 
@@ -157,7 +157,7 @@ paths written in our scripts only consist of the file path relative to that base
 
 * If you are unfamiliar with the term **full path**, **base path**, or **relative
  path**, please see the section on
-<a href="{{ site.baseurl }}set-working-directory-r#full-base-and-relative-paths"> Full, Base, and Relative Paths</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#full-base-and-relative-paths"> Full, Base, and Relative Paths</a>
 for a more detailed explanation before continuing with this tutorial.  
 
 ### Find a Full Path to a File in Unknown Location
@@ -321,7 +321,7 @@ are telling the computer the location of the directory (or folder) to start with
  when looking for other files or directories, or to save any output to. 
 
 Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}set-working-directory-r#download--uncompress-the-data"> Download & Uncompress The Data</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#download--uncompress-the-data"> Download & Uncompress The Data</a>
 
 ***
 
@@ -332,7 +332,7 @@ are accessible and ready to be opened in`R`.
 </div>
 
 Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}set-working-directory-r#the-r-working-directory"> The R Working Directory</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#the-r-working-directory"> The R Working Directory</a>
 
 ***
 
@@ -423,5 +423,5 @@ Bonus: Write the paths as for one of the other operating systems.
 </div>
 
 Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}set-working-directory-r#find-a-full-path-to-a-file-in-unknown-location"> Find a Full Path to a File in Unknown Location</a>
+<a href="{{ site.baseurl }}/set-working-directory-r#find-a-full-path-to-a-file-in-unknown-location"> Find a Full Path to a File in Unknown Location</a>
 

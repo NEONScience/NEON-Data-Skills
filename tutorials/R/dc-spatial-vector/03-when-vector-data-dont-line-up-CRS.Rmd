@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/03-when-vector-data-dont-line-up
+code1: /R/dc-spatial-vector/03-when-vector-data-dont-line-up-CRS.R
 tutorialSeries: vector-data-series
 urlTitle: dc-vector-data-reproject-crs-r
 ---

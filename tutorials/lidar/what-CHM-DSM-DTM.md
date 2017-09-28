@@ -66,7 +66,7 @@ are often associated with LiDAR data point clouds.
 
 For more on viewing LiDAR point cloud data using the Plas.io online
 viewer, see our tutorial 
-<a href="{{ site.baseurl }}/lidar-data/online-data-viewer/" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="{{ site.baseurl }}/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 
 
 ### Gridded, or Raster, LiDAR Data Products

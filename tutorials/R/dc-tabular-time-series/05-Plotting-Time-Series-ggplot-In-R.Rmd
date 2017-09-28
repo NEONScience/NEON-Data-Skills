@@ -59,7 +59,7 @@ your computer to complete this tutorial.
  <a href="http://www.cookbook-r.com/Graphs/index.html" target="_blank"> 
  _Cookbook for R_</a> site based on his *R Graphics Cookbook* text. 
 * The NEON Data Skills tutorial on 
- <a href="http://neondataskills.org/R/Plotly/" target="_blank"> 
+ <a href="http://neondataskills.org/plotly-r/" target="_blank"> 
  Interactive Data Viz Using R, ggplot2 and PLOTLY</a>.
 * Data Carpentry's 
  <a href="http://www.datacarpentry.org/R-ecology/05-visualization-ggplot2.html"

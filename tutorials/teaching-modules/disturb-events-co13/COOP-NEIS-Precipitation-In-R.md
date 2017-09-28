@@ -301,7 +301,7 @@ plot the data. We can convert it to a date/time class using `as.POSIXct()`.
     ##  POSIXct[1:1840], format: "2003-01-01 01:00:00" "2003-02-01 01:00:00" ...
 
 * For more information on date/time classes, see the NEON tutorial 
-<a href="{{ site.baseurl }}/R/time-series-convert-date-time-class-POSIX/" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
+<a href="{{ site.baseurl }}/dc-convert-date-time-POSIX-r" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
 
 ### NoData Values
 We've also learned that missing values, also known as NoData

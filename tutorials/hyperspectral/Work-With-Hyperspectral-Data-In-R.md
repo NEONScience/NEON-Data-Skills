@@ -148,7 +148,7 @@ More Information on raster metadata:
 
 * [Metadata to understand when working with raster data]({{ site.baseurl }}/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
 
-* [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters]({{ site.baseurl }}/HDF5/About-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
+* [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters]({{ site.baseurl }}/about-hdf5-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure 

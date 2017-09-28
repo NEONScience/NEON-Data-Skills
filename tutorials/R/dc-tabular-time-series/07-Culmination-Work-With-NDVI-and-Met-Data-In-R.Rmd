@@ -63,9 +63,9 @@ This tutorial relies on participants' familiarity with both `dplyr` and
 `ggplot2`. Prior to working through this culmination activity, we recommend the
 following tutorials, if you are new to either of the `R` packages.
 
-* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/R/time-series-subset-dplyr/ "Learn dplyr") 
+* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
 
-* [Plotting Time Series with ggplot in R tutorial ]({{ site.baseurl }}/R/time-series-plot-ggplot/ "Learn ggplot")  
+* [Plotting Time Series with ggplot in R tutorial ]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")  
 
 </div>
 
@@ -92,7 +92,7 @@ on a
 <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite </a>.
 The data files are Geographic Tagged Image-File Format (GeoTIFF). 
 The tutorial 
-[Extract NDVI Summary Values from a Raster Time Series]({{ site.baseurl }}/R/Extract-NDVI-From-Rasters-In-R/), 
+[Extract NDVI Summary Values from a Raster Time Series]({{ site.baseurl }}/dc-ndvi-calc-raster-time-series), 
 explains how to create this NDVI file from raster data. 
 
 ### Read In the Data
@@ -155,7 +155,7 @@ convert the data to the Date class.
 `harMet.daily2011`.
 
 HINT: If you are having trouble subsetting the data, refer back to
-[Subset & Manipulate Time Series Data with dplyr tutorial]({{ site.baseurl }}/R/time-series-subset-dplyr/ "Learn dplyr")
+[Subset & Manipulate Time Series Data with dplyr tutorial]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr")
 </div>
 
 ``` {r challenge-code-convert-date, include=TRUE, results="hide", echo=FALSE}
@@ -225,7 +225,7 @@ same viewer so we can more easily compare them.
 
 Hint: If you are having a hard time arranging the plots in a single grid, refer
 back to 
-[Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/R/time-series-plot-ggplot/ "Learn ggplot")
+[Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")
 </div>
 
 ``` {r plot-PAR-NDVI, echo=FALSE}

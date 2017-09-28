@@ -61,7 +61,7 @@ also supports efficient `data slicing`, or extraction of particular subsets of a
 dataset which means that you don't have to read  large files read into the 
 computers memory / RAM in their entirety in order work with them. 
 
-[Read more about HDF5 here.]({{ site.baseurl }}/HDF5/About/)
+[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
 
 ## HDF5 in R
 
@@ -72,7 +72,7 @@ suite of `R` libraries. It might also be useful to install
 free HDF5 viewer</a> which will allow you to explore the contents of an HDF5 file 
 using a graphic interface.
 
-[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
+[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/explore-data-hdfview/).
 
 
 First, let's get R setup. We will use the rhdf5 library. To access HDF5 files in 

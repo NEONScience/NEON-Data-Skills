@@ -92,4 +92,4 @@ Once you have completed the steps above:
 
 ## Supporting Materials
 
-If you would like a primer on plotting raster files in R, visit the NEON Data Skills tutorial: <a href="{{ site.baseurl }}/R/Plot-Rasters-In-R/" target="_blank">*Plot Raster Data in R*</a>.  
+If you would like a primer on plotting raster files in R, visit the NEON Data Skills tutorial: <a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>.  

@@ -113,7 +113,7 @@ The HDF5 format is open and free to use. The supporting libraries (and a free vi
 - **Supports Data Slicing:** "Data slicing", or extracting portions of the dataset as needed for  analysis, means large files don't need to be completely read into the computers memory or RAM.
 - **Open Format -  wide support in the many tools**: Because the HDF5 format is open, it is supported by a host of programming languages and tools, including open source languages like `R` and `Python` and open GIS tools like `QGIS`.
 
-You'll see what this looks like when [we open an HDF5 file in the HDFviewer]( {{ site.baseurl }}/HDF5/Exploring-Data-HDFView/).
+You'll see what this looks like when [we open an HDF5 file in the HDFviewer]( {{ site.baseurl }}/explore-data-hdfview/).
 
 
 ## Additional Resources About HDF5

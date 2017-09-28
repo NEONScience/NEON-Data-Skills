@@ -57,7 +57,7 @@ packages, visit
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> the R packages tutorial</a>.  
 2. An R Markdown document that contains a YAML header, code chunks and markdown
 segments. If you don't have an **.Rmd** file, visit
-<a href="{{site.baseurl}}/R/RMarkdown/rmd02" target="_blank"> the R Markdown tutorial</a> to create one.
+<a href="{{site.baseurl}}/rmd-code-intro" target="_blank"> the R Markdown tutorial</a> to create one.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**When To Knit**: Knitting is a useful exercise
@@ -97,7 +97,7 @@ using: `render(“input.Rmd”, “all”)`.
 ## Activity: Knit Script
 
 Knit the **.Rmd** file that you built in
-<a href="{{site.baseurl}}/R/RMarkdown/rmd02" target="_blank">the last tutorial</a>.
+<a href="{{site.baseurl}}/rmd-code-intro" target="_blank">the last tutorial</a>.
 What does it look like?
 </div>
 
@@ -121,7 +121,7 @@ results of the code that you included in the RMD document.
 
 ## Data Institute Participants: Complete Week 2 Assignment
 
-* Read [this week’s assignment]({{ site.baseurl }}/workshop-event/NEON-DI-2016/rmd-assignment) closely.
+* Read [this week’s assignment]({{ site.baseurl }}di-rmd-activity) closely.
 Edit your RMD document to ensure that you have completed all of the steps
 required by assignment.
 * Be sure to carefully check your knitr output to make sure it is rendering the

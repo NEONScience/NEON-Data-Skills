@@ -70,7 +70,7 @@ We will use the `lubridate` and `ggplot2` packages. Let's load those first.
 If you have not already done so, import the `hf001-10-15min-m.csv` file, which
 contains atmospheric data for Harvard Forest. Convert the `datetime` column
 to a `POSIXct` class as covered in the tutorial: 
-[Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt]({{ site.baseurl }}/R/brief-tabular-time-series-qplot/). 
+[Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt]({{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r). 
 
 ```{r load-libraries}
 # Load packages required for entire script
@@ -231,7 +231,7 @@ recognized as an integer and processed accordingly. If you encounter a numeric
 </div>
 
 In the
-[Why Metadata Are Important: How to Work with Metadata in Text & EML Format]({{ site.baseurl }}/R/why-metadata-are-important/)
+[Why Metadata Are Important: How to Work with Metadata in Text & EML Format]({{ site.baseurl }}/dc-metadata-importance-eml-r)
 we viewed the metadata for these data and discovered that missing values are
 designated using `NA` - a common `NoData` value placeholder. 
 
@@ -357,7 +357,7 @@ Thus a daily summary is sufficient for us to see overall trends.
 
 1. Import the Daily Meteorological data from the Harvard Forest (if you haven't
 already done so in the
-[Intro to Time Series Data in R - Managing Date / Time Format and Simple Plots using ggplot2]({{ site.baseurl }}/R/brief-tabular-time-series-qplot/ "for HarMet_Daily")
+[Intro to Time Series Data in R - Managing Date / Time Format and Simple Plots using ggplot2]({{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r "for HarMet_Daily")
 tutorial.)
 2. Check the metadata to see what the column names are for the variable of
 interest (precipitation, air temperature, PAR, day and time ).

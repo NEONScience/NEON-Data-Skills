@@ -38,7 +38,7 @@ In this tutorial, we will create a markdown file that documents both who you are
 and also the project that you might want to work on at the NEON Data Institute.
 
 
-<a class="link--button link--arrow" href="{{ site.baseurl }}/data-institute/capstone">
+<a class="link--button link--arrow" href="{{ site.baseurl }}/di-rs-capstone">
 Read more about the Data Institute Capstone Project.</a>
 
 ## Markdown Formatting

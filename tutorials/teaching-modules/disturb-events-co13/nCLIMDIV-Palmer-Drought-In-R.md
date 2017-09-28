@@ -324,7 +324,7 @@ to the web and allow us to explore the data in a more interactive way.
 <a href="https://plot.ly/" target="_blank" >Plotly </a> 
 allows you to create interactive plots that can be shared online. If
 you are new to Plotly, view the companion mini-lesson 
-<a href="{{ site.baseurl }}/R/Plotly/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
+<a href="{{ site.baseurl }}/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
 to learn how to set up an account and access your username and API key. 
 
 ### Step 1: Connect your Plotly account to R 

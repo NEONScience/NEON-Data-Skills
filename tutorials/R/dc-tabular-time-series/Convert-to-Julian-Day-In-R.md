@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/Convert-to-Julian-Day-In-R.R
 tutorialSeries: tabular-time-series
-urlTitle: julian-day-conversion
+urlTitle: julian-day-conversion-r
 ---
 
 This tutorial defines Julian (year) day as most often used in an ecological 
