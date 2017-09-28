@@ -1,5 +1,5 @@
 ---
-syncID: 31383d0105344f06bca692be74798305
+syncID: 41d7fc9adf1640839b4b117591110db8
 title: "Git 06: Sync GitHub Repos with Pull Requests"
 description: "This tutorial covers how to submit a pull request to a repository that you don't have direct push access to in order to suggest changes to content."
 dateCreated: 2016-05-06

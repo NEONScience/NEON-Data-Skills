@@ -1,5 +1,5 @@
 ---
-syncID: 31383d0105344f06bca692be74798305 
+syncID: 19345dfba1f545929ef88c486f645dad
 title: "Data Institute Assignment: Version Control with GitHub"
 description: "The page lists the requirements for the week 2 assignment."
 dateCreated: 2016-06-02
