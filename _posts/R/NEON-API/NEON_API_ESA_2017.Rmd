@@ -34,7 +34,8 @@ There are 3 basic categories of NEON data:
 1. Instrumentation - Data collected by an automated, streaming sensor, e.g. net radiation, soil carbon dioxide
 1. Remote sensing - Data collected by the airborne observation platform, e.g. LIDAR, surface reflectance
 
-This lesson covers the first two types of data. NEON remote sensing data are not currently available through the API.
+This lesson covers the first two types of data, and will soon be expanded to 
+cover remote sensing data as well.
 
 **R Skill Level:** Intermediate - you've got the basics of `R` down.
 
@@ -372,8 +373,8 @@ initial download:
 library(geoNEON)
 brd.point.loc <- def.extr.geo.os(brd.point)
 
-symbols(brd.point.loc$easting, brd.point.loc$northing, 
-        circles=brd.point.loc$uncorr.coordinateUncertainty, 
+symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+        circles=brd.point.loc$coordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 ```
@@ -385,14 +386,21 @@ observations:
 
 brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
 
-symbols(brd.point.pt$easting, brd.point.pt$northing, 
-        circles=brd.point.pt$coordinateUncertainty, 
+symbols(brd.point.pt$api.easting, brd.point.pt$api.northing, 
+        circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 ```
 
 
 ## Coming soon
+Remote sensing data were added to the API recently, and this tutorial 
+will be expanded to include a section on remote sensing data. In the 
+meantime, we can give you the guidance that all the query structure 
+is the same for remote sensing data, but once you get to the files 
+themselves, different handling will be needed, since they are not 
+tabular data.
+
 At the top of this tutorial, we installed the `neonDataStackR` package. 
 This is a custom R package that stacks the monthly files provided by 
 the NEON data portal into a single continuous file for each type of 

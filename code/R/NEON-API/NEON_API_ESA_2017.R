@@ -92,8 +92,8 @@ brd.WOOD_013
 library(geoNEON)
 brd.point.loc <- def.extr.geo.os(brd.point)
 
-symbols(brd.point.loc$easting, brd.point.loc$northing, 
-        circles=brd.point.loc$uncorr.coordinateUncertainty, 
+symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+        circles=brd.point.loc$coordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 
@@ -101,8 +101,8 @@ symbols(brd.point.loc$easting, brd.point.loc$northing,
 
 brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
 
-symbols(brd.point.pt$easting, brd.point.pt$northing, 
-        circles=brd.point.pt$coordinateUncertainty, 
+symbols(brd.point.pt$api.easting, brd.point.pt$api.northing, 
+        circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 

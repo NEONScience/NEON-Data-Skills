@@ -16,13 +16,13 @@ dirs <- c("R/NEON-API",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[2]
+dir <- dirs[1]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/mjones01/GitHub/NEON-Data-Skills"
+gitRepoPath <-"/Users/clunch/NEON-Data-Skills"
 
 # jekyll will only render md posts that begin with a date. Add one.
-add.date <- "2017-08-05-"
+add.date <- "2017-07-29-"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data/"
