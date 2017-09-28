@@ -59,6 +59,6 @@ submitted document to you.
 
 ****
 
-*Have questions? No problem. Leave your question in the comment box below.
+*Questions? No problem. Leave your question in the comment box below.
 It's likely some of your colleagues have the same question, too! And also
 likely someone else knows the answer.*
