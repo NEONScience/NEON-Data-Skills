@@ -363,7 +363,7 @@ So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
 * and provided in a basic data package (`.basic.`)
 * published on Aug 4, 2017 at 06:37:25 GMT (`.20170804T063725Z.`).
 
-More information about interpretting file names can be found in the readme that 
+More information about interpreting file names can be found in the readme that 
 accompanies each download. 
 
 Note: NEON instrumentation data products are currently (Fall/Winter 2017) being 
@@ -395,7 +395,7 @@ plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab=
 
 ```
 
-As, we'd expect we see daily fluxuations in soil temperature. 
+As, we'd expect we see daily fluctuation in soil temperature. 
 
 ## Geolocation data
 
