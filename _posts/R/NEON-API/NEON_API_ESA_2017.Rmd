@@ -181,12 +181,12 @@ The object contains a lot of information about the data product, including:
 * keywords under `$data$keywords`, 
 * references for documentation under `$data$specs`, 
 * data availability by site and month under `$data$siteCodes`, and 
-* specific URLs for the API calls for each site and month are listed under 
+* specific URLs for the API calls for each site and month under 
 `$data$siteCodes$availableDataUrls`.
 
-We need `$data$siteCodes` to tell us what we can download. And
-`$data$siteCodes$availableDataUrls` so we don't have to write the calls 
-ourselves in the next steps.
+We need `$data$siteCodes` to tell us what we can download.
+`$data$siteCodes$availableDataUrls` allows us to avoid writing the API 
+calls ourselves in the next steps.
 
 ``` {r os-query-avail-data}
 
@@ -355,7 +355,7 @@ So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
 * Domain 13 (`.D13.`)
 * Moab field site (`.MOAB.`) 
 * soil temperature data (`.DP1.00041.001.`)
-* version 0 (`.00000.`)
+* (internal NEON identifier, always 00000 in published data) (`.00000.`)
 * collected in Soil Plot 2, (`.002.`)
 * at the 4th depth below the surface (`.504.`)
 * and reported as a 30-minute mean of (`.030.` and `.ST_30_minute.`)
@@ -405,7 +405,7 @@ e.g. "soil plot 2, 4th depth below the surface."
 How to get spatial data and what to do with it depends on which type of 
 data you're working with.
 
-#### Instrumentation data (both aquatic or terrestrial)
+#### Instrumentation data (both aquatic and terrestrial)
 Stay tuned - spatial data for instruments are in the process of entry into 
 the NEON database.
 
