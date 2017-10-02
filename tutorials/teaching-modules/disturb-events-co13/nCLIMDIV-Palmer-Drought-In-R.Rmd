@@ -15,7 +15,6 @@ tutorialSeries:
 urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 ---
 
-{% include _toc.html %}
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plot.ly. The tutorial is part of the Data Activities that can be used 

@@ -1,7 +1,7 @@
 ---
 syncID: f578b1b20ef9483183a8c0abbf417440
 title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods"
-description: This tutorial teaches how to use Digital Terrain Models derived from LiDAR data to create Digital Elevation Models of Differences that allow us to measure the change in elevation of an area after a disturbance event.	
+description: This tutorial teaches how to use Digital Terrain Models derived from LiDAR data to create Digital Elevation Models of Differences that allow us to measure the change in elevation of an area after a disturbance event. 	
 dateCreated: 2015-05-18
 authors: Leah A. Wasser, Megan A. Jones
 contributors:	
@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: da-viz-neon-lidar-co13flood-R
 ---
 
-{% include _toc.html %}
+
 
 This tutorial focuses on how to visualize digital elevation models derived from
 LiDAR data in R. The tutorial is part of the Data Activities that can be used 
@@ -117,8 +117,34 @@ set our working directory to the location of our data.
 
     # load libraries
     library(raster)   # work with raster files
+
+    ## Loading required package: sp
+
+    ## Warning: package 'sp' was built under R version 3.4.1
+
+    ## 
+    ## Attaching package: 'raster'
+
+    ## The following object is masked from 'package:plotly':
+    ## 
+    ##     select
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     select
+
     library(rgdal)    # work with raster files
-    
+
+    ## Warning: package 'rgdal' was built under R version 3.4.2
+
+    ## rgdal: version: 1.2-12, (SVN revision 681)
+    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
+    ##  Loaded GDAL runtime: GDAL 2.1.3, released 2017/20/01
+    ##  Path to GDAL shared files: /Users/mjones01/Library/R/3.4/library/rgdal/gdal
+    ##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
+    ##  Path to PROJ.4 shared files: /Users/mjones01/Library/R/3.4/library/rgdal/proj
+    ##  Linking to sp version: 1.2-5
+
     # set working directory to ensure R can find the file we wish to import
     #setwd("working-dir-path-here")
 
@@ -331,11 +357,7 @@ When we call this new object, we can view the new extent.
     # view the extent of the cropbox1
     cropbox1
 
-    ## class       : Extent 
-    ## xmin        : 474276.7 
-    ## xmax        : 474392 
-    ## ymin        : 4434622 
-    ## ymax        : 4434766
+    ## Error in eval(expr, envir, enclos): object 'cropbox1' not found
 
 It is a good idea to write this new extent down, so that you can use the extent
 again the next time you use the script. 

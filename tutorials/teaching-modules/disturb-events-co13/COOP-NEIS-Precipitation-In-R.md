@@ -15,7 +15,6 @@ tutorialSeries:
 urlTitle: da-viz-coop-precip-data-R
 ---
 
-{% include _toc.html %}
 
 Several factors contributed to extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 
@@ -197,6 +196,27 @@ nteractive plots.
     # load packages
     library(ggplot2) # create efficient, professional plots
     library(plotly) # create cool interactive plots
+
+    ## Warning: package 'plotly' was built under R version 3.4.1
+
+    ## 
+    ## Attaching package: 'plotly'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     last_plot
+
+    ## The following object is masked from 'package:httr':
+    ## 
+    ##     config
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     layout
 
 
 

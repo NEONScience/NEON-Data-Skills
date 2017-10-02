@@ -9,13 +9,12 @@ estimatedTime:
 packagesLibraries: ggplot2, plotly
 topics: time-series, meteorology, data-viz
 languagesTool: R
-dataProduct:
+dataProduct: 
 code1: /teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
 tutorialSeries: 
 urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 ---
 
-{% include _toc.html %}
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plot.ly. The tutorial is part of the Data Activities that can be used 
@@ -349,6 +348,8 @@ We can create an interactive version of our plot using `plot.ly`. We should simp
     # Use exisitng ggplot plot & view as plotly plot in R
     palmer.drought_ggplotly <- ggplotly(palmer.drought)  
 
+    ## We recommend that you use the dev version of ggplot2 with `ggplotly()`
+    ## Install it with: `devtools::install_github('hadley/ggplot2')`
 
     palmer.drought_ggplotly
 
@@ -374,7 +375,7 @@ In the future, you could just skip the `ggplot()` step and plot directly with
 
     ## Warning: 'bar' objects don't have these attributes: 'title'
     ## Valid attributes include:
-    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
+    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'idssrc', 'customdatasrc', 'hoverinfosrc', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
 
 ![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/create-plotly-drought-plot-1.png)
 
@@ -462,9 +463,15 @@ drought!
 
     ## Error in file(file, "rt"): cannot open the connection
 
-    ## Warning: Removed 2 rows containing missing values (geom_bar).
+    ## Error in paste0(nCLIMDIV_US$YearMonth, "01"): object 'nCLIMDIV_US' not found
 
-![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-NDV-plot-only-1.png)
+    ## Error in as.Date(nCLIMDIV_US$Date, format = "%Y%m%d"): object 'nCLIMDIV_US' not found
+
+    ## Error in str(nCLIMDIV_US$Date): object 'nCLIMDIV_US' not found
+
+    ## Error in ggplot(data = nCLIMDIV_US, aes(Date, PDSI)): object 'nCLIMDIV_US' not found
+
+    ## Error in eval(expr, envir, enclos): object 'palmer.droughtUS' not found
 
 This value is just a common placeholder for a **No Data Value**. 
 
@@ -592,7 +599,7 @@ previous code.
 
     ## Warning: 'bar' objects don't have these attributes: 'title'
     ## Valid attributes include:
-    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
+    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'hoverinfo', 'hoverlabel', 'stream', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'hovertext', 'textposition', 'textfont', 'insidetextfont', 'outsidetextfont', 'orientation', 'base', 'offset', 'width', 'marker', 'r', 't', 'error_y', 'error_x', '_deprecated', 'xaxis', 'yaxis', 'xcalendar', 'ycalendar', 'idssrc', 'customdatasrc', 'hoverinfosrc', 'xsrc', 'ysrc', 'textsrc', 'hovertextsrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule'
 
 ![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/plotly-decade-1.png)
 

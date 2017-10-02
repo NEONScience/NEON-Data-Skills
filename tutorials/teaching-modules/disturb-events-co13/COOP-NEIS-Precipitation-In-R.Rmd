@@ -15,7 +15,6 @@ tutorialSeries:
 urlTitle: da-viz-coop-precip-data-R
 ---
 
-{% include _toc.html %}
 
 Several factors contributed to extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 

@@ -1,7 +1,7 @@
 ---
 syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
 title: "Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods." 
+description: "This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods."	
 dateCreated: 2015-05-18
 authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon	
 contributors: 
@@ -9,13 +9,12 @@ estimatedTime:
 packagesLibraries: ggplot2, plotly
 topics: time-series, meteorology, data-viz
 languagesTool: R
-dataProduct: 
-code1: /teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R 
+dataProduct:
+code1: /teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R	
 tutorialSeries: 
 urlTitle: da-viz-usgs-stream-discharge-data-R
 ---
 
-{% include _toc.html %}
 
 Several factors contributed to the extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 
@@ -431,6 +430,8 @@ Here we create a new R object with entries corresponding to just the dates we wa
     # view plotly plot in R
     ggplotly(disPlot.plotly)
 
+    ## We recommend that you use the dev version of ggplot2 with `ggplotly()`
+    ## Install it with: `devtools::install_github('hadley/ggplot2')`
 
 ![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/plotly-discharge-data-3.png)
 
