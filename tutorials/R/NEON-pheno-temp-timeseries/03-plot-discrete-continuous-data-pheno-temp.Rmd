@@ -10,7 +10,7 @@ packagesLibraries: dplyr, ggplot2, lubridate
 topics: timeseries, meteorology, phenology, organisms
 languagesTool: R
 dataProduct: NEON.DP1.10055, 
-code1: 03-plot-discrete-continuous-data-pheno-temp.R
+code1: R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp.R
 tutorialSeries:  neon-pheno-temp-series
 urlTitle: neon-pheno-temp-plots-r
 ---

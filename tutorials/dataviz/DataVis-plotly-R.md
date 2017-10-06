@@ -10,7 +10,7 @@ packagesLibraries: ggplot, plotly
 topics: data-viz
 languagesTool: R
 dataProduct:
-code1: /dataviz/DataVis-plotly-R.R
+code1: dataviz/DataVis-plotly-R.R
 tutorialSeries:
 urlTitle: plotly-r
 ---

@@ -10,8 +10,8 @@ packagesLibraries: raster, rgdal
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1:
-tutorialSeries: [intro-lidar-r-series]
+code1: lidar/Create-Lidar-CHM-R.R
+tutorialSeries: intro-lidar-r-series
 urlTitle: create-chm-rasters-r
 ---
 

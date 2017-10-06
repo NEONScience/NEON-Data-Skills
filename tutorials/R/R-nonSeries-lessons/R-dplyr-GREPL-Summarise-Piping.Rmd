@@ -10,7 +10,7 @@ packagesLibraries: dplyr
 topics: data-analysis
 languagesTool: R
 dataProduct: 
-code1: R-dplyr-GREPL-Summarise-Piping.R
+code1: R/R-nonSeries-lessons/R-dplyr-GREPL-Summarise-Piping.R
 tutorialSeries: 
 urlTitle: grepl-filter-piping-dplyr-r
 ---

@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, plotly
 topics: time-series, meteorology, data-viz
 languagesTool: R
 dataProduct:
-code1: /teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
+code1: teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
 tutorialSeries:
 urlTitle: da-viz-coop-precip-data-R
 ---
