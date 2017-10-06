@@ -1,8 +1,7 @@
 ---
 syncID: 03868e86e4d34d1fa88caacaddf95a57
 title: "Plot Continuous & Discrete Data Together"
-description: "This tutorial discusses ways to plot plant phenology (discrete time
-series) and single-aspirated temperature (continuous time series) together."
+description: "This tutorial discusses ways to plot plant phenology (discrete time series) and single-aspirated temperature (continuous time series) together."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg
