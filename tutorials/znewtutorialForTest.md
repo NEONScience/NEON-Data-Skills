@@ -1,6 +1,6 @@
 ---
 syncID: 1newLessonTest
-title: "New Tutorial to Test the GitHub Sync
+title: "New Tutorial to Test the GitHub Sync"
 description: "This is a test page to test sync timing."
 dateCreated:   2015-08-01
 authors: Megan A. Jones
