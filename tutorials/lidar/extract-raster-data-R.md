@@ -10,7 +10,7 @@ packagesLibraries: raster, sp, rgdal, maptools, rgeos, dplyr, ggplot
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool:
 dataProduct:
-code1: /LIDAR/extract-raster-data-R.R
+code1: lidar/extract-raster-data-R.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: extract-values-rasters-r
 ---

@@ -1,8 +1,7 @@
 ---
 syncID: 03868e86e4d34d1fa88caacaddf95a57
 title: "Plot Continuous & Discrete Data Together"
-description: "This tutorial discusses ways to plot plant phenology (discrete time
-series) and single-aspirated temperature (continuous time series) together."
+description: "This tutorial discusses ways to plot plant phenology (discrete time series) and single-aspirated temperature (continuous time series) together."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg
@@ -11,7 +10,7 @@ packagesLibraries: dplyr, ggplot2, lubridate
 topics: timeseries, meteorology, phenology, organisms
 languagesTool: R
 dataProduct: NEON.DP1.10055, 
-code1: 03-plot-discrete-continuous-data-pheno-temp.R
+code1: R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp.R
 tutorialSeries:  neon-pheno-temp-series
 urlTitle: neon-pheno-temp-plots-r
 ---

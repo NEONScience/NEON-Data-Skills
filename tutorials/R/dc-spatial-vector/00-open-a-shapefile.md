@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool:
 dataProduct:
-code1: /R/dc-spatial-vector/00-open-a-shapefile.R
+code1: R/dc-spatial-vector/00-open-a-shapefile.R
 tutorialSeries: vector-data-series
 urlTitle: dc-open-shapefiles-r
 

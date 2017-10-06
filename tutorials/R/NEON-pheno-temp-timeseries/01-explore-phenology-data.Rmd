@@ -10,7 +10,7 @@ packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
 languagesTool: R
 dataProduct: NEON.DP1.10055
-code1: 01-explore-phenology-data.R
+code1: R/NEON-pheno-temp-timeseries/01-explore-phenology-data.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
 ---
