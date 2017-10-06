@@ -12,7 +12,7 @@ languagesTool: R, python
 dataProduct: 
 code1: 
 tutorialSeries: 
-urlTitle: styles-css
+urlTitle: test-new-tutorial
 ---
 
 This page shows all the NEON stylings as currently shown on the
