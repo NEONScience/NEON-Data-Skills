@@ -16,7 +16,7 @@ dirs <- c("R/NEON-pheno-temp-timeseries",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[1]
+dir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
