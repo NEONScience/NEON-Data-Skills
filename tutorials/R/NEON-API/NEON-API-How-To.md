@@ -58,6 +58,19 @@ preferably, RStudio loaded on your computer.
 
 </div>
 
+## Wondering what an API is?
+
+If you are unfamiliar with the concept of an API, think of  an API as a 
+‘middleperson' that provides a communication path for a software application 
+to obtain information from a digital data source. APIs are becoming a very 
+common means of sharing digital information. Many of the apps that you use on 
+your computer or mobile device to produce maps, charts, reports, and other 
+useful forms of information pull data from multiple sources using APIs. In 
+the ecological and environmental sciences, many researchers use APIs to 
+programmatically pull data into their analyses. (Quoted from the NEON Observatory
+Blog story: 
+<a href="http://www.neonscience.org/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
+
 ## Anatomy of an API call
 
 An example API call: http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07
@@ -67,10 +80,10 @@ This includes the base URL, endpoint, and target.
 ### Base URL: 
 <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#C6C5C5">/data/DP1.10003.001/WOOD/2015-07</span>
 
-Specifics are appended to this in order to get the data or 
-metadata you're looking for, but all calls to this API will include 
-the base URL. For the NEON API, this is http://data.neonscience.org/api/v0 
-(not clickable, because the base URL by itself will take you nowhere!)
+Specifics are appended to this in order to get the data or metadata you're 
+looking for, but all calls to this API will include the base URL. For the NEON 
+API, this is http://data.neonscience.org/api/v0 --
+not clickable, because the base URL by itself will take you nowhere!
 
 ### Endpoints: 
 <span style="color:#C6C5C5">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#C6C5C5">/DP1.10003.001/WOOD/2015-07</span>
@@ -94,7 +107,6 @@ What type of data or metadata are you looking for?
 
 The specific data product, site, or location you want to get data for.
 
-
 ## Observational data
 Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>.
 
@@ -105,6 +117,7 @@ have data available. In the products endpoint, the target is the numbered
 identifier for the data product:
 
 
+    # Load the necessary libaries
     library(httr)
 
     ## Warning: package 'httr' was built under R version 3.4.1
@@ -112,7 +125,7 @@ identifier for the data product:
     library(jsonlite)
     library(dplyr, quietly=T)
 
-    ## Warning: package 'dplyr' was built under R version 3.4.1
+    ## Warning: package 'dplyr' was built under R version 3.4.2
 
     ## 
     ## Attaching package: 'dplyr'
@@ -125,22 +138,24 @@ identifier for the data product:
     ## 
     ##     intersect, setdiff, setequal, union
 
+    # Request data using the GET function & the API call
     req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
-
-The object returned from `GET()` has many layers of information. Entering the name of 
-the object gives you some basic information about what you downloaded. The `content()` 
-function returns the contents in the form of a highly nested list. This is typical of 
-JSON-formatted data returned by APIs:
-
-
     req
 
     ## Response [http://data.neonscience.org/api/v0/products/DP1.10003.001]
-    ##   Date: 2017-09-28 20:28
+    ##   Date: 2017-10-10 21:34
     ##   Status: 200
     ##   Content-Type: application/json;charset=UTF-8
     ##   Size: 7.18 kB
 
+The object returned from `GET()` has many layers of information. Entering the 
+name of the object gives you some basic information about what you downloaded. 
+
+The `content()` function returns the contents in the form of a highly nested 
+list. This is typical of JSON-formatted data returned by APIs. 
+
+
+    # View requested data
     req.content <- content(req, as="parsed")
     req.content
 
@@ -578,12 +593,16 @@ JSON-formatted data returned by APIs:
 
 To get a more accessible view of which sites have data for which months, you'll 
 need to extract data from the nested list. There are a variety of ways to do this, 
-in this tutorial we'll explore a couple of them. Here we'll use `fromJSON()`, in the 
-`jsonlite` package, which doesn't fully flatten the nested list, but gets us the part 
-we need. To use it, we need a text version of the content:
+in this tutorial we'll explore a couple of them. Here we'll use `fromJSON()`, in 
+the jsonlite package, which doesn't fully flatten the nested list, but gets us 
+the part we need. To use it, we need a text version of the content. Data this 
+way is not as human readable but is readable by the `fromJSON()` function. 
 
 
+    # make this JSON readable -> "text"
     req.text <- content(req, as="text")
+    
+    # Flatten data frame to see available data. 
     avail <- fromJSON(req.text, simplifyDataFrame=T, flatten=T)
     avail
 
@@ -685,15 +704,20 @@ we need. To use it, we need a text version of the content:
     ## 16                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07
     ## 17 http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06
 
-The object contains a lot of information about the data product, including 
-keywords under `$data$keywords`, references for documentation under `$data$specs`, 
-and data availability by site and month under `$data$siteCodes`, 
-which is what we need to tell us what we can download. The specific 
-URLs for the API calls for each site and month are listed under 
-`$data$siteCodes$availableDataUrls`, so we don't even have to write the calls 
-ourselves in the next steps.
+The object contains a lot of information about the data product, including: 
+
+* keywords under `$data$keywords`, 
+* references for documentation under `$data$specs`, 
+* data availability by site and month under `$data$siteCodes`, and 
+* specific URLs for the API calls for each site and month under 
+`$data$siteCodes$availableDataUrls`.
+
+We need `$data$siteCodes` to tell us what we can download.
+`$data$siteCodes$availableDataUrls` allows us to avoid writing the API 
+calls ourselves in the next steps.
 
 
+    # get data availability list for the product
     bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
     bird.urls
 
@@ -728,132 +752,158 @@ ourselves in the next steps.
     ## [29] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06"
 
 These are the URLs showing us what files are available for each month where 
-there are data. For simplicity, we'll just query the single month of data 
-available at the Woodworth (WOOD) site.
+there are data. 
+
+Let's look at the bird data from Woodworth (WOOD) site from July 2015. We can do 
+this by using the above code but now specifying which site/date we want using 
+the `grep()` function. 
+
+Note, that if there was only one month of data from a site, you can leave off the
+date in the function. If you want date from more than one site/month you need 
+to iterate this code, GET fails if you give it more than one URL. 
 
 
-    brd <- GET(bird.urls[grep("WOOD", bird.urls)])
+    # get data availability for WOOD July 2015
+    brd <- GET(bird.urls[grep("WOOD/2015-07", bird.urls)])
     brd.files <- fromJSON(content(brd, as="text"))
+    
+    # view just the available data files 
     brd.files$data$files
 
     ##                               crc32
     ## 1  c26d8ee478ddc41e5a3ebf0b1adb8c17
-    ## 2  4a5f2420d1f24131e350e4adc207b12e
-    ## 3  5ce80c39de222e286f73b915c06527dd
-    ## 4  9d746c8eb43b6d84e2db925d9aca50b1
-    ## 5  88b416d167e5021e40cdae7ec605c194
-    ## 6  7d1d2c21f0016212087cdc1041f37054
-    ## 7  9bc7bc357209579748cb103a899933b0
-    ## 8  8241d346adeeac463737112f47cffaa8
-    ## 9  7d1d2c21f0016212087cdc1041f37054
-    ## 10 4a5f2420d1f24131e350e4adc207b12e
-    ## 11 9bc7bc357209579748cb103a899933b0
-    ## 12 4972362cad0bd5873aa356af86e45826
-    ## 13 bfb5fd016eb775adf65bdb0c4b0914f8
-    ## 14 cdbd556c2b5396115fde5b22f6643d81
-    ## 15 61b33b64b9095e50331295a2cf6c0bbc
+    ## 2  88b416d167e5021e40cdae7ec605c194
+    ## 3  9bc7bc357209579748cb103a899933b0
+    ## 4  7d1d2c21f0016212087cdc1041f37054
+    ## 5  4a5f2420d1f24131e350e4adc207b12e
+    ## 6  9d746c8eb43b6d84e2db925d9aca50b1
+    ## 7  5ce80c39de222e286f73b915c06527dd
+    ## 8  7d1d2c21f0016212087cdc1041f37054
+    ## 9  cdbd556c2b5396115fde5b22f6643d81
+    ## 10 8241d346adeeac463737112f47cffaa8
+    ## 11 bfb5fd016eb775adf65bdb0c4b0914f8
+    ## 12 4a5f2420d1f24131e350e4adc207b12e
+    ## 13 61b33b64b9095e50331295a2cf6c0bbc
+    ## 14 9bc7bc357209579748cb103a899933b0
+    ## 15 4972362cad0bd5873aa356af86e45826
     ##                                                                               name
     ## 1                                NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml
-    ## 2      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv
-    ## 3                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip
-    ## 4     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv
-    ## 5                                                    NEON.DP1.10003.001_readme.txt
-    ## 6                      NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
-    ## 7                       NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
-    ## 8                           NEON.Bird Conservancy of the Rockies.brd_personnel.csv
-    ## 9                      NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
-    ## 10  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv
-    ## 11                      NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
-    ## 12               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip
-    ## 13 NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv
-    ## 14                                                   NEON.DP1.10003.001_readme.txt
-    ## 15                               NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml
+    ## 2                                                    NEON.DP1.10003.001_readme.txt
+    ## 3                       NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
+    ## 4                      NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
+    ## 5      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv
+    ## 6     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv
+    ## 7                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip
+    ## 8                      NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
+    ## 9                                                    NEON.DP1.10003.001_readme.txt
+    ## 10                          NEON.Bird Conservancy of the Rockies.brd_personnel.csv
+    ## 11 NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv
+    ## 12  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv
+    ## 13                               NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml
+    ## 14                      NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
+    ## 15               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip
     ##      size
     ## 1   69927
-    ## 2   23962
-    ## 3   67239
-    ## 4  355660
-    ## 5   11098
-    ## 6    9826
-    ## 7    7280
-    ## 8    2553
-    ## 9    9826
-    ## 10  23962
-    ## 11   7280
-    ## 12  69271
-    ## 13 376383
-    ## 14  11234
-    ## 15  74721
+    ## 2   11098
+    ## 3    7280
+    ## 4    9826
+    ## 5   23962
+    ## 6  355660
+    ## 7   67239
+    ## 8    9826
+    ## 9   11234
+    ## 10   2553
+    ## 11 376383
+    ## 12  23962
+    ## 13  74721
+    ## 14   7280
+    ## 15  69271
     ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   url
-    ## 1                                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=14c3a59c58ee5baa8dfe84adaff640a829eaf914eaf213f05127c7af47c20d47
-    ## 2         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=6ed9ea5c078973e76726909b6ef40d68128d8a044b04158bd63d4553e1b74b08
-    ## 3                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=cfa0361c1a7624e0d68dcce3a852f1d9ecc8c78efbed9bee5b50eae28c5b1cea
-    ## 4        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=9ea67b4bd7efea87efd4344cde1d5dfa48f45212430c4b363b65e218e2b02c9f
-    ## 5                                                       https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=fd2aed89d17c2b155b50ced53a8f65ee32d30b27b33c2891d2c742db89a02f3c
-    ## 6                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=719933fde5f662bab081d00a241bdbbcbf03f9a1ec565360ba06aae17a6c2a44
-    ## 7                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=1aab6a8809faa2356b5ab9e3b70227c4fb559a86426ae6a0e01b54ca012bd2c1
-    ## 8                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird%20Conservancy%20of%20the%20Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=12af66cb82968467707e97d18730b47d3aa4d528f3c720ed23b0b5f79f8b671e
-    ## 9                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=a81e4a0eee8b5e170feb5618515660df67e8c00d4cae2080961cb34050a41fea
-    ## 10  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=af6be2f2d2587fddf79a2b2e20ad68c73fa4c2164b0d68779e7b346e3e7ed25b
-    ## 11                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=4fc823828428fb5547eb71e1cac2fcaac972674c715cef393f30c944689562f8
-    ## 12               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=4498b70e04c1924618179eb4bcdf5b178e4d5f99079600dd4a8f9567115416bd
-    ## 13 https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=67230e91c44e4962348557dd5d4f8b6f88104dc76d4a588c60c9fd18a27070cc
-    ## 14                                                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=427ef4d28b2c7dd6546018f802db6eebd99e5ebe27db2f82e7709e0862306e93
-    ## 15                               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170928T202822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20170928%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=1107a027a2533fb1f588303794fb94eb6c867f5dbe7f007ecb05d561e29a4fda
+    ## 1                                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=983ba5a088f99b29a3d85e8922c20287a25d4dd8b6ce72ae587dbfa98f34d1d8
+    ## 2                                                       https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=6482dcb81f46ec2c66685598c116eea3fe9503e2698c322c7099563eedaecf0d
+    ## 3                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=d5b613a8f5442687c71d4e7060daa58f2c09701b0c227af756bc0ed4cc667256
+    ## 4                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=c206a98287ea57ab045d40b8ea7c2a5874288f628e64ee1860c95272e8004251
+    ## 5         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=2bf95225500520ef7102b20b25779c3efb4e72a3b966cb9b82beb4ee539cb6b1
+    ## 6        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=23130cad7a3a4f22120c7ab6eb2ae8ad57cdfcbc61059254b7f40bed42ed79cc
+    ## 7                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=2dd50897f98ae12cb0ef633755f003efef6a8b9d36fccbfbe2c47aeb6d81076f
+    ## 8                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=725cf0514b14ca81a82aeeac51a56f81afd3b4a8db3e8ea8c8cfd3aeba09a97f
+    ## 9                                                    https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=cdbf2548d85a8c334487d0925a6f9428c2c24b489f0383abf175927be14aabb1
+    ## 10                  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird%20Conservancy%20of%20the%20Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=efa0333668fc550f64db7d66c17e71bd4bda75bba9e8b1dd061e162f827f8f30
+    ## 11 https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=45efa0acad4731160041e4dd0bb24b52b3593d93ba194f97c4f90e32e57c3810
+    ## 12  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=7ebb8c2d7e27f45d563c4cdc922b3bd040e4573575c54cfed61d715d1887a3dd
+    ## 13                               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=f319866abb0a5d09122f5a9149916ce4eb7aa44bb6cf3b29196e6a9e6df9ac6c
+    ## 14                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=d3f71df99d780900589357aeede64f9f9fb52997fbaf2264bb82d5a79caf27d3
+    ## 15               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171010T213424Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171010%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=b53c528392bddd212b8a121be3ab6281a7a1ef40343d1eb26a8a63df733095ca
 
-And now we have the names of the files available for this site and 
-month, and URLs where we can get the files. We'll use 
-the file names to pick which ones we want.
+In this output, `name` and `url` are key fields. It provides us with the names 
+of the files available for this site and month, and URLs where we can get the 
+files. We'll use the file names to pick which ones we want.
 
-The available files include both data and metadata, and both the basic and 
-expanded data packages. Metadata are described by file name below. Basic 
-and expanded data packages are available for most NEON data products 
-(some only have basic). Typically the expanded package includes additional 
-quality or uncertainty data, either in additional files or additional 
-fields in the basic files.
+The available files include both **data** and **metadata**, and both the **basic**
+and **expanded** data packages. Typically the expanded package includes additional 
+quality or uncertainty data, either in additional files or additional fields 
+than in the basic files. Basic and expanded data packages are available for 
+most NEON data products (some only have basic). Metadata are described by file 
+name below.
 
-The format for most of the file names is 
-NEON.[domain number].[site code].[data product ID].[file-specific name].
-[date of file creation] 
+The format for most of the file names are:
+
+**NEON.[domain number].[site code].[data product ID].[file-specific name].
+[date of file creation] **
 
 Some files omit the domain and site, since they're not specific to a 
-location, like the data product readme. The date of file creation, in 
-this case 20170720T182547Z, can be used to determine whether data have 
-been updated since the last time you downloaded.
+location, like the data product readme. The date of file creation uses the 
+ISO6801 format, in this case 20170720T182547Z, and can be used to determine 
+whether data have been updated since the last time you downloaded.
 
-Leaving off NEON.D09.WOOD.10003.001, available files in our query for 
-July 2015 at Woodworth are all of the following: 
+Available files in our query for July 2015 at Woodworth are all of the following
+(leaving off the initial NEON.D09.WOOD.10003.001): 
 
-* **~.2015-07.expanded.20170720T182547Z.zip:** zip of all files in the expanded package
-  
-* **~.brd_countdata.2015-07.expanded.20170720T182547Z.csv:** count data table, expanded package version: counts of birds at each point
-  
-* **~.brd_perpoint.2015-07.expanded.20170720T182547Z.csv:** point data table, expanded package version: metadata at each observation point
-  
-* **NEON.Bird Conservancy of the Rockies.brd_personnel.csv:** personnel data table: accuracy scores for bird observers
-  
+* **~.2015-07.expanded.20170720T182547Z.zip:** zip of all files in the expanded 
+package
+
+* **~.brd_countdata.2015-07.expanded.20170720T182547Z.csv:** count data table, 
+expanded package version: counts of birds at each point
+
+* **~.brd_perpoint.2015-07.expanded.20170720T182547Z.csv:** point data table, 
+expanded package version: metadata at each observation point
+
+* **NEON.Bird Conservancy of the Rockies.brd_personnel.csv:** personnel data 
+table, accuracy scores for bird observers
+
 * **~.2015-07.basic.20170720T182547Z.zip:** zip of all files in the basic package
+
+* **~.brd_countdata.2015-07.basic.20170720T182547Z.csv:** count data table, 
+basic package version: counts of birds at each point
+
+* **~.brd_perpoint.2015-07.basic.20170720T182547Z.csv:** point data table, 
+basic package version: metadata at each observation point
+
+* **NEON.DP1.10003.001_readme.txt:** readme for the data product (not specific 
+to dates or location). Appears twice in the list, since it's in both the basic 
+and expanded package
+
+* **~.20150101-20160613.xml:** Ecological Metadata Language (EML) file. Appears 
+twice in the list, since it's in both the basic and expanded package
   
-* **~.brd_countdata.2015-07.basic.20170720T182547Z.csv:** count data table, basic package version: counts of birds at each point
+* **~.validation.20170720T182547Z.csv:** validation file for the data product, 
+lists input data and data entry rules. Appears twice in the list, since it's in 
+both the basic and expanded package
   
-* **~.brd_perpoint.2015-07.basic.20170720T182547Z.csv:** point data table, basic package version: metadata at each observation point
-  
-* **NEON.DP1.10003.001_readme.txt:** readme for the data product (not specific to dates or location). Appears twice in the list, since it's in both the basic and expanded package
-  
-* **~.20150101-20160613.xml:** Ecological Metadata Language (EML) file. Appears twice in the list, since it's in both the basic and expanded package
-  
-* **~.validation.20170720T182547Z.csv:** validation file for the data product: lists input data and data entry rules. Appears twice in the list, since it's in both the basic and expanded package
-  
-* **~.variables.20170720T182547Z.csv:** variables file for the data product: lists data fields in downloaded tables. Appears twice in the list, since it's in both the basic and expanded package
+* **~.variables.20170720T182547Z.csv:** variables file for the data product, 
+lists data fields in downloaded tables. Appears twice in the list, since it's 
+in both the basic and expanded package
 
 
 We'll get the data tables for the point data and count data in the basic 
 package. The list of files doesn't return in the same order every time, so we 
 won't use position in the list to select. Plus, we want code we can re-use 
 when getting data from other sites and other months. So we select files 
-based on the data table name and the package name:
+based on the data table name and the package name.
 
 
+
+    # Get both files
     brd.count <- read.delim(brd.files$data$files$url
                             [intersect(grep("countdata", brd.files$data$files$name),
                                         grep("basic", brd.files$data$files$name))], sep=",")
@@ -862,235 +912,270 @@ based on the data table name and the package name:
                             [intersect(grep("perpoint", brd.files$data$files$name),
                                         grep("basic", brd.files$data$files$name))], sep=",")
 
-Just to prove the files we pulled have actual data in them, a quick graphic:
+Now we have the data and can access it in R. Just to show that the files we 
+pulled have actual data in them, let's make a quick graphic showing 
 
 
-    clusterBySp <- brd.count %>% group_by(scientificName) %>% 
+    # Cluster by species
+    clusterBySp <- brd.count %>% 
+    	group_by(scientificName) %>% 
       summarize(total=sum(clusterSize))
+    
+    # Reorder so list is ordered most to least abundance
     clusterBySp <- clusterBySp[order(clusterBySp$total, decreasing=T),]
+    
+    # Plot
     barplot(clusterBySp$total, names.arg=clusterBySp$scientificName, 
             ylab="Total", cex.names=0.5, las=2)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API//NEON-API-How-To/os-plot-bird-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API/NEON-API-How-To/os-plot-bird-data-1.png)
+
+Wow! There are lots of *Agelaius phoeniceus* (Red-winged Blackbirds) at WOOD in July. 
 
 
 ## Instrumentation data
+
 The process is essentially the same for sensor data. We'll do the same series of 
-queries for Soil temperature, DP1.00041.001, and get data from Moab in March.
+queries for Soil Temperature, DP1.00041.001. Let's use data from Moab in March 
+2017 this time.
 
 
+    # Request soil temperature data
     req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
+    
+    # make this JSON readable
+    # Note how we've change this from two commands into one here
     avail.soil <- fromJSON(content(req.soil, as="text"), simplifyDataFrame=T, flatten=T)
+    
+    # get data availability list for the product
     temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
+    
+    # get data availability from location/date of interest
     tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
     tmp.files <- fromJSON(content(tmp, as="text"))
     tmp.files$data$files$name
 
-    ##   [1] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [2] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [3] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [4] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [5] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [6] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [7] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [8] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
-    ##   [9] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [10] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [11] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [12] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [13] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [14] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [15] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [16] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [17] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [18] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [19] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [20] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [21] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [22] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [23] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [24] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [25] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [26] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [27] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [28] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [29] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [30] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [31] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [32] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [33] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [34] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [35] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [36] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [37] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [38] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [39] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [40] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [41] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [42] "NEON.D13.MOAB.DP1.00041.001.2017-03.basic.20170804T063725Z.zip"                            
-    ##  [43] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [44] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [45] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [46] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [47] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [48] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [49] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [50] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [51] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [52] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [53] "NEON.DP1.00041.001_readme.txt"                                                             
-    ##  [54] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [55] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [56] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [57] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [58] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [59] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [60] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [61] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [1] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [2] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [3] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [4] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [5] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [6] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [7] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [8] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [9] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
+    ##  [10] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [11] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [12] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [13] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [14] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [15] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [16] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [17] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [18] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [19] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [20] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [21] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [22] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [23] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [24] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [25] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [26] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [27] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [28] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [29] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [30] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [31] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [32] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [33] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [34] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [35] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [36] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [37] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [38] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [39] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [40] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [41] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [42] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [43] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [44] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [45] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [46] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [47] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [48] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [49] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [50] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [51] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [52] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [53] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [54] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [55] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [56] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [57] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [58] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [59] "NEON.DP1.00041.001_readme.txt"                                                             
+    ##  [60] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [61] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
     ##  [62] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [63] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [64] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [65] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [66] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [67] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [68] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [69] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [70] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [71] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [72] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [73] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [74] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [75] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [76] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [77] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [78] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [79] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [80] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [63] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [64] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [65] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [66] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [67] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [68] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [69] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [70] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [71] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [72] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [73] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [74] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [75] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [76] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [77] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [78] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [79] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [80] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
     ##  [81] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
-    ##  [82] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [83] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [84] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [85] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [86] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [87] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [88] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [89] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [90] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [91] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [92] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [93] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [94] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [95] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ##  [96] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ##  [97] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ##  [98] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ##  [99] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [100] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [101] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [102] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [103] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [104] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [105] "NEON.D13.MOAB.DP1.00041.001.2017-03.expanded.20170804T063725Z.zip"                         
-    ## [106] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [107] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [108] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ##  [82] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [83] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [84] "NEON.D13.MOAB.DP1.00041.001.2017-03.basic.20170804T063725Z.zip"                            
+    ##  [85] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [86] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [87] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [88] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [89] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [90] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [91] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [92] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [93] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [94] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [95] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ##  [96] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ##  [97] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ##  [98] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
+    ##  [99] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [100] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [101] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [102] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [103] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [104] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [105] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [106] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [107] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [108] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
     ## [109] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [110] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [111] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [112] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [113] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [114] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [115] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [116] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [117] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [118] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [119] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [120] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [121] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [122] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [123] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [124] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [125] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [126] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [127] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [128] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [129] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [130] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [131] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
-    ## [132] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [133] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [134] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [135] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [136] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [137] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [138] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [139] "NEON.DP1.00041.001_readme.txt"                                                             
-    ## [140] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [141] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [142] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [143] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [144] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [145] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [146] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [147] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [148] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [149] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [150] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [151] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [152] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [153] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [154] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [155] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [156] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [157] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [158] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [159] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [160] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [161] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [162] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [163] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [164] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [165] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [166] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [167] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [168] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [169] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [170] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
-    ## [171] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [172] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [173] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [174] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [175] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [176] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [177] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [178] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [179] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [180] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [181] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [182] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [183] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [184] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [185] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [186] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [187] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [188] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [110] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [111] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [112] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [113] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [114] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [115] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [116] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [117] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [118] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [119] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [120] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [121] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [122] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [123] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [124] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [125] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [126] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [127] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [128] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [129] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [130] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [131] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [132] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [133] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [134] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [135] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [136] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [137] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [138] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [139] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [140] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [141] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [142] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [143] "NEON.D13.MOAB.DP1.00041.001.2017-03.expanded.20170804T063725Z.zip"                         
+    ## [144] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [145] "NEON.DP1.00041.001_readme.txt"                                                             
+    ## [146] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [147] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [148] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [149] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [150] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
+    ## [151] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [152] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [153] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [154] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [155] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [156] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [157] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [158] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [159] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [160] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [161] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [162] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [163] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [164] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [165] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [166] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [167] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [168] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [169] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [170] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [171] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [172] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [173] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [174] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [175] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [176] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [177] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [178] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [179] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [180] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [181] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [182] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [183] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [184] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [185] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [186] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [187] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [188] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv"
 
-These file names start and end the same way as the observational 
-files, but the middle is a little more cryptic. The structure 
-from beginning to end is: 
+These file names start and end the same way as the observational files, but the 
+middle is a little more cryptic. The structure from beginning to end is: 
 
-NEON.[domain number].[site code].[data product ID].00000.
+**NEON.[domain number].[site code].[data product ID].00000.
 [soil plot number].[depth].[averaging interval].[data table name].
-[year]-[month].[data package].[date of file creation]
+[year]-[month].[data package].[date of file creation]**
 
-So NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
-2017-03.basic.20170804T063725Z.csv is 
-the basic data package of the 30-minute mean of soil temperature 
-from March 2017 at Moab in soil plot 2, 4th depth below the 
-surface, published on Aug 4, 2017, at 06:37:25 GMT.
+So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
+2017-03.basic.20170804T063725Z.csv** is the:
+* NEON (`NEON.`)
+* Domain 13 (`.D13.`)
+* Moab field site (`.MOAB.`) 
+* soil temperature data (`.DP1.00041.001.`)
+* (internal NEON identifier, always 00000 in published data) (`.00000.`)
+* collected in Soil Plot 2, (`.002.`)
+* at the 4th depth below the surface (`.504.`)
+* and reported as a 30-minute mean of (`.030.` and `.ST_30_minute.`)
+* only for the period of March 2017 (`.2017-03.`)
+* and provided in a basic data package (`.basic.`)
+* published on Aug 4, 2017 at 06:37:25 GMT (`.20170804T063725Z.`).
 
-We'll pull out the URL for the plot and depth described above by 
-selecting "002.504.030" and the word "basic" in the file name.
+More information about interpreting file names can be found in the readme that 
+accompanies each download. 
+
+Note: NEON instrumentation data products are currently (Fall/Winter 2017) being 
+reprocessed on a rolling basis, and as each product is re-deployed, the files will 
+begin to appear in the format described here. Products that haven't yet 
+been reprocessed will return file names like the above, but will be missing the 
+year, month, package, and date of creation specifications.
+
+Let's get data (and the URL) for only the plot and depth described above by selecting 
+`002.504.030` and the word `basic` in the file name.
 
 Go get it:
 
@@ -1099,61 +1184,68 @@ Go get it:
                             [intersect(grep("002.504.030", tmp.files$data$files$name),
                                        grep("basic", tmp.files$data$files$name))], sep=",")
 
-And again, a plot to show we've downloaded something with data in it:
+Now we have the data and can use it to conduct our analyses. To show that we do 
+in fact have the data let's plot the mean soil temperature by date. 
 
 
+
+    # plot temp ~ date
     plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab="T")
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API//NEON-API-How-To/os-plot-soil-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API/NEON-API-How-To/os-plot-soil-data-1.png)
 
-Note: NEON instrumentation data products are currently being reprocessed 
-on a rolling basis, and as each product is re-deployed, the files will 
-begin to appear in the format described here. Products that haven't yet 
-been reprocessed will return file names like the above, but missing the 
-year, month, package, and date of creation specifications.
-
+As, we'd expect we see daily fluctuation in soil temperature. 
 
 ## Geolocation data
-You may have noticed some of the spatial data referenced above is a bit vague, 
+
+You may have noticed some of the spatial data referenced above are a bit vague, 
 e.g. "soil plot 2, 4th depth below the surface."
 
 How to get spatial data and what to do with it depends on which type of 
 data you're working with.
 
-### Instrumentation data (either aquatic or terrestrial)
+#### Instrumentation data (both aquatic and terrestrial)
 Stay tuned - spatial data for instruments are in the process of entry into 
 the NEON database.
 
-### Observational data - Aquatic
+#### Observational data - Aquatic
 Latitude, longitude, elevation, and associated uncertainties are included in 
 data downloads. Most products also include an "additional coordinate uncertainty" 
 that should be added to the provided uncertainty. Additional spatial data, such 
 as northing and easting, can be downloaded from the API.
 
-### Observational data - Terrestrial
+#### Observational data - Terrestrial
 Latitude, longitude, elevation, and associated uncertainties are included in 
 data downloads. These are the coordinates and uncertainty of the sampling plot; 
 for many protocols it is possible to calculate a more precise location. 
-Instructions for doing this are in the data product user guides, and code is 
-in the `geoNEON` package on GitHub.
+Instructions for doing this are in the respective data product user guides, and 
+code is in the `geoNEON` package on GitHub.
 
 ### Querying a single named location
-Let's look at the named locations in the bird data we downloaded. To do this, 
+Let's look at the named locations in the bird data we downloaded above. To do this, 
 look for the field called `namedLocation`, which is present in all observational 
 data products, both aquatic and terrestrial.
 
 
+    # view named location
     head(brd.point$namedLocation)
 
     ## [1] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
     ## [4] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
     ## 7 Levels: WOOD_006.birdGrid.brd ... WOOD_020.birdGrid.brd
 
-Query the locations endpoint of the API for the first named location, 
-WOOD_013.birdGrid.brd
+Here we see the first six entries in the `namedLocation` column which tells us
+the names of the Terrestrial Observation plots where the bird surveys were 
+conducted. 
+
+We can query the locations endpoint of the API for the first named location, 
+`WOOD_013.birdGrid.brd`. 
 
 
+    # location data 
     req.loc <- GET("http://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd")
+    
+    # make this JSON readable
     brd.WOOD_013 <- fromJSON(content(req.loc, as="text"))
     brd.WOOD_013
 
@@ -1220,34 +1312,35 @@ WOOD_013.birdGrid.brd
     ## 
     ## $data$locationProperties
     ##                             locationPropertyName locationPropertyValue
-    ## 1             Value for Reference Point Position                    B2
-    ## 2                      Value for Plot dimensions           500m x 500m
-    ## 3                Value for Subtype Specification            ninePoints
-    ## 4                         Value for Plot subtype              birdGrid
-    ## 5                            Value for Plot type           distributed
-    ## 6  Value for National Land Cover Database (2001)   grasslandHerbaceous
-    ## 7                      Value for Soil type order             Mollisols
-    ## 8                            Value for Plot size                250000
-    ## 9                              Value for Plot ID              WOOD_013
-    ## 10                      Value for State province                    ND
-    ## 11                             Value for Country          unitedStates
-    ## 12    Value for Positional dilution of precision                   2.4
-    ## 13    Value for Horizontal dilution of precision                     1
-    ## 14              Value for Coordinate uncertainty                  0.28
-    ## 15               Value for Elevation uncertainty                  0.48
-    ## 16                   Value for Minimum elevation                569.79
-    ## 17                              Value for County              Stutsman
-    ## 18                   Value for Coordinate source            GeoXH 6000
-    ## 19                            Value for UTM Zone                   14N
-    ## 20                  Value for Filtered positions                   121
-    ## 21                   Value for Maximum elevation                579.31
-    ## 22                      Value for Geodetic datum                 WGS84
-    ## 23                        Value for Slope aspect                238.91
-    ## 24                      Value for Slope gradient                  2.83
+    ## 1                            Value for Plot type           distributed
+    ## 2                         Value for Plot subtype              birdGrid
+    ## 3                              Value for Plot ID              WOOD_013
+    ## 4                      Value for Plot dimensions           500m x 500m
+    ## 5                Value for Subtype Specification            ninePoints
+    ## 6                            Value for Plot size                250000
+    ## 7             Value for Reference Point Position                    B2
+    ## 8                      Value for Soil type order             Mollisols
+    ## 9  Value for National Land Cover Database (2001)   grasslandHerbaceous
+    ## 10                      Value for Geodetic datum                 WGS84
+    ## 11                      Value for Slope gradient                  2.83
+    ## 12                             Value for Country          unitedStates
+    ## 13                   Value for Minimum elevation                569.79
+    ## 14                   Value for Maximum elevation                579.31
+    ## 15                              Value for County              Stutsman
+    ## 16                      Value for State province                    ND
+    ## 17               Value for Elevation uncertainty                  0.48
+    ## 18                            Value for UTM Zone                   14N
+    ## 19                        Value for Slope aspect                238.91
+    ## 20              Value for Coordinate uncertainty                  0.28
+    ## 21                   Value for Coordinate source            GeoXH 6000
+    ## 22    Value for Positional dilution of precision                   2.4
+    ## 23                  Value for Filtered positions                   121
+    ## 24    Value for Horizontal dilution of precision                     1
 
-Note spatial information under `$data` and under `$data$locationProperties`.
-Also note `$data$locationChildren`: these are the finer scale locations that 
-can be used to calculate precise spatial data for bird observations.
+Note spatial information under `$data$[nameOfCorrdinate]` and under 
+`$data$locationProperties`. Also note `$data$locationChildren`: these are the 
+finer scale locations that can be used to calculate precise spatial data for 
+bird observations.
 
 For convenience, we'll use the `geoNEON` package to make the calculations. 
 First we'll use `def.extr.geo.os()` to get the additional spatial information 
@@ -1255,31 +1348,48 @@ available through the API, and look at the spatial resolution available in the
 initial download:
 
 
+    # load the geoNEON package
     library(geoNEON)
-    brd.point.loc <- def.extr.geo.os(brd.point)
     
-    symbols(brd.point.loc$easting, brd.point.loc$northing, 
-            circles=brd.point.loc$uncorr.coordinateUncertainty, 
+    # extract the spatial data
+    brd.point.loc <- def.extr.geo.os(brd.point)
+
+    ##   |                                                                         |                                                                 |   0%  |                                                                         |=========                                                        |  14%  |                                                                         |===================                                              |  29%  |                                                                         |============================                                     |  43%  |                                                                         |=====================================                            |  57%  |                                                                         |==============================================                   |  71%  |                                                                         |========================================================         |  86%
+
+    # plot bird point locations 
+    # note that decimal degrees is also an option in the data
+    symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+            circles=brd.point.loc$coordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
-    ## Error in symbols(brd.point.loc$easting, brd.point.loc$northing, circles = brd.point.loc$uncorr.coordinateUncertainty, : invalid symbol parameter vector
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API/NEON-API-How-To/brd-extr-NL-1.png)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API//NEON-API-How-To/brd-extr-NL-1.png)
-
-And use `def.calc.geo.os()` to calculate the point locations of 
-observations:
+And use `def.calc.geo.os()` to calculate the point locations of observations.
 
 
     brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
-    
-    symbols(brd.point.pt$easting, brd.point.pt$northing, 
-            circles=brd.point.pt$coordinateUncertainty, 
+
+    ##   |                                                                         |                                                                 |   0%  |                                                                         |=                                                                |   2%  |                                                                         |==                                                               |   3%  |                                                                         |===                                                              |   5%  |                                                                         |====                                                             |   6%  |                                                                         |=====                                                            |   8%  |                                                                         |======                                                           |  10%  |                                                                         |=======                                                          |  11%  |                                                                         |========                                                         |  13%  |                                                                         |=========                                                        |  14%  |                                                                         |==========                                                       |  16%  |                                                                         |===========                                                      |  17%  |                                                                         |============                                                     |  19%  |                                                                         |=============                                                    |  21%  |                                                                         |==============                                                   |  22%  |                                                                         |===============                                                  |  24%  |                                                                         |=================                                                |  25%  |                                                                         |==================                                               |  27%  |                                                                         |===================                                              |  29%  |                                                                         |====================                                             |  30%  |                                                                         |=====================                                            |  32%  |                                                                         |======================                                           |  33%  |                                                                         |=======================                                          |  35%  |                                                                         |========================                                         |  37%  |                                                                         |=========================                                        |  38%  |                                                                         |==========================                                       |  40%  |                                                                         |===========================                                      |  41%  |                                                                         |============================                                     |  43%  |                                                                         |=============================                                    |  44%  |                                                                         |==============================                                   |  46%  |                                                                         |===============================                                  |  48%  |                                                                         |================================                                 |  49%  |                                                                         |=================================                                |  51%  |                                                                         |==================================                               |  52%  |                                                                         |===================================                              |  54%  |                                                                         |====================================                             |  56%  |                                                                         |=====================================                            |  57%  |                                                                         |======================================                           |  59%  |                                                                         |=======================================                          |  60%  |                                                                         |========================================                         |  62%  |                                                                         |=========================================                        |  63%  |                                                                         |==========================================                       |  65%  |                                                                         |===========================================                      |  67%  |                                                                         |============================================                     |  68%  |                                                                         |=============================================                    |  70%  |                                                                         |==============================================                   |  71%  |                                                                         |===============================================                  |  73%  |                                                                         |================================================                 |  75%  |                                                                         |==================================================               |  76%  |                                                                         |===================================================              |  78%  |                                                                         |====================================================             |  79%  |                                                                         |=====================================================            |  81%  |                                                                         |======================================================           |  83%  |                                                                         |=======================================================          |  84%  |                                                                         |========================================================         |  86%  |                                                                         |=========================================================        |  87%  |                                                                         |==========================================================       |  89%  |                                                                         |===========================================================      |  90%  |                                                                         |============================================================     |  92%  |                                                                         |=============================================================    |  94%  |                                                                         |==============================================================   |  95%  |                                                                         |===============================================================  |  97%  |                                                                         |================================================================ |  98%
+
+    # plot bird point locations 
+    # note that decimal degrees is also an option in the data
+    symbols(brd.point.pt$api.easting, brd.point.pt$api.northing, 
+            circles=brd.point.pt$adjCoordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API//NEON-API-How-To/brd-calc-NL-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-API/NEON-API-How-To/brd-calc-NL-1.png)
 
+Now you can see the individual points where the respective point counts were 
+located. 
 
 ## Coming soon
+
+Remote sensing data were added to the API recently (late September 2017). This 
+tutorial will be expanded to include a section on remote sensing data. In the 
+meantime, we can give you the guidance that all the query structure is the same 
+for remote sensing data, but once you get to the files themselves, different 
+handling will be needed, since they are not tabular data.
+
 At the top of this tutorial, we installed the `neonDataStackR` package. 
 This is a custom R package that stacks the monthly files provided by 
 the NEON data portal into a single continuous file for each type of 
@@ -1289,6 +1399,3 @@ will be added soon!
 
 For a guide to using `neonDataStackR` on data downloaded from the portal, 
 look <a href="{{ site.baseurl }}/neonDataStackR" target="_blank">here</a>.
-
-
-
