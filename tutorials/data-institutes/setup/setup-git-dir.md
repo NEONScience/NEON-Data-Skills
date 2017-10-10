@@ -1,7 +1,7 @@
 ---
 syncID: c31429a97db04e868c75bb6866b2a039
 title: "Setup GitHub Working Directory - Quick Intro to Bash"
-description: "This page reviews how to check that github is installed on your computer. It also provides a quick overview of Bash shell. Finally we will setup a working GitHub directory."
+description: "This page reviews how to check that github is installed on your computer. It also provides a quick overview of Bash shell. Finally, we will setup a working GitHub directory."
 dateCreated: 2014-05-06
 authors: Materials adapted from Software Carpentry by NEON staff
 contributors:
@@ -48,7 +48,7 @@ Our goal with shell is to:
 * Set up the directory where we will store all of the GitHub repositories 
 during the Institute, 
 * Make sure Git is installed correctly, and 
-* Gain comfort using bash so that we can use it to work with Git in Week 2. 
+* Gain comfort using bash so that we can use it to work with Git & GitHub. 
 
 ## Accessing Shell 
 How one accesses the shell depends on the operating system being used. 
@@ -182,6 +182,7 @@ $ ls
 data/  elements/  GitHub/  animals.txt  planets.txt  sunspot.txt
 ```
 
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** This material is a much abbreviated form of the 
 <a href="http://swcarpentry.github.io/shell-novice/" target="_blank"> Software Carpentry Unix Shell for Novices</a>
 workhop. Want a better understanding of shell? Check out the full series!
