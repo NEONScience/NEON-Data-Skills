@@ -25,7 +25,7 @@ page will introduce fundamental LiDAR (or lidar) concepts including:
 3. How LiDAR data are used to measure trees. 
 
 #### The Story of LiDAR
-<iframe width="560" height="315" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="//www.youtube.com/embed/m7SXoFv6Sdc?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
 ## Key Concepts
@@ -69,7 +69,7 @@ tool for scientists studying vegetation over large areas.
 ### How LiDAR Works
 
 #### How Does LiDAR Work?
-<iframe width="560" height="315" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 LiDAR is an **active remote sensing** system. An active system means that the 
 system itself generates energy - in this case, light - to measure things on the 
@@ -97,7 +97,7 @@ things like branches but others continue down towards the ground, multiple
 reflections may be recorded from one pulse of light. 
 
 #### LiDAR waveforms
-<iframe width="560" height="315" src="//www.youtube.com/embed/uSESVm59uDQ?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="//www.youtube.com/embed/uSESVm59uDQ?rel=0" frameborder="0" allowfullscreen></iframe>
 
 The distribution of energy that returns to the sensor creates what we call a 
 waveform. The amount of energy that returned to the LiDAR sensor is known as 

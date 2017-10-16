@@ -256,7 +256,7 @@ Read More:
 Check out this short video highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
 
  
 ### View Raster Coordinate Reference System (CRS) in R

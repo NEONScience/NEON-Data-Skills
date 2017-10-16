@@ -45,7 +45,7 @@ NEON field site is located within an eco-climatic domain.
 #### The Science and Design of NEON
 
 Watch this 3:55 minute video explaining the NEON program.
-<iframe width="560" height="315" src="https://www.youtube.com/embed/38JQXPubMoA" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/38JQXPubMoA" frameborder="0" allowfullscreen></iframe>
 
 Please read the following page about NEON's mission:
 
@@ -62,7 +62,7 @@ intersect with your current research or future career goals?
 #### The Spatial Design of NEON
 Watch this 4:22 minute video exploring the spatial design of NEON field sites.
  
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zYr9vII-iu4" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/zYr9vII-iu4" frameborder="0" allowfullscreen></iframe>
 
 Please read the following page about NEON's Spatial Design:
 
@@ -121,7 +121,7 @@ interested in? What kind of data are available?
 
 #### How NEON Collects Data
 Watch this 3:06 minute video exploring the data that NEON collects. 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9IbbdQC1N3A" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/9IbbdQC1N3A" frameborder="0" allowfullscreen></iframe>
 
 Read the
 <a href="http://{{ site.baseurl }}/science-design/data-collection-methods" target="_blank"> Data Collection Methods </a>
@@ -141,7 +141,7 @@ provides. Then, follow the links below to learn more about each collection metho
 Watch this 5 minute video to better understand the NEON Airborne Observation
 Platform (AOP), if you didn't already on the AOP page.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are familiar with LiDAR and
