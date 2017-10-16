@@ -19,7 +19,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plot.ly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>. 
+<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -509,7 +509,7 @@ drought!
 
 ```{r palmer-NDV-plot-only, echo=FALSE, results="hide"}
 # NoData Value in the nCLIMDIV data from 1990-199 US spatial scale 
-nCLIMDIV_US <- read.csv("drought/CDODiv5138116888828_US.txt", header = TRUE)
+nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
 
 #add a day of the month to each year-month combination
 nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
@@ -527,6 +527,7 @@ palmer.droughtUS <- ggplot(data=nCLIMDIV_US,
        ggtitle("Palmer Drought Severity Index - United States")   # title
 
 palmer.droughtUS
+
 ```
 
 This value is just a common placeholder for a **No Data Value**. 
@@ -648,7 +649,3 @@ palmer_plotly0515
 api_create(palmer_plotly0515)
 
 ```
-
-***
-Return to the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/detailed-lesson"> *Ecological Disturbance Teaching Module* by clicking here</a>.

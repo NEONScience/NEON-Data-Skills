@@ -19,8 +19,9 @@ urlTitle: da-viz-usgs-stream-discharge-data-R
 Several factors contributed to the extreme flooding that occurred in Boulder,
 Colorado in 2013. In this data activity, we explore and visualize the data for 
 stream discharge data collected by the United States Geological Survey (USGS). 
-This tutorial is part of the Data Activities that can be used with the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
+The tutorial is part of the Data Activities that can be used 
+with the 
+<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -95,8 +96,7 @@ Source: <a href="http://nwis.waterdata.usgs.gov/usa/nwis/peak/?site_no=06730200"
 This next section explains how to find and locate data through the USGS's 
 <a href="http://waterdata.usgs.gov/nwis" target="_blank"> National Water Information System portal</a>.
 If you want to use the pre-compiled dataset downloaded above, you can skip this 
-section and start again at the
-<a href="{{ site.baseurl }}/da-viz-usgs-stream-discharge-data-R/#work-with-stream-gauge-data" target="_blank"> Work With Stream Gauge Data header</a>.
+section and start again at the Work With Stream Gauge Data header.
 
 #### Step 1: Search for the data
 
@@ -459,13 +459,6 @@ Additional information on USGS streamflow measurements and data:
 USGS data can be downloaded via an API using a command line interface. This is
 particularly useful if you want to request data from multiple sites or build the
 data request into a script. 
-<a href="http://help.waterdata.usgs.gov/faq/automated-retrievals#RT">
+<a href="http://help.waterdata.usgs.gov/faq/automated-retrievals#RT" target="_blank">
 Read more here about API downloads of USGS data</a>.
-
-
-***
-Return to the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/detailed-lesson"> *Ecological Disturbance Teaching Module* by clicking here</a>.
-
-
 

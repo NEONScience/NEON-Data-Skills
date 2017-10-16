@@ -62,7 +62,7 @@ own username & key as appropriate.
 There are lots of ways to plot with the plotly package. We briefly describe two 
 basic functions `plotly()` and `ggplotly()`. For more information on plotting in
 R with Plotly, check out the 
-<a href="https://plot.ly/r/" target="_blank"> Plotly R library page. 
+<a href="https://plot.ly/r/" target="_blank"> Plotly R library page</a>. 
 
 Here we use the example dataframe `economics` that comes with the package. 
 
@@ -132,15 +132,13 @@ The function `plotly_POST()` allows you to post any plotly plot to your account.
 The plots below were generated using R code that harnesses the power of the
 `ggplot2` and the `plotly` packages. The plotly code utilizes the <a href="http://ropensci.org/packages/" target="_blank">RopenSci `plotly` packages - check them out!</a>
 
-<iframe width="460" height="293" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
 
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=460&height=345"></iframe>
 
-<iframe width="460" height="345" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=460&height=345"></iframe>
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/16.embed?width=800&height=600"></iframe>
 
-
-<iframe width="560" height="420" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/16.embed?width=800&height=600"></iframe>
-
-<iframe width="560" height="420" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/19.embed?width=800&height=600"></iframe>
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/19.embed?width=800&height=600"></iframe>
 
 
 <div id="ds-dataTip" markdown="1">

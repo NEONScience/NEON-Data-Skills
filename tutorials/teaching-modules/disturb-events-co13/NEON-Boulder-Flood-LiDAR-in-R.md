@@ -20,7 +20,7 @@ urlTitle: da-viz-neon-lidar-co13flood-R
 This tutorial focuses on how to visualize digital elevation models derived from
 LiDAR data in R. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>.
+<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -438,8 +438,4 @@ Now you have a graphic of your particular area of interest.
 but historical maps?  Check out 
 <a href="http://people.cas.sc.edu/hodgsonm/Published_Articles_PDF/James_Hodgson_Ghoshal_Latiolais_DEM%20DIfferencing_Geomorphology2012.pdf" target="_blank"> Allen James et al. 2012. Geomorphic change detection using historic maps and 
 DEM differencing: The temporal dimension of geospatial analysis. Geomorphology 137:181-198</a>. 
-
-***
-Return to the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/detailed-lesson"> *Ecological Disturbance Teaching Module* by clicking here</a>.
 
