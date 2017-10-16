@@ -70,7 +70,7 @@ have navigated to in your terminal before launching Jupyter Notebooks.
 	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
 	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png"></a>
 	<figcaption> Upon opening the application, you should see a screen similar to this one. 
-	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" Tutorial 0b: Using Jupyter Notebooks</a>
+	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks </a>
 	</figcaption>
 </figure>
 
@@ -144,11 +144,12 @@ There are two other useful keyboard shortcuts for running code:
 For more keyboard shortcuts, check out weidadeyue's 
 <a href="https://www.cheatography.com/weidadeyue/cheat-sheets/jupyter-notebook/" target="_blank">Shortcut cheatsheet</a>. 
 
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  Code cells can be executed in any 
 order. This means that you can overwrite your current variables by running 
 things out of order. When coding in notebooks, be cautions of the order in 
 which you run cells.
-{: .notice}
+</div>
 
 
 If you would like more details on running code in Jupyter Notebooks, please go through the 

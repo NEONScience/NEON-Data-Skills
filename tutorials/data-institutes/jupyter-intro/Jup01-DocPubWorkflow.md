@@ -20,7 +20,7 @@ urlTitle: jupyter-python-intro
 In this tutorial we learn how to effectively and efficiently document and publish our
 workflows online.
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 # Learning Objectives
 At the end of this activity, you will be able to:
@@ -34,7 +34,7 @@ with the Python kernel.
 ## Documentation Is Important
 
 As we read in
-<a href="{{ site.baseurl }}/reproducible-research/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
+<a href="{{ site.baseurl }}/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
 the four facets of reproducible science are:
 
 * Documentation
@@ -100,6 +100,4 @@ resource to learn other skills associated with using Python and Jupyter Notebook
 * <a href="http://nb.bianp.net/sort/views/" target="_blank">Fabian Pedregosa's Notebook Gallery</a>
 
 
-In the
-[next tutorial]({{site.baseurl}}/jupyter-python-notebook)
-we will learn more about working with Jupyter Notebooks.
+In the next tutorial we will learn more about working with Jupyter Notebooks.
