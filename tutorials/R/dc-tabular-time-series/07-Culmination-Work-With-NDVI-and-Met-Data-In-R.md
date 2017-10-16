@@ -75,7 +75,7 @@ following tutorials, if you are new to either of the `R` packages.
 Normalized Difference Vegetation Index (NDVI) is an indicator of how green
 vegetation is.  
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rxOMhQwApMc" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/rxOMhQwApMc" frameborder="0" allowfullscreen></iframe>
 
 NDVI is derived from remote sensing data based on a ratio the
 reluctance of visible red spectra and near-infrared spectra.  The NDVI values

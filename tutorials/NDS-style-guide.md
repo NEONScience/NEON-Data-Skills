@@ -206,7 +206,7 @@ It can have multiple paragraphs too.
 Use the embed code (found under Share > Embed) from YouTube to add a video to
 lessons.  
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe> 
+<iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe> 
 
 ***
 

@@ -18,7 +18,7 @@ urlTitle: tm-disturbance-events-co13flood
 
 #### The 2013 Colorado Front Range Flood
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IHIckvWhwoo" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/IHIckvWhwoo" frameborder="0" allowfullscreen></iframe>
  
 ## Why was the Flooding so Destructive? 
 
@@ -351,7 +351,7 @@ infrastructure.
 We could view photos from before and after the disturbance event to see where
 erosion or sedimentation has occurred. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bUcWERTM-OA?rel=0&loop=1" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/bUcWERTM-OA?rel=0&loop=1" frameborder="0" allowfullscreen></iframe>
 
 Images are great for an overall impression of what happened, where soil has 
 eroded, and where soil or rocks have been deposited. But it is hard to 
@@ -392,7 +392,7 @@ However, this relies on specialized equipment and is challenging to automate.
 #### 5. LiDAR
 A newer technology is Light Detection and Ranging (LiDAR or lidar). 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EYbhNSUnIdU" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/EYbhNSUnIdU" frameborder="0" allowfullscreen></iframe>
 
 Watch this video to see how LiDAR works.  
 

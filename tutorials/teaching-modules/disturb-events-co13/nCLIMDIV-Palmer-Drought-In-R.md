@@ -17,9 +17,9 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
-R and Plot.ly. The tutorial is part of the Data Activities that can be used 
+R and Plot.ly.The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/" target="_blank"> *Ecological Disturbance Teaching Module*</a>. 
+<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -444,9 +444,7 @@ The nCLIMDIV dataset includes not only the Palmer Drought Severity Index but
 also several other measures of precipitation, drought, and temperature. Choose one
 and repeat the steps above to see if a different but related measure shows a 
 similar pattern. Make sure to go back to the metadata so that you understand what
-the index or measurement you choose represents.  
-
-
+the index or measurement you choose represents. 
 
 </div>
 
@@ -609,6 +607,3 @@ previous code.
     
     api_create(palmer_plotly0515)
 
-***
-Return to the 
-<a href="{{ site.basurl }}/teaching-modules/disturb-events-co13/detailed-lesson"> *Ecological Disturbance Teaching Module* by clicking here</a>.

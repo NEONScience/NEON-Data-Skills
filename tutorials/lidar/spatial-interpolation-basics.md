@@ -33,7 +33,7 @@ present the main graphics and topics covered in the workshop.
 
 #### How Does LiDAR Works? 
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="//www.youtube.com/embed/EYbhNSUnIdU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 
 ## About Rasters
