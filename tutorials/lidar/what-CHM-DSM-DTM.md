@@ -18,23 +18,23 @@ urlTitle: chm-dsm-dtm-gridded-lidar-data
 
 ## Common LiDAR Data Products
 
-* [Digital Terrain Model](http://{{ site.baseurl }}/3d/SJER_DTM_3d.html) - This 
+* <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html target="_blank">Digital Terrain Model</a> - This 
 product represents the elevation of the ground.
-* [Digital Surface Model](http://{{ site.baseurl }}/3d/SJER_DSM_3d.html) - This 
+* <a href="{{ site.baseurl }}/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This 
 represents the elevation of the tallest surfaces at that point. Imagine draping 
 a sheet over the canopy of a forest, the DEM contours with the heights of the 
 trees where there are trees but the elevation of the ground when there is a 
 clearing in the forest.
 
-* [Canopy Height Model](http://{{ site.baseurl }}/3d/SJER_CHM_3d.html) - This 
+* <a href="{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This 
 represents the difference between a Digital Terrain Model and a Digital Surface 
 Model and gives you the height of the objects (in a forest, the trees) that are 
 on the surface of the earth.
 
 <figure class="third">
-    <a href="http://{{ site.baseurl }}/3d/SJER_DTM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
-    <a href="http://{{ site.baseurl }}/3d/SJER_DSM_3d.html"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
-    <a href="http://{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
+    <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
+    <a href="{{ site.baseurl }}/3d/SJER_DSM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
+    <a href="{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
     
     <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
      Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
@@ -48,7 +48,7 @@ points may be located anywhere in space are not aligned within any particular
 grid.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/Lidar_points.png">
+	<a href="{{ site.baseurl }}/images/lidar/Lidar_points.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/Lidar_points.png"></a>
 	<figcaption> Representative point cloud data. Source: National Ecological 
 	Observatory Network (NEON)  
@@ -60,9 +60,9 @@ format is a compressed format that can better handle the millions of points that
 are often associated with LiDAR data point clouds.
 
 ### Free Point Cloud Viewers for LiDAR Point Clouds
-- [Fusion: US Forest Service RSAC](http://www.fs.fed.us/eng/rsac/fusion/)
-- [Cloud compare](http://www.danielgm.net/cc/)
-- [Plas.io website](http://plas.io) 
+- <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest Service RSAC</a>
+- <a href="http://www.danielgm.net/cc/" target="_blank">Cloud compare</a>
+- <a href="http://plas.io" target="_blank">Plas.io website</a>
 
 For more on viewing LiDAR point cloud data using the Plas.io online
 viewer, see our tutorial 
@@ -83,7 +83,7 @@ means that each pixel represents a 1m by 1m area on the ground.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png">
+	<a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png"></a>
 	<figcaption> Raster or “gridded” data are stored as a grid of values which 
 	are rendered on a map as pixels. Each pixel value represents an area on the 
@@ -148,7 +148,7 @@ don't contains any lidar points. These cells will have a "no data" value if we
 process our raster in this way. 
 
 <figure>
-    <a href="http://{{ site.baseurl }}/gridding-interpolation-spatial-data-gif">
+    <a href="http://{{ site.baseurl }}/gridding-interpolation-spatial-data-gif" target="_blank">
     <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
@@ -172,5 +172,5 @@ predictions which is useful to know, if you are doing research.
 ***
 
 For learning more on how to work with LiDAR data, consider going through the 
-<a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">*Introduction to Working With Raster Data in R*</a>
+<a href="{{ site.baseurl }}/raster-data-series" target="_blank">*Introduction to Working With Raster Data in R*</a> 
 tutorial series.  
