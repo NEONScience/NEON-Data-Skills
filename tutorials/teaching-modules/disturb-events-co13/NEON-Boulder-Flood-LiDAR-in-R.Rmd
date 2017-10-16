@@ -61,7 +61,7 @@ directory accordingly.
  
 ## Research Question: How do We Measure Changes in Terrain?
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/m7SXoFv6Sdc?rel=0&start=105" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/m7SXoFv6Sdc?rel=0&start=105" frameborder="0" allowfullscreen></iframe>
 
 #### Questions
 1. How can LiDAR data be collected?  

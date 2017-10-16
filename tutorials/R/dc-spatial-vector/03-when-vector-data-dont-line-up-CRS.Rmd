@@ -87,7 +87,7 @@ for that state.
 Check out this short video highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
 
 In this tutorial we will learn how to identify and manage spatial data 
 in different projections. We will learn how to `reproject` the data so that they

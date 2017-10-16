@@ -53,7 +53,7 @@ on your computer to complete this tutorial.
 
 ## The Basics of Imagery - About Spectral Remote Sensing Data
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
 ## About Raster Bands in R 
 As discussed in the
