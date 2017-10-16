@@ -26,7 +26,7 @@ At the end of this activity, you will be able to:
 * Be able to use the `git clone` command to create a local version of a GitHub
 repository on your computer.
 
-## Additional Resources:
+## Additional Resources
 
 * <a href="http://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf" target="_blank"> Diagram of Git Commands </a>
 -- this diagram includes more commands than we will cover in this series but
