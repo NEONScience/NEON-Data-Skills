@@ -4,7 +4,7 @@ title: "Git 03: Git Clone - Work Locally On Your Computer"
 description: "This tutorial teaches you how to clone or copy a
 GitHub repository to your local computer."
 dateCreated: 2016-05-06
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:
@@ -88,9 +88,7 @@ this should be `YOUR-USER-NAME/DI-NEON-participants`.
 Then on your local computer:
 
 1. Your computer should already be setup with Git and a bash shell interface.
-If not, please refer to the
-<a href="{{ site.baseurl}}/workshop-event/NEON-DI-2017/setup " target="_blank"> Institute setup materials </a>
-before continuing.
+If not, please refer to the Institute setup materials before continuing.
 2. Open bash on your computer and navigate to the local GitHub directory that
 you created using the Set-up Materials.
 

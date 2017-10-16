@@ -3,7 +3,7 @@ syncID: e5c107fbf4a248588d5dbf7fbaffd49f
 title: "Git 04: Markdown Files"
 description: "This tutorial covers the basics of writing a document using the markdown language."
 dateCreated: 2016-05-06
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:
@@ -39,7 +39,7 @@ and also the project that you might want to work on at the NEON Data Institute.
 
 
 <a class="link--button link--arrow" href="{{ site.baseurl }}/di-rs-capstone">
-Read more about the Data Institute Capstone Project.</a>
+Read more about the Data Institute Capstone Project</a>
 
 ## Markdown Formatting
 
@@ -69,7 +69,7 @@ Have a look at the markdown below:
 	  The use of the highlight ( `text` ) will be reserved for denoting code.
     To add emphasis to other text use **bold** or *italics*.
 
-Notice that this sentence uses both a code highlight "``", bold and italics.
+Notice that this sentence uses a code highlight "``", bold and italics.
 As a rendered markdown chunk, it looks like this:
 
 The use of the highlight ( `text` ) will be reserve for denoting code when
@@ -143,13 +143,15 @@ Next, add a revised Capstone Project idea to the Markdown document using the
 heading `## Capstone Project`. Be sure to specify in the document the types of
 data that you think you may require to complete your project.
 
-</div>
-
 **NOTE:** The Data Institute repository is a public repository visible to anyone
 with internet access. If you prefer to not share your bio information publicly,
 please submit your Markdown document using a pseudonym for your name. You may also
 want to use a pseudonym for your GitHub account. HINT: cartoon character names work well.
 Please email us with the pseudonym so that we can connect the submitted document to you.
+
+
+</div>
+
 
 ****
 
