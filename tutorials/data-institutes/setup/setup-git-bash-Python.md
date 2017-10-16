@@ -16,7 +16,6 @@ tutorialSeries:
 urlTitle: setup-git-bash-python
 ---
 
-{% include _toc.html %} 
 
 This page outlines the tools and resources that you will need to complete 
 the Data Institute activities. Please be sure to have **the laptop you will be 
