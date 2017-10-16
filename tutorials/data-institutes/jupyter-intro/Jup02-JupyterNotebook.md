@@ -179,7 +179,7 @@ removed.
 
 **Resources for Learning Markdown**
 
-* Review the <a href="{{ site.baseurl }}/markdown-files" target="_blank"> Pre-Institute Week 2 materials on the basics of Markdown files</a>
+* Review the NEON tutorial <a href="{{ site.baseurl }}/markdown-files" target="_blank"> *Git 04: Markdown Files*</a>
 * Adam Pritchard's <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Markdown Cheatsheet </a>
 
 ## Saving & Quitting

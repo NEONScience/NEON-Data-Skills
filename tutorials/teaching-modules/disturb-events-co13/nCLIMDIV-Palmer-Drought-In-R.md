@@ -17,9 +17,9 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
-R and Plot.ly.The tutorial is part of the Data Activities that can be used 
+R and Plot.ly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -36,8 +36,6 @@ After completing this tutorial, you will be able to:
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
 
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.   
 
 #### R Libraries to Install:
 
@@ -444,7 +442,9 @@ The nCLIMDIV dataset includes not only the Palmer Drought Severity Index but
 also several other measures of precipitation, drought, and temperature. Choose one
 and repeat the steps above to see if a different but related measure shows a 
 similar pattern. Make sure to go back to the metadata so that you understand what
-the index or measurement you choose represents. 
+the index or measurement you choose represents.  
+
+
 
 </div>
 
@@ -455,21 +455,7 @@ If you choose to explore other time frames or spatial scales you may come across
 data that appear as if they have a negative value `-99.99`. If this were real, it would be a *very severe*
 drought!  
 
-
-    ## Warning in file(file, "rt"): cannot open file 'drought/
-    ## CDODiv5138116888828_US.txt': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    ## Error in paste0(nCLIMDIV_US$YearMonth, "01"): object 'nCLIMDIV_US' not found
-
-    ## Error in as.Date(nCLIMDIV_US$Date, format = "%Y%m%d"): object 'nCLIMDIV_US' not found
-
-    ## Error in str(nCLIMDIV_US$Date): object 'nCLIMDIV_US' not found
-
-    ## Error in ggplot(data = nCLIMDIV_US, aes(Date, PDSI)): object 'nCLIMDIV_US' not found
-
-    ## Error in eval(expr, envir, enclos): object 'palmer.droughtUS' not found
+![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R/palmer-NDV-plot-only-1.png)
 
 This value is just a common placeholder for a **No Data Value**. 
 
@@ -606,4 +592,3 @@ previous code.
     # skip this step if you haven't connected a Plotly account
     
     api_create(palmer_plotly0515)
-
