@@ -167,7 +167,7 @@ palmer.hydro
 
 ## ----palmer-NDV-plot-only, echo=FALSE, results="hide"--------------------
 # NoData Value in the nCLIMDIV data from 1990-199 US spatial scale 
-nCLIMDIV_US <- read.csv("drought/CDODiv5138116888828_US.txt", header = TRUE)
+nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
 
 #add a day of the month to each year-month combination
 nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
@@ -185,6 +185,7 @@ palmer.droughtUS <- ggplot(data=nCLIMDIV_US,
        ggtitle("Palmer Drought Severity Index - United States")   # title
 
 palmer.droughtUS
+
 
 ## ----palmer-no-data-values-----------------------------------------------
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 

@@ -21,7 +21,7 @@ Colorado in 2013. In this data activity, we explore and visualize the data for
 stream discharge data collected by the United States Geological Survey (USGS). 
 The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -36,8 +36,6 @@ After completing this tutorial, you will be able to:
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
 
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
 
 ### R Libraries to Install:
 
@@ -112,10 +110,10 @@ You can directly access the data for this station through the "Access Data" link
 on the map icon or searching for this site on the 
 <a href="http://waterdata.usgs.gov/nwis" target="_blank"> National Water Information System portal </a>.
 
-On the <a href="http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no=06730200
-" target="_blank"> Boulder Creek stream gauge 06730200 page</a>, we can now see 
-summary information about the types of data available for this station.  We want
-to select **Daily Data** and then the following parameters: 
+On the 
+<a href="http://waterdata.usgs.gov/nwis/inventory?agency_code=USGS&site_no=06730200" target="_blank"> Boulder Creek stream gauge 06730200 page</a>
+, we can now see summary information about the types of data available for this 
+station. We want to select **Daily Data** and then the following parameters: 
 
 * Available Parameters = **00060 Discharge (Mean)**
 * Output format = **Tab-separated**

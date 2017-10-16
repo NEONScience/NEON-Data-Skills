@@ -21,7 +21,7 @@ Colorado in 2013. In this data activity, we explore and visualize the data for
 precipitation (rainfall) data collected by the National Weather Service's 
 Cooperative Observer Program. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -38,9 +38,6 @@ After completing this tutorial, you will be able to:
 ### Things You'll Need To Complete This Lesson
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
-
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
 
 ### R Libraries to Install:
 
@@ -205,10 +202,6 @@ nteractive plots.
     ## The following object is masked from 'package:ggplot2':
     ## 
     ##     last_plot
-
-    ## The following object is masked from 'package:httr':
-    ## 
-    ##     config
 
     ## The following object is masked from 'package:stats':
     ## 
@@ -620,4 +613,5 @@ inches.
 
 #### Question
 Compare `HPCP` and `PRECIP`. Did we do the conversion correctly?  
+
 

@@ -20,7 +20,7 @@ urlTitle: da-viz-neon-lidar-co13flood-R
 This tutorial focuses on how to visualize digital elevation models derived from
 LiDAR data in R. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.basurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -36,8 +36,6 @@ to raster objects in R)
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
 
- **R Skill Level:** Intermediate - To succeed in this tutorial, you will need to
-have basic knowledge for use of the R software program.  
 
 ### R Libraries to Install:
 
@@ -126,10 +124,6 @@ set our working directory to the location of our data.
     ## Attaching package: 'raster'
 
     ## The following object is masked from 'package:plotly':
-    ## 
-    ##     select
-
-    ## The following object is masked from 'package:dplyr':
     ## 
     ##     select
 

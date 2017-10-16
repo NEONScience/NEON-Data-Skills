@@ -119,7 +119,7 @@ provides a comparison of the different indices.
 This interactive plot shows the Palmer Drought Severity Index from 1991 through 
 2015 for Colorado. 
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/2.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/2.embed"></iframe>
 
 Palmer Drought Severity Index for Colorado 1991-2015. Source: National 
 Ecological Observatory Network (NEON) based on data from 
@@ -191,7 +191,7 @@ The figure below show the total precipitation each month from 1948 to 2013 for
 the National Weather Service's COOP site Boulder 2 (Station ID:050843) that is 
 centrally located in Boulder, CO. 
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/6.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/6.embed"></iframe>
 
 Notice the general pattern of rainfall across the 65 years. 
 
@@ -210,7 +210,7 @@ Explore the data and answer the following questions:
 1. What was the total precipitation on these days? 
 1. In what units is this value?
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/4.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/4.embed"></iframe>
 
 
 **Optional Data Activity:** <a href="{{ site.baseurl }}/da-viz-coop-precip-data-R" target="_blank">Visualize <b>Precipitation Data</b> in R to Better Understand the 2013 Colorado Floods</a>.
@@ -248,7 +248,7 @@ Boulder is reported in daily averages.  Take a look at the interactive plot
 below to see how patterns of discharge seen in these data?
 
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/8.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/8.embed"></iframe>
 
 #### Questions: 
 
