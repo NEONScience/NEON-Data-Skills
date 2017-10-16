@@ -3,7 +3,7 @@ syncID: d447575df18a45618504010a416da4ed
 title: "Git 01: Intro to Git Version Control"
 description: "This tutorial introduces the importance of version control in scientific workflows."
 dateCreated: 2016-05-06
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:

@@ -3,7 +3,7 @@ syncID: ea49cde9b9514a89b3fb232708bbadb5
 title: "Git 05: Git Add Changes - Commit"
 description: "This tutorial covers how to edit a local version of a Git repository and then commit changes to it to be tracked in the Git version control system."
 dateCreated: 2016-05-06
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:
@@ -171,11 +171,9 @@ over time and when those changes occurred. Be sure that your message
 covers the change.
 
 <div id="ds-dataTip" markdown="1">
-
-<i class="fa fa-star"></i> **Data Tip:** It is good practice to keep commit messages to <50 characters.
-
+<i class="fa fa-star"></i> 
+**Data Tip:** It is good practice to keep commit messages to fewer than 50 characters.
 </div>
-
 
     # commit changes with message
     $ git commit -m “new example file for demonstration”
@@ -211,7 +209,7 @@ in the shell. This allows you to keep track of change that you've made and what
 life of a project. <code> git add</code> specifies what will go in a snapshot (putting things
  in the staging area), and <code> git commit </code> then actually takes the snapshot and
  makes a permanent record of it (as a commit). Image and caption source:
-<a href="http://swcarpentry.github.io/git-novice/04-changes.html" target="_blank"> Software Carpentry</a>
+<a href="http://swcarpentry.github.io/git-novice/04-changes/" target="_blank"> Software Carpentry</a>
 	</figcaption>
 </figure>
 
@@ -324,7 +322,7 @@ is in our individual user account, not NEONS. This fork is
  do not automatically transfer to the central repo. We need to sync them! We will
  learn how to sync these two
 repos in the next tutorial 
-[Git 06: Syncing GitHub Repos with Pull Requests]({{ site.baseurl}}/reproducible-research/pre-institute2/git06).
+<a href="{{ site.baseurl}}/github-pull-requests" target="_blank"> Git 06: Syncing GitHub Repos with Pull Requests </a>.
 
 ## Summary Workflow - Committing Changes
 
@@ -347,6 +345,6 @@ On the github.com website:
 
 ****
 
-*Got questions? No problem. Leave your question in the comment box below.
+*Have questions? No problem. Leave your question in the comment box below.
 It's likely some of your colleagues have the same question, too! And also
 likely someone else knows the answer.*

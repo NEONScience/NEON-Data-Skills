@@ -1,7 +1,7 @@
 ---
-syncID: 1testCSS
-title: "Styles for CSS"
-description: "This is a test page with the css styled."
+syncID: NDS-style-guide
+title: "NEON Data Skills Styles"
+description: "This is an example page with the css styled."
 dateCreated:   2015-08-01
 authors: Megan A. Jones
 contributors: Leslie Goldman
@@ -15,8 +15,9 @@ tutorialSeries:
 urlTitle: styles-css
 ---
 
-This page shows all the NEON stylings as currently shown on the
-<a href="http://neonscience.github.io/NEON-Lesson-Building-Data-Skills/example-post" target="_blank"> NEONDataSkills.org website</a>.  
+This page shows all the Markdown and html stylings used for NEON Data Skills on
+the NEONScience.org website.  
+This is a non-published page used only for reference and testing. 
 
 ## Rule
 
@@ -100,18 +101,6 @@ should be highlighted as input, and `2` should be highlighted as output. All
 should be visually seperate from the surrounding text. 
 
 
-I could make code chunks look like this if needed. This is designated with: 
-
-div id="ds-code-r" markdown="1"
-
-<div id="ds-code-r" markdown="1">
-
-	 # add 1 +1
-	 1+1
-	 2
-
-</div>  
-
 
 
 
@@ -128,25 +117,6 @@ def ls_dataset(name,node):
     
 f.visititems(ls_dataset)
 ```
-
-
-It could also be written like this. This is designated with:
-
-div id="ds-code-python" markdown="1"
-
-
-<div id="ds-code-python" markdown="1">
-
-```python
-#ls_dataset displays the name, shape, and type of datasets in hdf5 file
-def ls_dataset(name,node):
-    if isinstance(node, h5py.Dataset):
-        print(node)
-    
-f.visititems(ls_dataset)
-
-```
-</div>  
 
 
 ***

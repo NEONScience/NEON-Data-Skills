@@ -3,7 +3,7 @@ syncID: 1d30df8e044b4c9e9098ac47310a0380
 title: "Git 02: GitHub.com - Repos & Forks"
 description: "This tutorial teaches you how to fork, or copy, an existing GitHub repository."
 dateCreated: 2016-05-06
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:
@@ -60,7 +60,7 @@ discounts/options; normally $7/month).
 
 ## Navigate GitHub
 
-### Repositories AKA Repos
+### Repositories, AKA Repos
 
 Let's first discuss the repository or "repo". (The cool kids say repo, so we will
 jump on the git cool kid bandwagon) and use "repo" from here on in. According to
@@ -108,7 +108,7 @@ on the following 3 for now:
 * **Issues:** Submit discussion topics, or problems that you are having with
 the content in the repo, here.
 * **Pull Requests:** Submit changes to the repo for review /
-acceptance. We will explore pull requests more in the <a href="{{ site.baseurl }}/github-git-add" target="_blank">
+acceptance. We will explore pull requests more in the <a href="{{ site.baseurl }}/github-pull-requests" target="_blank">
 Git 06 tutorial.</a>
 
  <figure>
@@ -133,7 +133,7 @@ A bit further down the page, you'll notice a few other links:
 * **commits:** a commit is a saved and documented change to the content
 or structure of the repo. The commit history contains all changes that
 have been made to that repo. We will discuss commits more in
-<a href="{{ site.baseurl }}/github-git-add"> Git 05: Git Add Changes -- Commits </a>.
+<a href="{{ site.baseurl }}/github-git-add" target="_blank"> Git 05: Git Add Changes -- Commits </a>.
 
 ## Fork a Repository
 
@@ -217,6 +217,6 @@ On the github.com website:
 
 ****
 
-*Got questions? No problem. Leave your question in the comment box below.
+*Have questions? No problem. Leave your question in the comment box below.
 It's likely some of your colleagues have the same question, too! And also
 likely someone else knows the answer.*
