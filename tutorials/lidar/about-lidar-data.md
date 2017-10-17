@@ -170,10 +170,8 @@ points is known as a LiDAR point cloud.
 
 The commonly used file format to store LIDAR point cloud data is called .las 
 which is a format supported by the Americal Society of Photogrammetry and Remote 
-Sensing (ASPRS). Recently, the 
-[.laz](http://www.laszip.org/) 
-format has been 
-developed by Martin Isenberg of LasTools. The differences is that .laz is a 
+Sensing (ASPRS). Recently, the <a href= "http://www.laszip.org/" target="_blank"> .laz</a> 
+format has been developed by Martin Isenberg of LasTools. The differences is that .laz is a 
 highly compressed version of .las.
 
 Data products derived from LiDAR point cloud data are often raster files that 
@@ -226,7 +224,7 @@ various methods.
 
 ## Additional Resources
 
-*	What is the [las file format](http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html "las file format: ")?
-*	Using .las with Python? [las: python ingest](http://laspy.readthedocs.org/en/latest/tut_background.html)
-*	Specifications for [las v1.3](http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf)
+*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target"_blank">las file format</a>?
+*	Using .las with Python? <a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank">las: python ingest</a>
+*	Specifications for <a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank">las v1.3</a>
 
