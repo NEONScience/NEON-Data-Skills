@@ -33,7 +33,7 @@ the `knitr` package.
 ## Documentation Is Important
 
 As we read in
-<a href="{{ site.baseurl }}/workshop-event/NEON-DI-2016/NEON-repSci" target="_blank"> the Reproducible Science overview</a>,
+<a href="{{ site.baseurl }}/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
 the four facets of reproducible science are:
 
 * Documentation
@@ -65,8 +65,9 @@ to create documents that combine R code, output and text.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Most of the
-<a href="https://github.com/NEONInc/NEON-Data-Skills/" target="_blank">neondataskills.org </a> pages on this site are built using R Markdown files.
+<a href="https://github.com/NEONScience/NEON-Data-Skills/" target="_blank">NEON Data Skills educational resources</a> on this site are built using R Markdown files.
 </div>
+
 
 
 ### Why R Markdown?
@@ -109,6 +110,5 @@ generation with R --
 <a href="http://yihui.name/knitr/" target="_blank"> Yihui Xi -- knitr package creator</a>
 
 
-In the
-[next tutorial]({{site.baseurl}}/rmd-code-intro)
-we will learn more about working with the R Markdown format in R Studio.
+In the next tutorial we will learn more about working with the R Markdown format in RStudio.
+

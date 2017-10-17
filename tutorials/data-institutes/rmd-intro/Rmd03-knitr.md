@@ -121,8 +121,10 @@ results of the code that you included in the RMD document.
 
 ## Data Institute Participants: Complete Week 2 Assignment
 
-* Read [this week’s assignment]({{ site.baseurl }}di-rmd-activity) closely.
-Edit your RMD document to ensure that you have completed all of the steps
+* Read 
+<a href="{{ site.baseurl }}/di-rmd-activity" target="_blank"> this week’s assignment </a>
+closely.
+Edit your RMarkdown document to ensure that you have completed all of the steps
 required by assignment.
 * Be sure to carefully check your knitr output to make sure it is rendering the
 way you think it should!
