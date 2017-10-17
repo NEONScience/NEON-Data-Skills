@@ -19,7 +19,7 @@ urlTitle: packages-r
 ## R and RStudio
 
 Once R and RStudio are installed (in
-<a href="{{ site.baseurl }}/tutorial-series/setup-your-computer" target="_blank"> *Install Git, Bash Shell & R / RStudio*</a>
+<a href="{{ site.baseurl }}/tutorial-series/setup-your-computer" target="_blank"> *Install Git, Bash Shell, R & RStudio*</a>
 ), open RStudio to make sure it works and you don’t get any error messages. Then,
 install the needed R packages. 
 
