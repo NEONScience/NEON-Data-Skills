@@ -20,7 +20,7 @@ This tutorial covers adding new edits or contents from your forked repo on githu
 and a central repo.
 
 <div id="ds-objectives" markdown="1">
-# Learning Objectives
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain the concept of base fork and head fork.
