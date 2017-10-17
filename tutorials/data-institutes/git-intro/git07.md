@@ -23,7 +23,7 @@ before starting new edits in your local repo.
 
 <div id="ds-objectives" markdown="1">
 
-# Learning Objectives
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain why it is important to update a local repo before beginning edits.
