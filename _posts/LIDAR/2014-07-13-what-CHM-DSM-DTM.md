@@ -19,7 +19,6 @@ permalink: /self-paced-tutorial/2_LiDAR-Data-Concepts_Activity2/
 comments: true
 ---
 
-{% include _toc.html %}
 
 ## Common LiDAR Data Products
 
