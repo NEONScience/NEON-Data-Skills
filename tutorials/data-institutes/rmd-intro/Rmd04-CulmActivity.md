@@ -63,8 +63,7 @@ R Markdown files. The components of the finished RMD and HTML files should inclu
 * A .Rmd file that will be knit to an HTML output. 
 * Your name as an author of the file.
 * At the top of the .Rmd file, add your **bio** and **project summary**
-that 
-[you wrote and submitted in week 2 as a `.md` file]({{ site.baseurl }}/workshop-event/NEON-DI-2016/). 
+that you wrote and submitted in Week 2 as a `.md` file. 
 Please update your project summary if you have changes. 
 
 * In the RMD file, create a script that does the following: 
@@ -92,4 +91,5 @@ Once you have completed the steps above:
 
 ## Supporting Materials
 
-If you would like a primer on plotting raster files in R, visit the NEON Data Skills tutorial: <a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>.  
+If you would like a primer on plotting raster files in R, visit the NEON Data Skills tutorial series: 
+<a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>.  

@@ -17,11 +17,12 @@ urlTitle: set-working-directory-r
 
 
 
-This tutorial explains how to set a working directory in `R`. The working 
-directory points to a directory or folder on the computer where data that you 
-wish to work with in `R` is stored.
-
-**R Skill Level:** Beginner
+The primary goal of this tutorial is to explain how to set a working directory 
+in `R`. The working directory points to a directory or folder on the computer 
+where data that you wish to work with in `R` is stored. Along the way it teaches
+how to download and unzip the data files that accompany many NEON Data Skills 
+tutorials and the concepts of file paths – use the menu bar at right to navigate 
+to your desired topic.  
 
 <div id="ds-objectives" markdown="1">
 
@@ -44,11 +45,9 @@ preferably, RStudio loaded on your computer.
 
 </div>
 
-## NEON Data Skills Tutorials
-Many NEON tutorials, available through the 
-[NEON Data Skills portal](http://www.NEONdataskills.org "NEON Data Skills Portal"),
-utilize teaching data subsets which are hosted on the NEON Data Skills 
-fig**share** repository. If a data subset is required for a tutorial it can be 
+## Set Up For NEON Data Skills Tutorials
+Many NEON data tutorials utilize teaching data subsets which are hosted on the 
+NEON Data Skills fig**share** repository. If a data subset is required for a tutorial it can be 
 downloaded at the top of each tutorial in the **Download Data** section. 
 
 Prior to working with any data in `R`, we must set the **working directory** to
@@ -60,18 +59,17 @@ that `R` cannot find the file.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
 written assuming the working directory is the parent directory to the 
-uncompressed .zip file of downloaded data.  This allows for multiple data 
+uncompressed .zip file of downloaded data. This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 
 </div>
 
 * Wondering why we're saying **directory** instead of **folder**?  See our
-discussion of 
-<a href="{{ site.baseurl }}/set-working-directory-r#directory-vs-folder"> Directory vs. Folder.</a>
+discussion of Directory vs. Folder at the end of this tutorial. 
 
 ## Download & Uncompress the Data
 
 #### 1) Download
- First, we will download the data to a location on the computer. To download the 
+First, we will download the data to a location on the computer. To download the 
 data for this tutorial, click the blue button **Download NEON Teaching Data 
 Subset: Meteorological Data for Harvard Forest** within the box at the 
 top of this page. 
@@ -126,8 +124,14 @@ named `NEON-DS-Met-Time-Series` containing all the subdirectories and files that
 into the data directory. If the latter happens, they need to be moved into a 
 `data/NEON-DS-Met-Time-Series` directory.
 
-* Want to make sure you have these steps down!  Try it with another file in this
-<a href="{{ site.baseurl }}/set-working-directory-r#challenge-download-and-unzip-teaching-data-subset"> Challenge activity on Downloading & Unzipping Data Subsets.</a>
+
+<div id="ds-challenge" markdown="1">
+## Challenge: Download and Unzip Teaching Data Subset
+Want to make sure you have these steps down! Prepare the 
+**Site Layout Shapefiles Teaching Data Subset** so that the files
+are accessible and ready to be opened in`R`. 
+</div>
+
 
 The directory should be the same as in this screenshot (below). Note that 
 `NEON-DS-Site-Lyout-Files` directory will only be in your directory if you 
@@ -156,8 +160,7 @@ paths written in our scripts only consist of the file path relative to that base
  path (a **relative path**). 
 
 * If you are unfamiliar with the term **full path**, **base path**, or **relative
- path**, please see the section on
-<a href="{{ site.baseurl }}/set-working-directory-r#full-base-and-relative-paths"> Full, Base, and Relative Paths</a>
+ path**, please see the section below on *Full, Base, and Relative Paths*
 for a more detailed explanation before continuing with this tutorial.  
 
 ### Find a Full Path to a File in Unknown Location
@@ -249,6 +252,8 @@ Notice the the backslashes used in Windows paths must be changed to slashes in
 <i class="fa fa-star"></i>**Data Tip:** If using RStudio, you can view the 
 contents of the working directory in the Files pane.
 </div>
+
+
  <figure>
 	 <a href="{{ site.baseurl }}/images/set-working-dir/RStudio-working-directory.png">
 	 <img src="{{ site.baseurl }}/images/set-working-dir/RStudio-working-directory.png"></a>
@@ -257,7 +262,7 @@ contents of the working directory in the Files pane.
 	 (NEON) 
 	 </figcaption>
 </figure> 
-</div>
+
 
 ### Set the Working Directory: Using RStudio GUI
 
@@ -305,7 +310,7 @@ contents of the working directory in the Files pane.
 	 </figcaption>
 </figure> 
 
-
+***
 ***
 
 ## Directory vs. Folder
@@ -320,20 +325,8 @@ hold other directories and/or files. When we set the *working directory*, we
 are telling the computer the location of the directory (or folder) to start with
  when looking for other files or directories, or to save any output to. 
 
-Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}/set-working-directory-r#download--uncompress-the-data"> Download & Uncompress The Data</a>
 
 ***
-
-<div id="ds-challenge" markdown="1">
-## Challenge: Download and Unzip Teaching Data Subset
-Prepare the **Site Layout Shapefiles Teaching Data Subset** so that the files
-are accessible and ready to be opened in`R`. 
-</div>
-
-Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}/set-working-directory-r#the-r-working-directory"> The R Working Directory</a>
-
 ***
 
 ## Full, Base, and Relative Paths

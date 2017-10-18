@@ -49,7 +49,7 @@ For those that have CSS styles that are not yet resolved I give several options.
 
 ## GreyBox
 
-This is the "Greybox" styling. The div tag is currently (leaving out the < > so 
+This is the "Greybox" styling. The div tag is (leaving out the < > so 
 it isn't recognized as html): 
 
 `div id="ds-objectives" markdown="1"`  
@@ -123,7 +123,8 @@ f.visititems(ls_dataset)
 
 ## Data Tips
 
-It was changed to look like this. The div tag for this one is: 
+It was changed to look like this. The div tag for this one is (leaving out the < > so 
+it isn't recognized as html): 
 
 `div id="ds-dataTip" markdown="1"`
 
@@ -137,6 +138,9 @@ links, however, it cannot contain figures, etc.
 ***
 
 ## Challenges
+
+The div tag for this one is (leaving out the < > so it isn't recognized as html):
+`div id="ds-challenge" markdown="1"`
 
 This is how it appears in Markdown. 
 
@@ -190,6 +194,7 @@ It can have multiple paragraphs too.
 
 ## Two Images Side-by-side with Caption & Source
 
+
 <figure class="half">
 	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png">
@@ -205,6 +210,9 @@ It can have multiple paragraphs too.
 ## Embedded Videos
 Use the embed code (found under Share > Embed) from YouTube to add a video to
 lessons.  
+
+(leaving out the < > so it isn't recognized as html)
+iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe> 
 

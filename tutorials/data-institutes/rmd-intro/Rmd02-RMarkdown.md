@@ -17,7 +17,7 @@ urlTitle: rmd-code-intro
 
 You will need to have the `rmarkdown` and `knitr`
 packages installed on your computer prior to completing this tutorial. Refer to 
-<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/install-R-packages" target="_blank"> the setup materials</a> to get these installed. 
+the setup materials to get these installed. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -69,7 +69,11 @@ Markdown
 
 </div>
 
-## Create a new RMarkdown file in RStudio
+
+
+## Create an Rmd File
+
+### RMarkdown in RStudio Video
 
 Our goal in this series is to document our workflow. We can do this by 
 
@@ -82,8 +86,6 @@ The text size in the video is small so you may want to watch the video in
 full screen mode.
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/DNS7i2m4sB0" frameborder="0" allowfullscreen></iframe>
-
-## Create an RMD File
 
 Now that you have a sense of how R Markdown can be used in R studio, you are 
 ready to create your own RMD document. Do the following: 
@@ -334,12 +336,13 @@ For help opening and plotting raster data in `R`, see the NEON Data Skills tutor
 We will knit this document to HTML in the next tutorial. 
 </div>
 
-Now continue on to the
-[next tutorial]({{site.baseurl}}rmd-use-knitr)
+Now continue on to the next tutorial
 to learn how to knit this document into a HTML file.
 
+<div id="ds-challenge" markdown="1">
 ## Answers to the Default Text Markdown Syntax Questions
 
 * Are any words in bold? - Yes, “Knit” on line 10
 * Are any words in italics? - No
 * Are any words highlighted as code? - Yes, “echo = FALSE” on line 22
+</div>

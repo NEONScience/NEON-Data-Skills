@@ -20,7 +20,7 @@ This tutorial covers adding new edits or contents from your forked repo on githu
 and a central repo.
 
 <div id="ds-objectives" markdown="1">
-# Learning Objectives
+## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain the concept of base fork and head fork.
@@ -28,7 +28,7 @@ At the end of this activity, you will be able to:
 * Create a Pull Request on the GitHub.com website.
 
 
-## Additional Resources:
+## Additional Resources
 
 * <a href="http://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf" target="_blank"> Diagram of Git Commands: </a>
 this diagram includes more commands than we will

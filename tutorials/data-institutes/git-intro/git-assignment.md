@@ -8,7 +8,7 @@ contributors:
 estimatedTime:
 packagesLibraries:
 topics:
-language
+language: 
 tutorialSeries: 
 languagesTool: git
 dataProduct:
@@ -17,8 +17,7 @@ tutorialSeries:
 urlTitle: git-assignment
 ---
 
-
-**DUE: 11:59pm, Thursday June 8th**
+**DUE: TBA**
 
 During the NEON Data Institute, you will share the code that you create daily
 with everyone on the `NEON-WorkWithData/DI-NEON-participants` repo.

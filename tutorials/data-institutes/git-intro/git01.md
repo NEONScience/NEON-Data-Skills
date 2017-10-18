@@ -111,7 +111,7 @@ play back each change and end up with your latest version.
 	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/SWC_Git_play-changes.svg"></a>
 	<figcaption> A version control system saves changes to a document, sequentially
   as you add and commit them to the system.
-	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics.html" target="_blank"> Software Carpentry </a>
+	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
 	</figcaption>
 </figure>
 
@@ -127,7 +127,7 @@ two users can make independent changes to the same document.
 	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/SWC_Git_versions.svg"></a>
 	<figcaption> Different versions of the same document can be saved within a
   version control system.
-	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics.html" target="_blank"> Software Carpentry </a>
+	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
 	</figcaption>
 </figure>
 
@@ -142,7 +142,7 @@ ways) you can review two sets of changes on the same base document.
 	together, within a version control system <strong> if </strong> there are no conflicts (areas
 	where both users <strong> modified the same part of the same document in different ways</strong>).
 	Changes submitted by both users can then be merged together.
-	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics.html" target="_blank"> Software Carpentry </a>
+	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
 	</figcaption>
 </figure>
 

@@ -18,7 +18,7 @@ urlTitle: rmd-code-intro
 
 You will need to have the `rmarkdown` and `knitr`
 packages installed on your computer prior to completing this tutorial. Refer to 
-<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/install-R-packages" target="_blank"> the setup materials</a> to get these installed. 
+the setup materials to get these installed. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -70,7 +70,11 @@ Markdown
 
 </div>
 
-## Create a new RMarkdown file in RStudio
+
+
+## Create an Rmd File
+
+### RMarkdown in RStudio Video
 
 Our goal in this series is to document our workflow. We can do this by 
 
@@ -84,9 +88,7 @@ full screen mode.
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/DNS7i2m4sB0" frameborder="0" allowfullscreen></iframe>
 
-## Create an RMD File
-
-Now that you have a sense of how R Markdown can be used in R studio, you are 
+Now that you have a sense of how R Markdown can be used in RStudio, you are 
 ready to create your own RMD document. Do the following: 
 
 1. Create a new R Markdown file and choose HTML as the desired output format.
@@ -166,7 +168,7 @@ We will be rendering an HTML file.
 
 </div>
 
-### R Markdown Text / Markdown Blocks
+### R Markdown Text/Markdown Blocks
 
 An RMD document contains a mixture of code chunks and markdown blocks where 
 you can describe aspects of your processing workflow. The markdown blocks use the 
@@ -178,7 +180,7 @@ the outputs.
 When you render your document to HTML, this markdown will appear as text on the 
 output HTML document. 
 
-<a class="link--button link--arrow" href="http://rmarkdown.rstudio.com/authoring_basics.html" target="_blank"> Learn More about RStudio Markdown Basics</a>
+<a href="http://rmarkdown.rstudio.com/authoring_basics.html" target="_blank"> Learn More about RStudio Markdown Basics</a>
 
 ### Explore Your R Markdown File
 
@@ -218,7 +220,7 @@ name to markdown segments of an RMD. For more, view this
 ### Code chunks
 
 Code chunks are where your R code goes. All code chunks start and end with
-<code>```</code>  -- three backticks or graves. On 
+<code>```</code> – three backticks or graves. On 
 your keyboard, the backticks can be found on the same key as the tilde. 
 Graves are not the same as an apostrophe!
 
@@ -335,12 +337,14 @@ For help opening and plotting raster data in `R`, see the NEON Data Skills tutor
 We will knit this document to HTML in the next tutorial. 
 </div>
 
-Now continue on to the
-[next tutorial]({{site.baseurl}}rmd-use-knitr)
+Now continue on to the next tutorial
 to learn how to knit this document into a HTML file.
 
+
+<div id="ds-challenge" markdown="1">
 ## Answers to the Default Text Markdown Syntax Questions
 
 * Are any words in bold? - Yes, “Knit” on line 10
 * Are any words in italics? - No
 * Are any words highlighted as code? - Yes, “echo = FALSE” on line 22
+</div>

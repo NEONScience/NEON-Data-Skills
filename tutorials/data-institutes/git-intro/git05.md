@@ -34,7 +34,7 @@ At the end of this activity, you will be able to:
 
 ****
 
-#### Additional Resources:
+#### Additional Resources
 
 * <a href="http://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf" target="_blank"> Diagram of Git Commands </a>
 -- this diagram includes more commands than we will
@@ -322,7 +322,7 @@ is in our individual user account, not NEONS. This fork is
  do not automatically transfer to the central repo. We need to sync them! We will
  learn how to sync these two
 repos in the next tutorial 
-<a href="{{ site.baseurl}}/github-pull-requests" target="_blank"> Git 06: Syncing GitHub Repos with Pull Requests </a>.
+<a href="{{ site.baseurl }}/github-pull-requests" target="_blank"> Git 06: Syncing GitHub Repos with Pull Requests </a>.
 
 ## Summary Workflow - Committing Changes
 
