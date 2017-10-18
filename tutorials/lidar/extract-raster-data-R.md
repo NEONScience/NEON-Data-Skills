@@ -50,7 +50,8 @@ on your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
+<a href="{{site.baseurl}}/packages-in-r" target="_blank">
+More on Packages in R - Adapted from Software Carpentry</a>
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
@@ -65,7 +66,7 @@ created by unzipping this file.
 ***
 
 ## Recommended Reading
-<a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
@@ -217,7 +218,7 @@ our data doesn't yet
 have a specific Coordinate Reference System attached to it. The CRS is 
 information that allows a program like QGIS to determine where the data are 
 located, in the world. 
-<a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems.html" target="_blank">
+<a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems" target="_blank">
 Read more about CRS here</a>
 
 We need to assign a Coordinate Reference System to our insitu data. In this case, 
@@ -418,7 +419,8 @@ which gives a 2 rows, 3 columns layout.
 To complete this next method, you need to first create square plots around a 
 point to create a R object called `polys`. Directions for how to do this are 
 contained in this tutorial: 
- [*Create A Square Buffer Around a Plot Centroid in R*]({{ site.baseurl }}/field-data-polygons-centroids/ "Polygons"). 
+<a href="{{ site.baseurl }}/field-data-polygons-centroids" target="_blank>
+*Create A Square Buffer Around a Plot Centroid in R*</a>. 
 
 Once you have the SpatialPolygon object `polys`, you can use the same `extract()` function
 as we did for the circular plots, but this time with no buffer since we already 

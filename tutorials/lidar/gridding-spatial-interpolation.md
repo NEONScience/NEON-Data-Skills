@@ -29,7 +29,7 @@ present the main graphics and topics covered in the workshop.
 <a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>.
 
 </div>
-
+<p></p>
 
 #### How Does LiDAR Works? 
 
@@ -73,7 +73,7 @@ Interpolation can be done in a number of different ways, some of which are
 deterministic and some are probabilistic. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png">
+    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png" target=_"blank">
 	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered. Source: National Ecological
@@ -92,7 +92,7 @@ distributed with at least one data point within the spatial coverage of each ras
 cell.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridded.png">
+    <a href="{{ site.baseurl }}/images/spatialData/gridded.png" target="_blank">
     <img src="{{ site.baseurl }}/images/spatialData/gridded.png"></a>
     <figcaption>When you directly grid a dataset, values will only be calculated
 	for cells that overlap with data points. Thus, data gaps will not be filled. 
@@ -106,7 +106,7 @@ Gridding is the process of taking a set of points and using them to create a
 surface composed of a regular grid. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/lidar/gridding.gif">
+    <a href="{{ site.baseurl }}/images/lidar/gridding.gif" target="_blank">
     <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
     <figcaption>Animation showing the general process of taking lidar point 
     clouds and converting them to a raster format. Source: Tristan Goulden, 
@@ -125,7 +125,7 @@ However this general assumption is applied differently across different
 interpolation functions.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/grid.png">
+    <a href="{{ site.baseurl }}/images/spatialData/grid.png" target="_blank">
     <img src="{{ site.baseurl }}/images/spatialData/grid.png"></a>
     <figcaption>Interpolation methods will estimate values for cells where no known values exist.
 	</figcaption>
@@ -146,7 +146,7 @@ Different methods of interpolation are better for different data sets. This tabl
 lays out the strengths of some of the more common interpolation methods. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png">
+    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
     <figcaption>Abbreviations: TIN=Triangulated Irregular Network, IDW=Inverse 
     Distance Weighted interpolation.  Source: National Ecological Obervatory Network </figcaption>
@@ -166,13 +166,13 @@ point (a cell with an unknown value) using a linearly weighted combination of va
 from nearby points. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/idw_interpolation_QGIS.png">">
+    <a href="{{ site.baseurl }}/images/spatialData/idw_interpolation_QGIS.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/spatialData/idw_interpolation_QGIS.png"></a>
     <figcaption>
 	IDW interpolation calculates the value of an unknown cell center value (a 
 	query point) using surrounding points with the assumption that closest points 
 	will be the most similar to the value of interest. Source: 
-	<a href="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png">QGIS </a></figcaption>
+	<a href="https://docs.qgis.org/2.2/en/_images/idw_interpolation.png" target="_blank">QGIS </a></figcaption>
 </figure>
 
 #### Key Attributes of IDW Interpolation
@@ -192,7 +192,7 @@ data(e.g. east to west, elevational, etc).
 
 
 <figure>
-    <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif">
+    <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif" target="_blank">
 	<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image001.gif"></a>
     <figcaption>IDW interpolation looks at the linear distance between the unknown value
 	and surrounding points. Source: J. Abrecht, CUNY </figcaption>
@@ -211,14 +211,14 @@ result where sample points further away from the cell have a greater impact on
 the cell's calculated value.
 
 <figure>
-	 <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif">
+	 <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif" target="_blank">
 	 <img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif"></a>
 	<figcaption>
 	The solid line represents greater power and the dashed line represents lower 
 	power. The greater the power, the more localized an affect a sample point's 
 	value has on the resulting surface. A smaller power value yields a smoothed 
 	or more averaged surface. 
-	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif"> J. Abrecht, CUNY</a></figcaption>
+	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif" target="_blank"> J. Abrecht, CUNY</a></figcaption>
 </figure>
 
 The impacts of power:
@@ -271,12 +271,12 @@ below the min and max values of your sample points. Thus it is good for estimati
 high and low values not already represented in your data.
  
 <figure>
-    <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif">
+    <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif" target="_blank">
 	<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif"></a>
     <figcaption>
 	Spline interpolation fits a surface between the sample points of known values
 	to estimate a value for the unknown cell. 
-	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif"> J. Abrecht, CUNY</a></figcaption>
+	Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif" target="_blank"> J. Abrecht, CUNY</a></figcaption>
 </figure>
 
 
@@ -292,7 +292,7 @@ to the known sample points.
 and below the known sample points.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/reg_ten_Spline.png">
+    <a href="{{ site.baseurl }}/images/spatialData/reg_ten_Spline.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/spatialData/reg_ten_Spline.png">
 	</a>
     
@@ -337,7 +337,7 @@ This interpolation method works equally well on regular and irregularly spaced
 data.
 
 <figure>
-    <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png">
+    <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png" target="_blank">
 	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png">
 	</a>
     <figcaption>
@@ -356,7 +356,7 @@ is created using the immediately neighboring points and mapped on top of the
 original Voronoi diagram created using the known sample points (image below).
 
 <figure>
-    <a href="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png">
+    <a href="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png" target="_blank">
 	<img src="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png"></a>
     <figcaption>
 	A secondary Voronoi diagram is created using the immediately neighboring 
@@ -397,7 +397,7 @@ The TIN format remains the most true to the point distribution, density and
 spacing of a dataset. It also may yield the largest file size!
 
  <figure>
-	 <a href="{{ site.baseurl }}/images/spatialData/tin.png">
+	 <a href="{{ site.baseurl }}/images/spatialData/tin.png" target="_blank">
 	 <img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
 	 <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
 	the NEON San Joachiun (SJER) field site.</figcaption>

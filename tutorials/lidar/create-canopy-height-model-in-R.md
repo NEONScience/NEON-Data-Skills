@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
+<a href="{{site.baseurl}}/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry</a>
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
@@ -55,7 +55,7 @@ created by unzipping this file.
 ***
 
 ## Recommended Reading
-<a href="{{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/">
+<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
@@ -65,11 +65,12 @@ What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 The National Ecological Observatory Network (NEON) will provide LiDAR-derived 
 data products as one of its many free ecological data products. These products 
 will come in the 
-[GeoTIFF](http://trac.osgeo.org/geotiff/ "geotiff (read more)") 
+<a href="http://trac.osgeo.org/geotiff/" target="_blank">GeoTIFF</a> 
 format, which is a .tif raster format that is spatially located on the earth. 
 
 In this tutorial, we create a Canopy Height Model. The 
-[canopy height model (CHM)]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/),
+<a href="{{ site.baseurl }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">Canopy Height Model (CHM)</a>,
+ height model (CHM)]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/),
 represents the heights of the trees on the ground. We can derive the CHM 
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
@@ -86,7 +87,7 @@ surface model (DSM) and the digital terrain model (DTM).
     #setwd("pathToDirHere")
 
 First, we will import the Digital Surface Model (DSM). The 
-[DSM]({{ base.url }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+<a href="{{ base.url }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">DSM</a>
 represents the elevation of the top of the objects on the ground (trees, 
 buildings, etc).
 
@@ -114,7 +115,7 @@ Note the resolution, extent, and coordinate reference system (CRS) of the raster
 To do later steps, our DTM will need to be the same. 
 
 Next, we will import the Digital Terrain Model (DTM) for the same area. The 
-[DTM]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+<a href="({{ base.url }}/2_LiDAR-Data-Concepts_Activity2" target="_blank">DTM</a>
 represents the ground (terrain) elevation.
 
 
@@ -127,13 +128,13 @@ represents the ground (terrain) elevation.
 
 With both of these rasters now loaded, we can create the Canopy Height Model 
 (CHM). The 
-[CHM ]({{ base.url }} /remote-sensing/2_LiDAR-Data-Concepts_Activity2/)
+<a href="({{ base.url }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">CHM</a>)
 represents the difference between the DSM and the DTM or the height of all objects
 on the surface of the earth. 
 
 To do this we perform some basic raster math to calculate the CHM. You can 
 perform the same raster math in a GIS program like 
-[QGIS](http://www.qgis.org/en/site/ "QGIS").
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a>.
 
 When you do the math, make sure to subtract the DTM from the DSM or you'll get 
 trees with negative heights!
@@ -219,5 +220,6 @@ at it.
 ***
 
 Consider going onto the next tutorial 
-<a href="{{ site.baseurl }}/R/extract-raster-data-R/" target="_blank">*Extract Values from a Raster in R*</a> to compare this lidar-derived CHM with data taken from in ground!
+<a href="{{ site.baseurl }}/extract-raster-data-R" target="_blank">*Extract Values from a Raster in R*</a>
+to compare this lidar-derived CHM with data taken from in ground!
 
