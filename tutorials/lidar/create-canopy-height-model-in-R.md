@@ -69,8 +69,7 @@ will come in the
 format, which is a .tif raster format that is spatially located on the earth. 
 
 In this tutorial, we create a Canopy Height Model. The 
-<a href="{{ site.baseurl }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">Canopy Height Model (CHM)</a>,
- height model (CHM)]({{ site.baseurl }}/remote-sensing/2_LiDAR-Data-Concepts_Activity2/),
+<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">Canopy Height Model (CHM)</a>,
 represents the heights of the trees on the ground. We can derive the CHM 
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
@@ -87,7 +86,7 @@ surface model (DSM) and the digital terrain model (DTM).
     #setwd("pathToDirHere")
 
 First, we will import the Digital Surface Model (DSM). The 
-<a href="{{ base.url }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">DSM</a>
+<a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
 represents the elevation of the top of the objects on the ground (trees, 
 buildings, etc).
 
@@ -115,7 +114,7 @@ Note the resolution, extent, and coordinate reference system (CRS) of the raster
 To do later steps, our DTM will need to be the same. 
 
 Next, we will import the Digital Terrain Model (DTM) for the same area. The 
-<a href="({{ base.url }}/2_LiDAR-Data-Concepts_Activity2" target="_blank">DTM</a>
+<a href="({{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DTM</a>
 represents the ground (terrain) elevation.
 
 
@@ -128,7 +127,7 @@ represents the ground (terrain) elevation.
 
 With both of these rasters now loaded, we can create the Canopy Height Model 
 (CHM). The 
-<a href="({{ base.url }}/2_LiDAR-Data-Concepts_Activity2/" target="_blank">CHM</a>)
+<a href="({{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">CHM</a>)
 represents the difference between the DSM and the DTM or the height of all objects
 on the surface of the earth. 
 
