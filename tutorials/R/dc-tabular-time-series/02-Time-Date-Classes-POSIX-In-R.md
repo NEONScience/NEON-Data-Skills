@@ -408,6 +408,6 @@ Now, using the syntax that we learned above, we can convert the entire
 
     ## [1] "America/New_York"
 
-Now that our `datetime` data is properly identified as a `POSIXct` date-time
+Now that our `datetime` data are properly identified as a `POSIXct` date-time
 data class we can continue on and look at the patterns of precipitation,
 temperature, and PAR through time. 

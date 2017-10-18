@@ -56,7 +56,7 @@ on your computer to complete this tutorial.
 ## Get Started 
 In this tutorial, we are working with the same set of rasters used in the
 [Raster Time Series Data in R ]({{ site.baseurl }}/dc-multiband-rasters-r) 
-tutorial. This data is derived from the Landsat satellite and stored in 
+tutorial. These data are derived from the Landsat satellite and stored in 
 `GeoTIFF` format. Each raster covers the 
 <a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.  
 

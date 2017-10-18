@@ -233,7 +233,7 @@ quickly figure out what projection an object is in, using `object@crs`.
     ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
     ## +towgs84=0,0,0
 
-So our data is in UTM Zone 11 which is correct for California. We can use this 
+So our data are in UTM Zone 11 which is correct for California. We can use this 
 CRS to make our data points into a Spatial Points Data Frame which then allows 
 the points to be treated as spatial objects. 
 

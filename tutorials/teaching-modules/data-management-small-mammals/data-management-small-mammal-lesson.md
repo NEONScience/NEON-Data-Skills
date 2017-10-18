@@ -30,8 +30,8 @@ can be found on the
 
 Review the following resources prior to class to prepare for the data management activity:
 
-* NEON website: http://www.neonscience.org/
-* Abbreviated NEON Small Mammal Trapping Protocols (available in Resources section)
+* NEON website: <a href="http://www.neonscience.org/" target="_blank"> http://www.neonscience.org/</a>
+* Abbreviated NEON Small Mammal Trapping Protocols (available in Resources section of the Lesson Overview)
 * <a href="http://data.neonscience.org/api/v0/documents/FSUHandout_Vertebrates.pdf" target="_blank">Thibault, K. NEON breeding bird and small mammal abundance and diversity sampling. NEON.</a>
 * Videos explaining small mammal trapping:
 	 * National Park Service. <a href="https://youtu.be/KvGvS8pApFE" target="_blank"> From Field to Lab: Small Mammal Monitoring in Denali National Park </a>: 
@@ -61,7 +61,7 @@ data on a continental-scale to help researchers address questions related to
 climate change, land-use, and invasive species. Data are collected at field 
 sites called domains using standardized protocols, which allow for comparisons 
 across large geographic ranges. Data on dozens of different variables and 
-species will be collected every year for 30 years, yielding a comprehensive 
+species will be collected every year for over 30 years, yielding a comprehensive 
 look at ecological processes across the entire United States. Regardless of the 
 variables being measured, the general flow for data in these projects progresses 
 from data collection to data files and metadata files as shown in Figure 1. 
@@ -77,7 +77,7 @@ metadata files. Source: McNeil and Jones. In Prep.
 </figure>
 
 
-Given the scale and scope of the project, they will create literally terabytes 
+Given the scale and scope of the NEON project, they will create literally terabytes 
 of data every year, so the information needs to be very well organized to be 
 useful. In this activity, you’ll get practice translating field data into a 
 usable format for long-term archiving and then explore how real NEON data can be 
@@ -91,13 +91,13 @@ across the country in a wide variety of habitats. Their small size and short
 lifespan makes them sensitive to environmental changes, and they are responsible 
 for spreading or maintaining a wide diversity of zoonotic diseases in an 
 environment. They are also easy to safely collect as live specimens using arrays 
-of traps like those described in the Abbreviated NEON Small Mammal Trapping 
-Protocol. Live trapping has the advantage of being able to return the animal to 
+of traps like those described in the *Abbreviated NEON Small Mammal Trapping 
+Protocol*. Live trapping has the advantage of being able to return the animal to 
 their habitat without having to destructively sample. As you learned in the 
-readings and the Youtube videos, in just a few minutes you can collect a lot of 
+readings and the YouTube videos, in just a few minutes you can collect a lot of 
 information from an individual animal. Because researchers want to reduce the 
 stress on the animal while it is captured, it’s important to have an efficient 
-framework for recording that data. 
+framework for recording that data in a timely manner. 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Activity:** Take a few minutes now and review 
@@ -124,8 +124,31 @@ for the following variables:
 Processing raw data sheets into a data table is only easy if the data table is 
 well designed. 
 
+Some best practices for data sheets include: 
+
+* Descriptive file names (with no spaces)
+* Columns (variables) & rows (data)
+	* First row of **descriptive** headers
+		* Avoid spaces or starting headers with #s
+	* Data disaggregation 
+		* One cell per variable (e.g., toe length & tail length in separate columns)
+	* Each cell has one type of data
+		* Cell should only contain numbers or letters. 
+		* Not “3 eggs” -> Header: EggNumber , Data: 3
+	* Plain text
+* Use standardized formats for date/time
+	* Date: YYYY-MM-DD (Year-Month-Day)
+	* Time: hh:mm:ss (use 24-hour time)
+	* Date & Time: YYYY-MM-DDThh:mm:ss
+* Use full taxonomic names
+	* Genus and Genus species 
+	* (*Genus species* names are italicized in writing but not in data tables in .csv format)
+	* If standardized taxon abbreviations are used, make sure to include in the metadata
+
+
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Activity:**Thinking about the presentation and the principles described in 
+<i class="fa fa-star"></i> **Data Activity:**Thinking about the presentation and t
+he principles described in 
 Borer et al. 2010 and Sutter et al. 2015, work in pairs to create an Excel data 
 file that displays the information from your example data sheet for the variables 
 you identified above. Make sure that your data table adheres to the best practices 
@@ -143,6 +166,16 @@ How would you make sure you were not making mistakes?  What types of checks
 could you do to make sure you were correctly transferring the data?
 
 </div> 
+
+Other considerations for useful data files: 
+
+* Retain raw data, separate “clean” files for analysis
+* Using easily transferrable file formats & hardware
+	* .csv format, not .xls
+	* Internet/cloud storage & backup 
+	* Non-proprietary formats
+* Long-term data storage/archiving 
+
 
 ## Public Data & NEON
 
@@ -164,12 +197,14 @@ component of collecting good data. A good metadata file can help someone
 unfamiliar with a data file interpret the codes and variables presented – 
 and will help you remember what you did when you come back to the data later. 
 It also provides an opportunity to discuss any irregularities in the data set. 
-Discussion Questions:
+
+<div id="ds-challenge" markdown="1">
+**Discussion questions**:
 Examine the metadata file for the NEON data file. Briefly discuss with your 
 partner how this file could have helped you interpret the data sheet and create 
 your own data file or perform data analysis. Be prepared to share your 
 observations with the class.
-
+</div>
 
 ## Data Analysis
 Once you have a well-designed data file, you can use that information to 

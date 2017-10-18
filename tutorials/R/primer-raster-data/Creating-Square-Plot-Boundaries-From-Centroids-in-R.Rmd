@@ -109,7 +109,7 @@ We can see that our data consists of five distinct types of data:
 It would be nice to have a metadata file with this .csv to confirm the coordinate
 reference system (CRS) that the points are in, however, without one, based on 
 the numbers, we can assume it is in Universal Transverse Mercator (UTM). And 
-since we know the data is from the San Joaquin Experimental Range, that is in
+since we know the data are from the San Joaquin Experimental Range, that is in
 UTM zone 11N. 
 
 ## Part 1: Create Plot Boundary
