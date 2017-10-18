@@ -211,7 +211,7 @@ Las Tools and his colleagues.
 
 *	A LiDAR system uses a laser, a GPS and an IMU to estimate the heights of 
 objects on the ground.
-*	Discrete LiDAR data is generated from waveforms -- each point represent 
+*	Discrete LiDAR data are generated from waveforms -- each point represent 
 peak energy points along the returned energy.
 *	Discrete LiDAR points contain an x, y and z value. The z value is what is 
 used to generate height.

@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 
 <a href="http://{{ site.baseurl }}/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
 
-Please note that NEON Small Mammal data is now delivered in a slightly different
+Please note that NEON Small Mammal data are now delivered in a slightly different
 format. This data format here is provide to accompany this tutorial on dplyr only. 
 </div>
 

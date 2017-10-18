@@ -16,7 +16,7 @@ urlTitle: create-chm-rasters-r
 ---
 
 
-A common analysis using LiDAR data is to derive top of the canopy height values 
+A common analysis using LiDAR data are to derive top of the canopy height values 
 from the LiDAR data. These values are often used to track changes in forest 
 structure over time, to calculate biomass, and even leaf area index (LAI). Let's 
 dive into the basics of working with raster formatted LiDAR data in R! 

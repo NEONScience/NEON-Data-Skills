@@ -93,7 +93,7 @@ areas. COOP data usually consist of daily maximum and minimum temperatures,
 snowfall, and 24-hour precipitation totals." 
 > Quoted from NOAA's National Centers for Environmental Information
 
-Data is collected at different stations, often on paper data sheets like the one 
+Data are collected at different stations, often on paper data sheets like the one 
 below, and then entered into a central database where we can access that data and 
 download it in the .csv (Comma Separated Values) format.
 
@@ -145,7 +145,7 @@ shown in the image below, we selected:
    </figcaption>
 </figure>
 
-Once the data is entered and you select `Search`, you will be directed to a 
+Once the data are entered and you select `Search`, you will be directed to a 
 new page with a map. You can find out more information about the data by selecting
 `View Full Details`. 
 Notice that this dataset goes all the way back to 1 August 1948! However, we've 
@@ -238,7 +238,7 @@ this file.
 * **STATION** and **STATION_NAME**: Identification of the COOP station.
 * **ELEVATION, LATITUDE** and **LONGITUDE**: The spatial location of the station.
 * **DATE**: Gives the date in the format: YYYYMMDD HH:MM. Notice that DATE is 
-currently class `chr`, meaning the data is interpreted as a character class and 
+currently class `chr`, meaning the data are interpreted as a character class and 
 not as a date. 
 * **HPCP**: The total precipitation given in inches 
 (since we selected `Standard` for the units), recorded

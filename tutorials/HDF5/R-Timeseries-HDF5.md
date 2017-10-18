@@ -220,9 +220,9 @@ temperature in this part of the HDF5 file as follows:
 one of 20 regions that <a href="http://neonscience.org/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
 * **OSBS** - a group representing data from the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank"> Ordway Swisher Biological Station (OSBS).</a>
 * **min_1** - A group representing the mean temperature data value for every for 
-one minute in time. Temperature data is often collected at high frequencies (20 hz 
+one minute in time. Temperature data are often collected at high frequencies (20 hz 
 or 20 measurements a second) or more. A typical data product derived from high 
-frequency tempearture data is an average value. In this case, all measurements 
+frequency tempearture data are an average value. In this case, all measurements 
 are averaged every minute.  
 * **boom_1** - Boom 1 is the first and lowest arm or level on the tower. Towers 
 often contain arms where the sensors are mounted, that reach out horizontally 
@@ -302,7 +302,7 @@ In this case, our data are in
 <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" target="_blank">UTC time zone.</a> 
 The UTC time zone is a standardized time zone that does not observe daylight 
 savings time. If your data are in UTC, then you will need to convert them to 
-the local time zone where the data is collected for the dates and times to 
+the local time zone where the data are collected for the dates and times to 
 make sense when you plot & analyze your data. 
 
 For example, find your local time zone on this 
@@ -310,7 +310,7 @@ For example, find your local time zone on this
 wikipedia page.</a> 
 How many hours difference is UTC from your local time?
 
-To adjust for time, we need to tell R that the time zone where the data is 
+To adjust for time, we need to tell R that the time zone where the data are 
 collected is Eastern Standard time since our data were collected at OSBS. We
 can use the `attributes` function to set the time zone.
 

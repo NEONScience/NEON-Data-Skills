@@ -65,7 +65,7 @@ the surface data that we want for different Digital Elevation Models or similar
 data we use in analyses and mapping. 
 
 Basic gridding does not allow for the recovery/classification of data in any area
-where data is missing. Interpolation (including Triangulated Irregular Network 
+where data are missing. Interpolation (including Triangulated Irregular Network 
 (TIN) Interpolation) allows for gaps to be covered so that there are not holes 
 in the resulting raster surface.  
 

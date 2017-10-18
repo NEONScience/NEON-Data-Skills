@@ -1,7 +1,7 @@
 ---
 syncID: a1388c25d16342cca2643bc2df3fbd8e
 title: "Use the neonDataStackR package to access NEON data"
-description: "Convert data downloaded from the NEON Data Portal in zipped month-by-site files into a table with all data of interest. Temperature data is used as an example. "
+description: "Convert data downloaded from the NEON Data Portal in zipped month-by-site files into a table with all data of interest. Temperature data are used as an example. "
 dateCreated: 2017-08-01
 authors: [Megan A. Jones ]
 contributors: [ ]
@@ -17,7 +17,7 @@ urlTitle: neonDataStackR
 
 This tutorial goes over how to convert data downloaded from the NEON Data Portal 
 in zipped month-by-site files into individual files with all data from the 
-given site(s) and months. Temperature data is used as an example.
+given site(s) and months. Temperature data are used as an example.
 
 ## Download the Data
 To start, you must have your data of interest downloaded from the 
@@ -28,7 +28,7 @@ not the NEON data stored in other formats (HDF5, etc).
 
 Your data will download in a single zipped file. 
 
-The example data is any single-aspirated air temperature available from 
+The example data are any single-aspirated air temperature available from 
 1 January 2015 to 31 December 2016. 
 
 ## neonDataStackR package

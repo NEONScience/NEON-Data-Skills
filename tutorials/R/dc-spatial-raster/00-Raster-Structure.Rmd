@@ -295,7 +295,7 @@ We'll focus on the first few components of the CRS in this tutorial.
 * `+proj=utm` The projection of the dataset. Our data are in Universal 
 Transverse Mercator (UTM).  
 * `+zone=18` The UTM projection divides up the world into zones, this element
-tells you which zone the data is in. Harvard Forest is in Zone 18.
+tells you which zone the data are in. Harvard Forest is in Zone 18.
 * `+datum=WGS84` The datum was used to define the center point of the 
 projection. Our raster uses the `WGS84` datum.
 * `+units=m` This is the horizontal units that the data are in. Our units 
@@ -365,7 +365,7 @@ We can see that the elevation at our site ranges from 305.07m to 416.07m.
 ## NoData Values in Rasters
 
 Raster data often has a `NoDataValue` associated with it. This is a value 
-assigned to pixels where data is missing or no data were collected. 
+assigned to pixels where data are missing or no data were collected. 
 
 By default the shape of a raster is always square or rectangular. So if we 
 have  a dataset that has a shape that isn't square or rectangular, some pixels

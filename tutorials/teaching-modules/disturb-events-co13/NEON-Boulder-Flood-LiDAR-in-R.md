@@ -98,7 +98,7 @@ In this Data Activity, we will be using Digital Terrain Models (DTMs).
 #### More Details on LiDAR
 
 If you are particularly interested in how LiDAR works consider taking a closer
-look at how the data is collected and represented by going through this tutorial
+look at how the data are collected and represented by going through this tutorial
 on 
 <a href="http://neondataskills.org/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank"> "Light Detection and Ranging."</a> 
 

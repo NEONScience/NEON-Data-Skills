@@ -190,7 +190,7 @@ blue spectra differently.
 
 Check out the scale bars. What do they represent? 
 
-This reflectance data is radiance corrected for atmospheric effects. The data 
+This reflectance data are radiances corrected for atmospheric effects. The data 
 are typically unitless and ranges from 0-1. NEON Airborne Observation Platform
 data, where these rasters come from, has a scale factor of 10,000. 
 

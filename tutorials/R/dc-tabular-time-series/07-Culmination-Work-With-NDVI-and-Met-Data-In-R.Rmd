@@ -150,7 +150,7 @@ with data from each, within the same plots or analyses.
 1. Ensure that date fields within both data sets are in the Date class. If not,
 convert the data to the Date class. 
 
-2. The NDVI data is limited to 2011, however, the meteorological data is from
+2. The NDVI data are limited to 2011, however, the meteorological data are from
 2009-2011. Subset and retain only the 2011 meteorological data. Name it
 `harMet.daily2011`.
 

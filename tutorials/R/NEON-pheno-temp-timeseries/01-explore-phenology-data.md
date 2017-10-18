@@ -142,7 +142,7 @@ each sampling point.
 
 #### Available Data Tables
 
-In the downloaded data packet, data is available in two main files
+In the downloaded data packet, data are available in two main files
 
 * **phe_statusintensity:** Plant phenophase status and intensity data 
 * **phe_perindividual:** Geolocation and taxonomic identification for phenology plants
@@ -157,7 +157,7 @@ parsing rules; and an **XML** with machine readable metadata.
 
 ### Stack NEON Data
 
-NEON data is delivered in a site and year-month format. When you download data,
+NEON data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
 requested data for. Dealing with these seperate tables from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
@@ -590,7 +590,7 @@ names are character.
 Try it again.  
 
 `taxonID` and `scientificName` are provided for convenience in Status table, but
-most up to date data is always in the `phe_perindividual.csv` files. Therefore, 
+most up to date data are always in the `phe_perindividual.csv` files. Therefore, 
 we'll remove from the columns from the status data. (This is one more reason why you want to 
 fully read the documents associated with the data products!).
 

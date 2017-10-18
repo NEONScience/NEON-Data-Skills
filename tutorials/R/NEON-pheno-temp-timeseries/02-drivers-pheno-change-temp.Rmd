@@ -152,7 +152,7 @@ and tells us again that it is single-aspirated air temperature at 30 minute aver
 
 ### Stack NEON Data
 
-All the above data is delivered in a site and year-month format. When you download data,
+All the above data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
 requested data for. Dealing with these separate files from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
@@ -419,7 +419,7 @@ date and time, nor is the "Z" at the end, however we can tell `R` where the
 characters are so R can ignore them and interpret the correct date and time 
 as follows: `format="%Y-%m-%dT%H:%M:%"`.
 
-All NEON data is reported in UTC which is the same as GMT.
+All NEON data are reported in UTC which is the same as GMT.
 
 ```{r convert-datetime}
 # convert to Date Time 

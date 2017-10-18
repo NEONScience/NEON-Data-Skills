@@ -228,7 +228,7 @@ As we are adding these layers, take note of the class of each object.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/03-when-vector-data-dont-line-up-CRS/explore-units-1.png)
 
-The plot above demonstrates that the tower point location data is readable and 
+The plot above demonstrates that the tower point location data are readable and 
 will plot! Let's next add it as a layer on top of the U.S. states and boundary
 layers in our basemap plot.
 

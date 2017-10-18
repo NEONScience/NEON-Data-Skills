@@ -392,7 +392,7 @@ hard to read. Why? Let's have a look at the class of the x-axis variable - date.
 In this case, the `date` column is stored in our `data.frame` as a character
 class. Because it is a character, `R` does not know how to plot the dates as a
 continuous variable. Instead it tries to plot every date value as a text string. 
-The `airt` data is numeric so that metric plots just fine.
+The `airt` data class is numeric so that metric plots just fine.
 
 ## Date as a Date-Time Class 
 

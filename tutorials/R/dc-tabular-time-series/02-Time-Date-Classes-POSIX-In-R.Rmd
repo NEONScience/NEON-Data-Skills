@@ -350,6 +350,6 @@ str(harMet_15Min$datetime)
 tz(harMet_15Min$datetime)
 ```
 
-Now that our `datetime` data is properly identified as a `POSIXct` date-time
+Now that our `datetime` data are properly identified as a `POSIXct` date-time
 data class we can continue on and look at the patterns of precipitation,
 temperature, and PAR through time. 

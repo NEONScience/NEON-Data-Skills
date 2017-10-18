@@ -232,7 +232,7 @@ For more information on date-time classes, see the NEON Data Skills tutorial
 [Convert Date & Time Data from Character Class to Date-Time Class (POSIX) in R]({{ site.baseurl }}/dc-convert-date-time-POSIX-r).  
 
 To convert a Julian Day number to a date class, we need to set the **origin**
-of the day which "counting" Julian Days began. Our data is from 2011, and we 
+of the day which "counting" Julian Days began. Our data are from 2011, and we 
 know that the USGS Landsat Team created Julian Day values for this year. 
 Therefore, the first day or "origin" for our Julian day count is 01 January 2011.
 Once we set the Julian Day origin, we can add the Julian Day value (as an 

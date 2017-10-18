@@ -182,7 +182,7 @@ Check out the NEON Data Product Catalog to see what will be available.</a>
 ### Data By Request & Through Other Online Portals
 Currently, not all NEON data are accessible through the NEON data portal:
 
-* <a href="http://{{ site.baseurl }}/data-resources/get-data/airborne-data" target="_blank"> NEON AOP Data is available by request</a>.
+* <a href="http://{{ site.baseurl }}/data-resources/get-data/airborne-data" target="_blank"> NEON AOP data are available by request</a>.
 Data for some sites is now available for download.
 * <a href="http://www.ibol.org/dna-barcodes-for-neons-terrestrial-insects/" target="_blank"> NEON Terrestrial Insect DNA Barcoding Data</a>
 is available through the
