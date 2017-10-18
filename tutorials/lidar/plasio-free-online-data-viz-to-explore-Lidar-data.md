@@ -40,10 +40,11 @@ intensity, classification and RGB values.
 
 </div>
 
+
 #### Example visualization of LiDAR data 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	<a href="{{ site.baseurl }}/images/lidar/biomass.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
 	<figcaption> LiDAR data collected over Grand Mesa, Colorado as a part of 
 	instrument testing and calibration by the National Ecological Observatory Network 
@@ -113,7 +114,7 @@ plas.io toolbar in the "Data" section.
 NICE! You should see something similar to the screenshot below:
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/plasio_dataImport.png">
+	<a href="{{ site.baseurl }}/images/lidar/plasio_dataImport.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/plasio_dataImport.png"></a>
 	<figcaption> NEON lidar data in the plas.io online tool. 
 	</figcaption>
@@ -139,7 +140,7 @@ returned.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/Lidar_Intensity.jpg">
+	<a href="{{ site.baseurl }}/images/lidar/Lidar_Intensity.jpg" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/Lidar_Intensity.jpg"></a>
 	<figcaption> Lidar intensity values represent the amount of light energy that
 	reflected off of an object and returned to the sensor. 
@@ -157,7 +158,7 @@ values in an image processing software or even in Photoshop).
 Drag the slider back and forth. Notice that you can brighten up the data using the slider.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/intensitySlider.png">
+	<a href="{{ site.baseurl }}/images/lidar/intensitySlider.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/intensitySlider.png"></a>
 	<figcaption> The intensity scaling slider is located below the color map 
 tool so it's easy to miss. Drag the slider back and forth to adjust the range 
@@ -181,7 +182,7 @@ higher. Some common classes include:
 - 6 Building
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/plasio_ColorScheme_KendraSand.png">
+	<a href="{{ site.baseurl }}/images/lidar/plasio_ColorScheme_KendraSand.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/plasio_ColorScheme_KendraSand.png"></a>
 	<figcaption> Blue and Orange gradient color scheme submitted by Kendra Sand.
 	What color scheme is your favorite?
@@ -196,7 +197,7 @@ view the points, colored by class:
 - For kicks - play with the various colormap options to change the colors of the points.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/classification_Colorization2.png">
+	<a href="{{ site.baseurl }}/images/lidar/classification_Colorization2.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/lidar/classification_Colorization2.png"></a>
 	<figcaption> Set the colorization to 'classified' and then adjust the 
 	intensity blending to view the points, colored by ground and non-ground classification.

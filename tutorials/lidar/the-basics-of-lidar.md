@@ -38,7 +38,7 @@ we need tools that can estimate key characteristics over large areas because
 we don’t have the resources to measure each and every tree or shrub. 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/NEON-general/ScalingTrees_NatGeo.jpg">
+   <a href="{{ site.baseurl }}/images/NEON-general/ScalingTrees_NatGeo.jpg" target="_blank">
    <img src="{{ site.baseurl }}/images/NEON-general/ScalingTrees_NatGeo.jpg"></a>
    <figcaption>Conventional, on-the-ground methods to measure trees are resource 
    intensive and limit the amount of vegetation that can be characterized! Source: 
@@ -53,7 +53,7 @@ To measure vegetation or other data across large areas, we need remote sensing
 methods that can take many measurements quickly, using automated sensors. 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/lidar_SOAP.png">
+   <a href="{{ site.baseurl }}/images/lidar/lidar_SOAP.png"  target="_blank">
    <img src="{{ site.baseurl }}/images/lidar/lidar_SOAP.png"></a>
    <figcaption>LiDAR data collected at the Soaproot Saddle site by the National 
    Ecological Observatory Network's Airborne Observation Platform (NEON AOP)</a>.  
@@ -108,7 +108,7 @@ building.
 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/Waveform.PNG">
+   <a href="{{ site.baseurl }}/images/lidar/Waveform.PNG" target="_blank">
    <img src="{{ site.baseurl }}/images/lidar/Waveform.PNG"></a>
    <figcaption>An example LiDAR waveform returned from two trees and the ground.
  Source: NEON </a>.
@@ -122,7 +122,7 @@ There are many different uses for LiDAR data.
 - LiDAR data classically have been used to derive high resolution elevation data
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/HighRes.png">
+   <a href="{{ site.baseurl }}/images/lidar/HighRes.png" target="_blank">
    <img src="{{ site.baseurl }}/images/lidar/HighRes.png"></a>
    <figcaption>LiDAR data have historically been used to generate high 
    resolution elevation datasets. Source: National Ecological Observatory 
@@ -224,7 +224,7 @@ various methods.
 
 ## Additional Resources
 
-*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target"_blank">las file format</a>?
+*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">las file format</a>?
 *	Using .las with Python? <a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank">las: python ingest</a>
 *	Specifications for <a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank">las v1.3</a>
 
