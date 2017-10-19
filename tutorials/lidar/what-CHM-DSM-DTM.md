@@ -148,7 +148,7 @@ don't contains any lidar points. These cells will have a "no data" value if we
 process our raster in this way. 
 
 <figure>
-    <a href="http://{{ site.baseurl }}/gridding-interpolation-spatial-data-gif" target="_blank">
+    <a href="{{ site.baseurl }}/gridding-interpolation-spatial-data-gif" target="_blank">
     <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 

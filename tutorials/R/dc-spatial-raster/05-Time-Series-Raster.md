@@ -78,7 +78,7 @@ same **resolution**.
 
 The raster data that we will use in this tutorial are located in the
 (`NEON-DS-Landsat-NDVI\HARV\2011\NDVI`) directory and cover part of the 
-<a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.
 
 In this tutorial, we will:
 

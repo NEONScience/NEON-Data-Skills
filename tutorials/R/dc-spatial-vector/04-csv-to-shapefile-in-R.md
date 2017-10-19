@@ -60,7 +60,7 @@ on your computer to complete this tutorial.
 
 The `HARV_PlotLocations.csv` file contains `x, y` (point) locations for study 
 plot where NEON collects data on
-<a href="http://{{ site.baseurl }}/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> vegetation and other ecological metrics</a>.
+<a href="{{ site.baseurl }}/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> vegetation and other ecological metrics</a>.
 We would like to:
 
 * Create a map of these plot locations. 

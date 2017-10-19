@@ -19,7 +19,7 @@ In this tutorial, we'll work with
 <a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> 
 by 
-<a href="http://{{ site.baseurl }}" target="_blank">the National 
+<a href="{{ site.baseurl }}" target="_blank">the National 
 Ecological Observatory Network (NEON) </a>. 
 Here the data are provided in HDF5 format to allow for the exploration of this 
 format. More information about NEON temperature data can be found on the 
@@ -120,7 +120,7 @@ Each element in an hdf5 file can have metadata attached to it making HDF5 files
 tutorial were collected by a temperature sensor mounted on a National Ecological 
 Observatory Network (NEON) flux tower at the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 
 Learn more about 
-<a href="http://{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">flux data here.</a>
+<a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">flux data here.</a>
 </div>
 
 Let's first explore an HDF5 file that we know nothing about using the R function, 

@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
 collected over the San Joaquin field site located in California (NEON Domain 17) 
-and processed at <a href="http://{{ site.baseurl }}" target="_blank" >NEON </a> 
+and processed at <a href="{{ site.baseurl }}" target="_blank" >NEON </a> 
 headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
 
 This data download contains several files used in related tutorials. The path to 

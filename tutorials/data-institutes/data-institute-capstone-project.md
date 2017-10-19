@@ -34,7 +34,7 @@ You are welcome to use any data you choose for this project. Combining NEON data
 with external data is highly encouraged. You can learn more about what NEON 
 data are currently available on our website:
 
-<a class="btn btn-inverse" href="http://{{ site.baseurl }}/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
+<a class="btn btn-inverse" href="{{ site.baseurl }}/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
 
 ## Document Your Work
 
