@@ -48,7 +48,7 @@ on your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 

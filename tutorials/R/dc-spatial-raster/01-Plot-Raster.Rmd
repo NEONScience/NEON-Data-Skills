@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
+* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Download Data
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}

@@ -43,7 +43,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
+* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
 {% include/dataSubsets/_data_Landsat-NDVI.html %}
