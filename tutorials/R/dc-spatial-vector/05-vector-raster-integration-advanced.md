@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}/packages-in-r)
+* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
