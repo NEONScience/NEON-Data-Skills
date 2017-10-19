@@ -10,7 +10,7 @@ _site
 _site/
 CNAME
 _config.yml
-01knit-RMD-2-MD_NDSRepo.R
+code/01knit-RMD-2-MD_NDSRepo.R
 
 # R files
 # History files

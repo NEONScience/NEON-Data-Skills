@@ -19,7 +19,7 @@ dirs <- c("R/NEON-API",
 dir <- dirs[1]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/clunch/NEON-Data-Skills"
+gitRepoPath <-"/Users/mjones01/Documents/GitHub/NEON-Data-Skills"
 
 # jekyll will only render md posts that begin with a date. Add one.
 add.date <- "2017-07-29-"

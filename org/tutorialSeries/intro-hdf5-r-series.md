@@ -13,7 +13,7 @@ image:
 In this series we cover what a HDF5 format is and how to open, read, and create
 HDF5 files in R. We also cover extracting and plotting data from HDF5 files. 
 
-ata used in this series are from the National Ecological Observatory Network (NEON) 
+Data used in this series are from the National Ecological Observatory Network (NEON) 
 and are in HDF5 format.
 
 <div id="objectives" markdown="1">
