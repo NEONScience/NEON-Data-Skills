@@ -175,10 +175,10 @@ library(rgdal)
 
 In this tutorial, the multi-band data that we are working with is imagery
 collected using the 
-<a href="http://{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing"
+<a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing"
 target="_blank">NEON Airborne Observation Platform</a>
 high resolution camera over the 
-<a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest"
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest"
 target="_blank">NEON Harvard Forest field site</a>. 
 Each RGB image is a 3-band raster. The same steps would apply to 
 working with a multi-spectral image with 4 or more bands - like Landsat imagery.

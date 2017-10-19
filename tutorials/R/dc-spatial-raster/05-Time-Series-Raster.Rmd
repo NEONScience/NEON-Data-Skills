@@ -78,7 +78,7 @@ same **resolution**.
 
 The raster data that we will use in this tutorial are located in the
 (`NEON-DS-Landsat-NDVI\HARV\2011\NDVI`) directory and cover part of the 
-<a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.
 
 In this tutorial, we will:
 
@@ -86,7 +86,7 @@ In this tutorial, we will:
 2. Import, explore and plot NDVI data derived for several dates throughout the
 year. 
 3. View the RGB imagery used to derived the NDVI time series to better
-understand unusual / outlier values. 
+understand unusual/outlier values. 
 
 ## NDVI Data
 The Normalized Difference Vegetation Index or NDVI is a quantitative index of 

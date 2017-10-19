@@ -614,7 +614,7 @@ efficient approach!
 `grid.arrange(plotOne, plotTwo, ncol=1)`
 
 Let's plot `AirTempMonthly` and `AirTempDaily` on top of each other. To do this,
-we'll specify one column..
+we'll specify one column.
 
 
 ```{r compare-precip }

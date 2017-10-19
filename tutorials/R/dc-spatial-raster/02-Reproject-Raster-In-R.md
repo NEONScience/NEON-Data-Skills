@@ -264,7 +264,7 @@ hillshade to produce a nice looking, textured map!
 <div id="ds-challenge" markdown="1">
 ## Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
-<a href="http://{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
+<a href="{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range</a>
 field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files. 
 
 Reproject the data as necessary to make things line up!

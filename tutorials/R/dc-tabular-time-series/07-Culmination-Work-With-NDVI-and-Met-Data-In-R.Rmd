@@ -83,7 +83,7 @@ vary from -1.0 to 1.0.
 
 The imagery data used to create this NDVI data were collected over the National
 Ecological Observatory Network's
-<a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank" >Harvard Forest</a>
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank" >Harvard Forest</a>
 field site. 
 
 The imagery was created by the U.S. Geological Survey (USGS) using a 

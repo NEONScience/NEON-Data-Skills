@@ -61,7 +61,7 @@ subset and export a portion of an R object as a new `.csv` file.
 In this tutorial, we will work with atmospheric data, containing air temperature, 
 precipitation, and photosynthetically active radiation (PAR) data  - metrics
 that are key drivers of phenology. Our study area is the 
-<a href="http://{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest Field Site.</a>
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest Field Site.</a>
 
 ## Import Timeseries Data 
 
