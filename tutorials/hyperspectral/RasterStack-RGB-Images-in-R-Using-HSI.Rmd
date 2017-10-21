@@ -44,7 +44,8 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
 
@@ -322,17 +323,17 @@ plotRGB(hsiStack,
 ```
 
 <i class="fa fa-star"></i>**A note about image stretching:** 
-Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter.
-</div>
+Notice that the scale is set to 300 on the RGB image that we plotted above. We 
+can adjust this number and notice that the image gets darker - or lighter.
 
 Once you've created your raster, you can export it as a GeoTIFF. You can bring 
 this GeoTIFF into any GIS program!
 
 ```{r save-raster-geotiff}
 
-#write out final raster	
-#note: if you set overwrite to TRUE, then you will overwite or lose the older
-#version of the tif file! keep this in mind.
+# write out final raster	
+# note: if you set overwrite to TRUE, then you will overwite or lose the older
+# version of the tif file! keep this in mind.
 writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
 
 ```

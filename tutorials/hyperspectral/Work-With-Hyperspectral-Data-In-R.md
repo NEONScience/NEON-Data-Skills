@@ -42,7 +42,8 @@ preferably, RStudio loaded on your computer.
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 
-[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
 
@@ -144,11 +145,11 @@ location on the earth. The `wavelength` dataset contains the middle wavelength
 values for each band in the data. The reflectance dataset contains the image data 
 that we will use for both data processing and visualization. 
 
-More Information on raster metadata:
+More information on raster metadata:
 
-* [Metadata to understand when working with raster data]({{ site.baseurl }}/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Metadata to understand when working with raster data</a>.
 
-* [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters]({{ site.baseurl }}/about-hdf5-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
+* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters </a>.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure 
@@ -162,8 +163,6 @@ explore the data before diving into using it!
 We can use the `h5readAttributes` function to read and extract metadata from the 
 HDF5 file. Let's start by reading in the spatial information.
 
-
-
     # get spatialInfo using the h5readAttributes function 
     spInfo <- h5readAttributes(f,"spatialInfo")
     
@@ -172,7 +171,6 @@ HDF5 file. Let's start by reading in the spatial information.
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
 file. 
-
 
     # read in the wavelength information from the HDF5 file
     wavelengths<- h5read(f,"wavelength")
@@ -203,7 +201,6 @@ wavelengths represented in that  band. Thus in a band spanning 800-805 nm, the
 center would be 802.5 nm). The full width half max (FWHM) will also be reported. 
 This value represents the spread of the band around that center point. So, a band 
 that covers 800 nm-805 nm might have a FWHM of 2.5 and a wavelength value of 802.5. 
-</div>
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
@@ -259,6 +256,7 @@ later.
     ## [1] "array"
 
 ### A Note About Data Slicing in HDF5
+
 Data slicing allows us to extract and work with subsets of the data rather than 
 reading in the entire dataset into memory. Thus, in this case, we can extract and 
 plot the green band without reading in all 426 bands of information. The ability 
@@ -295,6 +293,7 @@ Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 | average height | 32        | 12        |
 
 ### Dimensions in Arrays
+
 An array contains 1 or more dimensions in the "z" direction. For example, let's 
 say that we collected 
 this same set of species data for every day in a 30 day month. We might then have 
@@ -382,8 +381,8 @@ represent a smaller number of pixels. These pixels are skewing how the image
 renders. 
 
 ### Data Ignore Value
-Image data in raster 
-format will often contain a data ignore value and a scale factor. The data ignore 
+Image data in raster format will often contain a data ignore value and a scale 
+factor. The data ignore 
 value represents pixels where there are no data. Among other causes, no data 
 values may be attributed to the sensor not collecting data in that area of the 
 image or to processing results which yield null values. 
@@ -428,7 +427,6 @@ The proper way to adjust our data would be
 what's called an `image stretch`. We will learn how to stretch our image data, 
 later. For now, let's plot the values as the log function on the pixel 
 reflectance values to factor out those larger values. 
-
 
     image(log(b34))
 
@@ -499,7 +497,7 @@ The map info string looks something like this:
 <br>
 `"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,`
 `1.000000e+000,11,North,WGS-84,units=Meters" `. 
-<br>
+</br>
 
 Notice that this information is separated by commas. We can use the 
 `strsplit` command in R to extract each element into a vector. The elements are 
@@ -537,7 +535,7 @@ the Y lower left hand corner coordinate and the number of columns in the
 		Observatory Network (NEON) </figcaption>
 </figure>
 
-[Learn more about raster attributes including extent, and coordinate reference systems here.](http://neondataskills.org/HDF5/Working-With-Rasters/) 
+<a href="{{ site.baseurl }}/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a>
 
 ### Define Raster CRS
 
