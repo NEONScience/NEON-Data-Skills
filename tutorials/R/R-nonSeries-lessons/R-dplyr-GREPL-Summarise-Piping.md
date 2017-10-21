@@ -29,7 +29,7 @@ After completing this tutorial, you will be able to:
 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -48,7 +48,7 @@ format. This data format here is provide to accompany this tutorial on dplyr onl
 
 ## Intro to dplyr
 When working with data frames in R, it is often useful to manipulate and 
-summarize data. The `dplyr` package in `R` offers one of the most comprehensive 
+summarize data. The `dplyr` package in R offers one of the most comprehensive 
 group of functions to perform common manipulation tasks. In addition, the 
 `dplyr` functions are often of a simpler syntax than most other data manipulation 
 functions in R.

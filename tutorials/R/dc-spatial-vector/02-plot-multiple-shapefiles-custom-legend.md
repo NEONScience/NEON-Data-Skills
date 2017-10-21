@@ -18,7 +18,7 @@ urlTitle: dc-plot-shapefiles-r
 
 This tutorial builds upon 
 [the previous tutorial]({{ site.baseurl }}dc-shapefile-attributes-r) 
-to work with shapefile attributes in `R` and explores how to plot multiple 
+to work with shapefile attributes in R and explores how to plot multiple 
 shapefiles using base R graphics. It then covers
 how to create a custom legend with colors and symbols that match your plot.
 
@@ -32,7 +32,7 @@ After completing this tutorial, you will be able to:
  * Customize a baseplot legend in R.
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -53,7 +53,7 @@ on your computer to complete this tutorial.
 </div>
 
 ## Load the Data
-To work with vector data in `R`, we can use the `rgdal` library. The `raster` 
+To work with vector data in R, we can use the `rgdal` library. The `raster` 
 package also allows us to explore metadata using similar commands for both
 raster and vector files. 
 
@@ -170,7 +170,7 @@ keyword. We could also use `top`, `topright`, etc.
 categories of `levels` in an attribute (e.g., levels(lines_HARV$TYPE) means use
 the levels boardwalk, footpath, etc).
 * `fill=`: apply unique **colors** to the boxes in our legend. `palette()` is 
-the default set of colors that `R` applies to all plots. 
+the default set of colors that R applies to all plots. 
 
 Let's add a legend to our plot.
 
@@ -294,7 +294,7 @@ and the points, symbolized as a symbol. We can customize this using
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** To view a short list of `pch` symbols, 
-type `?pch` into the `R` console. 
+type `?pch` into the R console. 
 </div>
 
 
@@ -331,11 +331,11 @@ using `lty = ()`. We have a total of 6 elements in our legend:
 
 The `lty` list designates, in order, which of those elements should be
 designated as a line (`1`) and which should be designated as a symbol (`NA`).
-Our object will thus look like `lty = c(NA,NA,1,1,1,1)`. This tells `R` to use a
+Our object will thus look like `lty = c(NA,NA,1,1,1,1)`. This tells R to use a
 line element for`the 3-6 elements in our legend only. 
 
 Once we do this, we need to **modify** our `pch` element. Each **line** element
-(3-6) should be represented by a `NA` value - this tells `R` to not use a
+(3-6) should be represented by a `NA` value - this tells R to not use a
 symbol, but to instead use a line.
 
 
@@ -375,7 +375,7 @@ create a map of study plot locations, with each point colored by the soil type
 site? Overlay this layer on top of the `lines_HARV` layer (the roads). Create a 
 custom legend that applies line symbols to lines and point symbols to the points.
 
-2. Modify the plot above. Tell `R` to plot each point, using a different
+2. Modify the plot above. Tell R to plot each point, using a different
 symbol of `pch` value. HINT: to do this, create a vector object of symbols by 
 factor level using the syntax described above for line width: 
 `c(15,17)[lines_HARV$soilTypeOr]`. Overlay this on top of the AOI Boundary. 

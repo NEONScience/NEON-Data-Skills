@@ -27,7 +27,7 @@ extent, coordinate reference system and spatial resolution.
 * Explain the basics of coordinate reference systems.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -56,7 +56,7 @@ This tutorial will overview the key attributes of a raster object, including
 spatial extent, resolution and coordinate reference system. When working within
 a GIS system often these attributes are accounted for. However, it is important
 to be more familiar with them when working in non-GUI environments such as 
- `R` or even `Python`.
+ R or even `Python`.
 
 In order to correctly spatially reference a raster that is not already georeferenced,
 you will also need to identify:
@@ -91,7 +91,7 @@ the image represents a 1 m x 1 m area.
 
 ## Load the Data
 
-Let's open up a raster in `R` to see how the attributes are stored. We are 
+Let's open up a raster in R to see how the attributes are stored. We are 
 going to work with a Digital Terrain Model from the San Joaquin Experimental 
 Range in California. 
 
@@ -123,7 +123,7 @@ that the x,y units of the data are meters (m).
 The spatial extent of a raster, represents the "X, Y" coordinates of the corners 
 of the raster in geographic space. This information, in addition to the cell 
 size or spatial resolution, tells the program how to place or render each pixel 
-in 2 dimensional space.  Tools like `R`, using supporting packages such as `rgdal` 
+in 2 dimensional space.  Tools like R, using supporting packages such as `rgdal` 
 and associated raster tools have functions that allow you to view and define the 
 extent of a new raster. 
 
@@ -305,7 +305,7 @@ There are lots of great resources that describe coordinate reference systems and
 projections in greater detail. However, for the purposes of this activity, what 
 is important to understand is that data from the same location but saved in 
 different projections **will not line up in any GIS or other program**. Thus 
-it's important when working with spatial data in a program like `R` or `Python` 
+it's important when working with spatial data in a program like R or `Python` 
 to identify the coordinate reference system applied to the data, and to grab 
 that information and retain it when you process / analyze the data.
 

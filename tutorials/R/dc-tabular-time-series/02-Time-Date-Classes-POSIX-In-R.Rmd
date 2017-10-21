@@ -19,7 +19,7 @@ urlTitle: dc-convert-date-time-POSIX-r
 This tutorial explores working with date and time field in R. We will overview
 the differences between `as.Date`, `POSIXct` and `POSIXlt` as used to convert
 a date / time field in character (string) format to a date-time format that is 
-recognized by `R`. This conversion supports efficient plotting, subsetting and
+recognized by R. This conversion supports efficient plotting, subsetting and
 analysis of time series data.
 
 
@@ -28,11 +28,11 @@ analysis of time series data.
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Describe various date-time classes and data structure in `R`. 
+* Describe various date-time classes and data structure in R. 
 * Explain the difference between `POSIXct` and `POSIXlt` data classes are and 
 why POSIXct may be preferred for some tasks. 
 * Convert a column containing date-time information in character
-format to a date-time `R` class.
+format to a date-time R class.
 * Convert a date-time column to different date-time classes. 
 * Write out a date-time class object in different ways (month-day,
 month-day-year, etc). 
@@ -56,12 +56,12 @@ your computer to complete this tutorial.
 
 ## The Data Approach
 In the [Intro to Time Series Data in R tutorial ]({{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r)
-we imported a time series dataset in `.csv` format into `R`. We learned how to 
-quickly plot these data by converting the date column to an `R` `Date` class.
+we imported a time series dataset in `.csv` format into R. We learned how to 
+quickly plot these data by converting the date column to an R `Date` class.
 In this tutorial we will explore how to work with a column that contains both a
 date AND a time stamp.
 
-We will use functions from both base `R` and the `lubridate` package to work 
+We will use functions from both base R and the `lubridate` package to work 
 with date-time data classes.
 
 ```{r load-libraries}
@@ -125,7 +125,7 @@ When we use `as.Date`, we lose the time stamp.
 
 #### R - Date Class - as.Date
 As we just saw, the `as.Date` format doesn't store any time information. When we
-use the`as.Date` method to convert a date stored as a character class to an `R`
+use the`as.Date` method to convert a date stored as a character class to an R
 `date` class, it will ignore all values after the date string.
 
 ```{r explore-as_date }
@@ -145,7 +145,7 @@ characters in the string.
 
 #### R - Date-Time - The POSIX classes
 If we have a column containing both date and time we need to use a class that
-stores both date AND time. Base `R` offers two closely related classes for date
+stores both date AND time. Base R offers two closely related classes for date
 and time: `POSIXct` and `POSIXlt`. 
 
 #### POSIXct
@@ -181,8 +181,8 @@ Here we see the number of seconds from 1 January 1970 to 9 October 2015
 (`1445271300`). Also, we see that a time zone (`tzone`) is associated with the value in seconds. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The `unclass` method in `R` allows you
-to view how a particular `R` object is stored.
+<i class="fa fa-star"></i>**Data Tip:** The `unclass` method in R allows you
+to view how a particular R object is stored.
 </div>
 
 #### POSIXlt
@@ -202,7 +202,7 @@ timeDatelt
 unclass(timeDatelt)
 ```
 
-When we convert a string to `POSIXlt`, and view it in `R`, it still looks
+When we convert a string to `POSIXlt`, and view it in R, it still looks
 similar to the `POSIXct` format. However, `unclass()` shows us that the data are
 stored differently. The `POSIXlt` class stores the hour, minute, second, day,
 month, and year separately.
@@ -219,8 +219,8 @@ using a base index value of 1900. Thus, 2015 is stored as 115 (`$year = 115`
 - 115 years since 1900).
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To learn more about how `R` stores
-information within date-time and other objects check out the `R` documentation
+<i class="fa fa-star"></i>**Data Tip:** To learn more about how R stores
+information within date-time and other objects check out the R documentation
 by using `?` (e.g., `?POSIXlt`). NOTE: you can use this same syntax to learn
 about particular functions (e.g., `?ggplot`).  
 </div>
@@ -230,13 +230,13 @@ more resource intensive to use in `data.frames`. This slows things down! We will
 thus use `POSIXct` for this tutorial.  
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** There are other `R` packages that
+<i class="fa fa-star"></i>**Data Tip:** There are other R packages that
 support date-time data classes, including `readr`, `zoo` and `chron`.  
 </div>
 
 ## Convert to Date-time Class
 
-When we convert from a character to a date-time class we need to tell `R` how 
+When we convert from a character to a date-time class we need to tell R how 
 the date and time information are stored in each string. To do this, we can use
 `format=`. Let's have a look at one of our date-time strings to determine it's 
 format.
@@ -262,7 +262,7 @@ is available in the `strptime` function help: `help(strptime)`. Check it out!
 </div>
 
 The "T" inserted into the middle of `datetime` isn't a standard character for 
-date and time, however we can tell `R` where the character is so it can ignore 
+date and time, however we can tell R where the character is so it can ignore 
 it and interpret the correct date and time as follows:
 `format="%Y-%m-%dT%H:%M"`.  
 
@@ -310,15 +310,14 @@ that these data were stored in Eastern Standard Time.
 ### Assign Time Zone
 
 When we convert a date-time formatted column to `POSIXct` format, we need to
-assign an associated **time zone**. If we don't assign a time zone,`R` will 
+assign an associated **time zone**. If we don't assign a time zone,R will 
 default to the local time zone that is defined on your computer. 
 There are individual designations for different time zones and time zone 
 variants (e.g., does the time occur during daylight savings time). 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** Codes for time zones can be found in this 
-<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
-target="_blank">time zone table</a>. 
+<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">time zone table</a>. 
 </div>
 
 The code for the Eastern time zone that is the closest match to the NEON Harvard

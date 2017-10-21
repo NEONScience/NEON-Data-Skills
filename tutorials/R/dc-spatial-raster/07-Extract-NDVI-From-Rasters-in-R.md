@@ -19,7 +19,7 @@ urlTitle: dc-ndvi-calc-raster-time-series
 
 
 In this tutorial, we will extract NDVI values from a raster time series dataset 
-in `R` and plot them using `ggplot`.
+in R and plot them using `ggplot`.
 
 
 <div id="ds-objectives" markdown="1">
@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 * Have experience comparing NDVI values between two different sites. 
 
 ## Things You'll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -218,7 +218,7 @@ What class is our `julianDay` column?
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** To be efficient, we substituted two
-elements in one line of code using the "|". You can often combine commands in `R`
+elements in one line of code using the "|". You can often combine commands in R
 to improve code efficiency. 
 `avg_NDVI_HARV$julianDay <- gsub("X|_HARV_NDVI_crop", "", row.names(avg_NDVI_HARV))`.
 </div>

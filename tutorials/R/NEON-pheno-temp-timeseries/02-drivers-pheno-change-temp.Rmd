@@ -18,7 +18,7 @@ urlTitle: neon-SAAT-temp-r
 
 In this tutorial, we explore the NEON single-aspirated air temperature data. We
 start using data that has already been "stacked" using the 
-<a href="{{ site.baseurl }}/R/neonDataStackR" target="_blank"> neonDataStackR package</a>. 
+<a href="{{ site.baseurl }}/neonDataStackR-temp" target="_blank"> neonDataStackR package</a>. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
 
@@ -37,7 +37,7 @@ After completing this activity, you will be able to:
  * plot time series data in scatter plots using ggplot function. 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -298,7 +298,7 @@ a date-time format.
 
 ## R - Date-Time - The POSIX classes
 If we have a column containing both date and time we need to use a class that
-stores both date AND time. Base `R` offers two closely related classes for date
+stores both date AND time. Base R offers two closely related classes for date
 and time: `POSIXct` and `POSIXlt`. 
 
 #### POSIXct
@@ -334,8 +334,8 @@ Here we see the number of seconds from 1 January 1970 to 9 October 2015
 (`1445271300`). Also, we see that a time zone (`tzone`) is associated with the value in seconds. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** The `unclass` method in `R` allows you
-to view how a particular `R` object is stored.
+<i class="fa fa-star"></i> **Data Tip:** The `unclass` method in R allows you
+to view how a particular R object is stored.
 </div>
 
 #### POSIXlt
@@ -355,7 +355,7 @@ timeDatelt
 unclass(timeDatelt)
 ```
 
-When we convert a string to `POSIXlt`, and view it in `R`, it still looks
+When we convert a string to `POSIXlt`, and view it in R, it still looks
 similar to the `POSIXct` format. However, `unclass()` shows us that the data are
 stored differently. The `POSIXlt` class stores the hour, minute, second, day,
 month, and year separately.
@@ -372,8 +372,8 @@ using a base index value of 1900. Thus, 2015 is stored as 115 (`$year = 115`
 - 115 years since 1900).
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** To learn more about how `R` stores
-information within date-time and other objects check out the `R` documentation
+<i class="fa fa-star"></i> **Data Tip:** To learn more about how R stores
+information within date-time and other objects check out the R documentation
 by using `?` (e.g., `?POSIXlt`). NOTE: you can use this same syntax to learn
 about particular functions (e.g., `?ggplot`).  
 </div>
@@ -383,13 +383,13 @@ more resource intensive to use in `data.frames`. This slows things down! We will
 thus use `POSIXct` for this tutorial.  
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** There are other `R` packages that
+<i class="fa fa-star"></i> **Data Tip:** There are other R packages that
 support date-time data classes, including `readr`, `zoo` and `chron`.  
 </div>
 
 ## Convert to Date-time Class
 
-When we convert from a character to a date-time class we need to tell `R` how 
+When we convert from a character to a date-time class we need to tell R how 
 the date and time information are stored in each string. To do this, we can use
 `format=`. Let's have a look at one of our date-time strings to determine it's 
 format.
@@ -415,7 +415,7 @@ is available in the `strptime` function help: `help(strptime)`. Check it out!
 </div>
 
 The "T" inserted into the middle of `datetime` isn't a standard character for 
-date and time, nor is the "Z" at the end, however we can tell `R` where the
+date and time, nor is the "Z" at the end, however we can tell R where the
 characters are so R can ignore them and interpret the correct date and time 
 as follows: `format="%Y-%m-%dT%H:%M:%"`.
 

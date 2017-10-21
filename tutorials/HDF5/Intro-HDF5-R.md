@@ -50,7 +50,8 @@ tutorial.
 
 ### Additional Resources
 
-Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
+Consider reviewing the documentation for the 
+<a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
 
 </div>
 
@@ -65,9 +66,9 @@ computers memory / RAM in their entirety in order work with them.
 
 ## HDF5 in R
 
-To access HDF5 files in `R`, we will use the `rhdf5` library which is part of 
+To access HDF5 files in R, we will use the `rhdf5` library which is part of 
 the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
-suite of `R` libraries. It might also be useful to install 
+suite of R libraries. It might also be useful to install 
 <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
 free HDF5 viewer</a> which will allow you to explore the contents of an HDF5 file 
 using a graphic interface.

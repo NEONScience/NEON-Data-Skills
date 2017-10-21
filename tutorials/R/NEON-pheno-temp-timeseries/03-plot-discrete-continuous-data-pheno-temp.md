@@ -27,7 +27,7 @@ After completing this tutorial, you will be able to:
  * plot only a subset of dates
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -124,7 +124,7 @@ Rather than re-coding the entire plot, we can add the `scale_x_date` element
 to the plot object `phenoPlot` we just created. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** You can type `?strptime` into the `R` 
+<i class="fa fa-star"></i> **Data Tip:** You can type `?strptime` into the R 
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type `scale_x_date` for a list of parameters that allow you to format dates 
 on the x-axis.

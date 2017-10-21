@@ -38,7 +38,7 @@ After completing this activity, you will be able to:
 * Export shapefiles from R using the `writeOGR()` function.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -71,7 +71,7 @@ San Joaquin Experimental Range (SJER) in California.
 
 ## Load CSV, Setup Plots 
 
-To work with our spatial data in `R`, we can use the `rgdal` package and the 
+To work with our spatial data in R, we can use the `rgdal` package and the 
 `sp` package. Once we've loaded these packages and set the working directory to
 the where our .csv file with the data is located, we can load our data. 
 
@@ -319,4 +319,4 @@ And there you have it -- a shapefile with a square plot boundary around your
 centroids. Bring this shapefile into QGIS or whatever GIS package you prefer 
 and have a look! 
 
-For more on working with shapefiles in R, check out our <a href="{{ site.baseurl }}/tutorial-series/vector-data-series/"> *Working with Vector Data in R* series </a>.
+For more on working with shapefiles in R, check out our <a href="{{ site.baseurl }}/vector-data-series/"> *Working with Vector Data in R* series </a>.

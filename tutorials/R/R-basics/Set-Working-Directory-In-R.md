@@ -18,8 +18,8 @@ urlTitle: set-working-directory-r
 
 
 The primary goal of this tutorial is to explain how to set a working directory 
-in `R`. The working directory points to a directory or folder on the computer 
-where data that you wish to work with in `R` is stored. Along the way it teaches
+in R. The working directory points to a directory or folder on the computer 
+where data that you wish to work with in R is stored. Along the way it teaches
 how to download and unzip the data files that accompany many NEON Data Skills 
 tutorials and the concepts of file paths – use the menu bar at right to navigate 
 to your desired topic.  
@@ -30,7 +30,7 @@ to your desired topic.
 After completing this tutorial, you will be able to:
 
 * Be able to download and uncompress NEON Teaching Data Subsets. 
-* Be able to set the `R` working directory.
+* Be able to set the R working directory.
 * Know the difference between full, base and relative paths. 
 * Be able to write out both full and relative paths for a given file or
  directory. 
@@ -50,11 +50,11 @@ Many NEON data tutorials utilize teaching data subsets which are hosted on the
 NEON Data Skills fig**share** repository. If a data subset is required for a tutorial it can be 
 downloaded at the top of each tutorial in the **Download Data** section. 
 
-Prior to working with any data in `R`, we must set the **working directory** to
-the location of the data files. Setting the working directory tells `R` where 
+Prior to working with any data in R, we must set the **working directory** to
+the location of the data files. Setting the working directory tells R where 
 the data files are located on the computer. If the working directory is not 
 correctly set first, when we try to open a file we will get an error telling us 
-that `R` cannot find the file. 
+that R cannot find the file. 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
@@ -129,7 +129,7 @@ into the data directory. If the latter happens, they need to be moved into a
 ## Challenge: Download and Unzip Teaching Data Subset
 Want to make sure you have these steps down! Prepare the 
 **Site Layout Shapefiles Teaching Data Subset** so that the files
-are accessible and ready to be opened in`R`. 
+are accessible and ready to be opened inR. 
 </div>
 
 
@@ -150,10 +150,10 @@ same but without that directory.
 
 
 ## The R Working Directory
-In `R`, the working directory is the directory where `R` starts when looking for 
+In R, the working directory is the directory where R starts when looking for 
 any file to open (as directed by a file path) and where it saves any output. 
 
-Without a working directory all `R` scripts would need the full file path 
+Without a working directory all R scripts would need the full file path 
 written any time we wanted to open or save a file. It is more efficient if we 
 have a **base file path** set as our **working directory** and then all file 
 paths written in our scripts only consist of the file path relative to that base
@@ -194,7 +194,7 @@ noted.
 </div>
 
 ### Determine Current Working Directory
-Once we are in the `R` program, we can view the current working directory
+Once we are in the R program, we can view the current working directory
 using the code `getwd()`. 
 
 	# view current working directory 
@@ -209,7 +209,7 @@ This code can be used at any time to determine the current working directory.
 
 ## Set the Working Directory
 To set our current working directory to the location where our data are located,
-we can either set the working directory in the `R` script or use our current GUI
+we can either set the working directory in the R script or use our current GUI
 to select the working directory.
 
 <div id="ds-dataTip" markdown="1">
@@ -226,12 +226,12 @@ We can set the working directory using the code `setwd("PATH")` where PATH is
 the full path to the desired directory. 
 
 Now, set your working directory to the directory where you have the data saved. 
-There is no `R` output from `setwd()`. If we want to check that the working
+There is no R output from `setwd()`. If we want to check that the working
 directory is correctly set we can use `getwd()`.
  
 #### Example Windows File Path
 Notice the the backslashes used in Windows paths must be changed to slashes in
-`R`. 
+R. 
 
 	# set the working directory to `data` folder
 	setwd("C:/Users/neon/Documents/data")

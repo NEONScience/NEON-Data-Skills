@@ -16,7 +16,7 @@ urlTitle: dc-plot-raster-data-r
 ---
 
 
-This tutorial reviews how to plot a raster in `R` using the `plot()` 
+This tutorial reviews how to plot a raster in R using the `plot()` 
 function. It also covers how to layer a raster on top of a hillshade to produce 
 an eloquent map.
 
@@ -26,13 +26,13 @@ an eloquent map.
 
 After completing this tutorial, you will be able to:
 
-* Know how to plot a single band raster in `R`.
+* Know how to plot a single band raster in R.
 * Know how to layer a raster dataset on top of a hillshade to create an elegant 
 basemap.
 
 ## Things You’ll Need To Complete This Tutorial
 
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -53,7 +53,7 @@ on your computer to complete this tutorial.
 
 ### Additional Resources
 
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> Read more about the `raster` package in `R`.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> Read more about the `raster` package in R.</a>
 
 </div>
 
@@ -95,7 +95,7 @@ We can view our data "symbolized" or colored according to ranges of values
 rather than using a continuous color ramp. This is comparable to a "classified"
 map. However, to assign breaks, it is useful to first explore the distribution
 of the data using a histogram. The `breaks` argument in the `hist()` function
-tells `R` to use fewer or more breaks or bins. 
+tells R to use fewer or more breaks or bins. 
 
 If we name the histogram, we can also view counts for each bin and assigned
 break values.  
@@ -119,7 +119,7 @@ subset of 100,000 values. We could force it to show all the pixel values or we
 can use the histogram as is and figure that the sample of 100,000 values
 represents our data well. 
 
-Looking at our histogram, `R` has binned out the data as follows:
+Looking at our histogram, R has binned out the data as follows:
 
 * 300-350m, 350-400m, 400-450m
 
@@ -151,7 +151,7 @@ a set of 4 values will result in 3 bins of data.
 
 ### Format Plot
 If we need to create multiple plots using the same color palette, we can create
-an `R` object (`myCol`) for the set of colors that we want to use. We can then
+an R object (`myCol`) for the set of colors that we want to use. We can then
 quickly change the palette across all plots by simply modifying the `myCol`
 object. 
 
@@ -264,7 +264,7 @@ transparent, 1 being opaque). Note that here we used the color palette
 `rainbow()` instead of `terrain.color()`.
 
 * More information in the 
-<a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">`R` color palettes documentation</a>. 
+<a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">R color palettes documentation</a>. 
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: Create DTM & DSM for SJER

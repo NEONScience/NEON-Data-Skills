@@ -32,7 +32,7 @@ After completing this tutorial, you will be able to:
 store & reference the `CRS` of a spatial object.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -111,7 +111,7 @@ library (raster)   # for metadata/attributes- vectors or rasters
 ## Import US Boundaries - Census Data
 
 There are many good sources of boundary base layers that we can use to create a 
-basemap. Some `R` packages even have these base layers built in to support quick
+basemap. Some R packages even have these base layers built in to support quick
 and efficient mapping. In this tutorial, we will use boundary layers for the 
 United States, provided by the
 <a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html" target="_blank"> United States Census Bureau.</a>
@@ -122,7 +122,7 @@ attributes to them if need be - for project specific mapping.
 ## Read US Boundary File
 
 We will use the `readOGR()` function to import the
-`/US-Boundary-Layers/US-State-Boundaries-Census-2014` layer into `R`. This layer
+`/US-Boundary-Layers/US-State-Boundaries-Census-2014` layer into R. This layer
 contains the boundaries of all continental states in the U.S. Please note that
 these data have been modified and reprojected from the original data downloaded
 from the Census website to support the learning goals of this tutorial.
@@ -244,9 +244,9 @@ It looks like our data are in different CRS. We can tell this by looking at
 the CRS strings in `proj4` format.
 
 ## Understanding CRS in Proj4 Format
-The CRS for our data are given to us by `R` in `proj4` format. Let's break
+The CRS for our data are given to us by R in `proj4` format. Let's break
 down the pieces of `proj4` string. The string contains all of the individual
-CRS elements that `R` or another GIS might need. Each element is specified
+CRS elements that R or another GIS might need. Each element is specified
 with a `+` sign, similar to how a `.csv` file is delimited or broken up by 
 a `,`. After each `+` we see the CRS element being defined. For example
 projection (`proj=`) and datum (`datum=`).
@@ -318,7 +318,7 @@ represented in meters.
 * <a href="http://proj.maptools.org/faq.html" target="_blank">More information on the proj4 format.</a>
 * <a href="http://spatialreference.org" target="_blank">A fairly comprehensive list of CRS by format.</a>
 * To view a list of datum conversion factors type: `projInfo(type = "datum")` 
-into the `R` console. 
+into the R console. 
 
 ***
 
@@ -328,7 +328,7 @@ Now we know our data are in different CRS. To address this, we have to modify
 or **reproject** the data so they are all in the **same** CRS. We can use
 `spTransform()` function to reproject our data. When we reproject the data, we
 specify the CRS that we wish to transform our data to. This CRS contains
-the datum, units and other information that `R` needs to **reproject** our data.
+the datum, units and other information that R needs to **reproject** our data.
 
 The `spTransform()` function requires two inputs:
 

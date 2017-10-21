@@ -30,7 +30,7 @@ After completing this activity, you will be able to:
 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -55,14 +55,9 @@ data to follow the code exactly.
 
 You may benefit from reviewing these related tutorials prior to this tutorial: 
 
-* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r
-">
-The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
-* <a href="{{ site.baseurl }}/raster-data-r
-">
-Please read "Raster Data in R - The Basics.</a>
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-The `raster` R package documentation.</a>
+* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank">The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Please read "Raster Data in R - The Basics.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The `raster` R package documentation.</a>
 
 </div>
 
@@ -85,8 +80,7 @@ color image.
 
 ## Work with Multiple Rasters
 
-In [a previous tutorial]({{ site.baseurl }}/raster-data-r
-), we loaded a 
+In <a href="{{ site.baseurl }}/raster-data-r" target="_blank">a previous tutorial</a>, we loaded a 
 single raster into R. We made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
 attributes. This raster was a Digital Elevation Model so there was only a single

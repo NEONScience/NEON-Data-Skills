@@ -28,9 +28,9 @@ multiple tasks within a single chunk of code.
 After completing this tutorial, you will be able to:
 
  * Explain several ways to manipulate data using functions in the `dplyr`
- package in `R`.
+ package in R.
  * Use `group-by()`, `summarize()`, and `mutate()` functions. 
- * Write and understand `R` code with pipes for cleaner, efficient coding.
+ * Write and understand R code with pipes for cleaner, efficient coding.
  * Use the `year()` function from the `lubridate` package to extract year from a
  date-time class variable. 
 
@@ -58,7 +58,7 @@ your computer to complete this tutorial.
 * NEON Data Skills tutorial on 
 <a href="http://neondataskills.org/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> spatial data and piping with dplyr</a>  
 * Data Carpentry lesson's on 
-<a href="http://www.datacarpentry.org/R-ecology/04-dplyr.html" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
+<a href="http://www.datacarpentry.org/R-ecology/04-dplyr" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
 * <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> `dplyr` package description</a>.
 * <a href="http://blog.rstudio.org/2014/01/17/introducing-dplyr/" target="_blank">RStudio Introduction to `dplyr`</a>
 
@@ -118,7 +118,7 @@ data exploration.
 ### Extract Year from a Date-Time Column
 To summarize by year efficiently, it is helpful to have a year column that we
 can use to `group` by. We can use the `lubridate` function `year()` to extract
-the year only from a `date-time` class `R` column. 
+the year only from a `date-time` class R column. 
 
 
     # create a year column
@@ -212,8 +212,8 @@ values for both years. Let's check our data for `NoData` values.
     ## 2 203173 2010-10-18 09:30:00   291    NA      M    NA
 
 It appears as if there are two `NoData` values (in 2009 and 2010) that are
-causing `R` to return a `NA` for the mean for those years. As we learned
-previously, we can use `na.rm` to tell `R` to ignore those values and calculate
+causing R to return a `NA` for the mean for those years. As we learned
+previously, we can use `na.rm` to tell R to ignore those values and calculate
 the final mean value.
 
 
@@ -233,13 +233,13 @@ Great! We've now used the `group_by` function to create groups for each year
 of our data. We then calculated a summary mean value per year using `summarize`.
 
 ### dplyr Pipes 
-The above steps utilized several steps of `R` code and created 1 `R` object - 
+The above steps utilized several steps of R code and created 1 R object - 
 `HARV.grp.year`. We can combine these steps using `pipes` in the `dplyr` 
 package.
 
 We can use `pipes` to string functions or processing steps together. The output 
 of each step is fed directly into the next step using the syntax: `%>%`. This 
-means we don't need to save the output of each intermediate step as a new `R`
+means we don't need to save the output of each intermediate step as a new R
 object.
 
 A few notes about piping syntax:
@@ -254,7 +254,7 @@ column name
 So, we have: `harMet15.09.11 %>% group_by(year) `
 
 * We can then add an additional function (or more functions!) to our pipe. For
-example, we can tell `R` to `tally` or count the number of measurements per
+example, we can tell R to `tally` or count the number of measurements per
 year.
 
 `harMet15.09.11 %>% group_by(year) %>% tally()`
@@ -384,17 +384,17 @@ The output shows we have 96 values for each day. Is that what we expect?
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
-data, we could use the `yday()` function
-<a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday"/>
-from the `lubridate` package to create a new column containing Julian day 
-values. [More information in this NEON Data Skills tutorial ]({{ site.baseurl }}/julian-day-conversion-r). 
+data, we could use 
+<a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday" target="_blank"> the `yday()` function from the `lubridate` package </a> 
+to create a new column containing Julian day values. 
+<a href=" {{ site.baseurl }}/julian-day-conversion-r" target="_blank"> More information in this NEON Data Skills tutorial on Julian date.</a> 
 </div>
 
 ### Summarize by Group
 We can use `summarize()` function to calculate a summary output value for each
 "group" - in this case Julian day per year. Let's calculate the mean air
 temperature for each Julian day per year. Note that we are still using
-`na.rm=TRUE` to tell `R` to skip `NA` values.
+`na.rm=TRUE` to tell R to skip `NA` values.
 
 
     harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
@@ -469,12 +469,12 @@ data_frame.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
-`transform()` in base `R`. However,`mutate()` allows us to create and 
+`transform()` in base R. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
 </div>
 
 ## Save dplyr Output as data_frame
-We can save output from a `dplyr` pipe as a new `R` object to use for quick
+We can save output from a `dplyr` pipe as a new R object to use for quick
 plotting. 
 
 
@@ -505,7 +505,7 @@ date for each summary value.
 
 We can add the the `datetime` column value to our `data_frame` by adding an
 additional argument to the `summarize()` function. In this case, we will add the
-`first` datetime value that `R` encounters when summarizing data by group as
+`first` datetime value that R encounters when summarizing data by group as
 follows:
 
 `datetime = first(datetime)`

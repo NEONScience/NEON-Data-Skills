@@ -183,7 +183,7 @@ The function requires the following variables:
 * res: the resolution of the raster
 * crs: the Coordinate Reference System for the raster
 
-The function output is a spatially referenced, `r` raster object.
+The function output is a spatially referenced, R raster object.
 
 ```{r function-read-refl-data }
 

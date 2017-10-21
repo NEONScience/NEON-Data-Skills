@@ -23,7 +23,7 @@ analyzed. Rasters that don't line up are most often in different Coordinate
 Reference Systems (CRS).
 
 This tutorial explains how to deal with rasters in different, known CRSs. It
-will walk though reprojecting rasters in `R` using the `projectRaster()`
+will walk though reprojecting rasters in R using the `projectRaster()`
 function in the `raster` package.
 
 
@@ -33,10 +33,10 @@ function in the `raster` package.
 
 After completing this tutorial, you will be able to:
 
-* Be able to reproject a raster in `R`.
+* Be able to reproject a raster in R.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -58,7 +58,7 @@ on your computer to complete this tutorial.
 ### Additional Resources
 
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the `raster` package in `R`.</a>
+Read more about the `raster` package in R.</a>
 
 </div>
 
@@ -109,7 +109,7 @@ top of our hillshade. The hillshade plotted just fine on it's own. Let's try to
 plot the DTM on it's own to make sure there are data there.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Code Tip:** For boolean `R` elements, such as
+<i class="fa fa-star"></i>**Code Tip:** For boolean R elements, such as
  `add=TRUE`, you can use `T` and `F` in place of `TRUE` and `FALSE`.
 </div>
 
@@ -143,7 +143,7 @@ Our DTM seems to contain data and plots just fine. Let's next check the
 Aha! `DTM_HARV` is in the UTM projection. `DTM_hill_HARV` is in
 `Geographic WGS84` - which is represented by latitude and longitude values.
 Because the two rasters are in different CRSs, they don't line up when plotted
-in `R`. We need to *reproject* `DTM_hill_HARV` into the UTM CRS. Alternatively,
+in R. We need to *reproject* `DTM_hill_HARV` into the UTM CRS. Alternatively,
 we could project `DTM_HARV` into WGS84. 
 
 ## Reproject Rasters
@@ -226,7 +226,7 @@ Let's next have a look at the resolution of our reprojected hillshade.
     ## [1] 1.000 0.998
 
 The output resolution of `DTM_hill_UTMZ18N_HARV` is 1 x 0.998. Yet, we know that
-the resolution for the data should be 1m x 1m. We can tell `R` to force our
+the resolution for the data should be 1m x 1m. We can tell R to force our
 newly reprojected raster to be 1m x 1m resolution by adding a line of code
 (`res=`).  
 

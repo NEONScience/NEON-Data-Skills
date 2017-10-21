@@ -163,7 +163,7 @@ including:
 2. The first group of 24 lines in the file are not data; we will tell R to skip
 those lines when it imports the data using `skip=25`.
 3. Our data have a header, which is similar to column names in a spreadsheet. We 
-will tell `R` to set `header=TRUE` to ensure the headers are imported as column
+will tell R to set `header=TRUE` to ensure the headers are imported as column
 names rather than data values.
 4. Finally we will set `stringsAsFactors = FALSE` to ensure our data come in a 
 individual values.

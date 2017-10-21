@@ -53,7 +53,7 @@ your computer to complete this tutorial.
 ### Recommended Tutorials
 This tutorial uses both `dplyr` and `ggplot2`. We recommend the following
 tutorials before working through this one, if you are new to either of the 
-above `R` packages.
+above R packages.
 
 * [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
 
@@ -69,7 +69,7 @@ time-series subset, for example a year or a season.
 
 ### Load the Data
 We will use the daily micro-meteorology data for 2009-2011 from the Harvard
-Forest. If you do not have this data loaded into an `R` `data_frame`, please 
+Forest. If you do not have this data loaded into an R `data_frame`, please 
 load them and convert date-time columns to a `date-time class` now.
 
 
@@ -295,7 +295,7 @@ syntax:
 
 `format(harMetDaily.09.11$date,"%B")`, 
 
-which tells `R` to extract the month name (`%B`) from the date field.
+which tells R to extract the month name (`%B`) from the date field.
 
 
     # add text month name column
@@ -325,7 +325,7 @@ which tells `R` to extract the month name (`%B`) from the date field.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/extract-month-name-1.png)
 
 Great! We've created a nice set of plots by month. However, how are the plots 
-ordered? It looks like `R` is ordering things alphabetically, yet we know
+ordered? It looks like R is ordering things alphabetically, yet we know
 that months are ordinal not character strings. To account for order, we can 
 reassign the `month_name` field to a `factor`. This will allow us to specify
 an order to each factor "level" (each month is a level).
@@ -413,7 +413,7 @@ Our `ifelse` statement ends with
 which we can translate this as "if the `month` column value is 9 or 10 or 11,
 then assign the value "Winter"."
 
-The last portion `, "Error"` tells `R` that if a `month` column value does not 
+The last portion `, "Error"` tells R that if a `month` column value does not 
 fall within any of the criteria laid out in previous `ifelse` statements, 
 assign the column the value of "Error". 
 
@@ -462,7 +462,7 @@ Now that we have a season column, we can plot our data by season!
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/plot-by-season-1.png)
 
 Note, that once again, we re-ran our `ggplot` code to make sure our new column
-is recognized by `R`. We can experiment with various facet layouts next.
+is recognized by R. We can experiment with various facet layouts next.
 
 
     # for a landscape orientation of the plots we change the order of arguments in
@@ -471,7 +471,7 @@ is recognized by `R`. We can experiment with various facet layouts next.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/plot-by-season2-1.png)
 
-Once again, `R` is arranging the plots in an alphabetical order not an order
+Once again, R is arranging the plots in an alphabetical order not an order
 relevant to the data. 
 
 <div id="ds-challenge" markdown="1">
@@ -502,8 +502,8 @@ Some data will have month formatted in `Year-Month`
     ## [1] "2001-03" "2001-04" "2001-05" "2001-06" "2001-07" "2001-08"
 
 For many analyses, we might want to summarize this data into a yearly total. 
-Base `R` does NOT have a distinct year-month date class. Instead to work with a 
-year-month field using base `R`, we need to convert to a Date class, which 
+Base R does NOT have a distinct year-month date class. Instead to work with a 
+year-month field using base R, we need to convert to a Date class, which 
 necessitates adding an associated day value. The syntax would be:
 
 `as.Date(paste(met_monthly_HARV$date,"-01", sep=""))`
@@ -522,17 +522,17 @@ syntax would be:
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: Convert Year-Month Data
-The goal of this challenge is to use both the base `R` and the `zoo` package
+The goal of this challenge is to use both the base R and the `zoo` package
 methods for working with year-month data.  
 
 Load the `NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv`
 file and give it the name `met_monthly_HARV`. Then:
 
-1. Convert the date field into a date/time class using both base `R` and the 
+1. Convert the date field into a date/time class using both base R and the 
 `zoo` package. Name the new fields `date_base` and `ymon_zoo` respectively.  
 2. Look at the format and check the class of both new date fields.
 3. Convert the `ymon_zoo` field into a new Date class field (`date_zoo`) so it
-can be used in base `R`, ggplot, etc.  
+can be used in base R, ggplot, etc.  
 
 HINT: be sure to load the `zoo` package, if you have not already.  
 
@@ -540,7 +540,7 @@ HINT: be sure to load the `zoo` package, if you have not already.
 
 
 
-Do you prefer to use base `R` or `zoo` to convert these data to a date/time
+Do you prefer to use base R or `zoo` to convert these data to a date/time
 class?
 
 <div id="ds-dataTip" markdown="1">

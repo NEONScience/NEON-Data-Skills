@@ -43,7 +43,7 @@ After completing this tutorial, you will be able to:
 in R.
 * Explain the basics of manipulating big data sets using indexing, 
 loops, and `dplyr`.
-* Refine your data plotting skills using `ggplot` in `R`.
+* Refine your data plotting skills using `ggplot` in R.
 * Apply a variety of data manipulation tasks including identifying data types 
 given a new dataset, string parsing, and working with & formatting date information.
 
@@ -80,7 +80,7 @@ Consider reviewing the documentation for the <a href="http://www.bioconductor.or
 ## rhdf5 package & R 
 To access HDF5 files in R, we'll use `rhdf5` which is part of the 
 <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of 
-`R` packages.
+R packages.
 
 It might also be useful to install 
 [HDFView](http://www.hdfgroup.org/products/java/hdfview/) 
@@ -295,7 +295,7 @@ Hint: When would you expect the temperature to be the warmest during the day?
     <a href="{{ site.baseurl }}/images/HDF5/heating-curve_LNewman.jpg">
     <img src="{{ site.baseurl }}/images/HDF5/heating-curve_LNewman.jpg"></a>
     <figcaption>In many parts of the world, we'd expect the maximum temperature
-    to occur during late afternoon. Source: <a href="http://web.gccaz.edu/~lnewman/gph111/topic_units/temperature1/temperature/heating-curve.jpg"> Lynn Newman </a></figcaption>
+    to occur during late afternoon. Source: <a href="http://web.gccaz.edu/~lnewman/gph111/topic_units/temperature1/temperature/heating-curve.jpg" target="_blank"> Lynn Newman </a></figcaption>
 </figure>
 
 In this case, our data are in 
@@ -478,7 +478,7 @@ the `$name` column, then we type `grepl("temperature",name)`
 'chain' or combine multiple queries together into one, concise, line of code. 
 
 Pulling this together, type, `fiu_struct %>% filter(grepl("OSBS/min_1",group))` 
-in to the `R` console. What happens?
+in to the R console. What happens?
 
 
 Next, we will create a loop that will populate the final `data.frame` that contains 

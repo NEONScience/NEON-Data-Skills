@@ -16,7 +16,7 @@ urlTitle: dc-shapefile-attributes-r
 
 
 This tutorial explains what shapefile attributes are and how to work with 
-shapefile attributes in `R`. It also covers how to identify and query shapefile
+shapefile attributes in R. It also covers how to identify and query shapefile
 attributes, as well as subset shapefiles by specific attribute values. 
 Finally, we will review how to plot a shapefile according to a set of attribute 
 values.
@@ -31,7 +31,7 @@ After completing this tutorial, you will be able to:
  * Plot a shapefile, colored by unique attribute values.
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -52,11 +52,11 @@ on your computer to complete this tutorial.
 </div>
 
 ## Shapefile Metadata & Attributes
-When we import a shapefile into `R`, the `readOGR()` function automatically
+When we import a shapefile into R, the `readOGR()` function automatically
 stores metadata and attributes associated with the file.
 
 ## Load the Data
-To work with vector data in `R`, we can use the `rgdal` library. The `raster` 
+To work with vector data in R, we can use the `rgdal` library. The `raster` 
 package also allows us to explore metadata using similar commands for both
 raster and vector files. 
 
@@ -96,7 +96,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 ## Query Shapefile Metadata 
 Remember, as covered in 
 [Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r),
-we can view metadata associated with an `R` object using:
+we can view metadata associated with an R object using:
 
 * `class()` - Describes the type of vector data stored in the object.
 * `length()` - How many features are in this spatial object?
@@ -150,7 +150,7 @@ stone wall).
 </figure>
 
 We can look at all of the associated data attributes by printing the contents of
-the `data` slot with `objectName@data`. We can use the base `R` `length` 
+the `data` slot with `objectName@data`. We can use the base R `length` 
 function to count the number of attributes associated with a spatial object too.
 
 ```{r shapefile-attributes}
@@ -163,7 +163,7 @@ length(lines_HARV@data)
 ```
 
 We can view the individual **name of each attribute** using the
-`names(lines_HARV@data)` method in `R`. We could also view just the first 6 rows
+`names(lines_HARV@data)` method in R. We could also view just the first 6 rows
 of attribute values using  `head(lines_HARV@data)`. 
 
 Let's give it a try.
@@ -219,7 +219,7 @@ TYPE values.
 
 ### Subset Shapefiles
 We can use the `objectName$attributeName` syntax to select a subset of features
-from a spatial object in `R`. 
+from a spatial object in R. 
 
 ```{r Subsetting-shapefiles}
 # select features that are of TYPE "footpath"
@@ -317,10 +317,10 @@ plot(stoneWall_HARV,
 To plot vector data with the color determined by a set of attribute values, the 
 attribute values must be class = `factor`. A **factor** is similar to a category
 - you can group vector objects by a particular category value - for example you 
-can group all lines of `TYPE=footpath`. However, in `R`, a factor can also have 
+can group all lines of `TYPE=footpath`. However, in R, a factor can also have 
 a determined *order*. 
 
-By default, `R` will import spatial object attributes as `factors`.
+By default, R will import spatial object attributes as `factors`.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If our data attribute values are not 
@@ -347,7 +347,7 @@ summary(lines_HARV$TYPE)
 ```
 
 When we use `plot()`, we can specify the colors to use for each attribute using
-the `col=` element. To ensure that `R` renders each feature by it's associated 
+the `col=` element. To ensure that R renders each feature by it's associated 
 factor / attribute value, we need to create a `vector` or colors - one for each 
 feature, according to it's associated attribute value / `factor` value. 
 
@@ -474,7 +474,7 @@ keyword. We could also use `top`, `topright`, etc.
 categories of `levels` in an attribute (e.g., levels(lines_HARV$TYPE) means use
 the levels boardwalk, footpath, etc).
 * `fill=`: apply unique **colors** to the boxes in our legend. `palette()` is 
-the default set of colors that `R` applies to all plots. 
+the default set of colors that R applies to all plots. 
 
 Let's add a legend to our plot.
 
@@ -617,7 +617,7 @@ using a different symbol. HINT: you can assign the symbol using `pch=` value.
 You can create a vector object of symbols by factor level using the syntax
 syntax that we used above to create a vector of lines widths and colors:
 `pch=c(15,17)[lines_HARV$soilTypeOr]`. Type `?pch` to learn more about pch or 
-use google to find a list of pch symbols that you can use in `R`.
+use google to find a list of pch symbols that you can use in R.
 
 </div>
 

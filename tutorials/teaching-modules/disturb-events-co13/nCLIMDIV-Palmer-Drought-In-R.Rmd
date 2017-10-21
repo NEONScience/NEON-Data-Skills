@@ -227,14 +227,14 @@ nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 ```
 
 Oops, that doesn't work!  R returned an origin error. The date class expects to 
-have day, month, and year data instead of just year and month. `R` needs a day 
+have day, month, and year data instead of just year and month. R needs a day 
 of the month in order to properly 
 convert this to a date class. The origin error is saying that it doesn't know where 
 to start counting the dates. (Note: If you have the `zoo` package installed you 
 will not get this error but `Date` will be filled with NAs.)
 
 We can add a fake "day" to our `YearMonth` data using the `paste0` function. Let's 
-add `01` to each field so `R` thinks that each date represents the first of the
+add `01` to each field so R thinks that each date represents the first of the
 month.
 
 ```{r convert-date }
