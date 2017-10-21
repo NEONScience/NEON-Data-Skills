@@ -42,7 +42,8 @@ preferably, RStudio loaded on your computer.
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 
-[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
 
@@ -133,9 +134,9 @@ that we will use for both data processing and visualization.
 
 More Information on raster metadata:
 
-* [Metadata to understand when working with raster data]({{ site.baseurl }}/HDF5/Working-With-Rasters/ "Key Attributes of Raster Data")
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Metadata to understand when working with raster data</a>.
 
-* [Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters]({{ site.baseurl }}/about-hdf5-Hyperspectral-Remote-Sensing-Data/ "Key Attributes of Raster Data")
+* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters </a>.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure 
@@ -197,7 +198,7 @@ wavelengths represented in that  band. Thus in a band spanning 800-805 nm, the
 center would be 802.5 nm). The full width half max (FWHM) will also be reported. 
 This value represents the spread of the band around that center point. So, a band 
 that covers 800 nm-805 nm might have a FWHM of 2.5 and a wavelength value of 802.5. 
-</div>
+
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
@@ -468,7 +469,7 @@ The map info string looks something like this:
 <br>
 `"UTM,1.000,1.000,256521.000,4112571.000,1.000000e+000,`
 `1.000000e+000,11,North,WGS-84,units=Meters" `. 
-<br>
+</br>
 
 Notice that this information is separated by commas. We can use the 
 `strsplit` command in R to extract each element into a vector. The elements are 
@@ -505,7 +506,7 @@ the Y lower left hand corner coordinate and the number of columns in the
 		Observatory Network (NEON) </figcaption>
 </figure>
 
-[Learn more about raster attributes including extent, and coordinate reference systems here.](http://neondataskills.org/HDF5/Working-With-Rasters/) 
+<a href="{{ site.baseurl }}/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a>
 
 ### Define Raster CRS
 

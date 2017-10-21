@@ -34,7 +34,8 @@ preferably, RStudio loaded on your computer.
 * **plyr**: `install.packages('plyr')`
 * **ggplot2**: `install.packages('ggplot2')`
 
-[ {{ site.baseurl }}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
@@ -42,6 +43,7 @@ preferably, RStudio loaded on your computer.
 ***
 {% include/_greyBox-wd-rscript.html %}
 ***
+
 ### Recommended Skills
 
 We highly recommend you work through the 

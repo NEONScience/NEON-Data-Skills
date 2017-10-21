@@ -44,7 +44,8 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
 
@@ -63,7 +64,8 @@ before moving on to this tutorial.
 </div>
 
 
-## About Hyperspectral Data 
+## About Hyperspectral Data
+
 We often want to generate a 3 band image from multi or hyperspectral data. The 
 most commonly recognized band combination is RGB which stands for Red, Green and 
 Blue. RGB images are just like the images that your camera takes. But there are 
@@ -89,11 +91,11 @@ combinations. Check it out:
 
 ## Create a Raster Stack in R
 
-In the [previous activity]({{ site.baseurl }}/hsi-hdf5-r), 
+In the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> previous activity </a>, 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-[intro to working with hyperspectral data activity]({{ site.baseurl }}/hsi-hdf5-r). 
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -178,8 +180,9 @@ We'll begin by grabbing these key attributes from the H5 file.
     ## [1] "15000"
 
 Next, we'll write a function that will perform the processing that we did step by 
-step in the [intro to working with hyperspectral data activity]({{ site.baseurl }}/hsi-hdf5-r). This will allow us to process multiple bands 
-in bulk.
+step in the 
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity</a>. 
+This will allow us to process multiple bands in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and
 extracts the reflectance. It them converts the data to a matrix, converts it to
@@ -194,7 +197,7 @@ The function requires the following variables:
 * res: the resolution of the raster
 * crs: the Coordinate Reference System for the raster
 
-The function output is a spatially referenced, `r` raster object.
+The function output is a spatially referenced, R raster object.
 
 
     # file: the hdf file
@@ -334,7 +337,6 @@ the bands in the list.
 
 We can play with the color ramps too if we want:
 
-
     #change the colors of our raster 
     myCol=terrain.colors(25)
     image(hsiStack$Band_58, main="Band 58", col=myCol)
@@ -366,9 +368,11 @@ More on plotRGB here.</a>
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-RGB-Image-1.png)
 
+
 <i class="fa fa-star"></i>**A note about image stretching:** 
-Notice that the scale is set to 300 on the RGB image that we plotted above. We can adjust this number and notice that the image gets darker - or lighter.
-</div>
+Notice that the scale is set to 300 on the RGB image that we plotted above. We 
+can adjust this number and notice that the image gets darker - or lighter.
+
 
 Once you've created your raster, you can export it as a GeoTIFF. You can bring 
 this GeoTIFF into any GIS program!
