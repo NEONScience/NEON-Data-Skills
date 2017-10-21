@@ -21,7 +21,7 @@ given site(s) and months. Temperature data are used as an example.
 
 ## Download the Data
 To start, you must have your data of interest downloaded from the 
-<a href="data.neonscience.org" target="_blank"> NEON Data Portal</a>.  
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.  
 
 The stacking function will only work on Comma Seperated Value (.csv) files and 
 not the NEON data stored in other formats (HDF5, etc). 
