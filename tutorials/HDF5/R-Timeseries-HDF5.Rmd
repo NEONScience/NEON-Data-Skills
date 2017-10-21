@@ -59,8 +59,7 @@ preferably, RStudio loaded on your computer.
 * **dplyr** for data manipulation: `install.packages("dplyr")`
 * **scales** for plotting dates: `install.packages("scales")`
 
-[ {{ site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
-
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 ### Data to Download
 We will use the file below in the optional challenge activity at the end of this 
 tutorial.

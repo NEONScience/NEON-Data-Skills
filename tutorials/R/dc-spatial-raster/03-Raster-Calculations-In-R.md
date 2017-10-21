@@ -84,7 +84,7 @@ buildings, etc. with the influence of ground elevation removed.
 </figure>
 
 * Check out more on LiDAR CHM, DTM and DSM in this NEON Data Skills overview tutorial: 
-<a href="http://neondataskills.org/chm-dsm-dtm-gridded-lidar-data" target="_blank"> 
+<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank"> 
 What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>. 
 
 ### Load the Data 

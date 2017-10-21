@@ -37,8 +37,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5**
 
-[ {{ site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
-
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 ### Data to Download
 We will use the file below in the optional challenge activity at the end of this 
 tutorial.
@@ -62,7 +61,8 @@ also supports efficient `data slicing`, or extraction of particular subsets of a
 dataset which means that you don't have to read  large files read into the 
 computers memory / RAM in their entirety in order work with them. 
 
-[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
+<a href="{{ site.baseurl }}/about-hdf5" target="_blank">Read more about HDF5 here.</a>
+
 
 ## HDF5 in R
 

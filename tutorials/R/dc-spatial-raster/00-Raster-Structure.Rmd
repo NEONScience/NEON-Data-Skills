@@ -117,8 +117,8 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="http://neondataskills.org/images/spatialData/NLCD06_conus_lg.gif ">
-    <img src="http://neondataskills.org/images/spatialData/NLCD06_conus_lg.gif">
+    <a href="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif ">
+    <img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
     </a>
     <figcaption> Map of the United States showing landcover as categorical data.
     Each color is a different landcover category.  Source: 

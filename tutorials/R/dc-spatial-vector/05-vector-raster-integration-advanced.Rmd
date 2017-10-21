@@ -461,9 +461,9 @@ which represents the radius of a circular region around each point.
 The units of the buffer are the same units of the data `CRS`.
 
 <figure>
-    <a href="http://neondataskills.org/images/spatialData/BufferCircular.png">
-    <img src="http://neondataskills.org/images/spatialData/BufferCircular.png"></a>
-    <figcaption> Extract raster information using a buffer region. All pixels
+    <a href="{{ site.baseurl }}/images/spatialData/BufferCircular.png">
+    <img src="{{ site.baseurl }}/images/spatialData/BufferCircular.png"></a>
+     <figcaption> Extract raster information using a buffer region. All pixels
     that are touched by the buffer region are included in the extract. 
     Source: National Ecological Observatory Network (NEON).
     </figcaption>

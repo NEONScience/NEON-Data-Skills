@@ -75,7 +75,7 @@ in these areas.
 
 LiDAR data can be used to create many different models of a landscape.  This
 brief lesson on 
-<a href="http://neondataskills.org/remote-sensing/2_LiDAR-Data-Concepts_Activity2/" target="_blank">
+<a href="{{ site.baseurl}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
 "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"</a> 
 explores three important landscape models that are commonly used. 
 
@@ -100,7 +100,7 @@ In this Data Activity, we will be using Digital Terrain Models (DTMs).
 If you are particularly interested in how LiDAR works consider taking a closer
 look at how the data are collected and represented by going through this tutorial
 on 
-<a href="http://neondataskills.org/remote-sensing/1_About-LiDAR-Data-Light-Detection-and-Ranging_Activity1/" target="_blank"> "Light Detection and Ranging."</a> 
+<a href="{{ site.baseurl }}/lidar-basics" target="_blank"> "Light Detection and Ranging."</a> 
 
 
 ## Digital Terrain Models 

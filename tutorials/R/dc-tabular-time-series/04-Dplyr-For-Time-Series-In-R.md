@@ -56,7 +56,7 @@ your computer to complete this tutorial.
 ### Additional Resources
 
 * NEON Data Skills tutorial on 
-<a href="http://neondataskills.org/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> spatial data and piping with dplyr</a>  
+<a href="{{ site.baseurl }}/grepl-filter-piping-dplyr-r" target="_blank"> spatial data and piping with dplyr</a>  
 * Data Carpentry lesson's on 
 <a href="http://www.datacarpentry.org/R-ecology/04-dplyr" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
 * <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> `dplyr` package description</a>.
