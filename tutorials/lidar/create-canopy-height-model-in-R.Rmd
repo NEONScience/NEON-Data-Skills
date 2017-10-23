@@ -32,7 +32,7 @@ After completing this tutorial, you will be able to:
 
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages

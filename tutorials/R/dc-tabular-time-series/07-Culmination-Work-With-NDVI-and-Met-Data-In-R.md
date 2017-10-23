@@ -61,7 +61,7 @@ your computer to complete this tutorial.
 ### Recommended Tutorials
 This tutorial relies on participants' familiarity with both `dplyr` and 
 `ggplot2`. Prior to working through this culmination activity, we recommend the
-following tutorials, if you are new to either of the `R` packages.
+following tutorials, if you are new to either of the R packages.
 
 * [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
 

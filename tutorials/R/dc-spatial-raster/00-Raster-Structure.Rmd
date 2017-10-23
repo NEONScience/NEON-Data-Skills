@@ -16,10 +16,10 @@ urlTitle: dc-raster-data-r
 ---
 
 In this tutorial, we will review the fundamental principles, packages and 
-metadata/raster attributes that are needed to work with raster data in `R`. 
+metadata/raster attributes that are needed to work with raster data in R. 
 We discuss the three core metadata elements that we need to understand to work 
-with rasters in `R`: **CRS**, **extent** and **resolution**. It also explores
-missing and bad data values as stored in a raster and how `R` handles these
+with rasters in R: **CRS**, **extent** and **resolution**. It also explores
+missing and bad data values as stored in a raster and how R handles these
 elements. Finally, it introduces the GeoTiff file format.
 
 <div id="ds-objectives" markdown="1">
@@ -29,13 +29,13 @@ elements. Finally, it introduces the GeoTiff file format.
 After completing this tutorial, you will be able to:
 
 * Understand what a raster dataset is and its fundamental attributes.
-* Know how to explore raster attributes in `R`.
-* Be able to import rasters into `R` using the `raster` package.
-* Be able to quickly plot a raster file in `R`.
+* Know how to explore raster attributes in R.
+* Be able to import rasters into R using the `raster` package.
+* Be able to quickly plot a raster file in R.
 * Understand the difference between single- and multi-band rasters.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -55,12 +55,9 @@ on your computer to complete this tutorial.
 ****
 
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the `raster` package in `R`.</a>
-* <a href="http://neondataskills.org/raster-data-r
-" target="_blank" >
-NEON Data Skills: Raster Data in R - The Basics</a>
-* <a href="http://neondataskills.org/R/Image-Raster-Data-In-R/" target="_blank" >
-NEON Data Skills: Image Raster Data in R - An Intro</a>
+Read more about the `raster` package in R.</a>
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
+* <a href="{{ site.baseurl }}/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
@@ -120,8 +117,8 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="http://neondataskills.org/images/spatialData/NLCD06_conus_lg.gif ">
-    <img src="http://neondataskills.org/images/spatialData/NLCD06_conus_lg.gif">
+    <a href="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif ">
+    <img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
     </a>
     <figcaption> Map of the United States showing landcover as categorical data.
     Each color is a different landcover category.  Source: 
@@ -183,8 +180,8 @@ More about the  `.tif` format:
 
 ## Raster Data in R
 
-Let's first import a raster dataset into `R` and explore its metadata.
-To open rasters in `R`, we will use the `raster` and `rgdal` packages.
+Let's first import a raster dataset into R and explore its metadata.
+To open rasters in R, we will use the `raster` and `rgdal` packages.
 
 ```{r load-libraries }
 # load libraries
@@ -222,8 +219,8 @@ plot(DSM_HARV,
 Here is a map showing the elevation of our site in Harvard Forest. 
 
 ## Coordinate Reference System
-The Coordinate Reference System or `CRS` tells `R` where the raster is located
-in geographic space. It also tells `R` what method should be used to "flatten"
+The Coordinate Reference System or `CRS` tells R where the raster is located
+in geographic space. It also tells R what method should be used to "flatten"
 or project the raster in geographic space. 
 
 <figure>
@@ -242,7 +239,7 @@ projections in greater detail (read more, below). For the purposes of this
 activity, what is important to understand is that data from the same location 
 but saved in **different projections will not line up in any GIS or other 
 program**. Thus, it's important when working with spatial data in a program like 
-`R` to identify the coordinate reference system applied to the data and retain 
+R to identify the coordinate reference system applied to the data and retain 
 it throughout data processing and analysis.
 
 Read More: 
@@ -260,8 +257,8 @@ seems proportionally larger or smaller than they actually are!
 
  
 ### View Raster Coordinate Reference System (CRS) in R
-We can view the `CRS` string associated with our `R` object using the`crs()` 
-method. We can assign this string to an `R` object, too.
+We can view the `CRS` string associated with our R object using the`crs()` 
+method. We can assign this string to an R object, too.
 
 ```{r view-resolution-units}
 # view resolution units
@@ -389,8 +386,8 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
 
 ```
 
-In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't 
-render pixels that contain a specified `NoDataValue`. `R` assigns missing data 
+In the next image, the black edges have been assigned `NoDataValue`. R doesn't 
+render pixels that contain a specified `NoDataValue`. R assigns missing data 
 with the `NoDataValue` as `NA`.
 
 ```{r demonstrate-no-data, echo=FALSE}
@@ -419,9 +416,9 @@ National Ecological Observatory Network (NEON)</a>.
 
 If we are lucky, our GeoTIFF file has a tag that tells us what is the
 `NoDataValue`. If we are less lucky, we can find that information in the
-raster's metadata. If a `NoDataValue` was stored in the GeoTIFF tag, when `R`
+raster's metadata. If a `NoDataValue` was stored in the GeoTIFF tag, when R
 opens up the raster, it will assign each instance of the value to `NA`. Values
-of `NA` will be ignored by `R` as demonstrated above.
+of `NA` will be ignored by R as demonstrated above.
 
 ## Bad Data Values in Rasters
 
@@ -462,7 +459,7 @@ hist(DSM_HARV,
 ```
 
 
-Notice that a warning is shown when `R` creates the histogram. 
+Notice that a warning is shown when R creates the histogram. 
 
 `Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4%  
 of the raster cells were used. 100000 values used.`
@@ -475,7 +472,7 @@ as our data become larger!
 <a href="http://www.r-bloggers.com/basics-of-histograms/" target="_blank">histograms in R from R-bloggers</a>
 
 We can define the max pixels to ensure that all pixel values are included in the
-histogram. **USE THIS WITH CAUTION** as forcing `R` to plot all pixel values
+histogram. **USE THIS WITH CAUTION** as forcing R to plot all pixel values
 in a histogram can be problematic when dealing with very large datasets.
 
 
@@ -534,8 +531,8 @@ Work with Multi-band Rasters: Images in R</a>.
 
 Remember that a `GeoTIFF` contains a set of embedded tags that contain 
 metadata about the raster. So far, we've explored raster metadata **after**
-importing it in `R`. However, we can use the `GDALinfo("path-to-raster-here")`
-function to view raster metadata before we open a file in `R`.
+importing it in R. However, we can use the `GDALinfo("path-to-raster-here")`
+function to view raster metadata before we open a file in R.
 
 ```{r view-attributes-gdal}
 
@@ -554,13 +551,13 @@ Notice a few things in the output:
 5. We can see the min and max values of the data: `Bmin` and `Bmax`.
 
 It is ideal to use `GDALinfo` to explore your file **before** reading it into 
-`R`.
+R.
 
 <div id="ds-challenge" markdown="1">
 
 ## Challenge: Explore Raster Metadata 
 
-Without using the `raster` function to read the file into `R`, determine the
+Without using the `raster` function to read the file into R, determine the
 following about the  `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif` file:
 
 1. Does this file has the same `CRS` as `DSM_HARV`?

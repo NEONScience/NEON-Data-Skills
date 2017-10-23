@@ -29,7 +29,7 @@ After completing this tutorial, you will be able to:
 * View the packages installed on your computer 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ## Additional Resourcs

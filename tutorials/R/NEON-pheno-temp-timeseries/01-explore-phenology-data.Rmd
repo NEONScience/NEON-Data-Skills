@@ -33,7 +33,7 @@ After completing this activity, you will be able to:
  * plot time series data in a bar plot using ggplot the function. 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -604,10 +604,9 @@ of phenological stagesin plant communities. Plant phenology is affected by force
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
 feedbacks to trophic interactions, carbon sequestration, community composition 
-and ecosystem function.  (quoted from <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
+and ecosystem function.  (quoted from 
+<a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
 
-Let's use some other NEON data to investigate potential driver's of phenologic 
-change in our next tutorial <a href="{{ site.baseurl }}/neon-SAAT-temp-r"> *Work with NEON Single-Aspirated Air Temperature Data* </a>. 
 
 ```{r write-csv, echo = FALSE}
 # Write .csv (this will be read in new in subsuquent lessons)

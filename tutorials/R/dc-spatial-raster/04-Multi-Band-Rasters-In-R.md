@@ -19,7 +19,7 @@ urlTitle: dc-multiband-rasters-r
 
 This tutorial explores how to import and plot a multi-band raster in
 R. It also covers how to plot a three-band color image using the `plotRGB()`
-function in `R`.
+function in R.
 
 <div id="ds-objectives" markdown="1">
 
@@ -27,12 +27,12 @@ function in `R`.
 After completing this tutorial, you will be able to:
 
 * Know how to identify a single vs. a multi-band raster file.
-* Be able to import multi-band rasters into `R` using the `raster` package.
-* Be able to plot multi-band color image rasters in `R` using `plotRGB()`.
+* Be able to import multi-band rasters into R using the `raster` package.
+* Be able to plot multi-band color image rasters in R using `plotRGB()`.
 * Understand what a `NoData` value is in a raster.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -69,7 +69,7 @@ a raster can contain 1 or more bands.
     raster.  Source: National Ecological Observatory Network (NEON).</figcaption>
 </figure>
 
-To work with multi-band rasters in `R`, we need to change how we import and plot
+To work with multi-band rasters in R, we need to change how we import and plot
 our data in several ways. 
 
 * To import multi band raster data we will use the `stack()` function.
@@ -141,15 +141,13 @@ packages.
 
 In this tutorial, the multi-band data that we are working with is imagery
 collected using the 
-<a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing"
-target="_blank">NEON Airborne Observation Platform</a>
+<a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
 high resolution camera over the 
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest"
-target="_blank">NEON Harvard Forest field site</a>. 
+<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>. 
 Each RGB image is a 3-band raster. The same steps would apply to 
 working with a multi-spectral image with 4 or more bands - like Landsat imagery.
 
-If we read a `rasterStack` into `R` using the `raster()` function, it only reads
+If we read a `rasterStack` into R using the `raster()` function, it only reads
 in the first band. We can plot this band using the plot function. 
 
 
@@ -188,11 +186,11 @@ in the first band. We can plot this band using the plot function.
     ## names       : HARV_RGB_Ortho 
     ## values      : 0, 255  (min, max)
 
-Notice that when we look at the attributes of RGB_Band1, we see :
+Notice that when we look at the attributes of RGB_Band1, we see:
 
 `band: 1  (of  3  bands)`
 
-This is `R` telling us that this particular raster object has more bands (3)
+This is R telling us that this particular raster object has more bands (3)
 associated with it.
 
 <div id="ds-dataTip" markdown="1">
@@ -215,8 +213,8 @@ Let's next examine the raster's min and max values. What is the value range?
 
     ## [1] 255
 
-This raster contains values between 0 and 255. These values 
-represent degrees of brightness associated with the image band. In 
+This raster contains values between 0 and 255. These values represent degrees 
+of brightness associated with the image band. In 
 the case of a RGB image (red, green and blue), band 1 is the red band. When
 we plot the red band, larger numbers (towards 255) represent pixels with more
 red in them (a strong red reflection). Smaller numbers (towards 0) represent
@@ -256,7 +254,7 @@ want to work with). To import the green band, we would use `band=2`.
     ## names       : HARV_RGB_Ortho 
     ## values      : 0, 255  (min, max)
 
-Notice that band 2 is the second of 3 bands `band: 2  (of  3  bands)`.  
+Notice that band 2 is the second of 3 bands `band: 2 (of 3 bands)`.  
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: Making Sense of Single Band Images
@@ -267,7 +265,7 @@ darker or lighter in band 2 (the green band) compared to band 1 (the red band)?
 
 
 ## Raster Stacks in R
-Next, we will work with all three image bands (red, green and blue) as an `R`
+Next, we will work with all three image bands (red, green and blue) as an R
 `RasterStack` object. We will then plot a 3-band composite, or full color,
 image. 
 
@@ -370,7 +368,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
 
 
 ### Create A Three Band Image
-To render a final 3 band, color image in `R`, we use `plotRGB()`.
+To render a final 3 band, color image in R, we use `plotRGB()`.
 
 This function allows us to:
 
@@ -445,11 +443,11 @@ Let's explore what happens with NoData values when using `RasterStack` and
 1. View the files attributes. Are there `NoData` values assigned for this file? 
 2. If so, what is the `NoData` Value? 
 3. How many bands does it have?
-4. Open the multi-band raster file in `R`. 
+4. Open the multi-band raster file in R. 
 5. Plot the object as a true color image. 
 6. What happened to the black edges in the data?
 7. What does this tell us about the difference in the data structure between  
-`HARV_Ortho_wNA.tif` and `HARV_RGB_Ortho.tif` (`R` object `RGB_stack`). How can
+`HARV_Ortho_wNA.tif` and `HARV_RGB_Ortho.tif` (R object `RGB_stack`). How can
 you check?
 
 Answer the questions above using the functions we have covered so far in this
@@ -468,10 +466,10 @@ for a tutorial on how to do this.
 
 ## RasterStack vs RasterBrick in R
 
-The `R` `RasterStack` and `RasterBrick` object types can both store multiple bands.
+The R `RasterStack` and `RasterBrick` object types can both store multiple bands.
 However, how they store each band is different. The bands in a `RasterStack` are
 stored as links to raster data that is located somewhere on our computer. A 
-`RasterBrick` contains all of the objects stored within the actual `R` object.
+`RasterBrick` contains all of the objects stored within the actual R object.
 In most cases, we can work with a `RasterBrick` in the same way we might work
 with a `RasterStack`. However a `RasterBrick` is often more efficient and faster
 to process - which is important when working with larger files.
@@ -479,9 +477,9 @@ to process - which is important when working with larger files.
 * <a href="http://www.inside-r.org/packages/cran/raster/docs/brick" target="_blank">
 More on Raster Bricks</a>
 
-We can turn a `RasterStack` into a `RasterBrick` in `R` by using
+We can turn a `RasterStack` into a `RasterBrick` in R by using
 `brick(StackName)`. Let's use the `object.size()` function to compare `stack` 
-and `brick` `R` objects.
+and `brick` R objects.
 
 
     # view size of the RGB_stack object that contains our 3 band image
@@ -512,7 +510,7 @@ You use `plotRGB` to block a `RasterBrick` too.
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: What Methods Can Be Used on an R Object?
-We can view various methods available to call on an `R` object with 
+We can view various methods available to call on an R object with 
 `methods(class=class(objectNameHere))`. Use this to figure out:
 
 1. What methods can be used to call on the `RGB_stack_HARV` object? 

@@ -35,11 +35,12 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5** 
 
-[ {{site.baseurl}}/packages-in-r](More on Packages in R - Adapted from Software Carpentry.)
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Recommended Background 
 
-Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
+Consider reviewing the documentation for the 
+<a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
 
 </div>
 
@@ -49,7 +50,7 @@ The HDF5 file can store large, heterogeneous datasets that include metadata. It
 also supports efficient `data slicing`, or extraction of particular subsets of a 
 dataset which means that you don't have to read  large files read into the computers 
 memory/RAM in their entirety in order work with them. This saves a lot of time
- when working with with HDF5 data in `R`. When HDF5 files contain spatial data, 
+ when working with with HDF5 data in R. When HDF5 files contain spatial data, 
 they can also be read directly into GIS programs such as `QGiS`.  
 
 The HDF5 format is a self-contained directory structure. We can compare this 
@@ -58,18 +59,20 @@ files  "directories" are called `groups` and files are called `datasets`. The
 HDF5 element itself is a file. Each element in an HDF5 file can have metadata 
 attached to it making HDF5 files "self-describing".
 
-[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
+<a href="{{ site.baseurl }}/about-hdf5" target="_blank">Read more about HDF5 here.</a>
 
 ## HDF5 in R
 
-To access HDF5 files in `R`, you need base <a href="http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain" target="_blank">HDF5 libraries</a> installed on your computer. 
+To access HDF5 files in R, you need base 
+<a href="http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain" target="_blank">HDF5 libraries</a> installed on your computer. 
 It might also be useful to install <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the free HDF5 viewer</a> which will allow you to explore the 
 contents of an HDF5 file visually using a graphic interface. 
-[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/explore-data-hdfview/).
+
+<a href="{{ site.baseurl }}/explore-data-hdfview/" target="_blank"> More about working with HDFview and a hands-on activity.</a>
 
 The package we'll be using is `rhdf5` which is part of the 
 <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of
- `R` packages. If you haven't installed this package before, you can use the first 
+ R packages. If you haven't installed this package before, you can use the first 
 two lines of code below to install the package. Then use the library command to 
 call the `library("rhdf5")` library.
 

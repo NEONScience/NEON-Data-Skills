@@ -302,7 +302,7 @@ Three common code chunk options are:
 
 * `eval = FALSE`: Do not **eval**uate (or run) this code chunk when
 knitting the RMD document. The code in this chunk will still render in our knitted
-HTML output, however it will not be evaluated or run by `R`.
+HTML output, however it will not be evaluated or run by R.
 * `echo=FALSE`: Hide the code in the output. The code is
 evaluated when the RMD file is knit, however only the output is rendered on the 
 output document.
@@ -331,7 +331,7 @@ that you downloaded. The `TEAK_lidarCHM` is a good raster to plot.
 * Be sure to document your steps as you go using both **code comments** and 
 **markdown syntax** in between the code chunks.
 
-For help opening and plotting raster data in `R`, see the NEON Data Skills tutorial
+For help opening and plotting raster data in R, see the NEON Data Skills tutorial
 <a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>. 
 
 We will knit this document to HTML in the next tutorial. 

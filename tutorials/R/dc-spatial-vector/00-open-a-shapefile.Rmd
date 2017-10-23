@@ -16,7 +16,7 @@ urlTitle: dc-open-shapefiles-r
 ---
 
 In this tutorial, we will open and plot point, line and polygon vector data 
-stored in shapefile format in `R`.
+stored in shapefile format in R.
 
 <div id="ds-objectives" markdown="1">
 
@@ -25,13 +25,13 @@ After completing this tutorial, you will be able to:
 
  * Explain the difference between point, line, and polygon vector elements.
  * Describe the differences between opening point, line and polygon shapefiles
-    in `R`.
- * Describe the components of a spatial object in `R`.
+    in R.
+ * Describe the components of a spatial object in R.
  * Read a shapefile into R. 
 
 ## Things You’ll Need To Complete This Tutorial
 
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -103,7 +103,7 @@ information about each stream line object.
 
 ## Import Shapefiles
 
-We will use the `rgdal` package to work with vector data in `R`. Notice that the
+We will use the `rgdal` package to work with vector data in R. Notice that the
 `sp` package automatically loads when `rgdal` is loaded. We will also load the
 `raster` package so we can explore raster and vector spatial metadata using similar commands.
 
@@ -131,7 +131,7 @@ located at the
 
 The first shapefile that we will open contains the boundary of our study area
 (or our Area Of Interest or AOI, hence the name `aoiBoundary`). To import 
-shapefiles we use the `R` function `readOGR()`.
+shapefiles we use the R function `readOGR()`.
 
 `readOGR()` requires two components:
 
@@ -159,7 +159,7 @@ Learn more about OGR.</a>
 
 ## Shapefile Metadata & Attributes
 
-When we import the `HarClip_UTMZ18` shapefile layer into `R` (as our
+When we import the `HarClip_UTMZ18` shapefile layer into R (as our
 `aoiBoundary_HARV` object), the `readOGR()` function automatically stores
 information about the data. We are particularly interested in the geospatial
 **metadata**, describing the format, `CRS`, `extent`, and other components of
@@ -249,10 +249,10 @@ In this case, our polygon object only has one attribute: `id`.
 
 ## Metadata & Attribute Summary
 We can view a metadata & attribute summary of each shapefile by entering 
-the name of the `R` object in the console. Note that the metadata output
+the name of the R object in the console. Note that the metadata output
 includes the **class**, the number of **features**, the **extent**, and the
-**coordinate reference system** (`crs`) of the `R` object. The last two lines of
-`summary` show a preview of the `R` object **attributes**.
+**coordinate reference system** (`crs`) of the R object. The last two lines of
+`summary` show a preview of the R object **attributes**.
 
 ```{r shapefile-summary}
 # view a summary of metadata & attributes associated with the spatial object
@@ -262,7 +262,7 @@ summary(aoiBoundary_HARV)
 
 
 # Plot a Shapefile
-Next, let's visualize the data in our `R` `spatialpolygonsdataframe` object using
+Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
 `plot()`.
 
 ``` {r plot-shapefile}
@@ -278,12 +278,12 @@ plot(aoiBoundary_HARV, col="cyan1", border="black", lwd=3,
 <div id="ds-challenge" markdown="1">
 ## Challenge: Import Line and Point Shapefiles
 Using the steps above, import the HARV_roads and HARVtower_UTM18N layers into
-`R`. Call the Harv_roads object `lines_HARV` and the HARVtower_UTM18N
+R. Call the Harv_roads object `lines_HARV` and the HARVtower_UTM18N
 `point_HARV`.
 
 Answer the following questions:
 
-1. What type of `R` spatial object is created when you import each layer?
+1. What type of R spatial object is created when you import each layer?
 2. What is the `CRS` and `extent`for each object?
 3. Do the files contain, points, lines or polygons?
 4. How many spatial objects are in each file?
@@ -380,8 +380,8 @@ plot(point_HARV, pch=8,
 ***
 
 ## Additional Resources: Plot Parameter Options
-For more on parameter options in the base `R` `plot()` function, check out these
+For more on parameter options in the base R `plot()` function, check out these
 resources:
 
-* <a href="http://www.statmethods.net/advgraphs/parameters.html" target="_blank">Parameter methods in `R`.</a>
-* <a href="https://codeyarns.files.wordpress.com/2011/07/20110729-vim-named-colors.png?w=700" target="_blank">Color names in `R`</a>
+* <a href="http://www.statmethods.net/advgraphs/parameters.html" target="_blank">Parameter methods in R.</a>
+* <a href="https://codeyarns.files.wordpress.com/2011/07/20110729-vim-named-colors.png?w=700" target="_blank">Color names in R</a>

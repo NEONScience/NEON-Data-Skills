@@ -33,8 +33,7 @@ At the end of this tutorial you will be able to
 </div>
 
 In this tutorial, we'll work with 
-<a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements"> 
-temperature data collected using sensors on a flux tower</a> 
+<a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> temperature data collected using sensors on a flux tower</a> 
 by 
 <a href="{{ site.baseurl }}" target="_blank">the National 
 Ecological Observatory Network (NEON) </a>. Here the data are provided in a HDF5 

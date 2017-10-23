@@ -27,7 +27,7 @@ labels, colors and overall plot appearance using `ggthemes`.
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
- * Create basic time series plots using `ggplot()` in `R`.
+ * Create basic time series plots using `ggplot()` in R.
  * Explain the syntax of `ggplot()` and know how to find out more about the
  package. 
  * Plot data using scatter and bar plots.
@@ -60,22 +60,20 @@ your computer to complete this tutorial.
  <a href="http://www.cookbook-r.com/Graphs/index.html" target="_blank"> 
  _Cookbook for R_</a> site based on his *R Graphics Cookbook* text. 
 * The NEON Data Skills tutorial on 
- <a href="http://neondataskills.org/plotly-r/" target="_blank"> 
- Interactive Data Viz Using R, ggplot2 and PLOTLY</a>.
+ <a href="{{ site.baseurl }}/plotly-r/" target="_blank"> 
+ Interactive Data Viz Using R, ggplot2 and Plot.ly</a>.
 * Data Carpentry's 
- <a href="http://www.datacarpentry.org/R-ecology/05-visualization-ggplot2.html"
- target="_blank"> 
- Data Visualization with ggplot2 lesson</a>.
+ <a href="http://www.datacarpentry.org/R-ecology/05-visualization-ggplot2" target="_blank"> Data Visualization with ggplot2 lesson</a>.
 * Hadley Wickham's 
  <a href="http://docs.ggplot2.org/" target="_blank"> documentation</a> 
- on the `ggplot2` package. 
+on the `ggplot2` package. 
 
 </div>
 
 ## Plotting Time Series Data
 Plotting our data allows us to quickly see general patterns including 
 outlier points and trends. Plots are also a useful way to communicate the 
-results of our research. `ggplot2` is a powerful `R` package that we use to 
+results of our research. `ggplot2` is a powerful R package that we use to 
 create customized, professional plots.
 
 ### Load the Data
@@ -203,7 +201,7 @@ We can create a `ggplot` object by assigning our plot to an object name.
 When we do this, the plot will not render automatically. To render the plot, we
 need to call it in the code.
 
-Assigning plots to an `R` object allows us to effectively add on to, 
+Assigning plots to an R object allows us to effectively add on to, 
 and modify the plot later. Let's create a new plot and call it `AirTempDaily`.
 
 
@@ -230,7 +228,7 @@ Rather than re-coding the entire plot, we can add the `scale_x_date` element
 to the plot object `AirTempDaily` that we just created. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** You can type `?strptime` into the `R` 
+<i class="fa fa-star"></i>**Data Tip:** You can type `?strptime` into the R 
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type `scale_x_date` for a list of parameters that allow you to format dates 
 on the x-axis.
@@ -336,7 +334,7 @@ There are some nice pre-defined themes that we can use as a starting place.
 Using the `theme_bw()` we now have a white background rather than grey.
 
 ### Import New Themes *Bonus* *Topic*
-There are externally developed themes built by the `R` community that are worth
+There are externally developed themes built by the R community that are worth
 mentioning. Feel free to experiment with the code below to install `ggthemes`.
 
 
@@ -422,7 +420,7 @@ plot actual values.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R/ggplot-geom_bar-1.png)
 
 Note that some of the bars in the resulting plot appear grey rather than black.
-This is because `R` will do it's best to adjust colors of bars that are closely
+This is because R will do it's best to adjust colors of bars that are closely
 spaced to improve readability. If we zoom into the plot, all of the bars are
 black.
 
@@ -565,7 +563,7 @@ label axes and adjust the plot ticks as you see fit.
 
 ## Display Multiple Figures in Same Panel
 It is often useful to arrange plots in a panel rather than displaying them 
-individually. In base `R`, we use `par(mfrow=())` to accomplish this. However
+individually. In base R, we use `par(mfrow=())` to accomplish this. However
 the `grid.arrange()` function from the `gridExtra` package provides a more
 efficient approach! 
 

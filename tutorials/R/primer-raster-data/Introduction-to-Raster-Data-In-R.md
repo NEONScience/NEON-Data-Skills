@@ -28,7 +28,7 @@ After completing this activity, you will be able to:
 * Perform raster calculations in R.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -53,11 +53,8 @@ data to follow the code exactly.
 
 
 ## Recommended Reading
-* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r
-" target="_blank">
-The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the raster package in R</a>
+* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">Read more about the raster package in R</a>
 
 </div>
 
@@ -66,15 +63,15 @@ Raster or "gridded" data are data that are saved in pixels. In the spatial world
 each pixel represents an area on the Earth's surface. For example in the raster 
 below, each pixel represents a particular land cover class that would be found in 
 that location in the real world. 
-<a href="{{ site.baseurl }}/raster-res-extent-pixels-r
-"> More on 
-rasters in the *The Relationship Between Raster Resolution, Spatial extent & Number of Pixels* tutorial</a>. 
+
+More on rasters in the
+<a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank"> *The Relationship Between Raster Resolution, Spatial extent & Number of Pixels* tutorial</a>. 
 
 <figure>
   <img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
    <figcaption>The National Land Cover dataset (NLCD) is an example of a commonly used 
 raster dataset. Each pixel in the Landsat derived raster represents a land cover
-class. Source:  <a href = "https://www.mrlc.gov/"> Multi-Resolution Land Characteristics Consortium</a>.</figcaption>
+class. Source:  <a href = "https://www.mrlc.gov/" target="_blank"> Multi-Resolution Land Characteristics Consortium</a>.</figcaption>
 
 </figure>
 
@@ -267,7 +264,7 @@ better for rendering larger rasters.
 
 ### Plotting with Colors
 
-In the above example. `terrain.colors()` tells `R` to create a palette of colors 
+In the above example. `terrain.colors()` tells R to create a palette of colors 
 within the `terrain.colors` color ramp. There are other palettes that you can 
 use as well include `rainbow` and `heat.colors`. 
 

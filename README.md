@@ -5,9 +5,6 @@ data. The National Ecological Observatory Network (NEON) is an ecological observ
 funded by the National Science Foundation and proudly operated by Battelle, that will 
 collect and provide open data for 30 years. 
 
-Check out the NEON Data Skills portal for the online resources and upcoming events: 
-[www.neondataskills.org](http://www.neondataskills.org)
-
 Check out our website for more: 
 [www.neonscience.org](http://www.neonscience.org "National Ecological Observatory Network")
 

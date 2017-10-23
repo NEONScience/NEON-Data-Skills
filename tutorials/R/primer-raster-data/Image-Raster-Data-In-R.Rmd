@@ -30,7 +30,7 @@ After completing this activity, you will be able to:
 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -55,18 +55,14 @@ data to follow the code exactly.
 
 You may benefit from reviewing these related tutorials prior to this tutorial: 
 
-* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r
-">
-The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
-* <a href="{{ site.baseurl }}/raster-data-r
-">
-Please read "Raster Data in R - The Basics.</a>
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-The `raster` R package documentation.</a>
+* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank"> The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank" > Please read "Raster Data in R - The Basics.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The `raster` R package documentation.</a>
 
 </div>
 
 ## Raster Data
+
 Raster or "gridded" data are data that are saved in pixels. In the spatial world, 
 each pixel represents an area on the Earth's surface. An color image raster is 
 a bit different from other rasters in that it has multiple bands. Each band 

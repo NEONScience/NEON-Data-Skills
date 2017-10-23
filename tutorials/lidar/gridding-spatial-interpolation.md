@@ -54,8 +54,7 @@ associated with a region on the earth’s surface.
 </figure>
 
 For more on raster resolution, see our tutorial on 
-<a href="{{ site.baseurl }}/raster-res-extent-pixels-r
-" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
+<a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
 
 
 ## Creating Surfaces (Rasters) From Points
@@ -410,7 +409,7 @@ spacing of a dataset. It also may yield the largest file size!
 
 ## Interpolation in R, GrassGIS, or QGIS
 
-These additional resources point to tools and information for gridding in `R`, 
+These additional resources point to tools and information for gridding in R, 
 `GRASS GIS` and `QGIS`.
 
 ### R functions

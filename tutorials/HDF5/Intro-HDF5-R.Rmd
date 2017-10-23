@@ -37,8 +37,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5**
 
-[ {{ site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
-
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 ### Data to Download
 We will use the file below in the optional challenge activity at the end of this 
 tutorial.
@@ -50,7 +49,8 @@ tutorial.
 
 ### Additional Resources
 
-Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
+Consider reviewing the documentation for the 
+<a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
 
 </div>
 
@@ -61,18 +61,19 @@ also supports efficient `data slicing`, or extraction of particular subsets of a
 dataset which means that you don't have to read  large files read into the 
 computers memory / RAM in their entirety in order work with them. 
 
-[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
+<a href="{{ site.baseurl }}/about-hdf5" target="_blank">Read more about HDF5 here.</a>
+
 
 ## HDF5 in R
 
-To access HDF5 files in `R`, we will use the `rhdf5` library which is part of 
+To access HDF5 files in R, we will use the `rhdf5` library which is part of 
 the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
-suite of `R` libraries. It might also be useful to install 
+suite of R libraries. It might also be useful to install 
 <a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
 free HDF5 viewer</a> which will allow you to explore the contents of an HDF5 file 
 using a graphic interface.
 
-[More about working with HDFview and a hands-on activity here]({{ site.baseurl }}/explore-data-hdfview/).
+<a href="{{ site.baseurl }}/explore-data-hdfview/" target="_blank">More about working with HDFview and a hands-on activity here.
 
 
 First, let's get R setup. We will use the rhdf5 library. To access HDF5 files in 

@@ -17,9 +17,9 @@ urlTitle: dc-csv-to-shapefile-r
 
 This tutorial will review how to import spatial points stored in `.csv` (Comma
 Separated Value) format into
-`R` as a spatial object - a `SpatialPointsDataFrame`. We will also
+R as a spatial object - a `SpatialPointsDataFrame`. We will also
 reproject data imported in a shapefile format, and export a shapefile from an
-`R` spatial object and plot raster and vector data as
+R spatial object and plot raster and vector data as
 layers in the same plot. 
 
 <div id="ds-objectives" markdown="1">
@@ -27,14 +27,14 @@ layers in the same plot.
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Import .csv files containing x,y coordinate locations into `R`.
+* Import .csv files containing x,y coordinate locations into R.
 * Convert a .csv to a spatial object.
 * Project coordinate locations provided in a Geographic
 Coordinate System (Latitude, Longitude) to a projected coordinate system (UTM).
 * Plot raster and vector data in the same plot to create a map.
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -70,7 +70,7 @@ shapefile can be imported into any GIS software.
 
 Spatial data are sometimes stored in a text file format (`.txt` or `.csv`). If 
 the text file has an associated `x` and `y` location column, then we can 
-convert it into an `R` spatial object which in the case of point data,
+convert it into an R spatial object which in the case of point data,
 will be a `SpatialPointsDataFrame`. The `SpatialPointsDataFrame` 
 allows us to store both the `x,y` values that represent the coordinate location
 of each point and the associated attribute data - or columns describing each
@@ -78,7 +78,7 @@ feature in the spatial object.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** There is a `SpatialPoints` object (not
-`SpatialPointsDataFrame`) in `R` that does not allow you to store associated
+`SpatialPointsDataFrame`) in R that does not allow you to store associated
 attributes. 
 </div>
 
@@ -95,7 +95,7 @@ We will use the `rgdal` and `raster` libraries in this tutorial.
 ## Import .csv 
 To begin let's import `.csv` file that contains plot coordinate `x, y`
 locations at the NEON Harvard Forest Field Site (`HARV_PlotLocations.csv`) in
-`R`. Note that we set `stringsAsFactors=FALSE` so our data import as a
+R. Note that we set `stringsAsFactors=FALSE` so our data import as a
 `character` rather than a `factor` class.
 
 
@@ -328,7 +328,7 @@ it using either of two equivalent but slightly different syntaxes.
 
 
 ## Plot Spatial Object 
-We now have a spatial `R` object, we can plot our newly created spatial object.
+We now have a spatial R object, we can plot our newly created spatial object.
 
 
     # plot spatial object
@@ -342,7 +342,7 @@ We now have a spatial `R` object, we can plot our newly created spatial object.
 In 
 [Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r)
 we learned about spatial object `extent`. When we plot several spatial layers in
-`R`, the first layer that is plotted, becomes the extent of the plot. If we add
+R, the first layer that is plotted, becomes the extent of the plot. If we add
 additional layers that are outside of that extent, then the data will not be
 visible in our plot. It is thus useful to know how to set the spatial extent of
 a plot using `xlim` and `ylim`.
@@ -440,7 +440,7 @@ so what is going on?
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/04-csv-to-shapefile-in-R/compare-extents-1.png)
 
 The **extents** of our two objects are **different**. `plot.locationsSp_HARV` is
-much larger than `aoiBoundary_HARV`. When we plot `aoiBoundary_HARV` first, `R`
+much larger than `aoiBoundary_HARV`. When we plot `aoiBoundary_HARV` first, R
 uses the extent of that object to as the plot extent. Thus the points in the 
 `plot.locationsSp_HARV` object are not rendered. To fix this, we can manually
 assign the plot extent using `xlims` and `ylims`. We can grab the extent
@@ -501,14 +501,14 @@ values from the spatial object that has a larger extent. Let's try it.
 We want to add two phenology plots to our existing map of vegetation plot
 locations. 
 
-Import the .csv: `HARV/HARV_2NewPhenPlots.csv` into `R` and do the following:
+Import the .csv: `HARV/HARV_2NewPhenPlots.csv` into R and do the following:
 
 1. Find the X and Y coordinate locations. Which value is X and which value is Y?
 2. These data were collected in a geographic coordinate system (WGS84). Convert
-the `data.frame` into an `R` `spatialPointsDataFrame`.
+the `data.frame` into an R `spatialPointsDataFrame`.
 3. Plot the new points with the plot location points from above. Be sure to add
 a legend. Use a different symbol for the 2 new points!  You may need to adjust
-the X and Y limits of your plot to ensure that both points are rendered by `R`!
+the X and Y limits of your plot to ensure that both points are rendered by R!
 
 If you have extra time, feel free to add roads and other layers to your map!
 
@@ -522,7 +522,7 @@ the projection from the objects used in that tutorial!
 
 ## Export a Shapefile
 
-We can write an `R` spatial object to a shapefile using the `writeOGR` function 
+We can write an R spatial object to a shapefile using the `writeOGR` function 
 in `rgdal`. To do this we need the following arguments:
 
 * the name of the spatial object (`plot.locationsSp_HARV`)

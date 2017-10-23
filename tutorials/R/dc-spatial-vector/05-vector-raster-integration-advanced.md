@@ -31,7 +31,7 @@ After completing this tutorial, you will be able to:
  overlay.
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded 
+You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -127,7 +127,7 @@ series, you can skip this code as you have already created these object.)
 ## Crop a Raster Using Vector Extent
 We can use the `crop` function to crop a raster to the extent of another spatial 
 object. To do this, we need to specify the raster to be cropped and the spatial
-object that will be used to crop the raster. `R` will use the `extent` of the
+object that will be used to crop the raster. R will use the `extent` of the
 spatial object as the cropping boundary.
 
 
@@ -198,7 +198,7 @@ vegetation plot locations with the Canopy Height Model information.
 
 If you completed
 [.csv to Shapefile in R]({{site.baseurl}}/dc-csv-to-shapefile-r)
-you have these plot locations as the spatial `R` spatial object
+you have these plot locations as the spatial R spatial object
 `plot.locationsSp_HARV`. Otherwise, import the locations from the
 `\HARV\PlotLocations_HARV.shp` shapefile in the downloaded data. 
 
@@ -262,7 +262,7 @@ to create an `extent` object.
 * `??raster::extent`
 * More on the 
 <a href="http://www.inside-r.org/packages/cran/raster/docs/extent" target="_blank">
-extent class in `R`</a>.
+extent class in R</a>.
 
 ## Extract Raster Pixels Values Using Vector Polygons
 
@@ -270,8 +270,8 @@ Often we want to extract values from a raster layer for particular locations -
 for example, plot locations that we are sampling on the ground. 
 
 <figure>
-    <a href="http://neondataskills.org/images/spatialData/BufferSquare.png">
-    <img src="http://neondataskills.org/images/spatialData/BufferSquare.png"></a>
+    <a href="{{ site.baseurl }}/images/spatialData/BufferSquare.png">
+    <img src="{{ site.baseurl }}/images/spatialData/BufferSquare.png"></a>
     <figcaption> Extract raster information using a polygon boundary. We can
     extract all pixel values within 20m of our x,y point of interest. These can 
     then be summarized into some value of interest (e.g. mean, maximum, total).
@@ -279,7 +279,7 @@ for example, plot locations that we are sampling on the ground.
     </figcaption>
 </figure>
 
-To do this in `R`, we use the `extract()` function. The `extract()` function
+To do this in R, we use the `extract()` function. The `extract()` function
 requires:
 
 * The raster that we wish to extract values from,
@@ -314,12 +314,12 @@ Forest field site.
 
     ## [1] 18450
 
-When we use the extract command, `R` extracts the value for each pixel located 
+When we use the extract command, R extracts the value for each pixel located 
 within the boundary of the polygon being used to perform the extraction - in
 this case the `aoiBoundary` object (1 single polygon). In this case, the
 function extracted values from 18,450 pixels.
 
-The `extract` function returns a `list` of values as default. You can tell `R` 
+The `extract` function returns a `list` of values as default. You can tell R 
 to summarize the data in some way or to return the data as a `data.frame`
 (`df=TRUE`).
 
@@ -349,7 +349,7 @@ site.
 
 ## Summarize Extracted Raster Values 
 
-We often want to extract summary values from a raster. We can tell `R` the type
+We often want to extract summary values from a raster. We can tell R the type
 of summary statistic we are interested in using the `fun=` method. Let's extract
 a mean height value for our AOI. 
 
@@ -380,8 +380,8 @@ which represents the radius of a circular region around each point.
 The units of the buffer are the same units of the data `CRS`.
 
 <figure>
-    <a href="http://neondataskills.org/images/spatialData/BufferCircular.png">
-    <img src="http://neondataskills.org/images/spatialData/BufferCircular.png"></a>
+    <a href="{{ site.baseurl }}/images/spatialData/BufferCircular.png">
+    <img src="{{ site.baseurl }}/images/spatialData/BufferCircular.png"></a>
     <figcaption> Extract raster information using a buffer region. All pixels
     that are touched by the buffer region are included in the extract. 
     Source: National Ecological Observatory Network (NEON).

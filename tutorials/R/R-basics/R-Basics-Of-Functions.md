@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 * Test and debug a function. (This section in construction).
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ****

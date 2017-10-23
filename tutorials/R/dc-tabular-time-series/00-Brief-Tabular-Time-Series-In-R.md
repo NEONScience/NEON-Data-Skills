@@ -16,9 +16,9 @@ urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
 
 This tutorial will demonstrate how to import a time series data set stored in `.csv`
-format into `R`. It will explore data classes for columns in a `data.frame` and 
+format into R. It will explore data classes for columns in a `data.frame` and 
 will walk through how to 
-convert a date, stored as a character string, into a date class that `R` can
+convert a date, stored as a character string, into a date class that R can
 recognize and plot efficiently.
 
 <div id="ds-objectives" markdown="1">
@@ -26,11 +26,11 @@ recognize and plot efficiently.
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-  * Open a `.csv` file in `R` using `read.csv()`and understand why we
+  * Open a `.csv` file in R using `read.csv()`and understand why we
   are using that file type.
-  * Work with data stored in different columns within a `data.frame` in `R`.
-  * Examine `R` object structures and data `classes`.
-  * Convert dates, stored as a character class, into an `R` date 
+  * Work with data stored in different columns within a `data.frame` in R.
+  * Examine R object structures and data `classes`.
+  * Convert dates, stored as a character class, into an R date 
   class.
   * Create a quick plot of a time-series data set using `qplot`. 
   
@@ -78,7 +78,7 @@ For more on .csv format see this Wikipedia article.</a>
 
 ## Import the Data 
 
-To begin, let's import the data into `R`. We can use base `R` functionality
+To begin, let's import the data into R. We can use base R functionality
 to import a `.csv` file. We will use the `ggplot2` package to plot our data. 
 
 
@@ -135,7 +135,7 @@ using `as.factor()`. Therefore it is often best to read in a file with
 `stringsAsFactors = FALSE`.
 
 ## Data.Frames in R
-The `read.csv()` imports our `.csv` into a `data.frame` object in `R`. `data.frame`s 
+The `read.csv()` imports our `.csv` into a `data.frame` object in R. `data.frame`s 
 are ideal for working with tabular data - they are similar to a spreadsheet.
 
 
@@ -150,7 +150,7 @@ ways to examine the structure of a data frame:
 
 * `head()`: shows us the first 6 rows of the data (`tail()` shows the last 6 
             rows). 
-* `str()` : displays the structure of the data as `R` interprets it.
+* `str()` : displays the structure of the data as R interprets it.
 
 Let's use both to explore our data. 
 
@@ -266,11 +266,11 @@ Mathematical operations can be performed on integers.
 including decimals (floating point values) and integers. Numeric also accept 
 larger numbers than **int** will.
 
-Storing variables using different `classes` is a strategic decision by `R` (and 
+Storing variables using different `classes` is a strategic decision by R (and 
 other programming languages) that optimizes processing and storage. It allows:
 
 * data to be processed more quickly & efficiently.
-* the program (`R`) to minimize the storage size.
+* the program (R) to minimize the storage size.
 
 ### Differences Between Classes 
 
@@ -376,7 +376,7 @@ object that the variables are stored in.
 We have successfully plotted some data. However, what is happening on the 
 x-axis?
 
-`R` is trying to plot EVERY date value in our data, on the x-axis. This makes it
+R is trying to plot EVERY date value in our data, on the x-axis. This makes it
 hard to read. Why? Let's have a look at the class of the x-axis variable - date.
 
 
@@ -390,7 +390,7 @@ hard to read. Why? Let's have a look at the class of the x-axis variable - date.
     ## [1] "numeric"
 
 In this case, the `date` column is stored in our `data.frame` as a character
-class. Because it is a character, `R` does not know how to plot the dates as a
+class. Because it is a character, R does not know how to plot the dates as a
 continuous variable. Instead it tries to plot every date value as a text string. 
 The `airt` data class is numeric so that metric plots just fine.
 
@@ -398,7 +398,7 @@ The `airt` data class is numeric so that metric plots just fine.
 
 We need to convert our `date` column, which is currently stored as a character 
 to a `date-time` class that can be displayed as a continuous variable. Lucky 
-for us, `R` has a `date` class.  We can convert the `date` field to a `date class`
+for us, R has a `date` class.  We can convert the `date` field to a `date class`
 using `as.Date()`.
 
 
@@ -417,7 +417,7 @@ using `as.Date()`.
     ## [6] "2001-02-16"
 
 Now that we have adjusted the date, let's plot again. Notice that it plots
-much more quickly now that R recognizes `date` as a date class. `R` can 
+much more quickly now that R recognizes `date` as a date class. R can 
 aggregate ticks on the x-axis by year instead of trying to plot every day!
 
 

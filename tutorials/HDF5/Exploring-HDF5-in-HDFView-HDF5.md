@@ -161,8 +161,8 @@ explore this HDF5 dataset within the HDFViewer.
 </figure>
 
 Next, we will explore a hyperspectral dataset, collected by the 
-<a href="http://neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank">
-NEON Airborne Observation Platform (AOP)</a> and saved in HDF5 format. Hyperspectral 
+<a href="http://neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
+and saved in HDF5 format. Hyperspectral 
 data are naturally hierarchical, as each pixel in the dataset contains reflectance 
 values for hundreds of bands collected by the sensor. The NEON sensor 
 (imaging spectrometer) collected data within 428 bands.

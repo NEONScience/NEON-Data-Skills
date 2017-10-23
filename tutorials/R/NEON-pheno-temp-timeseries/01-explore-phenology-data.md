@@ -33,7 +33,7 @@ After completing this activity, you will be able to:
  * plot time series data in a bar plot using ggplot the function. 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of `R` and, preferably, `RStudio` loaded
+You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -60,7 +60,7 @@ on your computer to complete this tutorial.
 * NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>
 * RStudio's <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
 * <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
-* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo API wrapper on CRAN </a>
+* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo R package that is an API wrapper on CRAN </a>
 
 </div>
 
@@ -812,11 +812,7 @@ of phenological stagesin plant communities. Plant phenology is affected by force
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
 feedbacks to trophic interactions, carbon sequestration, community composition 
-and ecosystem function.  (quoted from <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
-
-Let's use some other NEON data to investigate potential driver's of phenologic 
-change in our next tutorial <a href="{{ site.baseurl }}/neon-SAAT-temp-r"> *Work with NEON Single-Aspirated Air Temperature Data* </a>. 
-
-
+and ecosystem function.  (quoted from 
+<a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
 
 
