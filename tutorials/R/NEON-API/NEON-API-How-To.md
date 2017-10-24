@@ -52,9 +52,9 @@ preferably, RStudio loaded on your computer.
 
 ### Additional Resources
 
-* [Website for the NEON API](http://data.neonscience.org/data-api)
-* [GitHub repository for the NEON API](https://github.com/NEONScience/neon-data-api)
-* [ROpenSci wrapper for the NEON API](https://github.com/ropenscilabs/nneo) (not covered in this tutorial)
+* <a href="http://data.neonscience.org/data-api" taget="_blank">Webpage for the NEON API</a>
+* <a href="https://github.com/NEONScience/neon-data-api" target="_blank">GitHub repository for the NEON API</a>
+* <a href="https://github.com/ropenscilabs/nneo" target="_blank"> ROpenSci wrapper for the NEON API</a> (not covered in this tutorial)
 
 </div>
 
