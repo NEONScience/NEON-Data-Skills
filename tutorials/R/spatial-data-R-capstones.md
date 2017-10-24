@@ -19,9 +19,9 @@ urlTitle: spatial-data-capstones
 These capstone challenges utilize the skills that you learned in the previous 
 tutorials in the:
 
-* <a href="{{ site.baseurl }}/tutorial-series/primer-raster-data-r/" target="_blank"> *Primer on Raster Data in R* series</a>,
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
+* <a href="{{ site.baseurl }}/primer-raster-data-r/" target="_blank"> *Primer on Raster Data in R* series</a>,
+* <a href="{{ site.baseurl }}/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
+* <a href="{{ site.baseurl }}/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -40,13 +40,6 @@ on your computer to complete this tutorial.
 ### Download Data
 
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
-
-## Tutorial Series 
-These capstone activities rely on skills learned in the 
-
-* <a href="{{ site.baseurl }}/tutorial-series/spatial-data-types-primer/" target="_blank"> *Primer on Raster Data* series</a>,
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
  
 </div>
 
@@ -87,8 +80,9 @@ SOAP vegetation data).
 	- one for the San Joaquin (SJER) field site
 	- one for the Soaproot Saddle (SOAP) field site.
 3. Attribute each of the above groups with information about the field sites. 
-HINT: you can explore the <a href="{{ site.baseurl }}/science-design/field-sites/" target="_blank">
-NEON field sites page</a> for more information about each site. 
+HINT: you can explore the 
+<a href="/field-sites/field-sites-map" target="_blank">NEON field sites page</a> 
+for more information about each site. 
 4. Extract the vegetation structure data for San Joaquin and add it as a dataset 
 to the San Joaquin group. Do the same for the Soaproot Saddle dataset. 
 5. Add the plot centroids data to the SJER group. Include relevant attributes for 

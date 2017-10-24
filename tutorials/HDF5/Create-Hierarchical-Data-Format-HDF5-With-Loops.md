@@ -201,9 +201,10 @@ Do the following to figure out what it's doing.
 3. Type `g` into the console and take note of the result.
 4. Type `help(norm)` to understand what norm does. 
 
+And the output: 
 
     # 1
-    paste(g, "precip", sep="/")
+      paste(g, "precip", sep="/")
 
     ## [1] "location3/precip"
 
@@ -285,7 +286,8 @@ does the rest. Notice in this loop we are creating a "precip" and a "temp" datas
 and pasting them into each location group (the loop iterates 3 times).
 
 The `h5write` function is writing each matrix to a dataset in our HDF5 file 
-(sensorData.h5). It is looking for the following arguments: `hrwrite(dataset,YourHdfFileName,LocationOfDatasetInH5File)`. Therefore, the code: 
+(sensorData.h5). It is looking for the following arguments: 
+`hrwrite(dataset,YourHdfFileName,LocationOfDatasetInH5File)`. Therefore, the code: 
 `(matrix(rnorm(300,2,1),ncol=3,nrow=100),file = "sensorData.h5",paste(g,"precip",sep="/"))` 
 tells R to add a random matrix of values to the sensorData HDF5 file within the 
 path called `g`. It also tells R to call the dataset within that group, "precip". 

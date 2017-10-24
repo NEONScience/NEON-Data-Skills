@@ -47,7 +47,8 @@ that builds upon both HDF4 and NetCDF (two other hierarchical data formats).
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"><img src="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg">
+    <img src="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"></a>
     <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a>
 </figcaption>
 </figure>

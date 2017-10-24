@@ -16,14 +16,12 @@ urlTitle: time-series-hdf5-r
 ---
 
 In this tutorial, we'll work with 
-<a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank"> 
-temperature data collected using sensors on a flux tower</a> 
+<a href="/science-design/collection-methods/flux-tower-measurements" target="_blank"> temperature data collected using sensors on a flux tower</a> 
 by 
-<a href="/" target="_blank">the National 
-Ecological Observatory Network (NEON) </a>. 
+<a href="/" target="_blank">the National Ecological Observatory Network (NEON)</a>. 
 Here the data are provided in HDF5 format to allow for the exploration of this 
 format. More information about NEON temperature data can be found on the 
-<a href="http://data.neon.org" target="_blank">the NEON Data Portal</a>. 
+<a href="http://data.neonscience.org" target="_blank">the NEON Data Portal</a>. 
 Please note that at the present time temperature data are published on the data 
 portal as a flat .csv file and not as an HDF5 file. NEON data products currently 
 released in HDF5 include eddy covariance data and remote sensing data.
@@ -39,6 +37,7 @@ using advanced tools like `dplyr`.
 ## Learning Objectives
 
 After completing this tutorial, you will be able to:
+
 * Explore an HDF5 file and access groups and datasets 
 in R.
 * Explain the basics of manipulating big data sets using indexing, 
@@ -119,9 +118,9 @@ Each element in an hdf5 file can have metadata attached to it making HDF5 files
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**The Data:** The temperature data used in this 
 tutorial were collected by a temperature sensor mounted on a National Ecological 
-Observatory Network (NEON) flux tower at the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 
+Observatory Network (NEON) flux tower at the <a href="/field-sites/field-sites-map/OSBS" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 
 Learn more about 
-<a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">flux data here.</a>
+<a href="/science-design/collection-methods/flux-tower-measurements" target="_blank">flux data here.</a>
 </div>
 
 Let's first explore an HDF5 file that we know nothing about using the R function, 
@@ -163,8 +162,8 @@ Take note that this path is 4 groups "deep" and leads to one dataset called
 temperature in this part of the HDF5 file as follows:
 
 * **Domain_03** - A NEON domain is an ecologically unique region. Domain 3 is 
-one of 20 regions that <a href="http://neonscience.org/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
-* **OSBS** - a group representing data from the <a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank"> Ordway Swisher Biological Station (OSBS).</a>
+one of 20 regions that <a href="/science-design/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.
+* **OSBS** - a group representing data from the <a href="/field-sites/field-sites-map/OSBS" target="_blank"> Ordway Swisher Biological Station (OSBS).</a>
 * **min_1** - A group representing the mean temperature data value for every for 
 one minute in time. Temperature data are often collected at high frequencies (20 hz 
 or 20 measurements a second) or more. A typical data product derived from high 

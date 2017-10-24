@@ -35,7 +35,7 @@ After completing this activity, you will be able to:
 
 Install the free HDFView application. This application allows you to explore 
 the contents of an HDF5 file easily. 
-<a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click HERE to go to the download page. </a>
+<a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click here to go to the download page. </a>
 
 ## Data to Download
 NOTE: The first file downloaded has an .HDF5 file extension, the second file 
@@ -68,7 +68,8 @@ data contained within the HDF5 file, are built into the file itself.
 * One HDF5 file may contain several heterogeneous data types (e.g. images, 
 numeric data, data stored as strings). 
 
-For more introduction to the HDF5 format, see our <a href="{{ site.baseurl}}/about-hdf5" target="_blank"> *About Hierarchical Data Formats - What is HDF5?* tutorial</a>.
+For more introduction to the HDF5 format, see our 
+<a href="/about-hdf5" target="_blank"> *About Hierarchical Data Formats - What is HDF5?* tutorial</a>.
 
 In this tutorial, we will explore two different types of data saved in HDF5. 
 This will allow us to better understand how one file can store multiple different 
@@ -187,7 +188,7 @@ reflectance data.
 
 Read more about hyperspectral remote sensing data:
 
-* <a href="{{ site.baseurl }}/about-hdf5-Hyperspectral-Remote-Sensing-Data/" target="_blank"> *About Hyperspectral Remote Sensing Data* tutorial </a> on this site. 
+* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> *About Hyperspectral Remote Sensing Data* tutorial </a> on this site. 
 * <a href="http://spacejournal.ohio.edu/pdf/shippert.pdf" target="_blank">White paper by Dr Peg Shippert</a>
 
 
