@@ -366,7 +366,7 @@ with the `NoDataValue` as `NA`.
 
 The assigned `NoDataValue` varies across disciplines; `-9999` is a common value 
 used in both the remote sensing field and the atmospheric fields. It is also
-the standard used by the <a href="{{ site.baseurl }}" target="_blank"> 
+the standard used by the <a href="/" target="_blank"> 
 National Ecological Observatory Network (NEON)</a>. 
 
 If we are lucky, our GeoTIFF file has a tag that tells us what is the

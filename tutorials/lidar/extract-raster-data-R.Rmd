@@ -94,10 +94,10 @@ Let's start by plotting the plot locations where we measured trees (in red) on a
 
 We will need to convert the plot centroids to a spatial points dataset in R. This
 is why we need to loaded two packages - the spatial package 
-[sp](http://cran.r-project.org/web/packages/sp/index.html "R sp package") - 
+<a href="http://cran.r-project.org/web/packages/sp/index.html" target="_blank">sp</a> –- 
 and a data manipulation package 
-[dplyr](http://cran.r-project.org/web/packages/dplyr/index.html "dplyr") -- in 
-addition to working with the raster package.
+<a href="http://cran.r-project.org/web/packages/dplyr/index.html" target="_blank"> dplyr</a> -- 
+in addition to working with the raster package.
 
 NOTE: the `sp` library typically installs when you install the raster package. 
 

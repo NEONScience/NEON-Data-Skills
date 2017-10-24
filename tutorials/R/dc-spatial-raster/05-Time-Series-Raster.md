@@ -214,7 +214,7 @@ same syntax that we used on single-band raster objects in R including: `crs()`
 Notice that the CRS is `+proj=utm +zone=19 +ellps=WGS84 +units=m +no_defs`. The
 CRS is in UTM Zone 19.  If you have completed the previous tutorials in 
 this 
-[raster data in R series ]({{ site.baseurl }}tutorial-series/raster-data-series/),
+<a href="/raster-data-series" target="_blank">raster data in R series</a>,
 you may have noticed that the UTM zone for the NEON collected remote sensing 
 data was in Zone 18 rather than Zone 19. Why are the Landsat data in Zone 19?  
 
@@ -280,7 +280,7 @@ quickly apply this factor using raster math on the entire stack as follows:
 <i class="fa fa-star"></i>**Data Tip:** We can make this plot  
 even prettier by fixing the individual tile names, adding an plot title and by
 using the (`levelplot`) function. This is covered in the NEON Data Skills 
-[Plot Time Series Rasters in R ]({{ site.baseurl }}/dc-raster-rastervis-levelplot-r)
+<a href="/dc-raster-rastervis-levelplot-r" target="_blank">Plot Time Series Rasters in R</a>
 tutorial. 
 </div>
 
@@ -306,8 +306,7 @@ about the patterns of greening and browning observed in the plots above?
 Hint: the number after the "X" in each tile title is the Julian day which in
 this case represents the number of days into each year. If you are unfamiliar
 with Julian day, check out the NEON Data Skills 
-[Converting to Julian Day ]({{ site.baseurl }}/julian-day-conversion-r) 
-tutorial.
+<a href="/julian-day-conversion-r" target="_blank">*Converting to Julian Day* tutorial </a>.
 
 ## View Distribution of Raster Values
 In the above exercise, we viewed plots of our NDVI time series and noticed a 
