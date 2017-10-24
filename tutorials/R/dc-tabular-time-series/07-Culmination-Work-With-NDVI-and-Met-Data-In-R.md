@@ -16,15 +16,12 @@ urlTitle: dc-culm-activity-ndvi-met-data-r
 ---
 
 This tutorial is a culmination activity for the series on 
-[working with tabular time series data in R ]({{ site.baseurl }}/tutorial-series/tabular-time-series/) 
-and as part of a larger spatio-temporal tutorial series and Data Carpentry
-workshop on 
-[using spatio-temporal phenology-related data in R ]({{ site.baseurl }}/tutorial-series/neon-dc-phenology-series/).
-The data used in this culmination activity has been extracted or previously
-worked with in the tutorial series
-[working with tabular time series data in R ]({{ site.baseurl }}/tutorial-series/tabular-time-series/)
-and 
-[working with raster time-series data in R ]({{ site.baseurl }}/tutorial-series/raster-time-series/).
+<a href="/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
+Other related series include:
+<a href="/spatial-data-management-series" target="_blank"> intro to spatio-temporal data and data management</a>,
+<a href="/spatial-raster-series" target="_blank"> working with raster time-series data in R</a>,
+and
+<a href="/vector-data-series" target="_blank"> working with vector data in R </a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -63,9 +60,8 @@ This tutorial relies on participants' familiarity with both `dplyr` and
 `ggplot2`. Prior to working through this culmination activity, we recommend the
 following tutorials, if you are new to either of the R packages.
 
-* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
-
-* [Plotting Time Series with ggplot in R tutorial ]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")  
+* <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+* <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 
 </div>
 
@@ -92,7 +88,7 @@ on a
 <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite </a>.
 The data files are Geographic Tagged Image-File Format (GeoTIFF). 
 The tutorial 
-[Extract NDVI Summary Values from a Raster Time Series]({{ site.baseurl }}/dc-ndvi-calc-raster-time-series), 
+<a href="/dc-ndvi-calc-raster-time-series" target="_blank">*Extract NDVI Summary Values from a Raster Time Series* </a> 
 explains how to create this NDVI file from raster data. 
 
 ### Read In the Data
@@ -211,7 +207,7 @@ convert the data to the Date class.
 `harMet.daily2011`.
 
 HINT: If you are having trouble subsetting the data, refer back to
-[Subset & Manipulate Time Series Data with dplyr tutorial]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr")
+<a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
 </div>
 
 
@@ -259,7 +255,7 @@ same viewer so we can more easily compare them.
 
 Hint: If you are having a hard time arranging the plots in a single grid, refer
 back to 
-[Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")
+<a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 </div>
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-PAR-NDVI-1.png)

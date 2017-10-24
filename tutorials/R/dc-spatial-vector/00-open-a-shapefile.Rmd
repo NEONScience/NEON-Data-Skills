@@ -168,7 +168,7 @@ with each individual vector object.
 
  <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The 
- [Shapefile Metadata & Attributes in R]({{site.baseurl}}dc-shapefile-attributes-r) 
+<a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
 tutorial provides more information on both metadata and attributes
 and using attributes to subset and plot data. 
 </div>
@@ -353,8 +353,9 @@ CHM, please add:
 Be sure to give your plot a meaningful title. 
 
 For assistance consider using the 
-[Shapefile Metadata & Attributes in R]({{site.baseurl}}dc-shapefile-attributes-r),
-the [Plot Raster Data in R]({{site.baseurl}}/dc-plot-raster-data-r )
+<a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
+and
+the <a href="/dc-plot-raster-data-r" target="_blank" >*Plot Raster Data in R*</a>
 tutorials. 
 </div>
 

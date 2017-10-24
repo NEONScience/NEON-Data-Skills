@@ -55,7 +55,8 @@ your computer to complete this tutorial.
 </div>
 
 ## The Data Approach
-In the [Intro to Time Series Data in R tutorial ]({{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r)
+In the 
+<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>
 we imported a time series dataset in `.csv` format into R. We learned how to 
 quickly plot these data by converting the date column to an R `Date` class.
 In this tutorial we will explore how to work with a column that contains both a
@@ -105,8 +106,7 @@ of the `date-time` column?
 Our `datetime` column is stored as a `character` class. We need to convert it to 
 date-time class. What happens when we use the `as.Date` method that we learned
 about in the 
-[Intro to Time Series Data in R ]({{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r "for as.Date") 
-tutorial?
+<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>?
 
 
     # convert column to date class
@@ -357,7 +357,7 @@ Above, we successfully converted our data into a date-time class. However, what
 It appears as if our data were assigned MDT (which is the timezone of the
 computer where these tutorials were processed originally - in Colorado - Mountain
 Time). However, we know from the metadata, explored in the
-[Why Metadata Are Important: How to Work with Metadata in Text & EML Format tutorial ]({{ site.baseurl }}/dc-metadata-importance-eml-r),
+<a href="/dc-metadata-importance-eml-r" target="_blank">*Why Metadata Are Important: How to Work with Metadata in Text & EML Format* tutorial</a>,
 that these data were stored in Eastern Standard Time.
 
 ### Assign Time Zone

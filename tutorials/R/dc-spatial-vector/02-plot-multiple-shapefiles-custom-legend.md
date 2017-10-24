@@ -17,7 +17,7 @@ urlTitle: dc-plot-shapefiles-r
 
 
 This tutorial builds upon 
-[the previous tutorial]({{ site.baseurl }}dc-shapefile-attributes-r) 
+<a href="/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>
 to work with shapefile attributes in R and explores how to plot multiple 
 shapefiles using base R graphics. It then covers
 how to create a custom legend with colors and symbols that match your plot.
@@ -59,11 +59,11 @@ raster and vector files.
 
 We will import three shapefiles. The first is our `AOI` or *area of
 interest* boundary polygon that we worked with in 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r). 
+<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 The second is a shapefile containing the location of roads and trails within the
 field site. The third is a file containing the Harvard Forest Fisher tower
 location. These latter two we worked with in the
-[Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R]({{site.baseurl}}dc-shapefile-attributes-r) tutorial.
+<a href="/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial.
 
 
     # load packages
@@ -105,7 +105,7 @@ location. These latter two we worked with in the
 ## Plot Data
 
 In the 
-[*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R* tutorial]({{ site.baseurl }}dc-shapefile-attributes-r) 
+<a href="/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial.
 we created a plot where we customized the width of each line in a spatial object
 according to a factor level or category. To do this, we create a vector of
 colors containing a color value for EACH feature in our spatial object grouped
@@ -161,7 +161,7 @@ feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[l
 
 ## Add Plot Legend
 In the 
-[previous tutorial]({{ site.baseurl }}dc-shapefile-attributes-r),
+<a href="/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>,
 we also learned how to add a basic legend to our plot.
 
 * `bottomright`: We specify the **location** of our legend by using a default 
