@@ -52,6 +52,4 @@ License
 Disclaimer
 ----------
 
-\[Include the text below\]
-
 *Information and documents contained within this repository are available as-is. Codes or documents, or their use, may not be supported or maintained under any program or service and may not be compatible with data currently available from the NEON Data Portal.*
