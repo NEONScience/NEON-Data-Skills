@@ -133,7 +133,7 @@ plots that are grouped by a particular category or time period. To create a
 plot for each year, we will first need a **year** column in our data to use as a
 subset factor. We created a year column using the `year` function in the 
 `lubridate` package in the 
-[Subset and Manipulate Time Series Data with dplyr Tutorial ]({{ site.baseurl }}/R/time-series-subset-dplyr).
+<a href="/time-series-subset-dplyr" target="_blank">*Subset and Manipulate Time Series Data with dplyr* tutorial</a>.
 
 ```{r plot-by-year}
 
