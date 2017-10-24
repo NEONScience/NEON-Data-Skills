@@ -35,7 +35,6 @@ know!
 
 <!-- HTML tags to produce image, resize, add hyperlink. -->
 <!-- ONLY WORKS WITH HTML or GITHUB documents -->
-<a href="http://www.neonscience.org/"> <img src="logo.png" width="300px" /> </a>
 
 The National Ecological Observatory Network is a project solely funded by the 
 National Science Foundation and managed under cooperative agreement by Battelle. 
@@ -54,4 +53,4 @@ GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
 *Information and documents contained within this repository are available as-is. 
 Codes or documents, or their use, may not be supported or maintained under any 
 program or service and may not be compatible with data currently available from 
-the <a href="data.neonscience.org" target="_blank"> NEON Data Portal</a>.*
+the [NEON Data Portal](http://data.neonscience.org).*
