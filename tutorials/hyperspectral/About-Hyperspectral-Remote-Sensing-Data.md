@@ -92,7 +92,7 @@ center point.
 In the illustration above, the band that covers 800-805nm has a FWHM of 5 nm. 
 While a general spectral resolution of the sensor is often provided, not all 
 sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are 
-listed below (Courtesy of <a href="http://landsat.usgs.gov" target="_blank">USGS</a>:
+listed below (Courtesy of <a href="http://landsat.usgs.gov" target="_blank">USGS</a>)
 
 
 | Band | Wavelength range (microns) | Spatial Resolution (m) | Spectral Width (microns)|

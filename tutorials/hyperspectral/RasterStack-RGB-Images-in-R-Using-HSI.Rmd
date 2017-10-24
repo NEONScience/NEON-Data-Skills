@@ -72,20 +72,25 @@ other band combinations that are useful too. For example, near infrared images
 emphasize vegetation and help us classify or identify where vegetation is located 
 on the ground.
 
-<figure class="third">
+<figure >
     <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
+<figcaption> A portion of the SJER field site using red, green and blue (bands 58,34,19).</figcaption>
+</figure>
+
+<figure class="half">
     <a href="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"><img src="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"></a>
     <a href="{{ site.baseurl }}/images/hyperspectral/falseColor.png"><img src="{{ site.baseurl }}/images/hyperspectral/falseColor.png"></a>
     
-    <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
+    <figcaption>Here is the same section of SJER but with other bands highlighted. 
+    LEFT: colored infrared – near infrared, green and blue (bands 90, 34, 19). 
+    RIGHT: A false color image.</figcaption>
 </figure>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - Band Combinations:** The Biodiversity 
 Informatics group created a great interactive tool that lets you explore band 
-combinations. Check it out:
-<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using a great online tool!</a>
-</div>
+combinations. Check it out. Learn more about band combinations 
+<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">using a great online tool from the American Museum of Natural History!</a> (The tool requires Flash player. </div>
 
 
 ## Create a Raster Stack in R
@@ -95,7 +100,7 @@ In the
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-<a href="/hsi-hdf5-r" target="_blank">intro to working with hyperspectral data activity</a>. 
+<a href="/hsi-hdf5-r" target="_blank">intro to working with hyperspectral data activity </a>. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -427,13 +432,8 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 ```
 
-	
-<figure class="half">
-<a href="{{ site.baseurl }}/images/hyperspectral/NDVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/NDVI.png"></a>
-<a href="{{ site.baseurl }}/images/hyperspectral/EVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/EVI.png"></a>
-    
-<figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
-</figure>
+
+
 	
 <div id="ds-challenge" markdown="1">
 ## Challenge: Work with Indices
@@ -444,6 +444,14 @@ Try the following:
 EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))
 2. Calculate NDNI using the following equation: 
 log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
-3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple red and NIR bands and then calculate NDVI?
+3. Explore the bands in the hyperspectral data. What happens if you average 
+reflectance values across multiple red and NIR bands and then calculate NDVI?
 
 </div>
+
+<figure class="half">
+<a href="{{ site.baseurl }}/images/hyperspectral/NDVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/NDVI.png"></a>
+<a href="{{ site.baseurl }}/images/hyperspectral/EVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/EVI.png"></a>
+    
+<figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
+</figure>
