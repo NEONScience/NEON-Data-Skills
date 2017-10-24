@@ -57,7 +57,7 @@ on your computer to complete this tutorial.
 
 ## About Raster Bands in R 
 As discussed in the
-[Intro to Raster Data tutorial]({{ base.url }}/R/Introduction-to-Raster-Data-In-R), 
+<a href="/dc-raster-data-r" target="_blank"> *Intro to Raster Data* tutorial</a>, 
 a raster can contain 1 or more bands.
 
 <figure>
@@ -117,14 +117,14 @@ In a multi-band dataset, the rasters will always have the same *extent*,
 
 Multi-band raster data might also contain:
 
-1. **Time series:** the same variable, over the same area, over time. Check out 
-[Raster Time Series Data in R ]({{site.baseurl}}/dc-multiband-rasters-r)
+1. **Time series:** the same variable, over the same area, over time. Check out
+<a href="/dc-multiband-rasters-r" target="_blank"> Raster Time Series Data in R</a> 
 to learn more about time series stacks.
 2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
 (multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
 Data Skills
-[Imaging Spectroscopy HDF5 in R ]({{site.baseurl}}/hsi-hdf5-r)
-tutorial for more about working with hyperspectral data cubes.
+<a href="/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
+for more about working with hyperspectral data cubes.
 
 ## Getting Started with Multi-Band Data in R
 To work with multi-band raster data we will use the `raster` and `rgdal`
@@ -460,8 +460,8 @@ tutorial.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
-[Raster Time Series Data in R]({{ site.baseurl }}/dc-multiband-rasters-r)
-for a tutorial on how to do this.  
+<a href="/dc-multiband-rasters-r" target="_blank"> *Raster Time Series Data in R* </a>
+for a tutorial on how to do this. 
 </div>
 
 ## RasterStack vs RasterBrick in R

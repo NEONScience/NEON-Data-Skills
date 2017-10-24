@@ -332,8 +332,8 @@ keep track of data from different sites!
 
 1. Import the DSM and DTM from the SJER directory (if not aready imported
 in the 
-[Plot Raster Data in R]({{ site.baseurl }}/dc-plot-raster-data-r) 
-tutorial.) Don't forget to examine the data for `CRS`, bad values, etc. 
+<a href="/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>.) 
+Don't forget to examine the data for `CRS`, bad values, etc. 
 2. Create a `CHM` from the two raster layers and check to make sure the data
 are what you expect. 
 3. Plot the `CHM` from SJER. 

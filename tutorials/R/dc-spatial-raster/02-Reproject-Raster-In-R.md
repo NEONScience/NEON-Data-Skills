@@ -64,7 +64,8 @@ Read more about the `raster` package in R.</a>
 
 ## Raster Projection in R
 
-In the [Plot Raster Data in R]({{ site.baseurl }}/dc-plot-raster-data-r) 
+In the 
+<a href="/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>, 
 tutorial, we learned how to layer a raster file on top of a hillshade for a nice
 looking basemap. In this tutorial, all of our data were in the same CRS. What 
 happens when things don't line up?
@@ -274,8 +275,8 @@ Reproject the data as necessary to make things line up!
 
 <div id="ds-challenge" markdown="1">
 If you completed the San Joaquin plotting challenge in the
-[Plot Raster Data in R]({{ site.baseurl }}/R/Plot-Rasters-In-R#challenge-create-dtm--dsm-for-sjer) 
-tutorial, how does the map you just created compare to that map? 
+<a href="/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>,
+ how does the map you just created compare to that map? 
 </div>
 
 

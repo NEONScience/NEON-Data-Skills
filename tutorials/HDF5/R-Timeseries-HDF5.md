@@ -19,7 +19,7 @@ In this tutorial, we'll work with
 <a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements"> 
 temperature data collected using sensors on a flux tower</a> 
 by 
-<a href="{{ site.baseurl }}" target="_blank">the National 
+<a href="/" target="_blank">the National 
 Ecological Observatory Network (NEON) </a>. 
 Here the data are provided in HDF5 format to allow for the exploration of this 
 format. More information about NEON temperature data can be found on the 
@@ -82,7 +82,7 @@ To access HDF5 files in R, we'll use `rhdf5` which is part of the
 R packages.
 
 It might also be useful to install 
-[HDFView](http://www.hdfgroup.org/products/java/hdfview/) 
+<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">HDFView</a> 
 which will allow you to explore the contents of an HDF5 file visually using a 
 graphic interface. 
 
@@ -110,7 +110,7 @@ The HDF5 format is a self-contained directory structure. In HDF5 files though
 Each element in an hdf5 file can have metadata attached to it making HDF5 files 
 "self-describing".
 
-[Read more about HDF5 here.]({{ site.baseurl }}/about-hdf5/)
+<a href="/about-hdf5" target="_blank">Read more about HDF5 in this Data Skills tutorial. </a>
 
 ## Explore the HDF5 File Structure
 
@@ -331,7 +331,7 @@ can use the `attributes` function to set the time zone.
 
 Now the temperature peaks occur mid-afternoon when we'd expect them. 
 
-[More on customizing plots here.](http://www.statmethods.net/advgraphs/ggplot2.html)
+<a href="http://www.statmethods.net/advgraphs/ggplot2.html" target="_blank"> More on customizing plots here</a>.
 
 ### Extracting metadata
 

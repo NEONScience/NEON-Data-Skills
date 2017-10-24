@@ -20,14 +20,14 @@ urlTitle: about-hdf5
 
 ## Learning Objectives
 After completing this tutorial, you will be able to:
-<ol>
-<li>Understand what the Hierarchical Data Format (HDF5) is.</li>
-<li>Understand the key benefits of the HDF5 format, particularly related to big data. </li>
+
+* Understand what the Hierarchical Data Format (HDF5) is.</li>
+* Understand the key benefits of the HDF5 format, particularly related to big data. </li>
 <li>Understand both the types of data that can be stored in HDF5 and how it can be stored / structured.</li>
 </ol>
 
-<h3>What You'll Need</h3>
-<p>Internet access and a working thinking cap.</p>
+## What You'll Need
+Internet access and a working thinking cap.
 
 </div>
 
@@ -42,13 +42,14 @@ also allows for embedding of metadata making it *self-describing*.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** HDF5 is one hierarchical data format, 
 that builds upon both HDF4 and NetCDF (two other hierarchical data formats). 
-<a href="http://www.hdfgroup.org/why_hdf/" target="_blank"> Read  more about HDF5 here.</a>
+<a href="https://www.hdfgroup.org" target="_blank"> Read more about HDF5 here.</a>
 </div>
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/whyHDF5.jpg"><img src="{{ site.baseurl }}/images/whyHDF5.jpg"></a>
-    <figcaption>Why Use HDF5. Image Source: http://www.hdfgroup.org/why_hdf/</figcaption>
+    <a href="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"><img src="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"></a>
+    <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a>
+</figcaption>
 </figure>
 
 ## Hierarchical Structure - A file directory within a file
@@ -57,7 +58,7 @@ The HDF5 format can  be thought of as a file system contained and described
 within one single file. Think about the files and folders stored on your computer. 
 You might have a data directory with some temperature data for multiple field 
 sites. These temperature data are collected every minute and summarized on an 
-hourly, daily and weekly basis. Within **ONE** HDF5 file, you can store a similar 
+hourly, daily and weekly basis. Within **one** HDF5 file, you can store a similar 
 set of data organized in the same way that you might organize files and folders 
 on your computer. However in a HDF5 file, what we call "directories" or "
 folders" on our computers, are called `groups` and what we call files on our 

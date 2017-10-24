@@ -169,7 +169,7 @@ with each individual vector object.
 
  <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** The 
- [Shapefile Metadata & Attributes in R]({{site.baseurl}}dc-shapefile-attributes-r) 
+ <a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a>
 tutorial provides more information on both metadata and attributes
 and using attributes to subset and plot data. 
 </div>

@@ -63,9 +63,9 @@ related metrics to support modeling and further analysis.
 
 ## Get Started 
 In this tutorial, we will work with the same set of rasters used in the
-[Raster Time Series Data in R ]({{ site.baseurl }}/dc-multiband-rasters-r) 
+<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 and
-[Plot Raster Time Series Data in R Using RasterVis and Levelplot ]({{ site.baseurl }}/dc-raster-rastervis-levelplot-r)
+<a href="/dc-raster-rastervis-levelplot-r" target="_blank"> *Plot Raster Time Series Data in R Using RasterVis and Levelplot*</a> 
 tutorials. To begin, we will create a raster stack (also created in the previous
 tutorials so you may be able to skip this first step!). 
 
@@ -229,7 +229,7 @@ Storing this data as a date object is better - for plotting, data subsetting and
 working with our data. Let's convert.
 
 For more information on date-time classes, see the NEON Data Skills tutorial 
-[Convert Date & Time Data from Character Class to Date-Time Class (POSIX) in R]({{ site.baseurl }}/dc-convert-date-time-POSIX-r).  
+<a href="/dc-convert-date-time-POSIX-r" target="_blank"> *Convert Date & Time Data from Character Class to Date-Time Class (POSIX) in R*</a>.
 
 To convert a Julian Day number to a date class, we need to set the **origin**
 of the day which "counting" Julian Days began. Our data are from 2011, and we 
@@ -298,7 +298,7 @@ plot our data.
 We will use the `ggplot()` function within the `ggplot2` package for this plot. 
 If you are unfamiliar with `ggplot()` or would like to learn more about plotting
 in `ggplot()` see the tutorial on
-[Plotting Time Series with ggplot in R]({{ site.baseurl }}/dc-time-series-plot-ggplot-r).
+<a href="/dc-time-series-plot-ggplot-r" target="_blank">Plotting Time Series with ggplot in R</a>.
 
 
     # plot NDVI

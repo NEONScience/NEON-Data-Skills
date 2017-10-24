@@ -91,11 +91,11 @@ combinations. Check it out:
 
 ## Create a Raster Stack in R
 
-In the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> previous activity </a>, 
+In the <a href="/hsi-hdf5-r" target="_blank"> previous activity </a>, 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity. 
+<a href="{/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -181,7 +181,7 @@ We'll begin by grabbing these key attributes from the H5 file.
 
 Next, we'll write a function that will perform the processing that we did step by 
 step in the 
-<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity</a>. 
+<a href="/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity</a>. 
 This will allow us to process multiple bands in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and
@@ -399,8 +399,6 @@ combinations are below:
 * SWIR, NIR, Red Band: rgb (152,90,58)
 * False Color: rgb (363,246,55)
 
-More on Band Combinations: 
-[http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations](http://gdsc.nlr.nl/gdsc/en/information/earth_observation/band_combinations)
 
 </div>
 
