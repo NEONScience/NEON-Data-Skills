@@ -199,6 +199,8 @@ Do the following to figure out what it's doing.
 3. Type `g` into the console and take note of the result.
 4. Type `help(norm)` to understand what norm does. 
 
+And the output: 
+
 ```{r test}
 # 1
 paste(g, "precip", sep="/")
