@@ -74,7 +74,7 @@ We will need the `lubridate` and the `dplyr` packages to complete this tutorial.
 
 We will also use the 15-minute average atmospheric data subsetted to 2009-2011 
 for the NEON Harvard Forest Field Site. This subset was created in the
-[Subsetting Time Series Data tutorial]({{ site.baseurl }}/dc-subset-data-no-data-values-r "2009-2011 HarMet Data Subset"). 
+<a href="/dc-subset-data-no-data-values-r" target="_blank">*Subsetting Time Series Data* tutorial</a>.
 
 If this object isn't already created, please load the `.csv` version: 
 `NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv`. Be

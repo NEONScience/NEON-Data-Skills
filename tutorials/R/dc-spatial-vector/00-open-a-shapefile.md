@@ -361,8 +361,9 @@ CHM, please add:
 Be sure to give your plot a meaningful title. 
 
 For assistance consider using the 
-[Shapefile Metadata & Attributes in R]({{site.baseurl}}dc-shapefile-attributes-r),
-the [Plot Raster Data in R]({{site.baseurl}}/dc-plot-raster-data-r )
+<a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
+and
+the <a href="/dc-plot-raster-data-r" target="_blank" >*Plot Raster Data in R*</a>
 tutorials. 
 </div>
 

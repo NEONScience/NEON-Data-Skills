@@ -78,8 +78,6 @@ and a raster file, that we will introduce this tutorial:
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/05-vector-raster-integration-advanced/view-extents-1.png)
 
-
-
 Frequent use cases of cropping a raster file include reducing file size and
 creating maps.
 
@@ -97,7 +95,7 @@ GeoTIFF file, a Canopy Height Model for the Harvard Forest, Massachusetts.
 These data can be used to create maps that characterize our study location.
 
 If you have completed the Vector 00-04 tutorials in this 
-[Introduction to Working with Vector Data in R]({{site.baseurl}}/tutorial-series/vector-data-series/)
+<a href="/vector-data-series" target="_blank"> *Introduction to Working with Vector Data in R* </a>
 series, you can skip this code as you have already created these object.)
 
 
@@ -196,8 +194,8 @@ vegetation plot locations with the Canopy Height Model information.
 1. Crop the Canopy Height Model to the extent of the study plot locations. 
 2. Plot the vegetation plot location points on top of the Canopy Height Model. 
 
-If you completed
-[.csv to Shapefile in R]({{site.baseurl}}/dc-csv-to-shapefile-r)
+If you completed the
+<a href="/dc-csv-to-shapefile-r" target="_blank">*.csv to Shapefile in R* tutorial</a>
 you have these plot locations as the spatial R spatial object
 `plot.locationsSp_HARV`. Otherwise, import the locations from the
 `\HARV\PlotLocations_HARV.shp` shapefile in the downloaded data. 

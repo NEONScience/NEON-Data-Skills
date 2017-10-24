@@ -62,12 +62,12 @@ raster and vector files.
 
 We will import three shapefiles. The first is our `AOI` or area of
 interest boundary polygon that we worked with in 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r). 
+<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 The second is a shapefile containing the location of roads and trails within the
 field site. The third is a file containing the Fisher tower location.
 
 If you completed the
-[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r) 
+<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 tutorial, you can skip this code.
 
 
@@ -111,7 +111,7 @@ tutorial, you can skip this code.
 
 ## Query Shapefile Metadata 
 Remember, as covered in 
-[Open and Plot Shapefiles in R]({{site.baseurl}}/dc-open-shapefiles-r),
+<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 we can view metadata associated with an R object using:
 
 * `class()` - Describes the type of vector data stored in the object.

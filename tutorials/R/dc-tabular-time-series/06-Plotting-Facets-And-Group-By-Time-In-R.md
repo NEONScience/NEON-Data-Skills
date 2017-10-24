@@ -55,9 +55,8 @@ This tutorial uses both `dplyr` and `ggplot2`. We recommend the following
 tutorials before working through this one, if you are new to either of the 
 above R packages.
 
-* [Subset & Manipulate Time Series Data with dplyr tutorial ]({{ site.baseurl }}/dc-time-series-subset-dplyr-r "Learn dplyr") 
-
-* [Plotting Time Series with ggplot in R tutorial]({{ site.baseurl }}/dc-time-series-plot-ggplot-r "Learn ggplot")  
+* <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+* <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 
 ***
 </div>
@@ -131,7 +130,8 @@ plots that are grouped by a particular category or time period. To create a
 plot for each year, we will first need a **year** column in our data to use as a
 subset factor. We created a year column using the `year` function in the 
 `lubridate` package in the 
-[Subset and Manipulate Time Series Data with dplyr Tutorial ]({{ site.baseurl }}/R/time-series-subset-dplyr).
+<a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+
 
 
     # add year column to daily values
@@ -190,7 +190,7 @@ Julian or year days rather than date. We have Julian days stored in our
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
-[Convert to Julian Day tutorial ]({{ site.baseurl }}/julian-day-conversion-r). 
+<a href="}/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
 </div>
 
 
