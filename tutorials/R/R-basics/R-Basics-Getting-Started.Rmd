@@ -777,5 +777,3 @@ add the two numbers, 1 and 2 together. However, you can expand the capability of
 R by installing packages that contain suites of functions and compiled code that 
 you can also use in your code.  
 
-Go to the next tutorial
-[*Packages in R*]({{ site.baseurl }}/packages-in-r "Packages in R").

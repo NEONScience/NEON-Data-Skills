@@ -246,9 +246,9 @@ within the `terrain.colors` color ramp. There are other palettes that you can
 use as well include `rainbow` and `heat.colors`. 
 
 
-* [More on color palettes in R here](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html "More on color palettes.")
-* [Another good post on colors.](http://www.r-bloggers.com/color-palettes-in-r/)
-* [RColorBrewer is another powerful tool to create sets of colors.](http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
+* <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">More on color palettes in R here.</a>
+* <a href="http://www.r-bloggers.com/color-palettes-in-r/" target="_blank">Another good post on colors.</a>
+* <a href="http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf" target="_blank">RColorBrewer is another powerful tool to create sets of colors.</a>
 
 
  <div id="ds-challenge" markdown="1">
@@ -445,4 +445,6 @@ plot(DSM2, col=col, breaks=brk, main="Digital Surface Model, SJER (ft)")
 
 
 ## Image (RGB) Data in R
-[Go to our tutorial *Image Raster Data in R - An Intro* to learn more about working with image formatted rasters in R.]({{ site.baseurl }}/R/Image-Raster-Data-In-R/) 
+Go to our tutorial 
+<a href="image-raster-data-r" target="_blank">*Image Raster Data in R - An Intro* </a>
+to learn more about working with image formatted rasters in R.

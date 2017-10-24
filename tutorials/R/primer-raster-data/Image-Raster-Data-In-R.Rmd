@@ -81,9 +81,9 @@ color image.
 
 ## Work with Multiple Rasters
 
-In [a previous tutorial]({{ site.baseurl }}/raster-data-r
-), we loaded a 
-single raster into R. We made sure we knew the `CRS` 
+In 
+<a href="/raster-data-r" target="_blank">a previous tutorial</a>, 
+we loaded a single raster into R. We made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
 attributes. This raster was a Digital Elevation Model so there was only a single
 raster that represented the ground elevation in each pixel. When we work with 
