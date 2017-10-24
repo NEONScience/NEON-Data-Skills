@@ -18,7 +18,7 @@ urlTitle: chm-dsm-dtm-gridded-lidar-data
 
 ## Common LiDAR Data Products
 
-* <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html target="_blank">Digital Terrain Model</a> - This 
+* <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This 
 product represents the elevation of the ground.
 * <a href="{{ site.baseurl }}/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This 
 represents the elevation of the tallest surfaces at that point. Imagine draping 
