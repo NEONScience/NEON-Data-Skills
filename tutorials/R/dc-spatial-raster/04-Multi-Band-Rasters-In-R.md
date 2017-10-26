@@ -141,9 +141,9 @@ packages.
 
 In this tutorial, the multi-band data that we are working with is imagery
 collected using the 
-<a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
+<a href="/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
 high resolution camera over the 
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>. 
+<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. 
 Each RGB image is a 3-band raster. The same steps would apply to 
 working with a multi-spectral image with 4 or more bands - like Landsat imagery.
 
@@ -474,8 +474,6 @@ In most cases, we can work with a `RasterBrick` in the same way we might work
 with a `RasterStack`. However a `RasterBrick` is often more efficient and faster
 to process - which is important when working with larger files.
 
-* <a href="http://www.inside-r.org/packages/cran/raster/docs/brick" target="_blank">
-More on Raster Bricks</a>
 
 We can turn a `RasterStack` into a `RasterBrick` in R by using
 `brick(StackName)`. Let's use the `object.size()` function to compare `stack` 

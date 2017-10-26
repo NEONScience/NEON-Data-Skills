@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 
 ## Download Data
@@ -124,9 +124,9 @@ The shapefiles that we will import are:
 * A polygon shapefile representing our field site boundary, 
 * A line shapefile representing roads, and 
 * A point shapefile representing the location of the Fisher   
-<a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">flux tower</a> 
+<a href="/data-collection/flux-tower-measurements" target="_blank">flux tower</a> 
 located at the
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank"> NEON Harvard Forest field site</a>.
+<a href="/field-sites/field-sites-map/HARV" target="_blank"> NEON Harvard Forest field site</a>.
 
 The first shapefile that we will open contains the boundary of our study area
 (or our Area Of Interest or AOI, hence the name `aoiBoundary`). To import 
@@ -375,5 +375,5 @@ tutorials.
 For more on parameter options in the base R `plot()` function, check out these
 resources:
 
-* <a href="http://www.statmethods.net/advgraphs/parameters.html" target="_blank">Parameter methods in R.</a>
+* <a href="http://www.statmethods.net/advgraphs/parameters.html" target="_blank">Parameter methods in R</a>
 * <a href="https://codeyarns.files.wordpress.com/2011/07/20110729-vim-named-colors.png?w=700" target="_blank">Color names in R</a>

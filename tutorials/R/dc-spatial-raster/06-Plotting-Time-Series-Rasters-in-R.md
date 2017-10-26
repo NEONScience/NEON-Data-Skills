@@ -58,7 +58,7 @@ In this tutorial, we are working with the same set of rasters used in the
 <a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 tutorial. These data are derived from the Landsat satellite and stored in 
 `GeoTIFF` format. Each raster covers the 
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest field site</a>.  
+<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>.  
 
 If you have not already created the RasterStack, originally created in 
 <a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>,

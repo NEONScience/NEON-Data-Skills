@@ -300,9 +300,8 @@ for each band.
 
 <a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">More about Lapply here</a>. 
 
-NOTE: We are using the 
-<a href="http://www.inside-r.org/packages/cran/raster/docs/stack" target="_blank"> raster stack </a> 
-object in R to store several rasters that are of the same CRS and extent.
+NOTE: We are using the `raster stack` object in R to store several rasters that 
+are of the same CRS and extent.
 
 Next, add the names of the bands to the raster so we can easily keep track of 
 the bands in the list.
@@ -357,8 +356,6 @@ We can play with the color ramps too if we want:
 
 
 The `plotRGB` function allows you to combine three bands to create an image. 
-<a href="http://www.inside-r.org/packages/cran/raster/docs/plotRGB" target="_blank">
-More on plotRGB here.</a>
 
 
     # create a 3 band RGB image

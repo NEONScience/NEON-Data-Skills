@@ -91,7 +91,7 @@ stored within a HDF5 file using R.
 ##  Read HDF5 data into R
 We will use the `raster` and `rhdf5` packages to read in the HDF5 file that 
 contains hyperspectral data for the 
-<a href="http://neonscience.org/science-design/field-sites/san-joaquin" target="_blank">NEON San Joaquin (SJER) field site</a>. 
+<a href="/field-sites/field-sites-map/SJER" target="_blank">NEON San Joaquin (SJER) field site</a>. 
 Let's start by calling the needed packages and reading in our NEON HDF5 file.  
 
 Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use: 
