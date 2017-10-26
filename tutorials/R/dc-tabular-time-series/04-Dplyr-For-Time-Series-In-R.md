@@ -384,8 +384,7 @@ The output shows we have 96 values for each day. Is that what we expect?
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
-data, we could use 
-<a href="http://www.inside-r.org/packages/cran/lubridate/docs/yday" target="_blank"> the `yday()` function from the `lubridate` package </a> 
+data, we could use the `yday()` function from the `lubridate` package 
 to create a new column containing Julian day values. 
 <a href=" {{ site.baseurl }}/julian-day-conversion-r" target="_blank"> More information in this NEON Data Skills tutorial on Julian date.</a> 
 </div>

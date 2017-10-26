@@ -24,9 +24,9 @@ The series of maps below focus on provisional data from early small mammal sampl
 and soils sampling at NEON field sites. 
 
 Learn more about NEON 
-<a href="http://neonscience.org/science-design/collection-methods/soil-sensors-measurements" target="_blank">soils</a> 
+<a href="/data-collection/soil-sensors-measurements" target="_blank">soils</a> 
 and 
-<a href="http://neonscience.org/science-design/collection-methods/terrestrial-organism-sampling" target="_blank">terrestrial sampling</a>.
+<a href="http://neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">terrestrial sampling</a>.
 
 The first map below was created using small mammal data downloded from the NEON data 
 portal. The last map represents soil N:P ratio derived using the NEON soil 

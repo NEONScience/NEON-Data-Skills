@@ -84,7 +84,9 @@ for that state.
     </figcaption>
 </figure>
 
-Check out this short video highlighting how map projections can make continents 
+Check out this short video from 
+<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank">Buzzfeed</a> 
+highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
@@ -148,7 +150,6 @@ from the Census website to support the learning goals of this tutorial.
 Note: the Z-dimension warning is normal. The `readOGR()` function doesn't import 
 z (vertical dimension or height) data by default. This is because not all
 shapefiles contain z dimension data. 
-<a href="http://www.inside-r.org/packages/cran/rgdal/docs/ogrInfo" target="_blank">More on readOGR</a>
 
 Next, let's plot the U.S. states data.
 
@@ -364,7 +365,7 @@ represented in meters.
 
 * <a href="http://proj.maptools.org/faq.html" target="_blank">More information on the proj4 format.</a>
 * <a href="http://spatialreference.org" target="_blank">A fairly comprehensive list of CRS by format.</a>
-* To view a list of datum conversion factors type: `projInfo(type = "datum")` 
+* To view a list of datum conversion factors, type `projInfo(type = "datum")` 
 into the R console. 
 
 ***

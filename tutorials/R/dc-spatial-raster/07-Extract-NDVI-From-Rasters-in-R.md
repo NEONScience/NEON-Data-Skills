@@ -281,7 +281,7 @@ error we then subtract 1 to get the correct day, January 05 2011.
 We often want to compare two different sites. The National Ecological
 Observatory Network (NEON) also has a field site in Southern California
 at the
-<a href="{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >San Joaquin Experimental Range (SJER) </a>.  
+<a href="/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range (SJER) </a>.  
 
 For this challenge, compare NDVI values for the NEON Harvard Forest and San
 Joaquin Experimental Range field sites. NDVI data for SJER are located in the

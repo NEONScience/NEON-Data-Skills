@@ -113,7 +113,7 @@ Notice that there is metadata associated with each group.
 
 Double click on the `OSBS` group located within the Domain_03 group. Notice in 
 the metadata window that `OSBS` contains data collected from the 
-<a href="http://neonscience.org/science-design/field-sites/ordway-swisher-biological-station" target="_blank">NEON Ordway-Swisher Biological Station field site</a>.
+<a href="/field-sites/field-sites-map/OSBS" target="_blank">NEON Ordway-Swisher Biological Station field site</a>.
 
 Within the `OSBS` group there are two more groups - Min_1 and Min_30. What data 
 are contained within these groups? 
@@ -128,7 +128,7 @@ mounted on the tower booms.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Note:** The data used in this activity were collected 
 by a temperature sensor mounted on a National Ecological Observatory Network (NEON) flux tower. 
-<a href="http://neonscience.org/science-design/collection-methods/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
+<a href="/data-collection/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
 </div>
 
 <figure>
@@ -162,7 +162,7 @@ explore this HDF5 dataset within the HDFViewer.
 </figure>
 
 Next, we will explore a hyperspectral dataset, collected by the 
-<a href="http://neonscience.org/science-design/collection-methods/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
+<a href="/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
 and saved in HDF5 format. Hyperspectral 
 data are naturally hierarchical, as each pixel in the dataset contains reflectance 
 values for hundreds of bands collected by the sensor. The NEON sensor 

@@ -350,12 +350,8 @@ Notice that our manual `new.extent` (in red) is smaller than the
 object.
  
 See the documentation for the `extent()` function for more ways
-to create an `extent` object. 
+to create an `extent` object: `??raster::extent`
 
-* `??raster::extent`
-* More on the 
-<a href="http://www.inside-r.org/packages/cran/raster/docs/extent" target="_blank">
-extent class in R</a>.
 
 ## Extract Raster Pixels Values Using Vector Polygons
 

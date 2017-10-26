@@ -55,7 +55,7 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 ## Data Related to Phenology
 In this tutorial, we will explore atmospheric data (including temperature,
 precipitation and other metrics) collected by sensors mounted on a 
-<a href="/science-design/collection-methods/flux-tower-measurements" target="_blank">
+<a href="/data-collection/flux-tower-measurements" target="_blank">
 flux tower</a> 
 at the NEON Harvard Forest field site. We are interested in exploring 
 changes in temperature, precipitation, PAR and day 

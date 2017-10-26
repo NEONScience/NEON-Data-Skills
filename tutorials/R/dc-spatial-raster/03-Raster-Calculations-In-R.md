@@ -319,10 +319,10 @@ Ecological Observatory Network's (NEON) standard `NoDataValue`.
 Data are often more interesting and powerful when we compare them across various 
 locations. Let's compare some data collected over Harvard Forest to data
 collected in Southern California. The 
-<a href="{{ site.baseurl }}/science-design/field-sites/san-joaquin-experimental-range" target="_blank" >NEON San Joaquin Experimental Range (SJER) field site </a> 
+<a href="/field-sites/field-sites-map/SJER" target="_blank" >NEON San Joaquin Experimental Range (SJER) field site </a> 
 located in Southern California has a very different ecosystem and climate than
 the
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank" >NEON Harvard Forest Field Site</a>
+<a href="/field-sites/field-sites-map/HARV" target="_blank" >NEON Harvard Forest Field Site</a>
 in Massachusetts.  
 
 Import the SJER DSM and DTM raster files and create a Canopy Height Model.

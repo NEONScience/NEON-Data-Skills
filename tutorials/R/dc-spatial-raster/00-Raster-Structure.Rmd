@@ -82,7 +82,7 @@ range of quantitative values. Some examples of continuous rasters include:
 3. Elevation values for a region. 
 
 A map of elevation for Harvard Forest derived from the 
-<a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank"> 
+<a href="/data-collection/airborne-remote-sensing" target="_blank"> 
 NEON AOP LiDAR sensor</a> 
 is below. Elevation is represented as continuous numeric variable in this map. 
 The legend shows the continuous range of values in the data from around 300 to 

@@ -19,12 +19,14 @@ Here we will provide an overview of the National Ecological Observatory
 Network (NEON). Please carefully read through these materials and links that
 discuss NEON’s mission and design. 
 
+<div id="ds-challenge" markdown="1">
 **Data Institute participants**: As you review this information, please
 consider the
-<a href="{{site.baseurl}}/di-rs-capstone" target="_blank">capstone project </a>
+<a href="/di-rs-capstone" target="_blank">capstone project </a>
 that you may want to work on at the Institute. At the end of week one, you will 
 document an initial research question or idea and associated data needed to 
 address that question, that you may want to explore while at the NEON Data Institute.
+</div>
 
 <div id="ds-objectives" markdown="1">
 ## Learning Objectives
@@ -47,15 +49,13 @@ NEON field site is located within an eco-climatic domain.
 Watch this 3:55 minute video explaining the NEON program.
 <iframe width="640" height="360" src="https://www.youtube.com/embed/38JQXPubMoA" frameborder="0" allowfullscreen></iframe>
 
-Please read the following page about NEON's mission:
+Please, read the following page about 
+<a href="/observatory/about" target="_blank"> NEON's mission</a>.
 
-* <a href="{{ site.baseurl }}/about" target="_blank">Read about NEON’s mission</a>
-{: .readme }
-
-<div id="ds-dataTip" markdown="1">
+<div id="ds-challenge" markdown="1">
 **Data Institute Participants -- Thought Questions:** How might/does the NEON project
 intersect with your current research or future career goals?
-{: .notice .thought }
+</div>
 
 ## NEON's Spatial Design
 
@@ -66,12 +66,12 @@ Watch this 4:22 minute video exploring the spatial design of NEON field sites.
 
 Please read the following page about NEON's Spatial Design:
 
-<a class="link--button link--arrow" href="{{ site.baseurl }}/updates-events/update/primer-neon-sampling-design" target="_blank">
+* <a href="/observatory/observatory-blog/primer-neon-sampling-design" target="_blank">
 Read this primer on NEON's Sampling Design</a>
 
-<a class="link--button link--arrow" href="{{ site.baseurl }}/science-design/spatiotemporal-design" target="_blank">
+* <a href="/field-sites/spatiotemporal-design" target="_blank">
 Read about the different types of field sites - core and relocatable</a>
-{: .readme }
+
 
 ### NEON Field Site Locations
 
@@ -80,7 +80,7 @@ Explore the NEON Field Site map taking note of the locations of
 1. Aquatic & terrestrial field sites.
 2. Core & relocatable field sites.
 
-<a class="link--button link--arrow" href="{{ site.baseurl }}/science-design/field-sites" target="_blank">
+<a class="link--button link--arrow" href="/field-sites/field-sites-map" target="_blank">
 Click here to view the NEON Field Site Map</a>
 
 Explore the NEON field site map. Do the following:
@@ -96,7 +96,7 @@ filter sites by name, site host, domain or state.
 **NOTE:** Because NEON is still in it's construction phase, not all field sites 
 have online documentation. We are working on this!
 
-<div id="ds-dataTip" markdown="1">
+<div id="ds-challenge" markdown="1">
 **Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that you may explore as your
 Capstone Project at the Institute OR about a current project that you are
@@ -114,7 +114,7 @@ interested in? What kind of data are available?
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** You can download
-<a href="{{ site.baseurl }}/science-design/field-sites/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
+<a href="/data/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
 </div>
 
 ## The Data that NEON Collects
@@ -124,17 +124,16 @@ Watch this 3:06 minute video exploring the data that NEON collects.
 <iframe width="640" height="360" src="https://www.youtube.com/embed/9IbbdQC1N3A" frameborder="0" allowfullscreen></iframe>
 
 Read the
-<a href="{{ site.baseurl }}/science-design/data-collection-methods" target="_blank"> Data Collection Methods </a>
+<a href="/data-collection" target="_blank"> Data Collection Methods </a>
 page to learn more about the different types of data that NEON collects and
 provides. Then, follow the links below to learn more about each collection method:
 
-* <a href="{{ site.baseurl }}/science-design/collection-methods/aquatic-observations" target="_blank">Aquatic Observation System (AOS) </a>
-* <a href="{{ site.baseurl }}/science-design/collection-methods/aquatic-sensor-measurements" target="_blank">Aquatic Instrument System (AIS) </a>
-* <a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank"> Terrestrial Instrument System  (TIS) -- Flux Tower </a>
-* <a href="{{ site.baseurl }}/science-design/collection-methods/soil-sensors-and-measurements" target="_blank"> Terrestrial Instrument System (TIS) -- Soil Sensors and Measurements </a>
-* <a href="{{ site.baseurl }}/science-design/collection-methods/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal System (TOS) </a>
-* <a href="{{ site.baseurl }}/science-design/collection-methods/airborne-remote-sensing" target="_blank"> Airborne Observation Platform (AOP) </a>
-{: .readme }
+* <a href="/data-collection/aquatic-observations" target="_blank">Aquatic Observation System (AOS) </a>
+* <a href="/data-collection/aquatic-sensor-measurements" target="_blank">Aquatic Instrument System (AIS) </a>
+* <a href="/data-collection/flux-tower-measurements" target="_blank"> Terrestrial Instrument System  (TIS) -- Flux Tower </a>
+* <a href="/data-collection/soil-sensors-measurements" target="_blank"> Terrestrial Instrument System (TIS) -- Soil Sensors and Measurements </a>
+* <a href="/data-collection/terrestrial-organismal-sampling" target="_blank"> Terrestrial Organismal System (TOS) </a>
+* <a href="/data-collection/airborne-remote-sensing" target="_blank"> Airborne Observation Platform (AOP) </a>
 
 ### Airborne Remote Sensing
 
@@ -145,11 +144,11 @@ Platform (AOP), if you didn't already on the AOP page.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are familiar with LiDAR and
-hyperspectral remote sensing data, checkout this
+hyperspectral remote sensing data, check out this
 <a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">more technical NEON AOP video</a>.
 </div>
 
-<div id="ds-dataTip" markdown="1">
+<div id="ds-challenge" markdown="1">
 **Data Institute Participant – Thought Questions:** 
 Consider either your current
 or future research or the question you’d like to address at the Institute.
@@ -168,32 +167,37 @@ NEON data portal.
 
 **Read the following pages to learn more:**
 
-* <a  href="{{ site.baseurl }}/science-design/data-processing" target="_blank">
+* <a  href="/data/data-processing" target="_blank">
 Read more about NEON data processing.</a>
-* <a class="readme" href="{{ site.baseurl }}/science-design/data-processing/product-documentation" target="_blank">
+* <a  href="/science-design/data-processing/product-documentation" target="_blank">
 Read more about NEON methods documentation.</a>
-* <a class="readme" href="http://data.neonscience.org/home" target="_blank">
+* <a href="http://data.neonscience.org/home" target="_blank">
 Visit the NEON Data Portal - data.neonscience.org </a>
-* <a class="readme" href="http://data.neonscience.org/data-product-catalog" target="_blank">
+* <a href="http://data.neonscience.org/data-product-catalog" target="_blank">
 Check out the NEON Data Product Catalog to see what will be available.</a>
-{: .readme }
-
-
-### Data By Request & Through Other Online Portals
-Currently, not all NEON data are accessible through the NEON data portal:
-
-* <a href="{{ site.baseurl }}/data-resources/get-data/airborne-data" target="_blank"> NEON AOP data are available by request</a>.
-Data for some sites is now available for download.
 * <a href="http://www.ibol.org/dna-barcodes-for-neons-terrestrial-insects/" target="_blank"> NEON Terrestrial Insect DNA Barcoding Data</a>
 is available through the
 <a href="http://www.boldsystems.org/index.php/databases" target="_blank"> Barcode of Life Datasystem (BOLD) </a>.
 
+
+If you want to start your search with a specific data prodcuat then you might
+want to start your search in
+<a href="http://data.neonscience.org/data-product-catalog" target="_blank">the NEON Data Products Catalog.</a>
+Here you can find details about each data product including much of the metadata 
+& documentation for the data product. .  
+
+If you are instead primarily interested in data from a specific date range or 
+comparisons between sites, then starting with the 
+<a href="http://data.neonscience.org/view-data-availability" target="_blank">the NEON Data Availability Matrix</a> 
+may be the way to go. 
+
+
 ### Specimens & Samples
 An overview of how to get data, soil or species samples, and supporting
 documentation can always be found on the
-<a href="{{ site.baseurl }}/data-resources/get-data" target="_blank">Get Data page</a>.
+<a href="/data/neon-data-portal" target="_blank"> Data page</a>.
 
-<div id="ds-dataTip" markdown="1">
+<div id="ds-challenge" markdown="1">
 **Data Institute Participant – Thought Questions:** 
 Use the Data Portal tools to investigate the data availability for the field
 sites you’ve already identified in the previous Thought Questions. If your
@@ -207,19 +211,13 @@ desirable one that does have data available.
 * Where is the metadata to support this data?  
 </div>
 
-## What Data Are Available Now?
 
-Because NEON is still in construction, NEON data are not currently available for
-every field site.
-
-<a class="link--button link--arrow" href="http://data.neonscience.org/data-product-catalog" target="_blank">
-Check out the NEON Data Products Catalog.</a>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
-<a href="{{ site.baseurl }}/assignable-assets" target="_blank">Assignable Assets programs </a>.
+<a href="/opportunities/assignable-assets" target="_blank">Assignable Assets programs </a>.
 </div>
 
 
