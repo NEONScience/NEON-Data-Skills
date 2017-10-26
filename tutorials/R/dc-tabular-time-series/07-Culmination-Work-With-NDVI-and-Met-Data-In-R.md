@@ -19,7 +19,7 @@ This tutorial is a culmination activity for the series on
 <a href="/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
 Other related series include:
 <a href="/spatial-data-management-series" target="_blank"> intro to spatio-temporal data and data management</a>,
-<a href="/spatial-raster-series" target="_blank"> working with raster time-series data in R</a>,
+<a href="/raster-data-series" target="_blank"> working with raster time-series data in R</a>,
 and
 <a href="/vector-data-series" target="_blank"> working with vector data in R </a>.
 
@@ -56,9 +56,9 @@ your computer to complete this tutorial.
 ****
 
 ### Recommended Tutorials
-This tutorial relies on participants' familiarity with both `dplyr` and 
-`ggplot2`. Prior to working through this culmination activity, we recommend the
-following tutorials, if you are new to either of the R packages.
+This tutorial uses both `dplyr` and `ggplot2`. If you are new to either of these 
+R packages, we recommend the following NEON Data Skills tutorials before 
+working through this one.
 
 * <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
 * <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
@@ -71,6 +71,10 @@ following tutorials, if you are new to either of the R packages.
 Normalized Difference Vegetation Index (NDVI) is an indicator of how green
 vegetation is.  
 
+Watch this two and a half minute video from 
+<a href="https://www.youtube.com/channel/UCiZVuWsVsEG1BhJW1_YwI0A" target="_blank"> Karen Joyce</a> 
+that explains what NDVI is and why it is used. 
+
 <iframe width="640" height="360" src="https://www.youtube.com/embed/rxOMhQwApMc" frameborder="0" allowfullscreen></iframe>
 
 NDVI is derived from remote sensing data based on a ratio the
@@ -79,7 +83,7 @@ vary from -1.0 to 1.0.
 
 The imagery data used to create this NDVI data were collected over the National
 Ecological Observatory Network's
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank" >Harvard Forest</a>
+<a href="/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
 field site. 
 
 The imagery was created by the U.S. Geological Survey (USGS) using a 

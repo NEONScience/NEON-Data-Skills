@@ -56,7 +56,7 @@ your computer to complete this tutorial.
 
 ## The Data Approach
 In the 
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>
+<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial </a>
 we imported a time series dataset in `.csv` format into R. We learned how to 
 quickly plot these data by converting the date column to an R `Date` class.
 In this tutorial we will explore how to work with a column that contains both a
@@ -106,7 +106,7 @@ of the `date-time` column?
 Our `datetime` column is stored as a `character` class. We need to convert it to 
 date-time class. What happens when we use the `as.Date` method that we learned
 about in the 
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>?
+<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*  tutorial</a>?
 
 
     # convert column to date class

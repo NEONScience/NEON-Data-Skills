@@ -39,7 +39,7 @@ your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -61,7 +61,7 @@ subset and export a portion of an R object as a new `.csv` file.
 In this tutorial, we will work with atmospheric data, containing air temperature, 
 precipitation, and photosynthetically active radiation (PAR) data  - metrics
 that are key drivers of phenology. Our study area is the 
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest Field Site.</a>
+<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest Field Site.</a>
 
 ## Import Timeseries Data 
 
@@ -153,10 +153,14 @@ write.csv(harMet15.09.11,
 <div id="ds-challenge" markdown="1">
 ## Challenge: Subset & Plot Data
 
-1. Create a plot of daily precipitation for the month of July 2010 in Harvard
+1. Create a plot of precipitation for the month of July 2010 in Harvard
 Forest.  Be sure to label x and y axes. Also be sure to give your plot a title. 
 
-2. Create a plot of dew point (`dewp`) for the year, 2011 at Harvard Forest.
+2. Create a plot of dew point (`dewp`) for the year 2011 at Harvard Forest.
+
+**Bonus challenge:** Complete this challenge using the available daily data 
+instead of the 15-minute data. What will need to change in your subsetting code?
+
 </div>
 
 ``` {r challenge-code-subsetting, include=TRUE, results="hide", echo=FALSE}
@@ -195,6 +199,17 @@ qplot (datetime, dewp,
        data= harMet15_2011,
        main= "Dew Point: 2011\nNEON Harvard Forest Field Site",
        xlab= "Date", ylab= "Dew Point (C)")
+
+# 3
+
+# If you use the daily date, you will have to change several items. 
+# 1. The data set used will have to be different
+# 2. When subsetting & plotting, you will use `date` not `datetime` as 
+# the variable of interest
+# 3. When subsetting you will use as.Date instead of as.POSIXct and not need to 
+# provide time or timezone information. 
+
+
 ```
 
 ## Managing Missing Data: NoData values

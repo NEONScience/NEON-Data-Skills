@@ -43,7 +43,7 @@ your computer to complete this tutorial.
 * **gridExtra:** `install.packages("gridExtra")`
 * **ggthemes:** `install.packages("ggthemes")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -58,12 +58,12 @@ your computer to complete this tutorial.
 
 * Winston Chang's
  <a href="http://www.cookbook-r.com/Graphs/index.html" target="_blank"> 
- _Cookbook for R_</a> site based on his *R Graphics Cookbook* text. 
+ *Cookbook for R*</a> site based on his *R Graphics Cookbook* text. 
 * The NEON Data Skills tutorial on 
- <a href="{{ site.baseurl }}/plotly-r/" target="_blank"> 
+ <a href="/plotly-r" target="_blank"> 
  Interactive Data Viz Using R, ggplot2 and Plot.ly</a>.
 * Data Carpentry's 
- <a href="http://www.datacarpentry.org/R-ecology/05-visualization-ggplot2" target="_blank"> Data Visualization with ggplot2 lesson</a>.
+ <a href="http://www.datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html" target="_blank"> Data Visualization with ggplot2 lesson</a>.
 * Hadley Wickham's 
  <a href="http://docs.ggplot2.org/" target="_blank"> documentation</a> 
 on the `ggplot2` package. 

@@ -55,12 +55,12 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 ## Data Related to Phenology
 In this tutorial, we will explore atmospheric data (including temperature,
 precipitation and other metrics) collected by sensors mounted on a 
-<a href="{{ site.baseurl }}/science-design/collection-methods/flux-tower-measurements" target="_blank">
+<a href="/science-design/collection-methods/flux-tower-measurements" target="_blank">
 flux tower</a> 
 at the NEON Harvard Forest field site. We are interested in exploring 
 changes in temperature, precipitation, PAR and day 
 length throughout the year -- metrics that impact changes in the timing of plant 
-<a href=" http://budburst.org/phenology_defined" target="_blank">phenophases (phenology)</a>. 
+<a href=" http://budburst.org/documents/871408/2090280/U1_WhatIsPhenology_Background_Final.pdf" target="_blank">phenophases (phenology)</a>. 
 
 
 ## About .csv Format
@@ -71,10 +71,12 @@ Plain text formats are ideal for working both across platforms (Mac, PC, LINUX,
 etc) and also can be read by many different tools. The plain text 
 format is also less likely to become obsolete over time.
 
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:**
 <a href="https://en.wikipedia.org/wiki/Comma-separated_values" target="_blank"> 
 For more on .csv format see this Wikipedia article.</a>
 </div>
+
 
 ## Import the Data 
 
@@ -361,6 +363,7 @@ We will use the `qplot()` (for *quick plot*) function in the `ggplot2` package.
 The syntax for `qplot()` requires the x- and y-axis variables and then the R
 object that the variables are stored in. 
 
+<div id="ds-dataTip" markdown="1"<
 <i class="fa fa-star"></i>**Data Tip:** Add a title to the plot using 
 `main="Title string"`.
 </div>
@@ -432,12 +435,13 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: Using ggplot2's qplot function 
+
 1. Create a quick plot of the precipitation. Use the full time frame of data available
 in the `harMet.daily` object. 
 2. Do precipitation and air temperature have similar annual patterns? 
 3. Create a quick plot examining the relationship between air temperature and precipitation. 
 
-Hint: you can modify the X and Y axis labels using `xlab="label text"` and 
+Hint: you can modify the x and y axis labels using `xlab="label text"` and 
 `ylab="label text"`.
 
 </div>

@@ -106,7 +106,7 @@ head(harMet_15Min$datetime)
 Our `datetime` column is stored as a `character` class. We need to convert it to 
 date-time class. What happens when we use the `as.Date` method that we learned
 about in the 
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>?
+<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*  tutorial</a>?
 
 ```{r as-date-only }
 

@@ -39,7 +39,7 @@ your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -61,7 +61,7 @@ subset and export a portion of an R object as a new `.csv` file.
 In this tutorial, we will work with atmospheric data, containing air temperature, 
 precipitation, and photosynthetically active radiation (PAR) data  - metrics
 that are key drivers of phenology. Our study area is the 
-<a href="{{ site.baseurl }}/science-design/field-sites/harvard-forest" target="_blank">NEON Harvard Forest Field Site.</a>
+<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest Field Site.</a>
 
 ## Import Timeseries Data 
 
@@ -164,10 +164,14 @@ future. By default, the `.csv` file will be written to your working directory.
 <div id="ds-challenge" markdown="1">
 ## Challenge: Subset & Plot Data
 
-1. Create a plot of daily precipitation for the month of July 2010 in Harvard
+1. Create a plot of precipitation for the month of July 2010 in Harvard
 Forest.  Be sure to label x and y axes. Also be sure to give your plot a title. 
 
-2. Create a plot of dew point (`dewp`) for the year, 2011 at Harvard Forest.
+2. Create a plot of dew point (`dewp`) for the year 2011 at Harvard Forest.
+
+**Bonus challenge:** Complete these challenges using the available daily data 
+instead of the 15-minute data. What will need to change in your subsetting code?
+
 </div>
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-2.png)
