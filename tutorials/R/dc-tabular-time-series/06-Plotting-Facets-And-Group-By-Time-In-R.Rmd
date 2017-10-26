@@ -51,14 +51,14 @@ your computer to complete this tutorial.
 ****
 
 ### Recommended Tutorials
-This tutorial uses both `dplyr` and `ggplot2`. We recommend the following
-tutorials before working through this one, if you are new to either of the 
-above R packages.
+This tutorial uses both `dplyr` and `ggplot2`. If you are new to either of these 
+R packages, we recommend the following NEON Data Skills tutorials before 
+working through this one.
 
 * <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
 * <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>. 
 
-***
+
 </div>
 
 ## Plot Data Subsets Using Facets
@@ -187,7 +187,7 @@ Julian or year days rather than date. We have Julian days stored in our
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
-<a href="}/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
+<a href="/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
 </div>
 
 ```{r plot-precip-jd }
