@@ -32,14 +32,17 @@ After completing this tutorial, you will be able to:
 You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+***
+
 ## Additional Resourcs
 
 * More on packages from <a href="http://www.statmethods.net/interface/packages.html" target="_blank">Quick-R</a>.
 * <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Article on R-bloggers about installing packages in R</a>. 
 
-****
-
-{% include/_greyBox-wd-rscript.html %}
 
 </div>
 
