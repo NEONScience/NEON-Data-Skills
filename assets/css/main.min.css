@@ -4502,12 +4502,12 @@ img.load {
 /* ############## NEON Styles ########### */
 
 .navigation-wrapper {
-	border-top:5px solid #1ea0c1
+	border-top:5px solid #0072CE
 }
 
 /* make top bar link teal */
 .site-name > a {
-    color: #1ea0c1;
+    color: #0072CE;
 }
 	
 .NEON-header {
@@ -4548,7 +4548,7 @@ div#challenge h2 {
 /* Workshop Sidebar Styles*/
 
 .post-link > div {
-    border-top: 1px solid #00a5cc;
+    border-top: 1px solid #0072CE;
     border-left: 1px solid #ccc;
     margin: 0em;
     padding: 0.5em;
@@ -4565,7 +4565,7 @@ a:hover.post-link > div {
 }
 
 #index > h1 {
-    color: #1ea0c1;
+    color: #0072CE;
 }
 
 .workshop div#objectives, .tutorialSeries  div#objectives {
