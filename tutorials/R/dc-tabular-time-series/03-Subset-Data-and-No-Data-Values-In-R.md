@@ -164,10 +164,14 @@ future. By default, the `.csv` file will be written to your working directory.
 <div id="ds-challenge" markdown="1">
 ## Challenge: Subset & Plot Data
 
-1. Create a plot of daily precipitation for the month of July 2010 in Harvard
+1. Create a plot of precipitation for the month of July 2010 in Harvard
 Forest.  Be sure to label x and y axes. Also be sure to give your plot a title. 
 
-2. Create a plot of dew point (`dewp`) for the year, 2011 at Harvard Forest.
+2. Create a plot of dew point (`dewp`) for the year 2011 at Harvard Forest.
+
+**Bonus challenge:** Complete these challenges using the available daily data 
+instead of the 15-minute data. What will need to change in your subsetting code?
+
 </div>
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R/challenge-code-subsetting-2.png)

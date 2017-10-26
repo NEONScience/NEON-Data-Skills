@@ -76,6 +76,15 @@ qplot (datetime, dewp,
        main= "Dew Point: 2011\nNEON Harvard Forest Field Site",
        xlab= "Date", ylab= "Dew Point (C)")
 
+# 3
+
+# If you use the daily date, you will have to change several items. 
+# 1. The data set used will have to be different
+# 2. When subsetting & plotting, you will use `date` not `datetime` as 
+# the variable of interest
+# 3. When subsetting you will use as.Date instead of as.POSIXct and not need to 
+# provide time or timezone information. 
+
 ## ----missing values------------------------------------------------------
 
 # Check for NA values
