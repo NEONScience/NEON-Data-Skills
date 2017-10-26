@@ -414,7 +414,3 @@ assuming that the working directory is set to `/Users/neon/Documents/data/`.
 
 Bonus: Write the paths as for one of the other operating systems. 
 </div>
-
-Return to the next section in the tutorial: 
-<a href="{{ site.baseurl }}/set-working-directory-r#find-a-full-path-to-a-file-in-unknown-location"> Find a Full Path to a File in Unknown Location</a>
-
