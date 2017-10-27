@@ -298,7 +298,7 @@ plot our data.
 We will use the `ggplot()` function within the `ggplot2` package for this plot. 
 If you are unfamiliar with `ggplot()` or would like to learn more about plotting
 in `ggplot()` see the tutorial on
-<a href="/dc-time-series-plot-ggplot-r" target="_blank">Plotting Time Series with ggplot in R</a>.
+<a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R*</a>.
 
 
     # plot NDVI
@@ -311,9 +311,7 @@ in `ggplot()` see the tutorial on
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R/ggplot-data-1.png)
 
 <div id="ds-challenge" markdown="1">
-
 ## Challenge: Plot San Joaquin Experimental Range Data
-
 Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>

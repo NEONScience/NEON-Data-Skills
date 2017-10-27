@@ -221,7 +221,9 @@ Read More:
 * <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf" target="_blank"> NCEAS Overview of CRS in R.</a>
 
 ### How Map Projections Can Fool the Eye
-Check out this short video highlighting how map projections can make continents 
+Check out this short video, from 
+<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> Buzzfeed</a>, 
+highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
@@ -279,8 +281,8 @@ are meters.
 The spatial extent is the geographic area that the raster data covers. 
 
 <figure>
-    <a href="{{ site.baseurl}}/images/dc-spatial-raster/spatial_extent.png">
-    <img src="{{ site.baseurl}}/images/dc-spatial-raster/spatial_extent.png">
+    <a href="{{ site.baseurl }}/images/dc-spatial-raster/spatial_extent.png">
+    <img src="{{ site.baseurl }}/images/dc-spatial-raster/spatial_extent.png">
     </a>
     <figcaption> Image Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -297,8 +299,8 @@ Given our data resolution is 1 x 1, this means that each pixel represents a
 1 x 1 meter area on the ground.
 
 <figure>
-    <a href="{{ site.baseurl}}/images/dc-spatial-raster/raster_resolution.png">
-    <img src="{{ site.baseurl}}/images/dc-spatial-raster/raster_resolution.png">
+    <a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_resolution.png">
+    <img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_resolution.png">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -482,7 +484,7 @@ default the `raster()` function only imports the first band in a raster
 regardless of whether it has one or more bands. Jump to the fourth tutorial in 
 this series for a tutorial on multi-band rasters: 
 <a href="{{ site.baseurl }}/dc-multiband-rasters-r" target="_blank">
-Work with Multi-band Rasters: Images in R</a>.
+*Work with Multi-band Rasters: Images in R*</a>.
 
 ## View Raster File Attributes
 

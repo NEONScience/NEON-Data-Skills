@@ -85,7 +85,7 @@ buildings, etc. with the influence of ground elevation removed.
 
 * Check out more on LiDAR CHM, DTM and DSM in this NEON Data Skills overview tutorial: 
 <a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank"> 
-What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>. 
+*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>. 
 
 ### Load the Data 
 We will need the `raster` package to import and perform raster calculations. We
@@ -283,7 +283,8 @@ function compare?
 set of commands performed on a input object. Custom functions are particularly 
 useful for tasks that need to be repeated over and over in the code. A
 simplified syntax for writing a custom function in R is:
-`functionName <- function(variable1, variable2){WhatYouWantDone, WhatToReturn}`
+`functionName <- function(variable1, variable2){WhatYouWantDone, WhatToReturn}`.
+
 </div>
 
 ## Export a GeoTIFF
