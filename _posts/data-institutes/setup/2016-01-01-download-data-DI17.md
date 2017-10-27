@@ -56,6 +56,9 @@ make sure to correct for the change in file path when working through the script
  <a href="https://neondata.sharefile.com/d-sf1eb1e9c5174760a" class="btn btn-success">
 Download NEON Teaching Data Subset: Data Institute 2017</a>
 
+ <a href="https://ndownloader.figshare.com/files/8730436" class="btn btn-success">
+Download NEON Teaching Data Subset: Data Institute 2017 - Spectral Classification</a>
+
 </div>
 
 After clicking on the **Download Data** button, the data will automatically 
