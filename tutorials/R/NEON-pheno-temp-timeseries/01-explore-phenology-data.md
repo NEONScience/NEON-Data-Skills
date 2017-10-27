@@ -43,7 +43,7 @@ on your computer to complete this tutorial.
 * **ggplot2:** `install.packages("ggplot2")`
 
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
@@ -60,7 +60,7 @@ on your computer to complete this tutorial.
 * NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>
 * RStudio's <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
 * <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
-* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo R package that is an API wrapper on CRAN </a>
+* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo R package -- an API wrapper -- on CRAN </a>
 
 </div>
 
@@ -155,7 +155,7 @@ the data product and the download; a **variables** file that defines the
 term descriptions, data types, and units; a **validation** file with ata entry validation and 
 parsing rules; and an **XML** with machine readable metadata. 
 
-### Stack NEON Data
+## Stack NEON Data
 
 NEON data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
@@ -715,9 +715,11 @@ plotted:
 
 `ggplot(inStat_T, aes(date, n))`
 
+<div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** For a more detailed introduction to 
-using `ggplot()`, visit <a href="{{ site.baseurl }}/R/time-series-plot-ggplot/" target="_blank"> Time Series 05: Plot Time Series with ggplot2 in R</a>. 
-{: .notice }
+using `ggplot()`, visit 
+<a href="/dc-time-series-plot-ggplot-r" target="_blank"> *Time Series 05: Plot Time Series with ggplot2 in R* tutorial</a>. 
+</div>
 
 ### Bar Plots with ggplot
 To successfully plot, the last piece that is needed is the `geom`etry type. 

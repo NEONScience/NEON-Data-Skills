@@ -71,7 +71,7 @@ on your computer to complete this tutorial.
  on the `ggplot2` package. 
 * Winston Chang's
  <a href="http://www.cookbook-r.com/Graphs/index.html" target="_blank"> 
- _Cookbook for R_</a> site based on his *R Graphics Cookbook* text. 
+ *Cookbook for R*</a> site based on his *R Graphics Cookbook* text. 
 
 </div>
 
@@ -150,7 +150,7 @@ interval is 30-minute averaged data (030; the other option in our data is 1 minu
 averaging. Finally there is the abbreviated description that is more human readable
 and tells us again that it is single-aspirated air temperature at 30 minute averages.  
 
-### Stack NEON Data
+## Stack NEON Data
 
 All the above data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
@@ -544,7 +544,7 @@ object.
 
 *For a discussion of date formats is including Date, POSIXct, & POSIXlt see the
 NEON Data Skills tutorial
-<a href="{{ site.baseurl }}/R/time-series-convert-date-time-class-POSIX/" target="_blank"> Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt </a>.*
+<a href="/dc-convert-date-time-POSIX-r" target="_blank"> *Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt* </a>.*
 
 
 ## Scatterplots with ggplot

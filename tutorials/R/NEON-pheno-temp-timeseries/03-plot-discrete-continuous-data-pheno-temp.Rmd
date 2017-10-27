@@ -78,7 +78,7 @@ phe_1sp_2016$date <- as.Date(phe_1sp_2016$date)
 
 ```
 
-## Plot together
+## Aligned Plots
 
 We've previously looked at the plots apart, but let's plot them in the same 
 pane. 
@@ -179,7 +179,7 @@ grid.arrange(phenoPlot, tempPlot_dayMax_corr)
 
 ```
 
-## Same plot with two Y-axes?
+## Same plot with two Y-axes
 
 What about layering these plots and having two y-axes (right and left) that have
 the different scale bars. This might look cool. 

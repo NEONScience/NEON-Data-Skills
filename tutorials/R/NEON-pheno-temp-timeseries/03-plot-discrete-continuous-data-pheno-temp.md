@@ -75,7 +75,7 @@ object.
     temp_day$sDate <- as.Date(temp_day$sDate)
     phe_1sp_2016$date <- as.Date(phe_1sp_2016$date)
 
-## Plot together
+## Aligned Plots
 
 We've previously looked at the plots apart, but let's plot them in the same 
 pane. 
@@ -187,7 +187,7 @@ Let's align the datasets and replot
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/align-datasets-replot-1.png)
 
-## Same plot with two Y-axes?
+## Same plot with two Y-axes
 
 What about layering these plots and having two y-axes (right and left) that have
 the different scale bars. This might look cool. 
