@@ -22,7 +22,7 @@ urlTitle: plotly-r
 bills itself as "a collaborative platform for modern data science". You can use
 it to build  interactive plots that can easily be shared with others (like
 the
-<a href="{{ site.baseurl }}/teaching-modules/disturb-events-co13/detailed-lesson#drought" target="_blank"> Disturbance Events lessons</a>). 
+<a href="/overview-disturbance-events-co13flood" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods* lessons</a>). 
 
 You will need an free online Plotly account to post & share you plots online. But
 you can create the plots and use them on your local computer without an account.
