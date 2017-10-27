@@ -111,19 +111,17 @@ In a multi-band dataset, the rasters will always have the same *extent*,
 *CRS* and *resolution*.  
 
 
-
-
 ## Other Types of Multi-band Raster Data
 
 Multi-band raster data might also contain:
 
 1. **Time series:** the same variable, over the same area, over time. Check out
-<a href="/dc-multiband-rasters-r" target="_blank"> Raster Time Series Data in R</a> 
+<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R*</a> 
 to learn more about time series stacks.
 2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
 (multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
 Data Skills
-<a href="/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
+<a href="/hsi-hdf5-r" target="_blank"> *Imaging Spectroscopy HDF5 in R* tutorial</a> 
 for more about working with hyperspectral data cubes.
 
 ## Getting Started with Multi-Band Data in R
@@ -460,7 +458,7 @@ tutorial.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
-<a href="/dc-multiband-rasters-r" target="_blank"> *Raster Time Series Data in R* </a>
+<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 for a tutorial on how to do this. 
 </div>
 
