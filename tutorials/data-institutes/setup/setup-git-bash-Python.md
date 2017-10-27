@@ -30,7 +30,6 @@ Institute. Detailed directions to accomplish each objective are below.
 * Install Git 
 * Install Python 3.x
 
-## Installation Instructions
 
 {% include/wkSetup/_setup_bash.html %}
 {% include/wkSetup/_setup_Git.html %}

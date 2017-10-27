@@ -110,8 +110,8 @@ DEM
 Notice a few things about this raster. 
 
 *  `dimensions`: the "size" of the file in pixels
-		 * `nrow`, `ncol`: the number of rows and columns in the data (imagine a spreadsheet or a matrix). 
-		 *  `ncells`: the total number of pixels or cells that make up the raster.
+  + `nrow`, `ncol`: the number of rows and columns in the data (imagine a spreadsheet or a matrix). 
+  + `ncells`: the total number of pixels or cells that make up the raster.
 *  `resolution`: the size of each pixel (in meters in this case). 1 meter pixels 
 means that each pixel represents a 1m x 1m area on the earth's surface.
 *  `extent`: the spatial extent of the raster. This value will be in the same 
@@ -120,7 +120,7 @@ coordinate units as the coordinate reference system of the raster.
 raster is in UTM (Universal Trans Mercator) zone 11 with a datum of WGS 84. 
 <a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.
 
-## Working with Rasters in R
+## Work with Rasters in R
 Now that we have the raster loaded into R, let's grab some key raster attributes.
 
 

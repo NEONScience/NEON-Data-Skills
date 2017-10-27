@@ -69,7 +69,7 @@ the plot ID that goes with the data. The data we are using today were collected
 at the National Ecological Observatory Network field site at the 
 San Joaquin Experimental Range (SJER) in California. 
 
-## Load CSV, Setup Plots 
+## Load .csv, Setup Plots 
 
 To work with our spatial data in R, we can use the `rgdal` package and the 
 `sp` package. Once we've loaded these packages and set the working directory to
@@ -307,10 +307,10 @@ We can now export the spatial object as a shapefile.
     # write the shapefiles 
     writeOGR(polys.df, '.', '2014Plots_SJER', 'ESRI Shapefile')
 
-    ## Error in writeOGR(polys.df, ".", "2014Plots_SJER", "ESRI Shapefile"): layer exists, use a new layer name
 
 And there you have it -- a shapefile with a square plot boundary around your
 centroids. Bring this shapefile into QGIS or whatever GIS package you prefer 
 and have a look! 
 
-For more on working with shapefiles in R, check out our <a href="{{ site.baseurl }}/vector-data-series"> *Working with Vector Data in R* series </a>.
+For more on working with shapefiles in R, check out our 
+<a href="/vector-data-series" target="_blank"> *Working with Vector Data in R* series </a>.

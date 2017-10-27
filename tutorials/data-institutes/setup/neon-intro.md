@@ -222,7 +222,7 @@ tower/instrumentation setup and others. Learn more here the
 
 
 <div id="ds-challenge" markdown="1">
-## Data Institute Participants: Intro to NEON Culmination Activity
+**Data Institute Participants: Intro to NEON Culmination Activity**
 
 Write up a brief summary of a project that you might want to explore while at the
 Data Institute in Boulder, CO. Include the types of NEON (and other data) that you

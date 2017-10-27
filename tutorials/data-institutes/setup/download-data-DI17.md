@@ -16,9 +16,8 @@ urlTitle: download-data-DI17
 ---
 
 ## NEON Teaching Datasets
-Many NEON tutorials, available through the 
-<a href="{{ site.baseurl }}/resources/tutorials" target="_blank"> NEON Data Skills portal</a>,
-utilize teaching data subsets which are hosted on the NEON Data Skills 
+Many NEON data skills tutorials utilize teaching data subsets which are hosted 
+on the NEON Data Skills 
 <a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets/834136" target="_blank">fig**share** repository</a>. 
 
 We recommend downloading the complete Data Institute 2017 teaching data subsets from the 
@@ -29,9 +28,8 @@ tutorial series in the **Download Data** section.
 ## Download & Uncompress the Data
 
 #### 1) Download
-First, we will download the data to a location on the computer. To download the 
-data for this tutorial, click the blue button **Download NEON Teaching Data 
-Subset: Data Institute 2016**. 
+First, we will download the data sets to a location on the computer. To download the 
+data for this event, click the blue buttons below. 
 
 
 <div id="ds-objectives" markdown="1">
@@ -39,8 +37,11 @@ Subset: Data Institute 2016**.
 
 ### Download Data
 
-**Data Downloads will Be Published By 20 May 2017**
+ <a href="https://neondata.sharefile.com/d-sf1eb1e9c5174760a" class="class="link--button link--arrow">
+Download NEON Teaching Data Subset: Data Institute 2017</a>
 
+ <a href="https://ndownloader.figshare.com/files/8730436" class="class="link--button link--arrow">
+Download NEON Teaching Data Subset: Data Institute 2017 - Spectral Classification</a>
 
 </div>
 
@@ -67,7 +68,7 @@ downloaded from the internet, if so, the .zip file will download there.
 Third, we must move the data files to the location we want to work with them. 
 We recommend moving the .zip to a dedicated **NEONDI-2017** subdirectory within a 
 **data** directory in the
-**Documents** directory on your computer (**~/Documents/data/NEONDI-2016**). This 
+**Documents** directory on your computer (**~/Documents/data/NEONDI-2017**). This 
 **NEONDI-2017** directory can then be a repository for all data subsets you use 
 for the NEON Data Institute tutorials. 
 
@@ -104,7 +105,7 @@ SJER, and SOAP data subsets within the **NEONdata** subdirectory.
 	 <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute0-setup/AllSets_FileStructureScreenShot.png"></a>
 	 <figcaption> Screenshot of the <b></b> directory structure: nested 
 	 <b>Documents</b>, <b>data</b>, <b>NEONDI-2017</b>, and other 
-	 directories.(Note: this figure indicates the 2016 data not the 2017 data). Source: National Ecological Observatory Network
+	 directories.(Note: this figure shows the 2016 data not the 2017 data). Source: National Ecological Observatory Network
 	 (NEON) 
 	 </figcaption>
 </figure> 

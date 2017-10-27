@@ -31,8 +31,6 @@ Institute. Detailed directions to accomplish each objective are below.
 
 
 
-## Installation Instructions
-
 {% include/wkSetup/_setup_bash.html %}
 {% include/wkSetup/_setup_Git.html %}
 {% include/wkSetup/_setup_R_Rstudio.html %}
