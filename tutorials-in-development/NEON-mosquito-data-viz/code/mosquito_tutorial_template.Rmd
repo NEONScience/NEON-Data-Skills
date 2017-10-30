@@ -1,0 +1,808 @@
+---
+layout: post
+title: "Methods of Exploring NEON Mosquito Data in R"
+date:  2017-06-16
+authors: [Charlotte Roiger]
+dateCreated:  2017-05-20
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+description: "This is a tutorial that shows users how to clean and perform an initial analysis using NEON mosquito data."
+tags: [R]
+image: #update later
+  feature: TeachingModules.jpg
+  credit: A National Ecological Observatory Network (NEON) - Teaching Module
+  creditlink: http://www.neonscience.org
+permalink: /R/carabid-clean-data # update later
+code1: carabid-beetle-data/Beetle-Data-Clean-Portal-Data.R # update later
+code2: carabid-beetle-data/carabid-NEON-data-cleanup.R # update later
+comments: false
+---
+
+{% include _toc.html %}
+
+## About
+SENTENCES ADD HERE
+
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down
+
+<div id="objectives" markdown="1">
+
+# Goals & Objectives
+
+After completing this tutorial, you will be able to:
+
+*	Download mosquito trapping, identification, and sorting information from the 
+  NEON data portal
+* Download precipitation and temperature data from Global Historical Climatology
+  Network
+* Merge data frames to create one unified data frame with relevant variables to 
+  address research questions
+* Subset data by year
+* Use ggplot2 in R to create visualizations of data trends and maps  
+
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded on
+your computer to complete this tutorial.
+
+### R Libraries to Install:
+
+These R packages will be used in the tutorial below. Please make sure they are 
+installed prior to starting the tutorial. 
+ 
+* **dplyr:** `install.packages("dplyr")`
+* **plyr:** `install.packages("plyr")`
+* **tidyverse:** `install.packages("tidyverse")`
+*	**plyr:** `install.packages("plyr")`
+*	**mosaic:** `install.packages("mosaic")`
+*	**metScanR:** `install.packages("metScanR")`
+
+
+
+
+
+### Download The Data
+**NOTE: eventually turn these into teaching data subsets with others, then change to download buttons**
+You can download cleaned data files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/cleaned-Data.zip), 
+NOAA weather data for each site [here](//github.com/klevan/carabid-workshop/blob/master/data/NOAA%20weather%20data%20for%202014.csv), 
+NEON map shp files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/map%20data.zip) 
+and the script we will be modifying [here](//github.com/klevan/carabid-workshop/blob/master/code/data-analysis.R). 
+</div>
+
+
+
+## NEON Mosquito Data
+
+The mosquito data on the NEON Data Portal are divided by type of information 
+into six tables:
+ * field collection data
+ * sorting data
+ * identification and pinning data
+ * pathogen pooling data
+ * pathogen results data
+ * archiving pooling data
+
+#################################################################################################
+
+For this tutorial we focus on the 2014 data and the 13 sites
+for which data is available in that year. To look at all this data requires 
+downloading 39 files (one field, sorting and pinning data for each site) and 
+combining the datasheets across all sites for each type of data (i.e., field, 
+sorting and pinning). 
+
+NEON provides several documents with information about the Carabid beetle protocal & 
+data collection. It is highly recommended you are familiar with the
+<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001" 
+target="_blank">data product documents </a>
+prior to using NEON carabid beetle data for your research. 
+
+#################################################################################################
+
+
+We'll explore these six tables and then combine them into a couple of clean
+tables for use with analysis. 
+
+First, set up the R environment. 
+
+``` {r load-libraries}
+
+# Load packages required for entire script. 
+library(plyr)      # move/manipulate data
+library(dplyr)     # move/manipulate data
+library(foreign)   
+library(maptools)  # used for creating maps of NEON field sites
+library(raster)    # manipulate spatial data
+library(rbokeh) 
+library(rgdal)     # manipulate and read spatial data
+library(ggplot2)   # creation of plots and visualizations
+library(tidyverse) # move/manipulate data
+library(mosaic)    # good for data exploration
+
+#Set strings as factors equal to false thoughout
+options(stringsAsFactors = FALSE) 
+
+# set working directory to ensure R can find the file we wish to import
+
+#setwd("working-dir-path-here")
+
+```
+
+
+### Field Collection Data Table
+
+Read in the field collection data table. 
+
+``` {r trapping-table}
+
+#Read in the data TO BE CHANGED AS PORTAL DEVELOPS
+trap = read.csv('N:/Science/FSU/Intern Projects/2107_CharlotteRoiger/mos_trapping_in.csv')
+
+# set strings as factors as false throughout
+options(stringsAsFactors = FALSE) 
+
+#This command allows you to view the structure of the data
+str(trap)
+
+```
+
+This table contains information related to:
+
+* metadata about the sampling event, includes: 
+   + `plotID`: label of where a sample was collected
+   + `setDate`: when traps were set
+   + `collectDate`: the date of trap collection
+   + `sampleID`: unique label of sample collection events
+   + `targetTaxaPresent`:an indication of whether mosquitos were found in the 
+      sample 
+   + `HoursOfTrapping`: the number of days a given trap was in the field
+   + `samplingProtocolVersion`: the document number and the version of the 
+      sampling protocol used. These can be found in the 
+<a href="http://data.neonscience.org/documents" target="_blank"> NEON Documents Library</a>. 
+
+For sake of convenience we have only included the meta data for certain variables
+that we will use to carry out our analysis. For more metadata please see:
+INSERT LINK OR SOMETHING FOR SORT METADATA
+
+* metadata about the quality of the data 
+
+Unique collection events have a unique `sampleID` with the format = 
+`plotID.trapID.collectDate.TimeOfCollection`. 
+
+### Sorting Data Table
+
+
+``` {r sort-table}
+
+# read in sorting TO BE CHANGED AS PORTAL DEVELOPS
+sort = read.csv('N:/Science/FSU/Intern Projects/2107_CharlotteRoiger/mos_sorting_in.csv')
+
+# set strings as factors as false throughout
+options(stringsAsFactors = FALSE) 
+
+str(sort)
+
+```
+
+This table contains information about weight of subsamples and weight of bycatch. 
+
+* metadata about the subsampling event, includes:
+  + `plotID`: label of where a sample was collected
+  + `setDate`: when traps were set
+  + `collectDate`: the date of trap collection
+  + `sampleID`: unique label of sample collection events
+  + `subsampleID`: Unique label of subsampling collection events
+  + `totalWeight`: Total weight of sample
+  + `subsampleWeight`: Total weight of subsample
+  + `bycatchWeight`: Total weight of bycatch in the subsample
+
+Unique records have a unique `subSampleID` (format = 
+`plotID.trapID.collectDate.TimeofCollection.S.01` ). 
+
+For sake of convenience we have only included the meta data for certain variables
+that we will use to carry out our analysis. For more metadata please see:
+INSERT LINK OR SOMETHING FOR SORT METADATA
+
+### Identification Data Table
+
+``` {r identification-table}
+
+# read in data
+id = read.csv('N:/Science/FSU/Intern Projects/2107_CharlotteRoiger/mos_identification_in.csv')
+
+# set strings as factors as false throughout
+options(stringsAsFactors = FALSE) 
+
+# view structure of the data
+str(id)
+
+```
+
+The identification table contains information about the types of mosquitos found
+in each subsample. 
+
+* metadata about the subsampling event, includes:
+  + `plotID`: label of where a sample was collected
+  + `setDate`: when traps were set
+  + `collectDate`: the date of trap collection
+  + `sampleID`: unique label of sample collection events
+  + `subsampleID`: Unique label of subsampling collection events
+  + `individualCount`: The number of each species found in a subsample
+  + `scientificName`: The Scientific name of each species found in a subsample
+
+* metadata about the quality of the data 
+
+The identification table contains information about all mosquitos that were 
+found in each subsample. Each sample in the identification dataset contains the
+target taxa and once identified is either directly archived, or first sent to an
+external lab for Pathogen testing. 
+
+### Taxonomy Data Table
+
+```{r taxonomy-table}
+
+#read in data
+taxonomy = read.csv("~/GitHub/mosquito-intern/resources/mosquito_taxonomy.csv")
+
+# set strings as factors as false throughout
+options(stringsAsFactors = FALSE) 
+
+str(taxonomy)
+
+```
+
+This table contains information about mosquito taxonomy as well as the native
+status of each mosquito species in the data frame.
+
+* metadata about the subsampling event, includes:
+  + `scientificName`: the Scientific name of each species found in a subsample
+  + `d##NativeStatusCode`: an indicator of whether a species is native to 
+     each domain
+     
+SHOULD I ALSO ADD IN THE DOMAIN, PRECIP, AND TEMP TABLES HERE?
+
+HOW SHOULD I TALK ABOUT THE SOURCE FUNCTION
+
+
+## Wrangling the Data
+
+### Obtaining location information
+
+Before we can begin analyzing our data frames, we need to create a few new 
+variables and collect all the information we need into a unified usable 
+dataframe. To start, we will be extracting latitude and longitude information 
+from NEON's application programming interfaces. 
+
+```{r location-scraping}
+
+# Create a vector of unique plotIDs from the trap dataframe to speed up the data scraping process
+uniquePlotIDs <- unique(trap$plotID)
+
+# Use the lapply() to create a list where each element is a single plotID with GPS data
+latlon <- lapply(uniquePlotIDs, get_NEON_location, output="latlon")
+
+```
+
+Once we have the vector of unique plot IDs, we then use the lapply command to go
+through each element of uniquePlotIDs, apply the get_NEON_location function, and
+return a list of unique plot IDs paired with its corresponding location 
+information.
+
+```{r location-dataframe}
+
+# Convert list into a data frame with the do.call function
+latlon.df <- do.call(rbind, latlon)
+
+# Match the names of your columns in this dataframe to other dataframes
+names(latlon.df) <- c("uniquePlotIDs", "lat", "lon", "northing", "easting", "utmZone", "elevation", "NLCDclass") 
+
+# Removing datapoints with latitude or longitude listed as 1, not a viable sampling location
+latlon.df[latlon.df==1]<-NA
+
+
+```
+
+Next we need to put together the location and plot identification information 
+with our trapping data. To achieve this goal, we will use the merge command to 
+match each plot ID in our latlon data frame to a plot ID in the trap data set.
+The merge command allows users to match rows of separate dataframes by certain
+key variables (in this case by plot ID) to create one unified data frame. For 
+more information on the merge function, please see INSERT WEBSITE
+
+```{r trap-location-merge}
+
+# Merging trap data with latitude and  longitude data
+trap <- merge(x = latlon.df, y = trap, by.x = "uniquePlotIDs", by.y = "plotID") 
+
+```
+
+Once we are done merging our two data frames, we might notice that there is
+still a lot of missing latitude and longitude information (NEED TO INCLUDE WHY
+THIS IS???) However for some rows in our trapping dataset the variables
+pdaDecimalLatitude and pdaDecimalLongitude have location information that was
+not present in our latlon data frame. So we use an if-else statement to collect
+all of our latitude and longitude information into two more complete variables.
+
+```{r obtaining-more-lat}
+
+# Filling in more latitude and longitude data
+trap$lat2<-ifelse(is.na(trap$lat)==TRUE, trap$pdaDecimalLatitude,trap$lat)
+
+trap$lon2<-ifelse(is.na(trap$lon)==TRUE, trap$pdaDecimalLongitude,trap$lon)
+
+```
+
+The next step in our data cleaning process is to consolidate all of the 
+information stored in the trapping, identification, and sorting data frames. 
+A lot of the information in the sorting data frame is very similar to what is
+found in the identification data frame. But, one key difference is that the 
+sorting data frame also contains the weight of the subsample, the weight of the 
+bycatch, and the total weight of the sample. So we want to only select the 
+columns in the sorting data frame that aren't in the id data frame.
+
+```{r finding-unique-columns}
+
+# Create a vector of column names that are in sort but not in id
+cols = colnames(sort)[!colnames(sort)%in%colnames(id)]
+
+# Merge id with subsetted sorting data frame
+id <- left_join(id, sort[, c('subsampleID', cols)], 
+                by = "subsampleID")
+
+```
+
+If we want to then merge our id data frame with the information in trap, we 
+first have to simplify the trap data to lower processing times. We do that by
+selecting only the rows of our trap data frame that are unique, and omitting any
+rows that have repeated Plot IDs. 
+
+```{r create-unique-trap}
+
+#Creating a dataframe with only the unique plotIDs and lat2 lon2 data for merging
+uniquetrap<-trap[!duplicated(trap[,1]),c("uniquePlotIDs","lat2","lon2", "elevation","NLCDclass")]
+
+#Merging id df with lat2 lon2 data
+id <- merge(x = uniquetrap, y = id, by.y = "plotID", by.x = "uniquePlotIDs", all.y = TRUE)
+
+```
+
+One thing to keep in mind is that the identification and sorting data frames 
+only contain samples where the mosquitoes were present. However, we might also
+be interested in analyzing the samples where mosquitoes were not present. So we
+need to find the rows in the trap data frame where the plot ID is not in the
+id data frame and the target taxon is not present. First we create a subset of
+the trap data frame where mosquitoes were not found in the sample. Since we 
+want to then merge these rows with those in our id data frame we add in columns
+that are present in the id dataframe but not in the trap data frame and row-bind
+these two data frames together.
+
+```{r including-trap-zero}
+# Get zero traps from trapping
+new_trap<- trap[!trap$sampleID %in% id$sampleID & trap$targetTaxaPresent=="N",]
+
+#Add columns in new_trap that weren't present in the ID table then add new_trap to ID table
+new_trap <- new_trap[, colnames(new_trap)[colnames(new_trap)%in%colnames(id)]]
+
+new_trap[, colnames(id)[!colnames(id)%in%colnames(new_trap)]]<-NA
+
+id <- rbind(id,new_trap)
+```
+
+###Creating Variables and Obtaining Weather Data 
+
+Now that we have a more complete id data set, we want to create a couple of 
+variables that could be useful in our analysis as well as obtain weather data
+from the National Oceanic and Atmospheric Administration (NOAA). To start, we 
+will note that the individual count present in each observation of the id data
+frame is only the individual count of each subsample. So to estimate the 
+number of individuals in each sample we will use the sample weight,
+by-catch weight, and subsample weight to generate a sample multiplier. To 
+create the sample multiplier we use an if-else statement to find only the rows
+in the id dataframe where by-catch weight information is present. Then we divide
+the total sample weight by the by-catch weight subtracted from the subsample
+weight. Next we use another if-else statement to replace all instances where
+the sample multiplier is infinity with NAs. We then create a new variable called
+'newindividualCount'where we multiply the individual count by the sample
+multiplier.
+
+```{r fixing-individualCount}
+
+#Creation of sample Multiplier
+id$sampleMultiplier <- ifelse(is.na(id$bycatchWeight), id$totalWeight/id$subsampleWeight, id$totalWeight/(id$subsampleWeight-id$bycatchWeight))
+id$sampleMultiplier <- ifelse(id$sampleMultiplier==Inf, NA, id$sampleMultiplier)
+id$sampleMultiplier <- ifelse(id$subsampleWeight==0 & id$individualCount != 0, 1, id$sampleMultiplier)
+
+#Creation of New individual Count with Multiplier
+id$newindividualCount <-ifelse(is.na(id$sampleMultiplier)==F, round(id$individualCount*id$sampleMultiplier), NA)
+
+```
+
+Now that we have an estimate of the abundance of each species in a sample, we
+also want to create a variable that takes into account the amount of time a 
+trap was deployed. One issue present with creating this variable is that traps 
+were either deployed overnight or collected within the space of one day. To
+address this challenge, we first create a variable that returns true if the 
+set date and the collect date are on the same day. Next we create two variables
+that converts the minutes of the set and collect times into hours. After that, 
+we use an if-else statement to find observations where set and collection dates
+were on the same day, then we subtract the set hours from the collection hours
+to get the number of hours that the trap was deployed. If the trap was deployed
+over the period of two days, we calculate the number of hours from when the trap
+was set until midnight by subtracting the set time from 24, then added the
+number of hours the trap was deployed on the collect day to yield the hours of 
+deployment. 
+
+```{r trapping-hours}
+
+#Creation of a variable to test whether samples were collected on the same day or different days
+id$sameDay <- ifelse(substr(id$collectDate, 9, 10) != substr(id$setDate,9,10), FALSE, TRUE)
+
+#Creating variables that convert the time of set and collection to hours
+id$setHours <-((as.numeric(substr(id$setDate,15,16))/60)+(as.numeric(substr(id$setDate,12,13))))
+id$collectHours <-((as.numeric(substr(id$collectDate,15,16))/60)+(as.numeric(substr(id$collectDate,12,13))))
+
+#variable to calculate the number of hours of trap deployment
+id$HoursOfTrapping <-ifelse(id$sameDay == TRUE, id$collectHours - id$setHours, (24 - id$setHours) + id$collectHours)
+
+#Changing hours of trapping to positive number 
+id$HoursOfTrapping <- abs(as.numeric(id$HoursOfTrapping))
+
+```
+
+In our current id data frame, we have only the set and collect dates of each 
+sample, where the collect date and time is formatted as "YYYY-MM-DDThh:mm".
+However, if we want to look at the Julian date of observation for Culex 
+tarsalis, we might want the date and year when the sample was collected. So we 
+use the 'substr' command to collect only the first four characters of the
+'collectDate' variable to pull year information, then we convert year to a 
+factor. However, in the id data frame there are some observations where the 
+collection date was not available. For many of the observations where 
+collection information is missing, the date of when the sample was recieved so
+we can extract year information in a similar fashion from the 'recievedDate' 
+variable. 
+
+```{r date-and-year}
+
+#Extracting year information for id
+id$Year<-substr(id$collectDate,1,4)
+
+#Extracting year information for id from both collect date and recieved date
+id$receivedDate <- as.character(id$receivedDate)
+
+id$Year<-ifelse(is.na(id$collectDate), substr(id$receivedDate,1,4), substr(id$collectDate,1,4))
+
+#Exctracting date information for id
+id$Date<-substr(id$collectDate,1,10)
+
+```
+
+Our next objective is to obtain weather information for each day in our data set.
+The data in our temperature data frame ('temp.df') and precipitation data frame
+('precip.df') can be related to our NEON mosquito data by date and by proximity 
+to NEON sample sites. So first we convert the date in the temperature and 
+precipitation data frames to the variable type 'Date'. Next we find
+the site of each sample by taking the first four characters of each plot ID, and
+then merge the id data frame first with the temperature data frame by 'siteID' 
+and 'Date'. Now our data frame is nicely integrated, but we need to fix the 
+units of our maximum temperature variable by dividing each number in the column 
+called 'value' by ten. Then for clarity we rename the variable 'value' as 
+'Max.TempC'. We then repeat this process for our precipitation data. 
+
+```{r temp-data}
+
+#Change temp date type
+temp.df$date <- as.Date(temp.df$date)
+
+#Broad Site ID variable 
+id$siteID<-substr(id$uniquePlotIDs,1,4)
+
+#merging id with temp data
+id <- merge(x = temp.df, y = id, by.y = c('siteID','Date'), by.x = c('siteID','date'), all.y = TRUE)
+
+#Converting temperature to proper value
+id$value<-id$value/10
+names(id)[5]<-"Max.TempC"
+
+#Change precip date type
+precip.df$date <- as.Date(precip.df$date)
+
+#Merge id with precip data
+id <- merge(x = precip.df[,c(1,4,9)], y = id, by.y = c('siteID', 'date'), by.x = c('siteID', 'date'), all.y = TRUE)
+
+#converting temperature to proper value and renaming
+id$value<-id$value/10
+names(id)[3]<-"Precipmm"
+
+```
+
+### Finishing Touches and Filtering Data
+
+Now that we have location and weather information in a more usable format we
+are almost ready to start analyzing our NEON data. However we need to add domain
+and taxon rank information to our data frames so we can track changes in
+mosquito ranges and filter out missing data.
+
+```{r domain-taxonomy}
+
+#Merge with domain info.
+id <- merge(x = domain.df, y = id, by.y = "siteID", by.x = "siteid", all.y = TRUE)
+id$domainid <- as.character(id$domainid)
+
+#Merge with taxonomy df for taxson rank
+id <- merge( x = taxonomy[,c("scientificName", "taxonRank")], y = id, by.x = "scientificName", by.y = "scientificName")
+
+```
+
+Speaking of missing data, a quick exploration of our resulting identification
+data frame might reveal that the number of mosquito observations fluctuate 
+greatly for the years 2012, 2013, and 2015. This is because of changes in 
+sampling design, making the observations for these years less comparable to 
+2014 and 2016. Due to the changes in sampling design for mosquito collection,
+we will continue on with our analysis and focus in on the data from 2014 and
+2016. We will also filter our existing data by taxon rank. We choose to filter 
+out any observations in our data that are not identified down to the species or
+subspecies level so we can get a better idea of species richness and find 
+samples where *Culex tarsalis* was present.
+
+```{r filtering-id}
+
+#Filter by species and subspecies classification
+id <- dplyr::filter(id, id$taxonRank %in% c("subspecies","species"))
+
+#smalle subset only containing 2014 and 2016
+idsmall<-dplyr::filter(id, id$Year %in% c(2014,2016))
+
+```
+
+
+#Vignette One: Mosquito Species Richness Over Latitudinal Gradients
+
+
+###Calculating Species Richness and  Obtaining Location Information
+
+Now that we have our data frames in a more usable format, we want to explore 
+Mosquito species richness to see if there is a pattern in relation to 
+sample latitude. The first step we need to take to explore this topic is to
+calculate species richness at each sample plot. However if we calculate species 
+richness for each plot, we lose some complexity in our data since plots were 
+sampled multiple times. So we want to calculate the species richness per plot
+but also take into accound the date at which each sample was taken. To tackle 
+this problem we use the 'ddply' command from the 'plyr' package to count the 
+number of unique scientific names for each plot and date. We also choose to 
+include certain variables in the id data frame that could be relevant to our 
+exploration of species richness
+
+```{r create-specrich}
+
+specrich <- ddply(idsmall, ~ siteid + domainid + date, summarize, num_species = length(unique(scientificName)))
+```
+
+
+Next we merge our newply formed species ricness data frame with location
+information and convert latitude and longitude information into  a numeric. To 
+start exploring species richness we will make a scatter plot of species richness
+over latitude using the package 'ggplot2'. Another factor that we might want to
+take into account is the year in which the sample was taken to see if patterns
+in species richness differ by year. We will incorporate this variable into our 
+scatterplot of species richness over latitude by coloring the dots in our plot 
+with their corresponding year. 
+
+
+```{r plot-richness}
+
+#Omit all instances where date is unknown
+specrich <- specrich[complete.cases(specrich$date),]
+
+#Merging to get lat2 lon2 data
+
+#First extract site id for the uniquetrap data frame
+uniquetrap$siteid <- substr(uniquetrap$uniquePlotIDs,1,4)
+
+#Omit any instances where lat and lon is not known for a site
+uniquetrap <- uniquetrap[uniquetrap$lat2!="",]
+
+#taking only the observations that are not duplicated
+uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteid),]
+
+#merge with lat lon data excluding plotID
+specrich <- merge(x = uniquetrap[,c("lat2", "lon2", "elevation", "NLCDclass", "siteid")], y = specrich, by.y = "siteid", by.x = "siteid")
+
+#Changin lat2 to a numeric and date to date class
+specrich$lat2<-as.numeric(specrich$lat2)
+specrich$date<-as.Date(specrich$date)
+
+#Creating a Year variable
+
+specrich$Year <- substr(specrich$date, 1,4)
+
+
+# Plotting Species Richness over Latitude
+
+ggplot(specrich,aes(lat2, num_species))+
+  geom_point(aes(colour = Year), size = 2)+
+  labs(x = "Latitude", y = "Number of Species")+
+  ggtitle("Species Richness by Latitude")
+
+```
+
+What we can see from the plot of species richness by latitude is that there 
+appears to be a large amount of clustering between 28 and about 47 degrees 
+latitude. This result makes sense since most NEON sampling sites are located on 
+the continental United States. Another thing we might notice is that there
+does not appear to be a recognizable pattern between species richness and 
+latitude for both 2014 and 2016. However, latitude is a proxy variable for other
+environmental factors such as temperature. In our current data frame, we have
+a variable that accounts for the maximum temperature on the day of mosquito 
+collection, but it might be more useful to develop a metric that captures the
+maximum temperature of the days prior to collection. 
+
+###Creating a Temperature Lag Function
+
+To examine the maximum temperature of days before the collection date, we will 
+develop a function that takes the average maximum temperature of the 14 days
+prior to the sample collection date. To start, we define a function that takes 
+the date and site identification as inputs, and use the filter command to create
+a data frame that contains temperature information for each observation. We then
+take an average of the maximum temperature for the 14 days prior to collection
+at each site and also count the number of days where the maximum temperature was
+greater than 16 degrees Celsius.  
+
+```{r templag-function}
+
+Templag <- function(siteID, date){ 
+  date <- as.Date(date) #Converting all date inputs into date format
+  filter1 <- temp.df[grepl(siteID, temp.df$siteID),] #subset our temp data by site id
+  filter2 <- filter1[filter1$date >= date - 14 & filter1$date < date + 1,] # subset by date
+  TwoWeekAvgT <- mean(filter2$value)/10 #standardize temperature values
+  filter3 <- filter2[filter2$value > 16,] #select rows with max temp greater than 16 degrees C
+  GDD <- length(unique(filter3$date)) # count the number of unique dates in data frame
+  return(list(TwoWeekAvgT=TwoWeekAvgT, GDD=GDD))
+}
+
+```
+
+Now that our temperature lag function is complete, we will use the 'mapply'
+command to apply it to our species richness dataframe. We then create two new 
+variables that capture the average maximum temperature and the number of degree 
+days for the two weeks before collection. Once the two temperature variables
+are created, we then create a scatterplot of species richness over the average 
+maximum temperature. 
+
+
+
+```{r apply-templag}
+
+#Applying temp lag fucntion to species richness data frame
+SPTWAMT.mat<-mapply(Templag, specrich$siteid, specrich$date)
+
+#Creating variables that capture average max temp and degree days 
+specrich$TwoWeekAvgMT<- c(unlist(SPTWAMT.mat[1,]))
+specrich$DegreeDays <- c(unlist(SPTWAMT.mat[2,]))
+
+#Scatterplot of species richness and two week average max temp
+ggplot(specrich, aes(TwoWeekAvgMT, num_species))+
+  geom_point(color = "green")+
+  labs(x = "Two Week Average Maximum Temperature in Celsius", y = "Number of Species")+
+  ggtitle("Species Richness by Two Week Average Maximum Temperature")
+
+```
+
+Looking at the scatterplot of species richness by two week average maximum 
+temperature, we can see a sort of distribution where species richness is highest
+where the average maximum temperature two weeks prior to collection was between 
+25 to 32 degrees Celsius with a couple of outliers around 24 and 28 degrees
+Celsius. FINISH THIS
+
+<div id = "challenge" markdown = "1">
+
+###Challenge: Creating a Preipitation Lag Function
+
+Now that we've created and applied a function that can calculate the average 
+maximum temperature over a two week period before collection, try creating a
+function that gauges the amount of precipitation at a sampling site before
+collection. 
+
+</div>
+
+#Vignette Two: Culex Tarsalis 
+
+
+###Setting up data frames
+
+To begin our investigation of spatial patterns and phenology of the species
+*Culex tarsalis*, we need to create data frames with only the information
+relating to *Culx tarsalis* is present. But first we take a look at the number
+times *Culex tarsalis* was present in our data.
+
+```{r first-look-at-CuT}
+
+#Instances of Cu. tarsalis by Year
+table(id$Year, id$scientificName=="Culex tarsalis")
+
+```
+
+We can see from the table that *Culex tarsalis* was sampled most fequently in 
+the years 2014 and 2016. So very similar to our examination of species ricness,
+we will be focusing on these two years. Now we will subset our id data frame
+to only include rows of data where *Culex tarsalis* is in the 'scientificName'
+variable column. We next create an even smaller subset of our data by selecting
+rows whose year was either 2014 or 2016.
+
+```{r create-CuT-Dfs}
+
+#Creation of a subset with only Culex tarsalis
+tars<- id[grepl("Culex tarsalis", id$scientificName),]
+
+#Subset with only 2014 and 2016
+tarssmall <- tars[tars$Year %in% c(2014,2016), ]
+
+
+#Site Level variable
+tarsSiteLevel <- ddply(tarssmall,~siteid + domainid + date, summarize, siteAbundance = sum(newindividualCount))
+
+#merge with location information
+tarsSiteLevel <- merge(x = uniquetrap[,c("lat2", "lon2", "elevation", "NLCDclass", "siteid")], y = tarsSiteLevel, by.y = "siteid", by.x = "siteid")
+
+tarsSiteLevel$lat2<- as.numeric(tarsSiteLevel$lat2)
+tarsSiteLevel$lon2<- as.numeric(tarsSiteLevel$lon2)
+
+```
+
+Next we create variables that captures the two week average maximum temperature
+and the number of days greater than 16 degrees Celsius before collection by 
+applying the temperature lag function to the new *Culex tarsalis* data frame
+('tarssmall'). 
+
+
+```{r apply-templag-again}
+#Applying temperature lag function to tarssmall
+CTTWAMT.mat<- mapply(Templag, tarsSiteLevel$siteid, tarsSiteLevel$date)
+
+#Create variables in tarsSiteLevel for two week temp lag and degree days
+tarsSiteLevel$TwoWeekAvgMT <-c(unlist(CTTWAMT.mat[1,]))
+tarsSiteLevel$DegreeDays <- c(unlist(CTTWAMT.mat[2,]))
+
+
+```
+
+Next we want to explore the range of *Culex tarsalis* for the years 2014 and 
+2016. However, it might be helpful to know the regions in which *Culex tarsalis* 
+is considered to be native. One problem with obtaining the native status of 
+*Culex tarsalis* is that the native status information is contained in the 
+taxonomy data frame as a single row of data, as demonstrated below.
+
+```{r obtain-taxonomy}
+
+#A look at the row of data in the taxonomy data frame 
+taxonomy[grepl("Culex tarsalis", taxonomy$scientificName),]
+
+```
+
+Notice how the native status information in the taxonomy data is separated by
+domain in separate columns in a 'wide' format. We need the native status
+information to be in the form of a column or vector to be added to our current
+'tarssmall' data frame, so we use the gather command from the tidyr package
+to find the columns in the taxonomy data frame that contained native status
+information and transformed that row of information into a new data frame.
+
+```{r taxonomy-dataframe}
+
+#Selecting certain columns of the tarstax data frame to find native status information
+tarstax <- tidyr:: gather(taxonomy[grepl("Culex tarsalis", taxonomy$scientificName), grepl("NativeStatusCode", colnames(taxonomy))], "Domain ID")
+
+#Omitting rows of data where no information is available
+tarstax<-tarstax[c(5:15,17:23),]
+
+#Creation of a dataframe that includes domain identification and native status
+tarstax.df <-data.frame("domainID"= unique(domain.df$domainid), "DomainNativeStatus"= tarstax)
+
+```
+
+
+```{r merge-taxonomy-sitelevel}
+#Merge Cu. tarsalis taxonomy df with tars df
+tarsSiteLevel <- merge(x = tarstax.df[,c("domainID", "DomainNativeStatus.value")], y = tarsSiteLevel, by.x = "domainID", by.y = "domainid")
+
+```
+
+
+

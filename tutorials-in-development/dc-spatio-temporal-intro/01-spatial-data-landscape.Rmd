@@ -1,0 +1,98 @@
+---
+layout: post
+title: "Spatial Intro 01: The Spatial Data Landscape"
+date:   2015-10-29
+authors: []
+contributors: [ ]
+dateCreated: 2015-10-23
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+packagesLibraries: [ ]
+category: [self-paced-tutorial]
+tags: [R, spatial-data-gis]
+mainTag: spatial-data-management-series
+workshopSeries: [spatial-data-management-series]
+description: "This tutorial introduces the spatial data tool landscape. It
+covers the types of gui and non-gui tools that are available. The tutorial
+explores the benefits (and challenges) of using a non-gui (coding) approach to
+method development that supports clear documentation of methods."
+code1: /R/dc-spatio-temporal-intro/01-spatial-data-landscape.R
+image:
+  feature: NEONCarpentryHeader_2.png
+  credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
+  creditlink:
+permalink: /R/spatial-data-landscape
+comments: true
+---
+
+{% include _toc.html %}
+
+This tutorial introduces the spatial data tool landscape. It
+covers the types of gui and non-gui tools that are available. The tutorial
+explores the benefits (and challenges) of using a non-gui (coding) approach to
+method development that supports clear documentation of methods.
+
+**R Skill Level:** None. This tutorial is in a series with data skills
+intensive tutorials in the `R` programming language, however, the conceptual
+topics presented here relate to all programming languages!
+
+<div id="objectives" markdown="1">
+
+# Goals / Objectives
+
+After completing this activity, you will:
+
+* Be aware of a variety of tools that can be used to access spatial data.
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+### Additional Resources
+For a list of tools to work with spatial data, visit:
+* Wikipedia's <a href="http://en.wikipedia.org/wiki/List_of_geographic_information_systems_software" target="_blank" GIS software page. >
+* Wikipedia's <a href="http://en.wikipedia.org/wiki/List_of_spatial_analysis_software" target="_blank" spatial analysis software page. >
+
+</div>
+
+
+## This lesson overviews Gui vs Non-Gui tools, interactive vs non-interactive
+(nice graphic could go a long way here)
+
+## Gui Tools -
+Brief Description of this and a few examples of available tools. BRIEF discussion of why coding is potentially more reproducible compared to gui workflows
+
+### Pay:
+
+* ESRI ArcGIS
+
+### Open / Free: QGIS, Grass (maybe a line on each and a link to each page
+
+## Non Gui Tools
+  Benefits: Reproducible workflows, more easily documented (inline comments, etc)
+
+### R
+
+### Python
+
+### Matlab, IDL
+
+## Commonly found spatial data formats
+essentially one line about this with a link to the spatial data formats page.
+
+### Shapefiles (.shp, dbf, etc - group of files )
+
+### Geodatabases (.gdb, ??)
+
+### Csv’s (.csv)
+
+### text files: rasters (.asc) -- essentially one line about this with a link to the spatial data formats page.
+
+### Online: geojson,
+
+## Packages specific to R - with link to the setting up your work environment page
+
+### Raster
+
+### RGDAL
+
+### RasterVis

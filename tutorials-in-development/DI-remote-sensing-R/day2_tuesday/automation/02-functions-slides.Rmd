@@ -1,0 +1,116 @@
+---
+title: "Functions"
+output:
+  ioslides_presentation:
+    highlight: pygments
+    widescreen: yes
+---
+
+# What and how?
+
+## What is a function?
+
+```
+input --> function does something --> output
+```
+
+- **Main benefit:** Avoid repetition and increase reusability. When you write code you should be lazy and make your life as easy as possible! 
+    - If you are about to copy a piece of code 5 times and just change a variable 
+    in each instance, you are better off converting it into a function. 
+    - In general, never repeat yourself when you write code, it's called the 
+    *DRY* (Don't Repeat Yourself) principle.
+
+- **Another advantage:** Easier management of variables (and, behind the scenes, better use of memory). 
+   - You can create local and global variables which helps you securely isolate variables (for example, containing values, results or bits of data) and so that they will not be randomly altered.
+
+
+
+## How to write functions in R?
+
+Without using functions, you would have to redo the calculations each time:
+
+```{r, purl=FALSE}
+## Fahrenheit to Celsius
+(70 - 32) * 5/9
+(65 - 32) * 5/9
+(85 - 32) * 5/9
+```
+
+## 
+
+Let's convert this into a function:
+
+```{r, purl=FALSE}
+fahr_to_celsius <- function(temp) {
+    (temp - 32) * 5/9
+}
+```
+
+Don't forget to re-evaluate your function, after modifying it.
+
+We can extend our function to be more general:
+
+```{r, purl=FALSE}
+convert_fahr <- function(temp, to) {
+    res <- (temp - 32) * 5/9
+    if (to == "kelvin") {
+        res <- res + 273.15
+    }
+    res
+}
+```
+
+# Making your functions more versatile and robust
+
+## Control the format of input {.smaller}
+
+With functions you can easily control the format of the input and avoid the
+chances for typos or other small mistakes.
+
+```{r, purl=FALSE}
+convert_fahr <- function(temp, to = c("celsius", "kelvin")) {
+    to <- tolower(to)
+    to <- match.arg(to)
+    res <- (temp - 32) * 5/9
+    if (to == "kelvin") {
+        res <- res + 273.15
+    }
+    res
+}
+```
+
+## Make your functions expendable {.smaller}
+
+Let's refactor this function into something even better that will allow you to
+easily expand the `convert_fahr` function to other units:
+
+```{r, purl=FALSE}
+fahr_to_celsius <- function(temp) {
+    (temp - 32) * 5/9
+}
+
+celsius_to_kelvin <- function(temp) {
+    temp + 273.15
+}
+
+convert_fahr <- function(temp, to = c("celsius", "kelvin")) {
+    to <- tolower(to)
+    to <- match.arg(to)
+    res <- fahr_to_celsius(temp)
+    if (to == "kelvin") {
+        res <- celsius_to_kelvin(res)
+    }
+    res
+}
+```
+
+Your intentions are clear, everything is self contained, you can easily debug,
+test and document each of the steps involved.
+
+# Your turn!
+
+## Challenge
+
+Write a function that converts pounds in kilograms (divides by 2.2).
+
+*Stretch goal:* and in grams.
