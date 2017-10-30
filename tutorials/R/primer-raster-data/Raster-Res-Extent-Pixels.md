@@ -348,7 +348,8 @@ line up correctly when rendered together.
 <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a>
 
 #### How Map Projections Can Fool the Eye
-Check out this short video highlighting how map projections can make continents 
+Check out this short video,
+<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> by Buzzfeed</a>, highlighting how map projections can make continents 
 seems proportionally larger or smaller than they actually are!
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>

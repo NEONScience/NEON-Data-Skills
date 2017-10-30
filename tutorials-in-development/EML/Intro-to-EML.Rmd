@@ -1,0 +1,443 @@
+---
+layout: post
+title: "Introduction to EML in R"
+date:   2016-01-04
+authors: [Carl Boettiger, Leah A. Wasser]
+contributors: []
+dateCreated: 2015-12-28
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+tags: [metadata-eml]
+mainTag: metadata-eml
+packagesLibraries: [eml, purr, dplyr]
+category: 
+description: "This lesson will walk through the basic purpose and structure of metadata stored
+in EML (Ecological Metadata Language) format. We will work with an EML file created
+for an atmospheric dataset by the Harvard Forest LTER, using the R/OpenSci EML
+library for R."
+code1: 
+image:
+  feature: TeachingModules.jpg
+  credit: 
+  creditlink: 
+permalink: /R/EML
+comments: false
+---
+
+{% include _toc.html %}
+
+#About
+
+This lesson will walk through the basic purpose and structure of metadata stored
+in EML (Ecological Metadata Language) format. We will work with an EML file created
+for an atmospheric dataset by the Harvard Forest LTER, using the R/OpenSci EML
+library for `R`. The EML format can us used to document a suite of different
+objects including shapefiles & raster data (spatial data), software, hierarchical
+data sets and more. However in this lesson we will focus on an EML file that 
+documents a tablular data.
+
+##Introduction to EML
+The Ecological Metadata Language (EML) is a data specification developed specifically
+to document ecological data. An EML file is created using a `XML` based format.
+This means that content is embedded within hierarchical tags. For example
+the title of a dataset might be embedded in a `<title>` tag as follows:
+
+`<title>Fisher Meteorological Station at Harvard Forest since 2001</title>`
+
+Similarly, the creator of a dataset is also be found in a hierarchical tag
+structure.
+
+
+    <creator>
+      <individualName>
+        <givenName>Emery</givenName>
+        <surName>Boose</surName>
+      </individualName>
+    </creator>
+    
+
+The `EML` package for `R` is designed to read and allow users to work with `EML`
+format metadata. In this lesson, we will overview the basics of how to access
+key metadata that we might need to understand, in order to work with a particular
+dataset.
+
+## Work With EML
+
+To begin, we will load the `EML`, `purrr` and `dplyr` libraries.
+
+```{r install-EML-package, results="hide", warning=FALSE }
+#install R EML tools
+#library("devtools")
+#install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
+#devtools::install_github(c("hadley/purrr", "ropensci/EML"))
+
+
+#call package
+library("EML")
+library("purrr")
+library("dplyr")
+
+#data location
+#http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001
+#table 4 http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-04-monthly-m.csv
+```
+
+Next, we will read in the LTER EML file - directly from the online URL using
+`eml_read`. This file documents multiple data products that can be downloaded.
+<a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank">
+Check out the Harvard Forest Data Archive Page for Fisher Meteorological Station
+for more on this dataset and to download the archive files directly.</a>
+
+
+```{r read-eml }
+#import EML from Harvard Forest Met Data
+eml_HARV <- eml_read("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+
+#view size of object
+object.size(eml_HARV)
+
+#view the object class
+class(eml_HARV)
+```
+
+The `eml_read` function creates an `EML` class object. This object can be accessed
+using `slots` in R (`@`) rather than a typical subset `[]` approach.
+
+##Getting Started
+
+Before we go too much further, let's get some basic terms out of the way. In the 
+context of `EML`, a file documents a `dataset`. This `dataset` may consist of one
+or more files that are documented in the `EML` document. In the case of our 
+tabular meteorology data, the structure of our `EML` file includes:
+
+1. The **dataset**. A dataset may contain
+one or more data tables associated with it that may contain different types of related
+information. For this Harvard meteorological data, the data tables contain tower
+measurements including precipitation and temperature, that are aggregated
+at various time intervales (15 minute, daily, etc) and that date back to 2001.
+2. The **data tables**. Data tables refer to the actual data that make up the dataset. 
+For the Harvard Data, each data table contains a suite of meterological metrics 
+including precipiation and temperature (and associated quality flags), that are 
+aggregated at a particular time interval. (e.g. one data table contains monthly
+average data, another contains 15 minute averaged data, etc)
+
+
+## Explore Basic EML Properties
+
+We can begin to explore the contents of our EML file and associated data that it
+describes. Let's start at the dataset level. We can use `eml_get` to view the 
+contact information for the dataset, the keywords and it's associated temporal
+and spatial (if relevant) coverage.
+
+
+```{r view-eml-content }
+#view the contact name listed in the file
+#this works well!
+eml_get(eml_HARV,"contact")
+
+#grab all keywords in the file
+eml_get(eml_HARV,"keywords")
+
+#figure out the extent & temporal coverage of the data
+eml_get(eml_HARV,"coverage")
+
+```
+
+Next, let's view the abstract that describes the data.
+
+```{r view-dataset-eml }
+
+#view dataset abstract (description)
+eml_HARV@dataset@abstract
+
+#the above might be easier to read if we force line breaks!
+#we can use strwrap to do this
+#write out abstract - forcing line breaks
+strwrap(eml_HARV@dataset@abstract, width = 80)
+```
+
+
+##Determine Geographic Coverage
+Above we were able to view the geographic coverage. Let's plot the x, y values
+on a map for reference to ensure that the data are within our study area region of
+interest. We can access geographic extent using the slots, which are
+accessed in `R` using the `@` sign. 
+
+<i class="fa fa-star"></i> **Data Tip:**  To figure out the full slot string, 
+in `RStudio` we can use Tab Complete as we type.
+{: .notice }
+
+
+```{r find-geographic-coverage }
+#view geographic coverage
+eml_HARV@dataset@coverage@geographicCoverage
+
+```
+
+## Identify & Map Data Location
+
+Looking at the coverage for our data, there is only one unique x and y value. This 
+suggests that our data were collected at (x,y) one point location. We know this is a 
+tower so a point location makes sense. Let's grab the x and y coordinates and 
+create a quick context map. We will use `ggmap` to create our map.
+
+**NOTE: if this were a rectangular extent we'd want the bounding BOX. this is important
+if the data are for example, raster format, in HDF5 or something. we need the extent
+to properly geolocate and process the data.**
+
+<a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf" target="_blank">Learn More: A nice cheatsheet for GGMAP created by NCEAS</a>
+
+```{r map-location, warning=FALSE, message=FALSE}
+# grab x coordinate
+XCoord <- eml_HARV@dataset@coverage@geographicCoverage@boundingCoordinates@westBoundingCoordinate
+#grab y coordinate
+YCoord <- eml_HARV@dataset@coverage@geographicCoverage@boundingCoordinates@northBoundingCoordinate
+
+
+library(ggmap)
+#map <- get_map(location='Harvard', maptype = "terrain")
+map <- get_map(location='massachusetts', maptype = "toner", zoom =8)
+
+ggmap(map, extent=TRUE) +
+  geom_point(aes(x=XCoord,y=YCoord), 
+             color="darkred", size=6, pch=18)
+
+```
+
+We now have identified and mapped the point location where our data were collected. 
+We know the data are close enough to our study area to be useful. Next, let's 
+dig into the dataset structure to figure out what metrics that data contain.
+
+##Accessing dataset structure using EML
+
+To understand the data that are available for us to work with, let's first explore
+the `data table` structure as outlined in our `EML` file. We can access key components
+of the dataset metadata structure using slots via the `@` symbol.
+
+For example `eml_HARV@dataset` will return the entire dataset metadata structure.
+Let's view the description of abstract for the dataset.
+
+# View description and name of each data table in file
+
+Let's generate a clean list of all data tables and associated data table descriptions
+described in our `EML` file. To access this information we will using the following 
+syntax:
+
+`eml_HARV@dataset`
+
+* we will add `@dataTable`
+* we can access each dataTable element using index values: `[[1]]`
+* we can access the name of each dataTable using `@entityName`
+* we can access the description of each dataTable using `@entityDescription`
+
+Let's try this next!
+
+```{r view-data-tables }
+
+
+#we can view the data table name and description as follows
+eml_HARV@dataset@dataTable[[1]]@entityName
+eml_HARV@dataset@dataTable[[1]]@entityDescription
+#view download path
+eml_HARV@dataset@dataTable[[1]]@physical@distribution@online@url
+```
+
+
+To create a data frame with the 3 pieces of information abouve listed for each
+data table, we first can create  an object that contains EML information for
+just the data tables. Then we can use `purrr` to efficiently extract the 
+information for each data table. 
+
+```{r create-datatable-df }
+#create an object that just contains dataTable level attributes
+all.tables <- eml_HARV@dataset@dataTable
+
+#use purrrr to generate a data.frame that contains the attrName and Def for each column
+dataTable.desc <- purrr::map_df(all.tables, 
+              function(x) data_frame(attribute = x@entityName, 
+                        description = x@entityDescription,
+                        download.path = x@physical@distribution@online@url))
+
+#view table descriptions
+dataTable.desc
+#view just the paths (they are too long to render in the output above)
+head(dataTable.desc[3])
+
+#how many rows (data tables) are in the data_frame?
+nrow(dataTable.desc)
+
+```
+
+**NOTE: the above code is complex given the length of the slot calls. It would be 
+VERY NICE to have a function to help the user along with quickly generating / accessing
+data table attributes and descriptions.**
+
+
+Sweet! We now know there are 11 total data tables in this dataset. From the descriptions,
+we have a sense of the temporal coverage (date range) and associated temporal
+scale (15 min average, daily average, monthly average, etc). We also have the 
+path to download each file directly if we'd like to. This is a lot of 
+information to get us going!
+
+The data table of most interest to us now, is hourly average, in metric units.
+`hf001-08-hourly-m.csv`.
+
+#Data Table Metadata
+Let's next explore the attributes of Data Table 8 - `hf001-08-hourly-m.csv`. We 
+can explore its name, description, physical characteristics and identifier.
+
+```{r data-table-attr }
+
+#create an object that contains metadata for table 8 only
+EML.hr.dataTable <- eml_HARV@dataset@dataTable[[8]]
+
+#Check out the table's name - make sure it's the right table!
+EML.hr.dataTable@entityName
+
+#what information does this data table contain?
+EML.hr.dataTable@entityDescription
+
+#how is the text file delimited?
+EML.hr.dataTable@physical
+
+#view table id
+EML.hr.dataTable@id
+
+#this is the download URL for the file.
+EML.hr.dataTable@physical@distribution@online@url
+```
+
+
+##View Data Table Fields (attributes)
+We can access the attributes of a data table using similar syntax to the dataset 
+access.
+
+However: 
+
+* Instead of using `entityName` we will use `attributeName`
+* Instead of using `entityDescription` we will use `attributeDescription`
+
+Let's explore the dataTable attributes
+
+```{r view-15min-attr-list }
+#get list of measurements for the 10th data table in the EML file
+EML.hr.attr <- EML.hr.dataTable@attributeList@attribute
+#the first column is the date field
+EML.hr.attr[[1]]
+
+#view the column name and description for the first column
+EML.hr.attr[[1]]@attributeName
+EML.hr.attr[[1]]@attributeDefinition
+```
+
+
+#View All Data Table Attributes 
+
+We can create an automated list of all data table attributes and associated
+descriptions as we did with our data set too. 
+
+We will generate a summary of fields in our data table that includes:
+
+1. The field names (metrics measured or columns) `attributeName`
+2. The description of each field `attributeDefinition`
+
+Let's do that next.
+
+```{r view-monthly-attrs }
+#list of all attribute description and metadata
+#EML.15min.attr
+
+# use a split-apply-combine approach to parse the attribute data
+# and create a data_frame with only the attribute name and description
+
+#dplyr approach
+#do.call(rbind, 
+#        lapply(EML.15min.attr, function(x) data.frame(column.name = x@attributeName, 
+#                                             definition = x@attributeDefinition)))
+
+#use purrrr to generate a dplyr data_frame that contains the attrName 
+#and Def for each column
+EML.hr.attr.dt8 <- purrr::map_df(EML.hr.attr, 
+              function(x) data_frame(attribute = x@attributeName, 
+                          description = x@attributeDefinition))
+
+EML.hr.attr.dt8
+
+#view first 6 rows for each column 
+head(EML.hr.attr.dt8$attribute)
+head(EML.hr.attr.dt8$description)
+
+```
+
+From our data.frame generated above, we can see that this data table contains 
+air temperature and precipitation - two key drivers of phenology. 
+
+##Download Data Table
+
+We've now have:
+
+* successfully explored the dataset described in our `EML` file
+* identified the location where the data was collected and determined it is in the 
+desired range of our study area.
+* Identified the sub data tables described in the data set
+* Explored the data contained in the data tables and identified a table that we'd 
+like to work with
+
+Thus, let's go ahead and download the data table of interest. Using the EML
+file, we identified the URL where Table "8" can be downloaded:
+
+`EML.hr.dataTable@physical@distribution@online@url`
+
+We can use that output, with the base R `read.csv()` function to import the data
+table into a `dplyr data_frame`.
+
+
+```{r download-data }
+
+#view url
+EML.hr.dataTable@physical@distribution@online@url
+
+#Read in csv (data table 8)
+month.avg.m.HARV <- read.csv(EML.hr.dataTable@physical@distribution@online@url,
+                             stringsAsFactors = FALSE)
+
+str(month.avg.m.HARV)
+
+# view table structure
+EML.hr.dataTable@physical
+```
+
+We are now ready to work with the data!
+
+<div id="challenge" markdown="1">
+Questions
+
+1. How many header lines does the csv contain?
+2. What is the field delimiter (e.g. comma, tab, etc)
+3. What time zone is the data in (we will need this to convert the date time field)
+4. Is there a `noData` value? If so, what is it?
+
+HINT: it may be easier to skim the metadata using search to discover answers to 
+some of the questions above. Why?
+</div>
+
+
+
+#OTHER STUFF
+
+`eml_get(obj,"csv_filepaths")`
+
+**NOTE - THESE PATHS ARE NOT THE CORRECT PATHS TO THE DATA - what are they??**
+
+```{r EML-Structure }
+###THIS IS THE WRONG OUTPUT FOR SOME REASON??
+#what are the names of those tables?
+data.paths <- eml_get(obj,"csv_filepaths")
+data.paths
+
+data.paths[4]
+```
+
+
+
+
+

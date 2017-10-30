@@ -1,0 +1,21 @@
+---
+title: "2017 Mosquito Intern Project Test Code"
+output: html_document
+---
+
+```{r}
+id = read.csv('N:/Science/FSU/Intern Projects/2107_CharlotteRoiger/mos_identification_in.csv')
+trap = read.csv('N:/Science/FSU/Intern Projects/2107_CharlotteRoiger/mos_trapping_in.csv')
+```
+
+```{r}
+install.packages('plyr')
+library(plyr)
+test<- ddply(id, ~ uniquePlotIDs + collectDate, summarize, num_species = length(scientificName))
+test2<- ddply(na.omit(dplyr::select(id, uniquePlotIDs, collectDate, scientificName)), ~ uniquePlotIDs + collectDate, summarize, num_species = length(scientificName))
+
+
+
+
+```
+

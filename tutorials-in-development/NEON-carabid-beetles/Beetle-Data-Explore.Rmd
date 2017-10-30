@@ -1,0 +1,315 @@
+---
+layout: post
+title: "Work with NEON Carabid Beetle Data"
+date:  2016-12-16
+authors: [Katie LeVan]
+contributors: [Megan A. Jones] 
+dateCreated: 2016-12-16
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+description: "A tutorial about understanding NEON carabid data."
+image:
+  feature: TeachingModules.jpg
+  credit: A National Ecological Observatory Network (NEON) - Teaching Module
+  creditlink: http://www.neonscience.org
+permalink: /R/carabid-explore-data
+code1: Beetle-Data-Explore.R
+comments: false
+---
+
+{% include _toc.html %}
+
+This tutorial explains the structure of the NEON Ground Beetle Samplingdata and explains how to work with the 
+combined data.  cleaning and combining the three tables from the 
+NEON Data Portal related to Carabid Beetle data. This tutorial accompanies the 
+<a href="{{ site.basurl }}/R/carabid-explore-data" target="_blank"> *Work with NEON Carabid Beetle Data* tutorial</a> 
+which explains the structure of the data and explains how to work with the 
+combined data. 
+
+**R Skill Level:** Introduction - you've got the basics of `R` down and 
+understand the general structure of tabular data.
+
+<div id="objectives" markdown="1">
+
+# Objectives
+After completing this tutorial, you will:
+
+* ADD
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded on
+your computer to complete this tutorial.
+
+### Install R Packages
+
+These R packages will be used in the tutorial below. Please make sure they are 
+installed prior to starting the tutorial. 
+ 
+* **dplyr:** `install.packages("dplyr")`
+* **maps:** `install.packages("maps")`
+* **mapproj:** `install.packages("mapproj")`
+* **foreign:** `install.packages("foreign")`
+* **maptools:** `install.packages("maptools")`
+* **raster:** `install.packages("raster")`
+* **sp:** `install.packages("sp")`  **NOTE:maybe delete: automatically installs with raster package**
+* **graphics:** `install.packages("graphics")`
+* **vegan:** `install.packages("vegan")`
+
+### Download The Data
+**NOTE: eventually turn these into teaching data subsets with others, then change to download buttons**
+You can download cleaned data files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/cleaned-Data.zip), 
+NOAA weather data for each site [here](//github.com/klevan/carabid-workshop/blob/master/data/NOAA%20weather%20data%20for%202014.csv), 
+NEON map shp files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/map%20data.zip) 
+and the script we will be modifying [here](//github.com/klevan/carabid-workshop/blob/master/code/data-analysis.R). 
+
+
+</div>
+
+## What Data Is Available
+The carabid data that we will use for this tutorial were collected at 13 sites 
+in 2014. NEON carabid data are stored in three tables: 
+ * field collection data, 
+ * sorting data and 
+ * identification and pinning data. 
+ 
+ Let's read in the data and explore it. 
+ 
+ [**Note: Add brief bit about NEON file name conventions**]
+ADD where documentation for all the fields can be found; ?same for all tables? 
+
+* TOS Protocol and Procedure: Ground Beetle Sampling
+* TOS Protocol and Procedure: Ground Beetle and Mosquito Specimen Processing
+ 
+ **Note remove those packages not needed in this tutorial**
+
+``` {r load-data}
+# Load packages required for entire script. 
+library(plyr)      # move/manipulate data
+library(dplyr)     # move/manipulate data
+library(maps)      # build maps
+library(mapproj)   # work with map projections
+library(foreign)   # Read data in XXXX format (why needed here?)
+library(maptools)  # work with maps
+library(raster)    # work with raster spatial data
+library(graphics)  # base R graphics package
+library(vegan)     # community ecology functions
+
+# set working directory to ensure R can find the file we wish to import
+# setwd("working-dir-path-here")
+
+```
+
+### Field Collection Data Table
+Contains information related to the location of each trap (i.e., latitude, 
+longitude, NLCD class) and metadata about the sampling event (i.e., when traps 
+were set, `setDate`; the date of trap collection, `collectDate`; the number of 
+days a given trap was in the field, `daysOfTrapping`). Unique collection events 
+have a unique sampleID with the format = `plotID.trapID.collectDate`. 
+
+
+![Insect collection by pitfall trapping](https://farm6.staticflickr.com/5311/5860792533_d02d0bdf8a_b.jpg)
+
+**NOTE: Katie are these your photos? If so, can we pull them down and store on our
+site so they remain perminantly with the tutorial, also I'd like to add photo 
+credit for them. **
+
+### Sorting Data Table
+This table contains information about what specimens were found in traps. Sample 
+types include vertebrate bycatch (herps = `vert bycatch herp`; mammals = 
+`vert bycatch mam`), non-Carabidae invertebrate bycatch (`invert 
+bycatch`), and all information about carabids. 
+
+Older data (2014 and prior) divide carabid data into two categories: 
+
+* `common carabid`, for which all taxonomic and abundance data is listed in the 
+sorting dataset, and 
+* `other carabid`, a catch-all category indicating that the relevant taxonomic 
+and abundance information for specimens with that `sampleID` is provided in the 
+pinning dataset. 
+
+Data since 2015 has all beetle data referred to as `common carabid` but on the 
+data portal it will be `carabid`.  
+
+Unique records have a unique `associatedSampleID` (format = 
+`plotID.trapID.collectDate.taxonID.tubeID`). For records where taxonomic 
+information is unknown the following shorthand codes are used in place of the `taxonID` [**NOTE: I added taxonID here, is that correct**] based on `sampleType`:
+
+* `ib` for invertebrate bycatch, 
+* `vb` for vertebrate bycatch, 
+* `cc` for common carabid, 
+* `oc` for other carabid.
+
+![A mixed sample from a carabid trap](https://farm6.staticflickr.com/5159/5861346198_dcd8fb7a6f_b.jpg)
+
+### Pinning Data Table
+Contains information about all carabids that were pinned or pointed. Each sample 
+in the pinning dataset has a unique identifier (individualID). The information 
+in the pinning table are traceable to the sorting data via the a sampleID. Every
+'sampleID' in the pinning data matches an 'associatedSampleID' in the sorting 
+dataset. 
+
+![A pinned Euryderus grossus](http://www.boldsystems.org/pics/NEONT/carabid546%2B1259940908.jpg)
+
+## Data Format
+When downloaded from the portal, all data is divided by site. To look at all 13 
+sites from 2014 will require downloading 39 files (one field, sorting and pinning 
+data for each site) and combining the datasheets across all sites for each type 
+of data (i.e., field, sorting and pinning). 
+
+For an R script and information on how to clean and combine the numerous files 
+from several field sites, see the 
+<a href="{{ site.baseurl }}/R/carabid-clean-data" target="_blank"> *Clean & Combine Carabid Beetle Data from the NEON Data Portal* tutorial.
+
+## Combined, Clean Data
+
+However, for those that just want the csv files that are the end result, I have 
+provided them [here](//github.com/klevan/carabid-workshop/blob/master/data/cleaned%20data/cleaned%20data.zip). 
+Weather data from NOAA for these 13 sites can be found [here](//github.com/klevan/carabid-workshop/blob/master/data/NOAA%20weather%20data%20for%202014.csv).
+ 
+## Explore the Data
+
+```` {r read-data}
+fieldData_HARV <- read.csv(
+      file="cleanData/fieldData-cleaned.csv",
+      stringsAsFactors = FALSE
+      )
+
+sortData_HARV <- read.csv(
+      file="cleanData/sortData-cleaned.csv",
+      stringsAsFactors = FALSE
+      )
+
+pinData_HARV <- read.csv(
+      file="cleanData/pinData-cleaned.csv",
+      stringsAsFactors = FALSE
+      )
+
+```
+
+### Field Collection 
+A brief look at the data shows that most sites collect all 40 traps on a 14 day 
+interval; 81% of traps were collected on the 14 day cycle exactly and 62% 
+collected absolutely every trap during a collection bout. Deviations were 
+minor and in more than 85% of cases, field operations staff were able to reach 
+at least 8 of 10 plots.
+
+``` {r exp-field-data}
+
+
+par(mfrow=c(1,2))
+
+hist(fieldData_HARV$daysOfTrapping,xlim=c(0,30),
+		 col="black", 
+		 main="Typical sampling interval", 
+		 xlab="Days of trapping")
+    
+fieldData_HARV %>% 
+	count(siteID,boutNumber) -> numTrapsDeployed
+
+hist(numTrapsDeployed$n,xlim=c(0,40),
+		 col="black",
+		 main="Typical number of traps deployed",
+		 xlab="Number of traps per site per bout")
+
+```
+
+
+## Trends and Patterns
+Does latitude explain beetle abundance or richness? The relationship can be 
+examined at the level of the trap, the plot or the site; but the pattern may be 
+driven by substantial variation seen in the middle latitudes. 
+
+``` {r plot-abund}
+# plot beetle abunance 
+plot(Dmap,
+		 col="#ADA96E",bg='#77BFC7',
+		 main='Beetle Abundance by Site',cex.main=3)
+
+sites <- sites[order(sites[,'numCarabidsCaught']),]
+
+sites$intensity <- heat.colors(13)[13:1]
+
+sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+
+```
+
+![Map of beetle abundance](//klevan.github.io/images/rfigs/neonCarabidby_site_abundance_map.png)
+
+``` {r plot-richness}
+
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
+
+sites <- sites[order(sites[,'beetleRichness']),]
+
+sites$intensity <- heat.colors(13)[13:1] 
+    
+sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+    
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+```
+
+
+![Map of beetle richness](//klevan.github.io/images/rfigs/neonCarabidby_site_richness_map.png)
+
+### Plotting latitudinal gradients of beetle abundance and richness at the trap level
+
+``` {r plot-lat-grad-trap}
+    plot(bet_field$decimalLatitude,bet_field$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="darkblue")
+    plot(bet_field$decimalLatitude,bet_field$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="darkblue")
+```
+
+![Latitudinal gradients of beetle abundance and richness; data at the trap level](//klevan.github.io/images/rfigs/neonCarabidby_trap.png)
+
+### Plotting latitudinal gradients of beetle abundance and richness at the plot level
+
+``` {plot-lat-grad-plot}
+
+plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="turquoise")
+
+plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="turquoise")
+
+```
+
+![Latitudinal gradients of beetle abundance and richness; data summarized at the plot level](//klevan.github.io/images/rfigs/neonCarabidby_plot.png)
+
+### Plotting latitudinal gradients of beetle abundance and richness at the bout level
+
+    plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="deepskyblue")
+    plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="deepskyblue")
+
+![Latitudinal gradients of beetle abundance and richness; data summarized at the collection bout level](//klevan.github.io/images/rfigs/neonCarabidby_bout.png)
+
+### Precipitation and beetle distributions
+
+Precipitation was not homogeneous and largely fell in the southern and eastern US. Patterns of beetle abundance varied accordingly.
+
+    plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
+    sites <- sites[order(sites[,'prcp']),]
+    sites$intensity <- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue')
+    sites$cex <- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
+    points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+
+![Distribution of rainfall at across sites](//klevan.github.io/images/rfigs/neonCarabidby_site_rainfall_map.png)
+
+    plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per trap',bg='blue',pch=21)
+    plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)
+
+![Effect of rainfall on measured beetle abundance](//klevan.github.io/images/rfigs/neonCarabidrainfall.png)
+
+### Habitat and beetle distributions
+
+NLCD class is an included variable describing the habitat in which traps are embedded. Habitat type certainly seems to influence observed abundance and (to a lesser extent) richness.
+
+    par(mar=c(15,4.1,4.1,2.5))
+    nlcd$color <- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
+    barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
+    barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
+
+![Effect of habitat type on measured beetle abundance](//klevan.github.io/images/rfigs/neonCarabidnlcd_abundance.png)
+![Effect of habitat type on measured beetle richness](//klevan.github.io/images/rfigs/neonCarabidnlcd_richness.png)
+
+## Script Download
+To download the script that generated the above plots, click [here](//github.com/klevan/carabid-workshop/blob/master/code/data-analysis.R). 
+
+

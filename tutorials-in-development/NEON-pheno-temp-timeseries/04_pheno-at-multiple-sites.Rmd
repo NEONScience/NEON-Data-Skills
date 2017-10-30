@@ -1,0 +1,65 @@
+---
+layout: post
+title: "Title Here"
+date:   2016-01-01
+authors: [ ]
+contributors: [ ] 
+dateCreated: 2016-01-01
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+packagesLibraries: [ ]
+category: [self-paced-tutorial]
+tags: [ ]
+mainTag: 
+tutorialSeries: [ ]
+description: "Brief description in plain text."
+code1: use-if-associated-code.R
+image:
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: 
+permalink: 
+comments: true
+---
+
+{% include _toc.html %}
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
+<div id="objectives" markdown="1">
+
+###Goals / Objectives
+After completing this activity, you will:
+
+ * 
+
+##Things You’ll Need To Complete This Tutorial
+You will need the most current version of `R` and, preferably, `RStudio` loaded
+on your computer to complete this tutorial.
+
+###Install R Packages
+* **NAME:** `install.packages("NAME")`
+
+
+[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+
+###Download Data 
+(include file that inserts a button to download data from Figshare & text about
+data.  Feel free to just add text until the data set is finalized and uploaded).
+
+{% include/dataSubsets/_data_NAME.html %}  
+
+****
+{% include/_greyBox-wd-rscript.html %}
+
+****
+
+##Additional Resources
+
+* (links if you want to provide)
+
+</div>
+
+
+
+
+

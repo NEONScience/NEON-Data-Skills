@@ -39,7 +39,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
@@ -53,11 +53,11 @@ data to follow the code exactly.
 
 ## Recommended Reading
 
-You may benefit from reviewing these related tutorials prior to this tutorial: 
+You may benefit from reviewing these related resources prior to this tutorial: 
 
-* <a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank">The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R.</a>
-* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Please read "Raster Data in R - The Basics.</a>
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The `raster` R package documentation.</a>
+* <a href="/raster-res-extent-pixels-r" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R* tutorial.</a>
+* <a href="/raster-data-r" target="_blank"> Please read through *Raster Data in R - The Basics* tutorial.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The raster R package documentation.</a>
 
 </div>
 

@@ -1,0 +1,757 @@
+---
+title: "Roiger Intern Project Preliminary Code Data Portal Version"
+author: "Charlotte Roiger"
+output:
+  html_document: default
+  word_document: default
+---
+### Data Frame Set Up
+
+```{r, warning=FALSE, message=FALSE}
+# install.packages('tidyverse')
+library(tidyverse)
+library(mosaic)
+library(plyr)
+library(ggplot2)
+library(gridExtra)
+library(scales)
+library(foreign)
+library(rgeos)
+library(maptools)
+library(raster)
+library(rbokeh) # Maybe with a map?
+library(dplyr)
+library(rgdal) # requires sp, will use proj.4 if installed
+
+options(stringsAsFactors = FALSE) 
+
+
+# Clean starting environment
+rm(list = ls())
+
+# My working directory
+if(file.exists('~/GitHub/mosquito-intern')){
+  repo_location = '~/GitHub/mosquito-intern/code'
+}
+if(!exists('repo_location')){stop('Set the location of the neon_data repository.')}
+
+# Functions to pull NEON data
+source(paste(repo_location, 'get_NEON_data_by_productID.R', sep='/'))
+
+# Pulls all data by DPID
+# Requires: a known DPID, the folder location of the 'get_NEON_data_by_productID.R' script, andthe table names to pull
+# Note: table names are pulled by grepl, so you just need enough of the name to get a unique table name
+
+# Mosquito diversity data "DP1.10043.001"
+
+# contains 6 tables: 'mos_trapping', 'mos_sorting', 'mos_expertTaxonomistIDProcessed', 'mos_expertTaxonomistIDRaw','mos_archivepooling', 'mos_barcoding'
+mos = get_data_product(productID = "DP1.10043.001", 
+                       df = c('mos_trapping', 'mos_sorting', 'mos_expertTaxonomistIDProcessed', 'mos_expertTaxonomistIDRaw','mos_archivepooling', 'mos_barcoding'))
+
+# Rename table outputs 
+trap = mos$mos_trapping
+sort = mos$mos_sorting
+id = mos$mos_expertTaxonomistIDProcessed
+
+taxonomy = read_csv("~/GitHub/mosquito-intern/resources/mosquito_taxonomy.csv", na = "NA")
+precip.df = read_csv('~/GitHub/mosquito-intern/resources/precipitation.csv', na = "NA")
+temp.df = read_csv("~/GitHub/mosquito-intern/resources/temperature_maximum.csv", na = "NA")
+domain.df = read_csv("~/GitHub/mosquito-intern/data/domainid_siteid_match.csv", na = "NA")
+source('~/GitHub/mosquito-intern/code/get_NEON_location.R')
+
+# Merge ID with sort
+cols = colnames(sort)[!colnames(sort)%in%colnames(id)]
+id <- left_join(id, sort[, c('subsampleID', cols)], 
+                by = "subsampleID")
+
+#Creating a dataframe with only the unique plotIDs and lat/lon data for merging
+uniquetrap<-trap[!duplicated(trap$plotID),c("plotID", "decimalLatitude","decimalLongitude", "elevation","nlcdClass")]
+
+#Merging id df with lat2 lon2 data
+id <- merge(x = uniquetrap, y = id, by.y = "plotID", by.x = "plotID", all.y = TRUE)
+
+# Get zero traps from trapping
+new_trap<- trap[!trap$sampleID %in% id$sampleID & trap$targetTaxaPresent=="N",]
+
+#Add columns in new_trap that weren't present in the ID table then add new_trap to ID table
+new_trap <- new_trap[, colnames(new_trap)[colnames(new_trap)%in%colnames(id)]]
+
+new_trap[, colnames(id)[!colnames(id)%in%colnames(new_trap)]]<-NA
+
+id <- rbind(id,new_trap)
+
+#Convert sample weights and individual count to numeric type
+id$bycatchWeight<- as.numeric(id$bycatchWeight)
+id$totalWeight <- as.numeric(id$totalWeight)
+id$subsampleWeight <- as.numeric(id$subsampleWeight)
+id$individualCount <- as.numeric(id$individualCount)
+
+#Creation of sample Multiplier
+id$sampleMultiplier <- ifelse(is.na(id$bycatchWeight), id$totalWeight/id$subsampleWeight, id$totalWeight/(id$subsampleWeight-id$bycatchWeight))
+id$sampleMultiplier <- ifelse(id$sampleMultiplier==Inf, NA, id$sampleMultiplier)
+id$sampleMultiplier <- ifelse(id$subsampleWeight==0 & id$individualCount != 0, 1, id$sampleMultiplier)
+
+#Creation of New individual Count with Multiplier
+id$newindividualCount <-ifelse(is.na(id$sampleMultiplier)==F, round(id$individualCount*id$sampleMultiplier), NA)
+
+#Creation of a variable to test whether samples were collected on the same day or different days
+id$sameDay <- ifelse(substr(id$collectDate, 9, 10) != substr(id$setDate,9,10), FALSE, TRUE)
+
+#Creating variables that convert the time of set and collection to hours
+id$setHours <-((as.numeric(substr(id$setDate,15,16))/60)+(as.numeric(substr(id$setDate,12,13))))
+id$collectHours <-((as.numeric(substr(id$collectDate,15,16))/60)+(as.numeric(substr(id$collectDate,12,13))))
+
+#variable to calculate the number of hours of trap deployment
+id$HoursOfTrapping <-ifelse(id$sameDay == TRUE, id$collectHours - id$setHours, (24 - id$setHours) + id$collectHours)
+
+#Changing Time diff to numeric
+id$HoursOfTrapping <- abs(as.numeric(id$HoursOfTrapping))
+
+#Extracting year information for id from both collect date and recieved date
+id$receivedDate <- as.character(id$receivedDate)
+
+id$Year<-ifelse(is.na(id$collectDate), substr(id$receivedDate,1,4), substr(id$collectDate,1,4))
+
+
+#Chaning year to be a factor rather than a character
+id$Year<-as.factor(id$Year)
+
+#Exctracting date information for id
+id$Date<-substr(id$collectDate,1,10)
+
+#Change temp date type
+temp.df$date <- as.Date(temp.df$date)
+
+# #merging id with temp data
+# id <- merge(x = temp.df, y = id, by.y = c('siteID','Date'), by.x = c('siteID','date'), all.y = TRUE)
+# 
+# #Converting temperature to proper value
+# id$value<-id$value/10
+# names(id)[5]<-"Max.TempC"
+# 
+# #Change precip date type
+# precip.df$date <- as.Date(precip.df$date)
+# 
+# #Merge id with precip data
+# id <- merge(x = precip.df[,c(1,4,9)], y = id, by.y = c('siteID', 'date'), by.x = c('siteID', 'date'), all.y = TRUE)
+# 
+# #converting temperature to proper value and renaming
+# id$value<-id$value/10
+# names(id)[3]<-"Precipmm"
+
+#Merge with domain info.
+id$domainID <- as.character(id$domainID)
+
+#Filter by species and subspecies classification
+id <- dplyr::filter(id, id$taxonRank %in% c("subspecies","species", NA, ""))
+
+#smalle subset only containing 2014 and 2016
+idsmall<-dplyr::filter(id, id$Year %in% c(2014,2016))
+ 
+```
+
+
+### Species Richness Vignette
+
+```{r}
+#Creation of a dataframe that maps plotIds to number of unique scientific names
+
+specrich <- ddply(idsmall, ~ siteID + domainID + Date, summarize, num_species = length(unique(scientificName)))
+
+
+#Omit all instances where date is unknown
+specrich <- specrich[complete.cases(specrich$Date),]
+
+#Merging to get lat2 lon2 data
+
+#Omit any instances where lat and lon is not known for a site
+uniquetrap <- uniquetrap[uniquetrap$decimalLatitude!="",]
+
+#uniquetrap siteID
+uniquetrap$siteID <- substr(uniquetrap$plotID,1,4)
+
+#taking only the observations that are not duplicated
+uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteID),]
+
+#merge with lat lon data excluding plotID
+specrich <- merge(x = uniquetrap[,c("siteID", "decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = specrich, by.y = "siteID", by.x = "siteID")
+
+#Changin lat2 to a numeric and date to date class
+specrich$decimalLatitude<-as.numeric(specrich$decimalLatitude)
+specrich$date<-as.Date(specrich$Date)
+
+#Creating a Year variable
+specrich$Year <- substr(specrich$Date, 1,4)
+
+#Two week average max temp
+
+#Creation of Templag
+Templag <- function(siteID, date){
+  date <- as.Date(date)
+  filter1 <- temp.df[grepl(siteID, temp.df$siteID),]
+  filter2 <- filter1[filter1$date >= date - 14 & filter1$date < date + 1,]
+  TwoWeekAvgT <- mean(filter2$value)/10
+  filter3 <- filter2[filter2$value > 16,]
+  GDD <- length(unique(filter3$date))
+  # return(GDD)
+  # how to return multiple objects from a single function call
+  return(list(TwoWeekAvgT=TwoWeekAvgT, GDD=GDD))
+}
+
+SPTWAMT.mat<-mapply(Templag, specrich$siteID, specrich$date)
+# saveRDS(SPTWAMT.mat, file = 'SpeciesRichTempLag.rds')
+
+specrich$TwoWeekAvgMT<- c(unlist(SPTWAMT.mat[1,]))
+specrich$DegreeDays <- c(unlist(SPTWAMT.mat[2,]))
+
+#Creating a Continental indicator variable
+specrich$Continental <- ifelse(specrich$domainID %in% c('D18', 'D19'), 'Alaska', ifelse(specrich$domainID == 'D04', 'Puerto Rico', 'Continental U.S'))
+
+#Preliminary graph of latitude by species richness overall
+ggplot(specrich,aes(decimalLatitude, num_species))+
+  geom_point(aes(colour = Continental), size = 2)+
+  labs(x = "Latitude", y = "Number of Species")+
+  guides(fill = FALSE, color = FALSE)+
+  ggtitle("Species Richness by Latitude")
+
+# #Preliminary graph of latitude vs. maximum temp
+# ggplot(specrich, aes(lat2, Max.TempC))+
+#   geom_point(color = 'dark blue', size = 2)+
+#   labs(x = "Latitude", y = "Maximum Temperature in Celsius")+
+#   ggtitle("Latitude by Maximum Temperature")
+
+# #Preliminary graph of latitude vs. precipitation
+# ggplot(specrich, aes(lat2, Precipmm))+
+#   geom_point(color = 'orange')+
+#   labs(x = "Latitude", y = "Precipitation in millimeters")+
+#   ggtitle("Latitude by Precipitation")
+
+#Preliminary graph of species richness by max temp avg
+ggplot(specrich, aes(TwoWeekAvgMT, num_species))+
+  geom_point(aes(color = Year), size = 2)+
+  labs(x = "Two Week Average Maximum Temperature in Celsius", y = "Number of Species")+
+  ggtitle("Species Richness by Two Week Average Maximum Temperature")
+
+#Preliminary graph of species richness by degree day
+ggplot(specrich, aes(DegreeDays, num_species))+
+  geom_point(aes(color = Continental))+
+  labs(x = "Number of Days Above 16 Degrees Celsius", y = "Number of Species")+
+  ggtitle("Species Richness by Precipitation")
+
+  
+# ggplot(specrich, aes(NLCDclass, num_species))+
+#   geom_jitter(aes(color = NLCDclass))+
+#   scale_x_discrete(labels = c("evergreenForest" = "EGF", "woodyWetlands" = "WWK", "emergentHerbaceousWetlands" = "EHWL", "grasslandHerbaceous" = "GLH","deciduousForest" = "DF", "shrubScrub"= "SS", "mixedForest"= "MF", "pastureHay" = "PH", "cultivatedCrops" = "CC", "dwarfScrub" = "DS", "NA" = "NA"))
+
+#Preliminary graph of Species Richness vs. Time for 2016
+# ggplot(specrich, aes(month(collectDate, label=TRUE, abbr=TRUE), 
+#                 value, group=factor(year(collectDate)), colour=factor(year(collectDate)))) +
+#   geom_point(aes(colour = Year))+
+#   labs(x = "Date of Collection", y = "Number of Species")+
+#   ggtitle("Species Richness vs. Time for 2016")
+
+#Challenge Problem Make scatterplot of Species Richness vs. Time for other year subsets
+
+#Preliminary graph of Temp by latitude
+# testgif<-ggplot(specrich, aes(lat2, Max.TempC, frame =Year)) +
+#   geom_point(aes(colour = Year)) +
+#   labs(x = "Latitude", y = "Temperature in Celsius") +
+#   ggtitle("Maximum Temperature vs. Latitude Overall")
+# 
+# gganimate(testgif, interval = 0.5, 'output.gif')
+
+#Preliminary graph of maximum temp versus date for 2016
+# M.Temp2014<-ggplot(specrich[specrich$Year==2014,], aes(date, Max.TempC))+
+#   geom_point(colour = 'blue')+
+#   labs(x = "Date of Collection", y = "Maximum Temperature")+
+#   scale_y_continuous(limits = c(0,45))+
+#   scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month", limits = as.Date(c("2014-05-01","2014-12-01")))+
+#   ggtitle("Maximum Temperature in Celsius vs. Date of Collection for 2014")
+# 
+# M.Temp2016<-ggplot(specrich[specrich$Year==2016,], aes(date, Max.TempC))+
+#   geom_point(colour = 'green')+
+#   labs(x = "Date of Collection", y = "Maximum Temperature")+
+#   scale_y_continuous(limits = c(0,45))+
+#   scale_x_date(labels = date_format("%m-%y"), date_breaks = "1 month", limits = as.Date(c("2016-05-01","2016-12-01")))+
+#   ggtitle("Maximum Temperature in Celsius vs. Date of Collection for 2016")
+# 
+# grid.arrange(M.Temp2014, M.Temp2016)
+# 
+# ######
+# M.precip2014<-ggplot(specrich[specrich$Year==2014,], aes(lat2, Precipmm))+
+#   geom_point(colour = 'blue')+
+#   labs(x = "Date of Collection", y = "Maximum Temperature")+
+#   # scale_y_continuous(limits = c(0,45))+
+#   # scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month", limits = as.Date(c("2014-05-01","2014-12-01")))+
+#   ggtitle("Maximum Temperature in Celsius vs. Date of Collection for 2014")
+# 
+# M.precip2016<-ggplot(specrich[specrich$Year==2016,], aes(lat2, Precipmm))+
+#   geom_point(colour = 'green')+
+#   labs(x = "Date of Collection", y = "Maximum Temperature")+
+#   # scale_y_continuous(limits = c(0,45))+
+#   # scale_x_date(labels = date_format("%m-%y"), date_breaks = "1 month", limits = as.Date(c("2016-05-01","2016-12-01")))+
+#   ggtitle("Maximum Temperature in Celsius vs. Date of Collection for 2016")
+# 
+# grid.arrange(M.precip2014, M.precip2016)
+
+
+```
+
+
+###Julian Date of first occurence versus lat
+
+```{r}
+# #Over representation of females in ID sample
+# tally(id$sex)
+# 
+# #Table of proportions of female versus male over time
+# prop.table(table(id$Year,id$sex),1)
+# 
+# #Instances of Ae. albopictus by year
+# table(id$Year,id$scientificName=="Aedes albopictus")
+# 
+# #Number of times each species identified in id df
+# # tally(id$scientificName)
+# 
+# #Tracking number of sites where Ae. Albopictus has been identified
+# albo<- id[grepl("Aedes albopictus", id$scientificName),]
+# albo2014<- id2014[grepl("Aedes albopictus", id2014$scientificName),]
+# albo2015<- id2015[grepl("Aedes albopictus", id2015$scientificName),]
+# albo2016<- id2016[grepl("Aedes albopictus", id2016$scientificName),]
+# 
+# #ex of previous code
+# #albo <- id[id$scientificName=="Aedes albopictus",]
+# 
+# length(unique(albo2014$uniquePlotIDs)) #18
+# length(unique(albo2015$uniquePlotIDs)) #9
+# length(unique(albo2016$uniquePlotIDs)) #45
+# 
+# #Preliminary findings suggest large amount of fluctuation in number of sites, could be due to sampling procedure or changes in biotic variables at each site
+# 
+# #Sum of Ae. albopictus for each year
+# sum(na.omit(albo2014$newindividualCount)) # 69
+# sum(na.omit(albo2015$newindividualCount)) # 43
+# sum(na.omit(albo2016$newindividualCount)) # 433
+# 
+# #Proportion of Ae. albopictus relative to total number collected by year
+# sum(complete.cases(albo2014$newindividualCount))/sum(complete.cases(id2014$newindividualCount))
+# sum(complete.cases(albo2015$newindividualCount))/sum(complete.cases(id2015$newindividualCount))
+# sum(complete.cases(albo2016$newindividualCount))/sum(complete.cases(id2016$newindividualCount))
+# 
+# 
+# #Slight increase in proportion of Ae. Albopictus caught over time relative to total number of mosquitos caught exception of 2016.
+# 
+# #Create df for domain ID and native code
+# 
+# albotax <- tidyr:: gather(taxonomy[grepl("Aedes albopictus", taxonomy$scientificName), grepl("NativeStatusCode", colnames(taxonomy))], "Domain ID")
+# 
+# albotax<-albotax[c(5:15,17:23),]
+# 
+# albotax.df <-data.frame("domainID"= unique(domain.df$domainid), "DomainNativeStatus"= albotax)
+# 
+# #Merge Cu. tarsalis taxonomy df with albo df
+# albo <- merge(x = albotax.df, y = albo, by.x = "domainID", by.y = "domainid")
+# 
+# #Subsets containing only the rows where Cu. tarsalis was first sampled in each geographic subdivision
+# albo.firstdomain <- albo[match(unique(albo$domainID), albo$domainID),]
+# albo.firstsite <- albo[match(unique(albo$siteid), albo$siteid),]
+# albo.firstplot <- albo[match(unique(albo$uniquePlotIDs), albo$uniquePlotIDs),]
+
+############## Culex tarsalis #########################
+
+#Instances of Cu. tarsalis by Year
+table(id$Year, id$scientificName=="Culex tarsalis")
+
+#Tracking number of sites where Cu. tarsalis has been identified
+tars<- id[grepl("Culex tarsalis", id$scientificName),]
+tarssmall <- tars[tars$Year %in% c(2014,2016), ]
+
+#Site Level variable
+tarsSiteLevel <- ddply(tarssmall,~siteID + domainID + Date, summarize, siteAbundance = sum(newindividualCount))
+
+#merge with location information
+tarsSiteLevel <- merge(x = uniquetrap[,c("siteID" ,"decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = tarsSiteLevel, by.y = "siteID", by.x = "siteID")
+
+tarsSiteLevel$decimalLatitude<- as.numeric(tarsSiteLevel$decimalLatitude)
+tarsSiteLevel$decimalLongitude<- as.numeric(tarsSiteLevel$decimalLongitude)
+
+#Obtain Temperature information
+CTTWAMT.mat<- mapply(Templag, tarsSiteLevel$siteID, tarsSiteLevel$Date)
+
+#Create variables in tarsSiteLevel for two week temp lag and degree days
+tarsSiteLevel$TwoWeekAvgMT <-c(unlist(CTTWAMT.mat[1,]))
+tarsSiteLevel$DegreeDays <- c(unlist(CTTWAMT.mat[2,]))
+
+#Create Year Variable from Date
+tarsSiteLevel$Year <- substr(tarsSiteLevel$Date, 1,4)
+
+
+#Create df for domain ID and native code
+
+tarstax <- tidyr:: gather(taxonomy[grepl("Culex tarsalis", taxonomy$scientificName), grepl("NativeStatusCode", colnames(taxonomy))], "Domain ID")
+
+tarstax<-tarstax[c(5:15,17:23),]
+
+tarstax.df <-data.frame("domainID"= unique(domain.df$domainid), "DomainNativeStatus"= tarstax)
+
+#Merge Cu. tarsalis taxonomy df with tars df
+tarsSiteLevel <- merge(x = tarstax.df[,c("domainID", "DomainNativeStatus.value")], y = tarsSiteLevel, by.x = "domainID", by.y = "domainID")
+
+#Creation of subsets by Year
+
+tars2014 <- tarsSiteLevel[tarsSiteLevel$Year == 2014, ]
+tars2016 <- tarsSiteLevel[tarsSiteLevel$Year == 2016, ]
+
+
+#number of sites of appearance
+# length(unique(tars$uniquePlotIDs)) #160
+# # length(unique(tars2013$uniquePlotIDs)) #35
+# length(unique(tars2014$uniquePlotIDs)) #40
+# length(unique(tars2016$uniquePlotIDs)) #115
+# 
+# 
+# #Sum of Cu. tarsalis for each year
+# # sum(tars2013$newindividualCount) # 1,690
+# sum(tars2014$newindividualCount) # 17,432
+# sum(na.omit(tars2016$newindividualCount)) # 11,827
+
+#Proportion of Cu. tarsalis relative to total number collected by year
+# sum(complete.cases(tars2013$newindividualCount))/sum(complete.cases(id2013$newindividualCount))
+# sum(complete.cases(tars2014$newindividualCount))/sum(complete.cases(id2014$newindividualCount))
+# sum(complete.cases(tars2016$newindividualCount))/sum(complete.cases(id2016$newindividualCount))
+
+
+# Visualizations for domains, sites and plots where cx. tarsalis is present
+tars2016$date<-as.Date(tars2016$Date)
+tars2014$date<-as.Date(tars2014$Date)
+# tars2013$date<-as.Date(tars2013$date)
+
+# Abundance of Culex tarsalis for 2014 and 2016
+plot2016 <-ggplot(tars2016, aes(as.Date(Date), as.numeric(siteAbundance)))+
+  geom_point(color = "darkblue", size = 2)+
+  # scale_y_continuous(limits = c(0,305))+
+  scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month")+
+  labs(x = "Date", y = "Abundance of Culex tarsalis")+
+  ggtitle("Date versus Abundance of Culex tarsalis for 2016")
+plot2014 <-ggplot(tars2014, aes(as.Date(Date), as.numeric(siteAbundance)))+
+  geom_point(color = "dark green", size = 2)+
+  # scale_y_continuous(limits = c(0, 305))+
+  scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month", limits = as.Date(c("2014-05-01","2014-11-01")))+
+  labs(x = "Date", y = "Abundance of Culex tarsalis")+
+  ggtitle("Date versus Abundance of Culex tarsalis for 2014")
+
+grid.arrange(plot2014,plot2016)
+
+# Maximum temperature for 2014 and 2016
+tempplot2016 <-ggplot(tars2016, aes(as.Date(Date), as.numeric(TwoWeekAvgMT)))+
+  geom_point(color = "red", size = 2)+
+  scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month")+
+  labs(x = "Date", y = "Average Max Temperature in C")+
+  ggtitle("Date versus Two Week Average Maximum Temperature for 2016")
+tempplot2014 <-ggplot(tars2014, aes(as.Date(Date), as.numeric(TwoWeekAvgMT)))+
+  geom_point(color = "purple", size = 2)+
+  scale_x_date(labels = date_format("%m-%Y"), date_breaks = "1 month", limits = as.Date(c("2014-05-01","2014-11-01")))+
+  labs(x = "Date", y = "Average Max Temperature in C")+
+  ggtitle("Date versus Two Week Average Maximum Temperature for 2014")
+
+grid.arrange(tempplot2014, tempplot2016)
+
+#Plot comparison between temperature and abundance
+grid.arrange(tempplot2014, plot2014)
+grid.arrange(tempplot2016, plot2016)
+
+# #Abundance of Culex tarsalis by NLCD Class Code
+# ggplot(tarssmall, aes(NLCDclass, as.numeric(newindividualCount)))+
+#   geom_col(aes(fill = NLCDclass))+
+#   guides(fill = FALSE)+
+#   labs(x = "NLCD Class Code", y = "Abundance of Culex tarsalis")+
+#   ggtitle("Abundance of Culex tarsalis by NLCD Class Code")
+#   
+# tally(id$NLCDclass)
+
+############ WORKING ON MAPPING VIZ
+
+#Subsets containing only the rows where Cu. tarsalis was first sampled in each geographic subdivision
+tarsSiteLevel <- tarsSiteLevel[order(as.Date(tarsSiteLevel$Date)),]
+
+tars.firstdomain <- tarsSiteLevel[match(unique(tarsSiteLevel$domainID), tarsSiteLevel$domainID),]
+tars.firstsite <- tarsSiteLevel[match(unique(tarsSiteLevel$siteID), tarsSiteLevel$siteID),]
+
+require("rgdal") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
+
+# My working directory
+if(file.exists('~/GitHub/mosquito-intern')){ # Charlotte's path
+  repo_location = '~/GitHub/mosquito-intern'
+}
+if(file.exists('~/GitHub/mosquito-intern')){
+  repo_location = '~/GitHub/mosquito-intern'
+}
+if(!exists('repo_location')){stop('Set the location of the neon_data repository.')}
+
+# Two ways to make a map
+# Way #1: Map the data using maptools & the plot function
+# # Get shp files of NEON domains
+# Ddbf<-read.dbf(paste(repo_location, '/resources/spatial files/NEON-domain-map/NEON_Domains.dbf', sep='/'))
+# Dmap<-readShapePoly(paste(repo_location, '/resources/spatial files/NEON-domain-map/NEON_Domains.shp', sep='/'))
+# crs(Dmap) <- "+proj=utm +units=m +ellps=WGS84"
+# plot(Dmap,col="#ADA96E",bg='#77BFC7',main='NEON Domains',cex.main=1)
+# points(tars.firstdomain$lon2, tars.firstdomain$lat2, pch=21, bg= "blue",cex=1)
+# # points(long, lat)
+
+# Way #2: Using rgdal, ggplot and aes
+# Read blog post here: https://github.com/tidyverse/ggplot2/wiki/plotting-polygon-shapefiles
+
+
+
+#Read in file  
+NEONmap = readShapePoly(paste(repo_location, 'resources/spatial files/NEON-domain-map/NEON_Domains.shp', sep='/'))
+# Manipulate for plotting
+NEONmap@data$id = rownames(NEONmap@data)
+NEONmap.points = ggplot2::fortify(NEONmap, region="id")
+NEONmap.df = join(NEONmap.points, NEONmap@data, by="id")
+NEONmap.df$DomainID<-as.character(NEONmap.df$DomainID)
+NEONmap.df$nativestat<-ifelse(NEONmap.df$DomainID %in% c(1,2,3,5:17), "Native", "Absent")
+
+domain.df <- merge(x = uniquetrap[,c("decimalLatitude", "decimalLongitude", "siteID")], y = domain.df, by.x = "siteID", by.y = "siteid")
+
+domain.df <- merge(x = tars.firstsite[,c("siteID","DomainNativeStatus.value")], y = domain.df, by.x = "siteID", by.y = "siteid", all.y = TRUE)
+
+domain.df$tarsPresent <- ifelse(is.na(domain.df$DomainNativeStatus.value), "Not Prsent", "Present" )
+
+domain.df<- domain.df[domain.df$siteID %in% idsmall$siteID,]
+
+domain.df$tarsPresent<- as.factor(domain.df$tarsPresent)
+domain.df$lat2<- as.numeric(domain.df$decimalLatitude)
+domain.df$lon2<- as.numeric(domain.df$decimalLongitude)
+
+mapviz<-ggplot()+
+  geom_polygon(data = NEONmap.df, aes(long, lat, group=group, fill= as.factor(nativestat)))+
+  geom_path(data = NEONmap.df, aes(long,lat, group=group), color = 'black')+
+  scale_fill_manual(values = c("lightyellow2", "gold")) +
+  geom_point(data = domain.df, aes( decimalLongitude, decimalLatitude, color = tarsPresent),size = 2)+
+  labs( x = "Longitude", y ="Latitude")+
+  ggtitle("Map of Culex tarsalis Observation and Native Status")+
+  theme(plot.title = element_text(size = 16, face = "bold"))
+
+```
+
+
+############################ Working until this point ###########################################
+
+###Graphs and Visualizations
+
+```{r}
+######## NEED TO FIX TO MELD WITH CURRENT ID DATAFRAME CURRENT CODE BROKEN ##############
+#Preliminary graph of latitude by species richness overall
+# ggplot(specrich,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude all years")
+
+#Scatterplot with regression fit for 2012 ng
+# ggplot(mod2012$model,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude in 2012")+
+#   stat_smooth(method = "lm", col = "red")
+
+#Preliminary graph of latitude by species richness for 2013
+# ggplot(specrich2013,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude in 2013")
+
+#Scatterplot with regression fit for 2014 nb
+# ggplot(mod2014$model,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude in 2014")+
+#   stat_smooth(method = "lm", col = "red")
+
+#Scatterplot with regression fit for 2015 ng 
+# ggplot(mod2015$model,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude in 2015")+
+#   stat_smooth(method = "lm", col = "red")
+
+#Scatterplot with regression fit for 2016 g
+# ggplot(mod2016$model,aes(lat2, num_species))+
+#   geom_point(aes(colour = num_species))+
+#   ggtitle("Species Richness by Latitude in 2016")+
+#   stat_smooth(method = "lm", col = "red")
+
+#Visualization of proportion of female mosquitos over time
+# ggplot(id, aes(x = Year, fill = sex)) +
+#   geom_bar(position = "fill")+
+#   labs(y = "Proportions")+
+#   ggtitle("Proportions of Female Mosquitos by Year")
+
+#Max Temp for Year 2012
+# ggplot(specrich2012, aes(as.Date(collectDate), Max.TempC)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Maximum Temperature in Celsius") +
+#   ggtitle("Maximum Temperature for the Year 2012")
+
+#Max Temp for Year 2013
+# ggplot(specrich2013, aes(as.Date(collectDate), Max.TempC)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Maximum Temperature in Celsius") +
+#   ggtitle("Maximum Temperature for the Year 2013")
+
+
+#Max Temp for Year 2014
+# ggplot(specrich2014, aes(as.Date(collectDate), Max.TempC)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Maximum Temperature in Celsius") +
+#   ggtitle("Maximum Temperature for the Year 2014")
+
+
+#Max Temp for Year 2015
+# ggplot(specrich2015, aes(as.Date(collectDate), Max.TempC)) +
+#   geom_point(aes(colour = Precipmm)) +
+#   labs(x = "Date", y = "Maximum Temperature in Celsius") +
+#   ggtitle("Maximum Temperature for the Year 2015")
+
+
+#Max Temp for Year 2016
+# ggplot(specrich2016, aes(as.Date(collectDate), Max.TempC)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Maximum Temperature in Celsius") +
+#   ggtitle("Maximum Temperature for the Year 2016")
+
+
+#Precip for Year 2012
+# ggplot(specrich2012, aes(as.Date(collectDate), Precipmm)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Precipitation in mm") +
+#   ggtitle("Precipitation for the Year 2012")
+
+#Precip for Year 2013
+# ggplot(specrich2013, aes(as.Date(collectDate), Precipmm)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Precipitation in mm") +
+#   ggtitle("Precipitation for the Year 2013")
+
+#Precip for Year 2014
+# ggplot(specrich2014, aes(as.Date(collectDate), Precipmm)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Precipitation in mm") +
+#   ggtitle("Precipitation for the Year 2014")
+
+#Precip for Year 2015
+# ggplot(specrich2015, aes(as.Date(collectDate), Precipmm)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Precipitation in mm") +
+#   ggtitle("Precipitation for the Year 2015")
+
+#Precip for Year 2016
+# ggplot(specrich2016, aes(as.Date(collectDate), Precipmm)) +
+#   geom_point(aes(colour = num_species)) +
+#   labs(x = "Date", y = "Precipitation in mm") +
+#   ggtitle("Precipitation for the Year 2016")
+
+
+```
+
+###Preliminary Modeling
+
+```{r}
+#Preliminary Linear mods
+
+# mod2012 <-lm(num_species~lat2,data=specrich2012) #Sparse
+# summary(mod2012)
+# 
+# #omitted 2013 model due to lack of viable data to form model
+# 
+# mod2014 <-lm(num_species~lat2,data=specrich2014)
+# summary(mod2014)
+# 
+# mod2015 <-lm(numspecies~lat2,data=specrich2015) #Sparse
+# summary(mod2015)
+# 
+# mod2016 <-lm(num_species~lat2,data=specrich2016)
+# summary(mod2016)
+# 
+# modallyears <- lm(num_species~lat2, data=specrich)
+# summary(modallyears)
+# 
+# modyearfactor <- lm(num_species~lat2 + Year, data = specrich)
+# summary(modyearfactor)
+# 
+# #Precipitation Models
+# precip.mod2012 <- lm(num_species~lat2 + Precipmm, data = specrich2012)
+# summary(precip.mod2012)
+# 
+# precip.mod2014 <- lm(num_species~lat2 + Precipmm, data = specrich2014)
+# summary(precip.mod2014)
+# 
+# precip.mod2015 <- lm(num_species~lat2 + Precipmm, data = specrich2015)
+# summary(precip.mod2015)
+# 
+# precip.mod2016 <- lm(num_species~lat2 + Precipmm, data = specrich2016)
+# summary(precip.mod2016)
+# 
+# precip.modallyears <- lm(num_species~lat2 + Precipmm, data=specrich)
+# summary(precip.modallyears)
+# 
+# precip.modyearfactor <- lm(num_species~lat2 + Precipmm + Year, data = specrich)
+# summary(precip.modyearfactor)
+# 
+# #Max Temp Models
+# maxtemp.mod2012 <- lm(num_species~lat2 + Max.TempC, data = specrich2012)
+# summary(maxtemp.mod2012)
+# 
+# maxtemp.mod2014 <- lm(num_species~lat2 + Max.TempC, data = specrich2014)
+# summary(maxtemp.mod2014)
+# 
+# maxtemp.mod2015 <- lm(num_species~lat2 + Max.TempC, data = specrich2015)
+# summary(maxtemp.mod2015)
+# 
+# maxtemp.mod2016 <- lm(num_species~lat2 + Max.TempC, data = specrich2016)
+# summary(maxtemp.mod2016)
+# 
+# maxtemp.modallyears <- lm(num_species~lat2 + Max.TempC, data = specrich)
+# summary(maxtemp.modallyears)
+# 
+# maxtemp.modyearfactor <- lm(num_species~lat2 + Max.TempC + Year, data = specrich)
+# summary(maxtemp.modyearfactor)
+# 
+# #Maxtemp and precip combination models
+# 
+# combo.mod2012 <- lm(num_species~lat2 + Precipmm + Max.TempC, data = specrich2012)
+# summary(combo.mod2012)
+# 
+# combo.mod2014 <- lm(num_species~lat2 + Precipmm + Max.TempC, data = specrich2014)
+# summary(combo.mod2014)
+# 
+# combo.mod2015 <- lm(num_species~lat2 + Precipmm + Max.TempC, data = specrich2015)
+# summary(combo.mod2015)
+# 
+# combo.mod2016 <- lm(num_species~lat2 + Precipmm + Max.TempC, data = specrich2016)
+# 
+# combo.modallyears <- lm(num_species~lat2 + Precipmm + Max.TempC, data = specrich)
+# summary(combo.modallyears)
+# 
+# combo.modyearfactor <- lm(num_species~lat2 + Precipmm + Max.TempC + Year, data = specrich)
+# summary(combo.modyearfactor)
+
+```
+
+```{r}
+#Multi Level Linear Modeling
+# library(lme4)
+
+#Level one vars measured at each sample: Time Diff
+#level two vars measured at each site: Latitude, Precip, Temperature
+#level three vars measured at each domain: NLDC
+#Unconditional means model
+# Null.mll <- lmer(num_species ~ 1 + (1|uniquePlotIDs), REML= F, data=specrich)
+# summary(Null.mll)
+# 
+# Latonly.mll <- lmer(num_species ~ lat2 + (1|uniquePlotIDs), REML = F, data = specrich)
+# summary(Latonly.mll)
+# 
+# Latonly2.mll <- lmer(num_species ~ lat2 * Timediff + (Timediff|uniquePlotIDs), REML = F, data = specrich)
+
+# anova(Latonly.mll, Latonly2.mll)
+```
+

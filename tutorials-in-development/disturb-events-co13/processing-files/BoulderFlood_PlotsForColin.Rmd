@@ -1,0 +1,163 @@
+---
+title: "BoulderFlood_PlotsForColin"
+output: html_document
+---
+
+```{r load-libraries}
+
+library(lubridate) #work with time series data
+library(ggplot2)  #create efficient, professional plots
+library(plotly) #create cool interactive plots
+
+```
+
+
+
+```{r import-discharge }
+#SOURCE
+#http://nwis.waterdata.usgs.gov/co/nwis/uv/?cb_00065=on&cb_00060=on&format=rdb&site_no=06730200&period=&begin_date=2013-01-01&end_date=2013-12-31
+#import data
+
+#15min from 2013
+discharge2013_15min <- read.csv("precip-discharge/2013-discharge.txt",
+                      sep="\t",
+                      skip=25,
+                      header=TRUE,
+                      stringsAsFactors = FALSE)
+
+#view first few lines
+head(discharge2013_15min)
+#how many rows are in the R object
+nrow(discharge)
+
+#remove the first line from the data frame (which is a second list of headers)
+#the code below selects all rows beginning at row 2 and ending at the total
+#number of rows. 
+boulderStrDis.2013 <- discharge[2:nrow(discharge),]
+#############
+# daily data
+dischargeDaily <- read.csv("precip-discharge/06730200Discharge_Daily_since1986.csv",
+                      header=TRUE,
+                      stringsAsFactors = FALSE)
+
+#view first few lines
+head(dischargeDaily)
+```
+
+
+```{r rename-headers }
+
+#view names
+names(boulderStrDis.2013)
+names(dischargeDaily)
+
+#rename the fifth column to disValue representing discharge value
+names(boulderStrDis.2013)[5] <- "disValue"
+names(dischargeDaily)[4] <- "disValue"
+
+#view names
+names(boulderStrDis.2013)
+names(dischargeDaily)
+
+```
+
+
+```{r adjust-data-structure }
+#view structure of data
+str(boulderStrDis.2013)
+str(dischargeDaily)
+#view class of the disValue column
+class(boulderStrDis.2013$disValue)
+class(dischargeDaily$disValue)
+
+#convert column to integer
+boulderStrDis.2013$disValue <- as.integer(boulderStrDis.2013$disValue)
+dischargeDaily$disValue <- as.integer(dischargeDaily$disValue)
+
+class(boulderStrDis.2013$disValue)
+class(dischargeDaily$disValue)
+
+```
+
+```{r convert-time }
+# date time to POSIX
+#view class
+str(boulderStrDis.2013$datetime)
+
+#convert to date/time class - POSIX
+boulderStrDis.2013$datetime <- as.POSIXct(boulderStrDis.2013$datetime)
+
+#recheck data structure
+class(boulderStrDis.2013)
+
+# date to Date
+str(dischargeDaily$datetime)
+
+#convert to date/time class - POSIX
+dischargeDaily$datetime <- as.Date(dischargeDaily$datetime, format="%m/%e/%y")
+
+#recheck data structure
+str(dischargeDaily$datetime)
+```
+
+
+```{r define-time-subset }
+# Sept 2013
+#Define Start and end times for the subset as R objects that are the date class
+startTime1 <- as.Date("2013-09-01")
+endTime1 <- as.Date("2013-09-30")
+
+#create a start and end time R object
+start.end_Sept2013 <- c(startTime1,endTime1)
+start.end_Sept2013
+
+# Decade 2003 - 2012
+#Define Start and end times for the subset as R objects that are the date class
+startTime2 <- as.Date("2003-01-01")
+endTime2 <- as.Date("2012-12-31")
+
+#create a start and end time R object
+start.end_decade <- c(startTime2,endTime2)
+start.end_decade
+```
+
+  
+```{r plot-subset }
+#plot the data - September-October
+ggplot(data=dischargeDaily,
+      aes(datetime, disValue)) +
+      geom_bar(stat="identity", na.rm=T)+
+      scale_x_date(limits=start.end_Sept2013) +
+      xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
+      ggtitle("Stream Discharge (CFS) for Boulder Creek\nSeptember 2013")
+
+
+#plot the data - decade
+ggplot(data=dischargeDaily,
+      aes(datetime, disValue)) +
+      geom_bar(stat="identity", na.rm=T) +
+      scale_x_date(limits=start.end_decade) +
+      xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
+      ggtitle("Stream Discharge (CFS) for Boulder Creek\n Decade Averge 2003-2012")
+```
+
+```{r plot-decade-average }
+# subset only the decade
+dischargeDaily_decade <- subset(dischargeDaily,
+                         datetime >= as.Date('2003-01-01') &
+                         datetime <= as.Date('2012-12-31'))
+
+head(dischargeDaily_decade)
+
+dischargeDaily_decade$jd <- yday(dischargeDaily_decade$datetime)
+
+head(dischargeDaily_decade)
+str(dischargeDaily_decade)
+
+# plot the data - decade
+ggplot(data=dischargeDaily_decade,
+      aes(jd, disValue)) +
+      geom_bar(stat="identity", na.rm=T) +
+      xlab("Day of Year") + ylab("Discharge (Cubic Feet per Second)") +
+      ggtitle("Stream Discharge (CFS) for Boulder Creek\n Decade Averge 2003-2012")
+```

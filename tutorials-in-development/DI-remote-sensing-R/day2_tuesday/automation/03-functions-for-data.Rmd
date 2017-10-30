@@ -1,0 +1,138 @@
+# Functions for data
+
+Now that we know how to write functions, we can use this concept for preparing our
+data sets for analysis, generating the intermediary data files, and exporting
+them to CSV so that we can, for instance, share them with our collaborators.
+
+Let's start with the chunk from the manuscript:
+
+```{r, purl=TRUE}
+## Gathering all the data files
+split_gdp_files <- list.files(path = "data-raw", pattern = "gdp-percapita\\.csv$", full.names = TRUE)
+split_gdp_list <- lapply(split_gdp_files, read.csv)
+gdp <- do.call("rbind", split_gdp_list)
+```
+
+The simplest function we can write from this chunk is simply to enclose these
+lines of code inside curly brackets and not forgetting to return the `gdp`
+variable on the last line:
+
+```{r, purl=FALSE}
+gather_gdp_data <- function() {
+    split_gdp_files <- list.files(path = "data-raw", pattern = "gdp-percapita\\.csv$", full.names = TRUE)
+    split_gdp_list <- lapply(split_gdp_files, read.csv)
+    gdp <- do.call("rbind", split_gdp_list)
+    gdp
+}
+```
+
+We can make this function more general by using the folder where the files are
+stored and the pattern we use as arguments (`path` and `pattern`
+respectively). This way, we could re-use this function for another project where
+a similar operation (combining many CSV files into a single `data.frame`) would be
+needed.
+
+```{r, purl=FALSE}
+gather_data <- function(path = "data-raw", pattern = "gdp-percapita\\.csv$") {
+    split_files <- list.files(path = path, pattern = pattern, full.names = TRUE)
+    split_list <- lapply(split_gdp_files, read.csv)
+    gdp <- do.call("rbind", split_gdp_list)
+    gdp
+}
+```
+
+> ## A word of warning
+>
+> - the code here is pretty simple because we know that all datasets have
+>   exactly the same columns, but in a real life example, we might way to add
+>   additional checks to ensure that we won't be introducing any issues.
+> - this also illustrates how general you need to be when writing your
+>   functions. We could spend a lot of time optimizing and writing a function
+>   that would work on all cases. Sometimes it's worth your time, sometimes it
+>   might distract from your primary goal: writing the manuscript.
+
+## Towards automation
+
+We can create a `make_csv` function to automatically generate CSV files from our
+data sets. This might come handy if you want to send your intermediate datasets
+to your collaborators or if you want to inspect more closely that everything is
+working as it should.
+
+This function takes a data frame and make a CSV file out of it.
+
+
+```{r, purl=FALSE}
+make_csv <- function(obj, file, ...,  verbose = TRUE) {
+    if (verbose) {
+        message("Creating csv file: ", file)
+    }
+    write.csv(obj, file = file, row.names = FALSE, ...)
+}
+```
+
+Now, we can combine the two functions we just wrote (`make_csv` and
+`gather_data`) to generate a CSV file that contains the data from all countries:
+
+```{r, purl=FALSE}
+gdp_data <- gather_data()
+make_csv(gdp_data, file = "data-output/gdp.csv")
+```
+
+### Your turn
+
+Transform into functions these two pieces of code.
+
+```{r, purl=TRUE}
+## Turn this into a function called get_mean_lifeExp
+mean_lifeExp_by_cont <- gdp %>%
+    group_by(continent, year) %>%
+    summarize(mean_lifeExp = mean(lifeExp)) %>%
+    as.data.frame
+```
+
+```{r, purl=TRUE}
+## Turn this into a function called get_latest_lifeExp
+latest_lifeExp <- gdp %>%
+    filter(year == max(gdp$year)) %>%
+    group_by(continent) %>%
+    summarize(latest_lifeExp = mean(lifeExp)) %>%
+    as.data.frame
+```
+
+## Long computations
+
+[aside: talk about it if time permits]
+
+Caching is available in knitr but it can be pretty fragile. For instance, the
+caching is only based on whether the code in your chunk changes and doesn't
+check if your data on your hard drive is changing.
+
+In other cases, the output of your R code can't be represented into a CSV files,
+so you need to save it directly into an R object.
+
+```{r, purl=TRUE}
+## If you need to save an R object to avoid the repetition of long computations
+make_rds <- function(obj, file, ..., verbose = TRUE) {
+    if (verbose) {
+        message("Creating rds file: ", file)
+    }
+    saveRDS(obj, file = file)
+    invisible(file.exists(file))
+}
+```
+
+Then in your knitr document, you can do:
+
+`gdp <- readRDS(file="data-output/gdp.rds")`
+
+or maybe even:
+
+```{r, eval=FALSE}
+## An example of the kind of code you could use to work with time-consuming
+## computations in R.
+if ( !file.exists("data-output/gdp.rds")) {
+    gdp <- gather_gdp_data() ## long computation...
+    make_rds(gdp, file="data-output/gdp.rds")
+}
+gdp <- readRDS(file="data-output/gdp.rds")
+```

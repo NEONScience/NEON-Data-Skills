@@ -1,6 +1,6 @@
 ---
 syncID: c31429a97db04e868c75bb6866b2a039
-title: "Setup GitHub Working Directory - Quick Intro to Bash"
+title: "Set up GitHub Working Directory - Quick Intro to Bash"
 description: "This page reviews how to check that github is installed on your computer. It also provides a quick overview of Bash shell. Finally, we will setup a working GitHub directory."
 dateCreated: 2014-05-06
 authors: Materials adapted from Software Carpentry by NEON staff
@@ -25,9 +25,9 @@ On this page you will:
 *  Create a directory for all future GitHub repositories created on your computer
 
 To ensure Git is properly installed and to create a working directory for GitHub, 
-you will need to know a bit of shell. Please find a crash course below.
+you will need to know a bit of shell -- brief crash course below.
 
-## Crash Course in Shell 
+## Crash Course on Shell 
 
 The Unix shell has been around longer than most of its users have been alive. 
 It has survived so long because it’s a power tool that allows people to do 
@@ -120,8 +120,8 @@ system and how you have customized your filesystem.)
 alphabetical order, arranged neatly into columns.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** What is a directory? That is a folder! Read this section on
-<a href="{{ site.baseurl }}/set-working-directory-r#directory-vs-folder" target="_blank"> Directory & Folder </a>
+<i class="fa fa-star"></i>**Data Tip:** What is a directory? That is a folder! Read the section on
+<a href="/set-working-directory-r" target="_blank"> Directory vs. Folder </a>
 if you find the wording confusing.
 </div> 
 
@@ -161,7 +161,7 @@ data/  elements/  animals.txt  planets.txt  sunspot.txt
 ```
 
 To use `cd`, you need to be familiar with paths, if not, read the section on 
-<a href="{{ site.baseurl }}/set-working-directory-r#full-base-and-relative-paths" target="_blank"> Full, Base, and Relative Paths </a>.
+<a href="/set-working-directory-r" target="_blank"> Full, Base, and Relative Paths </a>.
 
 ### Make a directory -- mkdir
 Now we can create a new directory called `GitHub` that will contain our GitHub 
@@ -212,7 +212,7 @@ If you get an error, Git isn’t installed correctly. Reinstall and repeat.
 Now that we know Git is correctly installed, we can get it set up to work with. 
 
 The text below is modified slightly from 
-<a href="http://swcarpentry.github.io/git-novice/02-setup.html" target="_blank"> Software Carpentry's Setting up Git lesson</a>. 
+<a href="http://swcarpentry.github.io/git-novice/02-setup/" target="_blank"> Software Carpentry's Setting up Git lesson</a>. 
 
 When we use Git on a new computer for the first time, we need to configure a 
 few things. Below are a few examples of configurations we will set as we get 

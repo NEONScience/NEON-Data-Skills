@@ -17,8 +17,7 @@ urlTitle: download-data-DI16
 
 
 ## NEON Teaching Datasets
-Many NEON tutorials, available through the 
-<a href="{{ site.baseurl }}/resources/tutorials" target="_blank"> NEON Data Skills portal</a>,
+Many NEON Data Skills tutorials
 utilize teaching data subsets which are hosted on the NEON Data Skills 
 <a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets/834136" target="_blank">fig**share** repository</a>. 
 
