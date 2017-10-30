@@ -433,9 +433,9 @@ File names for AOP data are more variable than for IS or OS data;
 different AOP data products use different naming conventions. 
 File formats differ by product as well.
 
-This product, camera imagery, is stored in TIFF files, and the file 
-names are in the format BLAH. For a full list of AOP data products, 
-their naming conventions, and their file formats, see BLAH.
+This particular product, camera imagery, is stored in TIFF files. 
+For a full list of AOP data products, their naming conventions, and 
+their file formats, see <link pending>.
 
 Instead of reading a TIFF into R, we'll download it to the working 
 directory. This is one option for getting AOP files from the API; if 
@@ -446,9 +446,8 @@ this in the near future.
 To download the TIFF file, we use the `downloader` package, and we'll 
 select a file based on the time stamp in the file name: `20170328192931`
 
-``` {r download-aop-data}
+``` {r download-aop-data, eval=FALSE}
 
-# WHAT HAPPENS WHEN YOU KNIT THIS?
 download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
          paste(getwd(), "/SJER_image.tif", sep=""))
 
