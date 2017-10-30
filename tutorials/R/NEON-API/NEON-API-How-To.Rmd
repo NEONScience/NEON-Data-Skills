@@ -6,7 +6,7 @@ dateCreated:  2017-07-07
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones]
 estimatedTime: 1 - 1.5 hours
-packagesLibraries: httr, jsonlite, devtools, geoNEON, neonDataStackR
+packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonDataStackR]
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
@@ -16,26 +16,32 @@ urlTitle: neon-api-usage
 ---
 
 
-This is a tutorial in pulling data from the NEON API. The tutorial uses R 
-and the R package httr, but the core information about the API is applicable 
-to other languages and approaches.
+This is a tutorial in pulling data from the NEON API or Application 
+Programming Interface. The tutorial uses R and the R package httr, but the core 
+information about the API is applicable to other languages and approaches.
 
+## NEON data
 There are 3 basic categories of NEON data:
 
-1. Observational - Data collected by a human in the field, or in an analytical laboratory, e.g. beetle identification, foliar isotopes
-1. Instrumentation - Data collected by an automated, streaming sensor, e.g. net radiation, soil carbon dioxide
-1. Remote sensing - Data collected by the airborne observation platform, e.g. LIDAR, surface reflectance
+1. Observational - Data collected by a human in the field, or in an analytical 
+laboratory, e.g. beetle identification, foliar isotopes
+1. Instrumentation - Data collected by an automated, streaming sensor, e.g. net 
+radiation, soil carbon dioxide
+1. Remote sensing - Data collected by the airborne observation platform, e.g. 
+LIDAR, surface reflectance
 
-This lesson covers the first two types of data. NEON remote sensing data are not currently available through the API.
+This lesson covers all three types of data, but we recommend proceeding 
+through the lesson in order and not skipping ahead, since the query principles 
+are explained in the first section, on observational data.
 
 
 <div id="ds-objectives" markdown="1">
 
 # Objectives
-After completing this activity, you will:
+After completing this activity, you will be able to:
 
-* Be able to pull observational, instrumentation, and geolocation data from the NEON API.
-* Be able to transform API-accessed data from JSON to tabular format for analyses.
+* Pull observational, instrumentation, and geolocation data from the NEON API.
+* Transform API-accessed data from JSON to tabular format for analyses.
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
@@ -47,8 +53,11 @@ preferably, RStudio loaded on your computer.
 * **jsonlite:** `install.packages("jsonlite")`
 * **dplyr:** `install.packages("dplyr")`
 * **devtools:** `install.packages("devtools")`
+* **downloader:** `install.packages("downloader")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
 * **neonDataStackR:** `devtools::install_github("NEONScience/NEON-utilities/neonDataStackR")`
+
+Note, you must have devtools installed & loaded, prior to loading geoNEON or neonDataStackR. 
 
 ### Additional Resources
 
@@ -69,7 +78,7 @@ useful forms of information pull data from multiple sources using APIs. In
 the ecological and environmental sciences, many researchers use APIs to 
 programmatically pull data into their analyses. (Quoted from the NEON Observatory
 Blog story: 
-<a href="http://www.neonscience.org/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
+<a href="/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
 
 ## Anatomy of an API call
 
@@ -107,7 +116,7 @@ What type of data or metadata are you looking for?
 
 The specific data product, site, or location you want to get data for.
 
-## Observational data
+## Observational data (OS)
 Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>.
 
 We'll pick Breeding landbird point counts, DP1.10003.001
@@ -301,14 +310,14 @@ barplot(clusterBySp$total, names.arg=clusterBySp$scientificName,
 Wow! There are lots of *Agelaius phoeniceus* (Red-winged Blackbirds) at WOOD in July. 
 
 
-## Instrumentation data
+## Instrumentation data (IS)
 
 The process is essentially the same for sensor data. We'll do the same series of 
 queries for Soil Temperature, DP1.00041.001. Let's use data from Moab in March 
 2017 this time.
 
 ```{r soil-data}
-# Request soil temperature data
+# Request soil temperature data availability info
 req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
 
 # make this JSON readable
@@ -333,7 +342,8 @@ middle is a little more cryptic. The structure from beginning to end is:
 [year]-[month].[data package].[date of file creation]**
 
 So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
-2017-03.basic.20170804T063725Z.csv** is the:
+2017-03.basic.20170804T063725Z.csv** is the: 
+
 * NEON (`NEON.`)
 * Domain 13 (`.D13.`)
 * Moab field site (`.MOAB.`) 
@@ -378,7 +388,65 @@ plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab=
 
 ```
 
-As, we'd expect we see daily fluctuation in soil temperature. 
+As we'd expect we see daily fluctuation in soil temperature. 
+
+
+
+## Remote sensing data (AOP)
+
+Again, the process of determining which sites and time periods have data, and 
+finding the URLs for those data, is the same as for the other data types. We'll 
+go looking for High resolution orthorectified camera imagery, DP1.30010, and 
+we'll look at the flight over San Joaquin Experimental Range (SJER) in March 
+2017.
+
+```{r aop-data}
+# Request camera data availability info
+req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
+
+# make this JSON readable
+# Note how we've change this from two commands into one here
+avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=T)
+
+# get data availability list for the product
+cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
+
+# get data availability from location/date of interest
+cam <- GET(aop.urls[grep("SJER", aop.urls)])
+cam.files <- fromJSON(content(cam, as="text"))
+
+# this list of files is very long, so we'll just look at the first few
+head(cam.files$data$files$name)
+
+```
+
+File names for AOP data are more variable than for IS or OS data; 
+different AOP data products use different naming conventions. 
+File formats differ by product as well.
+
+This particular product, camera imagery, is stored in TIFF files. 
+For a full list of AOP data products, their naming conventions, and 
+their file formats, see <link pending>.
+
+Instead of reading a TIFF into R, we'll download it to the working 
+directory. This is one option for getting AOP files from the API; if 
+you plan to work with the files in R, you'll need to know how to 
+read the relevant file types into R. We hope to add tutorials for 
+this in the near future.
+
+To download the TIFF file, we use the `downloader` package, and we'll 
+select a file based on the time stamp in the file name: `20170328192931`
+
+``` {r download-aop-data, eval=FALSE}
+
+download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
+         paste(getwd(), "/SJER_image.tif", sep=""))
+
+```
+
+There is now an image of the San Joaquin Experimental Range in your 
+working directory.
+
 
 ## Geolocation data
 
@@ -493,4 +561,4 @@ the data portal, but not files pulled from the API. That functionality
 will be added soon!
 
 For a guide to using `neonDataStackR` on data downloaded from the portal, 
-look <a href="{{ site.baseurl }}/neonDataStackR" target="_blank">here</a>.
+look <a href="/neonDataStackR" target="_blank">here</a>.
