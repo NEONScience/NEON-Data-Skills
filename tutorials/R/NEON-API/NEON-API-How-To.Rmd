@@ -131,6 +131,7 @@ identifier for the data product:
 library(httr)
 library(jsonlite)
 library(dplyr, quietly=T)
+library(downloader)
 
 # Request data using the GET function & the API call
 req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
@@ -384,7 +385,9 @@ in fact have the data let's plot the mean soil temperature by date.
 
 ``` {r os-plot-soil-data}
 # plot temp ~ date
-plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab="T")
+plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime, 
+                                       format="%Y-%m-%d T %H:%M:%S Z"), 
+     pch=".", xlab="Date", ylab="T")
 
 ```
 
@@ -412,7 +415,7 @@ avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=
 cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
-cam <- GET(aop.urls[grep("SJER", aop.urls)])
+cam <- GET(cam.urls[grep("SJER", cam.urls)])
 cam.files <- fromJSON(content(cam, as="text"))
 
 # this list of files is very long, so we'll just look at the first few
@@ -444,8 +447,14 @@ download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$na
 
 ```
 
-There is now an image of the San Joaquin Experimental Range in your 
-working directory.
+<figure>
+	<a href="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.tif">
+	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.tif"></a>
+	<figcaption> This image of the San Joaquin Experimental Range should now be in your 
+working directory. Source: National Ecological Observatory Network
+	(NEON)  
+	</figcaption>
+</figure>
 
 
 ## Geolocation data
@@ -546,12 +555,6 @@ Now you can see the individual points where the respective point counts were
 located. 
 
 ## Coming soon
-
-Remote sensing data were added to the API recently (late September 2017). This 
-tutorial will be expanded to include a section on remote sensing data. In the 
-meantime, we can give you the guidance that all the query structure is the same 
-for remote sensing data, but once you get to the files themselves, different 
-handling will be needed, since they are not tabular data.
 
 At the top of this tutorial, we installed the `neonDataStackR` package. 
 This is a custom R package that stacks the monthly files provided by 

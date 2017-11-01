@@ -19,7 +19,7 @@ dirs <- c("R/NEON-API",
 dir <- dirs[1]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data/"
