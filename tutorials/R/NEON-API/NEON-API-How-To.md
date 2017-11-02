@@ -37,7 +37,7 @@ are explained in the first section, on observational data.
 
 <div id="ds-objectives" markdown="1">
 
-# Objectives
+## Objectives
 After completing this activity, you will be able to:
 
 * Pull observational, instrumentation, and geolocation data from the NEON API.
@@ -1255,6 +1255,7 @@ select a file based on the time stamp in the file name: `20170328192931`
     download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
              paste(getwd(), "/SJER_image.tif", sep=""))
 
+
 The image, below, of the San Joaquin Experimental Range should now be in your 
 working directory.
 
@@ -1263,6 +1264,7 @@ working directory.
 	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
 	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
 	Experimental Range. Source: National Ecological Observatory Network (NEON) 
+
 	</figcaption>
 </figure>
 
