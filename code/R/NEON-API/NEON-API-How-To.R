@@ -4,6 +4,7 @@
 library(httr)
 library(jsonlite)
 library(dplyr, quietly=T)
+library(downloader)
 
 # Request data using the GET function & the API call
 req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
@@ -68,7 +69,7 @@ barplot(clusterBySp$total, names.arg=clusterBySp$scientificName,
 
 
 ## ----soil-data-----------------------------------------------------------
-# Request soil temperature data
+# Request soil temperature data availability info
 req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
 
 # make this JSON readable
@@ -93,8 +94,35 @@ soil.temp <- read.delim(tmp.files$data$files$url
 
 ## ----os-plot-soil-data---------------------------------------------------
 # plot temp ~ date
-plot(soil.temp$soilTempMean~soil.temp$startDateTime, pch=".", xlab="Date", ylab="T")
+plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime, 
+                                       format="%Y-%m-%d T %H:%M:%S Z"), 
+     pch=".", xlab="Date", ylab="T")
 
+
+## ----aop-data------------------------------------------------------------
+# Request camera data availability info
+req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
+
+# make this JSON readable
+# Note how we've change this from two commands into one here
+avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=T)
+
+# get data availability list for the product
+cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
+
+# get data availability from location/date of interest
+cam <- GET(cam.urls[grep("SJER", cam.urls)])
+cam.files <- fromJSON(content(cam, as="text"))
+
+# this list of files is very long, so we'll just look at the first few
+head(cam.files$data$files$name)
+
+
+## ----download-aop-data, eval=FALSE---------------------------------------
+## 
+## download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
+##          paste(getwd(), "/SJER_image.tif", sep=""))
+## 
 
 ## ----get-bird-NLs--------------------------------------------------------
 # view named location
