@@ -17,7 +17,9 @@ urlTitle: styles-css
 
 This page shows all the Markdown and html stylings used for NEON Data Skills on
 the NEONScience.org website.  
-This is a non-published page used only for reference and testing. 
+This is a non-published page used only for reference and testing.  
+
+For a simple markdown cheatsheet check out: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 ## Rule
 
@@ -76,13 +78,35 @@ on your computer to complete this tutorial.
 ## Tutorial Series 
 These capstone activities rely on skills learned in the 
 
-* <a href="{{ site.baseurl }}/tutorial-series/spatial-data-types-primer/" target="_blank"> *Primer on Raster Data* series</a>,
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
-* <a href="{{ site.baseurl }}/tutorial-series/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
+* <a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a>,
+* <a href="/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
+* <a href="/intro-hdf5-r-series" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
  
 </div>
 
 ***
+
+## Links
+
+Because we want the ability to have links open on other pages, we only use
+html code for links and not markdown code. 
+
+####External Link 
+
+(leaving out the < > so it isn't recognized as html)
+a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a
+
+<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a>
+
+####Internal Link, using relative path (leaving out http://www.neonscience.org). 
+
+(leaving out the < > so it isn't recognized as html)
+a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a
+
+<a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a>
+
+***
+
 
 ## Code chunks
 
@@ -99,7 +123,6 @@ In Markdown code chunks look like this (indent only).
 Notice in the above code `# add 1+1` should be highlighted as a comment, `1+1` 
 should be highlighted as input, and `2` should be highlighted as output. All 
 should be visually seperate from the surrounding text. 
-
 
 
 
@@ -218,3 +241,6 @@ iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" 
 
 ***
 
+## Highlight in Specified Color
+
+<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#C6C5C5">/data/DP1.10003.001/WOOD/2015-07</span>

@@ -37,7 +37,7 @@ are explained in the first section, on observational data.
 
 <div id="ds-objectives" markdown="1">
 
-# Objectives
+## Objectives
 After completing this activity, you will be able to:
 
 * Pull observational, instrumentation, and geolocation data from the NEON API.
@@ -61,16 +61,16 @@ Note, you must have devtools installed & loaded, prior to loading geoNEON or neo
 
 ### Additional Resources
 
-* <a href="http://data.neonscience.org/data-api" taget="_blank">Webpage for the NEON API</a>
+* <a href="http://data.neonscience.org/data-api" target="_blank">Webpage for the NEON API</a>
 * <a href="https://github.com/NEONScience/neon-data-api" target="_blank">GitHub repository for the NEON API</a>
 * <a href="https://github.com/ropenscilabs/nneo" target="_blank"> ROpenSci wrapper for the NEON API</a> (not covered in this tutorial)
 
 </div>
 
-## Wondering what an API is?
+## What is an API?
 
 If you are unfamiliar with the concept of an API, think of  an API as a 
-‘middleperson' that provides a communication path for a software application 
+‘middle person' that provides a communication path for a software application 
 to obtain information from a digital data source. APIs are becoming a very 
 common means of sharing digital information. Many of the apps that you use on 
 your computer or mobile device to produce maps, charts, reports, and other 
@@ -1255,12 +1255,16 @@ select a file based on the time stamp in the file name: `20170328192931`
     download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
              paste(getwd(), "/SJER_image.tif", sep=""))
 
+
+The image, below, of the San Joaquin Experimental Range should now be in your 
+working directory.
+
 <figure>
-	<a href="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.tif">
-	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.tif"></a>
-	<figcaption> This image of the San Joaquin Experimental Range should now be in your 
-working directory. Source: National Ecological Observatory Network
-	(NEON)  
+	<a href="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png">
+	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
+	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
+	Experimental Range. Source: National Ecological Observatory Network (NEON) 
+
 	</figcaption>
 </figure>
 
@@ -1468,7 +1472,7 @@ And use `def.calc.geo.os()` to calculate the point locations of observations.
 Now you can see the individual points where the respective point counts were 
 located. 
 
-## Coming soon
+## Stacking NEON data
 
 At the top of this tutorial, we installed the `neonDataStackR` package. 
 This is a custom R package that stacks the monthly files provided by 

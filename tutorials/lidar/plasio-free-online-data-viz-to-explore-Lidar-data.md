@@ -182,8 +182,8 @@ higher. Some common classes include:
 - 6 Building
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/plasio_ColorScheme_KendraSand.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/lidar/plasio_ColorScheme_KendraSand.png"></a>
+	<a href="{{ site.baseurl }}/images/lidar/plasio_colorScheme_KendraSand.png" target="_blank">
+	<img src="{{ site.baseurl }}/images/lidar/plasio_colorScheme_KendraSand.png"></a>
 	<figcaption> Blue and Orange gradient color scheme submitted by Kendra Sand.
 	What color scheme is your favorite?
 	</figcaption>
