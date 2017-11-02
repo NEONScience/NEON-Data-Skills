@@ -1,0 +1,137 @@
+---
+layout: post
+title: "Working with Lidar Data"
+date:   2015-10-22 20:49:52
+authors: "Keely Roth, Mike Alonzo, Jonah Duckles"
+dateCreated:  2015-10-22 20:49:52
+lastModified: 2015-10-22 14:28:52
+category: remote-sensing-workshop
+tags: [module-1]
+mainTag: GIS-Spatial-Data
+description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
+code1:
+image:
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: http://www.neoninc.org
+permalink: /R/Raster-Data-In-R/
+code1: /R/2015-07-22-Introduction-to-Raster-Data-In-R.R
+comments: true
+
+---
+
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3>Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
+
+## About
+* Exploring Spatial patterns in Lidar Data: histograms,
+* Summarizing lidar data: binary binning/thresholding, etc.
+
+## R Skills Level
+Intermediate (link to other group's lessons)
+
+### Background
+
+## Learning Objectives
+* Understand the process of lidar measurement the resulting attributed point cloud
+* Understand the process of creating gridded (raster surface) products from the point cloud
+* Be able to open, plot, and explore the pixel values in a canopy height model (CHM)
+* Understand the ecological meaning and value of the canopy height model
+* Be able to crop out two study regions and display the subsets
+* Be able to analyze and threshold height distributions using histograms
+* Be able to visualize the spatial variation in the CHM using standard deviation in a moving window
+
+## Things You'll Need to Complete this Lesson
+
+### R libraries
+* `raster`
+* `rgdal`
+* `rhdf5`
+
+``` {r}
+install.packages('raster')
+install.packages('rgdal')
+install.packages('rhdf5')
+
+library('raster')
+library('rgdal')
+library('rhdf5')
+```
+### Tools
+
+* R
+* RStudio
+
+### Data
+* Lidar canopy height model (1 m resolution)
+
+``` {r}
+#download and save the chm
+```
+
+## Recommended Pre Lesson Reading
+
+## Lesson 1: Open, crop, display, and explore the CHM
+
+To get started, we'll open the CHM and display it. 
+
+``` {r}
+# Open the CHM
+# Display the image
+
+```
+Now we're going to crop the lidar chm so that the extents match those of the hyperspectral and the 
+  RGB camera data. With the cropped image, click a few locations in the image. What are the values you're seeing?
+  FIXME: don't know what the extents will be
+
+``` {r}
+# Crop so that extents are the same as the RGB and hyperspectral data
+# Extract values at a few locations to see the height values
+
+```
+
+Challenge: Create a histogram of the height values and discuss the shape of the distribution.
+  What does it mean to have so many 0 values?
+
+## Lesson 2: Subset the CHM to two Landsat pixels and summarize the data
+
+We now want to look at the structural variation of the vegetation within two 30 m Landsat pixels. To 
+  do this we will use the crop function based on outlines of the two pixels stored in a shapefile. Within these
+  pixel boundaries we will summarize the height distributions using a histogram. Finally, we will use the 
+  histogram to inform a threshold value that separates trees from low vegetation and ground.
+  FIXME: do we want two subsets that will be summarized separately because they represent structurally unique
+    areas?
+  
+``` {r}
+# Crop again but using the shapefile of the two landsat pixels
+# Use the tool (manipulate) that puts a slider on a histogram. Moving the slider will change the threshold
+# directly on the image
+```
+Challenge:
+
+## Lesson 3: Compute local standard deviation using moving window
+
+With this lidar CHM we have the opportunity to go beyond simple summary statistics based on the data distribution.
+  It may be useful to understand the spatial variation in vegetation structure. For instance, evenly spaced trees
+  across the landscape could be indicative of a community that is limited by water availability.
+  
+In this lesson we will examine the spatial variation of canopy heights using local standard deviation computed with
+  a moving X by X window. We can output a map of the variability and simple summary statistics.
+  FIXME: clarify what are the useful summary stats after playing with the moving window method
+  
+``` {r}
+# code for 2-D standard deviation using some window size that makes sense for the data
+# sum and/or means of the two landsat pixel subsets to compare
+```
+
+Challenge: Vary the window size of the moving window and generate summary statistics. FIXME: need to play around
+  with moving window
+  
