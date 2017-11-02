@@ -1,0 +1,110 @@
+---
+layout: post
+title: "Fusing Information from Lidar & Hyperspectral"
+date:   2015-10-23 13:43
+authors: "Keely Roth, Mike Alonzo, Jonah Duckles"
+dateCreated:  2014-11-26 20:49:52
+lastModified: 2015-07-23 14:28:52
+category: time-series-workshop
+tags: [module-4]
+mainTag: GIS-Spatial-Data
+description: "This post explains the fundamental principles, functions and metadata that you need to work with raster data in R."
+code1: 
+image:
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: http://www.neoninc.org
+permalink: /R/Raster-Data-In-R/
+code1: /R/2015-07-22-Introduction-to-Raster-Data-In-R.R
+comments: true
+
+---
+
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3>Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
+##About
+This activity will walk you through a simple example of combining information from both lidar and hyperspectral data.
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
+<div id="objectives">
+
+##Goals / Objectives
+After completing this activity, you will know:
+* load and display raster products from both lidar and hyperspectral modules
+* plot hyperspectral metrics on CHM (3D surface)
+* pixel-based correlation & scatter plot
+* combine the two data products to answer key questions
+* create summary stat report (total area statistics)
+* create landscape metric report (simple LE mets/spatial stats)
+
+
+
+##Things You'll Need To Complete This Lesson
+
+###R Libraries to Install:
+
+
+###Tools To Install
+
+Please be sure you have the most current version of `R` and preferably
+R studio to write your code.
+
+
+###Data to Download
+
+
+###Recommended Pre-Lesson Reading:
+
+### Lesson 1: Open & Visualize Data Products
+
+In this section, you will work with the rasters used in the previous modules (add link to modules), specifically, the
+lidar canopy height model, the spectral metric(s) rasters.
+
+```{r}
+# display the CHM and metric rasters side by side for each study region 1
+# display and compare region 2
+```
+
+Now let's create a 3-D surface for one of the spectral metrics using the height data from the CHM
+```{r}
+# add code to create and rotate surface
+```
+
+We can also compare pixel values from the different data types using a scatterplot.
+```{r}
+# create an xy scatterplot from CHM and a spectral metric
+# [would be cool to have a conditional slider to help them visualize pixels]
+```
+Challenge: Compare CHM values and a different spectral metric using this approach
+
+### Lesson 2: Create a fused data product
+
+Here we will combine the binary maps created in (linked modules) from the lidar and hyperspectral data. [The details here
+depend on exploring the data a bit more to create the story arc].
+
+```{r}
+# add raster math for mapping something specific (based on story arc)
+```
+Challenge: Add another layer to your fusion map (i.e., incorporate another metric).
+
+### Lesson 3: Spatial Analysis
+
+In this section you will run some simple landscape ecology metrics to analyze your fusion maps and compare study regions.
+[Explain metric example]
+
+```{r}
+# Calculate LE metric and display output for both study regions
+# Compare study regions
+```
+
+Challenge: Calculate [another LE metric] and compare your study regions.
+

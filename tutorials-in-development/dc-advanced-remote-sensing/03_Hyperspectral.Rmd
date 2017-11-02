@@ -1,0 +1,399 @@
+---
+layout: post
+title: "Hyperspectral Remote Sensing"
+date:   2015-10-22 20:49:52
+authors: "Keely Roth, Mike Alonzo, Jonah Duckles"
+dateCreated:  2015-10-22 20:49:52
+lastModified: 2015-10-22 14:28:52
+category: remote-sensing-workshop
+tags: [module-3]
+mainTag: GIS-Remote-Sensing-Data
+description: "Overview of hyperspectral analysis in R"
+code1:
+image:
+  feature: lidar_GrandMesa.png
+  credit: LiDAR data collected over Grand Mesa, Colorado - National Ecological Observatory Network (NEON)
+  creditlink: http://www.neoninc.org
+permalink: /R/Raster-Data-In-R/
+code1: /R/2015-07-22-Introduction-to-Raster-Data-In-R.R
+comments: true
+
+
+---
+
+<section id="table-of-contents" class="toc">
+  <header>
+    <h3>Contents</h3>
+  </header>
+<div id="drawer" markdown="1">
+*  Auto generated table of contents
+{:toc}
+</div>
+</section><!-- /#table-of-contents -->
+
+
+
+## About
+
+## R Skills Level: need to know RS basics
+
+
+## Goals and Objectives
+* understanding of spectral concepts: bands and wavelengths
+* open & display multispectral and hyperspectral data
+* geographically clip raster imagery
+* plot and compare single-pixel spectra
+* Understanding of information content of visible, multispectral and hyperspectral data
+* recognize general spectral signatures
+* calculate and understand the physical basis for spectral metrics
+* create and threshold based on histogram visualizations of spectral information
+* standard deviation moving window
+
+## Things You'll Need to Complete this Lesson
+
+### R libraries
+* `raster`
+* `rgdal`
+* `rhdf5`
+* `sp`
+* `manipulate`
+* `plyr`*
+
+
+``` {r}
+install.packages('raster')
+install.packages('rgdal')
+install.packages('rhdf5')
+install.packages('sp')
+install.packages('manipulate')
+install.packages('plyr')
+
+library('raster')
+library('rgdal')
+library('rhdf5')
+library('sp')
+library('manipulate')
+library('plyr')
+```
+
+### Tools
+
+* R
+* RStudio
+
+### Data
+* Visible High Res 10cm resolution
+* Hyperspectral HDF5 1m resolution
+* Multispectral Data ~30m resolution
+
+``` {r}
+#download and save each datasets
+```
+
+
+## Recommended Pre Lesson Reading
+
+understand what reflectance is
+
+
+## Notes for Formatting Lessons
+fill in outline for each module (think about story arc):
+with lesson obj
+lesson text/concept blocks
+chunk in programming steps
+Challenges
+organization:
+Objective
+Tutorial
+Functions
+Challenge
+
+
+
+
+
+## NEON Data Resolutions
+|             |  Spatial             | Spectral         | Temporal |
+|-------------|----------------------|------------------|----------|
+|NEON Visible       | Very High (eg 10cm)  | 3 broad bands    | 1-2/year|
+|Landsat Multispectral | Moderate (eg 30m)    | 6 broad bands    | ~22/year|
+|NEON hyperspectral | High (eg 1m)         | 424 FIXME narrow bands| 1-2/year|
+
+FIXME: add spectral profile graph and spectral sampling graphs
+FIXME: need to add the cropping portions of the lesson
+
+## Lesson 1: Opening and Exploring Multispectral and Hyperspectral Imagery
+
+To get started, we'll explore each of the three image datasets used in this module.
+First we'll open and display single bands from the high resolution RGB camera data. Then we'll combine these in a raster
+stack and display them in RGB.
+
+``` {r}
+# Open RGB camera image
+# Display single bands 
+# Create RGB stack
+# Display RGB stack
+```
+
+We can also examine the red, green and blue digital number values (0-255) for a pixel and compare values for different pixels.
+Using the code below, click on four different locations (try to find some trees, some grass, some dirt, something impervious) that are fairly far apart.
+``` {r}
+# Click and save point locations
+# FIXME:Assign wavelength values to each band
+# Extract data values from these pixels and examine resulting table
+# Plot the RGB values for these pixels
+# FIXME: Plot the locations of these pixels on the RGB image
+```
+We call each of these lines the "spectral profile" of the pixel. How might you expect these to look different? How different do they look?
+
+Now we'll do the same thing with multispectral Landsat data. We'll read this in a bit differently since each band is in its own file. We'll read in just 6 bands (Landsat 8 has 11 bands total). Use the band centers as the wavelength values.
+|Band Number|Wavelength Region (Band Range)|Band Center|
+|___________|______________________________|___________|
+|2          | blue (450-510 nm)            | 480 nm    |
+|3          | green (530-590 nm)           | 560 nm    |
+|4          | red (640-670 nm)             | 665 nm    |
+|5          | NIR (850-880 nm)             | 865 nm    |
+|6          | SWIR1 (1570-1650 nm)         | 1610 nm   |
+|7          | SWIR2 (2110-2290 nm)         | 2200 nm   |
+
+``` {r}
+# Read in single band GeoTIFFS (nice to have loop to read in from dir list)
+```
+
+Challenge: Create a stack of all 6 Landsat bands and display an RGB image. Plot the spectral profiles of the same four 
+locations as you did in the RGB camera data.
+
+Finally we will open and display the hyperspectral imagery.
+``` {r}
+# read in HDF5 file
+# FIXME: examine metadata
+# FIXME: how to display an RGB composite AND extract spectral data from all bands
+```
+
+Challenge: Explore spectral variation within a tree crown, or within a field of grass. Select a new set of pixel locations (save to new variable) and plot the signatures. 
+
+## Lesson 2: Multispectral vs. Hyperspectral Profiles & Spectral Signatures
+
+Now we'd like to more directly compare multispectral and hyperspectral signatures. However, our Landsat data is at a much coarser spatial resolution than the IS data, making a direct comparison difficult. So instead, we'll simulate the 6 Landsat
+bands from the IS data using the "convolve" function provided below. This function uses something called a "sensor response
+function", which basically says how much of the light at each wavelength in a band range is recorded by the sensor (add
+figure and link to more information)
+
+``` {r}
+# Convolve IS signatures using pre-defined function
+# Plot the 8 spec signatures from each of the images (4 convolved IS-to-Landsat and 4 from IS)
+```
+These spectra differ in four ways (spectral resolution, number of bands, and location of bands). [Add info; refer to 
+table/fig]
+
+We see lots more info... 
+Physics that drive these signatures (nice graphics here)
+
+Basic spectral signatures (building off the physics above)
+
+Challenge: Extract, plot and identify the mystery signatures from the provided coordinates. We'll use these spectra
+moving forward.
+
+## Lesson 3: Spectral Metrics
+
+Now that we understand the driving forces behind the spectrum, we can explore different ways of capturing that information.
+Spectral indices are a popular method for doing this. NDVI example. Because we have finer spectral resolution in IS data, we
+call these "narrowband indices" when calculated with IS data.
+
+``` {r}
+# Calculate NDVI with the "Landsat" spectra
+# Calculate narrowband NDVI with the IS spectra
+# Compare values.
+```
+Challenge: Here's the equation for INDEX-X. Calculate this for multispectral and IS spectra.
+
+One of the major benefits of IS data is that we can capture information from very specific bands.
+Red edge wavelength example. Note that we CAN calculate this w/multispec data, but not very precise.
+
+```{r}
+# Calc red edge w/IS spectra
+   # Subset IS spectra to wavelength region of interest
+   # Calculate first derivative
+   # Find wavelength at which maximum derivative value occurs
+   # Compare resulting values
+```
+
+Challenge: Using the same approach, we'll find the wavelength of max absorption (i.e.,min value) in a lignin-cellulose feature (xx-xx nm)
+
+Another major benefit of IS data is creating a metric that reflects an actual physical measurement (e.g., how much water
+in this pixel). Equivalent Water Thickness. Note that we can't even try to calc this using this approach w/multispec
+``` {r}
+# Adapt IDL code here into a function
+# Calculate EWT for the IS spectra
+```
+
+## Lesson 4: Mapping Spectral Metrics
+
+Now we'll make a map of these metrics and use it to answer some questions.
+
+``` {r}
+# Same approach as in lidar. Choose one index, calculate for entire image
+# Display index raster
+# Explore histogram thresholding to create a map.
+```
+
+Challenge: Create a map using another metric.
+
+## BELOW HERE IS JUST NOTES:
+
+###  viz
+Open
+Display one band of image (for each band)
+Create stack and display rgb composite
+Open vector and overlay
+Clip raster using the vector (using crop?)
+
+```{r}
+#load 10 cm vis dataset
+
+```
+
+Use image(red) image(green) image(blue)
+SJER_camera.tif
+import(raster)
+plotrgb()
+
+
+### multi
+Open the geotiffs
+Display one band of image
+Create 6-band stack and display a true color composite
+Open vector and overlay
+Clip stack using the vector (using crop?)
+
+```{r}
+#load landsat subset here
+```
+
+###hyper
+Open HDF5
+(maybe look at some metadata)
+Slice out one band of image
+Find roughly the same wavelenght as done above 
+Slice out true color wavelengths
+Create 3-band stack and display
+Open vector and overlay
+Clip the full set of bands using the vector (using crop?)
+
+
+
+```{r}
+#load hyperspectral data as h5
+
+
+
+```
+
+
+
+### Compare
+3-by raster plot
+3-by spectral plot
+
+## Clip
+
+Why do we clip?
+
+Apply a clip across all three rasters to about two landsat pixels
+
+## Understanding hyperspectral signatures
+Physics of light and reflectance
+
+Static diagram with spectral regions
+
+Fire trucks (that are yellow/green)!
+
+### Plot example spectral signatures
+
+* Plot some spectral signatures
+
+### Compare spectral signatures
+* Compare
+* plot of several materials (trees, dirt, grass, water)
+
+### Spectral metrics
+* lines at 550 for green leaves
+* lines at 684 for chlorophyl absorption
+* Calculate spectral metrics
+  * Naroww band NDVI
+  * Water metric
+  * Stress metric
+* Single pixel calculation
+* Creating a new raster based on the metrics with histogram
+* Threshold the new computed raster
+
+
+
+##About
+This activity will walk you through the fundamental principles of working
+with raster data in R.
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
+<div id="objectives">
+
+<h3>Goals / Objectives</h3>
+After completing this activity, you will know:
+<ol>
+<li>What a raster dataset is and its fundamental attributes.</li>
+<li>How to import rasters into `R` using the raster library.</li>
+<li>How to perform raster calculations in `R`.</li>
+</ol>
+
+<h3>Things You'll Need To Complete This Lesson</h3>
+
+<h3>R Libraries to Install:</h3>
+<ul>
+<li><strong>raster:</strong> <code> install.packages("raster")</code></li>
+<li><strong>rgdal:</strong> <code> install.packages("rgdal")</code></li>
+
+</ul>
+<h4>Tools To Install</h4>
+
+Please be sure you have the most current version of `R` and preferably
+R studio to write your code.
+
+
+<h4>Data to Download</h4>
+
+Download the raster and *in situ* collected vegetation structure data:
+<ul>
+<li><a href="http://neonhighered.org/Data/LidarActivity/CHM_InSitu_Data.zip" class="btn btn-success"> DOWNLOAD Sample NEON LiDAR data in Raster Format & Vegetation Sampling Data</a></li>
+<li><a href="{{ site.baseurl }}/data/rasterLayers_tif.zip" class="btn btn-success"> DOWNLOAD NEON imagery data (tiff format) California Domain 17 (D17)</a></li>
+</ul>
+
+<p>The LiDAR and imagery data used to create the rasters in this dataset were
+collected over the San Joaquin field site located in California (NEON Domain 17)
+and processed at <a href="http://www.neoninc.org" target="_blank" >NEON </a>
+headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
+
+<h4>Recommended Pre-Lesson Reading</h4>
+<ul>
+<li>
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">
+The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
+Read more about the `raster` package in R.</a>
+</li>
+</ul>
+</div>
+
+#About Raster Data
+Raster or "gridded" data are data that are saved in pixels. In the spatial world,
+each pixel represents an area on the Earth's surface. For example in the raster
+below, each pixel represents a particular land cover class that would be found in
+that location in the real world.
+<a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/"> More on
+rasters here</a>.
+
+```{r chunk-1}
+#code will go here!
+
+```
