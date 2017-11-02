@@ -136,7 +136,7 @@ contain spaces.
 The *result* of the operation on the right hand side of `<-` is *assigned* to 
 an object with the name specified on the left hand side of `<-`. The *result* 
 could be any type of R object, including your own functions (see the 
-<a href="/work-with-functions-r" target="_blank"> *Build & Work With Functions in R* tutorial</a>.
+<a href="/work-with-functions-r" target="_blank"> *Build & Work With Functions in R* tutorial</a>).
 
 ### Assignment Operator: Drop the Equals Sign
 
