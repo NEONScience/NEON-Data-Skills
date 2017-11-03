@@ -16,10 +16,46 @@ urlTitle: styles-css
 ---
 
 This page shows all the Markdown and html stylings used for NEON Data Skills on
-the NEONScience.org website.  
-This is a non-published page used only for reference and testing.  
+the NEONScience.org website. This is a non-published page used only for 
+reference and testing. If you have user permissions on the NEONScience.org website
+you can view it at neonscience.org/styles-css. Otherwise, use the text below to
+guide the styling used in NEON Data Skills educational resources. 
 
-For a simple markdown cheatsheet check out: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+For a simple markdown cheatsheet check out 
+<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">this cheatsheet</a>.
+
+***
+## Header at top of all tutorial pages
+
+This header must be at the top of each tutorial so that all associated metadata 
+will appear correctly.  
+
+    ---
+    syncID: sync-id-from-list
+    title: "Descriptive Title In Title Case"
+    description: "Descriptive text about the tutorial here. Must be all on one line no matter how long."
+    dateCreated: 2015-08-01
+    authors: Megan A. Jones, Separated by Commas, 
+    contributors: Leslie Goldman, Also Seperate, By Commas
+    estimatedTime: 1.5 hrs
+    packagesLibraries: raster, rhdf5, rgdal
+	- see list in processing_code/_data/packagesLibraries.yml for the correct list 
+    topics: data-analysis, data-visualization, HDF5, spatial-data-gis 
+	- see list in processing_code/_data/tags.yml for the correct list 
+    languagesTool: R, python
+	- see list in processing_code/_data/languagesTool.yml for the correct list 
+    dataProduct: DP1.0001.01
+	- all data products used in the tutorial
+    code1: code/R/neon-utitlites/
+	- the relative file path (code/...) of any code related to the tutorials so that it can be downloaded at the end of the tutorial
+    tutorialSeries: 
+	- if the tutorial is part of a series, this metadata isn't used by the Drupal site but is useful for tutorial management
+    urlTitle: styles-css 
+	- a short url that is descriptive but not long
+    ---
+
+
+***
 
 ## Rule
 
@@ -29,14 +65,18 @@ This is a rule (horizontal line) in markdown.
 
 ## Basic Markdown Highlighting
 
-This is basic markdown styling and should need special CSS. 
-
 The use of the highlight ( `text` ) will be reserve for denoting code when used
 in text. To add emphasis to other text use **bold** or *italics*. 
 
-# Heading one
+Write all headers in sentence case.  
+
+# Heading one  
+We don't use header one on the site. The title will be in header one but you 
+don't code it. 
 
 ## Heading two
+This level of header will show up in the table of contents on the side bar. It 
+should only be used for large section breaks and use descriptive headers. 
 
 ### Heading three
 
@@ -44,18 +84,14 @@ in text. To add emphasis to other text use **bold** or *italics*.
 
 ***
 
-Below are the various styles that are used throughout the NEON Data Skills pages. 
-For those that have CSS styles that are not yet resolved I give several options. 
-
-***
-
 ## GreyBox
 
-This is the "Greybox" styling. The div tag is (leaving out the < > so 
-it isn't recognized as html): 
+This is the "Greybox" styling which contains the information on set up, data 
+downloads, etc for the tutorial/lesson/workshop. 
+
+The necessary div tag (leaving out the < > so it isn't recognized as html): 
 
 `div id="ds-objectives" markdown="1"`  
-
 
 <div id="ds-objectives" markdown="1">
 
@@ -91,16 +127,18 @@ These capstone activities rely on skills learned in the
 Because we want the ability to have links open on other pages, we only use
 html code for links and not markdown code. 
 
-####External Link 
+#### External Link 
 
-(leaving out the < > so it isn't recognized as html)
+Code (leaving out the < > so it isn't recognized as html): 
+
 a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a
 
 <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a>
 
-####Internal Link, using relative path (leaving out http://www.neonscience.org). 
+#### Internal Link, using relative path (leaving out http://www.neonscience.org). 
 
-(leaving out the < > so it isn't recognized as html)
+Code (leaving out the < > so it isn't recognized as html):
+
 a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a
 
 <a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a>
@@ -146,10 +184,16 @@ f.visititems(ls_dataset)
 
 ## Data Tips
 
-It was changed to look like this. The div tag for this one is (leaving out the < > so 
-it isn't recognized as html): 
+Data tip boxes are used ot call out highlights that are useful, but beyond the 
+scope of the lesson. Without the star and with a different descriptor, they can 
+also be used in other cases. 
+
+There should always be a space between the star and Data Tip.  
+
+The div tag for this one is (leaving out the < > so it isn't recognized as html): 
 
 `div id="ds-dataTip" markdown="1"`
+i class="fa fa-star"></i **Data Tip:** 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Here is a block with a data tip. 
