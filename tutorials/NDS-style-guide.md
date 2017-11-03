@@ -251,7 +251,7 @@ It can have multiple paragraphs too.
 ## Image with Caption & Source
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	### Challenge: <a href="{{ site.baseurl }}/images/lidar/biomass.png">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
 	<figcaption> Caption here. Source: National Ecological Observatory Network
 	(NEON)  
@@ -287,4 +287,4 @@ iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" 
 
 ## Highlight in Specified Color
 
-<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#C6C5C5">/data/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#565A5C">/data/DP1.10003.001/WOOD/2015-07</span>
