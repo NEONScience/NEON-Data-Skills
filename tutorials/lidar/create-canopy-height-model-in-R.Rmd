@@ -150,7 +150,7 @@ We've now created a CHM from our DSM and DTM. What do you notice about the
 canopy cover at this location in the San Joaquin Experimental Range? 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Basic Raster Math 
+### Challenge: Basic Raster Math 
 
 Convert the CHM from meters to feet. Plot it. 
 </div>

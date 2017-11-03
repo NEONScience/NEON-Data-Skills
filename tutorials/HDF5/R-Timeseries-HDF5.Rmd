@@ -306,7 +306,7 @@ Note, for continued use we may want to convert the format from decimal degrees
 to a different format as this format is more difficult to extract from R!
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Further exploration
+### Challenge: Further exploration
 
 1. Explore the H5 file further. View attributes for other groups within the file. 
 If you have HDFView installed, compare what you see in R to what you see 
@@ -406,7 +406,7 @@ for path `i`.
 
     
 <div id="ds-challenge" markdown="1">
-## Challenge: Modify Loops
+### Challenge: Modify Loops
 
 Modify the loop above so that it adds both the boom name, the site name and 
 the data type (1 minute) as columns in our data frame.

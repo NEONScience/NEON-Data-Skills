@@ -64,7 +64,7 @@ to share data processing, analysis and visualization outputs. We can also use it
 to create documents that combine R code, output and text.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Most of the
+<i class="fa fa-star"></i> **Data Tip:** Most of the
 <a href="https://github.com/NEONScience/NEON-Data-Skills/" target="_blank">NEON Data Skills educational resources</a> on this site are built using R Markdown files.
 </div>
 
@@ -84,7 +84,7 @@ slide shows and more.
 * Code and data can be shared with a colleague to replicate the workflow.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 <a href="https://rpubs.com/" target= "_blank ">RPubs</a>
 is a quick way to share and publish code.
 </div>

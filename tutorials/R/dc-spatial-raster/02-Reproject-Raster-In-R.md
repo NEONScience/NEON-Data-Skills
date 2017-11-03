@@ -154,7 +154,7 @@ for the raster object that you want to reproject. It cannot be used if *no*
 CRS is defined. Lucky for us, the `DTM_hill_HARV` has a defined CRS. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** When we reproject a raster, we 
+<i class="fa fa-star"></i> **Data Tip:** When we reproject a raster, we 
 move it from one "grid" to another. Thus, we are modifying the data! Keep this 
 in mind as we work with raster data. 
 </div>
@@ -209,7 +209,7 @@ UTM. However, the extent values of `DTM_hillUTMZ18N_HARV` are different from
 `DTM_hill_HARV`.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Extent Change with CRS Change
+### Challenge: Extent Change with CRS Change
 Why do you think the two extents differ?  
 </div>
 
@@ -263,7 +263,7 @@ We have now successfully draped the Digital Terrain Model on top of our
 hillshade to produce a nice looking, textured map! 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Reproject, then Plot a Digital Terrain Model 
+### Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
 <a href="/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
 field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files. 

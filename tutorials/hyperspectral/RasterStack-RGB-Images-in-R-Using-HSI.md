@@ -387,7 +387,7 @@ What type of image do you get when you change the band values?
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Other band combinations
+### Challenge: Other band combinations
 
 Use different band combinations to create other "RGB" images. Suggested band 
 combinations are below: 
@@ -485,7 +485,7 @@ the best way to calculate NDVI from hyperspectral data!
 </figure>
 	
 <div id="ds-challenge" markdown="1">
-## Challenge: Work with Indices
+### Challenge: Work with Indices
 
 Try the following:
 

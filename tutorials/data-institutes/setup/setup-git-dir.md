@@ -86,7 +86,7 @@ $ pwd
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Home Directory Variation - The home 
+<i class="fa fa-star"></i> **Data Tip:** Home Directory Variation - The home 
 directory path will look different on different operating systems. On Linux it 
 may look like `/home/neon`, and on Windows it will be similar to
  `C:\Documents and Settings\neon` or `C:\Users\neon`. 
@@ -120,7 +120,7 @@ system and how you have customized your filesystem.)
 alphabetical order, arranged neatly into columns.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** What is a directory? That is a folder! Read the section on
+<i class="fa fa-star"></i> **Data Tip:** What is a directory? That is a folder! Read the section on
 <a href="/set-working-directory-r" target="_blank"> Directory vs. Folder </a>
 if you find the wording confusing.
 </div> 
@@ -183,7 +183,7 @@ data/  elements/  GitHub/  animals.txt  planets.txt  sunspot.txt
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** This material is a much abbreviated form of the 
+<i class="fa fa-star"></i> **Data Tip:** This material is a much abbreviated form of the 
 <a href="http://swcarpentry.github.io/shell-novice/" target="_blank"> Software Carpentry Unix Shell for Novices</a>
 workhop. Want a better understanding of shell? Check out the full series!
 </div>
@@ -267,7 +267,7 @@ Now that Git is set up, you will be ready to start the Week 2 materials to learn
 about version control and how Git & GitHub work. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** 
+<i class="fa fa-star"></i> **Data Tip:** 
 <a href="https://desktop.github.com/" target="_blank"> GitDesktop </a>
 is a GUI (one of many) for 
 using GitHub that is free and available for both Mac and Windows operating 

@@ -120,7 +120,7 @@ AirTempDaily
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If you are working with a date & time
+<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
 </div>
 
@@ -185,7 +185,7 @@ Julian or year days rather than date. We have Julian days stored in our
 `data_frame` (`harMetDaily.09.11`) as `jd`.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If you are unfamiliar with Julian day or
+<i class="fa fa-star"></i> **Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
 <a href="/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
 </div>
@@ -269,7 +269,7 @@ Have a close look at the data. Are there any noticeable min/max temperature
 differences between the three years?
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Faceted Plot
+### Challenge: Faceted Plot
 
 Create a faceted plot of air temperature vs soil temperature by *month* rather 
 than year.
@@ -480,7 +480,7 @@ Once again, R is arranging the plots in an alphabetical order not an order
 relevant to the data. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Create Plots by Season
+### Challenge: Create Plots by Season
 The goal of this challenge is to create plots that show the relationship between
 air and soil temperature across the different seasons with seasons arranged in
 an ecologically meaningful order.  
@@ -558,7 +558,7 @@ syntax would be:
 `as.Date(as.yearmon(met_monthly_HARV$date))`
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Convert Year-Month Data
+### Challenge: Convert Year-Month Data
 The goal of this challenge is to use both the base R and the `zoo` package
 methods for working with year-month data.  
 
@@ -608,7 +608,7 @@ Do you prefer to use base R or `zoo` to convert these data to a date/time
 class?
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** `zoo` date/time classes cannot be used
+<i class="fa fa-star"></i> **Data Tip:** `zoo` date/time classes cannot be used
 directly with ggplot2. If you deal with date formats that make sense to
 primarily use `zoo` date/time classes, you can use ggplot2 with the addition of 
 other functions. For details see the 
@@ -616,7 +616,7 @@ other functions. For details see the
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Year-Month Data
+### Challenge: Plot Year-Month Data
 Using the date field `date_base` (or `date_zoo`) that you created in the
 previous challenge, create a faceted plot of annual air temperature for each
 year (2001-2015) with month as the x-axis for the NEON Harvard Forest field

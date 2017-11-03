@@ -88,7 +88,7 @@ In many languages, the body of the function - the statements that are executed
 when it runs - must be indented, typically using 4 spaces. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** While it is not mandatory in R to indent 
+<i class="fa fa-star"></i> **Data Tip:** While it is not mandatory in R to indent 
 your code 4 spaces within a function, it is  strongly recommended as good 
 practice!
 </div>
@@ -150,7 +150,7 @@ We can see that even though there was no output from the function, the function
 was still operational. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Writing Functions
+### Challenge: Writing Functions
 
 Now that we've seen how to turn Fahrenheit into Kelvin, try your hand at converting
 Kelvin to Celsius. Remember, for the same temperature Kelvin is 273.15 degrees 

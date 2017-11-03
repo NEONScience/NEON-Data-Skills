@@ -252,7 +252,7 @@ use as well include `rainbow` and `heat.colors`.
 
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plotting Rasters
+### Challenge: Plotting Rasters
 
 Explore colors more: 
 
@@ -412,7 +412,7 @@ plot(DEMcrop2)
 
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plot a Digital Surface Model
+### Challenge: Plot a Digital Surface Model
 
 Use what you've learned to open and plot a Digital Surface Model. 
 

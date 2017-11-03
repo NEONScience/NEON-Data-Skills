@@ -200,7 +200,7 @@ sites that are located 3,000+ miles apart!
 </figure>
 
 <div id="challenge" markdown="1">
-## Challenge: Components of a Large Research Question
+### Challenge: Components of a Large Research Question
 
 Consider the following questions:
 
@@ -344,7 +344,7 @@ Other, non-USGS sources of remote sensing data can be found in the
 [Data Sources list at the end of this tutorial]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
 
 <div id="challenge" markdown="1">
-## Challenge: Explore *Landsat Look* Website
+### Challenge: Explore *Landsat Look* Website
 
 Visit the
 <a href="http://landsatlook.usgs.gov/" target="_blank">Landsat Look Viewer website</a>.
@@ -479,7 +479,7 @@ to understand how to work with date and time formats.
 cover how to import time series data in `.csv` format into `R` and how to work with, subset and plot date & date/time formats.
 
 <div id="challenge" markdown="1">
-## Challenge: Explore External Data from Harvard Forest
+### Challenge: Explore External Data from Harvard Forest
 Revisiting the <a href="http://harvardforest.fas.harvard.edu/data-archives" target="_blank"> Harvard Forest research station data archives</a>:
 
 1. What other data are available for Harvard Forest?

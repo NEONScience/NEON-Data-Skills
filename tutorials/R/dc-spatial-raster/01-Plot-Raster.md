@@ -151,7 +151,7 @@ We can include as few or many breaks as we'd like.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/plot-with-breaks-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Note that when we assign break values
+<i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
 </div>
 
@@ -190,7 +190,7 @@ Or we can also turn off the axes altogether.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/turn-off-axes-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Using Custom Breaks
+### Challenge: Plot Using Custom Breaks
 
 Create a plot of the Harvard Forest Digital Surface Model (DSM) that has:
 
@@ -224,7 +224,7 @@ above when viewing terrain.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/hillshade-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Turn off, or hide, the legend on 
+<i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
 a plot using `legend=FALSE`.
 </div>
 
@@ -256,7 +256,7 @@ transparent, 1 being opaque). Note that here we used the color palette
 <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">R color palettes documentation</a>. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Create DTM & DSM for SJER
+### Challenge: Create DTM & DSM for SJER
 Use the files in the `NEON_RemoteSensing/SJER/` directory to create a Digital
 Terrain Model map and Digital Surface Model map of the San Joaquin Experimental
 Range field site.

@@ -238,7 +238,7 @@ where the N denotes that it is in the Northern, not Southern hemisphere. Occassi
 
 Zone 18T, 730782m Easting, 4712631m Northing.
 
-<i class="fa fa-star"></i>**Data Tip:**  The UTM system doesn't apply to polar
+<i class="fa fa-star"></i> **Data Tip:**  The UTM system doesn't apply to polar
 regions (>80°N or S). Universal Polar Stereographic (UPS) coordinate system is
 used in these area. This is where zones A, B and Y, Z are used if you were
 wondering why they weren't in the UTM lettering system.  

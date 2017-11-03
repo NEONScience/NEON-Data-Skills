@@ -96,7 +96,7 @@ creates the colors that we see in an image.
 We can plot each band of a multi-band image individually. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** In many GIS applications, a single band 
+<i class="fa fa-star"></i> **Data Tip:** In many GIS applications, a single band 
 would render as a single image in grayscale. We will therefore use a grayscale 
 palette to render individual bands. 
 </div>
@@ -192,7 +192,7 @@ This is R telling us that this particular raster object has more bands (3)
 associated with it.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The number of bands associated with a 
+<i class="fa fa-star"></i> **Data Tip:** The number of bands associated with a 
 raster object can also be determined using the `nbands` slot. Syntax is 
 `ObjectName@file@nbands`, or specifically for our file: `RGB_band1@file_HARV@nbands`.
 </div>
@@ -255,7 +255,7 @@ want to work with). To import the green band, we would use `band=2`.
 Notice that band 2 is the second of 3 bands `band: 2 (of 3 bands)`.  
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Making Sense of Single Band Images
+### Challenge: Making Sense of Single Band Images
 Compare the plots of band 1 (red) and band 2 (green). Is the forested area
 darker or lighter in band 2 (the green band) compared to band 1 (the red band)?  
 </div>
@@ -456,7 +456,7 @@ tutorial.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/04-Multi-Band-Rasters-In-R/challenge-code-NoData-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** We can create a RasterStack from 
+<i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
 <a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 for a tutorial on how to do this. 
@@ -505,7 +505,7 @@ You use `plotRGB` to block a `RasterBrick` too.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: What Methods Can Be Used on an R Object?
+### Challenge: What Methods Can Be Used on an R Object?
 We can view various methods available to call on an R object with 
 `methods(class=class(objectNameHere))`. Use this to figure out:
 

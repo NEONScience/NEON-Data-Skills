@@ -88,7 +88,7 @@ An example API call: http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/
 This includes the base URL, endpoint, and target.
 
 ### Base URL: 
-<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#C6C5C5">/data/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
 
 Specifics are appended to this in order to get the data or metadata you're 
 looking for, but all calls to this API will include the base URL. For the NEON 
@@ -96,7 +96,7 @@ API, this is http://data.neonscience.org/api/v0 --
 not clickable, because the base URL by itself will take you nowhere!
 
 ### Endpoints: 
-<span style="color:#C6C5C5">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#C6C5C5">/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#A2A4A3">/DP1.10003.001/WOOD/2015-07</span>
 
 What type of data or metadata are you looking for?
 
@@ -113,7 +113,7 @@ What type of data or metadata are you looking for?
   Data! By product, site, and date (in monthly chunks).
 
 ### Targets:
-<span style="color:#C6C5C5">http://data.neonscience.org/api/v0/data</span><span style="color:#A00606;font-weight:bold">/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/data</span><span style="color:#A00606;font-weight:bold">/DP1.10003.001/WOOD/2015-07</span>
 
 The specific data product, site, or location you want to get data for.
 

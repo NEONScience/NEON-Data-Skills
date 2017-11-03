@@ -145,7 +145,7 @@ plot(DSM_HARV,
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Note that when we assign break values
+<i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
 </div>
 
@@ -183,7 +183,7 @@ plot(DSM_HARV,
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Using Custom Breaks
+### Challenge: Plot Using Custom Breaks
 
 Create a plot of the Harvard Forest Digital Surface Model (DSM) that has:
 
@@ -235,7 +235,7 @@ plot(DSM_hill_HARV,
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Turn off, or hide, the legend on 
+<i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
 a plot using `legend=FALSE`.
 </div>
 
@@ -267,7 +267,7 @@ transparent, 1 being opaque). Note that here we used the color palette
 <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">R color palettes documentation</a>. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Create DTM & DSM for SJER
+### Challenge: Create DTM & DSM for SJER
 Use the files in the `NEON_RemoteSensing/SJER/` directory to create a Digital
 Terrain Model map and Digital Surface Model map of the San Joaquin Experimental
 Range field site.

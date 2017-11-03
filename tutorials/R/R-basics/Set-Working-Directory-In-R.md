@@ -57,7 +57,7 @@ correctly set first, when we try to open a file we will get an error telling us
 that R cannot find the file. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
+<i class="fa fa-star"></i> **Data Tip:** All NEON Data Skills tutorials are
 written assuming the working directory is the parent directory to the 
 uncompressed .zip file of downloaded data. This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 
@@ -126,7 +126,7 @@ into the data directory. If the latter happens, they need to be moved into a
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Download and Unzip Teaching Data Subset
+### Challenge: Download and Unzip Teaching Data Subset
 Want to make sure you have these steps down! Prepare the 
 **Site Layout Shapefiles Teaching Data Subset** so that the files
 are accessible and ready to be opened inR. 
@@ -183,7 +183,7 @@ path to the directory or file:
 * Mac OS X:  `/Users/neon/Documents/data/NEON-DS-Met-Time-Series`
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** File or directory paths and the home 
+<i class="fa fa-star"></i> **Data Tip:** File or directory paths and the home 
 directory will appear slightly different in different operating systems. 
 Linux will appear as
  `/home/neon/`. Windows will be similar to `C:\Documents and Settings\neon\` or
@@ -213,7 +213,7 @@ we can either set the working directory in the R script or use our current GUI
 to select the working directory.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
+<i class="fa fa-star"></i> **Data Tip:** All NEON Data Skills tutorials are
 written assuming the working directory is the parent directory to the downloaded
 data (the **data** directory in this tutorial). This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 
@@ -249,7 +249,7 @@ R.
 	[1] "/Users/neon/Documents/data"
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If using RStudio, you can view the 
+<i class="fa fa-star"></i> **Data Tip:** If using RStudio, you can view the 
 contents of the working directory in the Files pane.
 </div>
 
@@ -363,7 +363,7 @@ the working directory to a specific directory. The base path for the
 	 /Users/neon/Documents/data/NEON-DS-Met-Time-Series 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** File or directory paths and the home 
+<i class="fa fa-star"></i> **Data Tip:** File or directory paths and the home 
 directory will appear slightly different in different operating systems. 
 Linux will appear as
  `/home/neon/`. Windows will be similar to `C:\Documents and Settings\neon\` or
@@ -374,7 +374,7 @@ noted.
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Full File Path
+### Challenge: Full File Path
 Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
 the format of the operating system you are currently using. 
 
@@ -405,7 +405,7 @@ The relative path for the `meanNDVI_HARV_2011.csv` file would be:
 	 NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Relative File Path
+### Challenge: Relative File Path
 Use the format of your current operating system:
 
 1. Write out the **full path** to for the `Boundary-US-State-Mass.shp` file. 

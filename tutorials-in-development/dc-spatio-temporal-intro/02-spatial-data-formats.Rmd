@@ -224,7 +224,7 @@ the
 
 <div id="challenge" markdown="1">
 
-## Challenge: Shapefiles
+### Challenge: Shapefiles
 
 Have a look at the map above:  **Study Plots by Soil Type**. What is the minimum number of
 shapefiles that are required to create this map? How do you know?

@@ -82,7 +82,7 @@ hole in the middle of it (like a doughnut), this is something to be aware of but
 not an issue we will deal with in this tutorial.
 
  <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Sometimes, boundary layers such as 
+<i class="fa fa-star"></i> **Data Tip:** Sometimes, boundary layers such as 
  states and countries, are stored as lines rather than polygons. However, these
  boundaries, when represented as a line, will not create a closed object with a defined "area" that can be "filled".
 </div>
@@ -152,7 +152,7 @@ Let's import our AOI.
     ## Integer64 fields read as strings:  id
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The acronym, OGR, refers to the
+<i class="fa fa-star"></i> **Data Tip:** The acronym, OGR, refers to the
 OpenGIS Simple Features Reference Implementation. 
 <a href="https://trac.osgeo.org/gdal/wiki/FAQGeneral" target="_blank"> 
 Learn more about OGR.</a> 
@@ -168,7 +168,7 @@ the vector data, and the **attributes** which describe properties associated
 with each individual vector object. 
 
  <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The 
+<i class="fa fa-star"></i> **Data Tip:** The 
  <a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a>
 tutorial provides more information on both metadata and attributes
 and using attributes to subset and plot data. 
@@ -311,7 +311,7 @@ Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/00-open-a-shapefile/plot-shapefile-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Import Line and Point Shapefiles
+### Challenge: Import Line and Point Shapefiles
 Using the steps above, import the HARV_roads and HARVtower_UTM18N layers into
 R. Call the Harv_roads object `lines_HARV` and the HARVtower_UTM18N
 `point_HARV`.
@@ -347,7 +347,7 @@ lines, we use `\n` where the line should break.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Raster & Vector Data Together
+### Challenge: Plot Raster & Vector Data Together
 
 
 You can plot vector data layered on top of raster data using the `add=TRUE`

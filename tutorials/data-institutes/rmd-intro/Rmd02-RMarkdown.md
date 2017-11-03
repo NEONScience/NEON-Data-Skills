@@ -123,7 +123,7 @@ Next, we'll break down the structure of an R Markdown file.
 </figure>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Screenshots on this page are
+<i class="fa fa-star"></i> **Data Tip:** Screenshots on this page are
 from RStudio with appearance preferences set to `Twilight` with `Monaco` font. You 
 can change the appearance of your RStudio by **Tools** > **Options**
 (or **Global Options** depending on the operating system). For more, see the

@@ -173,7 +173,7 @@ Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Explore CHM Raster Values
+### Challenge: Explore CHM Raster Values
 It's often a good idea to explore the range of values in a raster dataset just
 like we might explore a dataset that we collected in the field.  
 
@@ -236,7 +236,7 @@ them using efficient processing methods. The syntax is
 `outputRaster <- overlay(raster1, raster2, fun=functionName)`
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If the rasters are stacked and stored 
+<i class="fa fa-star"></i> **Data Tip:** If the rasters are stacked and stored 
 as `RasterStack` or `RasterBrick` objects in R, then we should use `calc()`. 
 `overlay()` will not work on stacked rasters. 
 </div>
@@ -257,7 +257,7 @@ How do the plots of the CHM created with manual raster math and the `overlay()`
 function compare?  
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** A custom function consists of a defined
+<i class="fa fa-star"></i> **Data Tip:** A custom function consists of a defined
 set of commands performed on a input object. Custom functions are particularly 
 useful for tasks that need to be repeated over and over in the code. A
 simplified syntax for writing a custom function in R is:
@@ -294,7 +294,7 @@ name in the specified directory. USE THIS SETTING WITH CAUTION!
 Ecological Observatory Network's (NEON) standard `NoDataValue`. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Explore the NEON San Joaquin Experimental Range Field Site
+### Challenge: Explore the NEON San Joaquin Experimental Range Field Site
 
 Data are often more interesting and powerful when we compare them across various 
 locations. Let's compare some data collected over Harvard Forest to data

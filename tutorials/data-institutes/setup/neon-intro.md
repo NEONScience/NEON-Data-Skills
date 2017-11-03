@@ -113,7 +113,7 @@ interested in? What kind of data are available?
 </div>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** You can download
+<i class="fa fa-star"></i> **Data Tip:** You can download
 <a href="/data/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
 </div>
 
@@ -143,7 +143,7 @@ Platform (AOP), if you didn't already on the AOP page.
 <iframe width="640" height="360" src="https://www.youtube.com/embed/SehdS6y_mjM" frameborder="0" allowfullscreen></iframe>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If you are familiar with LiDAR and
+<i class="fa fa-star"></i> **Data Tip:** If you are familiar with LiDAR and
 hyperspectral remote sensing data, check out this
 <a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">more technical NEON AOP video</a>.
 </div>
@@ -214,7 +214,7 @@ desirable one that does have data available.
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** NEON also provides support to your own 
+<i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
 <a href="/opportunities/assignable-assets" target="_blank">Assignable Assets programs </a>.

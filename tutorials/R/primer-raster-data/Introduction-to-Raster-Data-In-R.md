@@ -275,7 +275,7 @@ use as well include `rainbow` and `heat.colors`.
 
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plotting Rasters
+### Challenge: Plotting Rasters
 
 Explore colors more: 
 
@@ -440,7 +440,7 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
 
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plot a Digital Surface Model
+### Challenge: Plot a Digital Surface Model
 
 Use what you've learned to open and plot a Digital Surface Model. 
 

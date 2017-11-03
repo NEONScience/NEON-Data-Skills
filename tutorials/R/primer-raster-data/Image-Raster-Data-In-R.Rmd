@@ -251,7 +251,7 @@ plot(rgbRaster_crop)
 ```
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plot Cropped RGB
+### Challenge: Plot Cropped RGB
 Plot this new cropped stack as an RGB image. 
 </div>
 

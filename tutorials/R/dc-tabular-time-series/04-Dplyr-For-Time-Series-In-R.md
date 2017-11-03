@@ -306,7 +306,7 @@ We can use pipes to summarize data by year too:
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Using Pipes
+### Challenge: Using Pipes
 Use piping to create a `data_frame` called `jday.avg` that contains the average 
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
 
@@ -315,7 +315,7 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/pipe-demo-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
+<i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
 </div>
 
@@ -383,7 +383,7 @@ The output shows we have 96 values for each day. Is that what we expect?
     ## [1] 96
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
+<i class="fa fa-star"></i> **Data Tip:**  If Julian days weren't already in our 
 data, we could use the `yday()` function from the `lubridate` package 
 to create a new column containing Julian day values. 
 <a href=" {{ site.baseurl }}/julian-day-conversion-r" target="_blank"> More information in this NEON Data Skills tutorial on Julian date.</a> 
@@ -417,7 +417,7 @@ temperature for each Julian day per year. Note that we are still using
     ## # ... with 1,086 more rows
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Summarization & Calculations with dplyr
+### Challenge: Summarization & Calculations with dplyr
 We can use `sum` to calculate the total rather than mean value for each Julian
 Day. Using this information, do the following:
 
@@ -467,7 +467,7 @@ data_frame.
     ## # ... with 1,086 more rows
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
+<i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
 `transform()` in base R. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
 </div>
@@ -547,7 +547,7 @@ Let's try it!
     ## 6  2009     6  -4.915625 2009-01-06 00:15:00
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Combined dplyr Skills
+### Challenge: Combined dplyr Skills
 
 1. Plot daily total precipitation from 2009-2011 as we did in the previous
 challenge. However this time, use the new syntax that you learned (mutate and

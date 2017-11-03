@@ -51,7 +51,7 @@ Install the packages in the directory in the order indicated.
   successfully install QGIS on your Mac!**
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If your computer doesn't allow you to
+<i class="fa fa-star"></i> **Data Tip:** If your computer doesn't allow you to
 open these packages because they are from an unknown developer, right click on
 the package and select Open With >Installer (default). You will then be asked
 if you want to open the package. Select Open, and the installer will open.
@@ -93,7 +93,7 @@ directions to complete installation.
 4. Open HDFView to ensure that the program installed correctly.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 The HDFView application requires Java to be up to date. If you are having issues
 opening HDFView, try to update Java first!
 </div>

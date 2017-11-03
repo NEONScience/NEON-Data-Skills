@@ -231,7 +231,7 @@ then you can update your changes to the central NEON repository.
 own computer. You will most often do all of your work locally on your computer.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Other Workflows -- There are many other
+<i class="fa fa-star"></i> **Data Tip:** Other Workflows -- There are many other
 git workflows.
 <a href="https://ru.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow" target="_blank">Read more about other workflows</a>.
 This resource mentions Bitbucket, another web-based hosting service like GitHub.

@@ -88,7 +88,7 @@ in the code, an error message will appear with a line number in the R Console
 to help you diagnose the problem.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** You can run `knitr` from the command prompt
+<i class="fa fa-star"></i> **Data Tip:** You can run `knitr` from the command prompt
 using: `render(“input.Rmd”, “all”)`.
 </div>
 
@@ -138,7 +138,7 @@ directory and submitted via a **pull request**.
 </div>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If you are a frequent user of LaTex,
+<i class="fa fa-star"></i> **Data Tip:** If you are a frequent user of LaTex,
 you might find
 <a href="http://cdn.screenr.com/video/8352c25b-7324-4134-970b-b7c427381adb.mp4" target="_blank">this video from the creator of knitr </a>
 informational. It introduces R Markdown & knitr in conjunction with LaTex and

@@ -129,7 +129,7 @@ plot(lines_HARV,
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Given we have a factor with 4 levels, 
+<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
 we can create a vector of numbers, each of which specifies the thickness of each
 feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[lines_HARV$TYPE]`
 </div>
@@ -261,7 +261,7 @@ and the points, symbolized as a symbol. We can customize this using
 `pch=` in our legend: **16** is a point symbol, **15** is a box. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To view a short list of `pch` symbols, 
+<i class="fa fa-star"></i> **Data Tip:** To view a short list of `pch` symbols, 
 type `?pch` into the R console. 
 </div>
 
@@ -329,7 +329,7 @@ legend("bottomright",
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Polygon by Attribute
+### Challenge: Plot Polygon by Attribute
 
 1. Using the `NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp` shapefile, 
 create a map of study plot locations, with each point colored by the soil type

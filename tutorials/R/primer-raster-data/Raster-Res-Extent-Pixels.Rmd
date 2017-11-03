@@ -458,7 +458,7 @@ actually change the CRS of a raster, you need to use the `projectRaster` functio
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Assign CRS
+### Challenge: Assign CRS
 
 You can set the CRS and extent of a raster using the syntax 
 `rasterWithoutReference@crs <- rasterWithReference@crs` and 

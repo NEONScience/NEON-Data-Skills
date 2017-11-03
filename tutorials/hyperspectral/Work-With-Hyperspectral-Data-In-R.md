@@ -108,7 +108,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
     #setwd("working-dir-path-here")
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To update all packages installed in 
+<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in 
 R, use `update.packages()`.
 </div>
 
@@ -677,7 +677,7 @@ as a raster, using the `writeRaster` command.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Work with Rasters
+### Challenge: Work with Rasters
 
 Try these three extensions on your own: 
 
