@@ -79,7 +79,7 @@ directory.
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** All NEON Data Skills tutorials are
+<i class="fa fa-star"></i> **Data Tip:** All NEON Data Skills tutorials are
 written assuming the working directory is the parent directory to the 
 uncompressed .zip file of downloaded data -- **NEONDI-2017**. This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 

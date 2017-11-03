@@ -315,7 +315,7 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R/pipe-demo-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**  Older `dplyr` versions used the `%.%`
+<i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
 syntax to designate a pipe. Pipes are sometimes referred to as chains. 
 </div>
 
@@ -383,7 +383,7 @@ The output shows we have 96 values for each day. Is that what we expect?
     ## [1] 96
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**  If Julian days weren't already in our 
+<i class="fa fa-star"></i> **Data Tip:**  If Julian days weren't already in our 
 data, we could use the `yday()` function from the `lubridate` package 
 to create a new column containing Julian day values. 
 <a href=" {{ site.baseurl }}/julian-day-conversion-r" target="_blank"> More information in this NEON Data Skills tutorial on Julian date.</a> 
@@ -467,7 +467,7 @@ data_frame.
     ## # ... with 1,086 more rows
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The `mutate` function is similar to
+<i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
 `transform()` in base R. However,`mutate()` allows us to create and 
 immediately use the variable (`year2`).
 </div>

@@ -151,7 +151,7 @@ We can export this subset in `.csv` format to use in other analyses or to
 share with colleagues using `write.csv`. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Remember, to give your output files
+<i class="fa fa-star"></i> **Data Tip:** Remember, to give your output files
 concise, yet descriptive names so you can identify what it contains in the
 future. By default, the `.csv` file will be written to your working directory. 
 </div>
@@ -202,7 +202,7 @@ will recognize and flag this value as `NoData`. If the value is numeric (e.g.,
 `-9999`), then we might need to assign this value to `NA`.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** `NA` values will be ignored when
+<i class="fa fa-star"></i> **Data Tip:** `NA` values will be ignored when
 performing calculations in R. However a `NoData` value of `-9999` will be
 recognized as an integer and processed accordingly. If you encounter a numeric
 `NoData` value be sure to assign it to `NA` in R:
@@ -298,7 +298,7 @@ Harvard Forest. To view overall trends during these early exploration stages, it
 is okay for us to leave out the `NoData` values in our plots. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If we wanted to perform more advanced 
+<i class="fa fa-star"></i> **Data Tip:** If we wanted to perform more advanced 
 statistical analysis, we might consider gap-filling as our next step. Many data 
 products, from towers such as FluxNet include a higher level, gap-filled
 product that we can download. 

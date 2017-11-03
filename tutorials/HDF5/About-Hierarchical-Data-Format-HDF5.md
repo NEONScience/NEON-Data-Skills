@@ -40,7 +40,7 @@ structured ways, as you might do with files on your computer. The HDF5 format
 also allows for embedding of metadata making it *self-describing*. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** HDF5 is one hierarchical data format, 
+<i class="fa fa-star"></i> **Data Tip:** HDF5 is one hierarchical data format, 
 that builds upon both HDF4 and NetCDF (two other hierarchical data formats). 
 <a href="https://www.hdfgroup.org" target="_blank"> Read more about HDF5 here.</a>
 </div>

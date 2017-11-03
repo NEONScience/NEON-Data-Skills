@@ -151,7 +151,7 @@ for the raster object that you want to reproject. It cannot be used if *no*
 CRS is defined. Lucky for us, the `DTM_hill_HARV` has a defined CRS. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** When we reproject a raster, we 
+<i class="fa fa-star"></i> **Data Tip:** When we reproject a raster, we 
 move it from one "grid" to another. Thus, we are modifying the data! Keep this 
 in mind as we work with raster data. 
 </div>

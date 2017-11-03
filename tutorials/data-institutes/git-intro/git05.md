@@ -146,7 +146,7 @@ have been added to the Git tracking system but need to be **committed** as actua
 in the git repository history.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If you want to delete a file from your
+<i class="fa fa-star"></i> **Data Tip:** If you want to delete a file from your
 repo, you can do so using `git rm file-name-here.fileExtension`. If you delete
 a file in the finder (Mac) or Windows Explorer, you will still have to use
 `git add` at the command line to tell git that a file has been removed from the
@@ -237,7 +237,7 @@ cloned to our local computer. `master` is the repo branch that you are
 currently working on.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 Note about branches in Git: We won't cover branches in these tutorials, however,
 a Git repo can consist of many branches. You can think about a branch, like
 an additional copy of a repo where you can work on changes and updates. 
@@ -277,7 +277,7 @@ in it instead of "mjones01".
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** You can use Git and connect to GitHub
+<i class="fa fa-star"></i> **Data Tip:** You can use Git and connect to GitHub
 directly in the RStudio interface. If interested, read
 <a href="http://www.r-bloggers.com/rstudio-and-github/" target="_blank">this R-bloggers How-To</a>.
 </div>

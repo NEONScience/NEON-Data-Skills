@@ -117,7 +117,7 @@ contains the Julian day data.
     ## [1] 268 269 270 271 272 273
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**  In this tutorial we converted from
+<i class="fa fa-star"></i> **Data Tip:**  In this tutorial we converted from
 `Date` class to a Julian day, however, you can convert between any recognized
 date/time class (POSIXct, POSIXlt, etc) and Julian day using `yday`.  
 </div>

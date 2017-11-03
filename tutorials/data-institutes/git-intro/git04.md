@@ -105,7 +105,7 @@ For a more thorough list of markdown syntax, please read this
 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">GitHub Guide on Markdown</a>.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 There are many free Markdown editors out there! The
 <a href="http://Atom.io" target="_blank">atom.io</a>
 editor is a powerful text editor package by GitHub, that also has a Markdown

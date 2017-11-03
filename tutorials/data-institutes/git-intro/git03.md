@@ -108,7 +108,7 @@ GitHub directory on your computer.
     $ git clone https://github.com/neon/DI-NEON-participants.git
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:**
+<i class="fa fa-star"></i> **Data Tip:**
 Are you a Windows user and are having a hard time copying the URL into shell?
 You can copy and paste in the shell environment **after** you
 have the feature turned on. Right click on your bash shell window (at the top)

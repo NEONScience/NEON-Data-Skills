@@ -232,7 +232,7 @@ HDF5 file. In this case, the  precipitation and temperature datasets are of type
 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** It's useful to learn about the different 
+<i class="fa fa-star"></i> **Data Tip:** It's useful to learn about the different 
 types of data that can be stored within R (and other objects). 
 <a href="http://www.burns-stat.com/documents/tutorials/impatient-r/more-r-key-objects/more-r-numbers/#twonum" target="_blank">Learn more about float vs integer data here</a>
 </div>

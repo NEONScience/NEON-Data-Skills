@@ -379,7 +379,7 @@ a determined *order*.
 By default, R will import spatial object attributes as `factors`.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** If our data attribute values are not 
+<i class="fa fa-star"></i> **Data Tip:** If our data attribute values are not 
 read in as factors, we can convert the categorical 
 attribute values using `as.factor()`.
 </div>
@@ -526,7 +526,7 @@ Create a plot of roads using the following line thicknesses:
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/bicycle-map-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Given we have a factor with 4 levels, 
+<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
 we can create an vector of numbers, each of which specifies the thickness of each
 feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[lines_HARV$TYPE]`
 </div>
@@ -611,7 +611,7 @@ Let's try it!
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/plot-different-colors-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** You can modify the defaul R color palette 
+<i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
 using the palette method. For example `palette(rainbow(6))` or
 `palette(terrain.colors(6))`. You can reset the palette colors using
 `palette("default")`!

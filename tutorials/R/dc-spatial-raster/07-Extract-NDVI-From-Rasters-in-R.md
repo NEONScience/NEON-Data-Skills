@@ -217,7 +217,7 @@ Day value:
 What class is our `julianDay` column?
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To be efficient, we substituted two
+<i class="fa fa-star"></i> **Data Tip:** To be efficient, we substituted two
 elements in one line of code using the "|". You can often combine commands in R
 to improve code efficiency. 
 `avg_NDVI_HARV$julianDay <- gsub("X|_HARV_NDVI_crop", "", row.names(avg_NDVI_HARV))`.
@@ -426,7 +426,7 @@ tutorials. We can then use the subset function to remove outlier datapoints
 (below our identified threshold).
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Thresholding, or removing outlier data,
+<i class="fa fa-star"></i> **Data Tip:** Thresholding, or removing outlier data,
 can be tricky business. In this case, we can be confident that some of our NDVI
 values are not valid due to cloud cover. However, a threshold value may not 
 always be sufficient given 0.1 could be a valid NDVI value in some areas. This

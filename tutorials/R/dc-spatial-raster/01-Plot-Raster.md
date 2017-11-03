@@ -151,7 +151,7 @@ We can include as few or many breaks as we'd like.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/plot-with-breaks-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Note that when we assign break values
+<i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
 </div>
 
@@ -224,7 +224,7 @@ above when viewing terrain.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/01-Plot-Raster/hillshade-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Turn off, or hide, the legend on 
+<i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
 a plot using `legend=FALSE`.
 </div>
 

@@ -154,7 +154,7 @@ by factor level or category.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/02-plot-multiple-shapefiles-custom-legend/plot-unique-lines-1.png)
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Given we have a factor with 4 levels, 
+<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
 we can create a vector of numbers, each of which specifies the thickness of each
 feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[lines_HARV$TYPE]`
 </div>
@@ -293,7 +293,7 @@ and the points, symbolized as a symbol. We can customize this using
 `pch=` in our legend: **16** is a point symbol, **15** is a box. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To view a short list of `pch` symbols, 
+<i class="fa fa-star"></i> **Data Tip:** To view a short list of `pch` symbols, 
 type `?pch` into the R console. 
 </div>
 

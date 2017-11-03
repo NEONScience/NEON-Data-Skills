@@ -180,7 +180,7 @@ Here we see the number of seconds from 1 January 1970 to 9 October 2015
 (`1445271300`). Also, we see that a time zone (`tzone`) is associated with the value in seconds. 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** The `unclass` method in R allows you
+<i class="fa fa-star"></i> **Data Tip:** The `unclass` method in R allows you
 to view how a particular R object is stored.
 </div>
 
@@ -218,7 +218,7 @@ using a base index value of 1900. Thus, 2015 is stored as 115 (`$year = 115`
 - 115 years since 1900).
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** To learn more about how R stores
+<i class="fa fa-star"></i> **Data Tip:** To learn more about how R stores
 information within date-time and other objects check out the R documentation
 by using `?` (e.g., `?POSIXlt`). NOTE: you can use this same syntax to learn
 about particular functions (e.g., `?ggplot`).  
@@ -229,7 +229,7 @@ more resource intensive to use in `data.frames`. This slows things down! We will
 thus use `POSIXct` for this tutorial.  
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** There are other R packages that
+<i class="fa fa-star"></i> **Data Tip:** There are other R packages that
 support date-time data classes, including `readr`, `zoo` and `chron`.  
 </div>
 
@@ -256,7 +256,7 @@ components of the date-time data:
 * %H:%M - hours:minutes
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** A list of options for date-time format
+<i class="fa fa-star"></i> **Data Tip:** A list of options for date-time format
 is available in the `strptime` function help: `help(strptime)`. Check it out!   
 </div>
 
@@ -315,7 +315,7 @@ There are individual designations for different time zones and time zone
 variants (e.g., does the time occur during daylight savings time). 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip:** Codes for time zones can be found in this 
+<i class="fa fa-star"></i> **Data Tip:** Codes for time zones can be found in this 
 <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">time zone table</a>. 
 </div>
 
