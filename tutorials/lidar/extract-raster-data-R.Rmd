@@ -322,7 +322,7 @@ Looking at these distributions, the area has some pretty short trees -- plot 5
 (really, SJER120 since we didn't match up the plotIDs) looks almost bare!
 
 <div id="ds-challenge" markdown="1">
-## Challenge: For Loops & Plotting Parameters
+### Challenge: For Loops & Plotting Parameters
 This code will give you 6 rows of plots with 3 plots in each row. Modify the 
 `for loop` above to plot all 18 histograms. 
 
@@ -375,7 +375,7 @@ However, if you're going this route with your data, we recommend using the next
 method! 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Circles vs Squares
+### Challenge: Circles vs Squares
 
 Compare the values from `cent_max` and `square_max`. Are they the same? Why 
 might they differ? 
@@ -422,7 +422,7 @@ with a SpatialPolygonsDataFrame (`centShape`)? Keep this in mind when doing futu
 work--the SpatialPolgyonsDataFrame is more efficient. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Square Shapefile Plots
+### Challenge: Square Shapefile Plots
 
 Compare the values from `cent_max` and `square_max`. Are they the same? Why 
 might they differ? 
@@ -617,7 +617,7 @@ For more on using the **plotly** package to create interactive plots, see our tu
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Data
+### Challenge: Plot Data
 
 Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
 percentile vs *insitu* 95th percentile. 

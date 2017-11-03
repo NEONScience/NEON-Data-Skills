@@ -260,7 +260,7 @@ single raster.
 ![ ]({{ site.baseurl }}/images/rfigs/R/primer-raster-data/Image-Raster-Data-In-R/stack-crop-1.png)
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Plot Cropped RGB
+### Challenge: Plot Cropped RGB
 Plot this new cropped stack as an RGB image. 
 </div>
 

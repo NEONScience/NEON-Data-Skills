@@ -535,7 +535,7 @@ Let's select only the 2016 data.
     ## [1] "2016-01-01 00:00:00 EST" "2016-12-31 18:30:00 EST"
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Methods Work with Appropriate Classes 
+### Challenge: Methods Work with Appropriate Classes 
 What happens if you try to subset by date using this method if the 
 data aren't in a date-time class? Hint: Try it out with our previous `temp30` 
 object. 

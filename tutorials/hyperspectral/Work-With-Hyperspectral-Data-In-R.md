@@ -677,7 +677,7 @@ as a raster, using the `writeRaster` command.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Work with Rasters
+### Challenge: Work with Rasters
 
 Try these three extensions on your own: 
 

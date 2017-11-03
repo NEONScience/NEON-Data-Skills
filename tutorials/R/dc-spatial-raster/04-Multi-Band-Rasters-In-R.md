@@ -255,7 +255,7 @@ want to work with). To import the green band, we would use `band=2`.
 Notice that band 2 is the second of 3 bands `band: 2 (of 3 bands)`.  
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Making Sense of Single Band Images
+### Challenge: Making Sense of Single Band Images
 Compare the plots of band 1 (red) and band 2 (green). Is the forested area
 darker or lighter in band 2 (the green band) compared to band 1 (the red band)?  
 </div>
@@ -505,7 +505,7 @@ You use `plotRGB` to block a `RasterBrick` too.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: What Methods Can Be Used on an R Object?
+### Challenge: What Methods Can Be Used on an R Object?
 We can view various methods available to call on an R object with 
 `methods(class=class(objectNameHere))`. Use this to figure out:
 

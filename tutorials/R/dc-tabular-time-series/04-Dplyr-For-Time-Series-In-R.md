@@ -306,7 +306,7 @@ We can use pipes to summarize data by year too:
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Using Pipes
+### Challenge: Using Pipes
 Use piping to create a `data_frame` called `jday.avg` that contains the average 
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
 
@@ -417,7 +417,7 @@ temperature for each Julian day per year. Note that we are still using
     ## # ... with 1,086 more rows
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Summarization & Calculations with dplyr
+### Challenge: Summarization & Calculations with dplyr
 We can use `sum` to calculate the total rather than mean value for each Julian
 Day. Using this information, do the following:
 
@@ -547,7 +547,7 @@ Let's try it!
     ## 6  2009     6  -4.915625 2009-01-06 00:15:00
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Combined dplyr Skills
+### Challenge: Combined dplyr Skills
 
 1. Plot daily total precipitation from 2009-2011 as we did in the previous
 challenge. However this time, use the new syntax that you learned (mutate and

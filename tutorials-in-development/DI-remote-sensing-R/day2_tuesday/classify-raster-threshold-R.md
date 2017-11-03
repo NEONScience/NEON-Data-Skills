@@ -170,7 +170,7 @@ We will assign all north facing slopes "1" and south facing "2".
                 NAflag = -9999)
 
 <div id="challenge" markdown="1">
-## Challenge: Classify a Raster using Threshold Values
+### Challenge: Classify a Raster using Threshold Values
 
 1. Have a look at the code that you created for this lesson. Now imagine that you are
 your future self. Document your script so that your methods and process  is clear.

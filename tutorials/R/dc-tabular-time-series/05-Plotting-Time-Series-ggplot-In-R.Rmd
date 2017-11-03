@@ -372,7 +372,7 @@ AirTempDaily_custom
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Total Daily Precipitation
+### Challenge: Plot Total Daily Precipitation
 Create a plot of total daily precipitation using data in the `harMetDaily.09.11` 
 `data_frame`. 
 
@@ -428,7 +428,7 @@ spaced to improve readability. If we zoom into the plot, all of the bars are
 black.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot with scale_x_data()
+### Challenge: Plot with scale_x_data()
 Without creating a subsetted dataframe, plot the precipitation data for 
 *2010 only*.  Customize the plot with:
 
@@ -515,7 +515,7 @@ to consider what type of plot best represents the type of data that you are
 presenting.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Combine Points & Lines
+### Challenge: Combine Points & Lines
 You can combine geometries within one plot. For example, you can have a
 `geom_line()` and `geom_point` element in a plot. Add `geom_line(na.rm=TRUE)` to
 the `AirTempDaily`, a `geom_point` plot. What happens?
@@ -554,7 +554,7 @@ AirTempDaily_trend
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: A Trend in Precipitation? 
+### Challenge: A Trend in Precipitation? 
 
 Create a bar plot of total daily precipitation. Add a:
 
@@ -578,7 +578,7 @@ ggplot(harMetDaily.09.11, aes(date, prec)) +
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Monthly Air Temperature
+### Challenge: Plot Monthly Air Temperature
 
 Plot the monthly air temperature across 2009-2011 using the
 `harTemp.monthly.09.11` data_frame. Name your plot "AirTempMonthly". Be sure to
@@ -622,7 +622,7 @@ grid.arrange(AirTempDaily, AirTempMonthly, ncol=1)
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Create Panel of Plots
+### Challenge: Create Panel of Plots
 
 Plot `AirTempMonthly` and `AirTempDaily` next to each other rather than stacked
 on top of each other.  

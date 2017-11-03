@@ -199,7 +199,7 @@ the original raster).
 * Date: a date in format "YYYY-MM-DD"; currently in **chr** class
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Class Conversion & Subset by Time
+### Challenge: Class Conversion & Subset by Time
 The goal of this challenge is to get our data sets ready so that we can work 
 with data from each, within the same plots or analyses.  
 
@@ -252,7 +252,7 @@ allow for comparison.  Depending on how the plots are being viewed, they can
 have a vertical or horizontal arrangement. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Air Temperature and NDVI
+### Challenge: Plot Air Temperature and NDVI
 
 Plot the NDVI vs Date (previous plot) and PAR vs Date (create a new plot) in the
 same viewer so we can more easily compare them. 
@@ -299,7 +299,7 @@ We can also assign the date format for the x-axis and clearly label both axes.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-tabular-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/plot-same-xaxis-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Air Temperature and NDVI
+### Challenge: Plot Air Temperature and NDVI
 Create a plot, complementary to those above, showing air temperature (`airt`)
 throughout 2011. Choose colors and symbols that show the data well. 
 

@@ -258,7 +258,7 @@ in R.
 ![ ]({{ site.baseurl }}/images/rfigs/HDF5/Intro-HDF5-R/access-plot-data-1.png)
 
  <div id="ds-challenge" markdown="1">
-## Challenge: Work with HDF5 Files
+### Challenge: Work with HDF5 Files
 
 Time to practice the skills you've learned. Open up the D17_2013_SJER_vegStr.csv 
 in R. 

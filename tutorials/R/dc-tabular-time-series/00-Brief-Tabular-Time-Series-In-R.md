@@ -434,7 +434,7 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Using ggplot2's qplot function 
+### Challenge: Using ggplot2's qplot function 
 
 1. Create a quick plot of the precipitation. Use the full time frame of data available
 in the `harMet.daily` object. 

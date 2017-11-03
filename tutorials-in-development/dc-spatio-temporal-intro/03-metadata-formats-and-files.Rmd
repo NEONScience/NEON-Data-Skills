@@ -88,7 +88,7 @@ plot(DSM_HARV,
 
 
 <div id="challenge" markdown="1">
-## Challenge: What Do I Know About My Data?
+### Challenge: What Do I Know About My Data?
 
 The figure above was created from a dataset that you are given called:
 `HARV_dsmCrop.tif`.
@@ -584,7 +584,7 @@ an open-source program that can be used to enter metadataa to be stored in a
 file that conforms to the Ecological Metadata Language (EML) specifications.
 
 <div id="challenge" markdown="1">
-## Challenge: Find & Explore Metadata
+### Challenge: Find & Explore Metadata
 
 Refer back to the list of possible data sources at the end of
 [*Answer a Spatio-temporal Research Question with Data: Where to Start?*]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).

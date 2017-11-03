@@ -212,7 +212,7 @@ The div tag for this one is (leaving out the < > so it isn't recognized as html)
 This is how it appears in Markdown. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Title of Challenge
+### Challenge: Title of Challenge
   
 Here is some challenge text.
 

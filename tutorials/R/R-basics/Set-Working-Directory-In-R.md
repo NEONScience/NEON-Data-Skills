@@ -126,7 +126,7 @@ into the data directory. If the latter happens, they need to be moved into a
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Download and Unzip Teaching Data Subset
+### Challenge: Download and Unzip Teaching Data Subset
 Want to make sure you have these steps down! Prepare the 
 **Site Layout Shapefiles Teaching Data Subset** so that the files
 are accessible and ready to be opened inR. 
@@ -374,7 +374,7 @@ noted.
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Full File Path
+### Challenge: Full File Path
 Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
 the format of the operating system you are currently using. 
 
@@ -405,7 +405,7 @@ The relative path for the `meanNDVI_HARV_2011.csv` file would be:
 	 NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Relative File Path
+### Challenge: Relative File Path
 Use the format of your current operating system:
 
 1. Write out the **full path** to for the `Boundary-US-State-Mass.shp` file. 

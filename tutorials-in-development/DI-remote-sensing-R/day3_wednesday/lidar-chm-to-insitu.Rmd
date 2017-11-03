@@ -325,7 +325,7 @@ derived vegetation height, within plots, to actual measured tree height data!
 
 <div id="challenge" markdown="1">
 
-## Challenge: LiDAR vs Insitu Comparison
+### Challenge: LiDAR vs Insitu Comparison
 
 Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th
 percentile vs *insitu* 95th percentile. Add labels to your plot. Customize the

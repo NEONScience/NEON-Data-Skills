@@ -238,7 +238,7 @@ Harvard Forest is located in UTM Zone 18, but the Landsat data are in a `CRS` of
 UTM Zone 19.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Raster Metadata
+### Challenge: Raster Metadata
 Answer the following questions about our `RasterStack`.
 
 1. What is the CRS?
@@ -350,7 +350,7 @@ Let's have a look at the source Landsat imagery that was partially used used to
 derive our NDVI rasters to try to understand what appears to be outlier NDVI values.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Examine RGB Raster Files
+### Challenge: Examine RGB Raster Files
 
 1. View the imagery located in the `/NEON-DS-Landsat-NDVI/HARV/2011` directory. 
 2. Plot the RGB images for the Julian days 277 and 293 then plot and compare

@@ -286,7 +286,7 @@ str(year.sum)
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Using Pipes
+### Challenge: Using Pipes
 Use piping to create a `data_frame` called `jday.avg` that contains the average 
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
 
@@ -380,7 +380,7 @@ harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Summarization & Calculations with dplyr
+### Challenge: Summarization & Calculations with dplyr
 We can use `sum` to calculate the total rather than mean value for each Julian
 Day. Using this information, do the following:
 
@@ -481,7 +481,7 @@ head(harTemp.daily.09.11)
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Combined dplyr Skills
+### Challenge: Combined dplyr Skills
 
 1. Plot daily total precipitation from 2009-2011 as we did in the previous
 challenge. However this time, use the new syntax that you learned (mutate and

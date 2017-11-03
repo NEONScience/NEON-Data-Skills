@@ -568,7 +568,7 @@ Let's turn our plot into an interactive Plotly plot.
 
 <div id="ds-challenge" markdown="1">
 
-## Challenge: Plot Precip for Boulder Station Since 1948
+### Challenge: Plot Precip for Boulder Station Since 1948
 
 The Boulder precipitation station has been recording data since 1948. Use the 
 steps above to create a plot of the full record of precipitation at this station (1948 - 2013).

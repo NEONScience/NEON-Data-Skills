@@ -397,7 +397,7 @@ plot?
 
 <div id="ds-challenge" markdown="1">
 
-## Challenge: Does spatial scale affect the pattern? 
+### Challenge: Does spatial scale affect the pattern? 
 
 In the steps above we have been looking at data aggregated across the entire
 state of Colorado. What if we look just at the watershed that includes the Boulder area where our investigation is centered?
@@ -455,7 +455,7 @@ palmer.drought.co04_plotly
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Do different measures show the same pattern?
+### Challenge: Do different measures show the same pattern?
 
 The nCLIMDIV dataset includes not only the Palmer Drought Severity Index but 
 also several other measures of precipitation, drought, and temperature. Choose one

@@ -557,7 +557,7 @@ R.
 
 <div id="ds-challenge" markdown="1">
 
-## Challenge: Explore Raster Metadata 
+### Challenge: Explore Raster Metadata 
 
 Without using the `raster` function to read the file into R, determine the
 following about the  `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif` file:

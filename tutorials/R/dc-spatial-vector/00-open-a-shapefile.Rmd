@@ -276,7 +276,7 @@ plot(aoiBoundary_HARV, col="cyan1", border="black", lwd=3,
 ```
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Import Line and Point Shapefiles
+### Challenge: Import Line and Point Shapefiles
 Using the steps above, import the HARV_roads and HARVtower_UTM18N layers into
 R. Call the Harv_roads object `lines_HARV` and the HARVtower_UTM18N
 `point_HARV`.
@@ -339,7 +339,7 @@ plot(point_HARV, add  = TRUE, pch = 19, col = "purple")
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Raster & Vector Data Together
+### Challenge: Plot Raster & Vector Data Together
 
 
 You can plot vector data layered on top of raster data using the `add=TRUE`

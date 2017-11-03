@@ -246,7 +246,7 @@ Let's give it a try.
     ## [11] "RESVEHICLE" "RECMAP"     "Shape_Le_1" "ResVehic_1" "BicyclesHo"
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Attributes for Different Spatial Classes
+### Challenge: Attributes for Different Spatial Classes
 Explore the attributes associated with the `point_HARV` and `aoiBoundary_HARV` 
 spatial objects. 
 
@@ -358,7 +358,7 @@ Now, we see that there are in fact two features in our plot!
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Subset Spatial Line Objects
+### Challenge: Subset Spatial Line Objects
 Subset out all:
 
 1. `boardwalk` from the lines layer and plot it.
@@ -508,7 +508,7 @@ try.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/line-width-unique-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Line Width by Attribute 
+### Challenge: Plot Line Width by Attribute 
 We can customize the width of each line, according to specific attribute value,
 too. To do this, we create a vector of line width values, and map that vector
 to the factor levels - using the same syntax that we used above for colors.
@@ -618,7 +618,7 @@ using the palette method. For example `palette(rainbow(6))` or
 </div> 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Lines by Attribute
+### Challenge: Plot Lines by Attribute
 Create a plot that emphasizes only roads where bicycles and horses are allowed.
 To emphasize this, make the lines where bicycles are not allowed THINNER than
 the roads where bicycles are allowed.
@@ -634,7 +634,7 @@ other lines can be grey.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/01-shapefile-attributes/bicycle-map-2-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Polygon by Attribute
+### Challenge: Plot Polygon by Attribute
 
 1. Create a map of the State boundaries in the United States using the data
 located in your downloaded data folder: `NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014`. 

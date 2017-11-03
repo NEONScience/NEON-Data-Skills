@@ -247,7 +247,7 @@ remove the axis ticks from the plot with `scales =list(draw=FALSE)`.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R/remove-axis-ticks-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Divergent Color Ramps 
+### Challenge: Divergent Color Ramps 
 When we used `gsub` to modify the tile labels we replaced the beginning of each 
 tile title with "Day". A more descriptive name could be "Julian Day".
 

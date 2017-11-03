@@ -148,7 +148,7 @@ manage packages using Tools -> Install Packages.
 
 <div id="ds-challenge" markdown="1">
 
-## Challenge: Installing Packages
+### Challenge: Installing Packages
 
 Check to see if you can install the `dplyr` package or a package of interest to
 you. 

@@ -219,7 +219,7 @@ Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Explore CHM Raster Values
+### Challenge: Explore CHM Raster Values
 It's often a good idea to explore the range of values in a raster dataset just
 like we might explore a dataset that we collected in the field.  
 
@@ -315,7 +315,7 @@ name in the specified directory. USE THIS SETTING WITH CAUTION!
 Ecological Observatory Network's (NEON) standard `NoDataValue`. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Explore the NEON San Joaquin Experimental Range Field Site
+### Challenge: Explore the NEON San Joaquin Experimental Range Field Site
 
 Data are often more interesting and powerful when we compare them across various 
 locations. Let's compare some data collected over Harvard Forest to data

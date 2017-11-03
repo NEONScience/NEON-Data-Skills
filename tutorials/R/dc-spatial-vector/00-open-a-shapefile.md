@@ -311,7 +311,7 @@ Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-vector/00-open-a-shapefile/plot-shapefile-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Import Line and Point Shapefiles
+### Challenge: Import Line and Point Shapefiles
 Using the steps above, import the HARV_roads and HARVtower_UTM18N layers into
 R. Call the Harv_roads object `lines_HARV` and the HARVtower_UTM18N
 `point_HARV`.
@@ -347,7 +347,7 @@ lines, we use `\n` where the line should break.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Raster & Vector Data Together
+### Challenge: Plot Raster & Vector Data Together
 
 
 You can plot vector data layered on top of raster data using the `add=TRUE`

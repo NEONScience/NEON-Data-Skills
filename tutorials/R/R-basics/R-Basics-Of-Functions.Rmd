@@ -157,7 +157,7 @@ We can see that even though there was no output from the function, the function
 was still operational. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Writing Functions
+### Challenge: Writing Functions
 
 Now that we've seen how to turn Fahrenheit into Kelvin, try your hand at converting
 Kelvin to Celsius. Remember, for the same temperature Kelvin is 273.15 degrees 

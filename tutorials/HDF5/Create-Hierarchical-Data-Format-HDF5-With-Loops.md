@@ -378,14 +378,14 @@ Now you are ready to go onto the other tutorials in the series to explore more
 about HDF5 files. 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Your Own HDF5
+### Challenge: Your Own HDF5
 
 Think about an application for HDF5 that you might have. Create a new HDF5 file 
 that would support the data that you need to store. 
 </div>
 
 <div id="ds-challenge" markdown="1">
-## Challenge: View Data with HDFView
+### Challenge: View Data with HDFView
 Open the sensordata.H5 file in the HDFView application and explore the contents.
 
 Hint: You may be interested in these tutorials: 

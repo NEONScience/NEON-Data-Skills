@@ -162,7 +162,7 @@ future. By default, the `.csv` file will be written to your working directory.
               file="Met_HARV_15min_2009_2011.csv")
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Subset & Plot Data
+### Challenge: Subset & Plot Data
 
 1. Create a plot of precipitation for the month of July 2010 in Harvard
 Forest.  Be sure to label x and y axes. Also be sure to give your plot a title. 
@@ -250,7 +250,7 @@ The results above tell us there are `NoData` values in the `datetime` column.
 However, there are `NoData` values in other variables.  
 
 <div id="ds-challenge" markdown="1">
-## Challenge: NoData Values
+### Challenge: NoData Values
 
 How many `NoData` values are in the precipitation (`prec`) and PAR (`parr`)
 columns of our data?
@@ -337,7 +337,7 @@ R to ignore noData values in the mean calculations using `na.rm=`
 We now see that the 3-year average air temperature is 8.5°C.  
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Import, Understand Metadata, and Clean a Data Set
+### Challenge: Import, Understand Metadata, and Clean a Data Set
 We have been using the 15-minute data from the Harvard Forest. However, overall
 we are interested in larger scale patterns of greening-up and browning-down.  
 Thus a daily summary is sufficient for us to see overall trends.

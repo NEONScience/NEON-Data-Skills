@@ -367,7 +367,7 @@ symbol, but to instead use a line.
 
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot Polygon by Attribute
+### Challenge: Plot Polygon by Attribute
 
 1. Using the `NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp` shapefile, 
 create a map of study plot locations, with each point colored by the soil type

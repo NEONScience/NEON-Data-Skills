@@ -277,7 +277,7 @@ integer 05 `julianDay` value (indicating 5th of January), we cannot simply add
 error we then subtract 1 to get the correct day, January 05 2011.
 
 <div id="ds-challenge" markdown="1">
-## Challenge: NDVI for the San Joaquin Experimental Range
+### Challenge: NDVI for the San Joaquin Experimental Range
 We often want to compare two different sites. The National Ecological
 Observatory Network (NEON) also has a field site in Southern California
 at the
@@ -311,7 +311,7 @@ in `ggplot()` see the tutorial on
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R/ggplot-data-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot San Joaquin Experimental Range Data
+### Challenge: Plot San Joaquin Experimental Range Data
 Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>
@@ -341,7 +341,7 @@ of columns and exact same column names to be bound.
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R/merge-df-single-plot-1.png)
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Plot NDVI with Date
+### Challenge: Plot NDVI with Date
 Plot the SJER and HARV data in one plot but use date, rather than Julian day, 
 on the x-axis. 
 
@@ -513,7 +513,7 @@ the row names.
     write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Write to .csv
+### Challenge: Write to .csv
 
 1. Create a NDVI .csv file for the NEON SJER field site that is comparable with
 the one we just created for the Harvard Forest. Be sure to inspect for

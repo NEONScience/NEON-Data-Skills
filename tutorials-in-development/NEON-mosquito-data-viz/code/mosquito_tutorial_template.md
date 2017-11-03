@@ -358,7 +358,7 @@ All challenges are Header 2. The div tag (<\div>) goes BEFORE the code chunk
 associated with the challenge. 
 
 <div id="challenge" markdown="1">
-## Challenge: Title of Challenge
+### Challenge: Title of Challenge
   
 Here is some challenge text.
 
@@ -381,7 +381,7 @@ It can have multiple paragraphs too.
 
 
 	 <div id="challenge" markdown="1">
-	## Challenge: Title of Challenge
+	### Challenge: Title of Challenge
 	  
 	 Here is some challenge text.
 
