@@ -92,8 +92,8 @@ you can view metadata for the file. This will be located in the bottom window of
 the application.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDf5/OpenFIU.png">
-    <img src="{{ site.baseurl }}/images/HDf5/OpenFIU.png"></a>
+    <a href="{{ site.baseurl }}/images/HDF5/OpenFIU.png">
+    <img src="{{ site.baseurl }}/images/HDF5/OpenFIU.png"></a>
     <figcaption>If you click on the file name wtihin the viewer, you can view 
     any stored metadata for that file, at the bottom of the viewer. You may have 
     to click on the metadata tab at the bottom of the viewer.</figcaption>

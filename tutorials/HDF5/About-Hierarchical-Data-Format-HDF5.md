@@ -74,8 +74,8 @@ groups OR datasets within it.
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg">
-    <img src="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg">
+    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg"></a>
     <figcaption>An example HDF file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
@@ -83,8 +83,8 @@ groups OR datasets within it.
 An HDF5 file containing datasets, might be structured like this:  
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg">
-    <img src="{{ site.baseurl }}/images/HDf5/hdf5_structure3.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure3.jpg">
+    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure3.jpg"></a>
     <figcaption>An example HDF5 file structure containing data for multiple field sites and also containing various datasets (averaged at different time intervals).</figcaption>
 </figure> 
 
@@ -111,8 +111,8 @@ dataset, is that this facilitates automation without the need for a separate
 with the dataset, and which we might need to process the dataset.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDf5/hdf5_structure4.jpg">
-    <img src="{{ site.baseurl }}/images/HDf5/hdf5_structure2.jpg"></a>
+    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg">
+    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure2.jpg"></a>
     <figcaption>HDF5 files are self describing - this means that all elements 
     (the file itself, groups and datasets) can have associated metadata that 
     describes the information contained within the element.</figcaption>

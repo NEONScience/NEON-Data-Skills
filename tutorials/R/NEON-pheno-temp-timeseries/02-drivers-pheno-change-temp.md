@@ -535,14 +535,14 @@ Let's select only the 2016 data.
     ## [1] "2016-01-01 00:00:00 EST" "2016-12-31 18:30:00 EST"
 
 <div id="ds-challenge" markdown="1">
-## Challenge: Methods Work with Appropraite Classes 
+## Challenge: Methods Work with Appropriate Classes 
 What happens if you try to subset by date using this method if the 
 data aren't in a date-time class? Hint: Try it out with our previous `temp30` 
 object. 
 
 </div>
-
-*For a discussion of date formats is including Date, POSIXct, & POSIXlt see the
+–––
+For a discussion of date formats is including Date, POSIXct, & POSIXlt see the
 NEON Data Skills tutorial
 <a href="/dc-convert-date-time-POSIX-r" target="_blank"> *Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt* </a>.*
 
