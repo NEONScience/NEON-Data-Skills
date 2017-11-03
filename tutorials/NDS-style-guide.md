@@ -28,7 +28,7 @@ For a simple markdown cheatsheet check out
 ## Header at top of all tutorial pages
 
 This header must be at the top of each tutorial so that all associated metadata 
-will appear correctly.  
+will appear correctly. (spaces at beginning only added so as not to render)
 
     ---
     syncID: sync-id-from-list
@@ -89,9 +89,9 @@ should only be used for large section breaks and use descriptive headers.
 This is the "Greybox" styling which contains the information on set up, data 
 downloads, etc for the tutorial/lesson/workshop. 
 
-The necessary div tag (leaving out the < > so it isn't recognized as html): 
+The necessary div tag (spaces at beginning only added so as not to render): 
 
-`div id="ds-objectives" markdown="1"`  
+    <div id="ds-objectives" markdown="1">  
 
 <div id="ds-objectives" markdown="1">
 
@@ -129,17 +129,17 @@ html code for links and not markdown code.
 
 #### External Link 
 
-Code (leaving out the < > so it isn't recognized as html): 
+Code (spaces at beginning only added so as not to render): 
 
-a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a
+    <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a>
 
 <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a>
 
 #### Internal Link, using relative path (leaving out http://www.neonscience.org). 
 
-Code (leaving out the < > so it isn't recognized as html):
+Code (spaces at beginning only added so as not to render):
 
-a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a
+    <a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a>
 
 <a href="/primer-raster-data-R" target="_blank"> *Primer on Raster Data* series</a>
 
@@ -190,10 +190,10 @@ also be used in other cases.
 
 There should always be a space between the star and Data Tip.  
 
-The div tag for this one is: 
+The div tag for this one is (spaces at beginning only added so as not to render): 
 
     <div id="ds-dataTip" markdown="1">
-    <i class="fa fa-star"></i **Data Tip:**>
+    <i class="fa fa-star"></i> **Data Tip:**
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Here is a block with a data tip. 
@@ -206,13 +206,15 @@ links, however, it cannot contain figures, etc.
 
 ## Challenges
 
-The div tag for this one is (leaving out the < > so it isn't recognized as html):
-`div id="ds-challenge" markdown="1"`
+Titles of Challenges should be H3 header and in sentence case. 
 
-This is how it appears in Markdown. 
+The div tag for this one is (spaces at beginning only added so as not to render):
+
+    <div id="ds-challenge" markdown="1">
+
 
 <div id="ds-challenge" markdown="1">
-### Challenge: Title of Challenge
+### Challenge: Title of challenge
   
 Here is some challenge text.
 
@@ -247,11 +249,25 @@ It can have multiple paragraphs too.
 
 
 ***
+## Images 
+All images used in NEON Data Skills educational resources must be free of 
+copyright issues (CC, CC-BY, etc). We provide the source of all image (linked
+when possible). When feasible, we prefer to download and image and host it within
+the /images/ directory it GitHub. This prevents broken images when links to external 
+websites change. 
 
-## Image with Caption & Source
+Images should be large enough to be useful on the website and in presentations
+based on the educational resources. However, they should not be so large as to 
+prevent usage of the educational resources in areas with slower internet connections. 
+Image file sizes should not exceed 2 MB. Supported image types at this time are 
+.jpg, .png, and .gif.  
+
+
+
+### Image with Caption & Source
 
 <figure>
-	### Challenge: <a href="{{ site.baseurl }}/images/lidar/biomass.png">
+	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
 	<figcaption> Caption here. Source: National Ecological Observatory Network
 	(NEON)  
@@ -259,8 +275,7 @@ It can have multiple paragraphs too.
 </figure>
 
 
-## Two Images Side-by-side with Caption & Source
-
+### Two Images Side-by-side with Caption & Source
 
 <figure class="half">
 	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
@@ -268,7 +283,7 @@ It can have multiple paragraphs too.
 	</a>
 	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
-	<figcaption>Caption describing these two images. Include Source: 
+	<figcaption>Caption describing these two images LEFT: Blah blah. RIGHT: Blah blah. Source: 
 	</figcaption>
 </figure>
 
@@ -277,15 +292,18 @@ It can have multiple paragraphs too.
 ## Embedded Videos
 Use the embed code (found under Share > Embed) from YouTube to add a video to
 lessons.  
+Code (spaces at beginning only added so as not to render):
 
-(leaving out the < > so it isn't recognized as html)
-iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe
+    <iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe> 
 
 ***
 
 ## Highlight in Specified Color
+
+Code (spaces at beginning only added so as not to render):
+    <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
 
 <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
 
