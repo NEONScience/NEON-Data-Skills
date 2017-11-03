@@ -190,10 +190,10 @@ also be used in other cases.
 
 There should always be a space between the star and Data Tip.  
 
-The div tag for this one is (leaving out the < > so it isn't recognized as html): 
+The div tag for this one is: 
 
-`div id="ds-dataTip" markdown="1"`
-i class="fa fa-star"></i **Data Tip:** 
+    <div id="ds-dataTip" markdown="1">
+    <i class="fa fa-star"></i **Data Tip:**>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Here is a block with a data tip. 
@@ -287,4 +287,6 @@ iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" 
 
 ## Highlight in Specified Color
 
-<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#565A5C">/data/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
+
+
