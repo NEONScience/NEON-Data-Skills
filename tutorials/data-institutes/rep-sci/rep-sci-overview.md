@@ -42,7 +42,7 @@ your own research.
 Please view the online slide-show below which summarizes concepts taught in the
 Reproducible Science Curriculum.
 
-<a  class="link--button link--arrow" href="http://neon-workwithdata.github.io/slide-shows/intro-reprod-science.html" target="_blank">View Reproducible Science Slideshow</a>
+<a  class="link--button link--arrow" href="http://neonscience.github.io/slide-shows/intro-reprod-science.html" target="_blank">View Reproducible Science Slideshow</a>
 
 ## A Gap In Understanding
 
