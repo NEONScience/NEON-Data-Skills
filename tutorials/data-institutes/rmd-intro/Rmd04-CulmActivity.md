@@ -1,7 +1,7 @@
 ---
 syncID: 34ba2280e4414d92bfa760507e072233
-title: "Pre-Institute Week 3 Assignment"
-description: "This page details how to complete the assignment for pre-Institute week 3."
+title: "Assignment: Reproducible Workflows with R Markdown"
+description: "This page details how to complete the assignment for pre-Institute week 3 on documenting your code with R Markdown."
 dateCreated: 2016-01-01
 authors:
 contributors:

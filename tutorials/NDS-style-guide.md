@@ -105,7 +105,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
@@ -119,6 +119,28 @@ These capstone activities rely on skills learned in the
 * <a href="/intro-hdf5-r-series" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
  
 </div>
+
+## Include Files
+
+Include files are used for items/information that need to be to be repeated in 
+many places (like the dataset above). By using an include an update can be made 
+in one location and applied in all instances. 
+
+In a .md file includes are added with the following code 
+
+    {% include/wkSetup/_setup_data.html %}
+
+where everything after "include" is the file path to the appropriate file. 
+
+If you are creating content in Drupal (series overview, workshop, teaching module), 
+these same includes can be used by using the appropriate node ID.  
+
+     [[nid:6408]]
+
+It would appear like this: 
+
+{% include/wkSetup/_setup_data.html %}
+
 
 ***
 

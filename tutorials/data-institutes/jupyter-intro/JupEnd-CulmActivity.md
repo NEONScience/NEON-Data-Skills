@@ -1,7 +1,7 @@
 ---
 syncID: a82f3466e5e9433fbbf8026a54e720ae
-title: "Pre-Institute Week 3 Assignment"
-description: "This page details how to complete the assignment for pre-Institute week 3."
+title: "Assignment: Reproducible Workflows with Jupyter Notebooks"
+description: "This page details how to complete the assignment for pre-Institute week 3 on documenting your code with Jupyter Notebooks."
 dateCreated: 2017-06-12
 authors:
 contributors: 
