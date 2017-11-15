@@ -1,0 +1,84 @@
+Challenge (at end) was originally at end of Image-Raster-Data-In-R tutorial. 
+However, band 90 won't stack with the others and despite the text saying "band 90, 
+that you fixed in step 1", the tutorial doens't teach how to fix it.  I can't 
+find any of our tutorials that fix it.  
+I started to add a section When Raster's Won't Stack as this does seem like great
+info (extent & resolution don't match), but I can't figure out how to do it at 
+this point. 
+
+Removing from lesson so a working lesson can be published, but want to retain and 
+potentially add it back in later!  -- MJ 16 March 17
+
+---
+
+## When Rasters Won't Stack
+
+
+``` {r band-90}
+# import band 90 as a raster
+band90raster <- raster("band90.tif")
+
+# view attributes
+band90raster
+rgbRaster
+
+
+```
+
+Notice that the resolution and extent are different. We won't be able to create
+a raster stack or raser brick (coming up next) with the other bands if they don't
+line up. 
+
+Let's see what it looks like.
+``` {r plot-90}
+
+# plot band90
+plot(band90raster)
+
+```
+
+Hmm, band90 certainly appears to be of the same location as bands 19, 34, and 58. 
+The tags in the GeoTIFF must have been set incorrectly to start. 
+
+First, lets fix the extent
+
+``` {r set-extent}
+# define known extent from other bands
+
+
+```
+
+---- START CHALLENGE -----
+
+ <div id="ds-challenge" markdown="1">
+## Challenge: Create & Plot Image
+
+Apply what you've learned to a new problem! A color infrared image is the 
+combination of the near-infrared, red, and green bands. For our data
+
+* green: band 34
+* red: band 58 and 
+* near-infrared: band 90. 
+
+Using the  band90.tiff raster in the RGB directory with the other rasters, and 
+
+1. Create a color infrared image (as a false color RGB image). 
+1. Crop the image to the same dimensions as the previous RGB images (or 
+experiment with your own cropping dimensions). 
+1. Export your results as a GeoTiff. 
+
+Hint: NIR->R->G = R->G->B
+
+</div>
+
+``` {r challenge-code-plot-crop-rgb, echo=FALSE}
+
+
+# create color infrared stack
+nrgRaster <- stack(band90raster,band58,band34)
+
+# plot an RGB version of the cropped stack
+plotRGB(rgbRaster_crop,r=3,g=2,b=1, stretch = "lin")
+
+```
+

@@ -1,0 +1,235 @@
+---
+syncID: 2c3d05beff8c46b88c610fb0de0fc1c3
+title: "Subset HDF5 file in R"
+description: "Learn how to subset an H5 file in R."
+dateCreated:  2016-05-10
+authors: Leah A. Wasser
+contributors: Megan A. Jones
+estimatedTime:
+packagesLibraries: rhdf5
+topics: HDF5
+languagesTool:
+dataProduct:
+code1: institute-materials/day1_monday/subset-h5-file-R.R
+tutorialSeries: institute-day1
+---
+
+
+<div id="ds-objectives" markdown="1">
+<strong>R Skill Level:</strong> Intermediate
+
+## Learning Objectives
+After completing this activity, you will be able to:
+<ol>
+<li>Subset an HDF5 file.</li>
+
+</ol>
+
+</div>
+
+## Getting Started
+
+In this tutorial, we will extract a single-pixel's worth of reflectance values
+from an HDF5 file and plot a spectral profile for that pixel.
+
+```{r call-libraries, results="hide" }
+
+# load packages
+library(rhdf5)
+library(raster)
+library(plyr)
+library(rgeos)
+library(rgdal)
+library(ggplot2)
+
+# be sure to set your working directory
+# setwd("~/Documents/data/NEONDI-2016") # Mac
+# setwd("~/data/NEONDI-2016")  # Windows
+
+```
+
+## Import H5 Functions
+
+We have built a suite of **functions** that allow us to quickly open and read 
+NEON hyperspectral imagery data from an `hdf5` file. 
+
+```{r import-h5-functions }
+
+# install devtools (only if you have not previously intalled it)
+# install.packages("devtools")
+# call devtools library
+#library(devtools)
+
+## install from github
+# install_github("lwasser/neon-aop-package/neonAOP")
+## call library
+library(neonAOP)
+
+
+
+# your file will be in your working directory! This one happens to be in a diff dir
+# than our data
+# source("/Users/lwasser/Documents/GitHub/neon-aop-package/neonAOP/R/aop-data.R")
+
+
+```
+
+## Open H5 File
+
+Next, let's define a few variables that we will need to access the H5 file.
+
+```{r open-H5-file, results='hide'}
+
+# Define the file name to be opened
+f <- "NEONdata/D17-California/TEAK/2013/spectrometer/reflectance/Subset3NIS1_20130614_100459_atmcor.h5"
+
+# Look at the HDF5 file structure
+h5ls(f, all=T)
+
+# define the CRS in EPGS format for the file
+epsg <- 32611
+
+```
+
+## Read Wavelength Values
+
+Next, let's read in the wavelength center associated with each band in the HDF5
+file.
+
+```{r read-band-wavelengths }
+
+# read in the wavelength information from the HDF5 file
+wavelengths<- h5read(f,"wavelength")
+# convert wavelength to nanometers (nm)
+# NOTE: this is optional!
+wavelengths <- wavelengths*1000
+
+```
+
+
+## Get Subset
+Next, we might want to extract just a subset of our data to pull a spectral
+signature. For example, a plot boundary.
+
+```{r extract-subset}
+
+# get of H5 file map tie point
+h5.ext <- create_extent(f)
+
+# turn the H5 extent into a polygon to check overlap
+h5.ext.poly <- as(extent(h5.ext), "SpatialPolygons")
+
+# open file clipping extent
+clip.extent <- readOGR("NEONdata/D17-California/TEAK/vector_data", "TEAK_plot")
+
+# assign crs to h5 extent
+# paste0("+init=epsg:", epsg) -- it is better to use the proj string here
+
+crs(h5.ext.poly) <- CRS("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+
+# ensure the two extents overlap
+gIntersects(h5.ext.poly, clip.extent)
+
+# if they overlap, then calculate the extent
+# this doesn't currently account for pixel size at all 
+# and these values need to be ROUNDED
+
+yscale <- 1
+xscale <- 1
+
+# define index extent
+# xmin.index, xmax.index, ymin.index,ymax.index
+# all units will be rounded which means the pixel must occupy a majority (.5 or greater)
+# within the clipping extent
+index.bounds <- calculate_index_extent(extent(clip.extent),
+																			 h5.ext)
+
+# open a band that is subsetted using the clipping extent
+b58_clipped <- neonAOP::open_band(fileName=f,
+								bandNum=58,
+								epsg=32611,
+								subsetData = TRUE,
+								dims=index.bounds)
+
+# plot clipped bands
+plot(b58_clipped,
+     main="Band 58 Clipped")
+
+```
+
+## Run Subset over Many Bands
+
+```{r open-many-bands }
+
+# within the clipping extent
+index.bounds <- calculate_index_extent(extent(clip.extent),
+																			 h5.ext)
+# create  alist of the bands
+bands <- list(19,34,58)
+# within the clipping extent
+index.bounds <- calculate_index_extent(extent(clip.extent),
+              h5.ext)
+# clip out raster
+rgbRast.clip <- neonAOP::create_stack(file=f,
+            bands=bands,
+            epsg=epsg,
+            subset=TRUE,
+            dims=index.bounds)
+
+plotRGB(rgbRast.clip,
+        stretch="lin")
+
+```
+
+## Unclipped Data
+And here are the same data not subsetted but with the subset region overlayed
+on top.
+
+```{r plot-RGB-stack}
+
+rgbRast <- create_stack(file=f,
+                         bands=bands,
+                         epsg=epsg,
+                         subset=FALSE)
+
+plotRGB(rgbRast,
+        stretch="lin")
+
+plot(clip.extent,
+     add=T,
+     border="yellow",
+     lwd=3)
+
+```
+
+## View Spectra Within Clipped Raster
+
+```{r subset-h5-file}
+
+# array containing the index dimensions to slice
+H5close()
+
+subset.h5 <- h5read(f, "Reflectance",
+                    index=list(index.bounds[1]:index.bounds[2],
+                    					 index.bounds[3]:index.bounds[4],
+                    					 1:426)) # the column, row
+
+final.spectra <- data.frame(apply(subset.h5,
+              MARGIN = c(3), # take the mean value for each z value
+              mean)) # grab the mean value in the z dimension
+final.spectra$wavelength <- wavelengths
+
+# scale the data
+names(final.spectra) <- c("reflectance","wavelength")
+final.spectra$reflectance <- final.spectra$reflectance / 10000
+
+
+# plot the data
+qplot(x=final.spectra$wavelength,
+      y=final.spectra$reflectance,
+      xlab="Wavelength (nm)",
+      ylab="Reflectance",
+      main="Mean Spectral Signature for Clip Region")
+
+```
