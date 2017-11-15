@@ -39,7 +39,7 @@ learn in this series.
 
 We now have done the following:
 
-1. We've **forked** (made an individual copy of) the `NEON-WorkWithData/DI-NEON-participants` repo to
+1. We've **forked** (made an individual copy of) the `NEONScience/DI-NEON-participants` repo to
 our github.com account.
 2. We've **cloned** the forked repo - making a copy of it on our local computers.
 3. We've added files and content to our local copy of the repo and **committed**
@@ -125,7 +125,7 @@ Alternatively, you can click the Pull requests tab, then on this new page click 
 Select your fork to compare with NEON central repo. When you begin a pull 
 request, the head and base will auto-populate as follows:
 
-* base fork: **NEON-WorkWithData/DI-NEON-participants**
+* base fork: **NEONScience/DI-NEON-participants**
 * head fork: **YOUR-USER-NAME/DI-NEON-participants**
 
 The above pull request configuration tells Git to sync (or update) the NEON repo
@@ -184,7 +184,7 @@ you to the central repo landing page.
 
 #### Step 6 - Merge Pull Request
 In this final step, it’s time to merge your changes in the
-**NEON-WorkWithData/DI-NEON-participants** repo. 
+**NEONScience/DI-NEON-participants** repo. 
 
 NOTE 1: You are only able to merge a pull request in a repo that you have
 permissions to!
@@ -217,7 +217,7 @@ To submit your PR:
 Repeat the pull request steps above, with the base and head switched. Your base
 will be the NEON central repo and your HEAD will be YOUR forked repo:
 
-* base fork: **NEON-WorkWithData/DI-NEON-participants**
+* base fork: **NEONScience/DI-NEON-participants**
 * head fork: **YOUR-USER-NAME/DI-NEON-participants**
 
 When you get to Step 6 - Merge Pull Request (PR), are you able to merge the PR?

@@ -1,6 +1,6 @@
 ---
 syncID: a1388c25d16342cca2643bc2df3fbd8e
-title: "Use the neonDataStackR package to access NEON data"
+title: "Use the neonDataStackR Package to Access NEON Data"
 description: "Convert data downloaded from the NEON Data Portal in zipped month-by-site files into a table with all data of interest. Temperature data are used as an example. "
 dateCreated: 2017-08-01
 authors: [Megan A. Jones ]

@@ -1,7 +1,7 @@
 Using functions for modular code
 =============
 
-These slides can be used to teach how to make code more functional - starting first with the basic syntax of functions in R, to building functions that help to make plotting figures more straightforward. They were used at the [2016 NEON Data Intitute](http://neon-workwithdata.github.io/neon-data-institute-2016/).
+These slides can be used to teach how to make code more functional - starting first with the basic syntax of functions in R, to building functions that help to make plotting figures more straightforward. They were used at the [2016 NEON Data Intitute](http://neonscience.github.io/neon-data-institute-2016/).
 
 ## Before the lesson starts
 

@@ -72,7 +72,7 @@ documentation), and stores each file's revision history. Repositories can have
 multiple collaborators and can be either public or private.
 
 In the Data Institute, we will share our work in the
-<a href="https://github.com/NEON-WorkWithData/DI-NEON-participants" target="_blank">DI-NEON-participants repo.</a>
+<a href="https://github.com/NEONScience/DI-NEON-participants" target="_blank">DI-NEON-participants repo.</a>
 
 ### Find an Existing Repo
 
@@ -81,7 +81,7 @@ You can find repos in two ways:
 
 1. Type  “**DI-NEON-participants**”  in the github.com search bar to find the repository.
 2. Use the repository URL if you have it - like so:
-<a href="https://github.com/NEON-WorkWithData/DI-NEON-participants" target="_blank"> https://github.com/NEON-WorkWithData/DI-NEON-participants</a>.
+<a href="https://github.com/NEONScience/DI-NEON-participants" target="_blank"> https://github.com/NEONScience/DI-NEON-participants</a>.
 
 ### Navigation of a Repo Page
 
@@ -97,7 +97,7 @@ the format:
 
 So the full name of our repository is:
 
- **NEON-WorkWithData/DI-NEON-participants**
+ **NEONScience/DI-NEON-participants**
 
 #### Header Tabs
 
@@ -183,7 +183,7 @@ Now, check out your new fork. Its name should be:
 
 It can get confusing sometimes moving between a central repo:
 
-* https://github.com/NEON-WorkWithData/DI-NEON-participants
+* https://github.com/NEONScience/DI-NEON-participants
 
 and your forked repo:
 
