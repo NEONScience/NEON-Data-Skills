@@ -107,6 +107,6 @@ A raster consists of a series of pixels, each with the same dimensions and shape
 </figure>
 
 
-* [Intro to CRS ](http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems)
+* [Intro to CRS ](http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems)
 
-* [Intro to UTM CRS ](http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/geographic-vs-projected-coordinate-reference-systems-UTM)
+* [Intro to UTM CRS ](http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/geographic-vs-projected-coordinate-reference-systems-UTM)

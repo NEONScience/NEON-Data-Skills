@@ -40,7 +40,7 @@ in 2016 was **R**. This Institute was held at NEON headquarters in June 2016.
 The teaching materials from the 2016 Data Institute will be converted into 
 self-paced online tutorial series and will be provided free on this site. In the
 meantime, you can directly access the 
-<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/" target="_blank">2016 Data Institute materials here</a>.
+<a href="http://neonscience.github.io/neon-data-institute-2016/" target="_blank">2016 Data Institute materials here</a>.
 These materials were designed to be used in the context of the workshop with an instructor. 
 
 |Time | Day | Description
@@ -50,10 +50,10 @@ These materials were designed to be used in the context of the workshop with an 
 |--| 3-9 June |<a href="{{ site.baseurl }}/workshop-event/NEON-DI-2016/intro-git" target="_blank"> Version Control & Collaborative Science with Git & GitHub</a>|
 |--| 10-16 June |<a href="{{ site.baseurl }}/workshop-event/NEON-DI-2016/intro-rmd" target="_blank"> Documentation of Your Workflow with RMarkdown</a>|
 |--| 20-26 June| **Data Institute**|
-|7:50am - 10:00pm| Monday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day1/" target="_blank"> Intro to NEON, Intro to HDF5 & Hyperspectral RS</a>|
-|8:00am - 6:30pm| Tuesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day2/" target="_blank"> Intro to LiDAR data, Automated Workflows</a>|
-|8:00am - 6:30pm| Wednesday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day3/" target="_blank"> Remote Sensing Uncertainty</a>|
-|8:00am - 6:30pm| Thursday|<a href="http://neon-workwithdata.github.io/neon-data-institute-2016/tutorial-series/institute-day4/" target="_blank"> LiDAR & Hyperspectral Data Fusion</a>|
+|7:50am - 10:00pm| Monday|<a href="http://neonscience.github.io/neon-data-institute-2016/tutorial-series/institute-day1/" target="_blank"> Intro to NEON, Intro to HDF5 & Hyperspectral RS</a>|
+|8:00am - 6:30pm| Tuesday|<a href="http://neonscience.github.io/neon-data-institute-2016/tutorial-series/institute-day2/" target="_blank"> Intro to LiDAR data, Automated Workflows</a>|
+|8:00am - 6:30pm| Wednesday|<a href="http://neonscience.github.io/neon-data-institute-2016/tutorial-series/institute-day3/" target="_blank"> Remote Sensing Uncertainty</a>|
+|8:00am - 6:30pm| Thursday|<a href="http://neonscience.github.io/neon-data-institute-2016/tutorial-series/institute-day4/" target="_blank"> LiDAR & Hyperspectral Data Fusion</a>|
 |8:00am - 6:30pm| Friday|<a href="{{ site.baseurl }}/tutorial-series/institute-day5/" target="_blank"> Group projects</a>|
 |9:00am - 2:00pm| Saturday| Group project presentations|
 

@@ -292,7 +292,7 @@ load.
     ## Found more than one class "connection" in cache; using the first, from namespace 'EML'
 
     # import a truncated version of the eml file for quicker demonstration
-    # eml_HARV <- read_eml("http://neon-workwithdata.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
+    # eml_HARV <- read_eml("http://neonscience.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
     
     # view size of object
     object.size(eml_HARV)

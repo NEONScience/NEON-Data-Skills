@@ -23,7 +23,7 @@ comments: true
 **DUE: 11:59pm, Thursday June 8th**
 
 During the NEON Data Institute, you will share the code that you create daily
-with everyone on the `NEON-WorkWithData/DI-NEON-participants` repo.
+with everyone on the `NEONScience/DI-NEON-participants` repo.
 
 Through this week’s tutorials, you have learned the basic skills needed to
 successfully share your work at the Institute including how to:

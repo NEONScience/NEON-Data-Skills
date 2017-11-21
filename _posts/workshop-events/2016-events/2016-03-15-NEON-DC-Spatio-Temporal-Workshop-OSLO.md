@@ -164,8 +164,8 @@ Please note that the schedule listed below may change depending upon the pace of
 | 8:00     | Please come early if you have any setup / installation issues |          |
 | 9:00     | <a href="http://arnsteio.github.io/short-shell-novice/" target="_blank">The Shell - command line for data exploration</a> | Michael, Anne          |
 | 10:30 | ------- Coffee / Tea BREAK ------- |      |
-| 10:45 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> | Michael    |
-| 11:30 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> | Michael     |
+| 10:45 | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> | Michael    |
+| 11:30 | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> | Michael     |
 | 12:00 - 1:00 PM     | Lunch |          |
 | 1:00     | <a href="http://neondataskills.org/tutorial-series/vector-data-series/" target="_blank">Introduction to Vector Data in R</a> | Leah         |
 | 3:00 | ------- BREAK ------- |      |
@@ -181,7 +181,7 @@ Please note that the schedule listed below may change depending upon the pace of
 | 10:30 | ------ BREAK ------ |      |
 | 10:45 | <a href="{{ site.baseurl }}/tutorial-series/raster-data-series/" target="_blank">Getting Started with Raster Data in R</a> | Leah |
 | 12:00 - 1:00 PM     | Lunch  |          |
-| 1:00 - 1:30 PM     | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data Management: Understanding Metadata  </a> |    Michael     |
+| 1:00 - 1:30 PM     | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data Management: Understanding Metadata  </a> |    Michael     |
 | 1:00     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
 | 3:00 | ------ BREAK ------ |      |
 | 3:15     | <a href="{{ site.baseurl }}/tutorial-series/raster-time-series/" target="_blank">Raster Time Series Data in R</a> | Leah         |
