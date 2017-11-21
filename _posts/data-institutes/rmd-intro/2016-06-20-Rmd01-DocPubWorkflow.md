@@ -53,7 +53,7 @@ This week we will learn about the R Markdown file format (and R package) which
 can be used with the `knitr` package to document and publish (disseminate) your
 code and code output.
 
-<a class="btn btn-info" href="http://neon-workwithdata.github.io/slide-shows/share-publish-archive-slideshow.html" target= "_blank"> View Slideshow: Share, Publish & Archive - from the Reproducible Science Curriculum</a>
+<a class="btn btn-info" href="http://neonscience.github.io/slide-shows/share-publish-archive-slideshow.html" target= "_blank"> View Slideshow: Share, Publish & Archive - from the Reproducible Science Curriculum</a>
 
 ## The Tools We Will Use
 

@@ -148,11 +148,11 @@ pace of the workshop!
 |-------------|---------------|
 | 8:00     | Please come early if you have any setup or installation problems |
 | 9:00     | Geospatial Data Management - Intro to Geospatial Concepts
-|   | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatio-temporal-research-questions" target="_blank">Answer a Spatio-temporal Research Question with Data - Where to Start? </a> |
-|   | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> |
-|   | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data about Data -- Intro to Metadata Formats & Structure </a> |
+|   | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatio-temporal-research-questions" target="_blank">Answer a Spatio-temporal Research Question with Data - Where to Start? </a> |
+|   | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/spatial-data-formats" target="_blank">Data Management: Spatial Data Formats </a> |
+|   | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/metadata-file-formats-structures" target="_blank">Data about Data -- Intro to Metadata Formats & Structure </a> |
 | 10:30 | --------- BREAK --------- |
-| 10:45 | <a href="http://neon-workwithdata.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> |
+| 10:45 | <a href="http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/R/intro-to-coordinate-reference-systems" target="_blank">Data Management: Coordinate Reference Systems</a> |
 | 12:00 - 1:00 |  --------- Lunch ---------| 
 | 1:00     | <a href="{{ site.baseurl }}/tutorial-series/vector-data-series/" target="_blank">Vector Data in R</a> |
 |   | <a href="{{ site.baseurl }}/R/open-shapefiles-in-R/" target="_blank">Open and Plot Shapefiles in R - Getting Started with Point, Line and Polygon Vector Data</a>

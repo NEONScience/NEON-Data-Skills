@@ -34,7 +34,7 @@ familiarity with Jupyter Notebooks and that the environment, especially the
 
 # Deadlines
 **Due:** Please submit your activity based notebook files to the
-**NEON-WorkWithData/DI-NEON-participants** GitHub repo as a **pull request**
+**NEONScience/DI-NEON-participants** GitHub repo as a **pull request**
 by 11:59pm on 16 June 2017.
 
 </div>
@@ -49,7 +49,7 @@ Open this file in Jupyter Notebooks, determine the size of the raster, and
 (optional extension) plot the raster. Add in both code chunks and text (markdown) chunks
 to fully explain what is done. 
 When finished, submit the .ipynb file to the 
-**NEON-WorkWithData/DI-NEON-participants** GitHub repo 
+**NEONScience/DI-NEON-participants** GitHub repo 
 
 ## Detailed Directions
 
