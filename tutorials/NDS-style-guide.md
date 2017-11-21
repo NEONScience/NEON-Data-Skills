@@ -21,7 +21,7 @@ reference and testing. If you have user permissions on the NEONScience.org websi
 you can view it at neonscience.org/styles-css. Otherwise, use the text below to
 guide the styling used in NEON Data Skills educational resources. 
 
-For a simple markdown cheatsheet check out 
+For a simple markdown overview, check out 
 <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">this cheatsheet</a>.
 
 ***
@@ -126,16 +126,18 @@ Include files are used for items/information that need to be to be repeated in
 many places (like the dataset above). By using an include an update can be made 
 in one location and applied in all instances. 
 
-In a .md file includes are added with the following code 
+In a .md file includes are added with the following code (space between { % and % } 
+added so that this does not render).  
 
-    {% include/wkSetup/_setup_data.html %}
+    { % include/wkSetup/_setup_data.html % }
 
 where everything after "include" is the file path to the appropriate file. 
 
 If you are creating content in Drupal (series overview, workshop, teaching module), 
-these same includes can be used by using the appropriate node ID.  
+these same includes can be used by using the appropriate node ID (space between square brackets
+added so that this does not render). 
 
-     [[nid:6408]]
+     [ [nid:6408] ]
 
 It would appear like this: 
 
@@ -157,7 +159,7 @@ Code (spaces at beginning only added so as not to render):
 
 <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Adam Pritchar's Markdown cheatsheet</a>
 
-#### Internal Link, using relative path (leaving out http://www.neonscience.org). 
+#### Internal Link, using relative path
 
 Code (spaces at beginning only added so as not to render):
 
@@ -226,7 +228,7 @@ links, however, it cannot contain figures, etc.
 
 ***
 
-## Challenges
+## Challenge
 
 Titles of Challenges should be H3 header and in sentence case. 
 
@@ -262,6 +264,13 @@ It can have multiple paragraphs too.
 
 ## Quote Blocks
 
+    > Here is a quote block
+    > you can use all sorts of different spacing and bullets in it too
+    >
+    > * list one
+    > * list two
+    > but you have to use a `>` on each line for it to work which is a pain.
+
 > Here is a quote block
 > you can use all sorts of different spacing and bullets in it too
 >
@@ -288,6 +297,14 @@ Image file sizes should not exceed 2 MB. Supported image types at this time are
 
 ### Image with Caption & Source
 
+    <figure>
+    	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+    	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
+    	<figcaption> Caption here. Source: National Ecological Observatory Network
+    	(NEON)  
+    	</figcaption>
+    </figure>
+
 <figure>
 	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
 	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
@@ -298,6 +315,16 @@ Image file sizes should not exceed 2 MB. Supported image types at this time are
 
 
 ### Two Images Side-by-side with Caption & Source
+
+    <figure class="half">
+    	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+    	<img src="{{ site.baseurl }}/images/lidar/biomass.png">
+    	</a>
+    	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
+    	<img src="{{ site.baseurl }}/images/lidar/biomass.png"></a>
+    	<figcaption>Caption describing these two images LEFT: Blah blah. RIGHT: Blah blah. Source: 
+    	</figcaption>
+    </figure>
 
 <figure class="half">
 	<a href="{{ site.baseurl }}/images/lidar/biomass.png">
@@ -324,8 +351,9 @@ Code (spaces at beginning only added so as not to render):
 
 ## Highlight in Specified Color
 
-Code (spaces at beginning only added so as not to render):
-    <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
+
+
+`<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>`
 
 <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
 
