@@ -1,25 +1,20 @@
 ---
-layout: post
-title: "Methods of Exploring NEON Mosquito Data in R"
-date:  2017-06-16
-authors: [Charlotte Roiger]
-dateCreated:  2017-05-20
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+syncID: 
+title: "Methods of Exploring NEON Mosquito Data in R Part One: Data Set Up"
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
-tags: [R]
-image: #update later
-  feature: TeachingModules.jpg
-  credit: A National Ecological Observatory Network (NEON) - Teaching Module
-  creditlink: http://www.neonscience.org
-permalink: /R/carabid-clean-data # update later
-code1: carabid-beetle-data/Beetle-Data-Clean-Portal-Data.R # update later
-code2: carabid-beetle-data/carabid-NEON-data-cleanup.R # update later
-comments: true
+dateCreated: 2017-08-04
+authors: Charlotte Roiger 
+contributors: Megan A. Jones, Katie Levan, Cody Flagg
+estimatedTime: 
+packagesLibraries: 
+topics: data-analysis, data-visualization
+languagesTool: R
+dataProduct: NEON.DP1.10043.001
+code1: 
+tutorialSeries: neon-mosquito-data-intro
+urlTitle: tba
 ---
 
-{% include _toc.html %}
-
-## About
 
 This is part one of a series of tutorials that will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
@@ -27,7 +22,6 @@ tarsalis*. This series will also cover setting up data frames from existing NEON
 data as well as how to obtain location information from NEON APIs. 
 
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down
 
 <div id="objectives" markdown="1">
 
@@ -126,7 +120,7 @@ Read in the field collection data table.
 ```{r trapping-table}
 
 #Read in the data TO BE CHANGED AS PORTAL DEVELOPS
-trap = read.csv('NEON-mosquito-data-viz/mos_trapping_in.csv')
+trap = read_csv('NEON-mosquito-data-viz/mos_trapping_in.csv')
 
 # set strings as factors as false throughout
 options(stringsAsFactors = FALSE) 
@@ -152,7 +146,8 @@ This table contains information related to:
 
 For sake of convenience we have only included the meta data for certain variables
 that we will use to carry out our analysis. For more metadata please see:
-INSERT LINK OR SOMETHING FOR SORT METADATA
+
+*INSERT LINK FOR TRAP METADATA*
 
 * metadata about the quality of the data 
 
@@ -188,7 +183,8 @@ Unique records have a unique `subSampleID` (format =
 
 For sake of convenience we have only included the meta data for certain variables
 that we will use to carry out our analysis. For more metadata please see:
-INSERT LINK OR SOMETHING FOR SORT METADATA
+
+*INSERT LINK FOR SORT METADATA*
 
 ### Identification Data Table
 
@@ -219,7 +215,9 @@ in each subsample.
 The identification table contains information about all mosquitos that were 
 found in each subsample. Each sample in the identification dataset contains the
 target taxa and once identified is either directly archived, or first sent to an
-external lab for Pathogen testing.
+external lab for Pathogen testing.For more metadata please see:
+
+*INSERT LINK FOR SORT METADATA*
 
 ### Domain Data Table
 
@@ -313,7 +311,7 @@ where
 latlon.df <- do.call(rbind, latlon)
 
 # Match the names of your columns in this dataframe to other dataframes
-names(latlon.df) <- c("uniquePlotIDs", "lat", "lon", "northing", "easting", "utmZone", "elevation", "NLCDclass") 
+names(latlon.df) <- c("plotID", "lat", "lon", "elevation", "nlcdClass") 
 
 ```
 
@@ -328,7 +326,7 @@ more information on the merge function, please see
 ```{r trap-location-merge}
 
 # Merging trap data with latitude and  longitude data
-trap <- merge(x = latlon.df, y = trap, by.x = "uniquePlotIDs", by.y = "plotID") 
+trap <- merge(x = latlon.df, y = trap, by.x = "plotID", by.y = "plotID") 
 
 ```
 
@@ -342,9 +340,9 @@ latitude and longitude information into two more complete variables.
 ```{r obtaining-more-lat}
 
 # Filling in more latitude and longitude data
-trap$lat2<-ifelse(is.na(trap$lat)==TRUE, trap$pdaDecimalLatitude,trap$lat)
+trap$decimalLatitude<-ifelse(is.na(trap$lat)==TRUE, trap$pdaDecimalLatitude,trap$lat)
 
-trap$lon2<-ifelse(is.na(trap$lon)==TRUE, trap$pdaDecimalLongitude,trap$lon)
+trap$decimalLongitude<-ifelse(is.na(trap$lon)==TRUE, trap$pdaDecimalLongitude,trap$lon)
 
 ```
 
@@ -375,10 +373,10 @@ rows that have repeated Plot IDs.
 ```{r create-unique-trap}
 
 #Creating a dataframe with only the unique plotIDs and lat2 lon2 data for merging
-uniquetrap<-trap[!duplicated(trap[,1]),c("uniquePlotIDs","lat2","lon2", "elevation","NLCDclass")]
+uniquetrap<-trap[!duplicated(trap[,1]),c("plotID","decimalLatitude","decimalLongitude", "elevation","nlcdClass")]
 
-#Merging id df with lat2 lon2 data
-id <- merge(x = uniquetrap, y = id, by.y = "plotID", by.x = "uniquePlotIDs", all.y = TRUE)
+#Merging id df with lat/lon data
+id <- merge(x = uniquetrap, y = id, by.y = "plotID", by.x = "plotID", all.y = TRUE)
 
 ```
 
@@ -505,6 +503,9 @@ identified down to the species or subspecies level.
 #Merge with domain info.
 id <- merge(x = domain.df, y = id, by.y = "siteID", by.x = "siteid", all.y = TRUE)
 id$domainid <- as.character(id$domainid)
+
+#Rename column names
+colnames(id)[1:2]<-c("siteID", "domainID")
 
 #Merge with taxonomy df for taxson rank
 id <- merge( x = taxonomy[,c("scientificName", "taxonRank")], y = id, by.x = "scientificName", by.y = "scientificName")

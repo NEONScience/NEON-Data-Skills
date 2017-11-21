@@ -1,51 +1,49 @@
 ---
-layout: post
-title: "Methods of Exploring NEON Mosquito Data in R"
-date:  2017-06-16
-authors: [Charlotte Roiger]
-dateCreated:  2017-05-20
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+syncID: 
+title: "Methods of Exploring NEON Mosquito Data in R Part One: Data Set Up"
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
-tags: [R]
-image: #update later
-  feature: TeachingModules.jpg
-  credit: A National Ecological Observatory Network (NEON) - Teaching Module
-  creditlink: http://www.neonscience.org
-permalink: /R/carabid-clean-data # update later
-code1: carabid-beetle-data/Beetle-Data-Clean-Portal-Data.R # update later
-code2: carabid-beetle-data/carabid-NEON-data-cleanup.R # update later
-comments: true
+dateCreated: 2017-08-04
+authors: Charlotte Roiger 
+contributors: Megan A. Jones, Katie Levan, Cody Flagg
+estimatedTime: 
+packagesLibraries: 
+topics: data-analysis, data-visualization
+languagesTool: R,
+dataProduct: NEON.DP1.10043.001
+code1: 
+tutorialSeries: neon-mosquito-data-intro
+urlTitle: tba
 ---
-
-{% include _toc.html %}
-
-## About
 
 This is part one of a series of tutorials that will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
 tarsalis*. This series will also cover setting up data frames from existing NEON
 data as well as how to obtain location information from NEON APIs. 
 
+So that the code we are learning here makes sense within an ecological framework, 
+the series that this tutorial is part of will be exploring the questions of
+* what annual patterns of mosquito abundance and diversity are found? 
+* how has the range of *Culex tarsalis* changed over the first three years of 
+NEON data collection? 
 
-**R Skill Level:** Intermediate - you've got the basics of `R` down
+<div id="ds-objectives" markdown="1">
 
-<div id="objectives" markdown="1">
+## Objectives
 
-# Goals & Objectives
-
-After completing this tutorial series, you will be able to:
+After completing this tutorial, you will be able to:
 
 *	Download mosquito trapping, identification, and sorting information from the 
-  NEON data portal
+NEON data portal
 * Download precipitation and temperature data from Global Historical Climatology
-  Network
+Network
 * Merge data frames to create one unified data frame with relevant variables to 
-  address research questions
+address research questions
 * Subset data by year
 * Use ggplot2 in R to create visualizations of data trends and maps  
 
 
 ## Things You Will Need To Complete This Tutorial
+
 You will need the most current version of R and, preferably, RStudio loaded on
 your computer to complete this tutorial.
 
@@ -60,25 +58,132 @@ installed prior to starting the tutorial.
 *	**mosaic:** `install.packages("mosaic")`
 * **ggplot2:** `install.pcakages("ggplot2")`
 
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download The Data
 
-To start off this tutorial we will be pulling NEON mosquito data from the NEON
-data portal. To accomplish this we must first set our working directory and then
-use the `get_data_product` function to obtain mosquito data. Please fill in 
-the example code below with your working directory to obtain NEON data.
+This tutorial goes through how to pull data directly from the NEON data portal 
+using the API. There is no additional data to download. 
 
-```{r authors-wd-dataportal, echo=FALSE}
+****
+{% include/_greyBox-wd-rscript.html %}
 
-# Clean starting environment
-rm(list = ls())
+****
 
-# My working directory
-if(file.exists('~/GitHub/mosquito-intern')){
-  repo_location = '~/GitHub/mosquito-intern/code'
-}
-if(!exists('repo_location')){stop('Set the location of the neon_data repository.')}
+</div>
 
+## NEON mosquito data collection
+
+The data that we will primarily be working with in this tutorial are mosquiot abundance and diversity data collected at reguar intervals at NEON terrestrial field sites. 
+The mosquitos are captured in CO<sub>2</sub> traps and identified to species. 
+These data are available as NEON data product **NEON.DP1.10043.001**. More information
+about this data product can be found in the 
+<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10043.001" target="_blank">NEON Data Catalog</a>. 
+
+## NEON Data API
+
+To start off, we will be pulling NEON mosquito data from the NEON data portal 
+using the NEON API. This tutorial focuses specifically on using the API for NEON
+mosquito data. For more information on the API in general please see the 
+<a href="/neon-api-usage" target="_blank"> *Using the NEON API in R* tutorial </a>
+or the 
+<a href="http://data.neonscience.org/data-api" target="_blank"> NEON API webpage</a>. 
+
+First, let's set up our R environment to our desired working directory. 
+
+```{r loadStuff}
+
+# Load the necessary libaries
+library(httr)
+library(jsonlite)
+library(dplyr, quietly=T)
+library(downloader) 
+
+# set working directory to ensure R can find the file we wish to import
+# setwd("working-dir-path-here")
+```
+
+Now we can use the API call to determine if our desired mosquito data are 
+available.
+
+The API call that we will initially use looks like this 
+
+`http://data.neonscience.org/api/v0/products/DP1.10043.001`
+
+The initial part (in red) is the base URL that is going to the NEONScience 
+data portal with the API version 0. 
+
+`<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/products/DP1.10043.001</span>`
+
+The next part of the call specifies exactly what data we want from the call. 
+
+`<span style="color:#A2A4A3;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A00606">/products/DP1.10043.001</span>`
+
+Here it specifies that we want information about data `products` and specifcially 
+about the data product `DP1.10043.001` --- the mosquito data. 
+
+We will use the `GET()` function from the httr package to data we are 
+interested in using the API call. 
+
+```{r data-availability}
+
+# Request data using the GET function & the API call
+req <- GET("http://data.neonscience.org/api/v0/products/DP1.10043.001")
+req
+
+```
+
+What we get from this request is a "response" object. When we printed the response
+object we got the URL, date of response, http status ("200" means it was a success, "400s" means there was some type of error), the file content type, and the size of
+the file.  
+
+<div id="ds-dataTip" markdown="1"><i class="fa fa-star"></i> **Data Tip:** Type
+`?? httr` into your console to view the "Getting started with httr/httr quickstart
+guide" for more on GET() and response objects. </div>
+
+We can convert it into a JSON file to make it a bit more readable
+
+```{r json-readable}
+# make this JSON readable -> "text"
+req.text <- content(req, as="text")
+
+# Flatten data frame to see available data. 
+avail <- fromJSON(req.text, simplifyDataFrame=T, flatten=T)
+```
+
+If you print out `avail` you will see a long list of important information (I'm 
+not here so that we don't have to scroll through the full list --- but you should).
+
+What we are particularly interested in is the sites that the data is available 
+from and the data range represented by the data. Therefore, we can look at just 
+this data. 
+
+```{r}
+# see all sites
+avail$data$siteCodes
+
+# create a list of the URL codes for next step 
+mos.urls <- unlist(avail$data$siteCodes$availableDataUrls)
+mos.urls
+
+# get data availability for WOOD July 2015
+mos <- GET(mos.urls)
+mos.files <- fromJSON(content(mos, as="text"))
+
+# view just the available data files 
+mos.files$data$files
+
+# Get both files
+brd.count <- read.delim(brd.files$data$files$url
+                        [intersect(grep("countdata", brd.files$data$files$name),
+                                    grep("basic", brd.files$data$files$name))], sep=",")
+
+brd.point <- read.delim(brd.files$data$files$url
+                        [intersect(grep("perpoint", brd.files$data$files$name),
+                                    grep("basic", brd.files$data$files$name))], sep=",")
+```
+
+```{r script}
 # Functions to pull NEON data
 source(paste(repo_location, 'get_NEON_data_by_productID.R', sep='/'))
 
@@ -95,6 +200,12 @@ mos = get_data_product(productID = "DP1.10043.001",
 trap = mos$mos_trapping
 sort = mos$mos_sorting
 id = mos$mos_expertTaxonomistIDProcessed
+
+
+#Set strings as factors equal to false thoughout
+
+options(stringsAsFactors = FALSE) 
+
 ```
 
 
@@ -133,10 +244,13 @@ id = mos$mos_expertTaxonomistIDProcessed
 # sort = mos$mos_sorting
 # id = mos$mos_expertTaxonomistIDProcessed
 
+
+#Set strings as factors equal to false thoughout
+
+# options(stringsAsFactors = FALSE) 
+
 ```
 
-
-```
 
 ## NEON Mosquito Data
 
@@ -149,13 +263,13 @@ into six tables:
  * pathogen results data
  * archiving pooling data
 
-For this tutorial we focus on the 2014 and 2016 mosquito data and the 13 sites
-for which data is available in those years. To look at all this data requires 
-downloading 3 files (trapping, sorting, and identification data) and 
-combining the datasheets. 
+For this tutorial we focus on the 2014 and 2016 mosquito data for which data is 
+available in those years, we will also direct most of our focus to the field
+collection, sorting, and identification data. To look at all this data requires 
+downloading 3 files and combining the datasheets. 
 
 #################################################################################################
-NEON provides several documents with information about the Carabid beetle protocal & 
+NEON provides several documents with information about the Carabid beetle protocol & 
 data collection. It is highly recommended you are familiar with the
 <a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001" 
 target="_blank">data product documents </a>
@@ -169,17 +283,24 @@ use with analysis.
 
 First, set up the R environment. 
 
-```{r load-libraries-dp}
+```{r load-in-libraries-dp}
 
-# Load packages required for script. 
-library(dplyr)     # move/manipulate data
-library(plyr)      # move/manipulate data
-library(tidyverse) # move/manipulate data
-library(mosaic)    # good for data exploration
-library(ggplot2)   # creation of plots and visualizations
+# Load packages required for script.
 
-#Set strings as factors equal to false thoughout
-options(stringsAsFactors = FALSE) 
+# move/manipulate data
+library(dplyr)
+
+# move/manipulate data
+library(plyr)   
+
+# move/manipulate data
+library(tidyverse)
+
+# good for data exploration
+library(mosaic) 
+
+# creation of plots and visualizations
+library(ggplot2)   
 
 ```
 
@@ -213,9 +334,9 @@ This table contains information related to:
 
 For sake of convenience we have only included the meta data for certain variables
 that we will use to carry out our analysis. For more metadata please see:
-INSERT LINK OR SOMETHING FOR SORT METADATA
 
-* metadata about the quality of the data 
+**INSERT LINK FOR SORT METADATA**
+
 
 Unique collection events have a unique `sampleID` with the format = 
 `plotID.trapID.collectDate.TimeOfCollection`. 
@@ -223,7 +344,7 @@ Unique collection events have a unique `sampleID` with the format =
 ### Sorting Data Table
 
 
-``` {r sort-table-dp}
+```{r sort-table-dp}
 
 #View structure of sorting data
 str(sort)
@@ -247,6 +368,7 @@ Unique records have a unique `subSampleID` (format =
 
 For sake of convenience we have only included the meta data for certain variables
 that we will use to carry out our analysis. For more metadata please see:
+
 **INSERT LINK FOR SORT METADATA**
 
 ### Identification Data Table

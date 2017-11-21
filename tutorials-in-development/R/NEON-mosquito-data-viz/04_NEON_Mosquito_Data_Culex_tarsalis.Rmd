@@ -1,25 +1,19 @@
 ---
-layout: post
-title: "Methods of Exploring NEON Mosquito Data in R"
-date:  2017-06-16
-authors: [Charlotte Roiger]
-dateCreated:  2017-05-20
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-description: "This is part three of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
-tags: [R]
-image: #update later
-  feature: TeachingModules.jpg
-  credit: A National Ecological Observatory Network (NEON) - Teaching Module
-  creditlink: http://www.neonscience.org
-permalink: /R/carabid-clean-data # update later
-code1: carabid-beetle-data/Beetle-Data-Clean-Portal-Data.R # update later
-code2: carabid-beetle-data/carabid-NEON-data-cleanup.R # update later
-comments: false
+syncID: 
+title: "Methods of Exploring NEON Mosquito Data in R Part Four: Culex tarsalis"
+description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
+dateCreated: 2017-08-04
+authors: Charlotte Roiger 
+contributors: Megan A. Jones, Katie Levan, Cody Flagg
+estimatedTime: 
+packagesLibraries: 
+topics: data-analysis, data-visualization
+languagesTool: R
+dataProduct: NEON.DP1.10043.001
+code1: 
+tutorialSeries: neon-mosquito-data-intro
+urlTitle: tba
 ---
-
-{% include _toc.html %}
-
-## About
 
 This is part three of a series of tutorials that will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
@@ -106,13 +100,13 @@ idsmall = read.csv("NEON-mosquito-data-viz/idsmall.csv")
 uniquetrap = read.csv("NEON-mosquito-data-viz/uniquetrap.csv")
 
 #First extract site id for the uniquetrap data frame
-uniquetrap$siteid <- substr(uniquetrap$uniquePlotIDs,1,4)
+uniquetrap$siteID <- substr(uniquetrap$plotID,1,4)
 
 #Omit any instances where lat and lon is not known for a site
-uniquetrap <- uniquetrap[uniquetrap$lat2!="",]
+uniquetrap <- uniquetrap[uniquetrap$decimalLatitude!="",]
 
 #taking only the observations that are not duplicated
-uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteid),]
+uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteID),]
 
 #Re-run the templag function covered in part two of this tutorial series if not already  in your global environment
 
@@ -159,16 +153,17 @@ rows whose year was either 2014 or 2016.
 ```{r create-Cut-Dfs}
 
 #Tracking number of sites where Cu. tarsalis has been identified
-tars<- idsmall[grepl("Culex tarsalis", id$scientificName),]
+tars<- id[grepl("Culex tarsalis", id$scientificName),]
+tarssmall <- tars[tars$Year %in% c(2014,2016), ]
 
 #Site Level variable
-tarsSiteLevel <- ddply(tarssmall,~siteid + domainid + Date, summarize, siteAbundance = sum(newindividualCount))
+tarsSiteLevel <- ddply(tarssmall,~siteID + domainID + Date + Year, summarize, siteAbundance = sum(newindividualCount))
 
 #merge with location information
-tarsSiteLevel <- merge(x = uniquetrap[,c("lat2", "lon2", "elevation", "NLCDclass", "siteid")], y = tarsSiteLevel, by.y = "siteid", by.x = "siteid")
+tarsSiteLevel <- merge(x = uniquetrap[,c("siteID", "decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = tarsSiteLevel, by.y = "siteID", by.x = "siteID")
 
-tarsSiteLevel$lat2<- as.numeric(tarsSiteLevel$lat2)
-tarsSiteLevel$lon2<- as.numeric(tarsSiteLevel$lon2)
+tarsSiteLevel$decimalLatitude<- as.numeric(tarsSiteLevel$decimalLatitude)
+tarsSiteLevel$decimalLongitude<- as.numeric(tarsSiteLevel$decimalLongitude)
 
 ```
 
@@ -229,7 +224,7 @@ The reason that we choose to subset by year is so we can separate
 ```{r finishing-tarsSiteLevel}
 
 #Merge Cu. tarsalis taxonomy df with tars df
-tarsSiteLevel <- merge(x = tarstax.df[,c("domainID", "DomainNativeStatus.value")], y = tarsSiteLevel, by.x = "domainID", by.y = "domainid")
+tarsSiteLevel <- merge(x = tarstax.df[,c("domainID", "DomainNativeStatus.value")], y = tarsSiteLevel, by.x = "domainID", by.y = "domainID")
 
 #Creation of subsets by Year
 tars2014 <- tarsSiteLevel[tarsSiteLevel$Year == 2014, ]
@@ -338,7 +333,7 @@ tarsSiteLevel <- tarsSiteLevel[order(as.Date(tarsSiteLevel$Date)),]
 tars.firstdomain <- tarsSiteLevel[match(unique(tarsSiteLevel$domainID), tarsSiteLevel$domainID),]
 
 #Creation of a dataframe where Culex tarsalis first found at each site
-tars.firstsite <- tarsSiteLevel[match(unique(tarsSiteLevel$siteid), tarsSiteLevel$siteid),]
+tars.firstsite <- tarsSiteLevel[match(unique(tarsSiteLevel$siteID), tarsSiteLevel$siteID),]
 
 ```
 
@@ -439,28 +434,28 @@ variable we will have to take a sort of indirect route, manipulating our
 ```{r Cut-map-viz-presence}
 
 #merge domain and unique trap to obtain latitude and longitude information
-domain.df <- merge(x = uniquetrap[,c("lat2", "lon2", "siteid")], y = domain.df, by.x = "siteid", by.y = "siteid")
+domain.df <- merge(x = uniquetrap[,c("siteID","decimalLatitude", "decimalLongitude")], y = domain.df, by.x = "siteID", by.y = "siteid")
 
 #merge with "tars.firstsite" to obtain where Culex tarsalis present 
-domain.df <- merge(x = tars.firstsite[,c("siteid","DomainNativeStatus.value")], y = domain.df, by.x = "siteid", by.y = "siteid", all.y = TRUE)
+domain.df <- merge(x = tars.firstsite[,c("siteID","DomainNativeStatus.value")], y = domain.df, by.x = "siteID", by.y = "siteID", all.y = TRUE)
 
 #create variable to indicate whether Culex tarsalis is present
 domain.df$tarsPresent <- ifelse(is.na(domain.df$DomainNativeStatus.value), "Not Prsent", "Present" )
 
 #subset domain.df to include only sites sampled in 2014 and 2016
-domain.df<- domain.df[domain.df$siteid %in% idsmall$siteid,]
+domain.df<- domain.df[domain.df$siteID %in% idsmall$siteID,]
 
 #convert variables to proper type
 domain.df$tarsPresent<- as.factor(domain.df$tarsPresent)
-domain.df$lat2<- as.numeric(domain.df$lat2)
-domain.df$lon2<- as.numeric(domain.df$lon2)
+domain.df$decimalLatitude<- as.numeric(domain.df$decimalLatitude)
+domain.df$decimalLongitude<- as.numeric(domain.df$decimalLongitude)
 
 #mapping NEON domains along with presence/absence of Culex tarsalis
 ggplot()+
   geom_polygon(data = NEONmap.df, aes(long, lat, group=group, fill= as.factor(nativestat)))+
   geom_path(data = NEONmap.df, aes(long,lat, group=group), color = 'black')+
   scale_fill_manual(values = c("lightyellow2", "gold")) +
-  geom_point(data = domain.df, aes( lon2, lat2, color = tarsPresent),size = 2)+
+  geom_point(data = domain.df, aes( decimalLatitude, decimalLongitude, color = tarsPresent),size = 2)+
   labs( x = "Longitude", y ="Latitude")+
   ggtitle("Map of Culex tarsalis Observation and Native Status")+
   theme(plot.title = element_text(size = 16, face = "bold"))

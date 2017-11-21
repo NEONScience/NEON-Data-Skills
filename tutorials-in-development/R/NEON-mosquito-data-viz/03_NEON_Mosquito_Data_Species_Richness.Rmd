@@ -1,25 +1,19 @@
 ---
-layout: post
-title: "Methods of Exploring NEON Mosquito Data in R"
-date:  2017-06-16
-authors: [Charlotte Roiger]
-dateCreated:  2017-05-20
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-description: "This is part two of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
-tags: [R]
-image: #update later
-  feature: TeachingModules.jpg
-  credit: A National Ecological Observatory Network (NEON) - Teaching Module
-  creditlink: http://www.neonscience.org
-permalink: /R/carabid-clean-data # update later
-code1: carabid-beetle-data/Beetle-Data-Clean-Portal-Data.R # update later
-code2: carabid-beetle-data/carabid-NEON-data-cleanup.R # update later
-comments: false
+syncID: 
+title: "Methods of Exploring NEON Mosquito Data in R Part Three: "
+description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
+dateCreated: 2017-08-04
+authors: Charlotte Roiger 
+contributors: Megan A. Jones, Katie Levan, Cody Flagg
+estimatedTime: 
+packagesLibraries: 
+topics: data-analysis, data-visualization
+languagesTool: R
+dataProduct: NEON.DP1.10043.001
+code1: 
+tutorialSeries: neon-mosquito-data-intro
+urlTitle: tba
 ---
-
-{% include _toc.html %}
-
-## About
 
 This is part two of a series of tutorials will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
@@ -113,7 +107,8 @@ our exploration of species richness.
 ```{r create-specrich}
 
 #Creating a new data frame called specrich from idsmall
-specrich <- ddply(idsmall, ~ siteid + domainid + date, summarize, num_species = length(unique(scientificName)))
+
+specrich <- ddply(idsmall, ~ siteID + domainID + Date, summarize, num_species = length(unique(scientificName)))
 
 ```
 
@@ -134,27 +129,25 @@ specrich <- specrich[complete.cases(specrich$Date),]
 #Merging to get lat2 lon2 data
 
 #First extract site id for the uniquetrap data frame
-uniquetrap$siteid <- substr(uniquetrap$uniquePlotIDs,1,4)
+uniquetrap$siteID <- substr(uniquetrap$plotID,1,4)
 
 #Omit any instances where lat and lon is not known for a site
-uniquetrap <- uniquetrap[uniquetrap$lat2!="",]
+uniquetrap <- uniquetrap[uniquetrap$decimalLatitude!="",]
 
 #taking only the observations that are not duplicated
-uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteid),]
-
+uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteID),]
 
 #merge with lat lon data excluding plotID
-specrich <- merge(x = uniquetrap[,c("lat2", "lon2", "elevation", "NLCDclass", "siteid")], y = specrich, by.y = "siteid", by.x = "siteid")
+specrich <- merge(x = uniquetrap[,c("plotID", "decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = specrich, by.y = "siteID", by.x = "siteID")
 
-#Changin lat2 to a numeric and date to date class
-specrich$lat2<-as.numeric(specrich$lat2)
-specrich$date<-as.Date(specrich$Date)
+#Changing latitude to a numeric and date to date class
+specrich$decimalLatitude<-as.numeric(specrich$decimalLatitude)
 
 #Creating a Year variable
 specrich$Year <- substr(specrich$Date, 1,4)
 
 # Plotting Species Richness over Latitude
-ggplot(specrich,aes(lat2, num_species))+
+ggplot(specrich,aes(decimalLatitude, num_species))+
   geom_point(aes(colour = Year), size = 2)+
   labs(x = "Latitude", y = "Number of Species")+
   ggtitle("Species Richness by Latitude")
@@ -206,7 +199,7 @@ species richness over the average maximum temperature.
 ```{r apply-templag}
 
 #Applying temp lag fucntion to species richness data frame
-SPTWAMT.mat<-mapply(Templag, specrich$siteid, specrich$date)
+SPTWAMT.mat<-mapply(Templag, specrich$siteID, specrich$Date)
 
 #Creating variables that capture average max temp and degree days 
 specrich$TwoWeekAvgMT<- c(unlist(SPTWAMT.mat[1,]))
