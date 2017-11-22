@@ -8,7 +8,7 @@ contributors: Michael Patterson
 estimatedTime:
 packagesLibraries: ggplot2, dplyr, lubridate
 topics: time-series, phenology
-languagesTool:
+languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/04-Dplyr-For-Time-Series-In-R.R
 tutorialSeries: tabular-time-series

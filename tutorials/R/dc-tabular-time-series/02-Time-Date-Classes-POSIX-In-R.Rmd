@@ -8,7 +8,7 @@ contributors: Leah A. Wasser
 estimatedTime:
 packagesLibraries: lubridate
 topics: time-series, phenology
-languagesTool:
+languagesTool: R
 dataProduct:
 code1: /R/dc-tabular-time-series/02-Time-Date-Classes-POSIX-In
 tutorialSeries: tabular-time-series
