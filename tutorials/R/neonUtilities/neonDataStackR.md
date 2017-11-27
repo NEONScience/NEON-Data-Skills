@@ -71,23 +71,33 @@ data. The output from this function is one .csv with 1 minute data and one .csv
 with 30 minute data. 
 
 Depending on your file size this function may run for a while. The 2015 and 2016
-single aspirated air temperature from two sites that I used for the example took
-about 25 minutes to complete.  
+single aspirated air temperature from two sites that I used for a 2017 workshop took
+about 25 minutes to complete. 
+
+To run the `stackByTable()` function, simply use the file path to the downloaded
+and zipped file from your current working directory. 
 
 
 
     stackByTable("data/NEON_temp-air-single.zip")
 
 
-    Unpacked  2016-02-SERC-DP1.00002.001-basic-20160708035158.zip
-    Unpacked  2016-03-SERC-DP1.00002.001-basic-20160708035642.zip
-    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
-    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
-    Stacked  SAAT_1min
-    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
-    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", "finalQF")
-    Stacked  SAAT_30min
+    Unpacked  NEON.D10.CPER.DP1.00002.001.2016-07.basic.20171010T230533Z.zip
+    Unpacked  NEON.D10.CPER.DP1.00002.001.2016-08.basic.20171011T101525Z.zip
+    Unpacked  NEON.D10.CPER.DP1.00002.001.2016-09.basic.20171010T233829Z.zip
+    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", 
+    "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", 
+    "tempSingleMaximum", "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", 
+    "tempSingleStdErMean", "finalQF")
+    Joining, by = c("domainID", "siteID", "horizontalPosition", "verticalPosition", 
+    "startDateTime", "endDateTime", "tempSingleMean", "tempSingleMinimum", "tempSingleMaximum", 
+    "tempSingleVariance", "tempSingleNumPts", "tempSingleExpUncert", "tempSingleStdErMean", 
+    "finalQF")
+    # Note that I've removed some of the "Joining" output for ease of reading
     Finished: All of the data are stacked into  2  tables!
+    Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
+    Stacked  SAAT_1min
+    Stacked  SAAT_30min
 
 From the single-aspirated air temperature data we are given two final tables. 
 One with 1 minute intervals: **SAAT_1min** and one for 30 minute intervals: **SAAT_30min**.  
