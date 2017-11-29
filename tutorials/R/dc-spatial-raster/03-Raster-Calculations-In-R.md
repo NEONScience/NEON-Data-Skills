@@ -236,7 +236,7 @@ a appropriate color palette for the data, plot title and no axes ticks / labels.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/03-Raster-Calculations-In-R/challenge-code-CHM-HARV-1.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/03-Raster-Calculations-In-R/challenge-code-CHM-HARV-2.png)![ ]({{ site.baseurl }}/images/rfigs/R/dc-spatial-raster/03-Raster-Calculations-In-R/challenge-code-CHM-HARV-3.png)
 
-## Efficient Raster Calculations: Overlay Function
+## Overlay Function: Efficient Raster Calculations
 Raster math, like we just did, is an appropriate approach to raster calculations
 if:
 
