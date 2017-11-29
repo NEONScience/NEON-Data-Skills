@@ -55,7 +55,17 @@ We encourage you to do all of your work in RMarkdown or Jupyter Notebook files!
 
 ## Project Presentation
 
- You will present your project to the group on Saturday.
+You will present your project to the group on Saturday. Given that this is a 
+project completed in <24 hours, we don't expect many results. Focus on the workflow
+and what lessons/application to other work you discovered and may be useful to 
+other participants. 
+The duration of the presentation will be determined on Thursday based on how many 
+groups are formed. The presentation itself should be short (~10 mins) with 
+plenty of time for discussion (~20 mins).
+
+If you are interested in creating a reveal.js presentation from R Markdown to 
+present your capstone project, you can find out more information here: 
+<a href="http://rmarkdown.rstudio.com/revealjs_presentation_format.html" target="_blank">RStudio's reveal.js documentation</a>. 
 
 ***
 

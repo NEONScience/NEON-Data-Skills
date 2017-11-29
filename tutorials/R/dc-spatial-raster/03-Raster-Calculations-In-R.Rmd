@@ -215,7 +215,7 @@ plot(CHM_HARV,
 
 ```
 
-## Efficient Raster Calculations: Overlay Function
+## Overlay Function: Efficient Raster Calculations 
 Raster math, like we just did, is an appropriate approach to raster calculations
 if:
 

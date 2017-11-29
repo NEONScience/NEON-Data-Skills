@@ -56,7 +56,8 @@ installed prior to starting the tutorial.
 * **plyr:** `install.packages("plyr")`
 * **tidyverse:** `install.packages("tidyverse")`
 *	**mosaic:** `install.packages("mosaic")`
-* **ggplot2:** `install.pcakages("ggplot2")`
+* **ggplot2:** `install.packages("ggplot2")`
+* **devtools:**
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -126,6 +127,11 @@ We will use the `GET()` function from the httr package to data we are
 interested in using the API call. 
 
 ```{r data-availability}
+
+{
+zipsByProduct(dpID="DP1.10043.001", site="all", package="basic", check.size=T)
+stackByTable(paste0(getwd(), "/filesToStack-NEONDP10043"), folder=T)
+}
 
 # Request data using the GET function & the API call
 req <- GET("http://data.neonscience.org/api/v0/products/DP1.10043.001")
@@ -662,3 +668,10 @@ A link to part two of this tutorial series can be found here. In part two, we
 will use both the 'idsmall' and the 'uniquetrap' data frames to create a data
 frame that captures the number of species at each site on a given date. 
 
+
+## Stack NEON Data
+
+library(devtools)
+install_github("NEONScience/NEON-utilities/neonDataStackR", dependencies=TRUE)
+library (neonDataStackR)
+stackByTable("NEON_count-mosquitoes.zip")

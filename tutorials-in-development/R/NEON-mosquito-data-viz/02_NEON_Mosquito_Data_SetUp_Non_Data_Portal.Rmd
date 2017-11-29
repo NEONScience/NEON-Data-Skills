@@ -23,9 +23,9 @@ data as well as how to obtain location information from NEON APIs.
 
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Goals & Objectives
+## Objectives
 
 After completing this tutorial series, you will be able to:
 
@@ -55,39 +55,35 @@ installed prior to starting the tutorial.
 * **ggplot2:** `install.pcakages("ggplot2")`
 
 ### Download The Data
-**NOTE: eventually turn these into teaching data subsets with others, then change to download buttons**
-You can download cleaned data files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/cleaned-Data.zip), 
-NOAA weather data for each site [here](//github.com/klevan/carabid-workshop/blob/master/data/NOAA%20weather%20data%20for%202014.csv), 
-NEON map shp files [here](//github.com/klevan/carabid-workshop/blob/master/data/zip%20files/map%20data.zip) 
-and the script we will be modifying [here](//github.com/klevan/carabid-workshop/blob/master/code/data-analysis.R). 
+
+To complete this data you will either need to complete 
+<a href="/URLHERE" target="_blank"> *Tutorial One Title*</a> where we download 
+the necessary data from the NEON API or download the data packet here. 
+
+DOWNLOAD BUTTON HERE 
+
 </div>
 
 
 ## NEON Mosquito Data
 
 The mosquito data on the NEON Data Portal are divided by type of information 
-into six tables:
- * field collection data
- * sorting data
- * identification and pinning data
- * pathogen pooling data
- * pathogen results data
- * archiving pooling data
+into five tables:
+ * **mos_trapping**:field collection data. Note: if you download the "basic" package
+ * **mos_sorting**: sorting data
+ * **mos_expertTaxonomistIDProcessed**: identification and pinning data. Note 
+ that in the User Guide this is simply referred to as the **mos_identification** 
+ table. 
+ * **mos_expertTaxonomistIDRaw**: the raw identification and pinning data 
+ * **mos_archivepooling**: the pooling data for samples that are archived
+
+Please note that if for a given month no mosquitos were collected then only the 
+**mos_trapping** data will be included in the available data. 
 
 For this tutorial we focus on the 2014 and 2016 mosquito data and the 13 sites
 for which data is available in those years. To look at all this data requires 
 downloading 4 files (trapping, sorting, identification,and pathogen data) and 
 combining the datasheets. 
-
-#################################################################################################
-NEON provides several documents with information about the Carabid beetle protocal & 
-data collection. It is highly recommended you are familiar with the
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001" 
-target="_blank">data product documents </a>
-prior to using NEON carabid beetle data for your research. 
-
-#################################################################################################
-
 
 We'll explore these six tables and then combine them into a couple of tables for
 use with analysis. 
