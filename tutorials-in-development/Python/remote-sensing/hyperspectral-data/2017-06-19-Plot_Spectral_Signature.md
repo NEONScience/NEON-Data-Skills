@@ -17,7 +17,7 @@ image:
   feature: planeBanner.png
   credit:
   creditlink:
-permalink: /HDF5/plot-spec-sig-python/
+permalink: /plot-spec-sig-python/
 code1: Python/hyperspectral-data/Plot_Spectral_Signature.ipynb
 comments: true
 
