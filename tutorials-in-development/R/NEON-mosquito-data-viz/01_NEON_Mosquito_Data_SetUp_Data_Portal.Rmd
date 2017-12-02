@@ -56,7 +56,7 @@ installed prior to starting the tutorial.
 * **plyr:** `install.packages("plyr")`
 * **tidyverse:** `install.packages("tidyverse")`
 *	**mosaic:** `install.packages("mosaic")`
-* **ggplot2:** `install.pcakages("ggplot2")`
+* **ggplot2:** `install.packages("ggplot2")`
 * **devtools:**
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
