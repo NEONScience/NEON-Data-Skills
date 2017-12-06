@@ -35,10 +35,9 @@ At the end of this tutorial you will be able to
 In this tutorial, we'll work with 
 <a href="/data-collection/flux-tower-measurements" target="_blank"> temperature data collected using sensors on a flux tower</a> 
 by 
-<a href="/" target="_blank">the National 
-Ecological Observatory Network (NEON) </a>. Here the data are provided in a HDF5 
-format to allow for the exploration of this format. More on NEON temperature 
-data can be found on the 
+<a href="/" target="_blank">the National Ecological Observatory Network (NEON) </a>. 
+Here the data are provided in a HDF5 format to allow for the exploration of this 
+format. More on NEON temperature data can be found on the 
 <a href="http://data.neonscience.org" target="_blank">the NEON Data Portal</a>. 
 Please note that temperature data are distributed as a flat .csv file and not as an 
 HDF5 file. NEON data products including eddy covariance data and remote sensing 
