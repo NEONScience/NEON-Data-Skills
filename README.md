@@ -24,6 +24,9 @@ requests are reviewed for scientific accuracy and educational pedagogy. Individu
 who make significant contributions can request to be listed as contributors on 
 individual tutorials. 
 
+Please start by copying the template (/tutorials-in-development/tutorialTemplate.md) if you 
+are creating a new tutorial. 
+
 ### Questions?
 
 Having a problem getting something to work or want to know why the repo is setup 
