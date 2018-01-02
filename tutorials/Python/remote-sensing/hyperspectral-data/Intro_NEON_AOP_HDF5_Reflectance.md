@@ -380,8 +380,8 @@ the Scale_Factor=10000.0.
  <figure>
 	<a href="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png">
 	<img src="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png"></a>
-	<figcaption> Screenshot of the NEON 
-	Source: <a href="https://en.wikipedia.org/wiki/Talk%3AHistogram_equalization#/media/File:Histogrammspreizung.png"> Wikipedia - Public Domain </a>
+	<figcaption> Screenshot of the NEON HDF5 file format.
+	Source: National Ecological Observatory Network
 	</figcaption>
 </figure>
 

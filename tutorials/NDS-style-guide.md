@@ -6,9 +6,9 @@ dateCreated:   2015-08-01
 authors: Megan A. Jones
 contributors: Leslie Goldman
 estimatedTime: 
-packagesLibraries: raster, rhdf5, rgdal
-topics: data-analysis, data-visualization, HDF5, spatial-data-gis
-languagesTool: R, python
+packagesLibraries: raster, rhdf5, rgdal, NEON
+topics: data-analysis, data-visualization, HDF5, spatial-data-gis, NEON
+languagesTool: R, python, NEON
 dataProduct: 
 code1: 
 tutorialSeries: 
