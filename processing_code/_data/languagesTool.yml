@@ -1,11 +1,11 @@
 - slug: git
-  name: Git/GitHub
+  name: Git & GitHub
 
 - slug: python
-  name: Python programming
+  name: Python
   
 - slug: R
-  name: R programming
+  name: R
 
 - slug: QGIS
   name: QGIS
@@ -23,4 +23,7 @@
   name: API
 
 - slug: spreadsheet
-  name: spreadsheet
+  name: Spreadsheet
+
+- slug: rshiny
+  name: R Shiny
