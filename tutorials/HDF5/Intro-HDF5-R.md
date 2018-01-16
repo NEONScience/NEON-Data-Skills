@@ -8,7 +8,7 @@ contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5
 topics: HDF5
-languagesTool: R
+languagesTool: R, foo
 dataProduct:
 code1: /HDF5/Intro-HDF5-R.R
 tutorialSeries: intro-hdf5-r-series
