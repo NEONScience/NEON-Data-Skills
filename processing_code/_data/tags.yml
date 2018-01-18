@@ -38,7 +38,7 @@
   name: Vector Data 
 
 - slug: organisms
-  name: Organisimal Data
+  name: Organismal Data
   
 - slug: meteorology
   name: Meteorology
@@ -49,5 +49,3 @@
 - slug: macrosystems
   name: Macrosystems Ecology
 
-- slug: ecology
-  name: Ecology
