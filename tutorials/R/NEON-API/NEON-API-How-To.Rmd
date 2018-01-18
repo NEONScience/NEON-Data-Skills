@@ -126,7 +126,7 @@ First query the products endpoint of the API to find out which sites and dates
 have data available. In the products endpoint, the target is the numbered 
 identifier for the data product:
 
-``` {r os-avail-query}
+```{r os-avail-query}
 
 # Load the necessary libaries
 library(httr)
@@ -145,7 +145,7 @@ name of the object gives you some basic information about what you downloaded.
 The `content()` function returns the contents in the form of a highly nested 
 list. This is typical of JSON-formatted data returned by APIs. 
 
-``` {r os-query-contents}
+```{r os-query-contents}
 
 # View requested data
 req.content <- content(req, as="parsed")
@@ -160,7 +160,7 @@ the jsonlite package, which doesn't fully flatten the nested list, but gets us
 the part we need. To use it, we need a text version of the content. Data this 
 way is not as human readable but is readable by the `fromJSON()` function. 
 
-``` {r os-query-fromJSON}
+```{r os-query-fromJSON}
 # make this JSON readable -> "text"
 req.text <- content(req, as="text")
 
@@ -182,7 +182,7 @@ We need `$data$siteCodes` to tell us what we can download.
 `$data$siteCodes$availableDataUrls` allows us to avoid writing the API 
 calls ourselves in the next steps.
 
-``` {r os-query-avail-data}
+```{r os-query-avail-data}
 
 # get data availability list for the product
 bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
@@ -201,7 +201,7 @@ Note, that if there was only one month of data from a site, you can leave off th
 date in the function. If you want date from more than one site/month you need 
 to iterate this code, GET fails if you give it more than one URL. 
 
-``` {r os-query-bird-data-urls}
+```{r os-query-bird-data-urls}
 # get data availability for WOOD July 2015
 brd <- GET(bird.urls[grep("WOOD/2015-07", bird.urls)])
 brd.files <- fromJSON(content(brd, as="text"))
@@ -278,7 +278,7 @@ when getting data from other sites and other months. So we select files
 based on the data table name and the package name.
 
 
-``` {r os-get-bird-data}
+```{r os-get-bird-data}
 
 # Get both files
 brd.count <- read.delim(brd.files$data$files$url
@@ -294,7 +294,7 @@ brd.point <- read.delim(brd.files$data$files$url
 Now we have the data and can access it in R. Just to show that the files we 
 pulled have actual data in them, let's make a quick graphic showing 
 
-``` {r os-plot-bird-data}
+```{r os-plot-bird-data}
 # Cluster by species
 clusterBySp <- brd.count %>% 
 	group_by(scientificName) %>% 

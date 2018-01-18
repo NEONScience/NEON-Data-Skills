@@ -8,7 +8,7 @@
 
 require(knitr)
 dirs <- c("R/NEON-API",
-          "teaching-modules/disturb-events-co13",
+          "R/neonUtilities",
           "data-institutes/rmd-intro",
           "R/R-nonSeries-lessons",
           "dataviz")
@@ -16,7 +16,7 @@ dirs <- c("R/NEON-API",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[1]
+dir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/NEON-Data-Skills"
@@ -32,7 +32,7 @@ setwd(wd)
 subDir <- paste0(dir,"/")
 
 # don't change - this is the tutorials dir location required by jekyll
-postsDir <- file.path("tutorials", subDir)
+postsDir <- file.path("tutorials/", subDir)
 codeDir <- file.path("code/", subDir)
 
 # images path

@@ -6,10 +6,10 @@ dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	
 estimatedTime:	
-packagesLibraries: raster, rgdal, NEON
-topics: raster, spatial-data-gis, NEON
-languagesTool: R, NEON
-dataProduct: NEON
+packagesLibraries: raster, rgdal
+topics: raster, spatial-data-gis
+languagesTool: R
+dataProduct: 
 code1: /R/dc-spatial-raster/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 urlTitle: dc-raster-data-r
