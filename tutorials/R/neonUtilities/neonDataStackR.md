@@ -44,7 +44,7 @@ First, we must install the package from the GitHub repo. You must have the
 **devtools** package installed and loaded to do this. Then load the package. 
 
     # install devtools - can skip if already installed
-    install.packages(devtools)
+    install.packages("devtools")
 
     # load devtools
     library(devtools)
