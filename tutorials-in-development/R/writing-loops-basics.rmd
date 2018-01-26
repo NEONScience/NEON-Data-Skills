@@ -1,0 +1,314 @@
+---
+syncID: bcc5b84ad5b54a35a7d0331129f226a7
+title: "Introduction to Loops and Conditionals for Use with the NEON API"
+description: "This tutorial introduces the concepts of FOR and IF statements in R with the express purpose of demonstrating how to pull and compile large, uniformly structured data like from the NEON API."
+dateCreated: 2018-01-24
+authors: Michael Patterson
+contributors: Megan A. Jones
+estimatedTime: 1.5 hrs
+packagesLibraries: 
+topics: data-management, rep-sci
+languagesTool: R, api
+dataProduct: DP1.0001.01
+code1: R/NEON-API/writing-loops-basics.R
+---
+
+The goal of this tutorial is to introduce you to the concept of FOR loops and IF statements. To do this we will:
+
+1. Demonstrate a use case for a simple FOR loop
+2. Demonstrate a use case for a simple IF statement
+3. Walk through an example where a complex loop is required by placing an IF statement inside a FOR loop
+4. Put our knowledge to use in creating a loop to pull down and compile site location data from the NEON API.
+  
+It should be noted that this introduction is written more towards gaining a quick and general understanding of these concepts and, as such, will gloss over or omit certain theoretical underpinnings. There are many great tutorials out there for people wishing to gain a more complete understanding of the computer science aspects of FOR and IF. In the meantime, our goal is get people up and running as quickly as possible.
+
+### Why Use a FOR Loop?
+Counterintuitively, FOR loops do not do anything special in R that cannot be done otherwise.The purpose of a FOR loop is just to repeat a single task a number of times, saving us time and energy from having to hard code or monitor a process. As such, the use case for a FOR loop begins without any loop at all. Take the following situation:
+
+## Apple Counting Example
+You and your friend come to an apple tree in the late summer. Your friend says "look, there are 7 apples in the branches!". You, being the excellent counter you are, notice they have double counted and reply, "no, there are only 5 apples." Your friend disagrees and asks you for proof. Since you always carry your laptop with you, you choose to write an R code to count the apples as you label them. You write:
+
+```{r countApples}
+#start with zero apples in the counter
+applecounter<-0
+
+#add 1 apple
+applecounter<-(applecounter+1)
+
+#add apple #2
+applecounter<-(applecounter+1)
+
+#add apple #3
+applecounter<-(applecounter+1)
+
+#add apple #4
+applecounter<-(applecounter+1)
+
+#add apple #5
+applecounter<-(applecounter+1)
+
+#print the number of apples
+print(applecounter)
+```
+
+As you finish the 5th line of the code and you have it print the total for the last time, you show your friend the total and prove yourself correct.
+
+Now, as you look back at your code, you see that you had to write quite a number of repetitions for counting the apples. Even worse, you have to write the line exactly the number of times there are apples. You realize that with only 5 apples, this is not too bad. However, imagine trying to check your math if there were 50 apples, or 200!
+
+## A Basic FOR Loop
+Instead of repeating the code manually, loops exist to help us by giving us a syntax for repeating the same code a set number of times in a /i relatively /i small amount of space. For instance, the situation we have above would look like this when transformed into a loop:
+
+```{r appleLoop}
+#start with zero apples in the counter
+applecounter<-0
+
+for(i in 1:5){
+  applecounter<-(applecounter+1)
+}
+
+#print the results
+print(applecounter)
+```
+
+All from 20 lines to 9, not bad! But how does it work?
+
+### The Loop Format
+A FOR loop starts out with the following basic format:
+`for(){}`
+
+That's the overall structure that tells R what to look for.
+
+### Telling R how many times to run the loop
+Now, inside the parentheses, we tell R how many times to do the loop. In our case we told it to run 5 times:
+`(i in 1:5)`
+In English, we're telling R:
+"set variable i to the corresponding value of 1 through 5 as you run it that many times".
+put another way:
+"Run this loop once for each number in the set of number from 1 through 5 and set the variable `i` to the number corresponding to each value as the loop proceeds through the set"
+Still not quite following? Don't worry, it's a mouthful!
+Taking it in two steps is the best way to break it down:
+
+1. We tell R that we want to run the loop once for each value in the set as defined by the sequence. In our case, the sequence is 1:5, 1 through 5, so we're going to run the loop for 1, 2, 3, 4, and 5. Thus a total of 5 times, once for each number, in that order.
+2. We tell R that we want to track the value with the variable we've defined.
+ 
+Again, in our case, we use the variable `i`. So when we run the loop through the first time, for the number 1, `i` has the value 1. On the 3rd run through the loop, the value would be 3, and `i` would be set to 3. 
+
+If you still don't have it down, don't worry. Take a look at how we can set different values and things change.
+
+We can change the starting value of the sequence.
+
+```{r change-seq}
+#start with zero apples in the counter
+applecounter<-0
+
+for(i in 2:5){
+  applecounter<-(applecounter+1)
+}
+
+#print the results
+print(applecounter)
+```
+We ran 2:5, so we ran the sequence of 2,3,4,5. as a result, we only get 4 apples counted! 
+
+```{r}
+#start with zero apples in the counter
+applecounter<-0
+
+for(apples in 1:5){
+  applecounter<-(applecounter+1)
+}
+
+#print the results
+print(applecounter)
+```
+Here we changed the variable name to `apples`. As you can see, you can name your variable anything you like just so long as it followed the set rules for variable naming.
+
+You can also use variables to set the length of the sequence. For example:
+```{r}
+#start with zero apples in the counter
+applecounter<-0
+totalapples<-5
+
+for(i in 1:totalapples){
+  applecounter<-(applecounter+1)
+}
+
+#print the results
+print(applecounter)
+```
+
+While all these options aren't exactly useful here, the flexibility and ability to precisely tell R what to run in a loop makes FOR loops incredibly powerful as we will see later.
+
+### Telling the loop what to run
+Now that we have told R how many times to run the loop, we need to tell the loop what to run! Inside the curly brackets `{}` is the space reserved for telling the loop what to run. In our case, we tell the loop to run `applecounter<-(applecounter+1)`. This means that for each and every time the loop runs, it will run this code. This is great in our example, because we want the code to add 1 to our apple counter every time we count an apple.
+
+Another important thing that should be noted is that we can use any variables inside the loop, this includes the variable being set by the loop itself. This can be incredibly useful! For example, lets say we want to keep track of which apple we are counting and compare it to the overall count:
+
+```{r}
+#start with zero apples in the counter
+applecounter<-0
+
+for(i in 10:20){
+  applecounter<-(applecounter+1)
+  print(paste("We counted apple ",i," and it brings our total count to ",applecounter, sep = ""))
+}
+```
+
+As you can see, we used the variable `i` to track which value we were running the sequence. Also, because we put the `print()` inside the loop, it fired every time. This is also why we started with `applecounter<-0` outside, before, the loop. See what happens to the final count if we put it inside the loop:
+
+```{r}
+
+for(i in 10:20){
+  #start with zero apples in the counter
+  applecounter<-0
+  applecounter<-(applecounter+1)
+  print(paste("We counted apple ",i," and it brings our total count to ",applecounter, sep = ""))
+}
+```
+
+
+<div id="ds-challenge" markdown="1">
+### Challenge: What went wrong?
+Can you see what went wrong?
+
+</div>
+
+Answer: By putting `applecounter<-0` inside the loop, every time the loop runs it starts by zeroing out the counter! we made a loop that adds 1 to 0 ten times! 
+
+Finally, for sharp eyed readers, you also may notice that spread the curly bracket area across multiple lines. Traditionally, it's considered good practice to put the left curly bracket `{` on the first row of the loop,then to drop down and indent the code that is being run inside the loop, and finally to drop down and NOT indent the closing right curly bracket `}`. This really helps peolpe follow along as code gets longer and more complicated.
+
+### Putting it all together
+At this point we should have all two of the major parts of the FOR loop explained:
+
+    for(Variable `in` how many times repeated){
+       What the code does each time
+    }
+
+But so far in all the examples, we are cheating because we're counting the number of apples and telling the loop to run that many of times. We're basically doubling our effort. However, let's make our loop more useful. Imagine now that we have a random number of apples in every scenario. The flexibility of a FOR loop can easily handle this:
+
+```{r loopWithRandomNumber}
+# Lets have R generate a single random number between 5 and 10 and we'll store it in variable "apples"
+apples<-sample(5:10,1)
+
+for(i in 1:apples){
+  applecounter<-(applecounter+1)
+}
+
+# print the results
+print(applecounter)
+```
+
+In this scenario, we've created a loop that will run between once for each number between 1 and "however many apples you want to give us" and we do not ever have to change the code accordingly. Starting to see the power? Let's do one more together:
+
+Now imagine that we are in charge of a data set of the temperatures at our field site. To our horror, we realize that the temperatures were all written in fahrenheit and we need to convert them all to celsius. There are alternative ways to solve this, but why waste a good opporunity to practice our FOR loops.
+
+We want to go through each line and convert the temperature from F to C. So let's devise a loop that will automate that for us instead of having to hard code the conversion for every temperature. 
+
+```{r}
+#let us generate the data
+temperatures<-data.frame("Temp_Data"=(sample(0:100,replace = T,200)))
+
+for(i in 1:nrow(temperatures)){
+  temperatures$Centigrade[i]<-((temperatures$Temp_Data[i]-32)*0.5556)
+}
+
+head(temperatures)
+```
+
+The first part of the chunk just creates a data frame composed of 200 numbers between 0 and 100. It's just setup so we won't spend time on it.
+
+The loop begins by using variable `i`, which is just a personal habit of mine. Feel free to choose your own.
+The number of times is set by starting a 1 and going through as many times as the total number of rows in the data frame. This is an important concept to focus on both syntactically and semantically. Remember, we want to go through, line by line, of the data set and convert the temperature. As a result, we need to start with row 1 and go through every row to the last. And while we can count the total number of rows and hard code that number in, why not just have it count for us? The added bonus is that if this happens again, we will already have a fix coded!
+
+Next we look inside the loop, inside the `{}`. This single line is a little complex so we'll break it down:
+`temperatures$Centigrade[i]<-((temperatures$Temp_Data[i]-32)*0.5556)`
+Going from right to left, we start with `((temperatures$Temp_Data[i]-32)*0.5556)`. Now (X-32)*.5556 is just the formula for converting a temperature (X) in F to C and is not anything special. But `temperatures$Temp_Data[i]` is how we're pulling our data out. In English, we're telling R to go to row `i` of `temperatures$Temp_Data`. So as we repeat the loop from 1 to the end, we will incrementally go down the entire list, converting the temperature for each line.
+This brings us to the left side of the line, `temperatures$Centigrade[i]<-`, which tells R to place the converted temp on the i row of the centigrade row on the data frame. 
+
+Taken together, we're telling R to go to the list of temperatures, start at the top row, convert it, then write the data in the good column, then go down to the new row, and repeat this until we finish the last row. Again, a lot faster than hard coding!
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Title of challenge
+  
+After having solved the issue with temperature, we realize that all the surveying measurements were done in feet and not meters! Given this random data set of X and Y coordinates, convert the set from feet to meters!
+
+</div>
+
+
+
+```{r challenge-temp, include=FALSE}
+surveyData<-data.frame("X_Distance"=(sample(0:100,replace = T,200)),"Y_Distance"=(sample(0:100,replace = T,200)))
+
+for(i in 1:nrow(surveyData)){
+  surveyData$X_m[i]<-(surveyData$X_Distance[i]*.3048)
+  surveyData$Y_m[i]<-(surveyData$Y_Distance[i]*.3048)
+}
+
+head(surveyData)
+```
+
+## IF statements
+
+IF statements are, at their core, exactly what they sound like: They tell R to check to see if a statement is true, and if so, then run the chunk of code associated with it. The overall format is very similar to FOR loops, but checking for truth once instead of looping.
+
+But before we get ahead of ourselves, let's return to our friend picking apples.
+
+Imagine that we've collected 100 apples, when we go to count them we notice that some are rotten or worm eaten. Clearly we don't want to count apples that we can't eat, so we decide to write a code that checks to see if the apples are good, and if so, we count them!
+
+Start by creating our data set of apples. Some are good, some are rotten, and some are wormy.
+
+```{r}
+#build a data frame to contain our 100 apples
+appleCollection<-data.frame("apple_Type"=sample(c("good","rotten","wormy"),100, replace = TRUE))
+
+head(appleCollection)
+```
+
+Let's start with our original FOR loop. 
+```{r results="hide"}
+for(i in 1:5){
+  applecounter<-(applecounter+1)
+}
+```
+
+Clearly this is no longer enough. The problem we've run into is that we need some sort of mechanism to decide if the apple should be counted or not. As we go down the list of apples, we want to check to see *IF* the apple is good and if so, we want to count it. So let's create a test apple and write an "apple tester" to help us determine if it's good or not:
+
+```{r}
+#set the test apple to good
+testapple<-"good"
+
+if(testapple=="good"){
+  print("it's good!")
+}
+```
+
+But our tester is only good if it skips bad apples, so lets set our test apple to "rotten". 
+
+```{r}
+#set the test apple to good
+testapple<-"rotten"
+
+if(testapple=="good"){
+  print("it's good!")
+}
+```
+
+What do you know, it works! No false positives.
+
+However, this still doesn't really help us if we're feeding the apples in one by one. After all, we can just do it ourselves then. So let's combine this tester code with a FOR loop.
+Take a look at what this might look like in practice:
+
+```{r}
+#reset our apple counter to zero
+applecounter<-0
+
+for(i in 1:nrow(appleCollection)){
+  if(appleCollection$apple_Type[i]=="good"){
+    applecounter<-(applecounter+1)
+  }
+}
+
+
+
+```
+
