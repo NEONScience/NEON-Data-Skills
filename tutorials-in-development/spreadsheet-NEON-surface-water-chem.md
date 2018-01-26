@@ -26,6 +26,11 @@ data this tutorial will show you how to:
 * combine tables using the VLOOKUP function, and
 * create line and scatter plots. 
 
+This tutorial includes directions but not screenshots of where different icons are
+as the arrangement of the buttons in Excel (or Google Sheets or another 
+spreadsheet program) vary by version. The directions below are written for Excel 
+but all can work with Google Sheets. 
+
 <div id="ds-objectives" markdown="1">
 
 ## Things You’ll Need To Complete This Tutorial
@@ -46,27 +51,103 @@ directory.
 
 </div>
 
+## Research Question
+To guide our investigation of using NEON data with spreadsheets we will be investigating
+how similar the measurements for acid neutralizing capacity (ANC) is between the domain
+and external lab samples. ANC is a measurement that can change as the water sample
+sits and is exposed to ambient air. If we see a large difference in the measurements
+this would inform whether then ANC needs to be measured at the NEON Domain headquarters 
+immediately after sampling or if ANC can be measured by the external lab which 
+measures all the other water chemistry data. 
+
+
 ## Surface Water Chemistry Data
 
-Collected ~26 times per year at stream/river & 12 per lake
+NEON collects surface water chemistry data (NEON Data Product NEON.DP1.20093) 
+at all aquatic field sites. For more on this data product, view the 
+<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.20093.001" target="_blank"> Data Product catalog<a>. 
 
-Four data tables 
+Water samples are collected 26 times per year at each wadable stream or 
+non-wadable stream (river) site and 12 per year at lakes. In streams, 12 samples 
+are collected at regular intervals during the sampling season, while the 
+remaining 14 are collected on an irregular basis to capture major flow events.
+The data are provided in four discrete data tables.
 
 * swc_fieldSuperParent 
+  + Contains information about the site, geographic coordinates, and related data.
   + One record per parentSampleID
   + Linking to other data products: siteID, staionID and  collectDate –OR- parentSampleID
 * swc_fieldData
+  + Contains the surface water chemistry summary data per site per bout
   + One record per parentSampleID (per collectDate) = sampleID
 * swc_domainLabData 
-  + Acid Neutralizing Capacity (ANC) and alkalinity
-  + Two records per sampleID (one domainSampleID each)
+  + Contains those chemistry lab results conducted at domain facilities (acid neutralizing capacity (ANC) and alkalinity).
+  + Two records per parentSampleID (one domainSampleID each)
 * swc_externalLabData
-  + Most of the chemistry measurements
+  + Contains most of the chemistry measurements
   + One record per sampleID
 
-**Research question:** domain vs external ANC
-ANC: Acid neutralizing capacity titration result from Domain/external lab in milligrams of Calcium Carbonate per liter
- 
+Our research question is to compare the domain measured ANC (**ancMeqPerL** in 
+swc_domainLabData) and the external lab measured ANC (**externalANC** in 
+swc_externalLabData). Therefore, we need to be able join these two tables. 
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Variables to Link Tables
+  
+Explore the respective .csv files. What variables can be used to link the swc_externalLabData
+with the swc_domainLabData tables? 
+
+</div>
+
+The external lab data has individual records per **sampleID** while the domain 
+lab data has individual records per **domainSampleID** of which there are two
+per **parentSampleID**. However, the swc_fieldData table contains both **sampleID**
+ and **parentSampleID**. Therefore, we can use it to join the two table of interest. 
+
+## .csv files
+
+Let's get started with the data. Remember, we're starting with "stacked" data 
+(see Download Data above). 
+
+Let's start by opening the stacked external lab data (swc_externalLabData.csv). 
+This csv (comma seperate value) file when opened with Excel contains a single 
+worksheet with the value in it. 
+
+A good rule is to never do any data manipulations to raw data - **keep raw data raw**. 
+Therefore, we will save this .csv as an Excel workbook (.xslx). Let's name that 
+file **NEON_ANC_Comparison.xlsx**. 
+
+```
+Save swc_externalLabData.csv as NEON_ANC_Comparison.xlsx, a Excel workbook
+
+```
+
+Now that that our data are in a workbook we can open a new sheet and name it 
+"C.ExternalField" as we'll use this to join the External lab and Field data tables. 
+Start by pasting all of the External lab data into this worksheet. 
+
+We need all of our data of interest in the same workbook for this to work most 
+easily. Therefore, create two new sheets and paste data from swc_fieldData into one
+and swc_domainLabData into the other. Now we can work to join the tables.   
+
+## Date values in Excel 
+
+Let's go back to our C.ExternalField worksheet, which for now only contains the 
+External Lab data. 
+
+## NA values in Excel
+
+When we join the data tables we will want to consider areas where there are no
+data or where the NEON data has NA values. As a quick excersize to demonstrate
+how Excel deals with NA values let's create a line plot of the **waterCalcium**
+variable. In our data set this has "NA" values for sampling bouts in March and 
+April of 2017. 
+
+### Create Line Plot
+
+To create a line plot, highlight 
+
+
 Open External Data table
 Create .xls workbook. PaloozaDataTraining
 Keep raw data raw
