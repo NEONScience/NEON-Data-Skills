@@ -71,7 +71,7 @@ Here we use the example dataframe `economics` that comes with the package.
     library(plotly)  # to create interactive plots
     library(ggplot2) # to create plots and feed to ggplotly()
     
-    # view str of example data set
+    # view str of example dataset
     str(economics)
 
     ## Classes 'tbl_df', 'tbl' and 'data.frame':	574 obs. of  6 variables:

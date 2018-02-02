@@ -589,7 +589,7 @@ file that conforms to the Ecological Metadata Language (EML) specifications.
 Refer back to the list of possible data sources at the end of
 [*Answer a Spatio-temporal Research Question with Data: Where to Start?*]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
 Choose a site that is relevant to your interests and then find a dataset. For
-this data set find the metadata and answer the following questions:
+this dataset find the metadata and answer the following questions:
 
 1. What format are the metadata in?
 2. What metric is collected? Does it have units? If so, what?

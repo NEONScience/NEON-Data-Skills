@@ -20,7 +20,7 @@ library(webshot) # embed the plotly plots
 library(plotly)  # to create interactive plots
 library(ggplot2) # to create plots and feed to ggplotly()
 
-# view str of example data set
+# view str of example dataset
 str(economics)
 
 # plot with the plot_ly function

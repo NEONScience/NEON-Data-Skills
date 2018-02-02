@@ -542,7 +542,7 @@ In R, we need to assign this placeholder value to `NA`, which is R's
 representation of a null or NoData value. If we don't, R will include the `-99.99` value whenever calculations are performed
 or plots are created. By defining the placeholders as `NA`, R will correctly interpret, and not plot, the bad values. 
 
-Using the nCLIMDIV data set for the entire US, this is how we'd assign the placeholder
+Using the nCLIMDIV dataset for the entire US, this is how we'd assign the placeholder
 value to NA and plot the data.
 
 ```{r palmer-no-data-values}

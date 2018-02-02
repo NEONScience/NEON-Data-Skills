@@ -506,7 +506,7 @@ Let's see what they are.
     ## [11] "measuredBy"              "recordedBy"             
     ## [13] "remarks"                 "dataQF"
 
-There are several fields that overlap between the data sets. Some of these are
+There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. 
 
 However, some of these will have different values in each table. We want to keep 
@@ -610,7 +610,7 @@ across season?
 
 ## Patterns in Phenophase  
 
-From our larger data set (several sites, species, phenophases), let's create a
+From our larger dataset (several sites, species, phenophases), let's create a
 dataframe with only the data from a single site, species, and phenophase and 
 call it `phe_1sp`.
 

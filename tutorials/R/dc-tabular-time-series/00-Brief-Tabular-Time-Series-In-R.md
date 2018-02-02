@@ -1,7 +1,7 @@
 ---
 syncID: e833b177aa534b27b7dc35e264615e17
 title: "Time Series 00: Intro to Time Series Data in R - Managing Date/Time Formats & Simple Plots using ggplot2"
-description: "This tutorial will demonstrate how to import a time series data set stored in .csv format into R. It will explore data classes and will walk through how to convert date data, stored as a character string, into a date class that R can recognize and plot efficiently."
+description: "This tutorial will demonstrate how to import a time series dataset stored in .csv format into R. It will explore data classes and will walk through how to convert date data, stored as a character string, into a date class that R can recognize and plot efficiently."
 dateCreated:  2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 contributors: 
@@ -15,7 +15,7 @@ tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
 
-This tutorial will demonstrate how to import a time series data set stored in `.csv`
+This tutorial will demonstrate how to import a time series dataset stored in `.csv`
 format into R. It will explore data classes for columns in a `data.frame` and 
 will walk through how to 
 convert a date, stored as a character string, into a date class that R can
@@ -32,7 +32,7 @@ After completing this tutorial, you will be able to:
   * Examine R object structures and data `classes`.
   * Convert dates, stored as a character class, into an R date 
   class.
-  * Create a quick plot of a time-series data set using `qplot`. 
+  * Create a quick plot of a time-series dataset using `qplot`. 
   
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of R and, preferably, RStudio loaded on your computer to complete this tutorial.

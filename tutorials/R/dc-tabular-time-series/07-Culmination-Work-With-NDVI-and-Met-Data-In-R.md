@@ -28,7 +28,7 @@ and
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
- * Apply `ggplot2` and `dplyr` skills to a new data set.
+ * Apply `ggplot2` and `dplyr` skills to a new dataset.
  * Set min/max axis values in `ggplot()` to align data on multiple plots. 
 
 ## Things You’ll Need To Complete This Tutorial
@@ -200,10 +200,10 @@ the original raster).
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Class Conversion & Subset by Time
-The goal of this challenge is to get our data sets ready so that we can work 
+The goal of this challenge is to get our datasets ready so that we can work 
 with data from each, within the same plots or analyses.  
 
-1. Ensure that date fields within both data sets are in the Date class. If not,
+1. Ensure that date fields within both datasets are in the Date class. If not,
 convert the data to the Date class. 
 
 2. The NDVI data are limited to 2011, however, the meteorological data are from
@@ -216,7 +216,7 @@ HINT: If you are having trouble subsetting the data, refer back to
 
 
 
-Now that we have our data sets with Date class dates and limited to 2011, we can
+Now that we have our datasets with Date class dates and limited to 2011, we can
 begin working with both. 
 
 ## Plot NDVI Data from a .csv

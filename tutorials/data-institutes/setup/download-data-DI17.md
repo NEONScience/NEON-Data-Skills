@@ -28,7 +28,7 @@ tutorial series in the **Download Data** section.
 ## Download & Uncompress the Data
 
 #### 1) Download
-First, we will download the data sets to a location on the computer. To download the 
+First, we will download the datasets to a location on the computer. To download the 
 data for this event, click the blue buttons below. 
 
 

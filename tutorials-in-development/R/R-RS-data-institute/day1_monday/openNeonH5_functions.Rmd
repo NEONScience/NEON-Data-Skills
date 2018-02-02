@@ -43,15 +43,16 @@ preferably, RStudio loaded on your computer.
 * **raster**
 * **rgdal**
 
-[ { { site.baseurl }} R/Packages-In-R/](More on Packages in R - Adapted from Software Carpentry.)
 
 ### Download Data
 
-The data sets here is used for all the Data Institute 2016 tutorials. If you are
-only completing this tutorial you will only need the TEAK data set. 
+The datasets here is used for all the Data Institute 2016 tutorials. If you are
+only completing this tutorial you will only need the TEAK dataset. 
 
 {% include/dataSubsets/_data_Data-Institute-16-TEAK.html %}
+
 {% include/dataSubsets/_data_Data-Institute-16-SJER.html %}
+
 {% include/dataSubsets/_data_Data-Institute-16-SOAP.html %}
 
 ## Recommended Background 

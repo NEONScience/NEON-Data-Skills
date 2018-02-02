@@ -40,7 +40,7 @@ After completing this tutorial, you will be able to:
 
 * Explore an HDF5 file and access groups and datasets 
 in R.
-* Explain the basics of manipulating big data sets using indexing, 
+* Explain the basics of manipulating big datasets using indexing, 
 loops, and `dplyr`.
 * Refine your data plotting skills using `ggplot` in R.
 * Apply a variety of data manipulation tasks including identifying data types 

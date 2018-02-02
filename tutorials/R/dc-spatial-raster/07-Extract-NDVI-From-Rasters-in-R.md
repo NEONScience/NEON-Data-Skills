@@ -321,7 +321,7 @@ different color.
 ## Compare NDVI from Two Different Sites in One Plot
 Comparison of plots is often easiest when both plots are side by side. Or, even 
 better, if both sets of data are plotted in the same plot. We can do this by 
-binding the two data sets together. The date frames must have the same number
+binding the two datasets together. The date frames must have the same number
 of columns and exact same column names to be bound.  
 
 

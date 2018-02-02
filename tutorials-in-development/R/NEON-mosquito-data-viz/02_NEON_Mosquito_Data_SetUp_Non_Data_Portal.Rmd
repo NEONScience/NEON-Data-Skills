@@ -313,7 +313,7 @@ names(latlon.df) <- c("plotID", "lat", "lon", "elevation", "nlcdClass")
 
 Next we need to put together the location and plot identification information 
 with our trapping data. To achieve this goal, we will use the merge command to 
-match each plot ID in our latlon data frame to a plot ID in the trap data set.
+match each plot ID in our latlon data frame to a plot ID in the trap dataset.
 The merge command allows users to match rows of separate dataframes by certain
 key variables (in this case by plot ID) to create one unified data frame. For 
 more information on the merge function, please see 
@@ -400,7 +400,7 @@ id <- rbind(id,new_trap)
 
 ###Creating Variables and Obtaining Weather Data 
 
-Now that we have a more complete id data set, we want to create a couple of 
+Now that we have a more complete id dataset, we want to create a couple of 
 variables that could be useful in our analysis. To start, we 
 will note that the individual count present in each observation of the id data
 frame is only the individual count of each subsample. So to estimate the 

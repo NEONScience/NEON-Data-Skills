@@ -123,7 +123,7 @@ that you can automatically pull in
 
 ## View Wavelength Information
 
-Next, let's look at the wavelengths for each band in our hyperspectral data set.
+Next, let's look at the wavelengths for each band in our hyperspectral dataset.
 How many bands does our data contain?
 
 

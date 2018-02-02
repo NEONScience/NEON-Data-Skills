@@ -7,7 +7,7 @@ authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
 contributors: Sarah Newman
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
-languagesTool:
+languagesTool: R
 dataProduct:
 code1: /R/dc-spatial-vector/01-shapefile-attributes.R
 tutorialSeries: vector-data-series
