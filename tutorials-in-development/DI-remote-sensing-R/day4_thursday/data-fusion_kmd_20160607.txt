@@ -422,7 +422,7 @@ hist(all.data[[1]],
      main="Distribution of NDVI values\n Teakettle",
      col="springgreen")
 
-# this is a nice bimodal data set, so let's just take the top 1/3 of the data
+# this is a nice bimodal dataset, so let's just take the top 1/3 of the data
 # or manually calculate the top third
 green.range <- all.data.stats["NDVI","Max."] - all.data.stats["NDVI","Min."]
 green.threshold <- all.data.stats["NDVI","Max."] - (green.range/3)
@@ -478,7 +478,7 @@ south.tall.green.frac <- south.tall.green.count/freq(asp.ns, value=2)
 
 # if we look at these fracs, >11% of the pixels on north facing slopes should
 # meet our tall and green criteria, while <6% of the pixels on south facing
-# slopes do. So that's reassuring. (using original data set)
+# slopes do. So that's reassuring. (using original dataset)
 
 ```
 

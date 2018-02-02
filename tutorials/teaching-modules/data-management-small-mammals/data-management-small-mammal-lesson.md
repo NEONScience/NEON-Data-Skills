@@ -196,7 +196,7 @@ As we talked about during the presentation, metadata are another important
 component of collecting good data. A good metadata file can help someone 
 unfamiliar with a data file interpret the codes and variables presented – 
 and will help you remember what you did when you come back to the data later. 
-It also provides an opportunity to discuss any irregularities in the data set. 
+It also provides an opportunity to discuss any irregularities in the dataset. 
 
 <div id="ds-challenge" markdown="1">
 **Discussion questions**:
@@ -236,7 +236,7 @@ this calculation to generate an accurate estimate of population size:
 depends on several assumptions about the population. Knowing what you do based 
 on the sampling methods outlined in the Abbreviated NEON Small Mammal Trapping 
 Protocols document, do you think any of those assumptions have been violated in 
-this data set?  Why and what could be done to address those issues?
+this dataset?  Why and what could be done to address those issues?
 </div>
 
 Working in pairs, use the workbook – NEONSmallMammalDataAbundanceWorkbook.xlsx – 

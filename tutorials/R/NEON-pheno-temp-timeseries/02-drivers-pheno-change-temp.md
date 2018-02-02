@@ -290,7 +290,7 @@ tells R to ignore them for calculation,etc
 
     ## [1] 0
 
-What is the range of dates in our data set? 
+What is the range of dates in our dataset? 
  
 
     # View the date range
@@ -583,7 +583,7 @@ plot.
 
 What patterns can you see in the data? 
 
-Right now we are looking at all the data points in the data set. However, we may
+Right now we are looking at all the data points in the dataset. However, we may
 want to view or aggregate the data differently:  
 
 * aggregated data: min, mean, or max over a some duration

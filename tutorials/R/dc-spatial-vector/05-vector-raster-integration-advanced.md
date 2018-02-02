@@ -8,7 +8,7 @@ contributors: Sarah Newman
 estimatedTime:
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
-languagesTool:
+languagesTool: R
 dataProduct:
 code1: /R/dc-spatial-vector/05-vector-raster-integration-advanced.R
 tutorialSeries: vector-data-series

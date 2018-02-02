@@ -204,7 +204,7 @@ plt.savefig(just_chm_file_split[0]+'_'+just_chm_file_split[1]+'_'+just_chm_file_
 
 
 
-Now we will run a Gaussian smoothing kernal (convolution) across the data set to 
+Now we will run a Gaussian smoothing kernal (convolution) across the dataset to 
 remove spurious high vegetation points. This will help ensure we are finding 
 the treetops properly before running the watershed segmentation algorithm. For 
 different forest types it may be necessary to change the input parameters. 

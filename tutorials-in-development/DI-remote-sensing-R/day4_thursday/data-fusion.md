@@ -497,7 +497,7 @@ Next, look at NDVI.
 
 ![ ]({{ site.baseurl }}/images/rfigs/institute-materials/day4_thursday/data-fusion/explore-ndvi-1.png)
 
-    # this is a nice bimodal data set, so let's just take the top 1/3 of the data
+    # this is a nice bimodal dataset, so let's just take the top 1/3 of the data
     # or manually calculate the top third
     thresholds$greenRange <- all.data.stats["NDVI","Max."] - all.data.stats["NDVI","Min."]
     thresholds$greenThresh <- all.data.stats["NDVI","Max."] - (thresholds$greenRange/3)
@@ -549,7 +549,7 @@ object `asp.ns`.
     
     # if we look at these fractions, >11% of the pixels on north facing slopes should
     # meet our tall and green criteria, while <6% of the pixels on south facing
-    # slopes do. So that's reassuring. (using original data set)
+    # slopes do. So that's reassuring. (using original dataset)
 
 ## Plot Color Infrared (CIR) Image
 

@@ -71,7 +71,7 @@ GIS file formats.</a>
 ## Get Started With Your Project -  File Organization
 
 When we work with large, spatio-temporal data, it is a good idea to store large
-data sets in a general data directory that you can easily access from many
+datasets in a general data directory that you can easily access from many
 projects. If you are working in a collaborative
 environment, use a shared data directory.
 

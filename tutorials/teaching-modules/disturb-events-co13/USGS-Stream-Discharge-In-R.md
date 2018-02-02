@@ -124,7 +124,7 @@ Now click "Go".
 
 #### Step 2: Save data to .txt
 The output is a plain text page that you must copy into a spreadsheet of 
-choice and save as a .csv. Note, you can also download the teaching data set 
+choice and save as a .csv. Note, you can also download the teaching dataset 
 (above) or access the data through an API (see Additional Resources, below). 
 
 
@@ -380,7 +380,7 @@ October 15 2013.
 ![ ]({{ site.baseurl }}/images/rfigs/teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R/define-time-subset-1.png)
 
 We get a warning message because we are "ignoring" lots of the data in the
-data set.
+dataset.
 
 ## Plotly - Interactive (and Online) Plots
 

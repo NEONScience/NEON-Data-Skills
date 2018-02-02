@@ -140,7 +140,7 @@ External Lab data.
 When we join the data tables we will want to consider areas where there are no
 data or where the NEON data has NA values. As a quick excersize to demonstrate
 how Excel deals with NA values let's create a line plot of the **waterCalcium**
-variable. In our data set this has "NA" values for sampling bouts in March and 
+variable. In our dataset this has "NA" values for sampling bouts in March and 
 April of 2017. 
 
 ### Create Line Plot

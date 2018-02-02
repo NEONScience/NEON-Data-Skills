@@ -1,7 +1,7 @@
 # Functions for data
 
 Now that we know how to write functions, we can use this concept for preparing our
-data sets for analysis, generating the intermediary data files, and exporting
+datasets for analysis, generating the intermediary data files, and exporting
 them to CSV so that we can, for instance, share them with our collaborators.
 
 Let's start with the chunk from the manuscript:
@@ -54,7 +54,7 @@ gather_data <- function(path = "data-raw", pattern = "gdp-percapita\\.csv$") {
 ## Towards automation
 
 We can create a `make_csv` function to automatically generate CSV files from our
-data sets. This might come handy if you want to send your intermediate datasets
+datasets. This might come handy if you want to send your intermediate datasets
 to your collaborators or if you want to inspect more closely that everything is
 working as it should.
 

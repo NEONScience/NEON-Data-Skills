@@ -120,7 +120,7 @@ Fourth, we need to unzip/uncompress the file so that the data files can be
 accessed. Use your favorite tool that can unpackage/open .zip files (e.g.,
 winzip, Archive Utility, etc). The files will now be accessible in a directory 
 named `NEON-DS-Met-Time-Series` containing all the subdirectories and files that
- make up the data set or the subdirectories and files will be unzipped directly 
+ make up the dataset or the subdirectories and files will be unzipped directly 
 into the data directory. If the latter happens, they need to be moved into a 
 `data/NEON-DS-Met-Time-Series` directory.
 

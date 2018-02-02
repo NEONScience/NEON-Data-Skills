@@ -59,12 +59,12 @@ numeric day count since 1 January 4713 BCE or as a count from some other origin
 day, instead of an annual count of 365 or 366 days.
 </div>
 
-Including a Julian day variable in your data set can be very useful when
+Including a Julian day variable in your dataset can be very useful when
 comparing data across years, when plotting data, and when matching your data
 with other types of data that include Julian day. 
 
 ## Load the Data
-Load this data set that we will use to convert a date into a year day or Julian 
+Load this dataset that we will use to convert a date into a year day or Julian 
 day. 
 
 Notice the date is read in as a character and must first be converted to a Date

@@ -765,9 +765,9 @@ that you want to do, you'll be able to use R in your science.
 
 ### Sample Data
 
-R comes with sample data sets. You will often find these as the date sets in 
+R comes with sample datasets. You will often find these as the date sets in 
 documentation files or responses to inquires on public forums like *StackOverflow*. 
-To see all available sample data sets you can type in `data()` to the console. 
+To see all available sample datasets you can type in `data()` to the console. 
 
 ### Packages in R
 

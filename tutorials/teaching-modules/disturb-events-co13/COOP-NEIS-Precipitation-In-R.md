@@ -165,7 +165,7 @@ On the options page, we want to make sure we select:
 * Units (Standard)
 * Precipitation (w/ HPCP automatically checked)
 
-On the next page you must enter an email address for the data set to be sent 
+On the next page you must enter an email address for the dataset to be sent 
 to.  
 
 #### Step 3: Get the data
@@ -173,7 +173,7 @@ As this is a small dataset, it won't take long for you to get an email telling
 you the dataset is ready. Follow the link in the email to download your dataset.
 You can also view documentation (metadata) for the data.  
 Each data subset is downloaded with a unique order number.  The order number in 
-our example data set is 805325.  If you are using a data set you've downloaded 
+our example dataset is 805325.  If you are using a dataset you've downloaded 
 yourself, make sure to substitute in your own order number in the code below. 
 
 To ensure that we remember what our data file is, we've added a descriptor to 
@@ -350,7 +350,7 @@ There are 94 NA values in our dataset. This is missing data.
 
 This depends on what questions we are asking.  Here we are looking at 
 general patterns in the data across 10 years. Since we have just over 3650 
-days in our entire data set, missing 94 probably won't affect the general trends
+days in our entire dataset, missing 94 probably won't affect the general trends
 we are looking at.  
 
 Can you think of a research question where we would need to be concerned about

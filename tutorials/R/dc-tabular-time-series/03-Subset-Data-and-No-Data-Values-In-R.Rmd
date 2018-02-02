@@ -203,7 +203,7 @@ qplot (datetime, dewp,
 # 3
 
 # If you use the daily date, you will have to change several items. 
-# 1. The data set used will have to be different
+# 1. The dataset used will have to be different
 # 2. When subsetting & plotting, you will use `date` not `datetime` as 
 # the variable of interest
 # 3. When subsetting you will use as.Date instead of as.POSIXct and not need to 

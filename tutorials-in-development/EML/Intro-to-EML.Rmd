@@ -32,7 +32,7 @@ in EML (Ecological Metadata Language) format. We will work with an EML file crea
 for an atmospheric dataset by the Harvard Forest LTER, using the R/OpenSci EML
 library for `R`. The EML format can us used to document a suite of different
 objects including shapefiles & raster data (spatial data), software, hierarchical
-data sets and more. However in this lesson we will focus on an EML file that 
+datasets and more. However in this lesson we will focus on an EML file that 
 documents a tablular data.
 
 ##Introduction to EML
@@ -333,7 +333,7 @@ EML.hr.attr[[1]]@attributeDefinition
 #View All Data Table Attributes 
 
 We can create an automated list of all data table attributes and associated
-descriptions as we did with our data set too. 
+descriptions as we did with our dataset too. 
 
 We will generate a summary of fields in our data table that includes:
 
@@ -378,7 +378,7 @@ We've now have:
 * successfully explored the dataset described in our `EML` file
 * identified the location where the data was collected and determined it is in the 
 desired range of our study area.
-* Identified the sub data tables described in the data set
+* Identified the sub data tables described in the dataset
 * Explored the data contained in the data tables and identified a table that we'd 
 like to work with
 

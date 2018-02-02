@@ -42,13 +42,14 @@ on your computer to complete this tutorial.
 
 [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
 
-###Download Data 
+### Download Data 
 (include file that inserts a button to download data from Figshare & text about
-data.  Feel free to just add text until the data set is finalized and uploaded).
+data.  Feel free to just add text until the dataset is finalized and uploaded).
 
 {% include/dataSubsets/_data_NAME.html %}  
 
 ****
+
 {% include/_greyBox-wd-rscript.html %}
 
 ****

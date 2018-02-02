@@ -200,7 +200,7 @@ print(applecounter)
 
 In this scenario, we've created a loop that will run between once for each number between 1 and "however many apples you want to give us" and we do not ever have to change the code accordingly. Starting to see the power? Let's do one more together:
 
-Now imagine that we are in charge of a data set of the temperatures at our field site. To our horror, we realize that the temperatures were all written in fahrenheit and we need to convert them all to celsius. There are alternative ways to solve this, but why waste a good opporunity to practice our FOR loops.
+Now imagine that we are in charge of a dataset of the temperatures at our field site. To our horror, we realize that the temperatures were all written in fahrenheit and we need to convert them all to celsius. There are alternative ways to solve this, but why waste a good opporunity to practice our FOR loops.
 
 We want to go through each line and convert the temperature from F to C. So let's devise a loop that will automate that for us instead of having to hard code the conversion for every temperature. 
 
@@ -218,7 +218,7 @@ head(temperatures)
 The first part of the chunk just creates a data frame composed of 200 numbers between 0 and 100. It's just setup so we won't spend time on it.
 
 The loop begins by using variable `i`, which is just a personal habit of mine. Feel free to choose your own.
-The number of times is set by starting a 1 and going through as many times as the total number of rows in the data frame. This is an important concept to focus on both syntactically and semantically. Remember, we want to go through, line by line, of the data set and convert the temperature. As a result, we need to start with row 1 and go through every row to the last. And while we can count the total number of rows and hard code that number in, why not just have it count for us? The added bonus is that if this happens again, we will already have a fix coded!
+The number of times is set by starting a 1 and going through as many times as the total number of rows in the data frame. This is an important concept to focus on both syntactically and semantically. Remember, we want to go through, line by line, of the dataset and convert the temperature. As a result, we need to start with row 1 and go through every row to the last. And while we can count the total number of rows and hard code that number in, why not just have it count for us? The added bonus is that if this happens again, we will already have a fix coded!
 
 Next we look inside the loop, inside the `{}`. This single line is a little complex so we'll break it down:
 `temperatures$Centigrade[i]<-((temperatures$Temp_Data[i]-32)*0.5556)`
@@ -230,7 +230,7 @@ Taken together, we're telling R to go to the list of temperatures, start at the 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Title of challenge
   
-After having solved the issue with temperature, we realize that all the surveying measurements were done in feet and not meters! Given this random data set of X and Y coordinates, convert the set from feet to meters!
+After having solved the issue with temperature, we realize that all the surveying measurements were done in feet and not meters! Given this random dataset of X and Y coordinates, convert the set from feet to meters!
 
 </div>
 
@@ -255,7 +255,7 @@ But before we get ahead of ourselves, let's return to our friend picking apples.
 
 Imagine that we've collected 100 apples, when we go to count them we notice that some are rotten or worm eaten. Clearly we don't want to count apples that we can't eat, so we decide to write a code that checks to see if the apples are good, and if so, we count them!
 
-Start by creating our data set of apples. Some are good, some are rotten, and some are wormy.
+Start by creating our dataset of apples. Some are good, some are rotten, and some are wormy.
 
 ```{r}
 #build a data frame to contain our 100 apples

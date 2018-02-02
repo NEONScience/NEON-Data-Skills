@@ -141,7 +141,7 @@ weighted distance or area function.
  among measured points and account for the spatial configuration of the sample 
  points around the prediction location.
 
-Different methods of interpolation are better for different data sets. This table 
+Different methods of interpolation are better for different datasets. This table 
 lays out the strengths of some of the more common interpolation methods. 
 
 <figure>
