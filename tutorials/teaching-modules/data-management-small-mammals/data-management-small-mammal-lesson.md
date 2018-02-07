@@ -7,7 +7,7 @@ authors: Jim McNeil, Megan A. Jones
 contributors: 
 estimatedTime: 
 packagesLibraries: ggplot2, plotly
-topics: data-analysis, organisms, 
+topics: data-analysis, organisms, data-management
 languagesTool: spreadsheet
 dataProduct: DP1.10072.001
 code1: 
