@@ -14,7 +14,7 @@ The the instructor can submit a Teaching Module overview page to
 neondataskills@BattelleEcology.org and (after review) it can be posted on the 
 NEON site with links to the QUBESHub content.
 
-###Components of a Teaching Module 
+### Components of a Teaching Module 
 
 Teaching modules can be created in different ways, therefore we do not prescribe 
 a specific format.  However, the following components are frequently included 
