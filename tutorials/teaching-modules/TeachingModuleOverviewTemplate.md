@@ -31,26 +31,42 @@ in a teaching module.
 ### NEON Data Skills Teaching Module Overview Page Components
 
 Title: 
+
 Authors: 
+
 Contributors: Anyone who contributed but isn’t an author. 
+
 Description: Brief description of module (<255 characters).
+
 Overview: Several paragraphs describing the education resource and dataset. If it is an adaptation from another educational resource, please credit the original source. (Can be same as the overview in instructor notes)
 
 Estimated Duration: 
+
 Themes: 
+
 Audience: 
+
 Class size: 
+
 Technology Needs
+
 	Instructor:
+	
 	Student:
+	
 Materials Needed
+
 	Instructor:
+	
 	Student:
 
 Learning Objectives: 
+
 	Science content: 
+	
 	Data skills:
 
 URL of Materials on QUBESHub: 
+
 
 
