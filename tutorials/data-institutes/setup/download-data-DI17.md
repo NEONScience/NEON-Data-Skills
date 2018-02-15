@@ -37,10 +37,10 @@ data for this event, click the blue buttons below.
 
 ### Download Data
 
- <a href="https://neondata.sharefile.com/d-sf1eb1e9c5174760a" class="class="link--button link--arrow">
+ <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
 Download NEON Teaching Data Subset: Data Institute 2017</a>
 
- <a href="https://ndownloader.figshare.com/files/8730436" class="class="link--button link--arrow">
+ <a href="https://ndownloader.figshare.com/files/8730436" class="link--button link--arrow">
 Download NEON Teaching Data Subset: Data Institute 2017 - Spectral Classification</a>
 
 </div>
