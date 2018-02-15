@@ -786,7 +786,7 @@ in the linearly-stretched images.
 
 All of the functions we just wrote are available as a Python module. 
 
-{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
+[[nid:6792]]
 
 
 ## Challenge Code Solutions

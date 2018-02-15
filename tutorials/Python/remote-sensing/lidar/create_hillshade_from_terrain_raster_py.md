@@ -41,7 +41,7 @@ arrays with gdal.
 
 {% include/dataSubsets/_data_DI17.html %}
 
-{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
+[[nid:6792]]
 
 </div>
 
