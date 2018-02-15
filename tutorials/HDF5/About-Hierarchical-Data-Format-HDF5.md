@@ -21,13 +21,9 @@ urlTitle: about-hdf5
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Understand what the Hierarchical Data Format (HDF5) is.</li>
-* Understand the key benefits of the HDF5 format, particularly related to big data. </li>
-<li>Understand both the types of data that can be stored in HDF5 and how it can be stored / structured.</li>
-</ol>
-
-## What You'll Need
-Internet access and a working thinking cap.
+* Explain what the Hierarchical Data Format (HDF5) is.
+* Describe the key benefits of the HDF5 format, particularly related to big data. 
+* Describe both the types of data that can be stored in HDF5 and how it can be stored/structured.
 
 </div>
 
@@ -49,8 +45,7 @@ that builds upon both HDF4 and NetCDF (two other hierarchical data formats).
 <figure>
     <a href="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg">
     <img src="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"></a>
-    <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a>
-</figcaption>
+    <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a></figcaption>
 </figure>
 
 ## Hierarchical Structure - A file directory within a file
@@ -76,11 +71,11 @@ groups OR datasets within it.
 <figure>
     <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg">
     <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg"></a>
-    <figcaption>An example HDF file structure which contains groups, datasets and associated metadata.</figcaption>
+    <figcaption>An example HDF5 file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
 
-An HDF5 file containing datasets, might be structured like this:  
+An HDF5 file containing datasets, might be structured like this:
 
 <figure>
     <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure3.jpg">
@@ -111,7 +106,7 @@ dataset, is that this facilitates automation without the need for a separate
 with the dataset, and which we might need to process the dataset.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg">
+    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure2.jpg">
     <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure2.jpg"></a>
     <figcaption>HDF5 files are self describing - this means that all elements 
     (the file itself, groups and datasets) can have associated metadata that 
