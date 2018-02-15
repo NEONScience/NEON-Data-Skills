@@ -4,8 +4,8 @@ title: "Calculate NDVI & Extract Spectra Using Masks in Python"
 description: "Learn to calculate Normalized Difference Vegetation Index (NDVI) and extract spectral using masks with Python." 
 dateCreated: 2017-06-19 
 authors: Bridget Hass
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, 
 languagesTool: python
