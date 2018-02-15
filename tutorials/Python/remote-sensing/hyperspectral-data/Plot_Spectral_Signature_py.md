@@ -1,12 +1,11 @@
-
 ---
 syncID: c91d556c8fad4570a33a1aaa550a561d
 title: "Plot a Spectral Signature in Python"
 description: "Learn how to extract and plot a spectral profile from a single pixel of a reflectance band." 
 dateCreated: 2017-06-19 
 authors: Bridget Hass
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, pandas, gdal, matplotlib, h5py,IPython.display
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python

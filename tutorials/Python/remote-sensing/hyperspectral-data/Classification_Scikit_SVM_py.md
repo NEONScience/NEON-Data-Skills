@@ -1,12 +1,11 @@
-
 ---
 syncID: 1497c1da6ed64a7591e56ff1f2fce18d
 title: "Classification of Hyperspectral Data with Support Vector Machine (SVM) Using SciKit in Python"
 description: "Learn to classify spectral data using the Support Vector Machine (SVM) method." 
 dateCreated: 2017-06-19 
 authors: Paul Gader
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python

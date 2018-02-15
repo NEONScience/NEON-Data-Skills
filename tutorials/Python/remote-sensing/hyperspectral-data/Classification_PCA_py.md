@@ -1,4 +1,3 @@
-
 ---
 syncID: 9a1e6798f2e94a71bbcd1c6a1f5946d2
 title: "Classification of Hyperspectral Data with Principal Components Analysis (PCA) in Python"

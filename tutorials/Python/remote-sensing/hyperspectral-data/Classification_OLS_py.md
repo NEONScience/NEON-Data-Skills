@@ -1,12 +1,11 @@
-
 ---
 syncID: 1f8217240c064ed1a67b9db20e9362f4
 title: "Classification of Hyperspectral Data with Ordinary Least Squares in Python"
 description: "Learn to classify spectral data using the Ordinary Least Squares method." 
 dateCreated: 2017-06-21 
 authors: Paul Gader
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
