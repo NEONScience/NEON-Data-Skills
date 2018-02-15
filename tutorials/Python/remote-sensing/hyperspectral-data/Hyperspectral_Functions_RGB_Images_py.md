@@ -48,16 +48,16 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI17.html %}
 
- <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/neon_aop_refl_hdf5_functions.py" class="btn btn-success">
-Download the neon_aop_refl_hdf5_functions Module</a>
+{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
 
- <a href="{{ site.baseurl }}/code/Python/hyperspectral-data/RGBplot_widget.py" class="btn btn-success">
+<h3> <a href="{{ site.baseurl }}/code/Python/remote-sensing/hyperspectral-data/RGBplot_widget.py"> Python Module: RGBplot </a></h3> 
+To complete this tutorial, you will need this Python module for RGP plotting. 
+<a href="{{ site.baseurl }}/code/Python/remote-sensing/hyperspectral-data/RGBplot_widget.py" class="link--button link--arrow>
 Download the RGBplot Module</a>
+
 
 </div>
 
-
-## Background
 
 We can combine any three bands from the NEON reflectance data to make an RGB 
 image that will depict different information about the Earth's surface. 

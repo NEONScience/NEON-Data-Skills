@@ -782,6 +782,11 @@ With contrast-limited adaptive histogram equalization, you can see more detail
 in the image, and the highly reflective objects are not washed out, as they were 
 in the linearly-stretched images. 
 
+## Download Function Module 
+
+All of the functions we just wrote are available as a Python module. 
+
+{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
 
 
 ## Challenge Code Solutions
