@@ -204,40 +204,6 @@ print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[18]),'nm')
 We selected these bands so that they fall within the visible range of the 
 electromagnetic spectrum (400-700 nm).
 
-**Band 58 = 669 nm  --> Red**
-
- <figure>
-	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Red_Spectrum.jpg">
-	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Red_Spectrum.jpg"></a>
-	<figcaption> Red, Band 58 = 669 nm 
-	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank"> NASA Langley Research Center’s Science Directorate Education and Public Outreach </a>
-	</figcaption>
-</figure>
-
-**Band 34 = 549 nm --> Green**
-
- <figure>
-	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg">
-	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Green_Spectrum.jpg"></a>
-	<figcaption> Green, Band 34 = 549 nm 
-	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
-Public Outreach </a>
-	</figcaption>
-</figure>
-
-**Band 19 = 474 nm --> Blue** 
-
- <figure>
-	<a href="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg">
-	<img src="https://science-edu.larc.nasa.gov/EDDOCS/images/Erb/Blue_Spectrum.jpg"></a>
-	<figcaption> Blue, Band 19 = 474 nm 
-	Source: <a href="https://science-edu.larc.nasa.gov/" target="_blank">NASA Langley Research Center’s Science Directorate Education and
-Public Outreach </a>
-	</figcaption>
-</figure>
-
-For more, see NASA's article
-<a href="https://science-edu.larc.nasa.gov/EDDOCS/Wavelengths_for_Colors.html" target="_blank"> What Wavelength Goes With a Color? </a>.
 
 We can use the `stack_subset_bands` function to subset and stack these three 
 bands. First we need to define the subset extent and determine the corresponding 

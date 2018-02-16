@@ -1,4 +1,3 @@
-
 ---
 syncID: 7e916532e9fa49aeba7464350e661778
 title: "Create a Hillshade from a Terrain Raster in Python"

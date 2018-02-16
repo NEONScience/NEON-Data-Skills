@@ -1,6 +1,6 @@
 ---
 syncID: a6db1047adb34f41b9d17d6ed41f5fd5
-title: "Hyperspectral Variation Uncertainty Analysis in Python"
+title: "Exploring Uncertainty in LiDAR Data"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
 authors: Tristan Goulden
 contributors:
@@ -17,9 +17,9 @@ urlTitle: lidar-uncertainty-py
 In this exercise we will analyze the several NEON level 3 lidar rasters to assess 
 the uncertainty between days. 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Objectives
+### Objectives
 After completing this tutorial, you will be able to:
 
 * Load several tif files with metadata
@@ -50,9 +50,9 @@ uncertainty because we should expect that nothing has chnaged between the
 two collects. In this exercise we will analyze the several NEON Level 3 LIDAR rasters to 
 assess the uncertainty.
 
-## Start 
+## Set up system
 
-First, we'll set up our system and then . 
+First, we'll set up our system. 
 ```python
 import sys
 sys.version

@@ -19,9 +19,9 @@ In this tutorial, we will learn to classify spectral data using the
 Principal Components Analysis (PCA) method. 
 
 
-<div id="objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
-# Objectives
+### Objectives
 After completing this tutorial, you will be able to:
 
 * Classify spectral remote sensing data using Principal Components Analysis. 
@@ -55,6 +55,8 @@ Download Dr. Paul Gader's Classification 3 PPT</a>
 
 </div>
 
+
+## Set up
 First, we'll start by setting up the necessary environment. 
 
 ```python
