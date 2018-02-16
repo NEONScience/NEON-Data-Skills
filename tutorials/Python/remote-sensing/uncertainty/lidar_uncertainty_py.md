@@ -47,8 +47,8 @@ ensure coverage of the site. The following day, the weather improved and the
 site was flown again to collect good weather spectrometer data. Having 
 collections only one day apart provides an opportunity to assess LiDAR 
 uncertainty because we should expect that nothing has chnaged between the 
-two collects. In this exercise we will analyze the several NEON Level 3 LIDAR rasters to 
-assess the uncertainty.
+two collects. In this exercise we will analyze the several NEON Level 3 lidar 
+rasters to assess the uncertainty.
 
 ## Set up system
 
