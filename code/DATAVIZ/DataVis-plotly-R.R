@@ -1,8 +1,8 @@
 ## ----set-plotly-creds, eval=FALSE----------------------------------------
 ## # set plotly user name
-## Sys.setenv("plotly_username"="YOUR_plotly_username")
+## Sys.setenv("plotly_username"="YOUR_USERNAME")
 ## # set plotly API key
-## Sys.setenv("plotly_api_key"="YOUR_api_key")
+## Sys.setenv("plotly_api_key"="YOUR_KEY")
 ## 
 
 ## ----load-libraries-hidden, echo=FALSE, results="hide"-------------------
@@ -17,8 +17,8 @@ library(webshot) # embed the plotly plots
 ## ----create-plotly-plot--------------------------------------------------
 
 # load packages
-library(plotly)  # to create interactive plots
 library(ggplot2) # to create plots and feed to ggplotly()
+library(plotly)  # to create interactive plots
 
 # view str of example dataset
 str(economics)

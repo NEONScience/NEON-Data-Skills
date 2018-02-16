@@ -7,33 +7,33 @@
 ##################
 
 require(knitr)
-dirs <- c("R/NEON-API",
-          "R/neonUtilities",
-          "data-institutes/rmd-intro",
-          "R/R-nonSeries-lessons",
-          "dataviz")
+dirs <- c("R/NEON-API/",
+          "R/neonUtilities/",
+          "data-institutes/rmd-intro/",
+          "R/R-nonSeries-lessons/",
+          "dataviz/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-dir <- dirs[2]
+subDir <- dirs[5]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/NEON-Data-Skills"
+gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
-wd <- "~/Documents/data/"
+wd <- "~/Documents/data"
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir
 setwd(wd)
 
 # set series subdir
-subDir <- paste0(dir,"/")
+#subDir <- paste0(dir,"/")
 
 # don't change - this is the tutorials dir location required by jekyll
-postsDir <- file.path("tutorials/", subDir)
-codeDir <- file.path("code/", subDir)
+postsDir <- file.path("tutorials", subDir)
+codeDir <- file.path("code", subDir)
 
 # images path
 imagePath <- paste0("images/rfigs/", subDir)
@@ -85,9 +85,9 @@ if (file.exists(file.path(gitRepoPath, codeDir))){
 # clean out posts dir to avoid the issue of duplicate files -- WHY? this deletes the files?
 #unlink(paste0(gitRepoPath, postsDir,"*"), recursive = TRUE)
 # clean out code dir to avoid the issue of duplicate files
-unlink(paste0(gitRepoPath, codeDir,"*"), recursive = TRUE)
+unlink(paste0(gitRepoPath,"/", codeDir,"*"), recursive = TRUE)
 # clean out images dir to avoid the issue of duplicate files
-unlink(paste0(gitRepoPath, imagePath,"*"), recursive = TRUE)
+unlink(paste0(gitRepoPath,"/", imagePath,"*"), recursive = TRUE)
 
 
 # copy image directory over
