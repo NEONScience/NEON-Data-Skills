@@ -441,7 +441,9 @@ Yeah, too good to be true...What can we do?
 
 ## Error Analysis
 
-Error analysis can be used to identify characteristics of errors.  
-Try different Magic Numbers using Cross Validation, etc.
+Error analysis can be used to identify characteristics of errors. 
+
+You could try different Magic Numbers using Cross Validation, etc.  Stay tuned
+for a tutorial on this topic. 
 
 

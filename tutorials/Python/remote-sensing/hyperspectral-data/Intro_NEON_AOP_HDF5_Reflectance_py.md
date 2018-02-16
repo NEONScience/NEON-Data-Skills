@@ -4,8 +4,8 @@ title: "NEON AOP Hyperspectral Data in HDF5 format with Python"
 description: "Learn how to read NEON AOP hyperspectral HDF5 dataset using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2017-04-10 
 authors: Bridget Hass
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python

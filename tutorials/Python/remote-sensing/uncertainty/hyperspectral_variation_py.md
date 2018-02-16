@@ -50,7 +50,7 @@ We recommend you complete the following tutorials prior to this tutorial to have
 the necessary background. 
 
 1.  <a href="/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
-1.  <a href="/hyperspectral-HDF5-python/"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
+1.  <a href="/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
 1.  <a href="/plot-spec-sig-python/"> *Plot a Spectral Signature in Python*</a>
 
 

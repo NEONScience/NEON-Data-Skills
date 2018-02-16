@@ -1,4 +1,3 @@
-
 ---
 syncID: e6ccf19a4b454ca594388eeaa88ebe12
 title: "Calculate Vegetation Biomass from LiDAR Data in Python"
