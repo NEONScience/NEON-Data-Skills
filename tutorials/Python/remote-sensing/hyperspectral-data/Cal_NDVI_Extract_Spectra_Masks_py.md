@@ -40,7 +40,7 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI17.html %}
 
-{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
+[[nid:6792]]
 
 </div>
 

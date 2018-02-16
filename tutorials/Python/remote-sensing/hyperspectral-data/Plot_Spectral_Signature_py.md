@@ -42,14 +42,9 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI17.html %}
 
-{% include/dataSubsets/_script_neonAOPhdf5Functs.html %}
+[[nid:6792]]
 
-
-<h3> <a href="{{ site.baseurl }}/code/Python/remote-sensing/hyperspectral-data/spectraPlot_widget.py"> Python Module: spectraPlot </a></h3> 
-To complete this tutorial, you will need this Python module for working with 
-NEON HDF5 reflectance data. 
-<a href="{{ site.baseurl }}/code/Python/remote-sensing/hyperspectral-data/spectraPlot_widget.py" class="link--button link--arrow>
-Download the spectraPlot Module</a>
+[[nid:6793]]
 
 
 </div>
