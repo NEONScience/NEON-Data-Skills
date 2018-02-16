@@ -1,6 +1,6 @@
 ---
 syncID: b29c2164e6844a93b9d39961faa9861e
-title: "Interactive Data Visualization with R and Plotly"
+title: "Interactive Data Vizualization with R and Plotly"
 description: "Learn the basics of how to use the plotly package to create interactive plots and use the Plotly API in R to share these plots."
 dateCreated: 2014-12-06
 authors: Megan A. Jones, Leah A. Wasser
@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: dataviz/DataVis-plotly-R.R
 tutorialSeries:
-urlTitle: plotly-r
+urlTitle: plotly
 ---
 
 
@@ -23,6 +23,7 @@ bills itself as "a collaborative platform for modern data science". You can use
 it to build  interactive plots that can easily be shared with others (like
 the
 <a href="/overview-disturbance-events-co13flood" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods* lessons</a>). 
+
 
 You will need an free online Plotly account to post & share you plots online. But
 you can create the plots and use them on your local computer without an account.
@@ -52,9 +53,9 @@ own username & key as appropriate.
 
 
     # set plotly user name
-    Sys.setenv("plotly_username"="YOUR_plotly_username")
+    Sys.setenv("plotly_username"="YOUR_USERNAME")
     # set plotly API key
-    Sys.setenv("plotly_api_key"="YOUR_api_key")
+    Sys.setenv("plotly_api_key"="YOUR_KEY")
 
 
 
@@ -68,8 +69,8 @@ Here we use the example dataframe `economics` that comes with the package.
 
 
     # load packages
-    library(plotly)  # to create interactive plots
     library(ggplot2) # to create plots and feed to ggplotly()
+    library(plotly)  # to create interactive plots
     
     # view str of example dataset
     str(economics)
@@ -112,6 +113,8 @@ ggplot objects into interactive plots with `ggplotly()`.
 
     ggplotly(unemployment)
 
+    ## We recommend that you use the dev version of ggplot2 with `ggplotly()`
+    ## Install it with: `devtools::install_github('hadley/ggplot2')`
 
 ![ ]({{ site.baseurl }}/images/rfigs/dataviz/DataVis-plotly-R/ggplotly-2.png)
 
@@ -130,7 +133,8 @@ The function `plotly_POST()` allows you to post any plotly plot to your account.
 ## Examples
 
 The plots below were generated using R code that harnesses the power of the
-`ggplot2` and the `plotly` packages. The plotly code utilizes the <a href="http://ropensci.org/packages/" target="_blank">RopenSci `plotly` packages - check them out!</a>
+`ggplot2` and the `plotly` packages. The plotly code utilizes the 
+<a href="http://ropensci.org/packages/" target="_blank">RopenSci `plotly` packages - check them out!</a>
 
 <iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
 
