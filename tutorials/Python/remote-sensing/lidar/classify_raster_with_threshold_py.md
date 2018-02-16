@@ -1,7 +1,8 @@
 ---
 syncID: c324c554a35f463493349dbd0be19cec
 title: "Classify a Raster Using Threshold Values in Python"
-description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." dateCreated: 2017-06-21 
+description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." 
+dateCreated: 2017-06-21 
 authors: Bridget Hass
 contributors: 
 estimatedTime: 

@@ -2,6 +2,7 @@
 syncID: 84457ead9b964c8d916eacde9f271ec7
 title: "Assessing Spectrometer Accuracy using Validation Tarps with Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
+dateCreated: 2017-06-21 
 authors: Tristan Goulden
 contributors:
 estimatedTime:

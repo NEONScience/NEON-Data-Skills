@@ -2,6 +2,7 @@
 syncID: 7e916532e9fa49aeba7464350e661778
 title: "Create a Hillshade from a Terrain Raster in Python"
 description: "Learn how to create a hillshade from a terrain raster in Python." 
+dateCreated: 2017-06-21 
 authors: Bridget Hass
 contributors:
 estimatedTime:

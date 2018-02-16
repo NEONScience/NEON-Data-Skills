@@ -2,6 +2,7 @@
 syncID: c67de95147e9414a88ea876f3fc5252b
 title: "Mask a Raster Using Threshold Values in Python"
 description: "In this tutorial, we will learn how to remove parts of a raster based on pixel values using a mask we create." 
+dateCreated: 2017-06-21 
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
