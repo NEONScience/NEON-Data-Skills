@@ -2,6 +2,7 @@
 syncID: a6db1047adb34f41b9d17d6ed41f5fd5
 title: "Exploring Uncertainty in LiDAR Data"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
+dateCreated: 2017-06-21 
 authors: Tristan Goulden
 contributors:
 estimatedTime:
