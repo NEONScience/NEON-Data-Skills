@@ -2,6 +2,7 @@
 syncID: bb90898de165446f9a0e92e1399f4697
 title: "Hyperspectral Variation Uncertainty Analysis in Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
+dateCreated: 2017-06-21 
 authors: Tristan Goulden
 contributors:
 estimatedTime:
