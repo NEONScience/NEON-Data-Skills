@@ -15,7 +15,8 @@ urlTitle: classify-raster-thresholds-py
 ---
 
 In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS 
-(e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a classified raster object.
+(e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a 
+classified raster object.
 
 <div id="ds-objectives" markdown="1">
 
@@ -446,7 +447,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box],
 ![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_30_2.png)
 
 
- <div id="ds-challenge" markdown="1">
+<div id="ds-challenge" markdown="1">
 
 **Challenge: Document Your Workflow**
 
