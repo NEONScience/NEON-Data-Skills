@@ -11,7 +11,7 @@ Start with the template header below.
 Please get in touch if you are unsure of what directory to save your file in!
 1. Submit the PR! 
 
-Example header code:
+Example header code (open in edit view to read) :
 
 ---
 syncID: Contact NEONDataSkills for a suitable sync ID
