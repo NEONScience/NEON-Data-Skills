@@ -161,7 +161,7 @@ of each pixel on a surface given a specified light source. To calculate hillshad
  we need the zenith (altitude) and azimuth of the illumination source, as well 
 as the slope and aspect of the terrain. The formula for hillshade is:
 
-Hillshade = 255.0 * (( cos(zenith_I)*cos(slope_T))+(sin(zenith_I)*sin(slope_T)*cos(azimuth_I-aspect_T))
+Hillshade = 255.0 * (( cos(zenith_I) * cos(slope_T))+(sin(zenith_I) * sin(slope_T)*cos(azimuth_I-aspect_T))
 
 where all angles are in radians. 
 
