@@ -512,11 +512,12 @@ provide an example of classifying LiDAR aspect data to determine suitability of
 roofs for PV (photovoltaic) systems. Can you think of any other applications 
 where aspect classification might be useful?
 
-<i class="fa fa-star"></i> **Data Tip:** You can calculate aspect in Python from 
+<div id="ds-dataTip" markdown="1"><i class="fa fa-star"></i> **Data Tip:** You can calculate aspect in Python from 
 a digital elevation (or surface) model using the pyDEM package from the 
 <a href="https://earthlab.github.io/tutorials/get-slope-aspect-from-digital-elevation-model/" target="_blank">CU-Boulder
 Earth Lab.</a>
-{: .notice}
+</div>
+
 
 
 ### Import Data

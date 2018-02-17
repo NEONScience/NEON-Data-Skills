@@ -4,8 +4,8 @@ title: "Exploring Uncertainty in LiDAR Data"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: python
@@ -30,12 +30,10 @@ After completing this tutorial, you will be able to:
 
 ### Install Python Packages
 
-* **numpy**
-* **gdal** 
-* **matplotlib.pyplot** 
-* **h5py** 
-
-
+* numpy
+* gdal
+* matplotlib.pyplot
+* h5py
 
 ### Download Data
 
@@ -189,7 +187,7 @@ if (bands_dsm1 != 1 or bands_dsm2 != 1 or bands_dtm1 != 1 or bands_dtm2 != 1 or 
 
 ```
 
-Next we'll assign the raster object for each dataset
+Next we'll assign the raster object for each dataset...
 
 
 ```python
@@ -200,7 +198,7 @@ dtm2_raster = dtm2_dataset.GetRasterBand(1)
 chm_raster = chm_dataset.GetRasterBand(1)
 ```
 
-...and the associated NoData values
+...and the associated NoData values.
 
 
 ```python
@@ -239,7 +237,7 @@ diff_dsm_array = np.subtract(dsm_array1,dsm_array2)
 diff_dtm_array = np.subtract(dtm_array1,dtm_array2) 
 ```
 
-Let's get some summary statistics for the DSM difference...
+Let's get some summary statistics for the DSM difference.
 
 
 ```python
@@ -254,8 +252,10 @@ print('Standard deviations of difference in DSMs: ',round(diff_dsm_array_std,3),
     
 
 As a result we get the following:
-Mean difference in DSMs:  0.019  (m)
-Standard deviations of difference in DSMs:  0.743  (m)
+
+* Mean difference in DSMs:  0.019  (m)
+* Standard deviations of difference in DSMs:  0.743  (m)
+
 The mean is close to zero indicating there was very little systematic bias 
 between the two days. However, we notice that the standard deviation of the 
 data is quite high at 0.743 meters. Generally we expect NEON LiDAR data to have 
@@ -282,7 +282,7 @@ The histogram has long tails, obscuring the distribution near the center. To
 constrain the x-limits of the histogram we will use the mean and standard 
 deviation just calculated. Since the data appears to be normally distributed, 
 we can constrain the histogram to 95% of the data by including two standard 
-deviations above and below the mean.   
+deviations above and below the mean. 
 
 
 ```python
@@ -395,14 +395,8 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency')
     Standard deviations of difference in DSMs on veg points:  1.381  (m)
     
 
-    <matplotlib.text.Text at 0xe93aa58>
-
-
-
 ![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_39_2.png)
 
-
-    <matplotlib.figure.Figure at 0x93dfdd8>
 
 
 The results show a similar mean difference of near zero, but an extremely 
@@ -430,11 +424,6 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency')
     Mean difference in DTMs on veg points:  0.023  (m)
     Standard deviations of difference in DTMs on veg points:  0.163  (m)
     
-
-    <matplotlib.text.Text at 0xb182a20>
-
-    <matplotlib.figure.Figure at 0x96620f0>
-
 
 ![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_41_3.png)
 
@@ -469,7 +458,6 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency')
     Standard deviations of difference in DTMs on ground points:  0.068  (m)
     
 
-    <matplotlib.text.Text at 0xe939240>
 
 ![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_43_2.png)
 

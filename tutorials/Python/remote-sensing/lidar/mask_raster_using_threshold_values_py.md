@@ -306,7 +306,7 @@ plot_band_array(teak_chm_gt20_S,teak_chm_md['extent'],(20,60), \
 Use the array2raster function to export this masked raster to a geotiff. Pull it 
 into QGIS to make sure it looks reasonable. 
 
-**Challenge #2: Masking with other CHM LiDAR L2 products. **
+**Challenge #2: Masking with other CHM LiDAR L2 products**
 
 Choose thresholds for two (or more) of the TEAK LiDAR geotifs (DTM, DSM, CHM, 
 Slope, Aspect) and create a masked raster based on the criteria you chose. First 
