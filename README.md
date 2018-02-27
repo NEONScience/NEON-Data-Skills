@@ -1,4 +1,4 @@
-Welcome to the NEON Data Skills Git Repo!
+Welcome to the NEON Data Skills GitHub Repo!
 ===============================
 
 NEON Data Skills provides tutorials and resources for working with scientific 
@@ -11,7 +11,7 @@ For more information on NEON, visit the website:
 
 This repo contains the materials used to build the NEON Data Skills resources 
 that are available for use on 
-[the NEON Data Skills section of the NEON website](http://www.neonscience.org/neon-data-skills).
+[the NEON Data Skills section of the NEON website](http://www.neonscience.org/data-tutorials).
 
 <!-- ****** Usage ****** -->
 Usage
