@@ -11,7 +11,7 @@ For more information on NEON, visit the website:
 
 This repo contains the materials used to build the NEON Data Skills resources 
 that are available for use on 
-[the NEON Data Skills section of the NEON website](http://www.neonscience.org/neon-data-skills).
+[the NEON Data Skills section of the NEON website](http://www.neonscience.org/data-tutorials).
 
 <!-- ****** Usage ****** -->
 Usage
