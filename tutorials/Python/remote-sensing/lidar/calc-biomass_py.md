@@ -42,7 +42,11 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://neondata.sharefile.com/d-s3de0273e9c44908b" class="link--button link--arrow">
+If you have already downloaded the data set for the Data Institute, you have the 
+data for this tutorial within the SJER directory. If you would like to just 
+download the data for this tutorial use the following link. 
+
+<a href="https://neondata.sharefile.com/d-s58db39240bf49ac8" class="link--button link--arrow">
 Download the Biomass Calculation teaching data subset</a>
 
 </div>

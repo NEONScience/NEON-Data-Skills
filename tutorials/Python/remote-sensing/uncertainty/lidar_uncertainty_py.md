@@ -52,6 +52,7 @@ rasters to assess the uncertainty.
 ## Set up system
 
 First, we'll set up our system. 
+
 ```python
 import sys
 sys.version
@@ -271,7 +272,6 @@ plt.title('Histogram of PRIN DSM')
 plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency')
 ```
 
-    <matplotlib.text.Text at 0xd908978>
 
 
 ![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_29_1.png)
@@ -293,7 +293,6 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency')
 ```
 
 
-    <matplotlib.text.Text at 0xd93c390>
 
 
 ![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_31_1.png)
@@ -469,3 +468,6 @@ is only valid in bare open, har surface scenarios. We cannot expect the accuracy
 of the LiDAR to reach this level when vegetation is present. Quantifying the top 
 of the canopy is particularly difficult and can lead to uncertainty in excess of 
 1 m for any given pixel.  
+
+
+
