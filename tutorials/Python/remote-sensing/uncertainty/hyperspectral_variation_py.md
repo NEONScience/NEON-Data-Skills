@@ -4,8 +4,8 @@ title: "Hyperspectral Variation Uncertainty Analysis in Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: python
