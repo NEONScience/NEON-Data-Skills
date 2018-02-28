@@ -173,10 +173,23 @@ for item in sorted(sercRefl_md):
 It is often useful to look at several bands together. We can extract and stack 
 three bands in the red, green, and blue (RGB) spectrums to produce a color image 
 that looks similar to what we see with our eyes. In the next part of this 
-tutorial, we will learn to stack multiple bands and make a geotif raster from 
+tutorial, we will learn to stack multiple bands and make a geoTIFF raster from 
 the compilation of these bands. We can see that different combinations of bands 
 allow for different visualizations of the remotely-sensed objects and also 
 conveys useful information about the chemical makeup of the Earth's surface. 
+
+We will select bands that fall within the visible range of the electromagnetic 
+spectrum (400-700 nm) and at specific points that correspond to what we see 
+as red, green, and blue.
+
+<figure>
+    <a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.png">
+    <img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.png></a>
+    <figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
+    </figcaption>
+</figure>
+
+
 
 Let's use some functions from the module to start: 
 
@@ -200,9 +213,6 @@ print('Band 19 Center Wavelength = %.2f' %(wavelengths.value[18]),'nm')
     Band 34 Center Wavelength = 548.91 nm
     Band 19 Center Wavelength = 473.80 nm
     
-
-We selected these bands so that they fall within the visible range of the 
-electromagnetic spectrum (400-700 nm).
 
 
 We can use the `stack_subset_bands` function to subset and stack these three 
