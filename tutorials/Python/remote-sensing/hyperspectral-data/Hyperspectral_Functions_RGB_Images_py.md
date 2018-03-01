@@ -183,13 +183,11 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.png></a>
-    <figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
-    </figcaption>
+	<a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg">
+	<img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg"></a>
+	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
 </figure>
-
-
 
 Let's use some functions from the module to start: 
 
