@@ -1,0 +1,30 @@
+---
+syncID: 
+title: "Setting up Docker to use eddy4R"
+description: "This tutorial provides the basic steps for setting up and using Docker to work with the eddy4R R package in a Docker container."
+dateCreated: 2018-03-06
+authors: 
+contributors: 
+estimatedTime: 
+packagesLibraries: 
+topics: 
+languagesTool: R, Docker
+dataProduct: 
+code1: 
+tutorialSeries: 
+urlTitle: 
+---
+
+## Why Docker? 
+
+
+Intro to Docker from CyVerse's Container Camp: https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html 
+
+
+
+## Setting Up Docker
+
+## Access eddy4R
+
+
+
