@@ -45,7 +45,9 @@ account at <a href="https://hub.docker.com/" target="_blank">DockerHub</a>.
 
 Once logged in, getting Docker up and running on your favorite operating system 
 (Mac/Windows/Linux) is very easy. The "getting started" guide on Docker has 
-detailed instructions for setting up Docker.
+detailed instructions for setting up Docker. Unless you plan on being a very
+active user and devoloper in Docker, we recommend starting with the stable channel 
+(not edge channel) as you may encounter fewer problems.  
 
 [MJ: change from md to html links at some point]
 
