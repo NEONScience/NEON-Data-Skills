@@ -15,16 +15,161 @@ tutorialSeries:
 urlTitle: 
 ---
 
+This tutorials provides the basics on how to set up Docker on one's local computer
+and then connect to an eddy4R Docker container in order to use the eddy4R R package. 
+There are no specific skills needed for this tutorial, however, you will need to
+know how to access the command line tool for your operating system 
+(basic instructions given). 
+
 ## Why Docker? 
+[MJ: I will fill in later]
+
+"Getting all the tooling setup on your computer can be a daunting task, but not with Docker." 
+
+[MJ: Given credit to both of these sources]
+Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 10.5194/gmd-10-3189-2017
+
+The directions above are heavily borrowed from these authors and we thank them 
+for providing the information. CyVerse's Container Camp's 
+<a href="https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html" target="_blank"> Intro to Docker</a>. 
 
 
-Intro to Docker from CyVerse's Container Camp: https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html 
+In the tutorial below, we give the very barest of information to get NEON For more information on using Docker consider reading through the content from 
+CyVerse's Container Camp's 
+<a href="https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html" target="_blank"> Intro to Docker</a>. 
 
+## Install Docker
 
+To work with the eddy4R–Docker image, you first need to sign up for an 
+account at <a href="https://hub.docker.com/" target="_blank">DockerHub. 
 
-## Setting Up Docker
+Once logged in, getting Docker up and running on your favorite operating system 
+(Mac/Windows/Linux) is very easy. The "getting started" guide on Docker has 
+detailed instructions for setting up Docker.
+
+[MJ: change from md to html links at some point]
+
+* `Mac <https://docs.docker.com/docker-for-mac/install/>`
+* `Windows <https://docs.docker.com/docker-for-windows/install/>`
+* `Linux <https://docs.docker.com/install/linux/docker-ce/ubuntu/>`_.
+
+If you're using Docker for Windows make sure you have `shared your drive <https://docs.docker.com/docker-for-windows/#shared-drives>`_. 
+
+If you're using an older version of Windows or MacOS you may need to use `Docker Machine <https://docs.docker.com/machine/overview/>` instead. 
+
+## Test Docker installation
+
+Once you are done installing Docker, test your Docker installation by running 
+the following command to make sure you are using version 1.13 or higher. 
+
+You will need to open an open shell window (Linux; Mac=Terminal) or 
+
+``` {bash docker-version}
+
+docker --version
+	
+```
+
+When run, you will see which version of docker you currently are running.
+
+Note: If run without ``--version`` you should see a whole bunch of lines showing the different options available with ``docker``. Alternatively you can test your installation by running the following:
+
+``` {bash docker-world}
+
+docker run hello-world
+```
+
+Notice that the first line, states that the image can't be found locally. Therefore,
+Docker took the following steps:
+
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+3. The Docker daemon created a new container from that image which runs the 
+executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it 
+to your terminal.
+
+If either of these steps work, you are ready to go on to access the eddy4R R 
+package in Docker. If these steps have not worked, following the installation 
+instructions a second time. 
 
 ## Access eddy4R
 
+Download of the eddy4R–Docker image and subsequent creation of a local container 
+can be performed by two simple commands in an open shell (Linux; Mac = Termnal) 
+or the Docker Quickstart Terminal (Windows). 
+
+The first command `docker login` will prompt you for your DockerHub ID and password. 
+The second command `docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0` will 
+download the latest eddy4R–Docker image and start a Docker container that 
+utilizes port 8787 for establishing a graphical interface via web browser.  
+
+* `docker run`: docker will preform some process on an isolated container 
+* `-d`: the container will start in a detached mode, which means the container 
+run in the background and will print the container ID
+* `-p`: publish a container to a specified port (which follows)
+* `8787:8787`: specify which port you want to use. This default one is great if 
+you are runnin locally on a . If you are running many containers or on a shared network, 
+you may need to specify a different port.
+* `stefanmet/eddy4r:0.2.0`: finally, which container do you want to run. 
 
 
+
+```{bash, get-eddy4R}
+# log into to docker
+# if docker is already running on your computer, you can skip this
+docker login 
+
+# specify the eddy4r image that you want to run
+docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
+```
+
+This last command will run a specified release version (`eddy4r:0.2.0`) of the 
+Docker image. Alternatively you can use `eddy4r:latest` to get the most up-to-date 
+development image. 
+
+[MJ:what does this mean] If data are not directed from/to cloud hosting , a 
+physical file system location on the host computer (local/dir) can be mounted 
+to a file system location inside the Docker container (docker/dir). This is 
+achieved with the Docker run option -v local/dir:docker/dir. 
+
+
+## Access RStudio session
+
+Now you can access the interactive RStudio session for using eddy4r by using any
+web browser and going to `http://host-ip-address:8787` where `host-ip-address` 
+is the internal IP address of the Docker host. For example, if you host ip address 
+is 10.100.90.169 then you should type `http://10.100.90.169:8787` into your browser. 
+
+[MJ: my notes have http://10.100.90.169:8787/auth-sign-in difference?]
+
+The IP address of the Docker host is determined slighlty differently depending 
+on your Operating System. 
+
+***
+#### Windows
+Type `docker-machine ip default` into cmd.exe window. The output will be your 
+local IP address for the docker machine. 
+
+#### Mac
+
+Type `ifconfig | grep "inet " | grep -v 127.0.0.1` into your Terminal window. 
+The output will be one or more local IP addresses for the docker machine. Use 
+the numbers after the first `inet` output. 
+
+#### Linux
+Type `localhost` in a shell session and the local IP will be the output.
+
+***
+
+Once in the web browser you can log into this instance of the RStudio session 
+with both the username and password as **rstudio**. Once complete you are now in 
+a RStudio user interface with eddy4R installed and ready to use. 
+
+Additional information about the use of RStudio and eddy4R packages in Docker 
+containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages</a> [MJ:where is this, I can't find it]. 
+
+## Using eddy4R
+
+To learn to use the eddy4R package for turbulence flow, please visit [add link 
+once ready]. 
