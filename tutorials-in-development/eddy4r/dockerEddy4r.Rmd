@@ -41,7 +41,7 @@ CyVerse's Container Camp's
 ## Install Docker
 
 To work with the eddy4R–Docker image, you first need to sign up for an 
-account at <a href="https://hub.docker.com/" target="_blank">DockerHub. 
+account at <a href="https://hub.docker.com/" target="_blank">DockerHub</a>. 
 
 Once logged in, getting Docker up and running on your favorite operating system 
 (Mac/Windows/Linux) is very easy. The "getting started" guide on Docker has 
