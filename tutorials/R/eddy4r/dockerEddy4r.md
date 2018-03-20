@@ -7,8 +7,8 @@ authors: Megan A. Jones
 contributors: 
 estimatedTime: 
 packagesLibraries: 
-topics: data management
-languagesTool: R, Docker
+topics: data-management
+languagesTool: R, docker
 dataProduct: 
 code1: 
 tutorialSeries: eddy4r
@@ -93,7 +93,9 @@ You will need to open an open shell window (Linux; Mac=Terminal) or
 When run, you will see which version of docker you currently are running (note,
 your output may be different than the output here).
 
-Note: If run without ``--version`` you should see a whole bunch of lines showing the different options available with ``docker``. Alternatively you can test your installation by running the following:
+Note: If run without ``--version`` you should see a whole bunch of lines showing 
+the different options available with ``docker``. Alternatively you can test your 
+installation by running the following:
 
 
     
