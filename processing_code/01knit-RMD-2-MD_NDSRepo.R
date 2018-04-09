@@ -16,10 +16,10 @@ dirs <- c("R/NEON-API/",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
-subDir <- dirs[5]
+subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data"
