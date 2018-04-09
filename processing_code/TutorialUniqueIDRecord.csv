@@ -94,7 +94,7 @@ ff80154d46b940cbad327309b2308424,LiDAR and Hyperspectral Data Product Fusion
 a3524cf87ebd419bb33c13afab0f059e,Use NEON AOP Package
 4ceab45849cd4a459da8f61d33906706,Download a NEON Teaching Data Subset & Set A Working Directory In R
 457a5c01d051491297dc947939b4210f,Using the NEON API in R
-a1388c25d16342cca2643bc2df3fbd8e,Use the neonDataStackR package to access NEON data
+a1388c25d16342cca2643bc2df3fbd8e,Use the neonUtilities package to access NEON data
 41d7fc9adf1640839b4b117591110db8,Git 06: Sync GitHub Repos with Pull Requests
 19345dfba1f545929ef88c486f645dad,Data Institute Assignment: Version Control with GitHub
 30c2794722da4e4fb27f27f1e9364415,Document & Publish Your Workflow: Jupyter Notebooks
