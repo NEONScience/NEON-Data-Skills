@@ -47,7 +47,7 @@ Download NEON Surface Water Chemistry Data Subset</a>
 
 These data represents a subsample of NEON data from one site over several months 
 that have been downloaded from the NEON data portal in January 2018 and then the 
-<a href="http://www.neonscience.org/neonDataStackR" target="_blank"> neonDataStackR</a> R script was used to stack all 
+<a href="http://www.neonscience.org/neonUtilities" target="_blank"> neonUtilities</a> R script was used to stack all 
 the month-site data tables into combined data tables within the StackedFiles 
 directory.
 
