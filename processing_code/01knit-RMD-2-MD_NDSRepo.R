@@ -16,10 +16,14 @@ dirs <- c("R/eddy4r/",
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
+<<<<<<< HEAD
 subDir <- dirs[1]
+=======
+subDir <- dirs[2]
+>>>>>>> de1fb9ad6ee19fff79e65f7fca499ca16afa8f7a
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Documents/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data"

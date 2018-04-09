@@ -29,7 +29,7 @@ f7ac2eee32b04c649280251acdc921e0,Download the Data (2017)
 f98c089c370d441c9af10d1ad9f0f9fd,"Install Git, Bash Shell, Python"
 147dae35152d46cebc3e1eb62b77bc7d,"Install Git, Bash Shell, R & Rstudio"
 c31429a97db04e868c75bb6866b2a039,Setup GitHub Working Directory - Quick Intro to Bash
-b6c45c8828d5433db516b77608c6163b,"Install QGIS, HDF5 view"
+b6c45c8828d5433db516b77608c6163b,Install QGIS, HDF5View
 ee063c4b3bef435f8d7b7a472266bc98,Install Required R Packages 
 59a3345fc5194ad9a87cfdc5a2070321,NEON Data Institute Capstone Project
 1aca3293b5b24907b1512fc358e6f50e,Species Occurence maps
@@ -52,8 +52,8 @@ c10184c4075445bf8ade25415103d78d,"What is a CHM, DSM and DTM? About Gridded, Ras
 75f786a3b9ee4abba21878eb721704b6,Extract Values from a Raster in R
 a9b616f171be48d7a0ea2d539de11c87,Opening HDF5 files with Python Sample Code
 b9413609bb2c484cb3ce4238596f1cbe,"Vector 00: Open and Plot Shapefiles in R - Getting Started with Point, Line and Polygon Vector Data"
-d21a9fc2f94b4b9e890f5a71884e9f7e,"Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects byAttribute Value in R"
-5defe34482a742b589ea841d0c3adeeb,"Vector 02: Plot Multiple Shapefiles and Create Custom Legends in Base Plot in R"
+d21a9fc2f94b4b9e890f5a71884e9f7e,"Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R"
+5defe34482a742b589ea841d0c3adeeb,Vector 02: Plot Multiple Shapefiles and Create Custom Legends in Base Plot in R
 d5cc8e78181d49f0926cadd2424dfcd8,Vector 03: When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R
 c09431a7dabf4b07a11356cb6284b15e,Vector 04: Convert from .csv to a Shapefile in R
 a2e5db608b764b029d130970d02c0a8c,Vector 05: Crop Raster Data and Extract Summary Pixels Values From Rasters in R
@@ -125,7 +125,7 @@ c67de95147e9414a88ea876f3fc5252b,Mask a Raster Using Threshold Values in Python
 84457ead9b964c8d916eacde9f271ec7,Assessing Spectrometer Accuracy using Validation Tarps with Python
 bb90898de165446f9a0e92e1399f4697,Hyperspectral Variation Uncertainty Analysis in Python
 a6db1047adb34f41b9d17d6ed41f5fd5,Exploring Uncertainty in LiDAR Data
-63993d7274f84e51a1047e1fea9aece1,
+63993d7274f84e51a1047e1fea9aece1,Using NEON Utilities in Python
 93d1cc4e89d84ee09f1294e02ff2d440,
 5be9f80592394af3bc09cf8e469fef6e,
 67a5e95e1b7445aca7d7750b75c0ee98,

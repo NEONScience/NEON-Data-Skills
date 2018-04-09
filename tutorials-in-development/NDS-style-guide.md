@@ -47,7 +47,7 @@ will appear correctly. (spaces at beginning only added so as not to render)
     dataProduct: DP1.0001.01
 	- all data products used in the tutorial
     code1: code/R/neon-utitlites/
-	- the relative file path (code/...) of any code related to the tutorials so that it can be downloaded at the end of the tutorial
+	- the relative file path (/R/...) of any code related to the tutorials so that it can be downloaded at the end of the tutorial
     tutorialSeries: 
 	- if the tutorial is part of a series, this metadata isn't used by the Drupal site but is useful for tutorial management
     urlTitle: styles-css 
