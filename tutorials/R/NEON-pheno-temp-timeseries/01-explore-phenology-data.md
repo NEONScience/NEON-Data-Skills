@@ -161,7 +161,7 @@ NEON data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
 requested data for. Dealing with these seperate tables from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
-**neonDataStackR** that takes the unzipped downloaded file and joining the data 
+**neonUtilities** that takes the unzipped downloaded file and joining the data 
 files. 
 
 When we do this for phenology data we get three files, one for each data table, 

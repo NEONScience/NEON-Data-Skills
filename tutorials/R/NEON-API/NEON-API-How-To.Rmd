@@ -6,7 +6,7 @@ dateCreated:  2017-07-07
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones]
 estimatedTime: 1 - 1.5 hours
-packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonDataStackR]
+packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonUtilities]
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
@@ -56,9 +56,9 @@ preferably, RStudio loaded on your computer.
 * **devtools:** `install.packages("devtools")`
 * **downloader:** `install.packages("downloader")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
-* **neonDataStackR:** `devtools::install_github("NEONScience/NEON-utilities/neonDataStackR")`
+* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
 
-Note, you must have devtools installed & loaded, prior to loading geoNEON or neonDataStackR. 
+Note, you must have devtools installed & loaded, prior to loading geoNEON or neonUtilities. 
 
 ### Additional Resources
 
@@ -556,12 +556,12 @@ located.
 
 ## Stacking NEON data 
 
-At the top of this tutorial, we installed the `neonDataStackR` package. 
+At the top of this tutorial, we installed the `neonUtilities` package. 
 This is a custom R package that stacks the monthly files provided by 
 the NEON data portal into a single continuous file for each type of 
 data table in the download. It currently handles files downloaded from 
 the data portal, but not files pulled from the API. That functionality 
 will be added soon!
 
-For a guide to using `neonDataStackR` on data downloaded from the portal, 
+For a guide to using `neonUtilities` on data downloaded from the portal, 
 look <a href="/neonDataStackR" target="_blank">here</a>.
