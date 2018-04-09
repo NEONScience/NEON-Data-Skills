@@ -9,7 +9,7 @@ estimatedTime: 5 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
-code1: R/neonUtilities/neonDataStackR.R
+code1: R/neonUtilities/neonUtilities.R
 tutorialSeries:
 urlTitle: neonDataStackR
 
