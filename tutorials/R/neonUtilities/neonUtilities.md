@@ -3,8 +3,8 @@ syncID: a1388c25d16342cca2643bc2df3fbd8e
 title: "Use the neonUtilities Package to Access NEON Data"
 description: "Use the neonUtilities R package to download data, and to convert downloaded data from zipped month-by-site files into a table with all data of interest. Temperature data are used as an example. "
 dateCreated: 2017-08-01
-authors: [Megan A. Jones ]
-contributors: [Claire K. Lunch ]
+authors: [Megan A. Jones, Claire K. Lunch ]
+contributors:
 estimatedTime: 20 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
@@ -15,16 +15,19 @@ urlTitle: neonDataStackR
 
 ---
 
-This tutorial goes over how to use the neonUtilities R package.
+This tutorial goes over how to use the neonUtilities R package 
+(formerly the neonDataStackR package).
 The first three sections, through the `stackByTable()` function, are 
 all you need in order to convert data downloaded from the NEON Data Portal 
 in zipped month-by-site files into aggregated files with all data from the 
 given site(s) and months. The later sections cover additional functions 
 in the package: a conversion function to transform NEON files into 
-GeoCSV format, and wrappers for the API (Application Programming 
-Interface, more info <a href="http://http://data.neonscience.org/data-api" target="_blank">here</a>) that provide alternative 
-pathways for downloading data. 
-Throughout this tutorial, temperature data are used as an example.
+GeoCSV format and wrappers for the API (Application Programming 
+Interface; more info on the NEON API
+<a href="http://data.neonscience.org/data-api" target="_blank">here</a>)
+that provide alternative pathways for downloading data. 
+Unless noted, the data in this tutorial is NEON single aspirated air 
+temperature.
 
 ## Download the Data
 To start, you must have your data of interest downloaded from the 
@@ -35,12 +38,12 @@ files and not the NEON data stored in other formats (HDF5, etc).
 
 Your data will download in a single zipped file. 
 
-The example data below are any single-aspirated air temperature available from 
+The example data below are single-aspirated air temperature available from 
 1 January 2015 to 31 December 2016. 
 
 ## neonUtilities package
 
-This package was written to stack data downloaded in month-by-site files into a 
+This package was written to combine data downloaded in month-by-site files into a 
 full table with all the data of interest from all sites in the downloaded date
 range.  
 
@@ -48,13 +51,14 @@ More information on the package see the README in the associated GitHub repo
 <a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank"> NEONScience/NEON-utilities</a>. 
 
 First, we must install the package from the GitHub repo. You must have the 
-**devtools** package installed and loaded to do this. Then load the package. 
+**devtools** package installed and loaded to do this. Then load the `neonUtilities` 
+package. 
 
 
     # install devtools - can skip if already installed
     install.packages("devtools")
 
-    ## Installing package into '/Users/clunch/Library/R/3.4/library'
+    ## Installing package into '/Users/neon/Library/R/3.4/library'
     ## (as 'lib' is unspecified)
 
     ## Warning in install.packages :
@@ -85,7 +89,7 @@ First, we must install the package from the GitHub repo. You must have the
     library (neonUtilities)
 
 
-## stackByTable
+## stackByTable()
 The function `stackByTable()` joins the month-by-site files from a data 
 download. The output will yield data grouped into new files by table name. 
 For example the single aspirated air temperature data product contains 1 
@@ -104,7 +108,7 @@ The DPID can be found in the data product box on the
 new data browse page</a>, or in 
 the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">
 data product catalog</a>. 
-It will be in the form DP#.#####.001; the DPID of single aspirated air 
+It will be in the form DP#.#####.###; the DPID of single aspirated air 
 temperature is DP1.00002.001.
 
 
@@ -170,13 +174,13 @@ Try it now.
     (Further URLs omitted for space. Function returns a message 
       for each URL it attempts to download from)
     
-    36 zip files downloaded to /Users/clunch/filesToStack00002
+    36 zip files downloaded to /Users/neon/filesToStack00002
 
 Downloaded files can now be passed to `stackByTable()` to be 
 stacked. Another input is required in this case, folder=T.
 
 
-    stackByTable("DP1.00002.001", "/Users/clunch/filesToStack00002", folder=T)
+    stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", folder=T)
 
 ## getPackage
 
@@ -234,9 +238,11 @@ working directory.
 
 `transformFileToGeoCSV()` takes a NEON csv file, plus its 
 corresponding variables file, and writes out a new version of the 
-file with <a href="http://geows.ds.iris.edu/documents/GeoCSV.pdf" target="_blank">
-GeoCSV</a> headers. This allows for compatibility with data 
-provided by <a href="http://www.unavco.org/" target="_blank">UNAVCO</a> 
+file with 
+<a href="http://geows.ds.iris.edu/documents/GeoCSV.pdf" target="_blank">GeoCSV</a>
+headers. This allows for compatibility with data 
+provided by 
+<a href="http://www.unavco.org/" target="_blank">UNAVCO</a> 
 and other facilities.
 
 Inputs to `transformFileToGeoCSV()` are the file path to the data 
@@ -244,14 +250,13 @@ file, the file path to the variables file, and the file path where
 you want to write out the new version. It works on single site-month 
 files, not on stacked files.
 
-In this example we'll convert the November 2017 temperature data  
+In this example, we'll convert the November 2017 temperature data  
 from HARV that we downloaded with `getPackage()` earlier. First, 
 you'll need to unzip the file so you can get to the data files. 
 Then we'll select the file for the tower top, which we can 
 identify by the 050 in the VER field (see the 
-<a href="http://data.neonscience.org/file-naming-conventions" 
-target="_blank">file naming conventions</a> page for more 
-information).
+<a href="http://data.neonscience.org/file-naming-conventions" target="_blank"> file naming conventions</a> 
+page for more information).
 
 
     transformFileToGeoCSV("~/NEON.D01.HARV.DP1.00002.001.000.050.030.SAAT_30min.2017-11.basic.20171207T181046Z.csv", 
