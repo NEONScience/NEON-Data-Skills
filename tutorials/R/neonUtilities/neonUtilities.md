@@ -144,7 +144,7 @@ files are only available for observational data products).
 These .csv files are now ready for use with the program of your choice. 
 
 
-## zipsByProduct
+## zipsByProduct()
 The function `zipsByProduct()` is a wrapper for the NEON API, it 
 downloads zip files for the data product specified and stores them in 
 a format that can then be passed on to `stackByTable()`.
@@ -182,7 +182,7 @@ stacked. Another input is required in this case, folder=T.
 
     stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", folder=T)
 
-## getPackage
+## getPackage()
 
 If you only need a single site-month (e.g., to test code 
 you're writing), the `getPackage()` function can be used to 
@@ -195,7 +195,7 @@ November 2017 temperature data from Harvard Forest (HARV).
 
 The file should now be saved to your working directory.
 
-## byFileAOP
+## byFileAOP()
 
 Remote sensing data files can be very large, and NEON remote sensing 
 (AOP) data are stored in a directory structure that makes them easier 
@@ -234,7 +234,7 @@ relatively small year-site-product combination.
 The files should now be downloaded to a new folder in your 
 working directory.
 
-## transformFileToGeoCSV
+## transformFileToGeoCSV()
 
 `transformFileToGeoCSV()` takes a NEON csv file, plus its 
 corresponding variables file, and writes out a new version of the 
