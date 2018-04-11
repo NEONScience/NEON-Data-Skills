@@ -155,6 +155,8 @@ data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you 
 will want to set it to F.
 
+Try it now. 
+
 
     zipsByProduct("DP1.00002.001", site="HARV", package="basic", check.size=T)
 
