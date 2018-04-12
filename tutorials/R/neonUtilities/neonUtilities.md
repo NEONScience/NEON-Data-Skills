@@ -150,6 +150,7 @@ downloads zip files for the data product specified and stores them in
 a format that can then be passed on to `stackByTable()`.
 
 Inputs to `zipsByProduct()` are:
+
 * dpID: the data product ID, e.g. DP1.00002.001
 * site: either the 4-letter code of a single site, e.g. HARV, or "all", 
 indicating all sites with data available
