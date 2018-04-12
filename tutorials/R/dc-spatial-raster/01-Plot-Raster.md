@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: 
-code1: /R/dc-spatial-raster/01-Plot-Raster.R	
+code1: /R/dc-spatial-raster/01-Plot-Raster.R
 tutorialSeries: raster-data-series
 urlTitle: dc-plot-raster-data-r
 ---

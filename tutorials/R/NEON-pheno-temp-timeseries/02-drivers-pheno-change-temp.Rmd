@@ -156,7 +156,7 @@ All the above data are delivered in a site and year-month format. When you downl
 you will get a single zipped file containing a directory for each month and site that you've 
 requested data for. Dealing with these separate files from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
-**neonDataStackR** that takes the unzipped downloaded file and joining the data 
+**neonUtilities** that takes the unzipped downloaded file and joining the data 
 files. 
 
 For more on this function check out the 

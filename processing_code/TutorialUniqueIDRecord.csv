@@ -29,7 +29,7 @@ f7ac2eee32b04c649280251acdc921e0,Download the Data (2017)
 f98c089c370d441c9af10d1ad9f0f9fd,"Install Git, Bash Shell, Python"
 147dae35152d46cebc3e1eb62b77bc7d,"Install Git, Bash Shell, R & Rstudio"
 c31429a97db04e868c75bb6866b2a039,Setup GitHub Working Directory - Quick Intro to Bash
-b6c45c8828d5433db516b77608c6163b,"Install QGIS, HDF5 view"
+b6c45c8828d5433db516b77608c6163b,Install QGIS, HDF5View
 ee063c4b3bef435f8d7b7a472266bc98,Install Required R Packages 
 59a3345fc5194ad9a87cfdc5a2070321,NEON Data Institute Capstone Project
 1aca3293b5b24907b1512fc358e6f50e,Species Occurence maps
@@ -52,8 +52,8 @@ c10184c4075445bf8ade25415103d78d,"What is a CHM, DSM and DTM? About Gridded, Ras
 75f786a3b9ee4abba21878eb721704b6,Extract Values from a Raster in R
 a9b616f171be48d7a0ea2d539de11c87,Opening HDF5 files with Python Sample Code
 b9413609bb2c484cb3ce4238596f1cbe,"Vector 00: Open and Plot Shapefiles in R - Getting Started with Point, Line and Polygon Vector Data"
-d21a9fc2f94b4b9e890f5a71884e9f7e,"Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects byAttribute Value in R"
-5defe34482a742b589ea841d0c3adeeb,"Vector 02: Plot Multiple Shapefiles and Create Custom Legends in Base Plot in R"
+d21a9fc2f94b4b9e890f5a71884e9f7e,"Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R"
+5defe34482a742b589ea841d0c3adeeb,Vector 02: Plot Multiple Shapefiles and Create Custom Legends in Base Plot in R
 d5cc8e78181d49f0926cadd2424dfcd8,Vector 03: When Vector Data Don't Line Up - Handling Spatial Projection & CRS in R
 c09431a7dabf4b07a11356cb6284b15e,Vector 04: Convert from .csv to a Shapefile in R
 a2e5db608b764b029d130970d02c0a8c,Vector 05: Crop Raster Data and Extract Summary Pixels Values From Rasters in R
@@ -94,7 +94,7 @@ ff80154d46b940cbad327309b2308424,LiDAR and Hyperspectral Data Product Fusion
 a3524cf87ebd419bb33c13afab0f059e,Use NEON AOP Package
 4ceab45849cd4a459da8f61d33906706,Download a NEON Teaching Data Subset & Set A Working Directory In R
 457a5c01d051491297dc947939b4210f,Using the NEON API in R
-a1388c25d16342cca2643bc2df3fbd8e,Use the neonDataStackR package to access NEON data
+a1388c25d16342cca2643bc2df3fbd8e,Use the neonUtilities package to access NEON data
 41d7fc9adf1640839b4b117591110db8,Git 06: Sync GitHub Repos with Pull Requests
 19345dfba1f545929ef88c486f645dad,Data Institute Assignment: Version Control with GitHub
 30c2794722da4e4fb27f27f1e9364415,Document & Publish Your Workflow: Jupyter Notebooks

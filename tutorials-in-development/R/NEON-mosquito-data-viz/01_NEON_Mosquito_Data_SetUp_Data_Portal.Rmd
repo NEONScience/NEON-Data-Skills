@@ -672,6 +672,6 @@ frame that captures the number of species at each site on a given date.
 ## Stack NEON Data
 
 library(devtools)
-install_github("NEONScience/NEON-utilities/neonDataStackR", dependencies=TRUE)
-library (neonDataStackR)
+install_github("NEONScience/NEON-utilities/neonUtilities", dependencies=TRUE)
+library (neonUtilities)
 stackByTable("NEON_count-mosquitoes.zip")

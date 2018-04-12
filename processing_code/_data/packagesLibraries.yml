@@ -55,6 +55,6 @@
 - slug: plotly
   name: plotly  
 
-- slug: neonDataStackR
-  name: neonDataStackR  
+- slug: neonUtilities
+  name: neonUtilities
   

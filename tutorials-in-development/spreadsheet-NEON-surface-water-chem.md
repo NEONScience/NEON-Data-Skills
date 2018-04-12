@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: spreadsheets-swc
 ---
 
-NEON data are complex, consisting of over 180 different data products with many 
+NEON data are complex, consisting of over 180 different data products, with many 
 data products made up of several seperate data tables. We recommend that you work
 with NEON data in a scripted environment (like R, Python, etc) using a reproducible 
 science framework. However, if you need to work in a spreadsheet with NEON
@@ -23,8 +23,10 @@ data this tutorial will show you how to:
 
 * convert from ISO 8601 date format to a Excel recognized date format,
 * work with NA values,
-* combine tables using the VLOOKUP function, and
-* create line and scatter plots. 
+* combine tables using the VLOOKUP function, 
+* create line and scatter plots
+* basic pivot table use, and
+* plots from pivot tables. 
 
 This tutorial includes directions but not screenshots of where different icons are
 as the arrangement of the buttons in Excel (or Google Sheets or another 
@@ -44,8 +46,8 @@ Sheets, etc).
 Download NEON Surface Water Chemistry Data Subset</a>
 
 These data represents a subsample of NEON data from one site over several months 
-that have been downloaded from the NEON data portal and then the 
-<a href="http://www.neonscience.org/neonDataStackR" target="_blank"> neonDataStackR</a> R script was used to stack all 
+that have been downloaded from the NEON data portal in January 2018 and then the 
+<a href="http://www.neonscience.org/neonUtilities" target="_blank"> neonUtilities</a> R script was used to stack all 
 the month-site data tables into combined data tables within the StackedFiles 
 directory.
 
