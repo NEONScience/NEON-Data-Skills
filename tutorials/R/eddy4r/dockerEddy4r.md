@@ -21,9 +21,6 @@ There are no specific skills needed for this tutorial, however, you will need to
 know how to access the command line tool for your operating system 
 (basic instructions given). 
 
-EDDY for 4 to add back in 
-
-
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives
