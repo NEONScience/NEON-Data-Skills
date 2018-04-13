@@ -17,55 +17,59 @@ urlTitle: neonDataStackR
 
 This tutorial goes over how to use the neonUtilities R package 
 (formerly the neonDataStackR package).
-The first three sections, through the `stackByTable()` function, are 
-all you need in order to convert data downloaded from the NEON Data Portal 
-in zipped month-by-site files into aggregated files with all data from the 
-given site(s) and months. The later sections cover additional functions 
-in the package: a conversion function to transform NEON files into 
-GeoCSV format and wrappers for the API (Application Programming 
-Interface; more info on the NEON API
-<a href="http://data.neonscience.org/data-api" target="_blank">here</a>)
-that provide alternative pathways for downloading data. 
-Unless noted, the data in this tutorial is NEON single aspirated air 
-temperature.
 
-## Download the Data
-To start, you must have your data of interest downloaded from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.  
+The package contains 5 functions:
 
-The stacking function will only work on zipped Comma Separated Value (.csv) 
-files and not the NEON data stored in other formats (HDF5, etc). 
+* `stackByTable()` Takes zip files downloaded from the 
+<a href="data.neonscience.org" target="_blank">Data Portal</a> or 
+<a href="data.neonscience.org/data-api" target="_blank">NEON API</a> 
+(Application Programming Interface), unzips them, and joins 
+the monthly files by data table to create a single file per table.
+* `zipsByProduct()` A wrapper for the NEON API; downloads data 
+based on data product and site criteria. Stores downloaded data 
+in a format that can then be joined by `stackByTable()`.
+* `getPackage()` A wrapper for the NEON API; downloads one 
+site-by-month zip file at a time.
+* `byFileAOP()` A wrapper for the NEON API; downloads remote 
+sensing data based on data product, site, and year criteria. 
+Preserves the file structure of the original data.
+* `transformFileToGeoCSV()` Converts any NEON data file in 
+csv format into a new file with GeoCSV headers.
 
-Your data will download in a single zipped file. 
+### If you are only interested in joining data files downloaded from the NEON Data Portal:
+You will only need to use `stackByTable()`. Follow the instructions 
+in the first two sections, to install `neonUtilities` and use 
+`stackByTable()`, and you're done.
 
-The example data below are single-aspirated air temperature available from 
-1 January 2015 to 31 December 2016. 
 
 ## neonUtilities package
 
-This package was written to combine data downloaded in month-by-site files into a 
-full table with all the data of interest from all sites in the downloaded date
-range.  
+This package is intended to provide a toolbox of basic functionality 
+for working with NEON data. It currently contains the functions 
+listed above, but it is under development and more will be added in 
+the future.
 
-More information on the package see the README in the associated GitHub repo 
-<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank"> NEONScience/NEON-utilities</a>. 
+For more information on the package see the README in the associated GitHub repo 
+<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank"> NEONScience/NEON-utilities</a>. To report bugs or 
+request new features, post an issue in the GitHub repo 
+<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">
+issues page</a>.
 
-First, we must install the package from the GitHub repo. You must have the 
-**devtools** package installed and loaded to do this. Then load the `neonUtilities` 
-package. 
+First, we must install the `neonUtilities` package from the GitHub repo. 
+You must have the `devtools` package installed and loaded to do this.
 
 
     # install devtools - can skip if already installed
     install.packages("devtools")
 
-    ## Installing package into '/Users/neon/Library/R/3.4/library'
+    ## Installing package into '/Users/clunch/Library/R/3.4/library'
     ## (as 'lib' is unspecified)
 
     ## Warning in install.packages :
     ##   cannot open URL 'https://cran.rstudio.com/bin/macosx/el-capitan/contrib/3.4/PACKAGES.rds': HTTP status was '404 Not Found'
     ## 
     ## The downloaded binary packages are in
-    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpcwnZ9k/downloaded_packages
+    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpeF9J1Q/downloaded_packages
 
     # load devtools
     library(devtools)
@@ -80,7 +84,7 @@ package.
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T/RtmpcwnZ9k/devtools175d5817efee/NEONScience-NEON-utilities-984d3c6/neonUtilities'  \
+    ##   '/private/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T/RtmpeF9J1Q/devtoolsac52ab68656/NEONScience-NEON-utilities-a42d488/neonUtilities'  \
     ##   --library='/Users/clunch/Library/R/3.4/library' --install-tests
 
     ## 
@@ -92,14 +96,29 @@ package.
 ## stackByTable()
 The function `stackByTable()` joins the month-by-site files from a data 
 download. The output will yield data grouped into new files by table name. 
-For example the single aspirated air temperature data product contains 1 
+For example, the single aspirated air temperature data product contains 1 
 minute and 30 minute interval data. The output from this function is one 
 .csv with 1 minute data and one .csv with 30 minute data. 
 
-Depending on your file size this function may run for a while. The 2015 and 2016
-single aspirated air temperature from two sites that I used for a 2017 workshop
-took about 25 minutes to complete. A progress bar will display while the 
+Depending on your file size this function may run for a while. For 
+example, in testing for this tutorial, 124 MB of temperature data took 
+about 4 minutes to stack. A progress bar will display while the 
 stacking is in progress. 
+
+### Download the Data
+To stack data from the Portal, first download the data of interest from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
+To stack data downloaded from the API, see the `zipsByProduct()` section 
+below.
+
+Your data will download from the Portal in a single zipped file. 
+
+The stacking function will only work on zipped Comma Separated Value (.csv) 
+files and not the NEON data stored in other formats (HDF5, etc). 
+
+### Run `stackByTable()`
+
+The example data below are single-aspirated air temperature. 
 
 To run the `stackByTable()` function, input the data product ID (DPID) of the 
 data you downloaded, and the file path to the downloaded and zipped file. 
@@ -113,7 +132,7 @@ temperature is DP1.00002.001.
 
 
     # stack files - Mac OSX file path shown
-    stackByTable("DP1.00002.001","~neon/Documents/data/NEON_temp-air-single.zip")
+    stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip")
 
 
     Unpacking zip files
@@ -138,10 +157,25 @@ directory of the same name. When you open this you will see a new directory
 called **stackedFiles**. This directory contains one or more .csv files 
 (depends on the data product you are working with) with all the data from 
 the months & sites you downloaded. There will also be a single copy of the 
-associated varibles.csv and validation.csv files, if applicable (validation 
+associated variables.csv and validation.csv files, if applicable (validation 
 files are only available for observational data products).
 
 These .csv files are now ready for use with the program of your choice. 
+
+### Other options
+
+Two other input options in `stackByTable()` are `savePath` and 
+`saveUnzippedFiles`. `savePath` allows you to specify the file path 
+where you want the stacked files to go, overriding the default. 
+`saveUnzippedFiles` allows you to keep the unzipped, unstacked 
+files from an intermediate stage of the process; by default they 
+are discarded.
+
+Example usage:
+
+
+    stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip", 
+                 savepath="~data/allTemperature", saveUnzippedFiles=T)
 
 
 ## zipsByProduct()
@@ -160,7 +194,8 @@ data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you 
 will want to set it to F.
 
-Try it now. 
+Here, we'll download single-aspirated air temperature data from 
+Harvard Forest (HARV).
 
 
     zipsByProduct("DP1.00002.001", site="HARV", package="basic", check.size=T)
@@ -188,7 +223,7 @@ stacked. Another input is required in this case, folder=T.
 If you only need a single site-month (e.g., to test code 
 you're writing), the `getPackage()` function can be used to 
 download a single zip file. Here we'll download the 
-November 2017 temperature data from Harvard Forest (HARV).
+November 2017 temperature data from HARV.
 
 
     getPackage("DP1.00002.001", site_code="HARV", 
@@ -227,8 +262,8 @@ relatively small year-site-product combination.
       for each URL it attempts to download from)
     
     Successfully downloaded  36  files.
-    NEON_D01_HOPB_DP3_716000_4704000_CHM.tif downloaded to /Users/clunch/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP3_716000_4705000_CHM.tif downloaded to /Users/clunch/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
+    NEON_D01_HOPB_DP3_716000_4704000_CHM.tif downloaded to /Users/neon/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
+    NEON_D01_HOPB_DP3_716000_4705000_CHM.tif downloaded to /Users/neon/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
     
     (Further messages omitted for space.)
 
@@ -256,7 +291,7 @@ from HARV that we downloaded with `getPackage()` earlier. First,
 you'll need to unzip the file so you can get to the data files. 
 Then we'll select the file for the tower top, which we can 
 identify by the 050 in the VER field (see the 
-<a href="http://data.neonscience.org/file-naming-conventions" target="_blank"> file naming conventions</a> 
+<a href="http://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
 page for more information).
 
 
