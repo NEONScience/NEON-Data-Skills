@@ -16,14 +16,25 @@ tutorialSeries:
 urlTitle: utilities-python
 ---
 
+The instructions below will guide you through using the neonUtilities R package 
+in Python, via the rpy2 package. rpy2 creates an R environment you can interact 
+with from Python. The focus in this tutorial is on the Python implementation, 
+rather than a comprehensive overview of the package itself. For more 
+information about the package, and instructions for running it in R directly, 
+see the readme for the package on the <a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, 
+and the tutorial on the <a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
+
+
 ## Install and set up
 
-The instructions below will guide you through using the neonUtilities R package in Python, via the rpy2 package. rpy2 creates an R environment you can interact with from Python. The focus in this tutorial is on the Python implementation, rather than a comprehensive overview of the package itself. For more information about the package, and instructions for running it in R directly, see the readme for the package on the <a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, and the tutorial on the <a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
-
 Before starting, you will need:
+
 1. Python 3 installed. It is probably possible to use this workflow in Python 2, but these instructions were developed and tested using 3.6.4.
 2. R installed. You don't need to have ever used it directly. We tested using R 3.4.3, but most other recent versions should also work.
 3. rpy2 installed. Run the line below from the command line. It won't run within Jupyter, the error message is shown for clarity. It also likely will not work on Windows, see next section if you are running Windows.
+4. You may need to install `pip` first, if you don't have it installed already.
+
+From the command line, run:
 
 
 ```python
@@ -45,14 +56,15 @@ pip install rpy2
 
 ### Windows users
 
-The rpy2 package was built for Mac, and doesn't always work smoothly on Windows. If you have trouble with the install, try these steps.
+The rpy2 package was built for Mac, and doesn't always work smoothly on Windows. 
+If you have trouble with the install, try these steps.
 
 1. Add C:\Program Files\R\R-3.3.1\bin\x64 to the Windows Environment Variable “Path”
 2. Install rpy2 manually from https://www.lfd.uci.edu/~gohlke/pythonlibs/#rpy2
-    1. Pick the correct version. At the download page the portion of the files with cp## relate to the Python version. e.g., rpy2 2.9.2 cp36 cp36m win_amd64.whl is the correct download when running Python 36 and 64 bit Windows (amd64).
+    1. Pick the correct version. At the download page the portion of the files with cp## relate to the Python version. e.g., rpy2 2.9.2 cp36 cp36m win_amd64.whl is the correct download when 2.9.2 is the latest version of rpy2 and you are running Python 36 and 64 bit Windows (amd64).
     2. Save the whl file, navigate to it in windows then run pip directly on the file as follows “pip install rpy2 2.9.2 cp36 cp36m win_amd64.whl”
 3. Add  an R_HOME Windows environment variable with the path C:\Program Files\R\R-3.4.3 (or whichever version you are running)
-4. Add an R_USER Windows environment variable with the path C:\Users\tgoulden\AppData\Local\Continuum\Anaconda3\Lib\site-packages\rpy2 (modify for your own user account)
+4. Add an R_USER Windows environment variable with the path C:\Users\yourUserName\AppData\Local\Continuum\Anaconda3\Lib\site-packages\rpy2
 
 ## Load packages
 
@@ -73,7 +85,8 @@ base = importr('base')
 utils = importr('utils')
 ```
 
-Suppress R warnings. This step can be skipped, but will result in messages getting passed through from R that Python will interpret as warnings.
+Suppress R warnings. This step can be skipped, but will result in messages 
+getting passed through from R that Python will interpret as warnings.
 
 
 ```python
@@ -82,9 +95,16 @@ from rpy2.rinterface import RRuntimeWarning
 warnings.filterwarnings("ignore", category=RRuntimeWarning)
 ```
 
-Install the `devtools` R package. The system will ask you to choose a CRAN mirror, select one close to your location. You only need to do this step once, although if you use this code regularly, re-installing periodically to get the newest version is a good idea.
+Install the `devtools` R package. The system will ask you to choose a 
+CRAN mirror, select one close to your location. You only need to do this 
+step once, although if you use this code regularly, re-installing 
+periodically to get the newest version is a good idea.
 
-(The semicolon at the end of the line (here, and in some other function calls below) can be omitted. It suppresses a note indicating the output of the function is null. This note appears because these functions download or modify files on your local drive, but none of the data are read into the Python or R environments.)
+The semicolon at the end of the line (here, and in some other function 
+calls below) can be omitted. It suppresses a note indicating the output 
+of the function is null. This note appears because these functions download 
+or modify files on your local drive, but none of the data are read into the 
+Python or R environments.
 
 
 ```python
@@ -151,14 +171,18 @@ utils.install_packages('devtools');
     
 
 
-Now import the `devtools` package. This does need to be run every time you use the code; for those of you who are familiar with R, `importr` is roughly equivalent to the `library()` function in R.
+Now import the `devtools` package. This does need to be run every time 
+you use the code; for those of you who are familiar with R, `importr` 
+is roughly equivalent to the `library()` function in R.
 
 
 ```python
 devtools = importr('devtools')
 ```
 
-Using the `devtools` package, install the `neonUtilities` package. As with `devtools`, you can theoretically skip this step in the future, but since we update `neonUtilities` frequently, we recommend re-installing regularly.
+Using the `devtools` package, install the `neonUtilities` package. As with 
+`devtools`, you can theoretically skip this step in the future, but since 
+we update `neonUtilities` frequently, we recommend re-installing regularly.
 Then import the package.
 
 
@@ -169,9 +193,15 @@ neonUtils = importr('neonUtilities')
 
 ## Stack data files
 
-The function `stackByTable()` in `neonUtilities` merges the monthly, site-level files the <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal</a> provides. Start by downloading the dataset you're interested in from the Portal. It will download as a single zip file. Note the file path it's saved to and proceed.
+The function `stackByTable()` in `neonUtilities` merges the monthly, 
+site-level files the <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal</a> 
+provides. Start by downloading the dataset you're interested in from the 
+Portal. It will download as a single zip file. Note the file path it's 
+saved to and proceed.
 
-The data stacker package comes with a data file, table_types. The data file is needed for the package to work, and rpy2 doesn't load data by default. So we need to load it to the session and then pass it back to the R environment.
+The data stacker package comes with a data file, table_types. The data file 
+is needed for the package to work, and rpy2 doesn't load data by default. So 
+we need to load it to the session and then pass it back to the R environment.
 
 First, load the data file:
 
@@ -189,12 +219,16 @@ robjects.globalenv['table_types'] = table_types
 ```
 
 Now run the `stackByTable()` function to stack the data. It requires two inputs: 
+
 1. The data product identifier (DPID) of the data you're stacking. DPIDs can be found in the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a> and are in the form DP#.######.001
 2. A file path, the path to the zip file you downloaded from the NEON Data Portal.
 
+For additional, optional inputs, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
+for neonUtilities.
+
 
 ```python
-neonUtils.stackByTable('DP1.10100.001','/Downloads/NEON_isotope-soil-distrib-periodic.zip');
+neonUtils.stackByTable('DP1.10100.001','~/Downloads/NEON_isotope-soil-distrib-periodic.zip');
 ```
 
     Unpacked  NEON.D02.SCBI.DP1.10100.001.2014-08.expanded.20180308T180515Z.zip
@@ -226,27 +260,37 @@ neonUtils.stackByTable('DP1.10100.001','/Downloads/NEON_isotope-soil-distrib-per
     
 
 
-Check the folder containing the original zip file from the Data Portal; you should now have a subfolder containing the unzipped and stacked files.
+Check the folder containing the original zip file from the Data Portal; 
+you should now have a subfolder containing the unzipped and stacked files.
 
 ## Download files to be stacked
 
-The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download data files for a given product. The files downloaded by `zipsByProduct()` can then be fed into `stackByTable()`.
+The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download 
+data files for a given product. The files downloaded by `zipsByProduct()` 
+can then be fed into `stackByTable()`.
 
-The function will create a new folder in the R working directory and write the files there. Set the working directory if it isn't set to where you want it.
+`zipsByProduct()` will create a new folder in the R working directory and 
+write the files there. First set the working directory if it isn't set to 
+where you want it.
 
 
 ```python
-base.setwd('/Downloads');
+base.setwd('~/Downloads');
 ```
 
-Run the downloader with these inputs: a DPID, a site (or "all" for all sites), a package (either basic or expanded), and an indicator to check the size of your download before proceeding, or not.
+Run the downloader with these inputs: a DPID, a site (or "all" for all sites), 
+a package (either basic or expanded), and an indicator to check the size of 
+your download before proceeding, or not.
 
 There are two differences relative to running this function in R directly: 
 
-1. check.size becomes check_size, because dots have programmatic meaning in Python
-2. TRUE (or T) becomes "TRUE" because the values TRUE and FALSE don't have special meaning in Python the way they do in R, so it interprets them as variables if they're unquoted.
+1. `check.size` becomes `check_size`, because dots have programmatic meaning in Python
+2. `TRUE` (or `T`) becomes `"TRUE"` because the values TRUE and FALSE don't have special meaning in Python the way they do in R, so it interprets them as variables if they're unquoted.
 
-check_size="TRUE" will estimate the size of the download and ask you to confirm before proceeding. This will cause problems in certain environments, or in batch processing. Under those circumstances, set check_size="FALSE", but consider the size of your query before doing this.
+`check_size="TRUE"` will estimate the size of the download and ask you to 
+confirm before proceeding. This will cause problems in certain environments, 
+or in batch processing. Under those circumstances, set `check_size="FALSE"`, 
+but consider the size of your query before doing this.
 
 
 ```python
@@ -258,13 +302,16 @@ neonUtils.zipsByProduct(dpID='DP1.10023.001', site='HARV', package='basic', chec
     
 
 
-The message output by `zipsByProduct()` indicates the file path where the files have been downloaded.
+The message output by `zipsByProduct()` indicates the file path where the 
+files have been downloaded.
 
-Now take that file path and pass it to `stackByTable()`. The file structure is slightly different from the zip file returned by the Portal, so we need an additional input, folder="TRUE".
+Now take that file path and pass it to `stackByTable()`. The file structure 
+is slightly different from the zip file returned by the Portal, so we need 
+an additional input, folder="TRUE".
 
 
 ```python
-neonUtils.stackByTable("/Downloads/filesToStack10023", folder="TRUE");
+neonUtils.stackByTable(dpID='DP1.10023.001', '~/Downloads/filesToStack10023', folder='TRUE');
 ```
 
     Unpacked  NEON.D01.HARV.DP1.10023.001.2013-07.basic.20180226T180545Z.zip
@@ -290,9 +337,17 @@ neonUtils.stackByTable("/Downloads/filesToStack10023", folder="TRUE");
 
 ## Download remote sensing files
 
-The function `byFileAOP()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download data files for remote sensing (AOP) data products. These files cannot be stacked by `stackByTable()` because they are not tabular data. The function simply creates a folder in your working directory and writes the files there. It preserves the folder structure for the subproducts.
+The function `byFileAOP()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> 
+to programmatically download data files for remote sensing (AOP) data 
+products. These files cannot be stacked by `stackByTable()` because they 
+are not tabular data. The function simply creates a folder in your working 
+directory and writes the files there. It preserves the folder structure 
+for the subproducts.
 
-The inputs to `byFileAOP()` are a data product ID, a site, a year, and an indicator to check the size of the download before proceeding, or not. As above, if you are working in an environment that won't handle the interactive question, set check_size="FALSE".
+The inputs to `byFileAOP()` are a data product ID, a site, a year, and an 
+indicator to check the size of the download before proceeding, or not. As 
+above, if you are working in an environment that won't handle the 
+interactive question, set check_size="FALSE".
 
 
 ```python
