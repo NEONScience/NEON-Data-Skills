@@ -83,6 +83,23 @@ should only be used for large section breaks and use descriptive headers.
 #### Heading four
 
 ***
+## Code in Text Conventions
+
+To write code in a text section so that appears in code font, place a grave (`) 
+before and after the desired code section. On a standard US keyboard, the grave 
+is on the same key as the tidle (~). 
+
+Functions are in a code font (`code font`) and followed by parentheses, like 
+sum(), or mean().
+
+Other R objects (like data or function arguments) are in a code font, without 
+parentheses, like `flights` or `x`.
+
+If you want to make it clear what package an object comes from, you should use the 
+package name followed by two colons, like `dplyr::mutate()`, or
+`nycflights13::flights`. 
+
+***
 
 ## GreyBox
 
@@ -350,8 +367,6 @@ Code (spaces at beginning only added so as not to render):
 ***
 
 ## Highlight in Specified Color
-
-
 
 `<span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>`
 
