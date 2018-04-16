@@ -22,12 +22,13 @@ The package contains 5 functions:
 
 * `stackByTable()` Takes zip files downloaded from the 
 <a href="data.neonscience.org" target="_blank">Data Portal</a> or 
-<a href="data.neonscience.org/data-api" target="_blank">NEON API</a> 
-(Application Programming Interface), unzips them, and joins 
+downloaded by `zipsByProduct()`, unzips them, and joins 
 the monthly files by data table to create a single file per table.
-* `zipsByProduct()` A wrapper for the NEON API; downloads data 
-based on data product and site criteria. Stores downloaded data 
-in a format that can then be joined by `stackByTable()`.
+* `zipsByProduct()` A wrapper for the 
+<a href="data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+`stackByTable()`.
 * `getPackage()` A wrapper for the NEON API; downloads one 
 site-by-month zip file at a time.
 * `byFileAOP()` A wrapper for the NEON API; downloads remote 
@@ -36,10 +37,12 @@ Preserves the file structure of the original data.
 * `transformFileToGeoCSV()` Converts any NEON data file in 
 csv format into a new file with GeoCSV headers.
 
-### If you are only interested in joining data files downloaded from the NEON Data Portal:
-You will only need to use `stackByTable()`. Follow the instructions 
-in the first two sections, to install `neonUtilities` and use 
-`stackByTable()`, and you're done.
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> If you are only interested in joining data 
+files downloaded from the NEON Data Portal, you will only need to use 
+`stackByTable()`. Follow the instructions in the first two sections, 
+to install `neonUtilities` and use `stackByTable()`, and you're done. 
+</div>
 
 
 ## neonUtilities package
