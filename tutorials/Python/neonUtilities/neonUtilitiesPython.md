@@ -6,7 +6,7 @@ description: "Use the neonUtilities R package in Python, via the rpy2 library."
 dateCreated: 2018-12-08
 authors: Claire K. Lunch
 contributors: 
-estimatedTime: 
+estimatedTime: 20 minutes
 packagesLibraries: rpy2
 topics: data-management,rep-sci
 languagesTool: python
@@ -29,10 +29,16 @@ and the tutorial on the <a href="http://www.neonscience.org/neonDataStackR" targ
 
 Before starting, you will need:
 
-1. Python 3 installed. It is probably possible to use this workflow in Python 2, but these instructions were developed and tested using 3.6.4.
-2. R installed. You don't need to have ever used it directly. We tested using R 3.4.3, but most other recent versions should also work.
-3. rpy2 installed. Run the line below from the command line. It won't run within Jupyter, the error message is shown for clarity. It also likely will not work on Windows, see next section if you are running Windows.
-4. You may need to install `pip` first, if you don't have it installed already.
+1. Python 3 installed. It is probably possible to use this workflow in Python 2, 
+but these instructions were developed and tested using 3.6.4.
+2. R installed. You don't need to have ever used it directly. We tested using 
+R 3.4.3, but most other recent versions should also work.
+3. `rpy2` installed. Run the line below from the command line, it won't run within 
+Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
+`rpy2` often has install problems on Windows, see "Windows Users" section below if 
+you are running Windows.
+4. You may need to install `pip` before installing `rpy2`, if you don't have it 
+installed already.
 
 From the command line, run:
 
@@ -41,19 +47,6 @@ From the command line, run:
 pip install rpy2
 ```
 
-    
-    The following command must be run outside of the IPython shell:
-    
-        $ pip install rpy2
-    
-    The Python package manager (pip) can only be used from outside of IPython.
-    Please reissue the `pip` command in a separate terminal or command prompt.
-    
-    See the Python documentation for more informations on how to install packages:
-    
-        https://docs.python.org/3/installing/
-
-
 ### Windows users
 
 The rpy2 package was built for Mac, and doesn't always work smoothly on Windows. 
@@ -61,9 +54,14 @@ If you have trouble with the install, try these steps.
 
 1. Add C:\Program Files\R\R-3.3.1\bin\x64 to the Windows Environment Variable “Path”
 2. Install rpy2 manually from https://www.lfd.uci.edu/~gohlke/pythonlibs/#rpy2
-    1. Pick the correct version. At the download page the portion of the files with cp## relate to the Python version. e.g., rpy2 2.9.2 cp36 cp36m win_amd64.whl is the correct download when 2.9.2 is the latest version of rpy2 and you are running Python 36 and 64 bit Windows (amd64).
-    2. Save the whl file, navigate to it in windows then run pip directly on the file as follows “pip install rpy2 2.9.2 cp36 cp36m win_amd64.whl”
-3. Add  an R_HOME Windows environment variable with the path C:\Program Files\R\R-3.4.3 (or whichever version you are running)
+    1. Pick the correct version. At the download page the portion of the files 
+    with cp## relate to the Python version. e.g., rpy2 2.9.2 cp36 cp36m win_amd64.whl 
+    is the correct download when 2.9.2 is the latest version of rpy2 and you are 
+    running Python 36 and 64 bit Windows (amd64).
+    2. Save the whl file, navigate to it in windows then run pip directly on the file 
+    as follows “pip install rpy2 2.9.2 cp36 cp36m win_amd64.whl”
+3. Add  an R_HOME Windows environment variable with the path C:\Program Files\R\R-3.4.3 
+(or whichever version you are running)
 4. Add an R_USER Windows environment variable with the path C:\Users\yourUserName\AppData\Local\Continuum\Anaconda3\Lib\site-packages\rpy2
 
 ## Load packages
@@ -191,7 +189,7 @@ devtools.install_github('NEONScience/NEON-utilities/neonUtilities');
 neonUtils = importr('neonUtilities')
 ```
 
-## Stack data files
+## Join data files: stackByTable()
 
 The function `stackByTable()` in `neonUtilities` merges the monthly, 
 site-level files the <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal</a> 
@@ -220,15 +218,18 @@ robjects.globalenv['table_types'] = table_types
 
 Now run the `stackByTable()` function to stack the data. It requires two inputs: 
 
-1. The data product identifier (DPID) of the data you're stacking. DPIDs can be found in the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a> and are in the form DP#.######.001
+1. The data product identifier (DPID) of the data you're stacking. DPIDs can be 
+found in the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a> 
+and are in the form DP#.######.001
 2. A file path, the path to the zip file you downloaded from the NEON Data Portal.
 
-For additional, optional inputs, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
+For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 for neonUtilities.
 
 
 ```python
-neonUtils.stackByTable('DP1.10100.001','~/Downloads/NEON_isotope-soil-distrib-periodic.zip');
+neonUtils.stackByTable('DP1.10100.001',
+                       '~/Downloads/NEON_isotope-soil-distrib-periodic.zip');
 ```
 
     Unpacked  NEON.D02.SCBI.DP1.10100.001.2014-08.expanded.20180308T180515Z.zip
@@ -263,7 +264,7 @@ neonUtils.stackByTable('DP1.10100.001','~/Downloads/NEON_isotope-soil-distrib-pe
 Check the folder containing the original zip file from the Data Portal; 
 you should now have a subfolder containing the unzipped and stacked files.
 
-## Download files to be stacked
+## Download files to be stacked: zipsByProduct()
 
 The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download 
 data files for a given product. The files downloaded by `zipsByProduct()` 
@@ -284,8 +285,11 @@ your download before proceeding, or not.
 
 There are two differences relative to running this function in R directly: 
 
-1. `check.size` becomes `check_size`, because dots have programmatic meaning in Python
-2. `TRUE` (or `T`) becomes `"TRUE"` because the values TRUE and FALSE don't have special meaning in Python the way they do in R, so it interprets them as variables if they're unquoted.
+1. `check.size` becomes `check_size`, because dots have programmatic meaning 
+in Python
+2. `TRUE` (or `T`) becomes `"TRUE"` because the values TRUE and FALSE don't 
+have special meaning in Python the way they do in R, so it interprets them 
+as variables if they're unquoted.
 
 `check_size="TRUE"` will estimate the size of the download and ask you to 
 confirm before proceeding. This will cause problems in certain environments, 
@@ -294,7 +298,8 @@ but consider the size of your query before doing this.
 
 
 ```python
-neonUtils.zipsByProduct(dpID='DP1.10023.001', site='HARV', package='basic', check_size='TRUE');
+neonUtils.zipsByProduct(dpID='DP1.10023.001', site='HARV', 
+                        package='basic', check_size='TRUE');
 ```
 
     Continuing will download files totaling approximately 0.165245 MB. Do you want to proceed y/n: y
@@ -311,7 +316,8 @@ an additional input, folder="TRUE".
 
 
 ```python
-neonUtils.stackByTable(dpID='DP1.10023.001', '~/Downloads/filesToStack10023', folder='TRUE');
+neonUtils.stackByTable(dpID='DP1.10023.001', 
+                       '~/Downloads/filesToStack10023', folder='TRUE');
 ```
 
     Unpacked  NEON.D01.HARV.DP1.10023.001.2013-07.basic.20180226T180545Z.zip
@@ -335,7 +341,7 @@ neonUtils.stackByTable(dpID='DP1.10023.001', '~/Downloads/filesToStack10023', fo
     
 
 
-## Download remote sensing files
+## Download remote sensing files: byFileAOP()
 
 The function `byFileAOP()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> 
 to programmatically download data files for remote sensing (AOP) data 
@@ -351,7 +357,8 @@ interactive question, set check_size="FALSE".
 
 
 ```python
-neonUtils.byFileAOP(dpID='DP3.30015.001', site='HOPB', year='2017', check_size='TRUE');
+neonUtils.byFileAOP(dpID='DP3.30015.001', site='HOPB', 
+                    year='2017', check_size='TRUE');
 ```
 
     Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y

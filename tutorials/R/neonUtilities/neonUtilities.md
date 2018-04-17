@@ -22,12 +22,13 @@ The package contains 5 functions:
 
 * `stackByTable()` Takes zip files downloaded from the 
 <a href="data.neonscience.org" target="_blank">Data Portal</a> or 
-<a href="data.neonscience.org/data-api" target="_blank">NEON API</a> 
-(Application Programming Interface), unzips them, and joins 
+downloaded by `zipsByProduct()`, unzips them, and joins 
 the monthly files by data table to create a single file per table.
-* `zipsByProduct()` A wrapper for the NEON API; downloads data 
-based on data product and site criteria. Stores downloaded data 
-in a format that can then be joined by `stackByTable()`.
+* `zipsByProduct()` A wrapper for the 
+<a href="data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+`stackByTable()`.
 * `getPackage()` A wrapper for the NEON API; downloads one 
 site-by-month zip file at a time.
 * `byFileAOP()` A wrapper for the NEON API; downloads remote 
@@ -36,10 +37,12 @@ Preserves the file structure of the original data.
 * `transformFileToGeoCSV()` Converts any NEON data file in 
 csv format into a new file with GeoCSV headers.
 
-### If you are only interested in joining data files downloaded from the NEON Data Portal:
-You will only need to use `stackByTable()`. Follow the instructions 
-in the first two sections, to install `neonUtilities` and use 
-`stackByTable()`, and you're done.
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> If you are only interested in joining data 
+files downloaded from the NEON Data Portal, you will only need to use 
+`stackByTable()`. Follow the instructions in the first two sections, 
+to install `neonUtilities` and use `stackByTable()`, and you're done. 
+</div>
 
 
 ## neonUtilities package
@@ -69,7 +72,7 @@ You must have the `devtools` package installed and loaded to do this.
     ##   cannot open URL 'https://cran.rstudio.com/bin/macosx/el-capitan/contrib/3.4/PACKAGES.rds': HTTP status was '404 Not Found'
     ## 
     ## The downloaded binary packages are in
-    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpeF9J1Q/downloaded_packages
+    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmp34MIMq/downloaded_packages
 
     # load devtools
     library(devtools)
@@ -84,16 +87,18 @@ You must have the `devtools` package installed and loaded to do this.
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T/RtmpeF9J1Q/devtoolsac52ab68656/NEONScience-NEON-utilities-a42d488/neonUtilities'  \
+    ##   '/private/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T/Rtmp34MIMq/devtoolsb8e445f150b/NEONScience-NEON-utilities-09eff70/neonUtilities'  \
     ##   --library='/Users/clunch/Library/R/3.4/library' --install-tests
 
     ## 
+
+    ## Reloading installed neonUtilities
 
     # load neonUtilities
     library (neonUtilities)
 
 
-## stackByTable()
+## Join data files: stackByTable()
 The function `stackByTable()` joins the month-by-site files from a data 
 download. The output will yield data grouped into new files by table name. 
 For example, the single aspirated air temperature data product contains 1 
@@ -178,7 +183,7 @@ Example usage:
                  savepath="~data/allTemperature", saveUnzippedFiles=T)
 
 
-## zipsByProduct()
+## Download files to be stacked: zipsByProduct()
 The function `zipsByProduct()` is a wrapper for the NEON API, it 
 downloads zip files for the data product specified and stores them in 
 a format that can then be passed on to `stackByTable()`.
@@ -198,7 +203,8 @@ Here, we'll download single-aspirated air temperature data from
 Harvard Forest (HARV).
 
 
-    zipsByProduct("DP1.00002.001", site="HARV", package="basic", check.size=T)
+    zipsByProduct("DP1.00002.001", site="HARV", 
+                  package="basic", check.size=T)
 
 
     Continuing will download files totaling approximately 121.470836 MB. Do you want to proceed y/n: y
@@ -216,9 +222,10 @@ Downloaded files can now be passed to `stackByTable()` to be
 stacked. Another input is required in this case, folder=T.
 
 
-    stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", folder=T)
+    stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", 
+                 folder=T)
 
-## getPackage()
+## Download a single zip file: getPackage()
 
 If you only need a single site-month (e.g., to test code 
 you're writing), the `getPackage()` function can be used to 
@@ -231,7 +238,7 @@ November 2017 temperature data from HARV.
 
 The file should now be saved to your working directory.
 
-## byFileAOP()
+## Download remote sensing files: byFileAOP()
 
 Remote sensing data files can be very large, and NEON remote sensing 
 (AOP) data are stored in a directory structure that makes them easier 
@@ -249,7 +256,8 @@ Hop Brook (HOPB) in 2017; we use this as the example because it's a
 relatively small year-site-product combination.
 
 
-    byFileAOP("DP3.30015.001", site="HOPB", year="2017", check.size=T)
+    byFileAOP("DP3.30015.001", site="HOPB", 
+              year="2017", check.size=T)
 
 
     Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y
@@ -270,7 +278,7 @@ relatively small year-site-product combination.
 The files should now be downloaded to a new folder in your 
 working directory.
 
-## transformFileToGeoCSV()
+## Convert files to GeoCSV: transformFileToGeoCSV()
 
 `transformFileToGeoCSV()` takes a NEON csv file, plus its 
 corresponding variables file, and writes out a new version of the 

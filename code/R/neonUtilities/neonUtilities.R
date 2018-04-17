@@ -39,7 +39,8 @@ library (neonUtilities)
 
 ## ----run-zipsByProduct, eval = FALSE-------------------------------------
 ## 
-## zipsByProduct("DP1.00002.001", site="HARV", package="basic", check.size=T)
+## zipsByProduct("DP1.00002.001", site="HARV",
+##               package="basic", check.size=T)
 ## 
 
 ## ----zips-output, eval=FALSE---------------------------------------------
@@ -57,7 +58,8 @@ library (neonUtilities)
 
 ## ----zips-to-stack, eval = FALSE-----------------------------------------
 ## 
-## stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", folder=T)
+## stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002",
+##              folder=T)
 ## 
 
 ## ----get-pack, eval = FALSE----------------------------------------------
@@ -68,7 +70,8 @@ library (neonUtilities)
 
 ## ----aop-files, eval = FALSE---------------------------------------------
 ## 
-## byFileAOP("DP3.30015.001", site="HOPB", year="2017", check.size=T)
+## byFileAOP("DP3.30015.001", site="HOPB",
+##           year="2017", check.size=T)
 ## 
 
 ## ----aop-output, eval=FALSE----------------------------------------------
