@@ -22,12 +22,13 @@ The package contains 5 functions:
 
 * `stackByTable()` Takes zip files downloaded from the 
 <a href="data.neonscience.org" target="_blank">Data Portal</a> or 
-<a href="data.neonscience.org/data-api" target="_blank">NEON API</a> 
-(Application Programming Interface), unzips them, and joins 
+downloaded by `zipsByProduct()`, unzips them, and joins 
 the monthly files by data table to create a single file per table.
-* `zipsByProduct()` A wrapper for the NEON API; downloads data 
-based on data product and site criteria. Stores downloaded data 
-in a format that can then be joined by `stackByTable()`.
+* `zipsByProduct()` A wrapper for the 
+<a href="data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+`stackByTable()`.
 * `getPackage()` A wrapper for the NEON API; downloads one 
 site-by-month zip file at a time.
 * `byFileAOP()` A wrapper for the NEON API; downloads remote 
@@ -36,10 +37,12 @@ Preserves the file structure of the original data.
 * `transformFileToGeoCSV()` Converts any NEON data file in 
 csv format into a new file with GeoCSV headers.
 
-### If you are only interested in joining data files downloaded from the NEON Data Portal:
-You will only need to use `stackByTable()`. Follow the instructions 
-in the first two sections, to install `neonUtilities` and use 
-`stackByTable()`, and you're done.
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> If you are only interested in joining data 
+files downloaded from the NEON Data Portal, you will only need to use 
+`stackByTable()`. Follow the instructions in the first two sections, 
+to install `neonUtilities` and use `stackByTable()`, and you're done. 
+</div>
 
 
 ## neonUtilities package
@@ -74,7 +77,7 @@ library (neonUtilities)
 ```
 
 
-## stackByTable()
+## Join data files: stackByTable()
 The function `stackByTable()` joins the month-by-site files from a data 
 download. The output will yield data grouped into new files by table name. 
 For example, the single aspirated air temperature data product contains 1 
@@ -165,7 +168,7 @@ stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip",
 ```
 
 
-## zipsByProduct()
+## Download files to be stacked: zipsByProduct()
 The function `zipsByProduct()` is a wrapper for the NEON API, it 
 downloads zip files for the data product specified and stores them in 
 a format that can then be passed on to `stackByTable()`.
@@ -186,7 +189,8 @@ Harvard Forest (HARV).
 
 ```{r run-zipsByProduct, eval = FALSE}
 
-zipsByProduct("DP1.00002.001", site="HARV", package="basic", check.size=T)
+zipsByProduct("DP1.00002.001", site="HARV", 
+              package="basic", check.size=T)
 
 ```
 
@@ -209,11 +213,12 @@ stacked. Another input is required in this case, folder=T.
 
 ```{r zips-to-stack, eval = FALSE}
 
-stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", folder=T)
+stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", 
+             folder=T)
 
 ```
 
-## getPackage()
+## Download a single zip file: getPackage()
 
 If you only need a single site-month (e.g., to test code 
 you're writing), the `getPackage()` function can be used to 
@@ -229,7 +234,7 @@ getPackage("DP1.00002.001", site_code="HARV",
 
 The file should now be saved to your working directory.
 
-## byFileAOP()
+## Download remote sensing files: byFileAOP()
 
 Remote sensing data files can be very large, and NEON remote sensing 
 (AOP) data are stored in a directory structure that makes them easier 
@@ -248,7 +253,8 @@ relatively small year-site-product combination.
 
 ```{r aop-files, eval = FALSE}
 
-byFileAOP("DP3.30015.001", site="HOPB", year="2017", check.size=T)
+byFileAOP("DP3.30015.001", site="HOPB", 
+          year="2017", check.size=T)
 
 ```
 
@@ -273,7 +279,7 @@ NEON_D01_HOPB_DP3_716000_4705000_CHM.tif downloaded to /Users/neon/DP3.30015.001
 The files should now be downloaded to a new folder in your 
 working directory.
 
-## transformFileToGeoCSV()
+## Convert files to GeoCSV: transformFileToGeoCSV()
 
 `transformFileToGeoCSV()` takes a NEON csv file, plus its 
 corresponding variables file, and writes out a new version of the 
