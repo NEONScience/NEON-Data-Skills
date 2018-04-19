@@ -1,7 +1,7 @@
 ---
 syncID: 79f902f6c0264f16a9be13f50560860a
 title: "Plot Spectral Profiles Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
-description: "Extract a single pixel's worth of spectra from a a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
+description: "Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
 dateCreated:  2015-08-08 20:49:52
 authors: Leah A. Wasser
 contributors:
