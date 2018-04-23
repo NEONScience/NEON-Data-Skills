@@ -39,7 +39,7 @@ with the taxonomic rank queries.
 * limit: Result set will be truncated at this length. Defaults to 50.
 
 NEON has plans to modify the settings for offset and limit, such that 
-offset will default to 0 and limit will default to $\infty$, but in 
+offset will default to 0 and limit will default to $\infty$   ∞   , but in 
 the meantime users will want to set these manually. They are set to 
 non-default values in the examples below.
 
