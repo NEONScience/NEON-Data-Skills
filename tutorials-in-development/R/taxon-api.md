@@ -23,9 +23,9 @@ other endpoints. In the "Anatomy of an API Call" section above, each
 endpoint has a single type of target - a data product number, a named 
 location name, etc. For taxonomic data, there are multiple query 
 options, and some of them can be used in combination.
-For example, a query for taxa in the Pineaceae family:
+For example, a query for taxa in the Pinaceae family:
 
-<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy</span><span style="color:#A00606;font-weight:bold">/?family=Pinaceae</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy/?family=Pinaceae</span><span style="color:#A00606;font-weight:bold"></span>
 
 The available types of queries are listed in the <a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
 of the API web page. Briefly, they are:
@@ -34,7 +34,7 @@ of the API web page. Briefly, they are:
 looking for? BIRD, FISH, PLANT, etc. Cannot be used in combination 
 with the taxonomic rank queries.
 * The major taxonomic ranks from genus through kingdom
-* scientificname: Genus + species
+* scientificname: Genus + specific epithet + authority. This does not do fuzzy matching - only exact. Therefore, "Bouteloua americana (L.) Scribn." will return a result, but "Bouteloua americana" or "Bouteloua americana (L.)" will not.
 * offset: Skip this number of items in the list. Defaults to 50.
 * limit: Result set will be truncated at this length. Defaults to 50.
 
