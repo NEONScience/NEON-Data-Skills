@@ -9,6 +9,7 @@
 require(knitr)
 dirs <- c("R/eddy4r/",
           "R/neonUtilities/",
+          "R/NEON-API/",
           "data-institutes/rmd-intro/",
           "R/R-nonSeries-lessons/",
           "dataviz/")
@@ -17,7 +18,7 @@ dirs <- c("R/eddy4r/",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2]
+subDir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"/Users/clunch/NEON-Data-Skills"
