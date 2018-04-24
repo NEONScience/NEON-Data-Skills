@@ -38,6 +38,7 @@ are explained in the first section, on observational data.
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
+
 After completing this activity, you will be able to:
 
 * Pull observational, instrumentation, and geolocation data from the NEON API.
@@ -130,6 +131,18 @@ identifier for the data product:
     library(httr)
     library(jsonlite)
     library(dplyr, quietly=T)
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
     library(downloader)
     
     # Request data using the GET function & the API call
@@ -137,10 +150,10 @@ identifier for the data product:
     req
 
     ## Response [http://data.neonscience.org/api/v0/products/DP1.10003.001]
-    ##   Date: 2017-11-01 23:48
+    ##   Date: 2018-04-24 20:26
     ##   Status: 200
     ##   Content-Type: application/json;charset=UTF-8
-    ##   Size: 7.2 kB
+    ##   Size: 13.5 kB
 
 The object returned from `GET()` has many layers of information. Entering the 
 name of the object gives you some basic information about what you downloaded. 
@@ -197,7 +210,7 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## NULL
     ## 
     ## $data$productRemarks
-    ## [1] "Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables."
+    ## [1] "Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables. Taxonomic IDs of species of concern have been 'fuzzed'; see data package readme files for more information."
     ## 
     ## $data$themes
     ## $data$themes[[1]]
@@ -210,18 +223,18 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## $data$specs
     ## $data$specs[[1]]
     ## $data$specs[[1]]$specId
-    ## [1] 2565
+    ## [1] 3394
     ## 
     ## $data$specs[[1]]$specNumber
-    ## [1] "NEON_bird_userGuide_vA"
+    ## [1] "NEON.DOC.000916vB"
     ## 
     ## 
     ## $data$specs[[2]]
     ## $data$specs[[2]]$specId
-    ## [1] 2566
+    ## [1] 2565
     ## 
     ## $data$specs[[2]]$specNumber
-    ## [1] "NEON.DOC.00916vB"
+    ## [1] "NEON_bird_userGuide_vA"
     ## 
     ## 
     ## $data$specs[[3]]
@@ -265,7 +278,7 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## $data$siteCodes
     ## $data$siteCodes[[1]]
     ## $data$siteCodes[[1]]$siteCode
-    ## [1] "STEI"
+    ## [1] "ORNL"
     ## 
     ## $data$siteCodes[[1]]$availableMonths
     ## $data$siteCodes[[1]]$availableMonths[[1]]
@@ -274,157 +287,187 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## $data$siteCodes[[1]]$availableMonths[[2]]
     ## [1] "2016-06"
     ## 
+    ## $data$siteCodes[[1]]$availableMonths[[3]]
+    ## [1] "2017-05"
+    ## 
     ## 
     ## $data$siteCodes[[1]]$availableDataUrls
     ## $data$siteCodes[[1]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05"
     ## 
     ## $data$siteCodes[[1]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06"
+    ## 
+    ## $data$siteCodes[[1]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2017-05"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[2]]
     ## $data$siteCodes[[2]]$siteCode
-    ## [1] "ORNL"
+    ## [1] "UKFS"
     ## 
     ## $data$siteCodes[[2]]$availableMonths
     ## $data$siteCodes[[2]]$availableMonths[[1]]
-    ## [1] "2016-05"
-    ## 
-    ## $data$siteCodes[[2]]$availableMonths[[2]]
-    ## [1] "2016-06"
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[2]]$availableDataUrls
     ## $data$siteCodes[[2]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05"
-    ## 
-    ## $data$siteCodes[[2]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UKFS/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[3]]
     ## $data$siteCodes[[3]]$siteCode
-    ## [1] "GRSM"
+    ## [1] "CPER"
     ## 
     ## $data$siteCodes[[3]]$availableMonths
     ## $data$siteCodes[[3]]$availableMonths[[1]]
-    ## [1] "2016-06"
+    ## [1] "2013-06"
+    ## 
+    ## $data$siteCodes[[3]]$availableMonths[[2]]
+    ## [1] "2015-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableMonths[[3]]
+    ## [1] "2016-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableMonths[[4]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableMonths[[5]]
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[3]]$availableDataUrls
     ## $data$siteCodes[[3]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2013-06"
+    ## 
+    ## $data$siteCodes[[3]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2015-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2016-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableDataUrls[[4]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-05"
+    ## 
+    ## $data$siteCodes[[3]]$availableDataUrls[[5]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[4]]
     ## $data$siteCodes[[4]]$siteCode
-    ## [1] "CPER"
+    ## [1] "WOOD"
     ## 
     ## $data$siteCodes[[4]]$availableMonths
     ## $data$siteCodes[[4]]$availableMonths[[1]]
-    ## [1] "2015-05"
+    ## [1] "2015-07"
     ## 
     ## $data$siteCodes[[4]]$availableMonths[[2]]
-    ## [1] "2016-05"
+    ## [1] "2017-07"
     ## 
     ## 
     ## $data$siteCodes[[4]]$availableDataUrls
     ## $data$siteCodes[[4]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2015-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07"
     ## 
     ## $data$siteCodes[[4]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2016-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2017-07"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[5]]
     ## $data$siteCodes[[5]]$siteCode
-    ## [1] "WOOD"
+    ## [1] "HEAL"
     ## 
     ## $data$siteCodes[[5]]$availableMonths
     ## $data$siteCodes[[5]]$availableMonths[[1]]
-    ## [1] "2015-07"
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[5]]$availableDataUrls
     ## $data$siteCodes[[5]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HEAL/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[6]]
     ## $data$siteCodes[[6]]$siteCode
-    ## [1] "STER"
+    ## [1] "TALL"
     ## 
     ## $data$siteCodes[[6]]$availableMonths
     ## $data$siteCodes[[6]]$availableMonths[[1]]
-    ## [1] "2015-05"
+    ## [1] "2015-06"
     ## 
     ## $data$siteCodes[[6]]$availableMonths[[2]]
-    ## [1] "2016-05"
+    ## [1] "2016-07"
+    ## 
+    ## $data$siteCodes[[6]]$availableMonths[[3]]
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[6]]$availableDataUrls
     ## $data$siteCodes[[6]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06"
     ## 
     ## $data$siteCodes[[6]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07"
+    ## 
+    ## $data$siteCodes[[6]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[7]]
     ## $data$siteCodes[[7]]$siteCode
-    ## [1] "DELA"
+    ## [1] "JERC"
     ## 
     ## $data$siteCodes[[7]]$availableMonths
     ## $data$siteCodes[[7]]$availableMonths[[1]]
-    ## [1] "2015-06"
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[7]]$availableMonths[[2]]
+    ## [1] "2017-05"
     ## 
     ## 
     ## $data$siteCodes[[7]]$availableDataUrls
     ## $data$siteCodes[[7]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06"
+    ## 
+    ## $data$siteCodes[[7]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2017-05"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[8]]
     ## $data$siteCodes[[8]]$siteCode
-    ## [1] "TALL"
+    ## [1] "NOGP"
     ## 
     ## $data$siteCodes[[8]]$availableMonths
     ## $data$siteCodes[[8]]$availableMonths[[1]]
-    ## [1] "2015-06"
-    ## 
-    ## $data$siteCodes[[8]]$availableMonths[[2]]
-    ## [1] "2016-07"
+    ## [1] "2017-07"
     ## 
     ## 
     ## $data$siteCodes[[8]]$availableDataUrls
     ## $data$siteCodes[[8]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06"
-    ## 
-    ## $data$siteCodes[[8]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NOGP/2017-07"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[9]]
     ## $data$siteCodes[[9]]$siteCode
-    ## [1] "JERC"
+    ## [1] "LAJA"
     ## 
     ## $data$siteCodes[[9]]$availableMonths
     ## $data$siteCodes[[9]]$availableMonths[[1]]
-    ## [1] "2016-06"
+    ## [1] "2017-05"
     ## 
     ## 
     ## $data$siteCodes[[9]]$availableDataUrls
     ## $data$siteCodes[[9]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LAJA/2017-05"
     ## 
     ## 
     ## 
@@ -436,136 +479,136 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## $data$siteCodes[[10]]$availableMonths[[1]]
     ## [1] "2016-05"
     ## 
+    ## $data$siteCodes[[10]]$availableMonths[[2]]
+    ## [1] "2017-05"
+    ## 
     ## 
     ## $data$siteCodes[[10]]$availableDataUrls
     ## $data$siteCodes[[10]]$availableDataUrls[[1]]
     ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2016-05"
     ## 
+    ## $data$siteCodes[[10]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2017-05"
+    ## 
     ## 
     ## 
     ## $data$siteCodes[[11]]
     ## $data$siteCodes[[11]]$siteCode
-    ## [1] "SCBI"
+    ## [1] "DCFS"
     ## 
     ## $data$siteCodes[[11]]$availableMonths
     ## $data$siteCodes[[11]]$availableMonths[[1]]
-    ## [1] "2015-06"
+    ## [1] "2017-06"
     ## 
     ## $data$siteCodes[[11]]$availableMonths[[2]]
-    ## [1] "2016-05"
-    ## 
-    ## $data$siteCodes[[11]]$availableMonths[[3]]
-    ## [1] "2016-06"
+    ## [1] "2017-07"
     ## 
     ## 
     ## $data$siteCodes[[11]]$availableDataUrls
     ## $data$siteCodes[[11]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-06"
     ## 
     ## $data$siteCodes[[11]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05"
-    ## 
-    ## $data$siteCodes[[11]]$availableDataUrls[[3]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-07"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[12]]
     ## $data$siteCodes[[12]]$siteCode
-    ## [1] "TREE"
+    ## [1] "KONZ"
     ## 
     ## $data$siteCodes[[12]]$availableMonths
     ## $data$siteCodes[[12]]$availableMonths[[1]]
-    ## [1] "2016-06"
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[12]]$availableDataUrls
     ## $data$siteCodes[[12]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/KONZ/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[13]]
     ## $data$siteCodes[[13]]$siteCode
-    ## [1] "GUAN"
+    ## [1] "DEJU"
     ## 
     ## $data$siteCodes[[13]]$availableMonths
     ## $data$siteCodes[[13]]$availableMonths[[1]]
-    ## [1] "2015-05"
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[13]]$availableDataUrls
     ## $data$siteCodes[[13]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DEJU/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[14]]
     ## $data$siteCodes[[14]]$siteCode
-    ## [1] "DSNY"
+    ## [1] "LENO"
     ## 
     ## $data$siteCodes[[14]]$availableMonths
     ## $data$siteCodes[[14]]$availableMonths[[1]]
-    ## [1] "2015-06"
-    ## 
-    ## $data$siteCodes[[14]]$availableMonths[[2]]
-    ## [1] "2016-05"
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[14]]$availableDataUrls
     ## $data$siteCodes[[14]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06"
-    ## 
-    ## $data$siteCodes[[14]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LENO/2017-06"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[15]]
     ## $data$siteCodes[[15]]$siteCode
-    ## [1] "HARV"
+    ## [1] "RMNP"
     ## 
     ## $data$siteCodes[[15]]$availableMonths
     ## $data$siteCodes[[15]]$availableMonths[[1]]
-    ## [1] "2015-05"
+    ## [1] "2017-06"
     ## 
     ## $data$siteCodes[[15]]$availableMonths[[2]]
-    ## [1] "2015-06"
-    ## 
-    ## $data$siteCodes[[15]]$availableMonths[[3]]
-    ## [1] "2016-06"
+    ## [1] "2017-07"
     ## 
     ## 
     ## $data$siteCodes[[15]]$availableDataUrls
     ## $data$siteCodes[[15]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-06"
     ## 
     ## $data$siteCodes[[15]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06"
-    ## 
-    ## $data$siteCodes[[15]]$availableDataUrls[[3]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-07"
     ## 
     ## 
     ## 
     ## $data$siteCodes[[16]]
     ## $data$siteCodes[[16]]$siteCode
-    ## [1] "UNDE"
+    ## [1] "HARV"
     ## 
     ## $data$siteCodes[[16]]$availableMonths
     ## $data$siteCodes[[16]]$availableMonths[[1]]
-    ## [1] "2016-06"
+    ## [1] "2015-05"
     ## 
     ## $data$siteCodes[[16]]$availableMonths[[2]]
-    ## [1] "2016-07"
+    ## [1] "2015-06"
+    ## 
+    ## $data$siteCodes[[16]]$availableMonths[[3]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[16]]$availableMonths[[4]]
+    ## [1] "2017-06"
     ## 
     ## 
     ## $data$siteCodes[[16]]$availableDataUrls
     ## $data$siteCodes[[16]]$availableDataUrls[[1]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05"
     ## 
     ## $data$siteCodes[[16]]$availableDataUrls[[2]]
-    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07"
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06"
+    ## 
+    ## $data$siteCodes[[16]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06"
+    ## 
+    ## $data$siteCodes[[16]]$availableDataUrls[[4]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2017-06"
     ## 
     ## 
     ## 
@@ -580,6 +623,9 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## $data$siteCodes[[17]]$availableMonths[[2]]
     ## [1] "2016-06"
     ## 
+    ## $data$siteCodes[[17]]$availableMonths[[3]]
+    ## [1] "2017-06"
+    ## 
     ## 
     ## $data$siteCodes[[17]]$availableDataUrls
     ## $data$siteCodes[[17]]$availableDataUrls[[1]]
@@ -587,6 +633,534 @@ list. This is typical of JSON-formatted data returned by APIs.
     ## 
     ## $data$siteCodes[[17]]$availableDataUrls[[2]]
     ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2016-06"
+    ## 
+    ## $data$siteCodes[[17]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[18]]
+    ## $data$siteCodes[[18]]$siteCode
+    ## [1] "BONA"
+    ## 
+    ## $data$siteCodes[[18]]$availableMonths
+    ## $data$siteCodes[[18]]$availableMonths[[1]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[18]]$availableDataUrls
+    ## $data$siteCodes[[18]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BONA/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[19]]
+    ## $data$siteCodes[[19]]$siteCode
+    ## [1] "BARR"
+    ## 
+    ## $data$siteCodes[[19]]$availableMonths
+    ## $data$siteCodes[[19]]$availableMonths[[1]]
+    ## [1] "2017-07"
+    ## 
+    ## 
+    ## $data$siteCodes[[19]]$availableDataUrls
+    ## $data$siteCodes[[19]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BARR/2017-07"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[20]]
+    ## $data$siteCodes[[20]]$siteCode
+    ## [1] "SJER"
+    ## 
+    ## $data$siteCodes[[20]]$availableMonths
+    ## $data$siteCodes[[20]]$availableMonths[[1]]
+    ## [1] "2017-04"
+    ## 
+    ## 
+    ## $data$siteCodes[[20]]$availableDataUrls
+    ## $data$siteCodes[[20]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SJER/2017-04"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[21]]
+    ## $data$siteCodes[[21]]$siteCode
+    ## [1] "JORN"
+    ## 
+    ## $data$siteCodes[[21]]$availableMonths
+    ## $data$siteCodes[[21]]$availableMonths[[1]]
+    ## [1] "2017-04"
+    ## 
+    ## $data$siteCodes[[21]]$availableMonths[[2]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[21]]$availableDataUrls
+    ## $data$siteCodes[[21]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-04"
+    ## 
+    ## $data$siteCodes[[21]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[22]]
+    ## $data$siteCodes[[22]]$siteCode
+    ## [1] "STEI"
+    ## 
+    ## $data$siteCodes[[22]]$availableMonths
+    ## $data$siteCodes[[22]]$availableMonths[[1]]
+    ## [1] "2016-05"
+    ## 
+    ## $data$siteCodes[[22]]$availableMonths[[2]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[22]]$availableMonths[[3]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[22]]$availableDataUrls
+    ## $data$siteCodes[[22]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05"
+    ## 
+    ## $data$siteCodes[[22]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06"
+    ## 
+    ## $data$siteCodes[[22]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[23]]
+    ## $data$siteCodes[[23]]$siteCode
+    ## [1] "GRSM"
+    ## 
+    ## $data$siteCodes[[23]]$availableMonths
+    ## $data$siteCodes[[23]]$availableMonths[[1]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[23]]$availableMonths[[2]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[23]]$availableMonths[[3]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[23]]$availableDataUrls
+    ## $data$siteCodes[[23]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06"
+    ## 
+    ## $data$siteCodes[[23]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-05"
+    ## 
+    ## $data$siteCodes[[23]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[24]]
+    ## $data$siteCodes[[24]]$siteCode
+    ## [1] "OAES"
+    ## 
+    ## $data$siteCodes[[24]]$availableMonths
+    ## $data$siteCodes[[24]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[24]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[24]]$availableDataUrls
+    ## $data$siteCodes[[24]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-05"
+    ## 
+    ## $data$siteCodes[[24]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[25]]
+    ## $data$siteCodes[[25]]$siteCode
+    ## [1] "SERC"
+    ## 
+    ## $data$siteCodes[[25]]$availableMonths
+    ## $data$siteCodes[[25]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[25]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[25]]$availableDataUrls
+    ## $data$siteCodes[[25]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-05"
+    ## 
+    ## $data$siteCodes[[25]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[26]]
+    ## $data$siteCodes[[26]]$siteCode
+    ## [1] "ABBY"
+    ## 
+    ## $data$siteCodes[[26]]$availableMonths
+    ## $data$siteCodes[[26]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[26]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[26]]$availableDataUrls
+    ## $data$siteCodes[[26]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-05"
+    ## 
+    ## $data$siteCodes[[26]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[27]]
+    ## $data$siteCodes[[27]]$siteCode
+    ## [1] "MOAB"
+    ## 
+    ## $data$siteCodes[[27]]$availableMonths
+    ## $data$siteCodes[[27]]$availableMonths[[1]]
+    ## [1] "2015-06"
+    ## 
+    ## $data$siteCodes[[27]]$availableMonths[[2]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[27]]$availableDataUrls
+    ## $data$siteCodes[[27]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2015-06"
+    ## 
+    ## $data$siteCodes[[27]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[28]]
+    ## $data$siteCodes[[28]]$siteCode
+    ## [1] "BLAN"
+    ## 
+    ## $data$siteCodes[[28]]$availableMonths
+    ## $data$siteCodes[[28]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[28]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[28]]$availableDataUrls
+    ## $data$siteCodes[[28]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-05"
+    ## 
+    ## $data$siteCodes[[28]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[29]]
+    ## $data$siteCodes[[29]]$siteCode
+    ## [1] "STER"
+    ## 
+    ## $data$siteCodes[[29]]$availableMonths
+    ## $data$siteCodes[[29]]$availableMonths[[1]]
+    ## [1] "2013-06"
+    ## 
+    ## $data$siteCodes[[29]]$availableMonths[[2]]
+    ## [1] "2015-05"
+    ## 
+    ## $data$siteCodes[[29]]$availableMonths[[3]]
+    ## [1] "2016-05"
+    ## 
+    ## $data$siteCodes[[29]]$availableMonths[[4]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[29]]$availableDataUrls
+    ## $data$siteCodes[[29]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2013-06"
+    ## 
+    ## $data$siteCodes[[29]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05"
+    ## 
+    ## $data$siteCodes[[29]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05"
+    ## 
+    ## $data$siteCodes[[29]]$availableDataUrls[[4]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[30]]
+    ## $data$siteCodes[[30]]$siteCode
+    ## [1] "DELA"
+    ## 
+    ## $data$siteCodes[[30]]$availableMonths
+    ## $data$siteCodes[[30]]$availableMonths[[1]]
+    ## [1] "2015-06"
+    ## 
+    ## $data$siteCodes[[30]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[30]]$availableDataUrls
+    ## $data$siteCodes[[30]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06"
+    ## 
+    ## $data$siteCodes[[30]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[31]]
+    ## $data$siteCodes[[31]]$siteCode
+    ## [1] "SRER"
+    ## 
+    ## $data$siteCodes[[31]]$availableMonths
+    ## $data$siteCodes[[31]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[31]]$availableDataUrls
+    ## $data$siteCodes[[31]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SRER/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[32]]
+    ## $data$siteCodes[[32]]$siteCode
+    ## [1] "ONAQ"
+    ## 
+    ## $data$siteCodes[[32]]$availableMonths
+    ## $data$siteCodes[[32]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[32]]$availableDataUrls
+    ## $data$siteCodes[[32]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ONAQ/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[33]]
+    ## $data$siteCodes[[33]]$siteCode
+    ## [1] "SOAP"
+    ## 
+    ## $data$siteCodes[[33]]$availableMonths
+    ## $data$siteCodes[[33]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[33]]$availableDataUrls
+    ## $data$siteCodes[[33]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SOAP/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[34]]
+    ## $data$siteCodes[[34]]$siteCode
+    ## [1] "CLBJ"
+    ## 
+    ## $data$siteCodes[[34]]$availableMonths
+    ## $data$siteCodes[[34]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[34]]$availableDataUrls
+    ## $data$siteCodes[[34]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CLBJ/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[35]]
+    ## $data$siteCodes[[35]]$siteCode
+    ## [1] "SCBI"
+    ## 
+    ## $data$siteCodes[[35]]$availableMonths
+    ## $data$siteCodes[[35]]$availableMonths[[1]]
+    ## [1] "2015-06"
+    ## 
+    ## $data$siteCodes[[35]]$availableMonths[[2]]
+    ## [1] "2016-05"
+    ## 
+    ## $data$siteCodes[[35]]$availableMonths[[3]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[35]]$availableMonths[[4]]
+    ## [1] "2017-05"
+    ## 
+    ## $data$siteCodes[[35]]$availableMonths[[5]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[35]]$availableDataUrls
+    ## $data$siteCodes[[35]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06"
+    ## 
+    ## $data$siteCodes[[35]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05"
+    ## 
+    ## $data$siteCodes[[35]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06"
+    ## 
+    ## $data$siteCodes[[35]]$availableDataUrls[[4]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-05"
+    ## 
+    ## $data$siteCodes[[35]]$availableDataUrls[[5]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[36]]
+    ## $data$siteCodes[[36]]$siteCode
+    ## [1] "NIWO"
+    ## 
+    ## $data$siteCodes[[36]]$availableMonths
+    ## $data$siteCodes[[36]]$availableMonths[[1]]
+    ## [1] "2015-07"
+    ## 
+    ## $data$siteCodes[[36]]$availableMonths[[2]]
+    ## [1] "2017-07"
+    ## 
+    ## 
+    ## $data$siteCodes[[36]]$availableDataUrls
+    ## $data$siteCodes[[36]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2015-07"
+    ## 
+    ## $data$siteCodes[[36]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2017-07"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[37]]
+    ## $data$siteCodes[[37]]$siteCode
+    ## [1] "TREE"
+    ## 
+    ## $data$siteCodes[[37]]$availableMonths
+    ## $data$siteCodes[[37]]$availableMonths[[1]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[37]]$availableMonths[[2]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[37]]$availableDataUrls
+    ## $data$siteCodes[[37]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06"
+    ## 
+    ## $data$siteCodes[[37]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[38]]
+    ## $data$siteCodes[[38]]$siteCode
+    ## [1] "DSNY"
+    ## 
+    ## $data$siteCodes[[38]]$availableMonths
+    ## $data$siteCodes[[38]]$availableMonths[[1]]
+    ## [1] "2015-06"
+    ## 
+    ## $data$siteCodes[[38]]$availableMonths[[2]]
+    ## [1] "2016-05"
+    ## 
+    ## $data$siteCodes[[38]]$availableMonths[[3]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[38]]$availableDataUrls
+    ## $data$siteCodes[[38]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06"
+    ## 
+    ## $data$siteCodes[[38]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05"
+    ## 
+    ## $data$siteCodes[[38]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[39]]
+    ## $data$siteCodes[[39]]$siteCode
+    ## [1] "GUAN"
+    ## 
+    ## $data$siteCodes[[39]]$availableMonths
+    ## $data$siteCodes[[39]]$availableMonths[[1]]
+    ## [1] "2015-05"
+    ## 
+    ## $data$siteCodes[[39]]$availableMonths[[2]]
+    ## [1] "2017-05"
+    ## 
+    ## 
+    ## $data$siteCodes[[39]]$availableDataUrls
+    ## $data$siteCodes[[39]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05"
+    ## 
+    ## $data$siteCodes[[39]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2017-05"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[40]]
+    ## $data$siteCodes[[40]]$siteCode
+    ## [1] "TEAK"
+    ## 
+    ## $data$siteCodes[[40]]$availableMonths
+    ## $data$siteCodes[[40]]$availableMonths[[1]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[40]]$availableDataUrls
+    ## $data$siteCodes[[40]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TEAK/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[41]]
+    ## $data$siteCodes[[41]]$siteCode
+    ## [1] "UNDE"
+    ## 
+    ## $data$siteCodes[[41]]$availableMonths
+    ## $data$siteCodes[[41]]$availableMonths[[1]]
+    ## [1] "2016-06"
+    ## 
+    ## $data$siteCodes[[41]]$availableMonths[[2]]
+    ## [1] "2016-07"
+    ## 
+    ## $data$siteCodes[[41]]$availableMonths[[3]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[41]]$availableDataUrls
+    ## $data$siteCodes[[41]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06"
+    ## 
+    ## $data$siteCodes[[41]]$availableDataUrls[[2]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07"
+    ## 
+    ## $data$siteCodes[[41]]$availableDataUrls[[3]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2017-06"
+    ## 
+    ## 
+    ## 
+    ## $data$siteCodes[[42]]
+    ## $data$siteCodes[[42]]$siteCode
+    ## [1] "TOOL"
+    ## 
+    ## $data$siteCodes[[42]]$availableMonths
+    ## $data$siteCodes[[42]]$availableMonths[[1]]
+    ## [1] "2017-06"
+    ## 
+    ## 
+    ## $data$siteCodes[[42]]$availableDataUrls
+    ## $data$siteCodes[[42]]$availableDataUrls[[1]]
+    ## [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TOOL/2017-06"
 
 To get a more accessible view of which sites have data for which months, you'll 
 need to extract data from the nested list. There are a variety of ways to do this, 
@@ -647,7 +1221,7 @@ way is not as human readable but is readable by the `fromJSON()` function.
     ## NULL
     ## 
     ## $data$productRemarks
-    ## [1] "Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables."
+    ## [1] "Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables. Taxonomic IDs of species of concern have been 'fuzzed'; see data package readme files for more information."
     ## 
     ## $data$themes
     ## [1] "Organisms, Populations, and Communities"
@@ -657,8 +1231,8 @@ way is not as human readable but is readable by the `fromJSON()` function.
     ## 
     ## $data$specs
     ##   specId             specNumber
-    ## 1   2565 NEON_bird_userGuide_vA
-    ## 2   2566       NEON.DOC.00916vB
+    ## 1   3394      NEON.DOC.000916vB
+    ## 2   2565 NEON_bird_userGuide_vA
     ## 3   2567      NEON.DOC.014041vF
     ## 
     ## $data$keywords
@@ -667,42 +1241,92 @@ way is not as human readable but is readable by the `fromJSON()` function.
     ## [7] "species composition"   "population"            "landbirds"            
     ## 
     ## $data$siteCodes
-    ##    siteCode           availableMonths
-    ## 1      STEI          2016-05, 2016-06
-    ## 2      ORNL          2016-05, 2016-06
-    ## 3      GRSM                   2016-06
-    ## 4      CPER          2015-05, 2016-05
-    ## 5      WOOD                   2015-07
-    ## 6      STER          2015-05, 2016-05
-    ## 7      DELA                   2015-06
-    ## 8      TALL          2015-06, 2016-07
-    ## 9      JERC                   2016-06
-    ## 10     OSBS                   2016-05
-    ## 11     SCBI 2015-06, 2016-05, 2016-06
-    ## 12     TREE                   2016-06
-    ## 13     GUAN                   2015-05
-    ## 14     DSNY          2015-06, 2016-05
-    ## 15     HARV 2015-05, 2015-06, 2016-06
-    ## 16     UNDE          2016-06, 2016-07
-    ## 17     BART          2015-06, 2016-06
-    ##                                                                                                                                                                                                      availableDataUrls
-    ## 1                                                                         http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06
-    ## 2                                                                         http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06
-    ## 3                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06
-    ## 4                                                                         http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2016-05
-    ## 5                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07
-    ## 6                                                                         http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05
-    ## 7                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06
-    ## 8                                                                         http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07
-    ## 9                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06
-    ## 10                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2016-05
-    ## 11 http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06
-    ## 12                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06
-    ## 13                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05
-    ## 14                                                                        http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05
-    ## 15 http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06
-    ## 16                                                                        http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07
-    ## 17                                                                        http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2016-06
+    ##    siteCode                             availableMonths
+    ## 1      ORNL                   2016-05, 2016-06, 2017-05
+    ## 2      UKFS                                     2017-06
+    ## 3      CPER 2013-06, 2015-05, 2016-05, 2017-05, 2017-06
+    ## 4      WOOD                            2015-07, 2017-07
+    ## 5      HEAL                                     2017-06
+    ## 6      TALL                   2015-06, 2016-07, 2017-06
+    ## 7      JERC                            2016-06, 2017-05
+    ## 8      NOGP                                     2017-07
+    ## 9      LAJA                                     2017-05
+    ## 10     OSBS                            2016-05, 2017-05
+    ## 11     DCFS                            2017-06, 2017-07
+    ## 12     KONZ                                     2017-06
+    ## 13     DEJU                                     2017-06
+    ## 14     LENO                                     2017-06
+    ## 15     RMNP                            2017-06, 2017-07
+    ## 16     HARV          2015-05, 2015-06, 2016-06, 2017-06
+    ## 17     BART                   2015-06, 2016-06, 2017-06
+    ## 18     BONA                                     2017-06
+    ## 19     BARR                                     2017-07
+    ## 20     SJER                                     2017-04
+    ## 21     JORN                            2017-04, 2017-05
+    ## 22     STEI                   2016-05, 2016-06, 2017-06
+    ## 23     GRSM                   2016-06, 2017-05, 2017-06
+    ## 24     OAES                            2017-05, 2017-06
+    ## 25     SERC                            2017-05, 2017-06
+    ## 26     ABBY                            2017-05, 2017-06
+    ## 27     MOAB                            2015-06, 2017-05
+    ## 28     BLAN                            2017-05, 2017-06
+    ## 29     STER          2013-06, 2015-05, 2016-05, 2017-05
+    ## 30     DELA                            2015-06, 2017-06
+    ## 31     SRER                                     2017-05
+    ## 32     ONAQ                                     2017-05
+    ## 33     SOAP                                     2017-05
+    ## 34     CLBJ                                     2017-05
+    ## 35     SCBI 2015-06, 2016-05, 2016-06, 2017-05, 2017-06
+    ## 36     NIWO                            2015-07, 2017-07
+    ## 37     TREE                            2016-06, 2017-06
+    ## 38     DSNY                   2015-06, 2016-05, 2017-05
+    ## 39     GUAN                            2015-05, 2017-05
+    ## 40     TEAK                                     2017-06
+    ## 41     UNDE                   2016-06, 2016-07, 2017-06
+    ## 42     TOOL                                     2017-06
+    ##                                                                                                                                                                                                                                                                                                                                                    availableDataUrls
+    ## 1                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2017-05
+    ## 2                                                                                                                                                                                                                                                                                              http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UKFS/2017-06
+    ## 3  http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2013-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-06
+    ## 4                                                                                                                                                                                                                       http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2017-07
+    ## 5                                                                                                                                                                                                                                                                                              http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HEAL/2017-06
+    ## 6                                                                                                                                                http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2017-06
+    ## 7                                                                                                                                                                                                                       http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2017-05
+    ## 8                                                                                                                                                                                                                                                                                              http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NOGP/2017-07
+    ## 9                                                                                                                                                                                                                                                                                              http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LAJA/2017-05
+    ## 10                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2017-05
+    ## 11                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-07
+    ## 12                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/KONZ/2017-06
+    ## 13                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DEJU/2017-06
+    ## 14                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LENO/2017-06
+    ## 15                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-07
+    ## 16                                                                        http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2017-06
+    ## 17                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2017-06
+    ## 18                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BONA/2017-06
+    ## 19                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BARR/2017-07
+    ## 20                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SJER/2017-04
+    ## 21                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-04, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-05
+    ## 22                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2017-06
+    ## 23                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-06
+    ## 24                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-06
+    ## 25                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-06
+    ## 26                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-06
+    ## 27                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2017-05
+    ## 28                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-06
+    ## 29                                                                        http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2013-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2017-05
+    ## 30                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2017-06
+    ## 31                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SRER/2017-05
+    ## 32                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ONAQ/2017-05
+    ## 33                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SOAP/2017-05
+    ## 34                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CLBJ/2017-05
+    ## 35 http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-06
+    ## 36                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2015-07, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2017-07
+    ## 37                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2017-06
+    ## 38                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2017-05
+    ## 39                                                                                                                                                                                                                      http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2017-05
+    ## 40                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TEAK/2017-06
+    ## 41                                                                                                                                               http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07, http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2017-06
+    ## 42                                                                                                                                                                                                                                                                                             http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TOOL/2017-06
 
 The object contains a lot of information about the data product, including: 
 
@@ -721,35 +1345,91 @@ calls ourselves in the next steps.
     bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
     bird.urls
 
-    ##  [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05"
-    ##  [2] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06"
-    ##  [3] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05"
-    ##  [4] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06"
-    ##  [5] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06"
+    ##  [1] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-05"
+    ##  [2] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2016-06"
+    ##  [3] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ORNL/2017-05"
+    ##  [4] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UKFS/2017-06"
+    ##  [5] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2013-06"
     ##  [6] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2015-05"
     ##  [7] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2016-05"
-    ##  [8] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07"
-    ##  [9] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05"
-    ## [10] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05"
-    ## [11] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06"
-    ## [12] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06"
-    ## [13] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07"
-    ## [14] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06"
-    ## [15] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2016-05"
-    ## [16] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06"
-    ## [17] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05"
-    ## [18] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06"
-    ## [19] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06"
-    ## [20] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05"
-    ## [21] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06"
-    ## [22] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05"
-    ## [23] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05"
-    ## [24] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06"
-    ## [25] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06"
-    ## [26] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06"
-    ## [27] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07"
-    ## [28] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2015-06"
-    ## [29] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2016-06"
+    ##  [8] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-05"
+    ##  [9] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CPER/2017-06"
+    ## [10] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2015-07"
+    ## [11] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/WOOD/2017-07"
+    ## [12] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HEAL/2017-06"
+    ## [13] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2015-06"
+    ## [14] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2016-07"
+    ## [15] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TALL/2017-06"
+    ## [16] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2016-06"
+    ## [17] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JERC/2017-05"
+    ## [18] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NOGP/2017-07"
+    ## [19] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LAJA/2017-05"
+    ## [20] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2016-05"
+    ## [21] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OSBS/2017-05"
+    ## [22] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-06"
+    ## [23] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DCFS/2017-07"
+    ## [24] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/KONZ/2017-06"
+    ## [25] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DEJU/2017-06"
+    ## [26] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/LENO/2017-06"
+    ## [27] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-06"
+    ## [28] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/RMNP/2017-07"
+    ## [29] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-05"
+    ## [30] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2015-06"
+    ## [31] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2016-06"
+    ## [32] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/HARV/2017-06"
+    ## [33] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2015-06"
+    ## [34] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2016-06"
+    ## [35] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BART/2017-06"
+    ## [36] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BONA/2017-06"
+    ## [37] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BARR/2017-07"
+    ## [38] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SJER/2017-04"
+    ## [39] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-04"
+    ## [40] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/JORN/2017-05"
+    ## [41] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-05"
+    ## [42] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2016-06"
+    ## [43] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STEI/2017-06"
+    ## [44] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2016-06"
+    ## [45] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-05"
+    ## [46] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GRSM/2017-06"
+    ## [47] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-05"
+    ## [48] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/OAES/2017-06"
+    ## [49] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-05"
+    ## [50] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SERC/2017-06"
+    ## [51] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-05"
+    ## [52] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ABBY/2017-06"
+    ## [53] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2015-06"
+    ## [54] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/MOAB/2017-05"
+    ## [55] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-05"
+    ## [56] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/BLAN/2017-06"
+    ## [57] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2013-06"
+    ## [58] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2015-05"
+    ## [59] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2016-05"
+    ## [60] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/STER/2017-05"
+    ## [61] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2015-06"
+    ## [62] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DELA/2017-06"
+    ## [63] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SRER/2017-05"
+    ## [64] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/ONAQ/2017-05"
+    ## [65] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SOAP/2017-05"
+    ## [66] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/CLBJ/2017-05"
+    ## [67] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2015-06"
+    ## [68] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-05"
+    ## [69] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2016-06"
+    ## [70] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-05"
+    ## [71] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/SCBI/2017-06"
+    ## [72] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2015-07"
+    ## [73] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/NIWO/2017-07"
+    ## [74] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2016-06"
+    ## [75] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TREE/2017-06"
+    ## [76] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2015-06"
+    ## [77] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2016-05"
+    ## [78] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/DSNY/2017-05"
+    ## [79] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2015-05"
+    ## [80] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/GUAN/2017-05"
+    ## [81] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TEAK/2017-06"
+    ## [82] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-06"
+    ## [83] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2016-07"
+    ## [84] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/UNDE/2017-06"
+    ## [85] "http://data.neonscience.org:80/api/v0/data/DP1.10003.001/TOOL/2017-06"
 
 These are the URLs showing us what files are available for each month where 
 there are data. 
@@ -771,69 +1451,73 @@ to iterate this code, GET fails if you give it more than one URL.
     brd.files$data$files
 
     ##                               crc32
-    ## 1  4a5f2420d1f24131e350e4adc207b12e
-    ## 2  88b416d167e5021e40cdae7ec605c194
-    ## 3  5ce80c39de222e286f73b915c06527dd
-    ## 4  9bc7bc357209579748cb103a899933b0
-    ## 5  7d1d2c21f0016212087cdc1041f37054
-    ## 6  c26d8ee478ddc41e5a3ebf0b1adb8c17
-    ## 7  9d746c8eb43b6d84e2db925d9aca50b1
-    ## 8  4972362cad0bd5873aa356af86e45826
-    ## 9  4a5f2420d1f24131e350e4adc207b12e
-    ## 10 7d1d2c21f0016212087cdc1041f37054
-    ## 11 61b33b64b9095e50331295a2cf6c0bbc
-    ## 12 cdbd556c2b5396115fde5b22f6643d81
-    ## 13 9bc7bc357209579748cb103a899933b0
-    ## 14 8241d346adeeac463737112f47cffaa8
-    ## 15 bfb5fd016eb775adf65bdb0c4b0914f8
+    ## 1  4d4f86c1379dece680185e992a471432
+    ## 2  71e695abae2d1943d13e53c95430c6f5
+    ## 3  dd27e83b9a5e4a7453f284ae13d1f32d
+    ## 4  7c999e9ae4f7d94eaa2c11aadaeecd0b
+    ## 5  19adfd2c8bedfe867646644e1985dca0
+    ## 6  0cde0267b9141a0f37a14dc7e5c7084a
+    ## 7  5428880d2a72e66319eb6f29576a49af
+    ## 8  4d4f86c1379dece680185e992a471432
+    ## 9  51b19ca519653f87c7732791b345f89e
+    ## 10 bba1d7554ff524604e64ffcb0b23c0b0
+    ## 11 19adfd2c8bedfe867646644e1985dca0
+    ## 12 02506292f09b5a4ebcc055b279621f8e
+    ## 13 28bbedc80a738c2cd16afad21319136f
+    ## 14 81ddde9f27c7ba6d5a9f6cfb07ae78d3
+    ## 15 dd27e83b9a5e4a7453f284ae13d1f32d
+    ## 16 8dca69c9edcf4f3df4ee7fa3a0a624dc
     ##                                                                               name
-    ## 1      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv
-    ## 2                                                    NEON.DP1.10003.001_readme.txt
-    ## 3                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip
-    ## 4                       NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
-    ## 5                      NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
-    ## 6                                NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml
-    ## 7     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv
-    ## 8                NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip
-    ## 9   NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv
-    ## 10                     NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv
-    ## 11                               NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml
-    ## 12                                                   NEON.DP1.10003.001_readme.txt
-    ## 13                      NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv
-    ## 14                          NEON.Bird Conservancy of the Rockies.brd_personnel.csv
-    ## 15 NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv
+    ## 1      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20180418T200718Z.csv
+    ## 2           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20180418T200718Z.xml
+    ## 3                       NEON.D09.WOOD.DP1.10003.001.variables.20180418T200718Z.csv
+    ## 4     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20180418T200718Z.csv
+    ## 5                      NEON.D09.WOOD.DP0.10003.001.validation.20180418T200718Z.csv
+    ## 6                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20180418T200718Z.zip
+    ## 7                          NEON.D09.WOOD.DP1.10003.001.readme.20180418T200718Z.txt
+    ## 8   NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20180418T200718Z.csv
+    ## 9                          NEON.D09.WOOD.DP1.10003.001.readme.20180418T200718Z.txt
+    ## 10                          NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv
+    ## 11                     NEON.D09.WOOD.DP0.10003.001.validation.20180418T200718Z.csv
+    ## 12          NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20180418T200718Z.xml
+    ## 13               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20180418T200718Z.zip
+    ## 14 NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20180418T200718Z.csv
+    ## 15                      NEON.D09.WOOD.DP1.10003.001.variables.20180418T200718Z.csv
+    ## 16        NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20180418T200718Z.csv
     ##      size
     ## 1   23962
-    ## 2   11098
-    ## 3   67239
-    ## 4    7280
-    ## 5    9826
-    ## 6   69927
-    ## 7  355660
-    ## 8   69271
-    ## 9   23962
-    ## 10   9826
-    ## 11  74721
-    ## 12  11234
-    ## 13   7280
-    ## 14   2553
-    ## 15 376383
-    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   url
-    ## 1         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=2796dab839a2fad834db937bc46497d94a299e75c53349cb0f4ad122df826a46
-    ## 2                                                       https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=bf48a4d77b7e139a9bc391540937111f833ce68a254ea6e5130743870f51eb00
-    ## 3                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=ab73884d7f46e9659a2de859ae071703577276ec09c6ad643c6d9e39af0b0be1
-    ## 4                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=eedf135a734bc22ee1dbba9b8617b338977b7e268b3248be80e97314470da388
-    ## 5                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=f5949f162310bfab98204819c0dcdd2e19ac31774e173eb4c5c7af4e34656c0b
-    ## 6                                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=d17e55e50ecefc87e59cf90fdfe7465b67eefabb18434f10128e036b7446a187
-    ## 7        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=3042798dea743d75271e0e8c1f039c4a9fe21f4a15e07c343120c16e197a7b2a
-    ## 8                https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20170720T182547Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=fb096a49042a0bc25e3427a7e74921ab38fcf8bf1ae0d52af6f996a70d1b8207
-    ## 9   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=67dc0bcd3445efd65095b811807ce8e0a238fffe8e962379e273753f6c857ad9
-    ## 10                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=d531cb69c67d16f16cc2fdee58fef471474a2230281d63f2f8b452ed8b2aefb3
-    ## 11                               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.20150101-20160613.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=3000893a3de2d61f6d3c7de197030e99c891bad1edeeed2b631cf581deeb5496
-    ## 12                                                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.DP1.10003.001_readme.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=5f5dd3e4a68087dfc4ebe852c9a477ab904bb6a04a99ad494b5a35af40a231db
-    ## 13                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=4b55076b9dcec63be65fec479ffae3cdfb5794e583b413e270f1ad07c9d29f43
-    ## 14                  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird%20Conservancy%20of%20the%20Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=2c98ea81463e26b03bf151431bcde6017abca36a3637df444bc05895ff9b6433
-    ## 15 https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20170720T182547Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20171101T234819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20171101%2Fdata%2Fs3%2Faws4_request&X-Amz-Signature=3383327d76a743f2fb35aaaf203dad1266ed8ea081a9e6093cba92bd66f16e6c
+    ## 2   70196
+    ## 3    7280
+    ## 4  355660
+    ## 5    9830
+    ## 6   67654
+    ## 7   12361
+    ## 8   23962
+    ## 9   12640
+    ## 10  11918
+    ## 11   9830
+    ## 12  78407
+    ## 13  72540
+    ## 14 376383
+    ## 15   7280
+    ## 16    650
+    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        url
+    ## 1         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=33701fac26e94c358cce45932e81161bd71cadb24536c72edb9590a4ac8410ff
+    ## 2              https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20180418T200718Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=901d9e64ea2a0af111dac871bf35953775e715aa85bb7fd8f513b2330df0177b
+    ## 3                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=7a7a9ca4da0e4989d231c20385b32addc096148ae89d9c1ea4e9503474ff0041
+    ## 4        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9c55a56bc475804876443f97d5eb933d17d772cb71e1e3b9cc21854062f6c0f0
+    ## 5                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=de3a850035e46da380d4901b0868f09c86a102559bd58f47c87d8c954a3f93b0
+    ## 6                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20180418T200718Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=1520893d033850eaec6393effc10a1f0cdc9a4a201e8d895d485aed9b5fd1ea3
+    ## 7                             https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20180418T200718Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=b886fd97f6f371a063ffc2e5f8c36ca053dd938f51ceccb0e7b1545be41e0bff
+    ## 8   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=6e73c3fbb7855d08d5b10514d95772931f42df4490345f524e0b2edbf4faa02f
+    ## 9                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20180418T200718Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=0a10ca81ad41453c34b78609e727c2958f9351d6a0d7c0947ea6047f00ce5182
+    ## 10                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=3c1fc705305556fe6d76cc7ec0d0aa62df1f2013126a0fb444e13427104455c6
+    ## 11                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=5d73447fa8006a630b651ede40fc1ddab06b59db99e7cb80121da55a39b4bc0b
+    ## 12          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20180418T200718Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fe5139191b9d400d61bbb66df20bde73aeb1d82bf73aa93f6907bd517d3522dd
+    ## 13               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20180418T200718Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=d7b28758c1a3a33779fe0690f7bc855822595e6d85a5ff44b060e176b1a86873
+    ## 14 https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e12b3da1e85b92f7c055f19731dd97474448dfd397f6297302c6f89a7f04ea9a
+    ## 15                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=53ec4d87ec442159fff2bfa31b3ab8fe8d05ec38a70bd3f42ccd708cd9770ae8
+    ## 16        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20180418T200718Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180424T202614Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180424%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=5f0ae38dcc2abdf8dc21e53898eea75068faed67a61a356c9b5aecb8083a2230
 
 In this output, `name` and `url` are key fields. It provides us with the names 
 of the files available for this site and month, and URLs where we can get the 
@@ -955,194 +1639,194 @@ queries for Soil Temperature, DP1.00041.001. Let's use data from Moab in March
     tmp.files <- fromJSON(content(tmp, as="text"))
     tmp.files$data$files$name
 
-    ##   [1] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [2] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [3] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [4] "NEON.DP1.00041.001_readme.txt"                                                             
-    ##   [5] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [6] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [7] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##   [8] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##   [9] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [10] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [11] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [12] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [13] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [14] "NEON.D13.MOAB.DP1.00041.001.2017-03.basic.20170804T063725Z.zip"                            
-    ##  [15] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [16] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [17] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [18] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [19] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [20] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [21] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [22] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [23] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [24] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [25] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [26] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [27] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [28] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [29] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [30] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [31] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [32] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [33] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [34] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [35] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [36] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [37] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [38] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [39] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [40] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [41] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [42] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [43] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [44] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
-    ##  [45] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
-    ##  [46] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [47] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [48] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [49] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [50] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [51] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [52] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [53] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [54] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [55] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [56] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [57] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [58] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [59] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [1] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [2] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [3] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [4] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [5] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [6] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##   [7] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [8] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##   [9] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [10] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [11] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [12] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [13] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [14] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [15] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [16] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [17] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [18] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [19] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [20] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [21] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [22] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [23] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [24] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [25] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [26] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [27] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [28] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [29] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [30] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [31] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [32] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [33] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [34] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [35] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [36] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [37] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [38] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [39] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
+    ##  [40] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [41] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [42] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [43] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [44] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [45] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [46] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [47] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [48] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [49] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [50] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [51] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [52] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [53] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [54] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [55] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [56] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [57] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [58] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [59] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
     ##  [60] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [61] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [62] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [63] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [64] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [65] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [66] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [67] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [68] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [69] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [70] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [71] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [72] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [73] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [74] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [75] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [76] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [77] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [78] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [79] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [80] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [81] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [82] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [83] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [84] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [85] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [86] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [87] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [88] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [89] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [90] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [91] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [92] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
-    ##  [93] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [94] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
-    ##  [95] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ##  [96] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ##  [97] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ##  [98] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ##  [99] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [100] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [101] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [102] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [103] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [104] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
-    ## [105] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [106] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [107] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [108] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [109] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [110] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [111] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [112] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [113] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
-    ## [114] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [115] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [116] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [117] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [118] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [119] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [120] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [121] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [122] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [123] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [124] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [125] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [126] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [127] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [128] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [129] "NEON.D13.MOAB.DP1.00041.001.2017-03.expanded.20170804T063725Z.zip"                         
-    ## [130] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [131] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [132] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [133] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [134] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [135] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [136] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [137] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [138] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [139] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [140] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [141] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [142] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [143] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ##  [61] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [62] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [63] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [64] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [65] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [66] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [67] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [68] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [69] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [70] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [71] "NEON.D13.MOAB.DP1.00041.001.2017-03.basic.20170804T063725Z.zip"                            
+    ##  [72] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [73] "NEON.DP1.00041.001_readme.txt"                                                             
+    ##  [74] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [75] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [76] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [77] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [78] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [79] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [80] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [81] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [82] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [83] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [84] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [85] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [86] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [87] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [88] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [89] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
+    ##  [90] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"   
+    ##  [91] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [92] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [93] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [94] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"    
+    ##  [95] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ##  [96] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ##  [97] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ##  [98] "NEON.D13.MOAB.DP1.00041.001.2017-03.expanded.20170804T063725Z.zip"                         
+    ##  [99] "NEON.D13.MOAB.DP1.00041.001.004.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [100] "NEON.D13.MOAB.DP1.00041.001.004.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [101] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [102] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [103] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [104] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [105] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [106] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [107] "NEON.D13.MOAB.DP1.00041.001.001.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [108] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [109] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [110] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [111] "NEON.D13.MOAB.DP1.00041.001.005.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [112] "NEON.D13.MOAB.DP1.00041.001.001.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [113] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [114] "NEON.D13.MOAB.DP1.00041.001.002.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [115] "NEON.D13.MOAB.DP1.00041.001.004.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [116] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [117] "NEON.D13.MOAB.DP1.00041.001.002.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [118] "NEON.D13.MOAB.DP1.00041.001.001.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [119] "NEON.D13.MOAB.DP1.00041.001.001.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [120] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [121] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [122] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [123] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [124] "NEON.D13.MOAB.DP1.00041.001.002.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [125] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [126] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [127] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [128] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                         
+    ## [129] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [130] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [131] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [132] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [133] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [134] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [135] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [136] "NEON.D13.MOAB.DP1.00041.001.002.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [137] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [138] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [139] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [140] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [141] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [142] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [143] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
     ## [144] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [145] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [146] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [147] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [148] "NEON.DP1.00041.001_readme.txt"                                                             
-    ## [149] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [150] "NEON.D13.MOAB.DP1.00041.001.005.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [151] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [152] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [153] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [154] "NEON.D13.MOAB.DP1.00041.001.003.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [155] "NEON.D13.MOAB.DP1.00041.001.003.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [156] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [157] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [158] "NEON.D13.MOAB.DP1.00041.001.002.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [159] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [160] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [161] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [162] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [163] "NEON.D13.MOAB.DP1.00041.001.004.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [164] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [165] "NEON.D13.MOAB.DP1.00041.001.005.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [166] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [167] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [168] "NEON.D13.MOAB.DP1.00041.001.003.507.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [169] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [170] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [171] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [172] "NEON.D13.MOAB.DP1.00041.001.004.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [173] "NEON.D13.MOAB.DP1.00041.001.005.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [174] "NEON.D13.MOAB.DP1.00041.001.005.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [175] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [176] "NEON.D13.MOAB.DP1.00041.001.001.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [177] "NEON.D13.MOAB.DP1.00041.001.004.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [178] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [179] "NEON.D13.MOAB.DP1.00041.001.002.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [180] "NEON.D13.MOAB.DP1.00041.001.003.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [181] "NEON.D13.MOAB.DP1.00041.001.005.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [182] "NEON.D13.MOAB.DP1.00041.001.003.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [183] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [184] "NEON.D13.MOAB.DP1.00041.001.004.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [185] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
-    ## [186] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [187] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
-    ## [188] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [145] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [146] "NEON.D13.MOAB.DP1.00041.001.003.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [147] "NEON.D13.MOAB.DP1.00041.001.003.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [148] "NEON.D13.MOAB.DP1.00041.001.005.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [149] "NEON.D13.MOAB.DP1.00041.001.004.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [150] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [151] "NEON.D13.MOAB.DP1.00041.001.004.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [152] "NEON.D13.MOAB.DP1.00041.001.002.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [153] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [154] "NEON.D13.MOAB.DP1.00041.001.003.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [155] "NEON.D13.MOAB.DP1.00041.001.001.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [156] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [157] "NEON.D13.MOAB.DP1.00041.001.002.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [158] "NEON.D13.MOAB.DP1.00041.001.004.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [159] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [160] "NEON.D13.MOAB.DP1.00041.001.004.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [161] "NEON.D13.MOAB.DP1.00041.001.004.502.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [162] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [163] "NEON.D13.MOAB.DP1.00041.001.005.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [164] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [165] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [166] "NEON.D13.MOAB.DP1.00041.001.002.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [167] "NEON.D13.MOAB.DP1.00041.001.002.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [168] "NEON.D13.MOAB.DP1.00041.001.005.504.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [169] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [170] "NEON.D13.MOAB.DP1.00041.001.005.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [171] "NEON.D13.MOAB.DP1.00041.001.002.505.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [172] "NEON.D13.MOAB.DP1.00041.001.003.504.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [173] "NEON.D13.MOAB.DP1.00041.001.variables.20170804T063725Z.csv"                                
+    ## [174] "NEON.D13.MOAB.DP1.00041.001.001.503.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [175] "NEON.D13.MOAB.DP1.00041.001.005.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [176] "NEON.D13.MOAB.DP1.00041.001.003.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [177] "NEON.D13.MOAB.DP1.00041.001.005.509.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [178] "NEON.D13.MOAB.DP1.00041.001.001.509.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [179] "NEON.D13.MOAB.DP1.00041.001.001.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [180] "NEON.D13.MOAB.DP1.00041.001.001.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [181] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [182] "NEON.D13.MOAB.DP1.00041.001.001.503.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [183] "NEON.D13.MOAB.DP1.00041.001.003.506.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [184] "NEON.D13.MOAB.DP1.00041.001.005.506.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [185] "NEON.D13.MOAB.DP1.00041.001.003.505.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [186] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.expanded.20170804T063725Z.csv" 
+    ## [187] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-03.expanded.20170804T063725Z.csv"
+    ## [188] "NEON.DP1.00041.001_readme.txt"
 
 These file names start and end the same way as the observational files, but the 
 middle is a little more cryptic. The structure from beginning to end is: 
@@ -1200,7 +1884,6 @@ in fact have the data let's plot the mean soil temperature by date.
 As we'd expect we see daily fluctuation in soil temperature. 
 
 
-
 ## Remote sensing data (AOP)
 
 Again, the process of determining which sites and time periods have data, and 
@@ -1222,17 +1905,17 @@ we'll look at the flight over San Joaquin Experimental Range (SJER) in March
     
     # get data availability from location/date of interest
     cam <- GET(cam.urls[grep("SJER", cam.urls)])
+
+    ## Error: length(url) == 1 is not TRUE
+
     cam.files <- fromJSON(content(cam, as="text"))
-    
+
+    ## Error in inherits(x, "response"): object 'cam' not found
+
     # this list of files is very long, so we'll just look at the first few
     head(cam.files$data$files$name)
 
-    ## [1] "17032816_EH021656(20170328174837)-0047_ort.tif"
-    ## [2] "17032816_EH021656(20170328175426)-0103_ort.tif"
-    ## [3] "17032816_EH021656(20170328181216)-0251_ort.tif"
-    ## [4] "17032816_EH021656(20170328191211)-0726_ort.tif"
-    ## [5] "17032816_EH021656(20170328200520)-1192_ort.tif"
-    ## [6] "17032816_EH021656(20170328195317)-1084_ort.tif"
+    ## Error in head(cam.files$data$files$name): object 'cam.files' not found
 
 File names for AOP data are more variable than for IS or OS data; 
 different AOP data products use different naming conventions. 
@@ -1264,10 +1947,6 @@ working directory.
 	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
 	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
 	Experimental Range. Source: National Ecological Observatory Network (NEON) 
-
-	</figcaption>
-</figure>
-
 
 ## Geolocation data
 
@@ -1303,8 +1982,9 @@ data products, both aquatic and terrestrial.
     # view named location
     head(brd.point$namedLocation)
 
-    ## [1] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
-    ## [4] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
+    ## [1] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
+    ## [4] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
+    ## 7 Levels: WOOD_006.birdGrid.brd ... WOOD_020.birdGrid.brd
 
 Here we see the first six entries in the `namedLocation` column which tells us
 the names of the Terrestrial Observation plots where the bird surveys were 
@@ -1402,30 +2082,30 @@ We can query the locations endpoint of the API for the first named location,
     ## 
     ## $data$locationProperties
     ##                             locationPropertyName locationPropertyValue
-    ## 1                            Value for Plot type           distributed
-    ## 2                            Value for Plot size                250000
-    ## 3                         Value for Plot subtype              birdGrid
-    ## 4                      Value for Plot dimensions           500m x 500m
-    ## 5                      Value for Soil type order             Mollisols
-    ## 6                Value for Subtype Specification            ninePoints
-    ## 7                              Value for Plot ID              WOOD_013
-    ## 8             Value for Reference Point Position                    B2
-    ## 9  Value for National Land Cover Database (2001)   grasslandHerbaceous
-    ## 10                      Value for Slope gradient                  2.83
-    ## 11                      Value for State province                    ND
-    ## 12                   Value for Coordinate source            GeoXH 6000
+    ## 1                Value for Subtype Specification            ninePoints
+    ## 2                            Value for Plot type           distributed
+    ## 3                              Value for Plot ID              WOOD_013
+    ## 4                      Value for Soil type order             Mollisols
+    ## 5             Value for Reference Point Position                    B2
+    ## 6  Value for National Land Cover Database (2001)   grasslandHerbaceous
+    ## 7                         Value for Plot subtype              birdGrid
+    ## 8                      Value for Plot dimensions           500m x 500m
+    ## 9                            Value for Plot size                250000
+    ## 10                             Value for Country          unitedStates
+    ## 11    Value for Horizontal dilution of precision                     1
+    ## 12               Value for Elevation uncertainty                  0.48
     ## 13                   Value for Minimum elevation                569.79
-    ## 14                        Value for Slope aspect                238.91
-    ## 15                              Value for County              Stutsman
-    ## 16    Value for Horizontal dilution of precision                     1
-    ## 17                   Value for Maximum elevation                579.31
-    ## 18                  Value for Filtered positions                   121
-    ## 19               Value for Elevation uncertainty                  0.48
-    ## 20                             Value for Country          unitedStates
-    ## 21                            Value for UTM Zone                   14N
-    ## 22                      Value for Geodetic datum                 WGS84
-    ## 23              Value for Coordinate uncertainty                  0.28
-    ## 24    Value for Positional dilution of precision                   2.4
+    ## 14              Value for Coordinate uncertainty                  0.28
+    ## 15    Value for Positional dilution of precision                   2.4
+    ## 16                      Value for State province                    ND
+    ## 17                  Value for Filtered positions                   121
+    ## 18                            Value for UTM Zone                   14N
+    ## 19                   Value for Coordinate source            GeoXH 6000
+    ## 20                      Value for Slope gradient                  2.83
+    ## 21                      Value for Geodetic datum                 WGS84
+    ## 22                              Value for County              Stutsman
+    ## 23                        Value for Slope aspect                238.91
+    ## 24                   Value for Maximum elevation                579.31
 
 Note spatial information under `$data$[nameOfCorrdinate]` and under 
 `$data$locationProperties`. Also note `$data$locationChildren`: these are the 
@@ -1472,7 +2152,251 @@ And use `def.calc.geo.os()` to calculate the point locations of observations.
 Now you can see the individual points where the respective point counts were 
 located. 
 
-## Stacking NEON data
+## Taxonomy
+
+NEON maintains accepted taxonomies for many of the taxonomic identification 
+data we collect. NEON taxonomies are available for query via the API; they 
+are also provided via an interactive user interface, the <a href="http://data.neonscience.org/static/taxon.html" target="_blank">Taxon Viewer</a>.
+
+NEON taxonomy data provides the reference information for how NEON 
+validates taxa; an identification must appear in the taxonomy lists 
+in order to be accepted into the NEON database. Additions to the lists 
+are reviewed regularly. The taxonomy lists also provide the author 
+of the scientific name, and the reference text used.
+
+The taxonomy endpoint of the API works a little bit differently from the 
+other endpoints. In the "Anatomy of an API Call" section above, each 
+endpoint has a single type of target - a data product number, a named 
+location name, etc. For taxonomic data, there are multiple query 
+options, and some of them can be used in combination.
+For example, a query for taxa in the Pinaceae family:
+
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy</span><span style="color:#A00606;font-weight:bold">/?family=Pinaceae</span>
+
+The available types of queries are listed in the <a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
+of the API web page. Briefly, they are:
+
+* `taxonTypeCode`: Which of the taxonomies maintained by NEON are you 
+looking for? BIRD, FISH, PLANT, etc. Cannot be used in combination 
+with the taxonomic rank queries.
+* each of the major taxonomic ranks from genus through kingdom
+* `scientificname`: Genus + specific epithet (+ authority). Search is 
+by exact match only, see final example below.
+* `verbose`: Do you want the short (`false`) or verbose (`true`) response
+* `offset`: Skip this number of items in the list. Defaults to 50.
+* `limit`: Result set will be truncated at this length. Defaults to 50.
+
+Staff on the NEON project have plans to modify the settings for `offset` 
+and `limit`, such that `offset` will default to 0 and `limit` will default 
+to ∞, but in the meantime users will want to set these manually. They are 
+set to non-default values in the examples below.
+
+For the first example, let's query for the loon family, Gaviidae, in the 
+bird taxonomy. Note that query parameters are case-sensitive.
+
+
+    loon.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&offset=0&limit=500")
+
+Parse the results into a list using `fromJSON()`:
+
+
+    loon.list <- fromJSON(content(loon.req, as="text"))
+
+And look at the `$data` element of the results, which contains:
+
+* The full taxonomy of each taxon
+* The short taxon code used by NEON (taxonID/acceptedTaxonID)
+* The author of the scientific name (scientificNameAuthorship)
+* The vernacular name, if applicable
+* The reference text used (nameAccordingToID)
+
+The terms used for each field are matched to Darwin Core (dwc) and 
+the Global Biodiversity Information Facility (gbif) terms, where 
+possible, and the matches are indicated in the column headers.
+
+
+    loon.list$data
+
+    ##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName
+    ## 1          BIRD    ARLO            ARLO      Gavia arctica
+    ## 2          BIRD    COLO            COLO        Gavia immer
+    ## 3          BIRD    PALO            PALO     Gavia pacifica
+    ## 4          BIRD    RTLO            RTLO     Gavia stellata
+    ## 5          BIRD    YBLO            YBLO      Gavia adamsii
+    ##   dwc:scientificNameAuthorship dwc:taxonRank dwc:vernacularName
+    ## 1                   (Linnaeus)       species        Arctic Loon
+    ## 2                   (Brunnich)       species        Common Loon
+    ## 3                   (Lawrence)       species       Pacific Loon
+    ## 4                (Pontoppidan)       species  Red-throated Loon
+    ## 5                 (G. R. Gray)       species Yellow-billed Loon
+    ##      dwc:nameAccordingToID dwc:kingdom dwc:phylum dwc:class   dwc:order
+    ## 1 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
+    ## 2 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
+    ## 3 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
+    ## 4 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
+    ## 5 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
+    ##   dwc:family dwc:genus gbif:subspecies gbif:variety
+    ## 1   Gaviidae     Gavia              NA           NA
+    ## 2   Gaviidae     Gavia              NA           NA
+    ## 3   Gaviidae     Gavia              NA           NA
+    ## 4   Gaviidae     Gavia              NA           NA
+    ## 5   Gaviidae     Gavia              NA           NA
+
+To get the entire list for a particular taxonomic type, use the 
+`taxonTypeCode` query. Be cautious with this query, the PLANT taxonomic 
+list has several hundred thousand entries.
+
+For an example, let's look up the small mammal taxonomic list, which 
+is one of the shorter ones, and then display only the first 20 taxa:
+
+
+    mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500")
+    mam.list <- fromJSON(content(mam.req, as="text"))
+    mam.list$data[1:20,]
+
+    ##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName
+    ## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii
+    ## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres
+    ## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus
+    ## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus
+    ## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni
+    ## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.
+    ## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra
+    ## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa
+    ## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes
+    ## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus
+    ## 11  SMALL_MAMMAL    ARPO            ARPO                   Arborimus pomo
+    ## 12  SMALL_MAMMAL    ARSP            ARSP                    Arborimus sp.
+    ## 13  SMALL_MAMMAL    BATA            BATA                  Baiomys taylori
+    ## 14  SMALL_MAMMAL    BLBR            BLBR               Blarina brevicauda
+    ## 15  SMALL_MAMMAL    BLCA            BLCA             Blarina carolinensis
+    ## 16  SMALL_MAMMAL    BLHY            BLHY                Blarina hylophaga
+    ## 17  SMALL_MAMMAL    BLSP            BLSP                      Blarina sp.
+    ## 18  SMALL_MAMMAL    BRID            BRID           Brachylagus idahoensis
+    ## 19  SMALL_MAMMAL    CHBA            CHBA              Chaetodipus baileyi
+    ## 20  SMALL_MAMMAL    CHCA            CHCA         Chaetodipus californicus
+    ##    dwc:scientificNameAuthorship dwc:taxonRank
+    ## 1           Audubon and Bachman       species
+    ## 2                       Merriam       species
+    ## 3                       Merriam       species
+    ## 4                       Goldman    subspecies
+    ## 5                       Merriam       species
+    ## 6                          <NA>         genus
+    ## 7                        Taylor    subspecies
+    ## 8                    Rafinesque       species
+    ## 9                       Merriam       species
+    ## 10                         True       species
+    ## 11           Johnson and George       species
+    ## 12                         <NA>         genus
+    ## 13                       Thomas       species
+    ## 14                          Say       species
+    ## 15                      Bachman       species
+    ## 16                       Elliot       species
+    ## 17                         <NA>         genus
+    ## 18                      Merriam       species
+    ## 19                      Merriam       species
+    ## 20                      Merriam       species
+    ##               dwc:vernacularName dwc:nameAccordingToID dwc:kingdom
+    ## 1      Harriss Antelope Squirrel  isbn: 978 0801882210    Animalia
+    ## 2        Texas Antelope Squirrel  isbn: 978 0801882210    Animalia
+    ## 3  Whitetailed Antelope Squirrel  isbn: 978 0801882210    Animalia
+    ## 4                           <NA>  isbn: 978 0801882210    Animalia
+    ## 5      Nelsons Antelope Squirrel  isbn: 978 0801882210    Animalia
+    ## 6                           <NA>  isbn: 978 0801882210    Animalia
+    ## 7                           <NA>  isbn: 978 0801882210    Animalia
+    ## 8                       Sewellel  isbn: 978 0801882210    Animalia
+    ## 9               Whitefooted Vole  isbn: 978 0801882210    Animalia
+    ## 10                 Red Tree Vole  isbn: 978 0801882210    Animalia
+    ## 11              Sonoma Tree Vole  isbn: 978 0801882210    Animalia
+    ## 12                          <NA>  isbn: 978 0801882210    Animalia
+    ## 13          Northern Pygmy Mouse  isbn: 978 0801882210    Animalia
+    ## 14    Northern Shorttailed Shrew  isbn: 978 0801882210    Animalia
+    ## 15    Southern Shorttailed Shrew  isbn: 978 0801882210    Animalia
+    ## 16     Elliots Shorttailed Shrew  isbn: 978 0801882210    Animalia
+    ## 17                          <NA>  isbn: 978 0801882210    Animalia
+    ## 18                  Pygmy Rabbit  isbn: 978 0801882210    Animalia
+    ## 19          Baileys Pocket Mouse  isbn: 978 0801882210    Animalia
+    ## 20       California Pocket Mouse  isbn: 978 0801882210    Animalia
+    ##    dwc:phylum dwc:class    dwc:order    dwc:family        dwc:genus
+    ## 1    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 2    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 3    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 4    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 5    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 6    Chordata  Mammalia     Rodentia     Sciuridae Ammospermophilus
+    ## 7    Chordata  Mammalia     Rodentia Aplodontiidae       Aplodontia
+    ## 8    Chordata  Mammalia     Rodentia Aplodontiidae       Aplodontia
+    ## 9    Chordata  Mammalia     Rodentia    Cricetidae        Arborimus
+    ## 10   Chordata  Mammalia     Rodentia    Cricetidae        Arborimus
+    ## 11   Chordata  Mammalia     Rodentia    Cricetidae        Arborimus
+    ## 12   Chordata  Mammalia     Rodentia    Cricetidae        Arborimus
+    ## 13   Chordata  Mammalia     Rodentia    Cricetidae          Baiomys
+    ## 14   Chordata  Mammalia Soricomorpha     Soricidae          Blarina
+    ## 15   Chordata  Mammalia Soricomorpha     Soricidae          Blarina
+    ## 16   Chordata  Mammalia Soricomorpha     Soricidae          Blarina
+    ## 17   Chordata  Mammalia Soricomorpha     Soricidae          Blarina
+    ## 18   Chordata  Mammalia   Lagomorpha     Leporidae      Brachylagus
+    ## 19   Chordata  Mammalia     Rodentia  Heteromyidae      Chaetodipus
+    ## 20   Chordata  Mammalia     Rodentia  Heteromyidae      Chaetodipus
+    ##    gbif:subspecies gbif:variety
+    ## 1               NA           NA
+    ## 2               NA           NA
+    ## 3               NA           NA
+    ## 4               NA           NA
+    ## 5               NA           NA
+    ## 6               NA           NA
+    ## 7               NA           NA
+    ## 8               NA           NA
+    ## 9               NA           NA
+    ## 10              NA           NA
+    ## 11              NA           NA
+    ## 12              NA           NA
+    ## 13              NA           NA
+    ## 14              NA           NA
+    ## 15              NA           NA
+    ## 16              NA           NA
+    ## 17              NA           NA
+    ## 18              NA           NA
+    ## 19              NA           NA
+    ## 20              NA           NA
+
+To get information about a single taxon, use the `scientificname` 
+query. This query will not do a fuzzy match, so you need to query 
+the exact name of the taxon in the NEON taxonomy. Because of this, 
+the query will be most useful when you already have NEON data in 
+hand and are looking for more information about a specific taxon. 
+Querying on `scientificname` is unlikely to be an efficient way to 
+figure out if NEON recognizes a particular taxon.
+
+In addition, scientific names contain spaces, which are not 
+allowed in a URL. The spaces need to be replaced with the URL 
+encoding replacement, %20.
+
+For an example, let's look up the little sand verbena, *Abronia 
+minor Standl.* Searching for *Abronia minor* will fail, because 
+the NEON taxonomy for this species includes the authority. The 
+search will also fail with spaces. Search for 
+`Abronia%20minor%20Standl.`, and in this case we can omit 
+`offset` and `limit` because we know there can only be a single 
+result:
+
+
+    am.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.")
+    am.list <- fromJSON(content(am.req, as="text"))
+    am.list$data
+
+    ##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName
+    ## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.
+    ##   dwc:scientificNameAuthorship dwc:taxonRank  dwc:vernacularName
+    ## 1                      Standl.       species little sand verbena
+    ##                         dwc:nameAccordingToID dwc:kingdom    dwc:phylum
+    ## 1 http://plants.usda.gov (accessed 8/25/2014)     Plantae Magnoliophyta
+    ##       dwc:class      dwc:order    dwc:family dwc:genus gbif:subspecies
+    ## 1 Magnoliopsida Caryophyllales Nyctaginaceae   Abronia              NA
+    ##   gbif:variety
+    ## 1           NA
+
+## Stacking NEON data 
 
 At the top of this tutorial, we installed the `neonUtilities` package. 
 This is a custom R package that stacks the monthly files provided by 

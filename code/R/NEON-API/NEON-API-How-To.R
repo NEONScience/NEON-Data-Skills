@@ -165,3 +165,22 @@ symbols(brd.point.pt$api.easting, brd.point.pt$api.northing,
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 
+## ----get-loons-----------------------------------------------------------
+loon.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&offset=0&limit=500")
+
+## ----parse-loons---------------------------------------------------------
+loon.list <- fromJSON(content(loon.req, as="text"))
+
+## ----display-loons-------------------------------------------------------
+loon.list$data
+
+## ----get-mammals---------------------------------------------------------
+mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500")
+mam.list <- fromJSON(content(mam.req, as="text"))
+mam.list$data[1:20,]
+
+## ----get-verbena---------------------------------------------------------
+am.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.")
+am.list <- fromJSON(content(am.req, as="text"))
+am.list$data
+
