@@ -9,59 +9,61 @@ output: pdf_document
 ## Taxonomy
 
 NEON maintains accepted taxonomies for many of the taxonomic identification 
-data we collect. NEON taxonomies are available for query via the API; they 
-are also provided via an interactive user interface, the <a href="http://data.neonscience.org/static/taxon.html" target="_blank">Taxon Viewer</a>.
+data we collect. NEON taxonomies are available for query via the NEON API; they 
+are also provided via an interactive user interface, the 
+<a href="http://data.neonscience.org/static/taxon.html" target="_blank">Taxon Viewer</a>.
 
 NEON taxonomy data provides the reference information for how NEON 
 validates taxa; an identification must appear in the taxonomy lists 
 in order to be accepted into the NEON database. Additions to the lists 
 are reviewed regularly. The taxonomy lists also provide the author 
-of the scientific name, and the reference text used.
+of the scientific name and the reference text used.
 
-The taxonomy endpoint of the API works a little bit differently from the 
+The taxonomy endpoint of the NEON API works a little bit differently from the 
 other endpoints. In the "Anatomy of an API Call" section above, each 
 endpoint has a single type of target - a data product number, a named 
 location name, etc. For taxonomic data, there are multiple query 
-options, and some of them can be used in combination.
+options and some of them can be used in combination.
 For example, a query for taxa in the Pineaceae family:
 
 <span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy</span><span style="color:#A00606;font-weight:bold">/?family=Pinaceae</span>
 
-The available types of queries are listed in the <a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
+The available types of queries are listed in the 
+<a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
 of the API web page. Briefly, they are:
 
-* taxonTypeCode: Which of the taxonomies maintained by NEON are you 
+* `taxonTypeCode`: Which of the taxonomies maintained by NEON are you 
 looking for? BIRD, FISH, PLANT, etc. Cannot be used in combination 
 with the taxonomic rank queries.
-* The major taxonomic ranks from genus through kingdom
-* scientificname: Genus + species
-* offset: Skip this number of items in the list. Defaults to 50.
-* limit: Result set will be truncated at this length. Defaults to 50.
+* fields for each of the major taxonomic ranks from genus through kingdom
+* `scientificname`: Genus + species
+* `verbose`: Do you want the short (`false`) or verbose (`true`) response
+* `offset`: Skip this number of items in the list. Defaults to 50.
+* `limit`: Result set will be truncated at this length. Defaults to 50.
 
-NEON has plans to modify the settings for offset and limit, such that 
-offset will default to 0 and limit will default to $\infty$   ∞   , but in 
+Staff on the NEON project have plans to modify the settings for `offset` and `limit`, such that 
+`offset` will default to 0 and `limit` will default to ∞, but in 
 the meantime users will want to set these manually. They are set to 
 non-default values in the examples below.
 
-For the first example, let's query for the loon family, in the bird 
+For the first example, let's query for the loon family, Gaviidae, in the bird 
 taxonomy. Note that query parameters are case-sensitive.
-
 
 ```r
 loon.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&offset=0&limit=500")
 ```
 
-Parse the results into a list:
+Parse the results into a list using `fromJSON()`:
 
 
 ```r
 loon.list <- fromJSON(content(loon.req, as="text"))
 ```
 
-And look at the $data element of the results, which contains:
+And look at the `$data` element of the results, which contains:
 
 * The full taxonomy of each taxon
-* The short taxon code used by NEON (taxonID/acceptedTaxonID)
+* The short taxon code used by NEON (taxonID & acceptedTaxonID)
 * The author of the scientific name (scientificNameAuthorship)
 * The vernacular name, if applicable
 * The reference text used (nameAccordingToID)
@@ -103,7 +105,7 @@ loon.list$data
 ```
 
 To get the entire list for a particular taxonomic type, use the 
-taxonTypeCode query. Be cautious with this query, the PLANT taxonomic 
+`taxonTypeCode` query. Be cautious with this query, the PLANT taxonomic 
 list has several hundred thousand entries.
 
 For an example, let's look up the small mammal taxonomic list, which 
