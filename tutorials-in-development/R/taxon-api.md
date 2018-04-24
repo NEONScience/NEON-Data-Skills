@@ -23,10 +23,10 @@ The taxonomy endpoint of the NEON API works a little bit differently from the
 other endpoints. In the "Anatomy of an API Call" section above, each 
 endpoint has a single type of target - a data product number, a named 
 location name, etc. For taxonomic data, there are multiple query 
-options and some of them can be used in combination.
-For example, a query for taxa in the Pineaceae family:
+options, and some of them can be used in combination.
+For example, a query for taxa in the Pinaceae family:
 
-<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy</span><span style="color:#A00606;font-weight:bold">/?family=Pinaceae</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/taxonomy/?family=Pinaceae</span><span style="color:#A00606;font-weight:bold"></span>
 
 The available types of queries are listed in the 
 <a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
@@ -35,8 +35,9 @@ of the API web page. Briefly, they are:
 * `taxonTypeCode`: Which of the taxonomies maintained by NEON are you 
 looking for? BIRD, FISH, PLANT, etc. Cannot be used in combination 
 with the taxonomic rank queries.
-* fields for each of the major taxonomic ranks from genus through kingdom
-* `scientificname`: Genus + species
+* each of the major taxonomic ranks from genus through kingdom
+* `scientificname`: Genus + specific epithet + authority. Search is by 
+exact match only, see below.
 * `verbose`: Do you want the short (`false`) or verbose (`true`) response
 * `offset`: Skip this number of items in the list. Defaults to 50.
 * `limit`: Result set will be truncated at this length. Defaults to 50.
