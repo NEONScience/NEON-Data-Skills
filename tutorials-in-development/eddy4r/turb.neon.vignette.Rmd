@@ -1,0 +1,198 @@
+---
+title: "Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 0.2.0"
+author: "David Durden, Stefan Metzger, Natchaya Pingintha-Durden, Claire Lunch, Megan Jones"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 0.2.0}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 0. Install and set up
+
+This vignette assumes you are working with eddy4R within the Docker 
+environment established by NEON. To get set up in that environment, 
+follow the instructions <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/fbd76ce778bc369fa9b94b7751546abb1ae56073/tutorials/R/eddy4r/dockerEddy4r.md" target="_blank">here</a>.
+[CKL: Megan, I put a link to the page on GitHub, because I don't think we've 
+put this up on the website yet]
+
+At the end of those instructions, you should have an RStudio 
+environment running within Docker. Use that workspace for this 
+vignette.
+
+## 1. Install packages and set up environment
+
+First, check for required packages and install any that aren't 
+already installed.
+
+Throughout this vignette, we use the package::function() 
+syntax to refer to functions. This is done to avoid any 
+possibility of ambiguity, in case there are functions in 
+different packages with the same name.
+
+[CKL: Dave, based on your feedback, I dropped the update.packages() call. Yes?]
+
+```{r pack-install}
+
+packFlow00 <- c("DataCombine", "ff", "ffbase", "rhdf5","splus2R")
+packFlow01 <- packFlow00[!(packFlow00 %in% installed.packages()[,"Package"])]
+if(base::length(packFlow01) > 0) {
+  utils::install.packages(packFlow01)
+  }
+base::rm(packFlow00, packFlow01)
+
+```
+
+Now that we've ensured all needed packages are installed, load 
+them:
+
+[CKL: Dave, there are packages in this list that aren't in 
+packFlow00 above. Should I add them?]
+
+```{r pack-load}
+
+base::library(DataCombine)
+base::library(eddy4R.base)
+base::library(eddy4R.qaqc)
+base::library(ff)
+base::library(ffbase)
+base::library(methods)
+base::library(rhdf5)
+base::library(splus2R)
+
+```
+
+## 2. Set environment variables
+
+Here we set file paths and basic input parameters as environment 
+variables for convenience.
+
+[CKL: Dave, I dropped the if(TRUE) on this, because it didn't 
+seem useful. Also rearranged a bit and added explanatory 
+comments, please review]
+
+```{r env-vars}
+
+# file path for the directory containing input L0' data
+base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
+
+# file path to the HDF5 file of input L0' data
+base::Sys.setenv("DIRFILEPARA" = 
+                   "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
+
+# [CKL: this was commented out in the existing vignette. Should I delete?]
+# base::Sys.setenv("DIRMNT" = base::paste0("/home/", base::Sys.getenv("USER"), "/eddy"))
+
+# file path for outputs
+base::Sys.setenv("DIROUT" = "/home/eddy/out")
+
+# date(s) of the input data
+# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?]
+base::Sys.setenv("FILEDP0P" = "2017-05-01")
+
+# NEON domain of the input data: Domain 10, D10
+base::Sys.setenv("DOM" = "D10")
+
+# NEON site code of the input data:
+# Central Plains Experimental Range, CPER
+base::Sys.setenv("LOC" = "CPER")
+
+# flag to indicate to the eddy4R.base::def.para.flow() 
+# function that the variables above can be found as 
+# environment variables, instead of provided as function 
+# inputs
+base::Sys.setenv("METHPARAFLOW" = "EnvVar")
+
+```
+
+## 3. Read in metadata
+
+[CKL: I'm not sure how to describe this code chunk, because 
+it seems a bit redundant with the previous chunk. It looks 
+like the idea is to set up the user to use a default file 
+if they skipped the previous chunk. I'd be inclined to 
+drop it if that's the case.]
+
+```{r metadata}
+
+# start with an empty list of parameters
+Para <- base::list()
+
+# [CKL: Again, I'm confused here. We're confirming that we 
+# entered the environment variable we just entered above. 
+# Also, why set MethParaFlow both in the environment 
+# variables AND in the function call? Isn't the idea of 
+# the environment variables option to avoid this?]
+if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
+  Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
+} else {
+  # [CKL: And this 'else' is also confusing - if we didn't 
+  # set up the workflow to use environment variables, we 
+  # ingest a completely different dataset from the one 
+  # above?]
+  FileDp0p <- "2016-04-24"
+  Loc <- "SERC"
+  Dom <- "D02"
+  Para$Flow <- eddy4R.base::def.para.flow(FileDp0p = FileDp0p, 
+                                          Loc = Loc, Dom = Dom, 
+                                          MethParaFlow = "DfltInp",
+                                          urlInpRefe = "https://www.dropbox.com/s/qlp1pyanm5rn2eq/inpRefe_20170308.zip?dl=1",
+                                          urlOutRefe = "https://www.dropbox.com/s/60s78ehk7s5j6rd/outRefe_20170612.zip?dl=1")
+}
+
+```
+
+
+
+
+
+
+
+[CKL: everything below comes with the vignette template, I 
+kept it for my own reference, will delete in final version]
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
