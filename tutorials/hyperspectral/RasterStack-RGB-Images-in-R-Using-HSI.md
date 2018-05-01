@@ -95,7 +95,7 @@ In the <a href="/hsi-hdf5-r" target="_blank"> previous activity </a>,
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-<a href="{/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity. 
+<a href="{/hsi-hdf5-r" target="_blank"> Intro to Working with Hyperspectral Data tutorial</a>. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
