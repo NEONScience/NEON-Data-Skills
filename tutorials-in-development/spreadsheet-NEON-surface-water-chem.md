@@ -1,6 +1,6 @@
 ---
 syncID: d52ac2460ddc4dd7b80caab59e963422
-title: "Working With NEON Data in Spreadsheets: Surface Water Chemistry Data"
+title: "Working With NEON Data in Spreadsheets"
 description: "While s."
 dateCreated: 2018-01-18
 authors: Megan A. Jones
