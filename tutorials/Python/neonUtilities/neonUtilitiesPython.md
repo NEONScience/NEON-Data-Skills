@@ -13,7 +13,7 @@ languagesTool: python
 dataProduct: 
 code1: /Python/neonUtilities/neonUtilitiesPython.ipynb
 tutorialSeries: 
-urlTitle: utilities-python
+urlTitle: neon-utilities-python
 ---
 
 The instructions below will guide you through using the neonUtilities R package 
