@@ -162,7 +162,13 @@ you will get a single zipped file containing a directory for each month and site
 requested data for. Dealing with these seperate tables from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
 **neonUtilities** that takes the unzipped downloaded file and joining the data 
-files. 
+files. The teaching data downloaded with this tutorial is already stacked. If you
+are working with other NEON data, please go through the tutorial to stack the data
+in 
+<a href="/neonDataStackR" target="_blank">R</a> or in <a href="/neon-utilities-python" target="_blank">Python</a>
+and then return to this tutorial.  
+
+## Work with NEON Data
 
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
