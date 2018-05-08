@@ -80,22 +80,25 @@ base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
 base::Sys.setenv("DIRFILEPARA" = 
                    "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
 
-# [CKL: this was commented out in the existing vignette. Should I delete?]
-# base::Sys.setenv("DIRMNT" = base::paste0("/home/", base::Sys.getenv("USER"), "/eddy"))
+# [CKL: this was commented out in the existing vignette. Should I delete? 
+# DD: Yeah, we can delete this line]
 
 # file path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
 # date(s) of the input data
-# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?]
-base::Sys.setenv("FILEDP0P" = "2017-05-01")
+# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?
+# DD: It is possible, you would just add a vector of ISO formatted date character strings. I suggest we change the name of this variable to DATEOUT. Additionally, the new function actually just searches the input directory for the output date, removing the need for DIRFILEPARA. Do you think we should remove that ENV variable? (It still works with it to)]
+base::Sys.setenv("DATEOUT" = "2017-05-01")
 
 # NEON domain of the input data: Domain 10, D10
-base::Sys.setenv("DOM" = "D10")
+base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
+#[DD: The DOM ENV is no longer needed in the new setup of the function either. We use FILEOUTBASE, which allows us to specify the full beginning of the output filename. I updated it, if you prefer to use the old version let me know]
 
 # NEON site code of the input data:
 # Central Plains Experimental Range, CPER
 base::Sys.setenv("LOC" = "CPER")
+#[DD: We have a function that determines this from the input L0' file now. We can add that function call when we get to reading in Parameters and remove this ENV]
 
 # flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
@@ -111,7 +114,9 @@ base::Sys.setenv("METHPARAFLOW" = "EnvVar")
 it seems a bit redundant with the previous chunk. It looks 
 like the idea is to set up the user to use a default file 
 if they skipped the previous chunk. I'd be inclined to 
-drop it if that's the case.]
+drop it if that's the case.
+DD: Yeah, exactly. There is a file on dropbox that will be read by default if the ENV variables are not specified. We can remove this if you think it is better.
+]
 
 ```{r metadata}
 
@@ -123,22 +128,10 @@ Para <- base::list()
 # Also, why set MethParaFlow both in the environment 
 # variables AND in the function call? Isn't the idea of 
 # the environment variables option to avoid this?]
-if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
+# [DD: Yeah, this function grabs all the workflow parameters from the ENV or sets them to default values. This was taken from the workflow we use for L1 transitions, so we built in capabilities to specify function argument directly, through ENV variables from within RStudio or from the command line, or not specify anything and run the gold file test. So, a lot of this can be removed.]
+
   Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
-} else {
-  # [CKL: And this 'else' is also confusing - if we didn't 
-  # set up the workflow to use environment variables, we 
-  # ingest a completely different dataset from the one 
-  # above?]
-  FileDp0p <- "2016-04-24"
-  Loc <- "SERC"
-  Dom <- "D02"
-  Para$Flow <- eddy4R.base::def.para.flow(FileDp0p = FileDp0p, 
-                                          Loc = Loc, Dom = Dom, 
-                                          MethParaFlow = "DfltInp",
-                                          urlInpRefe = "https://www.dropbox.com/s/qlp1pyanm5rn2eq/inpRefe_20170308.zip?dl=1",
-                                          urlOutRefe = "https://www.dropbox.com/s/60s78ehk7s5j6rd/outRefe_20170612.zip?dl=1")
-}
+
 
 ```
 
