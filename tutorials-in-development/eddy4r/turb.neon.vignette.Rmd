@@ -31,23 +31,26 @@ vignette.
 ## 1. Install packages and set up environment
 
 First, check for required packages and install any that aren't 
-already installed.
+already installed. Once, all required packages are installed they are loaded into the environment.
 
 Throughout this vignette, we use the package::function() 
-syntax to refer to functions. This is done to avoid any 
+syntax to explicitly refer to functions. This is done to avoid any 
 possibility of ambiguity, in case there are functions in 
 different packages with the same name.
 
-[CKL: Dave, based on your feedback, I dropped the update.packages() call. Yes?]
+[CKL: Dave, based on your feedback, I dropped the update.packages() call. Yes? 
+DD: Yes, we should remove the update.packages() call. Otherwise, it will take forever to run the vignette. Plus, we are snapshotting the package versions with to coincide with our eddy4R docker versions going forward. So, any function should work with installed package versions from that release.]
 
 ```{r pack-install}
 
-packFlow00 <- c("DataCombine", "ff", "ffbase", "rhdf5","splus2R")
-packFlow01 <- packFlow00[!(packFlow00 %in% installed.packages()[,"Package"])]
-if(base::length(packFlow01) > 0) {
-  utils::install.packages(packFlow01)
-  }
-base::rm(packFlow00, packFlow01)
+packReq <- c("DataCombine", "eddy4R.base", "eddy4R.qaqc",  "ff", "ffbase", "methods", "rhdf5","splus2R")
+lapply(packReq, function(x) {
+  print(x)
+  if(require(x, character.only = TRUE) == FALSE) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }})
+base::rm(packReq)
 
 ```
 
@@ -55,20 +58,9 @@ Now that we've ensured all needed packages are installed, load
 them:
 
 [CKL: Dave, there are packages in this list that aren't in 
-packFlow00 above. Should I add them?]
+packFlow00 above. Should I add them? 
+DD: I thinkg we should add them. I've put them in the list. Additionally, I updated the function to lapply using require. This allowed me to combine the library() call. If you think we should keep separate feel free to revert this change.]
 
-```{r pack-load}
-
-base::library(DataCombine)
-base::library(eddy4R.base)
-base::library(eddy4R.qaqc)
-base::library(ff)
-base::library(ffbase)
-base::library(methods)
-base::library(rhdf5)
-base::library(splus2R)
-
-```
 
 ## 2. Set environment variables
 
@@ -88,22 +80,25 @@ base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
 base::Sys.setenv("DIRFILEPARA" = 
                    "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
 
-# [CKL: this was commented out in the existing vignette. Should I delete?]
-# base::Sys.setenv("DIRMNT" = base::paste0("/home/", base::Sys.getenv("USER"), "/eddy"))
+# [CKL: this was commented out in the existing vignette. Should I delete? 
+# DD: Yeah, we can delete this line]
 
 # file path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
 # date(s) of the input data
-# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?]
-base::Sys.setenv("FILEDP0P" = "2017-05-01")
+# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?
+# DD: It is possible, you would just add a vector of ISO formatted date character strings. I suggest we change the name of this variable to DATEOUT. Additionally, the new function actually just searches the input directory for the output date, removing the need for DIRFILEPARA. Do you think we should remove that ENV variable? (It still works with it to)]
+base::Sys.setenv("DATEOUT" = "2017-05-01")
 
 # NEON domain of the input data: Domain 10, D10
-base::Sys.setenv("DOM" = "D10")
+base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
+#[DD: The DOM ENV is no longer needed in the new setup of the function either. We use FILEOUTBASE, which allows us to specify the full beginning of the output filename. I updated it, if you prefer to use the old version let me know]
 
 # NEON site code of the input data:
 # Central Plains Experimental Range, CPER
 base::Sys.setenv("LOC" = "CPER")
+#[DD: We have a function that determines this from the input L0' file now. We can add that function call when we get to reading in Parameters and remove this ENV]
 
 # flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
@@ -119,7 +114,9 @@ base::Sys.setenv("METHPARAFLOW" = "EnvVar")
 it seems a bit redundant with the previous chunk. It looks 
 like the idea is to set up the user to use a default file 
 if they skipped the previous chunk. I'd be inclined to 
-drop it if that's the case.]
+drop it if that's the case.
+DD: Yeah, exactly. There is a file on dropbox that will be read by default if the ENV variables are not specified. We can remove this if you think it is better.
+]
 
 ```{r metadata}
 
@@ -131,22 +128,10 @@ Para <- base::list()
 # Also, why set MethParaFlow both in the environment 
 # variables AND in the function call? Isn't the idea of 
 # the environment variables option to avoid this?]
-if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
+# [DD: Yeah, this function grabs all the workflow parameters from the ENV or sets them to default values. This was taken from the workflow we use for L1 transitions, so we built in capabilities to specify function argument directly, through ENV variables from within RStudio or from the command line, or not specify anything and run the gold file test. So, a lot of this can be removed.]
+
   Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
-} else {
-  # [CKL: And this 'else' is also confusing - if we didn't 
-  # set up the workflow to use environment variables, we 
-  # ingest a completely different dataset from the one 
-  # above?]
-  FileDp0p <- "2016-04-24"
-  Loc <- "SERC"
-  Dom <- "D02"
-  Para$Flow <- eddy4R.base::def.para.flow(FileDp0p = FileDp0p, 
-                                          Loc = Loc, Dom = Dom, 
-                                          MethParaFlow = "DfltInp",
-                                          urlInpRefe = "https://www.dropbox.com/s/qlp1pyanm5rn2eq/inpRefe_20170308.zip?dl=1",
-                                          urlOutRefe = "https://www.dropbox.com/s/60s78ehk7s5j6rd/outRefe_20170612.zip?dl=1")
-}
+
 
 ```
 
