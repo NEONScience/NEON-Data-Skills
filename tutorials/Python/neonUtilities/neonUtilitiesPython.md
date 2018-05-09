@@ -1,6 +1,5 @@
-
 ---
-syncID:63993d7274f84e51a1047e1fea9aece1
+syncID: 63993d7274f84e51a1047e1fea9aece1
 title: "Using NEON Utilities in Python"
 description: "Use the neonUtilities R package in Python, via the rpy2 library."
 dateCreated: 2018-12-08
@@ -21,8 +20,10 @@ in Python, via the rpy2 package. rpy2 creates an R environment you can interact
 with from Python. The focus in this tutorial is on the Python implementation, 
 rather than a comprehensive overview of the package itself. For more 
 information about the package, and instructions for running it in R directly, 
-see the readme for the package on the <a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, 
-and the tutorial on the <a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
+see the readme for the package on the 
+<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, 
+and the tutorial on the 
+<a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
 
 
 ## Install and set up
@@ -34,7 +35,9 @@ but these instructions were developed and tested using 3.6.4.
 2. R installed. You don't need to have ever used it directly. We tested using 
 R 3.4.3, but most other recent versions should also work.
 3. `rpy2` installed. Run the line below from the command line, it won't run within 
-Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
+Jupyter. See 
+<a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> 
+for more information on how to install packages. 
 `rpy2` often has install problems on Windows, see "Windows Users" section below if 
 you are running Windows.
 4. You may need to install `pip` before installing `rpy2`, if you don't have it 
@@ -218,12 +221,13 @@ robjects.globalenv['table_types'] = table_types
 
 Now run the `stackByTable()` function to stack the data. It requires two inputs: 
 
-1. The data product identifier (DPID) of the data you're stacking. DPIDs can be 
+1. The NEON data product identifier (DPID) of the data you're stacking. DPIDs can be 
 found in the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a> 
-and are in the form DP#.######.001
+and are in the form DP#.######.###
 2. A file path, the path to the zip file you downloaded from the NEON Data Portal.
 
-For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
+For additional, optional inputs to `stackByTable()`, see the 
+<a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 for neonUtilities.
 
 
@@ -262,16 +266,18 @@ neonUtils.stackByTable('DP1.10100.001',
 
 
 Check the folder containing the original zip file from the Data Portal; 
-you should now have a subfolder containing the unzipped and stacked files.
+you should now have a subfolder containing the unzipped and stacked files called
+`StackedFiles`.
 
 ## Download files to be stacked: zipsByProduct()
 
-The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download 
-data files for a given product. The files downloaded by `zipsByProduct()` 
-can then be fed into `stackByTable()`.
+The function `zipsByProduct()` uses the 
+<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> 
+to programmatically download data files for a given product. The files 
+downloaded by `zipsByProduct()` can then be fed into `stackByTable()`.
 
 `zipsByProduct()` will create a new folder in the R working directory and 
-write the files there. First set the working directory if it isn't set to 
+write the files there. First, set the working directory if it isn't set to 
 where you want it.
 
 
@@ -279,15 +285,15 @@ where you want it.
 base.setwd('~/Downloads');
 ```
 
-Run the downloader with these inputs: a DPID, a site (or "all" for all sites), 
+Run the downloader with these inputs: a DPID, a 4-letter site ID (or "all" for all sites), 
 a package (either basic or expanded), and an indicator to check the size of 
-your download before proceeding, or not.
+your download before proceeding or not (TRUE/FALSE).
 
 There are two differences relative to running this function in R directly: 
 
 1. `check.size` becomes `check_size`, because dots have programmatic meaning 
 in Python
-2. `TRUE` (or `T`) becomes `"TRUE"` because the values TRUE and FALSE don't 
+2. `TRUE` (or `T`) becomes `'TRUE'` because the values TRUE and FALSE don't 
 have special meaning in Python the way they do in R, so it interprets them 
 as variables if they're unquoted.
 
