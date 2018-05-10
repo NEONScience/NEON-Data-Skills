@@ -31,45 +31,34 @@ vignette.
 ## 1. Install packages and set up environment
 
 First, check for required packages and install any that aren't 
-already installed. Once, all required packages are installed they are loaded into the environment.
+already installed. Once all required packages are installed, 
+load them into the environment.
 
-Throughout this vignette, we use the package::function() 
+Throughout this vignette, we use the `package::function()` 
 syntax to explicitly refer to functions. This is done to avoid any 
 possibility of ambiguity, in case there are functions in 
 different packages with the same name.
 
-[CKL: Dave, based on your feedback, I dropped the update.packages() call. Yes? 
-DD: Yes, we should remove the update.packages() call. Otherwise, it will take forever to run the vignette. Plus, we are snapshotting the package versions with to coincide with our eddy4R docker versions going forward. So, any function should work with installed package versions from that release.]
 
 ```{r pack-install}
 
-packReq <- c("DataCombine", "eddy4R.base", "eddy4R.qaqc",  "ff", "ffbase", "methods", "rhdf5","splus2R")
-lapply(packReq, function(x) {
+packReq <- c("DataCombine", "eddy4R.base", "eddy4R.qaqc",  
+             "ff", "ffbase", "methods", "rhdf5","splus2R")
+base::lapply(packReq, function(x) {
   print(x)
-  if(require(x, character.only = TRUE) == FALSE) {
-    install.packages(x)
-    library(x, character.only = TRUE)
+  if(base::require(x, character.only = TRUE) == FALSE) {
+    utils::install.packages(x)
+    base::library(x, character.only = TRUE)
   }})
 base::rm(packReq)
 
 ```
-
-Now that we've ensured all needed packages are installed, load 
-them:
-
-[CKL: Dave, there are packages in this list that aren't in 
-packFlow00 above. Should I add them? 
-DD: I thinkg we should add them. I've put them in the list. Additionally, I updated the function to lapply using require. This allowed me to combine the library() call. If you think we should keep separate feel free to revert this change.]
 
 
 ## 2. Set environment variables
 
 Here we set file paths and basic input parameters as environment 
 variables for convenience.
-
-[CKL: Dave, I dropped the if(TRUE) on this, because it didn't 
-seem useful. Also rearranged a bit and added explanatory 
-comments, please review]
 
 ```{r env-vars}
 
@@ -80,25 +69,18 @@ base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
 base::Sys.setenv("DIRFILEPARA" = 
                    "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
 
-# [CKL: this was commented out in the existing vignette. Should I delete? 
-# DD: Yeah, we can delete this line]
-
 # file path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
-# date(s) of the input data
-# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?
-# DD: It is possible, you would just add a vector of ISO formatted date character strings. I suggest we change the name of this variable to DATEOUT. Additionally, the new function actually just searches the input directory for the output date, removing the need for DIRFILEPARA. Do you think we should remove that ENV variable? (It still works with it to)]
+# date(s) of the input data, specified here for the ouput file name
 base::Sys.setenv("DATEOUT" = "2017-05-01")
 
-# NEON domain of the input data: Domain 10, D10
+# NEON domain, site, and data product ID of the input data
+# for the output file name:
+# Domain 10 = D10
+# Central Plains Experimental Range = CPER
+# Bundled eddy covariance data = 00200.001
 base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
-#[DD: The DOM ENV is no longer needed in the new setup of the function either. We use FILEOUTBASE, which allows us to specify the full beginning of the output filename. I updated it, if you prefer to use the old version let me know]
-
-# NEON site code of the input data:
-# Central Plains Experimental Range, CPER
-base::Sys.setenv("LOC" = "CPER")
-#[DD: We have a function that determines this from the input L0' file now. We can add that function call when we get to reading in Parameters and remove this ENV]
 
 # flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
@@ -110,28 +92,52 @@ base::Sys.setenv("METHPARAFLOW" = "EnvVar")
 
 ## 3. Read in metadata
 
-[CKL: I'm not sure how to describe this code chunk, because 
-it seems a bit redundant with the previous chunk. It looks 
-like the idea is to set up the user to use a default file 
-if they skipped the previous chunk. I'd be inclined to 
-drop it if that's the case.
-DD: Yeah, exactly. There is a file on dropbox that will be read by default if the ENV variables are not specified. We can remove this if you think it is better.
-]
+Pass along the environment variables defined in section 2, 
+then read in additional parameters from the HDF5 file.
 
 ```{r metadata}
 
 # start with an empty list of parameters
 Para <- base::list()
 
-# [CKL: Again, I'm confused here. We're confirming that we 
-# entered the environment variable we just entered above. 
-# Also, why set MethParaFlow both in the environment 
-# variables AND in the function call? Isn't the idea of 
-# the environment variables option to avoid this?]
-# [DD: Yeah, this function grabs all the workflow parameters from the ENV or sets them to default values. This was taken from the workflow we use for L1 transitions, so we built in capabilities to specify function argument directly, through ENV variables from within RStudio or from the command line, or not specify anything and run the gold file test. So, a lot of this can be removed.]
+# use the def.para.flow() function to specify the metadata 
+# are stored in environment variables
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 
-  Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
+# [CKL: the error messages here are confusing. Is there bandwidth 
+# on the EC team to modify? It would be helpful to add to the warning
+# message, something like: "1: In FUN(X[[i]], ...) :
+#  The variable ParaFlow$Deve is not specified as ENV variable; a 
+#  default value has been assigned"
+# Also, I'm now getting a new error: "FileDp0p must be defined and a character string."
+# I thought you had indicated FileDp0p wasn't required anymore?]
 
+
+# [CKL: next few lines shown with error messages as comments. 
+# Looks to me like some of the edits above resulted in 
+# missing parameters]
+
+Para$Flow$LevlTowr <- eddy4R.base::def.para.levl.towr(FileIn = Para$Flow$DirFilePara)
+#Error in base::file.exists(FileIn) : invalid 'file' argument
+for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
+
+        Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
+            DirFileParaLoca = Para$Flow$DirFilePara,
+            GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
+            PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+          )
+        
+      }
+#Error in rhdf5::H5Fopen(DirFileParaLoca) : 
+#  'name' must be a character string of length 1
+
+Para$Sci <- def.neon.read.hdf5.para(
+    DirFileParaLoca = Para$Flow$DirFilePara,
+    GrpName = "site",
+    PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+  )
+#Error in rhdf5::H5Fopen(DirFileParaLoca) : 
+#  'name' must be a character string of length 1
 
 ```
 
