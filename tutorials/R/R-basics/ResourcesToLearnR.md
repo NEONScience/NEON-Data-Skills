@@ -59,7 +59,7 @@ basics, it covers functions, loops, command line, and other key skills
 data aggregation & manipulation, ggplot2 for plotting, and touches on interacting 
 with an SQL database. Designed to be taught by an instructor but the materials also work for independent learning online. 
 * <a href="http://www.datacarpentry.org/semester-biology/" target="_blank">Ethan White’s Data Carpentry for Biologists Semester Course (online content)</a> 
-- This comprehensive course contains an R section. While the overal focus is on 
+ - This comprehensive course contains an R section. While the overal focus is on 
 data science skills, learning R is a portion of it (note, this is an extensive 
 course).
 * <a href="https://www.rstudio.com/online-learning/" target="_blank">RStudio’s list</a>
@@ -77,7 +77,7 @@ to recommend a specific series.  Find what works for you by searching
 is guided introduction to R where you code along with the instructions in R. You 
 get direct feedback when you type a command incorrectly. To use this package, 
 once you have R or RStudio open and running, use the following commands to start 
-the first lesson
+the first lesson. 
 
 `install.packages("swirl")`
 
@@ -94,8 +94,7 @@ scientists working on the NEON project have found useful.
 * Michael Crawley’s <a href="https://www.wiley.com/en-us/The+R+Book%2C+2nd+Edition-p-9780470973929" target="_blank">The R Book</a> 
 is a classic that takes you from beginning steps to analyses and modelling. 
 * Grolemun and Wickham’s <a href="http://r4ds.had.co.nz/" target="_blank">R for Data Science </a>
-focuses on using R in data science applications using Hadley Wickham’s “tidyverse”.  
-It does assume some basic familiarity with R.  Bonus: it is available online or in book format!  
+focuses on using R in data science applications using Hadley Wickham’s “tidyverse”. It does assume some basic familiarity with R.  Bonus: it is available online or in book format!  
 (If you are completely new, they recommend starting with 
 <a href="http://shop.oreilly.com/product/0636920028574.do" target="_blank"> Hands-on Programming with R</a>). 
 
