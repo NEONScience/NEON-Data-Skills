@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: R-basics
-urlTitle: getting-started-r
+urlTitle: resources-learn-r
 ---
 
 
