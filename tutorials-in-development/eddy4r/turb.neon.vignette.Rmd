@@ -109,8 +109,7 @@ Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 # message, something like: "1: In FUN(X[[i]], ...) :
 #  The variable ParaFlow$Deve is not specified as ENV variable; a 
 #  default value has been assigned"
-# Also, I'm now getting a new error: "FileDp0p must be defined and a character string."
-# I thought you had indicated FileDp0p wasn't required anymore?]
+# Also, I'm now getting a new error: ""UrlInpRefe" is missing, with no default"
 
 
 # [CKL: next few lines shown with error messages as comments. 
@@ -118,7 +117,7 @@ Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 # missing parameters]
 
 Para$Flow$LevlTowr <- eddy4R.base::def.para.levl.towr(FileIn = Para$Flow$DirFilePara)
-#Error in base::file.exists(FileIn) : invalid 'file' argument
+#Error: 'def.para.levl.towr' is not an exported object from 'namespace:eddy4R.base'
 for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
 
         Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
@@ -128,16 +127,16 @@ for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
           )
         
       }
-#Error in rhdf5::H5Fopen(DirFileParaLoca) : 
-#  'name' must be a character string of length 1
+#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
+#  unused argument (PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt"))
 
 Para$Sci <- def.neon.read.hdf5.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
     GrpName = "site",
     PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
   )
-#Error in rhdf5::H5Fopen(DirFileParaLoca) : 
-#  'name' must be a character string of length 1
+#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
+#  unused argument (PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime"))
 
 ```
 
