@@ -457,6 +457,8 @@ working directory.
 	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
 	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
 	Experimental Range. Source: National Ecological Observatory Network (NEON) 
+	</figcaption>
+</figure>
 
 ## Geolocation data
 
