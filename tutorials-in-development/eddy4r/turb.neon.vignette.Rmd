@@ -115,15 +115,18 @@ Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 # [CKL: next few lines shown with error messages as comments. 
 # Looks to me like some of the edits above resulted in 
 # missing parameters]
-
-Para$Flow$LevlTowr <- eddy4R.base::def.para.levl.towr(FileIn = Para$Flow$DirFilePara)
+  # Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file   
+  Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
+  # Grab the tower top level (LvlTowr) from the dp0p input file 
+  Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+  
 #Error: 'def.para.levl.towr' is not an exported object from 'namespace:eddy4R.base'
 for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
 
         Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
             DirFileParaLoca = Para$Flow$DirFilePara,
             GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
-            PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+            SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
           )
         
       }
@@ -133,7 +136,7 @@ for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
 Para$Sci <- def.neon.read.hdf5.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
     GrpName = "site",
-    PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+    SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
   )
 #Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
 #  unused argument (PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime"))
