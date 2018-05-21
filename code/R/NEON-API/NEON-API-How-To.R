@@ -111,7 +111,8 @@ avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=
 cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
-cam <- GET(cam.urls[grep("SJER", cam.urls)])
+cam <- GET(cam.urls[intersect(grep("SJER", cam.urls),
+                              grep("2017", cam.urls))])
 cam.files <- fromJSON(content(cam, as="text"))
 
 # this list of files is very long, so we'll just look at the first few
