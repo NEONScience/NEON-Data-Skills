@@ -17,6 +17,10 @@ _config.yml
 .Rapp.history
 # Session Data files
 .RData
+#Project files
+.Rproj.user/
+.Rproj.user
+*.Rproj
 
 # Python files
 # Byte-compiled / optimized / DLL files
@@ -94,3 +98,4 @@ ENV/
 .spyderproject
 # Rope project settings
 .ropeproject
+
