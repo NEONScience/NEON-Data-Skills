@@ -63,11 +63,14 @@ variables for convenience.
 ```{r env-vars}
 
 # file path for the directory containing input L0' data
-base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
+#base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
+#DD: This will be the case in the future, but the dp0p HDF5 file is not package into the deve docker, so you need to point it to a local file until we get ready to release the publication docker image.
+base::Sys.setenv("DIRINP" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/turbTow/inpRefe"))
 
-# file path to the HDF5 file of input L0' data
-base::Sys.setenv("DIRFILEPARA" = 
-                   "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
+#DD: This line is not needed in the new version 
+#file path to the HDF5 file of input L0' data
+#base::Sys.setenv("DIRFILEPARA" = 
+ #                  "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
 
 # file path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
@@ -102,7 +105,7 @@ Para <- base::list()
 
 # use the def.para.flow() function to specify the metadata 
 # are stored in environment variables
-Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",                                          UrlInpRefe = "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",                          UrlOutRefe = "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
 
 # [CKL: the error messages here are confusing. Is there bandwidth 
 # on the EC team to modify? It would be helpful to add to the warning
@@ -115,15 +118,18 @@ Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 # [CKL: next few lines shown with error messages as comments. 
 # Looks to me like some of the edits above resulted in 
 # missing parameters]
-
-Para$Flow$LevlTowr <- eddy4R.base::def.para.levl.towr(FileIn = Para$Flow$DirFilePara)
+  # Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file   
+  Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
+  # Grab the tower top level (LvlTowr) from the dp0p input file 
+  Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+  
 #Error: 'def.para.levl.towr' is not an exported object from 'namespace:eddy4R.base'
 for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
 
         Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
             DirFileParaLoca = Para$Flow$DirFilePara,
             GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
-            PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+            SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
           )
         
       }
@@ -133,7 +139,7 @@ for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
 Para$Sci <- def.neon.read.hdf5.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
     GrpName = "site",
-    PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+    SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
   )
 #Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
 #  unused argument (PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime"))
