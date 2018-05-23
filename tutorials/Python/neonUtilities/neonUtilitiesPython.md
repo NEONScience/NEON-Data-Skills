@@ -1,8 +1,9 @@
+
 ---
 syncID: 5be9f80592394af3bc09cf8e469fef6e
 title: "Using NEON Utilities in Python"
 description: "Use the neonUtilities R package in Python, via the rpy2 library."
-dateCreated: 2018-12-08
+dateCreated: 2018-5-10
 authors: Claire K. Lunch
 contributors: 
 estimatedTime: 20 minutes
@@ -20,10 +21,8 @@ in Python, via the rpy2 package. rpy2 creates an R environment you can interact
 with from Python. The focus in this tutorial is on the Python implementation, 
 rather than a comprehensive overview of the package itself. For more 
 information about the package, and instructions for running it in R directly, 
-see the readme for the package on the 
-<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, 
-and the tutorial on the 
-<a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
+see the readme for the package on the <a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank">NEON-utilities GitHub repo</a>, 
+and the tutorial on the <a href="http://www.neonscience.org/neonDataStackR" target="_blank">NEON Data Skills page</a>.
 
 
 ## Install and set up
@@ -35,9 +34,7 @@ but these instructions were developed and tested using 3.6.4.
 2. R installed. You don't need to have ever used it directly. We tested using 
 R 3.4.3, but most other recent versions should also work.
 3. `rpy2` installed. Run the line below from the command line, it won't run within 
-Jupyter. See 
-<a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> 
-for more information on how to install packages. 
+Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
 `rpy2` often has install problems on Windows, see "Windows Users" section below if 
 you are running Windows.
 4. You may need to install `pip` before installing `rpy2`, if you don't have it 
@@ -69,7 +66,7 @@ If you have trouble with the install, try these steps.
 
 ## Load packages
 
-Now import rpy2 into your session.
+Now import `rpy2` into your session.
 
 
 ```python
@@ -78,13 +75,65 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
 ```
 
-Import the base R functionality.
+Load the base R functionality, using the `rpy2` function `importr()`.
 
 
 ```python
 base = importr('base')
 utils = importr('utils')
+stats = importr('stats')
 ```
+
+The basic syntax for running R code via `rpy2` is `package.function(inputs)`, 
+where `package` is the R package in use, `function` is the name of the function 
+within the R package, and `inputs` are the inputs to the function. In other 
+words, it's very similar to running code in R as `package::function(inputs)`. 
+For example:
+
+
+```python
+stats.rnorm(6, 0, 1)
+```
+
+
+
+
+
+    <span>FloatVector with 6 elements.</span>
+    <table>
+      <tbody>
+      <tr>
+      
+      <td>
+        -1.767571
+      </td>
+      
+      <td>
+        -0.550345
+      </td>
+      
+      <td>
+        -0.195803
+      </td>
+      
+      <td>
+        -1.345787
+      </td>
+      
+      <td>
+        -1.184887
+      </td>
+      
+      <td>
+        -1.140016
+      </td>
+      
+      </tr>
+      </tbody>
+    </table>
+    
+
+
 
 Suppress R warnings. This step can be skipped, but will result in messages 
 getting passed through from R that Python will interpret as warnings.
@@ -101,9 +150,16 @@ CRAN mirror, select one close to your location. You only need to do this
 step once, although if you use this code regularly, re-installing 
 periodically to get the newest version is a good idea.
 
+This installation step carries out the same steps that it would if 
+run in R directly, so if you use R regularly and have already installed 
+`devtools` on your machine, you can skip this step, although again, 
+it's wise to update regularly. And be aware, this also means if you 
+install new versions of packages via `rpy2`, they'll be updated the 
+next time you use R, too.
+
 The semicolon at the end of the line (here, and in some other function 
 calls below) can be omitted. It suppresses a note indicating the output 
-of the function is null. This note appears because these functions download 
+of the function is null. The output is null because these functions download 
 or modify files on your local drive, but none of the data are read into the 
 Python or R environments.
 
@@ -131,60 +187,62 @@ utils.install_packages('devtools');
     11: Brazil (SP 1) [https]            12: Brazil (SP 2) [https]          
     13: Bulgaria [https]                 14: Chile 1 [https]                
     15: Chile 2 [https]                  16: China (Guangzhou) [https]      
-    17: China (Lanzhou) [https]          18: China (Shanghai) [https]       
-    19: Colombia (Cali) [https]          20: Czech Republic [https]         
-    21: Denmark [https]                  22: East Asia [https]              
-    23: Ecuador (Cuenca) [https]         24: Ecuador (Quito) [https]        
-    25: Estonia [https]                  26: France (Lyon 1) [https]        
-    27: France (Lyon 2) [https]          28: France (Marseille) [https]     
-    29: France (Montpellier) [https]     30: France (Paris 2) [https]       
-    31: Germany (Erlangen) [https]       32: Germany (Göttingen) [https]    
-    33: Germany (Münster) [https]        34: Greece [https]                 
-    35: Iceland [https]                  36: Indonesia (Jakarta) [https]    
-    37: Ireland [https]                  38: Italy (Padua) [https]          
-    39: Japan (Tokyo) [https]            40: Japan (Yonezawa) [https]       
-    41: Malaysia [https]                 42: Mexico (Mexico City) [https]   
-    43: Norway [https]                   44: Philippines [https]            
-    45: Serbia [https]                   46: Spain (A Coruña) [https]       
-    47: Spain (Madrid) [https]           48: Sweden [https]                 
-    49: Switzerland [https]              50: Turkey (Denizli) [https]       
-    51: Turkey (Mersin) [https]          52: UK (Bristol) [https]           
-    53: UK (Cambridge) [https]           54: UK (London 1) [https]          
-    55: USA (CA 1) [https]               56: USA (IA) [https]               
-    57: USA (KS) [https]                 58: USA (MI 1) [https]             
-    59: USA (NY) [https]                 60: USA (OR) [https]               
-    61: USA (TN) [https]                 62: USA (TX 1) [https]             
-    63: Vietnam [https]                  64: (other mirrors)                
+    17: China (Lanzhou) [https]          18: China (Shanghai 1) [https]     
+    19: China (Shanghai 2) [https]       20: Colombia (Cali) [https]        
+    21: Czech Republic [https]           22: Denmark [https]                
+    23: East Asia [https]                24: Ecuador (Cuenca) [https]       
+    25: Ecuador (Quito) [https]          26: Estonia [https]                
+    27: France (Lyon 1) [https]          28: France (Lyon 2) [https]        
+    29: France (Marseille) [https]       30: France (Montpellier) [https]   
+    31: France (Paris 2) [https]         32: Germany (Erlangen) [https]     
+    33: Germany (Göttingen) [https]      34: Germany (Münster) [https]      
+    35: Greece [https]                   36: Iceland [https]                
+    37: India [https]                    38: Indonesia (Jakarta) [https]    
+    39: Ireland [https]                  40: Italy (Padua) [https]          
+    41: Japan (Tokyo) [https]            42: Japan (Yonezawa) [https]       
+    43: Korea (Ulsan) [https]            44: Malaysia [https]               
+    45: Mexico (Mexico City) [https]     46: Norway [https]                 
+    47: Philippines [https]              48: Serbia [https]                 
+    49: Spain (A Coruña) [https]         50: Spain (Madrid) [https]         
+    51: Sweden [https]                   52: Switzerland [https]            
+    53: Turkey (Denizli) [https]         54: Turkey (Mersin) [https]        
+    55: UK (Bristol) [https]             56: UK (Cambridge) [https]         
+    57: UK (London 1) [https]            58: USA (CA 1) [https]             
+    59: USA (IA) [https]                 60: USA (KS) [https]               
+    61: USA (MI 1) [https]               62: USA (NY) [https]               
+    63: USA (OR) [https]                 64: USA (TN) [https]               
+    65: USA (TX 1) [https]               66: Vietnam [https]                
+    67: (other mirrors)                  
     
     
     
     
     
-    
-    Selection: 56
+    Selection: 59
     
     
     
     The downloaded binary packages are in
-    	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpp3bvLx/downloaded_packages
+    	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpstlW3C/downloaded_packages
     
     
     
 
 
-Now import the `devtools` package. This does need to be run every time 
-you use the code; for those of you who are familiar with R, `importr` 
-is roughly equivalent to the `library()` function in R.
+Now load the `devtools` package. This does need to be run every time 
+you use the code; if you're familiar with R, `importr()` is roughly 
+equivalent to the `library()` function in R.
 
 
 ```python
 devtools = importr('devtools')
 ```
 
-Using the `devtools` package, install the `neonUtilities` package. As with 
-`devtools`, you can theoretically skip this step in the future, but since 
-we update `neonUtilities` frequently, we recommend re-installing regularly.
-Then import the package.
+Using the `install_github()` function from the `devtools` package, install 
+the `neonUtilities` package from its location in the <a href="https://github.com/NEONScience" target="_blank"> public NEON GitHub</a> 
+repository. As with `devtools`, you can theoretically skip this step in 
+the future, but since we update `neonUtilities` frequently, we recommend 
+re-installing regularly. Then load the package.
 
 
 ```python
@@ -200,11 +258,12 @@ provides. Start by downloading the dataset you're interested in from the
 Portal. It will download as a single zip file. Note the file path it's 
 saved to and proceed.
 
-The data stacker package comes with a data file, table_types. The data file 
-is needed for the package to work, and rpy2 doesn't load data by default. So 
+The data stacker package comes with a data file, `table_types`. The data file 
+is needed for the package to work, and `rpy2` doesn't load data by default. So 
 we need to load it to the session and then pass it back to the R environment.
 
-First, load the data file:
+First, extract the data object from the package. Then extract the 
+`table_types` object from the data object:
 
 
 ```python
@@ -219,21 +278,15 @@ Now, pass it back to the R environment:
 robjects.globalenv['table_types'] = table_types
 ```
 
-Now run the `stackByTable()` function to stack the data. It requires two inputs: 
+Now run the `stackByTable()` function to stack the data. It requires only one 
+input, the path to the zip file you downloaded from the NEON Data Portal.
 
-1. The NEON data product identifier (DPID) of the data you're stacking. DPIDs can be 
-found in the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a> 
-and are in the form DP#.######.###
-2. A file path, the path to the zip file you downloaded from the NEON Data Portal.
-
-For additional, optional inputs to `stackByTable()`, see the 
-<a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
+For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 for neonUtilities.
 
 
 ```python
-neonUtils.stackByTable('DP1.10100.001',
-                       '~/Downloads/NEON_isotope-soil-distrib-periodic.zip');
+neonUtils.stackByTable(filepath='~/Downloads/NEON_isotope-soil-distrib-periodic.zip');
 ```
 
     Unpacked  NEON.D02.SCBI.DP1.10100.001.2014-08.expanded.20180308T180515Z.zip
@@ -266,15 +319,13 @@ neonUtils.stackByTable('DP1.10100.001',
 
 
 Check the folder containing the original zip file from the Data Portal; 
-you should now have a subfolder containing the unzipped and stacked files called
-`StackedFiles`.
+you should now have a subfolder containing the unzipped and stacked files called `stackedFiles`.
 
 ## Download files to be stacked: zipsByProduct()
 
-The function `zipsByProduct()` uses the 
-<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> 
-to programmatically download data files for a given product. The files 
-downloaded by `zipsByProduct()` can then be fed into `stackByTable()`.
+The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a> to programmatically download 
+data files for a given product. The files downloaded by `zipsByProduct()` 
+can then be fed into `stackByTable()`.
 
 `zipsByProduct()` will create a new folder in the R working directory and 
 write the files there. First, set the working directory if it isn't set to 
@@ -297,9 +348,9 @@ in Python
 have special meaning in Python the way they do in R, so it interprets them 
 as variables if they're unquoted.
 
-`check_size="TRUE"` will estimate the size of the download and ask you to 
+`check_size='TRUE'` will estimate the size of the download and ask you to 
 confirm before proceeding. This will cause problems in certain environments, 
-or in batch processing. Under those circumstances, set `check_size="FALSE"`, 
+or in batch processing. Under those circumstances, set `check_size='FALSE'`, 
 but consider the size of your query before doing this.
 
 
@@ -322,8 +373,7 @@ an additional input, folder="TRUE".
 
 
 ```python
-neonUtils.stackByTable(dpID='DP1.10023.001', 
-                       '~/Downloads/filesToStack10023', folder='TRUE');
+neonUtils.stackByTable(filepath='~/Downloads/filesToStack10023', folder='TRUE');
 ```
 
     Unpacked  NEON.D01.HARV.DP1.10023.001.2013-07.basic.20180226T180545Z.zip

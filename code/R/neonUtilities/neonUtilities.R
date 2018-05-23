@@ -14,7 +14,7 @@ library (neonUtilities)
 
 ## ----run-function, eval = FALSE------------------------------------------
 ## # stack files - Mac OSX file path shown
-## stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip")
+## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 ## 
 
 ## ----sample-output, eval=FALSE-------------------------------------------
@@ -33,13 +33,13 @@ library (neonUtilities)
 
 ## ----run-options, eval = FALSE-------------------------------------------
 ## 
-## stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip",
+## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip",
 ##              savepath="~data/allTemperature", saveUnzippedFiles=T)
 ## 
 
 ## ----run-zipsByProduct, eval = FALSE-------------------------------------
 ## 
-## zipsByProduct("DP1.00002.001", site="HARV",
+## zipsByProduct(dpID="DP1.00002.001", site="HARV",
 ##               package="basic", check.size=T)
 ## 
 
@@ -58,7 +58,32 @@ library (neonUtilities)
 
 ## ----zips-to-stack, eval = FALSE-----------------------------------------
 ## 
-## stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002",
+## stackByTable(filepath="/Users/neon/filesToStack00002",
+##              folder=T)
+## 
+
+## ----run-zipsByProduct-avg, eval = FALSE---------------------------------
+## 
+## zipsByProduct(dpID="DP1.00003.001", site="HARV",
+##               package="basic", avg=30, check.size=T)
+## 
+
+## ----zips-output-avg, eval=FALSE-----------------------------------------
+## Continuing will download files totaling approximately 5.56142 MB. Do you want to proceed y/n: y
+## trying URL 'https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.00003.001/PROV/HARV/20141001T000000--20141101T000000/basic/NEON.D01.HARV.DP1.00003.001.000.060.030.TAAT_30min.2014-10.basic.20171014T082555Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180523T221132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20180523%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=2a52fb43a773d3c91af41f44796876779a0d5ba041be39e4e73fc0a8d2e71b7a'
+## Content type 'application/octet-stream' length 56534 bytes (55 KB)
+## ==================================================
+## downloaded 55 KB
+## 
+## (Further URLs omitted for space. Function returns a message
+##   for each URL it attempts to download from)
+## 
+## 76 files downloaded to /Users/neon/filesToStack00003
+## 
+
+## ----zips-to-stack-avg, eval = FALSE-------------------------------------
+## 
+## stackByTable(filepath="/Users/neon/filesToStack00003",
 ##              folder=T)
 ## 
 

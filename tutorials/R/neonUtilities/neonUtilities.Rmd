@@ -104,19 +104,12 @@ files and not the NEON data stored in other formats (HDF5, etc).
 
 The example data below are single-aspirated air temperature. 
 
-To run the `stackByTable()` function, input the data product ID (DPID) of the 
-data you downloaded, and the file path to the downloaded and zipped file. 
-The DPID can be found in the data product box on the 
-<a href="http://data.neonscience.org/static/browse.html" target="_blank">
-new data browse page</a>, or in 
-the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">
-data product catalog</a>. 
-It will be in the form DP#.#####.###; the DPID of single aspirated air 
-temperature is DP1.00002.001.
+To run the `stackByTable()` function, input the file path to the 
+downloaded and zipped file. 
 
 ```{r run-function, eval = FALSE}
 # stack files - Mac OSX file path shown
-stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip")
+stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 
 ```
 
@@ -151,10 +144,10 @@ These .csv files are now ready for use with the program of your choice.
 
 ### Other options
 
-Two other input options in `stackByTable()` are `savePath` and 
-`saveUnzippedFiles`. `savePath` allows you to specify the file path 
+Other input options in `stackByTable()` are:
+* `savepath` : allows you to specify the file path 
 where you want the stacked files to go, overriding the default. 
-`saveUnzippedFiles` allows you to keep the unzipped, unstacked 
+* `saveUnzippedFiles` : allows you to keep the unzipped, unstacked 
 files from an intermediate stage of the process; by default they 
 are discarded.
 
@@ -162,7 +155,7 @@ Example usage:
 
 ```{r run-options, eval = FALSE}
 
-stackByTable("DP1.00002.001","~neon/data/NEON_temp-air-single.zip", 
+stackByTable(filepath="~neon/data/NEON_temp-air-single.zip", 
              savepath="~data/allTemperature", saveUnzippedFiles=T)
 
 ```
@@ -173,13 +166,28 @@ The function `zipsByProduct()` is a wrapper for the NEON API, it
 downloads zip files for the data product specified and stores them in 
 a format that can then be passed on to `stackByTable()`.
 
-Inputs to `zipsByProduct()` are:
+One of the inputs to `zipsByProduct()` is the data product ID, or 
+DPID, of the data you want to download. The DPID can be found in the 
+data product box on the 
+<a href="http://data.neonscience.org/static/browse.html" target="_blank">
+new data browse page</a>, or in 
+the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">
+data product catalog</a>. 
+It will be in the form DP#.#####.###; the DPID of single aspirated air 
+temperature is DP1.00002.001.
 
-* dpID: the data product ID, e.g. DP1.00002.001
-* site: either the 4-letter code of a single site, e.g. HARV, or "all", 
+Input options for `zipsByProduct()` are:
+
+* `dpID`: the data product ID, e.g. DP1.00002.001
+* `site`: either the 4-letter code of a single site, e.g. HARV, or "all", 
 indicating all sites with data available
-* package: either basic or expanded data package
-* check.size: T or F: should the function pause before downloading 
+* `package`: either basic or expanded data package
+* `avg`: either "all", to download all data (the default), or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data
+* `savepath`: the file path you want to download to; defaults to the 
+working directory
+* `check.size`: T or F: should the function pause before downloading 
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set it to F.
@@ -189,7 +197,7 @@ Harvard Forest (HARV).
 
 ```{r run-zipsByProduct, eval = FALSE}
 
-zipsByProduct("DP1.00002.001", site="HARV", 
+zipsByProduct(dpID="DP1.00002.001", site="HARV", 
               package="basic", check.size=T)
 
 ```
@@ -209,11 +217,54 @@ downloaded 1.5 MB
 ```
 
 Downloaded files can now be passed to `stackByTable()` to be 
-stacked. Another input is required in this case, folder=T.
+stacked. Another input is required in this case, `folder=T`.
 
 ```{r zips-to-stack, eval = FALSE}
 
-stackByTable("DP1.00002.001", "/Users/neon/filesToStack00002", 
+stackByTable(filepath="/Users/neon/filesToStack00002", 
+             folder=T)
+
+```
+
+For many sensor data products, download sizes can get 
+very large, and `stackByTable()` takes a long time. The 
+1-minute or 2-minute files are much larger than the 
+longer averaging intervals, so if you don't need high-
+frequency data, the `avg` input option lets you choose 
+which averaging interval to download.
+
+This option is only applicable to sensor (IS) data, 
+since OS data are not averaged.
+
+Download only the 30-minute data for triple-aspirated 
+air temperature at HARV:
+
+```{r run-zipsByProduct-avg, eval = FALSE}
+
+zipsByProduct(dpID="DP1.00003.001", site="HARV", 
+              package="basic", avg=30, check.size=T)
+
+```
+
+```{r zips-output-avg, eval=FALSE}
+Continuing will download files totaling approximately 5.56142 MB. Do you want to proceed y/n: y
+trying URL 'https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.00003.001/PROV/HARV/20141001T000000--20141101T000000/basic/NEON.D01.HARV.DP1.00003.001.000.060.030.TAAT_30min.2014-10.basic.20171014T082555Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180523T221132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20180523%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=2a52fb43a773d3c91af41f44796876779a0d5ba041be39e4e73fc0a8d2e71b7a'
+Content type 'application/octet-stream' length 56534 bytes (55 KB)
+==================================================
+downloaded 55 KB
+
+(Further URLs omitted for space. Function returns a message 
+  for each URL it attempts to download from)
+
+76 files downloaded to /Users/neon/filesToStack00003
+
+```
+
+And the 30-minute files can be stacked as usual:
+
+```{r zips-to-stack-avg, eval = FALSE}
+
+stackByTable(filepath="/Users/neon/filesToStack00003", 
              folder=T)
 
 ```
@@ -292,8 +343,8 @@ and other facilities.
 
 Inputs to `transformFileToGeoCSV()` are the file path to the data 
 file, the file path to the variables file, and the file path where
-you want to write out the new version. It works on single site-month 
-files, not on stacked files.
+you want to write out the new version. It works on both single 
+site-month files and on stacked files.
 
 In this example, we'll convert the November 2017 temperature data  
 from HARV that we downloaded with `getPackage()` earlier. First, 

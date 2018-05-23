@@ -65,6 +65,7 @@ variables for convenience.
 # file path for the directory containing input L0' data
 #base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
 #DD: This will be the case in the future, but the dp0p HDF5 file is not package into the deve docker, so you need to point it to a local file until we get ready to release the publication docker image.
+base::Sys.setenv("USER"="cklunch")
 base::Sys.setenv("DIRINP" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/turbTow/inpRefe"))
 
 #DD: This line is not needed in the new version 
