@@ -22,10 +22,7 @@ After completing this tutorial, you will be able to:
 
 * Understand how HDF5 files can be created and structured in R using the 
 rhdf5 libraries.
-* Understand the three key HDF5 elements: 
-		* the HDF5 file itself,
-		* groups,and 
-		* datasets.
+* Understand the three key HDF5 elements: the HDF5 file itself, groups, and datasets.
 * Understand how to add and read attributes from an HDF5 file.
 
 
@@ -35,9 +32,10 @@ preferably, RStudio loaded on your computer.
 
 ### R Libraries to Install:
 
-* **rhdf5**
+* **rhdf5**: The rhdf5 package is hosted on Bioconductor not CRAN. Directions for 
+installation are in the first code chunk. 
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>
 
 ### Data to Download
 We will use the file below in the optional challenge activity at the end of this 
