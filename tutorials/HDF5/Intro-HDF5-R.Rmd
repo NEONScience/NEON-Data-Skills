@@ -22,7 +22,7 @@ After completing this tutorial, you will be able to:
 
 * Understand how HDF5 files can be created and structured in R using the 
 rhdf5 libraries.
-* Understand the three key HDF5 elements: the HDF5 file itself, groups,and datasets.
+* Understand the three key HDF5 elements: the HDF5 file itself, groups, and datasets.
 * Understand how to add and read attributes from an HDF5 file.
 
 
