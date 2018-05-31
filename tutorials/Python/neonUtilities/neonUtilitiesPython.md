@@ -1,7 +1,6 @@
-
 ---
 syncID: 5be9f80592394af3bc09cf8e469fef6e
-title: "Using NEON Utilities in Python"
+title: "Using neonUtilities in Python"
 description: "Use the neonUtilities R package in Python, via the rpy2 library."
 dateCreated: 2018-5-10
 authors: Claire K. Lunch
