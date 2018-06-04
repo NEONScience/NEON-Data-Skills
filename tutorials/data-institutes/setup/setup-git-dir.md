@@ -17,8 +17,7 @@ urlTitle: bash-setup-git
 ---
 
 ## Checklist
-Once you have Git, Bash, R, and RStudio installed, you are ready to configure 
-Git. 
+Once you have Git and Bash installed, you are ready to configure Git. 
 
 On this page you will:
 
