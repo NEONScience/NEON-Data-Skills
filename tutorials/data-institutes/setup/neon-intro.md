@@ -151,9 +151,9 @@ more:
 ### Airborne Remote Sensing
 
 Watch this 5 minute video to better understand the NEON Airborne Observation
-Platform (AOP), if you didn't already on the AOP page.
+Platform (AOP).
 
-<a href="https://www.youtube.com/watch?v=muBZxMMQXK8" target="_blank">NEON Airborne Observation Platform</a>.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/muBZxMMQXK8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 <div id="ds-challenge" markdown="1">
@@ -167,6 +167,13 @@ address at the Institute.
 data?
 </div>
 
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
+research including proposals to fly the AOP over other study sites, a mobile 
+tower/instrumentation setup and others. Learn more here the
+<a href="/opportunities/assignable-assets" target="_blank">Assignable Assets programs </a>.
+</div>
+
 ## Access NEON Data
 
 NEON data are processed and go through quality assurance quality control checks 
@@ -174,8 +181,6 @@ at NEON headquarters in Boulder, CO.
 NEON carefully documents every aspect of sampling design, data collection,
 processing and delivery. This documentation is freely available through the
 NEON data portal.
-
-Read the following pages to learn more:
 
 * Visit the 
 <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal - data.neonscience.org </a>
@@ -189,15 +194,14 @@ about the product, find the data collection and processing protocols, and link
 directly to downloading the data. 
 * Additionally, some types of NEON data are also available through the data portals
 of other organizations. For example, 
-href="http://www.ibol.org/dna-barcodes-for-neons-terrestrial-insects/" target="_blank"> NEON Terrestrial Insect DNA Barcoding Data</a>
+<a href="http://www.ibol.org/dna-barcodes-for-neons-terrestrial-insects/" target="_blank"> NEON Terrestrial Insect DNA Barcoding Data</a>
 is available through the
 <a href="http://www.boldsystems.org/index.php/databases" target="_blank"> Barcode of Life Datasystem (BOLD)</a>. 
 Or NEON phenocam images are available from the 
-href="https://phenocam.sr.unh.edu/webcam/network/search/?sitename=neon&type=&primary_vegtype=&dominant_species=&active=1&fluxdata=1" target="_blank">Phenocam network site</a>. 
+<a href="https://phenocam.sr.unh.edu/webcam/network/search/?sitename=neon&type=&primary_vegtype=&dominant_species=&active=1&fluxdata=1" target="_blank">Phenocam network site</a>. 
 More details on where else the data are available from are available in the description 
 of each data product in the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">
-NEON Data Product Catalog</a>.
+<a href="http://data.neonscience.org/data-product-catalog" target="_blank">NEON Data Product Catalog</a>.
 
 ### Pathways to access NEON Data
 There are several ways to access data from NEON: 
@@ -220,9 +224,7 @@ documentation for individual data products.
 <div id="ds-challenge" markdown="1">
 **Data Institute Participant – Thought Questions:** 
 Use the Data Portal tools to investigate the data availability for the field
-sites you’ve already identified in the previous Thought Questions. If your
-desired field site doesn’t have data available for it, choose the next most
-desirable one that does have data available.  
+sites you’ve already identified in the previous Thought Questions. 
 
 * What types of aquatic/terrestrial data are currently available? Remote sensing data?  
 * Of these, what type of data are you most interested in working with for your project while at the Institute.  
@@ -231,13 +233,6 @@ desirable one that does have data available.
 * Where is the metadata to support this data?  
 </div>
 
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
-research including proposals to fly the AOP over other study sites, a mobile 
-tower/instrumentation setup and others. Learn more here the
-<a href="/opportunities/assignable-assets" target="_blank">Assignable Assets programs </a>.
-</div>
 
 <div id="ds-challenge" markdown="1">
 
@@ -248,8 +243,9 @@ Data Institute in Boulder, CO. Include the types of NEON (and other data) that y
 will need to implement this project. Save this summary as you will be refining 
 and adding to your ideas over the next few weeks.
 
-The goal of this activity if for you to begin to think about the project that you
-wish to work on while at the Data Institute. This project will ideally be 
+The goal of this activity if for you to begin to think about the 
+<a href="/di-rs-capstone" target="_blank">capstone project </a> 
+that you wish to work on while at the Data Institute. This project will ideally be 
 performed in groups, so over the next few weeks you'll have a chance to view the other
 project proposals and merge projects to collaborate with your colleagues.
 </div>
