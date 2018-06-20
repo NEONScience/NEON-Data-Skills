@@ -38,16 +38,13 @@ The directions on how to install docker are heavily borrowed from the author's
 of CyVerse's Container Camp's 
 <a href="https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html" target="_blank"> Intro to Docker</a> and we thank them for providing the information. 
 
-The directions for how to access eddy4R comes from Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 
+The directions for how to access eddy4R comes from 
+
+Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 
 <a href="https://www.geosci-model-dev.net/10/3189/2017/" target="_blank">10.5194/gmd-10-3189-2017</a>. 
 
 </div>
 
-
-## Why Docker? 
-[MJ: This section still needs to be completed.]
-
-"Getting all the tooling setup on your computer can be a daunting task, but not with Docker." 
 
 In the tutorial below, we give the very barest of information to get Docker set
 up for use with the NEON R package eddy4R. For more information on using Docker, 

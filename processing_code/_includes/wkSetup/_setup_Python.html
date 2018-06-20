@@ -8,9 +8,9 @@ individually can be a bit difficult, so we recommend using an all-in-one
 installer, like Anaconda.
 
 Regardless of how you choose to install it, **please make sure your environment 
-is set up with Python version 3.4 (at the time of writing, `gdal` did not work 
+is set up with Python version 3.5 (at the time of writing, the `gdal` package did not work 
 with the newest Python version 3.6). Python 2.x is quite different from Python 3.x
-so you do need to install 3.x and set up with the 3.4 environment. 
+so you do need to install 3.x and set up with the 3.5 environment. 
 
 We will teach using Python in the 
 <a href="http://jupyter.org" target="_blank">Jupyter Notebook environment</a>, 
@@ -28,7 +28,7 @@ recommend you download and install the library so that you can explore this tool
 Download and install 
 <a href="https://www.continuum.io/downloads" target="_blank" >Anaconda</a>.
 Download the default Python 3 installer (3.6 -- and yes you can later set up the 
-3.4 environment from this). Use all of the defaults for 
+3.5 environment from this). Use all of the defaults for 
 installation *except* make sure to check **Make Anaconda the default Python**.
 
 
@@ -38,7 +38,7 @@ Download and install
 <a href="https://www.continuum.io/downloads" target="_blank">Anaconda</a> from Continuum.
 Download the Python 3.x installer, choosing either the graphical installer or the 
 command-line installer (3.6 -- and yes you can later set up the 
-3.4 environment from this). For the graphical installer, use all of the defaults for 
+3.5 environment from this). For the graphical installer, use all of the defaults for 
 installation. For the command-line installer open Terminal, navigate to the
 directory with the download then enter: 
 
@@ -70,7 +70,6 @@ with the remote sensing data
 
 * gdal 
 * h5py
-* matlabpy
 
 If you are new to working with command line you may wish to complete the next
 setup instructions which provides and intro to command line (bash) prior to 
@@ -78,44 +77,44 @@ completing these package installation instructions.
 
 <h4 id="package-windows">Windows</h4>
 
-Create a new Python 3.4 environment by opening Windows Command Prompt and typing 
+Create a new Python 3.5 environment by opening Windows Command Prompt and typing 
 
-`conda create –n p34 python=3.4 anaconda`
+`conda create –n p35 python=3.5 anaconda`
 
-When prompted, activate the py34 environment in Command Prompt by typing 
+When prompted, activate the p35 environment in Command Prompt by typing 
 
-`activate py34`
+`activate p35`
 
-You should see (py34) at the beginning of the command line. You can also test 
+You should see (p35) at the beginning of the command line. You can also test 
 that you are using the correct version by typing `python --version`.
 
 Install Python package(s): 
 
 * gdal: `conda install gdal`
 * h5py: `conda install h5py`
-* matplotlib: `conda install matplotlib`
 
 Note: You may need to only install gdal as the others may be included in the 
 default. 
 
 <h4 id="package-mac">Mac OS X</h4>
 
-Create a new Python 3.4 environment by opening Terminal and typing 
+Create a new Python 3.5 environment by opening Terminal and typing 
 
-`conda create –n p34 python=3.4 anaconda`
+`conda create –n p35 python=3.5 anaconda`
 
-When prompted, activate the py34 environment in Command Prompt by typing 
+This may take a minute or two. 
 
-`source activate py34`
+When prompted, activate the p35 environment in Command Prompt by typing 
 
-You should see (py34) at the beginning of the command line. You can also test 
+`source activate p35`
+
+You should see (p35) at the beginning of the command line. You can also test 
 that you are using the correct version by typing `python --version`.
 
 Install Python package(s): 
 
 * gdal: `conda install gdal`
 * h5py: `conda install h5py`
-* matplotlib: `conda install matplotlib`
 
 
 <h4 id="package-linux">Linux</h4>
@@ -128,7 +127,6 @@ Install Python package(s):
 
 * gdal: `conda install gdal`
 * h5py: `conda install h5py`
-* matplotlib: `conda install matplotlib`
 
 <h2 id="jupyter-notebook">Set up Jupyter Notebook Environment</h2>
 
@@ -139,15 +137,12 @@ Open Jupyter Notebook with
 
 `jupyter notebook`
 
-Once the notebook is open, check which version of Python you are in. 
+Once the notebook is open, check which version of Python you are in by using the 
+prompts
 
- <figure>
-	<a href="{{ site.baseurl }}/images/Python/setup/check-python-env.png">
-	<img src="{{ site.baseurl }}/images/Python/setup/check-python-env.png"></a>
-	<figcaption> Check which Python environment is running. 
-	Source: National Ecological Observatory Network (NEON)  
-	</figcaption>
-</figure>
+    # check what version of Python you are using.
+    import sys
+    sys.version
 
 You should now be able to work in the notebook. 
 
