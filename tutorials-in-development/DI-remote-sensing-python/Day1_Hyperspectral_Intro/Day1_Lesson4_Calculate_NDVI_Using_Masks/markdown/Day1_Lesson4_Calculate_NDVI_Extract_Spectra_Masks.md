@@ -1,13 +1,13 @@
 
 # Calculate NDVI & Extract Spectra with Masks
 
-## Background:
+## Background on NDVI:
 The Normalized Difference Vegetation Index (NDVI) is a standard band-ratio calculation frequently used to analyze ecological remote sensing data. NDVI indicates whether the remotely-sensed target contains live green vegetation. When sunlight strikes objects, certain wavelengths of the electromagnetic spectrum are absorbed and other wavelengths are reflected. The pigment chlorophyll in plant leaves strongly absorbs visible light (with wavelengths in the range of 400-700 nm) for use in photosynthesis. The cell structure of the leaves, however, strongly reflects near-infrared light (wavelengths ranging from 700 - 1100 nm). Plants reflect up to 60% more light in the near infrared portion of the spectrum than they do in the green portion of the spectrum. By calculating the ratio of Near Infrared (NIR) to Visible (VIS) bands in hyperspectral data, we can obtain a metric of vegetation density and health.  
 
 The formula for NDVI is: $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
 
 <p>
-<img src="ndvi_tree.png" style="width: 250px;"/>
+<img src="../notebook/ndvi_tree.png" style="width: 250px;"/>
 <center><font size="2">Figure: (Wu et al. 2014)</font></center>
 </p>
 
@@ -25,13 +25,14 @@ warnings.filterwarnings('ignore') #don't display warnings
 
 ```python
 load ../neon_aop_hyperspectral.py
+```
 
-
-### Read in SERC Reflectance Tile
+## Read in SERC Reflectance Tile
 
 
 ```python
 sercRefl, sercRefl_md = aop_h5refl2array('../data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
+```
 ```
 
 ### Extract NIR and VIS bands
@@ -76,7 +77,7 @@ plot_aop_refl(ndvi,sercRefl_md['spatial extent'],
 ![png](output_11_0.png)
 
 
-## Extract Spectra Using Masks
+## Masking by Threshold
 
 In the second part of this tutorial, we will learn how to extract the average spectra of pixels whose NDVI exceeds a specified threshold value. There are several ways to do this using `numpy`, including the mask functions `numpy.ma`, as well as `numpy.where` and finally using `boolean` indexing. 
 
@@ -108,7 +109,7 @@ plot_aop_refl(ndvi_gtpt6,
 ![png](output_14_0.png)
 
 
-## Calculate the mean spectra for reflectance values thresholed by NDVI 
+## Function to calculate the mean spectra for reflectance values thresholed by NDVI 
 Below we will demonstrate how to calculate statistics on arrays where you have applied a mask `numpy.ma`. In this example, the function calculates the mean spectra for values that remain after masking out values by a specified threshold. 
 
 
@@ -187,5 +188,3 @@ ax.grid('on');
 ## References
 
 Wu C-D, McNeely E, Cedeño-Laurent JG, Pan W-C, Adamkiewicz G, Dominici F, et al. (2014) Linking Student Performance in Massachusetts Elementary Schools with the “Greenness” of School Surroundings Using Remote Sensing. PLoS ONE 9(10): e108548. doi:10.1371/journal.pone.0108548
-
-<center><font size="2">https://www.researchgate.net/figure/266947355_fig1_Figure-1-Green-vegetation-left-absorbs-visible-light-and-reflects-near-infrared-light</font></center>
