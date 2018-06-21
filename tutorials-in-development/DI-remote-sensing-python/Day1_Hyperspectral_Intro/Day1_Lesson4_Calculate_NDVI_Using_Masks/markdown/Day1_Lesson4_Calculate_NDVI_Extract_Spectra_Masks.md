@@ -11,7 +11,7 @@ The formula for NDVI is: $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
 <center><font size="2">Figure: (Wu et al. 2014)</font></center>
 </p>
 
-Start by setting plot preferences and loading the neon_aop_refl_hdf5_functions module:
+Start by setting plot preferences and load (or import) the `neon_aop_hyperspectral` Python module:
 
 
 ```python
@@ -33,9 +33,8 @@ load ../neon_aop_hyperspectral.py
 ```python
 sercRefl, sercRefl_md = aop_h5refl2array('../data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
 ```
-```
 
-### Extract NIR and VIS bands
+### Extract Near Infrared and Visible bands
 
 Now that we have uploaded all the required functions, we can calculate NDVI and plot it. 
 Below we print the center wavelengths that these bands correspond to:
