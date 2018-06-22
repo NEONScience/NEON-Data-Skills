@@ -41,7 +41,9 @@ You should be running `3.5.x`. If this is not the case, close this console (both
 <img src="../notebook/activate_py35.png" style="width: 300px;"/>
 </p>
 
-Now that you are in the right environment, first we will import the gdal package, which contains tools for programming and manipulating the Geospatial Data Abstraction Library (GDAL). For more information on GDAL, please refer to: 
+Once you running the `Python 3.5` environment, we can get started!. First, import the `gdal` package, which contains tools for programming and manipulating the Geospatial Data Abstraction Library (GDAL). For more information on GDAL, please refer to: 
+
+http://www.gdal.org/
 
 http://www.gdal.org/
 
