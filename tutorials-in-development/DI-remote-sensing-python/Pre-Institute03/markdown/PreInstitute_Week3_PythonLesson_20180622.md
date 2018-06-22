@@ -1,17 +1,17 @@
 
 ## Plotting a NEON RGB Camera Image (Geotif) in Python
-This lesson is a brief introduction to RGB camera images and the geotif raster format in Python. In this lesson, we will read in an RGB camera image for a single tile (1000m x 1000m image) of the NEON Smithsonian Environmental Research Center (SERC) site, which is used as a teaching example during the Data Institute. We will run the user-defined functions `RGBraster2array` and `plotRGBimage` to read in the image as an array of dimensions (`1000 x 1000 x 3`), plot an RGB image of this raster, and plot a histogram of the intensities of one of the three bands. 
+This lesson introduces NEON RGB camera images and functions to read in and plot geotif rasters in Python. In this lesson, we will read in an RGB camera tile of the NEON Smithsonian Environmental Research Center (SERC) site, which is used as a teaching example during the 2018 Data Institute. We will run the user-defined functions `RGBraster2array` and `plotRGBimage` to read in the image as an array, plot an RGB image of this raster, and plot a histogram of the intensities of one of the three bands. 
 
 ### Objectives
 
-In this tutorial, you will gain familiarity running Python (the `Python 3.5` environment you set up earlier) through Jupyter Notebook, and you will use `Python` to:
+In this tutorial, you will gain familiarity running `Python` through `Jupyter Notebook`, and you will:
 
 1. Plot a NEON RGB Camera Tile (Data Product 
 2. Plot a histogram of a single band of an RGB Camera Tile
 
 ### Background
 
-As part of the NEON Airborn Operation Platform's suite of remote sensing instruments, the digital camera producing high-resolution (0.25 m) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
+As part of the NEON Airborne Operation Platform's suite of remote sensing instruments, the digital camera produces high-resolution (0.25 m) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
 
 https://www.neonscience.org/data-collection/airborne-remote-sensing
 
