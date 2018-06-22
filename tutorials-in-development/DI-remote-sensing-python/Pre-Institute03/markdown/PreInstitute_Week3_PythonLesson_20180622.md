@@ -6,7 +6,7 @@ This lesson introduces NEON RGB camera images and functions to read in and plot 
 
 In this tutorial, you will gain familiarity running `Python` through `Jupyter Notebook`, and you will:
 
-1. Plot a NEON RGB Camera Tile (Data Product 
+1. Plot a NEON RGB Camera Tile
 2. Plot a histogram of a single band of an RGB Camera Tile
 
 ### Background
