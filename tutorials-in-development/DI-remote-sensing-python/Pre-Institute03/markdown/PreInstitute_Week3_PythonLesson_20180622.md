@@ -90,17 +90,16 @@ def RGBraster2array(RGB_geotif):
         numpy array of geotif values
     metadata:
         dictionary containing the following metadata (all strings):
-            array_rows = # of rows
-            array_cols = # of columns
-            bands = # of bands
-            driver = 
-            projection = 
-            geotransform = 
-            pixelWidth = 
-            pixelHeight = 
-            ext_dict = dictionary containing spatial extent with keys 'XMin', 'XMax', 'YMin', 'YMax'
-            extent = tuple containing spatial extent
-            noDataValue = 
+            array_rows
+            array_cols
+            bands
+            driver
+            projection
+            geotransform 
+            pixelWidth 
+            pixelHeight 
+            extent
+            noDataValue  
             scaleFactor 
     --------
     Example Execution:
@@ -120,12 +119,6 @@ def RGBraster2array(RGB_geotif):
     mapinfo = dataset.GetGeoTransform()
     metadata['pixelWidth'] = mapinfo[1]
     metadata['pixelHeight'] = mapinfo[5]
-
-    metadata['ext_dict'] = {}
-    metadata['ext_dict']['xMin'] = mapinfo[0]
-    metadata['ext_dict']['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
-    metadata['ext_dict']['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
-    metadata['ext_dict']['yMax'] = mapinfo[3]
     
     metadata['extent'] = (metadata['ext_dict']['xMin'],metadata['ext_dict']['xMax'],
                           metadata['ext_dict']['yMin'],metadata['ext_dict']['yMax'])
