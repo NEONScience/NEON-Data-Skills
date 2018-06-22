@@ -37,7 +37,7 @@ several remote sensing vegetation indices.
 the NEON data. Be sure to add comments so that the script is useful to others. 
 
 3. Add your script to the GitHub Repo: **DI-NEON-participants** to share with your
-colleagues. Save scripts to the DI-NEON-participants/2017-RemoteSensing/rs-indices.  
+colleagues. Save scripts to the DI-NEON-participants/2018-RemoteSensing/rs-indices.  
 Be sure to provide a clear file name reflecting the contents. If you are 
 comfortable, we recommend you put you names in the script as others may want to 
 contact you about it. 
