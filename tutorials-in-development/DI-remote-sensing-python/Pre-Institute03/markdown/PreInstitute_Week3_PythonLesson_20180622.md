@@ -1,5 +1,5 @@
 
-## Plotting a NEON RGB Camera Image (Geotif) in Python
+## Plotting a NEON RGB Camera Image (Geotif Raster) in Python
 This lesson introduces NEON RGB camera images and functions to read in and plot geotif rasters in Python. In this lesson, we will read in an RGB camera tile of the NEON Smithsonian Environmental Research Center (SERC) site, which is used as a teaching example during the 2018 Data Institute. We will run the user-defined functions `RGBraster2array` and `plotRGBimage` to read in the image as an array, plot an RGB image of this raster, and plot a histogram of the intensities of one of the three bands. 
 
 ### Objectives
