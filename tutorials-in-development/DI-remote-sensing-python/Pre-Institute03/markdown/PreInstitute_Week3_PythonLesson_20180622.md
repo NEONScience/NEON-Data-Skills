@@ -45,8 +45,6 @@ Once you running the `Python 3.5` environment, we can get started!. First, impor
 
 http://www.gdal.org/
 
-http://www.gdal.org/
-
 
 ```python
 import gdal
@@ -56,7 +54,7 @@ If you get the following message
 
 <p>
 <center><strong>ModuleNotFoundError</strong></center>
-<img src="../notebook/No_module_named_gdal.jpg" style="width: 600px;"/>
+<img src="../notebook/No_module_named_gdal.png" style="width: 600px;"/>
 </p>
 
 **Troubleshooting steps** --> try one of the following:
