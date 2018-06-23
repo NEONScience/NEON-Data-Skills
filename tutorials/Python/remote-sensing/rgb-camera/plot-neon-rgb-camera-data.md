@@ -12,7 +12,7 @@ languagesTool: python
 dataProduct: DP1.0001.01
 code1: code/Python/remote-sensing/rgb-camera/plot-neon-rgb-camera-data.ipynb
 tutorialSeries: jupyter-notebooks
-urlTitle: plot-neon-rgb
+urlTitle: plot-neon-rgb-py
 
 ---
 
