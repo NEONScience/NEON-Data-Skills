@@ -3,13 +3,13 @@ syncID: 67a5e95e1b7445aca7d7750b75c0ee98
 title: "Plotting a NEON RGB Camera Image (GeoTIFF) in Python"
 description: "This lesson is a brief introduction to RGB camera images and the GeoTIFF raster format in Python."
 dateCreated: 2018-06-30
-authors: Bridget Hass, 
+authors: Bridget Hass 
 contributors: 
 estimatedTime: 
 packagesLibraries: 
 topics: data-analysis, data-visualization, spatial-data-gis 
 languagesTool: python
-dataProduct: DP1.0001.01
+dataProduct: DP3.30010
 code1: code/Python/remote-sensing/rgb-camera/plot-neon-rgb-camera-data.ipynb
 tutorialSeries: jupyter-notebooks
 urlTitle: plot-neon-rgb-py
@@ -310,15 +310,16 @@ plt.xlabel('Brightness'); plt.ylabel('Frequency')
 
 ![ ]({{ site.baseurl }}/images/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
 
-## Exercises: 
+## Challenge:  
 Now that you've followed along to read in and plot an RGB camera image and band, try the following exercises on your own:
 
-1. **Plot histograms of the green and blue bands**
+1. **Plot histograms** of the green and blue bands.
 
-2. **Explore the data** to see what you can learn about the `SERC_RGBcam_array` and associated `SERC_RGBcam_metadata` 
+2. **Explore the data** to see what you can learn about the `SERC_RGBcam_array` 
+and associated `SERC_RGBcam_metadata`. 
 
     a. Determine the minimum and maximum reflectance for each band. Print these values with a print statement. *HINT*: Use the `numpy` functions `np.amin()` and `np.amax()`
     
-    b. What UTM zone is this data in? *HINT: Print out* `SERC_RGBcam_metadata['projection']`
+    b. What UTM zone is this data in? *Hint:* Print out `SERC_RGBcam_metadata['projection']`
     
-    c. Use the `plot_band_array` function to plot each band of the camera image separately. *HINT*: Use splicing to extract each band (eg. `SERC_RGBcam_array[:,:,0]`). 
+    c. Use the `plot_band_array` function to plot each band of the camera image separately. *HINT*: Use splicing to extract each band (e.g., `SERC_RGBcam_array[:,:,0]`). 

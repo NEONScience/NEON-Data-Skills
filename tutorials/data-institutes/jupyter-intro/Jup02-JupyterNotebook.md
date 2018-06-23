@@ -59,7 +59,7 @@ Once here, we want to create a new Jupyter kernel for the Python 3.5 conda envir
 
 In your Command Prompt/Terminal, type: 
 
-`python -m ipykernel install --user --name py35 --display-name "Python 3.5 NEON-RSDI"`
+`python -m ipykernel install --user --name p35 --display-name "Python 3.5 NEON-RSDI"`
 
 This command tells Python to create a new ipy (aka Jupyter Notebook) kernel using
 the Python environment we set up and called "py35". Then we tell it to use the display
