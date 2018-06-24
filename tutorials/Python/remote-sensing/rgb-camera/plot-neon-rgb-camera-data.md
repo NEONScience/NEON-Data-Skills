@@ -40,7 +40,7 @@ collected over the Smithsonian Environmental Research Station (SERC) NEON field
 site. Place this data in a location where you know where it is. You will need to 
 know the file path to this data.  
 
-## Background
+## Background on RGB
 
 As part of the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
@@ -60,7 +60,7 @@ more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`.
 
 </div>
 
-## Set up Environment
+### Check Python Version
 
 
 First make sure that you are running the Python 3.5 environment by running the 
