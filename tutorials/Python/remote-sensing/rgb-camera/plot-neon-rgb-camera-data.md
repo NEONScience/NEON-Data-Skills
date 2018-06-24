@@ -25,14 +25,14 @@ the intensities of one of the three bands.
 
 <div id="ds-objectives" markdown="1">
 
-### Objectives
+## Objectives
 
 After completing this tutorial, you will be able to: 
 
 * Plot a NEON RGB Camera Tile (Data Product 
 * Plot a histogram of a single band of an RGB Camera Tile
 
-### Download the Data 
+## Download the Data 
 
 Download the NEON GeoTiFF file of the 
 <a href="https://neondata.sharefile.com/d-s274babd550a45e7a">camera (RGB) imagery tile</a>
@@ -40,7 +40,7 @@ collected over the Smithsonian Environmental Research Station (SERC) NEON field
 site. Place this data in a location where you know where it is. You will need to 
 know the file path to this data.  
 
-### Background
+## Background
 
 As part of the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
@@ -74,7 +74,7 @@ sys.version
 
     '3.5.4 |Anaconda, Inc.| (default, Nov  8 2017, 14:34:30) [MSC v.1900 64 bit (AMD64)]'
 
-**Data Institue Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
+**Data Institute Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
 
 <figure>
     <a href="/images/Python/rgb-camera/activate_py35.png">
@@ -106,6 +106,8 @@ If you get the following message
 - from a Jupyter Python cell, run the command:
 `!conda install gdal`
 - from a Command Prompt (Windows) or Terminal (Mac), activate the appropriate environment
+
+## Read in RGB Camera Image
 
 Next we will import the `numpy` and `matplotlib` packages. Numpy stands for **Num**erical **Py**thon This is a standard package that comes with the Anaconda installation of Python, so you should not need to do any additional steps to install it. 
 
@@ -225,6 +227,7 @@ for key in sorted(SERC_RGBcam_metadata.keys()):
     projection
     scaleFactor
     
+## Plot RGB Camera Image
 
 Next, we'll define a function to plot the array data. Run the cell below:
 
@@ -283,12 +286,6 @@ plot_band_array(SERC_RGBcam_array,
                 cbar='off') 
 ```
 
-<figure>
-    <a href="/images/Python/rgb-camera/activate_py35.png">
-    <img src="/images/Python/rgb-camera/activate_py35.png"></a>
-    <figcaption> Activating `Python 3.5` enviornment from the command prompt. Source: National Ecological Observatory Network(NEON)  
-    </figcaption>
-</figure>
 
 ![ ]({{ site.baseurl }}/images/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
 
@@ -310,7 +307,8 @@ plt.xlabel('Brightness'); plt.ylabel('Frequency')
 
 ![ ]({{ site.baseurl }}/images/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
 
-## Challenge:  
+## Challenge Exercises
+
 Now that you've followed along to read in and plot an RGB camera image and band, try the following exercises on your own:
 
 1. **Plot histograms** of the green and blue bands.
