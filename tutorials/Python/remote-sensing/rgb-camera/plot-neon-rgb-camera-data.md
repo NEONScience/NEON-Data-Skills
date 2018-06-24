@@ -44,7 +44,7 @@ know the file path to this data.
 
 As part of the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
-suite of remote sensing instruments, the digital camera producing 
+suite of remote sensing instruments, the digital camera produces 
 high-resolution (0.25 m) photographs of the earth’s surface. The camera records 
 light energy that has reflected off the ground in the visible part 
 (red, green and blue) of the light spectrum. Often the camera images are used to 
