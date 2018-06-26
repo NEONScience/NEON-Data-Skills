@@ -165,6 +165,12 @@ def RGBraster2array(RGB_geotif):
     metadata['pixelWidth'] = mapinfo[1]
     metadata['pixelHeight'] = mapinfo[5]
     
+    metadata['ext_dict'] = {}
+    metadata['ext_dict']['xMin'] = mapinfo[0]
+    metadata['ext_dict']['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
+    metadata['ext_dict']['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
+    metadata['ext_dict']['yMax'] = mapinfo[3]
+    
     metadata['extent'] = (metadata['ext_dict']['xMin'],metadata['ext_dict']['xMax'],
                           metadata['ext_dict']['yMin'],metadata['ext_dict']['yMax'])
     
