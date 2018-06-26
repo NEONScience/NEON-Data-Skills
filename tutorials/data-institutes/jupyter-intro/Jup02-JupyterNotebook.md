@@ -43,6 +43,32 @@ pip3 install jupyter
 </code></pre>
 
 
+## Set up Environment 
+
+We need to set up the Python environment that we will be working in for the Notebook.
+This allows us to have different Python environments for different projects. The
+following directions pertain directly to the set up for the 2018 Data Institute 
+on Remote Sensing with Reproducible Workflows, however, you can adapt them to 
+the specific Python version and packages you wish to work with.  
+
+In your terminal application, navigate to the directory (`cd`)  where you
+want the Jupyter Notebooks to be saved (or where they already exist). 
+
+Once here, we want to create a new Jupyter kernel for the Python 3.5 conda environment 
+(py34) that we'll be using with Jupyter Notebooks. 
+
+In your Command Prompt/Terminal, type: 
+
+`python -m ipykernel install --user --name p35 --display-name "Python 3.5 NEON-RSDI"`
+
+This command tells Python to create a new ipy (aka Jupyter Notebook) kernel using
+the Python environment we set up and called "py35". Then we tell it to use the display
+name for this new kernel as "Python 3.5 NEON-RSDI". You will use this 
+name to identify the specific kernel you want to work with in the Notebook space, 
+so name it descriptively, especially if you think you'll be using several different 
+kernels.  
+
+
 ## Using Jupyter Notebooks
 
 ### Launching the Application 
@@ -102,6 +128,34 @@ the notebook.
 as code, but it can also be set to markdown as described later.
 * In **purple**, is the **code cell**. In this cell, you can type an execute 
 Python code as well as text that will be formatted in a nicely readable format.
+
+## Selecting a Kernel
+
+You'll be prompted to select a kernel when you open a new notebook, however, if 
+you are opening an existing notebook you will want to ensure that you are 
+using the correct kernel. The commands for selecting and changing kernels are in 
+the **Kernel** menu. 
+
+When you select or switch a kernel, you may want to use the navigate to **Kernel** in the menu, 
+select **Restart/ClearOutlook**.  The Restart/ClearOutlook option ensures that 
+the correct kernel will operate.
+
+ <figure>
+	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
+	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
+	<figcaption> To ensure that the correct kernel will operate, navigate to 
+	Kernel in the menu, select Restart/ClearOutlook.. 
+	Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
+</figure>
+
+You can always check what version of Python you are running by typing the following 
+into a code cell. 
+
+	 # Check what version of Python.  Should be 3.5. 
+	 import sys
+	 sys.version
+
 
 ## Writing & running code
 

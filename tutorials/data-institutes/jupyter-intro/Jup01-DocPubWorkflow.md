@@ -100,4 +100,5 @@ resource to learn other skills associated with using Python and Jupyter Notebook
 * <a href="http://nb.bianp.net/sort/views/" target="_blank">Fabian Pedregosa's Notebook Gallery</a>
 
 
-In the next tutorial we will learn more about working with Jupyter Notebooks.
+In the next tutorial, *<a href="/jupyter-python-intro" target="_blank">Introduction to using Jupyter Notebooks</a>*,
+ we will learn more about working with Jupyter Notebooks.
