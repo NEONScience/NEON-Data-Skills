@@ -51,18 +51,35 @@ following directions pertain directly to the set up for the 2018 Data Institute
 on Remote Sensing with Reproducible Workflows, however, you can adapt them to 
 the specific Python version and packages you wish to work with.  
 
+If you haven't yet created a Python 3.5 environment, you'll need to do 
+that now. Refer back to the Python section of the <a href="{{ site.baseurl }}/setup-git-bash-python" target="_blank">installation instructions</a>, 
+and create the 3.5 environment:
+
+`conda create -n p35 python=3.5 anaconda`
+
+And activate the Python 3.5 environment:
+
+On Mac:
+
+`source activate p35`
+
+On Windows:
+
+`activate p35`
+
+
 In your terminal application, navigate to the directory (`cd`)  where you
 want the Jupyter Notebooks to be saved (or where they already exist). 
 
 Once here, we want to create a new Jupyter kernel for the Python 3.5 conda environment 
-(py34) that we'll be using with Jupyter Notebooks. 
+(p35) that we'll be using with Jupyter Notebooks. 
 
-In your Command Prompt/Terminal, type: 
+With the p35 environment activated, in your Command Prompt/Terminal, type: 
 
 `python -m ipykernel install --user --name p35 --display-name "Python 3.5 NEON-RSDI"`
 
 This command tells Python to create a new ipy (aka Jupyter Notebook) kernel using
-the Python environment we set up and called "py35". Then we tell it to use the display
+the Python environment we set up and called "p35". Then we tell it to use the display
 name for this new kernel as "Python 3.5 NEON-RSDI". You will use this 
 name to identify the specific kernel you want to work with in the Notebook space, 
 so name it descriptively, especially if you think you'll be using several different 
