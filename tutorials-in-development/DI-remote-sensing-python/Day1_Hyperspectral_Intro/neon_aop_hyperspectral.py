@@ -3,26 +3,87 @@
 Created on Wed Jun 20 10:34:49 2018
 
 @author: bhass
+
+neon_aop_hyperspectral contains the following functions for use in the 2018
+Remote Sensing Data Institute 
+
+list_dataset (called with h5py.File.visititems):
+    lists the name and location of each dataset stored in an hdf5 file 
+
+ls_dataset (called with h5py.File.visititems):
+    lists name, shape, and type of each dataset stored in an hdf5 file
+
+aop_h5refl2array:
+    reads in NEON AOP reflectance hdf5 file, convert to a cleaned reflectance 
+    array and return associated metadata (spatial information and band center 
+    wavelengths)
+
+plot_aop_refl:
+    reads in and plot a single band or 3 stacked bands of a reflectance array
+    
+stack_rgb:
+    extracts and stacks three bands of a reflectance array
+    
+plot_aop_rgb:
+    reads in and plots 3 bands of a reflectance array as an RGB image
+    
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
 import h5py, os, copy
+from skimage import exposure
+
+def list_dataset(name,node):
+    
+    """list_dataset lists the name and location of each dataset stored in an hdf5 file.
+    --------
+    See Also:
+    --------
+    ls_dataset: 
+        Lists name, shape, and type of each dataset stored in an hdf5 file.
+    --------
+    Usage:
+    --------
+    f = h5py.File('NEON_D02_SERC_DP3_368000_4306000_reflectance.h5','r') 
+    f.visititems(list_dataset)"""
+    
+    if isinstance(node, h5py.Dataset):
+        print(name)
+
+def ls_dataset(name,node):
+    
+    """ls_dataset lists the name, shape, and datatype of each dataset stored in 
+    an hdf5 file.
+    --------
+    See Also
+    --------
+    list_dataset: 
+        Lists name and location of each dataset stored in an hdf5 file
+    Example:
+    --------
+    f = h5py.File('NEON_D02_SERC_DP3_368000_4306000_reflectance.h5','r') 
+    f.visititems(ls_dataset)"""
+    
+    if isinstance(node, h5py.Dataset):
+        print(node)
 
 def aop_h5refl2array(refl_filename):
-    """aop_h5refl2array reads in a NEON AOP reflectance hdf5 file and returns 
-           1. reflectance array (with the no data value and reflectance scale factor applied)
-           2. dictionary of metadata including spatial information, and wavelengths of the bands
-    --------
+    """read in NEON AOP reflectance hdf5 file, convert to a cleaned reflectance 
+    array and return associated metadata (spatial information and band center 
+    wavelengths)
+           
     Parameters
-        refl_filename -- full or relative path and name of reflectance hdf5 file
-    --------
+    ----------
+        refl_filename : string
+            reflectance hdf5 file name, including full or relative path
+
     Returns 
     --------
-    reflArray:
+    reflArray : ndarray
         array of reflectance values
-    metadata:
-        dictionary containing the following metadata:
+    metadata: dictionary 
+        associated metadata containing
             bad_band_window1 (tuple)
             bad_band_window2 (tuple)
             bands: # of bands (float)
@@ -30,7 +91,7 @@ def aop_h5refl2array(refl_filename):
             epsg: coordinate system code (float)
             map info: coordinate system, datum & ellipsoid, pixel dimensions, and origin coordinates (string)
             reflectance scale factor: factor by which reflectance is scaled (float)
-            wavelength: wavelength values (float)
+            wavelength: center wavelengths of bands (float)
             wavelength unit: 'm' (string)
     --------
     NOTE: This function applies to the NEON hdf5 format implemented in 2016, and should be used for
@@ -41,11 +102,10 @@ def aop_h5refl2array(refl_filename):
     --------
     sercRefl, sercRefl_metadata = h5refl2array('NEON_D02_SERC_DP3_368000_4306000_reflectance.h5') """
     
-    import h5py
     
     #Read in reflectance hdf5 file 
     hdf5_file = h5py.File(refl_filename,'r')
-
+    
     #Get the site name
     file_attrs_string = str(list(hdf5_file.items()))
     file_attrs_string_split = file_attrs_string.split("'")
@@ -53,6 +113,8 @@ def aop_h5refl2array(refl_filename):
     
     #Extract the reflectance & wavelength datasets
     refl = hdf5_file[sitename]['Reflectance']
+    
+    
     reflData = refl['Reflectance_Data']
     reflRaw = refl['Reflectance_Data'].value
     
@@ -97,20 +159,33 @@ def aop_h5refl2array(refl_filename):
 
 def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='Greys'):
     
-    '''plot_refl_data reads in and plots a single band or 3 stacked bands of a reflectance array
+    ''' read in and plot a single band or 3 stacked bands of a reflectance array
     --------
     Parameters
     --------
-        band_array: array of reflectance values, created from aop_h5refl2array
-        refl_extent: extent of reflectance data to be plotted (xMin, xMax, yMin, yMax) 
-                     use metadata['spatial extent'] from aop_h5refl2array function
-        colorlimit: optional, range of values to plot (min,max). 
-                    - helpful to look at the histogram of reflectance values before plotting to determine colorlimit.
-        ax: optional, default = current axis
-        title: optional; plot title (string)
-        cmap_title: optional; colorbar title 
-        colormap: optional (string, see https://matplotlib.org/examples/color/colormaps_reference.html) for list of colormaps
-    --------
+        band_array: ndarray
+            Array of reflectance values, created from aop_h5refl2array
+            If 'band_array' is a 2-D array, plots intensity of values
+            If 'band_array' is a 3-D array (3 bands), plots RGB image, set cbar to 'off' and don't need to specify colormap 
+        refl_extent: tuple
+            Extent of reflectance data to be plotted (xMin, xMax, yMin, yMax) 
+            Stored in metadata['spatial extent'] from aop_h5refl2array function
+        colorlimit: tuple, optional
+            Range of values to plot (min,max). 
+            Look at the histogram of reflectance values before plotting to determine colorlimit.
+        ax: axis handle, optional
+            Axis to plot on; specify if making figure with subplots. Default is current axis, plt.gca()
+        title: string, optional
+            plot title 
+        cbar: string, optional
+            Use cbar = 'on' (default), shows colorbar; use if plotting 1-band array
+            If cbar = 'off' (or not 'on'), does no
+        cmap_title: string, optional
+            colorbar title (eg. 'reflectance', etc.)
+        colormap: string, optional
+            Matplotlib colormap to plot 
+            see https://matplotlib.org/examples/color/colormaps_reference.html
+
     Returns 
     --------
         plots flightline array of single band of reflectance data
@@ -118,14 +193,12 @@ def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',
 
     Examples:
     --------
-    plot_aop_refl(sercb56,
+    >>> plot_aop_refl(sercb56,
               sercMetadata['spatial extent'],
               colorlimit=(0,0.3),
               title='SERC Band 56 Reflectance',
               cmap_title='Reflectance',
               colormap='Greys_r') '''
-    
-    import matplotlib.pyplot as plt
     
     plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
     if cbar == 'on':
@@ -137,6 +210,25 @@ def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',
     
 def stack_rgb(reflArray,bands):
     
+    ''' extract and stack three bands of a reflectance array 
+    --------
+    Parameters
+    --------
+        reflArray: ndarray (m x n x #bands)
+            Array of reflectance values, created from aop_h5refl2array
+        bands: tuple
+            Indices of bands to extract (R,G,B)
+
+    Returns 
+    --------
+        stackedRGB: ndarray (m x n x 3)
+            array containing 3 bands specified 
+    --------
+
+    Examples:
+    --------
+    >>> stack_rgb(sercRefl,(58,34,19)) '''
+    
     red = reflArray[:,:,bands[0]-1]
     green = reflArray[:,:,bands[1]-1]
     blue = reflArray[:,:,bands[2]-1]
@@ -147,11 +239,34 @@ def stack_rgb(reflArray,bands):
 
 def plot_aop_rgb(rgbArray,ext,ls_pct=5,plot_title=''):
     
-    from skimage import exposure
+    ''' read in and plot 3 bands of a reflectance array as an RGB image
+    --------
+    Parameters
+    --------
+        rgbArray: ndarray (m x n x 3)
+            3-band array of reflectance values, created from stack_rgb
+        ext: tuple
+            Extent of reflectance data to be plotted (xMin, xMax, yMin, yMax) 
+            Stored in metadata['spatial extent'] from aop_h5refl2array function
+        ls_pct: integer or float, optional
+            linear stretch percent
+        plot_title: string, optional
+            image title
+
+    Returns 
+    --------
+        plots RGB image of 3 bands of reflectance data
+    --------
+
+    Examples:
+    --------
+    >>> plot_aop_rgb(SERCrgb,
+                     sercMetadata['spatial extent'],
+                     plot_title = 'SERC RGB')'''
     
     pLow, pHigh = np.percentile(rgbArray[~np.isnan(rgbArray)], (ls_pct,100-ls_pct))
     img_rescale = exposure.rescale_intensity(rgbArray, in_range=(pLow,pHigh))
     plt.imshow(img_rescale,extent=ext)
     plt.title(plot_title + '\n Linear ' + str(ls_pct) + '% Contrast Stretch'); 
-    ax = plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degree
+    ax = plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') 
+    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) 
