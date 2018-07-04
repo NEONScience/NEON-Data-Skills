@@ -1,0 +1,161 @@
+---
+title: "Teakettle Canopy Height Analysis"
+author: "Naupaka Zimmerman"
+date: "June 21, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Analyis of Teakettle LiDAR-derived Canopy Height
+
+Out goals are to:
+
+1. Import a raster — A lidar canopy height model (lidar/Teak_lidarCHM.tif)
+1. For the CHM, set values == 0 to NA (not trees)
+1. Classify the raster according to some distribution – low medium and tall trees. This could be done using a histogram potentially or we could just decide that <2m is generally grasses / understory, <6m small trees,and the rest are tall trees. Visualize histogram/density and plot vertical cutoff lines
+1. Plot the reclassified raster and add a legend for each “class”
+1. Export the plot figure to a pdf in the outputs folder
+1. Export the classified raster as a geotiff with NaFlagg = -9999 to an outputs folder
+
+
+```{r code}
+# load library
+library("raster")
+
+# load data
+chm_file <- "../NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarCHM.tif"
+chm <- raster(chm_file)
+
+# quick sanity check
+plot(chm)
+
+# Fix 0 values for R
+chm[chm == 0] <- NA
+plot(chm)
+
+##########################################
+##########################################
+# Reclassify raster values
+
+# first create a matrix of values that represent the classification ranges
+# Lowest height class = 1
+height.class.m <- c(0, 6, 1,
+					6, 30, 2,
+					30, 50, 3,
+					50, 100, 4)
+height.class.m
+
+# reshape the object into a matrix with columns and rows
+reclass.height.mat <- matrix(height.class.m, 
+                ncol = 3, 
+                byrow = TRUE)
+
+reclass.height.mat
+
+# reclassify the raster using the reclass object - reclass.height.mat
+reclassified.chm <- reclassify(chm, 
+                     reclass.height.mat)
+
+# plot density of chm heights with cutoff lines
+density(chm, main = "Canopy heights at Teakettle site\n with bin cutoffs in red", xlab = "Height (m)")
+
+# cutoffs for bins from the reclassification matrix (second column)
+sapply(reclass.height.mat[, 2], function(x) abline(v = x, col = "red"))
+
+
+##########################################
+##########################################
+# Write density plot out to pdf
+
+pdf(file = "output/chm_density_plot.pdf", width = 6, height = 5)
+
+# plot density of chm heights with cutoff lines
+density(chm, main = "Canopy heights at Teakettle site\n with bin cutoffs in red", xlab = "Height (m)")
+
+# cutoffs for bins from the reclassification matrix (second column)
+sapply(reclass.height.mat[, 2], function(x) abline(v = x, col = "red"))
+
+dev.off()
+
+
+
+
+
+# this is a tricky bit because we need to out the legend
+# outside of the plot region
+
+# make room for a legend
+# 
+par(xpd = FALSE, mar = c(5.1, 4.1, 4.1, 4.5))
+
+# plot
+plot(reclassified.chm,
+     col = c("yellow", "orange", "red", "blue"), # hard code colors
+     main = "Canopy height classes \nLower Teakettle",
+     legend = FALSE)
+
+# allow legend to plot outside of bounds
+par(xpd = TRUE)
+
+# legend x
+leg.x <- par()$usr[2] + 20
+
+# legend y
+leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2) 
+
+# create the legend
+legend(leg.x, leg.y,  # set x,y legend location
+       legend = c("0-6 m", "6-30 m", "30-50 m", "50-100 m"),  # make sure the order matches colors
+       fill = c("yellow","orange", "red", "blue"),
+       bty = "n") # turn off border
+
+
+##########################################
+##########################################
+# Write out to pdf
+
+pdf(file = "output/reclassified_chm.pdf", height = 5, width = 6)
+
+# make room for a legend
+par(xpd = FALSE, mar = c(5.1, 4.1, 4.1, 4.5))
+
+# plot
+plot(reclassified.chm,
+     col = c("yellow", "orange", "red", "blue"), # hard code colors
+     main = "Canopy height classes \nLower Teakettle",
+     legend = FALSE)
+
+# allow legend to plot outside of bounds
+par(xpd = TRUE)
+
+# legend x
+leg.x <- par()$usr[2] + 20
+
+# legend y
+leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2) 
+
+# create the legend
+legend(leg.x, leg.y,  # set x,y legend location
+       legend = c("0-6 m", "6-30 m", "30-50 m", "50-100 m"),  # make sure the order matches colors
+       fill = c("yellow","orange", "red", "blue"),
+       bty = "n") # turn off border
+
+dev.off()
+
+##########################################
+##########################################
+
+
+# export geotiff
+writeRaster(reclassified.chm,
+            filename = "output/reclassified_lidar_CHM.tif",
+            format = "GTiff",
+            options = "COMPRESS=LZW",
+            overwrite = TRUE,
+            NAflag = -9999)
+
+
+```

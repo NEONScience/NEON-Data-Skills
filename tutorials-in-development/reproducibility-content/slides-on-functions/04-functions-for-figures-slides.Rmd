@@ -1,0 +1,152 @@
+---
+title: "Functions for Figures"
+output:
+  ioslides_presentation:
+    highlight: pygments
+    widescreen: yes
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+```
+
+## Writing functions to generate figures
+
+Now that we have functions to generate the datasets we need for our paper, we can start using them to generate the figures.
+
+To illustrate this concept, we are going to generate a figure before converting it into a function.
+
+First, load needed libraries and load data from a GeoTIFF raster file.
+
+```{r load-libraries-and-data, message=FALSE}
+library("raster")
+
+# Change to appropriate path as needed
+teak_chm_f <- "TEAK_lidarCHM.tif"
+teak_chm <- raster(teak_chm_f)
+```
+
+## Plotting a density function for canopy heights
+
+```{r plot-density-1, fig.height=4}
+
+# plot pd function for canopy heights
+density(teak_chm, main = "Canopy heights derived from LiDAR for\nNEON Teakettle (D17)",
+	 	xlab = "Canopy height (m)")
+```
+
+
+## Some light data cleaning
+
+```{r plot-density-2, fig.height=4}
+# Set 0 values to NA (ground values)
+teak_chm[teak_chm == 0] <- NA
+
+density(teak_chm, main = "Canopy heights derived from LiDAR for\nNEON Teakettle (D17)",
+	 xlab = "Canopy height (m)")
+```
+
+## Writing to PDF
+
+If we want to make a PDF file of this figure we could do:
+
+```{r write-to-pdf-1, purl=TRUE, eval=FALSE}
+pdf(file="teak_chm_density.pdf", width=8, height=6)
+
+density(teak_chm, main = "Canopy heights derived from LiDAR for\nNEON Teakettle (D17)",
+	 xlab = "Canopy height (m)")
+
+dev.off()
+```
+
+## Shortcomings
+
+This example is relatively simple but if you are building a more complex figure that relies on several variables, it means that they will be globally available in your knitr document, potentially causing conflicts down the road.
+
+## Improvements
+
+Let's convert this into a function:
+
+```{r make-function, purl=TRUE}
+# expects a chm raster dataset and a character string
+density_plot_from_chm <- function(chm, title) {
+	density(chm, main = title, xlab = "Canopy height (m)")
+}
+```
+
+## Prettier
+
+So this part gets a little prettier:
+
+```{r write-pdf-with-function, purl=TRUE, eval=FALSE}
+pdf(file="teak_chm_density.pdf", width=8, height=6)
+
+density_plot_from_chm(teak_chm, "Canopy heights derived from LiDAR for\n
+					  			NEON Teakettle (D17)")
+
+dev.off()
+```
+
+If you start making a lot of figures, it would be nice to have to repeat this
+first and third lines...
+
+## Automated
+
+Let's create another function that will automate this process:
+
+```{r pdf-from-function, purl=TRUE}
+## An example that generates a PDF file from a function that creates a plot
+## See http://nicercode.github.io/blog/2013-07-09-figure-functions/
+make_pdf <- function(expr, filename, ..., verbose = TRUE) {
+    if (verbose) {
+        message("Creating: ", filename)
+    }
+    pdf(file = filename, ...)
+    on.exit(dev.off())
+    eval.parent(substitute(expr))
+}
+```
+
+```{r run-pdf-function, purl=TRUE}
+make_pdf(density_plot_from_chm(teak_chm, 
+							   title = "Canopy heights for NEON Teakettle"), 
+		 filename = "teak_chm_density.pdf", width = 8, height = 6)
+```
+
+## Further improvements {.smaller}
+
+We can even improve our `density_plot_from_chm` function to make it a little more general. For instance, we can add an argument to add vertical line breaks at arbitrary positions. 
+
+```{r complexify-function, purl=TRUE, fig.height=3}
+# expects a raster, character string, and numeric vector for vertical breaks
+density_plot_from_chm <- function(chm, title, breaks) {
+	density(chm, main = title, xlab = "Canopy height (m)")
+	sapply(breaks, function(x) abline(v = x, col = "red"))
+}
+
+density_plot_from_chm(teak_chm, title = "Canopy heights", breaks = c(10,30))
+```
+
+## Your turn
+
+```{r exercise, purl=TRUE}
+# create a function to generate a histogram from a CHM raster and use it with make_pdf
+
+make_pdf <- function(expr, filename, ..., verbose = TRUE) {
+    if (verbose) {
+        message("Creating: ", filename)
+    }
+    pdf(file = filename, ...)
+    on.exit(dev.off())
+    eval.parent(substitute(expr))
+}
+
+# expects a raster, character string, and numeric vector for vertical breaks
+density_plot_from_chm <- function(chm, title, breaks) {
+	density(chm, main = title, xlab = "Canopy height (m)")
+	sapply(breaks, function(x) abline(v = x, col = "red"))
+}
+
+
+
+```
