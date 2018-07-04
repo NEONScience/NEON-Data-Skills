@@ -283,10 +283,16 @@ or via the command line by using the following lines:
 	 jupyter nbconvert --to pdf notebook_name.ipynb 
 
 Where "notebook_name.ipynb" matches the name of the notebook you want to convert. Prior to 
-converting the notebook you must be in the same working directory as your notebooks.
+converting the notebook you must be in the same working directory as your notebook or use
+the correct file path from your current working directory. 
+
+Converting to PDF requires both Pandoc and LaTeX to be installed. You can find 
+out more in the <a href="https://nbconvert.readthedocs.io/en/latest/usage.html#" target="_blank">ReadTheDoc for nbconvert</a>. 
 
 If you prefer to convert to a different format, like html, you simply change the 
-file type. Read more on what formats you can convert to and more about the 
+file type. 
+	 jupyter nbconvert --to html notebook_name.ipynb 
+Read more on what formats you can convert to and more about the 
 <a href="https://github.com/jupyter/nbconvert" target="_blank"> nbconvert package </a>. 
 
 
