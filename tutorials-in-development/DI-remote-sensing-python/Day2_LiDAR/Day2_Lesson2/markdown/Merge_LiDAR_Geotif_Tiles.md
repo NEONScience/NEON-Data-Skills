@@ -2,7 +2,7 @@
 # Merging Geotif Tiles to Create a Mosaic
 
 
-All of the lessons so far have been working with a single tile, but in your analysis you will likely want to work with a larger area of data, from a few tiles to an entire site. In this tutorial, we will demonstrate how to use the `gdal_merge` utility to mosaic multiple tiles together. This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to http://www.gdal.org/gdal_merge.html. 
+All of the lessons so far have been working with a single tile, but in your analysis you will likely want to work with a larger area of data, from a few tiles to an entire site. In this tutorial, we will demonstrate how to use the `gdal_merge` utility to mosaic multiple tiles together. This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your Anaconda folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to http://www.gdal.org/gdal_merge.html. 
 
 ## Objectives
 
