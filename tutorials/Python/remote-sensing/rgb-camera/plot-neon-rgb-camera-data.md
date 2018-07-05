@@ -10,7 +10,7 @@ packagesLibraries:
 topics: data-analysis, data-visualization, spatial-data-gis 
 languagesTool: python
 dataProduct: DP3.30010
-code1: code/Python/remote-sensing/rgb-camera/plot-neon-rgb-camera-data.ipynb
+code1: /Python/remote-sensing/rgb-camera/plot-neon-rgb-camera-data.ipynb
 tutorialSeries: jupyter-notebooks
 urlTitle: plot-neon-rgb-py
 
