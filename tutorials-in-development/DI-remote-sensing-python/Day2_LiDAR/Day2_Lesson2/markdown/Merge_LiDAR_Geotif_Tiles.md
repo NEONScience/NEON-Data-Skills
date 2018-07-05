@@ -19,7 +19,6 @@ import glob
 
 Make a list of files to mosaic using `glob.glob`, and print the result. In this example, we are selecting all files ending with `_aspect.tif` in the folder `.\TEAK_Aspect_Tiles`:
 
-
 ```python
 files_to_mosaic = glob.glob('.\TEAK_Aspect_Tiles\*_aspect.tif')
 files_to_mosaic
@@ -53,13 +52,6 @@ Now that we have the list of files we want to mosaic, we can run a system comman
 command = "python gdal_merge.py -o TEAK_Aspect_Mosaic.tif -of gtiff " + files_string
 os.system(command)
 ```
-
-
-
-
-    0
-
-
 
 This creates the file `TEAK_Aspect_Mosaic.tif` in the working directory. Now we can use the function `raster2array` to read in the mosaiced array. This function converts the geotif file into an array, and also stores relevant metadata (eg. spatial information) into the dicitonary `metadata`. Load or import this function into your cell with `%load raster2array`.
 
