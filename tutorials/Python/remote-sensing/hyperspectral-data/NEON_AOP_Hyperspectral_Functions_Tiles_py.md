@@ -23,7 +23,7 @@ introduce functions `aop_h5refl2array`, plot different combinations of
 bands, and demonstrate how to create `IPython widgets` for more interactive 
 data visualization. 
 
-<div id="ds-ojectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ### Objectives
 After completing this tutorial, you will be able to:

@@ -378,8 +378,8 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
 This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels. Hyperspectral data sets are often called "cubes" to reflect this 3-dimensional shape.
 
 <figure>
-    <a href="/hyperspectral/DataCube.png">
-    <img src="/hyperspectral/DataCube.png"></a>
+    <a href="{{ site.baseurl }}/hyperspectral/DataCube.png">
+    <img src="{{ site.baseurl }}/hyperspectral/DataCube.png"></a>
     <figcaption> A "cube" showing a hyperspectral data set. Source: National Ecological Observatory Network
     (NEON)  
     </figcaption>
@@ -583,7 +583,7 @@ Now we can plot this band using the Python package ```matplotlib.pyplot```, whic
 serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys') 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_48_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_45_0.png)
 
 We can see that this image looks pretty washed out. To see why this is, it helps to look at the range and distribution of reflectance values that we are plotting. We can do this by making a histogram. 
 
@@ -596,7 +596,7 @@ We can plot a histogram using the `matplotlib.pyplot.hist` function. Note that t
 plt.hist(b56[~np.isnan(b56)],50); #50 signifies the # of bins
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_51_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_48_0.png)
 
 We can see that most of the reflectance values are < 0.4. In order to show more contrast in the image, we can adjust the colorlimit (`clim`) to 0-0.4:
 
@@ -606,7 +606,7 @@ serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys',clim=(0,0.4))
 plt.title('SERC Band 56 Reflectance');
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_53_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_51_0.png)
 
 
 
