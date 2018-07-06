@@ -1,7 +1,7 @@
 ---
 syncID: e937a0e49f1c421291a717894c706938
-title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Python"
-description: "Learn to classify spectral data using the Principal Components Analysis (PCA) method."
+title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Python - Flightline Data"
+description: "Learn to efficiently work with flightline NEON AOP spectral data using functions."
 dateCreated: 2017-06-19 
 authors: Bridget Hass
 contributors:
@@ -9,9 +9,9 @@ estimatedTime:
 packagesLibraries: numpy, pandas, gdal, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
-dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/NEON_AOP_Hyperspectral_Functions_py.ipynb
-tutorialSeries: intro-hsi-py-series
+dataProduct: NEON.DP1.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/NEON_AOP_Hyperspectral_Functions_Flightlines_py.ipynb
+tutorialSeries: intro-hsi-flightline-py-series
 urlTitle: neon-hsi-aop-functions-python
 ---
 
@@ -28,8 +28,8 @@ interactively.
 After completing this tutorial, you will be able to:
 
 * Upload a Python module
-* Mre efficiently work with NEON hyperspectral data using functions, including: 
-	+ Read in NEON AOP reflectance hdf5 data and associated metadata
+* Efficiently work with NEON hyperspectral data using functions, including: 
+	+ Read in flightline NEON AOP reflectance hdf5 data and associated metadata
 	+ Subset a flightline to a smaller region
 	+ Stack and plot 3-band combinations (eg. RGB, Color Infrared, False Color Images)
 * Use IPython widgets to explore RGB band combinations interactively 
@@ -135,8 +135,9 @@ you will have to first type `neon.`, eg. `neon.plot_band_array`.
 ## Functions & Loops
 
 We can use the `h5refl2array` function to read in the SERC reflectance 
-flightline from Lesson 1. For a quick look at how to run this function, type 
-one of the following in the next code cell:
+flightline from the 
+*<a href="https://www.neonscience.org/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines</a>* 
+tutorial. For a quick look at how to run this function, type one of the following in the next code cell:
 
 `h5refl2array?` 
 
