@@ -1,6 +1,6 @@
 
 ---
-syncID: 8491e02fec01499281d05f3b92409e27
+syncID: 61ad1fc43ddd45b49cad1bca48656bbe
 title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Tiles" 
 description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2018-07-04 
