@@ -12,7 +12,7 @@ topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
 code1: Python/remote-sensing/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance_Tiles_py.ipynb
-tutorialSeries: intro-hsi-py-series
+tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: neon-aop-hdf5-tile-py
 ---
 
