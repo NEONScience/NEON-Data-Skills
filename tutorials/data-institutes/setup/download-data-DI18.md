@@ -1,5 +1,5 @@
 ---
-syncID: f7ac2eee32b04c649280251acdc921e0
+syncID: 4b8efebb6b6749c792efa54a38edbab7
 title: "Data Institute 2018: Download the Data"
 description: "This tutorial covers the data and set up the data directory you will need for the 2018 Institute on Remote Sensing."
 dateCreated: 2017-06-09
@@ -12,13 +12,13 @@ languagesTool:
 dataProduct:
 code1: 
 tutorialSeries: 
-urlTitle: download-data-DI17
+urlTitle: download-data-DI18
 ---
 
 ## NEON Teaching Datasets
 Many NEON data skills tutorials utilize teaching data subsets which are hosted 
 on the NEON Data Skills 
-<a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets" target="_blank">fig**share** repository</a>. 
+<a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets" target="_blank">fig**share** repository</a> or the NEON AOP data distribution service.
 
 We recommend downloading the complete Data Institute 2018 teaching data subsets 
 from the button in the instructions below. 

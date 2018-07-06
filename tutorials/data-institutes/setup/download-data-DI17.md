@@ -18,7 +18,7 @@ urlTitle: download-data-DI17
 ## NEON Teaching Datasets
 Many NEON data skills tutorials utilize teaching data subsets which are hosted 
 on the NEON Data Skills 
-<a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets/834136" target="_blank">fig**share** repository</a>. 
+<a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets/834136" target="_blank">fig**share** repository</a> or the NEON AOP data distribution service. 
 
 We recommend downloading the complete Data Institute 2017 teaching data subsets from the 
 button in the instructions below. 
