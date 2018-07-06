@@ -1,18 +1,17 @@
-
 ---
 syncID: 61ad1fc43ddd45b49cad1bca48656bbe
-title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Tiles" 
+title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Tiled Data" 
 description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
+packagesLibraries: numpy, h5py, gdal, matplotlib
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
 code1: Python/remote-sensing/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance_Tiles_py.ipynb
-tutorialSeries: intro-hsi-py-series
+tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: neon-aop-hdf5-tile-py
 ---
 
