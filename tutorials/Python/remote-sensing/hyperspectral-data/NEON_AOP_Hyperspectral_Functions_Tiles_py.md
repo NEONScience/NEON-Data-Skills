@@ -4,8 +4,8 @@ title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Pyth
 description: "Learn to efficintly work with tiled NEON AOP spectral data using functions."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
-contributors:
-estimatedTime:
+contributors: 
+estimatedTime: 
 packagesLibraries: numpy, matplotlib, h5py, os, osr, copy
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -14,6 +14,7 @@ code1: Python/remote-sensing/hyperspectral-data/NEON_AOP_Hyperspectral_Functions
 tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: neon-hsi-aop-functions-tiles-py
 ---
+
 
 In the tutorial, we learn how to efficiently read in hdf5 data using h5py, 
 apply the no-data value and scale factor, and plot a single band of a 
