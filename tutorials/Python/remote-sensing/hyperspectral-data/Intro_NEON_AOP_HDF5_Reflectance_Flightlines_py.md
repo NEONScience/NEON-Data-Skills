@@ -1,7 +1,7 @@
 ---
 syncID: 8491e02fec01499281d05f3b92409e27
-title: "NEON AOP Hyperspectral Data in HDF5 format with Python" 
-description: "Learn how to read NEON AOP hyperspectral HDF5 dataset using Python and develop skills to manipulate and visualize spectral data."
+title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines" 
+description: "Learn how to read NEON AOP hyperspectral HDF5 flightline dataset using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2017-04-10 
 authors: Bridget Hass
 contributors: 
@@ -9,8 +9,8 @@ estimatedTime:
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
-dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance_py.ipynb
+dataProduct: NEON.DP1.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: neon-aop-hdf5-py
 ---
@@ -65,6 +65,7 @@ For more information on spectral remote sensing watch this video.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
+## Set up 
 
 Before we start coding, make sure you are using the correct version of Python. 
 The `gdal` package is currently compatible with Python versions 3.4 and earlier (May 2017). 
@@ -110,7 +111,7 @@ relative path to that directory. For example, if our data were in the directory
 f = h5py.File('../data/SERC/hyperspectral/NEON_D02_SERC_DP1_20160807_160559_reflectance.h5','r') 
 ```
 
-## Explore NEON AOP HDF5 Reflectance Files
+## Explore the Files
 
 We can look inside the HDF5 dataset with the `h5py visititems` function. The 
 `list_dataset` function defined below displays all datasets stored in the hdf5 
@@ -348,7 +349,7 @@ print('serc_extDict:',serc_extDict)
     serc_extDict: {'xMin': 367167.0, 'xMax': 368273.0, 'yMin': 4300128.0, 'yMax': 4310980.0}
     
 
-## Extract a single band from the array
+## Extract a Single Band from Array
 
 
 ```python
@@ -413,7 +414,7 @@ print('Cleaned Band 56 Reflectance:\n',b56)
      [ nan  nan  nan ...,  nan  nan  nan]]
     
 
-## Plot histogram 
+## Plot Histogram 
 
 We can use functions from the `matplotlib` package to plot a histogram of the 
 reflectance data. 
@@ -430,7 +431,7 @@ plt.xlabel('Reflectance'); plt.ylabel('Frequency')
 ![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_29_1.png)
 
 
-## Plot single reflectance band
+## Plot Single Band
 
 Now we can plot this band using the Python package `matplotlib.pyplot`, which we i
 mported at the beginning of the lesson as `plt`. Note that the default colormap 
@@ -473,8 +474,8 @@ Note from both the plot and histogram of the reflectance values that almost all
 of the reflectance values range from 0.0-0.35. In order to see more contrast in 
 the plot, we try out a couple things: 
 
-1. adjust the color limits to only show the relevant range using the imshow clim option 
-1. apply linear contrast stretch or histogram equalization 
+1. adjust the color limits to only show the relevant range using the `imshow clim` option 
+2. apply linear contrast stretch or histogram equalization 
 
 
 ```python
@@ -506,7 +507,7 @@ rotatexlabels = plt.setp(ax3.get_xticklabels(),rotation=270) #rotate x tick labe
 ![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_33_0.png)
 
 
-## Extension: Plot a subset of the SERC flightline reflectance data
+## Extension: Plot a subset a flightline
 
 You may want to zoom in on a specific region within a flightline for 
 further analysis. To do this, we need to subset the data, which requires the 
@@ -514,9 +515,9 @@ following steps:
 
 1. Define the spatial extent of the data subset (or clip) that we want to zoom 
 in on.
-1. Determine the pixel indices of the full flightline that correspond to these 
+2. Determine the pixel indices of the full flightline that correspond to these 
 spatial extents.
-1. Subscript the full flightline array with these indices to create a subset.
+3. Subscript the full flightline array with these indices to create a subset.
 
 For this exercise, we will zoom in on a region in the middle of this SERC flight 
 line, around UTM y = 4306000 m. We will load the function `calc_clip_index`, 
@@ -714,7 +715,7 @@ Notice that the 8% stretch image (right) washes out some of the objects with
 higher reflectance (eg. the dock & buildings), but does a better job showing 
 contrast of the vegetation (eg. grass, trees, shadows). 
 
-### Explore the contrast stretch feature interactively using Python widgets: 
+### Explore the contrast stretch feature interactively using Python widgets 
 
 
 ```python
