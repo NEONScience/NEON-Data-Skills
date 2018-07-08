@@ -40,7 +40,7 @@ After completing this tutorial, you will be able to:
 * **numpy**
 * **matplotlib** 
 * **h5py**
-* **skimage** (optional)
+* **skimage** 
 * **IPython.html.widgets** (optional)
 
 
