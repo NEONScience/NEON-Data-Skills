@@ -28,7 +28,7 @@ data visualization.
 ### Objectives
 After completing this tutorial, you will be able to:
 
-* Upload a Python module
+* Load and run user-defined Python functions
 * Efficiently work with NEON hyperspectral data using functions, including: 
 	+ Read in tiled NEON AOP reflectance hdf5 data and associated metadata
 	+ Stack and plot 3-band combinations (eg. RGB, Color Infrared, False Color Images)
@@ -99,7 +99,7 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, we encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function automates the steps required to read AOP hdf5 reflectance tiles into a Python format, and also cleans the data: it sets no data values within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
+The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, to load it into your notebook, copy the function into your working directory and type `%load aop_h5refl2array`. You will have to run the cell (Shift Enter) twice: once to load the function into the cell (you should see the code appear), and once to run the function (`%load aop_h5refl2array` will become grayed out). We encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function automates the steps required to read AOP hdf5 reflectance tiles into a Python format, and also cleans the data: it sets no data values (-9999) within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
 
 
 ```python
