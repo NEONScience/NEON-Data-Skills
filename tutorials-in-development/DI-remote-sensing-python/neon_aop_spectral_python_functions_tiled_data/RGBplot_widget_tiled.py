@@ -4,13 +4,10 @@ def RGBplot_widget(R,G,B):
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')
     
     Rband = array[:,:,R-1].astype(np.float)
-    #Rband_clean = clean_band(Rband,Refl_md)
     
     Gband = array[:,:,G-1].astype(np.float)
-    #Gband_clean = clean_band(Gband,Refl_md)
     
     Bband = array[:,:,B-1].astype(np.float)
-    #Bband_clean = clean_band(Bband,Refl_md)
     
     rgbArray[..., 0] = Rband*256
     rgbArray[..., 1] = Gband*256
