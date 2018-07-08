@@ -38,8 +38,6 @@ After completing this tutorial, you will be able to:
 ### Install Python Packages
 
 * **numpy**
-* **pandas**
-* **gdal** 
 * **matplotlib** 
 * **h5py**
 
