@@ -434,7 +434,8 @@ of a displayed image, as we will show how to do below.
 *The following tutorial section is adapted from skikit-image's tutorial
 <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
 
-Let's see what the image looks like using a 5% linear contrast stretch using the `skiimage` module's `exposure` function.
+Let's see what the image looks like using a 5% linear contrast stretch using 
+the `skiimage` module's `exposure` function.
 
 
 ```python
@@ -513,13 +514,10 @@ def RGBplot_widget(R,G,B):
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')
     
     Rband = array[:,:,R-1].astype(np.float)
-    #Rband_clean = clean_band(Rband,Refl_md)
     
     Gband = array[:,:,G-1].astype(np.float)
-    #Gband_clean = clean_band(Gband,Refl_md)
     
     Bband = array[:,:,B-1].astype(np.float)
-    #Bband_clean = clean_band(Bband,Refl_md)
     
     rgbArray[..., 0] = Rband*256
     rgbArray[..., 1] = Gband*256
