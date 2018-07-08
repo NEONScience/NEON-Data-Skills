@@ -1,16 +1,96 @@
+---
+syncID: d967358feca948ed8db09b676bf12d30
+title: "Plot a Spectral Signature in Python - Tiled Data"
+description: "Learn how to extract and plot a spectral profile from a single pixel of a reflectance band using NEON tiled hyperspectral data." 
+dateCreated: 2018-07-04 
+authors: Bridget Hass
+contributors: 
+estimatedTime: 
+packagesLibraries: numpy, pandas, gdal, matplotlib, h5py,IPython.display
+topics: hyperspectral-remote-sensing, HDF5, remote-sensing
+languagesTool: python
+dataProduct: NEON.DP3.30006, NEON.DP3.30008
+code1: Python/remote-sensing/hyperspectral-data/Plot_Spectral_Signature_Tiles_py.ipynb
+tutorialSeries: intro-hsi-tiles-py-series
+urlTitle: plot-spec-sig-tiles-python
+---
 
-# Plot a Spectral Signature
+In this tutorial, we will learn how to extract and plot a spectral profile 
+from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
-A spectral signature is a plot of the amount of light energy reflected by an object throughout the range of wavelengths in the electromagnetic spectrum. The spectral signature of an object conveys useful information about its structural and chemical composition. We can use these signatures to identify and classify different objects from a spectral image. 
+This tutorial uses the mosaiced or tiled NEON data product. For a tutorial 
+using the flightline data, please see <a href="/plot-spec-sig-python" target="_blank"> Plot a Spectral Signature in Python - Flightline Data</a>. 
 
-Vegetation has a unique spectral signature characterized by high reflectance in the near infrared wavelengths, and much lower reflectance in the green portion of the visible spectrum. We can extract reflectance values in the NIR and visible spectrums from hyperspectral data in order to map vegetation on the earth's surface. You can also use spectral curves as a proxy for vegetation health. We will explore this concept more in the next lesson, where we will caluclate vegetation indices.  
-<p><center><strong>Example spectra of water, green grass, dry grass, and soil<strong></center>
-<img src="../notebook/reflectance_curves.png" style="width: 300px;"/>
-<p>
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Objectives
+After completing this tutorial, you will be able to:
 
-In this exercise, we will learn how to extract and plot a spectral profile from a single pixel of a reflectance band in a NEON hyperspectral hdf5 file. To do this, we will use the `aop_h5refl2array` function to read in and clean our h5 reflectance data, and the Python package `pandas` to create a dataframe for the reflectance and associated wavelength data. Instead of copying and pasting each function like we did in the last lesson, we will import the module `neon_aop_hyperspectral.py`, which contains several functions which we introduced in the previous tutorial. This imports the functions behind the scenes, the same way you import standard Python packages. In order to import a module, it must be located in the same directory as where you are running your noteook. 
+* Plot the spectral signature of a single pixel 
+* Remove bad band windows from a spectra
+* Use a widget to interactively look at spectra of various pixels
+* Calculate the mean spectra over multiple pixels
+
+### Install Python Packages
+
+* **numpy**
+* **pandas**
+* **gdal** 
+* **matplotlib** 
+* **h5py** 
+* **IPython.display**
+
+
+### Download Data
+
+{% include/dataSubsets/_data_DI18.html %}
+
+To complete this tutorial, we will import a Python module containing several functions. This imports the functions behind the scenes, the same way you import standard Python packages. In order to import a module, it must be located in the same directory as where you are running your noteook. 
+
+[[nid:7489]]
+
+
+</div>
+
+
+In this exercise, we will learn how to extract and plot a spectral profile from 
+a single pixel of a reflectance band in a NEON hyperspectral hdf5 file. To do 
+this, we will use the `aop_h5refl2array` function to read in and clean our h5 
+reflectance data, and the Python package `pandas` to create a dataframe for the 
+reflectance and associated wavelength data.  
+
+## Spectral Signatures
+
+A spectral signature is a plot of the amount of light energy reflected by an 
+object throughout the range of wavelengths in the electromagnetic spectrum. The 
+spectral signature of an object conveys useful information about its structural 
+and chemical composition. We can use these signatures to identify and classify 
+different objects from a spectral image. 
+
+For example, vegetation has a distinct spectral signature.
+
+<figure>
+	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
+	<figcaption> Spectral signature of vegetation. Source: Mark Elowitz 
+	</figcaption>
+</figure>
+
+Vegetation has a unique spectral signature characterized by high reflectance in 
+the near infrared wavelengths, and much lower reflectance in the green portion 
+of the visible spectrum. We can extract reflectance values in the NIR and visible 
+spectrums from hyperspectral data in order to map vegetation on the earth's 
+surface. You can also use spectral curves as a proxy for vegetation health. We 
+will explore this concept more in the next lesson, where we will caluclate 
+vegetation indices. 
+
+<figure>
+	<a href="{{ site.baseurl }}/images/hyperspectral/ReflectanceCurves_waterVegSoil.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/ReflectanceCurves_waterVegSoil.png"></a>
+	<figcaption> Example spectra of water, green grass, dry grass, and soil. Source: National Ecological Observatory Network (NEON)  
+	</figcaption>
+</figure>
+
 
 
 ```python
@@ -29,8 +109,11 @@ import neon_aop_hyperspectral as neon_hs
 ```
 
 
+![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/output_5_0.png)
+
+
 ```python
-sercRefl, sercRefl_md = neon_hs.aop_h5refl2array('../data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
+sercRefl, sercRefl_md = neon_hs.aop_h5refl2array('../data/Day1_Hyperspectral_Intro/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
 ```
 
 Optionally, you can view the data stored in the metadata dictionary, and print the minimum, maximum, and mean reflectance values in the tile. In order to handle any `nan` values, use `Numpy` `nanmin` `nanmax` and `nanmean`. 
@@ -60,8 +143,7 @@ neon_hs.plot_aop_refl(sercb56,
 ```
 
 
-![png](output_7_0.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/output_9_0.png)
 
 We can use `pandas` to create a dataframe containing the wavelength and reflectance values for a single pixel - in this example, we'll look at the center pixel of the tile (500,500). 
 
@@ -99,7 +181,7 @@ print(serc_pixel_df.tail(5))
     423       0.5458  2501.878906
     424       1.4881  2506.886719
     425       1.4882  2511.894531
-    
+
 
 We can now plot the spectra, stored in this dataframe structure. `pandas` has a built in plotting routine, which can be called by typing `.plot` at the end of the dataframe. 
 
@@ -116,8 +198,7 @@ ax.grid('on')
 ```
 
 
-![png](output_15_0.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/output_17_0.png)
 
 ##  Water Vapor Band Windows 
 We can see from the spectral profile above that there are spikes in reflectance around ~1400nm and ~1800nm. These result from water vapor which absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm. The atmospheric correction that converts radiance to reflectance subsequently results in a spike at these two bands. The wavelengths of these water vapor bands is stored in the reflectance attributes, which is saved in the reflectance metadata dictionary created with `h5refl2array`: 
@@ -132,7 +213,7 @@ print('Bad Band Window 2:',bbw2)
 
     Bad Band Window 1: [1340 1445]
     Bad Band Window 2: [1790 1955]
-    
+
 
 Below we repeat the plot we made above, but this time draw in the edges of the water vapor band windows that we need to remove. 
 
@@ -152,8 +233,14 @@ ax1.plot((1790,1790),(0,1.5), 'r--')
 ax1.plot((1955,1955),(0,1.5), 'r--')
 ```
 
-![png](output_19_1.png)
 
+
+
+    [<matplotlib.lines.Line2D at 0x81aaccb70>]
+
+
+
+![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/output_21_1.png)
 
 We can now set these bad band windows to `nan`, along with the last 10 bands, which are also often noisy (as seen in the spectral profile plotted above). First make a copy of the wavelengths so that the original metadata doesn't change.
 
@@ -166,7 +253,7 @@ w[-10:]=np.nan;  # the last 10 bands sometimes have noise - best to eliminate
 #print(w) #optionally print wavelength values to show that -9999 values are replaced with nan
 ```
 
-## DEMO: Interactive Spectra Visualization
+## Interactive Spectra Visualization
 
 Finally, we can create a `widget` to interactively view the spectra of different pixels along the reflectance tile. Run the two cells below, and interact with them to gain a better sense of what the spectra look like for different materials on the ground. 
 
@@ -220,4 +307,6 @@ def spectraPlot(pixel_x,pixel_y):
 interact(spectraPlot, pixel_x = (0,refl.shape[1]-1,1),pixel_y=(0,refl.shape[0]-1,1))
 ```
 
-![gif](spectra_widget.gif)
+![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/spectra_widget.gif)
+
+
