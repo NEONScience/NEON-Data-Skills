@@ -311,9 +311,6 @@ def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
 ```
 
-
-![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_13_0.png)
-
 Now that we have loaded this function, let's extract a single band from the SERC reflectance array and plot it:
 
 
