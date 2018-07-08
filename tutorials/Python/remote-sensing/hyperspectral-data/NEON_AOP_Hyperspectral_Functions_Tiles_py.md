@@ -264,7 +264,7 @@ sercRefl.shape
 
 
 
-## plot_aop_refl: plot a single band
+## Plot a Single Band
 
 Next we'll use the function `plot_aop_refl` to plot a single band of reflectance data. Read the `Parameters` section of the docstring to understand the required inputs & data type for each of these; only the band and spatial extent are required inputs, the rest are optional inputs that, if specified, allow you to set the range color values, specify the axis, add a title, colorbar, colorbar title, and change the colormap (default is to plot in greyscale). 
 
@@ -398,7 +398,7 @@ SERCrgb.shape
 
 
 
-## plot_aop_refl: plot an RGB band combination
+## Plot an RGB Image
 
 Next, we can use the function `plot_aop_refl`, even though we have more than one band. This function only works for a single or 3-band array, so ensure the array you use has the proper dimensions before using. You do not need to specify the colorlimits as the `matplotlib.pyplot` automatically scales 3-band arrays to 8-bit color (256). 
 
