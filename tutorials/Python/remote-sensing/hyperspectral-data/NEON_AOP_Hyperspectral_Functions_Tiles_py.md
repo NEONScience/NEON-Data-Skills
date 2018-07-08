@@ -1,7 +1,7 @@
 ---
 syncID: e046a83d83f2042d8b40dea1b20fd6779
 title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Python - Tiled Data"
-description: "Learn to efficintly work with tiled NEON AOP spectral data using functions."
+description: "Learn to efficiently work with tiled NEON AOP spectral data using functions."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
