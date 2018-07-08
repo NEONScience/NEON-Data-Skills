@@ -17,8 +17,7 @@ urlTitle: neon-aop-hdf5-tile-py
 
 
 In this introductory tutorial, we discuss how to read NEON AOP hyperspectral tiled
-data using Python. We develop and practice skills and use several tools to manipulate and 
-visualize the spectral data. 
+data using Python. We develop tools to manipulate and visualize the spectral data. 
 
 If you are interested in learning how to do this for flightline NEON AOP hyperspectral data, 
 please see <a href="/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines</a>.
@@ -365,16 +364,10 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
     SERC Reflectance Data Dimensions: (1000, 1000, 426)
 
 
-This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels. Hyperspectral data sets are often called "cubes" to reflect this 3-dimensional shape.
+This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels. Hyperspectral data sets are often called `cubes` to reflect this 3-dimensional shape.
 
-<figure>
-    <a href="{{ site.baseurl }}/hyperspectral/DataCube.png">
-    <img src="{{ site.baseurl }}/hyperspectral/DataCube.png"></a>
-    <figcaption> A "cube" showing a hyperspectral data set. Source: National Ecological Observatory Network
-    (NEON)  
-    </figcaption>
-</figure>
 
+![ ]({{ site.baseurl }}/images/hyperspectral/DataCube.png)
 
 NEON hyperspectral data contain around 426 spectral bands, and when working with tiled data, the spatial dimensions are 1000 x 1000, where each pixel represents 1 meter. Now let's take a look at the wavelength values. First, we will extract wavelength information from the `serc_refl` variable that we created:
 
@@ -596,7 +589,7 @@ serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys',clim=(0,0.4))
 plt.title('SERC Band 56 Reflectance');
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_51_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_50_0.png)
 
 
 
