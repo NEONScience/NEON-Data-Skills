@@ -1,12 +1,12 @@
 ---
 syncID: 61ad1fc43ddd45b49cad1bca48656bbe
 title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Tiled Data" 
-description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
+description: "Learn how to read NEON AOP hyperspectral tiled hdf5 data using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, h5py, gdal, matplotlib
+packagesLibraries: numpy, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -16,10 +16,9 @@ urlTitle: neon-aop-hdf5-tile-py
 ---
 
 
-In this introductory tutorial, we discuss how to read NEON AOP hyperspectral flightline
+In this introductory tutorial, we discuss how to read NEON AOP hyperspectral tiled
 data using Python. We develop and practice skills and use several tools to manipulate and 
-visualize the spectral data. By the end of this tutorial, you will become 
-familiar with the Python syntax.
+visualize the spectral data. 
 
 If you are interested in learning how to do this for flightline NEON AOP hyperspectral data, 
 please see <a href="/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines</a>.
@@ -30,7 +29,7 @@ please see <a href="/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral D
 
 After completing this tutorial, you will be able to:
 
-* Import and use Python packages `numpy, pandas, matplotlib, h5py, and gdal`.
+* Import and use Python packages `numpy, matplotlib, and h5py`.
 * Use the package `h5py` and the `visititems` functionality to read an HDF5 file 
 and view data attributes.
 * Read the data ignore value and scaling factor and apply these values to produce 
@@ -38,8 +37,6 @@ a cleaned reflectance array.
 * Extract and plot a single band of reflectance data
 * Plot a histogram of reflectance values to visualize the range and distribution 
 of values.
-* Subset an hdf5 reflectance file from the full flightline to a smaller region 
-of interest (if you complete the optional extension). 
 * Apply a histogram stretch and adaptive equalization to improve the contrast 
 of an image (if you complete the optional extension) . 
 
@@ -47,8 +44,6 @@ of an image (if you complete the optional extension) .
 ### Install Python Packages
 
 * **numpy**
-* **pandas**
-* **gdal** 
 * **matplotlib** 
 * **h5py**
 
@@ -60,9 +55,7 @@ of an image (if you complete the optional extension) .
 </div>
 
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our 
-environment at the Earth’s surface. In this tutorial we explore how to extract 
-information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
+Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
 
 #### Mapping the Invisible: Introduction to Spectral Remote Sensing
 
@@ -656,12 +649,6 @@ def linearStretch(percent):
     
 interact(linearStretch,percent=(0,100,1))
 ```
-
-
-
-
-
-
 
 
     <function __main__.linearStretch>
