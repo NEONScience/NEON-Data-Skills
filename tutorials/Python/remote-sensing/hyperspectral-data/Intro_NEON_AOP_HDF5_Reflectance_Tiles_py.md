@@ -36,9 +36,7 @@ and view data attributes.
 a cleaned reflectance array.
 * Extract and plot a single band of reflectance data
 * Plot a histogram of reflectance values to visualize the range and distribution 
-of values.
-* Apply a histogram stretch and adaptive equalization to improve the contrast 
-of an image (if you complete the optional extension) . 
+of values. 
 
 
 ### Install Python Packages
@@ -603,53 +601,3 @@ plt.title('SERC Band 56 Reflectance');
 
 
 Here you can see that adjusting the colorlimit displays features (eg. roads, buildings) much better than when we set the colormap limits to the entire range of reflectance values. 
-
-## Extension: Basic Image Processing -- Contrast Stretch & Histogram Equalization 
-
-We can also try out some basic image processing to better visualize the 
-reflectance data using the `ski-image` package. 
-
-Histogram equalization is a method in image processing of contrast adjustment 
-using the image's histogram. Stretching the histogram can improve the contrast 
-of a displayed image, as we will show how to do below. 
-
- <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png"></a>
-	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
-using the image's histogram. Stretching the histogram can improve the contrast 
-of a displayed image, as we will show how to do below.
-	Source: <a href="https://en.wikipedia.org/wiki/Talk%3AHistogram_equalization#/media/File:Histogrammspreizung.png"> Wikipedia - Public Domain </a>
-	</figcaption>
-</figure>
-
-
-*The following tutorial section is adapted from skikit-image's tutorial
-<a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
-
-Below we demonstrate a widget to interactively display different linear contrast stretches:
-
-### Explore the contrast stretch feature interactively using IPython widgets: 
-
-
-```python
-from skimage import exposure
-from IPython.html.widgets import *
-
-def linearStretch(percent):
-    pLow, pHigh = np.percentile(b56[~np.isnan(b56)], (percent,100-percent))
-    img_rescale = exposure.rescale_intensity(b56, in_range=(pLow,pHigh))
-    plt.imshow(img_rescale,extent=serc_ext,cmap='gist_earth') 
-    #cbar = plt.colorbar(); cbar.set_label('Reflectance')
-    plt.title('SERC Band 56 \n Linear ' + str(percent) + '% Contrast Stretch'); 
-    ax = plt.gca()
-    ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degree
-    
-interact(linearStretch,percent=(0,100,1))
-```
-
-
-    <function __main__.linearStretch>
-
-
