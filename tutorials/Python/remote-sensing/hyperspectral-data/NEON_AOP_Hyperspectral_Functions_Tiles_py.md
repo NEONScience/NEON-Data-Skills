@@ -6,7 +6,7 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, matplotlib, h5py, os, copy
+packagesLibraries: numpy, matplotlib, h5py, os, copy, skimage, IPython.html.widgets
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -40,6 +40,8 @@ After completing this tutorial, you will be able to:
 * **numpy**
 * **matplotlib** 
 * **h5py**
+* **skimage** (optional)
+* **IPython.html.widgets** (optional)
 
 
 ### Download Data
@@ -433,7 +435,7 @@ of a displayed image, as we will show how to do below.
 <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
 
 Let's see what the image looks like using a 5% linear contrast stretch using 
-the `skiimage` module's `exposure` function.
+the `skimage` module's `exposure` function.
 
 
 ```python
