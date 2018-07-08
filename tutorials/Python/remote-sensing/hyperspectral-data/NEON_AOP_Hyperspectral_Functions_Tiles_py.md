@@ -6,7 +6,7 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, matplotlib, h5py, os, osr, copy
+packagesLibraries: numpy, matplotlib, h5py, os, copy
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -101,7 +101,7 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, we encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function can be thought of as a wrapper to automate the steps required to read AOP hdf5 reflectance tiles into a Python format. This function also cleans the data: it sets any no data values within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
+The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, we encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function automates the steps required to read AOP hdf5 reflectance tiles into a Python format, and also cleans the data: it sets no data values within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
 
 
 ```python
@@ -342,8 +342,8 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg">
-	<img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg"></a>
+	<a href="{{ site.baseurl }}/images/hyperspectral/NEON_AOP_RGB_Band_Wavelengths.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/NEON_AOP_RGB_Band_Wavelengths.png"></a>
 	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
@@ -513,10 +513,8 @@ def RGBplot_widget(R,G,B):
     #Pre-allocate array  size
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')
     
-    Rband = array[:,:,R-1].astype(np.float)
-    
+    Rband = array[:,:,R-1].astype(np.float) 
     Gband = array[:,:,G-1].astype(np.float)
-    
     Bband = array[:,:,B-1].astype(np.float)
     
     rgbArray[..., 0] = Rband*256
@@ -537,25 +535,6 @@ def RGBplot_widget(R,G,B):
     
 interact(RGBplot_widget, R=(1,426,1), G=(1,426,1), B=(1,426,1))
 ```
-
-
-<p>Failed to display Jupyter Widget of type <code>interactive</code>.</p>
-<p>
-  If you're reading this message in the Jupyter Notebook or JupyterLab Notebook, it may mean
-  that the widgets JavaScript is still loading. If this message persists, it
-  likely means that the widgets JavaScript library is either not installed or
-  not enabled. See the <a href="https://ipywidgets.readthedocs.io/en/stable/user_install.html">Jupyter
-  Widgets Documentation</a> for setup instructions.
-</p>
-<p>
-  If you're reading this message in another frontend (for example, a static
-  rendering on GitHub or <a href="https://nbviewer.jupyter.org/">NBViewer</a>),
-  it may mean that your frontend doesn't currently support widgets.
-</p>
-
-
-
-    <function __main__.RGBplot_widget>
 
 ![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/rgb_widget.gif)
 
@@ -579,27 +558,6 @@ def linearStretch(percent):
 interact(linearStretch,percent=(0,20,1))
 ```
 
-
-<p>Failed to display Jupyter Widget of type <code>interactive</code>.</p>
-<p>
-  If you're reading this message in the Jupyter Notebook or JupyterLab Notebook, it may mean
-  that the widgets JavaScript is still loading. If this message persists, it
-  likely means that the widgets JavaScript library is either not installed or
-  not enabled. See the <a href="https://ipywidgets.readthedocs.io/en/stable/user_install.html">Jupyter
-  Widgets Documentation</a> for setup instructions.
-</p>
-<p>
-  If you're reading this message in another frontend (for example, a static
-  rendering on GitHub or <a href="https://nbviewer.jupyter.org/">NBViewer</a>),
-  it may mean that your frontend doesn't currently support widgets.
-</p>
-
-
-
-
-
-
-    <function __main__.linearStretch>
 ![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/linear_contrast.gif)
 
 
