@@ -344,7 +344,7 @@ as red, green, and blue.
 <figure>
 	<a href="{{ site.baseurl }}/images/hyperspectral/NEON_AOP_RGB_Band_Wavelengths.png">
 	<img src="{{ site.baseurl }}/images/hyperspectral/NEON_AOP_RGB_Band_Wavelengths.png"></a>
-	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
+	<figcaption> NEON Imaging Spectrometer bands and their respective center wavelengths (nm). Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
