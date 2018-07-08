@@ -1,7 +1,7 @@
 ---
 syncID: c91d556c8fad4570a33a1aaa550a561d
-title: "Plot a Spectral Signature in Python"
-description: "Learn how to extract and plot a spectral profile from a single pixel of a reflectance band." 
+title: "Plot a Spectral Signature in Python - Flightline Data"
+description: "Learn how to extract and plot a spectral profile from a single pixel of a reflectance band using the NEON flightline hyperspectral data." 
 dateCreated: 2017-06-19 
 authors: Bridget Hass
 contributors: 
@@ -9,14 +9,17 @@ estimatedTime:
 packagesLibraries: numpy, pandas, gdal, matplotlib, h5py,IPython.display
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
-dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Plot_Spectral_Signature_py.ipynb
+dataProduct: NEON.DP1.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/Plot_Spectral_Signature_Flightlines_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: plot-spec-sig-python
 ---
 
 In this tutorial, we will learn how to extract and plot a spectral profile 
 from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
+
+This tutorial uses the flightline NEON data products. For a tutorial 
+using the tiled/mosaiced data, please see <a href="/plot-spec-sig-tiles-python" target="_blank"> Plot a Spectral Signature in Python - Tiled Data</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -26,7 +29,7 @@ After completing this tutorial, you will be able to:
 * Plot the spectral signature of a single pixel 
 * Remove bad band windows from a spectra
 * Use a widget to interactively look at spectra of various pixels
-* Calculate the mean spectra over a multiple pixels
+* Calculate the mean spectra over multiple pixels
 
 ### Install Python Packages
 
