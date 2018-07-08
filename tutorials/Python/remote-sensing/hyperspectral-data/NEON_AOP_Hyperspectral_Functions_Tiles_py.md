@@ -48,9 +48,8 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI18.html %}
 
-[[nid:6792]]
+[[nid:7489]]
 
-[[nid:6791]]
 
 
 </div>

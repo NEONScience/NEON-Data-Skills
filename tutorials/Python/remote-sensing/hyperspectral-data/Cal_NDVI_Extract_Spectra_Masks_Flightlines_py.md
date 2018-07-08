@@ -1,7 +1,7 @@
 ---
 syncID: daa07e627a61458783103948c3a48f47
-title: "Calculate NDVI & Extract Spectra Using Masks in Python"
-description: "Learn to calculate Normalized Difference Vegetation Index (NDVI) and extract spectral using masks with Python." 
+title: "Calculate NDVI & Extract Spectra Using Masks in Python - Flightline Data"
+description: "Learn to calculate Normalized Difference Vegetation Index (NDVI) and extract spectral using masks with Python from NEON flighline AOP hyperspectral data products." 
 dateCreated: 2017-06-19 
 authors: Bridget Hass
 contributors: 
@@ -9,8 +9,8 @@ estimatedTime:
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, 
 languagesTool: python
-dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Cal_NDVI_Extract_Specta_Masks_py.ipynb
+dataProduct: NEON.DP1.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/Cal_NDVI_Extract_Specta_Masks_Flightlines_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: calc-ndvi-py
 ---
@@ -18,6 +18,9 @@ urlTitle: calc-ndvi-py
 In this tutorial, we will calculate the Normalized Difference Vegetation Index 
 (NDVI). 
 
+This tutorial uses the flightline NEON data product. For a tutorial 
+using the tiled/mosaiced data, please see 
+<a href="/calc-ndvi-py" target="_blank"> Calculate NDVI & Extract Spectra Using Masks in Python - Tiled Data</a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -25,7 +28,6 @@ In this tutorial, we will calculate the Normalized Difference Vegetation Index
 After completing this tutorial, you will be able to:
 
 * Calculate NDVI from hyperspectral data in Python.
-* Write Python script to create other vegetation and water indices. 
 
 ### Install Python Packages
 
@@ -65,18 +67,19 @@ The formula for NDVI is:
 **NDVI = (NIR - VIS)/(NIR+ VIS)**
 
 <figure>
- <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
- <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
-    <figcaption>NDVI is calculated from the visible and near-infrared light
+	<a href="{{ site.baseurl }}/images/hyperspectral/ndvi_tree.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/ndvi_tree.png"></a>
+	<figcaption> NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
     near-infrared light. Unhealthy or sparse vegetation (right) reflects more
-    visible light and less near-infrared light. Source: NASA 
-    </figcaption>
+    visible light and less near-infrared light. Source: 
+    <a href="https://www.researchgate.net/figure/266947355_fig1_Figure-1-Green-vegetation-left-absorbs-visible-light-and-reflects-near-infrared-light" target="_blank">Figure 1 in Wu et. al. 2014. PLOS. </a>   
+	</figcaption>
 </figure>
 
 * <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/measuring_vegetation_2.php" target="_blank">
-More on NDVI from NASA</a>
+Read, for more on NDVI from NASA.</a>
 
 
 ## Set up Environment 
