@@ -21,7 +21,7 @@ on the NEON Data Skills
 <a href="https://figshare.com/authors/NEON_Data_Skills_Teaching_Data_Subsets" target="_blank">fig**share** repository</a> or the NEON AOP data distribution service.
 
 We recommend downloading the complete Data Institute 2018 teaching data subsets 
-from the button in the instructions below. 
+from the buttons in the instructions below. 
 The required dataset(s) will also be available to download at the start of each 
 tutorial series in the **Download Data** section. 
 
@@ -42,9 +42,8 @@ data for this event, click the blue buttons below.
 
 </div>
 
-After clicking on the **Download Data** button, the data will automatically 
-download to the computer. This is a large file so it might take a while to 
-download. 
+After clicking on the **Download Data** button, you will be taken to a Citrix 
+FileShare page.  Download the necessary files (select all, except as noted above). 
 
 #### 2) Locate .zip file
 Second, we need to find the downloaded .zip files. Many browsers default to 
