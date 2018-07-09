@@ -239,9 +239,6 @@ def plot_aop_rgb(rgbArray,ext,ls_pct=5,plot_title=''):
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks-tiles/output_4_0.png)
-
-
 ### Read in SERC Reflectance Tile
 
 

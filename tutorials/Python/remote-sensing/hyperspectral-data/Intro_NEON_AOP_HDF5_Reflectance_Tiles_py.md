@@ -5,7 +5,8 @@ description: "Learn how to read NEON AOP hyperspectral tiled hdf5 data using Pyt
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
-estimatedTime: 
+estimatedTime: l = range(165)
+>>> l[0::10]
 packagesLibraries: numpy, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -425,7 +426,7 @@ print('SERC Map Info:',serc_mapInfo.value)
 Here we can spatial information about the reflectance data. Below is a break down of what each of these values means:
 
 - `UTM` - coordinate system (Universal Transverse Mercator)
-- `1.000, 1.000` - 
+- `1.000, 1.000` - pixel origin
 - `368000.000, 4307000.0` - UTM coordinates (meters) of the map origin, which refers to the upper-left corner of the image  (xMin, yMax). 
 - `1.0000000, 1.0000000` - pixel resolution (meters)
 - `18` - UTM zone
