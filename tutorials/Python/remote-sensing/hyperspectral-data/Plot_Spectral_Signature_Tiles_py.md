@@ -6,7 +6,7 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, pandas, gdal, matplotlib, h5py,IPython.display
+packagesLibraries: numpy, pandas, matplotlib, h5py,IPython.display
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -15,11 +15,9 @@ tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: plot-spec-sig-tiles-python
 ---
 
-In this tutorial, we will learn how to extract and plot a spectral profile 
-from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
+In this tutorial, we will learn how to extract and plot a spectral profile from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
-This tutorial uses the mosaiced or tiled NEON data product. For a tutorial 
-using the flightline data, please see <a href="/plot-spec-sig-python" target="_blank"> Plot a Spectral Signature in Python - Flightline Data</a>. 
+This tutorial uses the mosaiced or tiled NEON data product. For a tutorial using the flightline data, please see <a href="/plot-spec-sig-python" target="_blank"> Plot a Spectral Signature in Python - Flightline Data</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -35,7 +33,6 @@ After completing this tutorial, you will be able to:
 
 * **numpy**
 * **pandas**
-* **gdal** 
 * **matplotlib** 
 * **h5py** 
 * **IPython.display**
@@ -66,15 +63,6 @@ object throughout the range of wavelengths in the electromagnetic spectrum. The
 spectral signature of an object conveys useful information about its structural 
 and chemical composition. We can use these signatures to identify and classify 
 different objects from a spectral image. 
-
-For example, vegetation has a distinct spectral signature.
-
-<figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
-	<figcaption> Spectral signature of vegetation. Source: Mark Elowitz 
-	</figcaption>
-</figure>
 
 Vegetation has a unique spectral signature characterized by high reflectance in 
 the near infrared wavelengths, and much lower reflectance in the green portion 
@@ -107,9 +95,6 @@ Import the hyperspectral functions into the variable `neon_hs` (for neon hypersp
 ```python
 import neon_aop_hyperspectral as neon_hs
 ```
-
-
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-tiles-py/output_5_0.png)
 
 
 ```python
