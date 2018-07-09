@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 52f863b138b14d79a97e91422fc17b4f
 title: "Merging GeoTIFF Files to Create a Mosaic"
 description: "Learn to merge multiple GeoTIFF files to great a larger area of interest." 
 dateCreated: 2018-07-05 
