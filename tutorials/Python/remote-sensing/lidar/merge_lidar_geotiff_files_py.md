@@ -1,13 +1,49 @@
+---
+syncID: 
+title: "Merging GeoTIFF Files to Create a Mosaic"
+description: "Learn to merge multiple GeoTIFF files to great a larger area of interest." 
+dateCreated: 2018-07-05 
+authors: Bridget Hass
+contributors: 
+estimatedTime: 
+packagesLibraries: os, glob, numpy, osgeo, matplotlib.pyplot
+topics: lidar, data-analysis, remote-sensing
+languagesTool: python
+dataProduct: NEON.DP3.30015, NEON.DP3.30024, NEON.DP3.30025
+code1: Python/remote-sensing/lidar/merge_lidar_geotiff_files_py.ipynb
+tutorialSeries: intro-lidar-py-series
+urlTitle: merge-lidar-geotiff-py
+---
 
-# Merging Geotif Tiles to Create a Mosaic
+In your analysis you will likely want to work with an area larger than a single file, from a few tiles to an entire NEON field site. In this tutorial, we will demonstrate how to use the `gdal_merge` utility to mosaic multiple tiles together. 
+
+This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to the <a href="http://www.gdal.org/gdal_merge.html" target="_blank">gdal website</a>. . 
 
 
-All of the lessons so far have been working with a single tile, but in your analysis you will likely want to work with a larger area of data, from a few tiles to an entire site. In this tutorial, we will demonstrate how to use the `gdal_merge` utility to mosaic multiple tiles together. This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your Anaconda folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to http://www.gdal.org/gdal_merge.html. 
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+### Objectives
+After completing this tutorial, you will be able to:
 
-1. Merge multiple geotif raster tiles into a single mosaicked raster
-2. Use the functions `raster2array` to read a tif raster into a Python array
+* Merge multiple geotif raster tiles into a single mosaicked raster
+* Use the functions `raster2array` to read a tif raster into a Python array
+
+### Install Python Packages
+
+* **os**
+* **glob**
+* **osgeo** 
+* **matplotlib** 
+* **numpy**
+
+
+### Download Data
+
+{% include/dataSubsets/_data_DI18.html %}
+
+[[nid:XXXX]]
+
+</div>
 
 We'll start by importing the packages `os` and `glob`:
 
@@ -19,18 +55,19 @@ import glob
 
 Make a list of files to mosaic using `glob.glob`, and print the result. In this example, we are selecting all files ending with `_aspect.tif` in the folder `.\TEAK_Aspect_Tiles`:
 
+
 ```python
-files_to_mosaic = glob.glob('.\TEAK_Aspect_Tiles\*_aspect.tif')
+files_to_mosaic = glob.glob('../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/*_aspect.tif')
 files_to_mosaic
 ```
 
 
 
 
-    ['.\\TEAK_Aspect_Tiles\\NEON_D17_TEAK_DP3_320000_4100000_aspect.tif',
-     '.\\TEAK_Aspect_Tiles\\NEON_D17_TEAK_DP3_320000_4101000_aspect.tif',
-     '.\\TEAK_Aspect_Tiles\\NEON_D17_TEAK_DP3_321000_4100000_aspect.tif',
-     '.\\TEAK_Aspect_Tiles\\NEON_D17_TEAK_DP3_321000_4101000_aspect.tif']
+    ['../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_320000_4100000_aspect.tif',
+     '../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_320000_4101000_aspect.tif',
+     '../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_321000_4100000_aspect.tif',
+     '../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_321000_4101000_aspect.tif']
 
 
 
@@ -42,8 +79,8 @@ files_string = " ".join(files_to_mosaic)
 print(files_string)
 ```
 
-    .\TEAK_Aspect_Tiles\NEON_D17_TEAK_DP3_320000_4100000_aspect.tif .\TEAK_Aspect_Tiles\NEON_D17_TEAK_DP3_320000_4101000_aspect.tif .\TEAK_Aspect_Tiles\NEON_D17_TEAK_DP3_321000_4100000_aspect.tif .\TEAK_Aspect_Tiles\NEON_D17_TEAK_DP3_321000_4101000_aspect.tif
-    
+    ../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_320000_4100000_aspect.tif ../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_320000_4101000_aspect.tif ../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_321000_4100000_aspect.tif ../data/Day2_LiDAR_Intro/TEAK_Aspect_Tiles/NEON_D17_TEAK_DP3_321000_4101000_aspect.tif
+
 
 Now that we have the list of files we want to mosaic, we can run a system command to combine them into one raster. If `gdal_merge.py` is not copied into your working directory, you'll need to include the full path. 
 
@@ -52,6 +89,13 @@ Now that we have the list of files we want to mosaic, we can run a system comman
 command = "python gdal_merge.py -o TEAK_Aspect_Mosaic.tif -of gtiff " + files_string
 os.system(command)
 ```
+
+
+
+
+    0
+
+
 
 This creates the file `TEAK_Aspect_Mosaic.tif` in the working directory. Now we can use the function `raster2array` to read in the mosaiced array. This function converts the geotif file into an array, and also stores relevant metadata (eg. spatial information) into the dicitonary `metadata`. Load or import this function into your cell with `%load raster2array`.
 
@@ -148,7 +192,7 @@ for item in sorted(TEAK_aspect_metadata):
     pixelWidth: 1.0
     projection: PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32611"]]
     scaleFactor: 1.0
-    
+
 
 Load the function `plot_band_array` to plot the array:
 
@@ -178,10 +222,9 @@ plot_array(TEAK_aspect_array,
 ```
 
 
-![png](output_19_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/merge_lidar_geotiff_files_py/output_20_0.png)
 
-
-## Exercises:
+### Challenges
 
 1. Use the function `raster2array` to read in and plot each tile separately. Confirm that the mosaicked raster looks reasonable. 
-2. Download 9 adjacent tiles of another LiDAR L3 data product of your choice and use gdal_merge to combine them. You can find NEON data on the Data Portal -  http://data.neonscience.org/home, or Citrix. 
+2. Download 9 adjacent tiles of another LiDAR L3 data product of your choice and use gdal_merge to combine them. You can find NEON data on the <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal</a> or NEON's Citrix FileShare system. 
