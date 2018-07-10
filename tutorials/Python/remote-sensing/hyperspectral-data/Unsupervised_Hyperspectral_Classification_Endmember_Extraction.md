@@ -155,10 +155,6 @@ def clean_neon_refl_data(data,header):
     
     data_clean = data.copy()
     header_clean = header.copy()
-    #set data ignore value (-9999) to NaN:
-    data_clean[data_clean==header['data ignore value']]=np.nan #??? get message ValueError: cannot convert float NaN to integer
-    #if header['data ignore value'] in data:
-    #    print('data ignore values exist in data')
     
     #apply reflectance scale factor (divide by 10000)
     data_clean = data_clean/header['reflectance scale factor']
