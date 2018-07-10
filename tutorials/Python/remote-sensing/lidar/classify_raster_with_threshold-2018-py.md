@@ -38,7 +38,7 @@ After completing this tutorial, you will be able to:
 
 {% include/dataSubsets/_data_DI18.html %}
 
-[[nid:XXXX]]
+[[nid:7512]]
 
 </div>
 
@@ -244,7 +244,7 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_22_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_24_1.png)
 
 
 On your own, adjust the number of bins, and range of the y-axis to get a good idea of the distribution of the canopy height values. We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
