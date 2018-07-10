@@ -1,15 +1,8 @@
 # Welcome to the NEON Data Skills Git Repo!
 
-NEON Data Skills provides tutorials and resources for working with scientific 
-data. NEON (National Ecological Observatory Network) is an ecological observatory,
-funded by the National Science Foundation and operated by Battelle, that will 
-collect and provide open data for 30 years. 
-
-Check out the NEON Data Skills portal for the online resources and upcoming events: 
-[www.neondataskills.org](http://www.neondataskills.org)
-
-Check out our website for more: 
-[http://www.neonscience.org](http://www.neonscience.org "National Ecological Observatory Network")
+NEON Data Skills gh-pages branch is now deprecated. The NEON Data Skills materials
+are now stored and built in the master branch. The rendered tutorial can be found
+at [NEONScience.org](https://www.neonscience.org/resources/data-tutorials). 
 
 ## About NEON Data Skills 
 
