@@ -1,12 +1,13 @@
 ---
 syncID: 61ad1fc43ddd45b49cad1bca48656bbe
 title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Tiled Data" 
-description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
+description: "Learn how to read NEON AOP hyperspectral tiled hdf5 data using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
-estimatedTime: 
-packagesLibraries: numpy, h5py, gdal, matplotlib
+estimatedTime: l = range(165)
+>>> l[0::10]
+packagesLibraries: numpy, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -16,10 +17,8 @@ urlTitle: neon-aop-hdf5-tile-py
 ---
 
 
-In this introductory tutorial, we discuss how to read NEON AOP hyperspectral flightline
-data using Python. We develop and practice skills and use several tools to manipulate and 
-visualize the spectral data. By the end of this tutorial, you will become 
-familiar with the Python syntax.
+In this introductory tutorial, we discuss how to read NEON AOP hyperspectral tiled
+data using Python. We develop tools to manipulate and visualize the spectral data. 
 
 If you are interested in learning how to do this for flightline NEON AOP hyperspectral data, 
 please see <a href="/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines</a>.
@@ -30,25 +29,19 @@ please see <a href="/neon-aop-hdf5-py" target="_blank"> NEON AOP Hyperspectral D
 
 After completing this tutorial, you will be able to:
 
-* Import and use Python packages `numpy, pandas, matplotlib, h5py, and gdal`.
+* Import and use Python packages `numpy, matplotlib, and h5py`.
 * Use the package `h5py` and the `visititems` functionality to read an HDF5 file 
 and view data attributes.
 * Read the data ignore value and scaling factor and apply these values to produce 
 a cleaned reflectance array.
 * Extract and plot a single band of reflectance data
 * Plot a histogram of reflectance values to visualize the range and distribution 
-of values.
-* Subset an hdf5 reflectance file from the full flightline to a smaller region 
-of interest (if you complete the optional extension). 
-* Apply a histogram stretch and adaptive equalization to improve the contrast 
-of an image (if you complete the optional extension) . 
+of values. 
 
 
 ### Install Python Packages
 
 * **numpy**
-* **pandas**
-* **gdal** 
 * **matplotlib** 
 * **h5py**
 
@@ -60,9 +53,7 @@ of an image (if you complete the optional extension) .
 </div>
 
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our 
-environment at the Earth’s surface. In this tutorial we explore how to extract 
-information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
+Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
 
 #### Mapping the Invisible: Introduction to Spectral Remote Sensing
 
@@ -112,9 +103,8 @@ warnings.filterwarnings('ignore')
 
 ```f = h5py.File('file.h5','r')``` reads in an h5 file to the variable f. 
 
-### Using the help
-We will be using a number of built-in and user-defined functions and methods throughout the tutorial. If you are uncertain what a certain function does, or how to call it, you can type `help()` or type a 
-`?` at the end of the function or method and run the cell (either select Cell > Run Cells or Shift Enter with your cursor in the cell you want to run). The `?` will pop up a window at the bottom of the notebook displaying the function's `docstrings`, which includes information about the function and usage. We encourage you to use `help` and `?` throughout the tutorial as you come across functions you are unfamiliar with. Let's try this out with `h5py.File`:
+### Getting help on functions: `help` and `?`
+We will be using a number of built-in and user-defined functions and methods throughout the tutorial. If you are uncertain what a certain function does, or how to call it, you can type `help()` or type `?` at the end of the function or method and run the cell (either select Cell > Run Cells or Shift Enter with your cursor in the cell you want to run). The `?` will pop up a window at the bottom of the notebook displaying the function's `docstrings`, which includes information about the function and usage. We encourage you to use `help` and `?` throughout the tutorial as you come across functions you are unfamiliar with. Let's try this out with `h5py.File`:
 
 
 ```python
@@ -375,16 +365,10 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
     SERC Reflectance Data Dimensions: (1000, 1000, 426)
 
 
-This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels. Hyperspectral data sets are often called "cubes" to reflect this 3-dimensional shape.
+This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the dimensions of the reflectance array in pixels. Hyperspectral data sets are often called `cubes` to reflect this 3-dimensional shape.
 
-<figure>
-    <a href="/hyperspectral/DataCube.png">
-    <img src="/hyperspectral/DataCube.png"></a>
-    <figcaption> A "cube" showing a hyperspectral data set. Source: National Ecological Observatory Network
-    (NEON)  
-    </figcaption>
-</figure>
 
+![ ]({{ site.baseurl }}/images/hyperspectral/DataCube.png)
 
 NEON hyperspectral data contain around 426 spectral bands, and when working with tiled data, the spatial dimensions are 1000 x 1000, where each pixel represents 1 meter. Now let's take a look at the wavelength values. First, we will extract wavelength information from the `serc_refl` variable that we created:
 
@@ -442,7 +426,7 @@ print('SERC Map Info:',serc_mapInfo.value)
 Here we can spatial information about the reflectance data. Below is a break down of what each of these values means:
 
 - `UTM` - coordinate system (Universal Transverse Mercator)
-- `1.000, 1.000` - 
+- `1.000, 1.000` - pixel origin
 - `368000.000, 4307000.0` - UTM coordinates (meters) of the map origin, which refers to the upper-left corner of the image  (xMin, yMax). 
 - `1.0000000, 1.0000000` - pixel resolution (meters)
 - `18` - UTM zone
@@ -583,7 +567,7 @@ Now we can plot this band using the Python package ```matplotlib.pyplot```, whic
 serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys') 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_48_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_45_0.png)
 
 We can see that this image looks pretty washed out. To see why this is, it helps to look at the range and distribution of reflectance values that we are plotting. We can do this by making a histogram. 
 
@@ -596,7 +580,7 @@ We can plot a histogram using the `matplotlib.pyplot.hist` function. Note that t
 plt.hist(b56[~np.isnan(b56)],50); #50 signifies the # of bins
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_51_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_48_0.png)
 
 We can see that most of the reflectance values are < 0.4. In order to show more contrast in the image, we can adjust the colorlimit (`clim`) to 0-0.4:
 
@@ -606,64 +590,8 @@ serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys',clim=(0,0.4))
 plt.title('SERC Band 56 Reflectance');
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_53_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance-tiles/output_50_0.png)
 
 
 
 Here you can see that adjusting the colorlimit displays features (eg. roads, buildings) much better than when we set the colormap limits to the entire range of reflectance values. 
-
-## Extension: Basic Image Processing -- Contrast Stretch & Histogram Equalization 
-
-We can also try out some basic image processing to better visualize the 
-reflectance data using the `ski-image` package. 
-
-Histogram equalization is a method in image processing of contrast adjustment 
-using the image's histogram. Stretching the histogram can improve the contrast 
-of a displayed image, as we will show how to do below. 
-
- <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png"></a>
-	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
-using the image's histogram. Stretching the histogram can improve the contrast 
-of a displayed image, as we will show how to do below.
-	Source: <a href="https://en.wikipedia.org/wiki/Talk%3AHistogram_equalization#/media/File:Histogrammspreizung.png"> Wikipedia - Public Domain </a>
-	</figcaption>
-</figure>
-
-
-*The following tutorial section is adapted from skikit-image's tutorial
-<a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
-
-Below we demonstrate a widget to interactively display different linear contrast stretches:
-
-### Explore the contrast stretch feature interactively using IPython widgets: 
-
-
-```python
-from skimage import exposure
-from IPython.html.widgets import *
-
-def linearStretch(percent):
-    pLow, pHigh = np.percentile(b56[~np.isnan(b56)], (percent,100-percent))
-    img_rescale = exposure.rescale_intensity(b56, in_range=(pLow,pHigh))
-    plt.imshow(img_rescale,extent=serc_ext,cmap='gist_earth') 
-    #cbar = plt.colorbar(); cbar.set_label('Reflectance')
-    plt.title('SERC Band 56 \n Linear ' + str(percent) + '% Contrast Stretch'); 
-    ax = plt.gca()
-    ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degree
-    
-interact(linearStretch,percent=(0,100,1))
-```
-
-
-
-
-
-
-
-
-    <function __main__.linearStretch>
-
-

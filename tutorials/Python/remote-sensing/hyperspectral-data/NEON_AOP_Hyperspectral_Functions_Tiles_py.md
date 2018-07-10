@@ -1,12 +1,12 @@
 ---
 syncID: e046a83d83f2042d8b40dea1b20fd6779
 title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Python - Tiled Data"
-description: "Learn to efficintly work with tiled NEON AOP spectral data using functions."
+description: "Learn to efficiently work with tiled NEON AOP spectral data using functions."
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, matplotlib, h5py, os, osr, copy
+packagesLibraries: numpy, matplotlib, h5py, os, copy, skimage, IPython.html.widgets
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
@@ -23,12 +23,12 @@ introduce functions `aop_h5refl2array`, plot different combinations of
 bands, and demonstrate how to create `IPython widgets` for more interactive 
 data visualization. 
 
-<div id="ds-ojectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ### Objectives
 After completing this tutorial, you will be able to:
 
-* Upload a Python module
+* Load and run user-defined Python functions
 * Efficiently work with NEON hyperspectral data using functions, including: 
 	+ Read in tiled NEON AOP reflectance hdf5 data and associated metadata
 	+ Stack and plot 3-band combinations (eg. RGB, Color Infrared, False Color Images)
@@ -38,19 +38,18 @@ After completing this tutorial, you will be able to:
 ### Install Python Packages
 
 * **numpy**
-* **pandas**
-* **gdal** 
 * **matplotlib** 
 * **h5py**
+* **skimage** 
+* **IPython.html.widgets** (optional)
 
 
 ### Download Data
 
 {% include/dataSubsets/_data_DI18.html %}
 
-[[nid:6792]]
+[[nid:7489]]
 
-[[nid:6791]]
 
 
 </div>
@@ -101,7 +100,7 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, we encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function can be thought of as a wrapper to automate the steps required to read AOP hdf5 reflectance tiles into a Python format. This function also cleans the data: it sets any no data values within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
+The first function we will use is `aop_h5refl2array`. This function is loaded into the cell below, to load it into your notebook, copy the function into your working directory and type `%load aop_h5refl2array`. You will have to run the cell (Shift Enter) twice: once to load the function into the cell (you should see the code appear), and once to run the function (`%load aop_h5refl2array` will become grayed out). We encourage you to look through the code to understand what it is doing -- most of these steps should look familiar to you from the first lesson. This function automates the steps required to read AOP hdf5 reflectance tiles into a Python format, and also cleans the data: it sets no data values (-9999) within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
 
 
 ```python
@@ -264,7 +263,7 @@ sercRefl.shape
 
 
 
-## plot_aop_refl: plot a single band
+## Plot a Single Band
 
 Next we'll use the function `plot_aop_refl` to plot a single band of reflectance data. Read the `Parameters` section of the docstring to understand the required inputs & data type for each of these; only the band and spatial extent are required inputs, the rest are optional inputs that, if specified, allow you to set the range color values, specify the axis, add a title, colorbar, colorbar title, and change the colormap (default is to plot in greyscale). 
 
@@ -311,9 +310,6 @@ def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
 ```
 
-
-![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_13_0.png)
-
 Now that we have loaded this function, let's extract a single band from the SERC reflectance array and plot it:
 
 
@@ -342,9 +338,9 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg">
-	<img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg"></a>
-	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
+	<a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGBcombined.png">
+	<img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGBcombined.png"></a>
+	<figcaption> NEON Imaging Spectrometer bands and their respective center wavelengths (nm). Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
@@ -398,7 +394,7 @@ SERCrgb.shape
 
 
 
-## plot_aop_refl: plot an RGB band combination
+## Plot an RGB Image
 
 Next, we can use the function `plot_aop_refl`, even though we have more than one band. This function only works for a single or 3-band array, so ensure the array you use has the proper dimensions before using. You do not need to specify the colorlimits as the `matplotlib.pyplot` automatically scales 3-band arrays to 8-bit color (256). 
 
@@ -434,7 +430,8 @@ of a displayed image, as we will show how to do below.
 *The following tutorial section is adapted from skikit-image's tutorial
 <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
 
-Let's see what the image looks like using a 5% linear contrast stretch using the `skiimage` module's `exposure` function.
+Let's see what the image looks like using a 5% linear contrast stretch using 
+the `skimage` module's `exposure` function.
 
 
 ```python
@@ -512,14 +509,9 @@ def RGBplot_widget(R,G,B):
     #Pre-allocate array  size
     rgbArray = np.zeros((array.shape[0],array.shape[1],3), 'uint8')
     
-    Rband = array[:,:,R-1].astype(np.float)
-    #Rband_clean = clean_band(Rband,Refl_md)
-    
+    Rband = array[:,:,R-1].astype(np.float) 
     Gband = array[:,:,G-1].astype(np.float)
-    #Gband_clean = clean_band(Gband,Refl_md)
-    
     Bband = array[:,:,B-1].astype(np.float)
-    #Bband_clean = clean_band(Bband,Refl_md)
     
     rgbArray[..., 0] = Rband*256
     rgbArray[..., 1] = Gband*256
@@ -539,25 +531,6 @@ def RGBplot_widget(R,G,B):
     
 interact(RGBplot_widget, R=(1,426,1), G=(1,426,1), B=(1,426,1))
 ```
-
-
-<p>Failed to display Jupyter Widget of type <code>interactive</code>.</p>
-<p>
-  If you're reading this message in the Jupyter Notebook or JupyterLab Notebook, it may mean
-  that the widgets JavaScript is still loading. If this message persists, it
-  likely means that the widgets JavaScript library is either not installed or
-  not enabled. See the <a href="https://ipywidgets.readthedocs.io/en/stable/user_install.html">Jupyter
-  Widgets Documentation</a> for setup instructions.
-</p>
-<p>
-  If you're reading this message in another frontend (for example, a static
-  rendering on GitHub or <a href="https://nbviewer.jupyter.org/">NBViewer</a>),
-  it may mean that your frontend doesn't currently support widgets.
-</p>
-
-
-
-    <function __main__.RGBplot_widget>
 
 ![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/rgb_widget.gif)
 
@@ -581,27 +554,6 @@ def linearStretch(percent):
 interact(linearStretch,percent=(0,20,1))
 ```
 
-
-<p>Failed to display Jupyter Widget of type <code>interactive</code>.</p>
-<p>
-  If you're reading this message in the Jupyter Notebook or JupyterLab Notebook, it may mean
-  that the widgets JavaScript is still loading. If this message persists, it
-  likely means that the widgets JavaScript library is either not installed or
-  not enabled. See the <a href="https://ipywidgets.readthedocs.io/en/stable/user_install.html">Jupyter
-  Widgets Documentation</a> for setup instructions.
-</p>
-<p>
-  If you're reading this message in another frontend (for example, a static
-  rendering on GitHub or <a href="https://nbviewer.jupyter.org/">NBViewer</a>),
-  it may mean that your frontend doesn't currently support widgets.
-</p>
-
-
-
-
-
-
-    <function __main__.linearStretch>
 ![ ]({{ site.baseurl }}/images/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/linear_contrast.gif)
 
 

@@ -23,6 +23,7 @@ Some of the problems are:
 1. Tabular data is in proprietary format
 1. Not clear which sites different files are from
 1. Not clear the order in which the script were run or should be run
+1. Filename versioning
 1. In the code:
     * Multiple copies of similar code pasted near each other but with slight changes
     * Very few comments
@@ -39,5 +40,10 @@ Some of the problems are:
     * Dealing with dates in Excel (DANGER)
     * Units for values?
     * Where is metadata?
+    * no import of gdal in .py
+    * broken function definitions
+    * random comments
+    * commented out # numpy at top
+    
 
 
