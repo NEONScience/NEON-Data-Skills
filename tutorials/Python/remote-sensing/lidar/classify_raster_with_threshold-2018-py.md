@@ -6,7 +6,7 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
+packagesLibraries: numpy, gdal, matplotlib, os, copy
 topics: lidar, raster, remote-sensing
 languagesTool: python
 dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
@@ -214,8 +214,8 @@ To get a better idea of the dataset, we can use a similar function to `plot_aop_
 
 
 ```python
-def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
-    plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
+def plot_spatial_array(band_array,spatial_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
+    plot = plt.imshow(band_array,extent=spatial_extent,clim=colorlimit); 
     cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
     cbar.set_label(cmap_title,rotation=90,labelpad=20);
     plt.title(title); ax = plt.gca(); 
@@ -224,21 +224,15 @@ def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cmap
 ```
 
 
-
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_20_0.png)
-
-
 ### Histogram of Data 
 
 As we did with the reflectance tile, it is often useful to plot a histogram of the geotiff data in order to get a sense of the range and distribution of values. First we'll make a copy of the array and remove the `nan` values. 
 
 
 ```python
-import copy
-chm_nonan_array = copy.copy(chm_array)
-chm_nonan_array = chm_nonan_array[~np.isnan(chm_array)]
-plt.hist(chm_nonan_array,weights=np.zeros_like(chm_nonan_array)+1./
-         (chm_array.shape[0]*chm_array.shape[1]),bins=50);
+plt.hist(chm_array[~np.isnan(chm_array)],100);
+ax = plt.gca()
+ax.set_ylim([0,15000]) #adjust the y limit to zoom in on area of interest
 plt.title('Distribution of SERC Canopy Height')
 plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 ```
@@ -250,37 +244,14 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_23_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_22_1.png)
 
 
-We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
+On your own, adjust the number of bins, and range of the y-axis to get a good idea of the distribution of the canopy height values. We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
 
-
-```python
-chm_nonzero_array = copy.copy(chm_array)
-chm_nonzero_array[chm_array==0]=np.nan
-chm_nonzero_nonan_array = chm_nonzero_array[~np.isnan(chm_nonzero_array)]
-# Use weighting to plot relative frequency
-plt.hist(chm_nonzero_nonan_array,bins=50);
-
-# plt.hist(chm_nonzero_nonan_array.flatten(),50) 
-plt.title('Distribution of SERC Non-Zero Canopy Height')
-plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
-```
-
-
-
-
-    Text(0,0.5,'Relative Frequency')
-
-
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_25_1.png)
-
-
-Note that it appears that the trees don't have a smooth or normal distribution, but instead appear blocked off in chunks. This is an artifact of the Canopy Height Model algorithm, which bins the trees into 5m increments (this is done to avoid another artifact of "pits", read . 
+Note that it appears that the trees don't have a smooth or normal distribution, but instead appear blocked off in chunks. This is an artifact of the Canopy Height Model algorithm, which bins the trees into 5m increments (this is done to avoid another artifact of "pits" (Khosravipour et al., 2014). 
 
 From the histogram we can see that the majority of the trees are < 30m. We can re-plot the CHM array, this time adjusting the color bar limits to better visualize the variation in canopy height. We will plot the non-zero array so that CHM=0 appears white. 
-
 
 ```python
 plot_band_array(chm_array,
@@ -292,7 +263,7 @@ plot_band_array(chm_array,
 ```
 
 
-![png](output_27_0.png![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_27_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_26_0.png)
 
 ## Threshold Based Raster Classification
 Next, we will create a classified raster object. To do this, we will use the se the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
@@ -346,7 +317,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box,class5_box],
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_31_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_30_1.png)
 
 
 <div id="ds-challenge" markdown="1">
