@@ -1,16 +1,9 @@
 
 ## Unsupervised Spectral Classification - Endmember Extraction
 
-This notebook runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the **`PySpTools`** package to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
+This notebook runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the **`PySpTools`** package (https://pysptools.sourceforge.io/index.html) to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
 
 Since spectral data is so large in size, it is often useful to remove any unncessary or redundant data in order to save computational time. In this example, we will remove the water vapor bands, but you can also take a subset of bands, depending on your research application. 
-
-In this tutorial, we use the following user-defined functions: 
-- **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
-- **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
-- **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
-
-https://pysptools.sourceforge.io/index.html
 
 ## Dependencies & Installation:
 
@@ -26,6 +19,13 @@ import sys
 See Also:
 https://stackoverflow.com/questions/45156080/installing-modules-to-anaconda-from-tar-gz
 
+We will also use the following user-defined functions: 
+
+- **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
+- **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
+- **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
+
+Once PySpTools is installed, import the following packages:
 
 ```python
 import h5py, os, copy
@@ -37,13 +37,12 @@ import pysptools.abundance_maps as amap
 import pysptools.classification as cls
 import pysptools.material_count as cnt
 
-from skimage import exposure
-
 %matplotlib inline
 import warnings
 warnings.filterwarnings('ignore')
 ```
 
+Load (or copy) the read_neon_reflh5 function. This reads in an h5 array as-is. We will clean the data (apply the no data value and scale factor) with a separate function. 
 
 ```python
 def read_neon_reflh5(refl_filename):
