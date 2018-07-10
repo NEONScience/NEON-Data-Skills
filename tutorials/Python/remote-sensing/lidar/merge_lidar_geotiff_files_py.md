@@ -6,7 +6,7 @@ dateCreated: 2018-07-05
 authors: Bridget Hass
 contributors: 
 estimatedTime: 
-packagesLibraries: os, glob, numpy, osgeo, matplotlib.pyplot
+packagesLibraries: subprocess, gdal, osgeo, glob, numpy, matplotlib
 topics: lidar, data-analysis, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30015, NEON.DP3.30024, NEON.DP3.30025
@@ -17,7 +17,7 @@ urlTitle: merge-lidar-geotiff-py
 
 In your analysis you will likely want to work with an area larger than a single file, from a few tiles to an entire NEON field site. In this tutorial, we will demonstrate how to use the `gdal_merge` utility to mosaic multiple tiles together. 
 
-This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to the <a href="http://www.gdal.org/gdal_merge.html" target="_blank">gdal website</a>. . 
+This can be done in command line, or as a system command through `Python` as shown in this lesson. If you installed `Python` using `Anaconda`, you should have `gdal_merge.py` downloaded into your folder, in a path similar to `C:\Users\user\AppData\Local\Continuum\Anaconda3\Scripts`. You can also download it here and save it to your working directory. For details on `gdal_merge` refer to the <a href="http://www.gdal.org/gdal_merge.html" target="_blank">gdal website</a>. 
 
 
 <div id="ds-objectives" markdown="1">
@@ -30,8 +30,9 @@ After completing this tutorial, you will be able to:
 
 ### Install Python Packages
 
-* **os**
+* **subprocess**
 * **glob**
+* **gdal**
 * **osgeo** 
 * **matplotlib** 
 * **numpy**
@@ -45,12 +46,14 @@ After completing this tutorial, you will be able to:
 
 </div>
 
-We'll start by importing the packages `os` and `glob`:
+We'll start by importing the following packages:
 
 
 ```python
-import os
-import glob
+import numpy as np
+import matplotlib.pyplot as plt
+import subprocess, glob
+from osgeo import gdal
 ```
 
 Make a list of files to mosaic using `glob.glob`, and print the result. In this example, we are selecting all files ending with `_aspect.tif` in the folder `.\TEAK_Aspect_Tiles`:
@@ -84,26 +87,23 @@ print(files_string)
 
 Now that we have the list of files we want to mosaic, we can run a system command to combine them into one raster. If `gdal_merge.py` is not copied into your working directory, you'll need to include the full path. 
 
-
 ```python
-command = "python gdal_merge.py -o TEAK_Aspect_Mosaic.tif -of gtiff " + files_string
-os.system(command)
+command = "python ../gdal_merge.py -o TEAK_Aspect_Mosaic.tif -of gtiff " + files_string
+output = subprocess.check_output(command)
+output
 ```
 
 
 
 
-    0
+    b'0...10...20...30...40...50...60...70...80...90...100 - done.\n'
 
 
 
-This creates the file `TEAK_Aspect_Mosaic.tif` in the working directory. Now we can use the function `raster2array` to read in the mosaiced array. This function converts the geotif file into an array, and also stores relevant metadata (eg. spatial information) into the dicitonary `metadata`. Load or import this function into your cell with `%load raster2array`.
+This creates the file `TEAK_Aspect_Mosaic.tif` in the working directory. Now we can use the function `raster2array` to read in the mosaiced array. This function converts the geotif file into an array, and also stores relevant metadata (eg. spatial information) into the dicitonary `metadata`. Load or import this function into your cell with `%load raster2array`. Note that this function requires the imported packages at the beginning of this notebook in order to run. 
 
 
 ```python
-import numpy as np
-from osgeo import gdal
-
 def raster2array(geotif_file):
     metadata = {}
     dataset = gdal.Open(geotif_file)
@@ -151,14 +151,14 @@ def raster2array(geotif_file):
     return array, metadata
 ```
 
-We can call this function as follows, assuming `'TEAK_Aspect_Mosaic.tif'` is in your working directory:
+We can call this function as follows, assuming `'TEAK_Aspect_Mosaic.tif'` is in your working directory (otherwise you'll need to include the relative or absolute path):
 
 
 ```python
 TEAK_aspect_array, TEAK_aspect_metadata = raster2array('TEAK_Aspect_Mosaic.tif')
 ```
 
-Look at the size of the mosaicked tile using `.shape`. 
+Look at the size of the mosaicked tile using `.shape`. Since we created a mosaic of four 1000m x 1000m tiles, we expect the new tile to be 2000m x 2000m
 
 
 ```python
@@ -194,14 +194,12 @@ for item in sorted(TEAK_aspect_metadata):
     scaleFactor: 1.0
 
 
-Load the function `plot_band_array` to plot the array:
+Load the function `plot_spatial_array` to plot the array:
 
 
 ```python
-import matplotlib.pyplot as plt
-
-def plot_array(array,refl_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
-    plot = plt.imshow(array,extent=refl_extent,clim=colorlimit); 
+def plot_spatial_array(array,spatial_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
+    plot = plt.imshow(array,extent=spatial_extent,clim=colorlimit); 
     cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
     cbar.set_label(cmap_title,rotation=90,labelpad=20);
     plt.title(title); ax = plt.gca(); 
@@ -209,7 +207,7 @@ def plot_array(array,refl_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); 
 ```
 
-Finally, let's take a look at the mosaicked data:
+Finally, let's take a look at a plot of the tile mosaic:
 
 
 ```python
