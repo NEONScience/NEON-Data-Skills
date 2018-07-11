@@ -88,7 +88,8 @@ if args.verbose:
 
 # capture filename
 refl_filename = args.h5input
-
+if args.verbose:
+    print("filename being processed:\n", args.h5input)
 
 # capture desired pixel
 # note that this is y, x, spectra
