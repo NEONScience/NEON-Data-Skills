@@ -1,4 +1,4 @@
-### Reproducible analysis and modularizing code
+# Reproducible analysis and modularizing code
 
 Lesson put together by Naupaka Zimmerman for the 2018 NEON Data Institute.
 
@@ -9,7 +9,7 @@ be operated from the commandline as part of a pipeline-style workflow. It also
 serves to introduce learners to the use of git and GitHub during a scientific
 coding workflow.
 
-#### Steps & Instructor Notes:
+## Steps & Instructor Notes:
 
 Give overview of morning, and emphasize that the goal of the workflow (building on
 code learners saw the day before) is to show a conceptual example of a
@@ -32,7 +32,7 @@ down on whiteboard.
 
 Live coding/demonstrating:
 
-##### Setting up a directory, respository, and adding READMEs
+### Setting up a directory, respository, and adding READMEs
 
 Create the following directory structure:
 
@@ -77,7 +77,7 @@ git add README.md data/README.md
 git commit -m "Add README files"
 ```
 
-##### Set up and document conda environment
+### Set up and document conda environment
 
 At terminal, in project directory
 
@@ -100,7 +100,7 @@ git add environment.yml
 git commit
 ```
 
-##### Hyperspectral analysis in Jupyter notebooks
+### Hyperspectral analysis in Jupyter notebooks
 
 Run `jupyter notebook` to start a kernel and notebook viewer in the project
 folder. Add a new ipynb to the top level.
