@@ -21,6 +21,8 @@ PySpTools: Download pysptools-0.14.2.tar.gz from https://pypi.python.org/pypi/py
 ```python 
 import sys
 !{sys.executable} -m pip install "C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz
+!conda install --yes --prefix {sys.prefix} scikit-learn
+!conda install --yes --prefix {sys.prefix} cvxopt 
 ```
 
 See Also:
