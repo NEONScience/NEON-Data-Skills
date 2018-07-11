@@ -49,3 +49,15 @@
 ### Other links
 
 * ROpenSci Reproducibility Guide https://ropensci.github.io/reproducibility-guide/sections/references/
+* Binder for launching executable notebooks from GitHub repos https://mybinder.readthedocs.io/en/latest/index.html
+* Open Science Framework https://osf.io/
+* Data Repositories
+  * FigShare https://figshare.com/
+  * Dryad https://datadryad.org/
+  * Zenodo https://zenodo.org/
+    * Zenodo GitHub integration https://guides.github.com/activities/citable-code/
+* DataONE best practices https://www.dataone.org/all-best-practices
+* Python pandas package
+  * Pandas documentation https://pandas.pydata.org/pandas-docs/stable/
+  * 10 minutes to pandas https://pandas.pydata.org/pandas-docs/stable/10min.html
+  * Pandas compared to R/R packages https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
