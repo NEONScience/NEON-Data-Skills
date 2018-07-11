@@ -59,28 +59,106 @@ data/
 10 directories, 41 files
 
 
+
+https://neondata.sharefile.com/share/view/s145d7fe964a47d1b/fo188288-67a3-4566-bc0d-468784dd8b8b
+
+
+
+Give overview of morning. Conceptual example of a 'more' reproducible workflow.
+
+
+
+Download smaller h5 NEON files
+http://npk.io/Qlvhmt
+
+
+
+Talk about goals, think about what variables are needed, job these down on whiteboard.
+
+
+
+
+Install Atom
+
+Make directory structure
+
 project/
   code/
-    .gitkeep
+  data/
+    raw_data_located_outside_project_folder/
+  output/
+    csv/
+    figs/
+
+in gitbash or terminal
+
+git init
+git status
+
+With Atom: Add README.md and README_raw_data.md
+
+project/
+  README.md
+  code/
   data/
     raw_data_located_outside_project_folder/
     README_raw_data.md
   output/
-    .gitkeep
+    csv/
+    figs/
 
-Add ipynb to top level
+git add
+git commit
+
 
 
 
 At terminal, in project directory
 
 conda activate py35
-conda install argparse
+conda install argparse skimage pandas
+
+# To export environment file
+# activate <environment-name>
+conda env export > <environment-name>.yml
+
+# For other person to use the environment
+# conda env create -f <environment-name>.yml
+
+git add 
+git commit
+
+
+
+
+start jupyter notebook in project folder
+Add new ipynb to top level
+
+Start coding
+periodic add and commit
+
+When finished with notebook, add and commit. Set up GitHub repo, push to GitHub.
+
+Export ipynb to py, clean for command-line usage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 # Create a conda environment
-conda create --name <environment-name> python=<version:2.7/3.5>
+# conda create --name <environment-name> python=<version:2.7/3.5>
 
 # To create a requirements.txt file:
 # Gives you list of packages used for the environment
@@ -95,27 +173,6 @@ conda env export > <environment-name>.yml
 
 # For other person to use the environment
 # conda env create -f <environment-name>.yml
-
-
-python plot_hyperspectral_pixel_spectras_from_hdf5_argparse.py -h
-usage: plot_hyperspectral_pixel_spectras_from_hdf5_argparse.py
-       [-h] [-v] [-c CSVDIR] [-f FIGDIR] h5input ycoord xcoord
-
-positional arguments:
-  h5input               input h5 file
-  ycoord                y coord of pixel to plot
-  xcoord                x coord of pixel to plot
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --verbose         increase output verbosity
-  -c CSVDIR, --csvdir CSVDIR
-                        csv file output dir
-  -f FIGDIR, --figdir FIGDIR
-                        fig output dir
-                        
-                        
-
 
 python plot_hyperspectral_pixel_spectras_from_hdf5_argparse.py -c csv -f figs ~/Downloads/Files/NEON_D17_SJER_DP1_20180401_185358_reflectance.h5 120 120
 
