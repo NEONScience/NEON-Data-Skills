@@ -26,6 +26,8 @@ List of references and resources on resproducible research in the computational 
 
 * Software Carpentry https://software-carpentry.org/lessons/index.html
 * Data Carpentry https://datacarpentry.org/lessons/
+* Reproducible Research in R (in development) https://datacarpentry.org/rr-workshop/
+* Reproducible Research with Python and Jupyter (in development) https://reproducible-science-curriculum.github.io/workshop-RR-Jupyter/ 
 * ResBaz https://resbaz.github.io/resbaz2018/
 
 ### Books
