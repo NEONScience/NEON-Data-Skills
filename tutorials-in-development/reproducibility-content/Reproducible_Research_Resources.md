@@ -1,4 +1,6 @@
-List of references and resources on resproducible research in the computational life sciences, assembled by Naupaka Zimmerman in July 2018 for the  NEON Data Institute in Boulder, CO.
+List of references and resources on resproducible research in the computational life sciences. 
+
+*Assembled by Naupaka Zimmerman in July 2018 for the  NEON Data Institute in Boulder, CO.*
 
 ### Journal Articles
 
@@ -27,7 +29,7 @@ List of references and resources on resproducible research in the computational 
 * Software Carpentry https://software-carpentry.org/lessons/index.html
 * Data Carpentry https://datacarpentry.org/lessons/
 * Reproducible Research in R (in development) https://datacarpentry.org/rr-workshop/
-* Reproducible Research with Python and Jupyter (in development) https://reproducible-science-curriculum.github.io/workshop-RR-Jupyter/ 
+* Reproducible Research with Python and Jupyter (in development) https://reproducible-science-curriculum.github.io/workshop-RR-Jupyter/
 * ResBaz https://resbaz.github.io/resbaz2018/
 
 ### Books
