@@ -134,38 +134,3 @@ Add remote to working repository with `git add remote origin URL-here`.
 Push all commits: `git push -u origin master`.
 
 Done!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Create a conda environment
-# conda create --name <environment-name> python=<version:2.7/3.5>
-
-# To create a requirements.txt file:
-# Gives you list of packages used for the environment
-conda list
-
-# Save all the info about packages to your folder
-# conda list -e > requirements.txt
-
-# To export environment file
-# activate <environment-name>
-conda env export > <environment-name>.yml
-
-# For other person to use the environment
-# conda env create -f <environment-name>.yml
-
-python plot_hyperspectral_pixel_spectras_from_hdf5_argparse.py -c csv -f figs ~/Downloads/Files/NEON_D17_SJER_DP1_20180401_185358_reflectance.h5 120 120
