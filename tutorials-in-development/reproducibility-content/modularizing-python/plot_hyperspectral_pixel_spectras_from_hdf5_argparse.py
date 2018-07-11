@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Written by Naupaka Zimmerman
+# based on code developed by Bridget Hass at NEON and available here:
+# https://www.neonscience.org/neon-data-institute-2018
 # July 11, 2018
 # nzimmerman@usfca.edu
 
