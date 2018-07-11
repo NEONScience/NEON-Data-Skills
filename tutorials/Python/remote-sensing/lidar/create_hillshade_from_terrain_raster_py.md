@@ -41,7 +41,6 @@ arrays with gdal.
 
 {% include/dataSubsets/_data_DI17.html %}
 
-[[nid:6792]]
 
 </div>
 
