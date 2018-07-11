@@ -1,4 +1,4 @@
-List of references and resources on resproducible research in the computational life sciences. 
+## List of references and resources on resproducible research in the computational life sciences. 
 
 *Assembled by Naupaka Zimmerman in July 2018 for the  NEON Data Institute in Boulder, CO.*
 
