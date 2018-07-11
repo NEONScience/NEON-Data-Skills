@@ -1,16 +1,10 @@
 
-## Unsupervised Spectral Classification - Endmember Extraction
+# Unsupervised Spectral Classification 
+## Endmember Extraction, Spectral Information Divergence, Spectral Angle Mapping
 
-This notebook runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the **`PySpTools`** package to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
+This notebook runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the **`PySpTools`** package (https://pysptools.sourceforge.io/index.html) to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
 
 Since spectral data is so large in size, it is often useful to remove any unncessary or redundant data in order to save computational time. In this example, we will remove the water vapor bands, but you can also take a subset of bands, depending on your research application. 
-
-In this tutorial, we use the following user-defined functions: 
-- **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
-- **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
-- **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
-
-https://pysptools.sourceforge.io/index.html
 
 ## Dependencies & Installation:
 
@@ -21,10 +15,17 @@ PySpTools: Download pysptools-0.14.2.tar.gz from https://pypi.python.org/pypi/py
 ```python 
 import sys
 !{sys.executable} -m pip install "C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz
+!conda install --yes --prefix {sys.prefix} scikit-learn
+!conda install --yes --prefix {sys.prefix} cvxopt
 ```
 
-See Also:
-https://stackoverflow.com/questions/45156080/installing-modules-to-anaconda-from-tar-gz
+We will also use the following user-defined functions: 
+
+- **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
+- **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
+- **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
+
+Once PySpTools is installed, import the following packages:
 
 
 ```python
@@ -37,18 +38,19 @@ import pysptools.abundance_maps as amap
 import pysptools.classification as cls
 import pysptools.material_count as cnt
 
-from skimage import exposure
-
 %matplotlib inline
 import warnings
 warnings.filterwarnings('ignore')
 ```
 
+Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
+
 
 ```python
 def read_neon_reflh5(refl_filename):
     """read in a NEON AOP reflectance hdf5 file and returns 
-    reflectance array, and header containing metadata in envi format.
+    reflectance array, and metadata dictionary containing metadata 
+    (similar to envi header format)
     --------
     Parameters
         refl_filename -- full or relative path and name of reflectance hdf5 file
@@ -57,7 +59,7 @@ def read_neon_reflh5(refl_filename):
     --------
     reflArray:
         array of reflectance values
-    header:
+    metadata:
         dictionary containing the following metadata (all strings):
             bad_band_window1: min and max wavelenths of first water vapor window (tuple)
             bad_band_window2: min and max wavelenths of second water vapor window (tuple)
@@ -72,9 +74,9 @@ def read_neon_reflh5(refl_filename):
     --------
     Example Execution:
     --------
-    sercRefl, sercRefl_header = h5refl2array('NEON_D02_SERC_DP1_20160807_160559_reflectance.h5') """
+    sercRefl, sercMetadata = h5refl2array('NEON_D02_SERC_DP1_20160807_160559_reflectance.h5') """
     
-    #Read in reflectance hdf5 file (include full or relative path if data is located in a different directory)
+    #Read in reflectance hdf5 file 
     hdf5_file = h5py.File(refl_filename,'r')
 
     #Get the site name
@@ -88,45 +90,47 @@ def read_neon_reflh5(refl_filename):
     reflArray = refl['Reflectance_Data'].value
     
     #Create dictionary containing relevant metadata information
-    header = {}
-    header['map info'] = refl['Metadata']['Coordinate_System']['Map_Info'].value
-    header['wavelength'] = refl['Metadata']['Spectral_Data']['Wavelength'].value
+    metadata = {}
+    metadata['map info'] = refl['Metadata']['Coordinate_System']['Map_Info'].value
+    metadata['wavelength'] = refl['Metadata']['Spectral_Data']['Wavelength'].value
 
     #Extract no data value & set no data value to NaN
-    header['data ignore value'] = float(reflData.attrs['Data_Ignore_Value'])
-    header['reflectance scale factor'] = float(reflData.attrs['Scale_Factor'])
-    header['interleave'] = reflData.attrs['Interleave']
+    metadata['data ignore value'] = float(reflData.attrs['Data_Ignore_Value'])
+    metadata['reflectance scale factor'] = float(reflData.attrs['Scale_Factor'])
+    metadata['interleave'] = reflData.attrs['Interleave']
     
     #Extract spatial extent from attributes
-    header['spatial extent'] = reflData.attrs['Spatial_Extent_meters']
+    metadata['spatial extent'] = reflData.attrs['Spatial_Extent_meters']
     
     #Extract bad band windows
-    header['bad_band_window1'] = (refl.attrs['Band_Window_1_Nanometers'])
-    header['bad_band_window2'] = (refl.attrs['Band_Window_2_Nanometers'])
+    metadata['bad_band_window1'] = (refl.attrs['Band_Window_1_Nanometers'])
+    metadata['bad_band_window2'] = (refl.attrs['Band_Window_2_Nanometers'])
     
     #Extract projection information
-    header['projection'] = refl['Metadata']['Coordinate_System']['Proj4'].value
-    header['epsg'] = int(refl['Metadata']['Coordinate_System']['EPSG Code'].value)
+    metadata['projection'] = refl['Metadata']['Coordinate_System']['Proj4'].value
+    metadata['epsg'] = int(refl['Metadata']['Coordinate_System']['EPSG Code'].value)
     
     #Extract map information: spatial extent & resolution (pixel size)
     mapInfo = refl['Metadata']['Coordinate_System']['Map_Info'].value
     
     hdf5_file.close        
     
-    return reflArray, header
+    return reflArray, metadata
 ```
+
+Now that the function is defined, we can call it to read in the sample reflectance file. Note that if your data is stored in a different location, you'll have to change the relative path, or include the absolute path. 
 
 
 ```python
-data_path = os.getcwd()
-h5refl_filename = 'NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
-data,header = read_neon_reflh5(h5refl_filename)
+h5refl_filename = './data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
+data,metadata = read_neon_reflh5(h5refl_filename)
 ```
+
+Let's take a quick look at the data contained in the `metadata` dictionary with a `for loop`:
 
 
 ```python
-#Display information stored in header
-for key in sorted(header.keys()):
+for key in sorted(metadata.keys()):
   print(key)
 ```
 
@@ -142,10 +146,12 @@ for key in sorted(header.keys()):
     wavelength
     
 
+Now we can define a function that cleans the reflectance cube. Note that this also removes the water vapor bands, stored in the metadata as `bad_band_window1` and `bad_band_window2`, as well as the last 10 bands, which tend to be noisy. It is important to remove these values before doing classification or other analysis.
+
 
 ```python
-def clean_neon_refl_data(data,header):
-    """Clean h5 reflectance data and header
+def clean_neon_refl_data(data,metadata):
+    """Clean h5 reflectance data and metadata
     1. set data ignore value (-9999) to NaN
     2. apply reflectance scale factor (10000)
     3. remove bad bands (water vapor band windows + last 10 bands): 
@@ -153,28 +159,30 @@ def clean_neon_refl_data(data,header):
         Band_Window_2_Nanometers = 1790,1955
     """
     
-    data_clean = data.copy()
-    header_clean = header.copy()
+    # use copy so original data and metadata doesn't change
+    data_clean = data.copy().astype(float)
+    metadata_clean = metadata.copy()
+    
     #set data ignore value (-9999) to NaN:
-    data_clean[data_clean==header['data ignore value']]=np.nan #??? get message ValueError: cannot convert float NaN to integer
-    #if header['data ignore value'] in data:
-    #    print('data ignore values exist in data')
+    if metadata['data ignore value'] in data:
+        nodata_ind = np.where(data_clean==metadata['data ignore value'])
+        data_clean[nodata_ind]=np.nan 
     
     #apply reflectance scale factor (divide by 10000)
-    data_clean = data_clean/header['reflectance scale factor']
+    data_clean = data_clean/metadata['reflectance scale factor']
     
     #remove bad bands 
     #1. define indices corresponding to min/max center wavelength for each bad band window:
-    bb1_ind0 = np.max(np.where((np.asarray(header['wavelength'])<float(header['bad_band_window1'][0]))))
-    bb1_ind1 = np.min(np.where((np.asarray(header['wavelength'])>float(header['bad_band_window1'][1]))))
+    bb1_ind0 = np.max(np.where((np.asarray(metadata['wavelength'])<float(metadata['bad_band_window1'][0]))))
+    bb1_ind1 = np.min(np.where((np.asarray(metadata['wavelength'])>float(metadata['bad_band_window1'][1]))))
 
-    bb2_ind0 = np.max(np.where((np.asarray(header['wavelength'])<float(header['bad_band_window2'][0]))))
-    bb2_ind1 = np.min(np.where((np.asarray(header['wavelength'])>float(header['bad_band_window2'][1]))))
+    bb2_ind0 = np.max(np.where((np.asarray(metadata['wavelength'])<float(metadata['bad_band_window2'][0]))))
+    bb2_ind1 = np.min(np.where((np.asarray(metadata['wavelength'])>float(metadata['bad_band_window2'][1]))))
 
-    bb3_ind0 = len(header['wavelength'])-10
+    bb3_ind0 = len(metadata['wavelength'])-10
     
     #define valid band ranges from indices:
-    vb1 = list(range(0,bb1_ind0)); #TO DO - don't hard code bands in, fi
+    vb1 = list(range(0,bb1_ind0)); 
     vb2 = list(range(bb1_ind1,bb2_ind0))
     vb3 = list(range(bb2_ind1,bb3_ind0))
     
@@ -184,46 +192,73 @@ def clean_neon_refl_data(data,header):
     
     data_clean = data_clean[:,:,vb1+vb2+vb3]
     
-    header_clean['wavelength'] = [header['wavelength'][i] for i in valid_band_range]
+    metadata_clean['wavelength'] = [metadata['wavelength'][i] for i in valid_band_range]
     
-    return data_clean, header_clean
+    return data_clean, metadata_clean
 ```
+
+Now, use this function to pre-process the data:
+
+
+```python
+data_clean,metadata_clean = clean_neon_refl_data(data,metadata)
+```
+
+Let's see the dimensions of the data before and after cleaning:
 
 
 ```python
 print('Raw Data Dimensions:',data.shape)
-data_clean,header_clean = clean_neon_refl_data(data,header)
 print('Cleaned Data Dimensions:',data_clean.shape)
 ```
 
-    Raw Data Dimensions:
-     (1000, 1000, 426)
+    Raw Data Dimensions: (1000, 1000, 426)
     Cleaned Data Dimensions: (1000, 1000, 360)
     
 
+Note that we have retained 360 of the 426 bands. This still contains plenty of information, in your processing, you may wish to subset even further. Let's take a look at a histogram of the cleaned data:
+
 
 ```python
-def plot_aop_refl(band_array,refl_extent,colorlimit=(0,1),ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='Greys'):  
+plt.hist(data_clean[~np.isnan(data_clean)],50);
+```
+
+
+![png](output_15_0.png)
+
+
+Lastly, let's take a look at the data using the function `plot_aop_refl` function:
+
+
+```python
+def plot_aop_refl(band_array,
+                  refl_extent,
+                  colorlimit=(0,1),
+                  ax=plt.gca(),
+                  title='',
+                  cbar ='on',
+                  cmap_title='',
+                  colormap='Greys'):  
     plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
     if cbar == 'on':
         cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
-        cbar.set_label(cmap_title,rotation=90,labelpad=20)
+        cbar.set_label(cmap_title,rotation=90,labelpad=20);
     plt.title(title); ax = plt.gca(); 
     ax.ticklabel_format(useOffset=False, style='plain'); 
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); 
 ```
 
 
-![png](output_8_0.png)
-
 
 
 ```python
-plot_aop_refl(data_clean[:,:,0],header_clean['spatial extent'],(0,0.3))
+plot_aop_refl(data_clean[:,:,0],
+              metadata_clean['spatial extent'],
+              (0,0.2))
 ```
 
 
-![png](output_9_0.png)
+![png](output_18_0.png)
 
 
 ## Unsupervised Classification with Spectral Unmixing: 
@@ -239,53 +274,81 @@ http://www.harrisgeospatial.com/docs/SpectralAngleMapper.html
 
 http://www.harrisgeospatial.com/docs/SpectralInformationDivergence.html
 
-
-```python
-#Endmember Extraction (Unmixing) - NFINDR Algorithm (Winter, 1999)
-wavelength_float = [float(i) for i in header_clean['wavelength']]
-ee_axes = {}
-ee_axes['wavelength'] = wavelength_float
-ee_axes['x']='Wavelength, nm'
-ee_axes['y']='Reflectance'
-```
+First we need to define the endmember extraction algorithm, and use the `extract` method to extract the endmembers from our data cube. You have to specify the # of endmembers you want to find, and can optionally specify a maximum number of iterations (by default it will use 3p, where p is the 3rd dimension of the HSI cube (m x n x p). For this example, we will specify a small # of iterations in the interest of time. 
 
 
 ```python
 ee = eea.NFINDR()
 U = ee.extract(data_clean,4,maxit=5,normalize=False,ATGP_init=True)
-ee.display(axes=ee_axes,suffix='SERC')
+```
+
+In order to display these endmember spectra, we need to define the endmember axes `dictionary`. Specifically we want to show the wavelength values on the x-axis. The `metadata['wavelength']` is a `list`, but the ee_axes requires a `float` data type, so we have to cast it to the right data type. 
+
+
+```python
+type(metadata_clean['wavelength'])
 ```
 
 
-![png](output_12_0.png)
+
+
+    list
+
 
 
 
 ```python
-#Abundance Maps
-am = amap.FCLS()
-amaps = am.map(data_clean,U,normalize=False)
+ee_axes = {} # set ee_axes data type to dictionary
+# cast wavelength values to float to apply to ee_axes for display purposes
+ee_axes['wavelength'] = [float(i) for i in metadata_clean['wavelength']]
+ee_axes['x']='Wavelength, nm' #x axis label
+ee_axes['y']='Reflectance' #y axis label 
+```
+
+Now that the axes are defined, we can display the spectral endmembers with `ee.display`:
+
+
+```python
+ee.display(axes=ee_axes,suffix='SERC')
+```
+
+
+![png](output_26_0.png)
+
+
+Now that we have extracted the spectral endmembers, we can take a look at the abundance maps for each memeber. These show the fractional components of each of the endmembers. 
+
+
+```python
+am = amap.FCLS() #define am object using the amap 
+amaps = am.map(data_clean,U,normalize=False) #create abundance maps for the HSI cubems
+```
+
+Use `am.display` to plot these abundance maps:
+
+
+```python
 am.display(colorMap='jet',columns=4,suffix='SERC')
 ```
 
 
-![png](output_13_0.png)
+![png](output_30_0.png)
 
 
 
-![png](output_13_1.png)
+![png](output_30_1.png)
 
 
 
-![png](output_13_2.png)
+![png](output_30_2.png)
 
 
 
-![png](output_13_3.png)
+![png](output_30_3.png)
 
 
 
-    <matplotlib.figure.Figure at 0x1efe8b6b0f0>
+    <matplotlib.figure.Figure at 0x278745d3940>
 
 
 Print mean values of each abundance map to better estimate thresholds to use in the classification routines. 
@@ -327,10 +390,10 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05])
 ```
 
 
-![png](output_17_0.png)
+![png](output_34_0.png)
 
 
-Below we define a function to compute and display SID:
+Below we define a function to compute and display Spectral Information Diverngence (SID):
 
 
 ```python
@@ -349,29 +412,12 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 ```
 
 
-![png](output_21_0.png)
+![png](output_38_0.png)
 
 
 From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the USA Topo Base map (https://viewer.nationalmap.gov/):
 
-
-```python
-from IPython.core.display import Image
-UStopo_filename = 'SERC_368000_4307000_UStopo.PNG'
-UStopo_image = os.path.join(data_path,UStopo_filename)
-print('SERC Tile US Topo Base Map')
-Image(filename=UStopo_image,width=225,height=225)
-```
-
-    SERC Tile US Topo Base Map
-    
-
-
-
-
-![png](output_23_1.png)
-
-
+<img src="./SERC_368000_4307000_UStopo.PNG" style="width: 200px;"/>
 
 ## Exercises
 
@@ -395,7 +441,7 @@ def SAM(data,E,thrs=None):
 
 4. Take a subset of the bands before running endmember extraction. How different is the classification if you use only half the data points? How much faster does the algorithm run? When running analysis on large data sets, it is useful to 
 
-**TIPS**: 
+**HINTs**: 
 - To extract every 10th element from the array `A`, use `A[0::10]`
 - Import the package `time` to track the amount of time it takes to run a script. 
 
