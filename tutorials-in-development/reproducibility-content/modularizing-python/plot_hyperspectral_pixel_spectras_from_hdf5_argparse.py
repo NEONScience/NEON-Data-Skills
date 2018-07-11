@@ -1,5 +1,47 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-# coding: utf-8
+# Written by Naupaka Zimmerman
+# July 11, 2018
+# nzimmerman@usfca.edu
+
+# This script takes as input a hyperspectral imagery hdf5 file from the
+# NEON AOP platform, assuming the post-2016 hdf5 format. It was developed as
+# part of the 2018 Data Skills Institute at NEON in Boulder, CO. It extracts
+# the appropriate metadata from the file and then plots the full spectra for
+# a given pixel, which is meant to be passed in as a command-line argument.
+
+# It produces three output figures, one with the entire spectra, and then
+# two with the band bands (high noise) marked and then removed. It also will
+# output a csv file with the wavelength and reflectance with the bad regions
+# removed for the selected pixel.
+
+# For usage parameters, use the -h or --help flag.
+
+# This is free and unencumbered software released into the public domain.
+#
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
+#
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# For more information, please refer to <http://unlicense.org/>
 
 import h5py
 import numpy as np
@@ -8,27 +50,40 @@ import matplotlib.pyplot as plt
 from copy import copy
 import argparse
 
+# Initialize parser and set up command-line arguments
 parser = argparse.ArgumentParser()
+
 parser.add_argument("-v", "--verbose",
                     help="increase output verbosity",
                     action="store_true")
 
-parser.add_argument('-c', '--csvdir', default="./", help="csv file output dir")
-parser.add_argument('-f', '--figdir', default="./", help="fig output dir")
-parser.add_argument('h5input', help="input h5 file")
-parser.add_argument('ycoord', type=int, help="y coord of pixel to plot")
-parser.add_argument('xcoord', type=int, help="x coord of pixel to plot")
+parser.add_argument('-c', '--csvdir',
+                    default="./",
+                    help="csv file output dir")
+
+parser.add_argument('-f', '--figdir',
+                    default="./",
+                    help="fig output dir")
+
+parser.add_argument('h5input',
+                    help="input h5 file")
+
+parser.add_argument('ycoord',
+                    type=int,
+                    help="y coord of pixel to plot")
+
+parser.add_argument('xcoord',
+                    type=int,
+                    help="x coord of pixel to plot")
 
 args = parser.parse_args()
 
 if args.verbose:
-    print("verbosity turned on")
+    print("Verbosity turned on.")
 
-#refl_filename = ('/Users/naupaka/Desktop/RSDI-2018/data/Day1_Hyperspectral_Intro/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
-#refl_filename = ('/Users/naupaka/Downloads/Files/NEON_D17_SJER_DP1_20180401_184649_reflectance.h5')
+# capture filename
 refl_filename = args.h5input
 
-#pixel_to_plot = (100, 100)
 pixel_to_plot = (args.ycoord, args.xcoord)
 if args.verbose: print("pixel_to_plot\n",', '.join(map(str, pixel_to_plot)))
 
@@ -253,5 +308,3 @@ ax2.plot((bbw2[1], bbw2[1]), (0, 1.5), 'r--')
 
 fig = ax2.get_figure()
 fig.savefig(args.figdir+'/'+sitename+'_'+'_'.join(map(str, pixel_to_plot))+'_plot_3_marked_and_cleaned.png')
-
-
