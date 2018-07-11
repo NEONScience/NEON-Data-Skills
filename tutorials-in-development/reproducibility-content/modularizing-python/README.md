@@ -1,145 +1,139 @@
-Steps:
+### Reproducible analysis and modularizing code
 
-Create folder structure
+Lesson put together by Naupaka Zimmerman for the 2018 NEON Data Institute.
 
-RSDI-2018/
-data/
-├── Biomass
-│   ├── NEON_D17_SJER_DP3_256000_4106000_CHM.tif
-│   └── training
-│       └── SJER_Biomass_Training.csv
-├── Day1_Hyperspectral_Intro
-│   └── NEON_D02_SERC_DP3_368000_4306000_reflectance.h5
-├── Day2_LiDAR_Intro
-│   ├── NEON_D02_SERC_DP3_368000_4306000_CHM.tif
-│   ├── NEON_D17_TEAK_DP3_316000_4106000_CHM.tif
-│   ├── NEON_D17_TEAK_DP3_316000_4106000_aspect.tif
-│   └── TEAK_Aspect_Tiles
-│       ├── NEON_D17_TEAK_DP3_320000_4100000_aspect.tif
-│       ├── NEON_D17_TEAK_DP3_320000_4101000_aspect.tif
-│       ├── NEON_D17_TEAK_DP3_321000_4100000_aspect.tif
-│       └── NEON_D17_TEAK_DP3_321000_4101000_aspect.tif
-├── RGB
-│   └── 2017_SERC_2_368000_4306000_image.tif
-└── Uncertainty
-    ├── CHEQ
-    │   ├── CHEQ_Tarp_03_02_refl_bavg.txt
-    │   ├── CHEQ_Tarp_48_01_refl_bavg.txt
-    │   ├── NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5
-    │   ├── NEON_D05_CHEQ_DP1_20160912_160540_reflectance_w_blur.h5
-    │   └── NEON_D05_CHEQ_DP1_20160912_170131_reflectance.h5
-    ├── F07A
-    │   ├── NEON_D07_F07A_DP1_20160611_160444_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_160846_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_161228_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_161532_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_162007_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_162514_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_162951_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_163424_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_163945_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_164259_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_164809_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_165240_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_165711_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_170118_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_170538_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_170922_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_171403_reflectance_modify.h5
-    │   ├── NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5
-    │   └── NEON_D07_F07A_DP1_20160611_172430_reflectance_modify.h5
-    └── PRIN
-        ├── 2016_PRIN_1_607000_3696000_DSM.tif
-        ├── 2016_PRIN_1_607000_3696000_DTM.tif
-        ├── 2016_PRIN_1_607000_3696000_pit_free_CHM.tif
-        ├── 2016_PRIN_2_607000_3696000_DSM.tif
-        ├── 2016_PRIN_2_607000_3696000_DTM.tif
-        └── 2016_PRIN_2_607000_3696000_pit_free_CHM.tif
+The goal is to demonstrate a workflow from the start, to think about
+what inputs are needs, what outputs are desired, and how to move from
+development in a Jupyter notebook to development of a Python script meant to
+be operated from the commandline as part of a pipeline-style workflow. It also
+serves to introduce learners to the use of git and GitHub during a scientific
+coding workflow.
 
-10 directories, 41 files
+#### Steps & Instructor Notes:
 
+Give overview of morning, and emphasize that the goal of the workflow (building on
+code learners saw the day before) is to show a conceptual example of a
+'more' reproducible workflow. It's worth emphasizing that there is no one
+correct way to do this, just some principles to try and follow.
 
+Ask learners to download Atom for editing READMEs and to demonstrate
+its git integration.
 
-https://neondata.sharefile.com/share/view/s145d7fe964a47d1b/fo188288-67a3-4566-bc0d-468784dd8b8b
+Also have learners download smaller hdf5 NEON hyperspectral files to work with.
+Any NEON hdf5 hyperspectral file will work, but the smaller files help things
+process more quickly.
 
+Doi: 10.6084/m9.figshare.6807134
+Download all link:   https://ndownloader.figshare.com/articles/6807134/versions/1
 
+Talk though the thought process of defining goals for a coding project,
+including think about what variables or inputs are needed, job these
+down on whiteboard.
 
-Give overview of morning. Conceptual example of a 'more' reproducible workflow.
+Live coding/demonstrating:
 
+##### Setting up a directory, respository, and adding READMEs
 
+Create the following directory structure:
 
-Download smaller h5 NEON files
-http://npk.io/Qlvhmt
-
-
-
-Talk about goals, think about what variables are needed, job these down on whiteboard.
-
-
-
-
-Install Atom
-
-Make directory structure
-
+```
 project/
   code/
   data/
-    raw_data_located_outside_project_folder/
   output/
     csv/
     figs/
+```
 
-in gitbash or terminal
+Then in gitbash or terminal:
 
+```
 git init
 git status
+```
 
-With Atom: Add README.md and README_raw_data.md
+With Atom, add `README.md` and `data/README.md` files, with appropriate content.
+The data directory `README.md` should include an explanation as to why the data
+files are not located in the `data` directory, and the doi/URL for the data from
+figshare.
 
+The directory should now look like this:
+
+```
 project/
   README.md
   code/
   data/
-    raw_data_located_outside_project_folder/
-    README_raw_data.md
+    README.md
   output/
     csv/
     figs/
+```
 
-git add
-git commit
+Commit these changes.
 
+```
+git add README.md data/README.md
+git commit -m "Add README files"
+```
 
-
+##### Set up and document conda environment
 
 At terminal, in project directory
 
-conda activate py35
-conda install argparse skimage pandas
+```
+conda activate py35  # (set up during pre-institute)
+conda install h5py gdal pandas IPython
 
 # To export environment file
-# activate <environment-name>
-conda env export > <environment-name>.yml
+conda env export > environment.yml
 
 # For other person to use the environment
 # conda env create -f <environment-name>.yml
+```
 
-git add 
+Then add and commit that environment file (which contains all of the packages
+and versions in the selected conda environment).
+
+```
+git add environment.yml
 git commit
+```
 
+##### Hyperspectral analysis in Jupyter notebooks
 
+Run `jupyter notebook` to start a kernel and notebook viewer in the project
+folder. Add a new ipynb to the top level.
 
+Start coding, following the ipynb in the `code/instructor_materials` directory
+or the html exported version in the `output` directory. Periodically add and
+commit.
 
-start jupyter notebook in project folder
-Add new ipynb to top level
+When finished with notebook, add and commit.
 
-Start coding
-periodic add and commit
+Set up GitHub repo, push to GitHub.
 
-When finished with notebook, add and commit. Set up GitHub repo, push to GitHub.
+Export ipynb to html, move to output folder, prepend file name with date.
+Export ipynb to py, clean and further modify for command-line usage.
 
-Export ipynb to py, clean for command-line usage
+The finished version of this script is also in the `code/instructor_materials`
+directory.
+
+Demonstrate running command-line script, showing help and verbose/non-verbose
+run modes.
+
+```
+git add output/
+git commit -m "Add in generated output files"
+```
+
+Set up new empty repository on GitHub.
+
+Add remote to working repository with `git add remote origin URL-here`.
+
+Push all commits: `git push -u origin master`.
+
+Done!
 
 
 
@@ -165,7 +159,7 @@ Export ipynb to py, clean for command-line usage
 conda list
 
 # Save all the info about packages to your folder
-# conda list -e > requirements.txt 
+# conda list -e > requirements.txt
 
 # To export environment file
 # activate <environment-name>
@@ -175,5 +169,3 @@ conda env export > <environment-name>.yml
 # conda env create -f <environment-name>.yml
 
 python plot_hyperspectral_pixel_spectras_from_hdf5_argparse.py -c csv -f figs ~/Downloads/Files/NEON_D17_SJER_DP1_20180401_185358_reflectance.h5 120 120
-
-
