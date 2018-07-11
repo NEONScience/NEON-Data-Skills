@@ -9,6 +9,9 @@ be operated from the commandline as part of a pipeline-style workflow. It also
 serves to introduce learners to the use of git and GitHub during a scientific
 coding workflow.
 
+All of the needed files are in the project directory:
+`extract_spectra_from_hdf5`
+
 ## Steps & Instructor Notes:
 
 Give overview of morning, and emphasize that the goal of the workflow (building on
