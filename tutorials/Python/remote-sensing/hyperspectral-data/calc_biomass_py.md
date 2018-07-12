@@ -271,7 +271,6 @@ plt.savefig('../output/'+ just_chm_file[0:-4]+'_CHM.png',dpi=300,orientation='la
 ```
 
 
-
 ![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_23_0.png)
 
 
@@ -298,7 +297,7 @@ Now save a copy of filtered CHM. We will later use this in our code, so we'll ou
 
 ```python
 #Save the smoothed CHM
-array2raster('../data/Biomass/chm_filter.tif',
+array2raster('../output/chm_filter.tif',
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,
              np.array(chm_array_smooth,dtype=float),
@@ -327,20 +326,22 @@ plot_band_array(local_maxi,chm_array_metadata['extent'],
                 'Maximum',
                 'Maxi',
                 'Greys',
-                [0, 1])
+                [0, 0.5])
 
 plt.savefig('../output/'+just_chm_file[0:-4]+ '_Maximums.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
-
-array2raster('../data/Biomass/maximum.tif',
-             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
-             1,-1,np.array(local_maxi,dtype=np.float32),32611)
-
 ```
 
 
 ![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_31_1.png)
+
+
+```python
+array2raster('../output/maximum.tif',
+             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
+             1,-1,np.array(local_maxi,dtype=np.float32),32611)
+```
 
 If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster. 
 
@@ -407,7 +408,7 @@ plt.savefig('../output/'+just_chm_file[0:-4]+'_Segmentation.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
 
-array2raster('../data/Biomass/labels.tif',
+array2raster('../output/labels.tif',
              (chm_array_metadata['ext_dict']['xMin'],
               chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(labels,dtype=float),32611)
@@ -415,7 +416,8 @@ array2raster('../data/Biomass/labels.tif',
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_38_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_39_0.png)
+
 
 Now we will get several properties of the individual trees will be used as predictor variables. 
 
@@ -530,7 +532,7 @@ plt.savefig(just_chm_file_split[0]+'_'+just_chm_file_split[1]+'_'+just_chm_file_
             bbox_inches='tight',
             pad_inches=0.1)
 
-array2raster('../data/Biomass/biomass.tif',
+array2raster('../output/biomass.tif',
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(biomass_map,dtype=float),32611)
 
@@ -539,4 +541,6 @@ array2raster('../data/Biomass/biomass.tif',
     Sum of biomass is  6977394.049996292  kg
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_52_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_53_1.png)
+
+
