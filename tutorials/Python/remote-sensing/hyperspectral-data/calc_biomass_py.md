@@ -1,4 +1,3 @@
-
 ---
 syncID: e6ccf19a4b454ca594388eeaa88ebe12
 title: "Calculate Vegetation Biomass from LiDAR Data in Python"
@@ -16,12 +15,14 @@ tutorialSeries: intro-lidar-py-series
 urlTitle: calc-biomass-py
 ---
 
-<div id="ds-objectives" markdown="1">
-
 In this tutorial, we will calculate the biomass for a section of the SJER site. We 
 will be using the Canopy Height Model discrete LiDAR data product as well as NEON
 field data on vegetation data. This tutorial will calculate Biomass for individual 
-trees in the forest. 
+trees in the forest.
+
+
+<div id="ds-objectives" markdown="1">
+
 
 ### Objectives
 After completing this tutorial, you will be able to:
@@ -141,7 +142,7 @@ def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
     
 ```
 
-* `raster2array`: function to conver rasters to an array.
+* `raster2array`: function to convert rasters to an array.
 
 
 ```python

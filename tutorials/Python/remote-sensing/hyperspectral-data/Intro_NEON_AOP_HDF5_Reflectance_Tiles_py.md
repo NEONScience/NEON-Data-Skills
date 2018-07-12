@@ -5,8 +5,7 @@ description: "Learn how to read NEON AOP hyperspectral tiled hdf5 data using Pyt
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: 
-estimatedTime: l = range(165)
->>> l[0::10]
+estimatedTime: 
 packagesLibraries: numpy, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
