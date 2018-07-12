@@ -10,7 +10,7 @@ packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, 
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
-code1: Python/remote-sensing/hyperspectral-data/Calc_NDVI_Extract_Specta_Masks_Tiles_py.ipynb
+code1: Python/remote-sensing/hyperspectral-data/Calc_NDVI_Extract_Spectra_Masks_Tiles_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: calc-ndvi-tiles-py
 ---
