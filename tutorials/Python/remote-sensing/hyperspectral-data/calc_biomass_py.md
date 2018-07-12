@@ -312,7 +312,9 @@ Now we will run an algorithm to determine local maximums within the image. Setti
 
 ```python
 #Calculate local maximum points in the smoothed CHM
-local_maxi = peak_local_max(chm_array_smooth,indices=False, footprint=np.ones((5, 5)))
+#We want the array to have the actual values, we can do this by using .astype(float) so we get 0/1 not False/True. 
+local_maxi = peak_local_max(chm_array_smooth,indices=False,
+                            footprint=np.ones((5, 5))).astype(float)
 ```
 
 Plot the raster of local maximums. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.
@@ -335,12 +337,13 @@ plt.savefig('../output/'+just_chm_file[0:-4]+ '_Maximums.png',
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_31_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/calc-biomass_py/output_31_0.png)
 
 
 ```python
 array2raster('../output/maximum.tif',
-             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
+             (chm_array_metadata['ext_dict']['xMin'],
+              chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(local_maxi,dtype=np.float32),32611)
 ```
 
