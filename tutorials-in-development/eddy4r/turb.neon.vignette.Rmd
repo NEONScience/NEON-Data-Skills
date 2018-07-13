@@ -62,22 +62,14 @@ variables for convenience.
 
 ```{r env-vars}
 
-# file path for the directory containing input L0' data
-base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
-#DD: This will be the case in the future, but the dp0p HDF5 file is not package into the deve docker, so you need to point it to a local file until we get ready to release the publication docker image.
-# base::Sys.setenv("USER"="cklunch")
-# base::Sys.setenv("DIRINP" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/turbTow/inpRefe"))
+# File path for the directory containing input L0' data
+base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
 
-#DD: This line is not needed in the new version 
-#file path to the HDF5 file of input L0' data
-#base::Sys.setenv("DIRFILEPARA" = 
- #                  "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
-
-# file path for outputs
+# File path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
-# date(s) of the input data, specified here for the ouput file name
-base::Sys.setenv("DATEOUT" = "2017-05-01")
+# Date(s) of the input data, specified here for the output file name
+base::Sys.setenv("DATEOUT" = "2017-09-01")
 
 # NEON domain, site, and data product ID of the input data
 # for the output file name:
@@ -86,7 +78,7 @@ base::Sys.setenv("DATEOUT" = "2017-05-01")
 # Bundled eddy covariance data = 00200.001
 base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
 
-# flag to indicate to the eddy4R.base::def.para.flow() 
+# Flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
 # environment variables, instead of provided as function 
 # inputs
@@ -101,49 +93,101 @@ then read in additional parameters from the HDF5 file.
 
 ```{r metadata}
 
-# start with an empty list of parameters
+# In this section, define and/or read in a number of terms and 
+# parameters.
+
+# Start with an empty list of parameters
 Para <- base::list()
 
-# use the def.para.flow() function to specify the metadata 
-# are stored in environment variables
-Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",                                          UrlInpRefe = "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",                          UrlOutRefe = "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
+# Use the def.para.flow() function to specify the metadata are stored 
+# in environment variables, and give file paths to input and output.
+# You will see a number of warning messages in response to this line, 
+# but if you can proceed with the next several commands, don't worry 
+# about the warnings here.
+# [CKL: Dave, you said the data are in the build. What are the 
+# dropbox links for?]
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",
+                                        UrlInpRefe = 
+                                          "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",
+                                        UrlOutRefe = 
+                                          "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
 
-# [CKL: the error messages here are confusing. Is there bandwidth 
-# on the EC team to modify? It would be helpful to add to the warning
-# message, something like: "1: In FUN(X[[i]], ...) :
-#  The variable ParaFlow$Deve is not specified as ENV variable; a 
-#  default value has been assigned"
-# Also, I'm now getting a new error: ""UrlInpRefe" is missing, with no default"
+# Get the NEON-specific 4-letter code for the site location (Loc) 
+# from the dp0p input file   
+Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
 
+# Get the level of the tower top (LvlTowr) from the dp0p input file 
+Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
 
-# [CKL: next few lines shown with error messages as comments. 
-# Looks to me like some of the edits above resulted in 
-# missing parameters]
-  # Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file   
-  Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
-  # Grab the tower top level (LvlTowr) from the dp0p input file 
-  Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+# For each variable to be written out, set the ??? parameters.
+# Variables:
+#   amrs: Attitude Motion Reference System
+#   co2turb: Turbulent CO2 flux
+#   h2oTurb: Turbulent H2O flux
+#   soni: Windspeed and direction from sonic anemometer
+# Parameters:
+#   PrdIncrAgrDflt: [CKL: ???]
+#   PrdWndwAgrDflt: [CKL: ???]
+for(idx in c("amrs", "co2Turb", "h2oTurb", "soni")) {
   
-#Error: 'def.para.levl.towr' is not an exported object from 'namespace:eddy4R.base'
-for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
-
-        Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
-            DirFileParaLoca = Para$Flow$DirFilePara,
-            GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
-            SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
-          )
-        
-      }
-#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
-#  unused argument (PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt"))
-
-Para$Sci <- def.neon.read.hdf5.para(
+  Para$Flow$dp01[[idx]] <- eddy4R.base::def.hdf5.read.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
-    GrpName = "site",
-    SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+    GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
+    SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
   )
-#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
-#  unused argument (PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime"))
+  
+}
+
+# AngEnuXaxs: Angle of x axis [CKL: relative to what?]
+# AngEnuYaxs: Angle of y axis [CKL: relative to what?]
+# Ofst: Offset [CKL: of what relative to what?]
+# ZoneTime: Time zone of data collection
+Para$Sci <- eddy4R.base::def.hdf5.read.para(
+  DirFileParaLoca = Para$Flow$DirFilePara,
+  GrpName = Para$Flow$Loc,
+  SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+)
+
+# MaxReso: Maximum resolution [CKL: of what?]
+# NumBin: Number of bins [CKL: bins for what?]
+# NumWndw: Number of windows [CKL: ?]
+Para$Sci$dp01 <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp01"),
+      SetPara = c("Dspk$Br86$MaxReso", "Dspk$Br86$NumBin", "Dspk$Br86$NumWndw")
+)
+
+# In the next 3 commands, define the sampling frequency (FreqSamp) 
+# of the STOPPED HERE
+Para$Sci$dp0p$irgaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/irgaTurb"),
+      SetPara = c("FreqSamp")
+)
+      
+      Para$Sci$dp0p$mfcSampTurb <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/mfcSampTurb"),
+        SetPara = c("FreqSamp")
+      )
+      
+      Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/valvValiNemaTurb"),
+        SetPara = c("FreqSamp")
+      )
+      
+      Para$Sci$dp0p$soni <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
+        SetPara = c("AngNedZaxs","FreqSamp")
+      )
+      
+      Para$Sci$dp0p$amrs <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/amrs"),
+        SetPara = c("FreqSamp")
+      )
 
 ```
 
