@@ -115,7 +115,7 @@ page first.
 Let's begin by visiting that page above. At the top of the page, there is a list
 of data available for Harvard Forest. NOTE: **hf001-06: daily (metric) since 
 2001 (preview)** is the data that we used in the
-<a href="/dc-brief-tabular-time-series-qplot-r" target=_blank">previous tutorial.</a>
+<a href="{{ site.baseurl }}/dc-brief-tabular-time-series-qplot-r" target=_blank">previous tutorial.</a>
 
 Scroll down to the **Overview** section on the website. Take note of the 
 information provided in that section and answer the questions in the
