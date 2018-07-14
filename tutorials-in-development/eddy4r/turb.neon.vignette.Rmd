@@ -96,7 +96,7 @@ then read in additional parameters from the HDF5 file.
 # In this section, define and/or read in a number of terms and 
 # parameters.
 
-# Start with an empty list of parameters
+# Create an empty list for parameters.
 Para <- base::list()
 
 # Use the def.para.flow() function to specify the metadata are stored 
@@ -118,6 +118,10 @@ Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc
 
 # Get the level of the tower top (LvlTowr) from the dp0p input file 
 Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+
+# Use the def.hdf5.read.para() function to extract parameters 
+# from the metadata in the input file and assign them to the 
+# parameter list.
 
 # For each variable to be written out, set the ??? parameters.
 # Variables:
@@ -157,43 +161,176 @@ Para$Sci$dp01 <- def.hdf5.read.para(
       SetPara = c("Dspk$Br86$MaxReso", "Dspk$Br86$NumBin", "Dspk$Br86$NumWndw")
 )
 
-# In the next 3 commands, define the sampling frequency (FreqSamp) 
-# of the STOPPED HERE
+# In the next 5 commands, get the sampling frequency (FreqSamp) 
+# of each instrument from the parameters in the input file:
+# irgaTurb: Turbulent flux gas analyzer
+# mfcSampTurb: Mass flow controller
+# valvValiNemaTurb: [CKL: ???]
+# soni, amrs: See above
 Para$Sci$dp0p$irgaTurb <- def.hdf5.read.para(
       DirFileParaLoca = Para$Flow$DirFilePara,
       GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/irgaTurb"),
       SetPara = c("FreqSamp")
 )
-      
-      Para$Sci$dp0p$mfcSampTurb <- def.hdf5.read.para(
+
+Para$Sci$dp0p$mfcSampTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/mfcSampTurb"),
+      SetPara = c("FreqSamp")
+)
+
+Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/valvValiNemaTurb"),
+      SetPara = c("FreqSamp")
+)
+
+# For the sonic anemometer, also get the angle of the z axis 
+# relative to a plumb line (AngNedZaxs) [CKL: is this correct?]
+Para$Sci$dp0p$soni <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
+      SetPara = c("AngNedZaxs","FreqSamp")
+)
+
+Para$Sci$dp0p$amrs <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/amrs"),
+      SetPara = c("FreqSamp")
+)
+
+# [CKL: not sure I understand these next two parameters. 
+# After running them, Lag$TimeDiff is still NA.
+# If this is something that would be relevant in 
+# other circumstances, need to explain here]
+Para$Sci$dp01$co2Turb$RtioMoleDryCo2 <- def.hdf5.read.para(
         DirFileParaLoca = Para$Flow$DirFilePara,
-        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/mfcSampTurb"),
-        SetPara = c("FreqSamp")
-      )
-      
-      Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/co2Turb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryCo2"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+Para$Sci$dp01$h2oTurb$RtioMoleDryH2o <- def.hdf5.read.para(
         DirFileParaLoca = Para$Flow$DirFilePara,
-        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/valvValiNemaTurb"),
-        SetPara = c("FreqSamp")
-      )
-      
-      Para$Sci$dp0p$soni <- def.hdf5.read.para(
-        DirFileParaLoca = Para$Flow$DirFilePara,
-        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
-        SetPara = c("AngNedZaxs","FreqSamp")
-      )
-      
-      Para$Sci$dp0p$amrs <- def.hdf5.read.para(
-        DirFileParaLoca = Para$Flow$DirFilePara,
-        GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/amrs"),
-        SetPara = c("FreqSamp")
-      )
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/h2oTurb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryH2o"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+# Create a version label for your outputs, using the 
+# current system time
+Para$Flow$VersDp <- paste0(Para$Flow$VersDp, "_", 
+                           format(Sys.time(), "%Y%m%d_%H%M%S_%Z"))
+
+# Create a list of the sampling frequencies of the essential 
+# instruments, extracted from the input data above.
+FreqSamp <- list(
+  "irgaTurb" = Para$Sci$dp0p$irgaTurb$FreqSamp,
+  "mfcSampTurb" = Para$Sci$dp0p$mfcSampTurb$FreqSamp,
+  "valvValiNemaTurb" = ifelse(length(as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp))==0,
+                              0.2, as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp)), #[CKL: I modified this, including code as a comment isn't a good practice]
+  "soni" = Para$Sci$dp0p$soni$FreqSamp,
+  "amrs" = Para$Sci$dp0p$amrs$FreqSamp
+)
 
 ```
 
+## 4. Variable ranges
+
+Set plausible ranges for the input variables, to be tested on ingest.
+Then set paths for the working directory.
+
+```{r range}
+
+# Create an empty list for range values.
+Rng <- list()
+  
+# Set ranges for gas analyzer variables:
+# densMoleCo2: CO2 molar density, mol m-3
+# densMoleH2o: H2O molar density, mol m-3
+# presAtm: Atmospheric pressure, Pa
+# presDiff: Difference in pressure from ?? [CKL: ?], Pa
+# rtioMoleDryCo2: Mole ratio of CO2 in air, mol mol-1
+# rtioMoleDryH2o: Mole ratio of H2O in air, mol mol-1
+# tempIn: Temperature of air at inlet, K
+# tempOut: Temperature of air at outlet, K
+Rng$irgaTurb <- data.frame(
+  "densMoleCo2" = c(0,30) * 1e-3,
+  "densMoleH2o" = c(0,1500) * 1e-3,
+  "presAtm" = c(50,120) * 1e3,
+  "presDiff" = c(-10,1) * 1e3,
+  "rtioMoleDryCo2" = c(300,450) * 1e-6,
+  "rtioMoleDryH2o" = c(0,30) * 1e-3,
+  "tempIn" = c(220,330),
+  "tempOut" = c(220,330)
+)
+
+# Set ranges for sonic anemometer variables:
+# veloXaxs: Velocity on the x axis, m s-1
+# veloYaxs: Velocity on the y axis, m s-1
+# veloZaxs: Velocity on the z axis, m s-1
+# veloSoni: Total velocity, m s-1 [CKL: correct?]
+Rng$soni <- data.frame(
+  "veloXaxs"=c(-50,50),
+  "veloYaxs"=c(-50,50),
+  "veloZaxs"=c(-10,10),
+  "veloSoni"=c(300,400)
+)
+
+# Set ranges for attitude and motion reference variables:
+# angXaxs: Deviation from the x axis, degree
+# angYaxs: Deviation from the y axis, degree
+# angZaxs: Deviation from the z axis, degree
+Rng$amrs <- data.frame(
+  "angXaxs"=c(-360,360),
+  "angYaxs"=c(-360,360),
+  "angZaxs"=c(-360,360)
+)
+
+# Set directories and file paths
+# As written, this vignette uses the default paths. To use custom 
+# paths, assign the file paths you want to use to the parameters
+# Para$Flow$DirWrk, Para$Flow$DirInp, and Para$Flow$DirOut before
+# proceeding to the code below.
+
+# Working directory
+# Default: use a temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirWrk)) {
+  Para$Flow$DirWrk <- tempdir()
+
+  # Optional: create a user-specified working directory, e.g. on host filesystem
+  } else {
+    dir.create(Para$Flow$DirWrk, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for input data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirInp)) {
+  Para$Flow$DirInp <- paste0(Para$Flow$DirWrk, "/inpRefe")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirInp, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for output data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirOut)) {
+  Para$Flow$DirOut <- paste0(Para$Flow$DirWrk, "/out")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirOut, recursive = TRUE, showWarnings = FALSE)
+  }
 
 
+```
 
+## 5. Read in data!
+
+```{r ingest}
+
+```
 
 
 
