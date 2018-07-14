@@ -1,40 +1,84 @@
-
-# Unsupervised Hyperspectral Classification 
-## KMeans, Principal Component Analysis
+---
+syncID: 75f8885948494c0dbe6084099c61dd1e
+title: "Unsupervised Spectral Classification in Python: KMeans & PCA"
+description: "Learn to classify spectral data using KMeans and Principal Components Analysis (PCA)."
+dateCreated: 2018-07-10 
+authors: Bridget Hass
+contributors:
+estimatedTime:
+packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
+topics: hyperspectral-remote-sensing, HDF5, remote-sensing
+languagesTool: python
+dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/classification_kmeans_pca_py.ipynb
+tutorialSeries: intro-hsi-py-series
+urlTitle: classification-kmeans-pca-python
+---
 
 In this tutorial, we will use the `Spectral Python (SPy)` package to run KMeans and Principal Component Analysis unsupervised classification algorithms. 
 
-http://www.spectralpython.net/user_guide.html
-http://www.spectralpython.net/algorithms.html#unsupervised-classification
+<div id="ds-objectives" markdown="1">
 
-## Background
+### Objectives
+After completing this tutorial, you will be able to:
 
-## KMeans - Clustering
+* Classify spectral remote sensing data. 
 
-http://www.spectralpython.net/algorithms.html#k-means-clustering
+### Install Python Packages
+
+* **numpy**
+* **gdal** 
+* **matplotlib** 
+* **matplotlib.pyplot** 
+
+
+### Download Data
+
+ <a href="https://neondata.sharefile.com/d-s1dc135daffd4e65b" class="btn btn-success">
+Download the spectral classification teaching data subset</a>
+
+</div>
+
+In this tutorial, we will use the `Spectral Python (SPy)` package to run KMeans and Principal Component Analysis unsupervised classification algorithms. 
+
+To learn more about the Spcral Python packages read: 
+
+* <a href="http://www.spectralpython.net/user_guide.html" target="blank">Spectral Python User Guide</a>.
+* <a href="http://www.spectralpython.net/algorithms.html#unsupervised-classification" target="_blank">Spectral Python Unsupervised Classification</a>.
+
+
+## KMeans Clustering
+
 
 **KMeans** is an iterative clustering algorithm used to classify unsupervised data (eg. data without a training set) into a specified number of groups. The algorithm begins with an initial set of randomly determined cluster centers. Each pixel in the image is then assigned to the nearest cluster center (using distance in N-space as the distance metric) and each cluster center is then re-computed as the centroid of all pixels assigned to the cluster. This process repeats until a desired stopping criterion is reached (e.g. max number of iterations). 
 
+Read more on KMeans clustering from <a href="http://www.spectralpython.net/algorithms.html#k-means-clustering" target="_blank">Spectral Python</a>. 
+
 To visualize how the algorithm works, it's easier look at a 2D data set. In the example below, watch how the cluster centers shift with progressive iterations, 
 
-![gif](KMeans2D.gif)
 
-https://sandipanweb.wordpress.com/2017/03/19/hard-soft-clustering-with-k-means-weighted-k-means-and-gmm-em/
+ <figure>
+	<a href="{{ site.baseurl }}/images/hyperspectral/KMeans2D.gif">
+	<img src="{{ site.baseurl }}/images/hyperspectral/KMeans2D.gif"></a>
+	<figcaption> KMeans clustering demonstration Source: <a href="https://sandipanweb.wordpress.com/2017/03/19/hard-soft-clustering-with-k-means-weighted-k-means-and-gmm-em/" target="_blank">Sandipan Deyn</a>
+	</figcaption>
+</figure>
 
 
 ## Principal Component Analysis (PCA) - Dimensionality Reduction
 
-http://www.spectralpython.net/algorithms.html#principal-components
+Many of the bands within hyperspectral images are often strongly correlated. The principal components transformation represents a linear transformation of the original image bands to a set of new, uncorrelated features. These new features correspond to the eigenvectors of the image covariance matrix, where the associated eigenvalue represents the variance in the direction of the eigenvector. A very large percentage of the image variance can be captured in a relatively small number of principal components (compared to the original number of bands).
 
-Many of the bands within hyperspectral images are often strongly correlated. The principal components transformation represents a linear transformation of the original image bands to a set of new, uncorrelated features. These new features correspond to the eigenvectors of the image covariance matrix, where the associated eigenvalue represents the variance in the direction of the eigenvector. A very large percentage of the image variance can be captured in a relatively small number of principal components (compared to the original number of bands) .
+Read more about PCA with 
+<a href="http://www.spectralpython.net/algorithms.html#principal-components" target="_blank">Spectral Python</a>.
 
 
-## Dependencies & Installation:
+## Set up
 
-To run this notebook, you the following python packages need to be installed. You can install from the notebook following the commands below, or you can install required packages from command line after activating the p35 environment. In order to make use of the interactive graphics capabilities of `spectralpython`, such as `N-Dimensional Feature Display`, you will need to create a new Python 3.6 environment. These features are demonstrated in this tutorial, but are not required. 
+To run this notebook, the following Python packages need to be installed. You can install required packages from command line `pip install spectra scikit-learn cvxopt`.
 
-http://www.spectralpython.net/graphics.html
-
+or if already in a Jupyter Notebook, run the following code in a Notebook code cell. 
+ 
 Packages:
 - pylab
 - spectral
@@ -47,17 +91,25 @@ import sys
 !conda install --yes --prefix {sys.prefix} cvxopt 
 ```
 
-Optionally: 
+In order to make use of the interactive graphics capabilities of `spectralpython`, such as `N-Dimensional Feature Display`, you work in a Python 3.6 environment (as of July 2018). 
+
+For more, read from <a href="http://www.spectralpython.net/graphics.html" target="_blank">Spectral Python</a>.
+
+**Optional:**
 
 **matplotlib wx backend** (for 3-D visualization of PCA, requires Python 3.6)
-- https://stackoverflow.com/questions/42007164/how-to-install-wxpython-phoenix-for-python-3-6
+Find out more on 
+<a href="https://stackoverflow.com/questions/42007164/how-to-install-wxpython-phoenix-for-python-3-6" target="_blank"> StackOverflow</a>. 
+
 ```python 
 conda install -c newville wxpython-phoenix
 ```
 
 **Managing Conda Environments**
 - **nb_conda_kernels** package provides a separate jupyter kernel for each conda environment
-- https://conda.io/docs/user-guide/tasks/manage-environments.html
+- Find out more on 
+<a href="https://conda.io/docs/user-guide/tasks/manage-environments.html" target="_blank"> Conda docs</a>. 
+
 ```python 
 conda install -c conda-forge nb_conda_kernels
 ```
@@ -71,6 +123,7 @@ import spectral.io.envi as envi
 import numpy as np
 import matplotlib
 
+#for clean output, to not print warnings, don't use when developing script
 import warnings
 warnings.filterwarnings('ignore')
 ```
@@ -79,8 +132,8 @@ For this example, we will read in a reflectance tile in ENVI format. NEON provid
 
 
 ```python
-img = envi.open('C:/Users/bhass/Desktop/RSDI/RSDI_2018/NEON_D02_SERC_DP3_368000_4306000_reflectance.hdr',
-                'C:/Users/bhass/Desktop/RSDI/RSDI_2018/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat')
+img = envi.open('../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.hdr',
+                '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat')
 ```
 
 Note that the information is stored differently when read in with `envi.open`. We can find the wavelength information in `img.bands.centers`. Let's take a look at the first and last wavelengths values: 
@@ -93,7 +146,7 @@ print('Last 3 Band Center Wavelengths:',img.bands.centers[-3:])
 
     First 3 Band Center Wavelengths: [383.534302, 388.542206, 393.55011]
     Last 3 Band Center Wavelengths: [2501.878906, 2506.886719, 2511.894531]
-    
+
 
 We'll set the Water Vapor Band windows to NaN:
 
@@ -121,7 +174,7 @@ img.params
 
 
 
-    <bound method SpyFile.params of 	Data Source:   'C:/Users/bhass/Desktop/RSDI/RSDI_2018/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat'
+    <bound method SpyFile.params of 	Data Source:   './../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat'
     	# Rows:           1000
     	# Samples:        1000
     	# Bands:           426
@@ -142,26 +195,26 @@ for item in md:
 ```
 
     Metadata Contents:
-    	 description
-    	 samples
-    	 lines
-    	 bands
-    	 data type
-    	 interleave
-    	 file type
-    	 header offset
-    	 byte order
-    	 map info
-    	 coordinate system string
-    	 wavelength
-    	 fwhm
-    	 wavelength units
-    	 reflectance scale factor
-    	 data ignore value
     	 dataset names
-    
+    	 wavelength
+    	 coordinate system string
+    	 file type
+    	 reflectance scale factor
+    	 header offset
+    	 data ignore value
+    	 map info
+    	 interleave
+    	 samples
+    	 bands
+    	 byte order
+    	 wavelength units
+    	 data type
+    	 description
+    	 lines
+    	 fwhm
 
-To access any of these metadata items, use the syntax eg. `md['description']` or `md['map info']`:
+
+To access any of these metadata items, use the syntax `md['description']` or `md['map info']`:
 
 
 ```python
@@ -171,7 +224,7 @@ print('map info:',md['map info'])
 
     description: Atmospherically corrected reflectance.
     map info: ['UTM', '1.000', '1.000', '368000.000', '4307000.000', '1.000000e+000', '1.000000e+000', '18', 'North', 'WGS-84', 'units=Meters']
-    
+
 
 You can also use `type` and `len` to look at the type and length (or number) of some of the metadata contents:
 
@@ -183,7 +236,7 @@ print('Number of Bands:',len(md['wavelength']))
 
     <class 'list'>
     Number of Bands: 426
-    
+
 
 Let's look at the data using `imshow`, a wrapper around matplotlib's imshow for multi-band images:
 
@@ -201,7 +254,7 @@ print(view)
         G: [0.0184, 0.133]
         B: [0.0086, 0.1099]
     
-    
+
 
 When dealing with NEON hyperspectral data, we first want to remove the water vapor & noisy bands, keeping only the valid bands. To speed up the classification algorithms for demonstration purposes, we'll look at a subset of the data using `read_subimage`, a built in method to subset by area and bands. Type `help(img.read_subimage)` to see how it works. 
 
@@ -219,7 +272,7 @@ view = imshow(img_subset,bands=(58,34,19),stretch=0.01,title="RGB Image of 2017 
 ```
 
 
-![png](output_23_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_25_0.png)
 
 
 Now that we have the image subsetted, lets run the `k-means` algorithm. Type `help(kmeans)` to show how the function works. To run the k-means algorithm on the image and create 5 clusters, using a maximum of 50 iterations, use the following syntax:
@@ -246,7 +299,7 @@ Now that we have the image subsetted, lets run the `k-means` algorithm. Type `he
     Iteration 14...  0.0Iteration 14...1 pixels reassigned.
     Iteration 15...  0.0Iteration 15...0 pixels reassigned.
     kmeans terminated with 5 clusters after 14 iterations.
-    
+
 
 Note that the algorithm terminated afte 14 iterations, when the pixels stopped being reassigned. 
 
@@ -260,7 +313,7 @@ print(c.shape)
 ```
 
     (5, 360)
-    
+
 
 `c` contains 5 groups of spectral curves with 360 bands (the # of bands we've kept after removing the water vapor windows and the last 10 noisy bands). Let's plot these spectral classes:
 
@@ -281,13 +334,12 @@ pylab.ylabel('Reflectance')
 
 
 
-    <matplotlib.text.Text at 0x21cc7ac4ba8>
+    Text(0,0.5,'Reflectance')
 
 
 
 
-![png](output_29_1.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_31_1.png)
 
 
 ```python
@@ -313,13 +365,13 @@ view.show_data
 
 
 
-![png](output_30_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_32_1.png)
 
 
-## K-Means Exercises:
+## Challenges: K-Means
 
-    1. What do you think the spectral classes represent? 
-    2. Try using a different number of clusters in the `kmeans` algorithm (eg. 3, 10) to see what spectral classes and classifications result. 
+1. What do you think the spectral classes in the figure you just created represent? 
+2. Try using a different number of clusters in the `kmeans` algorithm (e.g., 3 or 10) to see what spectral classes and classifications result. 
 
 ## Principal Component Analysis (PCA)
 
@@ -333,7 +385,7 @@ xdata = pc.transform(img_subset)
 ```
 
 
-![png](output_33_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_35_0.png)
 
 
 In the covariance matrix display, lighter values indicate strong positive covariance, darker values indicate strong negative covariance, and grey values indicate covariance near zero.
@@ -358,13 +410,7 @@ v = imshow(img_pc[:,:,:5], stretch_all=True)
 
     5
     (200, 200, 5)
-    
 
 
-![png](output_36_1.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_38_1.png)
 
-
-## References
-
-Dey, Sandipan (2017). Hard & Soft Clustering with K-means, Weighted K-means and GMM-EM in Python. 
-https://sandipanweb.wordpress.com/2017/03/19/hard-soft-clustering-with-k-means-weighted-k-means-and-gmm-em/

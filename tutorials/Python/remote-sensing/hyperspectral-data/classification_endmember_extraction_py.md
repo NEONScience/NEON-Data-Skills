@@ -1,16 +1,58 @@
+---
+syncID: a9ef8a3acfb841e2b77b1f6360e22648
+title: "Unsupervised Spectral Classification in Python: Endmember Extraction"
+description: "Learn to classify spectral data using Endmember Extraction, Spectral Information Divergence, and Spectral Angle Mapping."
+dateCreated: 2018-07-10 
+authors: Bridget Hass
+contributors:
+estimatedTime:
+packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
+topics: hyperspectral-remote-sensing, HDF5, remote-sensing
+languagesTool: python
+dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
+code1: Python/remote-sensing/hyperspectral-data/classification_endmember_extraction_py.ipynb
+tutorialSeries: intro-hsi-py-series
+urlTitle: classification-endmember-python
+---
 
-# Unsupervised Spectral Classification 
-## Endmember Extraction, Spectral Information Divergence, Spectral Angle Mapping
+This tutorial runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the <a href="https://pysptools.sourceforge.io/index.html" target="_blank">PySpTools package</a> to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
 
-This notebook runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the **`PySpTools`** package (https://pysptools.sourceforge.io/index.html) to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile. 
+<div id="ds-objectives" markdown="1">
+
+### Objectives
+After completing this tutorial, you will be able to:
+
+* Classify spectral remote sensing data. 
+
+### Install Python Packages
+
+* **numpy**
+* **gdal** 
+* **matplotlib** 
+* **matplotlib.pyplot** 
+
+
+### Download Data
+
+ <a href="https://neondata.sharefile.com/d-s1dc135daffd4e65b" class="btn btn-success">
+Download the spectral classification teaching data subset</a>
+
+</div>
+
+This tutorial runs through an example of spectral unmixing to carry out unsupervised classification of a SERC hyperspectral data file using the <a href="https://pysptools.sourceforge.io/index.html" target="_blank">PySpTools package</a> to carry out **endmember extraction**, plot **abundance maps** of the spectral endmembers, and use **Spectral Angle Mapping** and **Spectral Information Divergence** to classify the SERC tile.  
 
 Since spectral data is so large in size, it is often useful to remove any unncessary or redundant data in order to save computational time. In this example, we will remove the water vapor bands, but you can also take a subset of bands, depending on your research application. 
 
-## Dependencies & Installation:
+## Set up
 
-To run this notebook, you the following python packages need to be installed. You can install from the notebook following the commands below, or you can install required packages from command line after activating the p35 environment.
+To run this notebook, the following Python packages need to be installed. 
 
-PySpTools: Download pysptools-0.14.2.tar.gz from https://pypi.python.org/pypi/pysptools
+You can install required packages from command line `pip install pysptools scikit-learn cvxopt`.
+
+or if already in a Jupyter Notebook:  
+
+1. PySpTools: Download <a href="https://pypi.python.org/pypi/pysptools" target="_blank">pysptools-0.14.2.tar.gz</a>.
+2. Run the following code in a Notebook code cell. 
 
 ```python 
 import sys
@@ -21,11 +63,11 @@ import sys
 
 We will also use the following user-defined functions: 
 
-- **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
-- **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
-- **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
+* **`read_neon_reflh5`**: function to read in NEON AOP Hyperspectral Data file (in hdf5 format)
+* **`clean_neon_refl_data`**: function to clean NEON hyperspectral data, including applying the data ignore value and reflectance scale factor, and removing water vapor bands
+* **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
 
-Once PySpTools is installed, import the following packages:
+Once PySpTools is installed, import the following packages. 
 
 
 ```python
@@ -39,6 +81,8 @@ import pysptools.classification as cls
 import pysptools.material_count as cnt
 
 %matplotlib inline
+
+#for clean output, to not print warnings, don't use when developing script
 import warnings
 warnings.filterwarnings('ignore')
 ```
@@ -122,7 +166,7 @@ Now that the function is defined, we can call it to read in the sample reflectan
 
 
 ```python
-h5refl_filename = './data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
+h5refl_filename = '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
 data,metadata = read_neon_reflh5(h5refl_filename)
 ```
 
@@ -144,7 +188,7 @@ for key in sorted(metadata.keys()):
     reflectance scale factor
     spatial extent
     wavelength
-    
+
 
 Now we can define a function that cleans the reflectance cube. Note that this also removes the water vapor bands, stored in the metadata as `bad_band_window1` and `bad_band_window2`, as well as the last 10 bands, which tend to be noisy. It is important to remove these values before doing classification or other analysis.
 
@@ -214,7 +258,7 @@ print('Cleaned Data Dimensions:',data_clean.shape)
 
     Raw Data Dimensions: (1000, 1000, 426)
     Cleaned Data Dimensions: (1000, 1000, 360)
-    
+
 
 Note that we have retained 360 of the 426 bands. This still contains plenty of information, in your processing, you may wish to subset even further. Let's take a look at a histogram of the cleaned data:
 
@@ -223,8 +267,7 @@ Note that we have retained 360 of the 426 bands. This still contains plenty of i
 plt.hist(data_clean[~np.isnan(data_clean)],50);
 ```
 
-
-![png](output_15_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_17_0.png)
 
 
 Lastly, let's take a look at the data using the function `plot_aop_refl` function:
@@ -249,6 +292,8 @@ def plot_aop_refl(band_array,
 ```
 
 
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_19_0.png)
+
 
 
 ```python
@@ -258,7 +303,7 @@ plot_aop_refl(data_clean[:,:,0],
 ```
 
 
-![png](output_18_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_20_0.png)
 
 
 ## Unsupervised Classification with Spectral Unmixing: 
@@ -268,18 +313,21 @@ plot_aop_refl(data_clean[:,:,0],
 
 **Spectral Angle Mapper (SAM):** is a physically-based spectral classification that uses an n-D angle to match pixels to reference spectra. The algorithm determines the spectral similarity between two spectra by calculating the angle between the spectra and treating them as vectors in a space with dimensionality equal to the number of bands. This technique, when used on calibrated reflectance data, is relatively insensitive to illumination and albedo effects. Endmember spectra used by SAM in this example are extracted from the NFINDR algorithm. SAM compares the angle between the endmember spectrum vector and each pixel vector in n-D space. Smaller angles represent closer matches to the reference spectrum. Pixels further away than the specified maximum angle threshold in radians are not classified.
 
-http://www.harrisgeospatial.com/docs/SpectralAngleMapper.html
+Read more on Spectral Angle Mapper from 
+<a href="http://www.harrisgeospatial.com/docs/SpectralAngleMapper.html" target="_blank">Harris Geospatial</a>. 
 
 **Spectral Information Divergence (SID):** is a spectral classification method that uses a divergence measure to match pixels to reference spectra. The smaller the divergence, the more likely the pixels are similar. Pixels with a measurement greater than the specified maximum divergence threshold are not classified. Endmember spectra used by SID in this example are extracted from the NFINDR endmembor extraction algorithm.
 
-http://www.harrisgeospatial.com/docs/SpectralInformationDivergence.html
+Read more on Spectral Information Divergence from 
+<a href="http://www.harrisgeospatial.com/docs/SpectralInformationDivergence.html" target="_blank">Harris Geospatial</a>. 
 
 First we need to define the endmember extraction algorithm, and use the `extract` method to extract the endmembers from our data cube. You have to specify the # of endmembers you want to find, and can optionally specify a maximum number of iterations (by default it will use 3p, where p is the 3rd dimension of the HSI cube (m x n x p). For this example, we will specify a small # of iterations in the interest of time. 
 
 
 ```python
 ee = eea.NFINDR()
-U = ee.extract(data_clean,4,maxit=5,normalize=False,ATGP_init=True)
+U = ee.extract(data_clean,4,maxit=5,
+               normalize=False,ATGP_init=True)
 ```
 
 In order to display these endmember spectra, we need to define the endmember axes `dictionary`. Specifically we want to show the wavelength values on the x-axis. The `metadata['wavelength']` is a `list`, but the ee_axes requires a `float` data type, so we have to cast it to the right data type. 
@@ -313,10 +361,10 @@ ee.display(axes=ee_axes,suffix='SERC')
 ```
 
 
-![png](output_26_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_28_0.png)
 
 
-Now that we have extracted the spectral endmembers, we can take a look at the abundance maps for each memeber. These show the fractional components of each of the endmembers. 
+Now that we have extracted the spectral endmembers, we can take a look at the abundance maps for each member. These show the fractional components of each of the endmembers. 
 
 
 ```python
@@ -332,23 +380,19 @@ am.display(colorMap='jet',columns=4,suffix='SERC')
 ```
 
 
-![png](output_30_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_0.png)
 
 
-
-![png](output_30_1.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_1.png)
 
 
-![png](output_30_2.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_2.png)
 
 
-
-![png](output_30_3.png)
-
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_3.png)
 
 
-    <matplotlib.figure.Figure at 0x278745d3940>
+    <Figure size 432x288 with 0 Axes>
 
 
 Print mean values of each abundance map to better estimate thresholds to use in the classification routines. 
@@ -363,11 +407,11 @@ print('EM4:',np.mean(amaps[:,:,3]))
 ```
 
     Abundance Map Mean Values:
-    EM1: 0.591774
-    EM2: 0.00089542
-    EM3: 0.380964
-    EM4: 0.0263671
-    
+    EM1: 0.59177357
+    EM2: 0.00089541974
+    EM3: 0.3809638
+    EM4: 0.026367119
+
 
 You can also look at histogram of each abundance map:
 
@@ -390,7 +434,7 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05])
 ```
 
 
-![png](output_34_0.png)
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_36_0.png)
 
 
 Below we define a function to compute and display Spectral Information Diverngence (SID):
@@ -412,19 +456,25 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 ```
 
 
-![png](output_38_0.png)
+
+![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_40_0.png)
 
 
-From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the USA Topo Base map (https://viewer.nationalmap.gov/):
+From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the <a href="https://viewer.nationalmap.gov/" target="_blank">USA Topo Base map</a>.
 
-<img src="./SERC_368000_4307000_UStopo.PNG" style="width: 200px;"/>
+ <figure>
+	<a href="{{ site.baseurl }}/images/site-images/SERC_368000_4307000_UStopo.png">
+	<img src="{{ site.baseurl }}/images/site-images/SERC_368000_4307000_UStopo.png"></a>
+	<figcaption> The NEON SJER field site. Source: National Ecological Observatory Network (NEON) 
+	</figcaption>
+</figure>
 
-## Exercises
+## Challenges
 
-1. On your own, try the Spectral Angle Mapper. If you aren't sure where to start, refer to `PySpTools` `SAM` documentation, and the Pine Creek example 1. 
-
-https://pysptools.sourceforge.io/classification.html#spectral-angle-mapper-sam
-https://pysptools.sourceforge.io/examples_front.html#examples-using-the-ipython-notebook
+1. On your own, try the Spectral Angle Mapper. If you aren't sure where to start, refer to 
+<a href="https://pysptools.sourceforge.io/classification.html#spectral-angle-mapper-sam" target="_blank">PySpTools SAM documentation</a> 
+and the 
+<a href="https://pysptools.sourceforge.io/examples_front.html#examples-using-the-ipython-notebook" target="_blank">Pine Creek example 1</a>. 
 
 **Hint**: use the SAM function below, and refer to the SID syntax used above. 
 
@@ -435,15 +485,16 @@ def SAM(data,E,thrs=None):
     sam.display(colorMap='Paired')
 ```
 
-2. Experiment with different settings with SID and SAM (eg. adjust the # of endmembers, thresholds, etc.) 
+2. Experiment with different settings with SID and SAM (e.g., adjust the # of endmembers, thresholds, etc.) 
 
 3. Determine which algorithm (SID, SAM) you think does a better job classifying the SERC data tile. Synthesize your results in a markdown cell. 
 
 4. Take a subset of the bands before running endmember extraction. How different is the classification if you use only half the data points? How much faster does the algorithm run? When running analysis on large data sets, it is useful to 
 
-**HINTs**: 
-- To extract every 10th element from the array `A`, use `A[0::10]`
-- Import the package `time` to track the amount of time it takes to run a script. 
+**Hints**: 
+
+* To extract every 10th element from the array `A`, use `A[0::10]`
+* Import the package `time` to track the amount of time it takes to run a script. 
 
 ```python
 start_time = time.time()
@@ -455,5 +506,5 @@ elapsed_time = time.time() - start_time
 
 `PySpTools` has an alpha interface with the Python machine learning package `scikit-learn`. To apply more advanced machine learning techniques, you may wish to explore some of these algorithms.  
 
-https://pysptools.sourceforge.io/skl.html
-http://scikit-learn.org/stable/
+* <a href="https://pysptools.sourceforge.io/skl.html" target="_blank">Scikit-learn documentation on SourceForge</a>.
+* <a href="http://scikit-learn.org/stable/" target="_blank">Scikit-learn website</a>.
