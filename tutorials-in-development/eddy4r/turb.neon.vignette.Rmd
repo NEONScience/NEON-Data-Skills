@@ -62,22 +62,14 @@ variables for convenience.
 
 ```{r env-vars}
 
-# file path for the directory containing input L0' data
-#base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
-#DD: This will be the case in the future, but the dp0p HDF5 file is not package into the deve docker, so you need to point it to a local file until we get ready to release the publication docker image.
-base::Sys.setenv("USER"="cklunch")
-base::Sys.setenv("DIRINP" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/turbTow/inpRefe"))
+# File path for the directory containing input L0' data
+base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
 
-#DD: This line is not needed in the new version 
-#file path to the HDF5 file of input L0' data
-#base::Sys.setenv("DIRFILEPARA" = 
- #                  "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
-
-# file path for outputs
+# File path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
-# date(s) of the input data, specified here for the ouput file name
-base::Sys.setenv("DATEOUT" = "2017-05-01")
+# Date(s) of the input data, specified here for the output file name
+base::Sys.setenv("DATEOUT" = "2017-09-01")
 
 # NEON domain, site, and data product ID of the input data
 # for the output file name:
@@ -86,7 +78,7 @@ base::Sys.setenv("DATEOUT" = "2017-05-01")
 # Bundled eddy covariance data = 00200.001
 base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
 
-# flag to indicate to the eddy4R.base::def.para.flow() 
+# Flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
 # environment variables, instead of provided as function 
 # inputs
@@ -101,55 +93,420 @@ then read in additional parameters from the HDF5 file.
 
 ```{r metadata}
 
-# start with an empty list of parameters
+# In this section, define and/or read in a number of terms and 
+# parameters.
+
+# Create an empty list for parameters.
 Para <- base::list()
 
-# use the def.para.flow() function to specify the metadata 
-# are stored in environment variables
-Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",                                          UrlInpRefe = "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",                          UrlOutRefe = "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
+# Use the def.para.flow() function to specify the metadata are stored 
+# in environment variables, and give file paths to input and output.
+# You will see a number of warning messages in response to this line, 
+# but if you can proceed with the next several commands, don't worry 
+# about the warnings here.
+# [CKL: Dave, you said the data are in the build. What are the 
+# dropbox links for?]
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",
+                                        UrlInpRefe = 
+                                          "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",
+                                        UrlOutRefe = 
+                                          "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
 
-# [CKL: the error messages here are confusing. Is there bandwidth 
-# on the EC team to modify? It would be helpful to add to the warning
-# message, something like: "1: In FUN(X[[i]], ...) :
-#  The variable ParaFlow$Deve is not specified as ENV variable; a 
-#  default value has been assigned"
-# Also, I'm now getting a new error: ""UrlInpRefe" is missing, with no default"
+# Get the NEON-specific 4-letter code for the site location (Loc) 
+# from the dp0p input file   
+Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
 
+# Get the level of the tower top (LvlTowr) from the dp0p input file 
+Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
 
-# [CKL: next few lines shown with error messages as comments. 
-# Looks to me like some of the edits above resulted in 
-# missing parameters]
-  # Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file   
-  Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
-  # Grab the tower top level (LvlTowr) from the dp0p input file 
-  Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+# Use the def.hdf5.read.para() function to extract parameters 
+# from the metadata in the input file and assign them to the 
+# parameter list.
+
+# For each variable to be written out, set the ??? parameters.
+# Variables:
+#   amrs: Attitude Motion Reference System
+#   co2turb: Turbulent CO2 flux
+#   h2oTurb: Turbulent H2O flux
+#   soni: Windspeed and direction from sonic anemometer
+# Parameters:
+#   PrdIncrAgrDflt: [CKL: ???]
+#   PrdWndwAgrDflt: [CKL: ???]
+for(idx in c("amrs", "co2Turb", "h2oTurb", "soni")) {
   
-#Error: 'def.para.levl.towr' is not an exported object from 'namespace:eddy4R.base'
-for(idx in c("soniAmrs", "irgaCo2", "irgaH2o", "soni")) {
-
-        Para$Flow$dp01[[idx]] <- def.neon.read.hdf5.para(
-            DirFileParaLoca = Para$Flow$DirFilePara,
-            GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
-            SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
-          )
-        
-      }
-#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
-#  unused argument (PosPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt"))
-
-Para$Sci <- def.neon.read.hdf5.para(
+  Para$Flow$dp01[[idx]] <- eddy4R.base::def.hdf5.read.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
-    GrpName = "site",
-    SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+    GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
+    SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
   )
-#Error in def.neon.read.hdf5.para(DirFileParaLoca = Para$Flow$DirFilePara,  : 
-#  unused argument (PosPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime"))
+  
+}
+
+# AngEnuXaxs: Angle of x axis [CKL: relative to what?]
+# AngEnuYaxs: Angle of y axis [CKL: relative to what?]
+# Ofst: Offset [CKL: of what relative to what?]
+# ZoneTime: Time zone of data collection
+Para$Sci <- eddy4R.base::def.hdf5.read.para(
+  DirFileParaLoca = Para$Flow$DirFilePara,
+  GrpName = Para$Flow$Loc,
+  SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+)
+
+# MaxReso: Maximum resolution [CKL: of what?]
+# NumBin: Number of bins [CKL: bins for what?]
+# NumWndw: Number of windows [CKL: ?]
+Para$Sci$dp01 <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp01"),
+      SetPara = c("Dspk$Br86$MaxReso", "Dspk$Br86$NumBin", "Dspk$Br86$NumWndw")
+)
+
+# In the next 5 commands, get the sampling frequency (FreqSamp) 
+# of each instrument from the parameters in the input file:
+# irgaTurb: Turbulent flux gas analyzer
+# mfcSampTurb: Mass flow controller
+# valvValiNemaTurb: [CKL: ???]
+# soni, amrs: See above
+Para$Sci$dp0p$irgaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/irgaTurb"),
+      SetPara = c("FreqSamp")
+)
+
+Para$Sci$dp0p$mfcSampTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/mfcSampTurb"),
+      SetPara = c("FreqSamp")
+)
+
+Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/valvValiNemaTurb"),
+      SetPara = c("FreqSamp")
+)
+
+# For the sonic anemometer, also get the angle of the z axis 
+# relative to a plumb line (AngNedZaxs) [CKL: is this correct?]
+Para$Sci$dp0p$soni <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
+      SetPara = c("AngNedZaxs","FreqSamp")
+)
+
+Para$Sci$dp0p$amrs <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/amrs"),
+      SetPara = c("FreqSamp")
+)
+
+# [CKL: not sure I understand these next two parameters. 
+# After running them, Lag$TimeDiff is still NA.
+# If this is something that would be relevant in 
+# other circumstances, need to explain here]
+Para$Sci$dp01$co2Turb$RtioMoleDryCo2 <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/co2Turb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryCo2"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+Para$Sci$dp01$h2oTurb$RtioMoleDryH2o <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/h2oTurb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryH2o"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+# Create a version label for your outputs, using the 
+# current system time
+Para$Flow$VersDp <- paste0(Para$Flow$VersDp, "_", 
+                           format(Sys.time(), "%Y%m%d_%H%M%S_%Z"))
+
+# Create a list of the sampling frequencies of the essential 
+# instruments, extracted from the input data above.
+FreqSamp <- list(
+  "irgaTurb" = Para$Sci$dp0p$irgaTurb$FreqSamp,
+  "mfcSampTurb" = Para$Sci$dp0p$mfcSampTurb$FreqSamp,
+  "valvValiNemaTurb" = ifelse(length(as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp))==0,
+                              0.2, as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp)), #[CKL: I modified this, including code as a comment isn't a good practice]
+  "soni" = Para$Sci$dp0p$soni$FreqSamp,
+  "amrs" = Para$Sci$dp0p$amrs$FreqSamp
+)
 
 ```
 
+## 4. Variable ranges
+
+Set plausible ranges for the input variables, to be tested on ingest.
+Then set paths for the working directory.
+
+```{r range}
+
+# Create an empty list for range values.
+Rng <- list()
+  
+# Set ranges for gas analyzer variables:
+# densMoleCo2: CO2 molar density, mol m-3
+# densMoleH2o: H2O molar density, mol m-3
+# presAtm: Atmospheric pressure, Pa
+# presDiff: Difference in pressure from ?? [CKL: ?], Pa
+# rtioMoleDryCo2: Mole ratio of CO2 in air, mol mol-1
+# rtioMoleDryH2o: Mole ratio of H2O in air, mol mol-1
+# tempIn: Temperature of air at inlet, K
+# tempOut: Temperature of air at outlet, K
+Rng$irgaTurb <- data.frame(
+  "densMoleCo2" = c(0,30) * 1e-3,
+  "densMoleH2o" = c(0,1500) * 1e-3,
+  "presAtm" = c(50,120) * 1e3,
+  "presDiff" = c(-10,1) * 1e3,
+  "rtioMoleDryCo2" = c(300,450) * 1e-6,
+  "rtioMoleDryH2o" = c(0,30) * 1e-3,
+  "tempIn" = c(220,330),
+  "tempOut" = c(220,330)
+)
+
+# Set ranges for sonic anemometer variables:
+# veloXaxs: Velocity on the x axis, m s-1
+# veloYaxs: Velocity on the y axis, m s-1
+# veloZaxs: Velocity on the z axis, m s-1
+# veloSoni: Total velocity, m s-1 [CKL: correct?]
+Rng$soni <- data.frame(
+  "veloXaxs"=c(-50,50),
+  "veloYaxs"=c(-50,50),
+  "veloZaxs"=c(-10,10),
+  "veloSoni"=c(300,400)
+)
+
+# Set ranges for attitude and motion reference variables:
+# angXaxs: Deviation from the x axis, degree
+# angYaxs: Deviation from the y axis, degree
+# angZaxs: Deviation from the z axis, degree
+Rng$amrs <- data.frame(
+  "angXaxs"=c(-360,360),
+  "angYaxs"=c(-360,360),
+  "angZaxs"=c(-360,360)
+)
+
+# Set directories and file paths
+# As written, this vignette uses the default paths. To use custom 
+# paths, assign the file paths you want to use to the parameters
+# Para$Flow$DirWrk, Para$Flow$DirInp, and Para$Flow$DirOut before
+# proceeding to the code below.
+
+# Working directory
+# Default: use a temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirWrk)) {
+  Para$Flow$DirWrk <- tempdir()
+
+  # Optional: create a user-specified working directory, e.g. on host filesystem
+  } else {
+    dir.create(Para$Flow$DirWrk, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for input data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirInp)) {
+  Para$Flow$DirInp <- paste0(Para$Flow$DirWrk, "/inpRefe")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirInp, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for output data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirOut)) {
+  Para$Flow$DirOut <- paste0(Para$Flow$DirWrk, "/out")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirOut, recursive = TRUE, showWarnings = FALSE)
+  }
 
 
+```
 
+## 5. Read in data!
+
+```{r ingest}
+
+# Create empty lists for data and quality flags
+data <- list()
+qfqmFlag <- list()
+
+# Index for the number of days iterated over, and empty list for outputs
+numDate <- 0
+out <- list()
+
+# Loop over days in input data (in the example data here, there is 
+# only one day)
+for(date in Para$Flow$DateOut) {
+  numDate <- numDate + 1
+
+  # Begin: read raw data from HDF5 file
+  if(Para$Flow$Read == "hdf5") {
+
+    # Create directory structure
+    dir.create(paste(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", 
+                     Para$Flow$VersDp, sep=""), 
+               recursive = TRUE, showWarnings = FALSE)
+
+    # Create empty list for inputs
+    inp <- list()
+    
+    # Loop over instruments
+    for(Var in c("irgaTurb", "mfcSampTurb", "valvValiNemaTurb", "soni", "amrs")){
+
+      # Use data read function, assigning results to a temporary variable
+      tmp <- eddy4R.base::wrap.hdf5.read(
+        DirInpLoca = Para$Flow$DirInp,
+        SiteLoca = Para$Flow$Loc,
+        DateLoca = date,
+        VarLoca = Var,
+        FreqLoca = FreqSamp[[Var]],
+        LvlTowr = Para$Flow$LvlTowr,
+        RngLoca = Rng,
+        
+        # Assign de-spiking parameters:
+        #   widt: WndwDspkBr86 de-spiking median filter window width [s]
+        #   nbin: NumDspkBr86Bin de-spiking histogram bins initial number/step size
+        #   rest: ThshDspkBr86Reso de-spiking resolution threshold
+        DespLoca = list(widt = 9,
+                        nbin = 2,
+                        rest = 10
+                        )
+        )
+
+      # Read in quality flags from HDF5 file
+      if(!Var %in% "valvValiNemaTurb"){
+      
+        tmpQfqm <- eddy4R.base::def.hdf5.read.qfqm(
+          DirInpLoca = Para$Flow$DirInp,
+          SiteLoca = Para$Flow$Loc,
+          DateLoca = date,
+          VarLoca = Var,
+          FreqLoca = FreqSamp[[Var]],
+          LvlTowr = Para$Flow$LvlTowr
+        )
+      
+      # Remove time from set of flags
+      # [CKL: I don't understand this step. Are there time-based flags we're discarding?]
+      tmpQfqm <- tmpQfqm[,grep("time",names(tmpQfqm),invert = T)]
+      }
+      
+      # Copy results from temporary variables to inp
+      
+      # Time domain, including unit assignment
+      if(Var == "irgaTurb") {
+        inp$time <- ff::as.ffdf.data.frame(data.frame(UTC = tmp$time))
+        base::attr(x = inp$time$UTC, which = "unit") <- "YYYY-MM-DD hh:mm:ss.sss"
+        }
+
+      # Sensor data, including unit assignment
+      inp$data[[Var]] <- ff::as.ffdf.data.frame(tmp$data)
+      for(idx in base::names(tmp$data)) 
+        base::attr(x = inp$data[[Var]][[idx]], which = "unit") <-
+        base::attr(x = tmp$data, which = "unit")[[idx]]
+      
+      if(exists("tmpQfqm")) inp$qfqm[[Var]] <- ff::as.ffdf.data.frame(tmpQfqm)
+
+      # Remove temporary variables
+      rm(tmp)
+      if(exists("tmpQfqm")) 
+        rm(tmpQfqm)
+      invisible(gc())
+    
+      # End loop over instruments
+      }; rm(Var)
+
+    # Calculate derived quantities: daily extent, native resolution
+    inp <- eddy4R.base::wrap.derv.prd.day(
+      inpList = inp,
+      ZoneTime = Para$Sci$ZoneTime,
+      AngZaxsSoniInst = Para$Sci$dp0p$soni$AngNedZaxs
+      )
+
+    # Print status message
+    print(paste0(format(Sys.time(), "%F %T"), ": dataset ", date, 
+                 ": derived quantities calculated (daily extent, native resolution)"))
+      
+  # End of raw data read
+  }
+
+  # Assign daily data and attributes to file-backed objects to keep RAM footprint small
+  # If loop is on the first day, create the attributes:
+  if(numDate == 1) {
+      
+    # IRGA
+    data$irgaTurb <- inp$data$irgaTurb
+    qfqmFlag$irgaTurb <- inp$qfqm$irgaTurb
+
+    # MFC
+    data$mfcSampTurb <- inp$data$mfcSampTurb
+    qfqmFlag$mfcSampTurb <- inp$qfqm$mfcSampTurb
+      
+    # Sonic anemometer
+    data$soni <- inp$data$soni
+    qfqmFlag$soni <- inp$qfqm$soni
+
+    # AMRS
+    data$amrs <- inp$data$amrs
+    qfqmFlag$amrs <- inp$qfqm$amrs
+    
+    # Time objects
+    data$time <- inp$time
+    qfqmFlag$time <- inp$time
+
+    # If loop is on any day after the first, append the attributes:
+    } else {
+
+      # IRGA
+      data$irgaTurb <- ffbase::ffdfappend(x = data$irgaTurb, 
+                                          dat = inp$data$irgaTurb)
+      qfqmFlag$irgaTurb <-  ffbase::ffdfappend(x =qfqmFlag$irgaTurb, 
+                                               dat = inp$qfqm$irgaTurb)
+
+      # MFC
+      data$mfcSampTurb <- ffbase::ffdfappend(x = data$mfcSampTurb, 
+                                             dat = inp$data$mfcSampTurb)
+      qfqmFlag$mfcSampTurb <-  ffbase::ffdfappend(x = qfqmFlag$mfcSampTurb, 
+                                                  dat = inp$qfqm$mfcSampTurb)
+      
+      # valvValiNemaTurb
+      data$valvValiNemaTurb <- ffbase::ffdfappend(x = data$valvValiNemaTurb, 
+                                                  dat = inp$data$valvValiNemaTurb)
+      qfqmFlag$valvValiNemaTurb <- ffbase::ffdfappend(x = qfqmFlag$valvValiNemaTurb, 
+                                                      dat = inp$qfqm$valvValiNemaTurb)
+      
+      # Sonic anemometer
+      data$soni <- ffbase::ffdfappend(x = data$soni, dat = inp$data$soni)
+      qfqmFlag$soni <-  ffbase::ffdfappend(x =qfqmFlag$soni, dat = inp$qfqm$soni)
+      
+      # AMRS
+      data$amrs <- ffbase::ffdfappend(x = data$amrs, dat = inp$data$amrs)
+      qfqmFlag$amrs <-  ffbase::ffdfappend(x =qfqmFlag$amrs, dat = inp$qfqm$amrs)
+      
+      # Time objects
+      data$time <- ffbase::ffdfappend(x = data$time, dat = inp$time)
+      qfqmFlag$time <-  ffbase::ffdfappend(x =qfqmFlag$time, dat = inp$time)
+     
+    # End attributes assignment
+    }
+
+  # Remove temporary list of input variables
+  inp <- NULL
+  inpQfqm <- NULL
+  invisible(gc())
+
+# End loop
+}
+
+# [CKL: stopped here, because loop appeared to work for
+# irgaTurb, mfcSampTurb, valvValiNemaTurb, soni, but then 
+# amrs ran forever]
+
+
+```
 
 
 
