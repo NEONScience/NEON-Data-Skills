@@ -330,6 +330,182 @@ if(is.na(Para$Flow$DirOut)) {
 
 ```{r ingest}
 
+# Create empty lists for data and quality flags
+data <- list()
+qfqmFlag <- list()
+
+# Index for the number of days iterated over, and empty list for outputs
+numDate <- 0
+out <- list()
+
+# Loop over days in input data (in the example data here, there is 
+# only one day)
+for(date in Para$Flow$DateOut) {
+  numDate <- numDate + 1
+
+  # Begin: read raw data from HDF5 file
+  if(Para$Flow$Read == "hdf5") {
+
+    # Create directory structure
+    dir.create(paste(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", 
+                     Para$Flow$VersDp, sep=""), 
+               recursive = TRUE, showWarnings = FALSE)
+
+    # Create empty list for inputs
+    inp <- list()
+    
+    # Loop over instruments
+    for(Var in c("irgaTurb", "mfcSampTurb", "valvValiNemaTurb", "soni", "amrs")){
+
+      # Use data read function, assigning results to a temporary variable
+      tmp <- eddy4R.base::wrap.hdf5.read(
+        DirInpLoca = Para$Flow$DirInp,
+        SiteLoca = Para$Flow$Loc,
+        DateLoca = date,
+        VarLoca = Var,
+        FreqLoca = FreqSamp[[Var]],
+        LvlTowr = Para$Flow$LvlTowr,
+        RngLoca = Rng,
+        
+        # Assign de-spiking parameters:
+        #   widt: WndwDspkBr86 de-spiking median filter window width [s]
+        #   nbin: NumDspkBr86Bin de-spiking histogram bins initial number/step size
+        #   rest: ThshDspkBr86Reso de-spiking resolution threshold
+        DespLoca = list(widt = 9,
+                        nbin = 2,
+                        rest = 10
+                        )
+        )
+
+      # Read in quality flags from HDF5 file
+      if(!Var %in% "valvValiNemaTurb"){
+      
+        tmpQfqm <- eddy4R.base::def.hdf5.read.qfqm(
+          DirInpLoca = Para$Flow$DirInp,
+          SiteLoca = Para$Flow$Loc,
+          DateLoca = date,
+          VarLoca = Var,
+          FreqLoca = FreqSamp[[Var]],
+          LvlTowr = Para$Flow$LvlTowr
+        )
+      
+      # Remove time from set of flags
+      # [CKL: I don't understand this step. Are there time-based flags we're discarding?]
+      tmpQfqm <- tmpQfqm[,grep("time",names(tmpQfqm),invert = T)]
+      }
+      
+      # Copy results from temporary variables to inp
+      
+      # Time domain, including unit assignment
+      if(Var == "irgaTurb") {
+        inp$time <- ff::as.ffdf.data.frame(data.frame(UTC = tmp$time))
+        base::attr(x = inp$time$UTC, which = "unit") <- "YYYY-MM-DD hh:mm:ss.sss"
+        }
+
+      # Sensor data, including unit assignment
+      inp$data[[Var]] <- ff::as.ffdf.data.frame(tmp$data)
+      for(idx in base::names(tmp$data)) 
+        base::attr(x = inp$data[[Var]][[idx]], which = "unit") <-
+        base::attr(x = tmp$data, which = "unit")[[idx]]
+      
+      if(exists("tmpQfqm")) inp$qfqm[[Var]] <- ff::as.ffdf.data.frame(tmpQfqm)
+
+      # Remove temporary variables
+      rm(tmp)
+      if(exists("tmpQfqm")) 
+        rm(tmpQfqm)
+      invisible(gc())
+    
+      # End loop over instruments
+      }; rm(Var)
+
+    # Calculate derived quantities: daily extent, native resolution
+    inp <- eddy4R.base::wrap.derv.prd.day(
+      inpList = inp,
+      ZoneTime = Para$Sci$ZoneTime,
+      AngZaxsSoniInst = Para$Sci$dp0p$soni$AngNedZaxs
+      )
+
+    # Print status message
+    print(paste0(format(Sys.time(), "%F %T"), ": dataset ", date, 
+                 ": derived quantities calculated (daily extent, native resolution)"))
+      
+  # End of raw data read
+  }
+
+  # Assign daily data and attributes to file-backed objects to keep RAM footprint small
+  # If loop is on the first day, create the attributes:
+  if(numDate == 1) {
+      
+    # IRGA
+    data$irgaTurb <- inp$data$irgaTurb
+    qfqmFlag$irgaTurb <- inp$qfqm$irgaTurb
+
+    # MFC
+    data$mfcSampTurb <- inp$data$mfcSampTurb
+    qfqmFlag$mfcSampTurb <- inp$qfqm$mfcSampTurb
+      
+    # Sonic anemometer
+    data$soni <- inp$data$soni
+    qfqmFlag$soni <- inp$qfqm$soni
+
+    # AMRS
+    data$amrs <- inp$data$amrs
+    qfqmFlag$amrs <- inp$qfqm$amrs
+    
+    # Time objects
+    data$time <- inp$time
+    qfqmFlag$time <- inp$time
+
+    # If loop is on any day after the first, append the attributes:
+    } else {
+
+      # IRGA
+      data$irgaTurb <- ffbase::ffdfappend(x = data$irgaTurb, 
+                                          dat = inp$data$irgaTurb)
+      qfqmFlag$irgaTurb <-  ffbase::ffdfappend(x =qfqmFlag$irgaTurb, 
+                                               dat = inp$qfqm$irgaTurb)
+
+      # MFC
+      data$mfcSampTurb <- ffbase::ffdfappend(x = data$mfcSampTurb, 
+                                             dat = inp$data$mfcSampTurb)
+      qfqmFlag$mfcSampTurb <-  ffbase::ffdfappend(x = qfqmFlag$mfcSampTurb, 
+                                                  dat = inp$qfqm$mfcSampTurb)
+      
+      # valvValiNemaTurb
+      data$valvValiNemaTurb <- ffbase::ffdfappend(x = data$valvValiNemaTurb, 
+                                                  dat = inp$data$valvValiNemaTurb)
+      qfqmFlag$valvValiNemaTurb <- ffbase::ffdfappend(x = qfqmFlag$valvValiNemaTurb, 
+                                                      dat = inp$qfqm$valvValiNemaTurb)
+      
+      # Sonic anemometer
+      data$soni <- ffbase::ffdfappend(x = data$soni, dat = inp$data$soni)
+      qfqmFlag$soni <-  ffbase::ffdfappend(x =qfqmFlag$soni, dat = inp$qfqm$soni)
+      
+      # AMRS
+      data$amrs <- ffbase::ffdfappend(x = data$amrs, dat = inp$data$amrs)
+      qfqmFlag$amrs <-  ffbase::ffdfappend(x =qfqmFlag$amrs, dat = inp$qfqm$amrs)
+      
+      # Time objects
+      data$time <- ffbase::ffdfappend(x = data$time, dat = inp$time)
+      qfqmFlag$time <-  ffbase::ffdfappend(x =qfqmFlag$time, dat = inp$time)
+     
+    # End attributes assignment
+    }
+
+  # Remove temporary list of input variables
+  inp <- NULL
+  inpQfqm <- NULL
+  invisible(gc())
+
+# End loop
+}
+
+# [CKL: stopped here, because loop appeared to work for
+# irgaTurb, mfcSampTurb, valvValiNemaTurb, soni, but then 
+# amrs ran forever]
+
+
 ```
 
 
