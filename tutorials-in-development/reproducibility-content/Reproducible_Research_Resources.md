@@ -1,6 +1,6 @@
-## List of references and resources on resproducible research
+## List of references and resources on reproducible research
 
-*Assembled by Naupaka Zimmerman in July 2018 for the  NEON Data Institute in Boulder, CO.*
+*Assembled by Naupaka Zimmerman in July 2018 for the NEON Data Institute in Boulder, CO.*
 
 ### Journal Articles
 
