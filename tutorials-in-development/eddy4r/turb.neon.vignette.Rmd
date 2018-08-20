@@ -105,19 +105,17 @@ Para <- base::list()
 # but if you can proceed with the next several commands, don't worry 
 # about the warnings here.
 # [CKL: Dave, you said the data are in the build. What are the 
-# dropbox links for?]
-Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar",
-                                        UrlInpRefe = 
-                                          "https://www.dropbox.com/s/d9ggsvepiypi9hb/inpRefe_20171220.zip?dl=1",
-                                        UrlOutRefe = 
-                                          "https://www.dropbox.com/s/xf2viykgzajdfic/outRefe_20171220.zip?dl=1")
+# dropbox links for?
+# DD: Removed, you can add the suppressWarnings() wrapper to this function call if you don't want the warnings showing.]
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
 
 # The args() function can be used to see the full list of function 
 # arguments available in def.para.flow().
 # Additional metadata can be passed to the function with "..." 
 # operator and added to the output metadata list.
 # [CKL: The second sentence is directly copied from your text,
-# and I don't understand it. Clarify?]
+# and I don't understand it. Clarify?
+# DD: The "..." operator acts as an open interface to pass any additional argument (metadata in this function) to the function. So, Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar", test = "dot operator") would add a metadata variable Para$Flow$test with a value of "dot operator"]
 base::args(eddy4R.base::def.para.flow)
 
 # Get the NEON-specific 4-letter code for the site location (Loc) 
@@ -138,10 +136,11 @@ Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)
 #   h2oTurb: Turbulent H2O flux
 #   soni: Windspeed and direction from sonic anemometer
 # Parameters:
-#   PrdIncrAgrDflt: [CKL: ???]
-#   PrdWndwAgrDflt: [CKL: ???]
+#   PrdIncrAgrDflt: [CKL: ???, DD: Period Increment Aggregation Default]
+#   PrdWndwAgrDflt: [CKL: ???, DD: Period Window Aggregation Default]
 # [CKL: in the version on FIU-algorithm, you deleted this
-# for loop. Why?]
+# for loop. Why?
+# DD: This was one of the SCI parameters that was not necessary for the workflow, so to make the workflow more concise I removed it. We can keep it, but it is just informational metadata.]
 for(idx in c("amrs", "co2Turb", "h2oTurb", "soni")) {
   
   Para$Flow$dp01[[idx]] <- eddy4R.base::def.hdf5.read.para(
@@ -157,8 +156,8 @@ for(idx in c("amrs", "co2Turb", "h2oTurb", "soni")) {
 # Ofst: Planar fit offset
 # ZoneTime: Time zone of data collection
 # The planar fit coefficients can be set to NA here, and 
-# estimated using the planar fit function [CKL: what's the function name?]
-# in the eddy4R.turb package. This requires a longer [CKL: how long?] 
+# estimated using the planar fit function [CKL: what's the function name?, DD: PFIT.R currently, but eddyR.turb is planned to be cleaned up and released at a later date. Those who would like to use this function would need to be added to the private NEON-FIU-algorithm repo]
+# in the eddy4R.turb package. This requires a longer [CKL: how long?, DD: That is a debate in the scientific community. A lot of people use 1 month of data, NEON currently uses a 9 day moving window around the day being processed] 
 # window of input data be provided to determine a robust planar
 # regression for the data.
 Para$Sci <- eddy4R.base::def.hdf5.read.para(
@@ -167,10 +166,11 @@ Para$Sci <- eddy4R.base::def.hdf5.read.para(
   SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
 )
 
-# MaxReso: Maximum resolution [CKL: of what?]
-# NumBin: Number of bins [CKL: bins for what?]
-# NumWndw: Number of windows [CKL: ?]
-# [CKL: you deleted this function call too. Why?]
+# MaxReso: Maximum resolution [CKL: of what?, DD: You can gather information about the despike function with this command: ?eddy4R.qaqc::def.dspk.br86; the MaxReso aligns with ThshReso == A single integer value of the resolution threshold for spike determination. Only considered spike only if difference larger than measurement resolution x ThshReso. Default = 10]
+# NumBin: Number of bins [CKL: bins for what?, DD: Aligns to NumBin == A single integer value of the initial number/step size of histogram bins. Default = 2]
+# NumWndw: Number of windows [CKL: ?, DD: Aligns to WndwFilt == A single integer value of filter width. Default = 9]
+# [CKL: you deleted this function call too. Why?
+# DD: The new dp0p HDF5 file have this parameter written at a different HDF5 group level, so this call is no longer useful.]
 Para$Sci$dp01 <- def.hdf5.read.para(
       DirFileParaLoca = Para$Flow$DirFilePara,
       GrpName = paste0("/", Para$Flow$Loc, "/dp01"),
@@ -181,7 +181,7 @@ Para$Sci$dp01 <- def.hdf5.read.para(
 # of each instrument from the parameters in the input file:
 # irgaTurb: Turbulent flux gas analyzer
 # mfcSampTurb: Mass flow controller
-# valvValiNemaTurb: [CKL: ???]
+# valvValiNemaTurb: [CKL: ???, DD: Valve Validation Nema enclosure Turbulence, this represents the valve information from the LI7200 IRGA validation system which sends validation gas to the sensor]
 # soni, amrs: See above
 Para$Sci$dp0p$irgaTurb <- def.hdf5.read.para(
       DirFileParaLoca = Para$Flow$DirFilePara,
@@ -202,7 +202,7 @@ Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
 )
 
 # For the sonic anemometer, also get the angle of the z axis 
-# relative to a plumb line (AngNedZaxs) [CKL: is this correct?]
+# relative to a plumb line (AngNedZaxs) [CKL: is this correct?, DD: This the angle with reference to North-East-Down coordinate system that the sonic anemometer was installed.]
 Para$Sci$dp0p$soni <- def.hdf5.read.para(
       DirFileParaLoca = Para$Flow$DirFilePara,
       GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
@@ -222,7 +222,7 @@ Para$Sci$dp0p$amrs <- def.hdf5.read.para(
 # and H2O, but leave them set to NA. Lag time is calculated by 
 # eddy4R.base::def.lag(). If you prefer to set it manually, 
 # you can set it here. [CKL: in this function call? in a different
-# function?]
+# function?, DD: It can be set as this piece of metadata (i.e. Para$Sci$dp01$co2Turb$RtioMoleDryCo2$`Lag$TimeDiff` <- 1.4, or it can be specified directly in the eddy4R.base::def.lag())
 Para$Sci$dp01$co2Turb$RtioMoleDryCo2 <- def.hdf5.read.para(
         DirFileParaLoca = Para$Flow$DirFilePara,
         GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/co2Turb/", 
@@ -248,7 +248,7 @@ FreqSamp <- list(
   "irgaTurb" = Para$Sci$dp0p$irgaTurb$FreqSamp,
   "mfcSampTurb" = Para$Sci$dp0p$mfcSampTurb$FreqSamp,
   "valvValiNemaTurb" = ifelse(length(as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp))==0,
-                              0.2, as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp)), #[CKL: I modified this, including code as a comment isn't a good practice]
+                              0.2, as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp)), #[CKL: I modified this, including code as a comment isn't a good practice, DD: Thanks]
   "soni" = Para$Sci$dp0p$soni$FreqSamp,
   "amrs" = Para$Sci$dp0p$amrs$FreqSamp
 )
@@ -289,7 +289,7 @@ Rng$irgaTurb <- data.frame(
 # veloXaxs: Velocity on the x axis, m s-1
 # veloYaxs: Velocity on the y axis, m s-1
 # veloZaxs: Velocity on the z axis, m s-1
-# veloSoni: Total velocity, m s-1 [CKL: correct?]
+# veloSoni: Speed of sound velocity, m s-1 [CKL: correct?, DD: This represents the speed of sound, since the sensor measures sonic pulses traveling from one transducer to another with a dependency on sonic (virtual) temperature.]
 Rng$soni <- data.frame(
   "veloXaxs"=c(-50,50),
   "veloYaxs"=c(-50,50),
@@ -416,7 +416,7 @@ for(date in Para$Flow$DateOut) {
         )
       
       # Remove time from set of flags
-      # [CKL: I don't understand this step. Are there time-based flags we're discarding?]
+      # [CKL: I don't understand this step. Are there time-based flags we're discarding?, DD: This just removes the timestamp that was read in with the data, since we create a separate list for time]
       tmpQfqm <- tmpQfqm[,grep("time",names(tmpQfqm),invert = T)]
       }
       
@@ -529,7 +529,7 @@ for(date in Para$Flow$DateOut) {
 
 # [CKL: stopped here, because loop appeared to work for
 # irgaTurb, mfcSampTurb, valvValiNemaTurb, soni, but then 
-# amrs ran forever]
+# amrs ran forever, DD: This is fixed now, correct?]
 
 
 ```
@@ -583,7 +583,7 @@ invisible(lapply(names(data), function(x) {
 # If Deve flag, meaning Development, is set to TRUE, only run a 
 # small number of iterations for testing purposes. Otherwise 
 # iterate over all variables and time periods [CKL: is this 
-# correct?]. This vignette sets Deve=TRUE.
+# correct?, That is correct Deve sets the iteration over just the first 10 30-minute aggregation periods]. This vignette sets Deve=TRUE.
 if (Para$Flow$Deve == TRUE) {
   iter <- 10
   } else {
@@ -615,7 +615,7 @@ for(idxAgr in 1:iter) {
     wrk$qfqm[[idxSens]] <- qfqmFlag[[idxSens]][wrk$idx[[idxSens]]$idxBgn[idxAgr]:
                                                  wrk$idx[[idxSens]]$idxEnd[idxAgr],]
 
-    # Assign units for each variable, from metadata [CKL: is this correct?]
+    # Assign units for each variable, from metadata [CKL: is this correct?, DD: Yes, the unit metadata is read in from the HDF5 file at the dataframe level. This step writes the unit attributes to the variable level; thus, if a variable is taken out of a dataframe during data munging it retatins it's unit metadata.]
     for(idxVar in base::names(wrk$data[[idxSens]])) {
 
       base::attr(x = wrk$data[[idxSens]][[idxVar]], which = "unit") <-
@@ -878,7 +878,7 @@ write the output to the NEON dp01 HDF5 file.
 ```{r format}
 
 # Drop the quality column (qfqm) after the example
-# [CKL: Why? Don't we want this in the output file?]
+# [CKL: Why? Don't we want this in the output file?, DD: Currently, the extended quality metrics by each variable are not included in the expanded HDF5 files. We are currently working on adding these metrics. If I finish that development work, we can get rid of this lapply call]
 lapply(names(out$qfqm), function(x){
   out$qfqm[[x]]$qm <<- NULL
 })  
@@ -915,7 +915,7 @@ eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out,
                                  LvlTowr = Para$Flow$LvlTowr, 
                                  MethUcrt = FALSE, 
                                  MethSubAgr = TRUE)
-# [CKL: Error: Variable names are not consistent among inputs: data, coefPoly, unitFrom, and unitTo. Check inputs.]
+# [CKL: Error: Variable names are not consistent among inputs: data, coefPoly, unitFrom, and unitTo. Check inputs., DD: This is the last step. I'm working on this now. I'll let you know what I find.]
 
 ```
 
