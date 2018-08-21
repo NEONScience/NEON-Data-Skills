@@ -46,12 +46,18 @@ brd.files$data$files
 
 # Get both files
 brd.count <- read.delim(brd.files$data$files$url
-                        [intersect(grep("countdata", brd.files$data$files$name),
-                                    grep("basic", brd.files$data$files$name))], sep=",")
+                        [intersect(grep("countdata", 
+                                        brd.files$data$files$name),
+                                    grep("basic", 
+                                         brd.files$data$files$name))], 
+                        sep=",")
 
 brd.point <- read.delim(brd.files$data$files$url
-                        [intersect(grep("perpoint", brd.files$data$files$name),
-                                    grep("basic", brd.files$data$files$name))], sep=",")
+                        [intersect(grep("perpoint", 
+                                        brd.files$data$files$name),
+                                    grep("basic", 
+                                         brd.files$data$files$name))], 
+                        sep=",")
 
 
 ## ----os-plot-bird-data---------------------------------------------------
@@ -88,8 +94,11 @@ tmp.files$data$files$name
 ## ----os-get-soil-data----------------------------------------------------
 
 soil.temp <- read.delim(tmp.files$data$files$url
-                        [intersect(grep("002.504.030", tmp.files$data$files$name),
-                                   grep("basic", tmp.files$data$files$name))], sep=",")
+                        [intersect(grep("002.504.030", 
+                                        tmp.files$data$files$name),
+                                   grep("basic", 
+                                        tmp.files$data$files$name))], 
+                        sep=",")
 
 
 ## ----os-plot-soil-data---------------------------------------------------
@@ -104,8 +113,9 @@ plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime,
 req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
 
 # make this JSON readable
-# Note how we've change this from two commands into one here
-avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=T)
+# Note how we've changed this from two commands into one here
+avail.aop <- fromJSON(content(req.aop, as="text"), 
+                      simplifyDataFrame=T, flatten=T)
 
 # get data availability list for the product
 cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
@@ -121,8 +131,9 @@ head(cam.files$data$files$name)
 
 ## ----download-aop-data, eval=FALSE---------------------------------------
 ## 
-## download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
-##          paste(getwd(), "/SJER_image.tif", sep=""))
+## download(cam.files$data$files$url[grep("20170328192931",
+##                                        cam.files$data$files$name)],
+##          paste(getwd(), "/SJER_image.tif", sep=""), mode="wb")
 ## 
 
 ## ----get-bird-NLs--------------------------------------------------------
@@ -176,9 +187,9 @@ loon.list <- fromJSON(content(loon.req, as="text"))
 loon.list$data
 
 ## ----get-mammals---------------------------------------------------------
-mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500")
+mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500&verbose=true")
 mam.list <- fromJSON(content(mam.req, as="text"))
-mam.list$data[1:20,]
+mam.list$data[1:10,]
 
 ## ----get-verbena---------------------------------------------------------
 am.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.")
