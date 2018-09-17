@@ -524,11 +524,9 @@ using the eddy4R.base::def.lag() function. After the lag correction
 has been applied, the half-hourly derived data sub-products for relative 
 humidity and dewpoint temperature are calculated.
 
-Then, the input data that are provided as NEON Level 1 data products are 
-subsetted from the sensor output, and naming syntax is changed to match 
+Then, the input data that are provided as NEON Level 0 prime data products (high frequency raw data that has been time regularized and units converted) are 
+subsetted, and naming syntax is changed to match 
 NEON Level 1 data product output conventions. 
-[CKL: I don't follow this at all. If they're input as L1 products, isn't 
-the naming syntax already in the NEON L1 convention?] 
 eddy4R.base::wrap.dp01.agr.prd() is used to calculate the 1-minute averaged 
 data and quality metrics. Finally, we calculate 30-minute data using 
 eddy4R.base::wrap.dp01() and determine the quality metrics and final quality 
@@ -587,7 +585,7 @@ for(idxAgr in 1:iter) {
   # Create empty list for data
   wrk$data <- list()
   
-  # Loop over sensor systems [CKL: to do what?]
+  # Loop over sensor systems to grab the data indices for the current aggregation period (i.e. 30 minute period of data).
   for(idxSens in names(data)) {
     wrk$data[[idxSens]] <- data[[idxSens]][wrk$idx[[idxSens]]$idxBgn[idxAgr]:
                                              wrk$idx[[idxSens]]$idxEnd[idxAgr],]
