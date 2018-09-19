@@ -758,6 +758,13 @@ for(idxAgr in 1:iter) {
     idx = c("soni", "amrs", "co2Turb", "h2oTurb")
     )
   
+          # Standard error removed from 1- and 30- minute, it is now part of the ucrt calculation function
+          lapply(names(wrk$dp01AgrSub[[lvlAgr]]$data), function(idxData){
+          wrk$dp01AgrSub[[lvlAgr]]$data[[idxData]]$se <<- NULL
+          wrk$dp01[[lvlAgr]][[idxData]]$se <<- NULL
+          })
+  
+  
   # Another time stamp: Starting quality processing
   print(paste0(format(Sys.time(), "%F %T"), 
                ": Beginning the qfqm data processing for data in loop...", 
@@ -893,7 +900,6 @@ eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out,
                                  LvlTowr = Para$Flow$LvlTowr, 
                                  MethUcrt = FALSE, 
                                  MethSubAgr = TRUE)
-# [CKL: Error: Variable names are not consistent among inputs: data, coefPoly, unitFrom, and unitTo. Check inputs., DD: This is the last step. I'm working on this now. I'll let you know what I find.]
 
 ```
 
