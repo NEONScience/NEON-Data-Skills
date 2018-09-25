@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 
 This vignette assumes you are working with eddy4R within the Docker 
 environment established by NEON. To get set up in that environment, 
-follow the instructions <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/fbd76ce778bc369fa9b94b7751546abb1ae56073/tutorials/R/eddy4r/dockerEddy4r.md" target="_blank">here</a>.
-[CKL: Megan, I put a link to the page on GitHub, because I don't think we've 
-put this up on the website yet]
+follow the instructions <a href="neonscience.org/set-up-docker" target="_blank">here</a>.
 
 At the end of those instructions, you should have an RStudio 
 environment running within Docker. Use that workspace for this 
@@ -252,7 +250,7 @@ Rng <- list()
 # densMoleCo2: CO2 molar density, mol m-3
 # densMoleH2o: H2O molar density, mol m-3
 # presAtm: Atmospheric pressure, Pa
-# presDiff: Difference in pressure from ?? [CKL: ?], Pa
+# presDiff: Difference in pressure, Pa
 # rtioMoleDryCo2: Mole ratio of CO2 in air, mol mol-1
 # rtioMoleDryH2o: Mole ratio of H2O in air, mol mol-1
 # tempIn: Temperature of air at inlet, K
@@ -904,43 +902,3 @@ eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out,
 ```
 
 
-[CKL: everything below comes with the vignette template, I 
-kept it for my own reference, will delete in final version]
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
