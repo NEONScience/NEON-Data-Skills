@@ -118,7 +118,7 @@ or the Docker Quickstart Terminal (Windows).
 
 The first command `docker login` will prompt you for your DockerHub ID and password. 
 
-The second command `docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0` will [DD: `eddy4r:0.2.0` will need to be updated to align with upcoming manuscript and public release or you can grab latest with `eddy4r:latest`]
+The second command `docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0` will 
 download the latest eddy4R–Docker image and start a Docker container that 
 utilizes port 8787 for establishing a graphical interface via web browser.  
 
@@ -136,7 +136,7 @@ are on a shared network, but the last 4 digits need to be 8787.
 
 Now try it. 
 
-```{bash, get-eddy4R}
+```{bash get-eddy4R, eval=FALSE}
 docker login 
 
 docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
@@ -144,7 +144,7 @@ docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
 
 This last command will run a specified release version (`eddy4r:0.2.0`) of the 
 Docker image. Alternatively you can use `eddy4r:latest` to get the most up-to-date 
-development image or eddy4r. 
+development image of eddy4r. 
 
 If you are using data stored on your local machine, rather than cloud hosting, a 
 physical file system location on the host computer (local/dir) can be mounted 
@@ -183,9 +183,8 @@ with both the username and password as **rstudio**. Once complete you are now in
 a RStudio user interface with eddy4R installed and ready to use. 
 
 Additional information about the use of RStudio and eddy4R packages in Docker 
-containers can be found on the WIKI LINK <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages</a>
+containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages (link pending)</a>.
 
 ## Using eddy4R
 
-To learn to use the eddy4R package to calculate fluxes, please visit [add link 
-once ready]. 
+To learn to use the eddy4R package to calculate fluxes, please visit <a href="" target="_blank">the eddy4R vignette (link pending)</a>.
