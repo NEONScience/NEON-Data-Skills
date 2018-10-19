@@ -12,8 +12,20 @@ languageTool: R
 code1: R/neonUtilities/neonUtilities.R
 tutorialSeries:
 urlTitle: neonDataStackR
-
+jupyter:
+  kernelspec:
+    display_name: R
+    language: R
+    name: ir
+  language_info:
+    codemirror_mode: r
+    file_extension: .r
+    mimetype: text/x-r-source
+    name: R
+    pygments_lexer: r
+    version: 3.4.3
 ---
+
 
 This tutorial goes over how to use the neonUtilities R package 
 (formerly the neonDataStackR package).
