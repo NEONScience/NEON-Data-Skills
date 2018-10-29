@@ -1,0 +1,245 @@
+---
+syncID:
+title: "Modelling phenology with phenor"
+authors: Koen Hufkens
+# contributors: Adam Young, Bijan Seyednasrollah, Katharyn Duffy
+# dateCreated: 2016-12-16
+# lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+# description: "This tutorial explains how download and format data for subsequent phenology modelling exercises."
+# topics: data-analysis, modelling, phenology
+# languagesTool: R
+# packagesLibraries: phenor
+# estimatedTime: 40 min
+# urlTitle: phenor-modelling
+---
+
+This tutorial focuses on aggregating and combining various climate and phenology data sources for modelling purposes using the phenor R package. This tutorial explains the various data sources, the structure of the formatted data and the final modelling procedures using various phenology models.
+
+**R Skill Level:** Introduction - you've got the basics of `R` down and 
+understand the general structure of tabular data and lists.
+
+# Objectives
+
+After completing this tutorial, you will be able:
+
+* to download climate and phenology data
+* to format these data in a standardized scheme
+* to use formatted data to callibrate phenology models
+* to make phenology predictions using forecast climate data
+
+## Things You’ll Need To Complete This Tutorial
+
+You will need the most current version of R and RStudio loaded on your computer to complete this tutorial. Optionally, a login to the [Pan European Phenology Project (PEP725)](http://www.pep725.eu/) website for data retreival.
+
+### Install R Packages
+
+These R packages will be used in the tutorial below. Please make sure they are installed prior to starting the tutorial.
+ 
+* **devtools** `install.packages("devtools")`
+* **phenor:** `install_github("khufkens/phenor")`
+* **phenocamr:** `install.packages("phenocamr")`
+
+# Introduction
+
+The phenor R package is a phenology modelling framework in R. The framework leverages measurements of vegetation phenology from four common phenology observation datasets combined with (global) retrospective and projected climate data. Currently, the package focusses on North America and Europe and relies heavily on [Daymet](https://daymet.ornl.gov/) and [E-OBS climate data](http://www.ecad.eu/download/ensembles/download.php) for underlying climate driver data in model optimization. The package supports global gridded CMIP5 forecasts for RCP4.5 and RCP8.5 climate change scenarios using the [NASA Earth Exchange global downscaled daily projections](https://nex.nasa.gov/nex/projects/1356/).
+
+Phenological model calibration / validation data are derived from four main sources:
+
+- the transition dates derived from [PhenoCam](https://phenocam.sr.unh.edu) time series (and included in this package)
+- the MODIS MCD12Q2 phenology product using the [MODISTools R package](http://onlinelibrary.wiley.com/doi/10.1002/ece3.1273/full)
+- the [Pan European Phenology Project (PEP725)](http://www.pep725.eu/) 
+- the [USA National Phenological Network (USA-NPN)](https://www.usanpn.org/) 
+
+In this tutorial you are going to download and format PhenoCam and PEP725 derived spring phenology data combined with Daymet and E-OBS climate data to callibrate a spring phenology model and make projections for the end of the century under an RCP8.5 CMIP5 model scenario.
+
+### Download Data
+
+#### Phenology
+
+To download phenology data from the PhenoCam network use the `phenocamr` package and the `download_phenocam()` function. This function allows you to download site based data and process it according to a standardized methodology.
+
+``` {r download-phenology-data, eval = FALSE}
+# The command below downloads all time series for deciduous broadleaf
+# data at the bartlett PhenoCam site and estimates the
+# phenophases (spring + autumn). For a detailed description of the download
+# procedure consult the phenocamr R package documentation
+phenocamr::download_phenocam(
+  vegetation = "DB",
+  site = "bartlett",
+  phenophase = TRUE
+  )
+```
+
+The code above illustrates the procedure, but in the interest of time and consistency you can download a curated dataset from the ORNL DAAC as fully described in Scientific Data (Richardson et al. 2018). A limited copy, only including time series and transition dates, is also mirrored as a [github repo](https://github.com/khufkens/phenocam_dataset) (500 mb).
+
+To download the data clone the project using the following command in a terminal:
+
+```bash
+git clone https://github.com/khufkens/phenocam_dataset.git
+```
+or download a [zipped file](https://github.com/khufkens/phenocam_dataset/archive/master.zip) of the archive.
+
+Downloading data from the PEP725 network is more elaborate as it requires a login on the website before you can access any data. In order to move forward with the interactive tutorial create a login on the PEP725 website and save your login details in a plain text file (txt) containing your email address and password on the first and second line, respectivelly. Name this file appropriately e.g. pep725_credentials.txt.
+
+To download PEP725 data you need to find out which data are available. You can either consult the data portal of the website, or use the `check_pep725_species()` function. This function allows you to either list all species in the dataset, or search by (partial) matches on the species names.
+
+``` {r check-pep725-data, eval = FALSE}
+# to list all species use
+phenor::check_pep725_species(list = TRUE)
+
+# to search only for Quercus (oak) use
+phenor::check_pep725_species(species = "querqus")
+```
+
+A query for *Quercus* returns a species ID number of **111**. Once you have established the required species number you can move forward and download the data.
+
+``` {r download-pep725-data, eval = FALSE}
+phenor::download_pep725(
+  credentials = "/foo/bar/pep725_credentials.txt",
+  species = 111,
+  path = "~",
+  internal = FALSE
+  )
+```
+
+#### Climate
+
+In order to calibrate phenology models additional climate data is required. Some of this data is dynamically queried during the formatting of the data (see below). However, for the formatting of the PEP725 data no automated routine is provided due to the size of the download and policy of the E-OBS dataset. Register and download the [E-OBS data](https://www.ecad.eu/download/ensembles/ensembles.php) for the 0.25 degree **regular grid** for the best estimates of TG, TN, TX, RR, PP (0.5 degree data is supported but not recommended).
+
+Similarly, the forecast CMIP5 data is gridded data which is too large to process dynamically. In order to use the CMIP5 data to make phenology projections the data needs to be downloaded one year at a time, and subset where possible to reduce file sizes. Below you find the instructions to download the 2090 CMIP5 data for the RCP8.5 scenario of the MIROC5 model. The data will be stored in the R temporary directory for later use.
+
+``` {r download-cmip5-data, eval = FALSE}
+phenor::download_cmip5(
+  year = 2090,
+  path = tempdir(),
+  model = "MIROC5",
+  scenario = "rcp85"
+  )
+```
+
+### Format Climate and Phenology Data
+
+If both phenology and climate data are available you can aggregate and format the data for modelling purposes. All funcitons in the `phenor` package with a `format_` prefix serve this purpose, although some might lack phenology validation data.
+
+You can format phenocam data using the `format_phenocam()` function, which requires you to provide the correct path to phenocam transition date files (as downloaded above). This function will match the transition dates from PhenoCam data with the appropriate Daymet data (dynamically).
+
+``` {r format-phenocam-data, eval = FALSE}
+# Format the phenocam transition date data (in /foo/bar/) correctly
+# additionally specify the direction of the curve to be considered
+# as well as the gcc percentile, threshold and the temporal offset
+# used. When internal = TRUE the data will be returned to the R
+# workspace, otherwise the data will be saved to disk.
+phenocam_data <- phenor::format_phenocam(
+  path = "/foo/bar/",
+  direction = "rising",
+  gcc_value = "gcc_90",
+  threshold = 50,
+  offset = 264,
+  internal = TRUE
+  )
+
+# All deciduous broadleaf forest data in the PhenoCam V1.0 has been
+# processed using the above settings and is included in the phenor
+# package and can be loaded using to limit processing
+data("phenocam_DB")
+
+# All data is structured as nested lists by site with all other
+# data nested within this top site level. Plot the data structure
+# for the site "acadia" by calling:
+str(phenocam_DB$acadia)
+```
+
+Similarly the PEP725 has its dedicated formatting function, `format_pep725()`. However, it will use the previously downloaded E-OBS data to provided the required climate data for the downloaded PEP725 data (both file directories are requested). In addition, you need to specify which [BBCH-scale value](https://en.wikipedia.org/wiki/BBCH-scale) you would like to see included in the final formatted dataset.
+
+``` {r eval = FALSE}
+pep725_data <- phenor::format_pep725(
+  pep_path = "~",
+  eobs_path = "/your/eobs/path/",
+  bbch = "11",
+  offset = 264,
+  count = 60,
+  resolution = 0.25
+  )
+```
+
+Finally, when making projections for the coming century you can use the `format_cmip5()` function. This function does not rely on phenology data but creates a consistent data structure so models can easily use this data consistently. In addition there is the option to constrain the data, which is global, spatially with an `extent` parameter. The extent is a vector with coordinates defining the region of interest defined as xmin, xmax, ymin, ymax in latitude / longitude.
+
+``` {r eval = FALSE}
+cmip5_data <- phenor::format_cmip5(
+  path = "~", 
+  year = 2090,
+  offset = 264,
+  model = "MIROC5",
+  scenario = "rcp85",
+  extent = c(-128, -65, 24, 50),
+  internal = TRUE
+  )
+```
+
+This concludes all the preparations required to model phenology data.
+
+### Phenology Model Parameterization
+
+Gathering all this data serves as input to a model callibration routine. This routine tweaks parameters in the model specification in order to best fit the response to the available phenology data using the collocated climate driver data.
+
+``` {r eval = FALSE}
+# Calibrate a simple Thermal Time (TT) model using simulated annealing
+# for both the phenocam and PEP725 data. This routine might take some
+# time to execute.
+phenocam_par <- model_calibration(
+  model = "TT",
+  data = phenocam_DB,
+  method = "GenSA",
+  control = list(max.call = 10000),
+  par_ranges = sprintf("%s/extdata/parameter_ranges.csv", path.package("phenor")),
+  plot = TRUE)
+
+pep725_par <- model_calibration(
+  model = "TT",
+  data = pep725_data,
+  method = "GenSA",
+  control = list(max.call = 10000),
+  par_ranges = sprintf("%s/extdata/parameter_ranges.csv", path.package("phenor")),
+  plot = TRUE)
+```
+
+The datasets which drive the optimization differ both in species (coverage), location and time window. It would be expected that the parameters would be slightly different between the two calibrations. We can list the parameters of both calibration runs to explore this.
+
+``` {r eval = FALSE}
+# only list the parameters, ignore other
+# ancillary fields
+print(phenocam_par$par)
+print(pep725_par$par)
+```
+
+### Phenology Model Predictions
+
+To finally evaluate how these results would change phenology by the end of the century we use the formatted CMIP5 data to `estimate_phenology()` with those given drivers.
+
+``` {r eval = FALSE}
+# project results forward to 2090 using the phenocam parameters
+# the region is the north-east of the US so data are "representative"
+cmip5_phenocam_projection <- phenor::estimate_phenology(
+  par = phenocam_par$par, # provide parameters
+  data = cmip5_data, # provide data
+  model = "TT", # make sure to use the same model !
+)
+
+# note that we use parameters for a region which is not
+# corresponding to the training data
+cmip5_pep725_projection <- phenor::estimate_phenology(
+  par = phenocam_par$par, # provide parameters
+  data = cmip5_data, # provide data
+  model = "TT", # make sure to use the same model !
+)
+
+```
+
+If data is gridded data the output will automatically be formatted as `raster` data, which can be plotted using the raster library as a map.
+
+``` {r eval = FALSE}
+# plot the gridded results and overlay
+# a world map outline
+plot(cmip5_phenocam_projection)
+maps::map("world", add = TRUE)
+```
