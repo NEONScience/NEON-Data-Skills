@@ -37,8 +37,11 @@ different packages with the same name.
 
 
 
-```{r pack-install}
+```{r pack-install,  message=F, warning=F}
 
+
+install.packages("memisc")
+library(memisc)
 packFlow00 <- c("DataCombine", "ff", "ffbase", "rhdf5", "Hmisc")
 packFlow01 <- packFlow00[!(packFlow00 %in% installed.packages()[,"Package"])]
 if(length(packFlow01) > 0) {
@@ -334,7 +337,9 @@ find that this section hangs or errors out, try opening
 Docker -> Preferences -> Advanced and increasing the memory 
 allotment.
 
-```{r ingest}
+```{r ingest,  message=F, warning=F}
+
+library(memisc)
 
 numDate <- 0
 tmpOut <- list()
@@ -552,7 +557,9 @@ Then concatenate results and HDF5 data formatting.
 
 
 
-```{r dp01-process}
+```{r dp01-process,  message=F, warning=F}
+
+library(memisc)
 
 print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp01 calculation begin"))
 
@@ -847,7 +854,10 @@ Then concatenate results and HDF5 data formatting.
 
 
 
-```{r dp02-process}
+```{r dp02-process,  message=F, warning=F}
+
+library(memisc)
+
 #dp02 generation---------------------------------------------------------------------------------------------------
   print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp02 calculation begin"))
   FileInp <- Para$Flow$DirFilePara
@@ -1199,7 +1209,7 @@ Then concatenate results and HDF5 data formatting.
 ```
 
 
-## 5. ECSE level 3 data products (dp03) generation.
+## 6. ECSE level 3 data products (dp03) generation.
 
 First vertically interpolate ECSE dp02 to get vertically resolved time change of rate, using eddy4R.stor::def.itpl.spce();
 Then also intepolate ECSE Level 2 qfqm data; 
@@ -1207,7 +1217,9 @@ Then concatenate results and HDF5 data formatting.
 
 
 
-```{r dp03-process}
+```{r dp03-process,  message=F, warning=F}
+
+library(memisc)
   #dp03 ecse generation-------------------------------------------------------------------------------------------------------------
   print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp03 calculation begins!"))
   
@@ -1363,7 +1375,7 @@ Then concatenate results and HDF5 data formatting.
 
 
 
-## 6. ECSE level 4 data products (dp04) generation.
+## 7. ECSE level 4 data products (dp04) generation.
 
 First spatial intergrate ECSE dp03 to get storage flux, using eddy4R.stor::def.flux.stor();
 Then also calculate ECSE Level 3 qfqm to get dp04 qfqm; 
@@ -1371,7 +1383,9 @@ Then concatenate results and HDF5 data formatting.
 
 
 
-```{r dp04-process}
+```{r dp04-process,  message=F, warning=F}
+
+library(memisc)
 
 #dp04------------------------------------------------------------------------------------------------------
   print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp04 calculation begin!"))
@@ -1467,14 +1481,16 @@ Then concatenate results and HDF5 data formatting.
 ```
 
 
-## 7. HDF5 write out
+## 8. HDF5 write out
 
 First transfer units and metadata to ECSE dp01-dp04
 Then HDF5 data formatting and output.
 
 
 
-```{r hdf5-output}
+```{r hdf5-output,  message=F, warning=F}
+
+library(memisc)
 #define working unit attributes
   wrkAttr <- list()
   #dp01
