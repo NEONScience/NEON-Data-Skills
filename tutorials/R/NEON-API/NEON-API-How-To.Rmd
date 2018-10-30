@@ -157,8 +157,8 @@ To get a more accessible view of which sites have data for which months, you'll
 need to extract data from the nested list. There are a variety of ways to do this, 
 in this tutorial we'll explore a couple of them. Here we'll use `fromJSON()`, in 
 the jsonlite package, which doesn't fully flatten the nested list, but gets us 
-the part we need. To use it, we need a text version of the content. Data this 
-way is not as human readable but is readable by the `fromJSON()` function. 
+the part we need. To use it, we need a text version of the content. The text 
+version is not as human readable but is readable by the `fromJSON()` function. 
 
 ```{r os-query-fromJSON}
 # make this JSON readable -> "text"
@@ -197,9 +197,9 @@ Let's look at the bird data from Woodworth (WOOD) site from July 2015. We can do
 this by using the above code but now specifying which site/date we want using 
 the `grep()` function. 
 
-Note, that if there was only one month of data from a site, you can leave off the
-date in the function. If you want date from more than one site/month you need 
-to iterate this code, GET fails if you give it more than one URL. 
+Note that if there were only one month of data from a site, you could leave 
+off the date in the function. If you want date from more than one site/month 
+you need to iterate this code, GET fails if you give it more than one URL. 
 
 ```{r os-query-bird-data-urls}
 # get data availability for WOOD July 2015
@@ -222,10 +222,10 @@ than in the basic files. Basic and expanded data packages are available for
 most NEON data products (some only have basic). Metadata are described by file 
 name below.
 
-The format for most of the file names are:
+The format for most of the file names is:
 
 **NEON.[domain number].[site code].[data product ID].[file-specific name].
-[date of file creation] **
+[date of file creation]**
 
 Some files omit the domain and site, since they're not specific to a 
 location, like the data product readme. The date of file creation uses the 
@@ -282,17 +282,23 @@ based on the data table name and the package name.
 
 # Get both files
 brd.count <- read.delim(brd.files$data$files$url
-                        [intersect(grep("countdata", brd.files$data$files$name),
-                                    grep("basic", brd.files$data$files$name))], sep=",")
+                        [intersect(grep("countdata", 
+                                        brd.files$data$files$name),
+                                    grep("basic", 
+                                         brd.files$data$files$name))], 
+                        sep=",")
 
 brd.point <- read.delim(brd.files$data$files$url
-                        [intersect(grep("perpoint", brd.files$data$files$name),
-                                    grep("basic", brd.files$data$files$name))], sep=",")
+                        [intersect(grep("perpoint", 
+                                        brd.files$data$files$name),
+                                    grep("basic", 
+                                         brd.files$data$files$name))], 
+                        sep=",")
 
 ```
 
 Now we have the data and can access it in R. Just to show that the files we 
-pulled have actual data in them, let's make a quick graphic showing 
+pulled have actual data in them, let's make a quick graphic:
 
 ```{r os-plot-bird-data}
 # Cluster by species
@@ -359,13 +365,7 @@ So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
 * published on Aug 4, 2017 at 06:37:25 GMT (`.20170804T063725Z.`).
 
 More information about interpreting file names can be found in the readme that 
-accompanies each download. 
-
-Note: NEON instrumentation data products are currently (Fall/Winter 2017) being 
-reprocessed on a rolling basis, and as each product is re-deployed, the files will 
-begin to appear in the format described here. Products that haven't yet 
-been reprocessed will return file names like the above, but will be missing the 
-year, month, package, and date of creation specifications.
+accompanies each download.
 
 Let's get data (and the URL) for only the plot and depth described above by selecting 
 `002.504.030` and the word `basic` in the file name.
@@ -375,14 +375,16 @@ Go get it:
 ``` {r os-get-soil-data}
 
 soil.temp <- read.delim(tmp.files$data$files$url
-                        [intersect(grep("002.504.030", tmp.files$data$files$name),
-                                   grep("basic", tmp.files$data$files$name))], sep=",")
+                        [intersect(grep("002.504.030", 
+                                        tmp.files$data$files$name),
+                                   grep("basic", 
+                                        tmp.files$data$files$name))], 
+                        sep=",")
 
 ```
 
-Now we have the data and can use it to conduct our analyses. To show that we do 
-in fact have the data let's plot the mean soil temperature by date. 
-
+Now we have the data and can use it to conduct our analyses. To take 
+a quick look at it, let's plot the mean soil temperature by date. 
 
 ``` {r os-plot-soil-data}
 # plot temp ~ date
@@ -408,14 +410,16 @@ we'll look at the flight over San Joaquin Experimental Range (SJER) in March
 req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
 
 # make this JSON readable
-# Note how we've change this from two commands into one here
-avail.aop <- fromJSON(content(req.aop, as="text"), simplifyDataFrame=T, flatten=T)
+# Note how we've changed this from two commands into one here
+avail.aop <- fromJSON(content(req.aop, as="text"), 
+                      simplifyDataFrame=T, flatten=T)
 
 # get data availability list for the product
 cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
-cam <- GET(cam.urls[grep("SJER", cam.urls)])
+cam <- GET(cam.urls[intersect(grep("SJER", cam.urls),
+                              grep("2017", cam.urls))])
 cam.files <- fromJSON(content(cam, as="text"))
 
 # this list of files is very long, so we'll just look at the first few
@@ -442,8 +446,9 @@ select a file based on the time stamp in the file name: `20170328192931`
 
 ``` {r download-aop-data, eval=FALSE}
 
-download(cam.files$data$files$url[grep("20170328192931", cam.files$data$files$name)],
-         paste(getwd(), "/SJER_image.tif", sep=""))
+download(cam.files$data$files$url[grep("20170328192931", 
+                                       cam.files$data$files$name)],
+         paste(getwd(), "/SJER_image.tif", sep=""), mode="wb")
 
 ```
 
@@ -456,6 +461,8 @@ working directory.
 	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
 	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
 	Experimental Range. Source: National Ecological Observatory Network (NEON) 
+	</figcaption>
+</figure>
 
 ## Geolocation data
 
@@ -510,7 +517,7 @@ brd.WOOD_013
 
 ```
 
-Note spatial information under `$data$[nameOfCorrdinate]` and under 
+Note spatial information under `$data$[nameOfCoordinate]` and under 
 `$data$locationProperties`. Also note `$data$locationChildren`: these are the 
 finer scale locations that can be used to calculate precise spatial data for 
 bird observations.
@@ -584,7 +591,7 @@ with the taxonomic rank queries.
 * each of the major taxonomic ranks from genus through kingdom
 * `scientificname`: Genus + specific epithet (+ authority). Search is 
 by exact match only, see final example below.
-* `verbose`: Do you want the short (`false`) or verbose (`true`) response
+* `verbose`: Do you want the short (`false`) or long (`true`) response
 * `offset`: Skip this number of items in the list. Defaults to 50.
 * `limit`: Result set will be truncated at this length. Defaults to 50.
 
@@ -627,12 +634,15 @@ To get the entire list for a particular taxonomic type, use the
 list has several hundred thousand entries.
 
 For an example, let's look up the small mammal taxonomic list, which 
-is one of the shorter ones, and then display only the first 20 taxa:
+is one of the shorter ones, and use the `verbose=true` option to see 
+a more extensive list of taxon data, including many taxon ranks that 
+aren't populated for these taxa. For space here, we display only 
+the first 10 taxa:
 
 ```{r get-mammals}
-mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500")
+mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500&verbose=true")
 mam.list <- fromJSON(content(mam.req, as="text"))
-mam.list$data[1:20,]
+mam.list$data[1:10,]
 ```
 
 To get information about a single taxon, use the `scientificname` 

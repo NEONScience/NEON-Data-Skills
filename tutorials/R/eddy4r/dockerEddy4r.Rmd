@@ -7,9 +7,9 @@ authors: Megan A. Jones
 contributors: 
 estimatedTime: 
 packagesLibraries: 
-topics: data management
+topics: data management, micrometeorology
 languagesTool: R, Docker
-dataProduct: 
+dataProduct: DP4.00200.001
 code1: 
 tutorialSeries: eddy4r
 urlTitle: set-up-docker
@@ -38,16 +38,14 @@ The directions on how to install docker are heavily borrowed from the author's
 of CyVerse's Container Camp's 
 <a href="https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/docker/dockerintro.html" target="_blank"> Intro to Docker</a> and we thank them for providing the information. 
 
-The directions for how to access eddy4R comes from Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 
+The directions for how to access eddy4R comes from 
+
+Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 
 <a href="https://www.geosci-model-dev.net/10/3189/2017/" target="_blank">10.5194/gmd-10-3189-2017</a>. 
 
 </div>
 
 
-## Why Docker? 
-[MJ: This section still needs to be completed.]
-
-"Getting all the tooling setup on your computer can be a daunting task, but not with Docker." 
 
 In the tutorial below, we give the very barest of information to get Docker set
 up for use with the NEON R package eddy4R. For more information on using Docker, 
@@ -59,9 +57,6 @@ consider reading through the content from CyVerse's Container Camp's
 
 To work with the eddy4R–Docker image, you first need to sign up for an 
 account at <a href="https://hub.docker.com/" target="_blank">DockerHub</a>. 
-
-[CKL: I think there is another step here, getting access to eddy4r. I don't 
-think a new account would automatically be able to access it?]
 
 Once logged in, getting Docker up and running on your favorite operating system 
 (Mac/Windows/Linux) is very easy. The "getting started" guide on Docker has 
@@ -85,7 +80,8 @@ instead.
 Once you are done installing Docker, test your Docker installation by running 
 the following command to make sure you are using version 1.13 or higher. 
 
-You will need to open an open shell window (Linux; Mac=Terminal) or 
+You will need an open shell window (Linux; Mac=Terminal) or the Docker 
+Quickstart Terminal (Windows).
 
 ``` {bash docker-version}
 
@@ -93,9 +89,11 @@ docker --version
 	
 ```
 
-When run, you will see which version of Docker you currently are running.
+When run, you will see which version of Docker you are currently running.
 
-Note: If run just the word ``docker`` you should see a whole bunch of lines showing the different options available with ``docker``. Alternatively you can test your installation by running the following:
+Note: If you run just the word ``docker`` you should see a whole bunch of 
+lines showing the different options available with ``docker``. Alternatively 
+you can test your installation by running the following:
 
 ``` {bash docker-world}
 
@@ -107,11 +105,12 @@ next few lines are pulling the image, so if you were to run the `hello-world`
 prompt again, it would already be local and you'd see the message start at 
 "Hello from Docker!". 
 
-If either of these steps work, you are ready to go on to access the eddy4R R 
-package in Docker. If these steps have not worked, follow the installation 
+If these steps work, you are ready to go on to access the 
+eddy4R-Docker image that houses the suite of eddy4R R 
+packages. If these steps have not worked, follow the installation 
 instructions a second time. 
 
-## Access eddy4R
+## Accessing eddy4R
 
 Download of the eddy4R–Docker image and subsequent creation of a local container 
 can be performed by two simple commands in an open shell (Linux; Mac = Terminal) 
@@ -127,14 +126,17 @@ utilizes port 8787 for establishing a graphical interface via web browser.
 * `-d`: the container will start in a detached mode, which means the container 
 run in the background and will print the container ID
 * `-p`: publish a container to a specified port (which follows)
-* `8787:8787`: specify which port you want to use. This default one is great if 
-you are running locally on a .[CKL: something missing here?] If you are running 
-many containers or on a shared network, you may need to specify a different port.
+* `8787:8787`: specify which port you want to use. The default 8787:8787 
+is great if you are running locally. The first 4 digits are the 
+port on your machine, the last 4 digits are the port communicating with 
+RStudio on Docker. You can change the first 4 digits if you want to use a 
+different port on your machine, or if you are running many containers or 
+are on a shared network, but the last 4 digits need to be 8787.
 * `stefanmet/eddy4r:0.2.0`: finally, which container do you want to run. 
 
 Now try it. 
 
-```{bash, get-eddy4R}
+```{bash get-eddy4R, eval=FALSE}
 docker login 
 
 docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
@@ -142,28 +144,23 @@ docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
 
 This last command will run a specified release version (`eddy4r:0.2.0`) of the 
 Docker image. Alternatively you can use `eddy4r:latest` to get the most up-to-date 
-development image. 
+development image of eddy4r. 
 
-[MJ:what does this mean] If data are not directed from/to cloud hosting , a 
+If you are using data stored on your local machine, rather than cloud hosting, a 
 physical file system location on the host computer (local/dir) can be mounted 
 to a file system location inside the Docker container (docker/dir). This is 
-achieved with the Docker run option -v local/dir:docker/dir. 
-[CKL: I think this means if you want to use data from your local computer, 
-instead of data in the cloud, you can mount a local directory into the 
-container. I didn't try it.]
+achieved with the Docker run option `-v local/dir:docker/dir`.
+
 
 ## Access RStudio session
 
 Now you can access the interactive RStudio session for using eddy4r by using any
 web browser and going to `http://host-ip-address:8787` where `host-ip-address` 
-is the internal IP address of the Docker host. For example, if you host ip address 
+is the internal IP address of the Docker host. For example, if your host IP address 
 is 10.100.90.169 then you should type `http://10.100.90.169:8787` into your browser. 
 
-[MJ: my notes have http://10.100.90.169:8787/auth-sign-in difference?]
-[CKL: not sure. I did it without the /auth-sign-in and worked fine.]
-
-The IP address of the Docker host is determined slighlty differently depending 
-on your Operating System. 
+To determine the IP address of your Docker host, follow the instructions below 
+for your operating system.
 
 ***
 #### Windows
@@ -186,13 +183,8 @@ with both the username and password as **rstudio**. Once complete you are now in
 a RStudio user interface with eddy4R installed and ready to use. 
 
 Additional information about the use of RStudio and eddy4R packages in Docker 
-containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages</a> [MJ:where is this, I can't find it].[CKL: I think this is 
-referring to the extensive wiki in the NEON-FIU-algorithm repo, which 
-is restricted access. For now we should probably drop the reference, 
-but longer term should talk to Dave and Stefan about what documentation 
-will be turned public in the future.]
+containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages (link pending)</a>.
 
 ## Using eddy4R
 
-To learn to use the eddy4R package for turbulence flow, please visit [add link 
-once ready]. 
+To learn to use the eddy4R package to calculate fluxes, please visit <a href="" target="_blank">the eddy4R vignette (link pending)</a>.

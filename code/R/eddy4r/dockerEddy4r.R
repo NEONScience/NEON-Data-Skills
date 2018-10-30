@@ -1,4 +1,4 @@
 ## 
 ## 
-## # log in to docker
+## docker login
 

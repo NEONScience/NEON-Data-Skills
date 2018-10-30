@@ -1,0 +1,92 @@
+---
+title: "Teakettle Canopy Height Analysis"
+author: "Naupaka Zimmerman"
+date: "June 21, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Analyis of Teakettle LiDAR-derived Canopy Height
+
+Out goals are to:
+
+1. Import a raster — A lidar canopy height model (lidar/Teak_lidarCHM.tif)
+1. For the CHM, set values == 0 to NA (not trees)
+1. Classify the raster according to some distribution – low medium and tall trees. This could be done using a histogram potentially or we could just decide that <2m is generally grasses / understory, <6m small trees,and the rest are tall trees. Visualize histogram/density and plot vertical cutoff lines.
+1. Plot the reclassified raster and add a legend for each “class”. 
+1. Export the plot figure to a pdf in the outputs folder – publishable
+1. Export the classified raster as a geotiff with NaFlagg = -9999 to an outputs folder.
+
+
+```{r initialize-set-params}
+# load library
+library("raster")
+
+# load functions
+source("scripts/functions.R")
+
+# set parameters
+chm_file <- "../NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarCHM.tif"
+chosen.breaks <- c(6, 30, 50, 100)
+site_name <- "Teakettle"
+site_file_code <- "TEAK"
+output_dir_path <- "../outputs/tuesday-pm/"
+```
+
+```{r create-output-dir}
+# create the output directory we want to use if it doesn't yet exist
+ifelse(!dir.exists(file.path(output_dir_path)), 
+	   dir.create(file.path(output_dir_path), showWarnings = TRUE))
+```
+
+```{r quick-sanity-plots}
+# Load raster into memory
+chm <- raster(chm_file)
+
+# quick sanity check
+plot(chm)
+
+# Fix 0 values for R
+chm[chm == 0] <- NA
+plot(chm)
+```
+
+
+```{r density-plot-with-breaks}
+# create the matrix to reclassify our raster
+reclass.height.mat <- create_height_class_matrix(chosen.breaks)
+
+# plot the density of values with the selected breaks
+plot_chm_density(chm, site_name, chosen.breaks)
+
+# Write density plot out to pdf
+make_pdf(plot_chm_density(chm, site_name, chosen.breaks),
+		 file = paste0(output_dir_path, site_file_code, "chm_density_plot.pdf"), width = 6, height = 5)
+
+```
+
+
+```{r reclassify-plot-and-save}
+# reclassify the raster using the reclass object - reclass.height.mat
+reclassified.chm <- reclassify(chm, 
+                     reclass.height.mat)
+
+# plot to make sure it looks ok
+plot_reclassified_raster(reclassified.chm, site_name, breaks = chosen.breaks)
+
+# Write out to pdf
+make_pdf(plot_reclassified_raster(reclassified.chm, site_name, breaks = chosen.breaks),
+	file = paste0(output_dir_path, site_file_code, "reclassified_chm.pdf"), height = 5, width = 6)
+
+# export geotiff
+writeRaster(reclassified.chm,
+            filename = paste0(output_dir_path, site_file_code, "reclassified_lidar_CHM.tif"),
+            format = "GTiff",
+            options = "COMPRESS=LZW",
+            overwrite = TRUE,
+            NAflag = -9999)
+
+```

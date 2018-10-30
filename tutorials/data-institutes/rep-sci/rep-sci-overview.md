@@ -90,3 +90,5 @@ sections for sharing code.
 * Recent open-access issue of
 <a href="http://onlinelibrary.wiley.com/doi/10.1111/ecog.2016.v39.i4/issuetoc" target="_blank">Ecography </a>
  focusing on reproducible ecology and software packages available for use.
+* A nice short blog post with an annotated bibliography of "Top 10 papers discussing reproducible research in computational science" from Lorena Barba: 
+<a href="https://hackernoon.com/barba-group-reproducibility-syllabus-e3757ee635cf#.dqvocwxyz" target="_blank"> Barba group reproducibility syllabus</a>.

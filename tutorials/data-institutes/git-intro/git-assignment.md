@@ -17,7 +17,7 @@ tutorialSeries:
 urlTitle: git-assignment
 ---
 
-**DUE: TBA**
+**DUE: 21 June 2018**
 
 During the NEON Data Institute, you will share the code that you create daily
 with everyone on the `NEONScience/DI-NEON-participants` repo.
@@ -32,12 +32,12 @@ bringing to the Institute), and
 interested in working on at the Institute. This biography was shared with the 
 group via the Data Institute’s GitHub repo.
 
-## Checklist for this Week’s Assignment:
+## Checklist for this week’s Assignment:
 
 You should have completed the following after Pre-institute week 2:
 
 * Fork & clone the **NEON-DataSkills/DI-NEON-participants** repo.
-* Create a .md file in the `participants/2017-RemoteSensing/pre-institute2-git` directory of the
+* Create a .md file in the `participants/2018-RemoteSensing/pre-institute2-git` directory of the
 repo. Name the document LastName-FirstName.md.
 * Write a biography that introduces yourself to the other participants. Please
 provide basic information including:

@@ -19,7 +19,7 @@ urlTitle: setup-git-bash-python
 
 This page outlines the tools and resources that you will need to complete 
 the Data Institute activities. Please be sure to have **the laptop you will be 
-bringing to the Institute** setup by **2 June 2017** to ensure you are 
+bringing to the Institute** setup by **14 June 2017** to ensure you are 
 prepared to begin the pre-Institute materials. 
 
 ## Checklist

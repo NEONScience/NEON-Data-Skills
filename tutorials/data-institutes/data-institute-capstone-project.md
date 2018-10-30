@@ -21,20 +21,20 @@ sensing data. and,
 
 ## About The Capstone Project
 
-As a capstone for this Institute, you will break up into small groups, to work 
-on addressing a science question using NEON and other data.
+As a capstone for this Institute, you will divide up into self selected small groups, 
+to work on addressing a science question using NEON and other data.
 
 Important: As you think about this project, consider what may be feasible to 
-explore in a short (~1 days worth) amount of time. You may consider a small 
-pilot project that could potentially be expanded, after you leave the Institute.  
+explore in a short (~8-12 hours) amount of time. You may consider a small 
+pilot project that could potentially be expanded after you leave the Institute.  
 
 
 ## The Data
 You are welcome to use any data you choose for this project. Combining NEON data
-with external data is highly encouraged. You can learn more about what NEON 
-data are currently available on our website:
+with external data is highly encouraged. You can view currently available NEON 
+data on the beta data browser:
 
-<a class="btn btn-inverse" href="{{ site.baseurl }}/data-resources/get-data" target="_blank">NEON Website Get Data Page.</a>
+<a class="btn btn-inverse" href="http://data.neonscience.org/static/browse.html" target="_blank">Browse NEON Data (beta version).</a>
 
 ## Document Your Work
 
@@ -49,7 +49,7 @@ You will submit the code used to work with and process your data, via Github.
 Please consider:
 
 1. The organization of your working directory
-2. The structure, organization and documentation of your code.
+2. The structure, organization, and documentation of your code.
 
 We encourage you to do all of your work in RMarkdown or Jupyter Notebook files!
 
@@ -73,8 +73,8 @@ present your capstone project, you can find out more information here:
 
 On Thursday of the Institute, we will spend some time discussing projects and you
 will have time to figure out who you'd like to work with. Note: It is OK if you
-would rather work independently, however a goal of this Institute is to practice
-efficient collaboration skills, so we encourage you to work in groups!
+would rather work independently, however, a goal of this Institute is to practice
+efficient collaboration skills, so we encourage you to work in pairs or groups!
 
 Let's get started:
 

@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 
 This vignette assumes you are working with eddy4R within the Docker 
 environment established by NEON. To get set up in that environment, 
-follow the instructions <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/fbd76ce778bc369fa9b94b7751546abb1ae56073/tutorials/R/eddy4r/dockerEddy4r.md" target="_blank">here</a>.
-[CKL: Megan, I put a link to the page on GitHub, because I don't think we've 
-put this up on the website yet]
+follow the instructions <a href="neonscience.org/set-up-docker" target="_blank">here</a>.
 
 At the end of those instructions, you should have an RStudio 
 environment running within Docker. Use that workspace for this 
@@ -31,81 +29,54 @@ vignette.
 ## 1. Install packages and set up environment
 
 First, check for required packages and install any that aren't 
-already installed.
+already installed. Once all required packages are installed, 
+load them into the environment.
 
-Throughout this vignette, we use the package::function() 
-syntax to refer to functions. This is done to avoid any 
+Throughout this vignette, we use the `package::function()` 
+syntax to explicitly refer to functions. This is done to avoid any 
 possibility of ambiguity, in case there are functions in 
 different packages with the same name.
 
-[CKL: Dave, based on your feedback, I dropped the update.packages() call. Yes?]
 
 ```{r pack-install}
 
-packFlow00 <- c("DataCombine", "ff", "ffbase", "rhdf5","splus2R")
-packFlow01 <- packFlow00[!(packFlow00 %in% installed.packages()[,"Package"])]
-if(base::length(packFlow01) > 0) {
-  utils::install.packages(packFlow01)
-  }
-base::rm(packFlow00, packFlow01)
+packReq <- c("DataCombine", "eddy4R.base", "eddy4R.qaqc",  
+             "ff", "ffbase", "methods", "rhdf5","splus2R")
+base::lapply(packReq, function(x) {
+  print(x)
+  if(base::require(x, character.only = TRUE) == FALSE) {
+    utils::install.packages(x)
+    base::library(x, character.only = TRUE)
+  }})
+base::rm(packReq)
 
 ```
 
-Now that we've ensured all needed packages are installed, load 
-them:
-
-[CKL: Dave, there are packages in this list that aren't in 
-packFlow00 above. Should I add them?]
-
-```{r pack-load}
-
-base::library(DataCombine)
-base::library(eddy4R.base)
-base::library(eddy4R.qaqc)
-base::library(ff)
-base::library(ffbase)
-base::library(methods)
-base::library(rhdf5)
-base::library(splus2R)
-
-```
 
 ## 2. Set environment variables
 
 Here we set file paths and basic input parameters as environment 
 variables for convenience.
 
-[CKL: Dave, I dropped the if(TRUE) on this, because it didn't 
-seem useful. Also rearranged a bit and added explanatory 
-comments, please review]
-
 ```{r env-vars}
 
-# file path for the directory containing input L0' data
-base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp")
+# File path for the directory containing input L0' data
+base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
 
-# file path to the HDF5 file of input L0' data
-base::Sys.setenv("DIRFILEPARA" = 
-                   "/home/eddy/inpExmp/ECTE_dp0p_CPER_2017-05-01.h5")
-
-# [CKL: this was commented out in the existing vignette. Should I delete?]
-# base::Sys.setenv("DIRMNT" = base::paste0("/home/", base::Sys.getenv("USER"), "/eddy"))
-
-# file path for outputs
+# File path for outputs
 base::Sys.setenv("DIROUT" = "/home/eddy/out")
 
-# date(s) of the input data
-# [CKL: is it possible to do this with data spanning multiple days? what's the syntax?]
-base::Sys.setenv("FILEDP0P" = "2017-05-01")
+# Date(s) of the input data, specified here for the output file name
+base::Sys.setenv("DATEOUT" = "2017-09-01")
 
-# NEON domain of the input data: Domain 10, D10
-base::Sys.setenv("DOM" = "D10")
+# NEON domain, site, and data product ID of the input data
+# for the output file name:
+# Domain 10 = D10
+# Central Plains Experimental Range = CPER
+# Bundled eddy covariance data = 00200.001
+base::Sys.setenv("FILEOUTBASE" = "NEON.D10.CPER.00200.001")
 
-# NEON site code of the input data:
-# Central Plains Experimental Range, CPER
-base::Sys.setenv("LOC" = "CPER")
-
-# flag to indicate to the eddy4R.base::def.para.flow() 
+# Flag to indicate to the eddy4R.base::def.para.flow() 
 # function that the variables above can be found as 
 # environment variables, instead of provided as function 
 # inputs
@@ -115,84 +86,819 @@ base::Sys.setenv("METHPARAFLOW" = "EnvVar")
 
 ## 3. Read in metadata
 
-[CKL: I'm not sure how to describe this code chunk, because 
-it seems a bit redundant with the previous chunk. It looks 
-like the idea is to set up the user to use a default file 
-if they skipped the previous chunk. I'd be inclined to 
-drop it if that's the case.]
+Pass along the environment variables defined in section 2, 
+then read in additional parameters from the HDF5 file.
 
 ```{r metadata}
 
-# start with an empty list of parameters
+# In this section, define and/or read in a number of terms and 
+# parameters.
+
+# Create an empty list for parameters.
 Para <- base::list()
 
-# [CKL: Again, I'm confused here. We're confirming that we 
-# entered the environment variable we just entered above. 
-# Also, why set MethParaFlow both in the environment 
-# variables AND in the function call? Isn't the idea of 
-# the environment variables option to avoid this?]
-if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
-  Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
-} else {
-  # [CKL: And this 'else' is also confusing - if we didn't 
-  # set up the workflow to use environment variables, we 
-  # ingest a completely different dataset from the one 
-  # above?]
-  FileDp0p <- "2016-04-24"
-  Loc <- "SERC"
-  Dom <- "D02"
-  Para$Flow <- eddy4R.base::def.para.flow(FileDp0p = FileDp0p, 
-                                          Loc = Loc, Dom = Dom, 
-                                          MethParaFlow = "DfltInp",
-                                          urlInpRefe = "https://www.dropbox.com/s/qlp1pyanm5rn2eq/inpRefe_20170308.zip?dl=1",
-                                          urlOutRefe = "https://www.dropbox.com/s/60s78ehk7s5j6rd/outRefe_20170612.zip?dl=1")
+# Use the def.para.flow() function to specify the metadata are stored 
+# in environment variables, and give file paths to input and output.
+# You will see a number of warning messages in response to this line, 
+# but if you can proceed with the next several commands, don't worry 
+# about the warnings here.
+Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
+
+# The args() function can be used to see the full list of function 
+# arguments available in def.para.flow().
+# Additional metadata can be passed to the function as well, by
+# assigning a variable name in the functional call.
+base::args(eddy4R.base::def.para.flow)
+
+# Get the NEON-specific 4-letter code for the site location (Loc) 
+# from the dp0p input file   
+Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
+
+# Get the level of the tower top (LvlTowr) from the dp0p input file 
+Para$Flow$LvlTowr <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
+
+# Use the def.hdf5.read.para() function to extract parameters 
+# from the metadata in the input file and assign them to the 
+# parameter list.
+
+# For each variable to be written out, set the aggregation 
+# parameters.
+# Variables:
+#   amrs: Attitude Motion Reference System
+#   co2turb: Turbulent CO2 flux
+#   h2oTurb: Turbulent H2O flux
+#   soni: Windspeed and direction from sonic anemometer
+# Parameters:
+#   PrdIncrAgrDflt: Period Increment Aggregation Default
+#   PrdWndwAgrDflt: Period Window Aggregation Default
+for(idx in c("amrs", "co2Turb", "h2oTurb", "soni")) {
+  
+  Para$Flow$dp01[[idx]] <- eddy4R.base::def.hdf5.read.para(
+    DirFileParaLoca = Para$Flow$DirFilePara,
+    GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/", idx),
+    SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+  )
+  
+}
+
+# AngEnuXaxs: Planar fit coefficient of the x axis
+# AngEnuYaxs: Planar fit coefficient of the y axis
+# Ofst: Planar fit offset
+# ZoneTime: Time zone of data collection
+# Note that a future release of the eddy4R package will 
+# include a planar fit function, which will allow you to 
+# set the planar fit coefficients to NA here, and then 
+# use the function to estimate them. This workflow will 
+# require a longer window of input data, on the order of 
+# days to weeks, be provided to determine a robust 
+# planar regression for the data.
+Para$Sci <- eddy4R.base::def.hdf5.read.para(
+  DirFileParaLoca = Para$Flow$DirFilePara,
+  GrpName = Para$Flow$Loc,
+  SetPara = c("Pf$AngEnuXaxs", "Pf$AngEnuYaxs", "Pf$Ofst", "ZoneTime")
+)
+
+# In the next 5 commands, get the sampling frequency (FreqSamp) 
+# of each instrument from the parameters in the input file:
+# irgaTurb: Turbulent flux gas analyzer
+# mfcSampTurb: Mass flow controller
+# valvValiNemaTurb: Valve Validation Nema enclosure Turbulence
+# soni, amrs: See above
+Para$Sci$dp0p$irgaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/irgaTurb"),
+      SetPara = c("FreqSamp")
+)
+
+Para$Sci$dp0p$mfcSampTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/mfcSampTurb"),
+      SetPara = c("FreqSamp")
+)
+
+Para$Sci$dp0p$valvValiNemaTurb <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/valvValiNemaTurb"),
+      SetPara = c("FreqSamp")
+)
+
+# For the sonic anemometer, also get the angle of the z axis 
+# relative to the North-East-Down coordinate system used 
+# for sonic anemometer installation (AngNedZaxs)
+Para$Sci$dp0p$soni <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/soni"),
+      SetPara = c("AngNedZaxs","FreqSamp")
+)
+
+Para$Sci$dp0p$amrs <- def.hdf5.read.para(
+      DirFileParaLoca = Para$Flow$DirFilePara,
+      GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/amrs"),
+      SetPara = c("FreqSamp")
+)
+
+# Lag$TimeDiff: The time lag to align gas concentration data 
+# with wind measurements, allowing for travel time from the inlet
+# to the gas analyzer.
+# The next two commands create the TimeDiff parameter for CO2
+# and H2O, but leave them set to NA. Lag time is calculated by 
+# eddy4R.base::def.lag(). If you prefer to set it manually, 
+# the def.lag() function can also set it.
+Para$Sci$dp01$co2Turb$RtioMoleDryCo2 <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/co2Turb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryCo2"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+Para$Sci$dp01$h2oTurb$RtioMoleDryH2o <- def.hdf5.read.para(
+        DirFileParaLoca = Para$Flow$DirFilePara,
+        GrpName = paste0("/", Para$Flow$Loc, "/dp01/data/h2oTurb/", 
+                         Para$Flow$LvlTowr, "_30m/rtioMoleDryH2o"),
+        SetPara = c("Lag$TimeDiff")
+)
+
+# Create a version label for your outputs, using the 
+# current system time
+Para$Flow$VersDp <- paste0(Para$Flow$VersDp, "_", 
+                           format(Sys.time(), "%Y%m%d_%H%M%S_%Z"))
+
+# Create a list of the sampling frequencies of the essential 
+# instruments, extracted from the input data above.
+FreqSamp <- list(
+  "irgaTurb" = Para$Sci$dp0p$irgaTurb$FreqSamp,
+  "mfcSampTurb" = Para$Sci$dp0p$mfcSampTurb$FreqSamp,
+  "valvValiNemaTurb" = ifelse(length(as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp))==0,
+                              0.2, as.numeric(Para$Sci$dp0p$valvValiNemaTurb$FreqSamp)),
+  "soni" = Para$Sci$dp0p$soni$FreqSamp,
+  "amrs" = Para$Sci$dp0p$amrs$FreqSamp
+)
+
+```
+
+## 4. Variable ranges
+
+Set plausible ranges for the input variables, to be tested on ingest.
+Then set paths for the working directory.
+
+```{r range}
+
+# Create an empty list for range values.
+Rng <- list()
+  
+# Set ranges for gas analyzer variables:
+# densMoleCo2: CO2 molar density, mol m-3
+# densMoleH2o: H2O molar density, mol m-3
+# presAtm: Atmospheric pressure, Pa
+# presDiff: Difference in pressure, Pa
+# rtioMoleDryCo2: Mole ratio of CO2 in air, mol mol-1
+# rtioMoleDryH2o: Mole ratio of H2O in air, mol mol-1
+# tempIn: Temperature of air at inlet, K
+# tempOut: Temperature of air at outlet, K
+Rng$irgaTurb <- data.frame(
+  "densMoleCo2" = c(0,30) * 1e-3,
+  "densMoleH2o" = c(0,1500) * 1e-3,
+  "presAtm" = c(50,120) * 1e3,
+  "presDiff" = c(-10,1) * 1e3,
+  "rtioMoleDryCo2" = c(300,450) * 1e-6,
+  "rtioMoleDryH2o" = c(0,30) * 1e-3,
+  "tempIn" = c(220,330),
+  "tempOut" = c(220,330)
+)
+
+# Set ranges for sonic anemometer variables:
+# veloXaxs: Velocity on the x axis, m s-1
+# veloYaxs: Velocity on the y axis, m s-1
+# veloZaxs: Velocity on the z axis, m s-1
+# veloSoni: Speed of sound, m s-1
+Rng$soni <- data.frame(
+  "veloXaxs"=c(-50,50),
+  "veloYaxs"=c(-50,50),
+  "veloZaxs"=c(-10,10),
+  "veloSoni"=c(300,400)
+)
+
+# Set ranges for attitude and motion reference variables:
+# angXaxs: Deviation from the x axis, degree
+# angYaxs: Deviation from the y axis, degree
+# angZaxs: Deviation from the z axis, degree
+Rng$amrs <- data.frame(
+  "angXaxs"=c(-360,360),
+  "angYaxs"=c(-360,360),
+  "angZaxs"=c(-360,360)
+)
+
+# Set directories and file paths
+# As written, this vignette uses the default paths. To use custom 
+# paths, assign the file paths you want to use to the parameters
+# Para$Flow$DirWrk, Para$Flow$DirInp, and Para$Flow$DirOut before
+# proceeding to the code below.
+
+# Working directory
+# Default: use a temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirWrk)) {
+  Para$Flow$DirWrk <- tempdir()
+
+  # Optional: create a user-specified working directory, e.g. on host filesystem
+  } else {
+    dir.create(Para$Flow$DirWrk, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for input data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirInp)) {
+  Para$Flow$DirInp <- paste0(Para$Flow$DirWrk, "/inpRefe")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirInp, recursive = TRUE, showWarnings = FALSE)
+  }
+
+# Directory for output data
+# Default: use temporary working directory on Docker filesystem
+if(is.na(Para$Flow$DirOut)) {
+  Para$Flow$DirOut <- paste0(Para$Flow$DirWrk, "/out")
+  
+  # Optional: create user-specified input directory
+  } else {
+    dir.create(Para$Flow$DirOut, recursive = TRUE, showWarnings = FALSE)
+  }
+
+
+```
+
+## 5. Read in data!
+
+We have found in testing that this section may run into trouble if 
+Docker is not assigned sufficient memory in your system. If you 
+find that this section hangs or errors out, try opening 
+Docker -> Preferences -> Advanced and increasing the memory 
+allotment.
+
+```{r ingest}
+
+# Create empty lists for data and quality flags
+data <- list()
+qfqmFlag <- list()
+
+# Index for the number of days iterated over, and empty list for outputs
+numDate <- 0
+out <- list()
+
+# Loop over days in input data (in the example data here, there is 
+# only one day)
+for(date in Para$Flow$DateOut) {
+  numDate <- numDate + 1
+
+  # Begin: read raw data from HDF5 file
+  if(Para$Flow$Read == "hdf5") {
+
+    # Create directory structure
+    dir.create(paste(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", 
+                     Para$Flow$VersDp, sep=""), 
+               recursive = TRUE, showWarnings = FALSE)
+
+    # Create empty list for inputs
+    inp <- list()
+    
+    # Loop over instruments
+    for(Var in c("irgaTurb", "mfcSampTurb", "valvValiNemaTurb", "soni", "amrs")){
+
+      # Use data read function, assigning results to a temporary variable
+      tmp <- eddy4R.base::wrap.hdf5.read(
+        DirInpLoca = Para$Flow$DirInp,
+        SiteLoca = Para$Flow$Loc,
+        DateLoca = date,
+        VarLoca = Var,
+        FreqLoca = FreqSamp[[Var]],
+        LvlTowr = Para$Flow$LvlTowr,
+        RngLoca = Rng,
+        
+        # Assign de-spiking parameters:
+        #   widt: WndwDspkBr86 de-spiking median filter window width [s]
+        #   nbin: NumDspkBr86Bin de-spiking histogram bins initial number/step size
+        #   rest: ThshDspkBr86Reso de-spiking resolution threshold
+        DespLoca = list(widt = 9,
+                        nbin = 2,
+                        rest = 10
+                        )
+        )
+
+      # Read in quality flags from HDF5 file
+      if(!Var %in% "valvValiNemaTurb"){
+      
+        tmpQfqm <- eddy4R.base::def.hdf5.read.qfqm(
+          DirInpLoca = Para$Flow$DirInp,
+          SiteLoca = Para$Flow$Loc,
+          DateLoca = date,
+          VarLoca = Var,
+          FreqLoca = FreqSamp[[Var]],
+          LvlTowr = Para$Flow$LvlTowr
+        )
+      
+      # Remove timestamp from flags, since timestamps will be 
+      # saved elsewhere
+      tmpQfqm <- tmpQfqm[,grep("time",names(tmpQfqm),invert = T)]
+      }
+      
+      # Copy results from temporary variables to inp
+      
+      # Time domain, including unit assignment
+      if(Var == "irgaTurb") {
+        inp$time <- ff::as.ffdf.data.frame(data.frame(UTC = tmp$time))
+        base::attr(x = inp$time$UTC, which = "unit") <- "YYYY-MM-DD hh:mm:ss.sss"
+        }
+
+      # Sensor data, including unit assignment
+      inp$data[[Var]] <- ff::as.ffdf.data.frame(tmp$data)
+      for(idx in base::names(tmp$data)) 
+        base::attr(x = inp$data[[Var]][[idx]], which = "unit") <-
+        base::attr(x = tmp$data, which = "unit")[[idx]]
+      
+      if(exists("tmpQfqm")) inp$qfqm[[Var]] <- ff::as.ffdf.data.frame(tmpQfqm)
+
+      # Remove temporary variables
+      rm(tmp)
+      if(exists("tmpQfqm")) 
+        rm(tmpQfqm)
+      invisible(gc())
+    
+      # End loop over instruments
+      }; rm(Var)
+
+    # Calculate derived quantities: daily extent, native resolution
+    inp <- eddy4R.base::wrap.derv.prd.day(
+      inpList = inp,
+      ZoneTime = Para$Sci$ZoneTime,
+      AngZaxsSoniInst = Para$Sci$dp0p$soni$AngNedZaxs
+      )
+
+    # Print status message
+    print(paste0(format(Sys.time(), "%F %T"), ": dataset ", date, 
+                 ": derived quantities calculated (daily extent, native resolution)"))
+      
+  # End of raw data read
+  }
+
+  # Assign daily data and attributes to file-backed objects 
+  #   to keep RAM footprint small
+  # If loop is on the first day, create the attributes:
+  if(numDate == 1) {
+      
+    # IRGA
+    data$irgaTurb <- inp$data$irgaTurb
+    qfqmFlag$irgaTurb <- inp$qfqm$irgaTurb
+
+    # MFC
+    data$mfcSampTurb <- inp$data$mfcSampTurb
+    qfqmFlag$mfcSampTurb <- inp$qfqm$mfcSampTurb
+      
+    # Sonic anemometer
+    data$soni <- inp$data$soni
+    qfqmFlag$soni <- inp$qfqm$soni
+
+    # AMRS
+    data$amrs <- inp$data$amrs
+    qfqmFlag$amrs <- inp$qfqm$amrs
+    
+    # Time objects
+    data$time <- inp$time
+    qfqmFlag$time <- inp$time
+
+    # If loop is on any day after the first, append the attributes:
+    } else {
+
+      # IRGA
+      data$irgaTurb <- ffbase::ffdfappend(x = data$irgaTurb, 
+                                          dat = inp$data$irgaTurb)
+      qfqmFlag$irgaTurb <-  ffbase::ffdfappend(x =qfqmFlag$irgaTurb, 
+                                               dat = inp$qfqm$irgaTurb)
+
+      # MFC
+      data$mfcSampTurb <- ffbase::ffdfappend(x = data$mfcSampTurb, 
+                                             dat = inp$data$mfcSampTurb)
+      qfqmFlag$mfcSampTurb <-  ffbase::ffdfappend(x = qfqmFlag$mfcSampTurb, 
+                                                  dat = inp$qfqm$mfcSampTurb)
+      
+      # valvValiNemaTurb
+      data$valvValiNemaTurb <- ffbase::ffdfappend(x = data$valvValiNemaTurb, 
+                                                  dat = inp$data$valvValiNemaTurb)
+      qfqmFlag$valvValiNemaTurb <- ffbase::ffdfappend(x = qfqmFlag$valvValiNemaTurb, 
+                                                      dat = inp$qfqm$valvValiNemaTurb)
+      
+      # Sonic anemometer
+      data$soni <- ffbase::ffdfappend(x = data$soni, dat = inp$data$soni)
+      qfqmFlag$soni <-  ffbase::ffdfappend(x =qfqmFlag$soni, dat = inp$qfqm$soni)
+      
+      # AMRS
+      data$amrs <- ffbase::ffdfappend(x = data$amrs, dat = inp$data$amrs)
+      qfqmFlag$amrs <-  ffbase::ffdfappend(x =qfqmFlag$amrs, dat = inp$qfqm$amrs)
+      
+      # Time objects
+      data$time <- ffbase::ffdfappend(x = data$time, dat = inp$time)
+      qfqmFlag$time <-  ffbase::ffdfappend(x =qfqmFlag$time, dat = inp$time)
+     
+    # End attributes assignment
+    }
+
+  # Remove temporary list of input variables
+  inp <- NULL
+  inpQfqm <- NULL
+  invisible(gc())
+
+# End loop
 }
 
 ```
 
 
+## 6. Begin data analysis.
+
+The first step is to get the half-hourly indices used to extract 
+data from the file-backed objects into internal memory as a list 
+of data.frames. Then, the lag time correction is applied to the gas 
+analyzer (IRGA) data, based on the sonic anemometer vertical velocity, 
+using the eddy4R.base::def.lag() function. After the lag correction 
+has been applied, the half-hourly derived data sub-products for relative 
+humidity and dewpoint temperature are calculated.
+
+Then, the input data that are provided as NEON Level 0 prime data products (high frequency raw data that has been time regularized and units converted) are 
+subsetted, and naming syntax is changed to match 
+NEON Level 1 data product output conventions. 
+eddy4R.base::wrap.dp01.agr.prd() is used to calculate the 1-minute averaged 
+data and quality metrics. Finally, we calculate 30-minute data using 
+eddy4R.base::wrap.dp01() and determine the quality metrics and final quality 
+flag using eddy4R.base::wrap.dp01.qfqm.ecte().
+
+```{r process}
+
+# Kick off with a time stamp when processing starts
+print(paste0(format(Sys.time(), "%F %T"), ": dataset ", date, 
+             " derived quantities (vignette) begin"))
+
+# Create empty list for working parameters and variables
+wrk <- list()
+
+# Create empty list for quality flag/quality metric data
+qfqm <- list()
+
+# Set begin and end time for each 30-minute averaging interval,
+# for each instrument system
+invisible(lapply(names(data), function(x) {
+  if(x == "amrs") {
+    wrk$idx[[x]] <<- eddy4R.base::def.idx.agr(time = data$amrs$time, 
+                                              PrdAgr = 1800, 
+                                              FreqLoca = 40)
+  }  else {  
+    wrk$idx[[x]] <<- eddy4R.base::def.idx.agr(time = data$time$UTC, 
+                                              PrdAgr = 1800, 
+                                              FreqLoca = 20)
+  }}))
+
+# If Deve flag, meaning Development, is set to TRUE, only run a 
+# small number of iterations for testing purposes. Otherwise 
+# iterate over all variables and time periods. This vignette 
+# sets Deve=TRUE.
+if (Para$Flow$Deve == TRUE) {
+  iter <- 10
+  } else {
+    iter <- max(sapply(names(wrk$idx), 
+                       function(x) length(wrk$idx[[x]]$idxBgn)))
+  }
+
+# Another time stamp: Loop start
+print(paste0(format(Sys.time(), "%F %T"), ": dataset ", 
+             date, " DP01 calculation begin"))
+numAgr <- 0
+
+for(idxAgr in 1:iter) {
+  
+  numAgr <- numAgr + 1
+  
+  # Create an identifier for the loop iterations
+  lvlAgr <- paste0("numAgr", ifelse(numAgr < 10, 
+                                    paste0("0", numAgr), 
+                                    numAgr))
+
+  # Create empty list for data
+  wrk$data <- list()
+  
+  # Loop over sensor systems to grab the data indices for the current aggregation period (i.e. 30 minute period of data).
+  for(idxSens in names(data)) {
+    wrk$data[[idxSens]] <- data[[idxSens]][wrk$idx[[idxSens]]$idxBgn[idxAgr]:
+                                             wrk$idx[[idxSens]]$idxEnd[idxAgr],]
+    wrk$qfqm[[idxSens]] <- qfqmFlag[[idxSens]][wrk$idx[[idxSens]]$idxBgn[idxAgr]:
+                                                 wrk$idx[[idxSens]]$idxEnd[idxAgr],]
+
+    # Assign units for each variable, from metadata
+    for(idxVar in base::names(wrk$data[[idxSens]])) {
+
+      base::attr(x = wrk$data[[idxSens]][[idxVar]], which = "unit") <-
+        base::attr(x = data[[idxSens]][[idxVar]], which = "unit")
+      
+      }; rm(idxVar)
+    
+    }; rm(idxSens)
+
+  # Lag time correction
+  # Select variables to be lagged
+  var <- c("rtioMoleDryCo2", "rtioMoleDryH2o", "rtioMassH2o", "presH2o")
+
+  # Loop over lag correction variables
+  tmpRun <- 0
+  for(idxVar in var) {
+    
+    tmpRun <- tmpRun + 1
+
+    # Is lag pre-determined or calculated?
+    # If lag is calculated:
+    if((base::length(base::grep(pattern = "CO2", 
+                                x = idxVar, 
+                                ignore.case = TRUE)) > 0 &&
+        is.na(Para$Sci$dp01$co2Turb$RtioMoleDryCo2$`Lag$TimeDiff`)) |
+       (base::length(base::grep(pattern = "H2O", 
+                                x = idxVar, ignore.case = TRUE)) > 0 &&
+        is.na(Para$Sci$dp01$h2oTurb$RtioMoleDryH2o$`Lag$TimeDiff`))) {
+      
+      # Calculate lag
+      lag <- def.lag(refe = wrk$data$soni$veloZaxs,
+                     meas = wrk$data$irgaTurb[[idxVar]],
+                     lagMax = 2 * FreqSamp$irgaTurb,
+                     lagCnst = TRUE,
+                     # Only negative lags permitted
+                     lagNgtvPstv = c("n", "p", "np")[1],
+                     lagAll = TRUE,
+                     freq = FreqSamp$irgaTurb,
+                     hpf = TRUE)
+      
+      } else {
+        
+        # If lag is pre-determined:
+        lag <- list()
+        lag$lag <- ifelse(base::length(base::grep(pattern = "CO2", 
+                                                  x = idxVar, 
+                                                  ignore.case = TRUE)) > 0,
+                          Para$Sci$dp01$co2Turb$RtioMoleDryCo2$`Lag$TimeDiff`,
+                          Para$Sci$dp01$h2oTurb$RtioMoleDryH2o$`Lag$TimeDiff`)
+        lag$corrCros <- NaN
+        
+      }
+    
+    # Shift data according to lag time
+    tmpAttr <- attributes(wrk$data$irgaTurb[[idxVar]])$unit
+    if(!is.na(lag$lag)) {
+      wrk$data$irgaTurb[[idxVar]] <- 
+        DataCombine:::shift(VarVect = wrk$data$irgaTurb[[idxVar]], 
+                            shiftBy = - lag$lag, reminder = FALSE)
+    }
+    attributes(wrk$data$irgaTurb[[idxVar]])$unit <- tmpAttr; rm(tmpAttr)
+      
+    # Store lag times
+    if(tmpRun == 1) {
+      tmpLag <- lag$lag / FreqSamp$irgaTurb
+      tmpCorrCros <- lag$corrCros
+      } else {
+        tmpLag <- c(tmpLag, lag$lag / FreqSamp$irgaTurb)
+        tmpCorrCros <- c(tmpCorrCros, lag$corrCros)
+      }
+
+    # End of lag correction loop
+    }
+
+  # Remove temporary variables
+  names(tmpLag) <- var
+  tmpLag <- data.frame(t(tmpLag))
+  names(tmpCorrCros) <- var
+  tmpCorrCros <- data.frame(t(tmpCorrCros))
+  rm(tmpRun, lag, idxVar, var)
+
+  # Derived variables
+  # Fast air temperature
+  wrk$data$soni$T_air_SONIC <- unlist(wrk$data$soni$tempSoni / 
+                                        (1 + 0.51 * wrk$data$irgaTurb$rtioMassH2o))
+  base::attr(x = wrk$data$soni$T_air_SONIC, which = "unit") <- "K"
+
+  # Ambient water vapor saturation pressure
+  if(!is.na(mean(wrk$data$soni$T_air_SONIC, na.rm=TRUE))) {
+    wrk$data$irgaTurb$presH2oSatAtm <- 
+      unlist(def.pres.h2o.sat.temp.mag(temp=wrk$data$soni$T_air_SONIC))
+    } else {
+      wrk$data$irgaTurb$presH2oSatAtm <- 
+        rep(NaN, length(wrk$data$soni$T_air_SONIC))
+    }
+  base::attr(x = wrk$data$irgaTurb$presH2oSatAtm, which = "unit") <- "Pa"
+
+  # Ambient relative humidity, including adjustment of partial 
+  # pressure from cell to ambient via Dalton's law
+  wrk$data$irgaTurb$rhAtm <- 
+    def.rh.pres.h2o.pres.sat.h2o(presH2o = wrk$data$irgaTurb$presH2o, 
+                                 presH2oSat = wrk$data$irgaTurb$presH2oSatAtm) *
+    mean(wrk$data$irgaTurb$presAtm, na.rm=TRUE) / 
+    mean(wrk$data$irgaTurb$presSum, na.rm=TRUE)
+
+  # Ambient dew point
+  wrk$data$irgaTurb$tempDew <- 
+    def.temp.dew.pres.h2o.temp.mag(presH2o = wrk$data$irgaTurb$presH2o, 
+                                   temp = wrk$data$soni$T_air_SONIC)
+
+  # Assemble data for Level 1 data product generation
+
+  # Create empty temporary lists
+  # For data
+  wrk$tmp$data <- list()
+  
+  # For quality flags and quality metrics
+  wrk$tmp$qfqm <- list()
+  
+  # Assemble data
+  # For sonic anemometer
+  wrk$tmp$data$soni <- data.frame(stringsAsFactors = FALSE,
+                                  "veloXaxsErth" = wrk$data$soni$veloXaxs,
+                                  "veloYaxsErth" = wrk$data$soni$veloYaxs, 
+                                  "veloZaxsErth" = wrk$data$soni$veloZaxs,
+                                  "veloXaxsYaxsErth" = wrk$data$soni$veloXaxsYaxsErth,
+                                  "angZaxsErth" = wrk$data$soni$angZaxsErth,                 
+                                  "tempSoni" = wrk$data$soni$tempSoni,
+                                  "tempAir" = wrk$data$soni$T_air_SONIC)
+      
+  # For AMRS
+  wrk$tmp$data$amrs <- data.frame(stringsAsFactors = FALSE,
+                                  "angNedXaxs" = wrk$data$amrs$angXaxs,
+                                  "angNedYaxs" = wrk$data$amrs$angYaxs,
+                                  "angNedZaxs" = wrk$data$amrs$angZaxs)
+     
+  # For CO2
+  wrk$tmp$data$co2Turb <- data.frame(stringsAsFactors = FALSE,
+                                     "rtioMoleDryCo2" = wrk$data$irgaTurb$rtioMoleDryCo2,
+                                     "densMoleCo2" = wrk$data$irgaTurb$densMoleCo2, 
+                                     "presAtm" = wrk$data$irgaTurb$presAtm,
+                                     "presSum" = wrk$data$irgaTurb$presSum,
+                                     "frt00Samp" = wrk$data$mfcSampTurb$frt00,
+                                     "tempAve" = wrk$data$irgaTurb$tempMean)
+    
+  # for H2O
+  wrk$tmp$data$h2oTurb <- data.frame(stringsAsFactors = FALSE,
+                                     "rtioMoleDryH2o" = wrk$data$irgaTurb$rtioMoleDryH2o,
+                                     "densMoleH2o" = wrk$data$irgaTurb$densMoleH2o, 
+                                     "tempDew" = wrk$data$irgaTurb$tempDew,
+                                     "presAtm" = wrk$data$irgaTurb$presAtm,
+                                     "presSum" = wrk$data$irgaTurb$presSum,
+                                     "frt00Samp" = wrk$data$mfcSampTurb$frt00,
+                                     "tempAve" = wrk$data$irgaTurb$tempMean)
+
+  # Calculate data products 
+  # Calculate 1 and 2 minute data products
+  wrk$dp01AgrSub[[lvlAgr]] <- eddy4R.base::wrap.dp01.agr.prd(inpList = wrk)
+  
+  # 30-minute data products
+  wrk$dp01[[lvlAgr]] <- eddy4R.base::wrap.dp01(
+    data = wrk$tmp$data,
+    idx = c("soni", "amrs", "co2Turb", "h2oTurb")
+    )
+  
+          # Standard error removed from 1- and 30- minute, it is now part of the ucrt calculation function
+          lapply(names(wrk$dp01AgrSub[[lvlAgr]]$data), function(idxData){
+          wrk$dp01AgrSub[[lvlAgr]]$data[[idxData]]$se <<- NULL
+          wrk$dp01[[lvlAgr]][[idxData]]$se <<- NULL
+          })
+  
+  
+  # Another time stamp: Starting quality processing
+  print(paste0(format(Sys.time(), "%F %T"), 
+               ": Beginning the qfqm data processing for data in loop...", 
+               idxAgr))
+  
+  # Calculate the quality metrics and determine the final quality flag
+  wrk$qfqmOut[[lvlAgr]] <- eddy4R.base::wrap.dp01.qfqm.ecte(
+    qfqm = wrk$qfqm,
+    idx = c("soni", "amrs", "co2Turb", "h2oTurb"),
+    MethMeas = "ecte",
+    RptExpd = TRUE )
+
+  # Remove temporary files
+  wrk$data <- NULL
+  wrk$tmp <- NULL
+  invisible(gc())
+
+# End loop
+}
+print(paste0(format(Sys.time(), "%F %T"), 
+             ": dataset ", date, 
+             " DP01 calculation complete"))
 
 
-
-
-
-[CKL: everything below comes with the vignette template, I 
-kept it for my own reference, will delete in final version]
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## 7. Aggregate data and quality metrics
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+Now, we aggregate the results from section 6. The first step is to 
+aggregate the half-hourly sets of data and qfqm. Then, we plot the 
+final quality flag and its relationship to the alpha and beta quality 
+metrics. (alpha = fraction of data flagged by sensor and statistical 
+plausibility tests; beta = fraction of quality flags not available 
+due to missing data)
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+```{r aggregation}
 
-## More Examples
+# Concatenate results using def.dp01.agr.ecte()
+out <- eddy4R.base::def.dp01.agr.ecte(inpList = wrk, 
+                                      MethSubAgr = TRUE, 
+                                      MethUcrt = FALSE)
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+# Generate qfqm table to be plotted
+inpPlot <- data.frame(time = 
+                        format(as.POSIXct(out$time$co2Turb$timeBgn, 
+                                          format="%Y-%m-%d %H:%M:%S"), 
+                               format="%H:%M"),
+                      qfFinl = out$qfqm$soni$qfFinl$veloXaxsYaxsErth,
+                      qmAlph = out$qfqm$soni$qmAlph$veloXaxsYaxsErth,
+                      qmBeta = out$qfqm$soni$qmBeta$veloXaxsYaxsErth)
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+# Plot final quality flag, alpha metric, and beta metric
+library(ggplot2)
+
+plot = ggplot(inpPlot, aes(time)) + 
+  geom_bar(aes(y = qfFinl, fill= "qfFinl"), stat="identity") +
+  geom_line(aes(y = qmAlph, group = 1, color = "qmAlph"), 
+            size = 1, linetype = "dashed") +
+  geom_line(aes(y = qmBeta, group = 2, color = "qmBeta"), 
+            size = 1, linetype = "dashed") +
+  ggtitle("veloXaxsYaxsErth") +
+  scale_colour_manual(" ", 
+                      values=c("qfFinl" = "black", 
+                               "qmAlph" = "blue", 
+                               "qmBeta" = "red")) +
+  scale_fill_manual("",values="black") +
+  theme(legend.key = element_blank(),
+        legend.title = element_blank(),
+        legend.box = "vertical",
+        plot.title = element_text(size=14, 
+                                  face="bold.italic", 
+                                  hjust = 0.5),
+        axis.title.x = element_text(size=14, face="bold"),
+        axis.title.y = element_text(size=14, face="bold")) +
+  ylim(-0.2,1.2) +
+  labs(y = "qfqm")
+
+print(plot)
+          
+# Remove temporary files
+wrk$dp01 <- NULL
+wrk$dp01AgrSub <- NULL
+wrk$qfqmOut <- NULL
+
 ```
 
-Also a quote using `>`:
+## 8. Format for output
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+Lastly, we prepare the data for output and write it to the dp01 
+output HDF5 file. We first create the skeleton structure of the 
+NEON HDF5 file using eddy4R.base::def.hdf5.crte(). We then perform 
+some packaging of the results to match the NEON HDF5 structure and 
+write the output to the NEON dp01 HDF5 file.
+
+```{r format}
+
+# Drop the quality column (qfqm) after the example;
+# these data will be added to the HDF5 structure in 
+# a future release
+lapply(names(out$qfqm), function(x){
+  out$qfqm[[x]]$qm <<- NULL
+})  
+
+# Use the def.hdf5.crte() function to generate the 
+# H5 file in NEON EC format
+eddy4R.base::def.hdf5.crte(Date = date, 
+                           Site = Para$Flow$Loc, 
+                           LvlTowr = Para$Flow$LvlTowr, 
+                           DirOut = base::paste0(Para$Flow$DirOut, 
+                                                 "/", Para$Flow$Loc, 
+                                                 "/", Para$Flow$VersDp),
+                           FileOutBase = Para$Flow$FileOutBase, 
+                           MethExpd = TRUE,
+                           FileNameReadMe = "/home/eddy/inpExmp/ECTE_HDF5_readme.txt",
+                           FileNameObjDesc = 
+                             "/home/eddy/inpExmp/ECTE_HDF5_object_description.csv")
+
+# Determine the output filename of the file we just created  
+FileOut <- base::list.files(path = base::paste0(Para$Flow$DirOut, 
+                                                "/", Para$Flow$Loc, 
+                                                "/", Para$Flow$VersDp), 
+                            pattern = ".h5", full.names = TRUE)
+
+# Call the wrapper function wrap.hdf5.wrte.dp01() to package 
+# and write data to output HDF5 files, both basic and expanded
+eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out, 
+                                 FileIn = base::paste0(Para$Flow$DirInp,
+                                                       "/","ECTE_dp0p_",  
+                                                       Para$Flow$Loc, "_", 
+                                                       date, ".h5"), 
+                                 FileOut = FileOut, 
+                                 SiteLoca = Para$Flow$Loc, 
+                                 LvlTowr = Para$Flow$LvlTowr, 
+                                 MethUcrt = FALSE, 
+                                 MethSubAgr = TRUE)
+
+```
+
+
