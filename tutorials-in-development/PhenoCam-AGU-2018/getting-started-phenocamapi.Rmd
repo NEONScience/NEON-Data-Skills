@@ -167,7 +167,7 @@ head(duke_middays_path)
 
 While the purpose of this document is to show the basic commands for interacting with the PhenoCam API. More vignettes can be found in the package on how to merge external time-series (e.g. Flux data) with the PhenoCam time-series. 
 
-[^*]: The R package is developed and maintained by <a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. Most recent release is available from: https://github.com/bnasr/xROI.
+[^*]: The R package is developed and maintained by <a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. Most recent release is available from: https://github.com/bnasr/phenocamapi.
 
 
 
