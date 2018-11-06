@@ -147,7 +147,7 @@ pixels that are more green, have a higher NDVI value.
 brewerpal page</a>.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** Cynthia Brewer, the creater of 
+<i class="fa fa-star"></i> **Data Tip:** Cynthia Brewer, the creator of 
 ColorBrewer, offers an online tool to help choose suitable color ramps, or to 
 create your own. <a href="http://colorbrewer2.org/" target="_blank">
 ColorBrewer 2.0; Color Advise for Cartography </a>  

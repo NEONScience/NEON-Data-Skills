@@ -16,7 +16,7 @@ urlTitle: spreadsheets-swc
 ---
 
 NEON data are complex, consisting of over 180 different data products, with many 
-data products made up of several seperate data tables. We recommend that you work
+data products made up of several separate data tables. We recommend that you work
 with NEON data in a scripted environment (like R, Python, etc) using a reproducible 
 science framework. However, if you need to work in a spreadsheet with NEON
 data this tutorial will show you how to: 
@@ -112,7 +112,7 @@ Let's get started with the data. Remember, we're starting with "stacked" data
 (see Download Data above). 
 
 Let's start by opening the stacked external lab data (swc_externalLabData.csv). 
-This csv (comma seperate value) file when opened with Excel contains a single 
+This csv (comma separate value) file when opened with Excel contains a single 
 worksheet with the value in it. 
 
 A good rule is to never do any data manipulations to raw data - **keep raw data raw**. 

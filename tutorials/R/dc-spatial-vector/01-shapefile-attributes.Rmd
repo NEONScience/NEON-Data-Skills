@@ -367,7 +367,7 @@ Let's give this a try.
 # Check the class of the attribute - is it a factor?
 class(lines_HARV$TYPE)
 
-# how many "levels" or unique values does hte factor have?
+# how many "levels" or unique values does the factor have?
 # view factor values
 levels(lines_HARV$TYPE)
 # count the number of unique values or levels

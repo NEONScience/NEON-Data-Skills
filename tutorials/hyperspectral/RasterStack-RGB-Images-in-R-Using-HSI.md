@@ -210,7 +210,7 @@ The function output is a spatially referenced, R raster object.
     	  #Convert from array to matrix
     	  out <- (out[,,1])
     	  #transpose data to fix flipped row and column order 
-        #depending upon how your data are formated you might not have to perform this
+        #depending upon how your data are formatted you might not have to perform this
         #step.
     	  out <-t(out)
         #assign data ignore values to NA

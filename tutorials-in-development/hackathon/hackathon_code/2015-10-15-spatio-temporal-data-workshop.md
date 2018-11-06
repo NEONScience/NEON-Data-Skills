@@ -371,7 +371,7 @@ the remote sensing group to cover this.
 ###Below is the same analysis for another site for the same time period!
 THe data are for california field site san Joachin experimental range.
 This might be an option additional activity to compare the two! Note
-that hte NDVI values are generally lower as it's a scrubby medit environment.
+that the NDVI values are generally lower as it's a scrubby medit environment.
 We can include photographs of the sites as well!
 The data are very interesting!
 

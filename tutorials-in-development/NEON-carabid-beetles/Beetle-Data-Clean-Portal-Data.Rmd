@@ -157,7 +157,7 @@ sorting dataset, and
 and abundance information for specimens with that `sampleID` is provided in the 
 pinning dataset. 
 
-Data after 2014 do not seperate between these two group. **Katie, is this correct. My notes from when I asked you weren't very clear**
+Data after 2014 do not separate between these two group. **Katie, is this correct. My notes from when I asked you weren't very clear**
 
 Unique records have a unique `associatedSampleID` (format = 
 `plotID.trapID.collectDate.taxonID.tubeID` ). For records where taxonomic 
@@ -270,7 +270,7 @@ pin <- fileList[grep(pin,fileList)] # subset to just the ones in your module, us
 Now we can do the same thing but with the weather data. Here we don't want to 
 bring in all the weather data field only column 8 (`PRCP`, precipitation), and 12 to 14 (`TMAX`, `TMIN`,`TOBS`, temperature measures). 
 
-``` {r file-fuction-weather}
+``` {r file-function-weather}
 fileList <- list.files(pathToWeatherData, full.names=TRUE) # list all the files, full.names=TRUE is necessary for ldplay/lapply to work below
 # use grep to create
 weather <- fileList[grep(weather,fileList)]
@@ -708,7 +708,7 @@ bet_field$daysOfTrapping <- as.numeric(bet_field$daysOfTrapping)
 ```
 
 ### Abundance for different sampleTypes
-In the beetle data in 2014 and prior, beetles were seperated into two `sampleTypes`:
+In the beetle data in 2014 and prior, beetles were separated into two `sampleTypes`:
 common carabid and other carabid. The way abundance is calculated differs. We 
 need to calculate it in two ways. 
 

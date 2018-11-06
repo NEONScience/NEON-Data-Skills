@@ -491,7 +491,7 @@ regr_rf.fit(biomass_predictors,biomass)
 
 
 
-We now apply the Random Forest model to the predictor variables to retreive biomass
+We now apply the Random Forest model to the predictor variables to retrieve biomass
 
 
 ```python

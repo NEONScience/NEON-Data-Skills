@@ -281,7 +281,7 @@ chm_mask = chm_array_smooth
 chm_mask[chm_array_smooth != 0] = 1
 ```
 
-Next we will perfrom the watershed segmentation, which produces a raster of labels.
+Next we will perform the watershed segmentation, which produces a raster of labels.
 
 
 ```python
@@ -483,7 +483,7 @@ all_training_data = np.stack([area,diameter,max_tree_height,min_tree_height,perc
 
 ```
 
-We know apply the Random Forest model to the predictor variables to retreive 
+We know apply the Random Forest model to the predictor variables to retrieve 
 biomass.
 
 

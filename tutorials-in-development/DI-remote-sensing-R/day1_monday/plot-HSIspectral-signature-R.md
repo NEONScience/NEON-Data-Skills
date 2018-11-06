@@ -55,7 +55,7 @@ plot a spectral profile for that pixel.
 
 ## Import H5 Functions
 
-In this scenario, we have built a suite of **fuctions** that allow us to quickly
+In this scenario, we have built a suite of **functions** that allow us to quickly
 open and read from an H5 file. Rather than code out each step to open the H5 file,
 let's open that file first using the `source` function which reads the functions into
 our working environment. We can then use the funtions to quickly and efficiently

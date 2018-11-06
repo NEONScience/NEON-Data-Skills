@@ -138,7 +138,7 @@ AirTempDaily_strata
 ## ----increase-font-size--------------------------------------------------
 # format x axis with dates
 AirTempDaily_custom<-AirTempDaily_1y +
-  # theme(plot.title) allows to format the Title seperately from other text
+  # theme(plot.title) allows to format the Title separately from other text
   theme(plot.title = element_text(lineheight=.8, face="bold",size = 20)) +
   # theme(text) will format all text that isn't specifically formatted elsewhere
   theme(text = element_text(size=18)) 

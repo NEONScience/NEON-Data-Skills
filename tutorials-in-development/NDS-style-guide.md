@@ -201,7 +201,7 @@ In Markdown code chunks look like this (indent only).
 
 Notice in the above code `# add 1+1` should be highlighted as a comment, `1+1` 
 should be highlighted as input, and `2` should be highlighted as output. All 
-should be visually seperate from the surrounding text. 
+should be visually separate from the surrounding text. 
 
 
 

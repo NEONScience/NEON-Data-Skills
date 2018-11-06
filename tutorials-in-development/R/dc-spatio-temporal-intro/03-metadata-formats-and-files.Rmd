@@ -568,7 +568,7 @@ NOTE: This data and metadata are used in the
 Metadata are particularly important when we are working with data that we did
 not collect ourselves. When you download, or gain access to data from a
 colleague, or other data provider, be sure to first find and review the
-metadata. Then, if the data is in a seperate file (e.g., structured or
+metadata. Then, if the data is in a separate file (e.g., structured or
 unstructured metadata) make sure you save the metadata in a directory that is
 closely associated with wherever you save the data itself!
 

@@ -76,7 +76,7 @@ deterministic and some are probabilistic.
 	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered. Source: National Ecological
-    Obervatory Network </figcaption>
+    Observatory Network </figcaption>
 </figure>
 
 
@@ -95,7 +95,7 @@ cell.
     <img src="{{ site.baseurl }}/images/spatialData/gridded.png"></a>
     <figcaption>When you directly grid a dataset, values will only be calculated
 	for cells that overlap with data points. Thus, data gaps will not be filled. 
-	Source: National Ecological Obervatory Network 
+	Source: National Ecological Osbervatory Network 
 	</figcaption>
 </figure>
 
@@ -148,7 +148,7 @@ lays out the strengths of some of the more common interpolation methods.
     <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png" target="_blank">
 	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
     <figcaption>Abbreviations: TIN=Triangulated Irregular Network, IDW=Inverse 
-    Distance Weighted interpolation.  Source: National Ecological Obervatory Network </figcaption>
+    Distance Weighted interpolation.  Source: National Ecological Osbervatory Network </figcaption>
 </figure>
 
 We will focus on deterministic methods in this tutorial.
@@ -436,7 +436,7 @@ The QGIS processing toolbox provides easy access to Grass commands.
 
 ### GrassGIS commands
 
-The following commands may be useful if you are woking with GrassGIS. 
+The following commands may be useful if you are working with GrassGIS. 
 
 * `v.surf.idw` - Surface interpolation from vector point data by Inverse Distance Squared Weighting
 * `v.surf.bspline` - Bicubic or bilinear spline interpolation with Tykhonov regularization

@@ -1,6 +1,6 @@
 ## ----os-avail-query------------------------------------------------------
 
-# Load the necessary libaries
+# Load the necessary libraries
 library(httr)
 library(jsonlite)
 library(dplyr, quietly=T)

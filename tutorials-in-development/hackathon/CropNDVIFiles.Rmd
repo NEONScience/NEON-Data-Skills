@@ -168,7 +168,7 @@ We could clip NDVI to the larger area but the analysis will begin to be less use
 given it's a average over a larger area.
 
 ## About the data
-The data are pulled from hte drive where Sheley collected the 30 year time series
+The data are pulled from the drive where Sheley collected the 30 year time series
 for landsat. We could also pull a fourth NIR band to allow students to create
 NDVI which might be interesting.
 

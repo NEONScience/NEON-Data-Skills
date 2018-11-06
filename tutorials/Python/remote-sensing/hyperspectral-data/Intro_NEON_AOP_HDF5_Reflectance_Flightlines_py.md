@@ -303,7 +303,7 @@ spatial extent of this dataset:
 
 
 ```python
-#First convert mapInfo to a string, and divide into separate strings using a comma seperator
+#First convert mapInfo to a string, and divide into separate strings using a comma separator
 mapInfo_string = str(serc_mapInfo.value) #convert to string
 mapInfo_split = mapInfo_string.split(",") #split the strings using the separator "," 
 print(mapInfo_split)

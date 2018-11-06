@@ -225,7 +225,7 @@ started with Git:
 On a command line, Git commands are written as `git verb`, where `verb` is what
 we actually want to do. 
 
-Set up you own git with the folowing command, using your own information instead
+Set up you own git with the following command, using your own information instead
 of NEON's. 
 
 ```bash

@@ -127,7 +127,7 @@ have data available. In the products endpoint, the target is the numbered
 identifier for the data product:
 
 
-    # Load the necessary libaries
+    # Load the necessary libraries
     library(httr)
     library(jsonlite)
     library(dplyr, quietly=T)

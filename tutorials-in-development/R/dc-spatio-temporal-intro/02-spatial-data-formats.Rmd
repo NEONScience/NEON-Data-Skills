@@ -370,7 +370,7 @@ the date the photo was taken.
 
 * **.asc:** A comma separated text file with a spatial heading.
 * **Hierarchical Data Format (HDF5):** An open file format that supports large,
-complex, heterogeneous data. More on HDF5 formated rasters can be found in the
+complex, heterogeneous data. More on HDF5 formatted rasters can be found in the
 NEON Data Skills [tutorials focusing on HDF5](http://neondataskills.org/HDF5/).
 * **.grd:** An ESRI specific raster format.
 * **netCDF:**  

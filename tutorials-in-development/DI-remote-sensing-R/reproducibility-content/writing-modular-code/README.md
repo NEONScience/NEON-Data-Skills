@@ -12,7 +12,7 @@ steps of making code more modular. They are:
 1. A script that pulls much of the plotting code into functions, but
    keeps them in the same file: `CHM_Analysis_partially_functionalized.Rmd`
 1. A version that pull the function out of the `.Rmd` and into
-   a seperate file (`scripts/functions.R`) that is then called with
+   a separate file (`scripts/functions.R`) that is then called with
    `source()`: `CHM_Analysis_functionalized.Rmd`.
 
 These script were written to read in a GeoTIFF formatted raster of

@@ -332,7 +332,7 @@ We can create an interactive version of our plot using `plot.ly`. We should simp
 
 ```{r create-ggplotly-drought}
 
-# Use exisitng ggplot plot & view as plotly plot in R
+# Use existing ggplot plot & view as plotly plot in R
 palmer.drought_ggplotly <- ggplotly(palmer.drought)  
 palmer.drought_ggplotly
 ```

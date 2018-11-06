@@ -88,7 +88,7 @@ implementation of the ASPRS LAS format, and it can consume LASzip-compressed
 data using LASzip NaCl module. Plasio is Chrome-only at this time, but it is 
 hoped that other contributors can step forward to bring it to other browsers.
 > 
-> It is expected that most WebGL-capable browers should be able to support 
+> It is expected that most WebGL-capable browsers should be able to support 
 plasio, and it contains nothing that is explicitly Chrome-specific beyond the 
 optional NaCL LASzip module. 
 

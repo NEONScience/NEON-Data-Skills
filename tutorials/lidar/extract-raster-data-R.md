@@ -83,7 +83,7 @@ methods) and then compare them to our ground measured tree heights.
 
 ## Convert x,y Locations to Spatial Data
 
-Let's say we have our *insitu* data in two seperate .csv (comma separate value) files: 
+Let's say we have our *insitu* data in two separate .csv (comma separate value) files: 
 
 * `SJER/VegetationData/D17_2013_vegStr.csv`: contains our vegetation structure data 
 for each plot. 
@@ -292,7 +292,7 @@ of all pixels using the `fun=max` command.
 In the first, example we'll presume our insitu sampling took place within a 
 circular plot with a 20m radius. Therefore, we will use a buffer of 20m. 
 
-When we use the `extract()` fuction with `fun=max`, R returns a dataframe 
+When we use the `extract()` function with `fun=max`, R returns a dataframe 
 containing the max height calculated from all pixels in the buffer for each plot
 
 
@@ -469,7 +469,7 @@ requires the `rgeos` package, installed.
 
 Then we can simple use the extract function again. Here we specify not weighting
 the values returned and we directly add the data to our centroids file instead
-of having it be a seperate data frame that we later have to match up. 
+of having it be a separate data frame that we later have to match up. 
 
 
     # extract max from chm for shapefile buffers

@@ -99,7 +99,7 @@ hist(contrast_mat)
 haze_degree <- getHazeFactor(rgb_array)
 
 print(haze_degree)
-# note that the values might be slightly differnt due to rounding errors on different platforms
+# note that the values might be slightly different due to rounding errors on different platforms
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## 
