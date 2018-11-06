@@ -50,48 +50,15 @@ to install `neonUtilities` and use `stackByTable()`, and you're done.
 This package is intended to provide a toolbox of basic functionality 
 for working with NEON data. It currently contains the functions 
 listed above, but it is under development and more will be added in 
-the future.
+the future. To report bugs or request new features, post an issue in the GitHub 
+repo 
+<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">issues page</a>.
 
-For more information on the package see the README in the associated GitHub repo 
-<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank"> NEONScience/NEON-utilities</a>. To report bugs or 
-request new features, post an issue in the GitHub repo 
-<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">
-issues page</a>.
-
-First, we must install the `neonUtilities` package from the GitHub repo. 
-You must have the `devtools` package installed and loaded to do this.
+First, we must install and load the `neonUtilities` package.
 
 
-    # install devtools - can skip if already installed
-    install.packages("devtools")
-
-    ## Installing package into '/Users/clunch/Library/R/3.4/library'
-    ## (as 'lib' is unspecified)
-
-    ## Warning in install.packages :
-    ##   cannot open URL 'https://cran.rstudio.com/bin/macosx/el-capitan/contrib/3.4/PACKAGES.rds': HTTP status was '404 Not Found'
-    ## 
-    ## The downloaded binary packages are in
-    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpXvpkNh/downloaded_packages
-
-    # load devtools
-    library(devtools)
-    
-    # install neonUtilities from GitHub
-    install_github("NEONScience/NEON-utilities/neonUtilities", dependencies=TRUE)
-
-    ## Downloading GitHub repo NEONScience/NEON-utilities@master
-    ## from URL https://api.github.com/repos/NEONScience/NEON-utilities/zipball/master
-
-    ## Installing neonUtilities
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T/RtmpXvpkNh/devtools33066acfe00f/NEONScience-NEON-utilities-a649bc8/neonUtilities'  \
-    ##   --library='/Users/clunch/Library/R/3.4/library' --install-tests
-
-    ## 
-
+    # install neonUtilities - can skip if already installed
+    install.packages("neonUtilities")
     # load neonUtilities
     library (neonUtilities)
 
