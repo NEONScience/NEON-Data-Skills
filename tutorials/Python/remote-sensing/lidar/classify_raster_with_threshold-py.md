@@ -505,7 +505,7 @@ dataset. This time, our classifications will be:
 
 
 **Further Reading:** 
-There are a range of applications for aspect classificaiton. 
+There are a range of applications for aspect classification. 
 <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html" target="_blank">Boz et al. (2015) </a> 
 provide an example of classifying LiDAR aspect data to determine suitability of 
 roofs for PV (photovoltaic) systems. Can you think of any other applications 

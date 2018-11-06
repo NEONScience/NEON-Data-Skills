@@ -72,7 +72,7 @@ Some people prefer RStudio as it provides a graphic interface where you can see
 what objects have been created and you can also set variables like your working
 directory, using menu options.
 
-Learn more about <a href="https://www.rstudio.com/online-learning/" target="_blank"> RStudio with thier online learning materials</a>.
+Learn more about <a href="https://www.rstudio.com/online-learning/" target="_blank"> RStudio with their online learning materials</a>.
 
 We want to use R to create code and a workflow is more reproducible.  We can 
 document everything that we do.  Our end goal is not just to "do stuff" but to 
@@ -213,7 +213,7 @@ R has many different **data structures**. These include
 * array
 
 These data structures vary by the dimensionality of the data and if they can 
-handle data of differnt types (homogenous vs heterogeneous).
+handle data of different types (homogenous vs heterogeneous).
 
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |

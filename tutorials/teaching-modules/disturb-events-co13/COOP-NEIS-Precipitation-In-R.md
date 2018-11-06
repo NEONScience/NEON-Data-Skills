@@ -593,7 +593,7 @@ inches.
     # convert from 100th inch by dividing by 100
     precip.boulder$PRECIP<-precip.boulder$HPCP/100
     
-    # view & check to make sure conversion occured
+    # view & check to make sure conversion occurred
     head(precip.boulder)
 
     ##       STATION    STATION_NAME ELEVATION LATITUDE LONGITUDE       DATE HPCP

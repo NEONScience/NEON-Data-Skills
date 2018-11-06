@@ -185,7 +185,7 @@ data were an attribute that would be much easier to access quickly.
     #' This function reads in data from the "Reflecatnce" dataset, applies the data
     #' ignore value, scales the data and returns a properly "projected" raster object.
     #' @param filename the path to the h5 file.
-    #' @param index a list formated object  e.g. list(1:3, 1:6, bands)
+    #' @param index a list formatted object  e.g. list(1:3, 1:6, bands)
     #' @keywords hdf5, extent
     #' @export
     #' @examples

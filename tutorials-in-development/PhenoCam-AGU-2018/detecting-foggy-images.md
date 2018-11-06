@@ -176,7 +176,7 @@ haze_degree <- getHazeFactor(rgb_array)
 print(haze_degree)
 #>      haze        A0 
 #> 0.2247816 0.7129889
-# note that the values might be slightly differnt due to rounding errors on different platforms
+# note that the values might be slightly different due to rounding errors on different platforms
 ```
 
 

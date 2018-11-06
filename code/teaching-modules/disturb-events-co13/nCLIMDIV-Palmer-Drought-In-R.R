@@ -72,7 +72,7 @@ hist(nCLIMDIV$PDSI,   # the date we want to use
 
 ## ----create-ggplotly-drought---------------------------------------------
 
-# Use exisitng ggplot plot & view as plotly plot in R
+# Use existing ggplot plot & view as plotly plot in R
 palmer.drought_ggplotly <- ggplotly(palmer.drought)  
 palmer.drought_ggplotly
 

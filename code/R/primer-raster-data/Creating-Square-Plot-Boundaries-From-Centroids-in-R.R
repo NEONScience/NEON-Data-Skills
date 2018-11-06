@@ -59,7 +59,7 @@ plot(polys)
 
 
 ## ----looping-it----------------------------------------------------------
-# First, initialize a list tha will later be populated
+# First, initialize a list that will later be populated
 # a, as a placeholder, since this is temporary
 a <- vector('list', length(2))
 

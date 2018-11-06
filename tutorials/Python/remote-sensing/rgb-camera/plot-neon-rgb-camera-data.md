@@ -79,11 +79,11 @@ sys.version
 <figure>
     <a href="/images/Python/rgb-camera/activate_py35.png">
     <img src="/images/Python/rgb-camera/activate_py35.png"></a>
-    <figcaption> Activating `Python 3.5` enviornment from the command prompt. Source: National Ecological Observatory Network(NEON)  
+    <figcaption> Activating `Python 3.5` environment from the command prompt. Source: National Ecological Observatory Network(NEON)  
     </figcaption>
 </figure>
 
-**Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. However, as of June 2018 the GDAL package wasn't fully compatable with Python 3.6 so we recommend using a Python 3.5 environment. 
+**Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. However, as of June 2018 the GDAL package wasn't fully compatible with Python 3.6 so we recommend using a Python 3.5 environment. 
 
 
 Now that you are in the right environment, first we will import the gdal package, which contains tools for programming and manipulating the Geospatial Data Abstraction Library (GDAL). For more information on GDAL, please refer to <a href="http://www.gdal.org/" target="_blank">gdal.org</a>.

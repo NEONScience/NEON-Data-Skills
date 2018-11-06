@@ -59,7 +59,7 @@ basics, it covers functions, loops, command line, and other key skills
 data aggregation & manipulation, ggplot2 for plotting, and touches on interacting 
 with an SQL database. Designed to be taught by an instructor but the materials also work for independent learning online. 
 * <a href="http://www.datacarpentry.org/semester-biology/" target="_blank">Ethan White’s Data Carpentry for Biologists Semester Course (online content)</a> 
- - This comprehensive course contains an R section. While the overal focus is on 
+ - This comprehensive course contains an R section. While the overall focus is on 
 data science skills, learning R is a portion of it (note, this is an extensive 
 course).
 * <a href="https://www.rstudio.com/online-learning/" target="_blank">RStudio’s list</a>

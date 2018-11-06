@@ -94,7 +94,7 @@ First, let's set up our R environment to our desired working directory.
 
 ```{r loadStuff}
 
-# Load the necessary libaries
+# Load the necessary libraries
 library(httr)
 library(jsonlite)
 library(dplyr, quietly=T)

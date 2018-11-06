@@ -13,12 +13,12 @@ fahr_to_kelvin <- function(temp) {
 ## 	}
 ## 
 
-## ----call-fuction--------------------------------------------------------
+## ----call-function--------------------------------------------------------
 # call function for F=32 degrees
 fahr_to_kelvin(32)
 
 # We could use `paste()` to create a sentence with the answer
-paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
+paste('The boiling point of water (212 Fahrenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
 
 
 ## ----funct-test----------------------------------------------------------

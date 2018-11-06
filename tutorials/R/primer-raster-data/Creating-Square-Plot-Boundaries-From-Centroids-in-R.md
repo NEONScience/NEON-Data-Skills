@@ -243,7 +243,7 @@ but don't hide as much under the box. Once you understand how this works, we
 recommend the `mapply()` function for your actual data processing. 
 
 
-    # First, initialize a list tha will later be populated
+    # First, initialize a list that will later be populated
     # a, as a placeholder, since this is temporary
     a <- vector('list', length(2))
     
