@@ -285,7 +285,7 @@ Now we can access all the midday images and download them one at a time. However
 we frequently want all the images within a specific time range of interest. We'll
 learn how to do that next. 
 
-```{r midday-time-range, fig.height=5, fig.width=6.5, message=FALSE, eval=FALSE}
+```{r midday-time-range, fig.height=6, fig.width=8, message=FALSE, eval=TRUE}
 
 # open a temporary directory
 tmp_dir <- tempdir()
@@ -305,7 +305,7 @@ head(duke_middays_path)
 ```
 
 We can demonstrate the seasonality of Duke forest observed from the camera:
-```{r plot-monthly-forest, fig.height=5, fig.width=6.5, message=FALSE, eval=TRUE}
+```{r plot-monthly-forest, fig.height=6, fig.width=8, message=FALSE, eval=TRUE}
 n <- length(duke_middays_path)
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
 
