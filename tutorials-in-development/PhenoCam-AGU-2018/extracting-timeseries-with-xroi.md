@@ -129,7 +129,7 @@ To get some hands-on experience with `xROI`, we can analyze images from the
 of the PhenoCam network. 
 
 You can download the data set from 
-<href="http://bit.ly/2PzZ2fL">this link (direct download)</a>. 
+<a href="http://bit.ly/2PzZ2fL">this link (direct download)</a>. 
 
 Follow the steps below:
 
@@ -159,7 +159,7 @@ xROI::Launch('/path/to/extracted/directory')
 Let's use xROI on a little more challenging site with field of view shifts. 
 
 Download and extract the data set from 
-<href="http://bit.ly/2DrZgA1">this link (direct download)</a> and follow the above steps to extract the time-series.
+<a href="http://bit.ly/2DrZgA1">this link (direct download)</a> and follow the above steps to extract the time-series.
 
 *** 
 
