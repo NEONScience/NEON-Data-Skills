@@ -2,7 +2,7 @@
 syncID: 
 title: "Detecting Foggy Images using hazer"
 description: "Learn how to estimate image haziness in a image as an indication of fog, cloud or other natural or artificial factors using the hazer R package."
-date: "`r Sys.Date()`"
+date: "2018-11-07"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -16,12 +16,7 @@ urlTitle: phenocam-hazer-intro
 ---
 
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 In this tutorial, you will learn how to 
 
@@ -33,7 +28,8 @@ In this tutorial, you will learn how to
 
 We will use several packages in this tutoiral. All are availale from CRAN.
 
-```{r required-libraries }
+
+```r
 
 # load packages
 library(hazer)
@@ -44,7 +40,8 @@ library(data.table)
 Before we start the image processing steps, let's read in and plot an image. This
 image is an example image that comes with the *hazer* package. 
 
-```{r read-image, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 # read the path to the example image
 jpeg_file <- system.file(package = 'hazer', 'pointreyes.jpg')
 
@@ -57,8 +54,9 @@ rgb_array <- jpeg::readJPEG(jpeg_file)
 # first set the margin in this order:(bottom, left, top, right)
 par(mar=c(0,0,3,0))  
 plotRGBArray(rgb_array, bty = 'n', main = 'Point Reyes National Seashore')
-
 ```
+
+![plot of chunk read-image](figure/read-image-1.png)
 
 When we work with images, all data we work with is generally on the scale of each
 individual pixel in the image. Therefore, for large images we will be working with
@@ -72,7 +70,8 @@ A histogram of the colors can be useful to understanding what our image is made
 up of. Using the `density()` function from the base *stats* package, we can extract 
 density distribution of each color channel.
 
-```{r histogram, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 
 # color channels can be extracted from the matrix
 red_vector <- rgb_array[,,1]
@@ -85,8 +84,9 @@ plot(density(red_vector), col = 'red', lwd = 2,
 		 main = 'Density function of the RGB channels', ylim = c(0,5))
 lines(density(green_vector), col = 'green', lwd = 2)
 lines(density(blue_vector), col = 'blue', lwd = 2)
-
 ```
+
+![plot of chunk histogram](figure/histogram-1.png)
 
 In *hazer* we can also extract three basic elements of an RGB image :
 
@@ -99,7 +99,8 @@ In *hazer* we can also extract three basic elements of an RGB image :
 The brightness matrix comes from the maximum value of the R, G, or B channel. We 
 can extract and show the brightness matrix using the `getBrightness()` function. 
 
-```{r brightness, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 
 # extracting the brightness matrix
 brightness_mat <- getBrightness(rgb_array)
@@ -111,21 +112,27 @@ par(mar=c(0,0,3,0))
 plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 ```
 
+![plot of chunk brightness](figure/brightness-1.png)
+
 Here the grayscale is used to show the value of each pixel's maximum brightness 
 of the R, G or B color channel. 
 
 To extract a single brighness value for the image, depending on our needs we can 
 perform some statistics or we can just use the mean of this matrix. 
 
-```{r brightness-adv}
+
+```r
 # the main quantiles
 quantile(brightness_mat)
+#>         0%        25%        50%        75%       100% 
+#> 0.09019608 0.43529412 0.62745098 0.80000000 0.92549020
 
 # create histogram
 par(mar=c(5,4,4,2))
 hist(brightness_mat)
-
 ```
+
+![plot of chunk brightness-adv](figure/brightness-adv-1.png)
 
 Why are we getting so many images up in the high range of the brightness? Where
 does this correlate to on the RGB image? 
@@ -135,7 +142,8 @@ does this correlate to on the RGB image?
 Darkness is determined by the minimum of the R, G or B color channel. In the 
 Similarly, we can extract and show the darkness matrix using the `getDarkness()` function.
 
-```{r darkness, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 
 # extracting the darkness matrix
 darkness_mat <- getDarkness(rgb_array)
@@ -146,11 +154,15 @@ plotRGBArray(darkness_mat, bty = 'n', main = 'Darkness matrix')
 
 # main quantiles
 quantile(darkness_mat)
+#>         0%        25%        50%        75%       100% 
+#> 0.03921569 0.23137255 0.36470588 0.47843137 0.81568627
 
 # histogram
 par(mar=c(5,4,4,2))
 hist(darkness_mat)
 ```
+
+![plot of chunk darkness](figure/darkness-1.png)![plot of chunk darkness](figure/darkness-2.png)
 
 ## Contrast
 
@@ -160,7 +172,8 @@ darkness and brightness matrices.
 
 The contrast of the image can quickly be extacted using the `getContrast()` function.
 
-```{r contrast, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 
 # extracting the contrast matrix
 contrast_mat <- getContrast(rgb_array)
@@ -171,11 +184,15 @@ plotRGBArray(contrast_mat, bty = 'n', main = 'Contrast matrix')
 
 # main quantiles
 quantile(contrast_mat)
+#>        0%       25%       50%       75%      100% 
+#> 0.0000000 0.1450980 0.2470588 0.3294118 0.4392157
 
 # histogram
 par(mar=c(5,4,4,2))
 hist(contrast_mat)
 ```
+
+![plot of chunk contrast](figure/contrast-1.png)![plot of chunk contrast](figure/contrast-2.png)
 
 
 ## Image fogginess & haziness
@@ -194,12 +211,14 @@ The function returns a vector of two numeric values:
 The PhenoCam standards classify any image with the haze degree greater 
 than 0.4 as a significantly foggy image.
 
-```{r haze, fig.show='hold', fig.height=5, fig.width=6.5}
+
+```r
 # extracting the haze matrix
 haze_degree <- getHazeFactor(rgb_array)
 
 print(haze_degree)
-
+#>      haze        A0 
+#> 0.2247816 0.7129889
 ```
 
 Here we have the haze values for our image. Note that the values might be 
@@ -215,7 +234,8 @@ You can download the related datasets from
 
 Download and extract the zip file to be used as input data for the followig step.
 
-```{r process-series-data}
+
+```r
 
 # set up the input image
 #images_dir <- '/path/to/image/directory/'
@@ -227,14 +247,14 @@ pointreyes_images <- dir(path = images_dir,
                          pattern = '*.jpg',
                          ignore.case = TRUE, 
                          full.names = TRUE)
-
 ```
 
 
 Now we can use a for loop to process all of the images to get the haze and A0 
 values. 
 
-```{r process-series-loop}
+
+```r
 
 
 # number of images
@@ -245,6 +265,7 @@ haze_mat <- data.table()
 
 # the process takes a bit, a progress bar lets us know it is working.
 pb <- txtProgressBar(0, n, style = 3)
+#> Error in txtProgressBar(0, n, style = 3): must have 'max' > 'min'
 
 for(i in 1:n) {
   image_path <- pointreyes_images[i]
@@ -258,26 +279,31 @@ for(i in 1:n) {
   
   setTxtProgressBar(pb, i)
 }
+#> Error in jpeg::readJPEG(image_path): unable to open NA
 ```
 
 Now we have a matrix with haze and A0 values for all our images. Let's classify
 those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
 
-```{r process-series-classify}
+
+```r
 
 # classify image as hazy: T/F
 haze_mat[haze>0.4,foggy:=TRUE]
+#> Error in .checkTypos(e, names(x)): Object 'haze' not found amongst
 haze_mat[haze<=0.4,foggy:=FALSE]
+#> Error in .checkTypos(e, names(x)): Object 'haze' not found amongst
 
 head(haze_mat)
-
+#> Null data.table (0 rows and 0 cols)
 ```
 
 Now we can save all the foggy images to a new folder that will retain the
 foggy images but keep them seperate from the non-foggy ones that we want to 
 analyze. 
 
-```{r process-series-seperate}
+
+```r
 
 # identify directory to move the foggy images to
 #foggy_dir <- '/path/to/foggy/images/directory/'
@@ -288,15 +314,18 @@ foggy_dir <- "/Users/mjones01/Downloads/pointreyes-foggy"
 
 # copy the files to the new directory
 file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
+#> Error in .checkTypos(e, names(x)): Object 'foggy' not found amongst
 
 # remove the files from the old directory
 file.remove(haze_mat[foggy==TRUE,file])
+#> Error in .checkTypos(e, names(x)): Object 'foggy' not found amongst
 ```
 
 Now that we have our images seperated, we can get the full list of haze
 values only for those images that are not classfied as "foggy".  
 
-```{r process-series-apply}
+
+```r
 
 # loading all the images as a list of arrays
 img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
@@ -307,7 +336,8 @@ haze_list <- t(sapply(img_list, FUN = getHazeFactor))
 
 # view first few entries
 head(haze_list)
-
+#>     
+#> [1,]
 ```
 
 We can then use these values for further analyses and data correction. 

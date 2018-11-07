@@ -43,7 +43,7 @@ directly from the server:
 - Downloading PhenoCam time-series data
 - Extracting the list of midday images
 - Downloading midday images for a given time range
- 
+
 ## Exploring PhenoCam metadata
 
 Each PhenoCam site has specific metadata including but not limited to how a site 
@@ -92,7 +92,23 @@ specific locations.
 Let's look at Mean Annual Precipiation (MAP) and Mean Annual
 Temperature (MAT) across the differnet field site and classify those by the
 primary vegetation type (`primary_veg_type`) for each site. We can find out what the abbreviations
-for the vegetation types mean on the...***BIJAN WHERE CAN THIS BE FOUND***?
+for the vegetation types mean from the following table:
+
+| Abbreviation |	Description |
+|----------|:-------------:|------:|
+| AG |	agriculture |
+| DB |	deciduous broadleaf |
+| DN |	deciduous needleleaf |
+| EB |	evergreen broadleaf |
+| EN |	evergreen needleleaf |
+| GR |	grassland |
+| MX |	mixed vegetation (generally EN/DN, DB/EN, or DB/EB) |
+| SH |	shrubs |
+| TN |	tundra (includes sedges, lichens, mosses, etc.) |
+| WT |	wetland |
+| NV |	non-vegetated |
+| RF |	reference panel | 	 
+| XX |	unspecified |
 
 To do this we'd first want to remove the sites where there is not data and then 
 plot the data. 
@@ -126,17 +142,17 @@ flux tower. For this, we'd want to filter for those with a flux tower using the
 
 
 ```{r filter-flux, fig.height=5, fig.width=6.5, message=FALSE}
-# store sites with flux_data available
-phenofluxsites <- phenos[flux_data==TRUE&!is.na(flux_sitenames), 
-												 .(PhenoCam=site, Flux=flux_sitenames)] # return as table 
-												   #and specify which variables to retain
+# store sites with flux_data available and the FLUX site name is specified
+phenofluxsites <- phenos[flux_data==TRUE&!is.na(flux_sitenames)&flux_sitenames!='', 
+                         .(PhenoCam=site, Flux=flux_sitenames)] # return as table 
+#and specify which variables to retain
+
+phenofluxsites <- phenofluxsites[Flux!='']
 
 # see the first few rows
 head(phenofluxsites)
 
 ```
-
-**BIJAN: when I do this I get 171 obs of which several comes back with a blank for Flux. This seems to be that some Flux_sitenames are blank while others are NA.  Is this something that should be fixed in the Phenocam database or something we should account for here?
 
 We could further identify which of those Phenocams with a fluxtower and in 
 decidious broadleaf forests (`primary_veg_type=='DB'`). 
@@ -145,7 +161,7 @@ decidious broadleaf forests (`primary_veg_type=='DB'`).
 
 #list deciduous broadleaf sites with flux tower
 DB.flux <- phenos[flux_data==TRUE&primary_veg_type=='DB', 
-									site]  # return just the site names as a list
+                  site]  # return just the site names as a list
 
 # see the first few rows
 head(DB.flux)
@@ -237,9 +253,6 @@ Therefore, extracting a list of midday images (only one image a day) can be usef
 # obtaining midday_images for dukehw
 duke_middays <- get_midday_list('dukehw')
 
-#BIJAN -- I get "unused argument (direct = FALSE)" when using your original code. However it work without the "FALSE".  Okay to remove? 
-#duke_middays <- get_midday_list('dukehw', direct = FALSE)
-
 # see the first few rows
 head(duke_middays)
 
@@ -274,18 +287,39 @@ learn how to do that next.
 
 ```{r midday-time-range, fig.height=5, fig.width=6.5, message=FALSE, eval=FALSE}
 
+# open a temporary directory
+tmp_dir <- tempdir()
+
 # download a subset. Example April 2018
-download_dir <- download_midday_images(site = 'dukehw', # which site
-																			 y = 2018, # which year
-																			 months = 4, # which month
-																			 download_dir = tempdir()) # where on your computer
+download_midday_images(site = 'dukehw', # which site
+                       y = 2017, # which year(s)
+                       months = 1:12, # which month(s)
+                       days = 15, # which days on month(s)
+                       download_dir = tmp_dir) # where on your computer
 
 # list of downloaded files
-duke_middays_path <- dir(download_dir, pattern = 'dukehw*', full.names = TRUE)
+duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
 
 head(duke_middays_path)
 
 ```
 
-BIJAN: we need some context here at the end. Regarding what was downloaded but 
-I don't fully understant the last steps as it seems to only be one image? 
+We can demonstrate the seasonality of Duke forest observed from the camera:
+```{r plot-monthly-forest, fig.height=5, fig.width=6.5, message=FALSE, eval=TRUE}
+n <- length(duke_middays_path)
+par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
+
+for(i in 1:n){
+  img <- readJPEG(duke_middays_path[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+  mtext(month.name[i], line = -2)
+}
+mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
+
+```
+
+The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
+
+
+

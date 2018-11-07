@@ -112,8 +112,9 @@ Rscript -e “xROI::Launch(Interactive = TRUE)”
 When you are done with the xROI interface you can close the tab in your browser 
 and end the session in R by using one of the following opitons
 
-BIJAN: can we end the instance with a command? The only option I've found that 
-works is the "Stop" button in RStudio but not everyone uses RStudio. 
+**In RStudio:** Press the <Esc> key on your keyboard.
+**In R Terminal:** Press <Ctrl + C> on your keyboard.
+
 
 ```{r end-xROI, echo=TRUE, eval=FALSE}
 # end shiny (xROI) app
@@ -122,7 +123,7 @@ stopApp()  #nope, doesn't work
 ```
 
 
-## Use xROI
+## Use xROI 
 
 To get some hands-on experience with `xROI`, we can analyze images from the 
 <a href="https://phenocam.sr.unh.edu/webcam/sites/dukehw/">dukehw</a> 
@@ -140,21 +141,27 @@ Follow the steps below:
 ```{r launch-xroi, echo=TRUE, eval=FALSE}
 
 # launch data in ROI
+# first edit the path below to the dowloaded directory you just extracted
 xROI::Launch('/path/to/extracted/directory')
 
-```
+# alternatively, you can run without specifying a path and use the interface to browse 
 
-BIJAN - I'm not able to get this to work.  I'm getting xROI to launch but can't 
-bring in the images. Perhaps we could Skype to figure out what I'm doing wrong & 
-how to improve the directions. 
+```
 
 3. Draw and ROI, enter the metadata. 
 
 4. Save the metadata and explore its content.
 
-5. Go to the `Time series extraction` tab. Extract the time-series.
+5. Explore if there is any FOV shift in the dataset using the `CLI processer` tab.
 
-6. Explore if there is any FOV shift in the dataset using the `CLI processer` tab.
+6. Go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
+
+
+### Assignment
+Let's use xROI on a little more challenging site with field of view shifts. 
+
+Download and extract the data set from 
+<href="http://bit.ly/2DrZgA1">this link (direct download)</a> and follow the above steps to extract the time-series.
 
 *** 
 
