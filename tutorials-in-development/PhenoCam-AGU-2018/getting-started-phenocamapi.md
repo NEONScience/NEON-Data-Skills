@@ -402,19 +402,25 @@ download_midday_images(site = 'dukehw', # which site
                        months = 1:12, # which month(s)
                        days = 15, # which days on month(s)
                        download_dir = tmp_dir) # where on your computer
+#>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%  |                                                                         |===========                                                      |  17%  |                                                                         |================                                                 |  25%  |                                                                         |======================                                           |  33%  |                                                                         |===========================                                      |  42%  |                                                                         |================================                                 |  50%  |                                                                         |======================================                           |  58%  |                                                                         |===========================================                      |  67%  |                                                                         |=================================================                |  75%  |                                                                         |======================================================           |  83%  |                                                                         |============================================================     |  92%  |                                                                         |=================================================================| 100%
+#> [1] "/tmp/RtmpJGNlz7"
 
 # list of downloaded files
 duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
 
 head(duke_middays_path)
-
+#> [1] "/tmp/RtmpJGNlz7/dukehw_2017_01_15_120109.jpg"
+#> [2] "/tmp/RtmpJGNlz7/dukehw_2017_02_15_120108.jpg"
+#> [3] "/tmp/RtmpJGNlz7/dukehw_2017_03_15_120151.jpg"
+#> [4] "/tmp/RtmpJGNlz7/dukehw_2017_04_15_120110.jpg"
+#> [5] "/tmp/RtmpJGNlz7/dukehw_2017_05_15_120108.jpg"
+#> [6] "/tmp/RtmpJGNlz7/dukehw_2017_06_15_120120.jpg"
 ```
 
 We can demonstrate the seasonality of Duke forest observed from the camera:
 
 ```r
 n <- length(duke_middays_path)
-#> Error in eval(expr, envir, enclos): object 'duke_middays_path' not found
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
 
 for(i in 1:n){
@@ -423,10 +429,10 @@ for(i in 1:n){
   rasterImage(img, 0, 0, 1, 1)
   mtext(month.name[i], line = -2)
 }
-#> Error in readJPEG(duke_middays_path[i]): object 'duke_middays_path' not found
 mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
-#> Error in mtext("Seasonal variation of forest at Duke Hardwood Forest", : plot.new has not been called yet
 ```
+
+![plot of chunk plot-monthly-forest](figure/plot-monthly-forest-1.png)
 
 The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
 
