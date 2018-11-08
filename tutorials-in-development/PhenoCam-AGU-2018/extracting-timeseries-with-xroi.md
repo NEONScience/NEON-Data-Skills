@@ -2,13 +2,13 @@
 syncID: 43aa1b7a6a4b48f3bce1ee636ba857e0
 title: "Extracting Timeseries from Images using the xROI R Package"
 description: "Delineate Region of Interests (ROIs) and Extract Time-Series Data from Digital Repeat Photography Images using xROI"
-date: "2018-11-07"
+date: "2018-11-08"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
 packagesLibraries: xROI, raster, rgdal, sp
 topics: remote-sensing, phenology, time-series, data-analysis
-languagesTool: R, shell
+languagesTool: R, bash
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
 code1: R/phenocam/extracting-timeseries-with-xroi.R
 tutorialSeries: phenocam-intro
@@ -38,7 +38,7 @@ capabilities. In other words, both the User Interface (UI) and server modules ar
 locally from the same machine and hence no internet connection is required (after
 installation). The xROI'ss UI element presents a side-panel for data entry and 
 three main tab-pages, each responsible for a specific task. The server-side 
-element consists of R and shell scripts. Image processing and geospatial features 
+element consists of R and bash scripts. Image processing and geospatial features 
 were performed using the `Geospatial Data Abstraction Library (GDAL)` and the 
 `rgdal` and `raster` R packages. 
 
@@ -95,11 +95,11 @@ library(xROI)
 Launch()
 ```
 
-Or from the command line (e.g. shell in Linux, Terminal in macOS and Command 
+Or from the command line (e.g. bash in Linux, Terminal in macOS and Command 
 Prompt in Windows machines) where an R engine is already installed.
 
 
-```shell
+```bash
 
 Rscript -e “xROI::Launch(Interactive = TRUE)”
 
