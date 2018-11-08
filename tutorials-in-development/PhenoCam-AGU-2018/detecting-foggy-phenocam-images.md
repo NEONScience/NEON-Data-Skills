@@ -237,13 +237,12 @@ Download and extract the zip file to be used as input data for the followig step
 
 ```r
 
-# set up the input image
-#images_dir <- '/path/to/image/directory/'
-images_dir <- "/Users/mjones01/Downloads/pointreyes"
-
+# set up the input image directory
+#pointreyes_dir <- '/path/to/image/directory/'
+pointreyes_dir <- 'data/pointreyes/'
 
 # get a list of all .jpg files in the directory
-pointreyes_images <- dir(path = images_dir, 
+pointreyes_images <- dir(path = pointreyes_dir, 
                          pattern = '*.jpg',
                          ignore.case = TRUE, 
                          full.names = TRUE)
@@ -265,7 +264,7 @@ haze_mat <- data.table()
 
 # the process takes a bit, a progress bar lets us know it is working.
 pb <- txtProgressBar(0, n, style = 3)
-#> Error in txtProgressBar(0, n, style = 3): must have 'max' > 'min'
+#>   |                                                                         |                                                                 |   0%
 
 for(i in 1:n) {
   image_path <- pointreyes_images[i]
@@ -279,23 +278,58 @@ for(i in 1:n) {
   
   setTxtProgressBar(pb, i)
 }
-#> Error in jpeg::readJPEG(image_path): unable to open NA
+#>   |                                                                         |=                                                                |   1%  |                                                                         |==                                                               |   3%  |                                                                         |===                                                              |   4%  |                                                                         |====                                                             |   6%  |                                                                         |=====                                                            |   7%  |                                                                         |=====                                                            |   8%  |                                                                         |======                                                           |  10%  |                                                                         |=======                                                          |  11%  |                                                                         |========                                                         |  13%  |                                                                         |=========                                                        |  14%  |                                                                         |==========                                                       |  15%  |                                                                         |===========                                                      |  17%  |                                                                         |============                                                     |  18%  |                                                                         |=============                                                    |  20%  |                                                                         |==============                                                   |  21%  |                                                                         |===============                                                  |  23%  |                                                                         |================                                                 |  24%  |                                                                         |================                                                 |  25%  |                                                                         |=================                                                |  27%  |                                                                         |==================                                               |  28%  |                                                                         |===================                                              |  30%  |                                                                         |====================                                             |  31%  |                                                                         |=====================                                            |  32%  |                                                                         |======================                                           |  34%  |                                                                         |=======================                                          |  35%  |                                                                         |========================                                         |  37%  |                                                                         |=========================                                        |  38%  |                                                                         |==========================                                       |  39%  |                                                                         |===========================                                      |  41%  |                                                                         |===========================                                      |  42%  |                                                                         |============================                                     |  44%  |                                                                         |=============================                                    |  45%  |                                                                         |==============================                                   |  46%  |                                                                         |===============================                                  |  48%  |                                                                         |================================                                 |  49%  |                                                                         |=================================                                |  51%  |                                                                         |==================================                               |  52%  |                                                                         |===================================                              |  54%  |                                                                         |====================================                             |  55%  |                                                                         |=====================================                            |  56%  |                                                                         |======================================                           |  58%  |                                                                         |======================================                           |  59%  |                                                                         |=======================================                          |  61%  |                                                                         |========================================                         |  62%  |                                                                         |=========================================                        |  63%  |                                                                         |==========================================                       |  65%  |                                                                         |===========================================                      |  66%  |                                                                         |============================================                     |  68%  |                                                                         |=============================================                    |  69%  |                                                                         |==============================================                   |  70%  |                                                                         |===============================================                  |  72%  |                                                                         |================================================                 |  73%  |                                                                         |=================================================                |  75%  |                                                                         |=================================================                |  76%  |                                                                         |==================================================               |  77%  |                                                                         |===================================================              |  79%  |                                                                         |====================================================             |  80%  |                                                                         |=====================================================            |  82%  |                                                                         |======================================================           |  83%  |                                                                         |=======================================================          |  85%  |                                                                         |========================================================         |  86%  |                                                                         |=========================================================        |  87%  |                                                                         |==========================================================       |  89%  |                                                                         |===========================================================      |  90%  |                                                                         |============================================================     |  92%  |                                                                         |============================================================     |  93%  |                                                                         |=============================================================    |  94%  |                                                                         |==============================================================   |  96%  |                                                                         |===============================================================  |  97%  |                                                                         |================================================================ |  99%  |                                                                         |=================================================================| 100%
 ```
 
-Now we have a matrix with haze and A0 values for all our images. Let's classify
-those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
+Now we have a matrix with haze and A0 values for all our images. Let's 
+compare top five images with low and high haze values.
+
+
+```r
+top10_high_haze <-  haze_mat[order(haze), file][1:5]
+top10_low_haze <-  haze_mat[order(-haze), file][1:5]
+
+par(mar= c(0,0,0,0), mfrow=c(10,2), oma=c(0,0,3,0))
+
+for(i in 1:5){
+  img <- readJPEG(top10_low_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+  
+  img <- readJPEG(top10_high_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+
+}
+mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
+```
+
+![plot of chunk plot-foggy-clear](figure/plot-foggy-clear-1.png)
+
+Let's classify those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
 
 
 ```r
 
 # classify image as hazy: T/F
 haze_mat[haze>0.4,foggy:=TRUE]
-#> Error in .checkTypos(e, names(x)): Object 'haze' not found amongst
 haze_mat[haze<=0.4,foggy:=FALSE]
-#> Error in .checkTypos(e, names(x)): Object 'haze' not found amongst
 
 head(haze_mat)
-#> Null data.table (0 rows and 0 cols)
+#>                                                 file      haze        A0
+#> 1: data/pointreyes//pointreyes_2017_01_01_120056.jpg 0.2246162 0.6994662
+#> 2: data/pointreyes//pointreyes_2017_01_06_120210.jpg 0.2334132 0.6862658
+#> 3: data/pointreyes//pointreyes_2017_01_16_120105.jpg 0.2313306 0.7021237
+#> 4: data/pointreyes//pointreyes_2017_01_21_120105.jpg 0.4538466 0.6208211
+#> 5: data/pointreyes//pointreyes_2017_01_26_120106.jpg 0.2285729 0.6864904
+#> 6: data/pointreyes//pointreyes_2017_01_31_120125.jpg 0.4223842 0.6301446
+#>    foggy
+#> 1: FALSE
+#> 2: FALSE
+#> 3: FALSE
+#> 4:  TRUE
+#> 5: FALSE
+#> 6:  TRUE
 ```
 
 Now we can save all the foggy images to a new folder that will retain the
@@ -306,19 +340,24 @@ analyze.
 ```r
 
 # identify directory to move the foggy images to
-#foggy_dir <- '/path/to/foggy/images/directory/'
-foggy_dir <- "/Users/mjones01/Downloads/pointreyes-foggy"
+foggy_dir <- paste0(pointreyes_dir, 'foggy')
+clear_dir <- paste0(pointreyes_dir, 'clear')
 
 # if a new directory, create new directory at this file path
-#dir.create(foggy_dir)
+dir.create(foggy_dir,  showWarnings = FALSE)
+dir.create(clear_dir,  showWarnings = FALSE)
 
-# copy the files to the new directory
+# copy the files to the new directories
 file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
-#> Error in .checkTypos(e, names(x)): Object 'foggy' not found amongst
+#>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 
-# remove the files from the old directory
-file.remove(haze_mat[foggy==TRUE,file])
-#> Error in .checkTypos(e, names(x)): Object 'foggy' not found amongst
+file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
+#>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ```
 
 Now that we have our images seperated, we can get the full list of haze
@@ -326,9 +365,15 @@ values only for those images that are not classfied as "foggy".
 
 
 ```r
+# this is an alternative approach instead of a for loop
 
 # loading all the images as a list of arrays
-img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
+pointreyes_clear_images <- dir(path = clear_dir, 
+                         pattern = '*.jpg',
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+img_list <- lapply(pointreyes_clear_images, FUN = jpeg::readJPEG)
 
 # getting the haze value for the list
 # patience - this takes a bit of time
@@ -336,11 +381,17 @@ haze_list <- t(sapply(img_list, FUN = getHazeFactor))
 
 # view first few entries
 head(haze_list)
-#>     
-#> [1,]
+#>           haze        A0
+#> [1,] 0.2246162 0.6994662
+#> [2,] 0.2334132 0.6862658
+#> [3,] 0.2313306 0.7021237
+#> [4,] 0.2285729 0.6864904
+#> [5,] 0.2165980 0.6908387
+#> [6,] 0.3459485 0.6788019
 ```
 
 We can then use these values for further analyses and data correction. 
+
 
 *** 
 
