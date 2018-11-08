@@ -55,6 +55,19 @@ To explore the PhenoCam data, we'll use several packages for this tutorial.
 
 library(data.table)
 library(phenocamapi)
+#> Loading required package: lubridate
+#> 
+#> Attaching package: 'lubridate'
+#> The following objects are masked from 'package:data.table':
+#> 
+#>     hour, isoweek, mday, minute, month, quarter, second, wday,
+#>     week, yday, year
+#> The following object is masked from 'package:base':
+#> 
+#>     date
+#> Loading required package: rjson
+#> Loading required package: RCurl
+#> Loading required package: bitops
 library(lubridate)
 library(jpeg)
 ```
@@ -403,18 +416,18 @@ download_midday_images(site = 'dukehw', # which site
                        days = 15, # which days on month(s)
                        download_dir = tmp_dir) # where on your computer
 #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%  |                                                                         |===========                                                      |  17%  |                                                                         |================                                                 |  25%  |                                                                         |======================                                           |  33%  |                                                                         |===========================                                      |  42%  |                                                                         |================================                                 |  50%  |                                                                         |======================================                           |  58%  |                                                                         |===========================================                      |  67%  |                                                                         |=================================================                |  75%  |                                                                         |======================================================           |  83%  |                                                                         |============================================================     |  92%  |                                                                         |=================================================================| 100%
-#> [1] "/tmp/RtmpJGNlz7"
+#> [1] "/tmp/RtmpdEZuw5"
 
 # list of downloaded files
 duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
 
 head(duke_middays_path)
-#> [1] "/tmp/RtmpJGNlz7/dukehw_2017_01_15_120109.jpg"
-#> [2] "/tmp/RtmpJGNlz7/dukehw_2017_02_15_120108.jpg"
-#> [3] "/tmp/RtmpJGNlz7/dukehw_2017_03_15_120151.jpg"
-#> [4] "/tmp/RtmpJGNlz7/dukehw_2017_04_15_120110.jpg"
-#> [5] "/tmp/RtmpJGNlz7/dukehw_2017_05_15_120108.jpg"
-#> [6] "/tmp/RtmpJGNlz7/dukehw_2017_06_15_120120.jpg"
+#> [1] "/tmp/RtmpdEZuw5/dukehw_2017_01_15_120109.jpg"
+#> [2] "/tmp/RtmpdEZuw5/dukehw_2017_02_15_120108.jpg"
+#> [3] "/tmp/RtmpdEZuw5/dukehw_2017_03_15_120151.jpg"
+#> [4] "/tmp/RtmpdEZuw5/dukehw_2017_04_15_120110.jpg"
+#> [5] "/tmp/RtmpdEZuw5/dukehw_2017_05_15_120108.jpg"
+#> [6] "/tmp/RtmpdEZuw5/dukehw_2017_06_15_120120.jpg"
 ```
 
 We can demonstrate the seasonality of Duke forest observed from the camera:
