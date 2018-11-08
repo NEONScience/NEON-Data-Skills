@@ -186,7 +186,12 @@ file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
 # this is an alternative approach instead of a for loop
 
 # loading all the images as a list of arrays
-img_list <- lapply(clear_dir, FUN = jpeg::readJPEG)
+pointreyes_clear_images <- dir(path = clear_dir, 
+                         pattern = '*.jpg',
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+img_list <- lapply(pointreyes_clear_images, FUN = jpeg::readJPEG)
 
 # getting the haze value for the list
 # patience - this takes a bit of time
