@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 
 * Import a .csv file with time series data.
 * Modify a date field that contains non-date characters and turn it into a proper
-date formated field.
+date formatted field.
 * Plot the data.
 * Convert time to a local time zone.
 
@@ -60,7 +60,7 @@ sites can be accessed from the
 </div>
 
 We'll start by loading the `ggplot2` package which enables plotting functions
-that we will use into our R enviornment.  
+that we will use into our R environment.  
 
 ### Load Data
 

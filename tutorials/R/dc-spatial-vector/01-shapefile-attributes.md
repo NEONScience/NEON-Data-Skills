@@ -431,7 +431,7 @@ Let's give this a try.
 
     ## [1] "factor"
 
-    # how many "levels" or unique values does hte factor have?
+    # how many "levels" or unique values does the factor have?
     # view factor values
     levels(lines_HARV$TYPE)
 

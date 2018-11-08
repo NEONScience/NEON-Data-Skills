@@ -89,7 +89,7 @@ overlapping.
 
 
 To date (June 2017), the NEON AOP has flown a BRDF flight at SJER and SOAP (D17) and 
-ORNL (D07). We will work with the ORNL BRDF flight and retreive reflectance 
+ORNL (D07). We will work with the ORNL BRDF flight and retrieve reflectance 
 curves from up to 18 lines and compare them to visualize the differences in the 
 resulting curves. To reduce the file size, each of the BRDF flight lines have 
 been reduced to a rectangular area covering where all lines are overlapping, 
@@ -183,7 +183,7 @@ y_coord = 3982000
 ```
 
 To prevent the function of failing, we will first check to ensure the 
-coordiantes are within the rectangular bounding box. If they are not, 
+coordinates are within the rectangular bounding box. If they are not, 
 we throw an error message and exit from the script.
 
 
@@ -248,7 +248,7 @@ ax = plt.subplot(111)
 	'NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5', 
 	'NEON_D07_F07A_DP1_20160611_172430_reflectance_modify.h5']
 
-Now we will begin cycling through all of the h5 files and retreiving the 
+Now we will begin cycling through all of the h5 files and retrieving the 
 information we need also print the file that is currently being processed.
 
 Inside the for loop we will:
@@ -334,7 +334,7 @@ The result is a plot with all the curves in which we can visualize the differenc
 in the observations simply by chaging the flight direction with repect to the 
 ground target.
 
-Experiment with changing the coordiante to analyze different targets within the 
+Experiment with changing the coordinate to analyze different targets within the 
 rectangle.
 
 

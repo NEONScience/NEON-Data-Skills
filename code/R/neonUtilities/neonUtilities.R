@@ -1,12 +1,6 @@
 ## ----loadStuff-----------------------------------------------------------
-# install devtools - can skip if already installed
-install.packages("devtools")
-
-# load devtools
-library(devtools)
-
-# install neonUtilities from GitHub
-install_github("NEONScience/NEON-utilities/neonUtilities", dependencies=TRUE)
+# install neonUtilities - can skip if already installed
+install.packages("neonUtilities")
 
 # load neonUtilities
 library (neonUtilities)

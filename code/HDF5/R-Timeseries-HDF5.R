@@ -9,7 +9,7 @@ library("rhdf5")
 # also load ggplot2 and dplyr
 library("ggplot2")
 library("dplyr")
-# a nice R packages that helps with date formating is scale.
+# a nice R packages that helps with date formatting is scale.
 library("scales")
 
 # set working directory to ensure R can find the file we wish to import and where

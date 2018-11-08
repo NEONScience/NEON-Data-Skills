@@ -57,7 +57,7 @@ on your computer to complete this tutorial.
 ## Extract Summary Statistics From Raster Data
 In science, we often want to extract summary values from raster data. For
 example, we might want to understand overall greeness across a field site or at
-each plot within a field site. These values can then be compared betweeen 
+each plot within a field site. These values can then be compared between 
 different field sites and combined with other
 related metrics to support modeling and further analysis.
 
@@ -462,7 +462,7 @@ Now our outlier data points are removed and the pattern of "green-up" and
 ## Write NDVI data to a .csv File
 We can write our final NDVI `data.frame` out to a text format, to quickly share
 with a colleague or to resuse for analysis or visualization purposes. We will
-export in Comma Seperated Value (.csv) file format given it is usable in many
+export in Comma Separated Value (.csv) file format given it is usable in many
 different tools and across platforms (MAC, PC, etc). 
 
 We will use `write.csv()` to write a specified `data.frame` to a `.csv` file.

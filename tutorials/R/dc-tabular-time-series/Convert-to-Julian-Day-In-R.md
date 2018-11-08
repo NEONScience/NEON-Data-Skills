@@ -16,7 +16,7 @@ urlTitle: julian-day-conversion-r
 ---
 
 This tutorial defines Julian (year) day as most often used in an ecological 
-context, explains why Julian days are useful for analyis and plotting, and 
+context, explains why Julian days are useful for analysis and plotting, and 
 teaches how to create a Julian day variable from a Date or Data/Time class 
 variable.
 

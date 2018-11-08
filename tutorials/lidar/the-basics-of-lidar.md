@@ -169,7 +169,7 @@ data are available as discrete points. A collection of discrete return LiDAR
 points is known as a LiDAR point cloud.
 
 The commonly used file format to store LIDAR point cloud data is called .las 
-which is a format supported by the Americal Society of Photogrammetry and Remote 
+which is a format supported by the American Society of Photogrammetry and Remote 
 Sensing (ASPRS). Recently, the <a href= "http://www.laszip.org/" target="_blank"> .laz</a> 
 format has been developed by Martin Isenberg of LasTools. The differences is that .laz is a 
 highly compressed version of .las.

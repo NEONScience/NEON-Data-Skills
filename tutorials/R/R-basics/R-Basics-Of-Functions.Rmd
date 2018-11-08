@@ -110,12 +110,12 @@ the object `Kelvin`.
 Calling our own function is no different from calling any other built in R 
 function that you are familiar with.  Let's try running our function.   
 
-``` {r call-fuction}
+``` {r call-function}
 # call function for F=32 degrees
 fahr_to_kelvin(32)
 
 # We could use `paste()` to create a sentence with the answer
-paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
+paste('The boiling point of water (212 Fahrenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
 
 ```
 
@@ -142,7 +142,7 @@ fahr_to_kelvin_test(32)
 Nothing is returned!  This is because we didn't specify what the output was in 
 the final line of the function.  
 
-However, we can see that the fuction still worked by assigning the function to 
+However, we can see that the function still worked by assigning the function to 
 object "a" and calling "a".
 
 ``` {r funct-test-3}
@@ -180,7 +180,7 @@ paste('absolute zero (0 Kelvin) in Celsius:', kelvin_to_celsius(0))
 What about converting Fahrenheit to Celsius? We could write out the formula as a
 new function or we can combine the two functions we have already created. It might
 seem a bit silly to do this just for converting from Fahrenheit to Celcius but 
-think about the other applciations where you will use fuctions! 
+think about the other applications where you will use functions! 
 
 ``` {r compound-function}
 

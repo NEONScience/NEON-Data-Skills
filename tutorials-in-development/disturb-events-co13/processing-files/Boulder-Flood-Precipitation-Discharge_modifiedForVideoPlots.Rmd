@@ -25,12 +25,12 @@ comments: false
 
 {% include _toc.html %}
 
-Several factors contributed to extreme flooding that occured in Boulder,
+Several factors contributed to extreme flooding that occurred in Boulder,
 Colorado in 2013. In this lesson, we will explore and visualize the data of two 
 key variables including:
 
 * Precipitation (rainfall) data collected by ???NDCD?? 
-* Stream discharge (or flow) that occured due to combination of the drought 
+* Stream discharge (or flow) that occurred due to combination of the drought 
 conditions and extreme rainfall.
 
 <div id="objectives" markdown="1">

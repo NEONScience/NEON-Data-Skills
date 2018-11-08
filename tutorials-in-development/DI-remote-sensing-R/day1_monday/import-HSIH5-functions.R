@@ -2,7 +2,7 @@
 ## About This Code ####
 ## The code below contains a set of functions that allow you to easily and quickly
 ## open one or  more bands from a NEON HSI HDF5 file.
-## You can load this file into your enviornment using source("path-to-file-here")
+## You can load this file into your environment using source("path-to-file-here")
 ## and then quickly call the various functions
 ## Author: Leah A. Wasser
 ## Date Created: 1 May 2016

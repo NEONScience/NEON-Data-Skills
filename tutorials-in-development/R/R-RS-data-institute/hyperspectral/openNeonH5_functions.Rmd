@@ -17,7 +17,7 @@ urlTitle: hdf5-neon-hyperspec-rs-functions
 
 In this tutorial you will learn how to write functions to open and work with 
 NEON Hyperspectral Remote Sensing data that are delivered in HDF5 format. You 
-will then use those fuctions to open and access hyperspectral remote sensing data.
+will then use those functions to open and access hyperspectral remote sensing data.
 Note that this tutorial currently outlines out to access
 the data in the HDF5 format used prior to 2017. The functions/pathways may need 
 to be different for the reformatted data now available from NEON. 
@@ -227,7 +227,7 @@ data were an attribute that would be much easier to access quickly.
 #' This function reads in data from the "Reflecatnce" dataset, applies the data
 #' ignore value, scales the data and returns a properly "projected" raster object.
 #' @param filename the path to the h5 file.
-#' @param index a list formated object  e.g. list(1:3, 1:6, bands)
+#' @param index a list formatted object  e.g. list(1:3, 1:6, bands)
 #' @keywords hdf5, extent
 #' @export
 #' @examples

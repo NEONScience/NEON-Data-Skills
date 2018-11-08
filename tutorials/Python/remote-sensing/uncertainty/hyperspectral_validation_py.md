@@ -18,7 +18,7 @@ urlTitle: hyperspectral-validation-py
 
 In this tutorial we will learn how to retrieve relfectance curves from a 
 pre-specified coordainte in a NEON AOP HDF5 file, learn how to read a 
-tab delimited text file, retrive bad band window indexes and mask portions of 
+tab delimited text file, retrieve bad band window indexes and mask portions of 
 a reflectance curve, plot reflectance curves on a graph and save the file, 
 gain an understanding of some sources of uncertainty in NIS data.
 
@@ -291,7 +291,7 @@ y_tarp_03_index = int((metadata['ext_dict']['yMax'] - tarp_03_center[1])/float(m
 
 Next, we will plot both the curve from the airborne data taken at the center of 
 the tarps as well as the curves obtained from the ASD data to provide a 
-visualisation of thier consistency for both tarps. Once generated, we will also 
+visualisation of their consistency for both tarps. Once generated, we will also 
 save the figure to a pre-determined location.
 
 

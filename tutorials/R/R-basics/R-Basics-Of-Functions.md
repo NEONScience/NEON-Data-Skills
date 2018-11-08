@@ -112,9 +112,9 @@ function that you are familiar with.  Let's try running our function.
     ## [1] 273.15
 
     # We could use `paste()` to create a sentence with the answer
-    paste('The boiling point of water (212 Farenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
+    paste('The boiling point of water (212 Fahrenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
 
-    ## [1] "The boiling point of water (212 Farenheit) is 373.15 degrees Kelvin."
+    ## [1] "The boiling point of water (212 Fahrenheit) is 373.15 degrees Kelvin."
 
 We've successfully called the function that we defined, and we have access to 
 the value that we returned. 
@@ -134,7 +134,7 @@ Try it:
 Nothing is returned!  This is because we didn't specify what the output was in 
 the final line of the function.  
 
-However, we can see that the fuction still worked by assigning the function to 
+However, we can see that the function still worked by assigning the function to 
 object "a" and calling "a".
 
 
@@ -164,7 +164,7 @@ less than Celsius.
 What about converting Fahrenheit to Celsius? We could write out the formula as a
 new function or we can combine the two functions we have already created. It might
 seem a bit silly to do this just for converting from Fahrenheit to Celcius but 
-think about the other applciations where you will use fuctions! 
+think about the other applications where you will use functions! 
 
 
     # use two functions (F->K & K->C) to create a new one (F->C)

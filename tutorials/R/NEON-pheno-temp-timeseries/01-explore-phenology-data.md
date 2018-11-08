@@ -159,7 +159,7 @@ parsing rules; and an **XML** with machine readable metadata.
 
 NEON data are delivered in a site and year-month format. When you download data,
 you will get a single zipped file containing a directory for each month and site that you've 
-requested data for. Dealing with these seperate tables from even one or two sites
+requested data for. Dealing with these separate tables from even one or two sites
 over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
 **neonUtilities** that takes the unzipped downloaded file and joining the data 
 files. The teaching data downloaded with this tutorial is already stacked. If you
@@ -472,7 +472,7 @@ with your report.
 
 ### Remove Duplicates
 
-The indivdual table (ind) file is included in each site by month-year file. As 
+The individual table (ind) file is included in each site by month-year file. As 
 a result when all the tables are stacked there are many duplicates. 
 
 Let's remove any duplicates that exist.
@@ -686,7 +686,7 @@ The `phenophaseState` is recorded as "yes" or "no" that the individual is in tha
 phenophase. The `phenophaseIntensity` are categories for how much of the indvidual
 is in that state. For now, we will stick with `phenophaseState`. 
 
-We can now calculate the total indivdiual with that state. 
+We can now calculate the total individual with that state. 
 
 Here we use pipes `%>%` from the dpylr package to "pass" objects onto the next
 function. 

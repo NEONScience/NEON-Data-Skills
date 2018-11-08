@@ -50,26 +50,15 @@ to install `neonUtilities` and use `stackByTable()`, and you're done.
 This package is intended to provide a toolbox of basic functionality 
 for working with NEON data. It currently contains the functions 
 listed above, but it is under development and more will be added in 
-the future.
+the future. To report bugs or request new features, post an issue in the GitHub 
+repo 
+<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">issues page</a>.
 
-For more information on the package see the README in the associated GitHub repo 
-<a href="https://github.com/NEONScience/NEON-utilities/tree/master/neonUtilities" target="_blank"> NEONScience/NEON-utilities</a>. To report bugs or 
-request new features, post an issue in the GitHub repo 
-<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">
-issues page</a>.
-
-First, we must install the `neonUtilities` package from the GitHub repo. 
-You must have the `devtools` package installed and loaded to do this.
+First, we must install and load the `neonUtilities` package.
 
 ```{r loadStuff}
-# install devtools - can skip if already installed
-install.packages("devtools")
-
-# load devtools
-library(devtools)
-
-# install neonUtilities from GitHub
-install_github("NEONScience/NEON-utilities/neonUtilities", dependencies=TRUE)
+# install neonUtilities - can skip if already installed
+install.packages("neonUtilities")
 
 # load neonUtilities
 library (neonUtilities)

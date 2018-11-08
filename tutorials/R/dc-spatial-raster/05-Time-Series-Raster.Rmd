@@ -93,7 +93,7 @@ The Normalized Difference Vegetation Index or NDVI is a quantitative index of
 greenness ranging from 0-1 where 0 represents minimal or no greenness and 1 
 represents maximum greenness. 
 
-NDVI is often used for a quantative proxy measure of vegetation health, cover
+NDVI is often used for a quantitative proxy measure of vegetation health, cover
 and phenology (life cycle stage) over large areas. Our NDVI data are a Landsat
 derived single band product saved as a GeoTIFF for different times of the year. 
 
@@ -286,7 +286,7 @@ plot(NDVI_HARV_stack,
 ```
 
 ## Take a Closer Look at Our Data
-Let's take a closer look at the plots of our data. Note that Massachusettes, 
+Let's take a closer look at the plots of our data. Note that Massachusetts, 
 where the NEON Harvard Forest Field Site is located has a fairly consistent
 fall, winter, spring and summer season where vegetation turns green in the
 spring, continues to grow throughout the summer, and begins to change colors and
