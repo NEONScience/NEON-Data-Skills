@@ -12,7 +12,7 @@ languagesTool: R, API
 dataProduct:
 code1: R/download-explore/NEON-download-explore
 tutorialSeries: 
-urlTitle: neon-explore
+urlTitle: download-explore-neon-data
 ---
 
 
