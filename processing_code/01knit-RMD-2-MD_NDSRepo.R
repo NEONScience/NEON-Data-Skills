@@ -12,16 +12,17 @@ dirs <- c("R/eddy4r/",
           "R/NEON-API/",
           "data-institutes/rmd-intro/",
           "R/R-nonSeries-lessons/",
-          "dataviz/")
+          "dataviz/",
+          "R/download-explore/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[1]
+subDir <- dirs[7]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/clunch/NEON-Data-Skills"
+gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data"
