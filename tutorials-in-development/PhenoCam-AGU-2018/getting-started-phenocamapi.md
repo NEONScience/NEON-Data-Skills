@@ -438,3 +438,9 @@ The goal of this section was to show how to download a limited number of midday 
 
 
 
+*** 
+
+The *hazer* R package is developed and maintained by 
+<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
+The most recent release is available from 
+<a href="https://github.com/bnasr/hazer" target="_blank">https://github.com/bnasr/hazer</a>.
