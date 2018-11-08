@@ -1,5 +1,5 @@
 ---
-syncID: 040aa4e32b574a7dac2bf2f88ea86858
+syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
 description: "Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data"
 dateCreated:  2018-11-07
