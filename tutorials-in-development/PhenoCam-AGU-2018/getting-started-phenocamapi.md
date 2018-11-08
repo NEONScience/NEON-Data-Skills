@@ -2,7 +2,7 @@
 syncID: 040aa4e32b574a7dac2bf2f88ea86858
 title: "Interacting with the PhenoCam Server using phenocamapi R Pacakge"
 description: "Learn the basics of how to extract PhenoCam data and metadata through the Phenocam API"
-date: "2018-11-07"
+date: "2018-11-08"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
