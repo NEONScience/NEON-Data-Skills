@@ -2,7 +2,7 @@
 syncID: 
 title: "Detecting Foggy Images using hazer"
 description: "Learn how to estimate image haziness in a image as an indication of fog, cloud or other natural or artificial factors using the hazer R package."
-date: "2018-11-07"
+date: "2018-11-08"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
