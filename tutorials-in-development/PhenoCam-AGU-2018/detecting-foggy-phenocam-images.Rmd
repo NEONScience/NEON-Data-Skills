@@ -219,7 +219,6 @@ Download and extract the zip file to be used as input data for the followig step
 
 # set up the input image
 #images_dir <- '/path/to/image/directory/'
-images_dir <- "/Users/mjones01/Downloads/pointreyes"
 
 
 # get a list of all .jpg files in the directory
