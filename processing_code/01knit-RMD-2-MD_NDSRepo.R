@@ -22,7 +22,7 @@ dirs <- c("R/eddy4r/",
 subDir <- dirs[7]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills"
+gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills/"
 
 # set working dir - this is where the data are located
 wd <- "~/Documents/data"
