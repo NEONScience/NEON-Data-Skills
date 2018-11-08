@@ -142,7 +142,7 @@ for(i in 1:n) {
 top10_high_haze <-  haze_mat[order(haze), file][1:5]
 top10_low_haze <-  haze_mat[order(-haze), file][1:5]
 
-par(mar= c(0,0,0,0), mfrow=c(10,2), oma=c(0,0,3,0))
+par(mar= c(0,0,0,0), mfrow=c(5,2), oma=c(0,0,3,0))
 
 for(i in 1:5){
   img <- readJPEG(top10_low_haze[i])
