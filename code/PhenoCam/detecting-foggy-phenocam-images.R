@@ -11,6 +11,7 @@ library(hazer)
 library(jpeg)
 library(data.table)
 
+
 ## ----read-image, fig.show='hold', fig.height=5, fig.width=8--------------
 # read the path to the example image
 jpeg_file <- system.file(package = 'hazer', 'pointreyes.jpg')
