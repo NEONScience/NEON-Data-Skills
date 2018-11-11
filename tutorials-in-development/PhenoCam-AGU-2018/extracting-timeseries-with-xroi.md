@@ -2,7 +2,7 @@
 syncID: 43aa1b7a6a4b48f3bce1ee636ba857e0
 title: "Extracting Timeseries from Images using the xROI R Package"
 description: "Delineate Region of Interests (ROIs) and Extract Time-Series Data from Digital Repeat Photography Images using xROI"
-date: "2018-11-08"
+date: "2018-11-11"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -114,12 +114,6 @@ and end the session in R by using one of the following opitons
 **In RStudio:** Press the <Esc> key on your keyboard.
 **In R Terminal:** Press <Ctrl + C> on your keyboard.
 
-
-
-```r
-# end shiny (xROI) app
-stopApp()  #nope, doesn't work
-```
 
 
 ## Use xROI 
