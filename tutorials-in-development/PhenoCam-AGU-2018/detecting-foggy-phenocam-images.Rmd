@@ -39,6 +39,7 @@ We will use several packages in this tutoiral. All are availale from CRAN.
 library(hazer)
 library(jpeg)
 library(data.table)
+
 ```
 
 Before we start the image processing steps, let's read in and plot an image. This
