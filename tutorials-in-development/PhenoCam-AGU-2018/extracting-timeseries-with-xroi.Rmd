@@ -116,12 +116,6 @@ and end the session in R by using one of the following opitons
 **In R Terminal:** Press <Ctrl + C> on your keyboard.
 
 
-```{r end-xROI, echo=TRUE, eval=FALSE}
-# end shiny (xROI) app
-stopApp()  #nope, doesn't work
-
-```
-
 
 ## Use xROI 
 
