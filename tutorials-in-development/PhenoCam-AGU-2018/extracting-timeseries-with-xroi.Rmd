@@ -86,7 +86,7 @@ Calling the `Launch()` function, as we'll do below, opens up the interactive
 mode in your operating system’s default web browser. The landing page offers an 
 example dataset to explore different modules or upload a new dataset of images. 
 
-You can lauch the interactive mode can be launched from an interactive R environment.
+You can launch the interactive mode can be launched from an interactive R environment.
 
 ```{r launch-r, echo=TRUE, eval=FALSE}
 # load xROI
