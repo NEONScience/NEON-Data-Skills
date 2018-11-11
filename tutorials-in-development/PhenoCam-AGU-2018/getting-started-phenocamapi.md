@@ -2,7 +2,7 @@
 syncID: 040aa4e32b574a7dac2bf2f88ea86858
 title: "Interacting with the PhenoCam Server using phenocamapi R Pacakge"
 description: "Learn the basics of how to extract PhenoCam data and metadata through the Phenocam API"
-date: "2018-11-08"
+date: "2018-11-11"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -55,6 +55,19 @@ To explore the PhenoCam data, we'll use several packages for this tutorial.
 
 library(data.table)
 library(phenocamapi)
+#> Loading required package: lubridate
+#> 
+#> Attaching package: 'lubridate'
+#> The following objects are masked from 'package:data.table':
+#> 
+#>     hour, isoweek, mday, minute, month, quarter, second, wday,
+#>     week, yday, year
+#> The following object is masked from 'package:base':
+#> 
+#>     date
+#> Loading required package: rjson
+#> Loading required package: RCurl
+#> Loading required package: bitops
 library(lubridate)
 library(jpeg)
 ```
@@ -250,7 +263,7 @@ rois[site=='dukehw',]
 #>          roi_name   site      lat       lon roitype sequence_number
 #> 1: dukehw_DB_1000 dukehw 35.97358 -79.10037      DB            1000
 #>                                      description first_date  last_date
-#> 1: canopy level DB forest at awesome Duke forest 2013-06-01 2018-11-07
+#> 1: canopy level DB forest at awesome Duke forest 2013-06-01 2018-11-10
 #>    site_years missing_data_pct
 #> 1:        5.2              4.0
 #>                                                                   roi_page
@@ -269,12 +282,12 @@ dukehw_DB_1000 <- get_pheno_ts(site = 'dukehw', vegType = 'DB', roiID = 1000, ty
 
 # what data are available
 str(dukehw_DB_1000)
-#> Classes 'data.table' and 'data.frame':	664 obs. of  35 variables:
-#>  $ date                : Factor w/ 664 levels "2013-06-01","2013-06-04",..: 1 2 3 4 5 6 7 8 9 10 ...
+#> Classes 'data.table' and 'data.frame':	665 obs. of  35 variables:
+#>  $ date                : Factor w/ 665 levels "2013-06-01","2013-06-04",..: 1 2 3 4 5 6 7 8 9 10 ...
 #>  $ year                : int  2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
 #>  $ doy                 : int  152 155 158 161 164 167 170 173 176 179 ...
 #>  $ image_count         : int  57 76 77 77 77 78 21 0 0 0 ...
-#>  $ midday_filename     : Factor w/ 636 levels "dukehw_2013_06_01_120111.jpg",..: 1 2 3 4 5 6 7 636 636 636 ...
+#>  $ midday_filename     : Factor w/ 637 levels "dukehw_2013_06_01_120111.jpg",..: 1 2 3 4 5 6 7 637 637 637 ...
 #>  $ midday_r            : num  91.3 76.4 60.6 76.5 88.9 ...
 #>  $ midday_g            : num  97.9 85 73.2 82.2 95.7 ...
 #>  $ midday_b            : num  47.4 33.6 35.6 37.1 51.4 ...
@@ -396,25 +409,22 @@ learn how to do that next.
 # open a temporary directory
 tmp_dir <- tempdir()
 
-# download a subset. Example April 2018
+# download a subset. Example dukehw 2017
 download_midday_images(site = 'dukehw', # which site
                        y = 2017, # which year(s)
                        months = 1:12, # which month(s)
                        days = 15, # which days on month(s)
                        download_dir = tmp_dir) # where on your computer
 #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%  |                                                                         |===========                                                      |  17%  |                                                                         |================                                                 |  25%  |                                                                         |======================                                           |  33%  |                                                                         |===========================                                      |  42%  |                                                                         |================================                                 |  50%  |                                                                         |======================================                           |  58%  |                                                                         |===========================================                      |  67%  |                                                                         |=================================================                |  75%  |                                                                         |======================================================           |  83%  |                                                                         |============================================================     |  92%  |                                                                         |=================================================================| 100%
-#> [1] "/tmp/Rtmp5n7c3y"
+#> [1] "/tmp/Rtmp2L1oTK"
 
 # list of downloaded files
 duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
 
 head(duke_middays_path)
-#> [1] "/tmp/Rtmp5n7c3y/dukehw_2017_01_15_120109.jpg"
-#> [2] "/tmp/Rtmp5n7c3y/dukehw_2017_02_15_120108.jpg"
-#> [3] "/tmp/Rtmp5n7c3y/dukehw_2017_03_15_120151.jpg"
-#> [4] "/tmp/Rtmp5n7c3y/dukehw_2017_04_15_120110.jpg"
-#> [5] "/tmp/Rtmp5n7c3y/dukehw_2017_05_15_120108.jpg"
-#> [6] "/tmp/Rtmp5n7c3y/dukehw_2017_06_15_120120.jpg"
+#> [1] "/tmp/Rtmp2L1oTK/dukehw_2017_01_15_120109.jpg" "/tmp/Rtmp2L1oTK/dukehw_2017_02_15_120108.jpg"
+#> [3] "/tmp/Rtmp2L1oTK/dukehw_2017_03_15_120151.jpg" "/tmp/Rtmp2L1oTK/dukehw_2017_04_15_120110.jpg"
+#> [5] "/tmp/Rtmp2L1oTK/dukehw_2017_05_15_120108.jpg" "/tmp/Rtmp2L1oTK/dukehw_2017_06_15_120120.jpg"
 ```
 
 We can demonstrate the seasonality of Duke forest observed from the camera:

@@ -123,7 +123,7 @@ if(class(img)!='try-error'){
 # open a temporary directory
 tmp_dir <- tempdir()
 
-# download a subset. Example April 2018
+# download a subset. Example dukehw 2017
 download_midday_images(site = 'dukehw', # which site
                        y = 2017, # which year(s)
                        months = 1:12, # which month(s)
