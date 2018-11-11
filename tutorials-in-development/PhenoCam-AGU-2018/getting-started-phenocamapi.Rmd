@@ -267,7 +267,7 @@ destfile <- tempfile(fileext = '.jpg')
 
 # download only the first available file
 # modify the `[1]` to download other images
-download.file(duke_middays[1], destfile = destfile)
+download.file(duke_middays[1], destfile = destfile, mode = 'wb')
 
 # plot the image
 img <- try(readJPEG(destfile))
