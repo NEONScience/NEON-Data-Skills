@@ -12,7 +12,7 @@ library(lubridate)
 library(jpeg)
 
 
-## ----obtain-data, fig.height=5, fig.width=6.5, message=FALSE-------------
+## ----obtain-data, fig.height=5, fig.width=8, message=FALSE---------------
 
 # obtaining the phenocam site metadata from the server as data.table
 phenos <- get_phenos()
@@ -23,7 +23,7 @@ head(phenos$site)
 # checking out the columns
 colnames(phenos)
 
-## ----plot-MAT-MAP, message=FALSE-----------------------------------------
+## ----plot-MAT-MAP, message=FALSE, fig.height=8, fig.width=8--------------
 # removing the sites with unkown MAT and MAP values
 phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
 
@@ -84,7 +84,7 @@ dukehw_DB_1000 <- get_pheno_ts(site = 'dukehw', vegType = 'DB', roiID = 1000, ty
 str(dukehw_DB_1000)
 
 
-## ----plot-gcc90----------------------------------------------------------
+## ----plot-gcc90, fig.height=5, fig.width=8-------------------------------
 # date variable into date format
 dukehw_DB_1000[,date:=as.Date(date)]
 
@@ -93,7 +93,7 @@ dukehw_DB_1000[,plot(date, gcc_90, col = 'green', type = 'b')]
 mtext('Duke Forest, Hardwood', font = 2)
 
 
-## ----midday-list, fig.height=5, fig.width=6.5, message=FALSE-------------
+## ----midday-list, fig.height=5, fig.width=8, message=FALSE---------------
 
 # obtaining midday_images for dukehw
 duke_middays <- get_midday_list('dukehw')
@@ -102,13 +102,13 @@ duke_middays <- get_midday_list('dukehw')
 head(duke_middays)
 
 
-## ----midday-download-----------------------------------------------------
+## ----midday-download, fig.height=5, fig.width=8--------------------------
 # download a file
 destfile <- tempfile(fileext = '.jpg')
 
 # download only the first available file
 # modify the `[1]` to download other images
-download.file(duke_middays[1], destfile = destfile)
+download.file(duke_middays[1], destfile = destfile, mode = 'wb')
 
 # plot the image
 img <- try(readJPEG(destfile))
@@ -118,25 +118,25 @@ if(class(img)!='try-error'){
   rasterImage(img, 0, 0, 1, 1)
 }
 
-## ----midday-time-range, fig.height=5, fig.width=6.5, message=FALSE, eval=FALSE----
-## 
-## # open a temporary directory
-## tmp_dir <- tempdir()
-## 
-## # download a subset. Example April 2018
-## download_midday_images(site = 'dukehw', # which site
-##                        y = 2017, # which year(s)
-##                        months = 1:12, # which month(s)
-##                        days = 15, # which days on month(s)
-##                        download_dir = tmp_dir) # where on your computer
-## 
-## # list of downloaded files
-## duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
-## 
-## head(duke_middays_path)
-## 
+## ----midday-time-range, fig.height=6, fig.width=8, message=FALSE, eval=TRUE----
 
-## ----plot-monthly-forest, fig.height=5, fig.width=6.5, message=FALSE, eval=TRUE----
+# open a temporary directory
+tmp_dir <- tempdir()
+
+# download a subset. Example dukehw 2017
+download_midday_images(site = 'dukehw', # which site
+                       y = 2017, # which year(s)
+                       months = 1:12, # which month(s)
+                       days = 15, # which days on month(s)
+                       download_dir = tmp_dir) # where on your computer
+
+# list of downloaded files
+duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
+
+head(duke_middays_path)
+
+
+## ----plot-monthly-forest, fig.height=6, fig.width=8, message=FALSE, eval=TRUE----
 n <- length(duke_middays_path)
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
 

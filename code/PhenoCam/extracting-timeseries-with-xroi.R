@@ -21,11 +21,6 @@
 ## 
 
 ## 
-## ----end-xROI, echo=TRUE, eval=FALSE-------------------------------------
-## # end shiny (xROI) app
-## stopApp()  #nope, doesn't work
-## 
-
 ## ----launch-xroi, echo=TRUE, eval=FALSE----------------------------------
 ## 
 ## # launch data in ROI
