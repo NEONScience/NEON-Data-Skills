@@ -3,15 +3,16 @@
 Files in the subdirectory `messy-dir-example` can be used to help
 students identify problems that make it difficult to share or reuse
 analyses. There are many problems with the folder structure, file
-nameing, data organization, and code organization in this example
+naming, data organization, and code organization in this example
 directory. This was taught as part of the [NEON Data Science Institute
-2016](http://neonscience.github.io/neon-data-institute-2016/) by
+2016](https://www.neonscience.org/neon-data-institute-2016) by
 [Naupaka Zimmerman](https://github.com/naupaka). The data and files are
-for the most part derived from various NEON remote sensing (AOP)
-    products from the D17 California sites.
+for the most part derived from various NEON remote sensing (AOP) products 
+from the D17 California sites.
 
-Students are shown the introductory slides ([available
-        here](https://github.com/NEONScience/slide-shows/blob/gh-pages/intro-reprod-science.md)) and then asked to identify problems in the directory.
+Students are shown the introductory slides 
+([available here](http://neonscience.github.io/slide-shows/intro-reprod-science.html))
+and then asked to identify problems in the directory.
 
 Some of the problems are:
 
@@ -39,11 +40,10 @@ Some of the problems are:
     * Different values for missing data
     * Dealing with dates in Excel (DANGER)
     * Units for values?
-    * Where is metadata?
-    * no import of gdal in .py
-    * broken function definitions
-    * random comments
-    * commented out # numpy at top
-    
+1. Where is metadata?
+1. no import of gdal in .py
+1. broken function definitions
+1. random comments
+1. commented out # numpy at top
 
 
