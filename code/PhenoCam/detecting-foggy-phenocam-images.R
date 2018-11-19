@@ -11,7 +11,8 @@ library(hazer)
 library(jpeg)
 library(data.table)
 
-## ----read-image, fig.show='hold', fig.height=5, fig.width=6.5------------
+
+## ----read-image, fig.show='hold', fig.height=5, fig.width=8--------------
 # read the path to the example image
 jpeg_file <- system.file(package = 'hazer', 'pointreyes.jpg')
 
@@ -26,7 +27,7 @@ par(mar=c(0,0,3,0))
 plotRGBArray(rgb_array, bty = 'n', main = 'Point Reyes National Seashore')
 
 
-## ----histogram, fig.show='hold', fig.height=5, fig.width=6.5-------------
+## ----histogram, fig.show='hold', fig.height=5, fig.width=8---------------
 
 # color channels can be extracted from the matrix
 red_vector <- rgb_array[,,1]
@@ -41,7 +42,7 @@ lines(density(green_vector), col = 'green', lwd = 2)
 lines(density(blue_vector), col = 'blue', lwd = 2)
 
 
-## ----brightness, fig.show='hold', fig.height=5, fig.width=6.5------------
+## ----brightness, fig.show='hold', fig.height=5, fig.width=8--------------
 
 # extracting the brightness matrix
 brightness_mat <- getBrightness(rgb_array)
@@ -52,7 +53,7 @@ brightness_mat <- getBrightness(rgb_array)
 par(mar=c(0,0,3,0))
 plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 
-## ----brightness-adv------------------------------------------------------
+## ----brightness-adv, fig.height=5, fig.width=8---------------------------
 # the main quantiles
 quantile(brightness_mat)
 
@@ -61,7 +62,7 @@ par(mar=c(5,4,4,2))
 hist(brightness_mat)
 
 
-## ----darkness, fig.show='hold', fig.height=5, fig.width=6.5--------------
+## ----darkness, fig.show='hold', fig.height=5, fig.width=8----------------
 
 # extracting the darkness matrix
 darkness_mat <- getDarkness(rgb_array)
@@ -77,7 +78,7 @@ quantile(darkness_mat)
 par(mar=c(5,4,4,2))
 hist(darkness_mat)
 
-## ----contrast, fig.show='hold', fig.height=5, fig.width=6.5--------------
+## ----contrast, fig.show='hold', fig.height=5, fig.width=8----------------
 
 # extracting the contrast matrix
 contrast_mat <- getContrast(rgb_array)
@@ -93,28 +94,27 @@ quantile(contrast_mat)
 par(mar=c(5,4,4,2))
 hist(contrast_mat)
 
-## ----haze, fig.show='hold', fig.height=5, fig.width=6.5------------------
+## ----haze, fig.show='hold', fig.height=5, fig.width=8--------------------
 # extracting the haze matrix
 haze_degree <- getHazeFactor(rgb_array)
 
 print(haze_degree)
 
 
-## ----process-series-data-------------------------------------------------
+## ----process-series-data, fig.height=5, fig.width=8----------------------
 
-# set up the input image
-#images_dir <- '/path/to/image/directory/'
-images_dir <- "/Users/mjones01/Downloads/pointreyes"
-
+# set up the input image directory
+#pointreyes_dir <- '/path/to/image/directory/'
+pointreyes_dir <- 'data/pointreyes/'
 
 # get a list of all .jpg files in the directory
-pointreyes_images <- dir(path = images_dir, 
+pointreyes_images <- dir(path = pointreyes_dir, 
                          pattern = '*.jpg',
                          ignore.case = TRUE, 
                          full.names = TRUE)
 
 
-## ----process-series-loop-------------------------------------------------
+## ----process-series-loop, fig.height=5, fig.width=8----------------------
 
 
 # number of images
@@ -139,7 +139,26 @@ for(i in 1:n) {
   setTxtProgressBar(pb, i)
 }
 
-## ----process-series-classify---------------------------------------------
+## ----plot-foggy-clear, fig.height=10, fig.width=8, message=FALSE, eval=TRUE----
+top10_high_haze <-  haze_mat[order(haze), file][1:5]
+top10_low_haze <-  haze_mat[order(-haze), file][1:5]
+
+par(mar= c(0,0,0,0), mfrow=c(5,2), oma=c(0,0,3,0))
+
+for(i in 1:5){
+  img <- readJPEG(top10_low_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+  
+  img <- readJPEG(top10_high_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+
+}
+mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
+
+
+## ----process-series-classify, fig.height=5, fig.width=8------------------
 
 # classify image as hazy: T/F
 haze_mat[haze>0.4,foggy:=TRUE]
@@ -148,25 +167,32 @@ haze_mat[haze<=0.4,foggy:=FALSE]
 head(haze_mat)
 
 
-## ----process-series-seperate---------------------------------------------
+## ----process-series-seperate, fig.height=5, fig.width=8------------------
 
 # identify directory to move the foggy images to
-#foggy_dir <- '/path/to/foggy/images/directory/'
-foggy_dir <- "/Users/mjones01/Downloads/pointreyes-foggy"
+foggy_dir <- paste0(pointreyes_dir, 'foggy')
+clear_dir <- paste0(pointreyes_dir, 'clear')
 
 # if a new directory, create new directory at this file path
-#dir.create(foggy_dir)
+dir.create(foggy_dir,  showWarnings = FALSE)
+dir.create(clear_dir,  showWarnings = FALSE)
 
-# copy the files to the new directory
+# copy the files to the new directories
 file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
 
-# remove the files from the old directory
-file.remove(haze_mat[foggy==TRUE,file])
+file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
 
-## ----process-series-apply------------------------------------------------
+
+## ----process-series-apply, fig.height=5, fig.width=8---------------------
+# this is an alternative approach instead of a for loop
 
 # loading all the images as a list of arrays
-img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
+pointreyes_clear_images <- dir(path = clear_dir, 
+                         pattern = '*.jpg',
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+img_list <- lapply(pointreyes_clear_images, FUN = jpeg::readJPEG)
 
 # getting the haze value for the list
 # patience - this takes a bit of time

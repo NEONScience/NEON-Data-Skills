@@ -69,7 +69,7 @@ We can obtain an up-to-date `data.frame` of the metadata of the entire PhenoCam
 network using the `get_phenos()` function. The returning value would be a 
 `data.table` in order to simplify further data exploration.
 
-```{r obtain-data, fig.height=5, fig.width=6.5, message=FALSE}
+```{r obtain-data, fig.height=5, fig.width=8, message=FALSE}
 
 # obtaining the phenocam site metadata from the server as data.table
 phenos <- get_phenos()
@@ -113,7 +113,7 @@ for the vegetation types mean from the following table:
 To do this we'd first want to remove the sites where there is not data and then 
 plot the data. 
 
-```{r plot-MAT-MAP, message=FALSE}
+```{r plot-MAT-MAP, message=FALSE, fig.height=8, fig.width=8}
 # removing the sites with unkown MAT and MAP values
 phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
 
@@ -230,7 +230,7 @@ outliers.
 Before we can plot `gcc-90` we do need to fix our dates and convert them from 
 Factors to Date to correctly plot. 
 
-```{r plot-gcc90}
+```{r plot-gcc90, fig.height=5, fig.width=8}
 # date variable into date format
 dukehw_DB_1000[,date:=as.Date(date)]
 
@@ -248,7 +248,7 @@ can use just the midday image when the sun is most directly overhead the canopy.
 Therefore, extracting a list of midday images (only one image a day) can be useful. 
 
 
-```{r midday-list, fig.height=5, fig.width=6.5, message=FALSE}
+```{r midday-list, fig.height=5, fig.width=8, message=FALSE}
 
 # obtaining midday_images for dukehw
 duke_middays <- get_midday_list('dukehw')
@@ -261,13 +261,13 @@ head(duke_middays)
 Now we have a list of all the midday images from this Phenocam. Let's download
 them and plot 
 
-```{r midday-download}
+```{r midday-download, fig.height=5, fig.width=8}
 # download a file
 destfile <- tempfile(fileext = '.jpg')
 
 # download only the first available file
 # modify the `[1]` to download other images
-download.file(duke_middays[1], destfile = destfile)
+download.file(duke_middays[1], destfile = destfile, mode = 'wb')
 
 # plot the image
 img <- try(readJPEG(destfile))
@@ -290,7 +290,7 @@ learn how to do that next.
 # open a temporary directory
 tmp_dir <- tempdir()
 
-# download a subset. Example April 2018
+# download a subset. Example dukehw 2017
 download_midday_images(site = 'dukehw', # which site
                        y = 2017, # which year(s)
                        months = 1:12, # which month(s)
@@ -323,3 +323,9 @@ The goal of this section was to show how to download a limited number of midday 
 
 
 
+*** 
+
+The *phenocamapi* R package is developed and maintained by 
+<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
+The most recent release is available from 
+<a href="https://github.com/bnasr/phenocamapi" target="_blank">https://github.com/bnasr/phenocamapi</a>.
