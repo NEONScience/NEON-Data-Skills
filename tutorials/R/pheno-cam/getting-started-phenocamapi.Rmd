@@ -10,7 +10,7 @@ packagesLibraries: phenocamapi, data.table, lubridate, jpeg
 topics: remote-sensing, phenology, time-series, data-analysis
 languagesTool: R
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
-code1: R/phenocam/getting-started-phenocamapi.R
+code1: /R/phenocam/getting-started-phenocamapi.R
 tutorialSeries: phenocam-intro
 urlTitle: phenocam-api-intro
 ---
