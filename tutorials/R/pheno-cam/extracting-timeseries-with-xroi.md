@@ -10,7 +10,7 @@ packagesLibraries: xROI, raster, rgdal, sp
 topics: remote-sensing, phenology, time-series, data-analysis
 languagesTool: R, bash
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
-code1: R/phenocam/extracting-timeseries-with-xroi.R
+code1: /R/phenocam/extracting-timeseries-with-xroi.R
 tutorialSeries: phenocam-intro
 urlTitle: phenocam-xroi-intro
 ---
@@ -117,9 +117,9 @@ You can download the data set from
 
 Follow the steps below:
 
-1. Save and extract (unzip) the file on your computer. 
+First,save and extract (unzip) the file on your computer. 
 
-2. Open the data set in `xROI` by setting the file path to your data
+Second, open the data set in `xROI` by setting the file path to your data
 
 
     # launch data in ROI
@@ -128,13 +128,13 @@ Follow the steps below:
     
     # alternatively, you can run without specifying a path and use the interface to browse 
 
-3. Draw and ROI, enter the metadata. 
+Now, draw an ROI and the metadata. 
 
-4. Save the metadata and explore its content.
+Then, save the metadata and explore its content.
 
-5. Explore if there is any FOV shift in the dataset using the `CLI processer` tab.
+Now we can explore if there is any FOV shift in the dataset using the `CLI processer` tab.
 
-6. Go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
+Finally, we can go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
 
 <div id="ds-challenge" markdown="1">
 ## Challenge: Use xROI
