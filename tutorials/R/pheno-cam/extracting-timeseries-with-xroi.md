@@ -2,7 +2,7 @@
 syncID: 43aa1b7a6a4b48f3bce1ee636ba857e0
 title: "Extracting Timeseries from Images using the xROI R Package"
 description: "Delineate Region of Interests (ROIs) and Extract Time-Series Data from Digital Repeat Photography Images using xROI"
-date: "2018-11-19"
+date: "2018-11-26"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -49,17 +49,21 @@ The latest tested xROI package can be installed from the
 <a href="https://cran.r-project.org/package=xROI" target="_blank">CRAN packages repository</a> by running the following command in an R environment. 
 
 
-    utils::install.packages('xROI', repos = "http://cran.us.r-project.org" )
+```r
+utils::install.packages('xROI', repos = "http://cran.us.r-project.org" )
+```
 
 Alternatively, the latest beta release of xROI can be directly downloaded and 
 installed from the development GitHub repository. 
 
 
-    # install devtools first
-    utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
-    
-    # use devtools to install from GitHub
-    devtools::install_github("bnasr/xROI")
+```r
+# install devtools first
+utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
+
+# use devtools to install from GitHub
+devtools::install_github("bnasr/xROI")
+```
 
 xROI depends on many R packages including: `raster`, `rgdal`, `sp`, `jpeg`, 
 `tiff`, `shiny`, `shinyjs`, `shinyBS`, `shinyAce`, `shinyTime`, `shinyFiles`, 
@@ -83,19 +87,23 @@ example dataset to explore different modules or upload a new dataset of images.
 You can launch the interactive mode can be launched from an interactive R environment.
 
 
-    # load xROI
-    library(xROI)
-    
-    # launch xROI 
-    Launch()
+```r
+# load xROI
+library(xROI)
+
+# launch xROI 
+Launch()
+```
 
 Or from the command line (e.g. bash in Linux, Terminal in macOS and Command 
 Prompt in Windows machines) where an R engine is already installed.
 
 
-    
-    Rscript -e “xROI::Launch(Interactive = TRUE)”
-    
+```bash
+
+Rscript -e “xROI::Launch(Interactive = TRUE)”
+
+```
 
 
 ## End xROI
@@ -122,11 +130,13 @@ First,save and extract (unzip) the file on your computer.
 Second, open the data set in `xROI` by setting the file path to your data
 
 
-    # launch data in ROI
-    # first edit the path below to the dowloaded directory you just extracted
-    xROI::Launch('/path/to/extracted/directory')
-    
-    # alternatively, you can run without specifying a path and use the interface to browse 
+```r
+# launch data in ROI
+# first edit the path below to the dowloaded directory you just extracted
+xROI::Launch('/path/to/extracted/directory')
+
+# alternatively, you can run without specifying a path and use the interface to browse 
+```
 
 Now, draw an ROI and the metadata. 
 
