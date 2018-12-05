@@ -1,0 +1,21 @@
+# Package installations required:
+# You will need to respond (enter/return) to two prompts during this code. 
+
+install.packages('rgdal')
+utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
+install.packages('hazer')
+install.packages('jpeg')
+install.packages('lubridate')
+install.packages('hazer')
+install.packages('data.table')
+install.packages('phenocamapi')
+devtools::install_github('khufkens/phenocamr')
+install.packages('xROI')
+devtools::install_github('khufkens/phenor')
+install.packages('daymetr')
+install.packages('tidyverse')
+install.packages('shiny')
+install.packages('xaringan')
+install.packages('maps')
+install.packages('raster')
+install.packages('sp')
