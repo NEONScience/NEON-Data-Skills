@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> *phenocamapi* R package</a> 
 is developed to simplify interacting with the 
 <a href="https://phenocam.sr.unh.edu" target="_blank">PhenoCam network</a> 
-dataset and perform data wrangling steps on PhenoCam sites' data and metaadata.
+dataset and perform data wrangling steps on PhenoCam sites' data and metadata.
 
 This tutorial will show you the basic commands for accessing PhenoCam data
 through the PhenoCam API. The *phenocampapi* R package is developed and maintained by 
@@ -89,8 +89,8 @@ Phenocams.
 We may want to explore some of the patterns in the metadata before we jump into
 specific locations. 
 
-Let's look at Mean Annual Precipiation (MAP) and Mean Annual
-Temperature (MAT) across the differnet field site and classify those by the
+Let's look at Mean Annual Precipitation (MAP) and Mean Annual
+Temperature (MAT) across the different field site and classify those by the
 primary vegetation type (`primary_veg_type`) for each site. We can find out what 
 the abbreviations for the vegetation types mean from the following table:
 
@@ -154,8 +154,8 @@ head(phenofluxsites)
 
 ```
 
-We could further identify which of those Phenocams with a fluxtower and in 
-decidious broadleaf forests (`primary_veg_type=='DB'`). 
+We could further identify which of those Phenocams with a flux tower and in 
+deciduous broadleaf forests (`primary_veg_type=='DB'`). 
 
 ```{r filter-flux-db, fig.height=5, fig.width=6.5, message=FALSE}
 
@@ -175,7 +175,7 @@ given site.
 
 ### Obtain ROIs
 To download the phenological time series from the PhenoCam, we need to know the 
-sitename, vegetation type and ROI ID. This information can be obtained from each
+site name, vegetation type and ROI ID. This information can be obtained from each
 specific PhenoCam page on the 
 <a href="https://phenocam.sr.unh.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
 or by using the `get_rois()` function. 
@@ -218,14 +218,14 @@ str(dukehw_DB_1000)
 We now have a variety of data related to this ROI from the Hardwood Stand at Duke 
 Forest. 
 
-Green Chromatic Coordinate (GCC) is a measure of "greeness" of an area and is
+Green Chromatic Coordinate (GCC) is a measure of "greenness" of an area and is
 widely used in Phenocam images as an indicator of the green pigment in vegetation.
 Let's use this measure to look at changes in GCC over time at this site. Looking 
 back at the available data, we have several options for GCC. `gcc90` is the 90th 
 quantile of GCC in the pixels across the ROI (for more details, 
 <a href="https://daac.ornl.gov/VEGETATION/guides/PhenoCam_V1.html" target="_blank"> PhenoCam v1 description</a>). 
-We'll use this as it tracks the upper greeness values while not inlcuding many 
-outliers.  
+We'll use this as it tracks the upper greenness values while not including many 
+outliners.  
 
 Before we can plot `gcc-90` we do need to fix our dates and convert them from 
 Factors to Date to correctly plot. 
@@ -304,7 +304,8 @@ head(duke_middays_path)
 
 ```
 
-We can demonstrate the seasonality of Duke forest observed from the camera:
+We can demonstrate the seasonality of Duke forest observed from the camera. (Note
+this code may take a while to run through the loop).
 ```{r plot-monthly-forest, fig.height=6, fig.width=8, message=FALSE, eval=TRUE}
 n <- length(duke_middays_path)
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
@@ -320,7 +321,6 @@ mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = 
 ```
 
 The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
-
 
 
 *** 

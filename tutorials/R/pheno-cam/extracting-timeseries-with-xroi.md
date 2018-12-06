@@ -2,7 +2,7 @@
 syncID: 43aa1b7a6a4b48f3bce1ee636ba857e0
 title: "Extracting Timeseries from Images using the xROI R Package"
 description: "Delineate Region of Interests (ROIs) and Extract Time-Series Data from Digital Repeat Photography Images using xROI"
-date: "2018-11-26"
+date: "2018-12-06"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -36,7 +36,7 @@ interactivity. While Shiny apps are primarily used for web-based applications to
 be used online, the package authors used Shiny for its graphical user interface 
 capabilities. In other words, both the User Interface (UI) and server modules are run 
 locally from the same machine and hence no internet connection is required (after
-installation). The xROI'ss UI element presents a side-panel for data entry and 
+installation). The xROI's UI element presents a side-panel for data entry and 
 three main tab-pages, each responsible for a specific task. The server-side 
 element consists of R and bash scripts. Image processing and geospatial features 
 were performed using the `Geospatial Data Abstraction Library (GDAL)` and the 
@@ -49,21 +49,17 @@ The latest tested xROI package can be installed from the
 <a href="https://cran.r-project.org/package=xROI" target="_blank">CRAN packages repository</a> by running the following command in an R environment. 
 
 
-```r
-utils::install.packages('xROI', repos = "http://cran.us.r-project.org" )
-```
+    utils::install.packages('xROI', repos = "http://cran.us.r-project.org" )
 
 Alternatively, the latest beta release of xROI can be directly downloaded and 
 installed from the development GitHub repository. 
 
 
-```r
-# install devtools first
-utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
-
-# use devtools to install from GitHub
-devtools::install_github("bnasr/xROI")
-```
+    # install devtools first
+    utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
+    
+    # use devtools to install from GitHub
+    devtools::install_github("bnasr/xROI")
 
 xROI depends on many R packages including: `raster`, `rgdal`, `sp`, `jpeg`, 
 `tiff`, `shiny`, `shinyjs`, `shinyBS`, `shinyAce`, `shinyTime`, `shinyFiles`, 
@@ -87,29 +83,25 @@ example dataset to explore different modules or upload a new dataset of images.
 You can launch the interactive mode can be launched from an interactive R environment.
 
 
-```r
-# load xROI
-library(xROI)
-
-# launch xROI 
-Launch()
-```
+    # load xROI
+    library(xROI)
+    
+    # launch xROI 
+    Launch()
 
 Or from the command line (e.g. bash in Linux, Terminal in macOS and Command 
 Prompt in Windows machines) where an R engine is already installed.
 
 
-```bash
-
-Rscript -e “xROI::Launch(Interactive = TRUE)”
-
-```
+    
+    Rscript -e “xROI::Launch(Interactive = TRUE)”
+    
 
 
 ## End xROI
 
 When you are done with the xROI interface you can close the tab in your browser 
-and end the session in R by using one of the following opitons
+and end the session in R by using one of the following options
 
 **In RStudio:** Press the <Esc> key on your keyboard.
 **In R Terminal:** Press <Ctrl + C> on your keyboard.
@@ -130,13 +122,11 @@ First,save and extract (unzip) the file on your computer.
 Second, open the data set in `xROI` by setting the file path to your data
 
 
-```r
-# launch data in ROI
-# first edit the path below to the dowloaded directory you just extracted
-xROI::Launch('/path/to/extracted/directory')
-
-# alternatively, you can run without specifying a path and use the interface to browse 
-```
+    # launch data in ROI
+    # first edit the path below to the dowloaded directory you just extracted
+    xROI::Launch('/path/to/extracted/directory')
+    
+    # alternatively, you can run without specifying a path and use the interface to browse 
 
 Now, draw an ROI and the metadata. 
 

@@ -36,7 +36,7 @@ interactivity. While Shiny apps are primarily used for web-based applications to
 be used online, the package authors used Shiny for its graphical user interface 
 capabilities. In other words, both the User Interface (UI) and server modules are run 
 locally from the same machine and hence no internet connection is required (after
-installation). The xROI'ss UI element presents a side-panel for data entry and 
+installation). The xROI's UI element presents a side-panel for data entry and 
 three main tab-pages, each responsible for a specific task. The server-side 
 element consists of R and bash scripts. Image processing and geospatial features 
 were performed using the `Geospatial Data Abstraction Library (GDAL)` and the 
@@ -110,7 +110,7 @@ Rscript -e “xROI::Launch(Interactive = TRUE)”
 ## End xROI
 
 When you are done with the xROI interface you can close the tab in your browser 
-and end the session in R by using one of the following opitons
+and end the session in R by using one of the following options
 
 **In RStudio:** Press the <Esc> key on your keyboard.
 **In R Terminal:** Press <Ctrl + C> on your keyboard.
