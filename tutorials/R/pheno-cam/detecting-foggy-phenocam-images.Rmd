@@ -133,7 +133,7 @@ does this correlate to on the RGB image?
 
 ## Darkness
 
-Darkness is determined by the minimum of the R, G or B color channel. In the 
+Darkness is determined by the minimum of the R, G or B color channel. 
 Similarly, we can extract and show the darkness matrix using the `getDarkness()` function.
 
 ```{r darkness, fig.show='hold', fig.height=5, fig.width=8}
@@ -270,6 +270,8 @@ Now we have a matrix with haze and A0 values for all our images. Let's
 compare top five images with low and high haze values.
 
 ```{r plot-foggy-clear, fig.height=10, fig.width=8, message=FALSE, eval=TRUE}
+haze_mat[,haze:=unlist(haze)]
+
 top10_high_haze <-  haze_mat[order(haze), file][1:5]
 top10_low_haze <-  haze_mat[order(-haze), file][1:5]
 
