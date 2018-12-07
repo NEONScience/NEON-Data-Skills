@@ -3,7 +3,7 @@ syncID: 6bb7e2064ff54157bb563d8d30c062ea
 title: "Modeling phenology with the R package phenor"
 authors: Koen Hufkens
 dateCreated: 2016-12-16
-lastModified: 2018-12-06
+lastModified: 2018-12-07
 description: "This tutorial explains how download and format data the model the phenology."
 topics: data-analysis, modeling, phenology
 languagesTool: R
@@ -50,7 +50,7 @@ installed prior to starting the tutorial.
 * **devtools** `install.packages("devtools")`
 * **phenor:** `install_github("khufkens/phenor")`
 * **phenocamr:** `install.packages("phenocamr")`
-* **phenocamr:** `install.packages("maps")`
+* **maps:** `install.packages("maps")`
 
 </div>
 
@@ -80,7 +80,7 @@ and
 for underlying climate driver data in model optimization. The package supports 
 global gridded CMIP5 forecasts for RCP4.5 and RCP8.5 climate change scenarios
 using the 
-<a href="https://nex.nasa.gov/nex/projects/1356/" target="_blank">NASA Earth Exchange global downscaled daily projections></a>.
+<a href="https://nex.nasa.gov/nex/projects/1356/" target="_blank">NASA Earth Exchange global downscaled daily projections</a>.
 
 Phenological model calibration and validation data are derived from four main sources:
 
@@ -91,13 +91,13 @@ Phenological model calibration and validation data are derived from four main so
 
 ### phenocamr
 
-We will also use the the *phenocamr* package to the processing of data provided 
+We will also use the the *phenocamr* package in the processing of data provided 
 through the PhenoCam API and past data releases. Although the uses of standard product 
 releases is encouraged in some instances you might want more control over the 
-data processing and the transition date products generated. phenocamr provides 
+data processing and the transition date products generated. *phenocamr* provides 
 this flexibility.
 
-## Get PhenoCam data
+## Get PhenoCam Data
 
 In this tutorial, you are going to download PhenoCam time series, extract 
 transition dates and combine the derived spring phenology data, Daymet data, to
@@ -126,10 +126,11 @@ First, we need to set up our R environment.
 
 To download phenology data from the PhenoCam network use the `download_phenocam()`
 function from the *phenocamr* package. This function allows you to download site
-based data and process it according to a standardized methodology.
+based data and process it according to a standardized methodology. A full description of the methodology is provided in <a href="https://www.nature.com/articles/sdata201828" target="_blank">Scientific
+Data: Tracking vegetation phenology across diverse North American biomes using PhenoCam imagery (Richardson et al. 2018)</a>.
 
 The code below downloads all time series for deciduous broadleaf data at the 
-<a href=" " target="_blank">Bartlett Experimental Forest (`bartlettir`) PhenoCam site</a> 
+<a href="https://phenocam.sr.unh.edu/webcam/sites/bartlettir/" target="_blank">Bartlett Experimental Forest (`bartlettir`) PhenoCam site</a> 
 and estimate the phenophases (spring & autumn). For a detailed description of 
 the download procedure consult the 
 <a href="https://cran.r-project.org/web/packages/phenocamr/index.html" target="_blank">phenocamr R package documentation</a>.
@@ -147,17 +148,17 @@ the download procedure consult the
       out_dir = "."
       )
 
-    #> Downloading: bartlettir_DB_1000_3day.csv
+    ## Downloading: bartlettir_DB_1000_3day.csv
 
-    #> -- Flagging outliers!
+    ## -- Flagging outliers!
 
-    #> -- Smoothing time series!
+    ## -- Smoothing time series!
 
-    #> -- Estimating transition dates!
+    ## -- Estimating transition dates!
 
 Using the code (`out_dir = "."`) causes the downloaded data, both the 3-day time
-series and the transition dates, to be downloaded to your current working 
-directory. You can change that is you want to save it elsewhere. 
+series and the calculated transition dates, to be stored in your current working 
+directory. You can change that is you want to save it elsewhere. You will get feedback on the processing steps completed.
 
 We can now load this data; both the time series and the transition files.
 
@@ -173,8 +174,7 @@ We can now load this data; both the time series and the transition files.
 ### Threshold values 
 
 Now let's plot the data to see what we are working with. But first, let's 
-calculate the transition date (`td`) for each year when 25% of the greenness 
-values within the 90% percentile (`threshold_25`).
+subset the transition date (`td`) for each year when 25% of the greenness amplitude (of the 90^th^) percentile is reached (`threshold_25`).
 
 
     # select the rising (spring dates) for 25% threshold of Gcc 90
@@ -222,7 +222,7 @@ above, showing the newly found transition dates along the Gcc curve.
                 upper_thresh = 0.8)
 
 Now we have manually set the parameters that were default for our first plot.
-Note, that here is also a lower and a middle threshold, the order matters so
+Note, that here is also a lower and a middle threshold parameter, the order matters so
 always use the relevant parameter (for parameters, check transition_dates())
 
 Now we can again plot the annual pattern with the transition dates. 
@@ -255,7 +255,7 @@ using the above settings. This data set is called `phenocam_DB`.
 Alternatively, you can download a curated dataset from the ORNL DAAC, as fully described in 
 <a href="https://www.nature.com/articles/sdata201828" target="_blank">Scientific
 Data: Tracking vegetation phenology across diverse North American biomes using PhenoCam imagery (Richardson et al. 2018)</a>. 
-A limited copy, only including time series and transition dates, is also mirrored
+A limited copy, including only time series and transition dates, is also mirrored
 as a 
 <a href="https://github.com/khufkens/phenocam_dataset" target="_blank">github repo (500 mb)</a>. 
 
@@ -270,13 +270,20 @@ In order to use the CMIP5 data to make phenology projections the data needs to
 be downloaded one year at a time, and subset where possible to reduce file sizes. 
 Below you find the instructions to download the 2090 CMIP5 data for the RCP8.5 
 scenario of the MIROC5 model. The data will be stored in the R temporary 
-directory for later use. Please note that this is a large file (< 4 GB). 
+directory for later use. Please note that this is a large file (> 4 GB). 
 
 
     # download source cmip5 data into your temporary directory
     # please note this is a large download: >4GB! 
     phenor::download_cmip5(
       year = 2090,
+      path = tempdir(),
+      model = "MIROC5",
+      scenario = "rcp85"
+      )
+    
+    phenor::download_cmip5(
+      year = 2010,
       path = tempdir(),
       model = "MIROC5",
       scenario = "rcp85"
@@ -295,8 +302,7 @@ those we downloaded above). This function will match the transition dates from
 PhenoCam data with the appropriate Daymet data (dynamically).
 
 In the next code chunk, we will format the phenocam transition date data 
-(in /foo/bar/) correctly. Then we will specify the direction of the curve to be 
-considered and setting the Gcc percentile, threshold and temporal offset. 
+(in your working directory, ".") correctly. Then we will specify the direction of the curve to be considered and setting the Gcc percentile, threshold and temporal offset. 
 
 
     # Format the phenocam transition date data 
@@ -312,8 +318,11 @@ considered and setting the Gcc percentile, threshold and temporal offset.
       internal = TRUE
       )
 
-    #> Processing 1 sites
-    #>   |                                                                         |                                                                 |   0%  |                                                                         |=================================================================| 100%
+    ## Processing 1 sites
+    ##   |                                                                       
+    ##   |                                                                 |   0%
+    ##   |                                                                       
+    ##   |=================================================================| 100%
 
     # When internal = TRUE, the data will be returned to the R
     # workspace, otherwise the data will be saved to disk.
@@ -321,40 +330,39 @@ considered and setting the Gcc percentile, threshold and temporal offset.
     # view data structure
     str(phenocam_data)
 
-    #> List of 1
-    #>  $ bartlettir:List of 13
-    #>   ..$ site            : chr "bartlettir"
-    #>   ..$ location        : num [1:2] 44.1 -71.3
-    #>   ..$ doy             : int [1:365] -102 -101 -100 -99 -98 -97 -96 -95 -94 -93 ...
-    #>   ..$ ltm             : num [1:365] 13.4 14 13.5 12.9 11.9 ...
-    #>   ..$ transition_dates: num [1:9] 133 129 122 133 130 128 136 130 138
-    #>   ..$ year            : num [1:9] 2008 2009 2010 2011 2012 ...
-    #>   ..$ Ti              : num [1:365, 1:9] 16 17.2 16.8 15.5 16.2 ...
-    #>   ..$ Tmini           : num [1:365, 1:9] 7 10 10.5 7.5 6.5 11 16 14.5 7.5 3 ...
-    #>   ..$ Tmaxi           : num [1:365, 1:9] 25 24.5 23 23.5 26 29 28.5 24 20 18 ...
-    #>   ..$ Li              : num [1:365, 1:9] 11.9 11.9 11.8 11.8 11.7 ...
-    #>   ..$ Pi              : num [1:365, 1:9] 0 0 0 0 0 0 5 6 0 0 ...
-    #>   ..$ VPDi            : num [1:365, 1:9] 1000 1240 1280 1040 960 1320 1800 1640 1040 760 ...
-    #>   ..$ georeferencing  : NULL
-    #>  - attr(*, "class")= chr "phenor_time_series_data"
+    ## List of 1
+    ##  $ bartlettir:List of 13
+    ##   ..$ site            : chr "bartlettir"
+    ##   ..$ location        : num [1:2] 44.1 -71.3
+    ##   ..$ doy             : int [1:365] -102 -101 -100 -99 -98 -97 -96 -95 -94 -93 ...
+    ##   ..$ ltm             : num [1:365] 13.4 14 13.5 12.9 11.9 ...
+    ##   ..$ transition_dates: num [1:9] 133 129 122 133 130 128 136 130 138
+    ##   ..$ year            : num [1:9] 2008 2009 2010 2011 2012 ...
+    ##   ..$ Ti              : num [1:365, 1:9] 16 17.2 16.8 15.5 16.2 ...
+    ##   ..$ Tmini           : num [1:365, 1:9] 7 10 10.5 7.5 6.5 11 16 14.5 7.5 3 ...
+    ##   ..$ Tmaxi           : num [1:365, 1:9] 25 24.5 23 23.5 26 29 28.5 24 20 18 ...
+    ##   ..$ Li              : num [1:365, 1:9] 11.9 11.9 11.8 11.8 11.7 ...
+    ##   ..$ Pi              : num [1:365, 1:9] 0 0 0 0 0 0 5 6 0 0 ...
+    ##   ..$ VPDi            : num [1:365, 1:9] 1000 1240 1280 1040 960 1320 1800 1640 1040 760 ...
+    ##   ..$ georeferencing  : NULL
+    ##  - attr(*, "class")= chr "phenor_time_series_data"
 
 As you can see, this formats a nested list of data. This nested list is consistent
-across all `format_` functions. 
+across all `format_` functions.
 
 Finally, when making projections for the coming century you can use the 
 `format_cmip5()` function. This function does not rely on phenology data but 
-creates a consistent data structure so models can easily use this data consistently. 
+creates a consistent data structure so models can easily use this data. 
 In addition, there is the option to constrain the data, which is global, 
 spatially with an `extent` parameter. The extent is a vector with coordinates 
 defining the region of interest defined as xmin, xmax, ymin, ymax in latitude and 
-longitude. 
+longitude.
 
-This code has a large download size, we do not show the output of this code. 
+This code has a large download size, we do not show the output of this code.
 
 
     # format the cmip5 data
-    
-    cmip5_data <- phenor::format_cmip5(
+    cmip5_2090 <- phenor::format_cmip5(
       path = tempdir(), 
       year = 2090,
       offset = 264,
@@ -364,24 +372,32 @@ This code has a large download size, we do not show the output of this code.
       internal = FALSE
       )
     
-    
-    
+    cmip5_2010 <- phenor::format_cmip5(
+      path = tempdir(), 
+      year = 2010,
+      offset = 264,
+      model = "MIROC5",
+      scenario = "rcp85",
+      extent = c(-95, -65, 24, 50),
+      internal = FALSE
+      )
 
 
 ### Climate Training Dataset
-Given the large size of the climate data, we will use subsetted & formatted 
-training dataset. You can download it here 
+Given the large size of the climate projection data above, we will use subsetted 
+and formatted training dataset. In that section of the tutorial, we will directly 
+read the data into R.
+
+Alternatively, you can download it here 
 <a href="https://github.com/khufkens/phenocamr_phenor_demo/archive/master.zip" target="_blank">as a zip file (128 MB)</a>
-,obtain the data by cloning the GitHub repository, 
+ or obtain the data by cloning the GitHub repository, 
 
 ```bash
 git clone https://github.com/khufkens/phenocamr_phenor_demo.git
 
 ```
 
-or wait until that portion of the tutorial and we will directly read it in to R.
-
-Now that we have the needed phenology and climate data, we can create our model.
+Now that we have the needed phenology and climate projection data, we can create our model.
 
 ## Phenology Model Parameterization
 
@@ -393,11 +409,11 @@ The default optimization method uses Simulated Annealing to find optimal
 parameter sets. Ideally the routine is run for >10K iterations (longer for 
 complex models). When the procedure ends, by default, a plot of the modeled ~ measured data 
 is provided in addition to model fit statistics. This gives you quick feedback 
-on model accuracy. 
+on model accuracy.
 
 For a full list of all models included and their model structure, please refer 
 to the <a href="https://github.com/khufkens/phenor" target="_blank">package documentation</a> and 
-<a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12970" target="_blank>Hufkens et al. 2018. An integrated phenology modelling framework in R: Phenology modelling with phenor</a>.
+<a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12970" target="_blank"> Hufkens et al. 2018. An integrated phenology modelling framework in R: Phenology modelling with phenor</a>.
 
 For the phenology data, we'll used the example data that comes with *phenor*. This
 will allow our models to run faster than if we used all the data we downloaded
@@ -422,39 +438,39 @@ processed using the settings we used above.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/pheno-cam/phenology_modeling_with_phenor/model-param-1.png)
 
-    #> 
-    #> Call:
-    #> lm(formula = data$transition_dates ~ out)
-    #> 
-    #> Residuals:
-    #>     Min      1Q  Median      3Q     Max 
-    #> -23.936  -6.000  -1.163   4.916  35.969 
-    #> 
-    #> Coefficients:
-    #>             Estimate Std. Error t value Pr(>|t|)    
-    #> (Intercept) -0.81232    4.96837  -0.163     0.87    
-    #> out          1.00733    0.04061  24.807   <2e-16 ***
-    #> ---
-    #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    #> 
-    #> Residual standard error: 8.773 on 356 degrees of freedom
-    #> Multiple R-squared:  0.6335,	Adjusted R-squared:  0.6325 
-    #> F-statistic: 615.4 on 1 and 356 DF,  p-value: < 2.2e-16
+    ## 
+    ## Call:
+    ## lm(formula = data$transition_dates ~ out)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -24.469  -5.467  -1.463   4.539  36.534 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -0.50457    4.92801  -0.102    0.919    
+    ## out          0.99974    0.04007  24.948   <2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 8.741 on 356 degrees of freedom
+    ## Multiple R-squared:  0.6361,	Adjusted R-squared:  0.6351 
+    ## F-statistic: 622.4 on 1 and 356 DF,  p-value: < 2.2e-16
 
-    
     # you can specify or alter the parameter ranges as located in
+    # copy this file and use the par_ranges parameter to use your custom version
     print(sprintf("%s/extdata/parameter_ranges.csv", path.package("phenor")))
 
-    #> [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/phenor/extdata/parameter_ranges.csv"
+    ## [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/phenor/extdata/parameter_ranges.csv"
 
-We can list the parameters by looking at one of the nested list items (`par`).
+We can list the parameters (`par`) by looking at one of the nested list items.
 
 
     # only list the TT model parameters, ignore other
     # ancillary fields
     print(phenocam_par$par)
 
-    #> [1] 175.578271  -4.621545 544.035223
+    ## [1] 176.666168  -3.991367 517.211340
 
 ## Phenology Model Predictions
 
@@ -466,25 +482,33 @@ We will use demo CMIP5 data, instead of the data we downloaded earlier, so that
 our model comes processes faster. 
 
 
-    
-    # download the cmip5 file from the demo repository
+    # download the cmip5 files from the demo repository
     download.file("https://github.com/khufkens/phenocamr_phenor_demo/raw/master/data/phenor_cmip5_data_MIROC5_2090_rcp85.rds",
                   "phenor_cmip5_data_MIROC5_2090_rcp85.rds")
     
+    download.file("https://github.com/khufkens/phenocamr_phenor_demo/raw/master/data/phenor_cmip5_data_MIROC5_2010_rcp85.rds",
+                  "phenor_cmip5_data_MIROC5_2010_rcp85.rds")
+    
     # read in cmip5 data
-    cmip5_data <- readRDS("phenor_cmip5_data_MIROC5_2090_rcp85.rds")
+    cmip5_2090 <- readRDS("phenor_cmip5_data_MIROC5_2090_rcp85.rds")
+    cmip5_2010 <- readRDS("phenor_cmip5_data_MIROC5_2010_rcp85.rds")
 
 Now that we have both the phenocam data and the climate date we want run our 
 model projection. 
 
 
-    
     # project results forward to 2090 using the phenocam parameters
-    # the region is the north-east of the US so data are "representative"
-    cmip5_phenocam_projection <- phenor::estimate_phenology(
+    cmip5_projection_2090 <- phenor::estimate_phenology(
       par = phenocam_par$par, # provide parameters
-      data = cmip5_data, # provide data
-      model = "TT" # make sure to use the same model!
+      data = cmip5_2090, # provide data
+      model = "TT" # make sure to use the same model !
+    )
+    
+    # project results forward to 2010 using the phenocam parameters
+    cmip5_projection_2010 <- phenor::estimate_phenology(
+      par = phenocam_par$par, # provide parameters
+      data = cmip5_2010, # provide data
+      model = "TT" # make sure to use the same model !
     )
 
 If data are gridded data, the output will automatically be formatted as raster 
@@ -497,16 +521,32 @@ Let's view our model.
     # a world map outline
     par(oma = c(0,0,0,0))
     raster::plot(cmip5_phenocam_projection, main = "DOY")
+
+    ## Error in raster::plot(cmip5_phenocam_projection, main = "DOY"): object 'cmip5_phenocam_projection' not found
+
     maps::map("world", add = TRUE)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/pheno-cam/phenology_modeling_with_phenor/map-model-1.png)
+    ## Error in plot.xy(xy.coords(x, y), type = type, ...): plot.new has not been called yet
 
-What can you take away from this model visualization?
+Maybe more intersting is showing the difference between the start (2010) and the
+end (2090) of the century.
+
+
+    # plot the gridded results and overlay
+    # a world map outline for reference
+    par(oma = c(0,0,0,0))
+    raster::plot(cmip5_projection_2010 - cmip5_projection_2090,
+                 main = expression(Delta * "DOY"))
+    maps::map("world", add = TRUE)
+
+![ ]({{ site.baseurl }}/images/rfigs/R/pheno-cam/phenology_modeling_with_phenor/map-model-diff-1.png)
+
+What can you take away from these model visualizations?
 
 ## PEP725 data
 
 To get phenocam data for Europe. you will likely want to use the Pan European 
-Phenology Project (PEP725). 
+Phenology Project (PEP725). This section teaching you how to access PEP725 data.
 
 ### PEP725 Log In
 Downloading data from the PEP725 network using *phenor* is more elaborate as it 
@@ -535,17 +575,17 @@ search by (partial) matches on the species names.
     # return results
     head(species_list)
 
-    #>   number                   name
-    #> 1    148             abies alba
-    #> 2    115                   acer
-    #> 3    209    actinidia deliciosa
-    #> 4    101 aesculus hippocastanum
-    #> 5    102                  alnus
-    #> 6    103   alopecurus pratensis
+    ##   number                   name
+    ## 1    148             abies alba
+    ## 2    115                   acer
+    ## 3    209    actinidia deliciosa
+    ## 4    101 aesculus hippocastanum
+    ## 5    102                  alnus
+    ## 6    103   alopecurus pratensis
 
-    print(quercus_nr)
+    head(quercus_nr)
 
-    #> [1] 111
+    ## [1] 111
 
 A query for *Quercus* returns a species ID number of **111**. Once you have 
 established the required species number you can move forward and download the species data.
@@ -561,7 +601,7 @@ established the required species number you can move forward and download the sp
 The data use policy does not allow to distribute data so this will conclude 
 the tutorial portion on downloading PEP725 observational data. However, the use 
 of the formatting functions required in *phenor* is consistent and the example 
-using PhenoCam data (see below) should make you confident in processing data 
+using PhenoCam data, above, should make you confident in processing data 
 from the PEP725 database once downloaded.
 
 ### PEP Climate Data
@@ -592,6 +632,3 @@ you would like to see included in the final formatted dataset.
       count = 60,
       resolution = 0.25
       )
-
-
-
