@@ -145,6 +145,8 @@ for(i in 1:n) {
 }
 
 ## ----plot-foggy-clear, fig.height=10, fig.width=8, message=FALSE, eval=TRUE----
+haze_mat[,haze:=unlist(haze)]
+
 top10_high_haze <-  haze_mat[order(haze), file][1:5]
 top10_low_haze <-  haze_mat[order(-haze), file][1:5]
 
@@ -158,8 +160,8 @@ for(i in 1:5){
   img <- readJPEG(top10_high_haze[i])
   plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
   rasterImage(img, 0, 0, 1, 1)
-
 }
+
 mtext('Separating out foggy images of Point Reyes, CA', font = 2, outer = TRUE)
 
 

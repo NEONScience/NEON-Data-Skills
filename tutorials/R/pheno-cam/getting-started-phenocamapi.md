@@ -54,27 +54,7 @@ To explore the PhenoCam data, we'll use several packages for this tutorial.
     
     library(data.table)
     library(phenocamapi)
-
-    #> Loading required package: rjson
-
-    #> Loading required package: RCurl
-
-    #> Loading required package: bitops
-
     library(lubridate)
-
-    #> 
-    #> Attaching package: 'lubridate'
-
-    #> The following objects are masked from 'package:data.table':
-    #> 
-    #>     hour, isoweek, mday, minute, month, quarter, second, wday,
-    #>     week, yday, year
-
-    #> The following object is masked from 'package:base':
-    #> 
-    #>     date
-
     library(jpeg)
 
 
@@ -428,7 +408,89 @@ learn how to do that next.
                            days = 15, # which days on month(s)
                            download_dir = tmp_dir) # where on your computer
 
-    #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%  |                                                                         |===========                                                      |  17%  |                                                                         |================                                                 |  25%  |                                                                         |======================                                           |  33%  |                                                                         |===========================                                      |  42%  |                                                                         |================================                                 |  50%  |                                                                         |======================================                           |  58%  |                                                                         |===========================================                      |  67%  |                                                                         |=================================================                |  75%  |                                                                         |======================================================           |  83%  |                                                                         |============================================================     |  92%  |                                                                         |=================================================================| 100%
+    #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_01_15_120109.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |===========                                                      |  17%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_02_15_120108.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |================                                                 |  25%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_03_15_120151.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |======================                                           |  33%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_04_15_120110.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |===========================                                      |  42%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_05_15_120108.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |================================                                 |  50%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_06_15_120120.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |======================================                           |  58%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_07_15_120109.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |===========================================                      |  67%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_08_15_120110.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |=================================================                |  75%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_09_15_120110.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |======================================================           |  83%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_10_15_120112.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |============================================================     |  92%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_11_15_120111.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
+
+    #>   |                                                                         |=================================================================| 100%
+
+    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
+    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
+    #> dukehw_2017_12_15_120108.jpg was already in /var/folders/0p/
+    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
 
     #> [1] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP"
 

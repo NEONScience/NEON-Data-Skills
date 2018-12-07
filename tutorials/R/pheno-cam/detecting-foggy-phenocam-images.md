@@ -231,6 +231,9 @@ Download and extract the zip file to be used as input data for the following ste
 
     # to download via R
     dir.create('data')
+
+    #> Warning in dir.create("data"): 'data' already exists
+
     destfile = 'data/pointreyes.zip'
     download.file(destfile = destfile, mode = 'wb', url = 'http://bit.ly/2F8w2Ia')
     unzip(destfile, exdir = 'data')  
@@ -285,14 +288,10 @@ Now we have a matrix with haze and A0 values for all our images. Let's
 compare top five images with low and high haze values.
 
 
+    haze_mat[,haze:=unlist(haze)]
+    
     top10_high_haze <-  haze_mat[order(haze), file][1:5]
-
-    #> Error in forderv(ans, cols, sort = TRUE, retGrp = FALSE, order = if (decreasing) -order else order, : First column being ordered is type 'list', not yet supported
-
     top10_low_haze <-  haze_mat[order(-haze), file][1:5]
-
-    #> Error in forderv(ans, cols, sort = TRUE, retGrp = FALSE, order = if (decreasing) -order else order, : First column being ordered is type 'list', not yet supported
-
     
     par(mar= c(0,0,0,0), mfrow=c(5,2), oma=c(0,0,3,0))
     
@@ -304,14 +303,11 @@ compare top five images with low and high haze values.
       img <- readJPEG(top10_high_haze[i])
       plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
       rasterImage(img, 0, 0, 1, 1)
-    
     }
-
-    #> Error in readJPEG(top10_low_haze[i]): object 'top10_low_haze' not found
-
+    
     mtext('Separating out foggy images of Point Reyes, CA', font = 2, outer = TRUE)
 
-    #> Error in mtext("Separating out foggy images of Point Reyes, CA", font = 2, : plot.new has not been called yet
+![ ]({{ site.baseurl }}/images/rfigs/R/pheno-cam/detecting-foggy-phenocam-images/plot-foggy-clear-1.png)
 
 Let's classify those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
 
@@ -324,9 +320,9 @@ Let's classify those into hazy and non-hazy as per the PhenoCam standard of 0.4.
     head(haze_mat)
 
     #>                                                 file      haze        A0
-    #> 1: data/pointreyes//pointreyes_2017_01_01_120056.jpg  0.224981 0.6970257
+    #> 1: data/pointreyes//pointreyes_2017_01_01_120056.jpg 0.2249810 0.6970257
     #> 2: data/pointreyes//pointreyes_2017_01_06_120210.jpg 0.2339372 0.6826148
-    #> 3: data/pointreyes//pointreyes_2017_01_16_120105.jpg  0.231294 0.7009978
+    #> 3: data/pointreyes//pointreyes_2017_01_16_120105.jpg 0.2312940 0.7009978
     #> 4: data/pointreyes//pointreyes_2017_01_21_120105.jpg 0.4536108 0.6209055
     #> 5: data/pointreyes//pointreyes_2017_01_26_120106.jpg 0.2297961 0.6813884
     #> 6: data/pointreyes//pointreyes_2017_01_31_120125.jpg 0.4206842 0.6315728
@@ -355,16 +351,17 @@ analyze.
     # copy the files to the new directories
     file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
 
-    #>  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-    #> [15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-    #> [29] TRUE TRUE
+    #>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+    #> [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+    #> [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 
     
     file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
 
-    #>  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-    #> [15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-    #> [29] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+    #>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+    #> [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+    #> [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+    #> [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 
 Now that we have our images separated, we can get the full list of haze
 values only for those images that are not classified as "foggy".  
