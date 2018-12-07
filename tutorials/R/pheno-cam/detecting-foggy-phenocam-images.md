@@ -131,7 +131,7 @@ does this correlate to on the RGB image?
 
 ## Darkness
 
-Darkness is determined by the minimum of the R, G or B color channel. In the 
+Darkness is determined by the minimum of the R, G or B color channel.
 Similarly, we can extract and show the darkness matrix using the `getDarkness()` function.
 
 
