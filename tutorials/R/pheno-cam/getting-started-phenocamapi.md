@@ -2,7 +2,7 @@
 syncID: 040aa4e32b574a7dac2bf2f88ea86858
 title: "Interacting with the PhenoCam Server using phenocamapi R Pacakge"
 description: "Learn the basics of how to extract PhenoCam data and metadata through the Phenocam API"
-date: "2018-12-06"
+date: "2018-12-07"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -54,7 +54,27 @@ To explore the PhenoCam data, we'll use several packages for this tutorial.
     
     library(data.table)
     library(phenocamapi)
+
+    #> Loading required package: rjson
+
+    #> Loading required package: RCurl
+
+    #> Loading required package: bitops
+
     library(lubridate)
+
+    #> 
+    #> Attaching package: 'lubridate'
+
+    #> The following objects are masked from 'package:data.table':
+    #> 
+    #>     hour, isoweek, mday, minute, month, quarter, second, wday,
+    #>     week, yday, year
+
+    #> The following object is masked from 'package:base':
+    #> 
+    #>     date
+
     library(jpeg)
 
 
@@ -258,7 +278,7 @@ we can run the following code.
     #>          roi_name   site      lat       lon roitype sequence_number
     #> 1: dukehw_DB_1000 dukehw 35.97358 -79.10037      DB            1000
     #>                                      description first_date  last_date
-    #> 1: canopy level DB forest at awesome Duke forest 2013-06-01 2018-12-04
+    #> 1: canopy level DB forest at awesome Duke forest 2013-06-01 2018-12-07
     #>    site_years missing_data_pct
     #> 1:        5.3              4.0
     #>                                                                   roi_page
@@ -279,12 +299,12 @@ we can run the following code.
     # what data are available
     str(dukehw_DB_1000)
 
-    #> Classes 'data.table' and 'data.frame':	673 obs. of  35 variables:
-    #>  $ date                : Factor w/ 673 levels "2013-06-01","2013-06-04",..: 1 2 3 4 5 6 7 8 9 10 ...
+    #> Classes 'data.table' and 'data.frame':	674 obs. of  35 variables:
+    #>  $ date                : Factor w/ 674 levels "2013-06-01","2013-06-04",..: 1 2 3 4 5 6 7 8 9 10 ...
     #>  $ year                : int  2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
     #>  $ doy                 : int  152 155 158 161 164 167 170 173 176 179 ...
     #>  $ image_count         : int  57 76 77 77 77 78 21 0 0 0 ...
-    #>  $ midday_filename     : Factor w/ 644 levels "dukehw_2013_06_01_120111.jpg",..: 1 2 3 4 5 6 7 644 644 644 ...
+    #>  $ midday_filename     : Factor w/ 645 levels "dukehw_2013_06_01_120111.jpg",..: 1 2 3 4 5 6 7 645 645 645 ...
     #>  $ midday_r            : num  91.3 76.4 60.6 76.5 88.9 ...
     #>  $ midday_g            : num  97.9 85 73.2 82.2 95.7 ...
     #>  $ midday_b            : num  47.4 33.6 35.6 37.1 51.4 ...
@@ -408,91 +428,9 @@ learn how to do that next.
                            days = 15, # which days on month(s)
                            download_dir = tmp_dir) # where on your computer
 
-    #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%
+    #>   |                                                                         |                                                                 |   0%  |                                                                         |=====                                                            |   8%  |                                                                         |===========                                                      |  17%  |                                                                         |================                                                 |  25%  |                                                                         |======================                                           |  33%  |                                                                         |===========================                                      |  42%  |                                                                         |================================                                 |  50%  |                                                                         |======================================                           |  58%  |                                                                         |===========================================                      |  67%  |                                                                         |=================================================                |  75%  |                                                                         |======================================================           |  83%  |                                                                         |============================================================     |  92%  |                                                                         |=================================================================| 100%
 
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_01_15_120109.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |===========                                                      |  17%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_02_15_120108.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |================                                                 |  25%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_03_15_120151.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |======================                                           |  33%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_04_15_120110.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |===========================                                      |  42%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_05_15_120108.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |================================                                 |  50%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_06_15_120120.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |======================================                           |  58%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_07_15_120109.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |===========================================                      |  67%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_08_15_120110.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |=================================================                |  75%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_09_15_120110.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |======================================================           |  83%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_10_15_120112.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |============================================================     |  92%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_11_15_120111.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #>   |                                                                         |=================================================================| 100%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months =
-    #> 1:12, : /var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/
-    #> dukehw_2017_12_15_120108.jpg was already in /var/folders/0p/
-    #> x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP
-
-    #> [1] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP"
+    #> [1] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4"
 
     
     # list of downloaded files
@@ -500,12 +438,12 @@ learn how to do that next.
     
     head(duke_middays_path)
 
-    #> [1] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_01_15_120109.jpg"
-    #> [2] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_02_15_120108.jpg"
-    #> [3] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_03_15_120151.jpg"
-    #> [4] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_04_15_120110.jpg"
-    #> [5] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_05_15_120108.jpg"
-    #> [6] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpaGq3rP/dukehw_2017_06_15_120120.jpg"
+    #> [1] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_01_15_120109.jpg"
+    #> [2] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_02_15_120108.jpg"
+    #> [3] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_03_15_120151.jpg"
+    #> [4] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_04_15_120110.jpg"
+    #> [5] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_05_15_120108.jpg"
+    #> [6] "/var/folders/0p/x8phw1_156511_jqkryx2t8m2vn2t3/T//RtmpcHGrs4/dukehw_2017_06_15_120120.jpg"
 
 We can demonstrate the seasonality of Duke forest observed from the camera. (Note
 this code may take a while to run through the loop).
