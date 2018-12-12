@@ -9,7 +9,7 @@ topics: data-analysis, modeling, phenology
 languagesTool: R
 packagesLibraries: phenor
 estimatedTime: 40 min
-code1: /R/phenocam/phenology_modeling_with_phenor.R
+code1: /R/pheno-cam/phenology_modeling_with_phenor.R
 urlTitle: phenocam-phenor-modeling
 ---
 
@@ -319,10 +319,14 @@ In the next code chunk, we will format the phenocam transition date data
       )
 
     ## Processing 1 sites
-    ##   |                                                                       
-    ##   |                                                                 |   0%
-    ##   |                                                                       
-    ##   |=================================================================| 100%
+    ## 
+  |                                                                       
+    ## 
+  |                                                                 |   0%
+    ## 
+  |                                                                       
+    ## 
+  |=================================================================| 100%
 
     # When internal = TRUE, the data will be returned to the R
     # workspace, otherwise the data will be saved to disk.
