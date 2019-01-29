@@ -64,13 +64,13 @@ variables for convenience.
 DirWrk <- tempdir()
 
 # output data
-eddy4R.base::def.dld.zip(Inp = list(Url = UrlOutRefe, Dir = "/home/eddy/inpExmp"))
+eddy4R.base::def.dld.zip(Inp = list(Url = UrlOutRefe, Dir = DirWrk))
 
 # File path for the directory containing input L0' data
-base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
+base::Sys.setenv("DIRINP" = paste0(DirWrk,"/inpExmp") 
 
 # File path for outputs
-base::Sys.setenv("DIROUT" = "/home/eddy/out")
+base::Sys.setenv("DIROUT" = paste0(DirWrk,"/out")
 
 # Date(s) of the input data, specified here for the output file name
 base::Sys.setenv("DATEOUT" = "2017-09-01")
