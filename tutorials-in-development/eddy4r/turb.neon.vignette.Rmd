@@ -60,8 +60,8 @@ variables for convenience.
 
 ```{r env-vars}
 
-# assign corresponding DirFilePara
-    ParaFlow$DirFilePara <- paste0(tempdir(), "/inpRefe/", list.files(paste0(tempdir(), "/inpRefe"))[1]
+# First, we assign a working directory where the input data, output reference data, and workflow will be downloaded to for running the tutorial. This defaults to a temporary directory, but you can change this to any location you like (be aware the downloaded .zip archive is ~ 360 MB)
+DirWrk <- tempdir()
 
 # output data
 eddy4R.base::def.dld.zip(Inp = list(Url = UrlOutRefe, Dir = "/home/eddy/inpExmp"))
