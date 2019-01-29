@@ -60,6 +60,12 @@ variables for convenience.
 
 ```{r env-vars}
 
+# assign corresponding DirFilePara
+    ParaFlow$DirFilePara <- paste0(tempdir(), "/inpRefe/", list.files(paste0(tempdir(), "/inpRefe"))[1]
+
+# output data
+eddy4R.base::def.dld.zip(Inp = list(Url = UrlOutRefe, Dir = "/home/eddy/inpExmp"))
+
 # File path for the directory containing input L0' data
 base::Sys.setenv("DIRINP" = "/home/eddy/inpExmp") 
 
