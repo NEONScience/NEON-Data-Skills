@@ -64,7 +64,7 @@ variables for convenience.
 DirWrk <- tempdir()
 
 #This is the data download url, we use a permanent URL (PURL) link to ensure the data is always accessible.
-UrlDld <- "https://www.dropbox.com/s/wz5w63zy0rzbsng/exmpFlowData_20180627.zip?dl=1"
+UrlDld <- "https://w3id.org/smetzger/Metzger-et-al_2019_NEON-BAMS/tutorial_data/"
 
 # Download input data and output reference data
 eddy4R.base::def.dld.zip(Inp = list(Url = UrlDld, Dir = DirWrk))
