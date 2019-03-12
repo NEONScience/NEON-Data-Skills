@@ -21,11 +21,11 @@ This tutorial goes over how to use the neonUtilities R package
 The package contains 5 functions:
 
 * `stackByTable()` Takes zip files downloaded from the 
-<a href="data.neonscience.org" target="_blank">Data Portal</a> or 
+<a href="http://data.neonscience.org" target="_blank">Data Portal</a> or 
 downloaded by `zipsByProduct()`, unzips them, and joins 
 the monthly files by data table to create a single file per table.
 * `zipsByProduct()` A wrapper for the 
-<a href="data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>; 
 downloads data based on data product and site criteria. Stores 
 downloaded data in a format that can then be joined by 
 `stackByTable()`.

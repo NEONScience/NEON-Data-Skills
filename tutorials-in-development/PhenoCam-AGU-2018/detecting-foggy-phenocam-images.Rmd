@@ -39,12 +39,13 @@ We will use several packages in this tutoiral. All are availale from CRAN.
 library(hazer)
 library(jpeg)
 library(data.table)
+
 ```
 
 Before we start the image processing steps, let's read in and plot an image. This
 image is an example image that comes with the *hazer* package. 
 
-```{r read-image, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r read-image, fig.show='hold', fig.height=5, fig.width=8}
 # read the path to the example image
 jpeg_file <- system.file(package = 'hazer', 'pointreyes.jpg')
 
@@ -72,7 +73,7 @@ A histogram of the colors can be useful to understanding what our image is made
 up of. Using the `density()` function from the base *stats* package, we can extract 
 density distribution of each color channel.
 
-```{r histogram, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r histogram, fig.show='hold', fig.height=5, fig.width=8}
 
 # color channels can be extracted from the matrix
 red_vector <- rgb_array[,,1]
@@ -99,7 +100,7 @@ In *hazer* we can also extract three basic elements of an RGB image :
 The brightness matrix comes from the maximum value of the R, G, or B channel. We 
 can extract and show the brightness matrix using the `getBrightness()` function. 
 
-```{r brightness, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r brightness, fig.show='hold', fig.height=5, fig.width=8}
 
 # extracting the brightness matrix
 brightness_mat <- getBrightness(rgb_array)
@@ -117,7 +118,7 @@ of the R, G or B color channel.
 To extract a single brighness value for the image, depending on our needs we can 
 perform some statistics or we can just use the mean of this matrix. 
 
-```{r brightness-adv}
+```{r brightness-adv, fig.height=5, fig.width=8}
 # the main quantiles
 quantile(brightness_mat)
 
@@ -135,7 +136,7 @@ does this correlate to on the RGB image?
 Darkness is determined by the minimum of the R, G or B color channel. In the 
 Similarly, we can extract and show the darkness matrix using the `getDarkness()` function.
 
-```{r darkness, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r darkness, fig.show='hold', fig.height=5, fig.width=8}
 
 # extracting the darkness matrix
 darkness_mat <- getDarkness(rgb_array)
@@ -160,7 +161,7 @@ darkness and brightness matrices.
 
 The contrast of the image can quickly be extacted using the `getContrast()` function.
 
-```{r contrast, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r contrast, fig.show='hold', fig.height=5, fig.width=8}
 
 # extracting the contrast matrix
 contrast_mat <- getContrast(rgb_array)
@@ -194,7 +195,7 @@ The function returns a vector of two numeric values:
 The PhenoCam standards classify any image with the haze degree greater 
 than 0.4 as a significantly foggy image.
 
-```{r haze, fig.show='hold', fig.height=5, fig.width=6.5}
+```{r haze, fig.show='hold', fig.height=5, fig.width=8}
 # extracting the haze matrix
 haze_degree <- getHazeFactor(rgb_array)
 
@@ -215,15 +216,14 @@ You can download the related datasets from
 
 Download and extract the zip file to be used as input data for the followig step.
 
-```{r process-series-data}
+```{r process-series-data, fig.height=5, fig.width=8}
 
-# set up the input image
-#images_dir <- '/path/to/image/directory/'
-images_dir <- "/Users/mjones01/Downloads/pointreyes"
-
+# set up the input image directory
+#pointreyes_dir <- '/path/to/image/directory/'
+pointreyes_dir <- 'data/pointreyes/'
 
 # get a list of all .jpg files in the directory
-pointreyes_images <- dir(path = images_dir, 
+pointreyes_images <- dir(path = pointreyes_dir, 
                          pattern = '*.jpg',
                          ignore.case = TRUE, 
                          full.names = TRUE)
@@ -234,7 +234,7 @@ pointreyes_images <- dir(path = images_dir,
 Now we can use a for loop to process all of the images to get the haze and A0 
 values. 
 
-```{r process-series-loop}
+```{r process-series-loop, fig.height=5, fig.width=8}
 
 
 # number of images
@@ -260,10 +260,32 @@ for(i in 1:n) {
 }
 ```
 
-Now we have a matrix with haze and A0 values for all our images. Let's classify
-those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
+Now we have a matrix with haze and A0 values for all our images. Let's 
+compare top five images with low and high haze values.
 
-```{r process-series-classify}
+```{r plot-foggy-clear, fig.height=10, fig.width=8, message=FALSE, eval=TRUE}
+top10_high_haze <-  haze_mat[order(haze), file][1:5]
+top10_low_haze <-  haze_mat[order(-haze), file][1:5]
+
+par(mar= c(0,0,0,0), mfrow=c(5,2), oma=c(0,0,3,0))
+
+for(i in 1:5){
+  img <- readJPEG(top10_low_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+  
+  img <- readJPEG(top10_high_haze[i])
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
+  rasterImage(img, 0, 0, 1, 1)
+
+}
+mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
+
+```
+
+Let's classify those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
+
+```{r process-series-classify, fig.height=5, fig.width=8}
 
 # classify image as hazy: T/F
 haze_mat[haze>0.4,foggy:=TRUE]
@@ -277,29 +299,36 @@ Now we can save all the foggy images to a new folder that will retain the
 foggy images but keep them seperate from the non-foggy ones that we want to 
 analyze. 
 
-```{r process-series-seperate}
+```{r process-series-seperate, fig.height=5, fig.width=8}
 
 # identify directory to move the foggy images to
-#foggy_dir <- '/path/to/foggy/images/directory/'
-foggy_dir <- "/Users/mjones01/Downloads/pointreyes-foggy"
+foggy_dir <- paste0(pointreyes_dir, 'foggy')
+clear_dir <- paste0(pointreyes_dir, 'clear')
 
 # if a new directory, create new directory at this file path
-#dir.create(foggy_dir)
+dir.create(foggy_dir,  showWarnings = FALSE)
+dir.create(clear_dir,  showWarnings = FALSE)
 
-# copy the files to the new directory
+# copy the files to the new directories
 file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
 
-# remove the files from the old directory
-file.remove(haze_mat[foggy==TRUE,file])
+file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
+
 ```
 
 Now that we have our images seperated, we can get the full list of haze
 values only for those images that are not classfied as "foggy".  
 
-```{r process-series-apply}
+```{r process-series-apply, fig.height=5, fig.width=8}
+# this is an alternative approach instead of a for loop
 
 # loading all the images as a list of arrays
-img_list <- lapply(pointreyes_images, FUN = jpeg::readJPEG)
+pointreyes_clear_images <- dir(path = clear_dir, 
+                         pattern = '*.jpg',
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+img_list <- lapply(pointreyes_clear_images, FUN = jpeg::readJPEG)
 
 # getting the haze value for the list
 # patience - this takes a bit of time
@@ -311,6 +340,7 @@ head(haze_list)
 ```
 
 We can then use these values for further analyses and data correction. 
+
 
 *** 
 
