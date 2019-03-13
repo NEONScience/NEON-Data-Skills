@@ -3,13 +3,15 @@
 install.packages("neonUtilities")
 
 # load neonUtilities
-library (neonUtilities)
+library(neonUtilities)
+
 
 
 ## ----run-function, eval = FALSE------------------------------------------
 ## # stack files - Mac OSX file path shown
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 ## 
+
 
 ## ----sample-output, eval=FALSE-------------------------------------------
 ## Unpacking zip files
@@ -25,30 +27,29 @@ library (neonUtilities)
 ## Stacking took 6.233922 secs
 ## All unzipped monthly data folders have been removed.
 
+
 ## ----run-options, eval = FALSE-------------------------------------------
 ## 
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip",
 ##              savepath="~data/allTemperature", saveUnzippedFiles=T)
 ## 
 
+
 ## ----run-zipsByProduct, eval = FALSE-------------------------------------
 ## 
-## zipsByProduct(dpID="DP1.00002.001", site="HARV",
+## zipsByProduct(dpID="DP1.00002.001", site="WREF",
 ##               package="basic", check.size=T)
 ## 
 
+
 ## ----zips-output, eval=FALSE---------------------------------------------
-## Continuing will download files totaling approximately 121.470836 MB. Do you want to proceed y/n: y
-## trying URL 'https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.00002.001/PROV/HARV/20141001T000000--20141101T000000/basic/NEON.D01.HARV.DP1.00002.001.2014-10.basic.20171010T150911Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180409T214634Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20180409%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=1349949ab91294c564250825007e50315967655a1d0e1a4392d19f310e910654'
-## Content type 'application/zip' length 1593260 bytes (1.5 MB)
-## ==================================================
-## downloaded 1.5 MB
 ## 
-## (Further URLs omitted for space. Function returns a message
-##   for each URL it attempts to download from)
+## Continuing will download files totaling approximately 10.80949 MB. Do you want to proceed y/n: y
+## Downloading 2 files
+##   |=================================================================================================| 100%
+## 2 files downloaded to /Users/neon/filesToStack00002
 ## 
-## 36 zip files downloaded to /Users/neon/filesToStack00002
-## 
+
 
 ## ----zips-to-stack, eval = FALSE-----------------------------------------
 ## 
@@ -56,24 +57,22 @@ library (neonUtilities)
 ##              folder=T)
 ## 
 
+
 ## ----run-zipsByProduct-avg, eval = FALSE---------------------------------
 ## 
-## zipsByProduct(dpID="DP1.00003.001", site="HARV",
+## zipsByProduct(dpID="DP1.00003.001", site="WREF",
 ##               package="basic", avg=30, check.size=T)
 ## 
 
+
 ## ----zips-output-avg, eval=FALSE-----------------------------------------
-## Continuing will download files totaling approximately 5.56142 MB. Do you want to proceed y/n: y
-## trying URL 'https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.00003.001/PROV/HARV/20141001T000000--20141101T000000/basic/NEON.D01.HARV.DP1.00003.001.000.060.030.TAAT_30min.2014-10.basic.20171014T082555Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20180523T221132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20180523%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=2a52fb43a773d3c91af41f44796876779a0d5ba041be39e4e73fc0a8d2e71b7a'
-## Content type 'application/octet-stream' length 56534 bytes (55 KB)
-## ==================================================
-## downloaded 55 KB
 ## 
-## (Further URLs omitted for space. Function returns a message
-##   for each URL it attempts to download from)
+## Continuing will download files totaling approximately 0.270066 MB. Do you want to proceed y/n: y
+## Downloading 4 files
+##   |=================================================================================================| 100%
+## 4 files downloaded to /Users/neon/filesToStack00003
 ## 
-## 76 files downloaded to /Users/neon/filesToStack00003
-## 
+
 
 ## ----zips-to-stack-avg, eval = FALSE-------------------------------------
 ## 
@@ -81,17 +80,57 @@ library (neonUtilities)
 ##              folder=T)
 ## 
 
+
+## ----loadBy, eval=F------------------------------------------------------
+## 
+## trip.temp <- loadByProduct(dpID="DP1.00003.001",
+##                            site=c("MOAB","ONAQ"),
+##                            startdate="2018-05",
+##                            enddate="2018-08")
+## 
+
+
+## ----loadBy-output, eval=F-----------------------------------------------
+## 
+## Continuing will download files totaling approximately 3.789588 MB. Do you want to proceed y/n: y
+## Downloading 4 files
+##   |=================================================================================================| 100%
+## 
+## Unpacking zip files
+##   |=================================================================================================| 100%
+## Stacking table TAAT_1min
+##   |=================================================================================================| 100%
+## Stacking table TAAT_30min
+##   |=================================================================================================| 100%
+## Finished: All of the data are stacked into 2 tables!
+## Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
+## Stacked TAAT_1min which has 174960 out of the expected 174960 rows (100%).
+## Stacked TAAT_30min which has 5832 out of the expected 5832 rows (100%).
+## Stacking took 3.441994 secs
+## All unzipped monthly data folders have been removed.
+## 
+
+
+## ----loadBy-list, eval=F-------------------------------------------------
+## 
+## names(trip.temp)
+## View(trip.temp$TAAT_30min)
+## 
+
+
 ## ----get-pack, eval = FALSE----------------------------------------------
 ## 
 ## getPackage("DP1.00002.001", site_code="HARV",
 ##            year_month="2017-11", package="basic")
 ## 
 
+
 ## ----aop-files, eval = FALSE---------------------------------------------
 ## 
 ## byFileAOP("DP3.30015.001", site="HOPB",
 ##           year="2017", check.size=T)
 ## 
+
 
 ## ----aop-output, eval=FALSE----------------------------------------------
 ## Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y
@@ -109,6 +148,32 @@ library (neonUtilities)
 ## 
 ## (Further messages omitted for space.)
 ## 
+
+
+## ----byTile, eval=F------------------------------------------------------
+## 
+## byTileAOP(dpID="DP3.30026.001", site="SOAP",
+##           year="2018", easting=c(298755,299296),
+##           northing=c(4101405,4101461),
+##           buffer=20)
+## 
+
+
+## ----byTile-output, eval=F-----------------------------------------------
+## 
+## trying URL 'https://neon-aop-product.s3.data.neonscience.org:443/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices/NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190313T225238Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20190313%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e9ae6858242b48df0677457e31ea3d86b2f20ac2cf43d5fc02847bbaf2e1da47'
+## Content type 'application/octet-stream' length 47798759 bytes (45.6 MB)
+## ==================================================
+## downloaded 45.6 MB
+## 
+## (Further URLs omitted for space. Function returns a message
+##   for each URL it attempts to download from)
+## 
+## Successfully downloaded  2  files.
+## NEON_D17_SOAP_DP3_298000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
+## NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
+## 
+
 
 ## ----geocsv, eval = FALSE------------------------------------------------
 ## 
