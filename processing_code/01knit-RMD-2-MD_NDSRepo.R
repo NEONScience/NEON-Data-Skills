@@ -19,7 +19,7 @@ dirs <- c("R/eddy4r/",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[7]
+subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills/"
