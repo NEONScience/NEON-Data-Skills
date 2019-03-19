@@ -20,27 +20,27 @@ This tutorial goes over how to use the neonUtilities R package
 
 The package contains several functions:
 
-* `stackByTable()` Takes zip files downloaded from the 
+* `stackByTable()`: Takes zip files downloaded from the 
 <a href="http://data.neonscience.org" target="_blank">Data Portal</a> or 
 downloaded by `zipsByProduct()`, unzips them, and joins 
 the monthly files by data table to create a single file per table.
-* `zipsByProduct()` A wrapper for the 
+* `zipsByProduct()`: A wrapper for the 
 <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>; 
 downloads data based on data product and site criteria. Stores 
 downloaded data in a format that can then be joined by 
 `stackByTable()`.
-* `loadByProduct()` Combines the functionality of `zipsByProduct()` and 
+* `loadByProduct()`: Combines the functionality of `zipsByProduct()` and 
 `stackByTable()`: Downloads the specified data, stacks the files, and 
 loads the files to the R environment.
-* `getPackage()` A wrapper for the NEON API; downloads one 
+* `getPackage()`: A wrapper for the NEON API; downloads one 
 site-by-month zip file at a time.
-* `byFileAOP()` A wrapper for the NEON API; downloads remote 
+* `byFileAOP()`: A wrapper for the NEON API; downloads remote 
 sensing data based on data product, site, and year criteria. 
 Preserves the file structure of the original data.
-* `byTileAOP()` Downloads remote sensing data for the specified 
+* `byTileAOP()`: Downloads remote sensing data for the specified 
 data product, subset to tiles that intersect a list of 
 coordinates.
-* `transformFileToGeoCSV()` Converts any NEON data file in 
+* `transformFileToGeoCSV()`: Converts any NEON data file in 
 csv format into a new file with GeoCSV headers.
 
 <div id="ds-dataTip" markdown="1">
@@ -66,14 +66,15 @@ First, we must install and load the `neonUtilities` package.
     # install neonUtilities - can skip if already installed
     install.packages("neonUtilities")
 
+    ## Installing package into '/Users/clunch/Library/R/3.5/library'
+    ## (as 'lib' is unspecified)
+
     ## 
     ## The downloaded binary packages are in
-    ## 	/var/folders/86/7gdhpvgx34z4sp2801dh62xm0000gn/T//RtmpNoz77w/downloaded_packages
+    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpp0YvCL/downloaded_packages
 
     # load neonUtilities
     library(neonUtilities)
-
-    ## Warning: package 'neonUtilities' was built under R version 3.5.2
 
 
 ## Join data files: stackByTable()
@@ -179,12 +180,17 @@ can be a vector of 4-letter NEON site codes, e.g.
 available data, or a date in the form YYYY-MM, e.g. 2017-06. 
 Since NEON data are provided in month packages, finer scale 
 querying is not available. Both start and end date are inclusive.
-* `package`: either basic or expanded data package
+* `package`: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
 * `avg`: either "all", to download all data (the default), or the 
 number of minutes in the averaging interval. See example below; 
-only applicable to IS data
+only applicable to IS data.
 * `savepath`: the file path you want to download to; defaults to the 
-working directory
+working directory.
 * `check.size`: T or F: should the function pause before downloading 
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
@@ -253,7 +259,7 @@ to `zipsByProduct()`, as described above.
 Since we are now loading data into the R environment, the function 
 output needs to be assigned to a variable name. We'll call it 
 `trip.temp`, and this time we'll query for data at Moab and at 
-Onaqui (MOAB and ONAQ), only from May-August 2018.
+Onaqui (MOAB and ONAQ), only from May--August 2018.
 
 
     trip.temp <- loadByProduct(dpID="DP1.00003.001", 
@@ -280,12 +286,21 @@ Onaqui (MOAB and ONAQ), only from May-August 2018.
     All unzipped monthly data folders have been removed.
 
 The object returned by `loadByProduct()` is a named list of data 
-tables. To work with each of them, select them from the list 
+frames. To work with each of them, select them from the list 
 using the `$` operator.
 
 
     names(trip.temp)
     View(trip.temp$TAAT_30min)
+
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can loop over the 
+list items with the `assign()` function:
+
+
+    for(i in 1:length(trip.temp)) {
+        assign(names(trip.temp)[i], trip.temp[[i]])
+    }
 
 ## Download a single zip file: getPackage()
 
@@ -345,23 +360,28 @@ working directory.
 Often when using remote sensing data, we only want data covering a
 certain area - usually the area where we have coordinated ground 
 sampling. `byTileAOP()` queries for data tiles containing a 
-specified list of coordinates. It only works for the tiled versions 
-of the remote sensing data, i.e. the ones with data product IDs 
-beginning with "DP3".
+specified list of coordinates. It only works for the tiled, AKA 
+mosaicked, versions of the remote sensing data, i.e. the ones with 
+data product IDs beginning with "DP3".
 
 Here, we'll download tiles of vegetation indices data (DP3.30026.001) 
 corresponding to select observational sampling plots. For more information 
-about NEON spatial data, see the 
+about accessing NEON spatial data, see the 
 <a href="https://www.neonscience.org/neon-api-usage" target="_blank">
 API tutorial</a> and the in-development <a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" 
 target="_blank">
 geoNEON package</a>.
 
 For now, assume we've used the API to look up the plot centroids of 
-plots SOAP_009 and SOAP_011 at the Soaproot Saddle site.
+plots SOAP_009 and SOAP_011 at the Soaproot Saddle site. You can 
+also look these up in the Spatial Data folder of the 
+<a href="https://data.neonscience.org/documents" target="_blank">
+document library</a>. 
 The coordinates of the two plots in UTMs are 298755,4101405 and 
 299296,4101461. These are 40x40m plots, so in looking for tiles 
-that contain the plots, we want to include a 20m buffer.
+that contain the plots, we want to include a 20m buffer. The 
+"buffer" is actually a square, it's a delta applied equally to 
+both the easting and northing coordinates.
 
 
     byTileAOP(dpID="DP3.30026.001", site="SOAP", 

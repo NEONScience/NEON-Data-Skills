@@ -6,12 +6,10 @@ install.packages("neonUtilities")
 library(neonUtilities)
 
 
-
 ## ----run-function, eval = FALSE------------------------------------------
 ## # stack files - Mac OSX file path shown
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 ## 
-
 
 ## ----sample-output, eval=FALSE-------------------------------------------
 ## Unpacking zip files
@@ -27,20 +25,17 @@ library(neonUtilities)
 ## Stacking took 6.233922 secs
 ## All unzipped monthly data folders have been removed.
 
-
 ## ----run-options, eval = FALSE-------------------------------------------
 ## 
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip",
 ##              savepath="~data/allTemperature", saveUnzippedFiles=T)
 ## 
 
-
 ## ----run-zipsByProduct, eval = FALSE-------------------------------------
 ## 
 ## zipsByProduct(dpID="DP1.00002.001", site="WREF",
 ##               package="basic", check.size=T)
 ## 
-
 
 ## ----zips-output, eval=FALSE---------------------------------------------
 ## 
@@ -50,20 +45,17 @@ library(neonUtilities)
 ## 2 files downloaded to /Users/neon/filesToStack00002
 ## 
 
-
 ## ----zips-to-stack, eval = FALSE-----------------------------------------
 ## 
 ## stackByTable(filepath="/Users/neon/filesToStack00002",
 ##              folder=T)
 ## 
 
-
 ## ----run-zipsByProduct-avg, eval = FALSE---------------------------------
 ## 
 ## zipsByProduct(dpID="DP1.00003.001", site="WREF",
 ##               package="basic", avg=30, check.size=T)
 ## 
-
 
 ## ----zips-output-avg, eval=FALSE-----------------------------------------
 ## 
@@ -73,13 +65,11 @@ library(neonUtilities)
 ## 4 files downloaded to /Users/neon/filesToStack00003
 ## 
 
-
 ## ----zips-to-stack-avg, eval = FALSE-------------------------------------
 ## 
 ## stackByTable(filepath="/Users/neon/filesToStack00003",
 ##              folder=T)
 ## 
-
 
 ## ----loadBy, eval=F------------------------------------------------------
 ## 
@@ -88,7 +78,6 @@ library(neonUtilities)
 ##                            startdate="2018-05",
 ##                            enddate="2018-08")
 ## 
-
 
 ## ----loadBy-output, eval=F-----------------------------------------------
 ## 
@@ -110,13 +99,18 @@ library(neonUtilities)
 ## All unzipped monthly data folders have been removed.
 ## 
 
-
 ## ----loadBy-list, eval=F-------------------------------------------------
 ## 
 ## names(trip.temp)
 ## View(trip.temp$TAAT_30min)
 ## 
 
+## ----assign-loop, eval=F-------------------------------------------------
+## 
+## for(i in 1:length(trip.temp)) {
+##     assign(names(trip.temp)[i], trip.temp[[i]])
+## }
+## 
 
 ## ----get-pack, eval = FALSE----------------------------------------------
 ## 
@@ -124,13 +118,11 @@ library(neonUtilities)
 ##            year_month="2017-11", package="basic")
 ## 
 
-
 ## ----aop-files, eval = FALSE---------------------------------------------
 ## 
 ## byFileAOP("DP3.30015.001", site="HOPB",
 ##           year="2017", check.size=T)
 ## 
-
 
 ## ----aop-output, eval=FALSE----------------------------------------------
 ## Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y
@@ -149,7 +141,6 @@ library(neonUtilities)
 ## (Further messages omitted for space.)
 ## 
 
-
 ## ----byTile, eval=F------------------------------------------------------
 ## 
 ## byTileAOP(dpID="DP3.30026.001", site="SOAP",
@@ -157,7 +148,6 @@ library(neonUtilities)
 ##           northing=c(4101405,4101461),
 ##           buffer=20)
 ## 
-
 
 ## ----byTile-output, eval=F-----------------------------------------------
 ## 
@@ -173,7 +163,6 @@ library(neonUtilities)
 ## NEON_D17_SOAP_DP3_298000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
 ## NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
 ## 
-
 
 ## ----geocsv, eval = FALSE------------------------------------------------
 ## 
