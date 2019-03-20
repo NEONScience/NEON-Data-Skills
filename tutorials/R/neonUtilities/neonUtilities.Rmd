@@ -140,6 +140,7 @@ These .csv files are now ready for use with the program of your choice.
 ### Other options
 
 Other input options in `stackByTable()` are:
+
 * `savepath` : allows you to specify the file path 
 where you want the stacked files to go, overriding the default. 
 * `saveUnzippedFiles` : allows you to keep the unzipped, unstacked 
