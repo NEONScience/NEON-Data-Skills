@@ -71,7 +71,7 @@ First, we must install and load the `neonUtilities` package.
 
     ## 
     ## The downloaded binary packages are in
-    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpp0YvCL/downloaded_packages
+    ## 	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//RtmpWTqUaE/downloaded_packages
 
     # load neonUtilities
     library(neonUtilities)
@@ -142,6 +142,7 @@ These .csv files are now ready for use with the program of your choice.
 ### Other options
 
 Other input options in `stackByTable()` are:
+
 * `savepath` : allows you to specify the file path 
 where you want the stacked files to go, overriding the default. 
 * `saveUnzippedFiles` : allows you to keep the unzipped, unstacked 
