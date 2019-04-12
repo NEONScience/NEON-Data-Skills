@@ -10,7 +10,7 @@ packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonUtilities
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
-code1: R/NEON-API/NEON-API-How-To
+code1: R/NEON-API/NEON-API-How-To.R
 tutorialSeries: 
 urlTitle: neon-api-usage
 ---
