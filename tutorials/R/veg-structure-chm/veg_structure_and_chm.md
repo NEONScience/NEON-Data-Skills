@@ -1,8 +1,7 @@
-
 ---
 syncID: d2d126173eeb4494a06e35aa34bd2196
-title: "Measuring tree height from the ground and from the air"
-description: "Compare tree height measured from the ground to a Lidar-based Canopy Height Model"
+title: "Measuring tree height: comparing ground-based measurements to Lidar-based Canopy Height Models"
+description: "Learn to work with NEON vegetation structure and canopy height model data to obtain tree heights. "
 dateCreated: 2019-5-21
 authors: Claire K. Lunch
 contributors:
@@ -13,31 +12,53 @@ languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
 code1: /R/veg-structure-chm/veg_structure_and_chm.ipynb
 tutorialSeries:
-urlTitle: veg-structure-chm
+urlTitle: tree-heights-veg-structure-chm
 ---
 
-## Comparing tree height measured from the ground to a Lidar-based Canopy Height Model
+This data tutorial provides instruction on working with two different NEON data products to obtain tree height data from NEON data: 
 
-This exercise uses the Canopy Height Model (CHM) and vegetation structure data
-from Wind River Experimental Forest in Washington State.
+* **DP3.30015.001, ecosystem structure**, aka Canopy Height Models (CHM) and 
+* **DP1.10098.001, wood plant vegetation structure**
 
-Start by loading packages and setting options.
+We will be using data from the Wind River Experimental Forest NEON field site located in Washington state. The predominant vegetation 
+is a tall, evergreen conifers. 
+ 
+<div id="ds-objectives" markdown="1">
 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** `install.packages("raster")`
+* **sp:** `install.packages("sp")`
+* **neonUtilites:** `install.packages("neonUtilities")`
+* **devtools:** `install.packages("devtools")`. You must load the devtools package before you can use it to install geoNEON (`library(devtools)`).  
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`. geoNEON is not on CRAN and must be installed from GitHub. 
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data
+Data are downloaded directly using the neonUtilies package. If you aren't familiar with this package, refer to the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial</a>
+for the `neonUtilities` package.
+</div>
+
+To start, we need to load the necessary packages and setting options.
 
 ```R
-options(stringsAsFactors = F)
+options(stringsAsFactors = F) #load strings as character not factors
 library(sp)
 library(raster)
 library(neonUtilities)
 library(geoNEON)
 ```
 
-### 1. Vegetation structure data
+### 1. Work with vegetation structure data
 
-Download the vegetation structure data. If you haven't done this step yet,
-refer to the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial</a>
-for the `neonUtilities` package.
-
+Download the basic package of vegetation structure data (DP1.10098.001) for Wind River Experimental Forest (site ID = WREF). 
+If you aren't familiar with this package, read the package help or refer to the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial for the `neonUtilities` package</a>.
 
 ```R
 veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic")
@@ -89,13 +110,11 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_081")],
 ![ ]({{ site.baseurl }}/images/veg-structure-chm/veg_structure_and_chm_11_0.png)
 
 
-### 2. Canopy height model data
+### 2. Work with canopy height model data
 
-Download the CHM tile at easting=580000 and northing=5075000, either
-from the data portal or using the `byTileAOP()` function. We could
-download all tiles that contain vegetation structure plots, but in
-this exercise we're sticking to one tile to limit download size and
-processing time.
+In this section, we'll download the Canopy Height Model (or Ecosystem Structure, DP3.30015.001) data for the same site.  However, as the 
+flight boxes for the NEON sites is large (generally 10 km x 10 km) and the data files are extremely large, we are only going to download 
+the data tile(s) that overlap with the vegetations structure plot of interest to us. Therefore, we'll download the CHM tile at easting=580000 and northing=5075000 using the `byTileAOP()` function. 
 
 Load the tile(s) into the environment using the `raster` package.
 
