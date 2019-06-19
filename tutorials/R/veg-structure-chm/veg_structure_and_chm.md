@@ -36,7 +36,9 @@ skip ahead to section 4.
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of R loaded on your computer to complete this tutorial.
 
-### 1. Setup
+</div>
+
+## 1. Setup
 
 Start by installing and loading packages and setting options. One of the 
 packages we'll be using, `geoNEON`, is only available via GitHub, so it's 
@@ -59,7 +61,7 @@ library(neonUtilities)
 library(geoNEON)
 ```
 
-### 2. Vegetation structure data
+## 2. Vegetation structure data
 
 Download the vegetation structure data using the `loadByProduct()` function in
 the `neonUtilities` package. Inputs needed to the function are:
@@ -137,7 +139,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 ![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
 
 
-### 3. Canopy height model data
+## 3. Canopy height model data
 
 Now we'll download the CHM tile corresponding to plot WREF_075. Several 
 other plots are also covered by this tile. We could download all tiles 
@@ -172,7 +174,7 @@ plot(chm, col=topo.colors(5))
 ![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
 
 
-### 4. Comparing the two datasets
+## 4. Comparing the two datasets
 
 Now we have the heights of individual trees measured from the ground, and 
 the height of the top surface of the canopy, measured from the air. There 
