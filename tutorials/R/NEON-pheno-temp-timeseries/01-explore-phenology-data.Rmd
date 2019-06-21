@@ -4,7 +4,7 @@ title: "Work With NEON's Plant Phenology Data"
 description: "Learn to work with NEON plant phenology observation data (NEON.DP1.10055)."
 dateCreated: 2017-08-01
 authors: Megan A. Jones, Natalie Robinson, Lee Stanish
-contributors: Katie Jones, Cody Flagg
+contributors: Katie Jones, Cody Flagg, Karlee Bradley
 estimatedTime: 
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
@@ -213,7 +213,7 @@ str(ind)
 ```
 
 Note that if you first open you data file in Excel, you might see 06/14/2014 as 
-the format instead of 2014-06-14. Excel can do some ~~wierd~~ interesting things
+the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
 to dates.
 
 #### Individual locations
@@ -373,19 +373,15 @@ phe_ind <- left_join(status_noD, ind_lastnoD)
 
 ```
 
-Ack!  Two different data types.  Why?  NA in taxonID is a logicial, but all the 
-names are character.  
+Ack!  Two different data types.  Why?  Notice that when we checked for intersecting variable names, `data` was one of these variables. We didn't change the `data` column in the ind object from a `character` class to a date class. But, we actually don't want to combine these two `date` columns.
 
 Try it again.  
 
-`taxonID` and `scientificName` are provided for convenience in Status table, but
-most up to date data are always in the `phe_perindividual.csv` files. Therefore, 
-we'll remove from the columns from the status data. (This is one more reason why you want to 
-fully read the documents associated with the data products!).
+We can rename the `date` column in ind so that the two dataframes can now join together.
 
 ```{r join-dfs}
-# drop taxonID, scientificName
-status_noD <- select (status_noD, -taxonID, -scientificName)
+# rename variables in ind
+ind_noD <- rename(ind_noD, addDate = date)
 
 # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
 phe_ind <- left_join(status_noD, ind_lastnoD)
