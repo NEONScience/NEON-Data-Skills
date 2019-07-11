@@ -4,7 +4,7 @@
 # Move .md file into NEON-Data-Skills/tutorials
 
 # file path to .md file
-fl <- "/Users/clunch/GitHub/NEON-Data-Skills/tutorials/R/veg-structure-chm/veg_structure_and_chm.md"
+fl <- "/Users/clunch/GitHub/NEON-Data-Skills/tutorials/R/eddy-intro/eddy_intro.md"
 
 # file path to image file folder
 # this should not need to change for different tutorials
