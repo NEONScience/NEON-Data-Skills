@@ -12,8 +12,8 @@ This R code introduces HDF5 file formats.Special thanks to Edmund Hart for gener
 ```{r}
 
 #Call the R HDF5 Library
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("rhdf5")
+#install.packages("BiocManager")
+#BiocManager::install("rhdf5")
 library("rhdf5")
 
 

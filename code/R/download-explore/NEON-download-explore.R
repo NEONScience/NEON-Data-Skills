@@ -4,8 +4,8 @@
 ## install.packages("neonUtilities")
 ## install.packages("raster")
 ## devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-## source("http://bioconductor.org/biocLite.R")
-## biocLite("rhdf5")
+## install.packages("BiocManager")
+## BiocManager::install("rhdf5")
 ## 
 
 ## ----setup, eval=FALSE---------------------------------------------------

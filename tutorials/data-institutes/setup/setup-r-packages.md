@@ -32,5 +32,5 @@ computer prior to the Institute.
 * The `rhdf5` package is not on CRAN and must be downloaded directly from 
 Bioconductor. The can be done using these two commands directly in your R 
 console. 
-	+ `source("http://bioconductor.org/biocLite.R")`
-	+ `biocLite("rhdf5")`
+	+ `#install.packages("BiocManager")`
+	+ `#BiocManager::install("rhdf5")`

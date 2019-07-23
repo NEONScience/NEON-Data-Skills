@@ -30,7 +30,7 @@ preferably, RStudio loaded on your computer.
 
 ### R Libraries to Install:
 
-* **rhdf5**: `source("http://bioconductor.org/biocLite.R")`, `biocLite("rhdf5")`
+* **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **plyr**: `install.packages('plyr')`
 * **ggplot2**: `install.packages('ggplot2')`
 
