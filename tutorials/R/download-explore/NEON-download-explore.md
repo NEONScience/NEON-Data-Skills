@@ -63,8 +63,8 @@ preferably, RStudio loaded on your computer.
     install.packages("neonUtilities")
     install.packages("raster")
     devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-    source("http://bioconductor.org/biocLite.R")
-    biocLite("rhdf5")
+    install.packages("BiocManager")
+    BiocManager::install("rhdf5")
 
 
 ### Additional Resources

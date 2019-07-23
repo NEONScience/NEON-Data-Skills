@@ -80,8 +80,8 @@ packages. As of Aug. 2017 this package was not yet on CRAN.
 
 
     # Install rhdf5 package (only need to run if not already installed)
-    #source("http://bioconductor.org/biocLite.R")
-    #biocLite("rhdf5")
+    #install.packages("BiocManager")
+    #BiocManager::install("rhdf5")
     
     # Call the R HDF5 Library
     library("rhdf5")

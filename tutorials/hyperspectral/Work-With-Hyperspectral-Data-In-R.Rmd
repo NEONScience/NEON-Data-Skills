@@ -38,7 +38,7 @@ preferably, RStudio loaded on your computer.
 
 ### R Libraries to Install:
 
-* **rhdf5**: `source("http://bioconductor.org/biocLite.R")`, `biocLite("rhdf5")`
+* **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 

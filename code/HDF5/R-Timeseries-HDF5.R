@@ -1,8 +1,8 @@
 ## ----setupLibrary--------------------------------------------------------
 
 # Install rhdf5 library
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("rhdf5")
+#install.packages("BiocManager")
+#BiocManager::install("rhdf5")
 
 
 library("rhdf5")
