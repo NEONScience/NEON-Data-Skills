@@ -10,6 +10,7 @@
 
 ## ----setup, eval=FALSE---------------------------------------------------
 ## 
+## # load packages
 ## library(neonUtilities)
 ## library(geoNEON)
 ## library(raster)

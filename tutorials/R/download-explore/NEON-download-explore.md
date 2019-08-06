@@ -3,8 +3,8 @@ syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
 description: "Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data"
 dateCreated:  2018-11-07
-authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones]
+authors: Claire K. Lunch
+contributors: Christine Laney, Megan A. Jones
 estimatedTime: 1 - 2 hours
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
@@ -58,6 +58,10 @@ preferably, RStudio loaded on your computer.
 * **geoNEON**: For working with NEON spatial data
 * **rhdf5**: HDF5 package; needed for eddy covariance data
 
+Some of these packages are on CRAN and can be installed by 
+`install.packages()`, others need to be installed from 
+other repositories:
+
 
     install.packages("devtools")
     install.packages("neonUtilities")
@@ -78,16 +82,18 @@ preferably, RStudio loaded on your computer.
 
 ## Getting started: Download data from the Portal and load packages
 
-Go to the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> 
-and download some data! Almost any IS or OS data product can be used for this section 
-of the tutorial, but we will proceed assuming you've downloaded Photosynthetically 
-Active Radiation (PAR) (DP1.00024.001) data. For optimal results, download three 
-months of data from two sites. The downloaded file should be a zip file named 
-NEON_par.zip
+Go to the 
+<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> 
+and download some data! Almost any IS or OS data product can be used for this 
+section of the tutorial, but we will proceed assuming you've downloaded 
+Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
+results, download three months of data from two sites. The downloaded file 
+should be a zip file named NEON_par.zip
 
 Now switch over to R and load all the packages installed above.
 
 
+    # load packages
     library(neonUtilities)
     library(geoNEON)
     library(raster)
