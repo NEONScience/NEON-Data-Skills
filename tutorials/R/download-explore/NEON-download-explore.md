@@ -3,8 +3,8 @@ syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
 description: "Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data"
 dateCreated:  2018-11-07
-authors: Claire K. Lunch
-contributors: Christine Laney, Megan A. Jones
+authors: [Claire K. Lunch]
+contributors: [Christine Laney, Megan A. Jones]
 estimatedTime: 1 - 2 hours
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
