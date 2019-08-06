@@ -58,6 +58,10 @@ preferably, RStudio loaded on your computer.
 * **geoNEON**: For working with NEON spatial data
 * **rhdf5**: HDF5 package; needed for eddy covariance data
 
+Some of these packages are on CRAN and can be installed by 
+`install.packages()`, others need to be installed from 
+other repositories:
+
 ```{r packages, eval=FALSE}
 
 install.packages("devtools")

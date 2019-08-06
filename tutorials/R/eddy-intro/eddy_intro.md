@@ -29,10 +29,15 @@ associated concepts.
 
 ## 1. Setup
 
-Start by installing and loading packages and setting options.
+Start by installing and loading packages and setting options. 
+To work with the NEON flux data, we need the `rhdf5` package, 
+which is hosted on Bioconductor, and requires a different 
+installation process than CRAN packages:
 
 
 ```R
+install.packages('BiocManager')
+BiocManager::install('rhdf5')
 install.packages('neonUtilities')
 ```
 
