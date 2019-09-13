@@ -21,16 +21,14 @@ inherently spatial and have dedicated tutorials. This tutorial does include
 guidance in linking locations on the ground to remotely sensed images.
 
 
-## neonUtilities package
+## Spatial data files
 
-This package is intended to provide a toolbox of basic functionality 
-for working with NEON data. It currently contains the functions 
-listed above, but it is under development and more will be added in 
-the future. To report bugs or request new features, post an issue in the GitHub 
-repo 
-<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">issues page</a>.
+The locations of observational sampling plots at terrestrial sites are 
+available in the <a href="http://data.neonscience.org/documents" target="_blank">document library</a> on the Data Portal as static files, 
+in both tabular and shapefile formats. Your download will be a zip file 
+containing tabular files of plot centroids and point locations, and 
+shapefiles of plot centroids, point locations, and polygons.
 
-First, we must install and load the `neonUtilities` package.
 
 ```{r loadStuff}
 # install neonUtilities - can skip if already installed
