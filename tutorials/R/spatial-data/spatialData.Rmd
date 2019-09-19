@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: b152963c4883463883c3b6f0de95fd93
 title: "Access and Work with NEON Geolocation Data"
 description: "Use files available on the data portal, the NEON API, and the neonUtilities R package to access the locations of NEON sampling events and infrastructure. Calculate more precise locations for certain sampling types, and reference ground sampling to airborne data."
 dateCreated: 2019-09-13
@@ -9,7 +9,7 @@ estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
-code1: R/
+code1: R/spatial-data/spatialData.R
 tutorialSeries:
 urlTitle: neon-spatial-data-basics
 
@@ -25,7 +25,7 @@ guidance in linking locations on the ground to remotely sensed images.
 We'll need several R packages in this tutorial. Install the packages and 
 load the libraries for each:
 
-``` {r setup}
+``` {r setup, message=F}
 
 # run once to get the package, and re-run if you need to get updates
 install.packages("sp")
