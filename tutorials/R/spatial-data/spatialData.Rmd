@@ -215,6 +215,50 @@ mam.loc <- def.calc.geo.os(data=mam$mam_pertrapnight,
 
 ```
 
+What columns have been added by `getLocTOS()`?
+
+``` {r mam-diff}
+
+names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
+
+```
+
+Now we have adjusted latitude, longitude, and elevation, and the 
+corresponding easting and northing. We can use the easting and northing to 
+plot the locations of the mammal traps:
+
+``` {r mam-grids}
+
+plot(mam.loc$easting, mam.loc$northing, pch=".",
+     xlab="Easting", ylab="Northing")
+
+```
+
+Each grid has 100 points, so even with each trap plotted as a . we can only 
+see a square for each grid. Let's zoom in on a single plot:
+
+``` {r plot-ONAQ019}
+
+plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_019")], 
+     mam.loc$northing[which(mam.loc$plotID=="ONAQ_019")], 
+     pch=".", xlab="Easting", ylab="Northing")
+
+```
+
+Now let's add a layer of data to see which of these traps caught a mammal:
+
+``` {r plot-captures}
+
+points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_019" & 
+                               mam.loc$trapStatus=="5 - capture")], 
+     mam.loc$northing[which(mam.loc$plotID=="ONAQ_019" &
+                              mam.loc$trapStatus=="5 - capture")],
+     pch=20, col="blue")
+
+```
+
+In the month of data we're viewing, in this plot, animals were caught at 
+only 5 of the 100 traps.
 
 
 
