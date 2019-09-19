@@ -30,7 +30,9 @@ load the libraries for each:
 # run once to get the package, and re-run if you need to get updates
 install.packages("sp")
 install.packages("rgdal")
+install.packages("rgeos")
 install.packages("ggplot2")
+install.packages("ggthemes")
 install.packages("neonUtilities")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
@@ -38,7 +40,9 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 # run every time you start a script
 library(sp)
 library(rgdal)
+library(rgeos)
 library(ggplot2)
+library(ggthemes)
 library(neonUtilities)
 library(geoNEON)
 
@@ -150,7 +154,7 @@ these files.
 
 ### Observational data
 
-Both aquatic and terrestrial observational data download include spatial 
+Both aquatic and terrestrial observational data downloads include spatial 
 data in the downloaded files. Let's take a look at the small mammal data. 
 Download small mammal data from Onaqui (ONAQ), August 2018 to investigate. 
 If downloading data using the `neonUtilties` package is new to you, check 
@@ -210,7 +214,7 @@ For small mammals, the function call looks like this:
 
 ``` {r mam-calc}
 
-mam.loc <- def.calc.geo.os(data=mam$mam_pertrapnight,
+mam.loc <- getLocTOS(data=mam$mam_pertrapnight,
                            dataProd="mam_pertrapnight")
 
 ```
@@ -239,8 +243,8 @@ see a square for each grid. Let's zoom in on a single plot:
 
 ``` {r plot-ONAQ019}
 
-plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_019")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_019")], 
+plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
+     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
      pch=".", xlab="Easting", ylab="Northing")
 
 ```
@@ -249,16 +253,92 @@ Now let's add a layer of data to see which of these traps caught a mammal:
 
 ``` {r plot-captures}
 
-points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_019" & 
+plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
+     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+     pch=".", xlab="Easting", ylab="Northing")
+
+points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003" & 
                                mam.loc$trapStatus=="5 - capture")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_019" &
+     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003" &
                               mam.loc$trapStatus=="5 - capture")],
-     pch=20, col="blue")
+     pch=19, col="blue")
 
 ```
 
 In the month of data we're viewing, in this plot, animals were caught at 
-only 5 of the 100 traps.
+27 of the 100 traps.
+
+
+### Sensor data
+
+Downloads of instrument system (IS) data include a file called 
+`sensor_positions.csv`. The sensor positions file contains information 
+about the coordinates of each sensor, relative to a reference location. 
+Let's look at the sensor locations for photosynthetically active 
+radiation (PAR) at the Treehaven site (TREE).
+
+The sensor positions file isn't kept by the methods in the `neonUtilities` 
+package (we plan to add this in the future!), so go to the 
+<a href="https://data.neonscience.org" target="_blank">Data Portal</a> 
+and download PAR (DP1.00024.001) data at TREE for July 2018. Unzip the 
+monthly package, and read the sensor positions file into R:
+
+``` {r sens-pos}
+
+pos <- read.delim("~/data/NEON.D05.TREE.DP1.00024.001.2018-07.basic.20190314T150344Z/NEON.D05.TREE.DP1.00024.001.sensor_positions.20190314T150344Z.csv",
+                  sep=",", header=T)
+names(pos)
+
+```
+
+The sensor locations are indexed by the HOR.VER indices - see the 
+<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
+page for more details about these indices. Here, the PAR data are collected at 
+each level of the tower (HOR=000), so only the VER index varies (VER=010-060).
+
+The x, y, and z offsets in the sensor positions file are in meters, and are 
+relative to the reference latitude, longitude, and elevation in the file. 
+Let's use the offsets to create a spatially explicit picture of light 
+attenuation through the canopy.
+
+Load the July 2018 PAR data from TREE into R using `loadByProduct()`:
+
+``` {r par-load}
+
+pr <- loadByProduct(dpID="DP1.00024.001", site="TREE",
+                    startdate="2018-07", enddate="2018-07",
+                    avg=30, check.size=F)
+
+```
+
+The HOR and VER indices in the sensor positions file correspond to the 
+`verticalPosition` and `horizontalPosition` fields in `pr$PARPAR_30min`, 
+although R has stripped off the leading zeroes from both indices.
+
+Use the `aggregate()` function to calculate mean PAR at each vertical 
+position on the tower over the month.
+
+``` {r par-ver-mean}
+
+pr.mn <- aggregate(pr$PARPAR_30min$PARMean, 
+                   by=list(pr$PARPAR_30min$verticalPosition),
+                   FUN=mean, na.rm=T)
+
+```
+
+And now we can plot mean PAR relative to elevation on the tower:
+
+``` {r par-plot}
+
+plot(pr.mn$x, pos$zOffset, type="b", pch=20,
+     xlab="Photosynthetically active radiation",
+     ylab="Height above tower base (m)")
+
+```
+
+
+
+
 
 
 
