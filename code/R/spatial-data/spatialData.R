@@ -1,14 +1,18 @@
-## ----setup, message=F----------------------------------------------------
+## ----install, eval=F-----------------------------------------------------
+## 
+## # run once to get the package, and re-run if you need to get updates
+## install.packages("sp")
+## install.packages("rgdal")
+## install.packages("rgeos")
+## install.packages("ggplot2")
+## install.packages("ggthemes")
+## install.packages("neonUtilities")
+## install.packages("devtools")
+## devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+## 
 
-# run once to get the package, and re-run if you need to get updates
-install.packages("sp")
-install.packages("rgdal")
-install.packages("rgeos")
-install.packages("ggplot2")
-install.packages("ggthemes")
-install.packages("neonUtilities")
-install.packages("devtools")
-devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+
+## ----libraries, results="hide"-------------------------------------------
 
 # run every time you start a script
 library(sp)
@@ -23,7 +27,7 @@ options(stringsAsFactors=F)
 
 
 
-## ----domains-------------------------------------------------------------
+## ----domains, results="hide"---------------------------------------------
 
 # modify "~/data" to the filepath where you downloaded the shapefile
 neon.domains <- readOGR("~/data/NEONDomains_0", layer="NEON_Domains")
@@ -37,7 +41,7 @@ map <- fortify(neon.domains, region="DomainName")
 
 
 
-## ----plot-domains, message=F---------------------------------------------
+## ----plot-domains, message=F, warning=F, fig.width=8, fig.height=6-------
 
 gg <- ggplot() + theme_map()
 gg <- gg + geom_map(data=map, map=map,
@@ -47,7 +51,7 @@ gg
 
 
 
-## ----plot-sites----------------------------------------------------------
+## ----plot-sites, fig.width=8, fig.height=6-------------------------------
 
 # modify "~/data" to the filepath where you downloaded the file
 sites <- read.delim("~/data/field-sites.csv", sep=",", header=T)
@@ -57,7 +61,7 @@ gg
 
 
 
-## ----sites-color---------------------------------------------------------
+## ----sites-color, fig.width=8, fig.height=6------------------------------
 
 gg <- gg + geom_point(data=sites, 
                       aes(x=Longitude, y=Latitude, color=Site.Type)) + 
@@ -73,11 +77,11 @@ gg
 
 rdme <- read.delim('/Users/clunch/Dropbox/NEON/spatial/All_NEON_TOS_Plots_V5/readme .csv',
                    sep=',', header=T)
-rdme
+rdme[,1]
 
 
 
-## ----get-mam-data--------------------------------------------------------
+## ----get-mam-data, results="hide"----------------------------------------
 
 mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
                      startdate="2018-08", enddate="2018-08",
@@ -87,17 +91,19 @@ mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
 
 ## ----print-mam-----------------------------------------------------------
 
-head(mam$mam_pertrapnight)
+head(mam$mam_pertrapnight[,1:18])
 
 
 
 ## ----print-ONAQ019-------------------------------------------------------
 
-mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_019"),]
+mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_019"),
+                     c("trapCoordinate","decimalLatitude",
+                       "decimalLongitude")]
 
 
 
-## ----mam-calc------------------------------------------------------------
+## ----mam-calc, results="hide"--------------------------------------------
 
 mam.loc <- getLocTOS(data=mam$mam_pertrapnight,
                            dataProd="mam_pertrapnight")
@@ -147,7 +153,7 @@ names(pos)
 
 
 
-## ----par-load------------------------------------------------------------
+## ----par-load, results="hide"--------------------------------------------
 
 pr <- loadByProduct(dpID="DP1.00024.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
