@@ -41,7 +41,7 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 ```
 
-``` {r libraries}
+``` {r libraries, results="hide"}
 
 # run every time you start a script
 library(sp)
