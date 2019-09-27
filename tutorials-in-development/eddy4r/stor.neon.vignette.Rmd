@@ -40,13 +40,13 @@ different packages with the same name.
 ```{r pack-install,  message=F, warning=F}
 
 
-install.packages("memisc")
+utils::install.packages("memisc")
 library(memisc)
 packFlow00 <- c("DataCombine", "ff", "ffbase", "rhdf5", "Hmisc")
-packFlow01 <- packFlow00[!(packFlow00 %in% installed.packages()[,"Package"])]
+packFlow01 <- packFlow00[!(packFlow00 %in% utils::installed.packages()[,"Package"])]
 if(length(packFlow01) > 0) {
     update.packages(ask = FALSE, checkBuilt = TRUE)
-    install.packages(packFlow01)
+    utils::install.packages(packFlow01)
 }
 rm(packFlow00, packFlow01)
 
@@ -79,9 +79,8 @@ variables for convenience.
 # define global environment
 eddy4R.base::def.env.glob()
 
-# these parameters need to go into Tammy's environment file
 
-# directory for hdf5 dp0p input data files in the Docker-internal directory structure (char)
+# File path for the directory containing input L0' data 
 if(FALSE) {
   # set to FALSE if only dp01 processing, TRUE if dp01 - dp04
   base::Sys.setenv("DEVE" = "FALSE")
@@ -108,7 +107,7 @@ if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
 } else {
   
   #The dates for the run must be specified, this set is for the gold file
-  DateOut<- "2017-05-23" #Should talk to Stefan about best way to handle this 
+  DateOut<- "2017-05-23" 
   FileOutBase <- "ECSE_dp04_CPER"
   Para$Flow <- eddy4R.base::def.para.flow(DateOut = DateOut, FileOutBase = FileOutBase, MethParaFlow = "DfltInp",
                                           
@@ -121,7 +120,7 @@ if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
 #--------------------------------------------------------------------------------------------
 # ASSEMBLE PARAMETERS FROM HDF5 FILE
 
-# create list for parameters; c2r == copied to GitHub parameter repo
+# create list for parameters; 
 
 # Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file   
 Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc 
@@ -142,7 +141,6 @@ base::invisible(eddy4R.base::wrap.hdf5.wrte.dp01.api(date = Para$Flow$DateOut, S
 #   SetPara = c("DirInp", "DirMnt", "DirOut", "DirTmp", "DirWrk", "Loc", "DirFilePara", "DateOut", "Read", "VersDp", "VersEddy")
 #   ) 
 
-# c2r: The horizontal and vertical indices for the measurement
 
 
 
@@ -152,7 +150,6 @@ base::invisible(eddy4R.base::wrap.hdf5.wrte.dp01.api(date = Para$Flow$DateOut, S
 
 # set directories / pathes
 
-# c2r: working directory
 
 #Para$Flow$DirWrk <- "/home/eddy/NEON/test"
 
@@ -171,7 +168,6 @@ if(is.na(Para$Flow$DirWrk)) {
 # set working directory
 setwd(Para$Flow$DirWrk)
 
-# c2r: DirInp, DirMnt input directory
 
 # default: use temporary working directory on Docker filesystem
 if(is.na(Para$Flow$DirInp)) {
@@ -185,7 +181,6 @@ if(is.na(Para$Flow$DirInp)) {
   
 }
 
-# c2r: output directory
 
 # default: use temporary working directory on Docker filesystem
 if(is.na(Para$Flow$DirOut)) {
@@ -206,7 +201,7 @@ if(is.na(Para$Flow$DirOut)) {
 # exclude files and subfolder with formats different from target file format
 #file <- file[which(sapply(1:length(file), function(x) strsplit(file[x], "_")[[1]][3] == Para$Flow$Loc))]
 
-Para$Flow$Site <- def.hdf5.read.para(
+Para$Flow$Site <- eddy4r.base::def.hdf5.read.para(
   DirFileParaLoca = Para$Flow$DirFilePara,
   GrpName = paste0("/", Para$Flow$Loc)#,
   #SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
@@ -259,9 +254,7 @@ resoTimeDp01 <- list(
 
 
 
-
-
-
+# name convention from L0p data variable names to dp01 variable names
 MapSensDp01 <- list(
   "co2Stor" = "irgaStor",
   "h2oStor" = "irgaStor",
@@ -285,7 +278,6 @@ for (i in 1:length(inpSens)){
 
 # principal sampling frequency, used for resampling
 # TODO (Done): incorporate in Para list
-# c2r: ParaSens$SensFreqSamp
 # unit [Hz]
 #get all sensors that have data in dp0p
 Sens <- c(Sens)
@@ -296,7 +288,7 @@ Sens <- Sens[!is.na(Sens)]
 Para$Flow$dp0p <- list()
 for(ss in Sens){
   Para$Flow$dp0p[[ss]] <- list()
-  Para$Flow$dp0p[[ss]]$FreqSamp <- def.hdf5.read.para(
+  Para$Flow$dp0p[[ss]]$FreqSamp <- eddy4R.base::def.hdf5.read.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
     GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/", ss)#,
     #SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
@@ -310,7 +302,7 @@ for(ss in Sens){
 }
 
 
-#get the Para$Flow$dp01$LvlTowr for each sensors
+#get the Para$Flow$dp01$LvlTowr for each sensor
 Para$Flow$dp01$LvlTowr <- list()
 for (i in 1:length(Sens)){
   nameSens <- paste0(Sens[i], "/")
@@ -514,20 +506,7 @@ for(Date in Para$Flow$DateOut) {
     DATA$time <- rbind(DATA$time, inp$time)
     qfqmFlag$time <- rbind(qfqmFlag$time, inp$time)
     
-    # # DATA$temp$irgaStor
-    # DATA$irgaStor <- ffbase::ffdfappend(x = DATA$irgaStor, dat = inp$irgaStor)
-    # 
-    # # DATA$temp$mfcSampStor
-    # DATA$mfcSampStor <- ffbase::ffdfappend(x = DATA$mfcSampStor, dat = inp$mfcSampStor)
-    # 
-    # # DATA$temp$soni
-    # DATA$soni <- ffbase::ffdfappend(x = DATA$soni, dat = inp$soni)
-    # 
-    # # DATA$temp$soniAmrs
-    # DATA$soniAmrs <- ffbase::ffdfappend(x = DATA$soniAmrs, dat = inp$soniAmrs)
-    # 
-    # # time objects
-    # DATA$time <- ffbase::ffdfappend(x = DATA$time, dat = inp$time)
+   
     
   }
   
@@ -593,7 +572,6 @@ wrk$dp01 <- list()
 wrk$qfqmOut <- list()
 wrk$ucrt <- list()
 
-  # c2r: VersDp output version
   Para$Flow$VersDp <- paste0(Para$Flow$VersDp, "_", format(Sys.time(), "%Y%m%d_%H%M%S_%Z"))
   
   
@@ -603,31 +581,32 @@ wrk$ucrt <- list()
   Para$Flow$dp01$Inp$data$co2Stor$samp <- list(
     "lvlMfcSampStor" = Para$Flow$dp01$LvlTowr$mfcSampStor,
     "lvlValv" = Para$Flow$dp01$LvlTowr$irgaValvLvl,
-    "PrdMeas" = 2,
-    "lvlCrdH2oValvVali" = NULL
+    "PrdMeas" = 2,  # measurment time: 2 min
+    "lvlCrdH2oValvVali" = NULL # co2Stor sampling has no validation, this parameter is NULL, this is only valid numbers for isoH2o validation data input
   )
   
   Para$Flow$dp01$Inp$data$co2Stor$vali <- list(
     "lvlMfcSampStor" = Para$Flow$dp01$LvlTowr$mfcSampStor,
     "lvlValv" = Para$Flow$dp01$LvlTowr$irgaValvLvl,
-    "PrdMeas" = 2,
+    "PrdMeas" = 2, # measurment time: 2 min
     "lvlCrdH2oValvVali" = NULL
   )
   
+  # h2o and co2 share the same parameters as measured using the same sensor
   Para$Flow$dp01$Inp$data$h2oStor <- Para$Flow$dp01$Inp$data$co2Stor
   
   
   Para$Flow$dp01$Inp$data$isoCo2$samp <- list(
     "lvlMfcSampStor" = NULL,
     "lvlValv" = Para$Flow$dp01$LvlTowr$crdCo2ValvLvl,
-    "PrdMeas" = 9,
+    "PrdMeas" = 9, # measurment time: 9 min
     "lvlCrdH2oValvVali" = NULL
   )
   
   Para$Flow$dp01$Inp$data$isoCo2$vali <- list(
     "lvlMfcSampStor" = NULL,
     "lvlValv" = NULL,
-    "PrdMeas" = 9,
+    "PrdMeas" = 9, # measurment time: 9 min
     "lvlCrdH2oValvVali" = NULL
   )
   
@@ -635,15 +614,15 @@ wrk$ucrt <- list()
   Para$Flow$dp01$Inp$data$isoH2o$samp <- list(
     "lvlMfcSampStor" = NULL,
     "lvlValv" = Para$Flow$dp01$LvlTowr$crdH2oValvLvl,
-    "PrdMeas" = 9,
+    "PrdMeas" = 9,   # measurment time: 9 min
     "lvlCrdH2oValvVali" = NULL
   )
   
   Para$Flow$dp01$Inp$data$isoH2o$vali <- list(
     "lvlMfcSampStor" = NULL,
     "lvlValv" = NULL,
-    "PrdMeas" = 3,
-    "lvlCrdH2oValvVali" = Para$Flow$dp01$LvlTowr$crdH2oValvVali
+    "PrdMeas" = 3,    # measurment time: 3 min
+    "lvlCrdH2oValvVali" = Para$Flow$dp01$LvlTowr$crdH2oValvVali   # this is only valid numbers for isoH2o validation data input
   )
   
   
@@ -651,7 +630,7 @@ wrk$ucrt <- list()
   #Input parameter for qfqm in dp01
   Para$Flow$dp01$Inp$qfqm <- list()
   
-  for (nn in names(Para$Flow$dp01$Inp$data)){
+  for (idxTmp in names(Para$Flow$dp01$Inp$data)){
     Para$Flow$dp01$Inp$qfqm[[nn]]$samp$lvlValvAux <- NULL
     Para$Flow$dp01$Inp$qfqm[[nn]]$vali$lvlValvAux <- NULL
   }
@@ -973,9 +952,10 @@ library(memisc)
   Para$Flow$dp02$LvlTowrReso$h2oStor <- Para$Flow$dp02$LvlTowrReso$co2Stor # output in dp01
   Para$Flow$dp02$LvlTowrReso$tempStor <- Para$Flow$dp02$LvlTowrReso$tempStor[which(substring(Para$Flow$dp02$LvlTowrReso$tempStor, 1, 3) == "000" & substring(Para$Flow$dp02$LvlTowrReso$tempStor, 9, 9) == "0")]
   
-  
+  #Parameters for dp02
   Para$Flow$dp02$Var <- list()
   
+  #name convention from variable names in dp01 to variable names in dp02
   Para$Flow$dp02$Var <- list(
     "co2Stor" = "rtioMoleDryCo2", #output node in dp01
     "h2oStor" = "rtioMoleDryH2o",  #output node in dp01
