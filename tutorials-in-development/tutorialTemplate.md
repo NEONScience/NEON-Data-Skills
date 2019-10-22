@@ -66,7 +66,7 @@ will appear correctly. (spaces at beginning only added so as not to render)
 
 ***
 
-Our tutorials are built with Markdown with a few exceptions (see links). For a simple markdown overview, check out 
+Our tutorials are styled with Markdown with a few exceptions (see links). For a simple markdown overview, check out 
 <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">this cheatsheet</a>.
 
 For specifics on how to include different element/styles in your tutorial, please
