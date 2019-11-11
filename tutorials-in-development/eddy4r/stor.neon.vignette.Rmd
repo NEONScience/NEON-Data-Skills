@@ -22,9 +22,7 @@ At the end of those instructions, you should have an RStudio
 environment running within Docker. Use that workspace for this 
 vignette.
 
-```
 
-```
 
 
 
