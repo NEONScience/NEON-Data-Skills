@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ## 0. Install and set up
 
 This vignette assumes you are working with eddy4R within the Docker 
@@ -112,9 +113,9 @@ Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc
 Para$Flow$LvlTowrTop <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
 Para$Flow$LvlTowrTop <- Para$Flow$LvlTowrTop[length(Para$Flow$LvlTowrTop)]
 
-# Use the definition function to grab reingest data
+# Use the definition function to grab temperature data from NEON portal
 # Indicating which data will be grab
-DpName <- c("tempAirLvl", "tempAirTop", "fluxHeatSoil", "radiNet", "presBaro")
+DpName <- c("tempAirLvl", "tempAirTop")
 
 # List all group hdf5 path before adding the existing data
 listParaPre <- rhdf5::h5ls(Para$Flow$DirFilePara, datasetinfo = FALSE)
@@ -220,9 +221,7 @@ resoTimeDp01 <- list(
 # Mapping dp01 name and sensor name
 MapSensDp01 <- list(
   "co2Stor" = "irgaStor",
-  "h2oStor" = "irgaStor",
-  "isoCo2" = "crdCo2",
-  "isoH2o" = "crdH2o"
+  "h2oStor" = "irgaStor"
 )
 
 # List all group hdf5 path
@@ -272,6 +271,7 @@ Docker is not assigned sufficient memory in your system. If you
 find that this section hangs or errors out, try opening 
 Docker -> Preferences -> Advanced and increasing the memory 
 allotment.
+
 
 ```{r ingest,  message=F, warning=F}
 
@@ -468,42 +468,6 @@ wrk$ucrt <- list()
   # For h2oStor
   Para$Flow$dp01$Inp$data$h2oStor <- Para$Flow$dp01$Inp$data$co2Stor
 
-  # For isoCo2 during sampling period
-  Para$Flow$dp01$Inp$data$isoCo2$samp <- list(
-    "lvlMfcSampStor" = NULL,
-    "lvlMfcValiStor" = NULL,
-    "lvlValv" = Para$Flow$dp01$LvlTowr$crdCo2ValvLvl,
-    "PrdMeas" = 9,
-    "lvlCrdH2oValvVali" = NULL
-  )
-
-  # For isoCo2 during validating period
-  Para$Flow$dp01$Inp$data$isoCo2$vali <- list(
-    "lvlMfcSampStor" = NULL,
-    "lvlMfcValiStor" = Para$Flow$dp01$LvlTowr$mfcValiStor,
-    "lvlValv" = NULL,
-    "PrdMeas" = 9,
-    "lvlCrdH2oValvVali" = NULL
-  )
-
-  # For isoH2o during sampling period
-  Para$Flow$dp01$Inp$data$isoH2o$samp <- list(
-    "lvlMfcSampStor" = NULL,
-    "lvlMfcValiStor" = NULL,
-    "lvlValv" = Para$Flow$dp01$LvlTowr$crdH2oValvLvl,
-    "PrdMeas" = 9,
-    "lvlCrdH2oValvVali" = NULL
-  )
-
-  # For isoH2o during validating period
-  Para$Flow$dp01$Inp$data$isoH2o$vali <- list(
-    "lvlMfcSampStor" = NULL,
-    "lvlMfcValiStor" = NULL,
-    "lvlValv" = NULL,
-    "PrdMeas" = 3,
-    "lvlCrdH2oValvVali" = Para$Flow$dp01$LvlTowr$crdH2oValvVali
-  )
-
   # Create empty list for input parameter for qfqm in dp01
   Para$Flow$dp01$Inp$qfqm <- list()
   for (idxTmp in names(Para$Flow$dp01$Inp$data)){
@@ -518,7 +482,6 @@ wrk$ucrt <- list()
 
   # Input parameter for ucrt in dp01
   Para$Flow$dp01$Inp$ucrt <- Para$Flow$dp01$Inp$data
-  Para$Flow$dp01$Inp$ucrt$isoCo2$vali$lvlValv <- Para$Flow$dp01$LvlTowr$crdCo2ValvLvl
 
   # Select data for different sampling, validating data at different window size (1 min, 2 min, 3 min, 9 min)
   for(idxDp01 in names(Para$Flow$dp01$Inp$data)){
@@ -546,6 +509,7 @@ wrk$ucrt <- list()
           tmpDp01 <- list()
           tmpQfqmDp01 <- list()
           # dp01 processing
+          print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, ": dp01 data processing ", idxDp01, " dp01 at measurment level of ", idxLvl))
           tmpDp01 <- eddy4R.stor::wrap.dp01.ecse(dp01 = idxDp01,
                                                  lvl = idxLvl,
                                                  lvlMfcSampStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor,
@@ -560,7 +524,9 @@ wrk$ucrt <- list()
                                                  idxTime = wrk$setData
           )
           
+          
           # qfqm processing
+          print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, ": dp01 qfqm processing ", idxDp01, " dp01 at measurment level of ", idxLvl))
           tmpQfqmDp01 <- eddy4R.qaqc::wrap.dp01.qfqm.ecse(dp01 = idxDp01,
                                                           RptExpd = TRUE,
                                                           lvl = idxLvl,
@@ -579,6 +545,7 @@ wrk$ucrt <- list()
           )
           
           #ucrt processing
+          print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, ": dp01 ucrt processing ", idxDp01, " dp01 at measurment level of ", idxLvl))
           tmpUcrtDp01 <- eddy4R.ucrt::wrap.neon.dp01.ucrt.ecse(dp01 = idxDp01,
                                                                lvl = idxLvl,
                                                                lvlMfcSampStor = Para$Flow$dp01$Inp$ucrt[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor,
@@ -620,7 +587,7 @@ wrk$ucrt <- list()
   rpt$dp01$ucrt <- eddy4R.base::def.hdf5.pack(inpList=wrk$ucrt, MethMeas = "ecse", Dp ="Dp01")
   
   # Add standard error under uncertainty dataframe
-  for(idxDp01 in c("co2Stor", "h2oStor", "isoCo2", "isoH2o")){
+  for(idxDp01 in c("co2Stor", "h2oStor")){
     for(idxLvl in base::names(rpt$dp01$ucrt[[idxDp01]])){
      
       for(idxSub in base::names(rpt$dp01$ucrt[[idxDp01]][[idxLvl]])){
@@ -686,10 +653,10 @@ Then also intepolate ECSE Level 1 qfqm data;
 Then calcualte the time change rate, using eddy4R.stor::def.time.rate.diff();
 Then concatenate results and HDF5 data formatting.
 
+
 ```{r dp02-process,  message=F, warning=F}
   # Print screen
-  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, 
-             " dp02 calculation begin"))
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp02 calculation begin"))
   
   # Get input file directory
   FileInp <- Para$Flow$DirFilePara
@@ -779,7 +746,7 @@ Then concatenate results and HDF5 data formatting.
   
   # Create empty list for dp02 workflow parameters
   Para$Flow$dp02 <- list()
-  
+  # Get measurement location for each dp01 
   Para$Flow$dp02$LvlTowrReso <- list(
     "co2Stor" = unique(sapply(1:length(unique(listPara$group[(grep("irgaStor/",listPara$group))])), function(xx) strsplit(unique(listPara$group[(grep("irgaStor/",listPara$group))]), "irgaStor/")[[xx]][2])),
     #"000_010" "000_020" "000_030" "000_040" "co2Arch" "co2High" "co2Low"  "co2Med"  "co2Zero", #sensor in dp0p
@@ -787,65 +754,53 @@ Then concatenate results and HDF5 data formatting.
    
   )
 
+  # Add _02m 
   Para$Flow$dp02$LvlTowrReso$co2Stor <- paste0(Para$Flow$dp02$LvlTowrReso$co2Stor[which(substring(Para$Flow$dp02$LvlTowrReso$co2Stor, 1, 3) == "000")], "_02m")
   Para$Flow$dp02$LvlTowrReso$h2oStor <- Para$Flow$dp02$LvlTowrReso$co2Stor # output in dp01
   Para$Flow$dp02$LvlTowrReso$tempStor <- Para$Flow$dp02$LvlTowrReso$tempStor[which(substring(Para$Flow$dp02$LvlTowrReso$tempStor, 1, 3) == "000" & substring(Para$Flow$dp02$LvlTowrReso$tempStor, 9, 9) == "0")]
 
-
+  # Create empty dp02 output names
   Para$Flow$dp02$Var <- list()
-
   Para$Flow$dp02$Var <- list(
-    "co2Stor" = "rtioMoleDryCo2", #output node in dp01
-    "h2oStor" = "rtioMoleDryH2o",  #output node in dp01
-    "tempStor" = "temp"  #output node in dp01
-
-
+    "co2Stor" = "rtioMoleDryCo2", 
+    "h2oStor" = "rtioMoleDryH2o", 
+    "tempStor" = "temp"  
   )
 
-
+  # Mapping between dp01 and dp02 name
   mapDp02Dp01 <- list(
     "co2Stor" = "co2Stor",
     "h2oStor" = "h2oStor",
     "tempStor" = c("tempAirLvl", "tempAirTop")
   )
 
-
-
-  # for dp02 output
+  # Create empty working list for dp02 output
   wrk$dp02 <- list()
 
-
-  #assign standard minutely time
+  # Assign standard minutely time
   timeDp02 <- as.POSIXlt(seq.POSIXt(
     from = as.POSIXlt(paste(Date, " 00:00:00", sep=""), format="%Y-%m-%d %H:%M:%OS", tz="UTC"),
     to = as.POSIXlt(paste(Date, " 23:59:00", sep=""), format="%Y-%m-%d %H:%M:%OS", tz="UTC"),
     by = 60
   ), tz="UTC")
 
-
-  #fractional UTC time [h UTC]
+  # Convert time to fractional UTC time [h UTC]
   timeFracDp02 <- timeDp02$hour + timeDp02$min / 60 + timeDp02$sec / 3600
-  #clean up
-  #rm(timeDp02)
 
-
-
-
-
-
-  #workflow for L2 dp---------------------------------------------------------------
-  #define idxLvl at the tower top of tempStor
+  # Define idxLvl at the tower top of tempStor
   idxLvlTempStor <- paste0("000_0", Para$Flow$Site$LvlMeasTow, "0_01m", sep="")
+  
+  # Assign the maximum gap time window
   WndwMax <- 40*60 #[s]
-
+  
+  # Start to calculate dp01 for each dp02
   for(idxDp in dp02){
   
     idxVar <- Para$Flow$dp02$Var[[idxDp]]
     wrk$dp02[[idxDp]] <- list()
 
-    #loop around different measurement levels as well as different aggregation time
+    # Loop around different measurement levels as well as different aggregation time
     for(idxLvl in Para$Flow$dp02$LvlTowrReso[[idxDp]]){
-     
       if(idxDp == "tempStor" & idxLvl == idxLvlTempStor) {
         tmpData <- rpt$dp01$data[[mapDp02Dp01[[idxDp]][2]]][[idxLvl]]
         tmpQfqm <- rpt$dp01$qfqm[[mapDp02Dp01[[idxDp]][2]]][[idxLvl]]
@@ -854,69 +809,57 @@ Then concatenate results and HDF5 data formatting.
         tmpQfqm <- rpt$dp01$qfqm[[mapDp02Dp01[[idxDp]][1]]][[idxLvl]]
       }
 
-
-
-
-
-      #intepolation-----------------------------------------------------
-
-
+      # data intepolation data
       tmpItpl <- eddy4R.stor::def.itpl.time(
         dataInp = tmpData[[idxVar]],
         WndwMax = WndwMax, #maximum gap time [s]
         methItpl = "linear"
       )
 
-      #intepolation for qfqm data----------------------------------------------------
-
-
-      #assign actual time
-      #convert to POSIXct, so the full date and time can be stored in as accessed as a single vector
+      # qfqm interpolation
+      # Assign actual time
+      # Convert to POSIXct, so the full date and time can be stored in as accessed as a single vector
       timeDp01 <- as.POSIXlt(tmpData[[idxVar]]$timeBgn, format="%Y-%m-%dT%H:%M:%OSZ", tz="UTC")
 
       if(idxDp == "co2Stor" | idxDp == "h2oStor"){
-        #timeBgn + numSamp/2/* 1/1Hz
         timeDp01 <- as.POSIXlt(timeDp01 + tmpData[[idxVar]]$numSamp/2*1/1, format="%Y-%m-%d %H:%M:%OS", tz="UTC")
       }
 
-      #fractional UTC time [h UTC]
+      # Convert time to fractional UTC time [h UTC]
       tmpQfqm$timeFrac <- timeDp01$hour + timeDp01$min / 60 + timeDp01$sec / 3600
-      #fractional day of year [DOY]
+      # Convert time to fractional day of year [DOY]
       tmpQfqm$DOYFrac <- timeDp01$yday + 1 +  tmpQfqm$timeFrac / 24
-      #     #make sure that all entries are sorted ascending
-      #       rpt$dp01$data$tmpOut <- rpt$dp01$data$tmpOut[order(rpt$dp01$data$tmpOut$UTC, decreasing=FALSE),]
-      #clean up
+      # Clean up
       rm(timeDp01)
 
-
-      #qfqm: determine which datapoints to assess
+      # qfqm: determine which datapoints to assess
       setQfqmLgth <- length(which(!is.na(tmpQfqm[[idxVar]]$qfFinl)))
 
-      #less than 2 values (minimum required by approx() function)
+      # less than 2 values (minimum required by approx() function)
       if(setQfqmLgth < 2) {
 
         tmpQfqmItpl <- as.numeric(rep(1, length(timeDp02)))
 
-        #interpolate actual data
+        # interpolate actual qfqm data
       } else {
 
         tmpQfqmItpl <- zoo::na.approx(object=as.vector(tmpQfqm[[idxVar]]$qfFinl), x=#tmpData$timeFrac
                                         as.integer(tmpQfqm$timeFrac * 60)
                                       , xout=as.integer(timeFracDp02 * 60)
                                       , method = "linear", maxgap=WndwMax, na.rm=FALSE, rule=1, f=0)
-        #replace qf that not = 0 to 1
+        # replace qf that not = 0 to 1
         tmpQfqmItpl <- ifelse(tmpQfqmItpl != 0 | is.na(tmpQfqmItpl), 1, 0)
       }
 
-
-
   
-      #---------calculate the change rate 4 minutely average at the end minus the begining 4 min average------------------------------------------------------------------------
-
+      # Calculate the change rate 4 minutely average at the end minus the begining 4 min average 
+      # Assign averaging period
       idxLvlReso <- paste0(substring(idxLvl, 1, 7), "_", as.integer(resoTimeDp02[[idxDp]] /60), "m")
+      # Assign window period and incremental period
       PrdWndwAgr <- 4 * 60 #unit [s]
       PrdIncrAgr <- as.integer(resoTimeDp02[[idxDp]])
-
+      
+      # data: calculate time rate of change
       wrk$dp02[[idxDp]][[idxLvlReso]] <- eddy4R.stor::def.time.rate.diff(
         dataInp = tmpItpl,
         numDate = numDate,
@@ -925,6 +868,7 @@ Then concatenate results and HDF5 data formatting.
         Date = substring(tmpData[[idxVar]]$timeBgn[1], 1, 10)
       )
 
+      # qfqm: calculate time rate of change
       wrk$qfqmDp02[[idxDp]][[idxLvlReso]] <- eddy4R.stor::def.time.rate.diff(
         dataInp = tmpQfqmItpl,
         numDate = numDate,
@@ -934,65 +878,46 @@ Then concatenate results and HDF5 data formatting.
         qfqmFlag = TRUE
 
       )
+    }
+    print(idxDp)
+  } 
 
 
+  # Clean up
+  base::invisible(gc())
 
-    }; #rm(idxLvl)
-    rlog$debug(idxDp)
-  }; #rm(idxDp)
-
-
-
-
-  # clean up
-
-  invisible(gc())
-
-
-  # end loop around aggregation interval
-  rlog$info(paste0("dataset ", Date, " dp02 calculation complete!"))
-  #save.image(wrk$dp02, file="~/wrkdp01_object.RData")
+  # End loop around aggregation interval
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp02 calculation complete!"))
+  # save.image
   save.image("~/wrkdp02.RData")
 
-
-
-
-  # concatenate results and HDF5 data formatting-----------------------------------------------------------------------------------------
-  #restructure output wrk$dp02:
+  # Concatenate results and HDF5 data formatting
+  # Restructure output wrk$dp02:
   rpt$dp02$data <- eddy4R.base::def.hdf5.pack(inpList=wrk$dp02, MethMeas = "ecse", Dp ="Dp02")
   rpt$dp02$qfqm <- eddy4R.base::def.hdf5.pack(inpList=wrk$qfqmDp02, MethMeas = "ecse", Dp ="Dp02")
 
-  #transfer units
+  # data: transfer units
   for(idxDp in base::names(rpt$dp02$data)) {
-  
     for(idxLvl in base::names(rpt$dp02$data[[idxDp]])){
       for(idxVar in base::names(rpt$dp02$data[[idxDp]][[idxLvl]])){
-       
         base::attr(x = rpt$dp02$data[[idxDp]][[idxLvl]][[idxVar]], which = "unit") <-
           paste0(base::attr(x = rpt$dp01$data[[mapDp02Dp01[[idxDp]][1]]][[1]][[Para$Flow$dp02$Var[[idxDp]]]], which = "unit"), " s-1")
-
       }
     }
-
   }
 
   #qfqm: transfer units
   for(idxDp in base::names(rpt$dp02$qfqm)) {
- 
     for(idxLvl in base::names(rpt$dp02$qfqm[[idxDp]])){
       for(idxVar in base::names(rpt$dp02$qfqm[[idxDp]][[idxLvl]])){
-      
         attributes(rpt$dp02$qfqm[[idxDp]][[idxLvl]][[idxVar]])$unit <-
           attributes(rpt$dp01$qfqm[[mapDp02Dp01[[idxDp]][1]]][[1]][[Para$Flow$dp02$Var[[idxDp]]]])$unit
-
       }
     }
-
   }
   
-  
 ```
-
 
 ## 6. ECSE level 3 data products (dp03) generation.
 
@@ -1001,181 +926,150 @@ Then also intepolate ECSE Level 2 qfqm data;
 Then concatenate results and HDF5 data formatting.
 
 
-
 ```{r dp03-process,  message=F, warning=F}
 
-#dp03 ecse generation-------------------------------------------------------------------------------------------------------------
-rlog$debug(paste0("dataset ", Date, " dp03 calculation begins!"))
+# Print screen
+print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp03 calculation begins!"))
 
+# Assign dp03 names
 dp03 <- c("co2Stor", "h2oStor", "tempStor")
 
-#vertical resolution is 0.1 m
+# Define vertical resolution is 0.1 m
 resoSpceOut <- 0.1
 
+# Get the mesurement hight for each measurement level
 lvlTowr <- Para$Flow$Site$DistZaxsLvlMeasTow
 
-#vertical resolution is 0.1 m
+# Interpolate measurement hight in 0.1 m resolution
 spceStad <- c(1:(max(as.numeric(lvlTowr))/resoSpceOut)) * resoSpceOut
 
+# Convert the mesurement hight for each measurement level to numeric
 spce <- as.numeric(lvlTowr)
 
-
+# Create empty dp03 working list
 wrk$dp03 <- list()
 
-#data calculation processing
+# Data calculation processing for each dp03
 for(idxDp in dp03){
   idxVar <- names(rpt$dp02$data[[idxDp]][[1]])
-
-
-  #interpolate vertically
   wrk$dp03[[idxDp]][[idxVar]] <- list()
-
   for(idxAgr in 1:length(rpt$dp02$data[[idxDp]][[1]][[1]][[1]])){
-  
-    #get dp02 data from each measurement level
+    # get dp02 data from each measurement level
     tmpData <- sapply(1:length(Para$Flow$dp02$LvlTowrReso[[idxDp]]), function(x) rpt$dp02$data[[idxDp]][[x]][[1]]$mean[idxAgr])
-
-
+    # interpolate vertically
     tmpDp03 <- eddy4R.stor::def.itpl.spce(
       dataInp = tmpData,
       methItpl = "linear",
       resoSpceOut = resoSpceOut,
       lvlTowr = lvlTowr
-
     )
-
-
+    # Copy results from temporary to wrk$dp03 
     if(idxAgr == 1) {
       wrk$dp03[[idxDp]][[idxVar]] <- tmpDp03
     } else {
       wrk$dp03[[idxDp]][[idxVar]] <- rbind(wrk$dp03[[idxDp]][[idxVar]], tmpDp03)
     }
-
-
   }# end of loop around idxAgr
 
-
-
+  # Fomatting wrk$dp03 to dataframe
   wrk$dp03[[idxDp]][[idxVar]] <- data.frame(wrk$dp03[[idxDp]][[idxVar]])
-  #dimnames(wrk$dp03[[idxDp]][[idxVar]])[[1]] <- rpt$dp02$data[[idxDp]][[1]][[1]]$timeBgn
   dimnames(wrk$dp03[[idxDp]][[idxVar]])[[2]] <- as.character(paste0(spceStad, " m"))
-
-
-  #wrk$dp03[[idxDp]][[idxVar]] <- cbind(rpt$dp02$data[[idxDp]][[1]][[1]]$timeBgn, wrk$dp03[[idxDp]][[idxVar]])
+  # Add timestamp
   wrk$dp03[[idxDp]][[idxVar]]$timeBgn <- rpt$dp02$data[[idxDp]][[1]][[1]]$timeBgn
   wrk$dp03[[idxDp]][[idxVar]]$timeEnd <- rpt$dp02$data[[idxDp]][[1]][[1]]$timeEnd
-
-
 } # end of loop around idxDp
 
+# Create empty qfqm dp03 working list
 wrk$qfqmDp03 <- list()
-#qfqm calculation processing
+#qfqm processing
 for(idxDp in dp03){
   idxVar <- names(rpt$dp02$qfqm[[idxDp]][[1]])
-
-
-  #interpolate vertically
   wrk$qfqmDp03[[idxDp]][[idxVar]] <- list()
-
   for(idxAgr in 1:length(rpt$dp02$qfqm[[idxDp]][[1]][[1]][[1]])){
-  
-    #get dp02 data from each measurement level
+    # get dp02 data from each measurement level
     tmpQfqm <- sapply(1:length(Para$Flow$dp02$LvlTowrReso[[idxDp]]), function(x) rpt$dp02$qfqm[[idxDp]][[x]][[1]]$qfFinl[idxAgr])
-    #interpolate vertically
-    tmpQfqmDp03 <- zoo::na.approx(object=as.vector(tmpQfqm), x=#tmpData$timeFrac
-                                    spce
-                                  , xout=spceStad
-                                  , method = "linear",
-                                  na.rm=TRUE#,#if you want begining and end to be constant fitted, na.rm=TRUE
-                                  #rule=1, f=0
+    # interpolate vertically
+    tmpQfqmDp03 <- zoo::na.approx(object=as.vector(tmpQfqm), 
+                                  x = spce, 
+                                  xout = spceStad,
+                                  method = "linear",
+                                  na.rm=TRUE
     )
     #fill in the data before 1st measurement level with 1st interpolation data
     tmpQfqmDp03 <- c(rep(tmpQfqmDp03[1], length(spceStad) - length(tmpQfqmDp03)), tmpQfqmDp03)
     #replace qf that not = 0 to 1
     tmpQfqmDp03 <- as.integer(ifelse(tmpQfqmDp03 != 0 | is.na(tmpQfqmDp03), 1, 0))
 
-    #gethering all data
+    # Gethering all data
     if(idxAgr == 1) {
       wrk$qfqmDp03[[idxDp]][[idxVar]] <- tmpQfqmDp03
     } else {
       wrk$qfqmDp03[[idxDp]][[idxVar]] <- rbind(wrk$qfqmDp03[[idxDp]][[idxVar]], tmpQfqmDp03)
     }
-
   }# end of loop around idxAgr
-
-
-
+  
+  # Fomatting wrk$qfqmDp03 to dataframe
   wrk$qfqmDp03[[idxDp]][[idxVar]] <- data.frame(wrk$qfqmDp03[[idxDp]][[idxVar]])
-  #dimnames(wrk$dp03[[idxDp]][[idxVar]])[[1]] <- rpt$dp02$data[[idxDp]][[1]][[1]]$timeBgn
   dimnames(wrk$qfqmDp03[[idxDp]][[idxVar]])[[2]] <- as.character(paste0(spceStad, " m"))
-
-
-  #wrk$dp03[[idxDp]][[idxVar]] <- cbind(rpt$dp02$data[[idxDp]][[1]][[1]]$timeBgn, wrk$dp03[[idxDp]][[idxVar]])
+  
+  # Add timestamp
   wrk$qfqmDp03[[idxDp]][[idxVar]]$timeBgn <- rpt$dp02$qfqm[[idxDp]][[1]][[1]]$timeBgn
   wrk$qfqmDp03[[idxDp]][[idxVar]]$timeEnd <- rpt$dp02$qfqm[[idxDp]][[1]][[1]]$timeEnd
 
-
 } # end of loop around idxDp
+
+#Copy results from working list to report list
 rpt$dp03$data <- wrk$dp03
 rpt$dp03$qfqm <- wrk$qfqmDp03
 
 #data: transfer units
 for(idxDp in base::names(rpt$dp03$data)) {
- 
    for(idxVar in base::names(rpt$dp03$data[[idxDp]])){
-  
     base::attr(x = rpt$dp03$data[[idxDp]][[idxVar]], which = "unit") <-
       base::attr(x = rpt$dp02$data[[idxDp]][[1]][[idxVar]], which = "unit")
-
   }
-
 }
 
 #qfqm: transfer units
 for(idxDp in base::names(rpt$dp03$qfqm)) {
- 
   for(idxVar in base::names(rpt$dp03$qfqm[[idxDp]])){
- 
     attributes(rpt$dp03$qfqm[[idxDp]][[idxVar]])$unit <-
       attributes(rpt$dp02$qfqm[[idxDp]][[1]][[idxVar]])$unit
   }
-
 }
+# Remove temporary dataframe
 rm(tmpData, tmpQfqm)
 
-rlog$info(paste0("dataset ", Date, " dp03 calculation complete!"))
-
-  
+# Print screen
+print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp03 calculation complete!"))
+ 
+ 
 ```
-
 
 
 ## 7. ECSE level 4 data products (dp04) generation.
 
 First spatial intergrate ECSE dp03 to get storage flux, using eddy4R.stor::def.flux.stor();
 Then also calculate ECSE Level 3 qfqm to get dp04 qfqm; 
-Then concatenate results and HDF5 data formatting.
-
+Then concatenate results and HDF5 data formatting;
+Then performing unit conversion.
 
 
 ```{r dp04-process,  message=F, warning=F}
-
-  rlog$debug(paste0("dataset ", Date, " dp04 calculation begin!"))
-
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp04 calculation begin!"))
+  # Create empty dp04 working list
   wrk$dp04 <- list()
-
+  
+  # Calculate flux for each data product
   for(idxDp in names(rpt$dp03$data)){
     idxVar <- names(rpt$dp03$data[[idxDp]])
-
-
     tmpData <- rpt$dp03$data[[idxDp]][[idxVar]]
-
-
     tmpDp04 <- eddy4R.stor::def.flux.stor(
       dataInp = tmpData,
       lvlTowr = LvlTowr
     )
-
+    # Gethering all data
     wrk$dp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$mean <- tmpDp04$mean
     wrk$dp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$timeBgn <- tmpDp04$timeBgn
     wrk$dp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$timeEnd <- tmpDp04$timeEnd
@@ -1184,163 +1078,136 @@ Then concatenate results and HDF5 data formatting.
 
   #dp04 qfqm claculation
   wrk$qfqmDp04 <- list()
-
   for(idxDp in names(rpt$dp03$qfqm)){
     idxVar <- names(rpt$dp03$qfqm[[idxDp]])
-
-
     tmpQfqm <- rpt$dp03$qfqm[[idxDp]][[idxVar]]
     tmpQfqm$timeBgn <- NULL
     tmpQfqm$timeEnd <- NULL
-    #tmpData <- as.matrix(tmpData)
-
-
-    #mean of dp03*(tower height - displacement height)
+    
+    # Gethering all data
     wrk$qfqmDp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$qfFinl <- as.integer(apply(tmpQfqm, 1, function(x) ifelse(any(x==1),1,0)))
     wrk$qfqmDp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$timeBgn <- rpt$dp03$qfqm[[idxDp]][[idxVar]]$timeBgn
     wrk$qfqmDp04[[idxDp]][[paste0("fluxStor", substring(idxVar, 5, nchar(idxVar)))]]$timeEnd <- rpt$dp03$qfqm[[idxDp]][[idxVar]]$timeEnd
 
   }
+  # Copy results from working list to report list
   rpt$dp04$data <- wrk$dp04
   rpt$dp04$qfqm <- wrk$qfqmDp04
 
-  #transfer units
+  # data: transfer units
   for(idxDp in base::names(rpt$dp04$data)) {
-  
       for(idxVar in base::names(rpt$dp04$data[[idxDp]])){
-     
-
       tmpUnit <- base::attr(x = rpt$dp03$data[[idxDp]][[paste0("rate", substring(idxVar, 9, nchar(idxVar)))]], which = "unit")
       base::attr(x = rpt$dp04$data[[idxDp]][[idxVar]], which = "unit") <- paste0(substring(tmpUnit, 1, (nchar(tmpUnit) - 3)), "m ", substring(tmpUnit, (nchar(tmpUnit) - 2)))
-
     }
-
   }
 
   #qfqm: transfer units
   for(idxDp in base::names(rpt$dp04$qfqm)) {
-  
     for(idxVar in base::names(rpt$dp04$qfqm[[idxDp]])){
-     
       attributes(rpt$dp04$qfqm[[idxDp]][[idxVar]])$unit <-
         attributes(rpt$dp03$qfqm[[idxDp]][[paste0("rate", substring(idxVar, 9, nchar(idxVar)))]])$unit
     }
-
   }
+  # Remove temporary dataframe
   rm(tmpData, tmpQfqm)
 
-  #assign new name for dp04 and sub dp04
+  # Assign new name for dp04 and sub dp04
   names(rpt$dp04$data$co2Stor) <- c("stor")
   names(rpt$dp04$data$h2oStor) <- c("stor")
   names(rpt$dp04$data$tempStor) <- c("stor")
   names(rpt$dp04$data) <- c("fluxCo2", "fluxH2o", "fluxTemp")
 
-  #assign new name for dp04 and sub dp04
+  # Assign new name for dp04 and sub dp04
   names(rpt$dp04$qfqm$co2Stor) <- c("stor")
   names(rpt$dp04$qfqm$h2oStor) <- c("stor")
   names(rpt$dp04$qfqm$tempStor) <- c("stor")
   names(rpt$dp04$qfqm) <- c("fluxCo2", "fluxH2o", "fluxTemp")
 
-  rlog$info(paste0("dataset ", Date, " dp04 calculation complete!"))
-
-  #performing unit conversion
-  #data
+  # Performing unit conversion
+  # data
   rpt <- eddy4R.base::wrap.unit.conv.out.ec(inpList = rpt, MethMeas = "ecse", MethType = "Data")
-  #qfqm
+  # qfqm
   rpt <- eddy4R.base::wrap.unit.conv.out.ec(inpList = rpt, MethMeas = "ecse", MethType = "Qfqm")
-  #ucrt
+  # ucrt
   rpt <- eddy4R.base::wrap.unit.conv.out.ec(inpList = rpt, MethMeas = "ecse", MethType = "Ucrt")
 
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " dp04 calculation complete!"))
+  
+  
 ```
 
 
 ## 8. HDF5 write out
 
-First transfer units and metadata to ECSE dp01-dp04
-Then HDF5 data formatting and output.
-
+Lastly, we prepare the data for output and write it to the dp01-dp04 
+output HDF5 file. We first create the skeleton structure of the NEON HDF5 file. 
+Then we extracting dp01 structure from input dp0p file using eddy4R.base::def.hdf5.extr ().
+Then write attribute and the output to the NEON ECSE dp01-do04 HDF5 file.
 
 
 ```{r hdf5-output,  message=F, warning=F}
 
- #Create structure for hdf5------------------------------------------------------------------------------------------------------
-
-
-  rlog$debug(paste0("dataset ", Date, ": HDF5 generation"))
-  #LvlTowr <- "_"
+  # Create structure for HDF5
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " : HDF5 generation"))
+  
+  # Get output directory
   DirHdf5Out <- Para$Flow$DirOut
-  #LvlDp <- "dp04"
 
-  #fomatting Date for file names
+  # Fomatting Date for file names
   dateFileInp <- gsub(pattern = "-", replacement = "", x = Date)
 
-  #Check to see if the directory exists, if not create the directory. Recursive required to write nested file directories
+  # Check to see if the directory exists, if not create the directory. 
+  # Recursive required to write nested file directories
   if (dir.exists(DirHdf5Out) == FALSE) dir.create(DirHdf5Out, recursive = TRUE)
 
-  #write out metadata at different hdf5 levels--------------------------------------------------------------------------------------
-  #Writing metadata from input dp0p file to output dp01 file for both basic and expand package
+  # Write out metadata at different hdf5 levels
+  # Writing metadata from input dp0p file to output dp01 file for both basic and expand package
   for (idxPack in c("expanded", "basic")){
     #Create the file, create a class
-    #Create the file, create a class
     idFile <- rhdf5::H5Fcreate(paste0(DirHdf5Out,"/",Para$Flow$FileOutBase, ".", Date, ".", idxPack,".h5"))
-    #If the file is already created use:
-    #idFile <- H5Fopen("HDF5TIS_L0_prototype.h5")
-    # idFile <- rhdf5::H5Fopen(paste0(DirHdf5Out,"/","ECSE_",LvlDp,"_", Para$Flow$Loc, "_", Date, "_new_format.h5"))
-
-    #Create a group level for SERC
+    
+    # Create a group level (Site level)
     idSite <- rhdf5::H5Gcreate(idFile, Para$Flow$Loc)
 
-
-
-    lapply(c("dp02"), function(n1)
-      #n1 <- "dp01"
-
-    {
+    # Create dp02 structure
+    lapply(c("dp02"), function(n1) {
       idn1 <- rhdf5::H5Gcreate(idSite, n1)
-
-      lapply(names(rpt[[n1]]), function(n2)
-        #n2 <- names(rpt[[n1]])[1]
-
-      {idn2 <- rhdf5::H5Gcreate(idn1, n2)
-
-      lapply(names(rpt[[n1]][[n2]]), function(n3) {
-        idn3 <- rhdf5::H5Gcreate(idn2, n3)
-        lapply(names(rpt[[n1]][[n2]][[n3]]), function(n4) {
-          rhdf5::H5Gcreate(idn3, n4)
+      lapply(names(rpt[[n1]]), function(n2) {
+        idn2 <- rhdf5::H5Gcreate(idn1, n2)
+        lapply(names(rpt[[n1]][[n2]]), function(n3) {
+          idn3 <- rhdf5::H5Gcreate(idn2, n3)
+          lapply(names(rpt[[n1]][[n2]][[n3]]), function(n4) {
+            rhdf5::H5Gcreate(idn3, n4)
         }) } ) }) })#end of lapply
 
-
-
-
-    lapply(c("dp03", "dp04"), function(n1)
-      #n1 <- "dp03"
-
-    {
+    # Create dp03 and dp04 structure
+    lapply(c("dp03", "dp04"), function(n1) {
       idn1 <- rhdf5::H5Gcreate(idSite, n1)
-
-      lapply(names(rpt[[n1]]), function(n2)
-        #n2 <- names(rpt[[n1]])[1]
-
-      {idn2 <- rhdf5::H5Gcreate(idn1, n2)
-
-      lapply(names(rpt[[n1]][[n2]]), function(n3) {
-        idn3 <- rhdf5::H5Gcreate(idn2, n3)
-
+      lapply(names(rpt[[n1]]), function(n2) {
+        idn2 <- rhdf5::H5Gcreate(idn1, n2)
+        lapply(names(rpt[[n1]][[n2]]), function(n3) {
+          idn3 <- rhdf5::H5Gcreate(idn2, n3)
       })})} )#end of lapply
 
     rhdf5::H5Gclose(idSite)
     rhdf5::H5Fclose(idFile)
     rhdf5::h5closeAll()
 
+    # Extract dp01 structure from input dp0p
     eddy4R.base::def.hdf5.extr(FileInp = Para$Flow$DirFilePara,
                                FileOut = paste0(Para$Flow$DirOut, "/",Para$Flow$FileOutBase, ".", Date, ".", idxPack,".h5"),
                                dp01 = c("co2Stor", "h2oStor", "isoCo2", "isoH2o"))
-    #Open the output file HDF5 link
+    
+    # Open the output file HDF5 link
     idFile <- rhdf5::H5Fopen(paste0(Para$Flow$DirOut, "/",Para$Flow$FileOutBase, ".", Date, ".", idxPack,".h5"))
 
-    #Write the attributes to the new file
+    # Write the attributes to the new file
     listAttr <- list()
     listAttr[[paste0("//", Para$Flow$Loc)]] <- Para$Flow$Site
+    #dp01
     for(idxDp in c("co2Stor", "h2oStor", "isoCo2", "isoH2o", "tempAirLvl", "tempAirTop")){
       
       listAttr[[paste0("/", Para$Flow$Loc, "/dp01/data/", idxDp)]][["PrdIncrAgrDflt"]] <- as.integer(resoTimeDp01[[idxDp]] )
@@ -1362,15 +1229,14 @@ Then HDF5 data formatting and output.
       if(idxDp %in% c("isoH2o")) listAttr[[paste0("/", Para$Flow$Loc, "/dp01/ucrt/", idxDp)]][["PrdIncrAgrDflt"]] <- c("NA", "NA", as.integer(resoTimeDp01[[idxDp]][3]))
     }
 
+    #dp02 and dp02
     for(idxDp in c("co2Stor", "h2oStor", "tempStor")){
-     
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/data/", idxDp)]] <- list()
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/qfqm/", idxDp)]] <- list()
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/data/", idxDp)]][["PrdIncrAgrDflt"]] <- as.integer(resoTimeDp02[[idxDp]] )
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/data/", idxDp)]][["PrdWndwAgrDflt"]] <- as.integer(resoTimeDp02[[idxDp]])
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/qfqm/", idxDp)]][["PrdIncrAgrDflt"]] <- as.integer(resoTimeDp02[[idxDp]] )
       listAttr[[paste0("/", Para$Flow$Loc, "/dp02/qfqm/", idxDp)]][["PrdWndwAgrDflt"]] <- as.integer(resoTimeDp02[[idxDp]])
-
       listAttr[[paste0("/", Para$Flow$Loc, "/dp03/data/", idxDp)]] <- list()
       listAttr[[paste0("/", Para$Flow$Loc, "/dp03/qfqm/", idxDp)]] <- list()
       listAttr[[paste0("/", Para$Flow$Loc, "/dp03/data/", idxDp)]][["PrdIncrAgrDflt"]] <- as.integer(resoTimeDp02[[idxDp]] )
@@ -1381,12 +1247,13 @@ Then HDF5 data formatting and output.
       listAttr[[paste0("/", Para$Flow$Loc, "/dp03/qfqm/", idxDp)]][["SpceWndwAgrDflt"]] <- resoSpceOut
     }
 
+    # Assign averaging period
     resoTimeDp04 <- list(
       "fluxCo2" = c(30) * 60, #output node in dp04
       "fluxH2o" = c(30) * 60,  #output node in dp04
       "fluxTemp" = c(30) *60  #output node in dp04
     )
-
+    # Write dp04 attribuite
     for(idxDp in c("fluxCo2", "fluxH2o", "fluxTemp")){
       listAttr[[paste0("/", Para$Flow$Loc, "/dp04/data/", idxDp)]] <- list()
       listAttr[[paste0("/", Para$Flow$Loc, "/dp04/qfqm/", idxDp)]] <- list()
@@ -1396,195 +1263,106 @@ Then HDF5 data formatting and output.
       listAttr[[paste0("/", Para$Flow$Loc, "/dp04/qfqm/", idxDp)]][["PrdWndwAgrDflt"]] <- as.integer(resoTimeDp04[[idxDp]] )
 
     }
-
-
-
-
-    #x <- "/CPER/dp0p/data/irgaStor_001/000_020"
+    # Get idData
     idData <- rhdf5::H5Oopen(idFile, paste0("//", Para$Flow$Loc))
 
-    # base::lapply(names(Para$Flow$Site), function(y){
-    #   #y <- names(listAttr[[x]])[1]
-    #   rhdf5::h5writeAttribute(attr = Para$Flow$Site[[y]], h5obj = idData, name = y)
-    #   }
-    #   )
-
-
-    #Write the attributes to the new file
+    # Write the attributes to the new file
     lapply(names(listAttr), function(x){
-
-      #x <- names(listAttr)[12]   #"//CPER"
       idData <- rhdf5::H5Oopen(idFile, x)
       base::lapply(names(listAttr[[x]]), function(y){
-        #y <- names(listAttr[[x]])[1]
-        #Check for logicals and convert to numeric
+        #C heck for logicals and convert to numeric
         if(is.logical(listAttr[[x]][[y]])) listAttr[[x]][[y]] <<- as.numeric(listAttr[[x]][[y]])
-
         rhdf5::h5writeAttribute(attr = listAttr[[x]][[y]], h5obj = idData, name = y)
-      }
-      )
+      })
     })
 
-    # empty dp01 for dp which already exits in input dp0p HDF5
+    # Empty dp01 for dp which already exits in input dp0p HDF5
     for (idxDp01 in c("tempAirLvl", "tempAirTop")){
       rpt$dp01$data[[idxDp01]] <- NULL
       rpt$dp01$qfqm[[idxDp01]] <- NULL
     }
-    #Write output to hdf5 file----------------------------------------------------------------------------------------
+    
+    #Write output to hdf5 file
 
     idFile <- rhdf5::H5Fopen(paste0(Para$Flow$DirOut, "/",Para$Flow$FileOutBase, ".", Date, ".", idxPack,".h5"))
 
-    #Write output to hdf5 file for data dp01 and dp02
+    # Write output to hdf5 file for data dp01 and dp02
     lapply(c("dp01", "dp02"), function(idxLvlDp) {
-      #idxLvlDp <- names(rpt)[1]
       lapply(names(rpt[[idxLvlDp]]$data), function(idxDp) {
-        #idxDp <- names(rpt[[idxLvlDp]]$data)[1]
         lapply(names(rpt[[idxLvlDp]]$data[[idxDp]]), function(idxLvLReso) {
-          #idxLvLReso <- names(rpt[[idxLvlDp]]$data[[idxDp]])[1]
-
-
           nid <- rhdf5::H5Gopen(idFile, paste0("/", Para$Flow$Loc, "/", idxLvlDp,"/data/",idxDp,"/",idxLvLReso))
           lapply(names(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]]), function(idxVar){
-
-            #idxVar <- names(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]])[1]
             rhdf5::h5writeDataset.data.frame(obj = rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]][[idxVar]], h5loc = nid, name = idxVar, DataFrameAsCompound = TRUE)
             if (!is.null(attributes(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]][[idxVar]])$unit) == TRUE){
               dgid <- rhdf5::H5Dopen(nid, idxVar)
               rhdf5::h5writeAttribute(attributes(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]][[idxVar]])$unit, h5obj = dgid, name = "unit")
-              #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
             }})} ) }) })
 
-    #only output qfFinl in the basic package
+    # Only output qfFinl in the basic package
     if (idxPack %in% "basic"){
       for(idxDp in base::names(rpt$dp01$qfqm)) {
-      
         for(idxLvl in base::names(rpt$dp01$qfqm[[idxDp]])){
            for(idxVar in base::names(rpt$dp01$qfqm[[idxDp]][[idxLvl]])){
             #output only qfFinl
-
             rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]] <- rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]][which((names(rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]) %in% c("qfFinl",  "timeBgn", "timeEnd")))]
             #unit transfer
             attributes(rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]])$unit <-
               attributes(wrk$qfqmOut[[idxDp]][[idxLvl]][[1]]$qfFinl[[idxVar]])$unit
-
           }
         }
-
       }; rm(idxVar)
-
     }# close if statment of idxPack = "basic
 
-    #Write output to hdf5 file for qfqm dp01 and dp02
+    # Write output to hdf5 file for qfqm dp01 and dp02
     lapply(c("dp01", "dp02"), function(idxLvlDp) {
-      #idxLvlDp <- names(rpt)[1]
       lapply(names(rpt[[idxLvlDp]]$qfqm), function(idxDp) {
-        #idxDp <- names(rpt[[idxLvlDp]]$data)[1]
         lapply(names(rpt[[idxLvlDp]]$qfqm[[idxDp]]), function(idxLvLReso) {
-          #idxLvLReso <- names(rpt[[idxLvlDp]]$data[[idxDp]])[1]
-
-
           nid <- rhdf5::H5Gopen(idFile, paste0("/", Para$Flow$Loc, "/", idxLvlDp,"/qfqm/",idxDp,"/",idxLvLReso))
           lapply(names(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxLvLReso]]), function(idxVar){
-
-            #idxVar <- names(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]])[1]
             rhdf5::h5writeDataset.data.frame(obj = rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxLvLReso]][[idxVar]], h5loc = nid, name = idxVar, DataFrameAsCompound = TRUE)
             if (!is.null(attributes(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxLvLReso]][[idxVar]])$unit) == TRUE){
               dgid <- rhdf5::H5Dopen(nid, idxVar)
               rhdf5::h5writeAttribute(attributes(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxLvLReso]][[idxVar]])$unit, h5obj = dgid, name = "unit")
-              #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
             } })} )})})
 
-    #Write output to hdf5 file for ucrt dp01
+    # Write output to hdf5 file for ucrt dp01
     lapply(c("dp01"), function(idxLvlDp) {
-      #idxLvlDp <- names(rpt)[1]
       lapply(names(rpt[[idxLvlDp]]$ucrt), function(idxDp) {
-        #idxDp <- names(rpt[[idxLvlDp]]$ucrt)[1]
         lapply(names(rpt[[idxLvlDp]]$ucrt[[idxDp]]), function(idxLvLReso) {
-          #idxLvLReso <- names(rpt[[idxLvlDp]]$data[[idxDp]])[1]
-
-
           nid <- rhdf5::H5Gopen(idFile, paste0("/", Para$Flow$Loc, "/", idxLvlDp,"/ucrt/",idxDp,"/",idxLvLReso))
           lapply(names(rpt[[idxLvlDp]]$ucrt[[idxDp]][[idxLvLReso]]), function(idxVar){
-
-            #idxVar <- names(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]])[1]
             rhdf5::h5writeDataset.data.frame(obj = rpt[[idxLvlDp]]$ucrt[[idxDp]][[idxLvLReso]][[idxVar]], h5loc = nid, name = idxVar, DataFrameAsCompound = TRUE)
             if (!is.null(attributes(rpt[[idxLvlDp]]$ucrt[[idxDp]][[idxLvLReso]][[idxVar]])$unit) == TRUE){
               dgid <- rhdf5::H5Dopen(nid, idxVar)
               rhdf5::h5writeAttribute(attributes(rpt[[idxLvlDp]]$ucrt[[idxDp]][[idxLvLReso]][[idxVar]])$unit, h5obj = dgid, name = "unit")
-              #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
             }})})})})
 
-    #Write output to hdf5 file for data dp03 and dp04
+    # Write output to hdf5 file for data dp03 and dp04
     lapply(c("dp03", "dp04"), function(idxLvlDp) {
-      #idxLvlDp <- names(rpt)[1]
       lapply(names(rpt[[idxLvlDp]]$data), function(idxDp) {
-        #idxDp <- names(rpt[[idxLvlDp]]$data)[1]
-
         nid <- rhdf5::H5Gopen(idFile, paste0("/", Para$Flow$Loc, "/", idxLvlDp,"/data/",idxDp))
         lapply(names(rpt[[idxLvlDp]]$data[[idxDp]]), function(idxVar) {
-          #idxLvLReso <- names(rpt[[idxLvlDp]]$data[[idxDp]])[1]
-
-
-          #idxVar <- names(rpt[[idxLvlDp]]$data[[idxDp]][[idxLvLReso]])[1]
           rhdf5::h5writeDataset.data.frame(obj = rpt[[idxLvlDp]]$data[[idxDp]][[idxVar]], h5loc = nid, name = idxVar, DataFrameAsCompound = TRUE)
-          #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
           if (!is.null(attributes(rpt[[idxLvlDp]]$data[[idxDp]][[idxVar]])$unit) == TRUE){
             dgid <- rhdf5::H5Dopen(nid, idxVar)
             rhdf5::h5writeAttribute(attributes(rpt[[idxLvlDp]]$data[[idxDp]][[idxVar]])$unit, h5obj = dgid, name = "unit")
-            #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
           }})})})
 
-    #Write output to hdf5 file for qfqm dp03 and dp04
+    # Write output to hdf5 file for qfqm dp03 and dp04
     lapply(c("dp03", "dp04"), function(idxLvlDp) {
-      #idxLvlDp <- names(rpt)[1]
       lapply(names(rpt[[idxLvlDp]]$qfqm), function(idxDp) {
-        #idxDp <- names(rpt[[idxLvlDp]]$qfqm)[1]
-
         nid <- rhdf5::H5Gopen(idFile, paste0("/", Para$Flow$Loc, "/", idxLvlDp,"/qfqm/",idxDp))
         lapply(names(rpt[[idxLvlDp]]$qfqm[[idxDp]]), function(idxVar) {
-          #idxLvLReso <- names(rpt[[idxLvlDp]]$qfqm[[idxDp]])[1]
-
-
-          #idxVar <- names(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxLvLReso]])[1]
           rhdf5::h5writeDataset.data.frame(obj = rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxVar]], h5loc = nid, name = idxVar, DataFrameAsCompound = TRUE)
-          #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
           if (!is.null(attributes(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxVar]])$unit) == TRUE){
             dgid <- rhdf5::H5Dopen(nid, idxVar)
             rhdf5::h5writeAttribute(attributes(rpt[[idxLvlDp]]$qfqm[[idxDp]][[idxVar]])$unit, h5obj = dgid, name = "unit")
-            #rhdf5::h5writeDataset.data.frame(obj = aa$temp, h5loc = nid, name = idxLvLReso)
           }})})})
 
-    # #unit of
-    # lapply(names(dataList2), function(x) {
-    #   if (!is.null(attributes(dataList2[[x]])$unit) == TRUE){
-    #     dgid <- rhdf5::H5Dopen(gid30, x)
-    #     rhdf5::h5writeAttribute(attributes(dataList2[[x]])$unit, h5obj = dgid, name = "unit")
-    #   }})
     rhdf5::h5closeAll()
   }#closed loop for idxPack
 
-  rlog$info(paste0("dataset ", Date, ": HDF5 generation complete!"))
-
-
-  # create directory
-  dir.create(paste0(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", Para$Flow$VersDp), showWarnings = FALSE, recursive = TRUE)
-  #write to csv file for flow.test.gold.eddy.R testing--------------------------------------------------
-
-  #idxDpLvl <- "dp01"
-  for(idxDpLvl in names(rpt)){
- 
-    for(idxDp in names(rpt[[idxDpLvl]]$data)){
-    
-
-   
-      #for(idxVari in names(rpt[[idxDpLvl]]$data[[idxDp]])){
-      idxVari <- names(rpt[[idxDpLvl]]$data[[idxDp]])[1]
-
-      #write to file
-      utils::write.csv(rpt[[idxDpLvl]]$data[[idxDp]][[idxVari]], file = paste0(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", Para$Flow$VersDp, "/", idxDpLvl, "-", idxDp, "-",  idxVari, ".csv"), col.names = FALSE,
-                       na = "NaN", row.names = FALSE, quote=FALSE)
-
-    }
-  }
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, " : HDF5 generation complete!"))
 
 ```
