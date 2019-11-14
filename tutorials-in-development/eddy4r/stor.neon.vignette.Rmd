@@ -22,10 +22,6 @@ At the end of those instructions, you should have an RStudio
 environment running within Docker. Use that workspace for this 
 vignette.
 
-
-
-
-
 ## 1. Install packages and set up environment
 
 First, check for required packages and install any that aren't 
@@ -38,12 +34,9 @@ possibility of ambiguity, in case there are functions in
 different packages with the same name.
 
 
+```{r pack-install}
 
-```{r pack-install,  message=F, warning=F}
-
-
-# load and attach required  packages
-#Call the R HDF5 Library
+# Load and attach required  packages
 packReq <- c("Hmisc")
 
 lapply(packReq, function(x) {
@@ -52,19 +45,14 @@ lapply(packReq, function(x) {
     utls::install.packages(x)
     library(x, character.only = TRUE)
   }})
-#Remove workflow package list
+# Remove workflow package list
 rm(packReq)
 
-# load and attach packages
+# Load and attach packages
 library(DataCombine)
 library(eddy4R.base)
 library(eddy4R.turb)
-library(ff)           # need to be loaded and attached for arithmetic to work properly on ff objects
-library(ffbase)       # need to be loaded and attached for arithmetic to work properly on ff objects
-# the default for Rscript (and apparently R CMD BATCH) omits package "methods"
-# (https://stat.ethz.ch/R-manual/R-devel/library/utils/html/Rscript.html)
-# this in turn brakes splus2R calls (...could not find function "is"...)
-# hence, exlicitly load and attach package 'methods'
+library(eddy4R.stor)
 library(methods)
 library(rhdf5)
 library(Hmisc)
@@ -72,8 +60,7 @@ library(Hmisc)
 ```
 
 
-
-## 2. Set environment variables and read in metadata
+## 2. Set environment variables, read in metadata, and ingest the additional dp01 data from NEON portal
 
 Here we set file paths and basic input parameters as environment 
 variables for convenience.
@@ -81,39 +68,26 @@ variables for convenience.
 
 ```{r env-vars}
 
-# define global environment
+# Define global environment
 eddy4R.base::def.env.glob()
-
-# Start logging
-logLevel <- Sys.getenv('LOG_LEVEL')
-if (is.null(logLevel) || logLevel == "") {
-    assign("rlog", NEONprocIS.base::def.log.init(Lvl="debug"), envir = .GlobalEnv)
-} else {
-    assign("rlog", NEONprocIS.base::def.log.init(), envir = .GlobalEnv)
-}
-rlog$info("Start ECSE L1 daily transition from flow.stor.towr.neon.R")
-
-
 
 # File path for the directory containing input L0' data 
 if(FALSE) {
   # set to FALSE if not under developement
   base::Sys.setenv("DEVE" = "FALSE")
-  # base::Sys.setenv("DIRFILEPARA" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/storTowr/inpRefe/ECSE_dp0p_KONZ_2017-09-05.h5"))
   base::Sys.setenv("DIRINP" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/irga/inpRefe/KONZ/ECSE"))
   base::Sys.setenv("DIRMNT" = paste0("/home/", Sys.getenv("USER"), "/eddy"))
   base::Sys.setenv("DIROUT" = paste0("/home/", Sys.getenv("USER"), "/eddy/data/irga/outRefe/KONZ"))
-  # adjust depending on whether dp01 / dp04 output; site name
   base::Sys.setenv("FILEOUTBASE" = "ECSE_dp04_KONZ")
   base::Sys.setenv("DATEOUT" = "2018-11-28")
   base::Sys.setenv("METHPARAFLOW" = "EnvVar")
   base::Sys.setenv("VERSDP" = "001")
 }
 
+# Create an empty list for parameters.
+Para <- base::list()
 
-Para <- list()
-
-# check environment variables for eddy4R workflow parameter "DirFilePara"
+# Check environment variables for eddy4R workflow parameter "DirFilePara"
 if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
 
   Para$Flow <- eddy4R.base::def.para.flow(MethParaFlow = "EnvVar")
@@ -122,7 +96,7 @@ if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
 } else {
 
   #The dates for the run must be specified, this set is for the gold file
-  DateOut<- "2018-11-28" #Should talk to Stefan about best way to handle this
+  DateOut<- "2018-11-28" 
   FileOutBase <- "ECSE_dp04_KONZ"
   Para$Flow <- eddy4R.base::def.para.flow(DateOut = DateOut, FileOutBase = FileOutBase, MethParaFlow = "DfltInp",
     UrlInpRefe = "https://s3.data.neonscience.org/neon-ec-goldfiles/EC-storage-processing/inpRefeStor_20190708.zip",
@@ -130,59 +104,39 @@ if("METHPARAFLOW" %in% base::names(base::Sys.getenv())) {
 }
 
 
-
-#--------------------------------------------------------------------------------------------
-# ASSEMBLE PARAMETERS FROM HDF5 FILE
-
-# create list for parameters; c2r == copied to GitHub parameter repo
-
-# Grab the NEON specific 4-letter code for the site location (Loc) from the dp0p input file
+# Read in parameters from the HDF5 file.
+# Grab the NEON specific 4-letter code for the site location (Loc)
 Para$Flow$Loc <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$Loc
 
-#Grab the tower top level
+# Grab the tower top level
 Para$Flow$LvlTowrTop <- eddy4R.base::def.para.site(FileInp = Para$Flow$DirFilePara)$LvlTowr
 Para$Flow$LvlTowrTop <- Para$Flow$LvlTowrTop[length(Para$Flow$LvlTowrTop)]
 
-#Use the definition function to grab reingest data
-#indicating which data will be grab
-if (Para$Flow$Deve == TRUE) {
-  DpName <- c("tempAirLvl", "tempAirTop", "fluxHeatSoil", "radiNet", "presBaro") } else {
-    DpName <- c("tempAirLvl", "tempAirTop", "fluxHeatSoil", "radiNet", "tempSoil", "h2oSoilVol", "presBaro")
-  }
+# Use the definition function to grab reingest data
+# Indicating which data will be grab
+DpName <- c("tempAirLvl", "tempAirTop", "fluxHeatSoil", "radiNet", "presBaro")
 
-#list all group hdf5 path before adding the exixting data
+# List all group hdf5 path before adding the existing data
 listParaPre <- rhdf5::h5ls(Para$Flow$DirFilePara, datasetinfo = FALSE)
 
-#get the Para$Flow$dp01Exis$Lvl for each dp
+# Get the measurement location for each reingest data (DpName) from the input file
 Para$Flow$dp01Exis$Lvl <- list()
 for (i in 1:length(DpName)){
   nameSens <- paste0("/", Para$Flow$Loc, "/dp01/data/", DpName[i])
   tmpLvl <- listParaPre$name[which(listParaPre$group %in% nameSens)]
-  #get rid of averaging period
+  # Get rid of averaging period
   tmpLvl <- grep(pattern = "30m", x = tmpLvl, ignore.case = TRUE, value =  TRUE)
   tmpLoc <- strsplit(as.character(tmpLvl),split='_', fixed=TRUE)
   Para$Flow$dp01Exis$Lvl[[DpName[i]]] <- unlist(lapply(1:length(tmpLoc), function(x) {as.character(paste0(tmpLoc[[x]][1], "_", tmpLoc[[x]][2]))}))
 }
 
-rlog$debug("Begin to re-ingest the existing dp01 data")
+# Begin to re-ingest the existing dp01 data
 base::invisible(eddy4R.base::wrap.hdf5.wrte.dp01.api(date = Para$Flow$DateOut, SiteLoca = Para$Flow$Loc, FileOut = Para$Flow$DirFilePara, LvlTowr = Para$Flow$dp01Exis$Lvl, DpName = DpName))
-rlog$info("End of re-ingest the existing dp01 data")
-# workflow parameters
 
-
-
-
-#--------------------------------------------------------------------------------------------
-# TO BE LOADED
-
-# set directories / pathes
-
-#  working directory
-
-
-# default: use temporary working directory on Docker filesystem
+# Setting workflow parameters
+# Working directory
 if(is.na(Para$Flow$DirWrk)) {
-
+  # default: use temporary working directory on Docker filesystem
   Para$Flow$DirWrk <- tempdir()
 
   # option: create user-specified working directory, e.g. on host filesystem
@@ -192,14 +146,12 @@ if(is.na(Para$Flow$DirWrk)) {
 
 }
 
-# set working directory
+# Set working directory
 setwd(Para$Flow$DirWrk)
 
-#  DirInp, DirMnt input directory
-
-# default: use temporary working directory on Docker filesystem
+# Input directory
 if(is.na(Para$Flow$DirInp)) {
-
+  # default: use temporary working directory on Docker filesystem
   Para$Flow$DirInp <- paste0(Para$Flow$DirWrk, "/inpRefe")
 
   # option: create user-specified input directory (if not existing), e.g. on host filesystem
@@ -209,11 +161,9 @@ if(is.na(Para$Flow$DirInp)) {
 
 }
 
-#  output directory
-
-# default: use temporary working directory on Docker filesystem
+# Output directory
 if(is.na(Para$Flow$DirOut)) {
-
+  # default: use temporary working directory on Docker filesystem
   Para$Flow$DirOut <- paste0(Para$Flow$DirWrk, "/out")
 
   # option: create user-specified input directory (if not existing), e.g. on host filesystem
@@ -223,66 +173,51 @@ if(is.na(Para$Flow$DirOut)) {
 
 }
 
-
-Para$Flow$Site <- edd4R.base::def.hdf5.read.para(
+# Get site information
+Para$Flow$Site <- eddy4R.base::def.hdf5.read.para(
   DirFileParaLoca = Para$Flow$DirFilePara,
-  GrpName = paste0("/", Para$Flow$Loc)#,
-  #SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+  GrpName = paste0("/", Para$Flow$Loc)
 )
 
-#read in L0p parameters setup-------------------------------------------------------------------
+# Assign de-spiking parameters:
+#   widt: WndwDspkBr86 de-spiking median filter window width [s]
+#   nbin: NumDspkBr86Bin de-spiking histogram bins initial number/step size
+#   rest: ThshDspkBr86Reso de-spiking resolution threshold
+DespLoca <- list(widt = 9,
+                 nbin = 2,
+                 rest = 10)
 
-
-DespLoca <- list()
-#de-spiking median filter window width [s]
-DespLoca$widt <- 9
-
-#de-spiking histogram bins initial number/step size
-DespLoca$nbin <- 2
-
-#de-spiking resolution threshold
-DespLoca$rest <- 10
-
-# sensors and variables for which to perform de-spiking
-#DespLoca$var <- sapply(base::names(Rng), function(x) base::names(Rng[[x]]))
+# List of sensors and variables for which to perform de-spiking
 DespLoca$var <- list()
 
-DespLoca$var$irgaStor <- c("asrpCo2", "asrpH2o", "pres", "rtioMoleDryCo2","rtioMoleDryH2o", "rtioMoleWetCo2", "rtioMoleWetH2o", "temp")
+DespLoca$var$irgaStor <- c("asrpCo2", "asrpH2o", "pres", "rtioMoleDryCo2", "rtioMoleDryH2o", "rtioMoleWetCo2", "rtioMoleWetH2o", "temp")
 DespLoca$var$mfcSampStor <- c("frt", "frt00", "frtSet00", "presAtm", "temp")
 DespLoca$var$mfcValiStor <- DespLoca$var$mfcSampStor
-DespLoca$var$crdCo2 <- c("dlta13CCo2", "pres",       "rtioMoleDry12CCo2", "rtioMoleDry13CCo2", "rtioMoleDryCo2",    "rtioMoleDryH2o",  "rtioMoleWet12CCo2", "rtioMoleWet13CCo2", "rtioMoleWetCo2", "rtioMoleWetH2o", "temp",           "tempWbox")
-DespLoca$var$crdH2o <- c("rtioMoleWetH2o", "rtioMoleDryH2o", "dlta18OH2o",     "dlta2HH2o", "temp",  "pres")
+DespLoca$var$crdCo2 <- c("dlta13CCo2", "pres", "rtioMoleDry12CCo2", "rtioMoleDry13CCo2", "rtioMoleDryCo2",    "rtioMoleDryH2o", "rtioMoleWet12CCo2", "rtioMoleWet13CCo2", "rtioMoleWetCo2", "rtioMoleWetH2o", "temp",           "tempWbox")
+DespLoca$var$crdH2o <- c("rtioMoleWetH2o", "rtioMoleDryH2o", "dlta18OH2o", "dlta2HH2o", "temp", "pres")
 DespLoca$var$crdH2oValvVali <- "injNum"
-DespLoca$var$envHut <- c("rtioMoleWetH2o", "rh",             "temp" ,          "pres"   )
+DespLoca$var$envHut <- c("rtioMoleWetH2o", "rh", "temp", "pres")
 DespLoca$var$mfm <- c("frt", "frt00", "presAtm", "temp")
 DespLoca$var$presInlt <-c("presDiff")
 DespLoca$var$presValiRegInStor <- c("presDiff")
 DespLoca$var$presValiRegOutStor <- c("presDiff")
-# map parameters (workflow and scientific) to internal process
 
-
-
-#freq output for all data products
-#unit [min]
+# Create a list of output frequencies for all data products
+# unit [min]
 resoTimeDp01 <- list(
-  "co2Stor" = c(2, 30) * 60, #output node in dp01
-  "h2oStor" = c(2, 30) * 60,  #output node in dp01
-  "tempAirLvl" = c(1,  30) * 60,  #output node in dp01
-  "tempAirTop" = c(1, 30) * 60,  #output node in dp01
-  "isoCo2" = c(9, 30) * 60,  #output node in dp01
-  "isoH2o" = c(3, 9, 30) * 60,  #output node in dp01
-  "irgaStor" = c(2, 30) * 60, #sensor
-  "mfcSampStor" = c(2, 30) * 60, #sensor
-  "mfcValiStor" = c(2, 30) * 60, #sensor
-  "mfm" = c(2, 30) * 60 #sensor
+  "co2Stor" = c(2, 30) * 60, 
+  "h2oStor" = c(2, 30) * 60,  
+  "tempAirLvl" = c(1,  30) * 60,  
+  "tempAirTop" = c(1, 30) * 60,  
+  "isoCo2" = c(9, 30) * 60,  
+  "isoH2o" = c(3, 9, 30) * 60, 
+  "irgaStor" = c(2, 30) * 60, 
+  "mfcSampStor" = c(2, 30) * 60, 
+  "mfcValiStor" = c(2, 30) * 60, 
+  "mfm" = c(2, 30) * 60 
 )
 
-
-
-
-
-
-
+# Mapping dp01 name and sensor name
 MapSensDp01 <- list(
   "co2Stor" = "irgaStor",
   "h2oStor" = "irgaStor",
@@ -290,62 +225,38 @@ MapSensDp01 <- list(
   "isoH2o" = "crdH2o"
 )
 
-#list all group hdf5 path
+# List all group hdf5 path
 listPara <- rhdf5::h5ls(Para$Flow$DirFilePara, datasetinfo = FALSE)
 
-#adding the logic if there is no sensor in dp0p
-inpSens <- c("irgaStor", "mfcSampStor", "mfcValiStor", "irgaValvLvl",
-             "crdCo2", "crdH2o", "crdH2oValvVali", "crdCo2ValvLvl", "crdH2oValvLvl", "envHut", "valvAux", "mfm")
-#additional sensors
-addSens <- c("presInlt", "presValiRegInStor", "presValiRegOutStor", "pumpStor", "rhSens")
-#logic to state if this workflow includes the additional sensors sensors
-#need to delete if all sensors are in the input file
-LocAddSens <- TRUE
-if (LocAddSens == TRUE) inpSens <- c(inpSens, addSens)
+# Creat list of input sensor 
+Sens <- c("irgaStor", "mfcSampStor", "mfcValiStor", "irgaValvLvl", "crdCo2", 
+             "crdH2o", "crdH2oValvVali", "crdCo2ValvLvl", "crdH2oValvLvl", "envHut", 
+             "valvAux", "mfm", "presInlt", "presValiRegInStor", "presValiRegOutStor", "pumpStor", "rhSens")
 
-#define dp0p sensor names which related to dp01 to dp04 generation
-Sens <-c()
-for (i in 1:length(inpSens)){
-  if((paste0("/", Para$Flow$Loc, "/dp0p/data/", inpSens[i]) %in% listPara$group)) Sens[i] <- inpSens[i]
-}
-
-# principal sampling frequency, used for resampling
-#  ParaSens$SensFreqSamp
-# unit [Hz]
-#get all sensors that have data in dp0p
-Sens <- c(Sens)
-#get rid of NA
-Sens <- Sens[!is.na(Sens)]
-
-#get parameter of sensor frequency
+# Get parameter of sensor sampling frequencies
 Para$Flow$dp0p <- list()
 for(idxSens in Sens){
   Para$Flow$dp0p[[idxSens]] <- list()
-  Para$Flow$dp0p[[idxSens]]$FreqSamp <- edd4R.base::def.hdf5.read.para(
+  Para$Flow$dp0p[[idxSens]]$FreqSamp <- eddy4R.base::def.hdf5.read.para(
     DirFileParaLoca = Para$Flow$DirFilePara,
-    GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/", idxSens)#,
-    #SetPara = c("PrdIncrAgrDflt", "PrdWndwAgrDflt")
+    GrpName = paste0("/", Para$Flow$Loc, "/dp0p/data/", idxSens)
   )$FreqSamp
-
-  # The input frequency is the sensor frequency, including the parameter of frequency such as ~1 and varies in crdCo2 and crdH2o, and 0.2 in valvAux, but the actual dp0p data frequency is already adjusted to 1 Hz in dp0p, therefore, here we adjust freqSamp to 1
-  # This is just short-term workaround, will need to change in L0p data products, and ultimately sensor frequency should be read in from dp0p automatically
+  
+  # Note that the input frequency is the sensor sampling frequency, including the parameter of frequency such as ~1 and varies in crdCo2 and crdH2o, and 0.2 in valvAux, but the actual input dp0p data frequency is already adjusted to 1 Hz in dp0p, therefore, here we adjust freqSamp to 1
   Para$Flow$dp0p[[idxSens]]$FreqSamp <- 1
-
-
 }
 
 
-#get the Para$Flow$dp01$LvlTowr for each sensor
+# Get the measurement location for each sensor from the input file
 Para$Flow$dp01$LvlTowr <- list()
 for (i in 1:length(Sens)){
   nameSens <- paste0(Sens[i], "/")
   Para$Flow$dp01$LvlTowr[[Sens[i]]] = unique(sapply(1:length(unique(listPara$group[(grep(nameSens,listPara$group))])), function(xx) strsplit(unique(listPara$group[(grep(nameSens,listPara$group))]), nameSens)[[xx]][2]))
 }
 
-Para$Flow$dp01$LvlTowr$co2Stor <- Para$Flow$dp01$LvlTowr$irgaStor #output in dp01
-#"000_010" "000_020" "000_030" "000_040" "co2Arch" "co2High" "co2Low"  "co2Med"  "co2Zero"
-Para$Flow$dp01$LvlTowr$h2oStor <- Para$Flow$dp01$LvlTowr$irgaStor # output in dp01
-#"000_010" "000_020" "000_030" "000_040" "co2Arch" "co2High" "co2Low"  "co2Med"  "co2Zero"
+# Mapping the sensor measurement location to report dp01
+Para$Flow$dp01$LvlTowr$co2Stor <- Para$Flow$dp01$LvlTowr$irgaStor 
+Para$Flow$dp01$LvlTowr$h2oStor <- Para$Flow$dp01$LvlTowr$irgaStor
 Para$Flow$dp01$LvlTowr$isoCo2 <- Para$Flow$dp01$LvlTowr$crdCo2
 Para$Flow$dp01$LvlTowr$isoH2o <- Para$Flow$dp01$LvlTowr$crdH2o
 
