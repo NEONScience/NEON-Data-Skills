@@ -275,47 +275,43 @@ allotment.
 
 ```{r ingest,  message=F, warning=F}
 
-numDate <- 0
-tmpOut <- list()
-# assign list
+# Create empty lists for data and quality flags
 Data <- list()
 qfqmFlag <- list()
 
-# start loop around dates
+# Index for the number of days iterated over, and empty list for outputs
+numDate <- 0
+tmpOut <- list()
+
+# Loop over days in input data (in the example data here, there is 
+# only one day)
 for(Date in Para$Flow$DateOut) {
-  rlog$debug(paste0("dataset ", Date, " DP0p read in begins!"))
   numDate <- numDate + 1
 
-
-  # begin: read raw data
+  # Begin: read raw data from HDF5 file
   if(Para$Flow$Read == "hdf5") {
-    ###
 
-    ##############################################################################################
-    #Data IMPORT
-
-    # assign list for inputs
+    # Create empty list for inputs
     inp <- list()
 
-    # start loop around instruments
+    # Loop over instruments
     for(idxSens in Sens){
      
       for(idxLvl in Para$Flow$dp01$LvlTowr[[idxSens]]){
-        # call read-in wrapper, assign result as temporary variable
+        # Use data read function, assign result as temporary variable
         tmp <- eddy4R.base::wrap.hdf5.read(
           DirInpLoca = Para$Flow$DirInp,
           SiteLoca = Para$Flow$Loc,
           DateLoca = Date,
           VarLoca = idxSens,
-          FreqLoca = Para$Flow$dp0p[[idxSens]]$FreqSamp, #"~1"
+          FreqLoca = Para$Flow$dp0p[[idxSens]]$FreqSamp,
           LvlTowr = idxLvl,
-          #RngLoca = Rng[[idxSens]],
           DespLoca = DespLoca,
           MethMeas = "ecse"
         )
 
 
-        #Read in quality flags from HDF5 file
+        # Read in quality flags from HDF5 file
         if(!idxSens %in% c("irgaValvLvl", "crdH2oValvVali", "crdCo2ValvLvl", "crdH2oValvLvl")){
 
           tmpQfqm <- eddy4R.base::def.hdf5.read.qfqm(
@@ -328,89 +324,48 @@ for(Date in Para$Flow$DateOut) {
             MethMeas = "ecse"
           )
 
-          #Remove time from set of flags
+          # Remove timestamp from flags, since timestamps will be 
+          # saved elsewhere
           tmpQfqm <- tmpQfqm[,grep("time",names(tmpQfqm),invert = T), drop = FALSE]
-
         }
-
-        # assign result as ffdf to inp
-
-        # time domain incl. unit assignment
+        
+        # Copy results from temporary variables to inp
+        # Time domain inclding unit assignment
         if(idxSens %in% c("irgaStor","crdCo2","crdH2o")) {
 
           inp$time <- tmp$time
-          #ff::as.ffdf.data.frame(data.frame(UTC = tmp$time))
           base::attr(x = inp$time, which = "unit") <- "YYYY-MM-DD hh:mm:ss.sss"
-
         }
 
-        # sensor data incl. unit assignment
+        # Sensor data incl. unit assignment
         inp$data[[idxSens]][[idxLvl]] <- tmp$data
-        #ff::as.ffdf.data.frame(tmp$data)
         for(idx in base::names(tmp$data)) base::attr(x = inp$data[[idxSens]][[idxLvl]][[idx]], which = "unit") <-
           base::attr(x = tmp$data, which = "unit")[[idx]]
         if(exists("tmpQfqm")) inp$qfqm[[idxSens]][[idxLvl]] <- data.frame(tmpQfqm)
 
-        # clean up
+        # Remove temporary variables
         rm(tmp)
         if(exists("tmpQfqm")) rm(tmpQfqm)
         invisible(gc())
 
-        # end loop around instruments
-      }#; rm(idxLvl)
-    }#; rm(idxSens)
+        # End loop over instruments
+      }
+    }
 
-    # Perform daily processing in native resolution
-    # actual calculation
+    # Calculate derived quantities: daily extent, native resolution
     inp <- eddy4R.stor::wrap.prd.day.ecse(
       inpList = inp,
       Desp = DespLoca
     )
 
-    rlog$debug(paste0("dataset ", Date, ": perform daily processing in native resolution"))
+    # Print status message
+    print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, 
+                 ": perform daily processing in native resolution"))
 
-
-    ###
-    # mid: read raw data
-  } else {
-    rlog$debug(paste0("dataset ", Date, " loading pre-processed raw data begin"))
-    ###
-
-
-
-    # load pre-processed high-frequency data from daily file
-
-    # assign input data list
-    inp <- list()
-
-    # start loop around instruments
-    for(idxSens in c("irgaStor", "mfcSampStor", "soni", "soniAmrs", "time")){
-      # load from file
-      ffload(file = paste(Para$Flow$DirWrk, "/", Para$Flow$Loc, "/", Para$Flow$VersDp, "/30-min rawdata/rawdata_", Date, "_", idxSens, sep=""), overwrite = TRUE)
-
-      # assign to inp list
-      inp$data[[idxSens]] <- tmp
-
-      # clean up
-      rm(tmp)
-      invisible(gc())
-
-      # end loop around instruments
-    }; rm(idxSens)
-
-
-
-    ###
-    rlog$debug(paste0("dataset ", Date, " loading pre-processed raw data complete"))
-  }
-  # end: read raw data
-  ###
-
-
-
-  # assign daily data and attributes to file-backed objects; RAM 2.8 GB
-
-  # case #1: first day (creation)
+  } 
+  
+  # Assign daily data and attributes
+  # If loop is on the first day, create the attributes:
   if(numDate == 1) {
 
     for(idxSens in Sens){
@@ -418,11 +373,11 @@ for(Date in Para$Flow$DateOut) {
       qfqmFlag[[idxSens]] <- inp$qfqm[[idxSens]]
     }
 
-    # time objects
+    # Time objects
     Data$time <- inp$time
     qfqmFlag$time <- inp$time
 
-    # case #2: subsequent day (appending)
+    # If loop is on any day after the first, append the attributes:
   } else {
 
     for(idxSens in Sens){
@@ -433,45 +388,38 @@ for(Date in Para$Flow$DateOut) {
     Data$time <- rbind(Data$time, inp$time)
     qfqmFlag$time <- rbind(qfqmFlag$time, inp$time)
 
-  
+  # End attributes assignment
   }
 
-  # clean up
+  # Remove temporary list of input variables
   inp <- NULL
   invisible(gc())
 
 }
 # end: loop around Dates
 
-
-rlog$info(paste0("dataset ", Date, " dp0p read in finishes!"))
-
-
-
 ```
-
-
-
 
 ## 4. eddy-covariance storage exchange (ECSE) level 1 data products (dp01) generation.
 
-The first step is to get indixes for different temporal resolutions at level 1 data products to determine where valid sampling and validation data are, using eddy4R.base::def.idx.agr(). 
-Then the descriptive statistics, mean, minimum, maximum, variance, standard deviation, number of samples, as well as begin time and end time are calculated at different temporal resolutions as a list of data.frames, using eddy4R.stor::wrap.dp01.ecse(). 
-eddy4R.qaqc::wrap.dp01.qfqm.ecse() and eddy4R.ucrt::wrap.neon.dp01.ucrt.ecse() are used to calculate quality and uncertatiny metrics. 
+The first step is to get indices for different temporal resolutions at level 1 data products 
+to determine where valid sampling and validation data are, using eddy4R.base::def.idx.agr(). 
+Then the descriptive statistics, mean, minimum, maximum, variance, standard deviation, 
+number of samples, as well as begin time and end time are calculated at different temporal resolutions 
+as a list of data.frames, using eddy4R.stor::wrap.dp01.ecse(). The eddy4R.qaqc::wrap.dp01.qfqm.ecse() and eddy4R.ucrt::wrap.neon.dp01.ucrt.ecse() are used to calculate quality and uncertatiny metrics. 
 Then concatenate results and HDF5 data formatting.
-
 
 
 ```{r dp01-process,  message=F, warning=F}
 
-rlog$debug(paste0("dataset ", Date, " dp01 calculation begin"))
+# Kick off with a time stamp when processing starts
+print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, 
+             " dp01 calculation begin"))
 
-# assign list for masked input data and parameters
+# Create empty list for working parameters and variables
 wrk <- list()
 
-#determine which entries in Data correspond to desired aggregation interval
-
-
+# Determine which entries in Data correspond to desired aggregation interval
 wrk$setData <- list()
 for(idxFreq in c(1, 2, 30)){
 
@@ -488,20 +436,18 @@ for(idxFreq in c(1, 2, 30)){
 }
 
 
-# assign list
-# for dp01 output
+# Create empty list for dp01, quality flag/ quality metric and uncertainty data
 wrk$dp01 <- list()
 wrk$qfqmOut <- list()
 wrk$ucrt <- list()
 
-  # c2r: VersDp output version
+  # Get the output version
   Para$Flow$VersDp <- paste0(Para$Flow$VersDp, "_", format(Sys.time(), "%Y%m%d_%H%M%S_%Z"))
 
-
-  #Input parameter for different sensors in dp01 data processing
+  # Create empty list for input parameter for different sensors in dp01 data processing
   Para$Flow$dp01$Inp <- list()
   
-  # for co2Stor during sampling period
+  # For co2Stor during sampling period
   Para$Flow$dp01$Inp$data$co2Stor$samp <- list(
     "lvlMfcSampStor" = Para$Flow$dp01$LvlTowr$mfcSampStor,
     "lvlMfcValiStor" = NULL,
@@ -510,7 +456,7 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = NULL
   )
 
-  # for co2Stor during validating period
+  # For co2Stor during validating period
   Para$Flow$dp01$Inp$data$co2Stor$vali <- list(
     "lvlMfcSampStor" = Para$Flow$dp01$LvlTowr$mfcSampStor,
     "lvlMfcValiStor" = Para$Flow$dp01$LvlTowr$mfcValiStor,
@@ -519,10 +465,10 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = NULL
   )
 
-  #for h2oStor
+  # For h2oStor
   Para$Flow$dp01$Inp$data$h2oStor <- Para$Flow$dp01$Inp$data$co2Stor
 
-  # for isoCo2 during sampling period
+  # For isoCo2 during sampling period
   Para$Flow$dp01$Inp$data$isoCo2$samp <- list(
     "lvlMfcSampStor" = NULL,
     "lvlMfcValiStor" = NULL,
@@ -531,7 +477,7 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = NULL
   )
 
-  # for isoCo2 during validating period
+  # For isoCo2 during validating period
   Para$Flow$dp01$Inp$data$isoCo2$vali <- list(
     "lvlMfcSampStor" = NULL,
     "lvlMfcValiStor" = Para$Flow$dp01$LvlTowr$mfcValiStor,
@@ -540,7 +486,7 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = NULL
   )
 
- # for isoH2o during sampling period
+  # For isoH2o during sampling period
   Para$Flow$dp01$Inp$data$isoH2o$samp <- list(
     "lvlMfcSampStor" = NULL,
     "lvlMfcValiStor" = NULL,
@@ -549,8 +495,7 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = NULL
   )
 
-  
-  # for isoH2o during validating period
+  # For isoH2o during validating period
   Para$Flow$dp01$Inp$data$isoH2o$vali <- list(
     "lvlMfcSampStor" = NULL,
     "lvlMfcValiStor" = NULL,
@@ -559,58 +504,51 @@ wrk$ucrt <- list()
     "lvlCrdH2oValvVali" = Para$Flow$dp01$LvlTowr$crdH2oValvVali
   )
 
-
-
-  #Input parameter for qfqm in dp01
+  # Create empty list for input parameter for qfqm in dp01
   Para$Flow$dp01$Inp$qfqm <- list()
-
   for (idxTmp in names(Para$Flow$dp01$Inp$data)){
     Para$Flow$dp01$Inp$qfqm[[idxTmp]]$samp$lvlValvAux <- NULL
     Para$Flow$dp01$Inp$qfqm[[idxTmp]]$vali$lvlValvAux <- NULL
   }
-
+  
+  # Transfer the location parameter from dp01 to qfqm
   Para$Flow$dp01$Inp$qfqm$co2Stor$samp$lvlValvAux <- Para$Flow$dp01$LvlTowr$valvAux
   Para$Flow$dp01$Inp$qfqm$co2Stor$vali$lvlValvAux <- Para$Flow$dp01$LvlTowr$valvAux
   Para$Flow$dp01$Inp$qfqm$h2oStor <- Para$Flow$dp01$Inp$qfqm$co2Stor
 
-
-  #Input parameter for ucrt in dp01
+  # Input parameter for ucrt in dp01
   Para$Flow$dp01$Inp$ucrt <- Para$Flow$dp01$Inp$data
   Para$Flow$dp01$Inp$ucrt$isoCo2$vali$lvlValv <- Para$Flow$dp01$LvlTowr$crdCo2ValvLvl
 
-
-
-  #select data for different sampling, validating data at different window size (1 min, 2 min, 3 min, 9 min)
+  # Select data for different sampling, validating data at different window size (1 min, 2 min, 3 min, 9 min)
   for(idxDp01 in names(Para$Flow$dp01$Inp$data)){
 
-    #adding logic to run if there is the sensor data in dp0p
+    # Adding logic to run if there is the sensor data in dp0p
     if(MapSensDp01[[idxDp01]] %in% Sens){
       for(idxLvl in Para$Flow$dp01$LvlTowr[[idxDp01]]){
 
-        #determine different PrdAgr
+        # Determine different PrdAgr
         PrdAgr <- as.integer(resoTimeDp01[[idxDp01]]/60)
 
-        #determine sampling or validating data
+        # Determine sampling or validating data
         if (substring(idxLvl, 1, 3) == "000"){
           tmpTypeMeas <- "samp"
           if(idxDp01 == "isoH2o" ) PrdAgr <- as.integer(resoTimeDp01[[idxDp01]][c(2,3)]/60)
-
 
         } else {
           tmpTypeMeas <- "vali"
           if(idxDp01 == "isoH2o" ) PrdAgr <- as.integer(resoTimeDp01[[idxDp01]][c(1,3)]/60)
 
         }
-
-
+        
+        # Start dp01 processing for each aggregation period 
         for (idxPrdAgr in PrdAgr) {
           tmpDp01 <- list()
           tmpQfqmDp01 <- list()
-          #dp01 processing
-          rlog$debug(paste0("dataset ", Date, ": dp01 data processing ", idxDp01, " dp01 at measurment level of ", idxLvl))
+          # dp01 processing
           tmpDp01 <- eddy4R.stor::wrap.dp01.ecse(dp01 = idxDp01,
                                                  lvl = idxLvl,
-                                                 lvlMfcSampStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor, #Para$Flow$dp01$LvlTowr$mfcSampStor,
+                                                 lvlMfcSampStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor,
                                                  lvlEnvHut = Para$Flow$dp01$LvlTowr$envHut,
                                                  lvlValv = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlValv,
                                                  lvlCrdH2oValvVali = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlCrdH2oValvVali,
@@ -621,12 +559,12 @@ wrk$ucrt <- list()
                                                  PrdAgr = idxPrdAgr,
                                                  idxTime = wrk$setData
           )
-          #qfqm processing
-          rlog$debug(paste0("dataset ", Date, ": dp01 qfqm processing ", idxDp01, " dp01 for ", idxLvl))
+          
+          # qfqm processing
           tmpQfqmDp01 <- eddy4R.qaqc::wrap.dp01.qfqm.ecse(dp01 = idxDp01,
                                                           RptExpd = TRUE,
                                                           lvl = idxLvl,
-                                                          lvlMfcSampStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor, #Para$Flow$dp01$LvlTowr$mfcSampStor,
+                                                          lvlMfcSampStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor,
                                                           lvlMfcValiStor = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlMfcValiStor,
                                                           lvlEnvHut = Para$Flow$dp01$LvlTowr$envHut,
                                                           lvlValv = Para$Flow$dp01$Inp$data[[idxDp01]][[tmpTypeMeas]]$lvlValv,
@@ -639,11 +577,11 @@ wrk$ucrt <- list()
                                                           PrdAgr = idxPrdAgr,
                                                           idxTime = wrk$setData
           )
+          
           #ucrt processing
-          rlog$debug(paste0("dataset ", Date, ": dp01 ucrt processing ", idxDp01, " dp01 for", idxLvl))
           tmpUcrtDp01 <- eddy4R.ucrt::wrap.neon.dp01.ucrt.ecse(dp01 = idxDp01,
                                                                lvl = idxLvl,
-                                                               lvlMfcSampStor = Para$Flow$dp01$Inp$ucrt[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor, #Para$Flow$dp01$LvlTowr$mfcSampStor,
+                                                               lvlMfcSampStor = Para$Flow$dp01$Inp$ucrt[[idxDp01]][[tmpTypeMeas]]$lvlMfcSampStor,
                                                                lvlEnvHut = Para$Flow$dp01$LvlTowr$envHut,
                                                                lvlValv = Para$Flow$dp01$Inp$ucrt[[idxDp01]][[tmpTypeMeas]]$lvlValv,
                                                                lvlCrdH2oValvVali = Para$Flow$dp01$Inp$ucrt[[idxDp01]][[tmpTypeMeas]]$lvlCrdH2oValvVali,
@@ -654,44 +592,41 @@ wrk$ucrt <- list()
                                                                PrdAgr = idxPrdAgr,
                                                                idxTime = wrk$setData
           )
-          #rename idxLvl
+          
+          # Rename idxLvl
           idxLvLPrdAgr <- paste0(idxLvl, "_", sprintf("%02d", idxPrdAgr), "m")
-          #output calculate dp01, qfqm, and ucrt
+          
+          # Copy results from temporary dataframe to working dataframe
           wrk$dp01[[idxDp01]][[idxLvLPrdAgr]] <- tmpDp01
           wrk$qfqmOut[[idxDp01]][[idxLvLPrdAgr]] <- tmpQfqmDp01
           wrk$ucrt[[idxDp01]][[idxLvLPrdAgr]] <- tmpUcrtDp01
-          # clean up
+          # Clean up
           base::invisible(base::gc())
-        }#close idxPrdAgr
+        }# close idxPrdAgr
 
       }# end of loop around idxLvl
     }# end of whether there is a valid data
   }# end of loop around idxDp01
 
+  # Clean up
 
+  base::invisible(base::gc())
 
-
-  # clean up
-
-  invisible(gc())
-
-  # concatenate results and HDF5 data formatting-----------------------------------------------------------------------------------------
-
-  # create directory
-  #dir.create(paste0(Para$Flow$DirOut, "/", Para$Flow$Loc, "/", Para$Flow$VersDp), showWarnings = FALSE)
-  #combine data product output into rpt
+  # Concatenate results and HDF5 data formatting
+  # Combine data product output into rpt
   rpt <- list()
   rpt$dp01$data <- eddy4R.base::def.hdf5.pack(inpList=wrk$dp01, MethMeas = "ecse", Dp ="Dp01")
   rpt$dp01$qfqm <- eddy4R.base::def.hdf5.pack(inpList=wrk$qfqmOut, MethMeas = "ecse", Dp ="Dp01")
   rpt$dp01$ucrt <- eddy4R.base::def.hdf5.pack(inpList=wrk$ucrt, MethMeas = "ecse", Dp ="Dp01")
-  # add standard error under /ucrt
+  
+  # Add standard error under uncertainty dataframe
   for(idxDp01 in c("co2Stor", "h2oStor", "isoCo2", "isoH2o")){
     for(idxLvl in base::names(rpt$dp01$ucrt[[idxDp01]])){
      
       for(idxSub in base::names(rpt$dp01$ucrt[[idxDp01]][[idxLvl]])){
        
         rpt$dp01$ucrt[[idxDp01]][[idxLvl]][[idxSub]]$se <- rpt$dp01$data[[idxDp01]][[idxLvl]][[idxSub]]$se
-        #re-arrange order of variable
+        # re-arrange order of variable
         tmp <- data.frame(mean= rpt$dp01$ucrt[[idxDp01]][[idxLvl]][[idxSub]]$mean,
                           vari = rpt$dp01$ucrt[[idxDp01]][[idxLvl]][[idxSub]]$vari,
                           se = rpt$dp01$ucrt[[idxDp01]][[idxLvl]][[idxSub]]$se,
@@ -707,49 +642,41 @@ wrk$ucrt <- list()
     }
   }
 
-  #transfer units
+  # data: Transfer units
   for(idxDp in base::names(rpt$dp01$data)) {
     for(idxLvl in base::names(rpt$dp01$data[[idxDp]])){
       for(idxVar in base::names(rpt$dp01$data[[idxDp]][[idxLvl]])){
        
-        #Add a fix here to remove se in /data
+        # Remove standard error from data
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$se <- NULL
 
         #unit transfer
         base::attr(x = rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]], which = "unit") <-
           base::attr(x = wrk$dp01[[idxDp]][[idxLvl]][[1]]$mean[[idxVar]], which = "unit")
-
-
       }
     }
 
   }; rm(idxVar)
 
-  #qfqm transfer units
+  # qfqm: transfer units
   for(idxDp in base::names(rpt$dp01$qfqm)) {
-  
     for(idxLvl in base::names(rpt$dp01$qfqm[[idxDp]])){
       for(idxVar in base::names(rpt$dp01$qfqm[[idxDp]][[idxLvl]])){
         #unit transfer
         attributes(rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]])$unit <-
           attributes(wrk$qfqmOut[[idxDp]][[idxLvl]][[1]]$qfFinl[[idxVar]])$unit
-
-
       }
     }
 
   }; rm(idxVar)
-
-
-  # end loop around aggregation interval
-  rlog$info(paste0("dataset ", Date, " dp01 calculation complete!"))
-  #save.image(wrk$dp01, file="~/wrkdp01_object.RData")
+  
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, 
+             " dp01 calculation complete!"))
+  # Save image
   save.image("~/wrkdp01.RData")
   
 ```
-
-
-
 
 ## 5. ECSE level 2 data products (dp02) generation.
 
@@ -759,66 +686,63 @@ Then also intepolate ECSE Level 1 qfqm data;
 Then calcualte the time change rate, using eddy4R.stor::def.time.rate.diff();
 Then concatenate results and HDF5 data formatting.
 
-
-
 ```{r dp02-process,  message=F, warning=F}
-
-rlog$debug(paste0("dataset ", Date, " dp02 calculation begin"))
+  # Print screen
+  print(paste0(format(Sys.time(), "%F %T"), ": dataset ", Date, 
+             " dp02 calculation begin"))
+  
+  # Get input file directory
   FileInp <- Para$Flow$DirFilePara
-  ## read in exiting dp01 data from input dp0p hdf5 file
-  #List of all object names
+  
+  # List of all object names from HDF5
   listObjName <- base::paste(listPara$group, listPara$name, sep = "/")
 
-  ##Groups for HDF5 group structure
-  #Grabbing just the HDF5 groups
+  # Get HDF5 group structure
   listGrp <- listPara[listPara$otype == "H5I_GROUP",]
-
+  # Get HDF5 group name
   listGrpName <- base::paste(listGrp$group, listGrp$name, sep = "/")
 
-  ##Dataset for HDF5 dataset output
-  #Grab just the data objects
+  # Get HDF5 data objects 
   listDataObj <- listPara[listPara$otype == "H5I_DATASET",]
 
-  #Combining names for grabbing datasets
+  # Combining names for grabbing datasets
   listDataName <- base::paste(listDataObj$group, listDataObj$name, sep = "/")
 
-  #get LvlTowr
+  # Get LvlTowr for air temperature
   Para$Flow$dp01$LvlTowr$tempAirLvl <- unique(sapply(1:length(unique(listPara$group[(grep("tempAirLvl/",listPara$group))])), function(xx) strsplit(unique(listPara$group[(grep("tempAirLvl/",listPara$group))]), "tempAirLvl/")[[xx]][2]))
   Para$Flow$dp01$LvlTowr$tempAirTop <- unique(sapply(1:length(unique(listPara$group[(grep("tempAirTop/",listPara$group))])), function(xx) strsplit(unique(listPara$group[(grep("tempAirTop/",listPara$group))]), "tempAirTop/")[[xx]][2]))
 
+  # Assign air temperature name
   exitDp01 <- c("tempAirLvl", "tempAirTop")
-  #get sub dp01
+  # Get air temperature sub data product name 
   exitSubDp01 <- list()
   for(idxDp in exitDp01) {
     subName <- unique(listPara$group[(grep(paste0(idxDp, "/"),listPara$group))])[1]
     exitSubDp01[[idxDp]] <- listDataObj$name[listDataObj$group == subName]
   }
-  #assign data into rpt
+  
+  # Transfer air temperature data and qfqm into rpt
   for(idxDp in exitDp01) {
-   
     for(idxLvl in Para$Flow$dp01$LvlTowr[[idxDp]]){
       for(idxVar in exitSubDp01[[idxDp]]){
-        #get /CPER/dp01/data
-        #Combining names for grabbing datasets
+        # Combining names for grabbing datasets
         listDataNameTmp <- paste0("/",Para$Flow$Loc, "/", "dp01", "/", "data", "/", idxDp, "/", idxLvl, "/", idxVar)
         listQfqmNameTmp <- paste0("/",Para$Flow$Loc, "/", "dp01", "/", "qfqm", "/", idxDp, "/", idxLvl, "/", idxVar)
 
-        #Read data from the input dp0p file
+        # Read data from the input dp0p file
         listDataTmp <- base::lapply(listDataNameTmp, rhdf5::h5read, file = FileInp, read.attributes = TRUE)
         listQfqmTmp <- base::lapply(listQfqmNameTmp, rhdf5::h5read, file = FileInp, read.attributes = TRUE)
 
-        #Apply group names to the list
+        # Apply group names to the list
         base::names(listDataTmp) <- idxVar
         base::names(listQfqmTmp) <- idxVar
 
-        #base attributes
-       
-        # perform unit conversion
+        # Perform unit conversion
         listDataTmp[[idxVar]] <- base::suppressWarnings(eddy4R.base::def.unit.conv(data = listDataTmp[[idxVar]],
                                                                                    unitFrom = attributes(listDataTmp[[idxVar]])$unit,
                                                                                    unitTo = "intl",
                                                                                    MethGc = FALSE))
-        #Add dp01 data into rpt
+        # Add dp01 data into rpt
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$mean <- listDataTmp[[idxVar]]$mean
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$min <- listDataTmp[[idxVar]]$min
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$max <- listDataTmp[[idxVar]]$max
@@ -826,37 +750,36 @@ rlog$debug(paste0("dataset ", Date, " dp02 calculation begin"))
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$numSamp <- listDataTmp[[idxVar]]$numSamp
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$timeBgn <- base::as.POSIXct(listDataTmp[[idxVar]]$timeBgn, format="%Y-%m-%dT%H:%M:%OSZ", tz="UTC")
         rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]]$timeEnd <- base::as.POSIXct(listDataTmp[[idxVar]]$timeEnd, format="%Y-%m-%dT%H:%M:%OSZ", tz="UTC")
-        #unit attributes
+        # Transfer unit attributes
         attributes(rpt$dp01$data[[idxDp]][[idxLvl]][[idxVar]])$unit <- attributes(listDataTmp[[idxVar]])$unit["mean"]
 
-        #Add dp01 qfqm into rpt
+        # Add dp01 qfqm into rpt
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$qmAlph <- listQfqmTmp[[idxVar]]$qmAlph
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$qmBeta <- listQfqmTmp[[idxVar]]$qmBeta
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$qfFinl <- listQfqmTmp[[idxVar]]$qfFinl
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$qfSci <- listQfqmTmp[[idxVar]]$qfSci
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$timeBgn <- base::as.POSIXct(listQfqmTmp[[idxVar]]$timeBgn, format="%Y-%m-%dT%H:%M:%OSZ", tz="UTC")
         rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]]$timeEnd <- base::as.POSIXct(listQfqmTmp[[idxVar]]$timeEnd, format="%Y-%m-%dT%H:%M:%OSZ", tz="UTC")
-        #unit attributes
+        # Assign unit attributes
         attributes(rpt$dp01$qfqm[[idxDp]][[idxLvl]][[idxVar]])$unit <- "NA"
       }
     }
-
   }; rm(idxVar)
 
+  # Define dp02 data product names
   dp02 <- c("co2Stor", "h2oStor", "tempStor")
 
-  #freq output for all data products
-  #unit [min]
+  # Create a list of output frequencies for all dp02
+  # unit [min]
   resoTimeDp02 <- list(
-    "co2Stor" = c(30) * 60, #output node in dp01
-    "h2oStor" = c(30) * 60,  #output node in dp01
-    "tempStor" = c(30) * 60  #output node in dp01
-
-
+    "co2Stor" = c(30) * 60, 
+    "h2oStor" = c(30) * 60,  
+    "tempStor" = c(30) * 60 
   )
-
+  
+  # Create empty list for dp02 workflow parameters
   Para$Flow$dp02 <- list()
-
+  
   Para$Flow$dp02$LvlTowrReso <- list(
     "co2Stor" = unique(sapply(1:length(unique(listPara$group[(grep("irgaStor/",listPara$group))])), function(xx) strsplit(unique(listPara$group[(grep("irgaStor/",listPara$group))]), "irgaStor/")[[xx]][2])),
     #"000_010" "000_020" "000_030" "000_040" "co2Arch" "co2High" "co2Low"  "co2Med"  "co2Zero", #sensor in dp0p
