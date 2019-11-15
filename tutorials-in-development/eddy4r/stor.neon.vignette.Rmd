@@ -1,5 +1,5 @@
 ---
-title: "Example workflow for processing NEON eddy-covariance storage data with eddy4R-Docker 0.2.0"
+title: "Example workflow for processing NEON eddy-covariance storage data with eddy4R-Docker 1.0.0"
 author: "Ke Xu, Natchaya Pingintha-Durden, David Durden, Stefan Metzger"
 date: "11/10/2019"
 output: html_document
