@@ -552,7 +552,7 @@ brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.pt$api.easting, brd.point.pt$api.northing, 
+symbols(brd.point.pt$easting, brd.point.pt$northing, 
         circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
