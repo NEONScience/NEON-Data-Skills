@@ -10,7 +10,7 @@ packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
-code1: R/download-explore/NEON-download-explore
+code1: R/download-explore/NEON-download-explore.R
 tutorialSeries: 
 urlTitle: download-explore-neon-data
 ---
