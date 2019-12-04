@@ -13,7 +13,8 @@ dirs <- c("R/NEON-pheno-temp-timeseries/",
           "data-institutes/rmd-intro/",
           "R/R-nonSeries-lessons/",
           "dataviz/",
-          "R/download-explore/")
+          "R/download-explore/",
+          "R/spatial-data/")
 
 #################### Set up Input Variables #############################
 
@@ -22,10 +23,10 @@ dirs <- c("R/NEON-pheno-temp-timeseries/",
 subDir <- dirs[1]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/mjones01/Documents/GitHub/NEON-Data-Skills"
+gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
-wd <- "~/Documents/data"
+wd <- "~/data"
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir
