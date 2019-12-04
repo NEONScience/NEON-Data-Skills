@@ -4,7 +4,7 @@ title: "Work With NEON's Plant Phenology Data"
 description: "Learn to work with NEON plant phenology observation data (NEON.DP1.10055)."
 dateCreated: 2017-08-01
 authors: Megan A. Jones, Natalie Robinson, Lee Stanish
-contributors: Katie Jones, Cody Flagg
+contributors: Katie Jones, Cody Flagg, Karlee Bradley
 estimatedTime: 
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
@@ -16,11 +16,10 @@ urlTitle: neon-plant-pheno-data-r
 ---
 
 
+
 Many organisms, including plants, show patterns of change across seasons - 
 the different stages of this observable change are called phenophases. In this 
 tutorial we explore how to work with NEON plant phenophase data. 
-
-
 
 <div id="ds-objectives" markdown="1">
 
@@ -38,9 +37,9 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-
 
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
@@ -60,7 +59,7 @@ on your computer to complete this tutorial.
 * NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>
 * RStudio's <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
 * <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
-* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo R package -- an API wrapper -- on CRAN </a>
+* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo API wrapper on CRAN </a>
 
 </div>
 
@@ -165,33 +164,72 @@ over a 12 month period can be a bit overwhelming. Luckily NEON provides an R pac
 files. The teaching data downloaded with this tutorial is already stacked. If you
 are working with other NEON data, please go through the tutorial to stack the data
 in 
-<a href="/neonDataStackR" target="_blank">R</a> or in <a href="/neon-utilities-python" target="_blank">Python</a>
-and then return to this tutorial.  
+<a href="/neonDataStackR" target="_blank">R</a> or in <a href="/neon-utilities-python" target="_blank">Python</a> 
+and then return to this tutorial. 
 
 ## Work with NEON Data
 
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
 
-Let's start by loading our data of interest. 
+Let's start by loading our data of interest. For this series, we'll work with 
+date from the NEON Domain 02 sites:
+
+* Blandy Farm (BLAN)
+* Smithsonian Conservation Biology Institute (SCBI)
+* Smithsonian Environmental Research Center (SERC)
+
+And we'll use data from January 2017 to December 2019.  This downloads over 9MB
+of data. If this is too large, use a smaller date range. 
 
 
-
+    library(neonUtilities)
     library(dplyr)
     library(ggplot2)
-    library(lubridate)  
     
+    options(stringsAsFactors=F) #used to prevent factors
     
     # set working directory to ensure R can find the file we wish to import
     # setwd("working-dir-path-here")
     
+    ## Two options for accessing data - programmatic or from the example dataset
+    # Read data from data portal 
     
+    phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
+    										 startdate = "2017-01", enddate="2019-12", 
+    										 check.size = F) 
+
+    ## Downloading files totaling approximately 9.65891 MB
+    ## Downloading 90 files
+    ##   |                                                                                                       |                                                                                               |   0%  |                                                                                                       |=                                                                                              |   1%  |                                                                                                       |==                                                                                             |   2%  |                                                                                                       |===                                                                                            |   3%  |                                                                                                       |====                                                                                           |   4%  |                                                                                                       |=====                                                                                          |   6%  |                                                                                                       |======                                                                                         |   7%  |                                                                                                       |=======                                                                                        |   8%  |                                                                                                       |========                                                                                       |   9%  |                                                                                                       |==========                                                                                     |  10%  |                                                                                                       |===========                                                                                    |  11%  |                                                                                                       |============                                                                                   |  12%  |                                                                                                       |=============                                                                                  |  13%  |                                                                                                       |==============                                                                                 |  14%  |                                                                                                       |===============                                                                                |  16%  |                                                                                                       |================                                                                               |  17%  |                                                                                                       |=================                                                                              |  18%  |                                                                                                       |==================                                                                             |  19%  |                                                                                                       |===================                                                                            |  20%  |                                                                                                       |====================                                                                           |  21%  |                                                                                                       |=====================                                                                          |  22%  |                                                                                                       |======================                                                                         |  23%  |                                                                                                       |=======================                                                                        |  24%  |                                                                                                       |========================                                                                       |  26%  |                                                                                                       |=========================                                                                      |  27%  |                                                                                                       |==========================                                                                     |  28%  |                                                                                                       |===========================                                                                    |  29%  |                                                                                                       |============================                                                                   |  30%  |                                                                                                       |==============================                                                                 |  31%  |                                                                                                       |===============================                                                                |  32%  |                                                                                                       |================================                                                               |  33%  |                                                                                                       |=================================                                                              |  34%  |                                                                                                       |==================================                                                             |  36%  |                                                                                                       |===================================                                                            |  37%  |                                                                                                       |====================================                                                           |  38%  |                                                                                                       |=====================================                                                          |  39%  |                                                                                                       |======================================                                                         |  40%  |                                                                                                       |=======================================                                                        |  41%  |                                                                                                       |========================================                                                       |  42%  |                                                                                                       |=========================================                                                      |  43%  |                                                                                                       |==========================================                                                     |  44%  |                                                                                                       |===========================================                                                    |  46%  |                                                                                                       |============================================                                                   |  47%  |                                                                                                       |=============================================                                                  |  48%  |                                                                                                       |==============================================                                                 |  49%  |                                                                                                       |================================================                                               |  50%  |                                                                                                       |=================================================                                              |  51%  |                                                                                                       |==================================================                                             |  52%  |                                                                                                       |===================================================                                            |  53%  |                                                                                                       |====================================================                                           |  54%  |                                                                                                       |=====================================================                                          |  56%  |                                                                                                       |======================================================                                         |  57%  |                                                                                                       |=======================================================                                        |  58%  |                                                                                                       |========================================================                                       |  59%  |                                                                                                       |=========================================================                                      |  60%  |                                                                                                       |==========================================================                                     |  61%  |                                                                                                       |===========================================================                                    |  62%  |                                                                                                       |============================================================                                   |  63%  |                                                                                                       |=============================================================                                  |  64%  |                                                                                                       |==============================================================                                 |  66%  |                                                                                                       |===============================================================                                |  67%  |                                                                                                       |================================================================                               |  68%  |                                                                                                       |=================================================================                              |  69%  |                                                                                                       |==================================================================                             |  70%  |                                                                                                       |====================================================================                           |  71%  |                                                                                                       |=====================================================================                          |  72%  |                                                                                                       |======================================================================                         |  73%  |                                                                                                       |=======================================================================                        |  74%  |                                                                                                       |========================================================================                       |  76%  |                                                                                                       |=========================================================================                      |  77%  |                                                                                                       |==========================================================================                     |  78%  |                                                                                                       |===========================================================================                    |  79%  |                                                                                                       |============================================================================                   |  80%  |                                                                                                       |=============================================================================                  |  81%  |                                                                                                       |==============================================================================                 |  82%  |                                                                                                       |===============================================================================                |  83%  |                                                                                                       |================================================================================               |  84%  |                                                                                                       |=================================================================================              |  86%  |                                                                                                       |==================================================================================             |  87%  |                                                                                                       |===================================================================================            |  88%  |                                                                                                       |====================================================================================           |  89%  |                                                                                                       |======================================================================================         |  90%  |                                                                                                       |=======================================================================================        |  91%  |                                                                                                       |========================================================================================       |  92%  |                                                                                                       |=========================================================================================      |  93%  |                                                                                                       |==========================================================================================     |  94%  |                                                                                                       |===========================================================================================    |  96%  |                                                                                                       |============================================================================================   |  97%  |                                                                                                       |=============================================================================================  |  98%  |                                                                                                       |============================================================================================== |  99%  |                                                                                                       |===============================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table phe_perindividual
+    ## Stacking table phe_statusintensity
+    ## Stacking table phe_perindividualperyear
+    ## Copied the most recent publication of variable definition file to /stackedFiles and renamed as variables.csv
+    ## Copied the most recent publication of validation file to /stackedFiles and renamed as validation.csv
+    ## Finished: Stacked 3 data tables and 2 metadata tables!
+    ## Stacking took 1.771532 secs
+
+    # if you aren't sure you can handle the data file size use check.size = T. 
+    
+    # save dataframes from the downloaded list
+    ind <- phe$phe_perindividual  #individual information
+
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/01-explore-phenology-data/loadStuff-1.png)
+
+    status <- phe$phe_statusintensity  #status & intensity info
+    
+    
+    ## If choosing to use example dataset downloaded from this tutorial.
     # Read in data
-    ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
-    		stringsAsFactors = FALSE )
+    #ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
+    #		stringsAsFactors = FALSE )
     
-    status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
-    		stringsAsFactors = FALSE)
+    #status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
+    #		stringsAsFactors = FALSE)
 
 Let's explore the data. Let's get to know what the `ind` dataframe looks like.
 
@@ -199,276 +237,134 @@ Let's explore the data. Let's get to know what the `ind` dataframe looks like.
     # What are the fieldnames in this dataset?
     names(ind)
 
-    ##  [1] "uid"                         "namedLocation"              
-    ##  [3] "domainID"                    "siteID"                     
-    ##  [5] "plotID"                      "decimalLatitude"            
-    ##  [7] "decimalLongitude"            "geodeticDatum"              
-    ##  [9] "coordinateUncertainty"       "elevation"                  
-    ## [11] "elevationUncertainty"        "subtypeSpecification"       
-    ## [13] "transectMeter"               "directionFromTransect"      
-    ## [15] "ninetyDegreeDistance"        "sampleLatitude"             
-    ## [17] "sampleLongitude"             "sampleGeodeticDatum"        
-    ## [19] "sampleCoordinateUncertainty" "sampleElevation"            
-    ## [21] "sampleElevationUncertainty"  "addDate"                    
-    ## [23] "editedDate"                  "individualID"               
-    ## [25] "taxonID"                     "scientificName"             
-    ## [27] "identificationQualifier"     "taxonRank"                  
-    ## [29] "growthForm"                  "vstTag"                     
-    ## [31] "samplingProtocolVersion"     "measuredBy"                 
-    ## [33] "identifiedBy"                "recordedBy"                 
-    ## [35] "remarks"                     "dataQF"
+    ##  [1] "uid"                         "namedLocation"               "domainID"                   
+    ##  [4] "siteID"                      "plotID"                      "decimalLatitude"            
+    ##  [7] "decimalLongitude"            "geodeticDatum"               "coordinateUncertainty"      
+    ## [10] "elevation"                   "elevationUncertainty"        "subtypeSpecification"       
+    ## [13] "transectMeter"               "directionFromTransect"       "ninetyDegreeDistance"       
+    ## [16] "sampleLatitude"              "sampleLongitude"             "sampleGeodeticDatum"        
+    ## [19] "sampleCoordinateUncertainty" "sampleElevation"             "sampleElevationUncertainty" 
+    ## [22] "date"                        "editedDate"                  "individualID"               
+    ## [25] "taxonID"                     "scientificName"              "identificationQualifier"    
+    ## [28] "taxonRank"                   "growthForm"                  "vstTag"                     
+    ## [31] "samplingProtocolVersion"     "measuredBy"                  "identifiedBy"               
+    ## [34] "recordedBy"                  "remarks"                     "dataQF"                     
+    ## [37] "publicationDate"
 
     # how many rows are in the data?
     nrow(ind)
 
-    ## [1] 1802
+    ## [1] 1500
 
     # look at the first six rows of data.
-    head(ind)
-
-    ##                                    uid          namedLocation domainID
-    ## 1 16a2656d-7287-46b1-aad7-bd000ec5983f BLAN_061.phenology.phe      D02
-    ## 2 35210426-a9f3-4e13-9073-7dfbff670703 BLAN_061.phenology.phe      D02
-    ## 3 fff04a10-2c95-44f5-b0df-4a62033d634f BLAN_061.phenology.phe      D02
-    ## 4 2d9de2e1-154b-4dd9-840d-2cf81fb77362 BLAN_061.phenology.phe      D02
-    ## 5 a32bce80-eeb9-463e-ad40-0cf6fa43bafe BLAN_061.phenology.phe      D02
-    ## 6 c1c5f91b-e073-430a-ba48-ee2eb19117a4 BLAN_061.phenology.phe      D02
-    ##   siteID   plotID decimalLatitude decimalLongitude geodeticDatum
-    ## 1   BLAN BLAN_061        39.05963        -78.07385            NA
-    ## 2   BLAN BLAN_061        39.05963        -78.07385            NA
-    ## 3   BLAN BLAN_061        39.05963        -78.07385            NA
-    ## 4   BLAN BLAN_061        39.05963        -78.07385            NA
-    ## 5   BLAN BLAN_061        39.05963        -78.07385            NA
-    ## 6   BLAN BLAN_061        39.05963        -78.07385            NA
-    ##   coordinateUncertainty elevation elevationUncertainty
-    ## 1                    NA       183                   NA
-    ## 2                    NA       183                   NA
-    ## 3                    NA       183                   NA
-    ## 4                    NA       183                   NA
-    ## 5                    NA       183                   NA
-    ## 6                    NA       183                   NA
-    ##   subtypeSpecification transectMeter directionFromTransect
-    ## 1              primary           484                 Right
-    ## 2              primary           506                 Right
-    ## 3              primary           484                 Right
-    ## 4              primary           476                  Left
-    ## 5              primary           498                 Right
-    ## 6              primary           469                  Left
-    ##   ninetyDegreeDistance sampleLatitude sampleLongitude sampleGeodeticDatum
-    ## 1                  0.5             NA              NA               WGS84
-    ## 2                  1.0             NA              NA               WGS84
-    ## 3                  2.0             NA              NA               WGS84
-    ## 4                  2.0             NA              NA               WGS84
-    ## 5                  2.0             NA              NA               WGS84
-    ## 6                  2.0             NA              NA               WGS84
-    ##   sampleCoordinateUncertainty sampleElevation sampleElevationUncertainty
-    ## 1                          NA              NA                         NA
-    ## 2                          NA              NA                         NA
-    ## 3                          NA              NA                         NA
-    ## 4                          NA              NA                         NA
-    ## 5                          NA              NA                         NA
-    ## 6                          NA              NA                         NA
-    ##      addDate editedDate            individualID taxonID
-    ## 1 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06295    RHDA
-    ## 2 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06286   LOMA6
-    ## 3 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06299   LOMA6
-    ## 4 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06300    RHDA
-    ## 5 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06288   LOMA6
-    ## 6 2015-06-25 2015-07-22 NEON.PLA.D02.BLAN.06297    RHDA
-    ##                    scientificName identificationQualifier taxonRank
-    ## 1          Rhamnus davurica Pall.                           species
-    ## 2 Lonicera maackii (Rupr.) Herder                           species
-    ## 3 Lonicera maackii (Rupr.) Herder                           species
-    ## 4          Rhamnus davurica Pall.                           species
-    ## 5 Lonicera maackii (Rupr.) Herder                           species
-    ## 6          Rhamnus davurica Pall.                           species
-    ##            growthForm vstTag samplingProtocolVersion
-    ## 1 Deciduous broadleaf     NA                      NA
-    ## 2 Deciduous broadleaf     NA                      NA
-    ## 3 Deciduous broadleaf     NA                      NA
-    ## 4 Deciduous broadleaf     NA                      NA
-    ## 5 Deciduous broadleaf     NA                      NA
-    ## 6 Deciduous broadleaf     NA                      NA
-    ##                         measuredBy                     identifiedBy
-    ## 1 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ## 2 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ## 3 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ## 4 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ## 5 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ## 6 cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd
-    ##                         recordedBy remarks dataQF
-    ## 1 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-    ## 2 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-    ## 3 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-    ## 4 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-    ## 5 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-    ## 6 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd             NA
-
+    #head(ind) #this is a good function to use but looks messy so not rendering it 
+    
     # look at the structure of the dataframe.
     str(ind)
 
-    ## 'data.frame':	1802 obs. of  36 variables:
-    ##  $ uid                        : chr  "16a2656d-7287-46b1-aad7-bd000ec5983f" "35210426-a9f3-4e13-9073-7dfbff670703" "fff04a10-2c95-44f5-b0df-4a62033d634f" "2d9de2e1-154b-4dd9-840d-2cf81fb77362" ...
+    ## 'data.frame':	1500 obs. of  37 variables:
+    ##  $ uid                        : chr  "e3098f88-4bd8-4235-82a6-224d6d24bd90" "2bf49aaa-e3dd-499c-b4af-9ce9e7454950" "c690a1c8-b95c-447d-96f8-79bdc56a43b4" "086b93d3-e74d-4461-9aef-1ae03eb399ba" ...
     ##  $ namedLocation              : chr  "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" ...
     ##  $ domainID                   : chr  "D02" "D02" "D02" "D02" ...
     ##  $ siteID                     : chr  "BLAN" "BLAN" "BLAN" "BLAN" ...
     ##  $ plotID                     : chr  "BLAN_061" "BLAN_061" "BLAN_061" "BLAN_061" ...
     ##  $ decimalLatitude            : num  39.1 39.1 39.1 39.1 39.1 ...
     ##  $ decimalLongitude           : num  -78.1 -78.1 -78.1 -78.1 -78.1 ...
-    ##  $ geodeticDatum              : logi  NA NA NA NA NA NA ...
-    ##  $ coordinateUncertainty      : logi  NA NA NA NA NA NA ...
+    ##  $ geodeticDatum              : chr  NA NA NA NA ...
+    ##  $ coordinateUncertainty      : num  NA NA NA NA NA NA NA NA NA NA ...
     ##  $ elevation                  : num  183 183 183 183 183 183 183 183 183 183 ...
-    ##  $ elevationUncertainty       : logi  NA NA NA NA NA NA ...
+    ##  $ elevationUncertainty       : num  NA NA NA NA NA NA NA NA NA NA ...
     ##  $ subtypeSpecification       : chr  "primary" "primary" "primary" "primary" ...
-    ##  $ transectMeter              : num  484 506 484 476 498 469 497 491 504 491 ...
+    ##  $ transectMeter              : num  506 498 484 476 491 484 504 491 497 469 ...
     ##  $ directionFromTransect      : chr  "Right" "Right" "Right" "Left" ...
-    ##  $ ninetyDegreeDistance       : num  0.5 1 2 2 2 2 1 0.5 0.5 0.5 ...
-    ##  $ sampleLatitude             : logi  NA NA NA NA NA NA ...
-    ##  $ sampleLongitude            : logi  NA NA NA NA NA NA ...
+    ##  $ ninetyDegreeDistance       : num  1 2 2 2 0.5 0.5 0.5 0.5 1 2 ...
+    ##  $ sampleLatitude             : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleLongitude            : num  NA NA NA NA NA NA NA NA NA NA ...
     ##  $ sampleGeodeticDatum        : chr  "WGS84" "WGS84" "WGS84" "WGS84" ...
-    ##  $ sampleCoordinateUncertainty: logi  NA NA NA NA NA NA ...
-    ##  $ sampleElevation            : logi  NA NA NA NA NA NA ...
-    ##  $ sampleElevationUncertainty : logi  NA NA NA NA NA NA ...
-    ##  $ addDate                    : chr  "2015-06-25" "2015-06-25" "2015-06-25" "2015-06-25" ...
-    ##  $ editedDate                 : chr  "2015-07-22" "2015-07-22" "2015-07-22" "2015-07-22" ...
-    ##  $ individualID               : chr  "NEON.PLA.D02.BLAN.06295" "NEON.PLA.D02.BLAN.06286" "NEON.PLA.D02.BLAN.06299" "NEON.PLA.D02.BLAN.06300" ...
-    ##  $ taxonID                    : chr  "RHDA" "LOMA6" "LOMA6" "RHDA" ...
-    ##  $ scientificName             : chr  "Rhamnus davurica Pall." "Lonicera maackii (Rupr.) Herder" "Lonicera maackii (Rupr.) Herder" "Rhamnus davurica Pall." ...
+    ##  $ sampleCoordinateUncertainty: num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleElevation            : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleElevationUncertainty : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ date                       : POSIXct, format: "2015-06-25" "2015-06-25" "2015-06-25" ...
+    ##  $ editedDate                 : POSIXct, format: "2015-07-22" "2015-07-22" "2015-07-22" ...
+    ##  $ individualID               : chr  "NEON.PLA.D02.BLAN.06286" "NEON.PLA.D02.BLAN.06288" "NEON.PLA.D02.BLAN.06299" "NEON.PLA.D02.BLAN.06300" ...
+    ##  $ taxonID                    : chr  "LOMA6" "LOMA6" "LOMA6" "RHDA" ...
+    ##  $ scientificName             : chr  "Lonicera maackii (Rupr.) Herder" "Lonicera maackii (Rupr.) Herder" "Lonicera maackii (Rupr.) Herder" "Rhamnus davurica Pall." ...
     ##  $ identificationQualifier    : chr  "" "" "" "" ...
     ##  $ taxonRank                  : chr  "species" "species" "species" "species" ...
     ##  $ growthForm                 : chr  "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" ...
-    ##  $ vstTag                     : logi  NA NA NA NA NA NA ...
-    ##  $ samplingProtocolVersion    : logi  NA NA NA NA NA NA ...
-    ##  $ measuredBy                 : chr  "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" ...
-    ##  $ identifiedBy               : chr  "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" ...
-    ##  $ recordedBy                 : chr  "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" ...
+    ##  $ vstTag                     : chr  NA NA NA NA ...
+    ##  $ samplingProtocolVersion    : chr  "" "" "" "" ...
+    ##  $ measuredBy                 : chr  "jcoloso@neoninc.org" "jcoloso@neoninc.org" "jcoloso@neoninc.org" "jcoloso@neoninc.org" ...
+    ##  $ identifiedBy               : chr  "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" ...
+    ##  $ recordedBy                 : chr  "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" ...
     ##  $ remarks                    : chr  "" "" "" "" ...
-    ##  $ dataQF                     : logi  NA NA NA NA NA NA ...
+    ##  $ dataQF                     : chr  NA NA NA NA ...
+    ##  $ publicationDate            : chr  "20191202T162801Z" "20191202T162801Z" "20191202T162801Z" "20191202T162801Z" ...
 
-Note that if you first open you data file in Excel, you might see 06/14/2014 as 
-the format instead of 2014-06-14. Excel can do some ~~wierd~~ interesting things
-to dates.
+Notice that the neonUtilities package read the data type from the variables file
+and then automatically converts the data to the correct date type in R. 
 
-#### Individual locations
+(Note that if you first openned your data file in Excel, you might see 06/14/2014 as 
+the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
+to dates.)
 
-To get the specific location data of each individual you would need to do some 
-math, or you can use the NEON geolocation 
-<a href="https://github.com/NEONScience/NEON-geolocation" target="_blank"> **geoNEON**</a>. 
-
+#### Phenology status
 Now let's look at the status data. 
 
 
     # What variables are included in this dataset?
     names(status)
 
-    ##  [1] "uid"                           "namedLocation"                
-    ##  [3] "domainID"                      "siteID"                       
-    ##  [5] "plotID"                        "date"                         
-    ##  [7] "editedDate"                    "dayOfYear"                    
-    ##  [9] "individualID"                  "taxonID"                      
-    ## [11] "scientificName"                "growthForm"                   
-    ## [13] "phenophaseName"                "phenophaseStatus"             
-    ## [15] "phenophaseIntensityDefinition" "phenophaseIntensity"          
-    ## [17] "samplingProtocolVersion"       "measuredBy"                   
-    ## [19] "recordedBy"                    "remarks"                      
-    ## [21] "dataQF"
+    ##  [1] "uid"                           "namedLocation"                 "domainID"                     
+    ##  [4] "siteID"                        "plotID"                        "date"                         
+    ##  [7] "editedDate"                    "dayOfYear"                     "individualID"                 
+    ## [10] "phenophaseName"                "phenophaseStatus"              "phenophaseIntensityDefinition"
+    ## [13] "phenophaseIntensity"           "samplingProtocolVersion"       "measuredBy"                   
+    ## [16] "recordedBy"                    "remarks"                       "dataQF"                       
+    ## [19] "publicationDate"
 
     nrow(status)
 
-    ## [1] 87292
+    ## [1] 215328
 
-    head(status)
-
-    ##                                    uid          namedLocation domainID
-    ## 1 d63aa5ff-c31d-425f-99b8-6d2fc890f51a BLAN_061.phenology.phe      D02
-    ## 2 2c4a0bb9-e942-48fe-bd52-dacd3bc4be74 BLAN_061.phenology.phe      D02
-    ## 3 3146c7ef-46a5-4c2f-8ba6-69a700142512 BLAN_061.phenology.phe      D02
-    ## 4 c3555684-c2e6-46a2-9290-a3e8524fa4a2 BLAN_061.phenology.phe      D02
-    ## 5 4a28f1e3-b14a-4982-9bde-b609ebd51915 BLAN_061.phenology.phe      D02
-    ## 6 2c6f4463-6122-431d-8ae6-f9f6e2058965 BLAN_061.phenology.phe      D02
-    ##   siteID   plotID       date editedDate dayOfYear            individualID
-    ## 1   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06286
-    ## 2   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06290
-    ## 3   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06291
-    ## 4   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06288
-    ## 5   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06286
-    ## 6   BLAN BLAN_061 2015-06-25 2015-07-22        NA NEON.PLA.D02.BLAN.06300
-    ##   taxonID scientificName          growthForm       phenophaseName
-    ## 1      NA             NA Deciduous broadleaf         Open flowers
-    ## 2      NA             NA Deciduous broadleaf Increasing leaf size
-    ## 3      NA             NA Deciduous broadleaf Increasing leaf size
-    ## 4      NA             NA Deciduous broadleaf         Open flowers
-    ## 5      NA             NA Deciduous broadleaf Increasing leaf size
-    ## 6      NA             NA Deciduous broadleaf       Colored leaves
-    ##   phenophaseStatus phenophaseIntensityDefinition phenophaseIntensity
-    ## 1               no                                                  
-    ## 2               no                                                  
-    ## 3               no                                                  
-    ## 4               no                                                  
-    ## 5               no                                                  
-    ## 6               no                                                  
-    ##   samplingProtocolVersion                       measuredBy
-    ## 1                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ## 2                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ## 3                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ## 4                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ## 5                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ## 6                      NA cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m
-    ##                         recordedBy remarks dataQF
-    ## 1 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-    ## 2 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-    ## 3 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-    ## 4 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-    ## 5 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-    ## 6 UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd    <NA>     NA
-
+    #head(status)   #this is a good function to use but looks messy so not rendering it 
     str(status)
 
-    ## 'data.frame':	87292 obs. of  21 variables:
-    ##  $ uid                          : chr  "d63aa5ff-c31d-425f-99b8-6d2fc890f51a" "2c4a0bb9-e942-48fe-bd52-dacd3bc4be74" "3146c7ef-46a5-4c2f-8ba6-69a700142512" "c3555684-c2e6-46a2-9290-a3e8524fa4a2" ...
+    ## 'data.frame':	215328 obs. of  19 variables:
+    ##  $ uid                          : chr  "9d40b3a1-22eb-4c8b-96b8-2aa871c3d103" "adac38a7-442c-4be2-9966-d94dac5cf540" "566f820c-1324-4c59-b895-4dc7b5ed096b" "1d3e2de8-e7e6-4fc7-b906-a9190d5dc73e" ...
     ##  $ namedLocation                : chr  "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" ...
     ##  $ domainID                     : chr  "D02" "D02" "D02" "D02" ...
     ##  $ siteID                       : chr  "BLAN" "BLAN" "BLAN" "BLAN" ...
     ##  $ plotID                       : chr  "BLAN_061" "BLAN_061" "BLAN_061" "BLAN_061" ...
-    ##  $ date                         : chr  "2015-06-25" "2015-06-25" "2015-06-25" "2015-06-25" ...
-    ##  $ editedDate                   : chr  "2015-07-22" "2015-07-22" "2015-07-22" "2015-07-22" ...
-    ##  $ dayOfYear                    : logi  NA NA NA NA NA NA ...
-    ##  $ individualID                 : chr  "NEON.PLA.D02.BLAN.06286" "NEON.PLA.D02.BLAN.06290" "NEON.PLA.D02.BLAN.06291" "NEON.PLA.D02.BLAN.06288" ...
-    ##  $ taxonID                      : logi  NA NA NA NA NA NA ...
-    ##  $ scientificName               : logi  NA NA NA NA NA NA ...
-    ##  $ growthForm                   : chr  "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" ...
-    ##  $ phenophaseName               : chr  "Open flowers" "Increasing leaf size" "Increasing leaf size" "Open flowers" ...
+    ##  $ date                         : POSIXct, format: "2017-02-24" "2017-02-24" "2017-02-24" ...
+    ##  $ editedDate                   : POSIXct, format: "2017-03-31" "2017-03-31" "2017-03-31" ...
+    ##  $ dayOfYear                    : num  55 55 55 55 55 55 55 55 55 55 ...
+    ##  $ individualID                 : chr  "NEON.PLA.D02.BLAN.06504" "NEON.PLA.D02.BLAN.06286" "NEON.PLA.D02.BLAN.06201" "NEON.PLA.D02.BLAN.06203" ...
+    ##  $ phenophaseName               : chr  "Initial growth" "Colored leaves" "Open flowers" "Open flowers" ...
     ##  $ phenophaseStatus             : chr  "no" "no" "no" "no" ...
     ##  $ phenophaseIntensityDefinition: chr  "" "" "" "" ...
     ##  $ phenophaseIntensity          : chr  "" "" "" "" ...
-    ##  $ samplingProtocolVersion      : logi  NA NA NA NA NA NA ...
-    ##  $ measuredBy                   : chr  "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" "cVPbPdjHNiEVZ3Vlm83FuXHus5z3id4m" ...
-    ##  $ recordedBy                   : chr  "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" "UPKVQ90CmewX9vOGBMiPV2gMtRUi+WUd" ...
-    ##  $ remarks                      : chr  NA NA NA NA ...
-    ##  $ dataQF                       : logi  NA NA NA NA NA NA ...
+    ##  $ samplingProtocolVersion      : chr  "" "" "" "" ...
+    ##  $ measuredBy                   : chr  "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" ...
+    ##  $ recordedBy                   : chr  "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" ...
+    ##  $ remarks                      : chr  "" "" "" "" ...
+    ##  $ dataQF                       : chr  "legacyData" "legacyData" "legacyData" "legacyData" ...
+    ##  $ publicationDate              : chr  "20190826T181125Z" "20190826T181125Z" "20190826T181125Z" "20190826T181125Z" ...
 
     # date range
     min(status$date)
 
-    ## [1] "2015-06-03"
+    ## [1] "2017-02-24 GMT"
 
     max(status$date)
 
-    ## [1] "2016-12-05"
-
-The `uid` is not important to understanding the data so we are going to remove `uid`. 
-However, if you are every reporting an error in the data you should include this
-with your report. 
-
-
-    ind <- select(ind,-uid)
-    status <- select (status, -uid)
+    ## [1] "2019-10-31 GMT"
 
 ## Clean up the Data
 
 * remove duplicates (full rows)
-* convert date
-* retain only the latest `editedDate` in the perIndividual table.
+* convert to date format
+* retain only the most recent `editedDate` in the perIndividual and status table.
 
 ### Remove Duplicates
 
@@ -484,12 +380,12 @@ Let's remove any duplicates that exist.
     ind_noD <- distinct(ind)
     nrow(ind_noD)
 
-    ## [1] 1557
+    ## [1] 1500
 
     status_noD<-distinct(status)
     nrow(status_noD)
 
-    ## [1] 85693
+    ## [1] 215328
 
 
 ### Variable Overlap between Tables
@@ -501,60 +397,45 @@ Let's see what they are.
 
 
     # where is there an intersection of names
-    sameName <- intersect(names(status_noD), names(ind_noD))
-    sameName
+    intersect(names(status_noD), names(ind_noD))
 
-    ##  [1] "namedLocation"           "domainID"               
-    ##  [3] "siteID"                  "plotID"                 
-    ##  [5] "editedDate"              "individualID"           
-    ##  [7] "taxonID"                 "scientificName"         
-    ##  [9] "growthForm"              "samplingProtocolVersion"
-    ## [11] "measuredBy"              "recordedBy"             
-    ## [13] "remarks"                 "dataQF"
+    ##  [1] "uid"                     "namedLocation"           "domainID"               
+    ##  [4] "siteID"                  "plotID"                  "date"                   
+    ##  [7] "editedDate"              "individualID"            "samplingProtocolVersion"
+    ## [10] "measuredBy"              "recordedBy"              "remarks"                
+    ## [13] "dataQF"                  "publicationDate"
 
 There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. 
 
 However, some of these will have different values in each table. We want to keep 
-those distinct value and not join on them. 
+those distinct value and not join on them. Therefore, we can rename these 
+fields before joining:
 
-We want to rename common fields before joining:
-
+* uid
+* date
 * editedDate
 * measuredBy
 * recordedBy
 * samplingProtocolVersion
 * remarks
 * dataQF
+* publicationDate
 
 Now we want to rename the variables that would have duplicate names. We can 
 rename all the variables in the status object to have "Stat" at the end of the 
 variable name. 
 
 
-    # rename status editedDate
-    status_noD <- rename(status_noD, editedDateStat=editedDate, 
-    		measuredByStat=measuredBy, recordedByStat=recordedBy, 
-    		samplingProtocolVersionStat=samplingProtocolVersion, 
-    		remarksStat=remarks, dataQFStat=dataQF)
+    # in Status table rename like columns 
+    status_noD <- rename(status_noD, uidStat=uid, dateStat=date, 
+    										 editedDateStat=editedDate, measuredByStat=measuredBy, 
+    										 recordedByStat=recordedBy, 
+    										 samplingProtocolVersionStat=samplingProtocolVersion, 
+    										 remarksStat=remarks, dataQFStat=dataQF, 
+    										 publicationDateStat=publicationDate)
 
-
-### Convert to Date
-
-Our `addDate` and `date` columns are stored as a `character` class. We need to 
-convert it to a date class. The `as.Date()` function in base R will do this. 
-
-
-    # convert column to date class
-    ind_noD$editedDate <- as.Date(ind_noD$editedDate)
-    str(ind_noD$editedDate)
-
-    ##  Date[1:1557], format: "2015-07-22" "2015-07-22" "2015-07-22" "2015-07-22" "2015-07-22" ...
-
-    status_noD$date <- as.Date(status_noD$date)
-    str(status_noD$date)
-
-    ##  Date[1:85693], format: "2015-06-25" "2015-06-25" "2015-06-25" "2015-06-25" "2015-06-25" ...
+### Filter to last editedDate
 
 The individual (ind) table contains all instances that any of the location or 
 taxonomy data of an individual was updated. Therefore there are many rows for
@@ -566,7 +447,7 @@ some individuals.  We only want the latest `editedDate` on ind.
     	group_by(individualID) %>%
     	filter(editedDate==max(editedDate))
     
-    # oh wait, duplicate dates, retain only one
+    # oh wait, duplicate dates, retain only the most recent editedDate
     ind_lastnoD <- ind_last %>%
     	group_by(editedDate, individualID) %>%
     	filter(row_number()==1)
@@ -586,30 +467,8 @@ rows from the "left" (first) dateframe to any rows that also occur in the "right
     # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
     phe_ind <- left_join(status_noD, ind_lastnoD)
 
-    ## Joining, by = c("namedLocation", "domainID", "siteID", "plotID", "individualID", "taxonID", "scientificName", "growthForm")
+    ## Joining, by = c("namedLocation", "domainID", "siteID", "plotID", "individualID")
 
-    ## Error in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y, check_na_matches(na_matches)): Can't join on 'taxonID' x 'taxonID' because of incompatible types (character / logical)
-
-Ack!  Two different data types.  Why?  NA in taxonID is a logicial, but all the 
-names are character.  
-
-Try it again.  
-
-`taxonID` and `scientificName` are provided for convenience in Status table, but
-most up to date data are always in the `phe_perindividual.csv` files. Therefore, 
-we'll remove from the columns from the status data. (This is one more reason why you want to 
-fully read the documents associated with the data products!).
-
-
-    # drop taxonID, scientificName
-    status_noD <- select (status_noD, -taxonID, -scientificName)
-    
-    # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
-    phe_ind <- left_join(status_noD, ind_lastnoD)
-
-    ## Joining, by = c("namedLocation", "domainID", "siteID", "plotID", "individualID", "growthForm")
-
-Worked this time! 
 Now that we have clean datasets we can begin looking into our particular data to 
 address our research question: do plants show patterns of changes in phenophase 
 across season?
@@ -634,7 +493,7 @@ which site or sites if we want to adapt our code later.
     ## using %in% allows one to add a vector if you want more than one site. 
     ## could also do it with == instead of %in% but won't work with vectors
     
-    phe_1sp <- filter(phe_ind, siteID %in% siteOfInterest)
+    phe_1st <- filter(phe_ind, siteID %in% siteOfInterest)
 
 ## Select Species of Interest
 
@@ -643,7 +502,7 @@ tree *Liriodendron tulipifera* (LITU).
 
 
     # see which species are present
-    unique(phe_1sp$taxonID)
+    unique(phe_1st$taxonID)
 
     ## [1] "JUNI" "MIVI" "LITU"
 
@@ -651,7 +510,7 @@ tree *Liriodendron tulipifera* (LITU).
     
     #subset to just "LITU"
     # here just use == but could also use %in%
-    phe_1sp <- filter(phe_1sp, taxonID==speciesOfInterest)
+    phe_1sp <- filter(phe_1st, taxonID==speciesOfInterest)
     
     # check that it worked
     unique(phe_1sp$taxonID)
@@ -664,15 +523,15 @@ tree *Liriodendron tulipifera* (LITU).
 And, perhaps a single phenophase. 
 
 
-    # see which species are present
+    # see which phenophases are present
     unique(phe_1sp$phenophaseName)
 
-    ## [1] "Colored leaves"       "Increasing leaf size" "Leaves"              
-    ## [4] "Open flowers"         "Breaking leaf buds"   "Falling leaves"
+    ## [1] "Open flowers"         "Breaking leaf buds"   "Colored leaves"       "Increasing leaf size"
+    ## [5] "Falling leaves"       "Leaves"
 
     phenophaseOfInterest <- "Leaves"
     
-    #subset to just the phenosphase of Interest 
+    #subset to just the phenosphase of interest 
     phe_1sp <- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
     
     # check that it worked
@@ -693,11 +552,11 @@ function.
 
 
     # Total in status by day
-    sampSize <- count(phe_1sp, date)
+    sampSize <- count(phe_1sp, dateStat)
     inStat <- phe_1sp %>%
-    	group_by(date) %>%
+    	group_by(dateStat) %>%
       count(phenophaseStatus)
-    inStat <- full_join(sampSize, inStat, by="date")
+    inStat <- full_join(sampSize, inStat, by="dateStat")
     
     # Retain only Yes
     inStat_T <- filter(inStat, phenophaseStatus %in% "yes")
@@ -737,7 +596,7 @@ We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 
 
     # plot number of individuals in leaf
-    phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+    phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
         geom_bar(stat="identity", na.rm = TRUE) 
     
     phenoPlot
@@ -745,7 +604,7 @@ We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/01-explore-phenology-data/plot-leaves-total-1.png)
 
     # Now let's make the plot look a bit more presentable
-    phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+    phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Total Individuals in Leaf") +
         xlab("Date") + ylab("Number of Individuals") +
@@ -763,7 +622,7 @@ We could also covert this to percentage and plot that.
     inStat_T$percent<- ((inStat_T$n.y)/inStat_T$n.x)*100
     
     # plot percent of leaves
-    phenoPlot_P <- ggplot(inStat_T, aes(date, percent)) +
+    phenoPlot_P <- ggplot(inStat_T, aes(dateStat, percent)) +
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Proportion in Leaf") +
         xlab("Date") + ylab("% of Individuals") +
@@ -774,40 +633,8 @@ We could also covert this to percentage and plot that.
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/01-explore-phenology-data/plot-leaves-percentage-1.png)
 
-The plots demonstrate that, while the 2016 data show the nice expected pattern 
-of increasing leaf-out, peak, and drop-off, we seem to be missing the increase 
-in leaf-out in 2015. Looking at the data, we see that there was no data collected
-before May of 2015 -- we're missing most of leaf out!
-
-## Filter by Date
-
-That may create problems with downstream analyses. Let's filter the dataset to 
-include just 2016.
-
-
-    # use filter to select only the site of Interest 
-    phe_1sp_2016 <- filter(inStat_T, date >= "2016-01-01")
-    
-    # did it work?
-    range(phe_1sp_2016$date)
-
-    ## [1] "2016-03-21" "2016-11-23"
-
-How does that look? 
-
-
-    # Now let's make the plot look a bit more presentable
-    phenoPlot16 <- ggplot(phe_1sp_2016, aes(date, n.y)) +
-        geom_bar(stat="identity", na.rm = TRUE) +
-        ggtitle("Total Individuals in Leaf") +
-        xlab("Date") + ylab("Number of Individuals") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-        theme(text = element_text(size=18))
-    
-    phenoPlot16
-
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/01-explore-phenology-data/plot-2016-1.png)
-
+The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
+and drop-off.
 
 ## Drivers of Phenology
 
@@ -822,5 +649,50 @@ water fluxes, nutrient budgets, carbon dynamics, and food availability and has
 feedbacks to trophic interactions, carbon sequestration, community composition 
 and ecosystem function.  (quoted from 
 <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
+
+## Filter by Date
+
+In the next part of this series, we will be exploring temperature as a driver of
+phenology. Temperture date is quite large (NEON provides this in 1 minute or 30
+minute intervals) so let's trim our phenology date down to only one year so that 
+we aren't working with as large a data. 
+
+Let's filter to just 2018 data. 
+
+
+    # use filter to select only the date of interest 
+    phe_1sp_2018 <- filter(inStat_T, dateStat >= "2018-01-01" & dateStat <= "2018-12-31")
+    
+    # did it work?
+    range(phe_1sp_2018$dateStat)
+
+    ## [1] "2018-04-13 GMT" "2018-11-20 GMT"
+
+How does that look? 
+
+
+    # Now let's make the plot look a bit more presentable
+    phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, n.y)) +
+        geom_bar(stat="identity", na.rm = TRUE) +
+        ggtitle("Total Individuals in Leaf") +
+        xlab("Date") + ylab("Number of Individuals") +
+        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+        theme(text = element_text(size=18))
+    
+    phenoPlot18
+
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/01-explore-phenology-data/plot-2018-1.png)
+
+
+
+
+    # Write .csv (this will be read in new in subsuquent lessons)
+    # This will write to your current working directory, change as desired.
+    write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
+    
+    #If you are using the downloaded example date, this code will write it to the 
+    #data file. 
+    
+    #write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
 
 

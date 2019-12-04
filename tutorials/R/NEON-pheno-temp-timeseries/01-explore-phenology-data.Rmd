@@ -15,12 +15,13 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 Many organisms, including plants, show patterns of change across seasons - 
 the different stages of this observable change are called phenophases. In this 
 tutorial we explore how to work with NEON plant phenophase data. 
-
-
 
 <div id="ds-objectives" markdown="1">
 
@@ -173,8 +174,15 @@ and then return to this tutorial.
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
 
-Let's start by loading our data of interest. 
+Let's start by loading our data of interest. For this series, we'll work with 
+date from the NEON Domain 02 sites:
 
+* Blandy Farm (BLAN)
+* Smithsonian Conservation Biology Institute (SCBI)
+* Smithsonian Environmental Research Center (SERC)
+
+And we'll use data from January 2017 to December 2019.  This downloads over 9MB
+of data. If this is too large, use a smaller date range. 
 
 ```{r loadStuff}
 
@@ -182,6 +190,7 @@ library(neonUtilities)
 library(dplyr)
 library(ggplot2)
 
+options(stringsAsFactors=F) #used to prevent factors
 
 # set working directory to ensure R can find the file we wish to import
 # setwd("working-dir-path-here")
@@ -189,9 +198,10 @@ library(ggplot2)
 ## Two options for accessing data - programmatic or from the example dataset
 # Read data from data portal 
 
-phe <- loadByProduct(dpID = "DP1.10055.001", site="JORN", 
-										 startdate = "2018-07", enddate="2018-12", 
-										 check.size = F)
+phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
+										 startdate = "2017-01", enddate="2019-12", 
+										 check.size = F) 
+# if you aren't sure you can handle the data file size use check.size = T. 
 
 # save dataframes from the downloaded list
 ind <- phe$phe_perindividual  #individual information
@@ -218,22 +228,19 @@ names(ind)
 nrow(ind)
 
 # look at the first six rows of data.
-head(ind)
+#head(ind) #this is a good function to use but looks messy so not rendering it 
 
 # look at the structure of the dataframe.
 str(ind)
 
 ```
 
-Note that if you first open you data file in Excel, you might see 06/14/2014 as 
+Notice that the neonUtilities package read the data type from the variables file
+and then automatically converts the data to the correct date type in R. 
+
+(Note that if you first openned your data file in Excel, you might see 06/14/2014 as 
 the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
-to dates.
-
-#### Individual locations
-
-To get the specific location data of each individual you would need to do some 
-math, or you can use the NEON geolocation 
-<a href="https://github.com/NEONScience/NEON-geolocation" target="_blank"> **geoNEON**</a>. 
+to dates.)
 
 #### Phenology status
 Now let's look at the status data. 
@@ -243,7 +250,7 @@ Now let's look at the status data.
 # What variables are included in this dataset?
 names(status)
 nrow(status)
-head(status)
+#head(status)   #this is a good function to use but looks messy so not rendering it 
 str(status)
 
 # date range
@@ -296,7 +303,7 @@ There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. 
 
 However, some of these will have different values in each table. We want to keep 
-those distinct value and not join on them. Therefore, we can rename the common 
+those distinct value and not join on them. Therefore, we can rename these 
 fields before joining:
 
 * uid
@@ -307,6 +314,7 @@ fields before joining:
 * samplingProtocolVersion
 * remarks
 * dataQF
+* publicationDate
 
 Now we want to rename the variables that would have duplicate names. We can 
 rename all the variables in the status object to have "Stat" at the end of the 
@@ -314,35 +322,16 @@ variable name.
 
 ```{r rename-column}
 
-# rename status editedDate
+# in Status table rename like columns 
 status_noD <- rename(status_noD, uidStat=uid, dateStat=date, 
 										 editedDateStat=editedDate, measuredByStat=measuredBy, 
 										 recordedByStat=recordedBy, 
 										 samplingProtocolVersionStat=samplingProtocolVersion, 
-										 remarksStat=remarks, dataQFStat=dataQF)
+										 remarksStat=remarks, dataQFStat=dataQF, 
+										 publicationDateStat=publicationDate)
 ```
 
-### Convert to Date
-
-Our `editedDate` and `date` columns are stored as a `character` class. We need 
-to convert it to a date class. The `as.Date()` function in base R will do this. 
-
-```{r as-date-only }
-
-# convert column to date class
-ind_noD$date <- as.Date(ind_noD$date)
-str(ind_noD$date)
-
-ind_noD$editedDate <- as.Date(ind_noD$editedDate)
-str(ind_noD$editedDate)
-
-status_noD$dateStat <- as.Date(status_noD$dateStat)
-str(status_noD$dateStat)
-
-status_noD$editedDateStat <- as.Date(status_noD$editedDateStat)
-str(status_noD$editedDateStat)
-
-```
+### Filter to last editedDate
 
 The individual (ind) table contains all instances that any of the location or 
 taxonomy data of an individual was updated. Therefore there are many rows for
@@ -372,7 +361,7 @@ rows from the "left" (first) dateframe to any rows that also occur in the "right
  <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
  for other types of joins. 
  
-```{r join-dfs-error}
+```{r join-dfs}
 
 # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
 phe_ind <- left_join(status_noD, ind_lastnoD)
@@ -398,13 +387,13 @@ which site or sites if we want to adapt our code later.
 ```{r filter-site}
 
 # set site of interest
-siteOfInterest <- "JORN"
+siteOfInterest <- "SCBI"
 
 # use filter to select only the site of Interest 
 ## using %in% allows one to add a vector if you want more than one site. 
 ## could also do it with == instead of %in% but won't work with vectors
 
-phe_1sp <- filter(phe_ind, siteID %in% siteOfInterest)
+phe_1st <- filter(phe_ind, siteID %in% siteOfInterest)
 
 
 
@@ -418,13 +407,13 @@ tree *Liriodendron tulipifera* (LITU).
 ```{r filter-species}
 
 # see which species are present
-unique(phe_1sp$taxonID)
+unique(phe_1st$taxonID)
 
-speciesOfInterest <- "PRGL2"
+speciesOfInterest <- "LITU"
 
 #subset to just "LITU"
 # here just use == but could also use %in%
-phe_1sp <- filter(phe_1sp, taxonID==speciesOfInterest)
+phe_1sp <- filter(phe_1st, taxonID==speciesOfInterest)
 
 # check that it worked
 unique(phe_1sp$taxonID)
@@ -465,11 +454,11 @@ function.
 ```{r calc-total-yes}
 
 # Total in status by day
-sampSize <- count(phe_1sp, date)
+sampSize <- count(phe_1sp, dateStat)
 inStat <- phe_1sp %>%
-	group_by(date) %>%
+	group_by(dateStat) %>%
   count(phenophaseStatus)
-inStat <- full_join(sampSize, inStat, by="date")
+inStat <- full_join(sampSize, inStat, by="dateStat")
 
 # Retain only Yes
 inStat_T <- filter(inStat, phenophaseStatus %in% "yes")
@@ -512,14 +501,14 @@ We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 ```{r plot-leaves-total}
 
 # plot number of individuals in leaf
-phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
     geom_bar(stat="identity", na.rm = TRUE) 
 
 phenoPlot
 
 
 # Now let's make the plot look a bit more presentable
-phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Total Individuals in Leaf") +
     xlab("Date") + ylab("Number of Individuals") +
@@ -538,7 +527,7 @@ We could also covert this to percentage and plot that.
 inStat_T$percent<- ((inStat_T$n.y)/inStat_T$n.x)*100
 
 # plot percent of leaves
-phenoPlot_P <- ggplot(inStat_T, aes(date, percent)) +
+phenoPlot_P <- ggplot(inStat_T, aes(dateStat, percent)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Proportion in Leaf") +
     xlab("Date") + ylab("% of Individuals") +
@@ -549,42 +538,8 @@ phenoPlot_P
 
 ```
 
-The plots demonstrate that, while the 2016 data show the nice expected pattern 
-of increasing leaf-out, peak, and drop-off, we seem to be missing the increase 
-in leaf-out in 2015. Looking at the data, we see that there was no data collected
-before May of 2015 -- we're missing most of leaf out!
-
-## Filter by Date
-
-That may create problems with downstream analyses. Let's filter the dataset to 
-include just 2016.
-
-```{r filter-to-2016}
-
-# use filter to select only the date of interest 
-phe_1sp_2016 <- filter(inStat_T, date >= "2016-01-01")
-
-# did it work?
-range(phe_1sp_2016$date)
-
-```
-
-How does that look? 
-
-```{r plot-2016}
-
-# Now let's make the plot look a bit more presentable
-phenoPlot16 <- ggplot(phe_1sp_2016, aes(date, n.y)) +
-    geom_bar(stat="identity", na.rm = TRUE) +
-    ggtitle("Total Individuals in Leaf") +
-    xlab("Date") + ylab("Number of Individuals") +
-    theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-    theme(text = element_text(size=18))
-
-phenoPlot16
-
-```
-
+The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
+and drop-off.
 
 ## Drivers of Phenology
 
@@ -600,11 +555,47 @@ feedbacks to trophic interactions, carbon sequestration, community composition
 and ecosystem function.  (quoted from 
 <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
 
+## Filter by Date
 
-```{r write-csv}
+In the next part of this series, we will be exploring temperature as a driver of
+phenology. Temperture date is quite large (NEON provides this in 1 minute or 30
+minute intervals) so let's trim our phenology date down to only one year so that 
+we aren't working with as large a data. 
+
+Let's filter to just 2018 data. 
+
+```{r filter-to-2018}
+
+# use filter to select only the date of interest 
+phe_1sp_2018 <- filter(inStat_T, dateStat >= "2018-01-01" & dateStat <= "2018-12-31")
+
+# did it work?
+range(phe_1sp_2018$dateStat)
+
+```
+
+How does that look? 
+
+```{r plot-2018}
+
+# Now let's make the plot look a bit more presentable
+phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, n.y)) +
+    geom_bar(stat="identity", na.rm = TRUE) +
+    ggtitle("Total Individuals in Leaf") +
+    xlab("Date") + ylab("Number of Individuals") +
+    theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+    theme(text = element_text(size=18))
+
+phenoPlot18
+
+```
+
+
+
+```{r write-csv, eval=F}
 # Write .csv (this will be read in new in subsuquent lessons)
 # This will write to your current working directory, change as desired.
-write.csv( phe_1sp_2016 , file="NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
+write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 #If you are using the downloaded example date, this code will write it to the 
 #data file. 
