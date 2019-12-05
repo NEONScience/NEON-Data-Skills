@@ -74,7 +74,7 @@ sorting and pinning).
 
 NEON provides several documents with information about the Carabid beetle protocal & 
 data collection. It is highly recommended you are familiar with the
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001" 
+<a href="http://data.neonscience.org/data-products/DP1.10022.001" 
 target="_blank">data product documents </a>
 prior to using NEON carabid beetle data for your research. 
 

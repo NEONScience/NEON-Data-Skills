@@ -80,7 +80,7 @@ on your computer to complete this tutorial.
 The following sections provide a brief overview of the NEON single aspirated
 air temperature data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
 
 ### NEON Air Temperature Data
 
@@ -121,8 +121,8 @@ where:
 * **SITE** refers to the standardized four-character alphabetic code of the site of 
 data acquisition.
 * **DPL** refers to the data product processing level
-* **PRNUM** refers to the data product number (see the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">Data Product Catalog</a>.)
+* **PRNUM** refers to the data product number (see 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products</a>.)
 * **REV** refers to the revision number of the data product. (001 = initial REV, Engineering-Grade or Provisional; 101 = initial REV, Science-Grade)
 * **TERMS** is used in data product numbering to identify a sub-product or discrete 
 vector of metadata. Since each download file typically contains several 

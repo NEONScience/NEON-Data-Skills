@@ -67,7 +67,7 @@ measures all the other water chemistry data.
 
 NEON collects surface water chemistry data (NEON Data Product NEON.DP1.20093) 
 at all aquatic field sites. For more on this data product, view the 
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.20093.001" target="_blank"> Data Product catalog<a>. 
+<a href="http://data.neonscience.org/data-products/DP1.20093.001" target="_blank"> Data Product catalog<a>. 
 
 Water samples are collected 26 times per year at each wadable stream or 
 non-wadable stream (river) site and 12 per year at lakes. In streams, 12 samples 

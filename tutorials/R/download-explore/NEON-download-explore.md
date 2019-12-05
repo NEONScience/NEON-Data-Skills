@@ -126,8 +126,8 @@ downloads zip files for the data product specified and stores them in
 a format that can then be passed on to `stackByTable()`.
 
 One of the inputs to `zipsByProduct()` is the data product ID, or 
-DPID, of the data you want to download. The DPID can be found in the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>. 
+DPID, of the data you want to download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>. 
 It will be in the form DP#.#####.###; e.g., the DPID of PAR, downloaded  
 above, is DP1.00024.001.
 

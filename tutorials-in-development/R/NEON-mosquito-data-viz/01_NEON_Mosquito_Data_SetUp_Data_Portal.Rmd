@@ -79,7 +79,7 @@ The data that we will primarily be working with in this tutorial are mosquiot ab
 The mosquitos are captured in CO<sub>2</sub> traps and identified to species. 
 These data are available as NEON data product **NEON.DP1.10043.001**. More information
 about this data product can be found in the 
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10043.001" target="_blank">NEON Data Catalog</a>. 
+<a href="http://data.neonscience.org/data-products/DP1.10043.001" target="_blank">NEON Data Catalog</a>. 
 
 ## NEON Data API
 
@@ -277,7 +277,7 @@ downloading 3 files and combining the datasheets.
 #################################################################################################
 NEON provides several documents with information about the Carabid beetle protocol & 
 data collection. It is highly recommended you are familiar with the
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001" 
+<a href="http://data.neonscience.org/data-products/DP1.10022.001" 
 target="_blank">data product documents </a>
 prior to using NEON carabid beetle data for your research. 
 
