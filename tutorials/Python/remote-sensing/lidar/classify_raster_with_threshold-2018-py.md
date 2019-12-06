@@ -45,7 +45,7 @@ After completing this tutorial, you will be able to:
 In this tutorial, we will work with the NEON AOP L3 LiDAR ecoysystem structure 
 (Canopy Height Model) data product. For more information about NEON data products 
 and the CHM product DP3.30015.001, see the 
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30015.001" target="_blank">NEON Data Product Catalog</a>. 
+<a href="http://data.neonscience.org/data-products/DP3.30015.001" target="_blank">NEON Data Product Catalog</a>. 
 
 First, let's import the required packages and set our plot display to be in-line:
 
