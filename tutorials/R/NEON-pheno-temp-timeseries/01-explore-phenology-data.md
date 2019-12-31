@@ -72,7 +72,7 @@ Why do they change?
 The following sections provide a brief overview of the NEON plant phenology 
 observation data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. 
 
 *The following description of the NEON Plant Phenology Observation data is modified 
 from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.*
