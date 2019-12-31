@@ -14,19 +14,20 @@ dirs <- c("R/eddy4r/",
           "R/R-nonSeries-lessons/",
           "dataviz/",
           "R/download-explore/",
-          "R/spatial-data/")
+          "R/spatial-data/",
+          "R/NEON-API/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[7]
+subDir <- dirs[9]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"/Users/clunch/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/Git/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
-wd <- "~/data"
+wd <- "~/Git/data"
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir
