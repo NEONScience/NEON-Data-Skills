@@ -52,7 +52,7 @@ of values.
 </div>
 
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-product-view?dpCode=DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
+Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-products/DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
 
 #### Mapping the Invisible: Introduction to Spectral Remote Sensing
 

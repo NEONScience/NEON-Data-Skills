@@ -10,7 +10,7 @@ packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
-code1: R/download-explore/NEON-download-explore
+code1: R/download-explore/NEON-download-explore.R
 tutorialSeries: 
 urlTitle: download-explore-neon-data
 ---
@@ -56,7 +56,7 @@ preferably, RStudio loaded on your computer.
 * **neonUtilities**: Basic functions for accessing NEON data
 * **raster**: Raster package; needed for remote sensing data
 * **geoNEON**: For working with NEON spatial data
-* **rhdf5**: HDF5 package; needed for eddy covariance data
+* **rhdf5**: HDF5 package; optional, needed only for eddy covariance data
 
 Some of these packages are on CRAN and can be installed by 
 `install.packages()`, others need to be installed from 
@@ -114,8 +114,9 @@ downloaded zip file.
 
 In the same directory as the zipped file, you should now have an unzipped 
 folder of the same name. When you open this you will see a new folder 
-called **stackedFiles**, which should contain three files: 
-**PARPAR_30min.csv**, **PARPAR_1min.csv**, and **variables.csv**.
+called **stackedFiles**, which should contain five files: 
+**PARPAR_30min.csv**, **PARPAR_1min.csv**, **sensor_positions.csv**, 
+**variables.csv**, and **readme.txt**.
 
 We'll look at these files in more detail below.
 
@@ -126,16 +127,17 @@ downloads zip files for the data product specified and stores them in
 a format that can then be passed on to `stackByTable()`.
 
 One of the inputs to `zipsByProduct()` is the data product ID, or 
-DPID, of the data you want to download. The DPID can be found in the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>. 
+DPID, of the data you want to download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>.
 It will be in the form DP#.#####.###; e.g., the DPID of PAR, downloaded  
 above, is DP1.00024.001.
 
 Input options for `zipsByProduct()` are:
 
 * `dpID`: the data product ID, e.g. DP1.00002.001
-* `site`: either the 4-letter code of a single site, e.g. HARV, or "all", 
-indicating all sites with data available
+* `site`: one of the following: "all", indicating all sites with data 
+available; the 4-letter code of a single site, e.g. HARV; or a vector 
+of site codes, e.g. `c("HARV","BART","SCBI")`
 * `package`: either basic or expanded data package
 * `avg`: either "all", to download all data (the default), or the 
 number of minutes in the averaging interval. See example below; 
@@ -157,15 +159,13 @@ Wind River Experimental Forest (WREF).
 
 In the file location for your download, you should now have a 
 folder named filesToStack10098. Use `stackByTable()` to stack 
-the files in this folder, as above, with the additional 
-input `folder=T`:
+the files in this folder, as above:
 
 
-    stackByTable(filepath="~/Downloads/filesToStack10098", 
-                 folder=T)
+    stackByTable(filepath="~/Downloads/filesToStack10098")
 
 The **filesToStack10098** folder should now contain a **stackedFiles** 
-folder with six files:
+folder with seven files:
 
 * vst_shrubgroup.csv
 * vst_perplotperyear.csv
@@ -173,6 +173,7 @@ folder with six files:
 * vst_apparentindividual.csv
 * variables.csv
 * validation.csv
+* readme.txt
 
 We'll look at these files in more detail below.
 
@@ -187,7 +188,7 @@ Input options for the AOP functions are:
 
 * `dpID`: the data product ID, e.g. DP1.00002.001
 * `site`: the 4-letter code of a single site, e.g. HARV
-* `year`: the 4-digit year
+* `year`: the 4-digit year to download
 * `savepath`: the file path you want to download to; defaults to the 
 working directory
 * `check.size`: T or F: should the function pause before downloading 
@@ -215,36 +216,37 @@ below.
 
 ## Navigate data downloads: IS
 
-Let's take a look at the PAR data we downloaded earlier. Start by 
-reading in the 30-minute file:
+Let's take a look at the PAR data we downloaded earlier. We'll 
+read in the 30-minute file using the function `readTableNEON()`, 
+which uses the `variables.csv` file to assign data types to each 
+column of data:
 
 
-    par30 <- read.delim("~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-                        sep=",")
+    par30 <- readTableNEON(dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+                           varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
     View(par30)
 
 The first four columns are added by `stackByTable()` when it merges 
-files across sites, months, and tower heights. The remaining columns 
-are described by the variables file:
+files across sites, months, and tower heights. The final column, 
+`publicationDate`, is the date-time stamp indicating when the data 
+were published. This can be used as an indicator for whether data 
+have been updated since the last time you downloaded them.
+
+The remaining columns are described by the variables file:
 
 
-    parvar <- read.delim("~/Downloads/NEON_par/stackedFiles/variables.csv", 
-                        sep=",")
+    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
     View(parvar)
 
 The variables file shows you the definition and units for each column 
 of data.
 
-Now that we know what we're looking at, let's convert the time stamp 
-to a format R understands and then plot PAR from the top tower level:
+Now that we know what we're looking at, let's plot PAR from the top 
+tower level:
 
 
-    par30$startDateTime <- as.POSIXct(par30$startDateTime, 
-                                      format="%Y-%m-%d T %H:%M:%S Z", 
-                                      tz="GMT")
-    
     plot(PARMean~startDateTime, 
-         data=par30[which(par30$verticalPosition==80),],
+         data=par30[which(par30$verticalPosition=="080"),],
          type="l")
 
 Looks good! The sun comes up and goes down every day, and some days 
@@ -265,11 +267,12 @@ We'll read in the vst_mappingandtagging and vst_apparentindividual
 files:
 
 
-    vegmap <- read.delim("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-                         sep=",")
+    vegmap <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
+                         "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
     View(vegmap)
-    vegind <- read.delim("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-                         sep=",")
+    
+    vegind <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
+                         "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
     View(vegind)
 
 As with the IS data, the variables file can tell you more about 
@@ -278,12 +281,10 @@ information about the validation and controlled data entry that
 were applied to the data:
 
 
-    vstvar <- read.delim("~/filesToStack10098/stackedFiles/variables.csv", 
-                        sep=",")
+    vstvar <- read.csv("~/filesToStack10098/stackedFiles/variables.csv")
     View(vstvar)
     
-    vstval <- read.delim("~/filesToStack10098/stackedFiles/validation.csv", 
-                        sep=",")
+    vstval <- read.csv("~/filesToStack10098/stackedFiles/validation.csv")
     View(vstval)
 
 OS data products each come with a Data Product User Guide, 
@@ -297,7 +298,7 @@ First, use the `geoNEON` package to calculate stem locations:
 
 
     names(vegmap)
-    vegmap <- geoNEON::def.calc.geo.os(vegmap, "vst_mappingandtagging")
+    vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
     names(vegmap)
 
 And now merge the mapping data with the individual measurements. 

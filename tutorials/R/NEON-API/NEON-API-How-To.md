@@ -119,7 +119,7 @@ What type of data or metadata are you looking for?
 The specific data product, site, or location you want to get data for.
 
 ## Observational data (OS)
-Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-product-catalog" target="_blank">data product catalog</a>.
+Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>.
 
 We'll pick Breeding landbird point counts, DP1.10003.001
 

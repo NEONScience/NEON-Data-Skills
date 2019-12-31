@@ -187,8 +187,7 @@ NEON data portal.
 * Read more about the 
 <a href="/data/data-processing" target="_blank">quality assurance and quality control processes for NEON data</a> 
 and how the data are processed from raw data to higher level data products.
-* Read through the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">NEON Data Product Catalog</a>. 
+* <a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore NEON Data Products</a>. 
 On the page for each data product in the catalog you can find the basic information 
 about the product, find the data collection and processing protocols, and link 
 directly to downloading the data. 
@@ -199,9 +198,10 @@ is available through the
 <a href="http://www.boldsystems.org/index.php/databases" target="_blank"> Barcode of Life Datasystem (BOLD)</a>. 
 Or NEON phenocam images are available from the 
 <a href="https://phenocam.sr.unh.edu/webcam/network/search/?sitename=neon&type=&primary_vegtype=&dominant_species=&active=1&fluxdata=1" target="_blank">Phenocam network site</a>. 
-More details on where else the data are available from are available in the description 
-of each data product in the 
-<a href="http://data.neonscience.org/data-product-catalog" target="_blank">NEON Data Product Catalog</a>.
+More details on where else the data are available from can be found in the Availability and Download
+section on the Product Details page for each data product (visit 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products</a> 
+to access individual Product Details pages).
 
 ### Pathways to access NEON Data
 There are several ways to access data from NEON: 

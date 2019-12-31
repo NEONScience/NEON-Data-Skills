@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<a href="https://neondata.sharefile.com/d-s1dc135daffd4e65b" class="btn btn-success">
+<a href="https://neondata.sharefile.com/share/view/s89752829ccb4ce1a/fo396a43-51ec-4b14-a1fb-b5e70f0b7e1b" class="button-arrow" target="_blank">
 Download the spectral classification teaching data subset</a>
 
 </div>

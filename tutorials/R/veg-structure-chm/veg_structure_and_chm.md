@@ -21,8 +21,8 @@ data products to estimate tree height:
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Woody plant vegetation structure**
 
-The <a href="https://data.neonscience.org/data-product-view?dpCode=DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the 
-remote sensing platform. The <a href="https://data.neonscience.org/data-product-view?dpCode=DP1.10098.001" target="_blank">vegetation structure data</a> are collected 
+The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the 
+remote sensing platform. The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected 
 by by field staff on the ground. We will be using data from the Wind River 
 Experimental Forest NEON field site located in Washington state. The 
 predominant vegetation there are tall evergreen conifers. 
