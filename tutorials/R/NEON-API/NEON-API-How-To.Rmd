@@ -1,17 +1,27 @@
 ---
-syncID: 457a5c01d051491297dc947939b4210f
 title: "Using the NEON API in R"
-description: "Tutorial for getting data from the NEON API, using R and the R package httr"
-dateCreated:  2017-07-07
-authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones]
-estimatedTime: 1 - 1.5 hours
-packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonUtilities]
-topics: data-management, rep-sci
-languagesTool: R, API
-dataProduct:
 code1: R/NEON-API/NEON-API-How-To.R
-tutorialSeries: 
+contributors:
+- Christine Laney
+- Megan A. Jones
+- Donal S. O'Leary
+dataProduct: null
+dateCreated: '2017-07-07'
+description: Tutorial for getting data from the NEON API, using R and the R package
+  httr
+estimatedTime: 1 - 1.5 hours
+languagesTool: R, API
+packagesLibraries:
+- httr
+- jsonlite
+- devtools
+- downloader
+- geoNEON
+- neonUtilities
+syncID: 457a5c01d051491297dc947939b4210f
+authors: Claire K. Lunch
+topics: data-management, rep-sci
+tutorialSeries: null
 urlTitle: neon-api-usage
 ---
 
