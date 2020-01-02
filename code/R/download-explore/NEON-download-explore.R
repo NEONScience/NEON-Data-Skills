@@ -32,10 +32,7 @@ stackByTable("~/Downloads/NEON_par.zip")
 ## ----run-zipsByProduct, results="hide", message=FALSE, warning=FALSE-----
 
 zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", 
-              check.size=F, # Caution! you should change this to
-              #check.size=T, # when running this code yourself
-              savepath="~/Downloads")
+              package="expanded", check.size=T, savepath="~/Downloads")
 
 
 
@@ -47,9 +44,7 @@ stackByTable(filepath="~/Downloads/filesToStack10098")
 
 ## ----aop-tile, , results="hide", message=FALSE, warning=FALSE------------
 
-byTileAOP("DP3.30015.001", site="WREF", year="2017", 
-          check.size = F, # Caution! you should change this to
-          #check.size = T, # when running this code yourself
+byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 
@@ -59,14 +54,14 @@ byTileAOP("DP3.30015.001", site="WREF", year="2017",
 par30 <- readTableNEON(
   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
   varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(par30) #Optional - view the data
+View(par30)
 
 
 
 ## ----read-par-var, , results="hide", message=FALSE, warning=FALSE--------
 
 parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(parvar) #Optional - view the data
+View(parvar)
 
 
 
@@ -83,22 +78,22 @@ plot(PARMean~startDateTime,
 vegmap <- readTableNEON(
   "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegmap) #Optional - view the data
+View(vegmap)
 
 vegind <- readTableNEON(
   "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegind) #Optional - view the data
+View(vegind)
 
 
 
 ## ----read-vst-var, , results="hide", message=FALSE, warning=FALSE--------
 
 vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vstvar) #Optional - view the data
+View(vstvar)
 
 vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-#View(vstval) #Optional - view the data
+View(vstval)
 
 
 

@@ -156,10 +156,7 @@ Wind River Experimental Forest (WREF).
 
 
     zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-                  package="expanded", 
-                  check.size=F, # Caution! you should change this to
-                  #check.size=T, # when running this code yourself
-                  savepath="~/Downloads")
+                  package="expanded", check.size=T, savepath="~/Downloads")
 
 In the file location for your download, you should now have a 
 folder named filesToStack10098. Use `stackByTable()` to stack 
@@ -210,9 +207,7 @@ Here, we'll download one tile of Ecosystem structure (Canopy Height
 Model) (DP3.30015.001) from WREF in 2017.
 
 
-    byTileAOP("DP3.30015.001", site="WREF", year="2017", 
-              check.size = F, # Caution! you should change this to
-              #check.size = T, # when running this code yourself
+    byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
               easting=580000, northing=5075000, savepath="~/Downloads")
 
 
@@ -232,7 +227,7 @@ column of data:
     par30 <- readTableNEON(
       dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
       varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-    #View(par30) #Optional - view the data
+    View(par30)
 
 The first four columns are added by `stackByTable()` when it merges 
 files across sites, months, and tower heights. The final column, 
@@ -244,7 +239,7 @@ The remaining columns are described by the variables file:
 
 
     parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-    #View(parvar) #Optional - view the data
+    View(parvar)
 
 The variables file shows you the definition and units for each column 
 of data.
@@ -280,12 +275,12 @@ files:
     vegmap <- readTableNEON(
       "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
       "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    #View(vegmap) #Optional - view the data
+    View(vegmap)
     
     vegind <- readTableNEON(
       "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
       "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    #View(vegind) #Optional - view the data
+    View(vegind)
 
 As with the IS data, the variables file can tell you more about 
 the data. OS data also come with a validation file, which contains 
@@ -294,10 +289,10 @@ were applied to the data:
 
 
     vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    #View(vstvar) #Optional - view the data
+    View(vstvar)
     
     vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-    #View(vstval) #Optional - view the data
+    View(vstval)
 
 OS data products each come with a Data Product User Guide, 
 which can be downloaded with the data or accessed from the 
