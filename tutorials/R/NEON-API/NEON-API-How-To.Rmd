@@ -4,7 +4,7 @@ title: "Using the NEON API in R"
 description: "Tutorial for getting data from the NEON API, using R and the R package httr"
 dateCreated:  2017-07-07
 authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones]
+contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 estimatedTime: 1 - 1.5 hours
 packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonUtilities]
 topics: data-management, rep-sci
@@ -14,6 +14,7 @@ code1: R/NEON-API/NEON-API-How-To.R
 tutorialSeries: 
 urlTitle: neon-api-usage
 ---
+
 
 
 This is a tutorial in pulling data from the NEON API or Application 
@@ -523,7 +524,7 @@ finer scale locations that can be used to calculate precise spatial data for
 bird observations.
 
 For convenience, we'll use the `geoNEON` package to make the calculations. 
-First we'll use `def.extr.geo.os()` to get the additional spatial information 
+First we'll use `getLocByName()` to get the additional spatial information 
 available through the API, and look at the spatial resolution available in the 
 initial download:
 
@@ -533,7 +534,7 @@ initial download:
 library(geoNEON)
 
 # extract the spatial data
-brd.point.loc <- def.extr.geo.os(brd.point)
+brd.point.loc <- getLocByName(brd.point)
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
@@ -543,16 +544,16 @@ symbols(brd.point.loc$api.easting, brd.point.loc$api.northing,
 
 ```
 
-And use `def.calc.geo.os()` to calculate the point locations of observations.
+And use `getLocTOS()` to calculate the point locations of observations.
 
 ```{r brd-calc-NL}
 
-brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
+brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.pt$api.easting, brd.point.pt$api.northing, 
+symbols(brd.point.pt$easting, brd.point.pt$northing, 
         circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
