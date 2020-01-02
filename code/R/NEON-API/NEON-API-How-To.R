@@ -170,7 +170,7 @@ brd.WOOD_013
 library(geoNEON)
 
 # extract the spatial data
-brd.point.loc <- def.extr.geo.os(brd.point)
+brd.point.loc <- getLocByName(brd.point)
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
@@ -182,7 +182,7 @@ symbols(brd.point.loc$api.easting, brd.point.loc$api.northing,
 
 ## ----brd-calc-NL---------------------------------------------------------
 
-brd.point.pt <- def.calc.geo.os(brd.point, "brd_perpoint")
+brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
 
 # plot bird point locations 
