@@ -1,17 +1,18 @@
 ---
 syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
-description: "Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data"
-dateCreated:  2018-11-07
+code1: R/download-explore/NEON-download-explore.R
 authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones]
+contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
+dataProduct: null
+dateCreated: '2018-11-07'
+description: Tutorial for downloading data from the Data Portal and the neonUtilities
+  package, then exploring and understanding the downloaded data
 estimatedTime: 1 - 2 hours
+languagesTool: R, API
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
-languagesTool: R, API
-dataProduct:
-code1: R/download-explore/NEON-download-explore.R
-tutorialSeries: 
+tutorialSeries: null
 urlTitle: download-explore-neon-data
 ---
 
@@ -88,7 +89,8 @@ and download some data! Almost any IS or OS data product can be used for this
 section of the tutorial, but we will proceed assuming you've downloaded 
 Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
 results, download three months of data from two sites. The downloaded file 
-should be a zip file named NEON_par.zip
+should be a zip file named NEON_par.zip. For this tutorial, we will be using 
+PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.
 
 Now switch over to R and load all the packages installed above.
 
@@ -154,8 +156,7 @@ Wind River Experimental Forest (WREF).
 
 
     zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-                  package="expanded", check.size=T,
-                  savepath="~/Downloads")
+                  package="expanded", check.size=T, savepath="~/Downloads")
 
 In the file location for your download, you should now have a 
 folder named filesToStack10098. Use `stackByTable()` to stack 
@@ -206,8 +207,9 @@ Here, we'll download one tile of Ecosystem structure (Canopy Height
 Model) (DP3.30015.001) from WREF in 2017.
 
 
-    byTileAOP("DP3.30015.001", site="WREF", year="2017",
+    byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
               easting=580000, northing=5075000, savepath="~/Downloads")
+
 
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
@@ -222,8 +224,9 @@ which uses the `variables.csv` file to assign data types to each
 column of data:
 
 
-    par30 <- readTableNEON(dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-                           varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
+    par30 <- readTableNEON(
+      dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+      varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
     View(par30)
 
 The first four columns are added by `stackByTable()` when it merges 
@@ -249,6 +252,8 @@ tower level:
          data=par30[which(par30$verticalPosition=="080"),],
          type="l")
 
+![ ]({{ site.baseurl }}/images/rfigs/R/download-explore/NEON-download-explore/plot-par-1.png)
+
 Looks good! The sun comes up and goes down every day, and some days 
 are cloudy. If you want to dig in a little deeper, try plotting PAR 
 from lower tower levels on the same axes to see light attenuation 
@@ -267,12 +272,14 @@ We'll read in the vst_mappingandtagging and vst_apparentindividual
 files:
 
 
-    vegmap <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-                         "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+    vegmap <- readTableNEON(
+      "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
+      "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
     View(vegmap)
     
-    vegind <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-                         "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+    vegind <- readTableNEON(
+      "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
+      "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
     View(vegind)
 
 As with the IS data, the variables file can tell you more about 
@@ -281,10 +288,10 @@ information about the validation and controlled data entry that
 were applied to the data:
 
 
-    vstvar <- read.csv("~/filesToStack10098/stackedFiles/variables.csv")
+    vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
     View(vstvar)
     
-    vstval <- read.csv("~/filesToStack10098/stackedFiles/validation.csv")
+    vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
     View(vstval)
 
 OS data products each come with a Data Product User Guide, 
@@ -311,13 +318,17 @@ to avoid having duplicate columns.
 
 Using the merged data, now we can map the stems in plot 85 
 (plot chosen at random). Note that the coordinates are in 
-meters but stem diameters are in cm.
+meters but stem diameters are in cm. Furthermore, the symbols()
+function wants the radii, not the diameters, of the circles, so
+we divide by 2 to convert diameters to radii after unit conversion.
 
 
     symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
             veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100, 
+            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
             xlab="Easting", ylab="Northing", inches=F)
+
+![ ]({{ site.baseurl }}/images/rfigs/R/download-explore/NEON-download-explore/plot-vst-1.png)
 
 ## Navigate data downloads: AOP
 
@@ -333,6 +344,8 @@ The `raster` package includes plotting functions:
 
 
     plot(chm, col=topo.colors(6))
+
+![ ]({{ site.baseurl }}/images/rfigs/R/download-explore/NEON-download-explore/plot-aop-1.png)
 
 
 

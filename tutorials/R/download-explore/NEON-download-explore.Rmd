@@ -1,17 +1,18 @@
 ---
 syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
-description: "Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data"
-dateCreated:  2018-11-07
+code1: R/download-explore/NEON-download-explore.R
 authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones]
+contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
+dataProduct: null
+dateCreated: '2018-11-07'
+description: Tutorial for downloading data from the Data Portal and the neonUtilities
+  package, then exploring and understanding the downloaded data
 estimatedTime: 1 - 2 hours
+languagesTool: R, API
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
-languagesTool: R, API
-dataProduct:
-code1: R/download-explore/NEON-download-explore.R
-tutorialSeries: 
+tutorialSeries: null
 urlTitle: download-explore-neon-data
 ---
 
@@ -91,11 +92,12 @@ and download some data! Almost any IS or OS data product can be used for this
 section of the tutorial, but we will proceed assuming you've downloaded 
 Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
 results, download three months of data from two sites. The downloaded file 
-should be a zip file named NEON_par.zip
+should be a zip file named NEON_par.zip. For this tutorial, we will be using 
+PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.
 
 Now switch over to R and load all the packages installed above.
 
-```{r setup, eval=FALSE}
+```{r setup, results='hide', message=FALSE, warning=FALSE}
 
 # load packages
 library(neonUtilities)
@@ -114,7 +116,7 @@ options(stringsAsFactors=F)
 The `stackByTable()` function will unzip and join the files in the 
 downloaded zip file.
 
-```{r stacking-portal, eval=FALSE}
+```{r stacking-portal, results="hide", message=FALSE, warning=FALSE}
 
 # Modify the file path to match the path to your zip file
 stackByTable("~/Downloads/NEON_par.zip")
@@ -161,11 +163,10 @@ will want to set it to F.
 Here, we'll download woody vegetation structure data from 
 Wind River Experimental Forest (WREF).
 
-```{r run-zipsByProduct, eval=FALSE}
+```{r run-zipsByProduct, results="hide", message=FALSE, warning=FALSE}
 
 zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", check.size=T,
-              savepath="~/Downloads")
+              package="expanded", check.size=T, savepath="~/Downloads")
 
 ```
 
@@ -173,7 +174,7 @@ In the file location for your download, you should now have a
 folder named filesToStack10098. Use `stackByTable()` to stack 
 the files in this folder, as above:
 
-```{r zips-to-stack, eval=FALSE}
+```{r zips-to-stack, results="hide", message=FALSE, warning=FALSE}
 
 stackByTable(filepath="~/Downloads/filesToStack10098")
 
@@ -220,12 +221,13 @@ around coordinates when deciding which tiles to download
 Here, we'll download one tile of Ecosystem structure (Canopy Height 
 Model) (DP3.30015.001) from WREF in 2017.
 
-```{r aop-tile, eval=FALSE}
+```{r aop-tile, , results="hide", message=FALSE, warning=FALSE}
 
-byTileAOP("DP3.30015.001", site="WREF", year="2017",
+byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 ```
+
 
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
@@ -239,10 +241,11 @@ read in the 30-minute file using the function `readTableNEON()`,
 which uses the `variables.csv` file to assign data types to each 
 column of data:
 
-```{r read-par, eval=FALSE}
+```{r read-par, , results="hide", message=FALSE, warning=FALSE}
 
-par30 <- readTableNEON(dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-                       varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
+par30 <- readTableNEON(
+  dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+  varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
 View(par30)
 
 ```
@@ -255,7 +258,7 @@ have been updated since the last time you downloaded them.
 
 The remaining columns are described by the variables file:
 
-```{r read-par-var, eval=FALSE}
+```{r read-par-var, , results="hide", message=FALSE, warning=FALSE}
 
 parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
 View(parvar)
@@ -268,7 +271,7 @@ of data.
 Now that we know what we're looking at, let's plot PAR from the top 
 tower level:
 
-```{r plot-par, eval=FALSE}
+```{r plot-par, eval=TRUE}
 
 plot(PARMean~startDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
@@ -293,14 +296,16 @@ data involves bringing those data together.
 We'll read in the vst_mappingandtagging and vst_apparentindividual 
 files:
 
-```{r read-vst, eval=FALSE}
+```{r read-vst, , results="hide", message=FALSE, warning=FALSE}
 
-vegmap <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+vegmap <- readTableNEON(
+  "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
+  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
 View(vegmap)
 
-vegind <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+vegind <- readTableNEON(
+  "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
+  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
 View(vegind)
 
 ```
@@ -310,12 +315,12 @@ the data. OS data also come with a validation file, which contains
 information about the validation and controlled data entry that 
 were applied to the data:
 
-```{r read-vst-var, eval=FALSE}
+```{r read-vst-var, , results="hide", message=FALSE, warning=FALSE}
 
-vstvar <- read.csv("~/filesToStack10098/stackedFiles/variables.csv")
+vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
 View(vstvar)
 
-vstval <- read.csv("~/filesToStack10098/stackedFiles/validation.csv")
+vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
 View(vstval)
 
 ```
@@ -329,7 +334,7 @@ to join the mapping and individual data.
 
 First, use the `geoNEON` package to calculate stem locations:
 
-```{r stems, eval=FALSE}
+```{r stems, , results='hide', message=FALSE, warning=FALSE}
 
 names(vegmap)
 vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
@@ -341,7 +346,7 @@ And now merge the mapping data with the individual measurements.
 `individualID` is the linking variable, the others are included 
 to avoid having duplicate columns.
 
-```{r vst-merge, eval=FALSE}
+```{r vst-merge, eval=TRUE}
 
 veg <- merge(vegind, vegmap, by=c("individualID","namedLocation",
                                   "domainID","siteID","plotID"))
@@ -350,13 +355,15 @@ veg <- merge(vegind, vegmap, by=c("individualID","namedLocation",
 
 Using the merged data, now we can map the stems in plot 85 
 (plot chosen at random). Note that the coordinates are in 
-meters but stem diameters are in cm.
+meters but stem diameters are in cm. Furthermore, the symbols()
+function wants the radii, not the diameters, of the circles, so
+we divide by 2 to convert diameters to radii after unit conversion.
 
-```{r plot-vst, eval=FALSE}
+```{r plot-vst, eval=TRUE}
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
         veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100, 
+        circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
         xlab="Easting", ylab="Northing", inches=F)
 
 ```
@@ -368,7 +375,7 @@ It has functionality for most analyses you might want to do.
 
 We'll use it to read in the tile we downloaded:
 
-```{r read-aop, eval=FALSE}
+```{r read-aop, eval=TRUE}
 
 chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
@@ -376,7 +383,7 @@ chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/Discre
 
 The `raster` package includes plotting functions:
 
-```{r plot-aop, eval=FALSE}
+```{r plot-aop, eval=TRUE}
 
 plot(chm, col=topo.colors(6))
 
