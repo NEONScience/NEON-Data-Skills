@@ -116,7 +116,7 @@ veg <- merge(vegind, vegmap, by=c("individualID","namedLocation",
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
         veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100, 
+        circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
         xlab="Easting", ylab="Northing", inches=F)
 
 

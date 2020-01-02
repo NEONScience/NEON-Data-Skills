@@ -318,12 +318,14 @@ to avoid having duplicate columns.
 
 Using the merged data, now we can map the stems in plot 85 
 (plot chosen at random). Note that the coordinates are in 
-meters but stem diameters are in cm.
+meters but stem diameters are in cm. Furthermore, the symbols()
+function wants the radii, not the diameters, of the circles, so
+we divide by 2 to convert diameters to radii after unit conversion.
 
 
     symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
             veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100, 
+            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
             xlab="Easting", ylab="Northing", inches=F)
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/download-explore/NEON-download-explore/plot-vst-1.png)
