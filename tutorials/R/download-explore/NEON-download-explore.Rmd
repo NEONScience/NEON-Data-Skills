@@ -163,18 +163,12 @@ will want to set it to F.
 Here, we'll download woody vegetation structure data from 
 Wind River Experimental Forest (WREF).
 
-```{r run-zipsByProduct, eval=FALSE}
+```{r run-zipsByProduct, results="hide", message=FALSE, warning=FALSE}
 
 zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", check.size=T,
-              savepath="~/Downloads")
-
-```
-
-```{r run-zipsByProduct_hidden, eval=TRUE, echo=FALSE, results="hide", message=FALSE, warning=FALSE}
-
-zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", check.size=F,
+              package="expanded", 
+              check.size=F, # Caution! you should change this to
+              #check.size=T, # when running this code yourself
               savepath="~/Downloads")
 
 ```
@@ -183,7 +177,7 @@ In the file location for your download, you should now have a
 folder named filesToStack10098. Use `stackByTable()` to stack 
 the files in this folder, as above:
 
-```{r zips-to-stack, eval=TRUE, message=FALSE, warning=FALSE}
+```{r zips-to-stack, results="hide", message=FALSE, warning=FALSE}
 
 stackByTable(filepath="~/Downloads/filesToStack10098")
 
@@ -230,19 +224,15 @@ around coordinates when deciding which tiles to download
 Here, we'll download one tile of Ecosystem structure (Canopy Height 
 Model) (DP3.30015.001) from WREF in 2017.
 
-```{r aop-tile, eval=FALSE}
+```{r aop-tile, , results="hide", message=FALSE, warning=FALSE}
 
-byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
+byTileAOP("DP3.30015.001", site="WREF", year="2017", 
+          check.size = F, # Caution! you should change this to
+          #check.size = T, # when running this code yourself
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 ```
 
-```{r aop-tile_hidden, eval=TRUE, echo=FALSE, results="hide"}
-
-byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = F,
-          easting=580000, northing=5075000, savepath="~/Downloads")
-
-```
 
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
@@ -256,20 +246,12 @@ read in the 30-minute file using the function `readTableNEON()`,
 which uses the `variables.csv` file to assign data types to each 
 column of data:
 
-```{r read-par, eval=FALSE}
+```{r read-par, , results="hide", message=FALSE, warning=FALSE}
 
 par30 <- readTableNEON(
   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
   varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-View(par30)
-
-```
-
-```{r read-par_hidden, eval=TRUE, echo=FALSE, results="hide"}
-
-par30 <- readTableNEON(dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-                       varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(par30)
+#View(par30) #Optional - view the data
 
 ```
 
@@ -281,17 +263,10 @@ have been updated since the last time you downloaded them.
 
 The remaining columns are described by the variables file:
 
-```{r read-par-var, eval=FALSE}
+```{r read-par-var, , results="hide", message=FALSE, warning=FALSE}
 
 parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-View(parvar)
-
-```
-
-```{r read-par-var_hidden, eval=TRUE, echo=FALSE, results='hide'}
-
-parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(parvar)
+#View(parvar) #Optional - view the data
 
 ```
 
@@ -326,29 +301,17 @@ data involves bringing those data together.
 We'll read in the vst_mappingandtagging and vst_apparentindividual 
 files:
 
-```{r read-vst, eval=FALSE}
+```{r read-vst, , results="hide", message=FALSE, warning=FALSE}
 
 vegmap <- readTableNEON(
   "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vegmap)
+#View(vegmap) #Optional - view the data
 
 vegind <- readTableNEON(
   "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vegind)
-
-```
-
-```{r read-vst_hidden, echo=FALSE, results='hide'}
-
-vegmap <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegmap)
-
-vegind <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegind)
+#View(vegind) #Optional - view the data
 
 ```
 
@@ -357,23 +320,13 @@ the data. OS data also come with a validation file, which contains
 information about the validation and controlled data entry that 
 were applied to the data:
 
-```{r read-vst-var, eval=FALSE}
+```{r read-vst-var, , results="hide", message=FALSE, warning=FALSE}
 
 vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vstvar)
+#View(vstvar) #Optional - view the data
 
 vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-View(vstval)
-
-```
-
-```{r read-vst-var_hidden, eval=TRUE, echo=F, results='hide'}
-
-vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vstvar)
-
-vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-#View(vstval)
+#View(vstval) #Optional - view the data
 
 ```
 
@@ -386,7 +339,7 @@ to join the mapping and individual data.
 
 First, use the `geoNEON` package to calculate stem locations:
 
-```{r stems, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+```{r stems, , results='hide', message=FALSE, warning=FALSE}
 
 names(vegmap)
 vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")

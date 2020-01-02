@@ -156,10 +156,10 @@ Wind River Experimental Forest (WREF).
 
 
     zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-                  package="expanded", check.size=T,
+                  package="expanded", 
+                  check.size=F, # Caution! you should change this to
+                  #check.size=T, # when running this code yourself
                   savepath="~/Downloads")
-
-
 
 In the file location for your download, you should now have a 
 folder named filesToStack10098. Use `stackByTable()` to stack 
@@ -167,17 +167,6 @@ the files in this folder, as above:
 
 
     stackByTable(filepath="~/Downloads/filesToStack10098")
-
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table vst_apparentindividual
-    ## Stacking table vst_mappingandtagging
-    ## Stacking table vst_perplotperyear
-    ## Copied the most recent publication of variable definition file to /stackedFiles and renamed as variables.csv
-    ## Copied the most recent publication of validation file to /stackedFiles and renamed as validation.csv
-    ## Finished: Stacked 3 data tables and 2 metadata tables!
-    ## Stacking took 0.06138396 secs
-    ## All unzipped monthly data folders have been removed.
 
 The **filesToStack10098** folder should now contain a **stackedFiles** 
 folder with seven files:
@@ -221,9 +210,10 @@ Here, we'll download one tile of Ecosystem structure (Canopy Height
 Model) (DP3.30015.001) from WREF in 2017.
 
 
-    byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
+    byTileAOP("DP3.30015.001", site="WREF", year="2017", 
+              check.size = F, # Caution! you should change this to
+              #check.size = T, # when running this code yourself
               easting=580000, northing=5075000, savepath="~/Downloads")
-
 
 
 In the directory indicated in `savepath`, you should now have a folder 
@@ -242,9 +232,7 @@ column of data:
     par30 <- readTableNEON(
       dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
       varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-    View(par30)
-
-
+    #View(par30) #Optional - view the data
 
 The first four columns are added by `stackByTable()` when it merges 
 files across sites, months, and tower heights. The final column, 
@@ -256,9 +244,7 @@ The remaining columns are described by the variables file:
 
 
     parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-    View(parvar)
-
-
+    #View(parvar) #Optional - view the data
 
 The variables file shows you the definition and units for each column 
 of data.
@@ -294,14 +280,12 @@ files:
     vegmap <- readTableNEON(
       "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
       "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vegmap)
+    #View(vegmap) #Optional - view the data
     
     vegind <- readTableNEON(
       "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
       "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vegind)
-
-
+    #View(vegind) #Optional - view the data
 
 As with the IS data, the variables file can tell you more about 
 the data. OS data also come with a validation file, which contains 
@@ -310,12 +294,10 @@ were applied to the data:
 
 
     vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vstvar)
+    #View(vstvar) #Optional - view the data
     
     vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-    View(vstval)
-
-
+    #View(vstval) #Optional - view the data
 
 OS data products each come with a Data Product User Guide, 
 which can be downloaded with the data or accessed from the 
@@ -327,6 +309,9 @@ to join the mapping and individual data.
 First, use the `geoNEON` package to calculate stem locations:
 
 
+    names(vegmap)
+    vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
+    names(vegmap)
 
 And now merge the mapping data with the individual measurements. 
 `individualID` is the linking variable, the others are included 

@@ -29,70 +29,44 @@ stackByTable("~/Downloads/NEON_par.zip")
 
 
 
-## ----run-zipsByProduct, eval=FALSE---------------------------------------
-## 
-## zipsByProduct(dpID="DP1.10098.001", site="WREF",
-##               package="expanded", check.size=T,
-##               savepath="~/Downloads")
-## 
-
-
-## ----run-zipsByProduct_hidden, eval=TRUE, echo=FALSE, results="hide", message=FALSE, warning=FALSE----
+## ----run-zipsByProduct, results="hide", message=FALSE, warning=FALSE-----
 
 zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", check.size=F,
+              package="expanded", 
+              check.size=F, # Caution! you should change this to
+              #check.size=T, # when running this code yourself
               savepath="~/Downloads")
 
 
 
-## ----zips-to-stack, eval=TRUE, message=FALSE, warning=FALSE--------------
+## ----zips-to-stack, results="hide", message=FALSE, warning=FALSE---------
 
 stackByTable(filepath="~/Downloads/filesToStack10098")
 
 
 
-## ----aop-tile, eval=FALSE------------------------------------------------
-## 
-## byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
-##           easting=580000, northing=5075000, savepath="~/Downloads")
-## 
+## ----aop-tile, , results="hide", message=FALSE, warning=FALSE------------
 
-
-## ----aop-tile_hidden, eval=TRUE, echo=FALSE, results="hide"--------------
-
-byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = F,
+byTileAOP("DP3.30015.001", site="WREF", year="2017", 
+          check.size = F, # Caution! you should change this to
+          #check.size = T, # when running this code yourself
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 
 
-## ----read-par, eval=FALSE------------------------------------------------
-## 
-## par30 <- readTableNEON(
-##   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv",
-##   varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-## View(par30)
-## 
+## ----read-par, , results="hide", message=FALSE, warning=FALSE------------
 
-
-## ----read-par_hidden, eval=TRUE, echo=FALSE, results="hide"--------------
-
-par30 <- readTableNEON(dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-                       varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(par30)
+par30 <- readTableNEON(
+  dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+  varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
+#View(par30) #Optional - view the data
 
 
 
-## ----read-par-var, eval=FALSE--------------------------------------------
-## 
-## parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-## View(parvar)
-## 
-
-
-## ----read-par-var_hidden, eval=TRUE, echo=FALSE, results='hide'----------
+## ----read-par-var, , results="hide", message=FALSE, warning=FALSE--------
 
 parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
-#View(parvar)
+#View(parvar) #Optional - view the data
 
 
 
@@ -104,53 +78,31 @@ plot(PARMean~startDateTime,
 
 
 
-## ----read-vst, eval=FALSE------------------------------------------------
-## 
-## vegmap <- readTableNEON(
-##   "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-##   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-## View(vegmap)
-## 
-## vegind <- readTableNEON(
-##   "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-##   "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-## View(vegind)
-## 
+## ----read-vst, , results="hide", message=FALSE, warning=FALSE------------
 
+vegmap <- readTableNEON(
+  "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
+  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+#View(vegmap) #Optional - view the data
 
-## ----read-vst_hidden, echo=FALSE, results='hide'-------------------------
-
-vegmap <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegmap)
-
-vegind <- readTableNEON("~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-                     "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vegind)
+vegind <- readTableNEON(
+  "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
+  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
+#View(vegind) #Optional - view the data
 
 
 
-## ----read-vst-var, eval=FALSE--------------------------------------------
-## 
-## vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-## View(vstvar)
-## 
-## vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-## View(vstval)
-## 
-
-
-## ----read-vst-var_hidden, eval=TRUE, echo=F, results='hide'--------------
+## ----read-vst-var, , results="hide", message=FALSE, warning=FALSE--------
 
 vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-#View(vstvar)
+#View(vstvar) #Optional - view the data
 
 vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-#View(vstval)
+#View(vstval) #Optional - view the data
 
 
 
-## ----stems, echo=FALSE, results='hide', message=FALSE, warning=FALSE-----
+## ----stems, , results='hide', message=FALSE, warning=FALSE---------------
 
 names(vegmap)
 vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
