@@ -6,8 +6,7 @@ authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 dataProduct: null
 dateCreated: '2018-11-07'
-description: Tutorial for downloading data from the Data Portal and the neonUtilities
-  package, then exploring and understanding the downloaded data
+description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
 estimatedTime: 1 - 2 hours
 languagesTool: R, API
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
