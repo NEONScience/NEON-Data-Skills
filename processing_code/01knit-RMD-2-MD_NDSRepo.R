@@ -15,7 +15,7 @@ dirs <- c("R/eddy4r/",
           "dataviz/",
           "R/download-explore/",
           "R/spatial-data/",
-          "R/download-explore/")
+          "R/NEON-API/")
 
 #################### Set up Input Variables #############################
 
