@@ -273,13 +273,18 @@ a result when all the tables are stacked there are many duplicates.
 Let's remove any duplicates that exist.
 
 ```{r remove-duplicates}
+# drop UID as that will be unique for duplicate records
+ind_noUID <- select(ind, -(uid))
+
+status_noUID <- select(status, -(uid))
+
 # remove duplicates
 ## expect many
 
-ind_noD <- distinct(ind)
+ind_noD <- distinct(ind_noUID)
 nrow(ind_noD)
 
-status_noD<-distinct(status)
+status_noD<-distinct(status_noUID)
 nrow(status_noD)
 
 ```
@@ -288,7 +293,7 @@ nrow(status_noD)
 ### Variable Overlap between Tables
 
 From the initial inspection of the data we can see there is overlap in variable
-names between the fields. 
+names between the fields.
 
 Let's see what they are.
 
@@ -306,7 +311,6 @@ However, some of these will have different values in each table. We want to keep
 those distinct value and not join on them. Therefore, we can rename these 
 fields before joining:
 
-* uid
 * date
 * editedDate
 * measuredBy
@@ -323,7 +327,7 @@ variable name.
 ```{r rename-column}
 
 # in Status table rename like columns 
-status_noD <- rename(status_noD, uidStat=uid, dateStat=date, 
+status_noD <- rename(status_noD, dateStat=date, 
 										 editedDateStat=editedDate, measuredByStat=measuredBy, 
 										 recordedByStat=recordedBy, 
 										 samplingProtocolVersionStat=samplingProtocolVersion, 
@@ -394,8 +398,6 @@ siteOfInterest <- "SCBI"
 ## could also do it with == instead of %in% but won't work with vectors
 
 phe_1st <- filter(phe_ind, siteID %in% siteOfInterest)
-
-
 
 ```
 
