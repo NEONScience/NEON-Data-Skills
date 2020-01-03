@@ -15,7 +15,17 @@ req
 
 # View requested data
 req.content <- content(req, as="parsed")
-req.content
+names(req.content$data)
+
+
+
+## ----os-query-contents-examples------------------------------------------
+
+# View Abstract
+req.content$data$productAbstract
+
+# View Available months and associated URLs for Onaqui, Utah - ONAQ
+req.content$data$siteCodes[[27]]
 
 
 
@@ -33,7 +43,8 @@ avail
 
 # get data availability list for the product
 bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
-bird.urls
+length(bird.urls) #total number of URLs
+bird.urls[1:10] #show first 10 URLs available
 
 
 
@@ -95,7 +106,8 @@ temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
 # get data availability from location/date of interest
 tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
 tmp.files <- fromJSON(content(tmp, as="text"))
-tmp.files$data$files$name
+length(tmp.files$data$files$name) # There are a lot of available files
+tmp.files$data$files$name[1:10]   # Let's print the first 10
 
 
 
@@ -135,8 +147,8 @@ cam <- GET(cam.urls[intersect(grep("SJER", cam.urls),
                               grep("2017", cam.urls))])
 cam.files <- fromJSON(content(cam, as="text"))
 
-# this list of files is very long, so we'll just look at the first few
-head(cam.files$data$files$name)
+# this list of files is very long, so we'll just look at the first ten
+head(cam.files$data$files$name, 10)
 
 
 
