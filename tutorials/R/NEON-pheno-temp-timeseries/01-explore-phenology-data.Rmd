@@ -427,7 +427,7 @@ unique(phe_1sp$taxonID)
 
 And, perhaps a single phenophase. 
 
-```{r filter-phonophase}
+```{r filter-phenophase}
 
 # see which phenophases are present
 unique(phe_1sp$phenophaseName)
@@ -442,30 +442,74 @@ unique(phe_1sp$phenophaseName)
 
 ```
 
+## Select only Primary Plots
+
+NEON plant phenology observations are collected along two types of plots. 
+
+* Primary plots: an 800 meter square phenology loop transect
+* Phenocam plots: a 200 m x 200 m plot located within view of a canopy level, 
+tower-mounted, phenology camera
+
+In the data, these plots are differentiated by the `subtypeSpecification`. 
+Depending on your question you may want to use only one or both of these plot types. 
+For this activity, we're going to only look at the primary plots. 
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
+the Data Product User Guide and use the variables files with the data download 
+to find the corresponding varibles names.
+</div>
+
+```{r filter-plot-type}
+# what plots are present?
+unique(phe_1sp$subtypeSpecification)
+
+# filter
+phe_1spPrimary <- filter(phe_1sp, subtypeSpecification == 'primary')
+
+# check that it worked
+unique(phe_1spPrimary$subtypeSpecification)
+
+```
+
 ## Total in Phenophase of Interest
 
 The `phenophaseState` is recorded as "yes" or "no" that the individual is in that
 phenophase. The `phenophaseIntensity` are categories for how much of the indvidual
 is in that state. For now, we will stick with `phenophaseState`. 
 
-We can now calculate the total individual with that state. 
+We can now calculate the total number of individuals with that state. We use 
+`n_distinct(indvidualID)` count the individuals (and not the records) in case 
+there are duplicate records for an individual. 
+
+But later on we'll also want to calculate the percent of the observed individuals
+in the "leaves" status, therefore, we're also adding in a step here to retain the 
+sample size so that we can calculate % later. 
 
 Here we use pipes `%>%` from the dpylr package to "pass" objects onto the next
 function. 
 
 ```{r calc-total-yes}
+# Calculate sample size for later use
+sampSize <- phe_1spPrimary%>%
+  group_by(dateStat)%>%
+  summarize(numInd= n_distinct(individualID))
 
-# Total in status by day
-sampSize <- count(phe_1sp, dateStat)
-inStat <- phe_1sp %>%
-	group_by(dateStat) %>%
-  count(phenophaseStatus)
+# Total in status by day for distinct individuals
+inStat <- phe_1spPrimary%>%
+  group_by(dateStat, phenophaseStatus)%>%
+  summarize(countYes=n_distinct(individualID))
+
 inStat <- full_join(sampSize, inStat, by="dateStat")
 
 # Retain only Yes
 inStat_T <- filter(inStat, phenophaseStatus %in% "yes")
 
+# check that it worked
+unique(inStat_T$phenophaseStatus)
+
 ```
+
 
 Now that we have the data we can plot it. 
 
@@ -503,14 +547,14 @@ We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 ```{r plot-leaves-total}
 
 # plot number of individuals in leaf
-phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
+phenoPlot <- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat="identity", na.rm = TRUE) 
 
 phenoPlot
 
 
 # Now let's make the plot look a bit more presentable
-phenoPlot <- ggplot(inStat_T, aes(dateStat, n.y)) +
+phenoPlot <- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Total Individuals in Leaf") +
     xlab("Date") + ylab("Number of Individuals") +
@@ -526,7 +570,7 @@ We could also covert this to percentage and plot that.
 ```{r plot-leaves-percentage}
 
 # convert to percent
-inStat_T$percent<- ((inStat_T$n.y)/inStat_T$n.x)*100
+inStat_T$percent<- ((inStat_T$countYes)/inStat_T$numInd)*100
 
 # plot percent of leaves
 phenoPlot_P <- ggplot(inStat_T, aes(dateStat, percent)) +
@@ -581,7 +625,7 @@ How does that look?
 ```{r plot-2018}
 
 # Now let's make the plot look a bit more presentable
-phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, n.y)) +
+phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
     geom_bar(stat="identity", na.rm = TRUE) +
     ggtitle("Total Individuals in Leaf") +
     xlab("Date") + ylab("Number of Individuals") +
