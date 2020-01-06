@@ -1,4 +1,4 @@
-## ----packages, eval=FALSE------------------------------------------------
+## ----packages, eval=FALSE-----------------------------------------------------------------------------------------------------
 ## 
 ## install.packages("devtools")
 ## install.packages("neonUtilities")
@@ -9,7 +9,7 @@
 ## 
 
 
-## ----setup, results='hide', message=FALSE, warning=FALSE-----------------
+## ----setup, results='hide', message=FALSE, warning=FALSE----------------------------------------------------------------------
 
 # load packages
 library(neonUtilities)
@@ -22,50 +22,68 @@ options(stringsAsFactors=F)
 
 
 
-## ----stacking-portal, results="hide", message=FALSE, warning=FALSE-------
+## ----stacking-portal, results="hide", message=FALSE, warning=FALSE------------------------------------------------------------
 
 # Modify the file path to match the path to your zip file
 stackByTable("~/Downloads/NEON_par.zip")
 
 
 
-## ----run-zipsByProduct, results="hide", message=FALSE, warning=FALSE-----
+## ----run-zipsByProduct, results="hide", message=FALSE, warning=FALSE----------------------------------------------------------
 
-zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-              package="expanded", check.size=T, savepath="~/Downloads")
-
-
-
-## ----zips-to-stack, results="hide", message=FALSE, warning=FALSE---------
-
-stackByTable(filepath="~/Downloads/filesToStack10098")
+veg_str=loadByProduct(dpID="DP1.10098.001", site="WREF", 
+              package="expanded", check.size=T)
 
 
 
-## ----aop-tile, , results="hide", message=FALSE, warning=FALSE------------
+## ----loadBy-list, eval=F------------------------------------------------------------------------------------------------------
+## 
+## names(veg_str)
+## View(veg_str$vst_perplotperyear)
+## 
+
+
+## ----env, eval=F--------------------------------------------------------------------------------------------------------------
+## 
+## list2env(veg_str, .GlobalEnv)
+## 
+
+
+## ----save-files, eval=F-------------------------------------------------------------------------------------------------------
+## 
+## write.csv(vst_apparentindividual,
+##           "~/Downloads/vst_apparentindividual.csv",
+##           row.names=F)
+## write.csv(variables_10098,
+##           "~/Downloads/variables_10098.csv",
+##           row.names=F)
+## 
+
+
+## ----aop-tile, results="hide", message=FALSE, warning=FALSE-------------------------------------------------------------------
 
 byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 
 
-## ----read-par, , results="hide", message=FALSE, warning=FALSE------------
+## ----read-par, results="hide", message=FALSE, warning=FALSE-------------------------------------------------------------------
 
 par30 <- readTableNEON(
   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-  varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
+  varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
 View(par30)
 
 
 
-## ----read-par-var, , results="hide", message=FALSE, warning=FALSE--------
+## ----read-par-var, results="hide", message=FALSE, warning=FALSE---------------------------------------------------------------
 
-parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
+parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
 View(parvar)
 
 
 
-## ----plot-par, eval=TRUE-------------------------------------------------
+## ----plot-par, eval=TRUE------------------------------------------------------------------------------------------------------
 
 plot(PARMean~startDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
@@ -73,46 +91,30 @@ plot(PARMean~startDateTime,
 
 
 
-## ----read-vst, , results="hide", message=FALSE, warning=FALSE------------
+## ----read-vst-var, results="hide", message=FALSE, warning=FALSE---------------------------------------------------------------
 
-vegmap <- readTableNEON(
-  "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vegmap)
+View(variables_10098)
 
-vegind <- readTableNEON(
-  "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-  "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vegind)
+View(validation_10098)
 
 
 
-## ----read-vst-var, , results="hide", message=FALSE, warning=FALSE--------
+## ----stems, results='hide', message=FALSE, warning=FALSE----------------------------------------------------------------------
 
-vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-View(vstvar)
-
-vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-View(vstval)
-
-
-
-## ----stems, , results='hide', message=FALSE, warning=FALSE---------------
-
-names(vegmap)
-vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
+names(vst_mappingandtagging) #this object was created using list2env() above
+vegmap <- geoNEON::getLocTOS(vst_mappingandtagging, "vst_mappingandtagging")
 names(vegmap)
 
 
 
-## ----vst-merge, eval=TRUE------------------------------------------------
+## ----vst-merge, eval=TRUE-----------------------------------------------------------------------------------------------------
 
-veg <- merge(vegind, vegmap, by=c("individualID","namedLocation",
+veg <- merge(vst_apparentindividual, vegmap, by=c("individualID","namedLocation",
                                   "domainID","siteID","plotID"))
 
 
 
-## ----plot-vst, eval=TRUE-------------------------------------------------
+## ----plot-vst, eval=TRUE------------------------------------------------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
         veg$adjNorthing[which(veg$plotID=="WREF_085")], 
@@ -121,13 +123,13 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_085")],
 
 
 
-## ----read-aop, eval=TRUE-------------------------------------------------
+## ----read-aop, eval=TRUE------------------------------------------------------------------------------------------------------
 
 chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
 
 
-## ----plot-aop, eval=TRUE-------------------------------------------------
+## ----plot-aop, eval=TRUE------------------------------------------------------------------------------------------------------
 
 plot(chm, col=topo.colors(6))
 
