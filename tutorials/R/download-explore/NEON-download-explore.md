@@ -1,20 +1,18 @@
 ---
 syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
-code1: R/download-explore/NEON-download-explore.R
+description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
+dateCreated: '2018-11-07'
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
-dataProduct: null
-dateCreated: '2018-11-07'
-description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
 estimatedTime: 1 - 2 hours
-languagesTool: R, API
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
-tutorialSeries: null
+languageTool: R, API
+code1: R/download-explore/NEON-download-explore.R
+tutorialSeries:
 urlTitle: download-explore-neon-data
 ---
-
 
 This tutorial covers downloading NEON data, using the Data Portal and 
 the neonUtilities R package, as well as basic instruction in beginning to 
@@ -31,11 +29,10 @@ analytical laboratory, e.g. beetle identification, foliar isotopes
 1. Instrumentation (IS) - Data collected by an automated, streaming sensor, e.g. 
 net radiation, soil carbon dioxide. This category also includes the eddy 
 covariance (EC) data, which are processed and structured in a unique way, distinct 
-from other instrumentation data.
+from other instrumentation data (see <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Tutorial for EC data</a> for details).
 
-This lesson covers all four (sub)types of data. The download procedures are 
+This lesson covers all three types of data. The download procedures are 
 similar for all types, but data navigation differs significantly by type.
-
 
 <div id="ds-objectives" markdown="1">
 
@@ -121,61 +118,113 @@ called **stackedFiles**, which should contain five files:
 
 We'll look at these files in more detail below.
 
-## Download data using neonUtilities: zipsByProduct()
+## Download files and load directly to R: loadByProduct()
 
-The function `zipsByProduct()` is a wrapper for the NEON API, it 
-downloads zip files for the data product specified and stores them in 
-a format that can then be passed on to `stackByTable()`.
+In the section above, we downloaded a .zip file from the data portal to
+our downloads folder, then used the stackByTable() function to transform
+those data into a usable format. However, there is a faster way to load
+data directly into the R Global Environment using `loadByProduct()`.
 
-One of the inputs to `zipsByProduct()` is the data product ID, or 
-DPID, of the data you want to download. The DPID can be found on the 
-<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>.
-It will be in the form DP#.#####.###; e.g., the DPID of PAR, downloaded  
-above, is DP1.00024.001.
+The most popular function in `neonUtilities` is `loadByProduct()`. 
+This function downloads data from the NEON API, merges the site-by-month 
+files, and loads the resulting data tables into the R environment, 
+assigning each data type to the appropriate R class. It combines the 
+actions of the `zipsByProduct()`, `stackByTable()`, and `readTableNEON()` 
+functions, described below.
 
-Input options for `zipsByProduct()` are:
+This is a popular choice because it ensures you're always working with the 
+latest data, and it ends with ready-to-use tables in R. However, if you 
+use it in a workflow you run repeatedly, keep in mind it will re-download 
+the data every time.
+
+`loadByProduct()` works on most observational (OS) and sensor (IS) data, 
+but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
+data, and some of the data tables in the microbial data products. For 
+functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
+sections in this tutorial. For functions that work with SAE data, see 
+the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.
+
+The inputs to `loadByProduct()` control which data to download and how 
+to manage the processing:
 
 * `dpID`: the data product ID, e.g. DP1.00002.001
-* `site`: one of the following: "all", indicating all sites with data 
-available; the 4-letter code of a single site, e.g. HARV; or a vector 
-of site codes, e.g. `c("HARV","BART","SCBI")`
-* `package`: either basic or expanded data package
-* `avg`: either "all", to download all data (the default), or the 
+* `site`: defaults to "all", meaning all sites with available data; 
+can be a vector of 4-letter NEON site codes, e.g. 
+`c("HARV","CPER","ABBY")`.
+* `startdate` and `enddate`: defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.
+* `package`: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
+* `avg`: defaults to "all", to download all data; or the 
 number of minutes in the averaging interval. See example below; 
-only applicable to IS data
+only applicable to IS data.
 * `savepath`: the file path you want to download to; defaults to the 
-working directory
+working directory.
 * `check.size`: T or F: should the function pause before downloading 
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set it to F.
+* `nCores`: Number of cores to use for parallel processing. Defaults 
+to 1, i.e. no parallelization.
+* `forceParallel`: If the data volume to be processed does not meet 
+minimum requirements to run in parallel, this overrides.
+
+The `dpID` is the data product identifier of the data you want to 
+download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">
+Explore Data Products page</a>.
+It will be in the form DP#.#####.###
 
 Here, we'll download woody vegetation structure data from 
 Wind River Experimental Forest (WREF).
 
 
-    zipsByProduct(dpID="DP1.10098.001", site="WREF", 
-                  package="expanded", check.size=T, savepath="~/Downloads")
+    veg_str=loadByProduct(dpID="DP1.10098.001", site="WREF", 
+                  package="expanded", check.size=T)
 
-In the file location for your download, you should now have a 
-folder named filesToStack10098. Use `stackByTable()` to stack 
-the files in this folder, as above:
+The object returned by `loadByProduct()` is a named list of data 
+frames. To work with each of them, select them from the list 
+using the `$` operator.
 
 
-    stackByTable(filepath="~/Downloads/filesToStack10098")
+    names(veg_str)
+    View(veg_str$vst_perplotperyear)
 
-The **filesToStack10098** folder should now contain a **stackedFiles** 
-folder with seven files:
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can use the 
+`list2env()` function:
 
-* vst_shrubgroup.csv
-* vst_perplotperyear.csv
-* vst_mappingandtagging.csv
-* vst_apparentindividual.csv
-* variables.csv
-* validation.csv
-* readme.txt
 
-We'll look at these files in more detail below.
+    list2env(veg_str, .GlobalEnv)
+
+For more details about the contents of the data tables and metadata tables, 
+check out the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
+
+If you want to be able to close R and come back to these data without 
+re-downloading, you'll want to save the tables locally. We recommend 
+also saving the variables file, both so you'll have it to refer to, and 
+so you can use it with `readTableNEON()` (see below).
+
+
+    write.csv(vst_apparentindividual, 
+              "~/Downloads/vst_apparentindividual.csv", 
+              row.names=F)
+    write.csv(variables_10098, 
+              "~/Downloads/variables_10098.csv", 
+              row.names=F)
+
+But, if you want to save files locally and load them into R (or another 
+platform) each time you run a script, instead of downloading from the API 
+every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
+instead of `loadByProduct()`, as we did in the first section above.
 
 ## Download remote sensing data: byFileAOP() and byTileAOP()
 
@@ -225,7 +274,7 @@ column of data:
 
     par30 <- readTableNEON(
       dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-      varFile="~/Downloads/NEON_par/stackedFiles/variables.csv")
+      varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
     View(par30)
 
 The first four columns are added by `stackByTable()` when it merges 
@@ -237,7 +286,7 @@ have been updated since the last time you downloaded them.
 The remaining columns are described by the variables file:
 
 
-    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables.csv")
+    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
     View(parvar)
 
 The variables file shows you the definition and units for each column 
@@ -267,31 +316,15 @@ almost all consist of multiple tables containing information collected
 at different times in different ways. Complexity in working with OS 
 data involves bringing those data together.
 
-We'll read in the vst_mappingandtagging and vst_apparentindividual 
-files:
-
-
-    vegmap <- readTableNEON(
-      "~/Downloads/filesToStack10098/stackedFiles/vst_mappingandtagging.csv",
-      "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vegmap)
-    
-    vegind <- readTableNEON(
-      "~/Downloads/filesToStack10098/stackedFiles/vst_apparentindividual.csv",
-      "~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vegind)
-
 As with the IS data, the variables file can tell you more about 
 the data. OS data also come with a validation file, which contains 
 information about the validation and controlled data entry that 
 were applied to the data:
 
 
-    vstvar <- read.csv("~/Downloads/filesToStack10098/stackedFiles/variables.csv")
-    View(vstvar)
+    View(variables_10098)
     
-    vstval <- read.csv("~/Downloads/filesToStack10098/stackedFiles/validation.csv")
-    View(vstval)
+    View(validation_10098)
 
 OS data products each come with a Data Product User Guide, 
 which can be downloaded with the data or accessed from the 
@@ -303,8 +336,8 @@ to join the mapping and individual data.
 First, use the `geoNEON` package to calculate stem locations:
 
 
-    names(vegmap)
-    vegmap <- geoNEON::getLocTOS(vegmap, "vst_mappingandtagging")
+    names(vst_mappingandtagging) #this object was created using list2env() above
+    vegmap <- geoNEON::getLocTOS(vst_mappingandtagging, "vst_mappingandtagging")
     names(vegmap)
 
 And now merge the mapping data with the individual measurements. 
@@ -312,7 +345,7 @@ And now merge the mapping data with the individual measurements.
 to avoid having duplicate columns.
 
 
-    veg <- merge(vegind, vegmap, by=c("individualID","namedLocation",
+    veg <- merge(vst_apparentindividual, vegmap, by=c("individualID","namedLocation",
                                       "domainID","siteID","plotID"))
 
 Using the merged data, now we can map the stems in plot 85 
