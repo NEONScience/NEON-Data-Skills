@@ -186,7 +186,7 @@ Here, we'll download woody vegetation structure data from
 Wind River Experimental Forest (WREF).
 
 
-    veg_str=loadByProduct(dpID="DP1.10098.001", site="WREF", 
+    veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
                   package="expanded", check.size=T)
 
 The object returned by `loadByProduct()` is a named list of data 
