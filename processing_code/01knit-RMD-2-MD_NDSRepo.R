@@ -15,13 +15,14 @@ dirs <- c("R/eddy4r/",
           "dataviz/",
           "R/download-explore/",
           "R/spatial-data/",
-          "R/NEON-API/")
+          "R/NEON-API/",
+          "hyperspectral/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[7] 
+subDir <- dirs[10] 
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Git/NEON-Data-Skills"

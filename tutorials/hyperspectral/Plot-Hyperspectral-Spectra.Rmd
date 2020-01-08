@@ -4,7 +4,7 @@ title: "Plot Spectral Profiles Derived from Hyperspectral Remote Sensing Data in
 description: "Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
 dateCreated:  2015-08-08 20:49:52
 authors: Leah A. Wasser
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal, plyr
 topics: hyperspectral, HDF5, remote-sensing 
@@ -65,8 +65,9 @@ library(plyr)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 ```
 
@@ -75,7 +76,7 @@ Now, we need to access the H5 file.
 ```{r open-H5-file }
 
 # Define the file name to be opened
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 # look at the HDF5 file structure 
 h5ls(f,all=T) 
 

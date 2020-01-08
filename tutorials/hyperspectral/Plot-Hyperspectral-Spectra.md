@@ -4,7 +4,7 @@ title: "Plot Spectral Profiles Derived from Hyperspectral Remote Sensing Data in
 description: "Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
 dateCreated:  2015-08-08 20:49:52
 authors: Leah A. Wasser
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal, plyr
 topics: hyperspectral, HDF5, remote-sensing 
@@ -37,13 +37,14 @@ preferably, RStudio loaded on your computer.
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
+
 ### Data to Download
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
 
 ***
 {% include/_greyBox-wd-rscript.html %}
-***
 
+***
 ### Recommended Skills
 
 We highly recommend you work through the 
@@ -63,35 +64,24 @@ plot a spectral profile for that pixel.
     library(ggplot2)
     
     # set working directory to ensure R can find the file we wish to import and where
-    # we want to save our files
-    #setwd("working-dir-path-here")
+    # we want to save our files. Be sure to move the download into your working directory!
+    wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+    setwd(wd)
 
 Now, we need to access the H5 file.
 
 
     # Define the file name to be opened
-    f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+    f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
     # look at the HDF5 file structure 
     h5ls(f,all=T) 
 
-    ##   group        name         ltype corder_valid corder cset       otype
-    ## 0     / Reflectance H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 1     /        fwhm H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 2     /    map info H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP
-    ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ##   num_attrs  dclass          dtype  stype rank             dim
-    ## 0         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426
-    ## 1         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ## 2         1  STRING     HST_STRING SIMPLE    1               1
-    ## 3        11                                  0                
-    ## 4         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ##            maxdim
-    ## 0 477 x 502 x 426
-    ## 1         426 x 1
-    ## 2               1
-    ## 3                
-    ## 4         426 x 1
+    ##   group        name         ltype corder_valid corder cset       otype num_attrs  dclass          dtype  stype rank             dim          maxdim
+    ## 0     / Reflectance H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426 477 x 502 x 426
+    ## 1     /        fwhm H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1         426 x 1
+    ## 2     /    map info H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         1  STRING     H5T_STRING SIMPLE    1               1               1
+    ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP        11                                  0                                
+    ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1         426 x 1
 
 Next, we can read the spatial attributes of the file.
 
@@ -136,13 +126,13 @@ function.
     
     head(aPixeldf)
 
-    ##    V1 Wavelength
-    ## 1 237     382.27
-    ## 2 240     387.28
-    ## 3 298     392.29
-    ## 4 278     397.30
-    ## 5 207     402.31
-    ## 6 235     407.32
+    ##    V1       Wavelength
+    ## 1 237 382.270008325577
+    ## 2 240 387.279987335205
+    ## 3 298 392.289996147156
+    ## 4 278 397.300004959106
+    ## 5 207 402.310013771057
+    ## 6 235 407.319992780685
 
     # we are now done working with the HDF5 file and are now using the dataframe `b`. 
     # therefore, we should close the H5 file
@@ -167,13 +157,13 @@ by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the dat
     names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
     head(aPixeldf)
 
-    ##   Reflectance Wavelength ScaledReflectance
-    ## 1         237     382.27            0.0237
-    ## 2         240     387.28            0.0240
-    ## 3         298     392.29            0.0298
-    ## 4         278     397.30            0.0278
-    ## 5         207     402.31            0.0207
-    ## 6         235     407.32            0.0235
+    ##   Reflectance       Wavelength ScaledReflectance
+    ## 1         237 382.270008325577            0.0237
+    ## 2         240 387.279987335205            0.0240
+    ## 3         298 392.289996147156            0.0298
+    ## 4         278 397.300004959106            0.0278
+    ## 5         207 402.310013771057            0.0207
+    ## 6         235 407.319992780685            0.0235
 
 ## Plot Spectral Profile
 

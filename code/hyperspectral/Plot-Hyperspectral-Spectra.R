@@ -1,4 +1,4 @@
-## ----call-libraries, results="hide"--------------------------------------
+## ----call-libraries, results="hide"---------------------------------------------------------------------------------------------------------------
 
 # Call required packages
 library(rhdf5)
@@ -6,19 +6,22 @@ library(plyr)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 
-## ----open-H5-file--------------------------------------------------------
+
+## ----open-H5-file---------------------------------------------------------------------------------------------------------------------------------
 
 # Define the file name to be opened
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 # look at the HDF5 file structure 
 h5ls(f,all=T) 
 
 
-## ----read-spatial-attributes---------------------------------------------
+
+## ----read-spatial-attributes----------------------------------------------------------------------------------------------------------------------
 
 # r get spatialInfo using the h5readAttributes function 
 spInfo <- h5readAttributes(f,"spatialInfo")
@@ -27,7 +30,8 @@ spInfo <- h5readAttributes(f,"spatialInfo")
 reflInfo <- h5readAttributes(f,"Reflectance")
 
 
-## ----read-band-wavelengths-----------------------------------------------
+
+## ----read-band-wavelengths------------------------------------------------------------------------------------------------------------------------
 
 # read in the wavelength information from the HDF5 file
 wavelengths<- h5read(f,"wavelength")
@@ -36,7 +40,8 @@ wavelengths<- h5read(f,"wavelength")
 wavelengths <- wavelengths*1000
 
 
-## ----extract-spectra-----------------------------------------------------
+
+## ----extract-spectra------------------------------------------------------------------------------------------------------------------------------
 
 # extract Some Spectra from a single pixel
 aPixel<- h5read(f,"Reflectance",index=list(54,36,NULL))
@@ -58,7 +63,8 @@ head(aPixeldf)
 H5close()
 
 
-## ----pull-scale-factor---------------------------------------------------
+
+## ----pull-scale-factor----------------------------------------------------------------------------------------------------------------------------
 
 # grab scale factor
 scaleFact <- reflInfo$`Scale Factor`
@@ -71,7 +77,8 @@ names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
 head(aPixeldf)
 
 
-## ----plot-spectra--------------------------------------------------------
+
+## ----plot-spectra---------------------------------------------------------------------------------------------------------------------------------
 
 qplot(x=aPixeldf$Wavelength, 
       y=aPixeldf$ScaledReflectance,

@@ -3,8 +3,8 @@ syncID: d42286b3af6148f3a8fd0863f00752a7
 title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
-authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
-contributors:
+authors: Edmund Hart, Leah A. Wasser
+contributors: Donal O'Leary
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing

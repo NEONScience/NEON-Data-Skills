@@ -3,8 +3,8 @@ syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 description: "Open up and explore a hyperspectral dataset stored in HDF5 format in R. Learn about the power of data slicing in HDF5. Slice our band subsets of the data and create and visualize one band."
 dateCreated:  2014-11-26 20:49:52
-authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
-contributors:
+authors: Leah A. Wasser, Edmund Hart
+contributors: Donal O'Leary
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
 topics: hyperspectral, HDF5, remote-sensing 
