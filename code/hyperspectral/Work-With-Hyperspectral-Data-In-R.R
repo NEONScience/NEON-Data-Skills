@@ -1,4 +1,4 @@
-## ----install-load-library, results="hide"--------------------------------
+## ----install-load-library, results="hide"---------------------------------------------------------------------------------------------------------
 
 # Load `raster` and `rhdf5` packages and read NIS data into R
 library(raster)
@@ -6,19 +6,22 @@ library(rhdf5)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 
-## ----view-file-strux-----------------------------------------------------
+
+## ----view-file-strux------------------------------------------------------------------------------------------------------------------------------
 
 # Define the file name to be opened
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 # look at the HDF5 file structure 
 h5ls(f,all=T) 
 
 
-## ----read-spatial-attributes---------------------------------------------
+
+## ----read-spatial-attributes----------------------------------------------------------------------------------------------------------------------
 
 # get spatialInfo using the h5readAttributes function 
 spInfo <- h5readAttributes(f,"spatialInfo")
@@ -28,13 +31,15 @@ reflInfo <- h5readAttributes(f,"Reflectance")
 
 
 
-## ----read-band-wavelengths-----------------------------------------------
+
+## ----read-band-wavelengths------------------------------------------------------------------------------------------------------------------------
 
 # read in the wavelength information from the HDF5 file
 wavelengths<- h5read(f,"wavelength")
 
 
-## ----get-reflectance-shape-----------------------------------------------
+
+## ----get-reflectance-shape------------------------------------------------------------------------------------------------------------------------
 
 # note that we can grab the dimensions of the dataset from the attributes
 # we can then use that information to slice out our band data
@@ -47,7 +52,8 @@ nCols
 nBands
 
 
-## ----get-reflectance-shape-2---------------------------------------------
+
+## ----get-reflectance-shape-2----------------------------------------------------------------------------------------------------------------------
 # Extract or "slice" data for band 34 from the HDF5 file
 b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
  
@@ -55,7 +61,8 @@ b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
 class(b34)
 
 
-## ----convert-to-matrix---------------------------------------------------
+
+## ----convert-to-matrix----------------------------------------------------------------------------------------------------------------------------
 
 # convert from array to matrix
 b34 <- b34[,,1]
@@ -64,7 +71,8 @@ b34 <- b34[,,1]
 class(b34)
 
 
-## ----read-attributes-plot------------------------------------------------
+
+## ----read-attributes-plot-------------------------------------------------------------------------------------------------------------------------
     
 # look at the metadata for the reflectance dataset
 h5readAttributes(f,"Reflectance")
@@ -77,7 +85,8 @@ image(b34)
 image(log(b34))
 
 
-## ----hist-data-----------------------------------------------------------
+
+## ----hist-data------------------------------------------------------------------------------------------------------------------------------------
 
 # Plot range of reflectance values as a histogram to view range
 # and distribution of values.
@@ -89,7 +98,8 @@ hist(b34,breaks=40,col="darkmagenta",xlim = c(0, 5000))
 hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
 
-## ----set-values-NA-------------------------------------------------------
+
+## ----set-values-NA--------------------------------------------------------------------------------------------------------------------------------
 
 # there is a no data value in our raster - let's define it
 myNoDataValue <- as.numeric(reflInfo$`data ignore value`)
@@ -102,12 +112,14 @@ b34[b34 == myNoDataValue] <- NA
 image(b34)
 
 
-## ----plot-log------------------------------------------------------------
+
+## ----plot-log-------------------------------------------------------------------------------------------------------------------------------------
 
 image(log(b34))
 
 
-## ----transpose-data------------------------------------------------------
+
+## ----transpose-data-------------------------------------------------------------------------------------------------------------------------------
 
 # We need to transpose x and y values in order for our 
 # final image to plot properly
@@ -116,7 +128,8 @@ image(log(b34), main="Transposed Image")
 
 
 
-## ----read-map-info-------------------------------------------------------
+
+## ----read-map-info--------------------------------------------------------------------------------------------------------------------------------
 
 # Populate the raster image extent value. 
 # get the map info, split out elements
@@ -130,7 +143,8 @@ mapInfo<-unlist(strsplit(mapInfo, ","))
 mapInfo
 
 
-## ----define-CRS----------------------------------------------------------
+
+## ----define-CRS-----------------------------------------------------------------------------------------------------------------------------------
 
 # Create the projection in as object
 myCRS <- spInfo$projdef
@@ -154,7 +168,8 @@ image(log(b34r),
 
 
 
-## ----define-extent-------------------------------------------------------
+
+## ----define-extent--------------------------------------------------------------------------------------------------------------------------------
 
 # grab resolution of raster as an object
 res <- spInfo$xscale
@@ -175,7 +190,7 @@ yMax
 # raster. To do this we need the number of columns and rows in the raster
 # and the resolution of the raster.
 
-# note that you need to multiple the columns and rows by the resolution of 
+# note that you need to multiply the columns and rows by the resolution of 
 # the data to calculate the proper extent!
 xMax <- (xMin + (ncol(b34))*res)
 yMin <- (yMax - (nrow(b34))*res) 
@@ -195,7 +210,8 @@ extent(b34r) <- rasExt
 b34r
 
 
-## ----plot-colors-raster--------------------------------------------------
+
+## ----plot-colors-raster---------------------------------------------------------------------------------------------------------------------------
 
 #let's change the colors of our raster and adjust the zlims 
 col=terrain.colors(25)
@@ -208,12 +224,13 @@ image(b34r,
       zlim=c(0,3000))
 
 
-## ----write-raster,  eval=FALSE-------------------------------------------
+
+## ----write-raster,  eval=FALSE--------------------------------------------------------------------------------------------------------------------
 ## 
 ## #write out the raster as a geotiff
 ## 
 ## writeRaster(b34r,
-##             file="band34.tif",
+##             file=paste0(wd,"band34.tif"),
 ##             format="GTiff",
 ##             overwrite=TRUE)
 ## 

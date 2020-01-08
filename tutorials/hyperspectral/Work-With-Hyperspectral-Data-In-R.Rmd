@@ -3,7 +3,7 @@ syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 description: "Open up and explore a hyperspectral dataset stored in HDF5 format in R. Learn about the power of data slicing in HDF5. Slice our band subsets of the data and create and visualize one band."
 dateCreated:  2014-11-26 20:49:52
-authors: Leah A. Wasser, Edmund Hart
+authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
@@ -105,8 +105,8 @@ library(rhdf5)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. Be sure to move the downloaded into your working directory!
-wd="~/Desktop/Hyperspectral_Tutorial/"
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
 setwd(wd)
 
 ```
@@ -562,7 +562,7 @@ yMax
 # raster. To do this we need the number of columns and rows in the raster
 # and the resolution of the raster.
 
-# note that you need to multiple the columns and rows by the resolution of 
+# note that you need to multiply the columns and rows by the resolution of 
 # the data to calculate the proper extent!
 xMax <- (xMin + (ncol(b34))*res)
 yMin <- (yMax - (nrow(b34))*res) 
@@ -609,7 +609,7 @@ as a raster, using the `writeRaster` command.
 #write out the raster as a geotiff
 
 writeRaster(b34r,
-            file="band34.tif",
+            file=paste0(wd,"band34.tif"),
             format="GTiff",
             overwrite=TRUE)
 

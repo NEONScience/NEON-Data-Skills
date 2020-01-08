@@ -3,7 +3,7 @@ syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 description: "Open up and explore a hyperspectral dataset stored in HDF5 format in R. Learn about the power of data slicing in HDF5. Slice our band subsets of the data and create and visualize one band."
 dateCreated:  2014-11-26 20:49:52
-authors: Leah A. Wasser, Edmund Hart
+authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
@@ -60,7 +60,7 @@ preferably, RStudio loaded on your computer.
 The electromagnetic spectrum is composed of thousands of bands representing 
 different types of light energy. Imaging spectrometers (instruments that collect 
 hyperspectral data) break the electromagnetic spectrum into groups of bands that 
-support classification of objects by their spectral properties on the earth's 
+support classification of objects by their spectral properties on the Earth's 
 surface. Hyperspectral data consists of many bands - up to hundreds of bands - 
 that cover the electromagnetic spectrum.
 
@@ -104,8 +104,9 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
     library(rgdal)
     
     # set working directory to ensure R can find the file we wish to import and where
-    # we want to save our files
-    #setwd("working-dir-path-here")
+    # we want to save our files. Be sure to move the download into your working directory!
+    wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+    setwd(wd)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** To update all packages installed in 
@@ -114,38 +115,26 @@ R, use `update.packages()`.
 
 
     # Define the file name to be opened
-    f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+    f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
     # look at the HDF5 file structure 
     h5ls(f,all=T) 
 
-    ##   group        name         ltype corder_valid corder cset       otype
-    ## 0     / Reflectance H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 1     /        fwhm H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 2     /    map info H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP
-    ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ##   num_attrs  dclass          dtype  stype rank             dim
-    ## 0         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426
-    ## 1         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ## 2         1  STRING     HST_STRING SIMPLE    1               1
-    ## 3        11                                  0                
-    ## 4         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ##            maxdim
-    ## 0 477 x 502 x 426
-    ## 1         426 x 1
-    ## 2               1
-    ## 3                
-    ## 4         426 x 1
+    ##   group        name         ltype corder_valid corder cset       otype num_attrs  dclass          dtype  stype rank             dim          maxdim
+    ## 0     / Reflectance H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426 477 x 502 x 426
+    ## 1     /        fwhm H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1         426 x 1
+    ## 2     /    map info H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         1  STRING     H5T_STRING SIMPLE    1               1               1
+    ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP        11                                  0                                
+    ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1         426 x 1
 
-When you look at the structure of the data, take note of the `map info dataset`, 
+When you look at the structure of the data, take note of the `map info` dataset, 
 the `spatialInfo` group, and the `wavelength` and `Reflectance` datasets. The 
 `spatialInfo` folder contains the spatial attributes of the data including its 
 Coordinate Reference System (CRS). The CRS documents how the data are physically 
-location on the earth. The `wavelength` dataset contains the middle wavelength 
+located on the Earth. The `wavelength` dataset contains the middle wavelength 
 values for each band in the data. The reflectance dataset contains the image data 
 that we will use for both data processing and visualization. 
 
-More information on raster metadata:
+More Information on raster metadata:
 
 * <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Metadata to understand when working with raster data</a>.
 
@@ -163,6 +152,8 @@ explore the data before diving into using it!
 We can use the `h5readAttributes` function to read and extract metadata from the 
 HDF5 file. Let's start by reading in the spatial information.
 
+
+
     # get spatialInfo using the h5readAttributes function 
     spInfo <- h5readAttributes(f,"spatialInfo")
     
@@ -171,6 +162,7 @@ HDF5 file. Let's start by reading in the spatial information.
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
 file. 
+
 
     # read in the wavelength information from the HDF5 file
     wavelengths<- h5read(f,"wavelength")
@@ -186,8 +178,8 @@ vector that we just imported and check out the data located at index 19 -
 </figure>
 
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. 
-This value equates to 472.44 nanometers (nm) which is in the visible blue portion 
-of the electromagnetic spectrum (~ 400-700 nm). 
+This value equates to 472.44 nanometers (nm) which is in the blue portion of
+the visible electromagnetic spectrum (~ 400-700 nm). 
 
 ### Bands and Wavelengths
 
@@ -201,6 +193,7 @@ wavelengths represented in that  band. Thus in a band spanning 800-805 nm, the
 center would be 802.5 nm). The full width half max (FWHM) will also be reported. 
 This value represents the spread of the band around that center point. So, a band 
 that covers 800 nm-805 nm might have a FWHM of 2.5 and a wavelength value of 802.5. 
+
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
@@ -256,7 +249,6 @@ later.
     ## [1] "array"
 
 ### A Note About Data Slicing in HDF5
-
 Data slicing allows us to extract and work with subsets of the data rather than 
 reading in the entire dataset into memory. Thus, in this case, we can extract and 
 plot the green band without reading in all 426 bands of information. The ability 
@@ -293,7 +285,6 @@ Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 | average height | 32        | 12        |
 
 ### Dimensions in Arrays
-
 An array contains 1 or more dimensions in the "z" direction. For example, let's 
 say that we collected 
 this same set of species data for every day in a 30 day month. We might then have 
@@ -381,8 +372,8 @@ represent a smaller number of pixels. These pixels are skewing how the image
 renders. 
 
 ### Data Ignore Value
-Image data in raster format will often contain a data ignore value and a scale 
-factor. The data ignore 
+Image data in raster 
+format will often contain a data ignore value and a scale factor. The data ignore 
 value represents pixels where there are no data. Among other causes, no data 
 values may be attributed to the sensor not collecting data in that area of the 
 image or to processing results which yield null values. 
@@ -427,6 +418,7 @@ The proper way to adjust our data would be
 what's called an `image stretch`. We will learn how to stretch our image data, 
 later. For now, let's plot the values as the log function on the pixel 
 reflectance values to factor out those larger values. 
+
 
     image(log(b34))
 
@@ -516,9 +508,8 @@ this information to define the raster's extent.
     # view the attributes in the map dataset
     mapInfo
 
-    ##  [1] "UTM"           "1.000"         "1.000"         "256521.000"   
-    ##  [5] "4112571.000"   "1.000000e+000" "1.000000e+000" "11"           
-    ##  [9] "North"         "WGS-84"        "units=Meters"
+    ##  [1] "UTM"           "1.000"         "1.000"         "256521.000"    "4112571.000"   "1.000000e+000" "1.000000e+000" "11"            "North"        
+    ## [10] "WGS-84"        "units=Meters"
 
 Next we define the extents of our raster. The extents will be used to calculate 
 the raster's resolution. The lower left hand corner is located at mapInfo[4:5]. 
@@ -558,14 +549,14 @@ string from the HDF5 attributes. Then we can assign that CRS to the raster objec
     
     b34r
 
-    ## class       : RasterLayer 
-    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 0.002096436, 0.001992032  (x, y)
-    ## extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 116, 15677  (min, max)
+    ## class      : RasterLayer 
+    ## dimensions : 502, 477, 239454  (nrow, ncol, ncell)
+    ## resolution : 0.00209643605870021, 0.00199203187250996  (x, y)
+    ## extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 116, 15677  (min, max)
 
     #let's have a look at our properly positioned raster. Take note of the 
     #coordinates on the x and y axis.
@@ -604,7 +595,7 @@ string from the HDF5 attributes. Then we can assign that CRS to the raster objec
     # raster. To do this we need the number of columns and rows in the raster
     # and the resolution of the raster.
     
-    # note that you need to multiple the columns and rows by the resolution of 
+    # note that you need to multiply the columns and rows by the resolution of 
     # the data to calculate the proper extent!
     xMax <- (xMin + (ncol(b34))*res)
     yMin <- (yMax - (nrow(b34))*res) 
@@ -622,11 +613,11 @@ string from the HDF5 attributes. Then we can assign that CRS to the raster objec
     
     rasExt
 
-    ## class       : Extent 
-    ## xmin        : 256521 
-    ## xmax        : 256998 
-    ## ymin        : 4112069 
-    ## ymax        : 4112571
+    ## class      : Extent 
+    ## xmin       : 256521 
+    ## xmax       : 256998 
+    ## ymin       : 4112069 
+    ## ymax       : 4112571
 
     # assign the spatial extent to the raster
     extent(b34r) <- rasExt
@@ -634,14 +625,14 @@ string from the HDF5 attributes. Then we can assign that CRS to the raster objec
     # look at raster attributes
     b34r
 
-    ## class       : RasterLayer 
-    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 116, 15677  (min, max)
+    ## class      : RasterLayer 
+    ## dimensions : 502, 477, 239454  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 116, 15677  (min, max)
 
 
 We can adjust the colors of our raster too if we want.
@@ -667,7 +658,7 @@ as a raster, using the `writeRaster` command.
     #write out the raster as a geotiff
     
     writeRaster(b34r,
-                file="band34.tif",
+                file=paste0(wd,"band34.tif"),
                 format="GTiff",
                 overwrite=TRUE)
     
