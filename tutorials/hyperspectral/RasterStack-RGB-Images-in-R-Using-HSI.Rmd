@@ -3,7 +3,7 @@ syncID: d42286b3af6148f3a8fd0863f00752a7
 title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
-authors: Edmund Hart, Leah A. Wasser
+authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, maps
@@ -30,7 +30,7 @@ After completing this activity, you will be able to:
 * Create a rasterstack in R which can then be used to create RGB images from 
 bands in a hyperspectral data cube.</li>
 * Plot data spatially on a map.</li>
-* Create basic vegetation indices like NDVI using raster  based calculations in 
+* Create basic vegetation indices like NDVI using raster-based calculations in 
 R.
 
 ## Things You’ll Need To Complete This Tutorial
@@ -113,15 +113,16 @@ library(rgdal)
 library(maps)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 ```
 
 ```{r read-in-file }
 
 # Read in H5 file
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 #View HDF5 file structure 
 h5ls(f,all=T)
 
@@ -265,11 +266,13 @@ hsiStack <- stack(rgb_rast)
 
 ```
 
-<a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">More about Lapply here</a>. 
+In the code chunk above, we used the `lapply()` function, which is a powerful,
+flexible way to apply a function (in this case, our `band2Raster()` fucntion)
+multiple times. You can <a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">learn more about lapply() here</a>. 
 
 NOTE: We are using the `raster stack` object in R to store several rasters that 
-are of the same CRS and extent.
-
+are of the same CRS and extent. This is a popular and convenient way to organize 
+co-incident rasters.
 
 Next, add the names of the bands to the raster so we can easily keep track of 
 the bands in the list.
@@ -325,7 +328,6 @@ plotRGB(hsiStack,
         r=1,g=2,b=3, scale=300, 
         stretch = "Lin")
 
-
 ```
 
 <i class="fa fa-star"></i>**A note about image stretching:** 
@@ -340,7 +342,7 @@ this GeoTIFF into any GIS program!
 # write out final raster	
 # note: if you set overwrite to TRUE, then you will overwite or lose the older
 # version of the tif file! keep this in mind.
-writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
+writeRaster(hsiStack, file=paste0(wd,"rgbImage.tif"), format="GTiff", overwrite=TRUE)
 
 ```
 
@@ -423,7 +425,7 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
 #add a color map with 5 colors
 myCol <- terrain.colors(3)
-#add breaks to the colormap (6 breaks = 5 segments)
+#add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
 brk <- c(0, .4, .7, .9)
 
 #plot the image using breaks

@@ -1,4 +1,4 @@
-## ----load-libraries------------------------------------------------------
+## ----load-libraries-------------------------------------------------------------------------------------------------------------------------------
 
 # Load required packages
 library(raster)
@@ -7,19 +7,22 @@ library(rgdal)
 library(maps)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 
-## ----read-in-file--------------------------------------------------------
+
+## ----read-in-file---------------------------------------------------------------------------------------------------------------------------------
 
 # Read in H5 file
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 #View HDF5 file structure 
 h5ls(f,all=T)
 
 
-## ----get-spatial-attributes----------------------------------------------
+
+## ----get-spatial-attributes-----------------------------------------------------------------------------------------------------------------------
 
 # R get spatial info and map info using the h5readAttributes function
 spInfo <- h5readAttributes(f,"spatialInfo")
@@ -54,7 +57,8 @@ myNoDataValue <- reflInfo$`data ignore value`
 myNoDataValue
 
 
-## ----function-read-refl-data---------------------------------------------
+
+## ----function-read-refl-data----------------------------------------------------------------------------------------------------------------------
 
 # file: the hdf file
 # band: the band you want to process
@@ -93,7 +97,8 @@ band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
 }
 
 
-## ----create-raster-stack-------------------------------------------------
+
+## ----create-raster-stack--------------------------------------------------------------------------------------------------------------------------
 
 #create a list of the bands we want in our stack
 rgb <- list(58,34,19)
@@ -112,7 +117,8 @@ rgb_rast
 hsiStack <- stack(rgb_rast)
 
 
-## ----plot-raster-stack---------------------------------------------------
+
+## ----plot-raster-stack----------------------------------------------------------------------------------------------------------------------------
 
 #Add the band numbers as names to each raster in the raster list
 
@@ -132,7 +138,8 @@ plot(hsiStack$Band_58, main="Band 58")
 
 	
 
-## ----plot-HSI-raster-----------------------------------------------------
+
+## ----plot-HSI-raster------------------------------------------------------------------------------------------------------------------------------
 
 #change the colors of our raster 
 myCol=terrain.colors(25)
@@ -147,7 +154,8 @@ myCol=topo.colors(15, alpha = 1)
 image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
 
 
-## ----plot-RGB-Image------------------------------------------------------
+
+## ----plot-RGB-Image-------------------------------------------------------------------------------------------------------------------------------
 
 
 # create a 3 band RGB image
@@ -157,15 +165,16 @@ plotRGB(hsiStack,
 
 
 
-## ----save-raster-geotiff-------------------------------------------------
+## ----save-raster-geotiff--------------------------------------------------------------------------------------------------------------------------
 
-#write out final raster	
-#note: if you set overwrite to TRUE, then you will overwite or lose the older
-#version of the tif file! keep this in mind.
-writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
+# write out final raster	
+# note: if you set overwrite to TRUE, then you will overwite or lose the older
+# version of the tif file! keep this in mind.
+writeRaster(hsiStack, file=paste0(wd,"rgbImage.tif"), format="GTiff", overwrite=TRUE)
 
 
-## ----create-location-map-------------------------------------------------
+
+## ----create-location-map--------------------------------------------------------------------------------------------------------------------------
 
 # Create a Map showing the location of our dataset in R
 map(database="state", region="california")
@@ -174,7 +183,8 @@ points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
 title(main="NEON San Joaquin (SJER) Field Site - Central California")
 
 
-## ----create-NDVI---------------------------------------------------------
+
+## ----create-NDVI----------------------------------------------------------------------------------------------------------------------------------
 
 #Calculate NDVI
 #select bands to use in calculation (red, NIR)
@@ -204,7 +214,7 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
 #add a color map with 5 colors
 myCol <- terrain.colors(3)
-#add breaks to the colormap (6 breaks = 5 segments)
+#add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
 brk <- c(0, .4, .7, .9)
 
 #plot the image using breaks
