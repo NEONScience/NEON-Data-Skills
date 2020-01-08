@@ -60,7 +60,7 @@ preferably, RStudio loaded on your computer.
 The electromagnetic spectrum is composed of thousands of bands representing 
 different types of light energy. Imaging spectrometers (instruments that collect 
 hyperspectral data) break the electromagnetic spectrum into groups of bands that 
-support classification of objects by their spectral properties on the earth's 
+support classification of objects by their spectral properties on the Earth's 
 surface. Hyperspectral data consists of many bands - up to hundreds of bands - 
 that cover the electromagnetic spectrum.
 
@@ -105,8 +105,9 @@ library(rhdf5)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
+# we want to save our files. Be sure to move the downloaded into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/"
+setwd(wd)
 
 ```
 
@@ -118,17 +119,17 @@ R, use `update.packages()`.
 ```{r view-file-strux }
 
 # Define the file name to be opened
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
 # look at the HDF5 file structure 
 h5ls(f,all=T) 
 
 ```
 
-When you look at the structure of the data, take note of the `map info dataset`, 
+When you look at the structure of the data, take note of the `map info` dataset, 
 the `spatialInfo` group, and the `wavelength` and `Reflectance` datasets. The 
 `spatialInfo` folder contains the spatial attributes of the data including its 
 Coordinate Reference System (CRS). The CRS documents how the data are physically 
-location on the earth. The `wavelength` dataset contains the middle wavelength 
+located on the Earth. The `wavelength` dataset contains the middle wavelength 
 values for each band in the data. The reflectance dataset contains the image data 
 that we will use for both data processing and visualization. 
 
@@ -183,8 +184,8 @@ vector that we just imported and check out the data located at index 19 -
 </figure>
 
 Band 19 has a associate wavelength center or 0.47244 which is in micrometers. 
-This value equates to 472.44 nanometers (nm) which is in the visible blue portion 
-of the electromagnetic spectrum (~ 400-700 nm). 
+This value equates to 472.44 nanometers (nm) which is in the blue portion of
+the visible electromagnetic spectrum (~ 400-700 nm). 
 
 ### Bands and Wavelengths
 
