@@ -29,9 +29,9 @@ stackByTable("~/Downloads/NEON_par.zip")
 
 
 
-## ----run-zipsByProduct, results="hide", message=FALSE, warning=FALSE----------------------------------------------------------
+## ----run-loadByProduct, results="hide", message=FALSE, warning=FALSE----------------------------------------------------------
 
-veg_str=loadByProduct(dpID="DP1.10098.001", site="WREF", 
+veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
               package="expanded", check.size=T)
 
 

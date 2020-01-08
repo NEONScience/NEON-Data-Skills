@@ -128,14 +128,11 @@ data directly into the R Global Environment using `loadByProduct()`.
 The most popular function in `neonUtilities` is `loadByProduct()`. 
 This function downloads data from the NEON API, merges the site-by-month 
 files, and loads the resulting data tables into the R environment, 
-assigning each data type to the appropriate R class. It combines the 
-actions of the `zipsByProduct()`, `stackByTable()`, and `readTableNEON()` 
-functions, described below.
-
-This is a popular choice because it ensures you're always working with the 
-latest data, and it ends with ready-to-use tables in R. However, if you 
-use it in a workflow you run repeatedly, keep in mind it will re-download 
-the data every time.
+assigning each data type to the appropriate R class. This is a popular 
+choice because it ensures you're always working with the latest data, 
+and it ends with ready-to-use tables in R. However, if you use it in
+a workflow you run repeatedly, keep in mind it will re-download the 
+data every time.
 
 `loadByProduct()` works on most observational (OS) and sensor (IS) data, 
 but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
@@ -204,10 +201,6 @@ with it as an independent object, you can use the
 
     list2env(veg_str, .GlobalEnv)
 
-For more details about the contents of the data tables and metadata tables, 
-check out the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
-tutorial.
-
 If you want to be able to close R and come back to these data without 
 re-downloading, you'll want to save the tables locally. We recommend 
 also saving the variables file, both so you'll have it to refer to, and 
@@ -224,7 +217,8 @@ so you can use it with `readTableNEON()` (see below).
 But, if you want to save files locally and load them into R (or another 
 platform) each time you run a script, instead of downloading from the API 
 every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
-instead of `loadByProduct()`, as we did in the first section above.
+instead of `loadByProduct()`, as we did in the first section above. Details
+can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
 
 ## Download remote sensing data: byFileAOP() and byTileAOP()
 
@@ -257,7 +251,6 @@ Model) (DP3.30015.001) from WREF in 2017.
 
     byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
               easting=580000, northing=5075000, savepath="~/Downloads")
-
 
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
