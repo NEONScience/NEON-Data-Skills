@@ -1,0 +1,178 @@
+---
+syncID: 79f902f6c0264f16a9be13f50560860a
+title: "Plot Spectral Profiles Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
+description: "Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
+dateCreated:  2015-08-08 20:49:52
+authors: Leah A. Wasser
+contributors: Donal O'Leary
+estimatedTime: 1.0 - 1.5 Hours
+packagesLibraries: rhdf5, raster, rgdal, plyr
+topics: hyperspectral, HDF5, remote-sensing 
+languagesTool: R
+dataProduct:
+code1: hyperspectral/Plot-Hyperspectral-Spectra.R
+tutorialSeries:
+urlTitle: plot-hsi-spectral-profile-r
+---
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Extract and plot spectra from an HDF5 file.
+* Work with groups and datasets within an HDF5 file.
+
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### R Libraries to Install:
+
+* **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
+* **plyr**: `install.packages('plyr')`
+* **ggplot2**: `install.packages('ggplot2')`
+
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
+
+
+### Data to Download
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
+
+***
+{% include/_greyBox-wd-rscript.html %}
+
+***
+### Recommended Skills
+
+We highly recommend you work through the 
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+before moving on to this tutorial.
+
+</div> 
+
+
+In this tutorial, we will extract a single-pixel's worth of reflectance values to
+plot a spectral profile for that pixel.
+
+```{r call-libraries, results="hide" }
+
+# Call required packages
+library(rhdf5)
+library(plyr)
+library(ggplot2)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
+
+```
+
+Now, we need to access the H5 file.
+
+```{r open-H5-file }
+
+# Define the file name to be opened
+#f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
+f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+# look at the HDF5 file structure 
+h5ls(f,all=T) 
+
+```
+
+Next, we can read the spatial attributes of the file.
+
+## But do we really need to??
+
+```{r read-spatial-attributes}
+# 
+# # r get spatialInfo using the h5readAttributes function 
+# spInfo <- h5readAttributes(f,"spatialInfo")
+# 
+# # r get attributes for the Reflectance dataset
+# reflInfo <- h5readAttributes(f,"Reflectance")
+
+```
+
+## Read Wavelength Values
+
+Next, let's read in the wavelength center associated with each band in the HDF5 
+file. 
+
+```{r read-band-wavelengths }
+
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+
+```
+
+
+## Extract Z-dimension data slice
+
+Next, we will extract all reflectance values for one pixel. This makes up the 
+spectral signature or profile of the pixel. To do that, we'll use the `h5read` 
+function.
+
+```{r extract-spectra }
+
+# extract Some Spectra from a single pixel
+aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35) )
+
+# reshape the data and turn into dataframe
+b <- adply(aPixel,c(1))
+
+# create clean data frame
+aPixeldf <- b[2]
+
+# add wavelength data to matrix
+aPixeldf$Wavelength <- wavelengths
+
+head(aPixeldf)
+
+
+# we are now done working with the HDF5 file and are now using the dataframe `b`. 
+# therefore, we should close the H5 file
+H5close()
+
+```
+
+## Scale Factor
+
+Then, we can pull the spatial attributes that we'll need to adjust the reflectance 
+values. Often, large raster data contain floating point (values with decimals) information.
+However, floating point data consume more space (yield a larger file size) compared
+to integer values. Thus, to keep the file sizes smaller, the data will be scaled
+by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the data attributes.
+
+```{r pull-scale-factor }
+
+# grab scale factor from the Reflectance attributes
+reflectanceAttr<- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+
+scaleFact = reflectanceAttr$Scale_Factor
+
+# add scaled data column to DF
+aPixeldf$scaled <- (aPixeldf$V1/scaleFact)
+
+# make nice column names
+names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
+head(aPixeldf)
+
+```
+
+## Plot Spectral Profile
+
+Now we're ready to plot our spectral profile!
+
+```{r plot-spectra }
+
+qplot(x=aPixeldf$Wavelength, 
+      y=aPixeldf$ScaledReflectance,
+      xlab="Wavelength (nm)",
+      ylab="Reflectance")
+
+```
+

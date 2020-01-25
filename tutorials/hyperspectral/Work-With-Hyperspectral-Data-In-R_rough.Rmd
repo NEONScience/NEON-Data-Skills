@@ -173,7 +173,7 @@ HDF5 file. Let's read in the wavekengths of the band centers:
 
 ```{r read-band-wavelengths }
 # read in the wavelength information from the HDF5 file
-wavelengths<- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 head(wavelengths)
 tail(wavelengths)
 
@@ -633,21 +633,7 @@ e.g. `b34[b34 > 6000 ] <- 10000`
 3. Use what you know to extract ALL of the reflectance values for
 ONE pixel rather than for an entire band. HINT: this will require you to pick
 an x and y value and then all values in the z dimension:
-`aPixel<- h5read(f,"Reflectance",index=list(54,36,NULL))`. Plot the spectra 
+`aPixel<- h5read(f,"Reflectance",index=list(NULL,100,35))`. Plot the spectra 
 output.
 
 </div>
-
-```{r}
-aPixel_soil<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,54,35) )
-
-h5closeAll()
-
-plot(aPixel_soil)
-
-aPixel_vegetation<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35) )
-plot(aPixel_vegetation)
-```
-
-
-
