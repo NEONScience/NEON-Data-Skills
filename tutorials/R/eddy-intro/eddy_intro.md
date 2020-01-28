@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, neonUtilities, ggplot2
 topics: HDF5, eddy-covariance, eddy-flux
 languagesTool: R
 dataProduct: DP4.00200.001
-code1: /R/eddy-intro/eddy_intro.ipynb
+code1: /R/eddy-intro/eddy_intro.r
 tutorialSeries: 
 urlTitle: eddy-data-intro
 ---
