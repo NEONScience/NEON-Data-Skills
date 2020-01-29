@@ -10,7 +10,7 @@ packagesLibraries: rpy2
 topics: data-management,rep-sci
 languagesTool: python
 dataProduct: 
-code1: /Python/neonUtilities/neonUtilitiesPython.ipynb
+code1: /Python/neonUtilities/neonUtilitiesPython.py
 tutorialSeries: 
 urlTitle: neon-utilities-python
 ---
