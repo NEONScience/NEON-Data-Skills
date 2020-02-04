@@ -1,0 +1,70 @@
+
+##### EDIT is the tag for stuff that still needs to be done!
+
+
+---
+title: "Subsetting HDF5 files to make a smaller deliverable"
+description: "Take a large HDF5 file and extract only the information that you need, then save as a new HDF5 file. For an example, we will take an existing hyperspectral dataset (~600Mb) and reduce it in size for subsequent tutorials."
+dateCreated: 2020-02-04 14:20:52
+authors: Donal O'Leary
+contributors: 
+estimatedTime: 1.0 Hours
+packagesLibraries: rhdf5, raster
+topics: hyperspectral, HDF5, remote-sensing
+languagesTool: R
+dataProudct: ##### EDIT
+code1: ##### EDIT
+tutorialSeries: ##### EDIT 
+urlTitle: create-raster-stack-hsi-hdf5-r
+---
+
+In this tutorial, we will subset and existing HDF5 file containing NEON
+hyperspectral data. The purpose of this exercise is to generate a smaller
+file for use in subsequent tuorials.
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+
+After completing this activity, you will be able to:
+
+* Navigate an HDF5 file to identify the variables of interest.</li>
+* Generate a new HDF5 file from a subset of the existing dataset.</li>
+* Save the new HDF5 file for future use.
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### R Libraries to Install:
+
+* **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
+* **raster**: `install.packages('raster')`
+
+<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
+
+### Data to Download
+
+{% include/dataSubsets/_data_Met-Time-Series.html %} ##### EDIT
+
+***
+{% include/_greyBox-wd-rscript.html %}  ##### EDIT
+***
+
+### Recommended Skills
+
+We highly recommend you work through the 
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+before moving on to this tutorial.
+
+</div>
+
+
+## About Hyperspectral Data 
+We often want to generate a 3 band image from multi or hyperspectral data. The 
+most commonly recognized band combination is RGB which stands for Red, Green and 
+Blue. RGB images are just like the images that your camera takes. But there are 
+other band combinations that are useful too. For example, near infrared images 
+emphasize vegetation and help us classify or identify where vegetation is located 
+on the ground.
