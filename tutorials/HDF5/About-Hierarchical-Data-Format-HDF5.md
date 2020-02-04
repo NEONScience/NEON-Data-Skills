@@ -101,7 +101,7 @@ about how the averaging was performed and over what time period data are availab
 
 One key benefit of having metadata that are attached to each file, group and 
 dataset, is that this facilitates automation without the need for a separate 
-(and additional) metadata document. Using a programming language, like R or 
+(and additional) metadata document. Using a programming language, like `R` or 
 `Python`, we can grab information from the metadata that are already associated 
 with the dataset, and which we might need to process the dataset.
 
@@ -138,9 +138,6 @@ spatial information associated with it - all in the same file)
 climate.
 * A set of images that cover one or more areas (each image can have unique 
 spatial information associated with it)
-* A multi or hyperspectral spatial dataset that contains thousands of bands
-* Field data for several sites characterizing insects, mammals, vegetation and 
-climate
 * And much more!
 
 ## Open Format 
@@ -148,7 +145,7 @@ The HDF5 format is open and free to use. The supporting libraries (and a free
 viewer), can be downloaded from the 
 <a href="http://www.hdfgroup.org" target="_blank">HDF Group </a> 
 website.  As such, HDF5 is widely supported in a host of programs, including 
-open source programming languages like R and `Python`, and commercial 
+open source programming languages like `R` and `Python`, and commercial 
 programming tools like `Matlab` and `IDL`. Spatial data that are stored in HDF5 
 format can be used in GIS and imaging programs including `QGIS`, `ArcGIS`, and 
 `ENVI`.
@@ -159,15 +156,15 @@ format can be used in GIS and imaging programs including `QGIS`, `ArcGIS`, and
 * **Self-Describing** The datasets with an HDF5 file are self describing. This 
 allows us to efficiently extract metadata without needing an additional metadata 
 document.
-* **Supporta Heterogeneous Data**: Different types of datasets can be contained 
+* **Supports Heterogeneous Data**: Different types of datasets can be contained 
 within one HDF5 file. 
 * **Supports Large, Complex Data**: HDF5 is a compressed format that is designed 
 to support large, heterogeneous, and complex datasets. 
 * **Supports Data Slicing:** "Data slicing", or extracting portions of the 
 dataset as needed for  analysis, means large files don't need to be completely 
 read into the computers memory or RAM.
-* **Open Format -  wide support in the many tools**: Because the HDF5 format is 
+* **Open Format -  wide support in many tools**: Because the HDF5 format is 
 open, it is supported by a host of programming languages and tools, including 
-open source languages like R and `Python` and open GIS tools like `QGIS`.
+open source languages like `R` and `Python` and open GIS tools like `QGIS`.
 
 
