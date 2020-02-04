@@ -15,7 +15,7 @@ languagesTool: R
 dataProudct: ##### EDIT
 code1: ##### EDIT
 tutorialSeries: ##### EDIT 
-urlTitle: create-raster-stack-hsi-hdf5-r
+urlTitle: ##### EDIT
 ---
 
 In this tutorial, we will subset and existing HDF5 file containing NEON
@@ -54,6 +54,8 @@ preferably, RStudio loaded on your computer.
 
 ### Recommended Skills
 
+##### EDIT this should be changed, as this tutorial will take place /before/ the hyperspectral lessons!
+
 We highly recommend you work through the 
 <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
@@ -62,9 +64,4 @@ before moving on to this tutorial.
 
 
 ## About Hyperspectral Data 
-We often want to generate a 3 band image from multi or hyperspectral data. The 
-most commonly recognized band combination is RGB which stands for Red, Green and 
-Blue. RGB images are just like the images that your camera takes. But there are 
-other band combinations that are useful too. For example, near infrared images 
-emphasize vegetation and help us classify or identify where vegetation is located 
-on the ground.
+PARAGRAPH 1
