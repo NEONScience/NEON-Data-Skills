@@ -257,9 +257,6 @@ b34<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(34,1:nCols,1:nRow
 # what type of object is b34?
 class(b34)
 
-# Use h5closeAll() to close the open connection - this saves memory and prevents problems!
-h5closeAll()
-
 ```
 
 ### A Note About Data Slicing in HDF5
