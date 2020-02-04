@@ -132,11 +132,6 @@ aPixeldf$Wavelength <- wavelengths
 
 head(aPixeldf)
 
-
-# we are now done working with the HDF5 file and are now using the dataframe `b`. 
-# therefore, we should close the H5 file
-H5close()
-
 ```
 
 ## Scale Factor

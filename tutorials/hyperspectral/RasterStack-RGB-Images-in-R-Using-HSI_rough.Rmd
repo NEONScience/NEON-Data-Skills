@@ -109,8 +109,8 @@ the file structure.
 # Load required packages
 library(raster)
 library(rhdf5)
-library(rgdal)
-library(maps)
+#library(rgdal)
+#library(maps)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
@@ -239,8 +239,6 @@ rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
                    extent=rasExt,
                    CRS=myCRS)
 
-
-h5closeAll()
 #check out the properties or rgb_rast
 #note that it displays properties of 3 rasters.
 
