@@ -35,7 +35,7 @@ After completing this activity, you will be able to:
 
 Install the free HDFView application. This application allows you to explore 
 the contents of an HDF5 file easily. 
-<a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click here to go to the download page. </a>
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">Click here to go to the download page. </a>
 
 ## Data to Download
 NOTE: The first file downloaded has an .HDF5 file extension, the second file 
