@@ -17,6 +17,9 @@ library(raster)
 library(plyr)
 library(ggplot2)
 
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+
 # read in the wavelength information from the HDF5 file
 wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 

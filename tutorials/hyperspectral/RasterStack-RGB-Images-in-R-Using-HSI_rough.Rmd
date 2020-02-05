@@ -120,10 +120,10 @@ setwd(wd)
 ```
 
 ```{r read-in-file }
-
+setwd(wd)
 # Read in H5 file
 #f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
-f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 #View HDF5 file structure 
 h5ls(f,all=T)
 
@@ -149,7 +149,7 @@ reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
 resolution <- reflInfo$Spatial_Resolution_X_Y[1]
 
 #grab the no data value
-myNoDataValue <- reflInfo$Data_Ignore_Value
+myNoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
 myNoDataValue
 
 # Grab the UTM coordinates of the spatial extent
@@ -232,7 +232,7 @@ for each band.
 
 ```{r create-raster-stack }
 #create a list of the bands we want in our stack
-rgb <- list(58,34,19)
+rgb <- list(58%/%4,34%/%4,19%/%4)
 #lapply tells R to apply the function to each element in the list
 rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
                    noDataValue=myNoDataValue, 
@@ -273,10 +273,10 @@ hsiStack
 
 #scale the data as specified in the reflInfo$Scale Factor
 
-hsiStack <- hsiStack/reflInfo$Scale_Factor
+hsiStack <- hsiStack/as.integer(reflInfo$Scale_Factor)
 
 ### Plot one raster in the stack to make sure things look OK.
-plot(hsiStack$Band_58, main="Band 58")
+plot(hsiStack$Band_14, main="Band 14")
 
 	
 ```
