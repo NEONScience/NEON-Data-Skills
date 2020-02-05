@@ -814,6 +814,7 @@ out <- eddy4R.base::def.dp01.agr.ecte(inpList = wrk,
                                       MethSubAgr = TRUE, 
                                       MethUcrt = FALSE)
 
+
 # Generate qfqm table to be plotted
 inpPlot <- data.frame(time = 
                         format(as.POSIXct(out$time$co2Turb$timeBgn, 
@@ -884,10 +885,7 @@ eddy4R.base::def.hdf5.crte(Date = date,
                                                  "/", Para$Flow$Loc, 
                                                  "/", Para$Flow$VersDp),
                            FileOutBase = Para$Flow$FileOutBase, 
-                           MethExpd = TRUE,
-                           FileNameReadMe = "/home/eddy/inpExmp/ECTE_HDF5_readme.txt",
-                           FileNameObjDesc = 
-                             "/home/eddy/inpExmp/ECTE_HDF5_object_description.csv")
+                           MethExpd = TRUE)
 
 # Determine the output filename of the file we just created  
 FileOut <- base::list.files(path = base::paste0(Para$Flow$DirOut, 
@@ -896,7 +894,7 @@ FileOut <- base::list.files(path = base::paste0(Para$Flow$DirOut,
                             pattern = ".h5", full.names = TRUE)
 
 # Call the wrapper function wrap.hdf5.wrte.dp01() to package 
-# and write data to output HDF5 files, both basic and expanded
+# and write data to output HDF5 files, just expanded 30 minute data
 eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out, 
                                  FileIn = base::paste0(Para$Flow$DirInp,
                                                        "/","ECTE_dp0p_",  
@@ -906,6 +904,6 @@ eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out,
                                  SiteLoca = Para$Flow$Loc, 
                                  LvlTowr = Para$Flow$LvlTowr, 
                                  MethUcrt = FALSE, 
-                                 MethSubAgr = TRUE)
+                                 MethSubAgr = FALSE)
 
 ```
