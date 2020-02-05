@@ -1,10 +1,10 @@
 ---
-title: "Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 0.2.0"
+title: "Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 1.0.0"
 author: "David Durden, Stefan Metzger, Natchaya Pingintha-Durden, Claire Lunch, Megan Jones"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 0.2.0}
+  %\VignetteIndexEntry{Example workflow for processing NEON eddy-covariance turbulence data with eddy4R-Docker 1.0.0}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
