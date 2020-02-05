@@ -46,7 +46,7 @@ preferably, RStudio loaded on your computer.
 
 ### Data to Download
 
-{% include/dataSubsets/_data_Met-Time-Series.html %} ##### EDIT
+{% include/dataSubsets/_data_Met-Time-Series.html %} ##### EDIT should be full 1km hyperspectral HDF5
 
 ***
 {% include/_greyBox-wd-rscript.html %}  ##### EDIT
@@ -65,3 +65,47 @@ before moving on to this tutorial.
 
 ## About Hyperspectral Data 
 PARAGRAPH 1
+
+
+
+```{r load-libraries}
+
+# Install rhdf5 package (only need to run if not already installed)
+#install.packages("BiocManager")
+#BiocManager::install("rhdf5")
+
+# Load required packages
+#library(raster)
+library(rhdf5)
+#library(rgdal)
+#library(maps)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
+
+```
+
+
+
+```{r read-in-file }
+
+# Read in H5 file
+#f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
+f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+#View HDF5 file structure 
+h5ls(f,all=T)
+
+```
+
+
+
+```{r create-hdf5}
+
+# create hdf5 file
+h5createFile("sensorData.h5")
+# create group for location 1
+h5createGroup("sensorData.h5", "location1")
+
+```
