@@ -122,7 +122,7 @@ or the Docker Quickstart Terminal (Windows).
 
 The first command `docker login` will prompt you for your DockerHub ID and password. 
 
-The second command `docker run -d -p 8787:8787 stefanmet/eddy4r:1.0.0` will 
+The second command `docker run -d -p 8787:8787 -e PASSWORD=YOURPASSWORD stefanmet/eddy4r:1.0.0` will 
 download the latest eddy4R–Docker image and start a Docker container that 
 utilizes port 8787 for establishing a graphical interface via web browser.  
 
@@ -136,6 +136,7 @@ port on your machine, the last 4 digits are the port communicating with
 RStudio on Docker. You can change the first 4 digits if you want to use a 
 different port on your machine, or if you are running many containers or 
 are on a shared network, but the last 4 digits need to be 8787.
+* `-e PASSWORD=YOURPASSWORD`: define a password environmental variable to use upon login to the Rstudio instance. YOURPASSWORD can be anything you want.
 * `stefanmet/eddy4r:1.0.0`: finally, which container do you want to run. 
 
 Now try it. 
@@ -143,7 +144,7 @@ Now try it.
 ```{bash get-eddy4R, eval=FALSE}
 docker login 
 
-docker run -d -p 8787:8787 stefanmet/eddy4r:1.0.0
+docker run -d -p 8787:8787 -e PASSWORD=YOURPASSWORD stefanmet/eddy4r:1.0.0
 ```
 
 This last command will run a specified release version (`eddy4r:1.0.0`) of the 
@@ -183,7 +184,7 @@ Type `localhost` in a shell session and the local IP will be the output.
 ***
 
 Once in the web browser you can log into this instance of the RStudio session 
-with both the username and password as **rstudio**. Once complete you are now in 
+with the username as **rstudio** and password as defined by `YOURPASSWORD`. Once complete you are now in 
 a RStudio user interface with eddy4R installed and ready to use. 
 
 Additional information about the use of RStudio and eddy4R packages in Docker 
@@ -191,4 +192,4 @@ containers can be found on the <a href="https://github.com/rocker-org/rocker/wik
 
 ## Using eddy4R
 
-To learn to use the eddy4R package to calculate fluxes, please visit <a href="" target="_blank">the eddy4R vignette (link pending)</a>.
+To learn to use the eddy4R package to calculate fluxes, please visit <a href="https://w3id.org/smetzger/Metzger-et-al_2019_NEON-BAMS/tutorial" target="_blank">the eddy4R vignette (link pending)</a>.
