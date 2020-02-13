@@ -169,8 +169,10 @@ for your operating system.
 
 ***
 #### Windows
-Type `docker-machine ip default` into cmd.exe window. The output will be your 
-local IP address for the docker machine. 
+Depending on the version of Docker, older Docker Toolbox versus the newer Docker Desktop for Windows, there are different way to get the docker machine IP address:
+* Docker Toolbox - Type `docker-machine ip default` into cmd.exe window. The output will be your local IP address for the docker machine. 
+* Docker Desktop for Windows - Type `ipconfig` into cmd.exe window. The output will include the DockerNAT IPv4 address that docker uses to communicate to the internet, which in most cases will be **10.0.75.1**. 
+
 
 #### Mac
 
