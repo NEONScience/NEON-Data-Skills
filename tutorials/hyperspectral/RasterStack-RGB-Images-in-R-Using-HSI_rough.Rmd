@@ -146,7 +146,7 @@ myCRS <- crs(paste0("+init=epsg:",myEPSG))
 
 # define the resolution
 reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
-resolution <- reflInfo$Spatial_Resolution_X_Y[1]
+# resolution <- reflInfo$Spatial_Resolution_X_Y[1]
 
 #grab the no data value
 myNoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
@@ -232,7 +232,7 @@ for each band.
 
 ```{r create-raster-stack }
 #create a list of the bands we want in our stack
-rgb <- list(58%/%4,34%/%4,19%/%4)
+rgb <- list(14,9,4)
 #lapply tells R to apply the function to each element in the list
 rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
                    noDataValue=myNoDataValue, 
@@ -245,7 +245,7 @@ rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
 rgb_rast
 
 #finally, create a raster stack from our list of rasters
-hsiStack <- stack(rgb_rast)
+rgbStack <- stack(rgb_rast)
 
 ```
 
@@ -267,16 +267,16 @@ the bands in the list.
 #Create a list of band names
 bandNames <- paste("Band_",unlist(rgb),sep="")
 
-names(hsiStack) <- bandNames
+names(rgbStack) <- bandNames
 #check properties of the raster list - note the band names
-hsiStack
+rgbStack
 
 #scale the data as specified in the reflInfo$Scale Factor
 
-hsiStack <- hsiStack/as.integer(reflInfo$Scale_Factor)
+rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
 
 ### Plot one raster in the stack to make sure things look OK.
-plot(hsiStack$Band_14, main="Band 14")
+plot(rgbStack$Band_14, main="Band 14")
 
 	
 ```
@@ -287,15 +287,15 @@ We can play with the color ramps too if we want:
 
 #change the colors of our raster 
 myCol=terrain.colors(25)
-image(hsiStack$Band_58, main="Band 58", col=myCol)
+image(rgbStack$Band_14, main="Band 58", col=myCol)
 
 #adjust the zlims or the stretch of the image
 myCol=terrain.colors(25)
-image(hsiStack$Band_58, main="Band 58", col=myCol, zlim = c(0,.5))
+image(rgbStack$Band_14, main="Band 58", col=myCol, zlim = c(0,.5))
 
 #try a different color palette
 myCol=topo.colors(15, alpha = 1)
-image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
+image(rgbStack$Band_14, main="Band 58", col=myCol, zlim=c(0,.5))
 
 ```
 
@@ -307,8 +307,8 @@ The `plotRGB` function allows you to combine three bands to create an image.
 
 
 # create a 3 band RGB image
-plotRGB(hsiStack,
-        r=1,g=2,b=3, scale=300, 
+plotRGB(rgbStack,
+        r=1,g=2,b=3, scale=.15,
         stretch = "Lin")
 
 ```
@@ -325,7 +325,7 @@ this GeoTIFF into any GIS program!
 # write out final raster	
 # note: if you set overwrite to TRUE, then you will overwite or lose the older
 # version of the tif file! keep this in mind.
-writeRaster(hsiStack, file=paste0(wd,"rgbImage.tif"), format="GTiff", overwrite=TRUE)
+writeRaster(rgbStack, file=paste0(wd,"rgbImage.tif"), format="GTiff", overwrite=TRUE)
 
 ```
 

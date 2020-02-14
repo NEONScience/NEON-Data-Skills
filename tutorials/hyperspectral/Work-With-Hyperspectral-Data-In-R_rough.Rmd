@@ -3,13 +3,13 @@ syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 description: "Open up and explore a hyperspectral dataset stored in HDF5 format in R. Learn about the power of data slicing in HDF5. Slice our band subsets of the data and create and visualize one band."
 dateCreated:  2014-11-26 20:49:52
-authors: Leah A. Wasser, Edmund Hart
-contributors: Donal O'Leary
+authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
+contributors: 
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, rgdal
 topics: hyperspectral, HDF5, remote-sensing 
 languagesTool: R
-dataProduct:
+dataProduct: ##### EDIT HERE
 code1: hyperspectral/Work-With-Hyperspectral-Data-In-R.R
 tutorialSeries:
 urlTitle: hsi-hdf5-r
@@ -253,7 +253,7 @@ nBands
 
 ```{r get-reflectance-shape-2}
 # Extract or "slice" data for band 34 from the HDF5 file
-b34<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(34,1:nCols,1:nRows)) 
+b34<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(1,1:nCols,1:nRows)) 
 # what type of object is b34?
 class(b34)
 
@@ -555,9 +555,9 @@ image(log(b34r),
 
 ```{r define-extent}
 
-# grab resolution of raster as an object
-res <- reflInfo$Spatial_Resolution_X_Y[1] #pulling just the X resolution because X and Y are equal
-res
+# # grab resolution of raster as an object
+# res <- reflInfo$Spatial_Resolution_X_Y[1] #pulling just the X resolution because X and Y are equal
+# res
 
 # Grab the UTM coordinates of the spatial extent
 
