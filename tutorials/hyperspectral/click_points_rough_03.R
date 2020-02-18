@@ -31,6 +31,7 @@ plotRGB(rgbStack,
 par(col="red", cex=3)
 c=click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.lab="red")
 
+## convert raster cell number into row and column (used to extract spectral signature below)
 c$row=c$cell%/%nrow(rgbStack)+1
 c$col=c$cell%%ncol(rgbStack)
 
@@ -67,30 +68,15 @@ ggplot()+
 
 ## Mask out absorption bands
 
-# grab scale factor from the Reflectance attributes
+# grab Reflectance metadata (which contains absorption band limits)
 reflMetadata<- h5readAttributes(f,"/SJER/Reflectance" )
 
 ab1 = reflMetadata$Band_Window_1_Nanometers
 ab2 = reflMetadata$Band_Window_2_Nanometers
+
+## Plot spectral signatures again with rectangles showing the absorption bands
 ggplot()+
   geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
-  geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color="black", fill="grey40", alpha=0.9)+
-  geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab2[1], xmax=ab2[2]), color="black", fill="grey40", alpha=0.95)+
-  scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
-                      labels = c("Field", "Tree", "Roof","Soil","Water"))+
-  labs(color = "Cover Type")+
-  ggtitle("Land cover spectral signatures")+
-  theme(plot.title = element_text(hjust = 0.5, size=20))+
-  xlab("Wavelength")
-
-Pixel.melt.masked=Pixel.melt
-
-Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab1[1]&Pixel.melt.masked$wavelengths<ab1[2],]$Reflectance=NA
-Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelengths<ab2[2],]$Reflectance=NA
-
-
-ggplot()+
-  geom_line(data = Pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
   geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color="black", fill="grey40", alpha=0.8)+
   geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab2[1], xmax=ab2[2]), color="black", fill="grey40", alpha=0.8)+
   scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
@@ -100,8 +86,20 @@ ggplot()+
   theme(plot.title = element_text(hjust = 0.5, size=20))+
   xlab("Wavelength")
 
-# p=drawPoly(b34r, sp=T)
-# crs(p)=crs(b34r)
-# plot(p)
-# 
-# plot(b34r, add=T, alpha=.5)
+
+## Now, manipulate the melted data.frame to remove all rows with wavelengths in the absorption bands
+Pixel.melt.masked=Pixel.melt
+
+Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab1[1]&Pixel.melt.masked$wavelengths<ab1[2],]$Reflectance=NA
+Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelengths<ab2[2],]$Reflectance=NA
+
+
+ggplot()+
+  geom_line(data = Pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
+                      labels = c("Field", "Tree", "Roof","Soil","Water"))+
+  labs(color = "Cover Type")+
+  ggtitle("Land cover spectral signatures")+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab("Wavelength")
+
