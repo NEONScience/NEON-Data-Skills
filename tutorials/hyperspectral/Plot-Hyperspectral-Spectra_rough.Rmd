@@ -76,8 +76,7 @@ Now, we need to access the H5 file.
 ```{r open-H5-file }
 
 # Define the file name to be opened
-#f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
-f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 # look at the HDF5 file structure 
 h5ls(f,all=T) 
 
@@ -166,6 +165,7 @@ Now we're ready to plot our spectral profile!
 
 qplot(x=aPixeldf$Wavelength, 
       y=aPixeldf$ScaledReflectance,
+      geom="line",
       xlab="Wavelength (nm)",
       ylab="Reflectance")
 

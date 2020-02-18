@@ -119,8 +119,7 @@ R, use `update.packages()`.
 ```{r view-file-strux }
 
 # Define the file name to be opened
-#f <- paste0(wd,"NEONDSImagingSpectrometerData.h5")
-f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5") ## testing compatability with data downloaded from portal
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5") ## testing compatability with data downloaded from portal
 
 # look at the HDF5 file structure 
 View(h5ls(f,all=T)) ## should remove 'View()' for better formatting? Or so it converts better?
@@ -253,7 +252,7 @@ nBands
 
 ```{r get-reflectance-shape-2}
 # Extract or "slice" data for band 34 from the HDF5 file
-b34<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(1,1:nCols,1:nRows)) 
+b34<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
 # what type of object is b34?
 class(b34)
 
@@ -541,13 +540,13 @@ b34r <- raster(b34,
 
 b34r
 
-#let's have a look at our properly positioned raster. Take note of the 
+#let's have a look at our properly oriented raster. Take note of the 
 #coordinates on the x and y axis.
 
 image(log(b34r), 
       xlab = "UTM Easting", 
       ylab = "UTM Northing",
-      main = "Properly Positioned Raster")
+      main = "Properly Oriented Raster")
 
 
 ```

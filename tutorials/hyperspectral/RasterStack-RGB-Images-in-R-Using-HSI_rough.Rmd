@@ -325,7 +325,7 @@ this GeoTIFF into any GIS program!
 # write out final raster	
 # note: if you set overwrite to TRUE, then you will overwite or lose the older
 # version of the tif file! keep this in mind.
-writeRaster(rgbStack, file=paste0(wd,"rgbImage.tif"), format="GTiff", overwrite=TRUE)
+writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), format="GTiff", overwrite=TRUE)
 
 ```
 
@@ -365,7 +365,7 @@ the best way to calculate NDVI from hyperspectral data!
 
 #Calculate NDVI
 #select bands to use in calculation (red, NIR)
-ndvi_bands <- c(58,90)
+ndvi_bands <- c(16,24)
 
 
 #create raster list and then a stack using those two bands
@@ -389,6 +389,7 @@ NDVI <- function(x) {
 ndvi_calc <- calc(ndvi_stack,NDVI)
 plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
+wavelengths[ndvi_bands]
 #play with breaks and colors to create a meaningful map
 
 #add a color map with 5 colors
