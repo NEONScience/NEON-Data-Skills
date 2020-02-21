@@ -1,7 +1,3 @@
-
-##### EDIT is the tag for stuff that still needs to be done!
-
-
 ---
 syncID: 884cc5915a3842c1ab6617b060797fab
 title: "Subsetting HDF5 files to make a smaller deliverable"
@@ -47,9 +43,9 @@ preferably, RStudio loaded on your computer.
 
 ### Data to Download
 
-{% include/dataSubsets/##########.html %} ##### EDIT should be full 1km hyperspectral HDF5
+{% include/dataSubsets/_data_Imaging-Spec-Data-Full-Tile-H5-2020.html %}
 
-##### EDIT original file is NEON_D17_SJER_DP3_257000_4112000_reflectance.h5 from March 2019
+This file is NEON_D17_SJER_DP3_257000_4112000_reflectance.h5 from March 2019, available on data.neonscience.org.
 
 ***
 {% include/_greyBox-wd-rscript.html %}  ##### EDIT
@@ -57,10 +53,8 @@ preferably, RStudio loaded on your computer.
 
 ### Recommended Skills
 
-##### EDIT this should be changed, as this tutorial will take place /before/ the hyperspectral lessons!
-
 If you haven't already, we highly recommend you work through the 
-<a href="{{ site.baseurl }}/########" target="_blank"> *Introduction to Working with HDF5 Format in R* series</a>
+<a href="{{ site.baseurl }}/intro-hdf5-r-series" target="_blank"> *Introduction to Working with HDF5 Format in R* series</a>
 before moving on to this tutorial.
 
 </div>
@@ -74,15 +68,17 @@ you can reduce file size, thereby shrinking your storage needs,
 and shortening file transfer/download times. In this example, we
 will take a full HDF5 file of NEON hyperspectral reflectance data
 from the San Joaquin Experimental Range (SJER) that has a file size
-of `652 Mb` and make a new HDF5 file with a reduced spatial extent,
-and a reduced spectral resolution, yeilding a file of only `50.1 Mb`.
+of ~`652 Mb` and make a new HDF5 file with a reduced spatial extent,
+and a reduced spectral resolution, yeilding a file of only ~`50.1 Mb`.
 This reduction in file size will make it easier and faster to share
 your data with others. We will then use this subsetted file in the
-#### EDIT - ADD LINK  "introduction to hyperspectral..." tutorial series.
+<a href="{{ site.baseurl }}/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
 
 If you find that downloading the full `652 Mb` file takes too much
 time or storage space, you will find a link to this subsetted file
-at the top of the ##### EDIT - ADD LINK "introduction to hyperspectral..." tutorial series page.
+at the top of each lesson in the <a href="{{ site.baseurl }}/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
+
+## Reading in the HDF5 file
 
 First, we will load the required library for this tutorial:
 
@@ -116,6 +112,8 @@ h5ls(f,all=T)
 
 ```
 
+## Create new HDF5 file framework
+
 Now, we create a new empty HDF5 file, and then populate this file with the
 groups that we need to save our essential information for this subset.
 Note that the function `h5createFile()` will not overwrite an existing
@@ -135,8 +133,6 @@ h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/Reflectance
 
 
 ```
-
-
 
 
 ```{r populate group attributes}
