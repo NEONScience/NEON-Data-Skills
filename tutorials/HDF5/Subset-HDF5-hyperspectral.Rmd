@@ -1,18 +1,20 @@
 ---
-syncID: 884cc5915a3842c1ab6617b060797fab
 title: "Subsetting HDF5 files to make a smaller deliverable"
-description: "Take a large HDF5 file and extract only the information that you need, then save as a new HDF5 file. For an example, we will take an existing hyperspectral dataset (~600Mb) and reduce it in size for subsequent tutorials."
+code1: null
+contributors: null
+dataProudct: null
 dateCreated: 2020-02-04 14:20:52
-authors: Donal O'Leary
-contributors: 
+description: Take a large HDF5 file and extract only the information that you need,
+  then save as a new HDF5 file. For an example, we will take an existing hyperspectral
+  dataset (~600Mb) and reduce it in size for subsequent tutorials.
 estimatedTime: 1.0 Hours
-packagesLibraries: rhdf5, raster
-topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
-dataProudct: ##### EDIT
-code1: ##### EDIT
-tutorialSeries: ##### EDIT 
-urlTitle: ##### EDIT
+packagesLibraries: rhdf5, raster
+syncID: 884cc5915a3842c1ab6617b060797fab
+authors: Donal O'Leary
+topics: hyperspectral, HDF5, remote-sensing
+tutorialSeries: null
+urlTitle: null
 ---
 
 In this tutorial, we will subset an existing HDF5 file containing NEON
@@ -42,13 +44,14 @@ preferably, RStudio loaded on your computer.
  R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
+The purpose of this tutorial is to reduce a large file (~`652Mb`) to a smaller size. The download linked here is the original large file, and therefore you may choose to skip this tutorial and download if you are on a slow internet connection or have file size limitations on your device.
 
 {% include/dataSubsets/_data_Imaging-Spec-Data-Full-Tile-H5-2020.html %}
 
 This file is NEON_D17_SJER_DP3_257000_4112000_reflectance.h5 from March 2019, available on data.neonscience.org.
 
 ***
-{% include/_greyBox-wd-rscript.html %}  ##### EDIT
+{% include/_greyBox-wd-rscript.html %}
 ***
 
 ### Recommended Skills
@@ -106,8 +109,6 @@ setwd(wd)
 
 # Read in H5 file
 f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
-#View HDF5 file structure 
-h5ls(f,all=T)
 
 ```
 
@@ -119,16 +120,19 @@ Note that the function `h5createFile()` will not overwrite an existing
 file. Therefore, if you have already created or downloaded this file, the
 function will throw an error!
 
-```{r create-hdf5, eval=FALSE, comment=NA}
-setwd(wd)
+```{r create-hdf5}
+# First, create a name for the new file
+nf <- paste0(wd, "NEON_hyperspectral_tutorial_example_subset.h5")
+
+
 # create hdf5 file
 
-h5createFile("NEON_hyperspectral_tutorial_example_subset.h5")
-h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/")
-h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/Reflectance")
-h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/Reflectance/Metadata")
-h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/Reflectance/Metadata/Coordinate_System")
-h5createGroup("NEON_hyperspectral_tutorial_example_subset.h5", "SJER/Reflectance/Metadata/Spectral_Data")
+h5createFile(nf)
+h5createGroup(nf, "SJER/")
+h5createGroup(nf, "SJER/Reflectance")
+h5createGroup(nf, "SJER/Reflectance/Metadata")
+h5createGroup(nf, "SJER/Reflectance/Metadata/Coordinate_System")
+h5createGroup(nf, "SJER/Reflectance/Metadata/Spectral_Data")
 
 ```
 
@@ -138,10 +142,10 @@ As explained within the <a href="{{ site.baseurl }}/intro-hdf5-r-series" target=
 
 First, we will do this for the low-level "SJER/Reflectance" group. 
 
-```{r ref-attributes, eval=FALSE, comment=NA}
+```{r ref-attributes}
 
 a=h5readAttributes(f,"/SJER/Reflectance/")
-fid <- H5Fopen("NEON_hyperspectral_tutorial_example_subset.h5")
+fid <- H5Fopen(nf)
 g=H5Gopen(fid, "SJER/Reflectance")
 
 for(i in 1:length(names(a))){
@@ -152,7 +156,7 @@ h5closeAll()
 
 Next, we will loop through each of the datasets within the Coordinate_System group, and copy those (and their attributes, if present) from the full tile to our subset file. The Coordinate_System group contains many important pieces of information for geolocating our data, so we need to make sure that the sunset file has those data.
 
-```{r populate-group-attributes, eval=FALSE, comment=NA}
+```{r populate-group-attributes}
 
 # make a list of all groups within the full tile file
 ls=h5ls(f,all=T)
@@ -165,7 +169,7 @@ for(i in 1:length(cg)){
   a=h5readAttributes(f,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
   d=h5read(f,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
   attributes(d)=a
-  h5write(obj=d,file="NEON_hyperspectral_tutorial_example_subset.h5",
+  h5write(obj=d,file=nf,
           name=paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]),
           write.attributes=T)
 }
@@ -191,7 +195,7 @@ wa <- h5readAttributes(file = f,
 attributes(ws) <- wa
 
 # Finally, write the subset of wavelengths and their attributes to the subset file
-h5write(obj=ws, file="NEON_hyperspectral_tutorial_example_subset.h5",
+h5write(obj=ws, file=nf,
         name="SJER/Reflectance/Metadata/Spectral_Data/Wavelength",
         write.attributes=T)
 ```
@@ -223,7 +227,7 @@ attributes(hs)=c(hsd,ha)
 
 attributes(hs)
 
-h5write(obj=hs, file="NEON_hyperspectral_tutorial_example_subset.h5",
+h5write(obj=hs, file=nf,
         name="SJER/Reflectance/Reflectance_Data",
         write.attributes=T)
 
@@ -232,6 +236,6 @@ h5closeAll()
 
 That's it! We just created a subset of the original HDF5 file, and included the most essential groups and metadata for exploratory analysis. You may consider adding other information, such as the weather quality indicator, when subsetting datasets for your own purposes.
 If you want to take a look at the subset that you just made, run the `h5ls()` function:
-```{r view-product}
-View(h5ls(paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5", all=T)))
+```{r view-product, eval=FALSE, comment=NA}
+View(h5ls(nf, all=T))
 ```
