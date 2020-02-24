@@ -262,7 +262,7 @@ Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelen
 ggplot()+
   geom_line(data = Pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
   scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
-                      labels = c("Field", "Tree", "Roof","Soil","Water"))+
+                      labels = c("Field", "Tree", "Roof", "Soil", "Water"))+
   labs(color = "Cover Type")+
   ggtitle("Land cover spectral signatures")+
   theme(plot.title = element_text(hjust = 0.5, size=20))+
@@ -280,7 +280,8 @@ There are many interesting comparisons to make with spectral signatures.
 Try these challenges to explore hyperspectral data further:
 
 1. Compare five different types of vegetation, and pick an appropriate color
-for each of their lines.
+for each of their lines. A nice guide to the many different color options
+in R can be found <a href="http://sape.inf.usi.ch/quick-reference/ggplot2/colour" target="_blank"> *here*.</a>
 
 2. What happens if you only click four points? What about six? How does this
 change the spectral signature plots, and can you fix any errors that occur?
