@@ -4,7 +4,7 @@ title: "Hierarchical Data Formats - What is HDF5?"
 description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file/data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 dateCreated:   2014-11-27
 authors: Leah A. Wasser
-contributors: Elizabeth Webb
+contributors: Elizabeth Webb, Donal O'Leary
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: HDF5
@@ -133,14 +133,11 @@ any of the following (and more) in one file:
 a site or for many sites 
 * A set of images that cover one or more areas (each image can have specific 
 spatial information associated with it - all in the same file)
-* A multi or hyperspectral spatial dataset that contains thousands of bands.
+* A multi or hyperspectral spatial dataset that contains hundreds of bands.
 * Field data for several sites characterizing insects, mammals, vegetation and 
 climate.
 * A set of images that cover one or more areas (each image can have unique 
 spatial information associated with it)
-* A multi or hyperspectral spatial dataset that contains thousands of bands
-* Field data for several sites characterizing insects, mammals, vegetation and 
-climate
 * And much more!
 
 ## Open Format 
