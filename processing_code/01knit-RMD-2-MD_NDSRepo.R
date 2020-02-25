@@ -15,23 +15,24 @@ dirs <- c("R/eddy4r/",
           "dataviz/",
           "R/download-explore/",
           "R/spatial-data/",
-          "R/NEON-API/")
+          "R/NEON-API/",
+          "hyperspectral/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[7] 
+subDir <- dirs[10] 
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Git/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
-wd <- "~/Git/data"
+wd_processing_doc <- "~/Git/data"
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir
-setwd(wd)
+setwd(wd_processing_doc)
 
 # set series subdir
 #subDir <- paste0(dir,"/")
@@ -52,11 +53,11 @@ opts_knit$set(base.url = base.url)
 # transfered, and deleted)
 # if it doesn't exist, create it
 # note this will fail if the sub dir doesn't exist
-if (file.exists(file.path(wd, imagePath))){
+if (file.exists(file.path(wd_processing_doc, imagePath))){
   print("Temp Image Dirs Exists! ")
 } else {
   #create image directory structure
-  dir.create(file.path(wd, imagePath), recursive = TRUE)
+  dir.create(file.path(wd_processing_doc, imagePath), recursive = TRUE)
   print("temp image directory created!")
 }
 
@@ -96,10 +97,10 @@ unlink(paste0(gitRepoPath,"/", imagePath,"*"), recursive = TRUE)
 
 
 # copy image directory over
-# file.copy(paste0(wd,"/",fig.path), paste0(gitRepoPath,imagePath), recursive=TRUE)
+# file.copy(paste0(wd_processing_doc,"/",fig.path), paste0(gitRepoPath,imagePath), recursive=TRUE)
 
 # copy rmd file to the rmd directory on git
-# file.copy(paste0(wd,"/",basename(files)), gitRepoPath, recursive=TRUE)
+# file.copy(paste0(wd_processing_doc,"/",basename(files)), gitRepoPath, recursive=TRUE)
 #################### Get List of RMD files to Render #############################
 
 
@@ -112,16 +113,15 @@ rmd.files <- list.files(file.path(gitRepoPath, postsDir), pattern="\\.Rmd$", ful
 # rmd.files <- rmd.files[5]
 
 for (files in rmd.files) {
-
   # copy .Rmd file to data working directory
-  file.copy(from = files, to=wd, overwrite = TRUE)
+  file.copy(from = files, to=wd_processing_doc, overwrite = TRUE)
   input=basename(files)
-
+  
   # setup path to images
   # print(paste0(imagePath, sub(".Rmd$", "", basename(input)), "/"))
   fig.path <- print(paste0(imagePath, sub(".Rmd$", "", input), "/"))
-
-
+  
+  
   opts_chunk$set(fig.path = fig.path)
   opts_chunk$set(fig.cap = " ")
   # render_jekyll()
@@ -129,42 +129,42 @@ for (files in rmd.files) {
   # create the markdown file name - add a date at the beginning to Jekyll recognizes
   # it as a post
   mdFile <- paste0(file.path(gitRepoPath,postsDir),sub(".Rmd$", "", input), ".md")
-
+  
   # knit Rmd to jekyll flavored md format
   knit(input, output = mdFile, envir = parent.frame())
-
+  
   # COPY image directory, rmd file OVER to the GIT SITE###
   # only copy over if there are images for the lesson
-  if (dir.exists(paste0(wd,"/",fig.path))){
+  if (dir.exists(paste0(wd_processing_doc,"/",fig.path))){
     # copy image directory over
-    file.copy(paste0(wd,"/",fig.path), file.path(gitRepoPath,imagePath), recursive=TRUE)
+    file.copy(paste0(wd_processing_doc,"/",fig.path), file.path(gitRepoPath,imagePath), recursive=TRUE)
   }
-
+  
   # copy rmd file to the rmd directory on git
-  # file.copy(paste0(wd,"/",basename(files)), gitRepoPath, recursive=TRUE)
-
+  # file.copy(paste0(wd_processing_doc,"/",basename(files)), gitRepoPath, recursive=TRUE)
+  
   # delete local repo copies of RMD files just so things are cleaned up??
-
+  
   ## OUTPUT STUFF TO R ##
   # output (purl) code in .R format
   rCodeOutput <- paste0(file.path(gitRepoPath, codeDir), sub(".Rmd$", "", basename(files)), ".R")
-
+  
   # purl the code to R
   purl(files, output = rCodeOutput)
-
+  
   # CLEAN UP
   # remove Rmd file from data working directory
   unlink(basename(files))
-
+  
   # print when file is knit
   doneWith <- paste0("processed: ",files)
   print(doneWith)
-
+  
 }
 
 ###### Local image cleanup #####
 
 # clean up working directory images dir (remove all sub dirs)
-unlink(paste0(wd,"/",imagePath,"*"), recursive = TRUE)
+unlink(paste0(wd_processing_doc,"/",imagePath,"*"), recursive = TRUE)
 
 ########################### end script
