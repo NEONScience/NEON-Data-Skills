@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, neonUtilities, ggplot2
 topics: HDF5, eddy-covariance, eddy-flux
 languagesTool: R
 dataProduct: DP4.00200.001
-code1: /R/eddy-intro/eddy_intro.ipynb
+code1: /R/eddy-intro/eddy_intro.r
 tutorialSeries: 
 urlTitle: eddy-data-intro
 ---
@@ -74,6 +74,12 @@ zipsByProduct(dpID="DP4.00200.001", package="basic",
               savepath="/data", 
               check.size=F)
 ```
+
+    Downloading files totaling approximately 313.289221 MB
+    Downloading 4 files
+      |======================================================================| 100%
+    4 files downloaded to /data/filesToStack00200
+
 
 ## 2. Data Levels
 
@@ -156,14 +162,18 @@ head(flux$NIWO)
 
 
 <table>
-<thead><tr><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.fluxCo2.nsae.flux</th><th scope=col>data.fluxCo2.stor.flux</th><th scope=col>data.fluxCo2.turb.flux</th><th scope=col>data.fluxH2o.nsae.flux</th><th scope=col>data.fluxH2o.stor.flux</th><th scope=col>data.fluxH2o.turb.flux</th><th scope=col>data.fluxMome.turb.veloFric</th><th scope=col>data.fluxTemp.nsae.flux</th><th scope=col>⋯</th><th scope=col>data.foot.stat.veloFric</th><th scope=col>data.foot.stat.distZaxsMeasDisp</th><th scope=col>data.foot.stat.distZaxsRgh</th><th scope=col>data.foot.stat.distZaxsAbl</th><th scope=col>data.foot.stat.distXaxs90</th><th scope=col>data.foot.stat.distXaxsMax</th><th scope=col>data.foot.stat.distYaxs90</th><th scope=col>qfqm.fluxCo2.stor.qfFinl</th><th scope=col>qfqm.fluxH2o.stor.qfFinl</th><th scope=col>qfqm.fluxTemp.stor.qfFinl</th></tr></thead>
+<caption>A data.frame: 6 × 26</caption>
+<thead>
+	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.fluxCo2.nsae.flux</th><th scope=col>data.fluxCo2.stor.flux</th><th scope=col>data.fluxCo2.turb.flux</th><th scope=col>data.fluxH2o.nsae.flux</th><th scope=col>data.fluxH2o.stor.flux</th><th scope=col>data.fluxH2o.turb.flux</th><th scope=col>data.fluxMome.turb.veloFric</th><th scope=col>data.fluxTemp.nsae.flux</th><th scope=col>⋯</th><th scope=col>data.foot.stat.veloFric</th><th scope=col>data.foot.stat.distZaxsMeasDisp</th><th scope=col>data.foot.stat.distZaxsRgh</th><th scope=col>data.foot.stat.distZaxsAbl</th><th scope=col>data.foot.stat.distXaxs90</th><th scope=col>data.foot.stat.distXaxsMax</th><th scope=col>data.foot.stat.distYaxs90</th><th scope=col>qfqm.fluxCo2.stor.qfFinl</th><th scope=col>qfqm.fluxH2o.stor.qfFinl</th><th scope=col>qfqm.fluxTemp.stor.qfFinl</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>0.1111935               </td><td>-0.06191186             </td><td>0.1731053               </td><td>19.401824               </td><td> 3.2511265              </td><td>16.150697               </td><td>0.19707045              </td><td>  4.1712006             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.03221479              </td><td>1000                    </td><td>333.60                  </td><td>133.44                  </td><td>25.02                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>0.9328922               </td><td> 0.08534117             </td><td>0.8475510               </td><td>10.444936               </td><td>-1.1768333              </td><td>11.621770               </td><td>0.19699723              </td><td> -0.9163691             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.33007082              </td><td>1000                    </td><td>258.54                  </td><td>108.42                  </td><td>50.04                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>0.4673682               </td><td> 0.02177216             </td><td>0.4455960               </td><td> 5.140617               </td><td>-4.3112673              </td><td> 9.451884               </td><td>0.06518208              </td><td> -2.9814957             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.12876068              </td><td>1000                    </td><td>308.58                  </td><td>125.10                  </td><td>58.38                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>0.7263614               </td><td> 0.24944366             </td><td>0.4769178               </td><td> 9.017467               </td><td> 0.1980776              </td><td> 8.819389               </td><td>0.12964000              </td><td>-13.3556222             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.83400000              </td><td>1000                    </td><td>208.50                  </td><td> 83.40                  </td><td>75.06                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>0.4740572               </td><td> 0.22524363             </td><td>0.2488136               </td><td> 3.180386               </td><td> 0.1316297              </td><td> 3.048756               </td><td>0.17460706              </td><td> -5.3406503             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.83400000              </td><td>1000                    </td><td>208.50                  </td><td> 83.40                  </td><td>66.72                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>0.8807022               </td><td> 0.07078007             </td><td>0.8099221               </td><td> 4.398761               </td><td>-0.2989443              </td><td> 4.697706               </td><td>0.10477970              </td><td> -7.2739206             </td><td>⋯                       </td><td>0.2                     </td><td>8.34                    </td><td>0.83400000              </td><td>1000                    </td><td>208.50                  </td><td> 83.40                  </td><td>41.70                   </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
+	<tr><th scope=row>1</th><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>0.1111935</td><td>-0.06191186</td><td>0.1731053</td><td>19.401824</td><td> 3.2511265</td><td>16.150697</td><td>0.19707045</td><td>  4.1712006</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.03221479</td><td>1000</td><td>333.60</td><td>133.44</td><td>25.02</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>0.9328922</td><td> 0.08534117</td><td>0.8475510</td><td>10.444936</td><td>-1.1768333</td><td>11.621770</td><td>0.19699723</td><td> -0.9163691</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.33007082</td><td>1000</td><td>258.54</td><td>108.42</td><td>50.04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>0.4673682</td><td> 0.02177216</td><td>0.4455960</td><td> 5.140617</td><td>-4.3112673</td><td> 9.451884</td><td>0.06518208</td><td> -2.9814957</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.12876068</td><td>1000</td><td>308.58</td><td>125.10</td><td>58.38</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>0.7263614</td><td> 0.24944366</td><td>0.4769178</td><td> 9.017467</td><td> 0.1980776</td><td> 8.819389</td><td>0.12964000</td><td>-13.3556222</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>75.06</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>0.4740572</td><td> 0.22524363</td><td>0.2488136</td><td> 3.180386</td><td> 0.1316297</td><td> 3.048756</td><td>0.17460706</td><td> -5.3406503</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>66.72</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>0.8807022</td><td> 0.07078007</td><td>0.8099221</td><td> 4.398761</td><td>-0.2989443</td><td> 4.697706</td><td>0.10477970</td><td> -7.2739206</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>41.70</td><td>1</td><td>1</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -183,14 +193,18 @@ flux$objDesc[which(flux$objDesc$Object %in% term),]
 
 
 <table>
-<thead><tr><th></th><th scope=col>Object</th><th scope=col>Description</th></tr></thead>
+<caption>A data.frame: 6 × 2</caption>
+<thead>
+	<tr><th></th><th scope=col>Object</th><th scope=col>Description</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><th scope=row>138</th><td>angZaxsErth                                                                                                    </td><td>Wind direction                                                                                                 </td></tr>
-	<tr><th scope=row>171</th><td>data                                                                                                           </td><td>Represents data fields                                                                                         </td></tr>
-	<tr><th scope=row>343</th><td>qfFinl                                                                                                         </td><td>The final quality flag indicating if the data are valid for the given aggregation period (1=fail, 0=pass)      </td></tr>
-	<tr><th scope=row>420</th><td>qfqm                                                                                                           </td><td>Quality flag and quality metrics, represents quality flags and quality metrics that accompany the provided data</td></tr>
-	<tr><th scope=row>604</th><td>timeBgn                                                                                                        </td><td>The beginning time of the aggregation period                                                                   </td></tr>
-	<tr><th scope=row>605</th><td>timeEnd                                                                                                        </td><td>The end time of the aggregation period                                                                         </td></tr>
+	<tr><th scope=row>138</th><td>angZaxsErth</td><td>Wind direction                                                                                                 </td></tr>
+	<tr><th scope=row>171</th><td>data       </td><td>Represents data fields                                                                                         </td></tr>
+	<tr><th scope=row>343</th><td>qfFinl     </td><td>The final quality flag indicating if the data are valid for the given aggregation period (1=fail, 0=pass)      </td></tr>
+	<tr><th scope=row>420</th><td>qfqm       </td><td>Quality flag and quality metrics, represents quality flags and quality metrics that accompany the provided data</td></tr>
+	<tr><th scope=row>604</th><td>timeBgn    </td><td>The beginning time of the aggregation period                                                                   </td></tr>
+	<tr><th scope=row>605</th><td>timeEnd    </td><td>The end time of the aggregation period                                                                         </td></tr>
 </tbody>
 </table>
 
@@ -212,32 +226,36 @@ flux$variables
 
 
 <table>
-<thead><tr><th scope=col>category</th><th scope=col>system</th><th scope=col>variable</th><th scope=col>stat</th><th scope=col>units</th></tr></thead>
+<caption>A data.frame: 24 × 5</caption>
+<thead>
+	<tr><th></th><th scope=col>category</th><th scope=col>system</th><th scope=col>variable</th><th scope=col>stat</th><th scope=col>units</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><td>data            </td><td>fluxCo2         </td><td>nsae            </td><td>                </td><td>umolCo2 m-2 s-1 </td></tr>
-	<tr><td>data            </td><td>fluxCo2         </td><td>stor            </td><td>                </td><td>umolCo2 m-2 s-1 </td></tr>
-	<tr><td>data            </td><td>fluxCo2         </td><td>turb            </td><td>                </td><td>umolCo2 m-2 s-1 </td></tr>
-	<tr><td>data            </td><td>fluxH2o         </td><td>nsae            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>fluxH2o         </td><td>stor            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>fluxH2o         </td><td>turb            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>fluxMome        </td><td>turb            </td><td>                </td><td>m s-1           </td></tr>
-	<tr><td>data            </td><td>fluxTemp        </td><td>nsae            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>fluxTemp        </td><td>stor            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>fluxTemp        </td><td>turb            </td><td>                </td><td>W m-2           </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>angZaxsErth     </td><td>deg             </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distReso        </td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>veloYaxsHorSd   </td><td>m s-1           </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>veloZaxsHorSd   </td><td>m s-1           </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>veloFric        </td><td>m s-1           </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distZaxsMeasDisp</td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distZaxsRgh     </td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distZaxsAbl     </td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distXaxs90      </td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distXaxsMax     </td><td>m               </td></tr>
-	<tr><td>data            </td><td>foot            </td><td>stat            </td><td>distYaxs90      </td><td>m               </td></tr>
-	<tr><td>qfqm            </td><td>fluxCo2         </td><td>stor            </td><td>                </td><td>NA              </td></tr>
-	<tr><td>qfqm            </td><td>fluxH2o         </td><td>stor            </td><td>                </td><td>NA              </td></tr>
-	<tr><td>qfqm            </td><td>fluxTemp        </td><td>stor            </td><td>                </td><td>NA              </td></tr>
+	<tr><th scope=row>1</th><td>data</td><td>fluxCo2 </td><td>nsae</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>2</th><td>data</td><td>fluxCo2 </td><td>stor</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>3</th><td>data</td><td>fluxCo2 </td><td>turb</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>4</th><td>data</td><td>fluxH2o </td><td>nsae</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>5</th><td>data</td><td>fluxH2o </td><td>stor</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>6</th><td>data</td><td>fluxH2o </td><td>turb</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>7</th><td>data</td><td>fluxMome</td><td>turb</td><td>                </td><td>m s-1          </td></tr>
+	<tr><th scope=row>8</th><td>data</td><td>fluxTemp</td><td>nsae</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>9</th><td>data</td><td>fluxTemp</td><td>stor</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>10</th><td>data</td><td>fluxTemp</td><td>turb</td><td>                </td><td>W m-2          </td></tr>
+	<tr><th scope=row>11</th><td>data</td><td>foot    </td><td>stat</td><td>angZaxsErth     </td><td>deg            </td></tr>
+	<tr><th scope=row>12</th><td>data</td><td>foot    </td><td>stat</td><td>distReso        </td><td>m              </td></tr>
+	<tr><th scope=row>13</th><td>data</td><td>foot    </td><td>stat</td><td>veloYaxsHorSd   </td><td>m s-1          </td></tr>
+	<tr><th scope=row>14</th><td>data</td><td>foot    </td><td>stat</td><td>veloZaxsHorSd   </td><td>m s-1          </td></tr>
+	<tr><th scope=row>15</th><td>data</td><td>foot    </td><td>stat</td><td>veloFric        </td><td>m s-1          </td></tr>
+	<tr><th scope=row>16</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsMeasDisp</td><td>m              </td></tr>
+	<tr><th scope=row>17</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsRgh     </td><td>m              </td></tr>
+	<tr><th scope=row>18</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsAbl     </td><td>m              </td></tr>
+	<tr><th scope=row>19</th><td>data</td><td>foot    </td><td>stat</td><td>distXaxs90      </td><td>m              </td></tr>
+	<tr><th scope=row>20</th><td>data</td><td>foot    </td><td>stat</td><td>distXaxsMax     </td><td>m              </td></tr>
+	<tr><th scope=row>21</th><td>data</td><td>foot    </td><td>stat</td><td>distYaxs90      </td><td>m              </td></tr>
+	<tr><th scope=row>22</th><td>qfqm</td><td>fluxCo2 </td><td>stor</td><td>                </td><td>NA             </td></tr>
+	<tr><th scope=row>23</th><td>qfqm</td><td>fluxH2o </td><td>stor</td><td>                </td><td>NA             </td></tr>
+	<tr><th scope=row>24</th><td>qfqm</td><td>fluxTemp</td><td>stor</td><td>                </td><td>NA             </td></tr>
 </tbody>
 </table>
 
@@ -267,16 +285,18 @@ operating system.
 
 
 ```R
-timeB <- substring(flux$NIWO$timeBgn, 1, nchar(flux$NIWO$timeBgn)-4)
-timeB <- strptime(timeB, format="%Y-%m-%dT%H:%M:%S", tz="GMT")
-timeB <- as.POSIXct(timeB)
+timeB <- as.POSIXct(flux$NIWO$timeBgn, 
+                    format="%Y-%m-%dT%H:%M:%S", 
+                    tz="GMT")
 flux$NIWO <- cbind(timeB, flux$NIWO)
 ```
 
 
 ```R
-plot(flux$NIWO$data.fluxCo2.nsae.flux~timeB, pch=".",
-    xlab="Date", ylab="CO2 flux", format="%Y-%m-%d")
+plot(flux$NIWO$data.fluxCo2.nsae.flux~timeB, 
+     pch=".", xlab="Date", ylab="CO2 flux",
+     xaxt="n")
+axis.POSIXct(1, x=timeB, format="%Y-%m-%d")
 ```
 
 
@@ -294,8 +314,8 @@ plot(flux$NIWO$data.fluxCo2.nsae.flux~timeB,
      pch=20, xlab="Date", ylab="CO2 flux",
      xlim=c(as.POSIXct("2018-07-07", tz="GMT"),
             as.POSIXct("2018-07-09", tz="GMT")),
-    ylim=c(-20,20),
-    format="%Y-%m-%d")
+    ylim=c(-20,20), xaxt="n")
+axis.POSIXct(1, x=timeB, format="%Y-%m-%d %H:%M:%S")
 ```
 
 
@@ -343,16 +363,16 @@ pr <- loadByProduct("DP1.00024.001", site="NIWO", avg=30,
                     package="basic", check.size=F)
 ```
 
-    Downloading 9 files
+    Downloading files totaling approximately 1.281789 MB
+    Downloading 11 files
       |======================================================================| 100%
     
+    Stacking operation across a single core.
     Stacking table PARPAR_30min
-      |======================================================================| 100%
-    Finished: All of the data are stacked into 1 tables!
-    Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
-    Stacked PARPAR_30min which has 11712 out of the expected 11712 rows (100%).
-    Stacking took 0.5041888 secs
-    All unzipped monthly data folders have been removed.
+    Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+    Copied the most recent publication of variable definition file to /stackedFiles
+    Finished: Stacked 1 data tables and 2 metadata tables!
+    Stacking took 0.2982938 secs
 
 
 `pr` is another named list, and again, metadata and units can be found in 
@@ -370,14 +390,13 @@ pr.top <- pr$PARPAR_30min[which(pr$PARPAR_30min$verticalPosition==
                                 max(pr$PARPAR_30min$verticalPosition)),]
 ```
 
-Now convert the time stamps in the PAR data to match the flux data:
+`loadByProduct()` automatically converts time stamps when it reads the 
+data, so here we just need to indicate which time field to use to 
+merge the flux and PAR data.
 
 
 ```R
-timeB <- strptime(pr.top$startDateTime, 
-                  format="%Y-%m-%dT%H:%M:%SZ", 
-                  tz="GMT")
-timeB <- as.POSIXct(timeB)
+timeB <- pr.top$startDateTime
 pr.top <- cbind(timeB, pr.top)
 ```
 
@@ -431,14 +450,18 @@ head(prof$NIWO)
 
 
 <table>
-<thead><tr><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.1 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.2 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.3 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.4 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.5 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.6 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.7 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.8 m</th><th scope=col>⋯</th><th scope=col>qfqm.tempStor.rateTemp.7.5 m</th><th scope=col>qfqm.tempStor.rateTemp.7.6 m</th><th scope=col>qfqm.tempStor.rateTemp.7.7 m</th><th scope=col>qfqm.tempStor.rateTemp.7.8 m</th><th scope=col>qfqm.tempStor.rateTemp.7.9 m</th><th scope=col>qfqm.tempStor.rateTemp.8 m</th><th scope=col>qfqm.tempStor.rateTemp.8.1 m</th><th scope=col>qfqm.tempStor.rateTemp.8.2 m</th><th scope=col>qfqm.tempStor.rateTemp.8.3 m</th><th scope=col>qfqm.tempStor.rateTemp.8.4 m</th></tr></thead>
+<caption>A data.frame: 6 × 506</caption>
+<thead>
+	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.1 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.2 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.3 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.4 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.5 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.6 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.7 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.8 m</th><th scope=col>⋯</th><th scope=col>qfqm.tempStor.rateTemp.7.5 m</th><th scope=col>qfqm.tempStor.rateTemp.7.6 m</th><th scope=col>qfqm.tempStor.rateTemp.7.7 m</th><th scope=col>qfqm.tempStor.rateTemp.7.8 m</th><th scope=col>qfqm.tempStor.rateTemp.7.9 m</th><th scope=col>qfqm.tempStor.rateTemp.8 m</th><th scope=col>qfqm.tempStor.rateTemp.8.1 m</th><th scope=col>qfqm.tempStor.rateTemp.8.2 m</th><th scope=col>qfqm.tempStor.rateTemp.8.3 m</th><th scope=col>qfqm.tempStor.rateTemp.8.4 m</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>-0.0002681938           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.0004878799           </td><td> 0.0004878799           </td><td> 0.0004878799           </td><td> 0.0004878799           </td><td> 0.0004878799           </td><td> 0.0004673503           </td><td> 0.0004331343           </td><td> 0.0003989183           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td> 0.0005085725           </td><td> 0.0005085725           </td><td> 0.0005085725           </td><td> 0.0005085725           </td><td> 0.0005085725           </td><td> 0.0005025472           </td><td> 0.0004925052           </td><td> 0.0004824631           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.0013276966           </td><td> 0.0013276966           </td><td> 0.0013276966           </td><td> 0.0013276966           </td><td> 0.0013276966           </td><td> 0.0013735225           </td><td> 0.0014498989           </td><td> 0.0015262753           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td> 0.0007344040           </td><td> 0.0007344040           </td><td> 0.0007344040           </td><td> 0.0007344040           </td><td> 0.0007344040           </td><td> 0.0008510161           </td><td> 0.0010453695           </td><td> 0.0012397230           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
-	<tr><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.0009449785           </td><td>-0.0009449785           </td><td>-0.0009449785           </td><td>-0.0009449785           </td><td>-0.0009449785           </td><td>-0.0007653319           </td><td>-0.0004659209           </td><td>-0.0001665099           </td><td>⋯                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td><td>0                       </td></tr>
+	<tr><th scope=row>1</th><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004673503</td><td> 0.0004331343</td><td> 0.0003989183</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005025472</td><td> 0.0004925052</td><td> 0.0004824631</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013735225</td><td> 0.0014498989</td><td> 0.0015262753</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0008510161</td><td> 0.0010453695</td><td> 0.0012397230</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0007653319</td><td>-0.0004659209</td><td>-0.0001665099</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -473,14 +496,18 @@ head(prof.l2$HARV)
 
 
 <table>
-<thead><tr><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.mean</th><th scope=col>data.h2oStor.rateRtioMoleDryH2o.mean</th><th scope=col>data.tempStor.rateTemp.mean</th><th scope=col>qfqm.co2Stor.rateRtioMoleDryCo2.qfFinl</th><th scope=col>qfqm.h2oStor.rateRtioMoleDryH2o.qfFinl</th><th scope=col>qfqm.tempStor.rateTemp.qfFinl</th></tr></thead>
+<caption>A data.frame: 6 × 9</caption>
+<thead>
+	<tr><th></th><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.mean</th><th scope=col>data.h2oStor.rateRtioMoleDryH2o.mean</th><th scope=col>data.tempStor.rateTemp.mean</th><th scope=col>qfqm.co2Stor.rateRtioMoleDryCo2.qfFinl</th><th scope=col>qfqm.h2oStor.rateRtioMoleDryH2o.qfFinl</th><th scope=col>qfqm.tempStor.rateTemp.qfFinl</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><td>010                     </td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>         NaN            </td><td>NaN                     </td><td> 2.583333e-05           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.002194788            </td><td>NaN                     </td><td>-2.008056e-04           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>-0.010752434            </td><td>NaN                     </td><td>-1.901111e-04           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.002556148            </td><td>NaN                     </td><td>-7.419444e-05           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>-0.015977747            </td><td>NaN                     </td><td>-1.537083e-04           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.000537461            </td><td>NaN                     </td><td>-1.874861e-04           </td><td>1                       </td><td>1                       </td><td>0                       </td></tr>
+	<tr><th scope=row>1</th><td>010</td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>         NaN</td><td>NaN</td><td> 2.583333e-05</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>010</td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.002194788</td><td>NaN</td><td>-2.008056e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>010</td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>-0.010752434</td><td>NaN</td><td>-1.901111e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>010</td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.002556148</td><td>NaN</td><td>-7.419444e-05</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>010</td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>-0.015977747</td><td>NaN</td><td>-1.537083e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>010</td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.000537461</td><td>NaN</td><td>-1.874861e-04</td><td>1</td><td>1</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -517,14 +544,18 @@ head(vars)
 
 
 <table>
-<thead><tr><th></th><th scope=col>site</th><th scope=col>level</th><th scope=col>category</th><th scope=col>system</th><th scope=col>hor</th><th scope=col>ver</th><th scope=col>tmi</th><th scope=col>name</th><th scope=col>otype</th><th scope=col>dclass</th><th scope=col>dim</th><th scope=col>oth</th></tr></thead>
+<caption>A data.frame: 6 × 12</caption>
+<thead>
+	<tr><th></th><th scope=col>site</th><th scope=col>level</th><th scope=col>category</th><th scope=col>system</th><th scope=col>hor</th><th scope=col>ver</th><th scope=col>tmi</th><th scope=col>name</th><th scope=col>otype</th><th scope=col>dclass</th><th scope=col>dim</th><th scope=col>oth</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><th scope=row>5</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>01m        </td><td>angNedXaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>44640      </td><td>NA         </td></tr>
-	<tr><th scope=row>6</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>01m        </td><td>angNedYaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>44640      </td><td>NA         </td></tr>
-	<tr><th scope=row>7</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>01m        </td><td>angNedZaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>44640      </td><td>NA         </td></tr>
-	<tr><th scope=row>9</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>30m        </td><td>angNedXaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>1488       </td><td>NA         </td></tr>
-	<tr><th scope=row>10</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>30m        </td><td>angNedYaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>1488       </td><td>NA         </td></tr>
-	<tr><th scope=row>11</th><td>HARV       </td><td>dp01       </td><td>data       </td><td>amrs       </td><td>000        </td><td>060        </td><td>30m        </td><td>angNedZaxs </td><td>H5I_DATASET</td><td>COMPOUND   </td><td>1488       </td><td>NA         </td></tr>
+	<tr><th scope=row>5</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
+	<tr><th scope=row>6</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
+	<tr><th scope=row>7</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
+	<tr><th scope=row>9</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
+	<tr><th scope=row>10</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
+	<tr><th scope=row>11</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
 </tbody>
 </table>
 
@@ -559,14 +590,18 @@ head(iso$HARV)
 
 
 <table>
-<thead><tr><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rtioMoleDryCo2.mean</th><th scope=col>data.co2Stor.rtioMoleDryCo2.min</th><th scope=col>data.co2Stor.rtioMoleDryCo2.max</th><th scope=col>data.co2Stor.rtioMoleDryCo2.vari</th><th scope=col>data.co2Stor.rtioMoleDryCo2.numSamp</th><th scope=col>data.co2Turb.rtioMoleDryCo2.mean</th><th scope=col>data.co2Turb.rtioMoleDryCo2.min</th><th scope=col>⋯</th><th scope=col>ucrt.isoCo2.rtioMoleDryCo2.se</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.se</th><th scope=col>ucrt.isoH2o.dlta18OH2o.mean</th><th scope=col>ucrt.isoH2o.dlta18OH2o.vari</th><th scope=col>ucrt.isoH2o.dlta18OH2o.se</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.se</th></tr></thead>
+<caption>A data.frame: 6 × 84</caption>
+<thead>
+	<tr><th></th><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rtioMoleDryCo2.mean</th><th scope=col>data.co2Stor.rtioMoleDryCo2.min</th><th scope=col>data.co2Stor.rtioMoleDryCo2.max</th><th scope=col>data.co2Stor.rtioMoleDryCo2.vari</th><th scope=col>data.co2Stor.rtioMoleDryCo2.numSamp</th><th scope=col>data.co2Turb.rtioMoleDryCo2.mean</th><th scope=col>data.co2Turb.rtioMoleDryCo2.min</th><th scope=col>⋯</th><th scope=col>ucrt.isoCo2.rtioMoleDryCo2.se</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.se</th><th scope=col>ucrt.isoH2o.dlta18OH2o.mean</th><th scope=col>ucrt.isoH2o.dlta18OH2o.vari</th><th scope=col>ucrt.isoH2o.dlta18OH2o.se</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.se</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
 <tbody>
-	<tr><td>010                     </td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>509.3375                </td><td>451.4786                </td><td>579.3518                </td><td>845.0795                </td><td>235                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>      NA                </td><td>       NaN              </td><td>       NaN              </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>502.2736                </td><td>463.5470                </td><td>533.6622                </td><td>161.3652                </td><td>175                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>1.764965                </td><td>0.08848440              </td><td>0.01226428              </td><td>0.014335993             </td><td>0.02544454              </td><td>0.003017400             </td><td>0.008116413             </td><td>0.06937514              </td><td>0.009640249             </td><td>0.006855142             </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>521.6139                </td><td>442.8649                </td><td>563.0518                </td><td>547.9924                </td><td>235                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>      NA                </td><td>       NaN              </td><td>       NaN              </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>469.6317                </td><td>432.6588                </td><td>508.7463                </td><td>396.8379                </td><td>175                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>1.149078                </td><td>0.08917388              </td><td>0.01542679              </td><td>0.017683602             </td><td>0.01373503              </td><td>0.002704220             </td><td>0.008582764             </td><td>0.08489408              </td><td>0.008572288             </td><td>0.005710986             </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>484.7725                </td><td>436.2842                </td><td>537.4641                </td><td>662.9449                </td><td>235                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>      NA                </td><td>       NaN              </td><td>       NaN              </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td><td>       NaN              </td><td>        NaN             </td><td>         NA             </td></tr>
-	<tr><td>010                     </td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>476.8554                </td><td>443.7055                </td><td>515.6598                </td><td>246.6969                </td><td>175                     </td><td>NA                      </td><td>NA                      </td><td>⋯                       </td><td>0.670111                </td><td>        NA              </td><td>        NA              </td><td>0.005890447             </td><td>0.01932110              </td><td>0.002095066             </td><td>0.008049170             </td><td>0.02813808              </td><td>0.002551672             </td><td>0.002654748             </td></tr>
+	<tr><th scope=row>1</th><td>010</td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>509.3375</td><td>451.4786</td><td>579.3518</td><td>845.0795</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>2</th><td>010</td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>502.2736</td><td>463.5470</td><td>533.6622</td><td>161.3652</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.764965</td><td>0.08848440</td><td>0.01226428</td><td>0.014335993</td><td>0.02544454</td><td>0.003017400</td><td>0.008116413</td><td>0.06937514</td><td>0.009640249</td><td>0.006855142</td></tr>
+	<tr><th scope=row>3</th><td>010</td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>521.6139</td><td>442.8649</td><td>563.0518</td><td>547.9924</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>4</th><td>010</td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>469.6317</td><td>432.6588</td><td>508.7463</td><td>396.8379</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.149078</td><td>0.08917388</td><td>0.01542679</td><td>0.017683602</td><td>0.01373503</td><td>0.002704220</td><td>0.008582764</td><td>0.08489408</td><td>0.008572288</td><td>0.005710986</td></tr>
+	<tr><th scope=row>5</th><td>010</td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>484.7725</td><td>436.2842</td><td>537.4641</td><td>662.9449</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>6</th><td>010</td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>476.8554</td><td>443.7055</td><td>515.6598</td><td>246.6969</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>0.670111</td><td>        NA</td><td>        NA</td><td>0.005890447</td><td>0.01932110</td><td>0.002095066</td><td>0.008049170</td><td>0.02813808</td><td>0.002551672</td><td>0.002654748</td></tr>
 </tbody>
 </table>
 
@@ -586,6 +621,10 @@ iso.d <- iso$HARV[grep("2018-06-25", iso$HARV$timeBgn, fixed=T),]
 iso.d <- iso.d[-which(is.na(as.numeric(iso.d$verticalPosition))),]
 ```
 
+    Warning message in which(is.na(as.numeric(iso.d$verticalPosition))):
+    “NAs introduced by coercion”
+
+
 `ggplot` is well suited to these types of data, let's use it to plot 
 the profiles.
 
@@ -604,6 +643,8 @@ g <- ggplot(iso.d, aes(y=verticalPosition)) +
 g
 ```
 
+    Warning message:
+    “Removed 2 rows containing missing values (geom_path).”
 
 
 
@@ -620,6 +661,8 @@ g <- ggplot(iso.d, aes(y=verticalPosition)) +
 g
 ```
 
+    Warning message:
+    “Removed 55 rows containing missing values (geom_path).”
 
 
 
@@ -628,3 +671,8 @@ g
 
 The legends are omitted for space, see if you can work out the times 
 of day the different colors represent.
+
+
+```R
+
+```

@@ -43,6 +43,10 @@ The directions for how to access eddy4R comes from
 Metzger, S., D. Durden, C. Sturtevant, H. Luo, N. Pingintha-durden, and T. Sachs (2017). eddy4R 0.2.0: a DevOps model for community-extensible processing and analysis of eddy-covariance data based on R, Git, Docker, and HDF5. Geoscientific Model Development 10:3189–3206. doi: 
 <a href="https://www.geosci-model-dev.net/10/3189/2017/" target="_blank">10.5194/gmd-10-3189-2017</a>. 
 
+The eddy4R versions within the tutorial have been updated to the 1.0.0 release that accompanied the following manuscript:
+
+Metzger, S., E. Ayres, D. Durden, C. Florian, R. Lee, C. Lunch, H. Luo, N. Pingintha-Durden, J.A. Roberti, M. SanClements, C. Sturtevant, K. Xu, and R.C. Zulueta, 2019: From NEON Field Sites to Data Portal: A Community Resource for Surface–Atmosphere Research Comes Online. Bull. Amer. Meteor. Soc., 100, 2305–2325, <a href="https://doi.org/10.1175/BAMS-D-17-0307.1" target="_blank">https://doi.org/10.1175/BAMS-D-17-0307.1</a>.
+
 </div>
 
 
@@ -118,7 +122,7 @@ or the Docker Quickstart Terminal (Windows).
 
 The first command `docker login` will prompt you for your DockerHub ID and password. 
 
-The second command `docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0` will 
+The second command `docker run -d -p 8787:8787 -e PASSWORD=YOURPASSWORD stefanmet/eddy4r:1.0.0` will 
 download the latest eddy4R–Docker image and start a Docker container that 
 utilizes port 8787 for establishing a graphical interface via web browser.  
 
@@ -132,17 +136,18 @@ port on your machine, the last 4 digits are the port communicating with
 RStudio on Docker. You can change the first 4 digits if you want to use a 
 different port on your machine, or if you are running many containers or 
 are on a shared network, but the last 4 digits need to be 8787.
-* `stefanmet/eddy4r:0.2.0`: finally, which container do you want to run. 
+* `-e PASSWORD=YOURPASSWORD`: define a password environmental variable to use upon login to the Rstudio instance. YOURPASSWORD can be anything you want.
+* `stefanmet/eddy4r:1.0.0`: finally, which container do you want to run. 
 
 Now try it. 
 
 ```{bash get-eddy4R, eval=FALSE}
 docker login 
 
-docker run -d -p 8787:8787 stefanmet/eddy4r:0.2.0
+docker run -d -p 8787:8787 -e PASSWORD=YOURPASSWORD stefanmet/eddy4r:1.0.0
 ```
 
-This last command will run a specified release version (`eddy4r:0.2.0`) of the 
+This last command will run a specified release version (`eddy4r:1.0.0`) of the 
 Docker image. Alternatively you can use `eddy4r:latest` to get the most up-to-date 
 development image of eddy4r. 
 
@@ -164,8 +169,10 @@ for your operating system.
 
 ***
 #### Windows
-Type `docker-machine ip default` into cmd.exe window. The output will be your 
-local IP address for the docker machine. 
+Depending on the version of Docker, older Docker Toolbox versus the newer Docker Desktop for Windows, there are different way to get the docker machine IP address:
+* Docker Toolbox - Type `docker-machine ip default` into cmd.exe window. The output will be your local IP address for the docker machine. 
+* Docker Desktop for Windows - Type `ipconfig` into cmd.exe window. The output will include either DockerNAT IPv4 address or vEthernet IPv4 address that docker uses to communicate to the internet, which in most cases will be **10.0.75.1**. 
+
 
 #### Mac
 
@@ -179,12 +186,12 @@ Type `localhost` in a shell session and the local IP will be the output.
 ***
 
 Once in the web browser you can log into this instance of the RStudio session 
-with both the username and password as **rstudio**. Once complete you are now in 
+with the username as **rstudio** and password as defined by `YOURPASSWORD`. Once complete you are now in 
 a RStudio user interface with eddy4R installed and ready to use. 
 
 Additional information about the use of RStudio and eddy4R packages in Docker 
-containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="" target="_blank">eddy4RWiki pages (link pending)</a>.
+containers can be found on the <a href="https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image" target="_blank">rocker-org/rocker website</a> and the <a href="https://github.com/NEONScience/eddy4R/wiki" target="_blank">eddy4RWiki pages</a>.
 
 ## Using eddy4R
 
-To learn to use the eddy4R package to calculate fluxes, please visit <a href="" target="_blank">the eddy4R vignette (link pending)</a>.
+To learn to use the eddy4R package to calculate fluxes, please visit <a href="https://w3id.org/smetzger/Metzger-et-al_2019_NEON-BAMS/tutorial" target="_blank">the eddy4R vignette (link pending)</a>.
