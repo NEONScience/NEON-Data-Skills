@@ -6,193 +6,168 @@ library(rhdf5)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
-# we want to save our files
-#setwd("working-dir-path-here")
-
-
-## ----view-file-strux-----------------------------------------------------
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+setwd(wd)
 
 # Define the file name to be opened
-f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+
+
+## ----view-file-strux, eval=FALSE, comment=NA-----------------------------
 # look at the HDF5 file structure 
-h5ls(f,all=T) 
+View(h5ls(f,all=T))
 
 
-## ----read-spatial-attributes---------------------------------------------
+## ----read-band-wavelength-attributes-------------------------------------
 
-# get spatialInfo using the h5readAttributes function 
-spInfo <- h5readAttributes(f,"spatialInfo")
-
-# get attributes for the Reflectance dataset
-reflInfo <- h5readAttributes(f,"Reflectance")
+# get information about the wavelengths of this dataset
+wavelengthInfo <- h5readAttributes(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengthInfo
 
 
 
 ## ----read-band-wavelengths-----------------------------------------------
-
 # read in the wavelength information from the HDF5 file
-wavelengths<- h5read(f,"wavelength")
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+head(wavelengths)
+tail(wavelengths)
+
 
 
 ## ----get-reflectance-shape-----------------------------------------------
+# First, we need to extract the reflectance metadata:
+reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
+reflInfo
 
-# note that we can grab the dimensions of the dataset from the attributes
-# we can then use that information to slice out our band data
-nRows <- reflInfo$row_col_band[1]
-nCols <- reflInfo$row_col_band[2]
-nBands <- reflInfo$row_col_band[3]
+# Next, we parse out the different attributes using strsplit
+
+nRows <- reflInfo$Dimensions[1]
+nCols <- reflInfo$Dimensions[2]
+nBands <- reflInfo$Dimensions[3]
 
 nRows
 nCols
 nBands
 
 
+
 ## ----get-reflectance-shape-2---------------------------------------------
-# Extract or "slice" data for band 34 from the HDF5 file
-b34<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,34))
- 
-# what type of object is b34?
-class(b34)
+# Extract or "slice" data for band 9 from the HDF5 file
+b9<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
+# what type of object is b9?
+class(b9)
+
 
 
 ## ----convert-to-matrix---------------------------------------------------
 
-# convert from array to matrix
-b34 <- b34[,,1]
+# convert from array to matrix by selecting only the first band
+b9 <- b9[1,,]
 
 # check it
-class(b34)
+class(b9)
+
 
 
 ## ----read-attributes-plot------------------------------------------------
     
 # look at the metadata for the reflectance dataset
-h5readAttributes(f,"Reflectance")
+h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data")
 
 # plot the image
-image(b34)
+image(b9)
 
-# oh, that doens't tell us much
+# oh, that is hard to visually interpret.
 # what happens if we plot a log of the data?
-image(log(b34))
+image(log(b9))
+
 
 
 ## ----hist-data-----------------------------------------------------------
 
 # Plot range of reflectance values as a histogram to view range
 # and distribution of values.
-hist(b34,breaks=40,col="darkmagenta")
+hist(b9,breaks=40,col="darkmagenta")
 
 # View values between 0 and 5000
-hist(b34,breaks=40,col="darkmagenta",xlim = c(0, 5000))
+hist(b9,breaks=40,col="darkmagenta",xlim = c(0, 5000))
 # View higher values
-hist(b34, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
+hist(b9, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
+
 
 
 ## ----set-values-NA-------------------------------------------------------
 
 # there is a no data value in our raster - let's define it
-myNoDataValue <- as.numeric(reflInfo$`data ignore value`)
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
 myNoDataValue
 
-# set all values greater than 15,000 to NA
-b34[b34 == myNoDataValue] <- NA
+# set all values equal to -9999 to NA
+b9[b9 == myNoDataValue] <- NA
 
 # plot the image now
-image(b34)
+image(b9)
+
 
 
 ## ----plot-log------------------------------------------------------------
 
-image(log(b34))
+image(log(b9))
+
 
 
 ## ----transpose-data------------------------------------------------------
 
 # We need to transpose x and y values in order for our 
 # final image to plot properly
-b34<-t(b34)
-image(log(b34), main="Transposed Image")
-
-
-
-## ----read-map-info-------------------------------------------------------
-
-# Populate the raster image extent value. 
-# get the map info, split out elements
-mapInfo<-h5read(f,"map info")
-
-# Extract each element of the map info information 
-# so we can extract the lower left hand corner coordinates.
-mapInfo<-unlist(strsplit(mapInfo, ","))
-
-# view the attributes in the map dataset
-mapInfo
+b9<-t(b9)
+image(log(b9), main="Transposed Image")
 
 
 ## ----define-CRS----------------------------------------------------------
 
-# Create the projection in as object
-myCRS <- spInfo$projdef
-myCRS
+# Extract the EPSG from the h5 dataset
+myEPSG=h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
+
+# convert the EPSG code to a CRS string
+myCRS=crs(paste0("+init=epsg:",myEPSG))
 
 # define final raster with projection info 
 # note that capitalization will throw errors on a MAC.
 # if UTM is all caps it might cause an error!
-b34r <- raster(b34, 
+b9r <- raster(b9, 
         crs=myCRS)
+b9r
 
-b34r
-
-#let's have a look at our properly positioned raster. Take note of the 
+#let's have a look at our properly oriented raster. Take note of the 
 #coordinates on the x and y axis.
 
-image(log(b34r), 
+image(log(b9r), 
       xlab = "UTM Easting", 
       ylab = "UTM Northing",
-      main = "Properly Positioned Raster")
+      main = "Properly Oriented Raster")
+
 
 
 
 ## ----define-extent-------------------------------------------------------
-
-# grab resolution of raster as an object
-res <- spInfo$xscale
-res
-
-# Grab the UTM coordinates of the upper left hand corner of the raster
-
-#grab the left side x coordinate (xMin)
-xMin <- as.numeric(mapInfo[4]) 
-#grab the top corner coordinate (yMax)
-yMax <- as.numeric(mapInfo[5])
-
-xMin
-yMax
-
-
-# Calculate the lower right hand corner to define the full extent of the 
-# raster. To do this we need the number of columns and rows in the raster
-# and the resolution of the raster.
-
-# note that you need to multiple the columns and rows by the resolution of 
-# the data to calculate the proper extent!
-xMax <- (xMin + (ncol(b34))*res)
-yMin <- (yMax - (nrow(b34))*res) 
-
-xMax
-yMin
+# Grab the UTM coordinates of the spatial extent
+xMin <- reflInfo$Spatial_Extent_meters[1]
+xMax <- reflInfo$Spatial_Extent_meters[2]
+yMin <- reflInfo$Spatial_Extent_meters[3]
+yMax <- reflInfo$Spatial_Extent_meters[4]
 
 # define the extent (left, right, top, bottom)
 rasExt <- extent(xMin,xMax,yMin,yMax)
-
 rasExt
 
 # assign the spatial extent to the raster
-extent(b34r) <- rasExt
+extent(b9r) <- rasExt
 
 # look at raster attributes
-b34r
+b9r
+
 
 
 ## ----plot-colors-raster--------------------------------------------------
@@ -200,7 +175,7 @@ b34r
 #let's change the colors of our raster and adjust the zlims 
 col=terrain.colors(25)
 
-image(b34r,  
+image(b9r,  
       xlab = "UTM Easting", 
       ylab = "UTM Northing",
       main= "Raster w Custom Colors",
@@ -208,17 +183,18 @@ image(b34r,
       zlim=c(0,3000))
 
 
-## ----write-raster,  eval=FALSE-------------------------------------------
-## 
-## #write out the raster as a geotiff
-## 
-## writeRaster(b34r,
-##             file="band34.tif",
-##             format="GTiff",
-##             overwrite=TRUE)
-## 
-## #It's always good practice to close the H5 connection before moving on!
-## #close the H5 file
-## H5close()
-## 
+
+## ----write-raster,  eval=FALSE, comment=NA-------------------------------
+
+#write out the raster as a geotiff
+
+writeRaster(b9r,
+            file=paste0(wd,"band9.tif"),
+            format="GTiff",
+            overwrite=TRUE)
+
+#It's always good practice to close the H5 connection before moving on!
+#close the H5 file
+H5close()
+
 
