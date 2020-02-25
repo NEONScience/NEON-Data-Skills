@@ -3,8 +3,8 @@ syncID: d42286b3af6148f3a8fd0863f00752a7
 title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
-authors: Edmund Hart, Leah A. Wasser
-contributors:
+authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
+contributors: 
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
@@ -26,12 +26,10 @@ data. We will also learn how to perform some basic raster calculations
 
 After completing this activity, you will be able to:
 
-* Extract a "slice" of data from a hyperspectral data cube.
-* Create a rasterstack in R which can then be used to create RGB images from 
-bands in a hyperspectral data cube.</li>
+* Extract a "slice" of data from a hyperspectral data cube. </li>
+* Create a rasterstack in R which can then be used to create RGB images from bands in a hyperspectral data cube.</li>
 * Plot data spatially on a map.</li>
-* Create basic vegetation indices like NDVI using raster  based calculations in 
-R.
+* Create basic vegetation indices like NDVI using raster-based calculations in R.
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
@@ -49,11 +47,16 @@ preferably, RStudio loaded on your computer.
 
 ### Data to Download
 
-{% include/dataSubsets/_data_Met-Time-Series.html %}
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
+
+*Remember* that the example dataset included here only has 1 out of every 4 bands
+included in a full NEON hyperspectral dataset (this makes it 1/4 the size!). When 
+we refer to bands in this tutorial, we will note both the band numbers for this 
+example dataset, and the band numbers for a standard NEON hyperspectral dataset 
+so that you can recreate these methods later with different inputs.
 
 ***
 {% include/_greyBox-wd-rscript.html %}
-***
 
 ### Recommended Skills
 
@@ -64,8 +67,7 @@ before moving on to this tutorial.
 </div>
 
 
-## About Hyperspectral Data
-
+## About Hyperspectral Data 
 We often want to generate a 3 band image from multi or hyperspectral data. The 
 most commonly recognized band combination is RGB which stands for Red, Green and 
 Blue. RGB images are just like the images that your camera takes. But there are 
@@ -73,29 +75,31 @@ other band combinations that are useful too. For example, near infrared images
 emphasize vegetation and help us classify or identify where vegetation is located 
 on the ground.
 
-<figure class="third">
+<figure >
     <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
+<figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
+</figure>
+
+<figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"><img src="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"></a>
-    <a href="{{ site.baseurl }}/images/hyperspectral/falseColor.png"><img src="{{ site.baseurl }}/images/hyperspectral/falseColor.png"></a>
-    
-    <figcaption>SJER image using 3 different band combinations. Left: typical red, green and blue (bands 58,34,19), middle: color infrared: near infrared, green and blue (bands 90, 34, 19).</figcaption>
+<figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - Band Combinations:** The Biodiversity 
 Informatics group created a great interactive tool that lets you explore band 
-combinations. Check it out:
-<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">Learn more about band combinations using a great online tool!</a>
-</div>
+combinations. Check it out. Learn more about band combinations 
+<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">using a great online tool from the American Museum of Natural History!</a> (The tool requires Flash player. </div>
 
 
 ## Create a Raster Stack in R
 
-In the <a href="/hsi-hdf5-r" target="_blank"> previous activity </a>, 
+In the 
+<a href="/hsi-hdf5-r" target="_blank">previous activity</a>, 
 we exported a subset of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-<a href="{/hsi-hdf5-r" target="_blank"> Intro to Working with Hyperspectral Data tutorial</a>. 
+<a href="/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Data tutorial</a>. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -103,85 +107,60 @@ the file structure.
     # Load required packages
     library(raster)
     library(rhdf5)
-    library(rgdal)
-    library(maps)
     
     # set working directory to ensure R can find the file we wish to import and where
-    # we want to save our files
-    #setwd("working-dir-path-here")
+    # we want to save our files. Be sure to move the download into your working directory!
+    wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+    setwd(wd)
+    
+    # create path to file name
+    f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 
-    # Read in H5 file
-    f <- 'NEON-DS-Imaging-Spectrometer-Data.h5'
     #View HDF5 file structure 
-    h5ls(f,all=T)
-
-    ##   group        name         ltype corder_valid corder cset       otype
-    ## 0     / Reflectance H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 1     /        fwhm H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 2     /    map info H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ## 3     / spatialInfo H5L_TYPE_HARD        FALSE      0    0   H5I_GROUP
-    ## 4     /  wavelength H5L_TYPE_HARD        FALSE      0    0 H5I_DATASET
-    ##   num_attrs  dclass          dtype  stype rank             dim
-    ## 0         6 INTEGER  H5T_STD_I16LE SIMPLE    3 477 x 502 x 426
-    ## 1         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ## 2         1  STRING     HST_STRING SIMPLE    1               1
-    ## 3        11                                  0                
-    ## 4         2   FLOAT H5T_IEEE_F32LE SIMPLE    2         426 x 1
-    ##            maxdim
-    ## 0 477 x 502 x 426
-    ## 1         426 x 1
-    ## 2               1
-    ## 3                
-    ## 4         426 x 1
+    View(h5ls(f,all=T))
 
 To spatially locate our raster data, we need a few key attributes:
 
 * The coordinate reference system
-* The lower left hand corner X, Y location of the raster
-* The dimensions (number of pixels in the x and y directions) of the raster to 
-   use to calculate the **extent**.
+* The spatial extent of the raster
    
 We'll begin by grabbing these key attributes from the H5 file.   
 
 
-    # R get spatial info and map info using the h5readAttributes function
-    spInfo <- h5readAttributes(f,"spatialInfo")
-    # define coordinate reference system
-    myCrs <- spInfo$projdef
-    # define the resolution
-    res <- spInfo$xscale
+    # define coordinate reference system from the EPSG code provided in the HDF5 file
+    myEPSG <- h5read(f,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
+    myCRS <- crs(paste0("+init=epsg:",myEPSG))
     
-    #Populate the raster image extent value. 
-    mapInfo<-h5read(f,"map info")
-    # the map info string contains the lower left hand coordinates of our raster
-    # let's grab those next
-    # split out the individual components of the mapinfo string
-    mapInfo<-unlist(strsplit(mapInfo, ","))
+    # get the Reflectance_Data attributes
+    reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
     
-    # grab the utm coordinates of the lower left corner
-    xMin<-as.numeric(mapInfo[4])
-    yMax<-as.numeric(mapInfo[5]) 
+    # Grab the UTM coordinates of the spatial extent
+    xMin <- reflInfo$Spatial_Extent_meters[1]
+    xMax <- reflInfo$Spatial_Extent_meters[2]
+    yMin <- reflInfo$Spatial_Extent_meters[3]
+    yMax <- reflInfo$Spatial_Extent_meters[4]
     
-    # R get attributes for the Reflectance dataset
-    reflInfo <- h5readAttributes(f,"Reflectance")
-    
-    #create objects represents the dimensions of the Reflectance dataset
-    #note that there are several ways to access the size of the raster contained
-    #within the H5 file
-    nRows <- reflInfo$row_col_band[1]
-    nCols <- reflInfo$row_col_band[2]
-    nBands <- reflInfo$row_col_band[3]
-    
-    #grab the no data value
-    myNoDataValue <- reflInfo$`data ignore value`
+    # define the extent (left, right, top, bottom)
+    rasExt <- extent(xMin,xMax,yMin,yMax)
+    # view the extent to make sure that it looks right
+    rasExt
+
+    ## class      : Extent 
+    ## xmin       : 257500 
+    ## xmax       : 258000 
+    ## ymin       : 4112500 
+    ## ymax       : 4113000
+
+    # Finally, define the no data value for later
+    myNoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
     myNoDataValue
 
-    ## [1] "15000"
+    ## [1] -9999
 
 Next, we'll write a function that will perform the processing that we did step by 
 step in the 
-<a href="/hsi-hdf5-r" target="_blank"> intro to working with hyperspectral data activity</a>. 
+<a href="/hsi-hdf5-r" target="_blank">intro to working with hyperspectral data activity</a>.
 This will allow us to process multiple bands in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and
@@ -193,8 +172,7 @@ The function requires the following variables:
 * file: the file
 * band: the band number we wish to extract
 * noDataValue: the noDataValue for the raster
-* xMin, yMin: the X,Y coordinate left hand corner locations for the raster.
-* res: the resolution of the raster
+* extent: a raster `Extent` object .
 * crs: the Coordinate Reference System for the raster
 
 The function output is a spatially referenced, R raster object.
@@ -204,11 +182,11 @@ The function output is a spatially referenced, R raster object.
     # band: the band you want to process
     # returns: a matrix containing the reflectance data for the specific band
     
-    band2Raster <- function(file, band, noDataValue, xMin, yMin, res, crs){
+    band2Raster <- function(file, band, noDataValue, extent, CRS){
         #first read in the raster
-        out<- h5read(f,"Reflectance",index=list(1:nCols,1:nRows,band))
+        out<- h5read(file,"/SJER/Reflectance/Reflectance_Data",index=list(band,NULL,NULL))
     	  #Convert from array to matrix
-    	  out <- (out[,,1])
+    	  out <- (out[1,,])
     	  #transpose data to fix flipped row and column order 
         #depending upon how your data are formatted you might not have to perform this
         #step.
@@ -218,19 +196,10 @@ The function output is a spatially referenced, R raster object.
         out[out == myNoDataValue] <- NA
     	  
         #turn the out object into a raster
-        outr <- raster(out,crs=myCrs)
-     
-        # define the extents for the raster
-        #note that you need to multiple the size of the raster by the resolution 
-        #(the size of each pixel) in order for this to work properly
-        xMax <- xMin + (outr@ncols * res)
-        yMin <- yMax - (outr@nrows * res)
-     
-        #create extents class
-        rasExt  <- extent(xMin,xMax,yMin,yMax)
+        outr <- raster(out,crs=CRS)
        
         #assign the extents to the raster
-        extent(outr) <- rasExt
+        extent(outr) <- extent
        
         #return the raster object
         return(outr)
@@ -240,23 +209,24 @@ The function output is a spatially referenced, R raster object.
 Now that the function is created, we can create our list of rasters. The list 
 specifies which bands (or dimensions in our hyperspectral dataset) we want to 
 include in our raster stack. Let's start with a typical RGB (red, green, blue) 
-combination. We will use bands 58, 34, and 19. 
+combination. We will use bands 14, 9, and 4 (bands 58, 34, and 19 in a full 
+NEON hyperspectral dataset).
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - wavelengths and bands:** Remember that 
-you can look at the wavelengths dataset to determine the center wavelength value 
-for each band. 
+you can look at the wavelengths dataset in the HDF5 file to determine the center 
+wavelength value for each band. 
 </div>
 
 
 
     #create a list of the bands we want in our stack
-    rgb <- list(58,34,19)
+    rgb <- list(14,9,4) #list(58,34,19) when using full NEON hyperspectral dataset
     #lapply tells R to apply the function to each element in the list
-    rgb_rast <- lapply(rgb,band2Raster, file = f, 
+    rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
                        noDataValue=myNoDataValue, 
-                       xMin=xMin, yMin=yMin, res=1,
-                       crs=myCrs)
+                       extent=rasExt,
+                       CRS=myCRS)
     
     #check out the properties or rgb_rast
     #note that it displays properties of 3 rasters.
@@ -264,93 +234,96 @@ for each band.
     rgb_rast
 
     ## [[1]]
-    ## class       : RasterLayer 
-    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 123, 15453  (min, max)
+    ## class      : RasterLayer 
+    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
+    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 0, 9418  (min, max)
     ## 
     ## 
     ## [[2]]
-    ## class       : RasterLayer 
-    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 116, 15677  (min, max)
+    ## class      : RasterLayer 
+    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
+    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 0, 9210  (min, max)
     ## 
     ## 
     ## [[3]]
-    ## class       : RasterLayer 
-    ## dimensions  : 502, 477, 239454  (nrow, ncol, ncell)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## data source : in memory
-    ## names       : layer 
-    ## values      : 84, 13805  (min, max)
+    ## class      : RasterLayer 
+    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
+    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 0, 9704  (min, max)
 
     #finally, create a raster stack from our list of rasters
-    hsiStack <- stack(rgb_rast)
+    rgbStack <- stack(rgb_rast)
 
-<a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">More about Lapply here</a>. 
+In the code chunk above, we used the `lapply()` function, which is a powerful,
+flexible way to apply a function (in this case, our `band2Raster()` fucntion)
+multiple times. You can <a href="http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" target="_blank">learn more about lapply() here</a>. 
 
 NOTE: We are using the `raster stack` object in R to store several rasters that 
-are of the same CRS and extent.
+are of the same CRS and extent. This is a popular and convenient way to organize 
+co-incident rasters.
 
 Next, add the names of the bands to the raster so we can easily keep track of 
 the bands in the list.
 
 
-    #Add the band numbers as names to each raster in the raster list
-    
     #Create a list of band names
     bandNames <- paste("Band_",unlist(rgb),sep="")
     
-    names(hsiStack) <- bandNames
+    # set the rasterStack's names equal to the list of bandNames created above
+    names(rgbStack) <- bandNames
+    
     #check properties of the raster list - note the band names
-    hsiStack
+    rgbStack
 
-    ## class       : RasterStack 
-    ## dimensions  : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## names       : Band_58, Band_34, Band_19 
-    ## min values  :     123,     116,      84 
-    ## max values  :   15453,   15677,   13805
+    ## class      : RasterStack 
+    ## dimensions : 500, 500, 250000, 3  (nrow, ncol, ncell, nlayers)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
+    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## names      : Band_14, Band_9, Band_4 
+    ## min values :       0,      0,      0 
+    ## max values :    9418,   9210,   9704
 
     #scale the data as specified in the reflInfo$Scale Factor
-    
-    hsiStack <- hsiStack/reflInfo$`Scale Factor`
+    rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
     
     ### Plot one raster in the stack to make sure things look OK.
-    plot(hsiStack$Band_58, main="Band 58")
+    plot(rgbStack$Band_14, main="Band 14")
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-raster-stack-1.png)
 
 We can play with the color ramps too if we want:
 
+
     #change the colors of our raster 
     myCol=terrain.colors(25)
-    image(hsiStack$Band_58, main="Band 58", col=myCol)
+    image(rgbStack$Band_14, main="Band 14", col=myCol)
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-HSI-raster-1.png)
 
     #adjust the zlims or the stretch of the image
     myCol=terrain.colors(25)
-    image(hsiStack$Band_58, main="Band 58", col=myCol, zlim = c(0,.5))
+    image(rgbStack$Band_14, main="Band 14", col=myCol, zlim = c(0,.5))
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-HSI-raster-2.png)
 
     #try a different color palette
     myCol=topo.colors(15, alpha = 1)
-    image(hsiStack$Band_58, main="Band 58", col=myCol, zlim=c(0,.5))
+    image(rgbStack$Band_14, main="Band 14", col=myCol, zlim=c(0,.5))
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-HSI-raster-3.png)
 
@@ -358,27 +331,27 @@ We can play with the color ramps too if we want:
 The `plotRGB` function allows you to combine three bands to create an image. 
 
 
+
     # create a 3 band RGB image
-    plotRGB(hsiStack,
-            r=1,g=2,b=3, scale=300, 
-            stretch = "Lin")
+    plotRGB(rgbStack,
+            r=1,g=2,b=3,
+            stretch = "lin")
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/plot-RGB-Image-1.png)
 
-
-<i class="fa fa-star"></i>**A note about image stretching:** 
-Notice that the scale is set to 300 on the RGB image that we plotted above. We 
-can adjust this number and notice that the image gets darker - or lighter.
+<i class="fa fa-star"></i>**A note about image stretching:** Notice that we use the argument
+`stretch="lin"` in this plotting function, which automatically stretches the 
+brightness values for us to produce a natural-looking image.
 
 
 Once you've created your raster, you can export it as a GeoTIFF. You can bring 
 this GeoTIFF into any GIS program!
 
 
-    #write out final raster	
-    #note: if you set overwrite to TRUE, then you will overwite or lose the older
-    #version of the tif file! keep this in mind.
-    writeRaster(hsiStack, file="rgbImage.tif", format="GTiff", overwrite=TRUE)
+    # write out final raster	
+    # note: if you set overwrite to TRUE, then you will overwite or lose the older
+    # version of the tif file! keep this in mind.
+    writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), format="GTiff", overwrite=TRUE)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - False color and near infrared images:** 
@@ -390,7 +363,9 @@ What type of image do you get when you change the band values?
 ### Challenge: Other band combinations
 
 Use different band combinations to create other "RGB" images. Suggested band 
-combinations are below: 
+combinations are below for use with the full NEON hyperspectral reflectance 
+datasets (for this example dataset, divide the band number by 4 and round to 
+the nearest whole number):
 
 * Color Infrared/False Color: rgb (90,34,19)
 * SWIR, NIR, Red Band: rgb (152,90,58)
@@ -398,22 +373,6 @@ combinations are below:
 
 
 </div>
-
-## Plot Spectral Data on a Map
-
-We can plot the location of our image on a map of the US. For this we'll use the 
-lower left coordinates of the raster, extracted from the SPINFO group. Note that 
-these coordinates are in latitude and longitude (geographic coordinates) rather 
-than UTM coordinates.
-
-
-    # Create a Map showing the location of our dataset in R
-    map(database="state", region="california")
-    points(spInfo$LL_lat~spInfo$LL_lon,pch = 15)
-    #add title to map.
-    title(main="NEON San Joaquin (SJER) Field Site - Central California")
-
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/create-location-map-1.png)
 
 ## Raster Math - Creating NDVI and other Vegetation Indices in R
 In this last part, we will calculate some vegetation indices using raster math 
@@ -431,13 +390,12 @@ the best way to calculate NDVI from hyperspectral data!
 
     #Calculate NDVI
     #select bands to use in calculation (red, NIR)
-    ndvi_bands <- c(58,90)
-    
+    ndvi_bands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
     
     #create raster list and then a stack using those two bands
-    ndvi_rast <- lapply(ndvi_bands,band2Raster, file = f, noDataValue=15000, 
-                        xMin=xMin, yMin=yMin,
-                        crs=myCRS,res=1)
+    ndvi_rast <- lapply(ndvi_bands,FUN=band2Raster, file = f,
+                       noDataValue=myNoDataValue, 
+                       extent=rasExt, CRS=myCRS)
     ndvi_stack <- stack(ndvi_rast)
     
     #make the names pretty
@@ -446,14 +404,14 @@ the best way to calculate NDVI from hyperspectral data!
     
     ndvi_stack
 
-    ## class       : RasterStack 
-    ## dimensions  : 502, 477, 239454, 2  (nrow, ncol, ncell, nlayers)
-    ## resolution  : 1, 1  (x, y)
-    ## extent      : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : +proj=utm +zone=11N +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0 
-    ## names       : Band_58, Band_90 
-    ## min values  :     123,     315 
-    ## max values  :   15453,   15293
+    ## class      : RasterStack 
+    ## dimensions : 500, 500, 250000, 2  (nrow, ncol, ncell, nlayers)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
+    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## names      : Band_16, Band_24 
+    ## min values :       0,       0 
+    ## max values :    9386,    9424
 
     #calculate NDVI
     NDVI <- function(x) {
@@ -466,23 +424,16 @@ the best way to calculate NDVI from hyperspectral data!
 
     #play with breaks and colors to create a meaningful map
     
-    #add a color map with 5 colors
-    myCol <- terrain.colors(3)
-    #add breaks to the colormap (6 breaks = 5 segments)
-    brk <- c(0, .4, .7, .9)
+    #add a color map with 4 colors
+    myCol <- rev(terrain.colors(4)) # use the 'rev()' function to put green as the highest NDVI value
+    #add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
+    brk <- c(0, .25, .5, .75, 1)
     
     #plot the image using breaks
     plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/create-NDVI-2.png)
 
-	
-<figure class="half">
-<a href="{{ site.baseurl }}/images/hyperspectral/NDVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/NDVI.png"></a>
-<a href="{{ site.baseurl }}/images/hyperspectral/EVI.png"><img src="{{ site.baseurl }}/images/hyperspectral/EVI.png"></a>
-    
-<figcaption>LEFT: NDVI for the NEON SJER field site, created in R. RIGHT: EVI for the NEON SJER field site created in R.</figcaption>
-</figure>
 	
 <div id="ds-challenge" markdown="1">
 ### Challenge: Work with Indices
@@ -491,8 +442,10 @@ Try the following:
 
 1. Calculate EVI using the following formula : 
 EVI<- 2.5 * ((b4-b3) / (b4 + 6 * b3- 7.5*b1 + 1))
-2. Calculate NDNI using the following equation: 
+2. Calculate Normalized Difference Nitrogen Index (NDNI) using the following equation: 
 log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
-3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple red and NIR bands and then calculate NDVI?
+3. Explore the bands in the hyperspectral data. What happens if you average 
+reflectance values across multiple red and NIR bands and then calculate NDVI?
 
 </div>
+
