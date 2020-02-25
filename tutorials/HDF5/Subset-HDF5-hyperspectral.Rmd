@@ -1,6 +1,6 @@
 ---
 title: "Subsetting HDF5 files to make a smaller deliverable"
-code1: null
+code1: HDF5/Subset-HDF5-hyperspectral.R
 contributors: null
 dataProudct: null
 dateCreated: 2020-02-04 14:20:52
@@ -14,7 +14,7 @@ syncID: 884cc5915a3842c1ab6617b060797fab
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
-urlTitle: null
+urlTitle: subset-hdf5-r
 ---
 
 In this tutorial, we will subset an existing HDF5 file containing NEON
