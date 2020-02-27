@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: lidar/Create-Lidar-CHM-R.R
+code1: LIDAR/create-canopy-height-model-in-R.R
 tutorialSeries: [intro-lidar-r-series]
 urlTitle: create-chm-rasters-r
 ---
