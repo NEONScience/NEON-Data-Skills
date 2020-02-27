@@ -4,13 +4,16 @@
 library(raster)
 library(rgdal)
 
-# set working directory to data folder
-#setwd("pathToDirHere")
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd="~/Desktop/LIDAR_Tutorial/" #This will depend on your local environment
+setwd(wd)
+
 
 ## ----import-dsm----------------------------------------------------------
 
 # assign raster to object
-dsm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
+dsm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
 
 # view info about the raster.
 dsm
@@ -19,12 +22,14 @@ dsm
 plot(dsm, main="LiDAR Digital Surface Model \n SJER, California")
 
 
+
 ## ----plot-DTM------------------------------------------------------------
 
 # import the digital terrain model
-dtm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif")
+dtm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
 
 plot(dtm, main="LiDAR Digital Terrain Model \n SJER, California")
+
 
 
 ## ----calculate-plot-CHM--------------------------------------------------
@@ -38,12 +43,14 @@ chm
 plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
 
 
+
 ## ----challenge-code-raster-math, include=TRUE, results="hide", echo=FALSE----
 # conversion 1m = 3.28084 ft
 chm_ft <- chm*3.28084
 
 # plot 
 plot(chm_ft, main="LiDAR Canopy Height Model \n in feet")
+
 
 
 ## ----canopy-function-----------------------------------------------------
@@ -62,8 +69,9 @@ chm3 <- overlay(dsm,dtm,fun = canopyCalc)
 chm3 
 
 
-## ----write-raster-to-geotiff, eval=FALSE---------------------------------
-## # write out the CHM in tiff format.
-## writeRaster(chm,"chm_SJER.tiff","GTiff")
-## 
+
+## ----write-raster-to-geotiff, eval=FALSE, comment=NA---------------------
+# write out the CHM in tiff format. 
+writeRaster(chm,paste0(wd,"chm_SJER.tiff"),"GTiff")
+
 

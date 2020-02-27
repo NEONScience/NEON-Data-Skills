@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-<a href="{{site.baseurl}}/packages-in-r)" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
+<a href="{{site.baseurl}}/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
