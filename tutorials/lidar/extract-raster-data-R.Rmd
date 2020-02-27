@@ -146,7 +146,7 @@ the data.
 ```{r plot-CHM }
 
 # import the digital terrain model
-chm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif")
+chm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif"))
 
 # plot raster
 plot(chm, main="LIDAR Canopy Height Model \n SJER, California")
