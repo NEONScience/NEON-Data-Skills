@@ -203,7 +203,20 @@ Notice in the above code `# add 1+1` should be highlighted as a comment, `1+1`
 should be highlighted as input, and `2` should be highlighted as output. All 
 should be visually separate from the surrounding text. 
 
+TO ADD: 
 
+eval = FALSE, comment = NA
+- do no evaluate the chunk but keep the code non-commented in the .R script
+
+eval =TRUE, purl = FALSE 
+ - do not include this code chunk in the .R but will show in the .md
+
+include = FALSE, purl = FALSE
+ - do not show this chunk in the .md or the .R files
+
+echo=FALSE, results="hide" 
+ - evaluates the code, doesn't show in .md but does appear in .R
+ - used primarily for the "answers" in Challenges
 
 
 ### Python 
