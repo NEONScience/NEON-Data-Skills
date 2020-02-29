@@ -4,7 +4,7 @@
 # Move .md file into NEON-Data-Skills/tutorials
 
 # file path to .md file
-fl <- "/Users/clunch/GitHub/NEON-Data-Skills/tutorials/R/eddy-intro/eddy_intro.md"
+fl <- "/Users/clunch/GitHub/NEON-Data-Skills/tutorials/Python/neonUtilities/neonUtilitiesPython.md"
 
 # file path to image file folder
 # this should not need to change for different tutorials
@@ -15,7 +15,7 @@ fileConn <- file(fl)
 fl.md <- readLines(fileConn)
 
 # delete leading space
-fl.md <- fl.md[-1]
+#fl.md <- fl.md[-1]
 
 # replace [png] with file path to images
 fl.mod <- gsub("[png](", img.fl, fl.md, fixed=TRUE)

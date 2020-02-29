@@ -1,15 +1,69 @@
-## ----loadStuff-----------------------------------------------------------
-# install neonUtilities - can skip if already installed
-install.packages("neonUtilities")
+## ----loadStuff, eval=FALSE-----------------------------------------------
+## # install neonUtilities - can skip if already installed
+## install.packages("neonUtilities")
+## # load neonUtilities
+## library(neonUtilities)
 
-# load neonUtilities
-library(neonUtilities)
+
+## ----loadBy, eval=F------------------------------------------------------
+## 
+## trip.temp <- loadByProduct(dpID="DP1.00003.001",
+##                            site=c("MOAB","ONAQ"),
+##                            startdate="2018-05",
+##                            enddate="2018-08")
+## 
+
+
+## ----loadBy-output, eval=F-----------------------------------------------
+## 
+## Continuing will download files totaling approximately 7.994569 MB. Do you want to proceed y/n: y
+## Downloading 8 files
+##   |========================================================================================================| 100%
+## 
+## Unpacking zip files using 1 cores.
+##   |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s
+##   |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s
+## Stacking operation across a single core.
+## Stacking table TAAT_1min
+##   |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s
+## Stacking table TAAT_30min
+##   |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s
+## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+## Copied the most recent publication of variable definition file to /stackedFiles
+## Finished: Stacked 2 data tables and 2 metadata tables!
+## Stacking took 0.8517601 secs
+## 
+
+
+## ----loadBy-list, eval=F-------------------------------------------------
+## 
+## names(trip.temp)
+## View(trip.temp$TAAT_30min)
+## 
+
+
+## ----env, eval=F---------------------------------------------------------
+## 
+## list2env(trip.temp, .GlobalEnv)
+## 
+
+
+## ----save-files, eval=F--------------------------------------------------
+## 
+## write.csv(TAAT_30min,
+##           "~/Downloads/TAAT_30min.csv",
+##           row.names=F)
+## write.csv(variables_00003,
+##           "~/Downloads/variables_00003.csv",
+##           row.names=F)
+## 
 
 
 ## ----run-function, eval = FALSE------------------------------------------
 ## # stack files - Mac OSX file path shown
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 ## 
+
 
 ## ----sample-output, eval=FALSE-------------------------------------------
 ## Unpacking zip files
@@ -25,92 +79,72 @@ library(neonUtilities)
 ## Stacking took 6.233922 secs
 ## All unzipped monthly data folders have been removed.
 
+
+## ----readtable, eval=F---------------------------------------------------
+## 
+## SAAT30 <- readTableNEON(
+##   dataFile='~/stackedFiles/SAAT_30min.csv',
+##   varFile='~/stackedFiles/variables_00002.csv'
+## )
+## 
+
+
 ## ----run-options, eval = FALSE-------------------------------------------
 ## 
 ## stackByTable(filepath="~neon/data/NEON_temp-air-single.zip",
 ##              savepath="~data/allTemperature", saveUnzippedFiles=T)
 ## 
 
+
 ## ----run-zipsByProduct, eval = FALSE-------------------------------------
 ## 
 ## zipsByProduct(dpID="DP1.00002.001", site="WREF",
+##               startdate="2019-04", enddate="2019-05",
 ##               package="basic", check.size=T)
 ## 
 
+
 ## ----zips-output, eval=FALSE---------------------------------------------
 ## 
-## Continuing will download files totaling approximately 10.80949 MB. Do you want to proceed y/n: y
+## Continuing will download files totaling approximately 12.750557 MB. Do you want to proceed y/n: y
 ## Downloading 2 files
-##   |=================================================================================================| 100%
+##   |========================================================================================================| 100%
 ## 2 files downloaded to /Users/neon/filesToStack00002
 ## 
 
+
 ## ----zips-to-stack, eval = FALSE-----------------------------------------
 ## 
-## stackByTable(filepath="/Users/neon/filesToStack00002",
-##              folder=T)
+## stackByTable(filepath="/Users/neon/filesToStack00002")
 ## 
+
 
 ## ----run-zipsByProduct-avg, eval = FALSE---------------------------------
 ## 
-## zipsByProduct(dpID="DP1.00003.001", site="WREF",
+## zipsByProduct(dpID="DP1.00002.001", site="WREF",
+##               startdate="2019-04", enddate="2019-05",
 ##               package="basic", avg=30, check.size=T)
 ## 
 
+
 ## ----zips-output-avg, eval=FALSE-----------------------------------------
 ## 
-## Continuing will download files totaling approximately 0.270066 MB. Do you want to proceed y/n: y
-## Downloading 4 files
-##   |=================================================================================================| 100%
-## 4 files downloaded to /Users/neon/filesToStack00003
+## Continuing will download files totaling approximately 2.101936 MB. Do you want to proceed y/n: y
+## Downloading 17 files
+##   |========================================================================================================| 100%
+## 17 files downloaded to /Users/neon/filesToStack00002
 ## 
+
 
 ## ----zips-to-stack-avg, eval = FALSE-------------------------------------
 ## 
-## stackByTable(filepath="/Users/neon/filesToStack00003",
-##              folder=T)
+## stackByTable(filepath="/Users/neon/filesToStack00002")
+## SAAT30 <- readTableNEON(
+##   dataFile='/Users/neon/filesToStack00002/stackedFiles/SAAT_30min.csv',
+##   varFile='/Users/neon/filesToStack00002/stackedFiles/variables_00002.csv'
+## )
 ## 
 
-## ----loadBy, eval=F------------------------------------------------------
-## 
-## trip.temp <- loadByProduct(dpID="DP1.00003.001",
-##                            site=c("MOAB","ONAQ"),
-##                            startdate="2018-05",
-##                            enddate="2018-08")
-## 
-
-## ----loadBy-output, eval=F-----------------------------------------------
-## 
-## Continuing will download files totaling approximately 3.789588 MB. Do you want to proceed y/n: y
-## Downloading 4 files
-##   |=================================================================================================| 100%
-## 
-## Unpacking zip files
-##   |=================================================================================================| 100%
-## Stacking table TAAT_1min
-##   |=================================================================================================| 100%
-## Stacking table TAAT_30min
-##   |=================================================================================================| 100%
-## Finished: All of the data are stacked into 2 tables!
-## Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
-## Stacked TAAT_1min which has 174960 out of the expected 174960 rows (100%).
-## Stacked TAAT_30min which has 5832 out of the expected 5832 rows (100%).
-## Stacking took 3.441994 secs
-## All unzipped monthly data folders have been removed.
-## 
-
-## ----loadBy-list, eval=F-------------------------------------------------
-## 
-## names(trip.temp)
-## View(trip.temp$TAAT_30min)
-## 
-
-## ----assign-loop, eval=F-------------------------------------------------
-## 
-## for(i in 1:length(trip.temp)) {
-##     assign(names(trip.temp)[i], trip.temp[[i]])
-## }
-## 
 
 ## ----get-pack, eval = FALSE----------------------------------------------
 ## 
@@ -118,11 +152,13 @@ library(neonUtilities)
 ##            year_month="2017-11", package="basic")
 ## 
 
+
 ## ----aop-files, eval = FALSE---------------------------------------------
 ## 
 ## byFileAOP("DP3.30015.001", site="HOPB",
 ##           year="2017", check.size=T)
 ## 
+
 
 ## ----aop-output, eval=FALSE----------------------------------------------
 ## Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y
@@ -141,6 +177,7 @@ library(neonUtilities)
 ## (Further messages omitted for space.)
 ## 
 
+
 ## ----byTile, eval=F------------------------------------------------------
 ## 
 ## byTileAOP(dpID="DP3.30026.001", site="SOAP",
@@ -148,6 +185,7 @@ library(neonUtilities)
 ##           northing=c(4101405,4101461),
 ##           buffer=20)
 ## 
+
 
 ## ----byTile-output, eval=F-----------------------------------------------
 ## 
@@ -163,6 +201,7 @@ library(neonUtilities)
 ## NEON_D17_SOAP_DP3_298000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
 ## NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
 ## 
+
 
 ## ----geocsv, eval = FALSE------------------------------------------------
 ## 

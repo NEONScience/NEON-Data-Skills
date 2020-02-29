@@ -40,14 +40,17 @@ Preserves the file structure of the original data.
 * `byTileAOP()`: Downloads remote sensing data for the specified 
 data product, subset to tiles that intersect a list of 
 coordinates.
+* `readTableNEON()`: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.
 * `transformFileToGeoCSV()`: Converts any NEON data file in 
 csv format into a new file with GeoCSV headers.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> If you are only interested in joining data 
 files downloaded from the NEON Data Portal, you will only need to use 
-`stackByTable()`. Follow the instructions in the first two sections, 
-to install `neonUtilities` and use `stackByTable()`, and you're done. 
+`stackByTable()`. Follow the instructions in the first section of the 
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
 </div>
 
 
@@ -62,15 +65,149 @@ repo
 
 First, we must install and load the `neonUtilities` package.
 
-```{r loadStuff}
+```{r loadStuff, eval=FALSE}
 # install neonUtilities - can skip if already installed
 install.packages("neonUtilities")
-
 # load neonUtilities
 library(neonUtilities)
+```
+
+## Download files and load directly to R: loadByProduct()
+
+The most popular function in `neonUtilities` is `loadByProduct()`. 
+This function downloads data from the NEON API, merges the site-by-month 
+files, and loads the resulting data tables into the R environment, 
+assigning each data type to the appropriate R class. It combines the 
+actions of the `zipsByProduct()`, `stackByTable()`, and `readTableNEON()` 
+functions, described below.
+
+This is a popular choice because it ensures you're always working with the 
+latest data, and it ends with ready-to-use tables in R. However, if you 
+use it in a workflow you run repeatedly, keep in mind it will re-download 
+the data every time.
+
+`loadByProduct()` works on most observational (OS) and sensor (IS) data, 
+but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
+data, and some of the data tables in the microbial data products. For 
+functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
+sections in this tutorial. For functions that work with SAE data, see 
+the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.
+
+The inputs to `loadByProduct()` control which data to download and how 
+to manage the processing:
+
+* `dpID`: the data product ID, e.g. DP1.00002.001
+* `site`: defaults to "all", meaning all sites with available data; 
+can be a vector of 4-letter NEON site codes, e.g. 
+`c("HARV","CPER","ABBY")`.
+* `startdate` and `enddate`: defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.
+* `package`: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
+* `avg`: defaults to "all", to download all data; or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data.
+* `savepath`: the file path you want to download to; defaults to the 
+working directory.
+* `check.size`: T or F: should the function pause before downloading 
+data and warn you about the size of your download? Defaults to T; if 
+you are using this function within a script or batch process you 
+will want to set it to F.
+* `nCores`: Number of cores to use for parallel processing. Defaults 
+to 1, i.e. no parallelization.
+
+The `dpID` is the data product identifier of the data you want to 
+download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">
+Explore Data Products page</a>.
+It will be in the form DP#.#####.###
+
+Let's get triple-aspirated air temperature data (DP1.00003.001) 
+from Moab and Onaqui (MOAB and ONAQ), from May--August 2018, and 
+name the data object `trip.temp`:
+
+```{r loadBy, eval=F}
+
+trip.temp <- loadByProduct(dpID="DP1.00003.001", 
+                           site=c("MOAB","ONAQ"),
+                           startdate="2018-05", 
+                           enddate="2018-08")
 
 ```
 
+```{r loadBy-output, eval=F}
+
+Continuing will download files totaling approximately 7.994569 MB. Do you want to proceed y/n: y
+Downloading 8 files
+  |========================================================================================================| 100%
+
+Unpacking zip files using 1 cores.
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Stacking operation across a single core.
+Stacking table TAAT_1min
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Stacking table TAAT_30min
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+Copied the most recent publication of variable definition file to /stackedFiles
+Finished: Stacked 2 data tables and 2 metadata tables!
+Stacking took 0.8517601 secs
+
+```
+
+The object returned by `loadByProduct()` is a named list of data 
+frames. To work with each of them, select them from the list 
+using the `$` operator.
+
+```{r loadBy-list, eval=F}
+
+names(trip.temp)
+View(trip.temp$TAAT_30min)
+
+```
+
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can use the 
+`list2env()` function:
+
+``` {r env, eval=F}
+
+list2env(trip.temp, .GlobalEnv)
+
+```
+
+For more details about the contents of the data tables and metadata tables, 
+check out the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
+
+If you want to be able to close R and come back to these data without 
+re-downloading, you'll want to save the tables locally. We recommend 
+also saving the variables file, both so you'll have it to refer to, and 
+so you can use it with `readTableNEON()` (see below).
+
+```{r save-files, eval=F}
+
+write.csv(TAAT_30min, 
+          "~/Downloads/TAAT_30min.csv", 
+          row.names=F)
+write.csv(variables_00003, 
+          "~/Downloads/variables_00003.csv", 
+          row.names=F)
+
+```
+
+But, if you want to save files locally and load them into R (or another 
+platform) each time you run a script, instead of downloading from the API 
+every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
+instead of `loadByProduct()`.
 
 ## Join data files: stackByTable()
 The function `stackByTable()` joins the month-by-site files from a data 
@@ -132,10 +269,25 @@ directory of the same name. When you open this you will see a new directory
 called **stackedFiles**. This directory contains one or more .csv files 
 (depends on the data product you are working with) with all the data from 
 the months & sites you downloaded. There will also be a single copy of the 
-associated variables.csv and validation.csv files, if applicable (validation 
-files are only available for observational data products).
+associated variables, validation, and sensor_positions files, if applicable 
+(validation files are only available for observational data products, and 
+sensor position files are only available for instrument data products).
 
-These .csv files are now ready for use with the program of your choice. 
+These .csv files are now ready for use with the program of your choice.
+
+To read the data tables into R, we recommend using `readTableNEON()`, 
+which will assign each column to the relevant R class, based on the 
+metadata in the variables file. This ensures time stamps and missing 
+data are interpreted correctly in R.
+
+```{r readtable, eval=F}
+
+SAAT30 <- readTableNEON(
+  dataFile='~/stackedFiles/SAAT_30min.csv',
+  varFile='~/stackedFiles/variables_00002.csv'
+)
+
+```
 
 ### Other options
 
@@ -156,71 +308,41 @@ stackByTable(filepath="~neon/data/NEON_temp-air-single.zip",
 
 ```
 
-
 ## Download files to be stacked: zipsByProduct()
 The function `zipsByProduct()` is a wrapper for the NEON API, it 
 downloads zip files for the data product specified and stores them in 
 a format that can then be passed on to `stackByTable()`.
 
-One of the inputs to `zipsByProduct()` is the data product ID, or 
-DPID, of the data you want to download. The DPID can be found on the 
-<a href="http://data.neonscience.org/data-products/explore" target="_blank">
-Explore Data Products page</a>.
-It will be in the form DP#.#####.###; the DPID of single aspirated air 
-temperature is DP1.00002.001.
+Input options for `zipsByProduct()` are the same as those for 
+`loadByProduct()` described above, except for `nCores`.
 
-Input options for `zipsByProduct()` are:
-
-* `dpID`: the data product ID, e.g. DP1.00002.001
-* `site`: defaults to "all", meaning all sites with available data; 
-can be a vector of 4-letter NEON site codes, e.g. 
-`c("HARV","CPER","ABBY")`.
-* `startdate` and `enddate`: either NA, meaning all dates with 
-available data, or a date in the form YYYY-MM, e.g. 2017-06. 
-Since NEON data are provided in month packages, finer scale 
-querying is not available. Both start and end date are inclusive.
-* `package`: either basic or expanded data package. Expanded data 
-packages generally include additional information about data 
-quality, such as chemical standards and quality flags. Not every 
-data product has an expanded package; if the expanded package is 
-requested but there isn't one, the basic package will be 
-downloaded.
-* `avg`: either "all", to download all data (the default), or the 
-number of minutes in the averaging interval. See example below; 
-only applicable to IS data.
-* `savepath`: the file path you want to download to; defaults to the 
-working directory.
-* `check.size`: T or F: should the function pause before downloading 
-data and warn you about the size of your download? Defaults to T; if 
-you are using this function within a script or batch process you 
-will want to set it to F.
-
-Here, we'll download single-aspirated air temperature data from 
-Wind River Experimental Forest (WREF).
+Here, we'll download single-aspirated air temperature (DP1.00002.001) 
+data from Wind River Experimental Forest (WREF) for April and May of 
+2019.
 
 ```{r run-zipsByProduct, eval = FALSE}
 
 zipsByProduct(dpID="DP1.00002.001", site="WREF", 
+              startdate="2019-04", enddate="2019-05",
               package="basic", check.size=T)
 
 ```
 
 ```{r zips-output, eval=FALSE}
 
-Continuing will download files totaling approximately 10.80949 MB. Do you want to proceed y/n: y
+Continuing will download files totaling approximately 12.750557 MB. Do you want to proceed y/n: y
 Downloading 2 files
-  |=================================================================================================| 100%
+  |========================================================================================================| 100%
 2 files downloaded to /Users/neon/filesToStack00002
 
 ```
 
 Downloaded files can now be passed to `stackByTable()` to be 
-stacked. Another input is required in this case, `folder=T`.
+stacked.
 
 ```{r zips-to-stack, eval = FALSE}
 
-stackByTable(filepath="/Users/neon/filesToStack00002", 
-             folder=T)
+stackByTable(filepath="/Users/neon/filesToStack00002")
 
 ```
 
@@ -234,102 +356,39 @@ which averaging interval to download.
 This option is only applicable to sensor (IS) data, 
 since OS data are not averaged.
 
-Download only the 30-minute data for triple-aspirated 
+Download only the 30-minute data for single-aspirated 
 air temperature at WREF:
 
 ```{r run-zipsByProduct-avg, eval = FALSE}
 
-zipsByProduct(dpID="DP1.00003.001", site="WREF", 
+zipsByProduct(dpID="DP1.00002.001", site="WREF", 
+              startdate="2019-04", enddate="2019-05",
               package="basic", avg=30, check.size=T)
 
 ```
 
 ```{r zips-output-avg, eval=FALSE}
 
-Continuing will download files totaling approximately 0.270066 MB. Do you want to proceed y/n: y
-Downloading 4 files
-  |=================================================================================================| 100%
-4 files downloaded to /Users/neon/filesToStack00003
+Continuing will download files totaling approximately 2.101936 MB. Do you want to proceed y/n: y
+Downloading 17 files
+  |========================================================================================================| 100%
+17 files downloaded to /Users/neon/filesToStack00002
 
 ```
 
-And the 30-minute files can be stacked as usual:
+The 30-minute files can be stacked as usual, and can 
+be read into R using `readTableNEON()`:
 
 ```{r zips-to-stack-avg, eval = FALSE}
 
-stackByTable(filepath="/Users/neon/filesToStack00003", 
-             folder=T)
+stackByTable(filepath="/Users/neon/filesToStack00002")
+SAAT30 <- readTableNEON(
+  dataFile='/Users/neon/filesToStack00002/stackedFiles/SAAT_30min.csv',
+  varFile='/Users/neon/filesToStack00002/stackedFiles/variables_00002.csv'
+)
 
 ```
 
-
-## Download files and load directly to R: loadByProduct()
-
-The examples above all end with a file on your local machine that can 
-be opened in any platform. If you plan to work with data in R, it can 
-be convenient to download and load the data in one step, and 
-`loadByProduct()` enables this.
-
-The available inputs to `loadByProduct()` are the same as the inputs 
-to `zipsByProduct()`, as described above.
-
-Since we are now loading data into the R environment, the function 
-output needs to be assigned to a variable name. We'll call it 
-`trip.temp`, and this time we'll query for data at Moab and at 
-Onaqui (MOAB and ONAQ), only from May--August 2018.
-
-```{r loadBy, eval=F}
-
-trip.temp <- loadByProduct(dpID="DP1.00003.001", 
-                           site=c("MOAB","ONAQ"),
-                           startdate="2018-05", 
-                           enddate="2018-08")
-
-```
-
-```{r loadBy-output, eval=F}
-
-Continuing will download files totaling approximately 3.789588 MB. Do you want to proceed y/n: y
-Downloading 4 files
-  |=================================================================================================| 100%
-
-Unpacking zip files
-  |=================================================================================================| 100%
-Stacking table TAAT_1min
-  |=================================================================================================| 100%
-Stacking table TAAT_30min
-  |=================================================================================================| 100%
-Finished: All of the data are stacked into 2 tables!
-Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
-Stacked TAAT_1min which has 174960 out of the expected 174960 rows (100%).
-Stacked TAAT_30min which has 5832 out of the expected 5832 rows (100%).
-Stacking took 3.441994 secs
-All unzipped monthly data folders have been removed.
-
-```
-
-The object returned by `loadByProduct()` is a named list of data 
-frames. To work with each of them, select them from the list 
-using the `$` operator.
-
-```{r loadBy-list, eval=F}
-
-names(trip.temp)
-View(trip.temp$TAAT_30min)
-
-```
-
-If you prefer to extract each table from the list and work 
-with it as an independent object, you can loop over the 
-list items with the `assign()` function:
-
-``` {r assign-loop, eval=F}
-
-for(i in 1:length(trip.temp)) {
-    assign(names(trip.temp)[i], trip.temp[[i]])
-}
-
-```
 
 ## Download a single zip file: getPackage()
 
