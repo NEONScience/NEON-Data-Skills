@@ -163,6 +163,27 @@ You can list any additional resources you'd like to link to if needed.
 
 ***
 
+## Code Chunks 
+
+In most tutorials, code is embedded within code 
+
+### R Markdown code chunk arguments
+
+* `eval = FALSE, comment = NA`: Used when you do not want to evaluate the chunk 
+but you do want to keep the code non-commented out in the .R script. (You'll 
+almost always want to include `comment=NA`when using `eval=FALSE`)
+* `eval =TRUE, purl = FALSE`: Used when you do not want to include a code chunk 
+in the .R but you do want it to show in the .md. Relatively few use cases. 
+* `include = FALSE, purl = FALSE`: Used when you do not want to show a chunk in 
+the .md or the .R files. Typically used for set up of the .RMD or to create a 
+graphic to supplement text in a .RMD that isn't part of the actual code of the 
+lesson. 
+* `echo=FALSE, results="hide"`: Used when you want to evaluate the code but you
+don't want the code or results to show in the .md (website) but you do want the 
+code to appear in .R. Frequently used  for the "answers" in Challenges code sections. 
+
+***
+
 ## Images 
 All images used in NEON Data Skills educational resources must be free of 
 copyright issues (CC0, CC-BY, etc). We write out the source and license of all images (linked
