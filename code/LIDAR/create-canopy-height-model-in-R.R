@@ -1,4 +1,4 @@
-## ----set-up--------------------------------------------------------------
+## ----set-up, message=FALSE, warning=FALSE--------------------------
 
 # Load needed packages
 library(raster)
@@ -6,11 +6,11 @@ library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd="~/Desktop/LIDAR_Tutorial/" #This will depend on your local environment
+wd="~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 
-## ----import-dsm----------------------------------------------------------
+## ----import-dsm----------------------------------------------------
 
 # assign raster to object
 dsm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
@@ -19,20 +19,20 @@ dsm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceMode
 dsm
 
 # plot the DSM
-plot(dsm, main="LiDAR Digital Surface Model \n SJER, California")
+plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
 
 
-## ----plot-DTM------------------------------------------------------------
+## ----plot-DTM------------------------------------------------------
 
 # import the digital terrain model
 dtm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
 
-plot(dtm, main="LiDAR Digital Terrain Model \n SJER, California")
+plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
 
 
-## ----calculate-plot-CHM--------------------------------------------------
+## ----calculate-plot-CHM--------------------------------------------
 
 # use raster math to create CHM
 chm <- dsm - dtm
@@ -40,7 +40,7 @@ chm <- dsm - dtm
 # view CHM attributes
 chm
 
-plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 
 
@@ -49,11 +49,11 @@ plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
 chm_ft <- chm*3.28084
 
 # plot 
-plot(chm_ft, main="LiDAR Canopy Height Model \n in feet")
+plot(chm_ft, main="Lidar Canopy Height Model \n in feet")
 
 
 
-## ----canopy-function-----------------------------------------------------
+## ----canopy-function-----------------------------------------------
 # Create a function that subtracts one raster from another
 # 
 canopyCalc <- function(DTM, DSM) {
@@ -70,8 +70,8 @@ chm3
 
 
 
-## ----write-raster-to-geotiff, eval=FALSE, comment=NA---------------------
+## ----write-raster-to-geotiff, eval=FALSE, comment=NA---------------
 # write out the CHM in tiff format. 
-writeRaster(chm,paste0(wd,"chm_SJER.tiff"),"GTiff")
+writeRaster(chm,paste0(wd,"chm_SJER.tif"),"GTiff")
 
 

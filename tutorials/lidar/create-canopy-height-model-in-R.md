@@ -1,7 +1,7 @@
 ---
 syncID: 4a21c923ecc848e08af1222e5552bc89
-title: "Create a Canopy Height Model from LiDAR-derived Rasters in R"
-description: "In this tutorial, you will bring LiDAR-derived raster data (DSM and DTM) into R to create a  canopy height model (CHM)."
+title: "Create a Canopy Height Model from lidar-derived Rasters in R"
+description: "In this tutorial, you will bring lidar-derived raster data (DSM and DTM) into R to create a canopy height model (CHM)."
 dateCreated: 2014-07-21
 authors: Edmund Hart, Leah A. Wasser
 contributors: Donal O'Leary
@@ -16,10 +16,10 @@ urlTitle: create-chm-rasters-r
 ---
 
 
-A common analysis using LiDAR data are to derive top of the canopy height values 
-from the LiDAR data. These values are often used to track changes in forest 
+A common analysis using lidar data are to derive top of the canopy height values 
+from the lidar data. These values are often used to track changes in forest 
 structure over time, to calculate biomass, and even leaf area index (LAI). Let's 
-dive into the basics of working with raster formatted LiDAR data in R! 
+dive into the basics of working with raster formatted lidar data in R! 
 
 <div id="ds-objectives" markdown="1">
 
@@ -56,13 +56,13 @@ created by unzipping this file.
 
 ## Recommended Reading
 <a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
-What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
+What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
 
 </div>
 
-## Create a LiDAR derived Canopy Height Model (CHM)
+## Create a lidar-derived Canopy Height Model (CHM)
 
-The National Ecological Observatory Network (NEON) will provide LiDAR-derived 
+The National Ecological Observatory Network (NEON) will provide lidar-derived 
 data products as one of its many free ecological data products. These products 
 will come in the 
 <a href="http://trac.osgeo.org/geotiff/" target="_blank">GeoTIFF</a> 
@@ -74,7 +74,7 @@ represents the heights of the trees on the ground. We can derive the CHM
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
 
-We will use the `raster` R package to work with the the lidar derived digital 
+We will use the `raster` R package to work with the the lidar-derived digital 
 surface model (DSM) and the digital terrain model (DTM). 
 
 
@@ -84,7 +84,7 @@ surface model (DSM) and the digital terrain model (DTM).
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Desktop/LIDAR_Tutorial/" #This will depend on your local environment
+    wd="~/Documents/data/" #This will depend on your local environment
     setwd(wd)
 
 First, we will import the Digital Surface Model (DSM). The 
@@ -104,11 +104,11 @@ buildings, etc).
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/donal/Desktop/LIDAR_Tutorial/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
+    ## source     : /Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
     ## names      : SJER2013_DSM
 
     # plot the DSM
-    plot(dsm, main="LiDAR Digital Surface Model \n SJER, California")
+    plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/create-canopy-height-model-in-R/import-dsm-1.png)
 
@@ -123,7 +123,7 @@ represents the ground (terrain) elevation.
     # import the digital terrain model
     dtm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
     
-    plot(dtm, main="LiDAR Digital Terrain Model \n SJER, California")
+    plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/create-canopy-height-model-in-R/plot-DTM-1.png)
 
@@ -152,11 +152,11 @@ trees with negative heights!
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /private/var/folders/ty/4htjktld70d4jchykyv6hgbr0000gn/T/RtmpkVGiBU/raster/r_tmp_2020-02-26_190420_31953_00186.grd 
+    ## source     : /private/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T/RtmpL3MMG7/raster/r_tmp_2020-03-03_134813_26109_61159.grd 
     ## names      : layer 
     ## values     : -1.399994, 40.29001  (min, max)
 
-    plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+    plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/create-canopy-height-model-in-R/calculate-plot-CHM-1.png)
 
@@ -190,7 +190,7 @@ efficient way to do this would be to create a function to create your CHMs.
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /private/var/folders/ty/4htjktld70d4jchykyv6hgbr0000gn/T/RtmpkVGiBU/raster/r_tmp_2020-02-26_190438_31953_03175.grd 
+    ## source     : /private/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T/RtmpL3MMG7/raster/r_tmp_2020-03-03_134836_26109_92856.grd 
     ## names      : layer 
     ## values     : -40.29001, 1.399994  (min, max)
 
@@ -203,7 +203,7 @@ efficient way to do this would be to create a function to create your CHMs.
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /private/var/folders/ty/4htjktld70d4jchykyv6hgbr0000gn/T/RtmpkVGiBU/raster/r_tmp_2020-02-26_190441_31953_92071.grd 
+    ## source     : memory
     ## names      : layer 
     ## values     : -40.29001, 1.399994  (min, max)
 
@@ -212,10 +212,10 @@ As with any raster, we can write out the CHM as a GeoTiff using the
 
 
     # write out the CHM in tiff format. 
-    writeRaster(chm,paste0(wd,"chm_SJER.tiff"),"GTiff")
+    writeRaster(chm,paste0(wd,"chm_SJER.tif"),"GTiff")
 
 We've now successfully created a canopy height model using basic raster math -- in 
-R! We can bring the `chm_SJER.tiff` file into QGIS (or any GIS program) and look 
+R! We can bring the `chm_SJER.tif` file into QGIS (or any GIS program) and look 
 at it. 
 
 ***
