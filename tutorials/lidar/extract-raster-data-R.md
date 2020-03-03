@@ -1,7 +1,7 @@
 ---
 syncID: 75f786a3b9ee4abba21878eb721704b6
 title: "Extract Values from a Raster in R"
-description: "Learn to extract data from a raster using circular or square buffers created around a x,y location or from a shapefile. With this will will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame"
+description: "Learn to extract data from a raster using circular or square buffers created around a x,y location or from a shapefile. With this we will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame"
 dateCreated: 2014-07-21
 authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
 contributors: 
@@ -67,7 +67,7 @@ created by unzipping this file.
 
 ## Recommended Reading
 <a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
-What is a CHM, DSM and DTM? About Gridded, Raster LIDAR Data</a>
+What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
 
 </div>
 
@@ -114,8 +114,7 @@ NOTE: the `sp` library typically installs when you install the raster package.
     library(ggplot2)
     
     # set working directory to ensure R can find the file we wish to import and where
-    #setwd("pathToDirHere")	    # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Desktop/LIDAR_Tutorial/" #This will depend on your local environment
+    wd="~/Documents/data/" #This will depend on your local environment
     setwd(wd)
 
 Let's get started with the *insitu* vegetation data!
@@ -169,7 +168,7 @@ Let's get started with the *insitu* vegetation data!
     ##  $ stemmapqf            : int  0 0 0 0 0 0 0 0 0 0 ...
 
 Now let's load the Canopy Height Model raster. Note, if you completed the
-<a href="{{ site.baseurl }}/create-chm-rasters-r" target="_blank"> *Create a Canopy Height Model from LIDAR-derived Rasters in R*</a> 
+<a href="{{ site.baseurl }}/create-chm-rasters-r" target="_blank"> *Create a Canopy Height Model from lidar-derived Rasters in R*</a> 
 tutorial this is the same object `chm` you can created. You do not need to reload
 the data. 
 
@@ -178,7 +177,7 @@ the data.
     chm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif"))
     
     # plot raster
-    plot(chm, main="LIDAR Canopy Height Model \n SJER, California")
+    plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/plot-CHM-1.png)
 
@@ -232,8 +231,8 @@ quickly figure out what projection an object is in, using `object@crs`.
     chm@crs
 
     ## CRS arguments:
-    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84
-    ## +towgs84=0,0,0
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
+    ## +ellps=WGS84 +towgs84=0,0,0
 
 So our data are in UTM Zone 11 which is correct for California. We can use this 
 CRS to make our data points into a Spatial Points Data Frame which then allows 
@@ -367,13 +366,20 @@ Ack! We've lost our PlotIDs, how will we match them up?
     # have a look at the centroids dataFrame
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
-    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
-    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
-    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
-    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
-    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
-    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
+    ##    Plot_ID  Point northing  easting Remarks ID
+    ## 1 SJER1068 center  4111568 255852.4      NA  1
+    ## 2  SJER112 center  4111299 257407.0      NA  2
+    ## 3  SJER116 center  4110820 256838.8      NA  3
+    ## 4  SJER117 center  4108752 256176.9      NA  4
+    ## 5  SJER120 center  4110476 255968.4      NA  5
+    ## 6  SJER128 center  4111389 257078.9      NA  6
+    ##   chmMaxHeight
+    ## 1    18.940002
+    ## 2    24.189972
+    ## 3    13.299988
+    ## 4    10.989990
+    ## 5     5.690002
+    ## 6    19.079987
 
 Excellent. We now have the maximum "tree" height for each plot based on the CHM. 
 
@@ -456,7 +462,7 @@ requires the `rgeos` package, installed.
     centShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp"))
 
     ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "/Users/donal/Desktop/LIDAR_Tutorial/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp", layer: "SJERPlotCentroids_Buffer"
+    ## Source: "/Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp", layer: "SJERPlotCentroids_Buffer"
     ## with 18 features
     ## It has 6 fields
 
@@ -475,13 +481,20 @@ of having it be a separate data frame that we later have to match up.
     # view
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight chmMaxShape
-    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002   18.940002
-    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972   24.189972
-    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988   13.299988
-    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990   10.989990
-    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002    5.690002
-    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987   19.079987
+    ##    Plot_ID  Point northing  easting Remarks ID
+    ## 1 SJER1068 center  4111568 255852.4      NA  1
+    ## 2  SJER112 center  4111299 257407.0      NA  2
+    ## 3  SJER116 center  4110820 256838.8      NA  3
+    ## 4  SJER117 center  4108752 256176.9      NA  4
+    ## 5  SJER120 center  4110476 255968.4      NA  5
+    ## 6  SJER128 center  4111389 257078.9      NA  6
+    ##   chmMaxHeight chmMaxShape
+    ## 1    18.940002   18.940002
+    ## 2    24.189972   24.189972
+    ## 3    13.299988   13.299988
+    ## 4    10.989990   10.989990
+    ## 5     5.690002    5.690002
+    ## 6    19.079987   19.079987
 
 Which was faster, extracting from a SpatialPolgygon object (`polys`) or extracting 
 with a SpatialPolygonsDataFrame (`centShape`)? Keep this in mind when doing future
@@ -649,13 +662,20 @@ standardize your names to avoid potential confusion like this!
     # view
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight chmMaxShape
-    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002   18.940002
-    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972   24.189972
-    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988   13.299988
-    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990   10.989990
-    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002    5.690002
-    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987   19.079987
+    ##    Plot_ID  Point northing  easting Remarks ID
+    ## 1 SJER1068 center  4111568 255852.4      NA  1
+    ## 2  SJER112 center  4111299 257407.0      NA  2
+    ## 3  SJER116 center  4110820 256838.8      NA  3
+    ## 4  SJER117 center  4108752 256176.9      NA  4
+    ## 5  SJER120 center  4110476 255968.4      NA  5
+    ## 6  SJER128 center  4111389 257078.9      NA  6
+    ##   chmMaxHeight chmMaxShape chmMaxSquareShape     diff
+    ## 1    18.940002   18.940002         18.940002 0.000000
+    ## 2    24.189972   24.189972         24.189972 0.000000
+    ## 3    13.299988   13.299988         13.299988 0.000000
+    ## 4    10.989990   10.989990         10.989990 0.000000
+    ## 5     5.690002    5.690002          7.380005 1.690002
+    ## 6    19.079987   19.079987         19.079987 0.000000
     ##   insituMaxHeight
     ## 1            19.3
     ## 2            23.9
@@ -667,7 +687,7 @@ standardize your names to avoid potential confusion like this!
 ## Plot Remote Sensed vs Ground Data
 
 Now we can create a plot that illustrates the relationship between in situ 
-measured tree height values and LIDAR-derived max canopy height values.
+measured tree height values and lidar-derived max canopy height values.
 
 We can make a simple plot using the base R `plot()` function:
 
@@ -681,7 +701,7 @@ Or we can use the `ggplot()` function from the **ggplot2** package. For more on
 using the **ggplot2** package see our tutorial, 
 <a href="{{ site.baseurl }}/dc-time-series-plot-ggplot-r" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
 
-In reality, we know that the trees in these plots are the same height regardless of if we measure them with LIDAR or from the ground. However, there may be certain biases in our measurements, and it wil be interesting to see if one method measures the trees as being taller than the other. To make this comparison, we will add what is called a "1:1" line, i.e., the line where all of the points would fall if both methods measured the trees as exactly the same height. Let's make this "1:1" line dashed and slightly transparent so that it doesn't obscure any of our points.
+In reality, we know that the trees in these plots are the same height regardless of if we measure them with lidar or from the ground. However, there may be certain biases in our measurements, and it wil be interesting to see if one method measures the trees as being taller than the other. To make this comparison, we will add what is called a "1:1" line, i.e., the line where all of the points would fall if both methods measured the trees as exactly the same height. Let's make this "1:1" line dashed and slightly transparent so that it doesn't obscure any of our points.
 
 
     # create plot
@@ -691,7 +711,7 @@ In reality, we know that the trees in these plots are the same height regardless
       geom_point() + 
       theme_bw() + 
       ylab("Maximum measured height") + 
-      xlab("Maximum LIDAR pixel")
+      xlab("Maximum lidar pixel")
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/plot-w-ggplot-1.png)
 
@@ -705,7 +725,7 @@ customize your plot.
       geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
       geom_point() + 
       ylab("Maximum Measured Height") + 
-      xlab("Maximum LIDAR Height")+
+      xlab("Maximum lidar Height")+
       geom_smooth(method=lm) 
     
     p
@@ -714,15 +734,15 @@ customize your plot.
 
     # Add labels
     p + theme(panel.background = element_rect(colour = "grey")) + 
-      ggtitle("LIDAR CHM Derived vs Measured Tree Height") +
+      ggtitle("lidar CHM Derived vs Measured Tree Height") +
       theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
       theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
       theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/ggplot-data-2.png)
 
-You have now successfully compared LIDAR derived vegetation height, within plots, 
-to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though LIDAR underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the LIDAR-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.
+You have now successfully compared lidar derived vegetation height, within plots, 
+to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.
 
 If you want to make this an interactive plot, you could use Plotly to do so. 
 For more on using the **plotly** package to create interactive plots, see our tutorial 
@@ -732,7 +752,7 @@ For more on using the **plotly** package to create interactive plots, see our tu
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Data
 
-Create a plot of LIDAR 95th percentile value vs *insitu* max height. Or LIDAR 95th 
+Create a plot of lidar 95th percentile value vs *insitu* max height. Or lidar 95th 
 percentile vs *insitu* 95th percentile. 
 
 Compare this plot to the previous one with max height. Which would you prefer to 
