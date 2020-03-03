@@ -1,4 +1,4 @@
-## ----set-up--------------------------------------------------------------
+## ----set-up, message=FALSE-----------------------------
 
 # Load needed packages
 library(raster)
@@ -11,34 +11,38 @@ library(maptools)
 # plotting
 library(ggplot2)
 
-# set working directory to data folder
-#setwd("pathToDirHere")
+# set working directory to ensure R can find the file we wish to import and where
+wd="~/Documents/data/" #This will depend on your local environment
+setwd(wd)
 
-## ----read-veg------------------------------------------------------------
+
+## ----read-veg------------------------------------------
 
 # import the centroid data and the vegetation structure data
 # this means all strings of letter coming in will remain character
 options(stringsAsFactors=FALSE)
 
 # read in plot centroids
-centroids <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv")
+centroids <- read.csv(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv"))
 str(centroids)
 
 # read in vegetation heights
-vegStr <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv")
+vegStr <- read.csv(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv"))
 str(vegStr)
 
 
-## ----plot-CHM------------------------------------------------------------
+
+## ----plot-CHM------------------------------------------
 
 # import the digital terrain model
-chm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif")
+chm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif"))
 
 # plot raster
-plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 
-## ----plot-veg------------------------------------------------------------
+
+## ----plot-veg------------------------------------------
 
 ## overlay the centroid points and the stem locations on the CHM plot
 # plot the chm
@@ -52,14 +56,16 @@ points(centroids$easting,centroids$northing, pch=0, cex = 2 )
 points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
 
 
-## ----check-CRS-----------------------------------------------------------
+
+## ----check-CRS-----------------------------------------
 # check CHM CRS
 chm@crs
 
 
-## ----createSpatialDf-----------------------------------------------------
+
+## ----createSpatialDf-----------------------------------
 ## create SPDF: SpatialPointsDataFrame()
-# specify the northing (columns 4) & easting (column 3) in order
+# specify the easting (column 4) & northing (columns 3) in that order
 # specify CRS proj4string: borrow CRS from chm 
 # specify raster
 centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
@@ -71,7 +77,8 @@ centroid_spdf = SpatialPointsDataFrame(centroids[,4:3],
 centroid_spdf
 
 
-## ----extract-plot-data---------------------------------------------------
+
+## ----extract-plot-data---------------------------------
 
 # extract circular, 20m buffer
 
@@ -85,7 +92,8 @@ cent_max <- extract(chm,             # raster layer
 cent_max
 
 
-## ----fix-ID--------------------------------------------------------------
+
+## ----fix-ID--------------------------------------------
 
 # grab the names of the plots from the centroid_spdf
 cent_max$plot_id <- centroid_spdf$Plot_ID
@@ -103,7 +111,8 @@ centroids <- merge(centroids, cent_max, by.x = 'Plot_ID', by.y = 'plot_id')
 head(centroids)
 
 
-## ----explore-data-distribution-------------------------------------------
+
+## ----explore-data-distribution-------------------------
 # extract all
 cent_heightList <- extract(chm,centroid_spdf,buffer = 20)
 
@@ -115,12 +124,12 @@ for (i in 1:5) {
   }
 
 
-## ----challenge-code-loops, include=TRUE, results="hide", echo=FALSE------
+
+## ----challenge-code-loops, echo=FALSE, eval=FALSE, comment=NA----
 # set parameters for graphics
 par(mfrow=c(6,3))
 
-# create histograms for the first 5 plots of data
-# using a for loop
+# create histograms using a for loop
 
 for (i in 1:18) {
   hist(cent_heightList[[i]], main=(paste("plot",i)))
@@ -130,21 +139,24 @@ for (i in 1:18) {
 par(mfrow=c(1,1))
 
 
-## ----square-plot, eval=FALSE---------------------------------------------
+
+## ----square-plot, eval=FALSE---------------------------
 ## square_max <- extract(chm,             # raster layer
 ## 	polys,   # spatial polygon for extraction
 ## 	fun=max,         # what to value to extract
 ## 	df=TRUE)         # return a dataframe?
 ## 
 
-## ----read-shapefile------------------------------------------------------
+
+## ----read-shapefile------------------------------------
 # load shapefile data
-centShape <- readShapePoly("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp")
+centShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp"))
 
 plot(centShape)
 
 
-## ----extract-w-shapefile-------------------------------------------------
+
+## ----extract-w-shapefile-------------------------------
 # extract max from chm for shapefile buffers
 centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
 
@@ -152,20 +164,25 @@ centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
 head(centroids)
 
 
-## ----challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE----
+
+## ----challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE, warning=FALSE, fig.show='hide'----
 # load shapefile data
-squareShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp")
+squareShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp"))
 
 plot(squareShape)
 
 # extract max from chm for shapefile buffers
 centroids$chmMaxSquareShape <- extract(chm, squareShape, weights=FALSE, fun=max)
 
+# calculate the difference between the two methods
+centroids$diff <- centroids$chmMaxSquareShape-centroids$chmMaxShape
+
 # view
 head(centroids)
 
 
-## ----analyze-base-r------------------------------------------------------
+
+## ----analyze-base-r------------------------------------
 # find max stemheight
 maxStemHeight <- aggregate( vegStr$stemheight ~ vegStr$plotid, 
 														FUN = max )  
@@ -180,7 +197,8 @@ names(maxStemHeight) <- c('plotid','insituMaxHeight')
 head(maxStemHeight)
 
 
-## ----trees-95------------------------------------------------------------
+
+## ----trees-95------------------------------------------
 # add the max and 95th percentile height value for all trees within each plot
 insitu <- cbind(maxStemHeight,'quant'=tapply(vegStr$stemheight, 
 	vegStr$plotid, quantile, prob = 0.95))
@@ -189,7 +207,8 @@ insitu <- cbind(maxStemHeight,'quant'=tapply(vegStr$stemheight,
 head(insitu)
 
 
-## ----analyze-plot-dplyr--------------------------------------------------
+
+## ----analyze-plot-dplyr--------------------------------
 
 # find the max stem height for each plot
 maxStemHeight_d <- vegStr %>% 
@@ -204,7 +223,8 @@ names(maxStemHeight_d) <- c("plotid","insituMaxHeight")
 head(maxStemHeight_d)
 
 
-## ----bonus-dplyr---------------------------------------------------------
+
+## ----bonus-dplyr---------------------------------------
 
 # one line of nested commands, 95% height value
 insitu_d <- vegStr %>%
@@ -216,7 +236,8 @@ insitu_d <- vegStr %>%
 head(insitu_d)
 
 
-## ----merge-dataframe-----------------------------------------------------
+
+## ----merge-dataframe-----------------------------------
 
 # merge the insitu data into the centroids data.frame
 centroids <- merge(centroids, maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
@@ -225,51 +246,58 @@ centroids <- merge(centroids, maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
 head(centroids)
 
 
-## ----plot-data-----------------------------------------------------------
+
+## ----plot-data-----------------------------------------
 
 #create basic plot
-plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHeight)
+plot(x = centroids$chmMaxShape, y=centroids$insituMaxHeight)
 
 
-## ----plot-w-ggplot-------------------------------------------------------
+
+## ----plot-w-ggplot-------------------------------------
 
 # create plot
 
-ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
+ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   theme_bw() + 
   ylab("Maximum measured height") + 
-  xlab("Maximum LiDAR pixel")
+  xlab("Maximum lidar pixel")
 
 
-## ----ggplot-data---------------------------------------------------------
+
+## ----ggplot-data---------------------------------------
 
 #plot with regression fit
-p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
+p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   ylab("Maximum Measured Height") + 
-  xlab("Maximum LiDAR Height")+
+  xlab("Maximum lidar Height")+
   geom_smooth(method=lm) 
 
 p
 
 # Add labels
 p + theme(panel.background = element_rect(colour = "grey")) + 
-  ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
+  ggtitle("lidar CHM Derived vs Measured Tree Height") +
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
   theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
   theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
 
-## ----challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE----
+
+## ----challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE, fig.show='hide'----
 # 1. Add 95 data to centroids df
 centroids_c <- merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
 
 # 2. Plot 95 data vs insitu data
 ggplot(centroids_c,aes(x=quant, y =insituMaxHeight.x )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   ylab("Maximum Measured Height") + 
-  xlab("95% quantile LiDAR Height")+
+  xlab("95% quantile lidar Height")+
   geom_smooth(method=lm) 
 
 

@@ -1,16 +1,16 @@
 ---
 syncID: 75f786a3b9ee4abba21878eb721704b6
 title: "Extract Values from a Raster in R"
-description: "Learn to extract data from a raster using circular or square buffers created around a x,y location or from a shapefile. With this will will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame so that they can be"
+description: "Learn to extract data from a raster using circular or square buffers created around a x,y location or from a shapefile. With this we will learn to convert x,y locations in a .csv file into a SpatialPointsDataFrame"
 dateCreated: 2014-07-21
-authors: Edmund Hart, Leah A. Wasser
-contributors:
+authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
+contributors: 
 estimatedTime: 0.5 Hours
 packagesLibraries: raster, sp, rgdal, maptools, rgeos, dplyr, ggplot
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool:
 dataProduct:
-code1: lidar/extract-raster-data-R.R
+code1: LIDAR/extract-raster-data-R.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: extract-values-rasters-r
 ---
@@ -67,7 +67,7 @@ created by unzipping this file.
 
 ## Recommended Reading
 <a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
-What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
+What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
 
 </div>
 
@@ -101,7 +101,7 @@ in addition to working with the raster package.
 
 NOTE: the `sp` library typically installs when you install the raster package. 
 
-```{r set-up}
+```{r set-up, message=FALSE}
 
 # Load needed packages
 library(raster)
@@ -114,8 +114,9 @@ library(maptools)
 # plotting
 library(ggplot2)
 
-# set working directory to data folder
-#setwd("pathToDirHere")
+# set working directory to ensure R can find the file we wish to import and where
+wd="~/Documents/data/" #This will depend on your local environment
+setwd(wd)
 ```
 
 Let's get started with the *insitu* vegetation data!
@@ -127,27 +128,27 @@ Let's get started with the *insitu* vegetation data!
 options(stringsAsFactors=FALSE)
 
 # read in plot centroids
-centroids <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv")
+centroids <- read.csv(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv"))
 str(centroids)
 
 # read in vegetation heights
-vegStr <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv")
+vegStr <- read.csv(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv"))
 str(vegStr)
 
 ```
 
 Now let's load the Canopy Height Model raster. Note, if you completed the
-<a href="{{ site.baseurl }}/create-chm-rasters-r" target="_blank"> *Create a Canopy Height Model from LiDAR-derived Rasters in R*</a> 
+<a href="{{ site.baseurl }}/create-chm-rasters-r" target="_blank"> *Create a Canopy Height Model from lidar-derived Rasters in R*</a> 
 tutorial this is the same object `chm` you can created. You do not need to reload
 the data. 
 
 ```{r plot-CHM }
 
 # import the digital terrain model
-chm <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif")
+chm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif"))
 
 # plot raster
-plot(chm, main="LiDAR Canopy Height Model \n SJER, California")
+plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 ```
 
@@ -209,7 +210,7 @@ the points to be treated as spatial objects.
 
 ```{r createSpatialDf}
 ## create SPDF: SpatialPointsDataFrame()
-# specify the northing (columns 4) & easting (column 3) in order
+# specify the easting (column 4) & northing (columns 3) in that order
 # specify CRS proj4string: borrow CRS from chm 
 # specify raster
 centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
@@ -248,7 +249,7 @@ the extract function in R allows you
 to specify a circular buffer with a given radius around an x,y point location. 
 Values for all pixels in the specified raster that fall within the circular 
 buffer are extracted. In this case, we can tell R to extract the maximum value 
-of all pixels using the `fun=max` command.
+of all pixels using the `fun=max` argument.
 
 ### Method 1: Extract Data From a Cirular Buffer
 
@@ -323,7 +324,7 @@ Looking at these distributions, the area has some pretty short trees -- plot 5
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: For Loops & Plotting Parameters
-This code will give you 6 rows of plots with 3 plots in each row. Modify the 
+Seeing as we have 18 trees in our `cent_heightList`, it would be nice to show all 18 plots organized into 6 rows of plots with 3 plots in each row. Modify the 
 `for loop` above to plot all 18 histograms. 
 
 Improve upon the plot's final appearance to make a readable final figure. 
@@ -331,12 +332,11 @@ Hint: one way to setup a layout with multiple plots in R is: `par(mfrow=c(2,3))`
 which gives a 2 rows, 3 columns layout. 
 </div> 
 
-```{r challenge-code-loops, include=TRUE, results="hide", echo=FALSE}
+```{r challenge-code-loops, echo=FALSE, eval=FALSE, comment=NA}
 # set parameters for graphics
 par(mfrow=c(6,3))
 
-# create histograms for the first 5 plots of data
-# using a for loop
+# create histograms using a for loop
 
 for (i in 1:18) {
   hist(cent_heightList[[i]], main=(paste("plot",i)))
@@ -354,10 +354,8 @@ To complete this next method, you need to first create square plots around a
 point to create a R object called `polys`. Directions for how to do this are 
 contained in this tutorial: 
  
- <a href="{{ site.baseurl }}/field-data-polygons-centroids" target="_blank">
- *Create A Square Buffer Around a Plot Centroid in R*</a>. 
- 
- 
+<a href="{{ site.baseurl }}/field-data-polygons-centroids" target="_blank">*Create A Square Buffer Around a Plot Centroid in R*</a>. 
+
 
 Once you have the SpatialPolygon object `polys`, you can use the same `extract()` function
 as we did for the circular plots, but this time with no buffer since we already 
@@ -373,14 +371,6 @@ square_max <- extract(chm,             # raster layer
 
 However, if you're going this route with your data, we recommend using the next
 method! 
-
-<div id="ds-challenge" markdown="1">
-### Challenge: Circles vs Squares
-
-Compare the values from `cent_max` and `square_max`. Are they the same? Why 
-might they differ? 
-
-</div>
 
 ## Method 3: Extract Values Using a Shapefile
 
@@ -398,13 +388,13 @@ requires the `rgeos` package, installed.
 
 ```{r read-shapefile }
 # load shapefile data
-centShape <- readShapePoly("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp")
+centShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp"))
 
 plot(centShape)
 
 ```
 
-Then we can simple use the extract function again. Here we specify not weighting
+Then we can simply use the extract function again. Here we specify not weighting
 the values returned and we directly add the data to our centroids file instead
 of having it be a separate data frame that we later have to match up. 
 
@@ -429,14 +419,17 @@ might they differ?
 
 </div>
 
-```{r challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE}
+```{r challenge-code-square-shape, include=TRUE, results="hide", echo=FALSE, warning=FALSE, fig.show='hide'}
 # load shapefile data
-squareShape <- readShapePoly("SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp")
+squareShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buff_Square.shp"))
 
 plot(squareShape)
 
 # extract max from chm for shapefile buffers
 centroids$chmMaxSquareShape <- extract(chm, squareShape, weights=FALSE, fun=max)
+
+# calculate the difference between the two methods
+centroids$diff <- centroids$chmMaxSquareShape-centroids$chmMaxShape
 
 # view
 head(centroids)
@@ -498,7 +491,7 @@ package **dplyr**. Additionally, the **dplyr** workflow is more similar to a
 typical database approach.
 
 For more on using the **dplyr** package see our tutorial, 
-<a href="{{ site.baseurl }}/R/GREPL-Filter-Piping-in-DPLYR-Using-R/" target="_blank"> *Filter, Piping and GREPL Using R DPLYR - An Intro*</a>. 
+<a href="{{ site.baseurl }}/grepl-filter-piping-dplyr-r/" target="_blank"> *Filter, Piping and GREPL Using R DPLYR - An Intro*</a>. 
 
 ```{r analyze-plot-dplyr }
 
@@ -541,7 +534,7 @@ we will merge the data on the Plot ID (`plotid`, `Plot_ID`) column. Notice that
 it's spelled slightly differently in both data.frames so we'll need to tell R 
 what it's called in each data.frame.
 
-If you plan you data collection, entry, and analyses ahead of time you can 
+If you plan your data collection, entry, and analyses ahead of time you can 
 standardize your names to avoid potential confusion like this!
 
 ```{r merge-dataframe}
@@ -557,14 +550,14 @@ head(centroids)
 ## Plot Remote Sensed vs Ground Data
 
 Now we can create a plot that illustrates the relationship between in situ 
-measured tree height values and LiDAR-derived max canopy height values.
+measured tree height values and lidar-derived max canopy height values.
 
 We can make a simple plot using the base R `plot()` function:
 
 ```{r plot-data }
 
 #create basic plot
-plot(x = centroids$chmMaxHeight, y=centroids$insituMaxHeight)
+plot(x = centroids$chmMaxShape, y=centroids$insituMaxHeight)
 
 ```
 
@@ -572,15 +565,18 @@ Or we can use the `ggplot()` function from the **ggplot2** package. For more on
 using the **ggplot2** package see our tutorial, 
 <a href="{{ site.baseurl }}/dc-time-series-plot-ggplot-r" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
 
+In reality, we know that the trees in these plots are the same height regardless of if we measure them with lidar or from the ground. However, there may be certain biases in our measurements, and it wil be interesting to see if one method measures the trees as being taller than the other. To make this comparison, we will add what is called a "1:1" line, i.e., the line where all of the points would fall if both methods measured the trees as exactly the same height. Let's make this "1:1" line dashed and slightly transparent so that it doesn't obscure any of our points.
+
 ```{r plot-w-ggplot}
 
 # create plot
 
-ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
+ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   theme_bw() + 
   ylab("Maximum measured height") + 
-  xlab("Maximum LiDAR pixel")
+  xlab("Maximum lidar pixel")
 
 ```
 
@@ -591,25 +587,26 @@ customize your plot.
 ```{r ggplot-data }
 
 #plot with regression fit
-p <- ggplot(centroids,aes(x=chmMaxHeight, y =insituMaxHeight )) + 
+p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   ylab("Maximum Measured Height") + 
-  xlab("Maximum LiDAR Height")+
+  xlab("Maximum lidar Height")+
   geom_smooth(method=lm) 
 
 p
 
 # Add labels
 p + theme(panel.background = element_rect(colour = "grey")) + 
-  ggtitle("LiDAR CHM Derived vs Measured Tree Height") +
+  ggtitle("lidar CHM Derived vs Measured Tree Height") +
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
   theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
   theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
 ```
 
-You have now successfully compared LiDAR derived vegetation height, within plots, 
-to actual measured tree height data!
+You have now successfully compared lidar derived vegetation height, within plots, 
+to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.
 
 If you want to make this an interactive plot, you could use Plotly to do so. 
 For more on using the **plotly** package to create interactive plots, see our tutorial 
@@ -619,7 +616,7 @@ For more on using the **plotly** package to create interactive plots, see our tu
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Data
 
-Create a plot of LiDAR 95th percentile value vs *insitu* max height. Or LiDAR 95th 
+Create a plot of lidar 95th percentile value vs *insitu* max height. Or lidar 95th 
 percentile vs *insitu* 95th percentile. 
 
 Compare this plot to the previous one with max height. Which would you prefer to 
@@ -627,15 +624,16 @@ use for your analysis? Why?
 
 </div>
 
-```{r challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE}
+```{r challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE, fig.show='hide'}
 # 1. Add 95 data to centroids df
 centroids_c <- merge(centroids, insitu, by.x = 'Plot_ID', by.y = 'plotid')
 
 # 2. Plot 95 data vs insitu data
 ggplot(centroids_c,aes(x=quant, y =insituMaxHeight.x )) + 
+  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
   ylab("Maximum Measured Height") + 
-  xlab("95% quantile LiDAR Height")+
+  xlab("95% quantile lidar Height")+
   geom_smooth(method=lm) 
 
 
