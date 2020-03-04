@@ -115,7 +115,7 @@ library(maptools)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-wd="~/Documents/data/" #This will depend on your local environment
+wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 ```
 
@@ -160,7 +160,7 @@ our existing raster.
 
 ## overlay the centroid points and the stem locations on the CHM plot
 # plot the chm
-myCol=terrain.colors(6)
+myCol <- terrain.colors(6)
 plot(chm,col=myCol, main="Plot & Tree Locations", breaks=c(-2,0,2,10,40))
 
 ## plotting details: cex = point size, pch 0 = square
@@ -213,9 +213,8 @@ the points to be treated as spatial objects.
 # specify the easting (column 4) & northing (columns 3) in that order
 # specify CRS proj4string: borrow CRS from chm 
 # specify raster
-centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
-																			 proj4string=chm@crs, 
-																			 centroids)
+centroid_spdf <- SpatialPointsDataFrame(
+  centroids[,4:3], proj4string=chm@crs, centroids)
 
 # check centroid CRS
 # note SPDFs don't have a crs slot so `object@crs` won't work
@@ -346,7 +345,6 @@ for (i in 1:18) {
 par(mfrow=c(1,1))
 
 ```
-
 
 ## Method 2: Square Plots 
 
@@ -590,19 +588,18 @@ customize your plot.
 p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
   geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
-  ylab("Maximum Measured Height") + 
-  xlab("Maximum lidar Height")+
-  geom_smooth(method=lm) 
-
-p
-
-# Add labels
-p + theme(panel.background = element_rect(colour = "grey")) + 
+  geom_smooth(method=lm) + # add regression line and confidence interval
+  theme(panel.background = element_rect(colour = "grey")) + 
   ggtitle("lidar CHM Derived vs Measured Tree Height") +
+  ylab("Maximum Measured Height") + 
+  xlab("Maximum lidar Height") +
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-  theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-  theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+  theme(axis.title.y = element_text(
+    family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
+  theme(axis.title.x = element_text(
+    family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
+print(p)
 ```
 
 You have now successfully compared lidar derived vegetation height, within plots, 
