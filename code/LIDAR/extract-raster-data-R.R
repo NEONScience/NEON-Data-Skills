@@ -1,4 +1,4 @@
-## ----set-up, message=FALSE-----------------------------
+## ----set-up, message=FALSE-------------------------------------------------------------
 
 # Load needed packages
 library(raster)
@@ -12,11 +12,11 @@ library(maptools)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-wd="~/Documents/data/" #This will depend on your local environment
+wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 
-## ----read-veg------------------------------------------
+## ----read-veg--------------------------------------------------------------------------
 
 # import the centroid data and the vegetation structure data
 # this means all strings of letter coming in will remain character
@@ -32,7 +32,7 @@ str(vegStr)
 
 
 
-## ----plot-CHM------------------------------------------
+## ----plot-CHM--------------------------------------------------------------------------
 
 # import the digital terrain model
 chm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif"))
@@ -42,11 +42,11 @@ plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
 
 
-## ----plot-veg------------------------------------------
+## ----plot-veg--------------------------------------------------------------------------
 
 ## overlay the centroid points and the stem locations on the CHM plot
 # plot the chm
-myCol=terrain.colors(6)
+myCol <- terrain.colors(6)
 plot(chm,col=myCol, main="Plot & Tree Locations", breaks=c(-2,0,2,10,40))
 
 ## plotting details: cex = point size, pch 0 = square
@@ -57,20 +57,19 @@ points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
 
 
 
-## ----check-CRS-----------------------------------------
+## ----check-CRS-------------------------------------------------------------------------
 # check CHM CRS
 chm@crs
 
 
 
-## ----createSpatialDf-----------------------------------
+## ----createSpatialDf-------------------------------------------------------------------
 ## create SPDF: SpatialPointsDataFrame()
 # specify the easting (column 4) & northing (columns 3) in that order
 # specify CRS proj4string: borrow CRS from chm 
 # specify raster
-centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
-																			 proj4string=chm@crs, 
-																			 centroids)
+centroid_spdf <- SpatialPointsDataFrame(
+  centroids[,4:3], proj4string=chm@crs, centroids)
 
 # check centroid CRS
 # note SPDFs don't have a crs slot so `object@crs` won't work
@@ -78,7 +77,7 @@ centroid_spdf
 
 
 
-## ----extract-plot-data---------------------------------
+## ----extract-plot-data-----------------------------------------------------------------
 
 # extract circular, 20m buffer
 
@@ -93,7 +92,7 @@ cent_max
 
 
 
-## ----fix-ID--------------------------------------------
+## ----fix-ID----------------------------------------------------------------------------
 
 # grab the names of the plots from the centroid_spdf
 cent_max$plot_id <- centroid_spdf$Plot_ID
@@ -112,7 +111,7 @@ head(centroids)
 
 
 
-## ----explore-data-distribution-------------------------
+## ----explore-data-distribution---------------------------------------------------------
 # extract all
 cent_heightList <- extract(chm,centroid_spdf,buffer = 20)
 
@@ -125,7 +124,7 @@ for (i in 1:5) {
 
 
 
-## ----challenge-code-loops, echo=FALSE, eval=FALSE, comment=NA----
+## ----challenge-code-loops, echo=FALSE, eval=FALSE, comment=NA--------------------------
 # set parameters for graphics
 par(mfrow=c(6,3))
 
@@ -140,7 +139,7 @@ par(mfrow=c(1,1))
 
 
 
-## ----square-plot, eval=FALSE---------------------------
+## ----square-plot, eval=FALSE-----------------------------------------------------------
 ## square_max <- extract(chm,             # raster layer
 ## 	polys,   # spatial polygon for extraction
 ## 	fun=max,         # what to value to extract
@@ -148,7 +147,7 @@ par(mfrow=c(1,1))
 ## 
 
 
-## ----read-shapefile------------------------------------
+## ----read-shapefile--------------------------------------------------------------------
 # load shapefile data
 centShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp"))
 
@@ -156,7 +155,7 @@ plot(centShape)
 
 
 
-## ----extract-w-shapefile-------------------------------
+## ----extract-w-shapefile---------------------------------------------------------------
 # extract max from chm for shapefile buffers
 centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
 
@@ -182,7 +181,7 @@ head(centroids)
 
 
 
-## ----analyze-base-r------------------------------------
+## ----analyze-base-r--------------------------------------------------------------------
 # find max stemheight
 maxStemHeight <- aggregate( vegStr$stemheight ~ vegStr$plotid, 
 														FUN = max )  
@@ -198,7 +197,7 @@ head(maxStemHeight)
 
 
 
-## ----trees-95------------------------------------------
+## ----trees-95--------------------------------------------------------------------------
 # add the max and 95th percentile height value for all trees within each plot
 insitu <- cbind(maxStemHeight,'quant'=tapply(vegStr$stemheight, 
 	vegStr$plotid, quantile, prob = 0.95))
@@ -208,7 +207,7 @@ head(insitu)
 
 
 
-## ----analyze-plot-dplyr--------------------------------
+## ----analyze-plot-dplyr----------------------------------------------------------------
 
 # find the max stem height for each plot
 maxStemHeight_d <- vegStr %>% 
@@ -224,7 +223,7 @@ head(maxStemHeight_d)
 
 
 
-## ----bonus-dplyr---------------------------------------
+## ----bonus-dplyr-----------------------------------------------------------------------
 
 # one line of nested commands, 95% height value
 insitu_d <- vegStr %>%
@@ -237,7 +236,7 @@ head(insitu_d)
 
 
 
-## ----merge-dataframe-----------------------------------
+## ----merge-dataframe-------------------------------------------------------------------
 
 # merge the insitu data into the centroids data.frame
 centroids <- merge(centroids, maxStemHeight, by.x = 'Plot_ID', by.y = 'plotid')
@@ -247,14 +246,14 @@ head(centroids)
 
 
 
-## ----plot-data-----------------------------------------
+## ----plot-data-------------------------------------------------------------------------
 
 #create basic plot
 plot(x = centroids$chmMaxShape, y=centroids$insituMaxHeight)
 
 
 
-## ----plot-w-ggplot-------------------------------------
+## ----plot-w-ggplot---------------------------------------------------------------------
 
 # create plot
 
@@ -267,25 +266,24 @@ ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) +
 
 
 
-## ----ggplot-data---------------------------------------
+## ----ggplot-data-----------------------------------------------------------------------
 
 #plot with regression fit
 p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
   geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
   geom_point() + 
-  ylab("Maximum Measured Height") + 
-  xlab("Maximum lidar Height")+
-  geom_smooth(method=lm) 
-
-p
-
-# Add labels
-p + theme(panel.background = element_rect(colour = "grey")) + 
+  geom_smooth(method=lm) + # add regression line and confidence interval
+  theme(panel.background = element_rect(colour = "grey")) + 
   ggtitle("lidar CHM Derived vs Measured Tree Height") +
+  ylab("Maximum Measured Height") + 
+  xlab("Maximum lidar Height") +
   theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-  theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-  theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+  theme(axis.title.y = element_text(
+    family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
+  theme(axis.title.x = element_text(
+    family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
 
+print(p)
 
 
 ## ----challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE, fig.show='hide'----

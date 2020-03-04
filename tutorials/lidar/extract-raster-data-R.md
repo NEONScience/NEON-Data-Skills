@@ -114,7 +114,7 @@ NOTE: the `sp` library typically installs when you install the raster package.
     library(ggplot2)
     
     # set working directory to ensure R can find the file we wish to import and where
-    wd="~/Documents/data/" #This will depend on your local environment
+    wd <- "~/Documents/data/" #This will depend on your local environment
     setwd(wd)
 
 Let's get started with the *insitu* vegetation data!
@@ -188,7 +188,7 @@ our existing raster.
 
     ## overlay the centroid points and the stem locations on the CHM plot
     # plot the chm
-    myCol=terrain.colors(6)
+    myCol <- terrain.colors(6)
     plot(chm,col=myCol, main="Plot & Tree Locations", breaks=c(-2,0,2,10,40))
     
     ## plotting details: cex = point size, pch 0 = square
@@ -231,8 +231,7 @@ quickly figure out what projection an object is in, using `object@crs`.
     chm@crs
 
     ## CRS arguments:
-    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
-    ## +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
 
 So our data are in UTM Zone 11 which is correct for California. We can use this 
 CRS to make our data points into a Spatial Points Data Frame which then allows 
@@ -243,9 +242,8 @@ the points to be treated as spatial objects.
     # specify the easting (column 4) & northing (columns 3) in that order
     # specify CRS proj4string: borrow CRS from chm 
     # specify raster
-    centroid_spdf = SpatialPointsDataFrame(centroids[,4:3], 
-    																			 proj4string=chm@crs, 
-    																			 centroids)
+    centroid_spdf <- SpatialPointsDataFrame(
+      centroids[,4:3], proj4string=chm@crs, centroids)
     
     # check centroid CRS
     # note SPDFs don't have a crs slot so `object@crs` won't work
@@ -366,20 +364,13 @@ Ack! We've lost our PlotIDs, how will we match them up?
     # have a look at the centroids dataFrame
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID
-    ## 1 SJER1068 center  4111568 255852.4      NA  1
-    ## 2  SJER112 center  4111299 257407.0      NA  2
-    ## 3  SJER116 center  4110820 256838.8      NA  3
-    ## 4  SJER117 center  4108752 256176.9      NA  4
-    ## 5  SJER120 center  4110476 255968.4      NA  5
-    ## 6  SJER128 center  4111389 257078.9      NA  6
-    ##   chmMaxHeight
-    ## 1    18.940002
-    ## 2    24.189972
-    ## 3    13.299988
-    ## 4    10.989990
-    ## 5     5.690002
-    ## 6    19.079987
+    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
+    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
+    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
+    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
+    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
+    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
+    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
 
 Excellent. We now have the maximum "tree" height for each plot based on the CHM. 
 
@@ -417,7 +408,6 @@ Improve upon the plot's final appearance to make a readable final figure.
 Hint: one way to setup a layout with multiple plots in R is: `par(mfrow=c(2,3))` 
 which gives a 2 rows, 3 columns layout. 
 </div> 
-
 
 
 
@@ -462,7 +452,7 @@ requires the `rgeos` package, installed.
     centShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp"))
 
     ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "/Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp", layer: "SJERPlotCentroids_Buffer"
+    ## Source: "/Users/donal/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp", layer: "SJERPlotCentroids_Buffer"
     ## with 18 features
     ## It has 6 fields
 
@@ -481,20 +471,13 @@ of having it be a separate data frame that we later have to match up.
     # view
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID
-    ## 1 SJER1068 center  4111568 255852.4      NA  1
-    ## 2  SJER112 center  4111299 257407.0      NA  2
-    ## 3  SJER116 center  4110820 256838.8      NA  3
-    ## 4  SJER117 center  4108752 256176.9      NA  4
-    ## 5  SJER120 center  4110476 255968.4      NA  5
-    ## 6  SJER128 center  4111389 257078.9      NA  6
-    ##   chmMaxHeight chmMaxShape
-    ## 1    18.940002   18.940002
-    ## 2    24.189972   24.189972
-    ## 3    13.299988   13.299988
-    ## 4    10.989990   10.989990
-    ## 5     5.690002    5.690002
-    ## 6    19.079987   19.079987
+    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight chmMaxShape
+    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002   18.940002
+    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972   24.189972
+    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988   13.299988
+    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990   10.989990
+    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002    5.690002
+    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987   19.079987
 
 Which was faster, extracting from a SpatialPolgygon object (`polys`) or extracting 
 with a SpatialPolygonsDataFrame (`centShape`)? Keep this in mind when doing future
@@ -662,27 +645,20 @@ standardize your names to avoid potential confusion like this!
     # view
     head(centroids)
 
-    ##    Plot_ID  Point northing  easting Remarks ID
-    ## 1 SJER1068 center  4111568 255852.4      NA  1
-    ## 2  SJER112 center  4111299 257407.0      NA  2
-    ## 3  SJER116 center  4110820 256838.8      NA  3
-    ## 4  SJER117 center  4108752 256176.9      NA  4
-    ## 5  SJER120 center  4110476 255968.4      NA  5
-    ## 6  SJER128 center  4111389 257078.9      NA  6
-    ##   chmMaxHeight chmMaxShape chmMaxSquareShape     diff
-    ## 1    18.940002   18.940002         18.940002 0.000000
-    ## 2    24.189972   24.189972         24.189972 0.000000
-    ## 3    13.299988   13.299988         13.299988 0.000000
-    ## 4    10.989990   10.989990         10.989990 0.000000
-    ## 5     5.690002    5.690002          7.380005 1.690002
-    ## 6    19.079987   19.079987         19.079987 0.000000
-    ##   insituMaxHeight
-    ## 1            19.3
-    ## 2            23.9
-    ## 3            16.0
-    ## 4            11.0
-    ## 5             8.8
-    ## 6            18.2
+    ##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight chmMaxShape
+    ## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002   18.940002
+    ## 2  SJER112 center  4111299 257407.0      NA  2    24.189972   24.189972
+    ## 3  SJER116 center  4110820 256838.8      NA  3    13.299988   13.299988
+    ## 4  SJER117 center  4108752 256176.9      NA  4    10.989990   10.989990
+    ## 5  SJER120 center  4110476 255968.4      NA  5     5.690002    5.690002
+    ## 6  SJER128 center  4111389 257078.9      NA  6    19.079987   19.079987
+    ##   chmMaxSquareShape     diff insituMaxHeight
+    ## 1         18.940002 0.000000            19.3
+    ## 2         24.189972 0.000000            23.9
+    ## 3         13.299988 0.000000            16.0
+    ## 4         10.989990 0.000000            11.0
+    ## 5          7.380005 1.690002             8.8
+    ## 6         19.079987 0.000000            18.2
 
 ## Plot Remote Sensed vs Ground Data
 
@@ -724,22 +700,20 @@ customize your plot.
     p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
       geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
       geom_point() + 
+      geom_smooth(method=lm) + # add regression line and confidence interval
+      theme(panel.background = element_rect(colour = "grey")) + 
+      ggtitle("lidar CHM Derived vs Measured Tree Height") +
       ylab("Maximum Measured Height") + 
-      xlab("Maximum lidar Height")+
-      geom_smooth(method=lm) 
+      xlab("Maximum lidar Height") +
+      theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
+      theme(axis.title.y = element_text(
+        family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
+      theme(axis.title.x = element_text(
+        family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
     
-    p
+    print(p)
 
 ![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/ggplot-data-1.png)
-
-    # Add labels
-    p + theme(panel.background = element_rect(colour = "grey")) + 
-      ggtitle("lidar CHM Derived vs Measured Tree Height") +
-      theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-      theme(axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-      theme(axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
-
-![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/ggplot-data-2.png)
 
 You have now successfully compared lidar derived vegetation height, within plots, 
 to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.
