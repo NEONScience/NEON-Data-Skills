@@ -81,7 +81,7 @@ centroid_spdf
 
 # extract circular, 20m buffer
 
-cent_max <- extract(chm,             # raster layer
+cent_max <- raster::extract(chm,             # raster layer
 	centroid_spdf,   # SPDF with centroids for buffer
 	buffer = 20,     # buffer size, units depend on CRS
 	fun=max,         # what to value to extract
@@ -113,7 +113,7 @@ head(centroids)
 
 ## ----explore-data-distribution---------------------------------------------------------
 # extract all
-cent_heightList <- extract(chm,centroid_spdf,buffer = 20)
+cent_heightList <- raster::extract(chm,centroid_spdf,buffer = 20)
 
 # create histograms for the first 5 plots of data
 # using a for loop
@@ -140,7 +140,7 @@ par(mfrow=c(1,1))
 
 
 ## ----square-plot, eval=FALSE-----------------------------------------------------------
-## square_max <- extract(chm,             # raster layer
+## square_max <- raster::extract(chm,             # raster layer
 ## 	polys,   # spatial polygon for extraction
 ## 	fun=max,         # what to value to extract
 ## 	df=TRUE)         # return a dataframe?
@@ -157,7 +157,7 @@ plot(centShape)
 
 ## ----extract-w-shapefile---------------------------------------------------------------
 # extract max from chm for shapefile buffers
-centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
+centroids$chmMaxShape <- raster::extract(chm, centShape, weights=FALSE, fun=max)
 
 # view
 head(centroids)
@@ -171,7 +171,7 @@ squareShape <- readOGR(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentr
 plot(squareShape)
 
 # extract max from chm for shapefile buffers
-centroids$chmMaxSquareShape <- extract(chm, squareShape, weights=FALSE, fun=max)
+centroids$chmMaxSquareShape <- raster::extract(chm, squareShape, weights=FALSE, fun=max)
 
 # calculate the difference between the two methods
 centroids$diff <- centroids$chmMaxSquareShape-centroids$chmMaxShape
@@ -266,24 +266,21 @@ ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) +
 
 
 
-## ----ggplot-data-----------------------------------------------------------------------
+## ----ggplot-data-full------------------------------------------------------------------
+# plot with regression
 
-#plot with regression fit
-p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
-  geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
-  geom_point() + 
-  geom_smooth(method=lm) + # add regression line and confidence interval
-  theme(panel.background = element_rect(colour = "grey")) + 
-  ggtitle("lidar CHM Derived vs Measured Tree Height") +
-  ylab("Maximum Measured Height") + 
-  xlab("Maximum lidar Height") +
-  theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-  theme(axis.title.y = element_text(
-    family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-  theme(axis.title.x = element_text(
-    family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+ggplot(centroids, aes(x=chmMaxShape, y=insituMaxHeight)) +
+  geom_abline(slope=1, intercept=0, alpha=.5, lty=2) + #plotting our "1:1" line
+  geom_point() +
+  geom_smooth(method = lm) + # add regression line and confidence interval
+  ggtitle("Lidar CHM-derived vs. Measured Tree Height") +
+  ylab("Maximum Measured Height") +
+  xlab("Maximum Lidar Hright") +
+  theme(panel.background = element_rect(colour = "grey"),
+        plot.title = element_text(family="sans", face="bold", size=20, vjust=1.19),
+        axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2),
+        axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1))
 
-print(p)
 
 
 ## ----challenge-code-plot-95, include=TRUE, results="hide", echo=FALSE, fig.show='hide'----
