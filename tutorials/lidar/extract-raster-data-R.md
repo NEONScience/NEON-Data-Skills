@@ -292,12 +292,15 @@ In the first, example we'll presume our insitu sampling took place within a
 circular plot with a 20m radius. Therefore, we will use a buffer of 20m. 
 
 When we use the `extract()` function with `fun=max`, R returns a dataframe 
-containing the max height calculated from all pixels in the buffer for each plot
+containing the max height calculated from all pixels in the buffer for each plot.
+
+There are a few other popular packages that have a function called `extract()`, 
+so we will specify to use the function from the `raster` package using the "`::`" notation.
 
 
     # extract circular, 20m buffer
     
-    cent_max <- extract(chm,             # raster layer
+    cent_max <- raster::extract(chm,             # raster layer
     	centroid_spdf,   # SPDF with centroids for buffer
     	buffer = 20,     # buffer size, units depend on CRS
     	fun=max,         # what to value to extract
@@ -385,7 +388,7 @@ through several plots and create histograms using a `for loop`.
 
 
     # extract all
-    cent_heightList <- extract(chm,centroid_spdf,buffer = 20)
+    cent_heightList <- raster::extract(chm,centroid_spdf,buffer = 20)
     
     # create histograms for the first 5 plots of data
     # using a for loop
@@ -425,7 +428,7 @@ as we did for the circular plots, but this time with no buffer since we already
 have a polygon to use. 
 
 
-    square_max <- extract(chm,             # raster layer
+    square_max <- raster::extract(chm,             # raster layer
     	polys,   # spatial polygon for extraction
     	fun=max,         # what to value to extract
     	df=TRUE)         # return a dataframe? 
@@ -466,7 +469,7 @@ of having it be a separate data frame that we later have to match up.
 
 
     # extract max from chm for shapefile buffers
-    centroids$chmMaxShape <- extract(chm, centShape, weights=FALSE, fun=max)
+    centroids$chmMaxShape <- raster::extract(chm, centShape, weights=FALSE, fun=max)
     
     # view
     head(centroids)
@@ -696,24 +699,21 @@ We can also add a regression fit to our plot. Explore the `ggplot()` options and
 customize your plot.
 
 
-    #plot with regression fit
-    p <- ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) + 
-      geom_abline(slope=1, intercept = 0, alpha=.5, lty=2)+ # plotting our "1:1" line
-      geom_point() + 
-      geom_smooth(method=lm) + # add regression line and confidence interval
-      theme(panel.background = element_rect(colour = "grey")) + 
-      ggtitle("lidar CHM Derived vs Measured Tree Height") +
-      ylab("Maximum Measured Height") + 
-      xlab("Maximum lidar Height") +
-      theme(plot.title=element_text(family="sans", face="bold", size=20, vjust=1.9)) +
-      theme(axis.title.y = element_text(
-        family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1)) +
-      theme(axis.title.x = element_text(
-        family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2))
+    # plot with regression
     
-    print(p)
+    ggplot(centroids, aes(x=chmMaxShape, y=insituMaxHeight)) +
+      geom_abline(slope=1, intercept=0, alpha=.5, lty=2) + #plotting our "1:1" line
+      geom_point() +
+      geom_smooth(method = lm) + # add regression line and confidence interval
+      ggtitle("Lidar CHM-derived vs. Measured Tree Height") +
+      ylab("Maximum Measured Height") +
+      xlab("Maximum Lidar Hright") +
+      theme(panel.background = element_rect(colour = "grey"),
+            plot.title = element_text(family="sans", face="bold", size=20, vjust=1.19),
+            axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2),
+            axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1))
 
-![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/ggplot-data-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/LIDAR/extract-raster-data-R/ggplot-data-full-1.png)
 
 You have now successfully compared lidar derived vegetation height, within plots, 
 to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.
