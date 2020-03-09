@@ -107,7 +107,7 @@ f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 Next, let's take a look at the structure of the full NEON hyperspectral reflectance HDF5 file.
 
-```{r view-product, eval=FALSE, comment=NA}
+```{r view-original, eval=FALSE, comment=NA}
 View(h5ls(f, all=T))
 ```
 
