@@ -1,4 +1,5 @@
 ---
+syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
 code1: hyperspectral/Work-With-Hyperspectral-Data-In-R.R
 contributors: null
@@ -10,10 +11,9 @@ description: Open up and explore a hyperspectral dataset stored in HDF5 format i
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
 packagesLibraries: rhdf5, raster, rgdal
-syncID: c1cd91f1343b430c9c37497c52cf98ac
 authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
-tutorialSeries: null
+tutorialSeries: intro-hsi-r-series
 urlTitle: hsi-hdf5-r
 ---
 
@@ -53,7 +53,7 @@ preferably, RStudio loaded on your computer.
 
 *Remember* that the example dataset included here only has 1 out of every 4 bands
 included in a full NEON hyperspectral dataset (this substantially reduces size!). When 
-we refer to bands in this tutorial, we will note both the band numbers for this 
+we refer to bands in this tutorial, we will note the band numbers for this 
 example dataset, which may be different from NEON production data.
 
 ***
@@ -74,7 +74,11 @@ that cover the electromagnetic spectrum.
 The NEON imaging spectrometer (NIS) collects data within the 380 nm to 2510 nm 
 portions of the electromagnetic spectrum within bands that are approximately 5 nm 
 in width. This results in a hyperspectral data cube that contains approximately 
-428 bands - which means BIG DATA. 
+428 bands - which means BIG DATA. *Remember* that the example dataset used 
+here only has 1 out of every 4 bands included in a full NEON hyperspectral dataset 
+(this substantially reduces size!). When we refer to bands in this tutorial, 
+we will note the band numbers for this example dataset, which may be different 
+from NEON production data. 
 
 
 <figure>
@@ -112,7 +116,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+    wd <- "~/Documents/data/" #This will depend on your local environment
     setwd(wd)
     
     # Define the file name to be opened
@@ -127,31 +131,36 @@ R, use `update.packages()`.
     # look at the HDF5 file structure 
     View(h5ls(f,all=T))
 
-When you look at the structure of the data, take note of the `map info` dataset,
-the `Coordinate_System` group, and the `wavelength` and `Reflectance` datasets. The
-`Coordinate_System` folder contains the spatial attributes of the data including its
+When you look at the structure of the data, take note of the "map info" dataset,
+the "Coordinate_System" group, and the "wavelength" and "Reflectance" datasets. The
+"Coordinate_System" folder contains the spatial attributes of the data including its
 EPSG Code, which is easily converted to a Coordinate Reference System (CRS). 
-The CRS documents how the data are physically located on the Earth. The `wavelength` 
+The CRS documents how the data are physically located on the Earth. The "wavelength" 
 dataset contains the middle wavelength values for each band in the data. The 
-`Reflectance` dataset contains the image data that we will use for both data processing 
+"Reflectance" dataset contains the image data that we will use for both data processing 
 and visualization.
 
 More Information on raster metadata:
 
-* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Metadata to understand when working with raster data</a>.
+* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Raster Data in R 
+- The Basics</a> - this tutorial explains more about how rasters work in R and 
+their associated metadata.
 
-* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> Metadata and important concepts associated with multi-band (multi and hyperspectral) rasters </a>.
+* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> About 
+Hyperspectral Remote Sensing Data</a> -this tutorial explains more about 
+metadata and important concepts associated with multi-band (multi and 
+hyperspectral) rasters.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure
 of individual HDF5 files may vary depending on who produced the data. In this
 case, the Wavelength and reflectance data within the file are both datasets.
-However the spatial information is contained within a group. Data downloaded from
+However, the spatial information is contained within a group. Data downloaded from
 another organization like NASA, may look different. This is why it's important to
 explore the data before diving into using it!
 </div>
 
-We can use the `h5readAttributes` function to read and extract metadata from the 
+We can use the `h5readAttributes()` function to read and extract metadata from the 
 HDF5 file. Let's start by learning about the wavelengths described within this file.
 
 
@@ -179,7 +188,9 @@ HDF5 file. Let's read in the wavelengths of the band centers:
 
     ## [1] 2404.764 2424.796 2444.828 2464.860 2484.892 2504.924
 
-Which wavelength is band 6 associated with? (Hint: look at the wavelengths 
+Which wavelength is band 6 associated with? 
+
+(Hint: look at the wavelengths 
 vector that we just imported and check out the data located at index 6 - 
 `wavelengths[6]`).
 
@@ -203,29 +214,39 @@ the center wavelength value. This value represents the center point value of the
 wavelengths represented in that  band. Thus in a band spanning 695-700 nm, the 
 center would be 697.5 nm). The full width half max (FWHM) will also be reported. 
 This value represents the spread of the band around that center point. So, a band 
-that covers 800 nm-805 nm might have a FWHM of 5 nm and a wavelength value of 802.5 nm. 
-
+that covers 800 nm-805 nm might have a FWHM of 5 nm and a wavelength value of 
+802.5 nm. 
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
     <img src="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png"></a>
     <figcaption>Bands represent a range of values (types of light) within the 
     electromagnetic spectrum. Values for each band are often represented as the 
-    center point value of each band.</figcaption>
+    center point value of each band. Source: National Ecological Observatory 
+    Network (NEON)</figcaption>
 </figure>
 
-The HDF5 dataset that we are working with in this activity contains more 
+The HDF5 dataset that we are working with in this activity may contain more 
 information than we need to work with. For example, we don't necessarily need 
-to process all 426 bands available in a full NEON hyperspectral reflectance file 
-- if we are interested in creating a product like NDVI which only users bands in 
+to process all 107 bands available in this example dataset (or all 426 bands 
+available in a full NEON hyperspectral reflectance file, for that matter)
+- if we are interested in creating a product like NDVI which only uses bands in 
 the near infra-red and red portions of the spectrum. Or we might only be interested 
 in a spatial subset of the data - perhaps a region where we have plots in the field.
 
 The HDF5 format allows us to slice (or subset) the data - quickly extracting the 
 subset that we need to process. Let's extract one of the green bands in our 
-dataset - band 9. By the way - what is the center wavelength value associated 
-with band 9? hint: `wavelengths[9]`. How do we know this band is a green band 
-in the visible portion of the spectrum?
+dataset - band 9. 
+
+By the way - what is the center wavelength value associated 
+with band 9? 
+
+Hint: `wavelengths[9]`. 
+
+How do we know this band is a green band in the visible portion of the spectrum?
+
+In order to effectively subset our data, let's first read the important 
+reflectance metadata stored as *attributes* in the "Reflectance_Data" dataset. 
 
 
     # First, we need to extract the reflectance metadata:
@@ -271,7 +292,7 @@ in the visible portion of the spectrum?
     ## $dim
     ## [1] 107 500 500
 
-    # Next, we parse out the different attributes using strsplit
+    # Next, we read the different dimensions
     
     nRows <- reflInfo$Dimensions[1]
     nCols <- reflInfo$Dimensions[2]
@@ -295,7 +316,8 @@ different from how R reads data. We'll adjust for this later.
 
 
     # Extract or "slice" data for band 9 from the HDF5 file
-    b9<- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
+    b9 <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
+    
     # what type of object is b9?
     class(b9)
 
@@ -339,10 +361,11 @@ Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):
 
 ### Dimensions in Arrays
 An array contains 1 or more dimensions in the "z" direction. For example, let's 
-say that we collected this same set of species data for every day in a 30 day month.
+say that we collected the same set of species data for every day in a 30 day month.
 We might then have a matrix like the one above for each day for a total of 30 days 
 making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R object 
-types <a href="http://www.statmethods.net/input/datatypes.html">here</a>.
+types <a href="http://www.statmethods.net/input/datatypes.html">here</a> 
+(links to external site, DataCamp).
 
 <figure class="half">
     <a href="{{ site.baseurl }}/images/R/matrix.png"><img src="{{ site.baseurl }}/images/R/matrix.png"></a>
@@ -528,7 +551,7 @@ as other GIS and imaging processing software like QGIS and ENVI do.
 
     # We need to transpose x and y values in order for our 
     # final image to plot properly
-    b9<-t(b9)
+    b9 <- t(b9)
     image(log(b9), main="Transposed Image")
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Work-With-Hyperspectral-Data-In-R/transpose-data-1.png)
@@ -554,22 +577,24 @@ To create a raster in R, we need a few pieces of information, including:
 
 ### Define Raster CRS
 
-First, we need to define the Coordinate reference system (`CRS`) of the raster. 
+First, we need to define the Coordinate reference system (CRS) of the raster. 
 To do that, we can first grab the EPSG code from the HDF5 attributes, and covert the
 EPSG to a CRS string. Then we can assign that CRS to the raster object.
 
 
     # Extract the EPSG from the h5 dataset
-    myEPSG=h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
+    myEPSG <- h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
     
     # convert the EPSG code to a CRS string
-    myCRS=crs(paste0("+init=epsg:",myEPSG))
+    myCRS <- crs(paste0("+init=epsg:",myEPSG))
     
     # define final raster with projection info 
     # note that capitalization will throw errors on a MAC.
     # if UTM is all caps it might cause an error!
     b9r <- raster(b9, 
             crs=myCRS)
+    
+    # view the raster attributes
     b9r
 
     ## class      : RasterLayer 
@@ -581,8 +606,8 @@ EPSG to a CRS string. Then we can assign that CRS to the raster object.
     ## names      : layer 
     ## values     : 0, 9210  (min, max)
 
-    #let's have a look at our properly oriented raster. Take note of the 
-    #coordinates on the x and y axis.
+    # let's have a look at our properly oriented raster. Take note of the 
+    # coordinates on the x and y axis.
     
     image(log(b9r), 
           xlab = "UTM Easting", 
@@ -641,8 +666,8 @@ HDF5 file "Reflectance_Data" group attributes that we saved before as `reflInfo`
 We can adjust the colors of our raster too if we want.
 
 
-    #let's change the colors of our raster and adjust the zlims 
-    col=terrain.colors(25)
+    # let's change the colors of our raster and adjust the zlims 
+    col <- terrain.colors(25)
     
     image(b9r,  
           xlab = "UTM Easting", 
@@ -658,15 +683,14 @@ We've now created a raster from band 9 reflectance data. We can export the data
 as a raster, using the `writeRaster` command. 
 
 
-    #write out the raster as a geotiff
-    
+    # write out the raster as a geotiff
     writeRaster(b9r,
                 file=paste0(wd,"band9.tif"),
                 format="GTiff",
                 overwrite=TRUE)
     
-    #It's always good practice to close the H5 connection before moving on!
-    #close the H5 file
+    # It's always good practice to close the H5 connection before moving on!
+    # close the H5 file
     H5close()
 
 
