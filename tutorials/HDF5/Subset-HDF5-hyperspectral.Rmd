@@ -2,7 +2,7 @@
 syncID: 884cc5915a3842c1ab6617b060797fab
 title: "Subsetting NEON HDF5 hyperspectral files to make a smaller deliverable"
 code1: HDF5/Subset-HDF5-hyperspectral.R
-contributors: null
+contributors: Megan Jones
 dataProudct: DP3.30006.001, DP1.30006.001, DP1.30008.001, DP4.00200.001
 dateCreated: 2020-02-04
 description: Take a large NEON hyperspectral HDF5 file and extract only the information that you need, then save as a new HDF5 file. For an example, we will take an existing hyperspectral dataset (~600Mb) and reduce it in size for subsequent tutorials.
@@ -213,11 +213,11 @@ h5write(obj=wavelengths, file=nf,
 
 ## Spatial Subsetting
 
-Even after spectral subsetting, our file size would be greater than 100Mb. Therefore, we will also perform a *spatial* subsetting processto further reduce our file size. Now, we need to figure out which part of the full image that we want to extract for our subset. It takes a number of steps in order to read in a band of data and plot the reflectance values - all of which are thoroughly described in the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> tutorial. For now, let's focus on the essentials for our problem at hand. The Reflectance_Data dataset has three dimensions in the order of bands, columns, rows. We want to extract a single band, and all 1,000 columns and rows, so we will feed those values into the `index=` argument as a `list`. 
+Even after spectral subsetting, our file size would be greater than 100Mb. Therefore, we will also perform a *spatial* subsetting processto further reduce our file size. Now, we need to figure out which part of the full image that we want to extract for our subset. It takes a number of steps in order to read in a band of data and plot the reflectance values - all of which are thoroughly described in the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> tutorial. For now, let's focus on the essentials for our problem at hand. The Reflectance_Data dataset has three dimensions in the order of bands, columns, rows. We want to extract a single band, and all 1,000 columns and rows, so we will feed those values into the `index=` argument as a `list`. For this example, we will select the 58th band in the hyperspectral dataset, which corresponds to a wavelength of 667nm, which is in the red end of the visible electromagnetic spectrum. 
 
 
 ```{r plot-example-band}
-# Extract or "slice" data for band 44 from the HDF5 file
+# Extract or "slice" data for band 58 from the HDF5 file
 b58 <- h5read(f,name = "SJER/Reflectance/Reflectance_Data",
              index=list(58,1:1000,1:1000))
 
@@ -231,7 +231,7 @@ image(log(b58), col=grey(0:100/100))
 
 As we can see here, this hyperspectral reflectance tile contains a school campus that is under construction. There are many different land cover types contained here, which makes it a great example! Perhaps the most unique feature shown is in the bottom right corner of this image, where we can see the tip of a small reservoir. Let's be sure to capture this feature in our spatial subset, as well as a few other land cover types (irrigates grass, trees, bare soil, and buildings).
 
-While raster images count their pixels from the top left corner, we are working with a matrix, which counts its pixels from the bottom left corner. Therefore, rows are counted from the bottom to the top, and columns are counted from the left to the right. Therefore, if we want to sample the bottom right quadrant of this image, we need to select rows 1 through 500, and columns 501 through 1000. 
+While raster images count their pixels from the top left corner, we are working with a matrix, which counts its pixels from the bottom left corner. Therefore, rows are counted from the bottom to the top, and columns are counted from the left to the right. If we want to sample the bottom right quadrant of this image, we need to select rows 1 through 500, and columns 501 through 1000. Note that the `index=` argument in `h5read()` requires a `list` of three dimenstions for this example - in the order of bands, columns, rows. 
 
 ```{r plot-example-band-subset}
 subset_rows <- 1:500
@@ -248,12 +248,20 @@ image(log(b58), col=grey(0:100/100))
 
 ```
 
+Perfect - now we have a spatial subset that includes all of the different land cover types that we are interested in investigating. 
 
-##### ADD CHALLENGE HERE - pick your own area to crop out and select the approprite range of rows and columns.
+<div id="ds-challenge" markdown="1">
+### Challenge: Pick your subset
 
-Note that the `index=` argument in `h5read()` requires a `list` of three dimenstions for this example - in the order of bands, columns, rows. 
+1. Pick your own area of interest for this spatial subset, and find the rows and columns that capture that area. Can you include some solar panels, as well as the water body?
 
-Here, we are taking every fourth band (using our `idx` variabe), columns 501:1000 (the eastern half of the tile) and rows 1:500 (the northern half of the tile). The results in us extracting every fourth band of the northeast quadrant of the mosaic tile.
+2. Does it make a difference if you use a band from another part of the electromagnetic spectrum, such as the near-infrared? Hint: you can use the 'wavelengths' function above while removing the `index=` argument to get the full list of band wavelengths.
+
+</div>
+
+## Extracting the example sbset
+
+Now that we have determined our ideal spectral and spatial subsets for our analysis, we are ready to put both of those pieces of information into our `h5read()` function to extract our example subset out of the full NEON hyperspectral dataset. Here, we are taking every fourth band (using our `idx` variabe), columns 501:1000 (the eastern half of the tile) and rows 1:500 (the northern half of the tile). The results in us extracting every fourth band of the northeast quadrant of the mosaic tile.
 
 ```{r read-hyp-data}
 
@@ -263,7 +271,7 @@ Here, we are taking every fourth band (using our `idx` variabe), columns 501:100
 # columns to read. This is ultimately how we reduce the file size.
 hs <- h5read(file = f, 
              name = "SJER/Reflectance/Reflectance_Data", 
-             index = list(idx, 501:1000, 1:500)
+             index = list(idx, subset_columns, subset_rows)
             )
 ```
 
@@ -274,7 +282,7 @@ As per the 'adding group attributes' section above, we will need to add the attr
 # when writing the file at the bottom
 hsd <- attributes(hs)
 
-# We also need the attributes for the reflectance data, of course.
+# We also need the attributes for the reflectance data.
 ha <- h5readAttributes(file = f, 
                        name = "SJER/Reflectance/Reflectance_Data")
 
