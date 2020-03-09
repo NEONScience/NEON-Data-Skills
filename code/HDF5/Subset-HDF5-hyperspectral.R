@@ -160,10 +160,10 @@ ha <- h5readAttributes(file = f,
 # However, some of the attributes are not longer valid since 
 # we changed the spatial extend of this dataset. therefore, 
 # we will need to overwrite those with the correct values.
-ha$Dimensions=c(500,500,107) # Note that the HDF5 file saves dimensions in a different order than R reads them
-ha$Spatial_Extent_meters[1]=ha$Spatial_Extent_meters[1]+500
-ha$Spatial_Extent_meters[3]=ha$Spatial_Extent_meters[3]+500
-attributes(hs)=c(hsd,ha)
+ha$Dimensions <- c(500,500,107) # Note that the HDF5 file saves dimensions in a different order than R reads them
+ha$Spatial_Extent_meters[1] <- ha$Spatial_Extent_meters[1]+500
+ha$Spatial_Extent_meters[3] <- ha$Spatial_Extent_meters[3]+500
+attributes(hs) <- c(hsd,ha)
 
 # View the combined attributes to ensure they are correct
 attributes(hs)
