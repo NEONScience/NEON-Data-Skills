@@ -76,7 +76,7 @@ at the top of each lesson in the <a href="{{ site.baseurl }}/intro-hsi-r-series"
 
 ## Exploring the NEON hyperspectral HDF5 file structure
 
-In order to determine what information that we want to include in the subset, we should first take a look at the full NEON hyperspectral HDF5 file structure to see what is included. To do so, we will load the required package for this tutorial (you can un-comment the middle two lines to load 'BiocManager' and 'rhdf5' if you don't already have it on your computer).
+In order to determine what information that we want to put into our subset, we should first take a look at the full NEON hyperspectral HDF5 file structure to see what is included. To do so, we will load the required package for this tutorial (you can un-comment the middle two lines to load 'BiocManager' and 'rhdf5' if you don't already have it on your computer).
 
 ```{r load-libraries}
 
@@ -115,11 +115,7 @@ Wow, there is a lot of information in there! The majority of the groups containe
 
 ## Create new HDF5 file framework
 
-Now, we create a new empty HDF5 file, and then populate this file with the
-groups that we need to save our essential information for this subset.
-Note that the function `h5createFile()` will not overwrite an existing
-file. Therefore, if you have already created or downloaded this file, the
-function will throw an error!
+In order to make a new subset HDF5 file, we first must create an empty file with the appropriate name, then we will begin to fill in that file with the essential data and attributes that we want to include. Note that the function `h5createFile()` will not overwrite an existing file. Therefore, if you have already created or downloaded this file, the function will throw an error! Each function should return 'TRUE' if it runs correctly.
 
 ```{r create-hdf5}
 # First, create a name for the new file
@@ -127,6 +123,8 @@ nf <- paste0(wd, "NEON_hyperspectral_tutorial_example_subset.h5")
 
 # create hdf5 file
 h5createFile(nf)
+
+# Now we create the groups that we will use to organize our data
 h5createGroup(nf, "SJER/")
 h5createGroup(nf, "SJER/Reflectance")
 h5createGroup(nf, "SJER/Reflectance/Metadata")
@@ -149,12 +147,15 @@ fid <- H5Fopen(nf)
 g <- H5Gopen(fid, "SJER/Reflectance")
 
 for(i in 1:length(names(a))){
-h5writeAttribute(attr = a[[i]], h5obj=g, name=names(a[i]))
+  h5writeAttribute(attr = a[[i]], h5obj=g, name=names(a[i]))
 }
+
+# It's always a good idea to close the file connection immidiately
+# after finishing each step that leaves an open connection.
 h5closeAll()
 ```
 
-Next, we will loop through each of the datasets within the Coordinate_System group, and copy those (and their attributes, if present) from the full tile to our subset file. The Coordinate_System group contains many important pieces of information for geolocating our data, so we need to make sure that the subset file has those data.
+Next, we will loop through each of the datasets within the Coordinate_System group, and copy those (and their attributes, if present) from the full tile to our subset file. The Coordinate_System group contains many important pieces of information for geolocating our data, so we need to make sure that the subset file has that information.
 
 ```{r populate-group-attributes}
 
@@ -191,7 +192,8 @@ The goal of subsetting this dataset is to substantially reduce the file size, ma
 Some circumstances demand the full spectral resolution file. For example, if you wanted to discern between the spectral signatures of similar minerals, or if you were conducting an analysis of the differences in the 'red edge' between plant functional types, you would want to use the full spectral resolution of the original hyperspectral dataset. Still, we can use far fewer bands for demonstration and teaching purposes, while still getting a good sense of what these hyperspectral data can do.
 
 ```{r subset-wavelengths}
-# First, we make our 'index', a list of number that will allow us to select every fourth band
+
+# First, we make our 'index', a list of number that will allow us to select every fourth band, using the "sequence" function seq()
 idx <- seq(from = 1, to = 426, by = 4)
 
 # We then use this index to select particular wavelengths from the full tile using the "index=" argument
@@ -213,13 +215,14 @@ h5write(obj=wavelengths, file=nf,
 
 ## Spatial Subsetting
 
-Even after spectral subsetting, our file size would be greater than 100Mb. Therefore, we will also perform a *spatial* subsetting processto further reduce our file size. Now, we need to figure out which part of the full image that we want to extract for our subset. It takes a number of steps in order to read in a band of data and plot the reflectance values - all of which are thoroughly described in the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> tutorial. For now, let's focus on the essentials for our problem at hand. The Reflectance_Data dataset has three dimensions in the order of bands, columns, rows. We want to extract a single band, and all 1,000 columns and rows, so we will feed those values into the `index=` argument as a `list`. For this example, we will select the 58th band in the hyperspectral dataset, which corresponds to a wavelength of 667nm, which is in the red end of the visible electromagnetic spectrum. 
+Even after spectral subsetting, our file size would be greater than 100Mb. Therefore, we will also perform a *spatial* subsetting processto further reduce our file size. Now, we need to figure out which part of the full image that we want to extract for our subset. It takes a number of steps in order to read in a band of data and plot the reflectance values - all of which are thoroughly described in the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> tutorial. For now, let's focus on the essentials for our problem at hand. In order to explore the spatial qualities of this dataset, let's plot a single band as an overview map to see what objects and land cover types are contained within this mosaic tile. The Reflectance_Data dataset has three dimensions in the order of bands, columns, rows. We want to extract a single band, and all 1,000 columns and rows, so we will feed those values into the `index=` argument as a `list`. For this example, we will select the 58th band in the hyperspectral dataset, which corresponds to a wavelength of 667nm, which is in the red end of the visible electromagnetic spectrum. We will use `NULL` in the column and row position to indicate that we want *all* of the columns and rows (we agree that it is weird that `NULL` indicates "all" in this circumstance, but that is the default behavior for this, and many other, functions).
 
 
 ```{r plot-example-band}
 # Extract or "slice" data for band 58 from the HDF5 file
 b58 <- h5read(f,name = "SJER/Reflectance/Reflectance_Data",
-             index=list(58,1:1000,1:1000))
+             index=list(58,NULL,NULL))
+h5closeAll()
 
 # convert from array to matrix
 b58 <- b58[1,,]
@@ -229,9 +232,9 @@ image(log(b58), col=grey(0:100/100))
 
 ```
 
-As we can see here, this hyperspectral reflectance tile contains a school campus that is under construction. There are many different land cover types contained here, which makes it a great example! Perhaps the most unique feature shown is in the bottom right corner of this image, where we can see the tip of a small reservoir. Let's be sure to capture this feature in our spatial subset, as well as a few other land cover types (irrigates grass, trees, bare soil, and buildings).
+As we can see here, this hyperspectral reflectance tile contains a school campus that is under construction. There are many different land cover types contained here, which makes it a great example! Perhaps the most unique feature shown is in the bottom right corner of this image, where we can see the tip of a small reservoir. Let's be sure to capture this feature in our spatial subset, as well as a few other land cover types (irrigated grass, trees, bare soil, and buildings).
 
-While raster images count their pixels from the top left corner, we are working with a matrix, which counts its pixels from the bottom left corner. Therefore, rows are counted from the bottom to the top, and columns are counted from the left to the right. If we want to sample the bottom right quadrant of this image, we need to select rows 1 through 500, and columns 501 through 1000. Note that the `index=` argument in `h5read()` requires a `list` of three dimenstions for this example - in the order of bands, columns, rows. 
+While raster images count their pixels from the top left corner, we are working with a matrix, which counts its pixels from the bottom left corner. Therefore, rows are counted from the bottom to the top, and columns are counted from the left to the right. If we want to sample the bottom right quadrant of this image, we need to select rows 1 through 500 (bottom half), and columns 501 through 1000 (right half). Note that, as above, the `index=` argument in `h5read()` requires a `list` of three dimenstions for this example - in the order of bands, columns, rows. 
 
 ```{r plot-example-band-subset}
 subset_rows <- 1:500
@@ -239,6 +242,7 @@ subset_columns <- 501:1000
 # Extract or "slice" data for band 44 from the HDF5 file
 b58 <- h5read(f,name = "SJER/Reflectance/Reflectance_Data",
              index=list(58,subset_columns,subset_rows))
+h5closeAll()
 
 # convert from array to matrix
 b58 <- b58[1,,]
@@ -261,7 +265,7 @@ Perfect - now we have a spatial subset that includes all of the different land c
 
 ## Extracting the example sbset
 
-Now that we have determined our ideal spectral and spatial subsets for our analysis, we are ready to put both of those pieces of information into our `h5read()` function to extract our example subset out of the full NEON hyperspectral dataset. Here, we are taking every fourth band (using our `idx` variabe), columns 501:1000 (the eastern half of the tile) and rows 1:500 (the northern half of the tile). The results in us extracting every fourth band of the northeast quadrant of the mosaic tile.
+Now that we have determined our ideal spectral and spatial subsets for our analysis, we are ready to put both of those pieces of information into our `h5read()` function to extract our example subset out of the full NEON hyperspectral dataset. Here, we are taking every fourth band (using our `idx` variabe), columns 501:1000 (the right half of the tile) and rows 1:500 (the bottom half of the tile). The results in us extracting every fourth band of the bottom-right quadrant of the mosaic tile.
 
 ```{r read-hyp-data}
 
@@ -275,9 +279,10 @@ hs <- h5read(file = f,
             )
 ```
 
-As per the 'adding group attributes' section above, we will need to add the attributes to the hyperspectral data (`hs`) before writing to the new HDF5 subset file (`nf`). The `hs` variable already has one attribute, `$dim`, which contains the actual dimensions of the `hs` array, and will be important for writing the array to the `nf` file later. We will want to combine this attribute with all of the other Reflectance_Data groupd attributes from the original HDF5 file, `f`. However, some of the attributes will no longer be valid, such as the `Dimensions` and `Spatial_Extent_meters` attributes, so we will need to overwrite those before assigning these attributes to the `hs` variable to then write to the `nf` file.
+As per the 'adding group attributes' section above, we will need to add the attributes to the hyperspectral data (`hs`) before writing to the new HDF5 subset file (`nf`). The `hs` variable already has one attribute, `$dim`, which contains the actual dimensions of the `hs` array, and will be important for writing the array to the `nf` file later. We will want to combine this attribute with all of the other Reflectance_Data group attributes from the original HDF5 file, `f`. However, some of the attributes will no longer be valid, such as the `Dimensions` and `Spatial_Extent_meters` attributes, so we will need to overwrite those before assigning these attributes to the `hs` variable to then write to the `nf` file.
 
 ```{r hyp-data-attributes}
+
 # grab the '$dim' attribute - as this will be needed 
 # when writing the file at the bottom
 hsd <- attributes(hs)
@@ -289,7 +294,7 @@ ha <- h5readAttributes(file = f,
 # However, some of the attributes are not longer valid since 
 # we changed the spatial extend of this dataset. therefore, 
 # we will need to overwrite those with the correct values.
-ha$Dimensions=c(500,500,107)
+ha$Dimensions=c(500,500,107) # Note that the HDF5 file saves dimensions in a different order than R reads them
 ha$Spatial_Extent_meters[1]=ha$Spatial_Extent_meters[1]+500
 ha$Spatial_Extent_meters[3]=ha$Spatial_Extent_meters[3]+500
 attributes(hs)=c(hsd,ha)
