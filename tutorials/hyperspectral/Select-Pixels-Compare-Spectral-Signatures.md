@@ -7,7 +7,7 @@ dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 Hours
 languagesTool: R
-dataProudct: null
+dataProudct: DP3.30006.001
 packagesLibraries: rhdf5, raster, plyr, reshape2, ggplot2
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
@@ -64,8 +64,10 @@ so that you can recreate these methods later with different inputs.
 
 ### Recommended Skills
 
-We highly recommend you work through the 
-<a href="https://neonscience.org/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+This tutorial will require that you be comfortable navigating HDF5 files, 
+and have an understanding of what spectral signatures are. For additional 
+information on these topics, we highly recommend you work through the 
+<a href="https://neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>
 before moving on to this tutorial.
 
 </div>
