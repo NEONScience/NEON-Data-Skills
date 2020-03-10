@@ -1,18 +1,14 @@
 ---
-title: "Advanced Spectral Signatures in R"
-code1: HYPERSPECTRAL/Advanced_Spectral_Signatures.R
+syncID: db9715ca243944fabbe81031f2ed5cec
+title: "Select pixels and compare spectral signatures in R"
+code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: null
-output:
-  html_document:
-    df_print: paged
-dateCreated: 2020-02-18 20:18:34
-description: Plot the spectral signatures of multiple different land cover types using
-  an interactive click-to-extract interface.
+dateCreated: 2020-02-18
+description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 Hours
 languagesTool: R
 dataProudct: null
 packagesLibraries: rhdf5, raster, plyr, reshape2, ggplot2
-syncID: db9715ca243944fabbe81031f2ed5cec
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
@@ -75,9 +71,11 @@ before moving on to this tutorial.
 </div>
 
 
-## Import libraries and load datasets
-First, we need to load our required libraries, and import the hyperspectral
-data (in HDF5 format).
+## Getting Started
+
+First, we need to load our required packages, and import the hyperspectral
+data (in HDF5 format). We will also collect a few other important pieces of 
+information (band wavelengths and scaling factor) while we're at it.
 
 
     # Load required packages
@@ -89,7 +87,7 @@ data (in HDF5 format).
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+    wd <- "~/Documents/data/" #This will depend on your local environment
     setwd(wd)
     
     # define filepath to the hyperspectral dataset
@@ -99,31 +97,35 @@ data (in HDF5 format).
     wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
     
     # grab scale factor from the Reflectance attributes
-    reflInfo<- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+    reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
     
-    scaleFact = reflInfo$Scale_Factor
+    scaleFact <- reflInfo$Scale_Factor
 
-Now, we read in the RGB image that we created in an earlier tutorial and plot it.
+Now, we read in the RGB image that we created in an earlier tutorial and plot it. 
+If you didn't make this image before, you can download it from the link at the top 
+of this page.
 
 
     # Read in RGB image as a 'stack' rather than a plain 'raster'
     rgbStack <- stack(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"))
     
-    ## Plot as RGB image
+    # Plot as RGB image
     plotRGB(rgbStack,
             r=1,g=2,b=3, scale=300, 
             stretch = "lin")
 
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Advanced_Spectral_Signatures/read-in-RGB-and-plot-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/read-in-RGB-and-plot-1.png)
 
-## Interactive `click` function from `raster` package
+## Interactive `click` Function from `raster` Package
+
 Next, we use an interactive clicking function to identify the pixels that we want
 to extract spectral signatures for. To follow along best with this tutorial, we 
 suggest the following five cover types (exact location shown below). 
+
 1. Irrigated grass
 2. Tree canopy (avoid the shaded northwestern side of the tree)
 3. Roof
-4. Bare soil (infield)
+4. Bare soil (baseball diamond infield)
 5. Open water
 
 As shown here:
@@ -138,7 +140,7 @@ As shown here:
     par(col="red", cex=3)
     
     # use the 'click' function
-    c=click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.lab="red")
+    c <- click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.lab="red")
 
 Once you have clicked your five points, press the `ESC` key to save your
 clicked points and close the function before moving on to the next step. If 
@@ -150,9 +152,9 @@ to extract spectral signatures, we need to convert that cell number into a row
 and column, as shown here:
 
 
-    ## convert raster cell number into row and column (used to extract spectral signature below)
-    c$row=c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
-    c$col=c$cell%%ncol(rgbStack)
+    # convert raster cell number into row and column (used to extract spectral signature below)
+    c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
+    c$col <- c$cell%%ncol(rgbStack)
 
 ## Extract Spectral Signatures from HDF5 file
 Next, we loop through each of the cells that we selected to use the `h5read` 
@@ -162,7 +164,7 @@ column.
 
     # create a new dataframe from the band wavelengths so that we can add
     # the reflectance values for each cover type
-    Pixel_df=as.data.frame(wavelengths)
+    Pixel_df <- as.data.frame(wavelengths)
     
     # loop through each of the cells that we selected
     for(i in 1:length(c$cell)){
@@ -171,19 +173,19 @@ column.
                      index=list(NULL,c$col[i],c$row[i]))
     
     # scale reflectance values from 0-1
-    aPixel=aPixel/as.vector(scaleFact)
+    aPixel <- aPixel/as.vector(scaleFact)
     
     # reshape the data and turn into dataframe
     b <- adply(aPixel,c(1))
     
     # rename the column that we just created
-    names(b)[2]=paste0("Point_",i)
+    names(b)[2] <- paste0("Point_",i)
     
     # add reflectance values for this pixel to our combined data.frame called Pixel_df
-    Pixel_df=cbind(Pixel_df,b[2])
+    Pixel_df <- cbind(Pixel_df,b[2])
     }
 
-## Plot spectral signatures using ggplot2
+## Plot Spectral signatures using ggplot2
 Finally, we have everything that we need to plot the spectral signatures for 
 each of the pixels that we clicked. In order to color our lines by the different
 land cover types, we will first reshape our data using the `melt` function, then
@@ -191,8 +193,9 @@ plot the spectral signatures.
 
 
     # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
-    Pixel.melt=melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
+    Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
     
+    # Now, let's plot some spectral signatures!
     ggplot()+
       geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
       scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
@@ -202,26 +205,28 @@ plot the spectral signatures.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Advanced_Spectral_Signatures/plot-spectral-signatures-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/plot-spectral-signatures-1.png)
 
-Nice! However, there seems to be something weird going on in the wavelengths near 1400nm and 1850 nm...
+Nice! However, there seems to be something weird going on in the wavelengths 
+near 1400nm and 1850 nm...
 
 ## Atmospheric Absorbtion Bands 
-Those irregularities around 1400nm and 1850 nm are two major atmospheric absorbtion bands - regions
-where gasses in the atmosphere (primarily carbon dioxide and water vapor) absorb radiation, and 
-therefore, obscure the reflected radiation that the imaging spectrometer measures. Fortunately, the 
-lower and upper bound of each of those atmopheric absopbtion bands is specified in the HDF5 file. 
-Let's read those bands and plot rectangles where the reflectance measurements are obscured by 
-atmospheric absorbtion. 
+Those irregularities around 1400nm and 1850 nm are two major atmospheric 
+absorbtion bands - regions where gasses in the atmosphere (primarily carbon 
+dioxide and water vapor) absorb radiation, and therefore, obscure the 
+reflected radiation that the imaging spectrometer measures. Fortunately, the 
+lower and upper bound of each of those atmopheric absopbtion bands is specified 
+in the HDF5 file. Let's read those bands and plot rectangles where the 
+reflectance measurements are obscured by atmospheric absorbtion. 
 
 
     # grab Reflectance metadata (which contains absorption band limits)
-    reflMetadata<- h5readAttributes(f,"/SJER/Reflectance" )
+    reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
     
-    ab1 = reflMetadata$Band_Window_1_Nanometers
-    ab2 = reflMetadata$Band_Window_2_Nanometers
+    ab1 <- reflMetadata$Band_Window_1_Nanometers
+    ab2 <- reflMetadata$Band_Window_2_Nanometers
     
-    ## Plot spectral signatures again with rectangles showing the absorption bands
+    # Plot spectral signatures again with rectangles showing the absorption bands
     ggplot()+
       geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
       geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color="black", fill="grey40", alpha=0.8)+
@@ -233,19 +238,20 @@ atmospheric absorbtion.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Advanced_Spectral_Signatures/mask-atmospheric-absorbtion-bands-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/mask-atmospheric-absorbtion-bands-1.png)
 
-Now we can clearly see that the noisy sections of each spectral signature is within the atmospheric
-absorbtion bands. For our final step, let's take all reflectance values from within each absorbtion
-band and set them to `NA` to remove the noisy sections from the plot.
+Now we can clearly see that the noisy sections of each spectral signature are 
+within the atmospheric absorbtion bands. For our final step, let's take all 
+reflectance values from within each absorbtion band and set them to `NA` to 
+remove the noisy sections from the plot.
 
 
     # Duplicate the spectral signatures into a new data.frame
-    Pixel.melt.masked=Pixel.melt
+    Pixel.melt.masked <- Pixel.melt
     
     # Mask out all values within each of the two atmospheric absorbtion bands
-    Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab1[1]&Pixel.melt.masked$wavelengths<ab1[2],]$Reflectance=NA
-    Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelengths<ab2[2],]$Reflectance=NA
+    Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab1[1]&Pixel.melt.masked$wavelengths<ab1[2],]$Reflectance <- NA
+    Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelengths<ab2[2],]$Reflectance <- NA
     
     # Plot the masked spectral signatures
     ggplot()+
@@ -257,10 +263,10 @@ band and set them to `NA` to remove the noisy sections from the plot.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Advanced_Spectral_Signatures/remove-absorbtion-band-reflectances-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/remove-absorbtion-band-reflectances-1.png)
 
-There you have it, spectral signatures for five different land cover types, with the readings 
-from the atmospheric absorbtion bands removed.
+There you have it, spectral signatures for five different land cover types, 
+with the readings from the atmospheric absorbtion bands removed.
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Compare Spectral Signatures
@@ -278,3 +284,5 @@ change the spectral signature plots, and can you fix any errors that occur?
 3. Does shallow water have a different spectral signature than deep water?
 
 </div>
+
+
