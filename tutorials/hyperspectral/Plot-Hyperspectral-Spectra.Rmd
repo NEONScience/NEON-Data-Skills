@@ -53,9 +53,24 @@ before moving on to this tutorial.
 
 </div> 
 
+Everything on our planet reflects electromagnetic radiation from the Sun, and 
+different types of land cover often have dramatically different refelectance 
+properties across the spectrum. One of the most powerful aspects of the NEON 
+Imaging Spectrometer (a.k.a. NEON's hyperspectral imager) is that it can 
+accurately measure these reflectance properties at a very high spectral resolution. 
+When you plot the reflectance values across the observed spectrum, you will see 
+that different land cover types (vegetation, pavement, bare soils, etc.) have 
+distinct patterns in their reflectance values, a feature that we call the 
+'spectral signature' of a particular land cover class. 
 
-In this tutorial, we will extract a single-pixel's worth of reflectance values to
-plot a spectral signature for that pixel.
+In this tutorial, we will extract a single pixel's worth of reflectance 
+values to plot a spectral signature for that pixel. In order to plot the 
+spectral signature for a given pixel in this hyperspectral dataset, we will 
+need to extract the reflectance values for that pixel, and pair those with the 
+wavelengths that are represented in those measurements. We will also need to 
+adjust the reflectance values by the scaling factor that is saved as an 
+'attribute' in the HDF5 file. First, let's start by defining the working 
+directory and reading in the example dataset.
 
 ```{r call-libraries, results="hide" }
 
@@ -66,7 +81,7 @@ library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd="~/Desktop/Hyperspectral_Tutorial/" #This will depend on your local environment
+wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 ```
@@ -86,7 +101,8 @@ h5ls(f,all=T)
 ## Read Wavelength Values
 
 Next, let's read in the wavelength center associated with each band in the HDF5 
-file. 
+file. We will later match these with the reflectance values and show both in 
+our final spectral signature plot.
 
 ```{r read-band-wavelengths }
 
@@ -99,17 +115,17 @@ wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 ## Extract Z-dimension data slice
 
 Next, we will extract all reflectance values for one pixel. This makes up the 
-spectral signature or profile of the pixel. To do that, we'll use the `h5read` 
+spectral signature or profile of the pixel. To do that, we'll use the `h5read()` 
 function. Here we pick an arbitrary pixel at `(100,35)`, and use the `NULL` 
-value to select _all_ bands from that location.
+value to select *all* bands from that location.
 
 ```{r extract-spectra }
 
 # extract all bands from a single pixel
-aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35) )
+aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
 
 # The line above generates a vector of reflectance values.
-# Next, we reshape the data and turn into dataframe
+# Next, we reshape the data and turn them into a dataframe
 b <- adply(aPixel,c(1))
 
 # create clean data frame
@@ -133,9 +149,9 @@ by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the dat
 ```{r pull-scale-factor }
 
 # grab scale factor from the Reflectance attributes
-reflectanceAttr<- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
 
-scaleFact = reflectanceAttr$Scale_Factor
+scaleFact <- reflectanceAttr$Scale_Factor
 
 # add scaled data column to DF
 aPixeldf$scaled <- (aPixeldf$V1/as.vector(scaleFact))
@@ -146,9 +162,9 @@ head(aPixeldf)
 
 ```
 
-## Plot Spectral Profile
+## Plot Spectral Signature
 
-Now we're ready to plot our spectral profile!
+Now we're ready to plot our spectral signature!
 
 ```{r plot-spectra }
 
