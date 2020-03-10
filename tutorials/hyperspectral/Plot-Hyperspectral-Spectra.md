@@ -205,11 +205,10 @@ by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the dat
 Now we're ready to plot our spectral signature!
 
 
-    qplot(x=aPixeldf$Wavelength, 
-          y=aPixeldf$ScaledReflectance,
-          geom="line",
-          xlab="Wavelength (nm)",
-          ylab="Reflectance")
+    ggplot(data=aPixeldf)+
+       geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+       xlab("Wavelength (nm)")+
+       ylab("Reflectance")
 
 ![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Plot-Hyperspectral-Spectra/plot-spectra-1.png)
 

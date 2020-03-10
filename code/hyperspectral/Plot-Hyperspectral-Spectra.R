@@ -65,10 +65,9 @@ head(aPixeldf)
 
 ## ----plot-spectra----------------------------------------------------------------------
 
-qplot(x=aPixeldf$Wavelength, 
-      y=aPixeldf$ScaledReflectance,
-      geom="line",
-      xlab="Wavelength (nm)",
-      ylab="Reflectance")
+ggplot(data=aPixeldf)+
+   geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+   xlab("Wavelength (nm)")+
+   ylab("Reflectance")
 
 
