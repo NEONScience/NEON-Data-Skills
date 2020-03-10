@@ -907,3 +907,13 @@ eddy4R.base::wrap.hdf5.wrte.dp01(inpList = out,
                                  MethSubAgr = FALSE)
 
 ```
+
+## 9. Accessing output data
+
+The output dp01 HDF5 file will be located in the `/out` folder of the `tempdir()`. 
+
+```{r format}
+
+list.files(paste0(tempdir(),"/out"), recursive = T)
+
+```
