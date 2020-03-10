@@ -4,7 +4,7 @@ title:  "Plas.io: Free Online Data Viz to Explore LiDAR Data"
 description: "Learn about LiDAR point cloud file formats .las and .laz. Explore LiDAR point cloud data using the free, online Plas.io viewer ."
 dateCreated:   2014-07-21 
 authors: Leah A. Wasser
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: lidar, remote-sensing, data-viz
@@ -182,8 +182,8 @@ higher. Some common classes include:
 - 6 Building
 
 <figure>
-	<a href="{{ site.baseurl }}/images/lidar/plasio_colorScheme_KendraSand.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/lidar/plasio_colorScheme_KendraSand.png"></a>
+	<a href="{{ site.baseurl }}/images/lidar/Plasio_ColorScheme_KendraSand.png" target="_blank">
+	<img src="{{ site.baseurl }}/images/lidar/Plasio_ColorScheme_KendraSand.png"></a>
 	<figcaption> Blue and Orange gradient color scheme submitted by Kendra Sand.
 	What color scheme is your favorite?
 	</figcaption>
