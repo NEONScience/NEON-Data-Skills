@@ -113,13 +113,13 @@ Then, we create a string (`f`) of the HDF5 filename and read its attributes.
     setwd(wd)
     
     # Make the name of our HDF5 file a variable
-    f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+    f_full <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 Next, let's take a look at the structure of the full NEON hyperspectral 
 reflectance HDF5 file.
 
 
-    View(h5ls(f, all=T))
+    View(h5ls(f_full, all=T))
 
 Wow, there is a lot of information in there! The majority of the groups contained 
 within this file are Metadata, most of which are used for processing the raw 
@@ -144,31 +144,31 @@ Each function should return 'TRUE' if it runs correctly.
 
 
     # First, create a name for the new file
-    nf <- paste0(wd, "NEON_hyperspectral_tutorial_example_subset.h5")
+    f <- paste0(wd, "NEON_hyperspectral_tutorial_example_subset.h5")
     
     # create hdf5 file
-    h5createFile(nf)
+    h5createFile(f)
 
     ## [1] TRUE
 
     # Now we create the groups that we will use to organize our data
-    h5createGroup(nf, "SJER/")
+    h5createGroup(f, "SJER/")
 
     ## [1] TRUE
 
-    h5createGroup(nf, "SJER/Reflectance")
+    h5createGroup(f, "SJER/Reflectance")
 
     ## [1] TRUE
 
-    h5createGroup(nf, "SJER/Reflectance/Metadata")
+    h5createGroup(f, "SJER/Reflectance/Metadata")
 
     ## [1] TRUE
 
-    h5createGroup(nf, "SJER/Reflectance/Metadata/Coordinate_System")
+    h5createGroup(f, "SJER/Reflectance/Metadata/Coordinate_System")
 
     ## [1] TRUE
 
-    h5createGroup(nf, "SJER/Reflectance/Metadata/Spectral_Data")
+    h5createGroup(f, "SJER/Reflectance/Metadata/Spectral_Data")
 
     ## [1] TRUE
 
@@ -192,8 +192,8 @@ then we can use `h5writeAttribute()` to edit the group that we want to give
 an attribute.
 
 
-    a <- h5readAttributes(f,"/SJER/Reflectance/")
-    fid <- H5Fopen(nf)
+    a <- h5readAttributes(f_full,"/SJER/Reflectance/")
+    fid <- H5Fopen(f)
     g <- H5Gopen(fid, "SJER/Reflectance")
     
     for(i in 1:length(names(a))){
@@ -212,7 +212,7 @@ subset file has that information.
 
 
     # make a list of all groups within the full tile file
-    ls <- h5ls(f,all=T)
+    ls <- h5ls(f_full,all=T)
     
     # make a list of all of the names within the Coordinate_System group
     cg <- unique(ls[ls$group=="/SJER/Reflectance/Metadata/Coordinate_System",]$name)
@@ -222,16 +222,16 @@ subset file has that information.
       print(cg[i])
       
       # Read the inividual dataset within the Coordinate_System group
-      d=h5read(f,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
+      d=h5read(f_full,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
     
       # Read the associated attributes (if any)
-      a=h5readAttributes(f,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
+      a=h5readAttributes(f_full,paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]))
         
       # Assign the attributes (if any) to the dataset
       attributes(d)=a
       
       # Finally, write the dataset to the HDF5 file
-      h5write(obj=d,file=nf,
+      h5write(obj=d,file=f,
               name=paste0("/SJER/Reflectance/Metadata/Coordinate_System/",cg[i]),
               write.attributes=T)
     }
@@ -265,18 +265,18 @@ data can do.
     idx <- seq(from = 1, to = 426, by = 4)
     
     # We then use this index to select particular wavelengths from the full tile using the "index=" argument
-    wavelengths <- h5read(file = f, 
+    wavelengths <- h5read(file = f_full, 
                  name = "SJER/Reflectance/Metadata/Spectral_Data/Wavelength", 
                  index = list(idx)
                 )
     
     # As per above, we also need the wavelength attributes
-    wavelength.attributes <- h5readAttributes(file = f, 
+    wavelength.attributes <- h5readAttributes(file = f_full, 
                            name = "SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
     attributes(wavelengths) <- wavelength.attributes
     
     # Finally, write the subset of wavelengths and their attributes to the subset file
-    h5write(obj=wavelengths, file=nf,
+    h5write(obj=wavelengths, file=f,
             name="SJER/Reflectance/Metadata/Spectral_Data/Wavelength",
             write.attributes=T)
 
@@ -304,7 +304,7 @@ default behavior for this, and many other, functions).
 
 
     # Extract or "slice" data for band 58 from the HDF5 file
-    b58 <- h5read(f,name = "SJER/Reflectance/Reflectance_Data",
+    b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
                  index=list(58,NULL,NULL))
     h5closeAll()
     
@@ -336,7 +336,7 @@ rows.
     subset_rows <- 1:500
     subset_columns <- 501:1000
     # Extract or "slice" data for band 44 from the HDF5 file
-    b58 <- h5read(f,name = "SJER/Reflectance/Reflectance_Data",
+    b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
                  index=list(58,subset_columns,subset_rows))
     h5closeAll()
     
@@ -380,21 +380,21 @@ the bottom-right quadrant of the mosaic tile.
     # Note the list that we feed into the index argument! 
     # This tells the h5read() function which bands, rows, and 
     # columns to read. This is ultimately how we reduce the file size.
-    hs <- h5read(file = f, 
+    hs <- h5read(file = f_full, 
                  name = "SJER/Reflectance/Reflectance_Data", 
                  index = list(idx, subset_columns, subset_rows)
                 )
 
 As per the 'adding group attributes' section above, we will need to add the 
 attributes to the hyperspectral data (`hs`) before writing to the new HDF5 
-subset file (`nf`). The `hs` variable already has one attribute, `$dim`, which 
+subset file (`f`). The `hs` variable already has one attribute, `$dim`, which 
 contains the actual dimensions of the `hs` array, and will be important for 
-writing the array to the `nf` file later. We will want to combine this attribute 
+writing the array to the `f` file later. We will want to combine this attribute 
 with all of the other Reflectance_Data group attributes from the original HDF5 
 file, `f`. However, some of the attributes will no longer be valid, such as the 
 `Dimensions` and `Spatial_Extent_meters` attributes, so we will need to overwrite 
 those before assigning these attributes to the `hs` variable to then write to 
-the `nf` file.
+the `f` file.
 
 
     # grab the '$dim' attribute - as this will be needed 
@@ -402,7 +402,7 @@ the `nf` file.
     hsd <- attributes(hs)
     
     # We also need the attributes for the reflectance data.
-    ha <- h5readAttributes(file = f, 
+    ha <- h5readAttributes(file = f_full, 
                            name = "SJER/Reflectance/Reflectance_Data")
     
     # However, some of the attributes are not longer valid since 
@@ -456,8 +456,8 @@ the `nf` file.
     ## [1]     0 10000
 
     # Finally, write the hyperspectral data, plus attributes, 
-    # to our new file 'nf'.
-    h5write(obj=hs, file=nf,
+    # to our new file 'f'.
+    h5write(obj=hs, file=f,
             name="SJER/Reflectance/Reflectance_Data",
             write.attributes=T)
 
@@ -477,4 +477,4 @@ datasets for your own purposes.
 If you want to take a look at the subset that you just made, run the `h5ls()` function:
 
 
-    View(h5ls(nf, all=T))
+    View(h5ls(f, all=T))
