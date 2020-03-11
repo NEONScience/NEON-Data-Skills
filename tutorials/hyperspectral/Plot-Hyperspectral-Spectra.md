@@ -213,5 +213,5 @@ Now we're ready to plot our spectral signature!
        xlab("Wavelength (nm)")+
        ylab("Reflectance")
 
-<img src="{{ site.baseurl }}/images/rfigs/hyperspectral/Plot-Hyperspectral-Spectra/plot-spectra-1.png" title=" " alt=" " width="750px" height="500px" />
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Plot-Hyperspectral-Spectra/plot-spectra-1.png)
 

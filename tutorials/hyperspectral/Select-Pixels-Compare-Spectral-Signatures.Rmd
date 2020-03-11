@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
+code1: hyperspectral/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
@@ -201,7 +201,7 @@ each of the pixels that we clicked. In order to color our lines by the different
 land cover types, we will first reshape our data using the `melt()` function, then
 plot the spectral signatures.
 
-```{r plot-spectral-signatures, out.width="750px", out.height="500px"}
+```{r plot-spectral-signatures, fig.width=9, fig.height=6}
 # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
 Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
@@ -228,7 +228,7 @@ lower and upper bound of each of those atmopheric absopbtion bands is specified
 in the HDF5 file. Let's read those bands and plot rectangles where the 
 reflectance measurements are obscured by atmospheric absorbtion. 
 
-```{r mask-atmospheric-absorbtion-bands, out.width="750px", out.height="500px"}
+```{r mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6}
 
 # grab Reflectance metadata (which contains absorption band limits)
 reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
@@ -254,7 +254,7 @@ within the atmospheric absorbtion bands. For our final step, let's take all
 reflectance values from within each absorbtion band and set them to `NA` to 
 remove the noisy sections from the plot.
 
-```{r remove-absorbtion-band-reflectances, out.width="750px", out.height="500px"}
+```{r remove-absorbtion-band-reflectances, fig.width=9, fig.height=6}
 
 # Duplicate the spectral signatures into a new data.frame
 Pixel.melt.masked <- Pixel.melt

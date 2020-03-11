@@ -169,7 +169,7 @@ head(aPixeldf)
 
 Now we're ready to plot our spectral signature!
 
-```{r plot-spectra, out.width="750px", out.height="500px"}
+```{r plot-spectra, fig.width=9, fig.height=6}
 
 ggplot(data=aPixeldf)+
    geom_line(aes(x=Wavelength, y=ScaledReflectance))+

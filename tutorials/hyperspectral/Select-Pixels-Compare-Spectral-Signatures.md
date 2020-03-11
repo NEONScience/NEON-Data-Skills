@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
+code1: hyperspectral/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
@@ -201,7 +201,7 @@ plot the spectral signatures.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-<img src="{{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/plot-spectral-signatures-1.png" title=" " alt=" " width="750px" height="500px" />
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/plot-spectral-signatures-1.png)
 
 Nice! However, there seems to be something weird going on in the wavelengths 
 near 1400nm and 1850 nm...
@@ -234,7 +234,7 @@ reflectance measurements are obscured by atmospheric absorbtion.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-<img src="{{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/mask-atmospheric-absorbtion-bands-1.png" title=" " alt=" " width="750px" height="500px" />
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/mask-atmospheric-absorbtion-bands-1.png)
 
 Now we can clearly see that the noisy sections of each spectral signature are 
 within the atmospheric absorbtion bands. For our final step, let's take all 
@@ -259,7 +259,7 @@ remove the noisy sections from the plot.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-<img src="{{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/remove-absorbtion-band-reflectances-1.png" title=" " alt=" " width="750px" height="500px" />
+![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Select-Pixels-Compare-Spectral-Signatures/remove-absorbtion-band-reflectances-1.png)
 
 There you have it, spectral signatures for five different land cover types, 
 with the readings from the atmospheric absorbtion bands removed.
