@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: hyperspectral/Select-Pixels-Compare-Spectral-Signatures.R
+code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
