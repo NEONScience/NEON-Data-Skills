@@ -51,16 +51,10 @@ preferably, RStudio loaded on your computer.
 
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
 
-*Remember* that the example dataset included here only has 1 out of every 4 bands
-included in a full NEON hyperspectral dataset (this substantially reduces size!). When 
-we refer to bands in this tutorial, we will note the band numbers for this 
-example dataset, which may be different from NEON production data.
-
 ***
 {% include/_greyBox-wd-rscript.html %}
 
 </div> 
-
 
 ## About Hyperspectral Remote Sensing Data
 

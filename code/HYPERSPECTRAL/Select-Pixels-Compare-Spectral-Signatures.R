@@ -82,7 +82,7 @@ Pixel_df <- cbind(Pixel_df,b[2])
 
 
 
-## ----plot-spectral-signatures----------------------------------------------------------
+## ----plot-spectral-signatures, fig.width=9, fig.height=6-------------------------------
 # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
 Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
@@ -97,7 +97,7 @@ ggplot()+
   xlab("Wavelength")
 
 
-## ----mask-atmospheric-absorbtion-bands-------------------------------------------------
+## ----mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6----------------------
 
 # grab Reflectance metadata (which contains absorption band limits)
 reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
@@ -118,7 +118,7 @@ ggplot()+
   xlab("Wavelength")
 
 
-## ----remove-absorbtion-band-reflectances-----------------------------------------------
+## ----remove-absorbtion-band-reflectances, fig.width=9, fig.height=6--------------------
 
 # Duplicate the spectral signatures into a new data.frame
 Pixel.melt.masked <- Pixel.melt

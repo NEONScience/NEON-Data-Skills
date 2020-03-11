@@ -49,19 +49,18 @@ preferably, RStudio loaded on your computer.
 
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
 
-*Remember* that the example dataset included here only has 1 out of every 4 bands
-included in a full NEON hyperspectral dataset (this makes it 1/4 the size!). When 
-we refer to bands in this tutorial, we will note both the band numbers for this 
-example dataset, and the band numbers for a standard NEON hyperspectral dataset 
-so that you can recreate these methods later with different inputs.
-
 ***
 {% include/_greyBox-wd-rscript.html %}
 
 ### Recommended Skills
 
-We highly recommend you work through the 
-<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+For this tutorial you should be comfortable working with HDF5 files that 
+contain hyperspectral data, including reading in reflectance values and 
+associated metadata and attributes. 
+
+If you aren't familiar with these steps already, we highly recommend you work 
+through the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> 
+*Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
 
 </div>

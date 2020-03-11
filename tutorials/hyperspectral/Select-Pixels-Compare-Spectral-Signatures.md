@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
+code1: hyperspectral/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
@@ -49,12 +49,6 @@ preferably, RStudio loaded on your computer.
 ### Data to Download
 
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
-
-*Remember* that the example dataset included here only has 1 out of every 4 bands
-included in a full NEON hyperspectral dataset (this makes it 1/4 the size!). When 
-we refer to bands in this tutorial, we will note both the band numbers for this 
-example dataset, and the band numbers for a standard NEON hyperspectral dataset 
-so that you can recreate these methods later with different inputs.
 
 ***
 {% include/dataSubsets/_data_Imaging-Spec-Data-RGB-2020.html %}
@@ -146,10 +140,10 @@ As shown here:
 
 Once you have clicked your five points, press the `ESC` key to save your
 clicked points and close the function before moving on to the next step. If 
-you make a mistake in the step, run the `plotRGB` function again to start over.
+you make a mistake in the step, run the `plotRGB()` function again to start over.
 
 
-The `click` function identifies the cell number that you clicked, but in order 
+The `click()` function identifies the cell number that you clicked, but in order 
 to extract spectral signatures, we need to convert that cell number into a row
 and column, as shown here:
 
@@ -159,7 +153,7 @@ and column, as shown here:
     c$col <- c$cell%%ncol(rgbStack)
 
 ## Extract Spectral Signatures from HDF5 file
-Next, we loop through each of the cells that we selected to use the `h5read` 
+Next, we loop through each of the cells that we selected to use the `h5read()` 
 function to etract the reflectance values of all bands from the given row and
 column. 
 
@@ -190,7 +184,7 @@ column.
 ## Plot Spectral signatures using ggplot2
 Finally, we have everything that we need to plot the spectral signatures for 
 each of the pixels that we clicked. In order to color our lines by the different
-land cover types, we will first reshape our data using the `melt` function, then
+land cover types, we will first reshape our data using the `melt()` function, then
 plot the spectral signatures.
 
 
