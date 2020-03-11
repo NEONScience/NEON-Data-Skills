@@ -1,17 +1,17 @@
 ---
 syncID: 79f902f6c0264f16a9be13f50560860a
-title: "Plot Spectral Profiles Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
-description: "Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral profile." 
-dateCreated:  2015-08-08 20:49:52
-authors: Leah A. Wasser, Donal O'Leary
-contributors: 
-estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, raster, rgdal, plyr
-topics: hyperspectral, HDF5, remote-sensing 
-languagesTool: R
-dataProduct:
+title: "Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
 code1: hyperspectral/Plot-Hyperspectral-Spectra.R
-tutorialSeries:
+contributors: null
+dateCreated: 2015-08-08 20:49:52
+description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
+estimatedTime: 1.0 - 1.5 Hours
+languagesTool: R
+dataProduct: null
+packagesLibraries: rhdf5, raster, rgdal, plyr
+authors: Leah A. Wasser, Donal O'Leary
+topics: hyperspectral, HDF5, remote-sensing
+tutorialSeries: null
 urlTitle: plot-hsi-spectral-profile-r
 ---
 
@@ -47,8 +47,11 @@ preferably, RStudio loaded on your computer.
 ***
 ### Recommended Skills
 
-We highly recommend you work through the 
-<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+For this tutorial, you should be comfortable reading data from a HDF5 file and 
+have a general familiarity with hyperspectral data. If you aren't familiar with 
+these steps already, we highly recommend you work through the 
+<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> 
+*Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
 
 </div> 
@@ -210,5 +213,5 @@ Now we're ready to plot our spectral signature!
        xlab("Wavelength (nm)")+
        ylab("Reflectance")
 
-![ ]({{ site.baseurl }}/images/rfigs/hyperspectral/Plot-Hyperspectral-Spectra/plot-spectra-1.png)
+<img src="{{ site.baseurl }}/images/rfigs/hyperspectral/Plot-Hyperspectral-Spectra/plot-spectra-1.png" title=" " alt=" " width="750px" height="500px" />
 

@@ -63,7 +63,7 @@ head(aPixeldf)
 
 
 
-## ----plot-spectra----------------------------------------------------------------------
+## ----plot-spectra, out.width="750px", out.height="500px"-------------------------------
 
 ggplot(data=aPixeldf)+
    geom_line(aes(x=Wavelength, y=ScaledReflectance))+
