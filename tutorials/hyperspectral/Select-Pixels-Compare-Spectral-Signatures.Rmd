@@ -50,12 +50,6 @@ preferably, RStudio loaded on your computer.
 
 {% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
 
-*Remember* that the example dataset included here only has 1 out of every 4 bands
-included in a full NEON hyperspectral dataset (this makes it 1/4 the size!). When 
-we refer to bands in this tutorial, we will note both the band numbers for this 
-example dataset, and the band numbers for a standard NEON hyperspectral dataset 
-so that you can recreate these methods later with different inputs.
-
 ***
 {% include/dataSubsets/_data_Imaging-Spec-Data-RGB-2020.html %}
 
@@ -153,13 +147,13 @@ c <- click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.la
 
 Once you have clicked your five points, press the `ESC` key to save your
 clicked points and close the function before moving on to the next step. If 
-you make a mistake in the step, run the `plotRGB` function again to start over.
+you make a mistake in the step, run the `plotRGB()` function again to start over.
 ```{r create-c-hidden, include=FALSE, purl=FALSE}
 c <- as.data.frame(c(135750,50101,234644,242062,73477))
 names(c) <- "cell"
 ```
 
-The `click` function identifies the cell number that you clicked, but in order 
+The `click()` function identifies the cell number that you clicked, but in order 
 to extract spectral signatures, we need to convert that cell number into a row
 and column, as shown here:
 
@@ -170,7 +164,7 @@ c$col <- c$cell%%ncol(rgbStack)
 ```
 
 ## Extract Spectral Signatures from HDF5 file
-Next, we loop through each of the cells that we selected to use the `h5read` 
+Next, we loop through each of the cells that we selected to use the `h5read()` 
 function to etract the reflectance values of all bands from the given row and
 column. 
 
@@ -204,10 +198,10 @@ Pixel_df <- cbind(Pixel_df,b[2])
 ## Plot Spectral signatures using ggplot2
 Finally, we have everything that we need to plot the spectral signatures for 
 each of the pixels that we clicked. In order to color our lines by the different
-land cover types, we will first reshape our data using the `melt` function, then
+land cover types, we will first reshape our data using the `melt()` function, then
 plot the spectral signatures.
 
-```{r plot-spectral-signatures}
+```{r plot-spectral-signatures, out.width="750px", out.height="500px"}
 # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
 Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
@@ -234,7 +228,7 @@ lower and upper bound of each of those atmopheric absopbtion bands is specified
 in the HDF5 file. Let's read those bands and plot rectangles where the 
 reflectance measurements are obscured by atmospheric absorbtion. 
 
-```{r mask-atmospheric-absorbtion-bands}
+```{r mask-atmospheric-absorbtion-bands, out.width="750px", out.height="500px"}
 
 # grab Reflectance metadata (which contains absorption band limits)
 reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
@@ -260,7 +254,7 @@ within the atmospheric absorbtion bands. For our final step, let's take all
 reflectance values from within each absorbtion band and set them to `NA` to 
 remove the noisy sections from the plot.
 
-```{r remove-absorbtion-band-reflectances}
+```{r remove-absorbtion-band-reflectances, out.width="750px", out.height="500px"}
 
 # Duplicate the spectral signatures into a new data.frame
 Pixel.melt.masked <- Pixel.melt

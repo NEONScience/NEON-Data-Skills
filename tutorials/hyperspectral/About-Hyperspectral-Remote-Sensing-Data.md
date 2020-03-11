@@ -4,7 +4,7 @@ title: "About Hyperspectral Remote Sensing Data"
 description: "Learn about the fundamental principles of hyperspectral remote sensing data."
 dateCreated: 2014-1-10
 authors: Leah A. Wasser
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: hyperspectral, HDF5, remote-sensing 
@@ -53,12 +53,12 @@ width. This results in a hyperspectral data cube that contains approximately
 ### Bands and Wavelengths
 
 A *band* represents a group of wavelengths. For example, the wavelength values 
-between 800nm and 805nm might be one band as captured by an imaging spectrometer. 
+between 695nm and 700nm might be one band as captured by an imaging spectrometer. 
 The imaging spectrometer collects reflected light energy in a pixel for light 
 in that band. Often when you work with a multi or hyperspectral dataset, the 
 band information is reported as the center wavelength value. This value 
 represents the center point value of the wavelengths represented in that band. 
-Thus in a band spanning 800-805 nm, the center would be 802.5).
+Thus in a band spanning 695-700 nm, the center would be 697.5).
 
 <figure>
     <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
@@ -71,7 +71,7 @@ Thus in a band spanning 800-805 nm, the center would be 802.5).
 ### Spectral Resolution
 The spectral resolution of a dataset that has more than one band, refers to the 
 width of each band in the dataset. In the example above, a band was defined as 
-spanning 800-805nm. The width or spatial resolution of the band is thus 5 
+spanning 695-700nm. The width or spatial resolution of the band is thus 5 
 nanometers. To see an example of this, check out the band widths for the 
 <a href="http://landsat.usgs.gov/band_designations_landsat_satellites.php" target="_blank">Landsat sensors</a>.
 
@@ -86,10 +86,10 @@ center point.
     <img src="{{ site.baseurl }}/images/hyperspectral/FWHM2.png"></a>
     <figcaption>The Full Width Half Max (FWHM) of a band relates to the distance 
     in nanometers between the band center and the edge of the band. In this 
-    case, the FWHM for Band C is 10 nm.</figcaption>
+    case, the FWHM for Band C is 5 nm.</figcaption>
 </figure>
 
-In the illustration above, the band that covers 800-805nm has a FWHM of 5 nm. 
+In the illustration above, the band that covers 695-700nm has a FWHM of 5 nm. 
 While a general spectral resolution of the sensor is often provided, not all 
 sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are 
 listed below (Courtesy of <a href="http://landsat.usgs.gov" target="_blank">USGS</a>)
