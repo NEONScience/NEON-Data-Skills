@@ -22,21 +22,16 @@ dirs <- c("R/NEON-pheno-temp-timeseries/",
 
 # set directory (order above) that you'd like to build
 
-<<<<<<< HEAD
-subDir <- dirs[9] 
-=======
-subDir <- dirs[10] 
->>>>>>> e0017704eb57db16a6ff4b524d527ffdb9d14971
+
+subDir <- dirs[1] 
+
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
 
 # set working dir - this is where the data are located
-<<<<<<< HEAD
-wd <- "~/Documents/data"
-=======
-wd_processing_doc <- "~/Git/data"
->>>>>>> e0017704eb57db16a6ff4b524d527ffdb9d14971
+
+wd_processing_doc <- "~/Documents/data"
 
 ################### CONFIG BELOW IS REQUIRED BY JEKYLL - DON'T CHANGE ##########
 #set data working dir

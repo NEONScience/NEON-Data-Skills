@@ -186,7 +186,8 @@ library(scales)
 # setwd("working-dir-path-here")
 
 # Read in data
-temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', stringsAsFactors = FALSE)
+temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv',
+												 stringsAsFactors = FALSE)
 
 ```
 
@@ -254,7 +255,7 @@ What about null (`NA`) data?
 # Are there NA's in your data? Count 'em up
 sum(is.na(temp30$tempSingleMean) )
 
-mean(temp30$tempSingleMean)
+mean(temp30$tempSingleMean, )
 ```
 
 Why was there no output? 
@@ -503,7 +504,9 @@ Depending on exactly what question you are asking you may prefer to use one over
 the other. For many applications, the mean temperature of the one or 30 minute
 interval will provide the best representation of the data. 
 
-Let's plot it. 
+Let's plot it. (This is a plot of a large amount of data. It can take 1-2 mins 
+to process. It is not essential for completing the next steps if this takes too 
+much of your computer memory?)
 
 ```{r plot-temp}
 # plot temp data
