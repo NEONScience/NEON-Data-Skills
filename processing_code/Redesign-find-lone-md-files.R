@@ -13,6 +13,12 @@ rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/old-tutorials/tutorials
 md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/old-tutorials/tutorials",
                         pattern="\\.md$", full.names = TRUE, recursive = TRUE)
 
+setwd("~/Git/dev-aten/NEON-Data-Skills/processing_code/")
+md.files2=md.files
+md.files2=gsub("/Users/olearyd/Git/dev-aten/NEON-Data-Skills/old-tutorials/tutorials","",md.files2)
+write.table(md.files2, file="md-file-list.txt", quote = FALSE)
+
+
 # Remove any .md files from the list if they contain "/Python/" in their filepath
 # https://stackoverflow.com/questions/40885360/remove-entries-from-string-vector-containing-specific-characters-in-r/40885527
 md.files <- md.files[!grepl(paste0("/Python/", collapse = "|"), md.files)]
@@ -24,3 +30,6 @@ rmd.files <- gsub("\\.Rmd","",rmd.files)
 md.files <- gsub("\\.md","",md.files)
 
 unpaired.md <- md.files[!md.files %in% rmd.files]
+
+
+
