@@ -2,7 +2,7 @@
 # key filepath CSV file
 
 master_dir <- "~/Git/dev-aten/NEON-Data-Skills"
-setwd("~/Git/dev-aten/NEON-Data-Skills/processing_code/")
+setwd("~/Git/dev-aten/NEON-Data-Skills/processing_code/Redesign_scripts/")
 
 key <- read.csv("redesign-tutorial-filepaths.csv")
 
@@ -20,13 +20,14 @@ file <- md.files.to.move[basename(md.files.to.move) %in% key$lesson[i]]
 
 dn <- file.path(master_dir, key$root[i], key$language[i], key$theme[i], key$group[i])
 
+print(file)
 
 if (file.exists(dn)){
-  print("Tutorial Dir Exists! ")
+  #print("Tutorial Dir Exists! ")
 } else {
   #create image directory structure
   dir.create(dn, recursive = TRUE)
-  print("Tutorial directory created!")
+  #print("Tutorial directory created!")
 }
 
 if (dir.exists(dn)){
