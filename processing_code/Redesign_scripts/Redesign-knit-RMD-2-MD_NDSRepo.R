@@ -20,13 +20,14 @@ require(markdown)
 
 # do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
-          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/")
+          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
+          "R")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2] 
+subDir <- dirs[3] 
 
 # Inputs - Where the git repo is on your computer
 ### CHANGE AFTER MIGRATION
@@ -65,7 +66,10 @@ rmd.files <- list.files(file.path(gitRepoPath, "tutorials", subDir),
 #################### Set up Image Directory #############################
 
 # just render one file
-# rmd.files <- rmd.files[5]
+#rmd.files <- rmd.files[43:61] #41-44 are CO floods tutorials. 
+# COOP-NEIS-Precipitation-In-R.Rmd is causing a problem when reading in data
+# so is nCLIMDIV-Palmer-Drought-In-R.Rmd
+# Should update with paste0(wd,...) to make it work again!
 
 setwd(wd_processing_doc)
 

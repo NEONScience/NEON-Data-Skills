@@ -171,7 +171,7 @@ command line.
 
 Now try them in the console.  
 
-``` {r ls-rm-funcs}
+``` {r ls-rm-funcs, eval=FALSE, comment=NA}
 
 # assign value "5" to object "x"
 x <- 5
