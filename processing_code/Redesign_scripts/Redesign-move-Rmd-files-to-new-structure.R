@@ -20,7 +20,7 @@ for(i in 1:length(key$lesson)){
   
   if(length(file)>0){
   
-  dn <- file.path(master_dir, key$root[i], key$language[i], key$theme[i], key$group[i])
+  dn <- file.path(master_dir, key$root[i], key$language[i], key$theme[i], key$group[i], gsub("\\.md","",(as.character(key$lesson[i])))))
   
   print(file)
   
