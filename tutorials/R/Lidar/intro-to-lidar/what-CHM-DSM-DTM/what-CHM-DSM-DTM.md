@@ -18,23 +18,23 @@ urlTitle: chm-dsm-dtm-gridded-lidar-data
 
 ## Common LiDAR Data Products
 
-* <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This 
+* <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This 
 product represents the elevation of the ground.
-* <a href="{{ site.baseurl }}/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This 
+* <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This 
 represents the elevation of the tallest surfaces at that point. Imagine draping 
 a sheet over the canopy of a forest, the DEM contours with the heights of the 
 trees where there are trees but the elevation of the ground when there is a 
 clearing in the forest.
 
-* <a href="{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This 
+* <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This 
 represents the difference between a Digital Terrain Model and a Digital Surface 
 Model and gives you the height of the objects (in a forest, the trees) that are 
 on the surface of the earth.
 
 <figure class="third">
-    <a href="{{ site.baseurl }}/3d/SJER_DTM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/dem.png"></a>
-    <a href="{{ site.baseurl }}/3d/SJER_DSM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/dsm.png"></a>
-    <a href="{{ site.baseurl }}/3d/SJER_CHM_3d.html" target="_blank"><img src="{{ site.baseurl }}/images/lidar/chm.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/dem.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/dsm.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/chm.png"></a>
     
     <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
      Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
@@ -48,8 +48,8 @@ points may be located anywhere in space are not aligned within any particular
 grid.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/Lidar_points.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/lidar/Lidar_points.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png"></a>
 	<figcaption> Representative point cloud data. Source: National Ecological 
 	Observatory Network (NEON)  
 	</figcaption>
@@ -66,7 +66,7 @@ are often associated with LiDAR data point clouds.
 
 For more on viewing LiDAR point cloud data using the Plas.io online
 viewer, see our tutorial 
-<a href="{{ site.baseurl }}/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 
 
 ### Gridded, or Raster, LiDAR Data Products
@@ -83,8 +83,8 @@ means that each pixel represents a 1m by 1m area on the ground.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_concept.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png"></a>
 	<figcaption> Raster or “gridded” data are stored as a grid of values which 
 	are rendered on a map as pixels. Each pixel value represents an area on the 
 	Earth’s surface.  Source: National Ecological Observatory Network (NEON)  
@@ -148,8 +148,8 @@ don't contains any lidar points. These cells will have a "no data" value if we
 process our raster in this way. 
 
 <figure>
-    <a href="{{ site.baseurl }}/gridding-interpolation-spatial-data-gif" target="_blank">
-    <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
+    <a href="https://www.neonscience.org/gridding-interpolation-spatial-data-gif" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
@@ -172,5 +172,5 @@ predictions which is useful to know, if you are doing research.
 ***
 
 For learning more on how to work with LiDAR data, consider going through the 
-<a href="{{ site.baseurl }}/raster-data-series" target="_blank">*Introduction to Working With Raster Data in R*</a> 
+<a href="https://www.neonscience.org/raster-data-series" target="_blank">*Introduction to Working With Raster Data in R*</a> 
 tutorial series.  

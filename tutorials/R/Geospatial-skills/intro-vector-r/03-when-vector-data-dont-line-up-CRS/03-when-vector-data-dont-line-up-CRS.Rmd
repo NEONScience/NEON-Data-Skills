@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Data to Download
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -70,8 +70,8 @@ For instance, many states prefer to use a **State Plane** projection customized
 for that state.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     </a>
     <figcaption>Maps of the United States using data in different projections. 
     Notice the differences in shape associated with each different projection.

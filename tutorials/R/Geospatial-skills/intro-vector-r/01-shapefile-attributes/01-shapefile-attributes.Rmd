@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -62,12 +62,12 @@ raster and vector files.
 
 We will import three shapefiles. The first is our `AOI` or area of
 interest boundary polygon that we worked with in 
-<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 The second is a shapefile containing the location of roads and trails within the
 field site. The third is a file containing the Fisher tower location.
 
 If you completed the
-<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 tutorial, you can skip this code.
 
 ```{r load-packages-data }
@@ -95,7 +95,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 
 ## Query Shapefile Metadata 
 Remember, as covered in 
-<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.,
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.,
 we can view metadata associated with an R object using:
 
 * `class()` - Describes the type of vector data stored in the object.
@@ -138,8 +138,8 @@ which describes the type of road (woods road, footpath, boardwalk, or
 stone wall).
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
     <figcaption>The shapefile format allows us to store attributes for each
     feature (vector object) stored in the shapefile. The attribute table, is 
     similar to a spreadsheet. There is a row for each feature. The first column

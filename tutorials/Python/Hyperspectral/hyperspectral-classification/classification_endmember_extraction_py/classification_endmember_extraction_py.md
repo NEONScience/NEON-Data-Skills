@@ -267,7 +267,7 @@ Note that we have retained 360 of the 426 bands. This still contains plenty of i
 plt.hist(data_clean[~np.isnan(data_clean)],50);
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_17_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_17_0.png)
 
 
 Lastly, let's take a look at the data using the function `plot_aop_refl` function:
@@ -292,7 +292,7 @@ def plot_aop_refl(band_array,
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_19_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_19_0.png)
 
 
 
@@ -303,7 +303,7 @@ plot_aop_refl(data_clean[:,:,0],
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_20_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_20_0.png)
 
 
 ## Unsupervised Classification with Spectral Unmixing: 
@@ -361,7 +361,7 @@ ee.display(axes=ee_axes,suffix='SERC')
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_28_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_28_0.png)
 
 
 Now that we have extracted the spectral endmembers, we can take a look at the abundance maps for each member. These show the fractional components of each of the endmembers. 
@@ -380,16 +380,16 @@ am.display(colorMap='jet',columns=4,suffix='SERC')
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_32_0.png)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_32_1.png)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_32_2.png)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_32_3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_32_3.png)
 
 
     <Figure size 432x288 with 0 Axes>
@@ -434,7 +434,7 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05])
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_36_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_36_0.png)
 
 
 Below we define a function to compute and display Spectral Information Diverngence (SID):
@@ -457,14 +457,14 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_endmember_extraction_py/output_40_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_40_0.png)
 
 
 From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the <a href="https://viewer.nationalmap.gov/" target="_blank">USA Topo Base map</a>.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/site-images/SERC_368000_4307000_UStopo.png">
-	<img src="{{ site.baseurl }}/images/site-images/SERC_368000_4307000_UStopo.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SERC_368000_4307000_UStopo.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SERC_368000_4307000_UStopo.png"></a>
 	<figcaption> The NEON SJER field site. Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
 </figure>

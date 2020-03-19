@@ -19,9 +19,9 @@ urlTitle: spatial-data-capstones
 These capstone challenges utilize the skills that you learned in the previous 
 tutorials in the:
 
-* <a href="{{ site.baseurl }}/primer-raster-data-r/" target="_blank"> *Primer on Raster Data in R* series</a>,
-* <a href="{{ site.baseurl }}/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
-* <a href="{{ site.baseurl }}/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
+* <a href="https://www.neonscience.org/primer-raster-data-r/" target="_blank"> *Primer on Raster Data in R* series</a>,
+* <a href="https://www.neonscience.org/intro-hsi-r-series/" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data - in R* series</a>, or
+* <a href="https://www.neonscience.org/intro-hdf5-r-series/" target="_blank"> *Introduction to the Hierarchical Data Format (HDF5) - Using HDFView & R* series</a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -35,7 +35,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
@@ -81,7 +81,7 @@ SOAP vegetation data).
 	- one for the Soaproot Saddle (SOAP) field site.
 3. Attribute each of the above groups with information about the field sites. 
 HINT: you can explore the 
-<a href="/field-sites/field-sites-map" target="_blank">NEON field sites page</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank">NEON field sites page</a> 
 for more information about each site. 
 4. Extract the vegetation structure data for San Joaquin and add it as a dataset 
 to the San Joaquin group. Do the same for the Soaproot Saddle dataset. 

@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 
 ## Download Data
@@ -59,8 +59,8 @@ of the vertices, determines the type of vector that we are working
 with: point, line or polygon.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/pnt_line_poly.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/pnt_line_poly.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png"></a>
     <figcaption> There are 3 types of vector objects: points, lines or 
     polygons. Each object type has a different structure. 
     Image Source: National Ecological Observatory Network (NEON) 
@@ -125,9 +125,9 @@ The shapefiles that we will import are:
 * A polygon shapefile representing our field site boundary, 
 * A line shapefile representing roads, and 
 * A point shapefile representing the location of the Fisher   
-<a href="/data-collection/flux-tower-measurements" target="_blank">flux tower</a> 
+<a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank">flux tower</a> 
 located at the
-<a href="/field-sites/field-sites-map/HARV" target="_blank"> NEON Harvard Forest field site</a>.
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> NEON Harvard Forest field site</a>.
 
 The first shapefile that we will open contains the boundary of our study area
 (or our Area Of Interest or AOI, hence the name `aoiBoundary`). To import 
@@ -168,7 +168,7 @@ with each individual vector object.
 
  <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** The 
-<a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
 tutorial provides more information on both metadata and attributes
 and using attributes to subset and plot data. 
 </div>
@@ -203,8 +203,8 @@ in the CRS **UTM zone 18N**. The CRS is critical to interpreting the object
 `extent` values as it specifies units. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/spatial_extent.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/spatial_extent.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"></a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial object. 
@@ -224,8 +224,8 @@ may have a name, length, number of lanes, speed limit, type of road and other
 attributes stored with it. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
     <figcaption>Each spatial feature in an R spatial object has the same set of 
     associated attributes that describe or characterize the feature.
     Attribute data are stored in a separate *.dbf file. Attribute data can be
@@ -353,9 +353,9 @@ CHM, please add:
 Be sure to give your plot a meaningful title. 
 
 For assistance consider using the 
-<a href="/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*Shapefile Metadata & Attributes in R*</a> 
 and
-the <a href="/dc-plot-raster-data-r" target="_blank" >*Plot Raster Data in R*</a>
+the <a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank" >*Plot Raster Data in R*</a>
 tutorials. 
 </div>
 

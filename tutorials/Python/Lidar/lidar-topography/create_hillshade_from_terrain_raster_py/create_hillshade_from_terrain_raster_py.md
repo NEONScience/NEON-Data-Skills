@@ -204,7 +204,7 @@ plot_band_array(teak_dtm_array,teak_dtm_md['extent'],'TEAK DTM','Elevation, m',c
 ax = plt.gca(); plt.grid('on')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_9_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_9_0.png)
 
 
 Use the hillshade function on the TEAK DTM array, with an aspect of 225° and 
@@ -219,7 +219,7 @@ plot_band_array(teak_hillshade_array,teak_dtm_md['extent'],'TEAK Hillshade, Aspe
 ax = plt.gca(); plt.grid('on') 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_11_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_11_0.png)
 
 Next, overlay this transparent hillshade on the DTM:
 
@@ -240,7 +240,7 @@ plt.title('TEAK Hillshade + DTM')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_13_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_13_1.png)
 
 
 ### Calculate CHM & Overlay on Top of Hillshade
@@ -256,7 +256,7 @@ plot_band_array(teak_chm_array,teak_dtm_md['extent'],'TEAK Canopy Height Model',
 ax = plt.gca(); plt.grid('on')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_15_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_15_0.png)
 
 
 Overlay the transparent hillshade, canophy height model, and DTM:
@@ -286,6 +286,6 @@ plt.title('TEAK 2013 \n Terrain, Hillshade, & Canopy Height')
     <matplotlib.text.Text at 0xdb4ebe0>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/create-hillshade-py/output_17_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_17_1.png)
 
 

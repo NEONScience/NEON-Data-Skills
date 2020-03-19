@@ -50,9 +50,9 @@ After completing this tutorial, you will be able to:
 We recommend you complete the following tutorials prior to this tutorial to have
 the necessary background. 
 
-1.  <a href="/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
-1.  <a href="/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
-1.  <a href="/plot-spec-sig-python/"> *Plot a Spectral Signature in Python*</a>
+1.  <a href="https://www.neonscience.org/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
+1.  <a href="https://www.neonscience.org/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
+1.  <a href="https://www.neonscience.org/plot-spec-sig-python/"> *Plot a Spectral Signature in Python*</a>
 
 
 </div>
@@ -74,12 +74,12 @@ overlapping.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/neon-aop/ORNL_BRDF_flightlines.jpg">
-	<img src="{{ site.baseurl }}/images/neon-aop/ORNL_BRDF_flightlines.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_BRDF_flightlines.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_BRDF_flightlines.jpg"></a>
 </figure>
  <figure>
-	<a href="{{ site.baseurl }}/images/neon-aop/ORNL_NumberSamples.png">
-	<img src="{{ site.baseurl }}/images/neon-aop/ORNL_NumberSamples.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_NumberSamples.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_NumberSamples.png"></a>
 	<figcaption> Top: Flight lines from a bi-directional reflectance distribution 
 	function flight at ORNL. Bottom: A graphical representation of the number of 
 	samples in each area of the sampling.  
@@ -327,7 +327,7 @@ fig.savefig('BRDF_uncertainty_at_' + str(x_coord) +'_'+ str(y_coord)+'.png',dpi=
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-variation/output_17_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-variation/output_17_0.png)
 
 
 The result is a plot with all the curves in which we can visualize the difference 

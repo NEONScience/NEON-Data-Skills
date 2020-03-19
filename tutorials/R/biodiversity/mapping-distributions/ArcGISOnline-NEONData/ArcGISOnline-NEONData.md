@@ -24,7 +24,7 @@ The series of maps below focus on provisional data from early small mammal sampl
 and soils sampling at NEON field sites. 
 
 Learn more about NEON 
-<a href="/data-collection/soil-sensors-measurements" target="_blank">soils</a> 
+<a href="https://www.neonscience.org/data-collection/soil-sensors-measurements" target="_blank">soils</a> 
 and 
 <a href="http://neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">terrestrial sampling</a>.
 

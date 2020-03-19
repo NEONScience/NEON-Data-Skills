@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **rasterVis:** `install.packages("rasterVis")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
 {% include/dataSubsets/_data_Landsat-NDVI.html %}
@@ -54,13 +54,13 @@ on your computer to complete this tutorial.
 
 ## Get Started 
 In this tutorial, we are working with the same set of rasters used in the
-<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 tutorial. These data are derived from the Landsat satellite and stored in 
 `GeoTIFF` format. Each raster covers the 
-<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>.  
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>.  
 
 If you have not already created the RasterStack, originally created in 
-<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>,
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>,
 please create it now. 
 
 ```{r load-libraries-data }

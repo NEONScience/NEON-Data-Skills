@@ -53,8 +53,8 @@ the equivalent for your operating system. Once you've downloaded and unzipped
 the dataset, move it to this directory. 
 
 <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png"></a>
 	<figcaption> The <strong>data</strong> directory with the teaching data subset. This is the suggested organization for all Data Institute teaching data subsets. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -98,8 +98,8 @@ NOTE: The document title is not the same as the file name.
 4. Hit the knit button in RStudio (as is done in the video above). What happens?
 
 <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -115,8 +115,8 @@ Next, we'll break down the structure of an R Markdown file.
 ## Understand Structure of an R Markdown file
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png"></a>
 	<figcaption>Screenshot of a new R Markdown document in RStudio. Notice the different
 	parts of the document. 
 	Source: National Ecological Observatory Network (NEON)  
@@ -253,7 +253,7 @@ in R, and sets the working directory.
  ```</code></pre>
 
 (For help setting the working directory, see the NEON Data Skills tutorial
-<a href="{{ site.baseurl }}/set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
 
 Then, add another chunk that loads the `TEAK_lidarDSM` raster file.
 
@@ -332,7 +332,7 @@ that you downloaded. The `TEAK_lidarCHM` is a good raster to plot.
 **markdown syntax** in between the code chunks.
 
 For help opening and plotting raster data in R, see the NEON Data Skills tutorial
-<a href="{{ site.baseurl }}/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>. 
+<a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>. 
 
 We will knit this document to HTML in the next tutorial. 
 </div>

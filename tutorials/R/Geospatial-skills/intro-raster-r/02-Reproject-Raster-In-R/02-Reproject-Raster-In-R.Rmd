@@ -44,7 +44,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -65,7 +65,7 @@ Read more about the `raster` package in R.</a>
 ## Raster Projection in R
 
 In the
-<a href="/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>,
+<a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>,
 we learned how to layer a raster file on top of a hillshade for a nice
 looking basemap. In this tutorial, all of our data were in the same CRS. What 
 happens when things don't line up?
@@ -248,7 +248,7 @@ hillshade to produce a nice looking, textured map!
 <div id="ds-challenge" markdown="1">
 ### Challenge: Reproject, then Plot a Digital Terrain Model 
 Create a map of the 
-<a href="/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
 field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files. 
 
 Reproject the data as necessary to make things line up!
@@ -283,7 +283,7 @@ plot(DSM_SJER,
 
 <div id="ds-challenge" markdown="1">
 If you completed the San Joaquin plotting challenge in the
-<a href="/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>, 
+<a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank"> *Plot Raster Data in R* tutorial</a>, 
 how does the map you just created compare to that map? 
 </div>
 

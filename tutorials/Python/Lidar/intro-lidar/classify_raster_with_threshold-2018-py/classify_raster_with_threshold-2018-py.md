@@ -244,7 +244,7 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_24_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify_raster_with_threshold-2018-py/output_24_1.png)
 
 
 On your own, adjust the number of bins, and range of the y-axis to get a good idea of the distribution of the canopy height values. We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
@@ -263,7 +263,7 @@ plot_band_array(chm_array,
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_26_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify_raster_with_threshold-2018-py/output_26_0.png)
 
 ## Threshold Based Raster Classification
 Next, we will create a classified raster object. To do this, we will use the se the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
@@ -317,7 +317,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box,class5_box],
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify_raster_with_threshold-2018-py/output_30_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify_raster_with_threshold-2018-py/output_30_1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -343,8 +343,8 @@ Create the following threshold classified outputs:
     * South: 135-225 degrees
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg">
-	<img src="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>

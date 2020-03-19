@@ -18,7 +18,7 @@ urlTitle: neon-SAAT-temp-r
 
 In this tutorial, we explore the NEON single-aspirated air temperature data. We
 start using data that has already been "stacked" using the 
-<a href="{{ site.baseurl }}/neonDataStackR-temp" target="_blank"> neonDataStackR package</a>. 
+<a href="https://www.neonscience.org/neonDataStackR-temp" target="_blank"> neonDataStackR package</a>. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
 
@@ -48,7 +48,7 @@ on your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
@@ -484,7 +484,7 @@ object.
 
 For a discussion of date formats is including Date, POSIXct, & POSIXlt see the
 NEON Data Skills tutorial
-<a href="/dc-convert-date-time-POSIX-r" target="_blank"> *Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt </a>.*
+<a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> *Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt </a>.*
 
 
 ## Scatterplots with ggplot
@@ -531,7 +531,7 @@ want to view or aggregate the data differently:
 * or some other segregation of the data.  
 
 Given that in the previous tutorial, 
-<a href="{{ site.baseurl }}/neon-plant-pheno-data-r" target="_blank"> *Work With NEON's Plant Phenology Data*</a>, 
+<a href="https://www.neonscience.org/neon-plant-pheno-data-r" target="_blank"> *Work With NEON's Plant Phenology Data*</a>, 
 we were working with phenology data collected on a daily scale let's aggregate
 to that level.  
 

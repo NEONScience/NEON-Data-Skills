@@ -184,8 +184,8 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg">
-	<img src="{{ site.baseurl }}/images/hyperspectral/spectrum_RGB_bands.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGB_bands.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGB_bands.jpg"></a>
 	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
@@ -260,7 +260,7 @@ plot_band_array(sercSubset_RGB[:,:,2],clipExt,colorlimit,ax3,title='SERC Band 19
                      cmap_title='Reflectance',colormap='Blues_r')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_13_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_13_0.png)
 
 Finally, we can plot the three bands together:
 
@@ -269,7 +269,7 @@ Finally, we can plot the three bands together:
 plot_band_array(sercSubset_RGB,clipExt,(0,0.5),title='SERC Subset RGB Image',cbar='off')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_15_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_15_0.png)
 
 
 ## Basic Image Processing -- Contrast Stretch & Histogram Equalization 
@@ -284,8 +284,8 @@ of a displayed image, as we will show how to do below.
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.
@@ -322,7 +322,7 @@ interact(linearStretch,percent=(0,20,1))
     <function __main__.linearStretch>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_18_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_18_1.png)
 
 
 ```python
@@ -360,7 +360,7 @@ interact(adaptEqualizeHist,clip=(0,1,.05))
 
     <function __main__.adaptEqualizeHist>
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_19_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_19_1.png)
 
 
 
@@ -386,7 +386,7 @@ plot_band_array(sercSubset_CIR,clipExt,(0,0.5),title='SERC Subset CIR Image',cba
     Band 19 Center Wavelength = 473.80 nm
     
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_21_1.png)
 
 
  <div id="challenge" markdown="1">
@@ -464,7 +464,7 @@ interact(RGBplot_widget, R=(1,426,1), G=(1,426,1), B=(1,426,1))
 
     <function __main__.RGBplot_widget>
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_27_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_27_1.png)
 
 
 ### References
@@ -497,4 +497,4 @@ plot_band_array(sercSubset_FCI,clipExt,(0,0.5),title='SERC Subset CIR Image',cba
     Band 19 Center Wavelength = 674.11 nm
     
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-functions-rgb-images/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_23_1.png)

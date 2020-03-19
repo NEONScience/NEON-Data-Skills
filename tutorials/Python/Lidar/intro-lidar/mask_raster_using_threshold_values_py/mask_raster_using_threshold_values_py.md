@@ -47,8 +47,8 @@ a raster containing only **south facing** pixels where **canopy height > 20m.**
 The graphic below illustrates raster masking.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/spatialData/raster_masks.jpg">
-	<img src="{{ site.baseurl }}/images/spatialData/raster_masks.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg"></a>
 	<figcaption> Masks can be used to highlight desired parameters. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
@@ -175,7 +175,7 @@ ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_8_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/mask-rasters-py/output_8_1.png)
 
 
 
@@ -232,7 +232,7 @@ plt.xlabel('Canopy Height (m)'); plt.ylabel('Relative Frequency')
 
     <matplotlib.text.Text at 0x8d79908>
 
-![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_14_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/mask-rasters-py/output_14_1.png)
 
 
 Now plot, setting the extent to 60m.
@@ -244,7 +244,7 @@ plot_band_array(teak_chm_array,teak_chm_md['extent'],(0,60), \
                 title='TEAK Canopy Height',cmap_title='Canopy Height, m',colormap='BuGn')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_16_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/mask-rasters-py/output_16_0.png)
 
 
 ## Mask Data by Aspect and NDVI
@@ -281,7 +281,7 @@ plot_band_array(teak_chm_gt20,teak_chm_md['extent'],(20,60), \
                nan]]
     
 
-![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_18_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/mask-rasters-py/output_18_1.png)
 
 
 Now include the additional requirement that slope is south-facing (i.e., 
@@ -296,7 +296,7 @@ plot_band_array(teak_chm_gt20_S,teak_chm_md['extent'],(20,60), \
                 title='TEAK Canopy Height > 20m \n South Facing',cmap_title='Canopy Height, m',colormap='Greens')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/mask-rasters-py/output_8_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/mask-rasters-py/output_8_1.png)
 
 
 

@@ -38,8 +38,8 @@ we need tools that can estimate key characteristics over large areas because
 we don’t have the resources to measure each and every tree or shrub. 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/NEON-general/ScalingTrees_NatGeo.jpg" target="_blank">
-   <img src="{{ site.baseurl }}/images/NEON-general/ScalingTrees_NatGeo.jpg"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/ScalingTrees_NatGeo.jpg" target="_blank">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/ScalingTrees_NatGeo.jpg"></a>
    <figcaption>Conventional, on-the-ground methods to measure trees are resource 
    intensive and limit the amount of vegetation that can be characterized! Source: 
    National Geographic
@@ -53,8 +53,8 @@ To measure vegetation or other data across large areas, we need remote sensing
 methods that can take many measurements quickly, using automated sensors. 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/lidar_SOAP.png"  target="_blank">
-   <img src="{{ site.baseurl }}/images/lidar/lidar_SOAP.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/lidar_SOAP.png"  target="_blank">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/lidar_SOAP.png"></a>
    <figcaption>LiDAR data collected at the Soaproot Saddle site by the National 
    Ecological Observatory Network's Airborne Observation Platform (NEON AOP)</a>.  
    </figcaption>
@@ -108,8 +108,8 @@ building.
 
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/Waveform.PNG" target="_blank">
-   <img src="{{ site.baseurl }}/images/lidar/Waveform.PNG"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Waveform.PNG" target="_blank">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Waveform.PNG"></a>
    <figcaption>An example LiDAR waveform returned from two trees and the ground.
  Source: NEON </a>.
    </figcaption>
@@ -122,8 +122,8 @@ There are many different uses for LiDAR data.
 - LiDAR data classically have been used to derive high resolution elevation data
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/HighRes.png" target="_blank">
-   <img src="{{ site.baseurl }}/images/lidar/HighRes.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/HighRes.png" target="_blank">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/HighRes.png"></a>
    <figcaption>LiDAR data have historically been used to generate high 
    resolution elevation datasets. Source: National Ecological Observatory 
    Network </a>.
@@ -139,8 +139,8 @@ structure including
 	- Species identification (if a less dense forests with high point density LiDAR)
 
 <figure>
-   <a href="{{ site.baseurl }}/images/lidar/Lidar_points.png">
-   <img src="{{ site.baseurl }}/images/lidar/Lidar_points.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png"></a>
    <figcaption>Cross section showing LiDAR point cloud data superimposed on the 
    corresponding landscape profile. Source: National Ecological Observatory 
    Network</a>.
@@ -202,7 +202,7 @@ vegetation type.
 
 Check out our tutorial on viewing LiDAR point cloud data using the Plas.io online
 viewer: 
-<a href="{{ site.baseurl }}/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 The Plas.io viewer used in this tutorial was developed by Martin Isenberg of 
 Las Tools and his colleagues.
 

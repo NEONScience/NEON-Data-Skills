@@ -221,7 +221,7 @@ plt.show()
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_19_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_19_0.png)
 
 
 
@@ -237,7 +237,7 @@ plt.show()
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_21_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_21_0.png)
 
 
 The histogram shows a wide variation in DSM differences, with those at the 95% limit at around +/- 1.5 m. Let's take a look at the spatial distribution of the errors by plotting a map of the difference between the two DSMs. Here we'll also use the extra variable in the plot function to constrain the limits of the colorbar to 95% of the observations. 
@@ -249,7 +249,7 @@ plot_band_array(diff_dsm_array,dsm1_array_metadata['extent'],'DSM Difference','D
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_23_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_23_0.png)
 
 
 It seems that there is a spatial pattern in the distribution of errors. Now let's take a look at the histogram and map for the difference in DTMs.
@@ -277,10 +277,10 @@ plt.show()
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_25_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_25_1.png)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_25_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_25_2.png)
 
 
 The overall magnitude of differences are smaller than in the DSM but the same spatial pattern of the error is evident. 
@@ -298,7 +298,7 @@ plt.show()
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_27_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_27_0.png)
 
 
 From the CHM, it appears the spatial distribution of error patterns follow the location of vegetation. 
@@ -327,7 +327,7 @@ plt.show()
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_29_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_29_1.png)
 
 
     <Figure size 432x288 with 0 Axes>
@@ -363,7 +363,7 @@ plt.show()
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_31_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_31_2.png)
 
 Here we can see that the mean difference is almost zero at 0.023 m, and the variation in less than the DSM at 0.163 m. 
 
@@ -390,7 +390,7 @@ plt.show()
     Standard deviations of difference in DTMs on ground points:  0.068  (m)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/lidar-uncertainty/output_33_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_33_1.png)
 
 
 In the open ground scenario we are able to produce the error chatracteristics we expect with a mean difference of only 0.011 m and a variation of 0.068 m. 

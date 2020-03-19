@@ -39,7 +39,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
@@ -55,8 +55,8 @@ data to follow the code exactly.
 
 You may benefit from reviewing these related resources prior to this tutorial: 
 
-* <a href="/raster-res-extent-pixels-r" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R* tutorial.</a>
-* <a href="/raster-data-r" target="_blank" > Please read through *Raster Data in R - The Basics* tutorial.</a>
+* <a href="https://www.neonscience.org/raster-res-extent-pixels-r" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R* tutorial.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank" > Please read through *Raster Data in R - The Basics* tutorial.</a>
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The `raster` R package documentation.</a>
 
 </div>
@@ -72,7 +72,7 @@ electromagnetic spectrum. These colors together create what we know as a full
 color image.
 
 <figure>
-   <img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png">
    <figcaption>A color image at the NEON San Joaquin Experimental Range (SJER) 
    field site in California. Each pixel in the image represents the combined
    reflectance in the red, green and blue portions of the electromagnetic spectrum.
@@ -82,7 +82,7 @@ color image.
 ## Work with Multiple Rasters
 
 In 
-<a href="/raster-data-r" target="_blank">a previous tutorial</a>, 
+<a href="https://www.neonscience.org/raster-data-r" target="_blank">a previous tutorial</a>, 
 we loaded a single raster into R. We made sure we knew the `CRS` 
 (coordinate reference system) and extent of the dataset among other key metadata 
 attributes. This raster was a Digital Elevation Model so there was only a single

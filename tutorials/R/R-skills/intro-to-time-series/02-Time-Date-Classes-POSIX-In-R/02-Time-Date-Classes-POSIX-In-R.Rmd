@@ -44,7 +44,7 @@ your computer to complete this tutorial.
 ### Install R Packages
 * **lubridate:** `install.packages("lubridate")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -55,7 +55,7 @@ your computer to complete this tutorial.
 </div>
 
 ## The Data Approach
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R* tutorial</a>
 we imported a time series dataset in `.csv` format into R. We learned how to 
 quickly plot these data by converting the date column to an R `Date` class.
 In this tutorial we will explore how to work with a column that contains both a
@@ -106,7 +106,7 @@ head(harMet_15Min$datetime)
 Our `datetime` column is stored as a `character` class. We need to convert it to 
 date-time class. What happens when we use the `as.Date` method that we learned
 about in the 
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*  tutorial</a>?
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*  tutorial</a>?
 
 ```{r as-date-only }
 
@@ -303,7 +303,7 @@ Above, we successfully converted our data into a date-time class. However, what
 It appears as if our data were assigned MDT (which is the timezone of the
 computer where these tutorials were processed originally - in Colorado - Mountain
 Time). However, we know from the metadata, explored in the
-<a href="/dc-metadata-importance-eml-r" target="_blank">*Why Metadata Are Important: How to Work with Metadata in Text & EML Format* tutorial</a>,
+<a href="https://www.neonscience.org/dc-metadata-importance-eml-r" target="_blank">*Why Metadata Are Important: How to Work with Metadata in Text & EML Format* tutorial</a>,
 that these data were stored in Eastern Standard Time.
 
 ### Assign Time Zone

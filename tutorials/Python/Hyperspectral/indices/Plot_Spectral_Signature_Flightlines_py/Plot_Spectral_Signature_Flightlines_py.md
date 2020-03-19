@@ -19,7 +19,7 @@ In this tutorial, we will learn how to extract and plot a spectral profile
 from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
 This tutorial uses the flightline NEON data products. For a tutorial 
-using the tiled/mosaiced data, please see <a href="/plot-spec-sig-tiles-python" target="_blank"> Plot a Spectral Signature in Python - Tiled Data</a>. 
+using the tiled/mosaiced data, please see <a href="https://www.neonscience.org/plot-spec-sig-tiles-python" target="_blank"> Plot a Spectral Signature in Python - Tiled Data</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -63,8 +63,8 @@ For example, the atmosphere, soil, water, and vegetation have spectral signature
 of distinctly different shapes. 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/spectralSignatures_MoleroGarzo.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/spectralSignatures_MoleroGarzo.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectralSignatures_MoleroGarzo.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectralSignatures_MoleroGarzo.png"></a>
 	<figcaption> Example spectral signatures of atmosphere, soil, water, and vegetation.
 	Source: <a href="http://remotesensing.spiedigitallibrary.org/article.aspx?articleid=1352329"> Molero et al. 2012 JARS </a>
 	</figcaption>
@@ -77,13 +77,13 @@ the near infrared (NIR) wavelengths, and much lower reflectance in the green por
 of the visible spectrum. We can extract reflectance values in the NIR and 
 visible spectrums from hyperspectral data in order to map vegetation on the 
 earth's surface. We will explore this more in another tutorial, 
-<a href="{{ site.baseurl }}/HDF5/calc-ndvi-python/" target="_blank"> *Calculate NDVI with Python* </a>, 
+<a href="https://www.neonscience.org/HDF5/calc-ndvi-python/" target="_blank"> *Calculate NDVI with Python* </a>, 
 where we will caluclate a Vegetation Index.  
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/vegetationSpectrum_MarkElowitz.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
 	<figcaption> Details of an example vegetation spectral signature.
 	Source: <a href="http://www.markelowitz.com/Hyperspectral.html"> Mark Elowitz </a>
 	</figcaption>
@@ -175,7 +175,7 @@ print('mean:',round(np.nanmean(serc_b56_subset),2))
 plot_band_array(serc_b56_subset,clipExtent,(0,0.3),title='SERC Subset Band 56',cmap_title='Reflectance',colormap='gist_earth')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_5_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_5_0.png)
 
 
 We can use `pandas` to create a dataframe containing the wavelength and 
@@ -236,7 +236,7 @@ plt.plot((1955,1955),(0,1.5), 'r--')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_9_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_9_1.png)
 
 
 
@@ -408,7 +408,7 @@ ax3.set_ylim(sercRefl_md['extent'][2],sercRefl_md['extent'][3])
 
     (4300128.0, 4310980.0)
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_14_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_14_1.png)
 
 
 ## Spectra of Pixel from Subset of Flight Line Reflectance Band
@@ -489,7 +489,7 @@ ax2.set_ylim(clipExt[2],clipExt[3])
 
     (4305750.0, 4306350.0)
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_18_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_18_1.png)
 
 
 
@@ -560,7 +560,7 @@ interact(spectraPlot, pixel_x = (0,refl.shape[1]-1,1),pixel_y=(0,refl.shape[0]-1
     <function __main__.spectraPlot>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_21_1.png)
 
 
  <div id="ds-challenge" markdown="1">
@@ -706,7 +706,7 @@ ax2.set_ylim(clipExt[2],clipExt[3])
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_27_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_27_1.png)
 
 
 ## References
@@ -773,5 +773,5 @@ ax2.set_ylim(clipExt[2],clipExt[3])
 
     (4305750.0, 4306350.0)
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-spectral-sig-py/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_23_1.png)
 

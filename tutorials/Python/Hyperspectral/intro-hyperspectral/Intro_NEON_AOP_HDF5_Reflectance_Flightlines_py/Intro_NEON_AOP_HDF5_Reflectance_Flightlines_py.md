@@ -379,8 +379,8 @@ exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and
 the Scale_Factor=10000.0.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/hdfview_SERCrefl.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/hdfview_SERCrefl.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/hdfview_SERCrefl.png"></a>
 	<figcaption> Screenshot of the NEON HDF5 file format.
 	Source: National Ecological Observatory Network
 	</figcaption>
@@ -428,7 +428,7 @@ plt.xlabel('Reflectance'); plt.ylabel('Frequency')
     <matplotlib.text.Text at 0x9b5b940>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_29_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_29_1.png)
 
 
 ## Plot Single Band
@@ -466,7 +466,7 @@ ax3.set_xlim([0,0.5])
     (0, 0.5)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_31_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_31_1.png)
 
 
 
@@ -504,7 +504,7 @@ ax1.ticklabel_format(useOffset=False, style='plain') #do not use scientific nota
 rotatexlabels = plt.setp(ax3.get_xticklabels(),rotation=270) #rotate x tick labels 90 degree
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_33_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_33_0.png)
 
 
 ## Extension: Plot a subset a flightline
@@ -627,7 +627,7 @@ plt.xlabel('Reflectance'); plt.ylabel('Frequency')
     <matplotlib.text.Text at 0xad94358>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_46_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_46_1.png)
 
 Note that most of the reflectance values are < 0.5, but the colorbar scale 
 ranges from 0 - 1.6. This results in a low-contrast image; with this colormap, 
@@ -665,8 +665,8 @@ using the image's histogram. Stretching the histogram can improve the contrast
 of a displayed image, as we will show how to do below. 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.
@@ -708,7 +708,7 @@ rotatexlabels = plt.setp(ax2.get_xticklabels(),rotation=90) #rotate x tick label
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_50_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_50_0.png)
 
 
 Notice that the 8% stretch image (right) washes out some of the objects with 
@@ -735,7 +735,7 @@ interact(linearStretch,percent=(0,100,1))
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_53_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_53_0.png)
 
 
 ### Apply Adaptive Histogram Equalization to Improve Image Contrast
@@ -776,7 +776,7 @@ ax_cdf.set_ylabel('Fraction of Total Intensity')
     <matplotlib.text.Text at 0x45bad208>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_55_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_55_2.png)
 
 
 With contrast-limited adaptive histogram equalization, you can see more detail 
@@ -832,4 +832,4 @@ rotatexlabels = plt.setp(ax4.get_xticklabels(),rotation=90) #rotate x tick label
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/intro-NEON-HDF5-reflectance/output_48_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/intro-NEON-HDF5-reflectance/output_48_0.png)

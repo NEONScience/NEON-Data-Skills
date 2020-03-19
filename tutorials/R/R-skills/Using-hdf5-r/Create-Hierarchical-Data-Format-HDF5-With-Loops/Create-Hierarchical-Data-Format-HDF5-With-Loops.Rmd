@@ -34,7 +34,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5** 
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Recommended Background 
 
@@ -57,7 +57,7 @@ files  "directories" are called `groups` and files are called `datasets`. The
 HDF5 element itself is a file. Each element in an HDF5 file can have metadata 
 attached to it making HDF5 files "self-describing".
 
-<a href="{{ site.baseurl }}/about-hdf5" target="_blank"> Read more about HDF5 here. </a>
+<a href="https://www.neonscience.org/about-hdf5" target="_blank"> Read more about HDF5 here. </a>
 
 ## HDF5 in R
 
@@ -317,7 +317,7 @@ Open the sensordata.H5 file in the HDFView application and explore the contents.
 
 Hint: You may be interested in these tutorials: 
 
-* <a href="{{ site.baseurl }}/explore-data-hdfview" target="_blank"> HDFView: Exploring HDF5 Files in the Free HDFview Tool </a>. 
+* <a href="https://www.neonscience.org/explore-data-hdfview" target="_blank"> HDFView: Exploring HDF5 Files in the Free HDFview Tool </a>. 
 * <a href="{{ site.baseurl }}setup-qgis-h5view#install-hdfview" target="_blank"> Install HDF5View </a>. 
 
 </div>

@@ -21,7 +21,7 @@ Colorado in 2013. In this data activity, we explore and visualize the data for
 stream discharge data collected by the United States Geological Survey (USGS). 
 The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -78,8 +78,8 @@ increases significantly during a flood event.
 For more on stream discharge by USGS.</a>
 
 <figure>
-<a href="{{ site.baseurl }}/images/disturb-events-co13/USGS-Peak-discharge.gif">
-<img src="{{ site.baseurl }}/images/disturb-events-co13/USGS-Peak-discharge.gif"></a>
+<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif"></a>
 <figcaption>
 The USGS tracks stream discharge through time at locations across the United 
 States. Note the pattern observed in the plot above. The peak recorded discharge
@@ -271,7 +271,7 @@ and/or time data to a date/time class. As we have both date and time date, we
 will use the class POSIXct. 
 
 To learn more about different date/time classes, see the 
-<a href="{{ site.baseurl }}/dc-convert-date-time-POSIX-r" target="_blank" > 
+<a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank" > 
 *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a> tutorial. 
 
 ```{r convert-time }
@@ -358,7 +358,7 @@ We have now successfully created a plot. We can turn that plot into an interacti
 plot using **Plotly**. <a href="https://plot.ly/" target="_blank" >Plotly </a> 
 allows you to create interactive plots that can also be shared online. If
 you are new to Plotly, view the companion mini-lesson 
-<a href="{{ site.baseurl }}/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
+<a href="https://www.neonscience.org/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
 to learn how to set up an account and access your username and API key. 
 
 ### Time subsets in plotly

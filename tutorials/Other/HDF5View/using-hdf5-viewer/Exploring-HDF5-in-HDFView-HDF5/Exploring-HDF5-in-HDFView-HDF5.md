@@ -69,7 +69,7 @@ data contained within the HDF5 file, are built into the file itself.
 numeric data, data stored as strings). 
 
 For more introduction to the HDF5 format, see our 
-<a href="/about-hdf5" target="_blank"> *About Hierarchical Data Formats - What is HDF5?* tutorial</a>.
+<a href="https://www.neonscience.org/about-hdf5" target="_blank"> *About Hierarchical Data Formats - What is HDF5?* tutorial</a>.
 
 In this tutorial, we will explore two different types of data saved in HDF5. 
 This will allow us to better understand how one file can store multiple different 
@@ -92,8 +92,8 @@ you can view metadata for the file. This will be located in the bottom window of
 the application.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/OpenFIU.png">
-    <img src="{{ site.baseurl }}/images/HDF5/OpenFIU.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/OpenFIU.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/OpenFIU.png"></a>
     <figcaption>If you click on the file name within the viewer, you can view 
     any stored metadata for that file, at the bottom of the viewer. You may have 
     to click on the metadata tab at the bottom of the viewer.</figcaption>
@@ -113,7 +113,7 @@ Notice that there is metadata associated with each group.
 
 Double click on the `OSBS` group located within the Domain_03 group. Notice in 
 the metadata window that `OSBS` contains data collected from the 
-<a href="/field-sites/field-sites-map/OSBS" target="_blank">NEON Ordway-Swisher Biological Station field site</a>.
+<a href="https://www.neonscience.org/field-sites/field-sites-map/OSBS" target="_blank">NEON Ordway-Swisher Biological Station field site</a>.
 
 Within the `OSBS` group there are two more groups - Min_1 and Min_30. What data 
 are contained within these groups? 
@@ -128,12 +128,12 @@ mounted on the tower booms.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Note:** The data used in this activity were collected 
 by a temperature sensor mounted on a National Ecological Observatory Network (NEON) flux tower. 
-<a href="/data-collection/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
+<a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
 </div>
 
 <figure>
-    <a href="{{ site.baseurl }}/images/NEONtower.png">
-    <img src="{{ site.baseurl }}/images/NEONtower.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEONtower.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEONtower.png"></a>
     <figcaption>A NEON flux tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>
 </figure>
 
@@ -157,12 +157,12 @@ explore this HDF5 dataset within the HDFViewer.
 ### Part 2: Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
-    <a href="{{ site.baseurl }}/images/aop_0.jpg"><img src="{{ site.baseurl }}/images/aop_0.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/aop_0.jpg"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/aop_0.jpg"></a>
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
 Next, we will explore a hyperspectral dataset, collected by the 
-<a href="/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
 and saved in HDF5 format. Hyperspectral 
 data are naturally hierarchical, as each pixel in the dataset contains reflectance 
 values for hundreds of bands collected by the sensor. The NEON sensor 
@@ -179,8 +179,8 @@ reflected light energy. Each pixel will contain several hundred bands worth of
 reflectance data.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/LandsatVsHyper-01.png">
-    <img src="{{ site.baseurl }}/images/LandsatVsHyper-01.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/LandsatVsHyper-01.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/LandsatVsHyper-01.png"></a>
     <figcaption>A hyperspectral instruments records reflected light energy across 
     very narrow bands. The NEON Imaging Spectrometer collects 428 bands of 
     information for each pixel on the ground.</figcaption>
@@ -188,7 +188,7 @@ reflectance data.
 
 Read more about hyperspectral remote sensing data:
 
-* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> *About Hyperspectral Remote Sensing Data* tutorial </a> on this site. 
+* <a href="https://www.neonscience.org/hyper-spec-intro" target="_blank"> *About Hyperspectral Remote Sensing Data* tutorial </a> on this site. 
 * <a href="http://spacejournal.ohio.edu/pdf/shippert.pdf" target="_blank">White paper by Dr Peg Shippert</a>
 
 

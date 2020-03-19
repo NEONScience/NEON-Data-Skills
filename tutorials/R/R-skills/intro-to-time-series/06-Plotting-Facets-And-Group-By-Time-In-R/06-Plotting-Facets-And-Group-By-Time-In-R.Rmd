@@ -39,7 +39,7 @@ your computer to complete this tutorial.
 * **reshape2:** `install.packages("reshape2")`
 * **zoo:** `install.packages("zoo")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -55,8 +55,8 @@ This tutorial uses both `dplyr` and `ggplot2`. If you are new to either of these
 R packages, we recommend the following NEON Data Skills tutorials before 
 working through this one.
 
-* <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
-* <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>. 
+* <a href="https://www.neonscience.org/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+* <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>. 
 
 
 </div>
@@ -133,7 +133,7 @@ plots that are grouped by a particular category or time period. To create a
 plot for each year, we will first need a **year** column in our data to use as a
 subset factor. We created a year column using the `year` function in the 
 `lubridate` package in the 
-<a href="/time-series-subset-dplyr" target="_blank">*Subset and Manipulate Time Series Data with dplyr* tutorial</a>.
+<a href="https://www.neonscience.org/time-series-subset-dplyr" target="_blank">*Subset and Manipulate Time Series Data with dplyr* tutorial</a>.
 
 ```{r plot-by-year}
 
@@ -187,7 +187,7 @@ Julian or year days rather than date. We have Julian days stored in our
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** If you are unfamiliar with Julian day or
 year day, see the 
-<a href="/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
+<a href="https://www.neonscience.org/julian-day-conversion-r)" target="_blank">Convert to Julian Day tutorial </a>.
 </div>
 
 ```{r plot-precip-jd }

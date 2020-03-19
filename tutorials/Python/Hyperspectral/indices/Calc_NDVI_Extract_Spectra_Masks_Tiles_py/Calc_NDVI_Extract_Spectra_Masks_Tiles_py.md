@@ -20,7 +20,7 @@ In this tutorial, we will calculate the Normalized Difference Vegetation Index
 
 This tutorial uses the mosaiced or tiled NEON data product. For a tutorial 
 using the flightline data, please see 
-<a href="/calc-ndvi-py" target="_blank"> Calculate NDVI & Extract Spectra Using Masks in Python - Flightline Data</a>.
+<a href="https://www.neonscience.org/calc-ndvi-py" target="_blank"> Calculate NDVI & Extract Spectra Using Masks in Python - Flightline Data</a>.
 
 
 <div id="ds-objectives" markdown="1">
@@ -56,8 +56,8 @@ The Normalized Difference Vegetation Index (NDVI) is a standard band-ratio calcu
 The formula for NDVI is: $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
 
 <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/ndvi_tree.png">
-	<img src="{{ site.baseurl }}/images/hyperspectral/ndvi_tree.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/ndvi_tree.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/ndvi_tree.png"></a>
 	<figcaption> NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -285,7 +285,7 @@ plot_aop_refl(ndvi,sercRefl_md['spatial extent'],
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks-tiles/output_13_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks-tiles/output_13_0.png)
 
 ## Extract Spectra Using Masks
 
@@ -316,7 +316,7 @@ plot_aop_refl(ndvi_gtpt6,
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks-tiles/output_16_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks-tiles/output_16_0.png)
 
 ## Calculate the mean spectra, thresholded by NDVI 
 Below we will demonstrate how to calculate statistics on arrays where you have applied a mask `numpy.ma`. In this example, the function calculates the mean spectra for values that remain after masking out values by a specified threshold. 
@@ -391,4 +391,4 @@ ax.grid('on');
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/calc-ndvi-extract-spec-masks-tiles/output_24_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks-tiles/output_24_0.png)

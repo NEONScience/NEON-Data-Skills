@@ -43,7 +43,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -56,8 +56,8 @@ on your computer to complete this tutorial.
 
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
 Read more about the `raster` package in R.</a>
-* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
-* <a href="{{ site.baseurl }}/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
+* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
@@ -66,8 +66,8 @@ Raster or "gridded" data are stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth's surface.
 
 <figure>
-    <a href="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
-    <img src="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -82,7 +82,7 @@ range of quantitative values. Some examples of continuous rasters include:
 3. Elevation values for a region. 
 
 A map of elevation for Harvard Forest derived from the 
-<a href="/data-collection/airborne-remote-sensing" target="_blank"> 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> 
 NEON AOP LiDAR sensor</a> 
 is below. Elevation is represented as continuous numeric variable in this map. 
 The legend shows the continuous range of values in the data from around 300 to 
@@ -117,8 +117,8 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif ">
-    <img src="{{ site.baseurl }}/images/spatialData/NLCD06_conus_lg.gif">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/NLCD06_conus_lg.gif ">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/NLCD06_conus_lg.gif">
     </a>
     <figcaption> Map of the United States showing landcover as categorical data.
     Each color is a different landcover category.  Source: 
@@ -224,8 +224,8 @@ in geographic space. It also tells R what method should be used to "flatten"
 or project the raster in geographic space. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     </a>
     <figcaption> Maps of the United States in different projections. Notice the 
     differences in shape associated with each different projection. These 
@@ -304,8 +304,8 @@ are meters.
 The spatial extent is the geographic area that the raster data covers. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/spatial_extent.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/spatial_extent.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/spatial_extent.png">
     </a>
     <figcaption> Image Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -322,8 +322,8 @@ Given our data resolution is 1 x 1, this means that each pixel represents a
 1 x 1 meter area on the ground.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/raster_resolution.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/raster_resolution.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_resolution.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_resolution.png">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -413,7 +413,7 @@ plotRGB(newRGBImage, r = 1, g = 2, b = 3,
 
 The assigned `NoDataValue` varies across disciplines; `-9999` is a common value 
 used in both the remote sensing field and the atmospheric fields. It is also
-the standard used by the <a href="/" target="_blank"> 
+the standard used by the <a href="https://www.neonscience.org/" target="_blank"> 
 National Ecological Observatory Network (NEON)</a>. 
 
 If we are lucky, our GeoTIFF file has a tag that tells us what is the
@@ -504,8 +504,8 @@ is a single band raster. This means that there is only one dataset stored in
 the raster: surface elevation in meters for one time period.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/single_multi_raster.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/single_multi_raster.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png"></a>
     <figcaption>Source: National Ecological Observatory Network (NEON).
     </figcaption>
 </figure>
@@ -526,7 +526,7 @@ contains data for more than one variable or time period for each cell. By
 default the `raster()` function only imports the first band in a raster
 regardless of whether it has one or more bands. Jump to the fourth tutorial in 
 this series for a tutorial on multi-band rasters: 
-<a href="{{ site.baseurl }}/dc-multiband-rasters-r" target="_blank">
+<a href="https://www.neonscience.org/dc-multiband-rasters-r" target="_blank">
 *Work with Multi-band Rasters: Images in R*</a>.
 
 ## View Raster File Attributes
@@ -569,7 +569,7 @@ following about the  `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif`
 5. Is the file a multi- or single-band raster?
 
 Notice: this file is a `hillshade`. We will learn about hillshades in
-<a href="{{ site.baseurl }}/dc-multiband-rasters-r" target="_blank"> *Work with Multi-band Rasters: Images in R*</a>.
+<a href="https://www.neonscience.org/dc-multiband-rasters-r" target="_blank"> *Work with Multi-band Rasters: Images in R*</a>.
  
 </div>
 

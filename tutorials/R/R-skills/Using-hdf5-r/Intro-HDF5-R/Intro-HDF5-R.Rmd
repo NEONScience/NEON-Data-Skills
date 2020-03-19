@@ -34,7 +34,7 @@ preferably, RStudio loaded on your computer.
 
 * **rhdf5**: The rhdf5 package is hosted on Bioconductor not CRAN. Directions for installation are in the first code chunk. 
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Data to Download
 
@@ -62,7 +62,7 @@ also supports efficient `data slicing`, or extraction of particular subsets of a
 dataset which means that you don't have to read  large files read into the 
 computers memory / RAM in their entirety in order work with them. 
 
-<a href="/about-hdf5" target="_blank">Read more about HDF5 here.</a>
+<a href="https://www.neonscience.org/about-hdf5" target="_blank">Read more about HDF5 here.</a>
 
 
 ## HDF5 in R
@@ -74,7 +74,7 @@ suite of R libraries. It might also be useful to install
 free HDF5 viewer</a> 
 which will allow you to explore the contents of an HDF5 file using a graphic interface.
 
-<a href="/explore-data-hdfview/" target="_blank">More about working with HDFview and a hands-on activity here.</a>
+<a href="https://www.neonscience.org/explore-data-hdfview/" target="_blank">More about working with HDFview and a hands-on activity here.</a>
 
 
 First, let's get R setup. We will use the rhdf5 library. To access HDF5 files in 

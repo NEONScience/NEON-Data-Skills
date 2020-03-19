@@ -21,7 +21,7 @@ Colorado in 2013. In this data activity, we explore and visualize the data for
 precipitation (rainfall) data collected by the National Weather Service's 
 Cooperative Observer Program. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -98,8 +98,8 @@ below, and then entered into a central database where we can access that data an
 download it in the .csv (Comma Separated Values) format.
 
  <figure>
-   <a href="{{ site.baseurl }}/images/disturb-events-co13/COOP_SampleDataSheet.png">
-   <img src="{{ site.baseurl }}/images/disturb-events-co13/COOP_SampleDataSheet.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png"></a>
    <figcaption> An example of the data sheets used to collect the precipitation
    data for the Cooperative Observer Network. Source: Cooperative Observer 
    Network, NOAA
@@ -121,8 +121,8 @@ To obtain data we must first choose a location of interest.
 The COOP site Boulder 2 (Station ID:050843) is centrally located in Boulder, CO. 
 
  <figure>
-   <a href="{{ site.baseurl }}/images/disturb-events-co13/LocationOfPrecipStation.png">
-   <img src="{{ site.baseurl }}/images/disturb-events-co13/LocationOfPrecipStation.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"></a>
    <figcaption> Cooperative Observer Network station 050843 is located in 
    central Boulder, CO. Source: National Centers for Environmental Information 
    </figcaption>
@@ -137,8 +137,8 @@ shown in the image below, we selected:
 * the search term (e.g. the # for the station located in central Boulder, CO: 050843). 
 
  <figure>
-   <a href="{{ site.baseurl }}/images/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
-   <img src="{{ site.baseurl }}/images/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"></a>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"></a>
    <figcaption> An example of the data sheets used to collect the precipitation
    data for the Cooperative Observer Network. Source: National Ecological
    Observatory Network (NEON)  
@@ -285,7 +285,7 @@ str(precip.boulder$DateTime)
 ```
 
 * For more information on date/time classes, see the NEON tutorial 
-<a href="{{ site.baseurl }}/dc-convert-date-time-POSIX-r" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
+<a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
 
 ### NoData Values
 We've also learned that missing values, also known as NoData

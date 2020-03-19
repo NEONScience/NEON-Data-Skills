@@ -58,8 +58,8 @@ To visualize how the algorithm works, it's easier look at a 2D data set. In the 
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/hyperspectral/KMeans2D.gif">
-	<img src="{{ site.baseurl }}/images/hyperspectral/KMeans2D.gif"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/KMeans2D.gif">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/KMeans2D.gif"></a>
 	<figcaption> KMeans clustering demonstration Source: <a href="https://sandipanweb.wordpress.com/2017/03/19/hard-soft-clustering-with-k-means-weighted-k-means-and-gmm-em/" target="_blank">Sandipan Deyn</a>
 	</figcaption>
 </figure>
@@ -272,7 +272,7 @@ view = imshow(img_subset,bands=(58,34,19),stretch=0.01,title="RGB Image of 2017 
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_kmeans_pca_py/output_25_0.png)
 
 
 Now that we have the image subsetted, lets run the `k-means` algorithm. Type `help(kmeans)` to show how the function works. To run the k-means algorithm on the image and create 5 clusters, using a maximum of 50 iterations, use the following syntax:
@@ -339,7 +339,7 @@ pylab.ylabel('Reflectance')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_31_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_kmeans_pca_py/output_31_1.png)
 
 
 ```python
@@ -365,7 +365,7 @@ view.show_data
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_32_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_kmeans_pca_py/output_32_1.png)
 
 
 ## Challenges: K-Means
@@ -385,7 +385,7 @@ xdata = pc.transform(img_subset)
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_35_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_kmeans_pca_py/output_35_0.png)
 
 
 In the covariance matrix display, lighter values indicate strong positive covariance, darker values indicate strong negative covariance, and grey values indicate covariance near zero.
@@ -412,5 +412,5 @@ v = imshow(img_pc[:,:,:5], stretch_all=True)
     (200, 200, 5)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_kmeans_pca_py/output_38_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_kmeans_pca_py/output_38_1.png)
 

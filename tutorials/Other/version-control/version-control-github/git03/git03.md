@@ -41,8 +41,8 @@ By forking the NEON repo, we created a copy of it in our github.com account.
 
 
 <figure>
- <a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_fork_emphasis.png">
- <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_fork_emphasis.png" width="70%"></a>
+ <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png">
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png" width="70%"></a>
  <figcaption>When you fork a reposiotry on the github.com website, you are creating a
  duplicate copy of it in your github.com account. This is useful as a backup
  of the material. It also allows you to edit the material without modifying
@@ -55,8 +55,8 @@ Now we will learn how to create a local version of our forked repo on our
 laptop, so that we can efficiently add to and edit repo content.
 
 <figure>
- <a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_clone.png">
- <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_clone.png" width="70%"></a>
+ <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_clone.png">
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_clone.png" width="70%"></a>
  <figcaption>When you clone a repository to your local computer, you are creating a
  copy of that same repo <strong>locally </strong> on your computer. This
  allows you to edit files on your computer. And, of course, it is also yet another
@@ -75,8 +75,8 @@ this should be `YOUR-USER-NAME/DI-NEON-participants`.
 2. Click on the **Clone or Download** dropdown button and copy the URL of the repo.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-clone.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-clone.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-clone.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-clone.png"></a>
 	<figcaption>The clone or download drop down allows you to copy the URL that
 	you will need to clone a repository. Download allows you to download a .zip file
 	containing all of the files in the repo.

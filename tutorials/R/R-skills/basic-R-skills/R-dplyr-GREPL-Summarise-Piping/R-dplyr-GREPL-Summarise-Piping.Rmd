@@ -36,9 +36,9 @@ on your computer to complete this tutorial.
 * **dplyr**: `install.packages("dplyr")` used for data manipulation
 
 ### Data to Download:
-<a href="{{ site.baseurl }}/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="link--button link--arrow">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a>
+<a href="https://www.neonscience.org/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="link--button link--arrow">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a>
 
-<a href="/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
+<a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
 
 Please note that NEON Small Mammal data are now delivered in a slightly different
 format. This data format here is provide to accompany this tutorial on dplyr only. 

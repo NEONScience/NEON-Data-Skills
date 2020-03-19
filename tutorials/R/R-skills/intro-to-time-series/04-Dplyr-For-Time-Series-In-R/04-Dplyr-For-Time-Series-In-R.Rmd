@@ -43,7 +43,7 @@ your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -56,7 +56,7 @@ your computer to complete this tutorial.
 ### Additional Resources
 
 * NEON Data Skills tutorial on 
-<a href="{{ site.baseurl }}/grepl-filter-piping-dplyr-r" target="_blank"> spatial data and piping with dplyr</a>  
+<a href="https://www.neonscience.org/grepl-filter-piping-dplyr-r" target="_blank"> spatial data and piping with dplyr</a>  
 * Data Carpentry lesson's on 
 <a href="http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
 * <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> `dplyr` package description</a>.
@@ -74,7 +74,7 @@ We will need the `lubridate` and the `dplyr` packages to complete this tutorial.
 
 We will also use the 15-minute average atmospheric data subsetted to 2009-2011 
 for the NEON Harvard Forest Field Site. This subset was created in the
-<a href="/dc-subset-data-no-data-values-r" target="_blank">*Subsetting Time Series Data* tutorial</a>.
+<a href="https://www.neonscience.org/dc-subset-data-no-data-values-r" target="_blank">*Subsetting Time Series Data* tutorial</a>.
 
 If this object isn't already created, please load the `.csv` version: 
 `NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv`. Be
@@ -364,7 +364,7 @@ The output shows we have 96 values for each day. Is that what we expect?
 data, we could use the `yday()` function from the `lubridate` package 
 to create a new column containing Julian day 
 values. More information in this
-<a href="/julian-day-conversion-r" target="_blank"> NEON Data Skills tutorial</a>. 
+<a href="https://www.neonscience.org/julian-day-conversion-r" target="_blank"> NEON Data Skills tutorial</a>. 
 </div>
 
 ### Summarize by Group

@@ -39,7 +39,7 @@ preferably, RStudio loaded on your computer.
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **raster**: `install.packages('raster')`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
@@ -60,7 +60,7 @@ For this tutorial, we recommend that you have some basic familiarity with the
 HDF5 file format, including knowing how to open HDF5 files (in Rstudio or 
 HDF5Viewer) and how groups and metadata are structured. To brush up on these 
 skills, we suggest that you work through the 
-<a href="{{ site.baseurl }}/intro-hdf5-r-series" target="_blank"> *Introduction to Working with HDF5 Format in R* series</a> 
+<a href="https://www.neonscience.org/intro-hdf5-r-series" target="_blank"> *Introduction to Working with HDF5 Format in R* series</a> 
 before moving on to this tutorial.
 
 </div>
@@ -79,11 +79,11 @@ of ~652 Mb and make a new HDF5 file with a reduced spatial extent,
 and a reduced spectral resolution, yeilding a file of only ~50.1 Mb. 
 This reduction in file size will make it easier and faster to conduct 
 your analysis and to share your data with others. We will then use this 
-subsetted file in the <a href="{{ site.baseurl }}/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
+subsetted file in the <a href="https://www.neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
 
 If you find that downloading the full 652 Mb file takes too much 
 time or storage space, you will find a link to this subsetted file 
-at the top of each lesson in the <a href="{{ site.baseurl }}/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
+at the top of each lesson in the <a href="https://www.neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
 
 ## Exploring the NEON hyperspectral HDF5 file structure
 
@@ -168,7 +168,7 @@ h5createGroup(f, "SJER/Reflectance/Metadata/Spectral_Data")
 
 One of the great things about HDF5 files is that they can contain 
 *data* and *attributes* within the same group. 
-As explained within the <a href="{{ site.baseurl }}/intro-hdf5-r-series" target="_blank"> Introduction to Working with HDF5 Format in R series</a>, 
+As explained within the <a href="https://www.neonscience.org/intro-hdf5-r-series" target="_blank"> Introduction to Working with HDF5 Format in R series</a>, 
 attributes are a type of metadata that are associated with an HDF5 group or 
 dataset. There may be multiple attributes associated with each group and/or 
 dataset. Attributes come with a name and an associated array of information. 
@@ -280,7 +280,7 @@ herefore, we will also perform a *spatial* subsetting process to further
 reduce our file size. Now, we need to figure out which part of the full image 
 that we want to extract for our subset. It takes a number of steps in order 
 to read in a band of data and plot the reflectance values - all of which are 
-thoroughly described in the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> 
+thoroughly described in the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> *Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R*</a> 
 tutorial. For now, let's focus on the essentials for our problem at hand. In 
 order to explore the spatial qualities of this dataset, let's plot a single 
 band as an overview map to see what objects and land cover types are contained 

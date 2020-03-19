@@ -52,9 +52,9 @@ After completing this tutorial, you will be able to:
 We recommend you complete the following tutorials prior to this tutorial to have
 the necessary background. 
 
-1.  <a href="/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
-1.  <a href="/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
-1.  <a href="/plot-spec-sig-python/"> *Plot a Spectral Signature in Python*</a>
+1.  <a href="https://www.neonscience.org/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
+1.  <a href="https://www.neonscience.org/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
+1.  <a href="https://www.neonscience.org/plot-spec-sig-python/"> *Plot a Spectral Signature in Python*</a>
 
 </div>
 
@@ -70,16 +70,16 @@ field spectrometer. The ASD measurments provide a validation source against the
 the airborne measurements. 
 
  <figure class="half">
-	<a href="{{ site.baseurl }}/images/neon-aop/tarps_close.jpg">
-	<img src="{{ site.baseurl }}/images/neon-aop/tarps_close.jpg">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_close.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_close.jpg">
 	</a>
-	<a href="{{ site.baseurl }}/images/neon-aop/tarps_far.jpg">
-	<img src="{{ site.baseurl }}/images/neon-aop/tarps_far.jpg">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_far.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_far.jpg">
 	</a>
 </figure>  
  <figure>
-	<a href="{{ site.baseurl }}/images/neon-aop/tarps_aerial.jpg">
-	<img src="{{ site.baseurl }}/images/neon-aop/tarps_aerial.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_aerial.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarps_aerial.jpg"></a>
 	<figcaption> The validation tarps,  3% reflectance (black tarp) and 
 48% reflectance (white tarp), laid out in the field. 
 	Source: National Ecological Observatory Network (NEON)  
@@ -204,8 +204,8 @@ the coordinates for the center of each tarp which are as follows:
 3% reflectance tarp UTMx: 727497, UTMy: 5078970
 
  <figure>
-	<a href="{{ site.baseurl }}/images/neon-aop/tarp_centers.jpg">
-	<img src="{{ site.baseurl }}/images/neon-aop/tarp_centers.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarp_centers.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/tarp_centers.jpg"></a>
 	<figcaption> The validation tarps,  3% reflectance (black tarp) and 
 48% reflectance (white tarp), laid out in the field. 
 	Source: National Ecological Observatory Network (NEON)  
@@ -319,11 +319,11 @@ plt.savefig('CHEQ_20160912_3_tarp.png',dpi=300,orientation='landscape',bbox_inch
 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_21_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_21_0.png)
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_21_1.png)
 
 
 This produces plots showing the results of the ASD and airborne measurements 
@@ -354,10 +354,10 @@ plt.savefig('CHEQ_20160912_3_tarp_absolute_diff.png',dpi=300,orientation='landsc
 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_23_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_23_0.png)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_23_1.png)
 
 
 From this we are able to see that the 48% tarp actually has larger absolute 
@@ -391,11 +391,11 @@ plt.savefig('CHEQ_20160912_3_tarp_relative_diff.png',dpi=300,orientation='landsc
 
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_25_0.png)
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/hyperspectral-validation/output_25_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_25_1.png)
 
 
 

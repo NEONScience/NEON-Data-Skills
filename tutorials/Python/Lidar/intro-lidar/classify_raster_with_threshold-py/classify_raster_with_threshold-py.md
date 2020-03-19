@@ -235,7 +235,7 @@ def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar
 plot_band_array(chm_array,chm_ext,(0,80),title='SERC Canopy Height',cmap_title='Canopy Height, m')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_19_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_19_0.png)
 
 
 ### Plot Histogram of Data 
@@ -254,7 +254,7 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
     <matplotlib.text.Text at 0x95a12e8>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_21_1.png)
 
 
 We can see that most of the values are zero. In SERC, many of the zero CHM 
@@ -285,7 +285,7 @@ print('mean:',round(np.mean(chm_nonzero_nonan_array),2),'m')
     mean: 19.23 m
     
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_23_1.png)
 
 From the histogram we can see that the majority of the trees are < 45m. We can 
 replot the CHM array, this time adjusting the color bar to better visualize the 
@@ -297,7 +297,7 @@ appears white.
 plot_band_array(chm_array,chm_ext,(0,45),title='SERC Canopy Height',cmap_title='Canopy Height, m',colormap='BuGn')
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_25_0.png)
 
 
 ### Read in a GeoTIFF raster and associated metadata
@@ -444,7 +444,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box],
     <matplotlib.legend.Legend at 0xc877240>
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_30_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_30_2.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -495,8 +495,8 @@ dataset. This time, our classifications will be:
 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg">
-	<img src="{{ site.baseurl }}/images/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>
@@ -551,7 +551,7 @@ plot_band_array(TEAK_asp_array,TEAK_asp_metadata['extent'],(0,360),title='TEAK A
     scaleFactor: 1.0
     
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_33_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_33_1.png)
 
 
 ```python
@@ -598,7 +598,7 @@ ax.legend(handles=[blue_box,red_box],handlelength=0.7,bbox_to_anchor=(1.05, 0.45
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classify-raster-thresholds/output_34_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_34_2.png)
 
 
 <div id="ds-challenge" markdown="1">

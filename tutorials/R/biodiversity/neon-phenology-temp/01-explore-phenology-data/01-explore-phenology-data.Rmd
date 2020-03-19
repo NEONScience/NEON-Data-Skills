@@ -42,7 +42,7 @@ on your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 
 
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
@@ -119,8 +119,8 @@ meter square loop transect (primary) and within a 200 m x 200 m plot located
 within view of a canopy level, tower-mounted, phenology camera.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png">
-	<img src="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-pheno-temp-timeseries/NEONphenoTransect.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-pheno-temp-timeseries/NEONphenoTransect.png"></a>
 	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
 	Point-level geolocations are recorded at eight referecne points along the 
 	perimeter, plot-level geolaocation at the plot centoid (star). 
@@ -164,7 +164,7 @@ over a 12 month period can be a bit overwhelming. Luckily NEON provides an R pac
 files. The teaching data downloaded with this tutorial is already stacked. If you
 are working with other NEON data, please go through the tutorial to stack the data
 in 
-<a href="/neonDataStackR" target="_blank">R</a> or in <a href="/neon-utilities-python" target="_blank">Python</a> 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">R</a> or in <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Python</a> 
 and then return to this tutorial. 
 
 ## Work with NEON Data
@@ -508,7 +508,7 @@ plotted:
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** For a more detailed introduction to 
 using `ggplot()`, visit 
-<a href="/dc-time-series-plot-ggplot-r" target="_blank"> *Time Series 05: Plot Time Series with ggplot2 in R* tutorial</a>. 
+<a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank"> *Time Series 05: Plot Time Series with ggplot2 in R* tutorial</a>. 
 </div>
 
 ### Bar Plots with ggplot

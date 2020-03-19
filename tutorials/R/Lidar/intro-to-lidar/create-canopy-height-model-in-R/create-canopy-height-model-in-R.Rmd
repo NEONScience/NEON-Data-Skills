@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-<a href="{{site.baseurl}}/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
+<a href="https://www.neonscience.org/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
 
 ## Download Data
 {% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
@@ -55,7 +55,7 @@ created by unzipping this file.
 ***
 
 ## Recommended Reading
-<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
+<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
 What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
 
 </div>
@@ -69,7 +69,7 @@ will come in the
 format, which is a .tif raster format that is spatially located on the earth. 
 
 In this tutorial, we create a Canopy Height Model. The 
-<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">Canopy Height Model (CHM)</a>,
+<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">Canopy Height Model (CHM)</a>,
 represents the heights of the trees on the ground. We can derive the CHM 
 by subtracting the ground elevation from the elevation of the top of the surface 
 (or the tops of the trees). 
@@ -202,6 +202,6 @@ at it.
 ***
 
 Consider going onto the next tutorial 
-<a href="{{ site.baseurl }}/extract-raster-values-R/" target="_blank">*Extract Values from a Raster in R*</a>
+<a href="https://www.neonscience.org/extract-raster-values-R/" target="_blank">*Extract Values from a Raster in R*</a>
 to compare this lidar-derived CHM with ground-based observations!
 

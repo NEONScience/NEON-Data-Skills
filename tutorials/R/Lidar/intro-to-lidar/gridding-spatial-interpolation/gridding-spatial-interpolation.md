@@ -24,9 +24,9 @@ present the main graphics and topics covered in the workshop.
 
 ## Additional Resources
 * Learn more about LiDAR data in our tutorial
-<a href="{{ site.baseurl }}/lidar-basics" target="_blank"> *The Basics of LiDAR - Light Detection and Ranging - Remote Sensing*</a>.
+<a href="https://www.neonscience.org/lidar-basics" target="_blank"> *The Basics of LiDAR - Light Detection and Ranging - Remote Sensing*</a>.
 * Learn more about Digital Surface Models, Digital Terrain Models and Canopy Height Models in our tutorial 
-<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>.
+<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">*What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>.
 
 </div>
 <p></p>
@@ -39,22 +39,22 @@ present the main graphics and topics covered in the workshop.
 ## About Rasters
 
 For a full tutorial on rasters & raster data, please go through the 
-<a href="{{ site.baseurl }}/dc-raster-data-r" target="_blank">*Intro to Raster Data in R* tutorial</a>
+<a href="https://www.neonscience.org/dc-raster-data-r" target="_blank">*Intro to Raster Data in R* tutorial</a>
 which provides a foundational concepts even if you aren't working with R.
 
 A raster is a dataset made up of cells or pixels. Each pixel represents a value 
 associated with a region on the earth’s surface. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell 
     in meters. This size in turn relates to the area on the ground that the pixel 
     represents. Source: National Ecological Observatory Network </figcaption>
 </figure>
 
 For more on raster resolution, see our tutorial on 
-<a href="{{ site.baseurl }}/raster-res-extent-pixels-r" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
+<a href="https://www.neonscience.org/raster-res-extent-pixels-r" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels*</a>. 
 
 
 ## Creating Surfaces (Rasters) From Points
@@ -72,8 +72,8 @@ Interpolation can be done in a number of different ways, some of which are
 deterministic and some are probabilistic. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridding_approaches.png" target=_"blank">
-	<img src="{{ site.baseurl }}/images/spatialData/gridding_approaches.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridding_approaches.png" target=_"blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridding_approaches.png"></a>
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered. Source: National Ecological
     Observatory Network </figcaption>
@@ -91,8 +91,8 @@ distributed with at least one data point within the spatial coverage of each ras
 cell.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridded.png" target="_blank">
-    <img src="{{ site.baseurl }}/images/spatialData/gridded.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridded.png" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridded.png"></a>
     <figcaption>When you directly grid a dataset, values will only be calculated
 	for cells that overlap with data points. Thus, data gaps will not be filled. 
 	Source: National Ecological Osbervatory Network 
@@ -105,8 +105,8 @@ Gridding is the process of taking a set of points and using them to create a
 surface composed of a regular grid. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/lidar/gridding.gif" target="_blank">
-    <img src="{{ site.baseurl }}/images/lidar/gridding.gif"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/gridding.gif" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/gridding.gif"></a>
     <figcaption>Animation showing the general process of taking lidar point 
     clouds and converting them to a raster format. Source: Tristan Goulden, 
     National Ecological Observatory Network
@@ -124,8 +124,8 @@ However this general assumption is applied differently across different
 interpolation functions.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/grid.png" target="_blank">
-    <img src="{{ site.baseurl }}/images/spatialData/grid.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/grid.png" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/grid.png"></a>
     <figcaption>Interpolation methods will estimate values for cells where no known values exist.
 	</figcaption>
 </figure>
@@ -145,8 +145,8 @@ Different methods of interpolation are better for different datasets. This table
 lays out the strengths of some of the more common interpolation methods. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/spatialData/gridMethod_FeaturesTbl.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridMethod_FeaturesTbl.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/gridMethod_FeaturesTbl.png"></a>
     <figcaption>Abbreviations: TIN=Triangulated Irregular Network, IDW=Inverse 
     Distance Weighted interpolation.  Source: National Ecological Osbervatory Network </figcaption>
 </figure>
@@ -165,8 +165,8 @@ point (a cell with an unknown value) using a linearly weighted combination of va
 from nearby points. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/idw_interpolation_QGIS.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/spatialData/idw_interpolation_QGIS.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/idw_interpolation_QGIS.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/idw_interpolation_QGIS.png"></a>
     <figcaption>
 	IDW interpolation calculates the value of an unknown cell center value (a 
 	query point) using surrounding points with the assumption that closest points 
@@ -291,8 +291,8 @@ to the known sample points.
 and below the known sample points.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/reg_ten_Spline.png" target="_blank">
-	<img src="{{ site.baseurl }}/images/spatialData/reg_ten_Spline.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/reg_ten_Spline.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/reg_ten_Spline.png">
 	</a>
     
     <figcaption>
@@ -396,8 +396,8 @@ The TIN format remains the most true to the point distribution, density and
 spacing of a dataset. It also may yield the largest file size!
 
  <figure>
-	 <a href="{{ site.baseurl }}/images/spatialData/tin.png" target="_blank">
-	 <img src="{{ site.baseurl }}/images/spatialData/tin.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/tin.png" target="_blank">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/tin.png"></a>
 	 <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
 	the NEON San Joachiun (SJER) field site.</figcaption>
  </figure>

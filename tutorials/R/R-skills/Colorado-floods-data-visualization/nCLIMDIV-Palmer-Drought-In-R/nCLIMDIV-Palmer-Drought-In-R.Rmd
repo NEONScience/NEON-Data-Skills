@@ -19,7 +19,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plot.ly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -307,7 +307,7 @@ to the web and allow us to explore the data in a more interactive way.
 <a href="https://plot.ly/" target="_blank" >Plotly </a> 
 allows you to create interactive plots that can be shared online. If
 you are new to Plotly, view the companion mini-lesson 
-<a href="{{ site.baseurl }}/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
+<a href="https://www.neonscience.org/plotly-r/" target="_blank"> *Interactive Data Vizualization with R and Plotly*</a>
 to learn how to set up an account and access your username and API key. 
 
 ### Step 1: Connect your Plotly account to R 

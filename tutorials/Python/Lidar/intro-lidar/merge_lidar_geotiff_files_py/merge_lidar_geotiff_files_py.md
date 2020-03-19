@@ -223,7 +223,7 @@ plot_array(TEAK_aspect_array,
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/merge_lidar_geotiff_files_py/output_20_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/merge_lidar_geotiff_files_py/output_20_0.png)
 
 ### Challenges
 

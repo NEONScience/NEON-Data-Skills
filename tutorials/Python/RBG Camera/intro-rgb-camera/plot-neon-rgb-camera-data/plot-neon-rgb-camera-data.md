@@ -77,7 +77,7 @@ sys.version
 **Data Institute Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
 
 <figure>
-    <a href="/images/Python/rgb-camera/activate_py35.png">
+    <a href="https://www.neonscience.org/images/Python/rgb-camera/activate_py35.png">
     <img src="/images/Python/rgb-camera/activate_py35.png"></a>
     <figcaption> Activating `Python 3.5` environment from the command prompt. Source: National Ecological Observatory Network(NEON)  
     </figcaption>
@@ -96,7 +96,7 @@ import gdal
 If you get the following message 
 
 <figure>
-    <a href="/images/Python/rgb-camera/no_module_named_gdal.png">
+    <a href="https://www.neonscience.org/images/Python/rgb-camera/no_module_named_gdal.png">
     <img src="/images/Python/rgb-camera/no_module_named_gdal.png"></a>
     <figcaption> Typical error when the correct module is not found. Source: National Ecological Observatory Network(NEON)  
     </figcaption>
@@ -293,7 +293,7 @@ plot_band_array(SERC_RGBcam_array,
 ```
 
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
 
 Lastly, we can plot a histogram of the first band (red), which we can extract by using `splicing`. Since Python is 0-based, to extract all values of the first band, we can use: `SERC_RGBcam_array[:,:,0]`. *Notes*: It speeds up the algorithm to flatten the 2-D array into one dimension using `numpy.ravel`; `20` specifies the number of bins. 
 
@@ -311,7 +311,7 @@ plt.xlabel('Brightness'); plt.ylabel('Frequency')
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
 
 ## Challenge Exercises
 

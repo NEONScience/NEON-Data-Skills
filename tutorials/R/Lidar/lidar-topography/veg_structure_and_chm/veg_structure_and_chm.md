@@ -117,7 +117,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_11_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_11_0.png)
 
 
 And now overlay the estimated uncertainty in the location of each stem, 
@@ -136,7 +136,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
 
 
 ## 3. Canopy height model data
@@ -171,7 +171,7 @@ plot(chm, col=topo.colors(5))
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
 
 
 ## 4. Comparing the two datasets
@@ -213,7 +213,7 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
 
 
 
@@ -270,7 +270,7 @@ plot(CHM10, col=topo.colors(5))
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_28_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_28_0.png)
 
 
 Use the `extract()` function again to get the values from each pixel. We 
@@ -290,7 +290,7 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
 
 
 
@@ -353,7 +353,7 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
 
 
 
@@ -386,7 +386,7 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ]({{ site.baseurl }}/images/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
 
 
 

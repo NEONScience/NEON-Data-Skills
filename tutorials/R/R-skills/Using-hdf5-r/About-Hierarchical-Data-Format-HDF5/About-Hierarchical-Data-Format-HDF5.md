@@ -43,8 +43,8 @@ that builds upon both HDF4 and NetCDF (two other hierarchical data formats).
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg">
-    <img src="{{ site.baseurl }}/images/HDF5/whyHDF5.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/whyHDF5.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/whyHDF5.jpg"></a>
     <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a></figcaption>
 </figure>
 
@@ -69,8 +69,8 @@ groups OR datasets within it.
 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg">
-    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure4.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure4.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure4.jpg"></a>
     <figcaption>An example HDF5 file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
@@ -78,8 +78,8 @@ groups OR datasets within it.
 An HDF5 file containing datasets, might be structured like this:
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure3.jpg">
-    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure3.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure3.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure3.jpg"></a>
     <figcaption>An example HDF5 file structure containing data for multiple field sites and also containing various datasets (averaged at different time intervals).</figcaption>
 </figure> 
 
@@ -106,8 +106,8 @@ dataset, is that this facilitates automation without the need for a separate
 with the dataset, and which we might need to process the dataset.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/HDF5/hdf5_structure2.jpg">
-    <img src="{{ site.baseurl }}/images/HDF5/hdf5_structure2.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure2.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure2.jpg"></a>
     <figcaption>HDF5 files are self describing - this means that all elements 
     (the file itself, groups and datasets) can have associated metadata that 
     describes the information contained within the element.</figcaption>

@@ -85,8 +85,8 @@ To ensure that the correct kernel will operate, navigate to **Kernel** in the me
 select **Restart/ClearOutlook**. 
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
 	<figcaption> To ensure that the correct kernel will operate, navigate to 
 	Kernel in the menu, select Restart/ClearOutlook.. 
 	Source: National Ecological Observatory Network (NEON)  

@@ -39,7 +39,7 @@ your computer to complete this tutorial.
 * **lubridate:** `install.packages("lubridate")`
 * **ggplot2:** `install.packages("ggplot2")`
 
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -61,7 +61,7 @@ subset and export a portion of an R object as a new `.csv` file.
 In this tutorial, we will work with atmospheric data, containing air temperature, 
 precipitation, and photosynthetically active radiation (PAR) data  - metrics
 that are key drivers of phenology. Our study area is the 
-<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest Field Site.</a>
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest Field Site.</a>
 
 ## Import Timeseries Data 
 
@@ -70,7 +70,7 @@ We will use the `lubridate` and `ggplot2` packages. Let's load those first.
 If you have not already done so, import the `hf001-10-15min-m.csv` file, which
 contains atmospheric data for Harvard Forest. Convert the `datetime` column
 to a `POSIXct` class as covered in the tutorial: 
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">*Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
 
 ```{r load-libraries}
 # Load packages required for entire script
@@ -246,7 +246,7 @@ recognized as an integer and processed accordingly. If you encounter a numeric
 </div>
 
 In the
-<a href="/dc-metadata-importance-eml-r" target="_blank">*Why Metadata Are Important: How to Work with Metadata in Text & EML Format* tutorial</a>,
+<a href="https://www.neonscience.org/dc-metadata-importance-eml-r" target="_blank">*Why Metadata Are Important: How to Work with Metadata in Text & EML Format* tutorial</a>,
 we viewed the metadata for these data and discovered that missing values are
 designated using `NA` - a common `NoData` value placeholder. 
 
@@ -371,7 +371,7 @@ Thus a daily summary is sufficient for us to see overall trends.
 
 1. Import the Daily Meteorological data from the Harvard Forest (if you haven't
 already done so in the
-<a href="/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*</a> tutorial.)
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*</a> tutorial.)
 2. Check the metadata to see what the column names are for the variable of
 interest (precipitation, air temperature, PAR, day and time ).
 3. If needed, convert the data class of different columns.

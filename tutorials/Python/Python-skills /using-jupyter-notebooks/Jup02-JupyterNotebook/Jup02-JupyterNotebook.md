@@ -21,7 +21,7 @@ urlTitle: jupyter-python-notebook
 
 You can set up your notebook in several ways. Here we present the Anaconda Python
 distribution method so as to follow the 
-<a href="{{ site.baseurl }}/setup-git-bash-python" target="_blank">Data Institute set up instructions</a>. 
+<a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">Data Institute set up instructions</a>. 
 
 ### Browser
 First, make sure you have an updated browser on which to run the app. Both Mozilla
@@ -30,7 +30,7 @@ Firefox and Google Chrome work well.
 ### Installation 
 Data Institute participants should have already installed Jupyter Notebooks 
 through the Anaconda installation during the 
-<a href="{{ site.baseurl }}/setup-git-bash-python" target="_blank">Data Institute set up instructions</a>.
+<a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">Data Institute set up instructions</a>.
 
 If you install Python using `pip` you can install the Jupyter package with the 
 following code. 
@@ -52,7 +52,7 @@ on Remote Sensing with Reproducible Workflows, however, you can adapt them to
 the specific Python version and packages you wish to work with.  
 
 If you haven't yet created a Python 3.5 environment, you'll need to do 
-that now. Refer back to the Python section of the <a href="{{ site.baseurl }}/setup-git-bash-python" target="_blank">installation instructions</a>, 
+that now. Refer back to the Python section of the <a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">installation instructions</a>, 
 and create the 3.5 environment:
 
 `conda create -n p35 python=3.5 anaconda`
@@ -110,8 +110,8 @@ something like this.  Note that the home directory will be whatever directory yo
 have navigated to in your terminal before launching Jupyter Notebooks.  
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png"></a>
 	<figcaption> Upon opening the application, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks </a>
 	</figcaption>
@@ -127,8 +127,8 @@ Python kernels and one Matlab kernel. When starting a notebook, you should choos
 Once you start a new notebook, you will be brought to the following screen.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png"></a>
 	<figcaption> Upon opening a new Python notebook, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
@@ -158,8 +158,8 @@ select **Restart/ClearOutlook**.  The Restart/ClearOutlook option ensures that
 the correct kernel will operate.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
 	<figcaption> To ensure that the correct kernel will operate, navigate to 
 	Kernel in the menu, select Restart/ClearOutlook.. 
 	Source: National Ecological Observatory Network (NEON)  
@@ -251,7 +251,7 @@ removed.
 
 **Resources for Learning Markdown**
 
-* Review the NEON tutorial <a href="{{ site.baseurl }}/markdown-files" target="_blank"> *Git 04: Markdown Files*</a>
+* Review the NEON tutorial <a href="https://www.neonscience.org/markdown-files" target="_blank"> *Git 04: Markdown Files*</a>
 * Adam Pritchard's <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"> Markdown Cheatsheet </a>
 
 ## Saving & Quitting

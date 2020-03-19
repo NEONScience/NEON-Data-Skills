@@ -17,7 +17,7 @@ urlTitle: dc-plot-shapefiles-r
 
 
 This tutorial builds upon 
-<a href="/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>,
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>,
 to work with shapefile attributes in R and explores how to plot multiple 
 shapefiles using base R graphics. It then covers
 how to create a custom legend with colors and symbols that match your plot.
@@ -41,7 +41,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -59,11 +59,11 @@ raster and vector files.
 
 We will import three shapefiles. The first is our `AOI` or *area of
 interest* boundary polygon that we worked with in 
-<a href="/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank">*Open and Plot Shapefiles in R*</a>.
 The second is a shapefile containing the location of roads and trails within the
 field site. The third is a file containing the Harvard Forest Fisher tower
 location. These latter two we worked with in the
-<a href="/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial.
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial.
 
 ```{r load-packages-data }
 
@@ -92,7 +92,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 ## Plot Data
 
 In the 
-<a href="/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a> tutorial
 we created a plot where we customized the width of each line in a spatial object
 according to a factor level or category. To do this, we create a vector of
 colors containing a color value for EACH feature in our spatial object grouped
@@ -136,7 +136,7 @@ feature in our `SpatialLinesDataFrame` by factor level (category): `c(6,4,1,2)[l
 
 ## Add Plot Legend
 In the 
-<a href="/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>,
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank">*the previous tutorial*</a>,
 we also learned how to add a basic legend to our plot.
 
 * `bottomright`: We specify the **location** of our legend by using a default 

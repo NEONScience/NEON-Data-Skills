@@ -54,10 +54,10 @@ To complete this tutorial you need:
 
 1. The R `knitr` package to complete this tutorial. If you need help installing 
 packages, visit
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> the R packages tutorial</a>.  
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> the R packages tutorial</a>.  
 2. An R Markdown document that contains a YAML header, code chunks and markdown
 segments. If you don't have an **.Rmd** file, visit
-<a href="{{site.baseurl}}/rmd-code-intro" target="_blank"> the R Markdown tutorial</a> to create one.
+<a href="https://www.neonscience.org/rmd-code-intro" target="_blank"> the R Markdown tutorial</a> to create one.
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**When To Knit**: Knitting is a useful exercise
@@ -70,8 +70,8 @@ and the size of your data.
 ### How to Knit
 
 <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -97,15 +97,15 @@ using: `render(“input.Rmd”, “all”)`.
 ## Activity: Knit Script
 
 Knit the **.Rmd** file that you built in
-<a href="{{site.baseurl}}/rmd-code-intro" target="_blank">the last tutorial</a>.
+<a href="https://www.neonscience.org/rmd-code-intro" target="_blank">the last tutorial</a>.
 What does it look like?
 </div>
 
 ### View the Output
 
 <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/Rmd-screenshot-html.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute3-rmd/Rmd-screenshot-html.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/Rmd-screenshot-html.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/Rmd-screenshot-html.png"></a>
 	<figcaption> R Markdown (left) and the resultant HTML (right) after knitting.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -122,7 +122,7 @@ results of the code that you included in the RMD document.
 ## Data Institute Participants: Complete Week 2 Assignment
 
 * Read 
-<a href="{{ site.baseurl }}/di-rmd-activity" target="_blank"> this week’s assignment </a>
+<a href="https://www.neonscience.org/di-rmd-activity" target="_blank"> this week’s assignment </a>
 closely.
 * Be sure to carefully check your knitr output to make sure it is rendering the
 way you think it should!

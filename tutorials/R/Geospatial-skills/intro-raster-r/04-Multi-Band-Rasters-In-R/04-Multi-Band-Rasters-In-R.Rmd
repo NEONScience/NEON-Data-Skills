@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
 {% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
@@ -57,12 +57,12 @@ on your computer to complete this tutorial.
 
 ## About Raster Bands in R 
 As discussed in the
-<a href="/dc-raster-data-r" target="_blank"> *Intro to Raster Data* tutorial</a>, 
+<a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro to Raster Data* tutorial</a>, 
 a raster can contain 1 or more bands.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/single_multi_raster.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/single_multi_raster.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
     </a>
     <figcaption>A raster can contain one or more bands. We can use the
     raster function to import one single band from a single OR multi-band
@@ -84,8 +84,8 @@ electromagnetic spectrum. The pixel brightness for each band, when composited
 creates the colors that we see in an image. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/RGBSTack_1.jpg">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
     <figcaption>A color image consists of 3 bands - red, green and blue. When
     rendered together in a GIS, or even a tool like Photoshop or any other
     image software, they create a color image. 
@@ -149,12 +149,12 @@ par(original_par) # go back to original par
 Multi-band raster data might also contain:
 
 1. **Time series:** the same variable, over the same area, over time. Check out 
-<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* tutorial </a>
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* tutorial </a>
 to learn more about time series stacks.
 2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
 (multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
 Data Skills
-<a href="/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
 tutorial for more about working with hyperspectral data cubes.
 
 ## Getting Started with Multi-Band Data in R
@@ -175,9 +175,9 @@ library(rgdal)
 
 In this tutorial, the multi-band data that we are working with is imagery
 collected using the 
-<a href="/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
 high resolution camera over the 
-<a href="/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. 
 Each RGB image is a 3-band raster. The same steps would apply to 
 working with a multi-spectral image with 4 or more bands - like Landsat imagery.
 
@@ -358,8 +358,8 @@ the image might improve clarity and contrast using  `stretch="lin"` or
 `stretch="hist"`.  
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/imageStretch_dark.jpg">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/imageStretch_dark.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 0, a
     darker image is rendered by default. We can stretch the values to extend to
@@ -369,8 +369,8 @@ the image might improve clarity and contrast using  `stretch="lin"` or
 </figure>
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-raster/imageStretch_light.jpg">
-    <img src="{{ site.baseurl }}/images/dc-spatial-raster/imageStretch_light.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 255, a
     lighter image is rendered by default. We can stretch the values to extend to
@@ -448,7 +448,7 @@ GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
 several, individual single-band GeoTIFFs too. Check out:
-<a href="/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* </a>
 for a tutorial on how to do this.  
 </div>
 

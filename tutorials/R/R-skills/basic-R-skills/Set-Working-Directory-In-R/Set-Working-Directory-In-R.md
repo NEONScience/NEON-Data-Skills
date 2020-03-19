@@ -80,8 +80,8 @@ data subset is for those wishing to practice these skills in a Challenge
 activity and will be downloaded at that time. 
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/download-data-screenshot.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/download-data-screenshot.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png"></a>
 	 <figcaption> Screenshot of the <b>Download Data </b> button at the top of 
 	 NEON Data Skills tutorials. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -98,8 +98,8 @@ Note: You may have previously specified a specific directory (folder) for files
 downloaded from the internet, if so, the .zip file will download there.
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/downloads_folder.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/downloads_folder.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/downloads_folder.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/downloads_folder.png"></a>
 	 <figcaption> Screenshot of the computer's Downloads folder containing the
 	 new <b>NEONDSMetTimeSeries.zip </b> file. Source: National Ecological
 	 Observatory Network (NEON) 
@@ -139,8 +139,8 @@ completed the challenge above. If you did not, your directory should look the
 same but without that directory. 
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/neon-documents-contents.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/neon-documents-contents.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png"></a>
 	 <figcaption> Screenshot of the <b>neon</b> directory with the nested 
 	 <b>Documents</b>, <b>data</b>, <b>NEON-DS-Met-Time-Series</b>, and other 
 	 directories. Source: National Ecological Observatory Network
@@ -255,8 +255,8 @@ contents of the working directory in the Files pane.
 
 
  <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/RStudio-working-directory.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/RStudio-working-directory.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-working-directory.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-working-directory.png"></a>
 	 <figcaption> The Files pane in RStudio shows the contents of the current
 	 working directory. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -272,8 +272,8 @@ contents of the working directory in the Files pane.
 4. in the new window that appears, select the appropriate directory. 
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/RStudio-GUI-setWD.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/RStudio-GUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-GUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-GUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the RStudio GUI.
 	 Source: National Ecological Observatory Network (NEON) 
 	 </figcaption>
@@ -289,8 +289,8 @@ contents of the working directory in the Files pane.
 3. in the new window that appears, select the appropriate directory.
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/Windows-RGUI-setWD.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/Windows-RGUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Windows-RGUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Windows-RGUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the R GUI in Windows.
 	 Source: National Ecological Observatory Network (NEON) 
 	 </figcaption>
@@ -303,8 +303,8 @@ contents of the working directory in the Files pane.
 3. in the new window that appears, select the appropriate directory.
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/Mac-RGUI-setWD.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/Mac-RGUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Mac-RGUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Mac-RGUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the R GUI in Mac OS X. 
 	 Source: National Ecological Observatory Network (NEON)  
 	 </figcaption>
@@ -332,8 +332,8 @@ are telling the computer the location of the directory (or folder) to start with
 ## Full, Base, and Relative Paths
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/neon-documents-contents.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/neon-documents-contents.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png"></a>
 	 <figcaption> Screenshot of the <b>neon</b> directory with the nested 
 	 <b>Documents</b>, <b>data</b>, <b>NEON-DS-Met-Time-Series</b>, and other 
 	 directories. Source: National Ecological Observatory Network
@@ -392,8 +392,8 @@ we can then create a relative path for all directories and files within the
 **data** directory. 
 
 <figure>
-	 <a href="{{ site.baseurl }}/images/set-working-dir/data-folder-contents.png">
-	 <img src="{{ site.baseurl }}/images/set-working-dir/data-folder-contents.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png"></a>
 	 <figcaption> Screenshot of the data directory containing the both NEON Data 
 	 Skills Teaching Subsets. Source: National Ecological Observatory Network
 	 (NEON) 

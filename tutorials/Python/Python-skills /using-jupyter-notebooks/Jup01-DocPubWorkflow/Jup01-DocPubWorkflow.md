@@ -34,7 +34,7 @@ with the Python kernel.
 ## Documentation Is Important
 
 As we read in
-<a href="{{ site.baseurl }}/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
+<a href="https://www.neonscience.org/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
 the four facets of reproducible science are:
 
 * Documentation
@@ -100,5 +100,5 @@ resource to learn other skills associated with using Python and Jupyter Notebook
 * <a href="http://nb.bianp.net/sort/views/" target="_blank">Fabian Pedregosa's Notebook Gallery</a>
 
 
-In the next tutorial, *<a href="/jupyter-python-intro" target="_blank">Introduction to using Jupyter Notebooks</a>*,
+In the next tutorial, *<a href="https://www.neonscience.org/jupyter-python-intro" target="_blank">Introduction to using Jupyter Notebooks</a>*,
  we will learn more about working with Jupyter Notebooks.

@@ -115,7 +115,7 @@ plt.show()
 
     (346, 1)
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_6_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_6_1.png)
 
 
 Let's load indices for Red, Green, and Blue for NEON hyperspectral data.
@@ -162,7 +162,7 @@ plt.imshow(RGBIm)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_10_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_10_0.png)
 
 
 
@@ -198,7 +198,7 @@ mymu        = PlotSpectraAndMean(SomeSpectra, Wv, 3)
     (346,)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_13_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_13_1.png)
 
 
 
@@ -226,7 +226,7 @@ plt.ylabel('Reflectance')
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_16_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_16_0.png)
 
 
 Compute the average spectrum and plot it.
@@ -242,7 +242,7 @@ plt.ylabel('Reflectance')
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_18_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_18_0.png)
 
 
 Now we want to subtract the mean from every sample.
@@ -268,7 +268,7 @@ plt.plot(Wv, muz, 'k')
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_21_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_21_0.png)
 
 
 Let's calculate the covariance.
@@ -293,7 +293,7 @@ plt.imshow(C)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_25_0.png)
 
 
 ```python
@@ -358,7 +358,7 @@ plt.plot(Norms)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_29_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_29_0.png)
 
 
 ```python
@@ -396,7 +396,7 @@ print('{0:4f} {1:4f}'.format(BigNorm, LitNorm))
 ### Too many Norms.  How do we fix?
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_33_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_33_0.png)
 
 
     1.000000 1.000000
@@ -421,7 +421,7 @@ MuNorm          = PlotSpectraAndMean(SomeSpectraNorm, Wv, 3)
     (346,)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_35_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_35_1.png)
 
 
 
@@ -432,7 +432,7 @@ plt.imshow(CNorm)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_36_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_36_0.png)
 
 
 
@@ -511,7 +511,7 @@ plt.hist(NDVIVals)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_40_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_40_0.png)
 
 
 
@@ -523,7 +523,7 @@ plt.imshow(HiNDVI)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_41_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_41_0.png)
 
 
 ```python
@@ -552,7 +552,7 @@ plt.colorbar()
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_43_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_43_0.png)
 
 ## PCA 
 
@@ -594,7 +594,7 @@ plt.show()
     (346,)
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_47_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_47_1.png)
 
 
 
@@ -678,7 +678,7 @@ plt.show()
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_100_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_100_1.png)
 
 
 We can also display principal components as images
@@ -696,11 +696,11 @@ for coord in range(3):
 
 
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_100_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_100_2.png)
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_100_3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_100_3.png)
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_PCA/output_100_3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_100_3.png)
 
  <div id="ds-challenge" markdown="1">
 

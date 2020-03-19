@@ -42,7 +42,7 @@ preferably, RStudio loaded on your computer.
 * **rgdal**: `install.packages('rgdal')`
 * **maps**: `install.packages('maps')`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
@@ -59,7 +59,7 @@ contain hyperspectral data, including reading in reflectance values and
 associated metadata and attributes. 
 
 If you aren't familiar with these steps already, we highly recommend you work 
-through the <a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> 
+through the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
 *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
 
@@ -75,12 +75,12 @@ emphasize vegetation and help us classify or identify where vegetation is locate
 on the ground.
 
 <figure >
-    <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"><img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"></a>
 <figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
 </figure>
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"><img src="{{ site.baseurl }}/images/hyperspectral/NIR_G_B.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/NIR_G_B.png"></a>
 <figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
 
@@ -94,11 +94,11 @@ combinations. Check it out. Learn more about band combinations
 ## Create a Raster Stack in R
 
 In the 
-<a href="/hsi-hdf5-r" target="_blank">previous activity</a>, 
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">previous activity</a>, 
 we exported a single band of the NEON Reflectance data from a HDF5 file. In this 
 activity, we will create a full color image using 3 (red, green and blue - RGB) 
 bands. We will follow many of the steps we followed in the 
-<a href="/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a> tutorial. 
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a> tutorial. 
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
@@ -159,7 +159,7 @@ myNoDataValue
 
 Next, we'll write a function that will perform the processing that we did step by 
 step in the 
-<a href="/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a>.
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a>.
 This will allow us to process multiple bands in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and

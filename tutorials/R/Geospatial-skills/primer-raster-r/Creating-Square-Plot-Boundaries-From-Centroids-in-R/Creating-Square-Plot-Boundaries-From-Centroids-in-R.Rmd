@@ -46,7 +46,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
 
@@ -320,4 +320,4 @@ centroids. Bring this shapefile into QGIS or whatever GIS package you prefer
 and have a look! 
 
 For more on working with shapefiles in R, check out our 
-<a href="/vector-data-series" target="_blank"> *Working with Vector Data in R* series </a>.
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *Working with Vector Data in R* series </a>.

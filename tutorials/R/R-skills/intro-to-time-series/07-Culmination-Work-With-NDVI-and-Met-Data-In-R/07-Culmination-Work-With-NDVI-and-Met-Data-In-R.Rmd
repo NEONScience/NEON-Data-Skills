@@ -16,12 +16,12 @@ urlTitle: dc-culm-activity-ndvi-met-data-r
 ---
 
 This tutorial is a culmination activity for the series on 
-<a href="/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
+<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
 Other related series include:
-<a href="/spatial-data-management-series" target="_blank"> intro to spatio-temporal data and data management</a>,
-<a href="/raster-data-series" target="_blank"> working with raster time-series data in R</a>,
+<a href="https://www.neonscience.org/spatial-data-management-series" target="_blank"> intro to spatio-temporal data and data management</a>,
+<a href="https://www.neonscience.org/raster-data-series" target="_blank"> working with raster time-series data in R</a>,
 and
-<a href="/vector-data-series" target="_blank"> working with vector data in R </a>.
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> working with vector data in R </a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -44,7 +44,7 @@ your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **reshape2:** `install.packages("reshape2")`
 
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -60,8 +60,8 @@ This tutorial uses both `dplyr` and `ggplot2`. If you are new to either of these
 R packages, we recommend the following NEON Data Skills tutorials before 
 working through this one.
 
-* <a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
-* <a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>. 
+* <a href="https://www.neonscience.org/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+* <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>. 
 
 </div>
 
@@ -83,7 +83,7 @@ vary from -1.0 to 1.0.
 
 The imagery data used to create this NDVI data were collected over the National
 Ecological Observatory Network's
-<a href="/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
 field site. 
 
 The imagery was created by the U.S. Geological Survey (USGS) using a 
@@ -92,7 +92,7 @@ on a
 <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite </a>.
 The data files are Geographic Tagged Image-File Format (GeoTIFF). 
 The tutorial 
-<a href="/dc-ndvi-calc-raster-time-series" target="_blank">*Extract NDVI Summary Values from a Raster Time Series* </a> 
+<a href="https://www.neonscience.org/dc-ndvi-calc-raster-time-series" target="_blank">*Extract NDVI Summary Values from a Raster Time Series* </a> 
 explains how to create this NDVI file from raster data. 
 
 ### Read In the Data
@@ -155,7 +155,7 @@ convert the data to the Date class.
 `harMet.daily2011`.
 
 HINT: If you are having trouble subsetting the data, refer back to
-<a href="/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
+<a href="https://www.neonscience.org/dc-time-series-subset-dplyr-r" target="_blank">*Subset & Manipulate Time Series Data with dplyr* tutorial</a>.
 </div>
 
 ``` {r challenge-code-convert-date, include=TRUE, results="hide", echo=FALSE}
@@ -225,7 +225,7 @@ same viewer so we can more easily compare them.
 
 Hint: If you are having a hard time arranging the plots in a single grid, refer
 back to 
-<a href="/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
+<a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 </div>
 
 ``` {r plot-PAR-NDVI, echo=FALSE}

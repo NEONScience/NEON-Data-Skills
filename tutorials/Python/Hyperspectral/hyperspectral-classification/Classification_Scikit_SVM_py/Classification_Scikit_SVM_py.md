@@ -245,7 +245,7 @@ plt.plot(y)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_25_0.png)
 
 
 ```python
@@ -259,7 +259,7 @@ plt.plot(d)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_27_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_27_0.png)
 
 
 ## Include Outliers
@@ -346,7 +346,7 @@ plt.plot(Targets)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_37_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_37_0.png)
 
 
 
@@ -381,7 +381,7 @@ plt.xlim((Wv[1], Wv[NBands-1]))
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_40_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_40_0.png)
 
 
 ```python
@@ -400,7 +400,7 @@ plt.plot(d)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_44_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_44_0.png)
 
 
 
@@ -433,7 +433,7 @@ plt.plot(dtest)
 plt.show()
 ```
 
-![ ]({{ site.baseurl }}/images/py-figs/classification_SVM/output_49_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_SVM/output_49_0.png)
 
 
 

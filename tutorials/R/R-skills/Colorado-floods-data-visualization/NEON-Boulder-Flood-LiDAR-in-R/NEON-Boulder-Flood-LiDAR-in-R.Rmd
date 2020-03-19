@@ -20,7 +20,7 @@ urlTitle: da-viz-neon-lidar-co13flood-R
 This tutorial focuses on how to visualize digital elevation models derived from
 LiDAR data in R. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="{{ site.baseurl }}/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -75,13 +75,13 @@ in these areas.
 
 LiDAR data can be used to create many different models of a landscape.  This
 brief lesson on 
-<a href="{{ site.baseurl }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">
+<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
 "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"</a> 
 explores three important landscape models that are commonly used. 
 
 <figure>
-	<a href="{{ site.baseurl }}/images/dc-spatial-raster/lidarTree-height.png">
-  <img src="{{ site.baseurl }}/images/dc-spatial-raster/lidarTree-height.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"></a>
   <figcaption>Digital Terrain Models, Digital Surface Models and Canopy Height
   	Models are three common LiDAR-derived data products. The digital terrain model
   	allows scientists to study changes in terrain (topography) over time.
@@ -100,7 +100,7 @@ In this Data Activity, we will be using Digital Terrain Models (DTMs).
 If you are particularly interested in how LiDAR works consider taking a closer
 look at how the data are collected and represented by going through this tutorial
 on 
-<a href="{{ site.baseurl }}/lidar-basics" target="_blank"> "Light Detection and Ranging."</a> 
+<a href="https://www.neonscience.org/lidar-basics" target="_blank"> "Light Detection and Ranging."</a> 
 
 
 ## Digital Terrain Models 
@@ -304,8 +304,8 @@ cropbox1<-drawExtent()
 ```
 
 <figure>
-	<a href="{{ site.baseurl }}/images/disturb-events-co13/drawExtent.png">
-  <img src="{{ site.baseurl }}/images/disturb-events-co13/drawExtent.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png"></a>
 </figure>
 
 After executing the `drawExtent()` function, we now physically click on the plot

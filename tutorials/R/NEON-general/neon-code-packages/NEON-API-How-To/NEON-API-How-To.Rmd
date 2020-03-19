@@ -80,7 +80,7 @@ useful forms of information pull data from multiple sources using APIs. In
 the ecological and environmental sciences, many researchers use APIs to 
 programmatically pull data into their analyses. (Quoted from the NEON Observatory
 Blog story: 
-<a href="/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
+<a href="https://www.neonscience.org/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
 
 ## Anatomy of an API call
 
@@ -475,8 +475,8 @@ The image, below, of the San Joaquin Experimental Range should now be in your
 working directory.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png">
-	<img src="{{ site.baseurl }}/images/site-images/SJER_tile_20170328192931.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SJER_tile_20170328192931.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SJER_tile_20170328192931.png"></a>
 	<figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
 	Experimental Range. Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
@@ -699,4 +699,4 @@ the data portal, but not files pulled from the API. That functionality
 will be added soon!
 
 For a guide to using `neonUtilities` on data downloaded from the portal, 
-look <a href="/neonDataStackR" target="_blank">here</a>.
+look <a href="https://www.neonscience.org/neonDataStackR" target="_blank">here</a>.

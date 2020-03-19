@@ -108,12 +108,12 @@ on the following 3 for now:
 * **Issues:** Submit discussion topics, or problems that you are having with
 the content in the repo, here.
 * **Pull Requests:** Submit changes to the repo for review /
-acceptance. We will explore pull requests more in the <a href="{{ site.baseurl }}/github-pull-requests" target="_blank">
+acceptance. We will explore pull requests more in the <a href="https://www.neonscience.org/github-pull-requests" target="_blank">
 Git 06 tutorial.</a>
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png"></a>
 	<figcaption> Screenshot of the NEON Data Institute central repository (note, 
 	there has been a slight change in the repo name).
 	The github.com search bar is at the top of the page. Notice there are 6
@@ -133,7 +133,7 @@ A bit further down the page, you'll notice a few other links:
 * **commits:** a commit is a saved and documented change to the content
 or structure of the repo. The commit history contains all changes that
 have been made to that repo. We will discuss commits more in
-<a href="{{ site.baseurl }}/github-git-add" target="_blank"> Git 05: Git Add Changes -- Commits </a>.
+<a href="https://www.neonscience.org/github-git-add" target="_blank"> Git 05: Git Add Changes -- Commits </a>.
 
 ## Fork a Repository
 
@@ -142,16 +142,16 @@ copy of the repo that you create in **your account**. You can fork any repo at
 any time by clicking the fork button in the upper right hand corner on github.com.
 
  <figure>
-	<a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png">
-	<img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png" width="70%"></a>
 	<figcaption> Click on the "Fork" button to fork any repo. Source:
 <a href="https://guides.github.com/activities/forking/" target="_blank">GitHub Guides</a>.  
 	</figcaption>
 </figure>
 
 <figure>
- <a href="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_fork_emphasis.png">
- <img src="{{ site.baseurl }}/images/pre-institute-content/pre-institute2-git/git_fork_emphasis.png" width="70%"></a>
+ <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png">
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png" width="70%"></a>
  <figcaption>When we fork a repo in github.com, we are telling Git to create an
  exact copy of the repo that we're forking in our own github.com account.
  Once the repo is in our own account, we can edit it as we now own that fork.
@@ -197,7 +197,7 @@ repo. Does it contain your username? Or your colleagues'? Or NEON's?
 Your fork is *an exact copy*, or completely in sync with, the NEON central repo.
 You could confirm this by comparing your fork to the NEON central repository using
 the **pull request** option. We will learn about pull requests in
-<a href="{{ site.baseurl }}/github-pull-requests" target="_blank"> Git06: Sync GitHub Repos with Pull Requests.</a>
+<a href="https://www.neonscience.org/github-pull-requests" target="_blank"> Git06: Sync GitHub Repos with Pull Requests.</a>
 For now, take our word for it.
 
 The fork will remain in sync with the NEON central repo until:

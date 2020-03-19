@@ -34,7 +34,7 @@ preferably, RStudio loaded on your computer.
 * **plyr**: `install.packages('plyr')`
 * **ggplot2**: `install.packages('ggplot2')`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
 
@@ -50,7 +50,7 @@ preferably, RStudio loaded on your computer.
 For this tutorial, you should be comfortable reading data from a HDF5 file and 
 have a general familiarity with hyperspectral data. If you aren't familiar with 
 these steps already, we highly recommend you work through the 
-<a href="{{ site.baseurl }}/hsi-hdf5-r" target="_blank"> 
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
 *Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
 before moving on to this tutorial.
 

@@ -300,7 +300,7 @@ axis.POSIXct(1, x=timeB, format="%Y-%m-%d")
 ```
 
 
-![ ]({{ site.baseurl }}/images/eddy_intro_files/eddy_intro_20_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_20_0.png)
 
 
 Like a lot of flux data, these data have some stray spikes, but there 
@@ -319,7 +319,7 @@ axis.POSIXct(1, x=timeB, format="%Y-%m-%d %H:%M:%S")
 ```
 
 
-![ ]({{ site.baseurl }}/images/eddy_intro_files/eddy_intro_22_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_22_0.png)
 
 
 Note the timing of C uptake; the UTC time zone is clear here, where 
@@ -415,7 +415,7 @@ plot(fx.pr$data.fluxCo2.nsae.flux~fx.pr$PARMean,
 ```
 
 
-![ ]({{ site.baseurl }}/images/eddy_intro_files/eddy_intro_33_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_33_0.png)
 
 
 If you're interested in data in the eddy covariance bundle besides the 
@@ -648,7 +648,7 @@ g
 
 
 
-![ ]({{ site.baseurl }}/images/eddy_intro_files/eddy_intro_50_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_50_1.png)
 
 
 
@@ -666,7 +666,7 @@ g
 
 
 
-![ ]({{ site.baseurl }}/images/eddy_intro_files/eddy_intro_51_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_51_1.png)
 
 
 The legends are omitted for space, see if you can work out the times 

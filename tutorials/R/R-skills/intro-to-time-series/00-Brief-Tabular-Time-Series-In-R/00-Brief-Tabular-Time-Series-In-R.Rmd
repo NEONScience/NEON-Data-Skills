@@ -41,7 +41,7 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 
 * **ggplot2:** `install.packages("ggplot2")`
 
- <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+ <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
 {% include/dataSubsets/_data_Met-Time-Series.html %}
@@ -55,7 +55,7 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 ## Data Related to Phenology
 In this tutorial, we will explore atmospheric data (including temperature,
 precipitation and other metrics) collected by sensors mounted on a 
-<a href="/data-collection/flux-tower-measurements" target="_blank">
+<a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank">
 flux tower</a> 
 at the NEON Harvard Forest field site. We are interested in exploring 
 changes in temperature, precipitation, PAR and day 

@@ -19,7 +19,7 @@ urlTitle: di-packages-r
 ## R and RStudio
 
 Once R and RStudio are installed (in
-<a href="/setup-git-bash-rstudio" target="_blank"> *Install Git, Bash Shell, R & RStudio*</a>
+<a href="https://www.neonscience.org/setup-git-bash-rstudio" target="_blank"> *Install Git, Bash Shell, R & RStudio*</a>
 ), open RStudio to make sure it works and you don’t get any error messages. Then,
 install the needed R packages. 
 

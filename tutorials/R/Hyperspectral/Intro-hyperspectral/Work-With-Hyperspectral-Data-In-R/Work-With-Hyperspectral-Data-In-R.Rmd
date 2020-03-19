@@ -44,7 +44,7 @@ preferably, RStudio loaded on your computer.
 * **raster**: `install.packages('raster')`
 * **rgdal**: `install.packages('rgdal')`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
 ### Data to Download
@@ -76,8 +76,8 @@ from NEON production data.
 
 
 <figure>
-  <a href="{{ site.baseurl }}/images/hyperspectral/DataCube.png">
-  <img src="{{ site.baseurl }}/images/hyperspectral/DataCube.png"></a>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/DataCube.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/DataCube.png"></a>
 	<figcaption>A data cube of NEON hyperspectral data. Each layer in the cube 
   represents a band.</figcaption>
 </figure>
@@ -96,7 +96,7 @@ stored within a HDF5 file using R.
 ##  Read HDF5 data into R
 We will use the `raster` and `rhdf5` packages to read in the HDF5 file that 
 contains hyperspectral data for the 
-<a href="/field-sites/field-sites-map/SJER" target="_blank">NEON San Joaquin (SJER) field site</a>. 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank">NEON San Joaquin (SJER) field site</a>. 
 Let's start by calling the needed packages and reading in our NEON HDF5 file.  
 
 Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use: 
@@ -139,11 +139,11 @@ and visualization.
 
 More Information on raster metadata:
 
-* <a href="{{ site.baseurl }}/raster-data-r" target="_blank"> Raster Data in R 
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank"> Raster Data in R 
 - The Basics</a> - this tutorial explains more about how rasters work in R and 
 their associated metadata.
 
-* <a href="{{ site.baseurl }}/hyper-spec-intro" target="_blank"> About 
+* <a href="https://www.neonscience.org/hyper-spec-intro" target="_blank"> About 
 Hyperspectral Remote Sensing Data</a> -this tutorial explains more about 
 metadata and important concepts associated with multi-band (multi and 
 hyperspectral) rasters.
@@ -186,8 +186,8 @@ vector that we just imported and check out the data located at index 6 -
 `wavelengths[6]`).
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/bluelight.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/bluelight.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/bluelight.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/bluelight.png"></a>
     <figcaption>482 nanometers falls within the blue portion of the electromagnetic spectrum. Source: National Ecological Observatory Network </figcaption>
 </figure>
 
@@ -209,8 +209,8 @@ that covers 800 nm-805 nm might have a FWHM of 5 nm and a wavelength value of
 802.5 nm. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/spectrumZoomed.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png"></a>
     <figcaption>Bands represent a range of values (types of light) within the 
     electromagnetic spectrum. Values for each band are often represented as the 
     center point value of each band. Source: National Ecological Observatory 
@@ -316,8 +316,8 @@ types <a href="http://www.statmethods.net/input/datatypes.html">here</a>
 (links to external site, DataCamp).
 
 <figure class="half">
-    <a href="{{ site.baseurl }}/images/R/matrix.png"><img src="{{ site.baseurl }}/images/R/matrix.png"></a>
-    <a href="{{ site.baseurl }}/images/R/array.png"><img src="{{ site.baseurl }}/images/R/array.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/matrix.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/array.png"></a>
     <figcaption>Right: a matrix has only 2 dimensions. Left: an array has more than 2 dimensions.</figcaption>
 </figure>
 
@@ -430,10 +430,10 @@ image looks like when plotted. The bottom on is an RGB version of the same image
 Notice a difference? 
 
 <figure class="half">
-    <a href="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/RGBImage_2.png"></a>
-    <a href="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/SJER_Flipped.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/SJER_Flipped.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/SJER_Flipped.png"></a>
     <figcaption>LEFT: The image as it should look. RIGHT: the image that we outputted from the code above. Notice a difference?</figcaption>
 </figure>
 
@@ -537,15 +537,15 @@ b9r
 ```
 
 <figure>
-		<a href="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png">
-		<img src="{{ site.baseurl }}/images/hyperspectral/sat_image_lat_lon.png"></a>
+		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png"></a>
 		<figcaption>The extent of a raster represents the spatial location of each 
 		corner. The coordinate units will be determined by the spatial projection/
 		coordinate reference system that the data are in. Source: National Ecological
 		Observatory Network (NEON) </figcaption>
 </figure>
 
-<a href="{{ site.baseurl }}/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a>
+<a href="https://www.neonscience.org/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a>
 
 We can adjust the colors of our raster too if we want.
 

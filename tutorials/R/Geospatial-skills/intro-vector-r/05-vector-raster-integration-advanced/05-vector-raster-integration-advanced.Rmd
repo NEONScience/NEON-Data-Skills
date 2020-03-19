@@ -40,7 +40,7 @@ on your computer to complete this tutorial.
 * **rgdal:** `install.packages("rgdal")`
 * **sp:** `install.packages("sp")`
 
-* <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 {% include/dataSubsets/_data_Site-Layout-Files.html %}
@@ -56,8 +56,8 @@ on your computer to complete this tutorial.
 We often work with spatial layers that have different spatial extents.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/spatial_extent.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/spatial_extent.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"></a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial 
@@ -160,7 +160,7 @@ GeoTIFF file, a Canopy Height Model for the Harvard Forest, Massachusetts.
 These data can be used to create maps that characterize our study location.
 
 If you have completed the Vector 00-04 tutorials in this 
-<a href="/vector-data-series" target="_blank"> *Introduction to Working with Vector Data in R* </a>
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *Introduction to Working with Vector Data in R* </a>
 series, you can skip this code as you have already created these object.)
 
 ```{r load-libraries-data, results="hide", warning=FALSE }
@@ -248,7 +248,7 @@ vegetation plot locations with the Canopy Height Model information.
 2. Plot the vegetation plot location points on top of the Canopy Height Model. 
 
 If you completed the
-<a href="/dc-csv-to-shapefile-r" target="_blank">*.csv to Shapefile in R* tutorial</a>
+<a href="https://www.neonscience.org/dc-csv-to-shapefile-r" target="_blank">*.csv to Shapefile in R* tutorial</a>
 you have these plot locations as the spatial R spatial object
 `plot.locationsSp_HARV`. Otherwise, import the locations from the
 `\HARV\PlotLocations_HARV.shp` shapefile in the downloaded data. 
@@ -359,7 +359,7 @@ Often we want to extract values from a raster layer for particular locations -
 for example, plot locations that we are sampling on the ground. 
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/BufferSquare.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferSquare.png">
     <img src="{{ site.baseulr }}/images/spatialData/BufferSquare.png"></a>
     <figcaption> Extract raster information using a polygon boundary. We can
     extract all pixel values within 20m of our x,y point of interest. These can 
@@ -457,8 +457,8 @@ which represents the radius of a circular region around each point.
 The units of the buffer are the same units of the data `CRS`.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/spatialData/BufferCircular.png">
-    <img src="{{ site.baseurl }}/images/spatialData/BufferCircular.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png"></a>
      <figcaption> Extract raster information using a buffer region. All pixels
     that are touched by the buffer region are included in the extract. 
     Source: National Ecological Observatory Network (NEON).
