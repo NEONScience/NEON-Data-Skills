@@ -54,6 +54,7 @@ base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-
 # how to reference raw images on github:
 # https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
 opts_knit$set(base.url = base.url)
+opts_knit$set(root.dir = '~/Git/data/')
 
 #################### Get List of RMD files to Render #############################
 
@@ -67,9 +68,11 @@ rmd.files <- list.files(file.path(gitRepoPath, "tutorials", subDir),
 
 # just render one file
 #rmd.files <- rmd.files[43:61] #41-44 are CO floods tutorials. 
-# COOP-NEIS-Precipitation-In-R.Rmd is causing a problem when reading in data
-# so is nCLIMDIV-Palmer-Drought-In-R.Rmd
+# #41 COOP-NEIS-Precipitation-In-R.Rmd is causing a problem when reading in data
+# so is #42 nCLIMDIV-Palmer-Drought-In-R.Rmd
 # Should update with paste0(wd,...) to make it work again!
+
+rmd.files <- c(rmd.files[1:40], rmd.files[43:61])
 
 setwd(wd_processing_doc)
 
