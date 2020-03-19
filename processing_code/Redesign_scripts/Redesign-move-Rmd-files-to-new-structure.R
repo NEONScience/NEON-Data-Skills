@@ -41,7 +41,7 @@ for(i in 1:length(key$lesson)){
     print("File copied and flagged for review")
     
     if(file.exists(gsub("\\.Rmd","\\.md",file))){
-      unlink(gsub("\\.Rmd","\\.md",file))
+      unlink(file.path(dn,gsub("\\.Rmd","\\.md",basename(file))))
       print(".md deleted - must be remade once .Rmd is updated")
     }
   }
