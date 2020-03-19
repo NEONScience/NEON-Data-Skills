@@ -1,0 +1,146 @@
+---
+syncID: b29c2164e6844a93b9d39961faa9861e
+title: "Interactive Data Vizualization with R and Plotly"
+description: "Learn the basics of how to use the plotly package to create interactive plots and use the Plotly API in R to share these plots."
+dateCreated: 2014-12-06
+authors: Megan A. Jones, Leah A. Wasser
+contributors:
+estimatedTime:
+packagesLibraries: ggplot, plotly
+topics: data-viz
+languagesTool: R
+dataProduct:
+code1: DATAVIZ/DataVis-plotly-R.R
+tutorialSeries:
+urlTitle: plotly
+---
+
+
+## Plotly - Interactive (and Online) Plots
+
+<a href="https://plot.ly/" target="_blank"> Plotly</a> 
+bills itself as "a collaborative platform for modern data science". You can use
+it to build  interactive plots that can easily be shared with others (like
+the
+<a href="/overview-disturbance-events-co13flood" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods* lessons</a>). 
+
+
+You will need an free online Plotly account to post & share you plots online. But
+you can create the plots and use them on your local computer without an account.
+If you do not wish to share plots online you can skip to 
+**Step 3: Create Plotly plot**. 
+
+Additional information on the `plotly` R package can be found 
+<a href="https://plot.ly/r/getting-started/" target="_blank"> on the Plotly R Getting Started page</a>.  
+
+Note: Plotly doesn't just work with R -- other programs include Python, MATLAB,
+Excel, and JavaScript. 
+
+### Step 1: Create account
+If you do not already have an account, you need to set up an account by visiting
+the <a href="https://plot.ly/" target="_blank" >Plotly</a> website and following
+the directions there.
+
+### Step 2: Connect account to R 
+
+To share plots from R (or RStudio) to Plotly, you have to connect to your 
+account.  This is done through an API (Application Program Interface). You can
+find your username & API key in your profile settings on the Plotly website 
+under the "API key" menu option.  
+
+To link your account to your R, use the following commands, substituting in your
+own username & key as appropriate. 
+
+``` {r set-plotly-creds, eval=FALSE}
+# set plotly user name
+Sys.setenv("plotly_username"="YOUR_USERNAME")
+# set plotly API key
+Sys.setenv("plotly_api_key"="YOUR_KEY")
+
+```
+
+```{r load-libraries-hidden, echo=FALSE, results="hide"}
+# this package is only added to get the webpage derived from this code to render
+# the plotly graphs.  It is NOT needed for any of the analysis or data 
+# visualizations.
+
+# install.packages("webshot")
+# webshot::install_phantomjs() 
+library(webshot) # embed the plotly plots
+```
+
+### Step 3: Create Plotly plot
+There are lots of ways to plot with the plotly package. We briefly describe two 
+basic functions `plotly()` and `ggplotly()`. For more information on plotting in
+R with Plotly, check out the 
+<a href="https://plot.ly/r/" target="_blank"> Plotly R library page</a>. 
+
+Here we use the example dataframe `economics` that comes with the package. 
+
+```{r create-plotly-plot}
+
+# load packages
+library(ggplot2) # to create plots and feed to ggplotly()
+library(plotly)  # to create interactive plots
+
+# view str of example dataset
+str(economics)
+
+# plot with the plot_ly function
+unempPerCapita <- plot_ly(x =economics$date, y = economics$unemploy/economics$pop)
+unempPerCapita 
+
+```
+
+Note: This plot is interactive within the R environment but is not as posted on
+this website. 
+
+If you already use ggplot to create your plots, you can directly turn your 
+ggplot objects into interactive plots with `ggplotly()`. 
+
+``` {r ggplotly}
+## plot with ggplot, then ggplotly
+
+unemployment <- ggplot(economics, aes(date,unemploy)) + geom_line()
+unemployment
+
+ggplotly(unemployment)
+
+```
+
+
+Note: This plot is interactive within the R environment but is not as posted on
+this website. 
+
+### Step 4: Publish to Plotly
+
+The function `plotly_POST()` allows you to post any plotly plot to your account. 
+
+``` {r pub-plotly, eval=FALSE}
+
+# publish plotly plot to your plotly online account
+api_create(unemployment)
+
+```
+
+## Examples
+
+The plots below were generated using R code that harnesses the power of the
+`ggplot2` and the `plotly` packages. The plotly code utilizes the 
+<a href="http://ropensci.org/packages/" target="_blank">RopenSci `plotly` packages - check them out!</a>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=460&height=345"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/16.embed?width=800&height=600"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/19.embed?width=800&height=600"></iframe>
+
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**Data Tip** Are you a Python user? Use `matplotlib` 
+to create and publish visualizations.
+</div>
+
+
