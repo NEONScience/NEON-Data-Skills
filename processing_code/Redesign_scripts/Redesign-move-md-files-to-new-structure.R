@@ -10,8 +10,6 @@ key <- read.csv("redesign-tutorial-filepaths.csv")
 md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/old-tutorials/tutorials",
                        pattern="\\.md$", full.names = TRUE, recursive = TRUE)
 
-#md.files.names <- basename(md.files)
-
 md.files.to.move <- md.files[basename(md.files) %in% key$lesson]
 
 for(i in 1:length(md.files.to.move)){
