@@ -45,10 +45,7 @@ for(i in 1:length(key$lesson)){
       print(".md deleted - must be remade once .Rmd is updated")
     }
   }
-  
-<<<<<<< HEAD
+
   }
   
-=======
->>>>>>> 44184559ee1f9c91513c776c2d3b5456e4175510
 }
