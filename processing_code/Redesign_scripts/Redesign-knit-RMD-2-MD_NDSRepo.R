@@ -16,10 +16,11 @@
 ##################
 
 require(knitr)
+require(markdown)
 
 # do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
-          "R")
+          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/")
 
 #################### Set up Input Variables #############################
 
@@ -127,6 +128,9 @@ for (files in rmd.files) {
   # knit Rmd to jekyll flavored md format
   # Still calling file in original github location, not in temp
   knit(files, output = mdFile, envir = parent.frame())
+  
+  # mak an HTML version too
+  markdown::markdownToHTML(mdFile, output = htmlFile)
   
   # purl the code to R
   purl(files, output = rCodeOutput)
