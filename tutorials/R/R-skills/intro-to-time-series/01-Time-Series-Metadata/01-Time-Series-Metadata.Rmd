@@ -331,10 +331,10 @@ the contact information for the dataset and a description of the methods.
 ```{r view-eml-content }
 # view the contact name listed in the file
 
-eml_HARV@dataset@creator
+eml_HARV$dataset$creator
 
 # view information about the methods used to collect the data as described in EML
-eml_HARV@dataset@methods
+eml_HARV$dataset$methods
 
 
 ```
@@ -354,10 +354,9 @@ We need the extent to properly geolocate and process the data.
 ```{r map-location, warning=FALSE, message=FALSE}
 
 # grab x coordinate from the coverage information
-XCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@westBoundingCoordinate@.Data
-
+XCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$westBoundingCoordinate[[1]]
 # grab y coordinate from the coverage information
-YCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@northBoundingCoordinate@.Data
+YCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$northBoundingCoordinate[[1]]
 
 # map <- get_map(location='Harvard', maptype = "terrain")
 
