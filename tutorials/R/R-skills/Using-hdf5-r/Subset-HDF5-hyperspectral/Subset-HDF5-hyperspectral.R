@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries------------------------------------------------------------------------------
 
 # Install rhdf5 package (only need to run if not already installed)
 # install.packages("BiocManager")
@@ -9,7 +9,7 @@ library(rhdf5)
 
 
 
-## ----wd-and-filename----------------------------------------------------------------------
+## ----wd-and-filename-----------------------------------------------------------------------------
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
 wd <- "~/Documents/data/" # This will depend on your local environment
@@ -20,11 +20,11 @@ f_full <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 
 
-## ----view-original, eval=FALSE, comment=NA------------------------------------------------
+## ----view-original, eval=FALSE, comment=NA-------------------------------------------------------
 View(h5ls(f_full, all=T))
 
 
-## ----create-hdf5--------------------------------------------------------------------------
+## ----create-hdf5---------------------------------------------------------------------------------
 # First, create a name for the new file
 f <- paste0(wd, "NEON_hyperspectral_tutorial_example_subset.h5")
 
@@ -40,7 +40,7 @@ h5createGroup(f, "SJER/Reflectance/Metadata/Spectral_Data")
 
 
 
-## ----ref-attributes-----------------------------------------------------------------------
+## ----ref-attributes------------------------------------------------------------------------------
 
 a <- h5readAttributes(f_full,"/SJER/Reflectance/")
 fid <- H5Fopen(f)
@@ -55,7 +55,7 @@ for(i in 1:length(names(a))){
 h5closeAll()
 
 
-## ----populate-group-attributes------------------------------------------------------------
+## ----populate-group-attributes-------------------------------------------------------------------
 
 # make a list of all groups within the full tile file
 ls <- h5ls(f_full,all=T)
@@ -83,7 +83,7 @@ for(i in 1:length(cg)){
 }
 
 
-## ----subset-wavelengths-------------------------------------------------------------------
+## ----subset-wavelengths--------------------------------------------------------------------------
 
 # First, we make our 'index', a list of number that will allow us to select every fourth band, using the "sequence" function seq()
 idx <- seq(from = 1, to = 426, by = 4)
@@ -105,7 +105,7 @@ h5write(obj=wavelengths, file=f,
         write.attributes=T)
 
 
-## ----plot-example-band--------------------------------------------------------------------
+## ----plot-example-band---------------------------------------------------------------------------
 # Extract or "slice" data for band 58 from the HDF5 file
 b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
              index=list(58,NULL,NULL))
@@ -119,7 +119,7 @@ image(log(b58), col=grey(0:100/100))
 
 
 
-## ----plot-example-band-subset-------------------------------------------------------------
+## ----plot-example-band-subset--------------------------------------------------------------------
 subset_rows <- 1:500
 subset_columns <- 501:1000
 # Extract or "slice" data for band 44 from the HDF5 file
@@ -135,7 +135,7 @@ image(log(b58), col=grey(0:100/100))
 
 
 
-## ----read-hyp-data------------------------------------------------------------------------
+## ----read-hyp-data-------------------------------------------------------------------------------
 
 # Read in reflectance data.
 # Note the list that we feed into the index argument! 
@@ -147,7 +147,7 @@ hs <- h5read(file = f_full,
             )
 
 
-## ----hyp-data-attributes------------------------------------------------------------------
+## ----hyp-data-attributes-------------------------------------------------------------------------
 
 # grab the '$dim' attribute - as this will be needed 
 # when writing the file at the bottom
@@ -179,6 +179,6 @@ h5write(obj=hs, file=f,
 h5closeAll()
 
 
-## ----view-product, eval=FALSE, comment=NA-------------------------------------------------
+## ----view-product, eval=FALSE, comment=NA--------------------------------------------------------
 View(h5ls(f, all=T))
 

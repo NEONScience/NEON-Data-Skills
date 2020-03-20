@@ -21,7 +21,7 @@ require(markdown)
 # do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
           "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
-          "R")
+          "R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral")
 
 #################### Set up Input Variables #############################
 

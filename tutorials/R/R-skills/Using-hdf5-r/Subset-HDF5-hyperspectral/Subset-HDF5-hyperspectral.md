@@ -149,40 +149,28 @@ Each function should return 'TRUE' if it runs correctly.
     # create hdf5 file
     h5createFile(f)
 
-    ## file '/Users/olearyd/Documents/data/NEON_hyperspectral_tutorial_example_subset.h5' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     # Now we create the groups that we will use to organize our data
     h5createGroup(f, "SJER/")
 
-    ## Can not create group. Object with name 'SJER/' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     h5createGroup(f, "SJER/Reflectance")
 
-    ## Can not create group. Object with name 'SJER/Reflectance' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     h5createGroup(f, "SJER/Reflectance/Metadata")
 
-    ## Can not create group. Object with name 'SJER/Reflectance/Metadata' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     h5createGroup(f, "SJER/Reflectance/Metadata/Coordinate_System")
 
-    ## Can not create group. Object with name 'SJER/Reflectance/Metadata/Coordinate_System' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     h5createGroup(f, "SJER/Reflectance/Metadata/Spectral_Data")
 
-    ## Can not create group. Object with name 'SJER/Reflectance/Metadata/Spectral_Data' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
 ## Adding group attributes
 
@@ -205,18 +193,13 @@ an attribute.
 
 
     a <- h5readAttributes(f_full,"/SJER/Reflectance/")
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
     fid <- H5Fopen(f)
     g <- H5Gopen(fid, "SJER/Reflectance")
     
     for(i in 1:length(names(a))){
       h5writeAttribute(attr = a[[i]], h5obj=g, name=names(a[i]))
     }
-
-    ## Error in H5Aexists(h5obj, name): 'name' must be a character string of length 1
-
+    
     # It's always a good idea to close the file connection immidiately
     # after finishing each step that leaves an open connection.
     h5closeAll()
@@ -230,14 +213,10 @@ subset file has that information.
 
     # make a list of all groups within the full tile file
     ls <- h5ls(f_full,all=T)
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
+    
     # make a list of all of the names within the Coordinate_System group
     cg <- unique(ls[ls$group=="/SJER/Reflectance/Metadata/Coordinate_System",]$name)
-
-    ## Error in ls$group: object of type 'closure' is not subsettable
-
+    
     # Loop through the list of datasets that we just made above
     for(i in 1:length(cg)){
       print(cg[i])
@@ -257,7 +236,10 @@ subset file has that information.
               write.attributes=T)
     }
 
-    ## Error in eval(expr, envir, enclos): object 'cg' not found
+    ## [1] "Coordinate_System_String"
+    ## [1] "EPSG Code"
+    ## [1] "Map_Info"
+    ## [1] "Proj4"
 
 ## Spectral Subsetting
 
@@ -287,19 +269,12 @@ data can do.
                  name = "SJER/Reflectance/Metadata/Spectral_Data/Wavelength", 
                  index = list(idx)
                 )
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
+    
     # As per above, we also need the wavelength attributes
     wavelength.attributes <- h5readAttributes(file = f_full, 
                            name = "SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
     attributes(wavelengths) <- wavelength.attributes
-
-    ## Error in eval(expr, envir, enclos): object 'wavelength.attributes' not found
-
+    
     # Finally, write the subset of wavelengths and their attributes to the subset file
     h5write(obj=wavelengths, file=f,
             name="SJER/Reflectance/Metadata/Spectral_Data/Wavelength",
@@ -331,20 +306,15 @@ default behavior for this, and many other, functions).
     # Extract or "slice" data for band 58 from the HDF5 file
     b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
                  index=list(58,NULL,NULL))
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
     h5closeAll()
     
     # convert from array to matrix
     b58 <- b58[1,,]
-
-    ## Error in eval(expr, envir, enclos): object 'b58' not found
-
+    
     # Make a plot to view this band
     image(log(b58), col=grey(0:100/100))
 
-    ## Error in image(log(b58), col = grey(0:100/100)): object 'b58' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-1.png)
 
 As we can see here, this hyperspectral reflectance tile contains a school campus 
 that is under construction. There are many different land cover types contained 
@@ -368,20 +338,15 @@ rows.
     # Extract or "slice" data for band 44 from the HDF5 file
     b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
                  index=list(58,subset_columns,subset_rows))
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
     h5closeAll()
     
     # convert from array to matrix
     b58 <- b58[1,,]
-
-    ## Error in eval(expr, envir, enclos): object 'b58' not found
-
+    
     # Make a plot to view this band
     image(log(b58), col=grey(0:100/100))
 
-    ## Error in image(log(b58), col = grey(0:100/100)): object 'b58' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-subset-1.png)
 
 Perfect - now we have a spatial subset that includes all of the different land 
 cover types that we are interested in investigating. 
@@ -420,8 +385,6 @@ the bottom-right quadrant of the mosaic tile.
                  index = list(idx, subset_columns, subset_rows)
                 )
 
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
 As per the 'adding group attributes' section above, we will need to add the 
 attributes to the hyperspectral data (`hs`) before writing to the new HDF5 
 subset file (`f`). The `hs` variable already has one attribute, `$dim`, which 
@@ -437,38 +400,60 @@ the `f` file.
     # grab the '$dim' attribute - as this will be needed 
     # when writing the file at the bottom
     hsd <- attributes(hs)
-
-    ## Error in eval(expr, envir, enclos): object 'hs' not found
-
+    
     # We also need the attributes for the reflectance data.
     ha <- h5readAttributes(file = f_full, 
                            name = "SJER/Reflectance/Reflectance_Data")
-
-    ## Error in h5checktypeOrOpenLoc(file, readonly = TRUE, native = native): Error in h5checktypeOrOpenLoc(). Cannot open file. File '/Users/olearyd/Documents/data/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5' does not exist.
-
+    
     # However, some of the attributes are not longer valid since 
     # we changed the spatial extend of this dataset. therefore, 
     # we will need to overwrite those with the correct values.
     ha$Dimensions <- c(500,500,107) # Note that the HDF5 file saves dimensions in a different order than R reads them
-
-    ## Error in ha$Dimensions <- c(500, 500, 107): object 'ha' not found
-
     ha$Spatial_Extent_meters[1] <- ha$Spatial_Extent_meters[1]+500
-
-    ## Error in eval(expr, envir, enclos): object 'ha' not found
-
     ha$Spatial_Extent_meters[3] <- ha$Spatial_Extent_meters[3]+500
-
-    ## Error in eval(expr, envir, enclos): object 'ha' not found
-
     attributes(hs) <- c(hsd,ha)
-
-    ## Error in eval(expr, envir, enclos): object 'hsd' not found
-
+    
     # View the combined attributes to ensure they are correct
     attributes(hs)
 
-    ## Error in eval(expr, envir, enclos): object 'hs' not found
+    ## $dim
+    ## [1] 107 500 500
+    ## 
+    ## $Cloud_conditions
+    ## [1] "For cloud conditions information see Weather Quality Index dataset."
+    ## 
+    ## $Cloud_type
+    ## [1] "Cloud type may have been selected from multiple flight trajectories."
+    ## 
+    ## $Data_Ignore_Value
+    ## [1] -9999
+    ## 
+    ## $Description
+    ## [1] "Atmospherically corrected reflectance."
+    ## 
+    ## $Dimension_Labels
+    ## [1] "Line, Sample, Wavelength"
+    ## 
+    ## $Dimensions
+    ## [1] 500 500 107
+    ## 
+    ## $Interleave
+    ## [1] "BSQ"
+    ## 
+    ## $Scale_Factor
+    ## [1] 10000
+    ## 
+    ## $Spatial_Extent_meters
+    ## [1]  257500  258000 4112500 4113000
+    ## 
+    ## $Spatial_Resolution_X_Y
+    ## [1] 1 1
+    ## 
+    ## $Units
+    ## [1] "Unitless."
+    ## 
+    ## $Units_Valid_range
+    ## [1]     0 10000
 
     # Finally, write the hyperspectral data, plus attributes, 
     # to our new file 'f'.
@@ -476,7 +461,9 @@ the `f` file.
             name="SJER/Reflectance/Reflectance_Data",
             write.attributes=T)
 
-    ## Error in h5write(obj = hs, file = f, name = "SJER/Reflectance/Reflectance_Data", : object 'hs' not found
+    ## You created a large dataset with compression and chunking.
+    ## The chunk size is equal to the dataset dimensions.
+    ## If you want to read subsets of the dataset, you should testsmaller chunk sizes to improve read times.
 
     # It's always a good idea to close the HDF5 file connection
     # before moving on.
