@@ -4,7 +4,7 @@ title: "Getting Started with the R Programming Language"
 description: "This tutorial presents the basics of using R."
 dateCreated: 2014-11-04
 authors: Leah A. Wasser - Adapted from Software Carpentry
-contributors: 
+contributors: Donal O'Leary
 estimatedTime:
 packagesLibaries:
 topics: data-analysis
@@ -455,13 +455,13 @@ the `as.<class_name>`.
 
 ``` {r coercion}
 # making values numeric
-as.numeric(c("1")
+as.numeric("1")
 
 # make values charactor
-as.character(1:2)
+as.character(c(1:2))
 
 # make values 
-as.factor("male","female")
+as.factor(c("male","female"))
 ```
 
 ### Matrix
@@ -561,11 +561,11 @@ Try it out.
 xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
 xlist
 
-$a
+xlist$a
  
-$b
+xlist$b
 
-$data
+xlist$data
 
 ```
 

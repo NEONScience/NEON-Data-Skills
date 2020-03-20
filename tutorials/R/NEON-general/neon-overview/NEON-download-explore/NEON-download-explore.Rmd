@@ -213,7 +213,7 @@ If you prefer to extract each table from the list and work
 with it as an independent object, you can use the 
 `list2env()` function:
 
-``` {r env, eval=F}
+``` {r env, eval=T}
 
 list2env(veg_str, .GlobalEnv)
 

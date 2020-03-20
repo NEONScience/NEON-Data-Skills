@@ -4,7 +4,7 @@ title: "Access and Work with NEON Geolocation Data"
 description: "Use files available on the data portal, the NEON API, and the neonUtilities R package to access the locations of NEON sampling events and infrastructure. Calculate more precise locations for certain sampling types, and reference ground sampling to airborne data."
 dateCreated: 2019-09-13
 authors: [Claire K. Lunch]
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
@@ -142,7 +142,7 @@ shapefiles of plot centroids, point locations, and polygons.
 The readme file contains descriptions for each of the columns in the 
 tabular files.
 
-```{r TOS-readme, echo=F}
+```{r TOS-readme, eval=FALSE, echo=FALSE}
 
 rdme <- read.delim('/Users/clunch/Dropbox/NEON/spatial/All_NEON_TOS_Plots_V5/readme .csv',
                    sep=',', header=T)
@@ -162,13 +162,13 @@ these files.
 
 Both aquatic and terrestrial observational data downloads include spatial 
 data in the downloaded files. Let's take a look at the small mammal data. 
-Download small mammal data from Onaqui (ONAQ), August 2018 to investigate. 
+Download small mammal data from Yellowstone National Park (YELL), August 2018 to investigate. 
 If downloading data using the `neonUtilties` package is new to you, check 
 out the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
 
 ``` {r get-mam-data, results="hide"}
 
-mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
+mam <- loadByProduct(dpID="DP1.10072.001", site="YELL",
                      startdate="2018-08", enddate="2018-08",
                      check.size=F)
 
@@ -188,7 +188,7 @@ for all traps within a single plot to see this:
 
 ``` {r print-ONAQ019}
 
-mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_019"),
+mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="YELL_031"),
                      c("trapCoordinate","decimalLatitude",
                        "decimalLongitude")]
 
@@ -249,10 +249,10 @@ plot(mam.loc$easting, mam.loc$northing, pch=".",
 Each grid has 100 points, so even with each trap plotted as a . we can only 
 see a square for each grid. Let's zoom in on a single plot:
 
-``` {r plot-ONAQ019}
+``` {r plot-YELL_031}
 
-plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+plot(mam.loc$easting[which(mam.loc$plotID=="YELL_031")], 
+     mam.loc$northing[which(mam.loc$plotID=="YELL_031")], 
      pch=".", xlab="Easting", ylab="Northing")
 
 ```
@@ -261,21 +261,20 @@ Now let's add a layer of data to see which of these traps caught a mammal:
 
 ``` {r plot-captures}
 
-plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+plot(mam.loc$easting[which(mam.loc$plotID=="YELL_031")], 
+     mam.loc$northing[which(mam.loc$plotID=="YELL_031")], 
      pch=".", xlab="Easting", ylab="Northing")
 
-points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003" & 
+points(mam.loc$easting[which(mam.loc$plotID=="YELL_031" & 
                                mam.loc$trapStatus=="5 - capture")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003" &
+     mam.loc$northing[which(mam.loc$plotID=="YELL_031" &
                               mam.loc$trapStatus=="5 - capture")],
      pch=19, col="blue")
 
 ```
 
 In the month of data we're viewing, in this plot, animals were caught at 
-27 of the 100 traps.
-
+50 of the 100 traps.
 
 ### Sensor data
 
@@ -288,7 +287,7 @@ radiation (PAR) at the Treehaven site (TREE).
 The sensor positions file isn't kept by the methods in the `neonUtilities` 
 package (we plan to add this in the future!), so go to the 
 <a href="https://data.neonscience.org" target="_blank">Data Portal</a> 
-and download PAR (DP1.00024.001) data at TREE for July 2018. Unzip the 
+and download the basic PAR (DP1.00024.001) data at TREE for July 2018. Unzip the 
 monthly package, and read the sensor positions file into R:
 
 ``` {r sens-pos}

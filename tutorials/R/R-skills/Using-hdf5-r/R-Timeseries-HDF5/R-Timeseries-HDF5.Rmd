@@ -129,7 +129,7 @@ Let's first explore an HDF5 file that we know nothing about using the R function
 
 ```{r defineH5Path}
 # Identify file path (be sure to adjust the path to match your file structure!)
-f <- "NEON-DS-Tower-Temperature-Data.hdf5"
+f <- "NEONDSTowerTemperatureData.hdf5"
 # View structure of file
 h5ls(f)
 

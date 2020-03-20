@@ -82,14 +82,14 @@ library (raster)
 
 # Import a polygon shapefile
 aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-                            "HarClip_UTMZ18")
+                            "HarClip_UTMZ18", stringsAsFactors = T)
 
 # Import a line shapefile
-lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV", "HARV_roads")
+lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV", "HARV_roads", stringsAsFactors = T)
 
 # Import a point shapefile 
 point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-                      "HARVtower_UTM18N")
+                      "HARVtower_UTM18N", stringsAsFactors = T)
 
 ```
 
@@ -625,7 +625,7 @@ use google to find a list of pch symbols that you can use in R.
 ## 1
 # Read the shapefile file
 State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
-          "US-State-Boundaries-Census-2014")
+          "US-State-Boundaries-Census-2014", stringsAsFactors = T)
 
 # how many levels?
 levels(State.Boundary.US$region)
@@ -646,7 +646,7 @@ legend("bottomright",
 ## 2
 # open plot locations
 plotLocations <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-          "PlotLocations_HARV")
+          "PlotLocations_HARV", stringsAsFactors = T)
 
 # how many unique soils?  Two
 unique(plotLocations$soilTypeOr)

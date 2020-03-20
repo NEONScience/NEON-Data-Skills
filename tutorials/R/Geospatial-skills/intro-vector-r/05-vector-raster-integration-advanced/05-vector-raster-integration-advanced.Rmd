@@ -385,9 +385,9 @@ Forest field site.
 
 # extract tree height for AOI
 # set df=TRUE to return a data.frame rather than a list of values
-tree_height <- extract(x = chm_HARV, 
+tree_height <- raster::extract(x = chm_HARV, 
                        y = aoiBoundary_HARV, 
-                       df=TRUE)
+                       df = TRUE)
 
 # view the object
 head(tree_height)
@@ -434,7 +434,7 @@ a mean height value for our AOI.
 ```{r summarize-extract }
 # extract the average tree height (calculated using the raster pixels)
 # located within the AOI polygon
-av_tree_height_AOI <- extract(x = chm_HARV, 
+av_tree_height_AOI <- raster::extract(x = chm_HARV, 
                               y = aoiBoundary_HARV,
                               fun=mean, 
                               df=TRUE)
@@ -475,7 +475,7 @@ crs(point_HARV)
 # extract the average tree height (height is given by the raster pixel value)
 # at the tower location
 # use a buffer of 20 meters and mean function (fun) 
-av_tree_height_tower <- extract(x = chm_HARV, 
+av_tree_height_tower <- raster::extract(x = chm_HARV, 
                                 y = point_HARV, 
                                 buffer=20,
                                 fun=mean, 
@@ -508,7 +508,7 @@ plot.locationsSp_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
                             "PlotLocations_HARV")
 
 # extract data at each plot location
-meanTreeHt_plots_HARV <- extract(x = chm_HARV, 
+meanTreeHt_plots_HARV <- raster::extract(x = chm_HARV, 
                                y = plot.locationsSp_HARV, 
                                buffer=20,
                                fun=mean, 

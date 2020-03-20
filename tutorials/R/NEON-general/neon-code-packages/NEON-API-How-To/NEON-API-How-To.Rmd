@@ -181,7 +181,7 @@ version is not as human readable but is readable by the `fromJSON()` function.
 req.text <- content(req, as="text")
 
 # Flatten data frame to see available data. 
-avail <- fromJSON(req.text, simplifyDataFrame=T, flatten=T)
+avail <- jsonlite::fromJSON(req.text, simplifyDataFrame=T, flatten=T)
 avail
 
 ```
@@ -221,7 +221,7 @@ you need to iterate this code, GET fails if you give it more than one URL.
 ```{r os-query-bird-data-urls}
 # get data availability for WOOD July 2015
 brd <- GET(bird.urls[grep("WOOD/2015-07", bird.urls)])
-brd.files <- fromJSON(content(brd, as="text"))
+brd.files <- jsonlite::fromJSON(content(brd, as="text"))
 
 # view just the available data files 
 brd.files$data$files
@@ -318,10 +318,10 @@ Now we have the data and can access it in R. Just to show that the files we
 pulled have actual data in them, let's make a quick graphic:
 
 ```{r os-plot-bird-data}
-# Cluster by species
-clusterBySp <- brd.count %>% 
-	group_by(scientificName) %>% 
-  summarize(total=sum(clusterSize))
+# Cluster by species 
+clusterBySp <- brd.count %>%
+  dplyr::group_by(scientificName) %>%
+  dplyr::summarise(total=sum(clusterSize, na.rm=T))
 
 # Reorder so list is ordered most to least abundance
 clusterBySp <- clusterBySp[order(clusterBySp$total, decreasing=T),]
@@ -347,14 +347,14 @@ req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
 
 # make this JSON readable
 # Note how we've change this from two commands into one here
-avail.soil <- fromJSON(content(req.soil, as="text"), simplifyDataFrame=T, flatten=T)
+avail.soil <- jsonlite::fromJSON(content(req.soil, as="text"), simplifyDataFrame=T, flatten=T)
 
 # get data availability list for the product
 temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
 tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
-tmp.files <- fromJSON(content(tmp, as="text"))
+tmp.files <- jsonlite::fromJSON(content(tmp, as="text"))
 length(tmp.files$data$files$name) # There are a lot of available files
 tmp.files$data$files$name[1:10]   # Let's print the first 10
 
@@ -429,7 +429,7 @@ req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
 
 # make this JSON readable
 # Note how we've changed this from two commands into one here
-avail.aop <- fromJSON(content(req.aop, as="text"), 
+avail.aop <- jsonlite::fromJSON(content(req.aop, as="text"), 
                       simplifyDataFrame=T, flatten=T)
 
 # get data availability list for the product
@@ -438,7 +438,7 @@ cam.urls <- unlist(avail.aop$data$siteCodes$availableDataUrls)
 # get data availability from location/date of interest
 cam <- GET(cam.urls[intersect(grep("SJER", cam.urls),
                               grep("2017", cam.urls))])
-cam.files <- fromJSON(content(cam, as="text"))
+cam.files <- jsonlite::fromJSON(content(cam, as="text"))
 
 # this list of files is very long, so we'll just look at the first ten
 head(cam.files$data$files$name, 10)
@@ -530,7 +530,7 @@ We can query the locations endpoint of the API for the first named location,
 req.loc <- GET("http://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd")
 
 # make this JSON readable
-brd.WOOD_013 <- fromJSON(content(req.loc, as="text"))
+brd.WOOD_013 <- jsonlite::fromJSON(content(req.loc, as="text"))
 brd.WOOD_013
 
 ```
@@ -628,7 +628,7 @@ loon.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&of
 Parse the results into a list using `fromJSON()`:
 
 ```{r parse-loons}
-loon.list <- fromJSON(content(loon.req, as="text"))
+loon.list <- jsonlite::fromJSON(content(loon.req, as="text"))
 ```
 
 And look at the `$data` element of the results, which contains:
@@ -659,7 +659,7 @@ the first 10 taxa:
 
 ```{r get-mammals}
 mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500&verbose=true")
-mam.list <- fromJSON(content(mam.req, as="text"))
+mam.list <- jsonlite::fromJSON(content(mam.req, as="text"))
 mam.list$data[1:10,]
 ```
 
@@ -685,7 +685,7 @@ result:
 
 ```{r get-verbena}
 am.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.")
-am.list <- fromJSON(content(am.req, as="text"))
+am.list <- jsonlite::fromJSON(content(am.req, as="text"))
 am.list$data
 ```
 

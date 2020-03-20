@@ -478,7 +478,7 @@ Let's view our model.
 # plot the gridded results and overlay
 # a world map outline
 par(oma = c(0,0,0,0))
-raster::plot(cmip5_phenocam_projection, main = "DOY")
+raster::plot(cmip5_projection_2090, main = "DOY")
 maps::map("world", add = TRUE)
 ```
 

@@ -78,14 +78,14 @@ library(raster)
 
 # Import a polygon shapefile 
 aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-                            "HarClip_UTMZ18")
+                            "HarClip_UTMZ18", stringsAsFactors = T)
 
 # Import a line shapefile
-lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV", "HARV_roads")
+lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV", "HARV_roads", stringsAsFactors = T)
 
 # Import a point shapefile 
 point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
-                      "HARVtower_UTM18N")
+                      "HARVtower_UTM18N", stringsAsFactors = T)
 
 ```
 

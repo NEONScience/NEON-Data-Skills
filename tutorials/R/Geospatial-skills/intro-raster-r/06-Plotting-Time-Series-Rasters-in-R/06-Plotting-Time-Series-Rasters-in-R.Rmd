@@ -4,7 +4,7 @@ title: "Raster 06: Plot Raster Time Series Data in R Using RasterVis and Levelpl
 description: "This tutorial covers how to efficiently and effectively plot a stack of rasters using rasterVis package in R. Specifically it covers using levelplot and adding meaningful, custom names to band labels in a RasterStack." 
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors: 
+contributors: Donal O'Leary
 estimatedTime: 
 packagesLibraries: raster, rgdal, rasterVis
 topics: data-viz, raster, spatial-data-gis
@@ -131,7 +131,7 @@ NDVI (greenness) data using the `colorRampPalette()` function in combination wit
 ```{r change-color-ramp }
 # use colorbrewer which loads with the rasterVis package to generate
 # a color ramp of yellow to green
-cols <- colorRampPalette(brewer.pal(9,"YlGn"))
+cols <- colorRampPalette(brewer_pal(palette = "YlGn")(9))
 # create a level plot - plot
 levelplot(NDVI_HARV_stack,
         main="Landsat NDVI -- Improved Colors \nNEON Harvard Forest Field Site",
@@ -143,7 +143,7 @@ The yellow to green color ramp visually represents NDVI well given it's a
 measure of greenness. Someone looking at the plot can quickly understand that
 pixels that are more green, have a higher NDVI value. 
 
-* For all of the `brewer.pal` ramp names see the 
+* For all of the `brewer_pal` ramp names see the 
 <a href="http://www.datavis.ca/sasmac/brewerpal.html" target="_blank">
 brewerpal page</a>.
 
@@ -256,7 +256,7 @@ rasterNames  <- gsub("Day","Julian Day ", rasterNames)
 # use level plot to create a nice plot with one legend and a 5x3 layout.
 levelplot(NDVI_HARV_stack,
       layout=c(5, 3), # create a 4x3 layout for the data
-      col.regions=colorRampPalette(brewer.pal(9,"BrBG")), # specify color 
+      col.regions=colorRampPalette(brewer_pal(palette = "BrBG")(9)), # specify color 
       main="Landsat NDVI - Julian Days - 2011 \nNEON Harvard Forest Field Site",
       names.attr=rasterNames)
 
