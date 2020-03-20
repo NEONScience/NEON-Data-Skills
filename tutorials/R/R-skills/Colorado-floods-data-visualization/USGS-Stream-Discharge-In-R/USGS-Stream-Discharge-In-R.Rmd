@@ -391,7 +391,11 @@ disPlot.plotly <- disPlot.plotly +
 	ggtitle("Stream Discharge - Boulder Creek 2013")
 
 disPlot.plotly
+```
 
+You can now display your interactive plot in R using the following command: 
+
+``` {r view-plotly, eval=F, comment=NA}
 # view plotly plot in R
 ggplotly(disPlot.plotly)
 ```

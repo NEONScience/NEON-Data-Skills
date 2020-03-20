@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries-----------------------------------------------------------------------------------------
 # set your working directory
 #setwd("working-dir-path-here")
 
@@ -8,7 +8,7 @@ library(plotly) # create cool interactive plots
 
 
 
-## ----import-discharge-2-------------------------------------------------------------------
+## ----import-discharge-2-------------------------------------------------------------------------------------
 
 #import data
 discharge <- read.csv("disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt",
@@ -22,7 +22,7 @@ head(discharge)
 
 
 
-## ----remove-second-header-----------------------------------------------------------------
+## ----remove-second-header-----------------------------------------------------------------------------------
 # nrow: how many rows are in the R object
 nrow(discharge)
 
@@ -32,7 +32,7 @@ nrow(discharge)
 discharge <- discharge[2:nrow(discharge),]
 
 
-## ----rename-headers-----------------------------------------------------------------------
+## ----rename-headers-----------------------------------------------------------------------------------------
 #view names
 names(discharge)
 
@@ -45,13 +45,13 @@ names(discharge)
 
 
 
-## ----view-data-structure------------------------------------------------------------------
+## ----view-data-structure------------------------------------------------------------------------------------
 #view structure of data
 str(discharge)
 
 
 
-## ----adjust-data-structure----------------------------------------------------------------
+## ----adjust-data-structure----------------------------------------------------------------------------------
 # view class of the disValue column
 class(discharge$disValue)
 
@@ -62,7 +62,7 @@ str(discharge)
 
 
 
-## ----convert-time-------------------------------------------------------------------------
+## ----convert-time-------------------------------------------------------------------------------------------
 #view class
 class(discharge$datetime)
 
@@ -74,7 +74,7 @@ str(discharge)
 
 
 
-## ----no-data-values-----------------------------------------------------------------------
+## ----no-data-values-----------------------------------------------------------------------------------------
 # check total number of NA values
 sum(is.na(discharge$datetime))
 
@@ -83,7 +83,7 @@ hist(discharge$disValue)
 
 
 
-## ----plot-flood-data----------------------------------------------------------------------
+## ----plot-flood-data----------------------------------------------------------------------------------------
 
 ggplot(discharge, aes(datetime, disValue)) +
   geom_point() +
@@ -92,7 +92,7 @@ ggplot(discharge, aes(datetime, disValue)) +
 
 
 
-## ----define-time-subset-------------------------------------------------------------------
+## ----define-time-subset-------------------------------------------------------------------------------------
 
 # Define Start and end times for the subset as R objects that are the time class
 startTime <- as.POSIXct("2013-08-15 00:00:00")
@@ -112,7 +112,7 @@ ggplot(discharge,
 
 
 
-## ----plotly-discharge-data----------------------------------------------------------------
+## ----plotly-discharge-data----------------------------------------------------------------------------------
 
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 
@@ -136,11 +136,13 @@ disPlot.plotly <- disPlot.plotly +
 
 disPlot.plotly
 
+
+## ----view-plotly, eval=F, comment=NA------------------------------------------------------------------------
 # view plotly plot in R
 ggplotly(disPlot.plotly)
 
 
-## ----pub-plotly, eval=FALSE---------------------------------------------------------------
+## ----pub-plotly, eval=FALSE---------------------------------------------------------------------------------
 ## # set username
 ## Sys.setenv("plotly_username"="yourUserNameHere")
 ## # set user key

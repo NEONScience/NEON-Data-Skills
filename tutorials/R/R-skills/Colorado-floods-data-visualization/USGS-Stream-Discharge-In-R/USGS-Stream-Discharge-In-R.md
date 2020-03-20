@@ -229,8 +229,8 @@ in R.
     #view names
     names(discharge)
 
-    ## [1] "agency_cd"             "site_no"               "datetime"             
-    ## [4] "X17663_00060_00003"    "X17663_00060_00003_cd"
+    ## [1] "agency_cd"             "site_no"               "datetime"              "X17663_00060_00003"   
+    ## [5] "X17663_00060_00003_cd"
 
     #rename the fifth column to disValue representing discharge value
     names(discharge)[4] <- "disValue"
@@ -425,17 +425,11 @@ Here we create a new R object with entries corresponding to just the dates we wa
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-2.png)
 
+You can now display your interactive plot in R using the following command: 
+
+
     # view plotly plot in R
     ggplotly(disPlot.plotly)
-
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-
-    ## Warning in normalizePath(f2): path[1]="webshot1f087659c4ed.png": No such file or directory
-
-    ## Warning in file(con, "rb"): cannot open file 'webshot1f087659c4ed.png': No such file or
-    ## directory
-
-    ## Error in file(con, "rb"): cannot open the connection
 
 If you are satisfied with your plot you can now publish it to your Plotly account. 
 
