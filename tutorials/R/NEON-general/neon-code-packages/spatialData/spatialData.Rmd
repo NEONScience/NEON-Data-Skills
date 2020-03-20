@@ -75,7 +75,7 @@ We'll read in the spatial data using the `rgdal` and `sp` packages
 and plot it using the `ggplot2` package. First, read in the domain 
 shapefile:
 
-``` {r domains, results="hide"}
+``` {r domains, results="hide", warning=FALSE, message=FALSE}
 
 # modify "~/data" to the filepath where you downloaded the shapefile
 neon.domains <- readOGR("~/data/NEONDomains_0", layer="NEON_Domains")
@@ -85,9 +85,12 @@ neon.domains <- readOGR("~/data/NEONDomains_0", layer="NEON_Domains")
 neon.domains <- SpatialPolygonsDataFrame(gSimplify(neon.domains, tol=0.1, 
                                                  topologyPreserve=TRUE), 
                                data=neon.domains@data)
-map <- fortify(neon.domains, region="DomainName")
+map <- broom::tidy(neon.domains)
 
 ```
+
+The `broom::tidy()` function might give you some warnings about factor levels, 
+but it shouldn't prevent you from continuing on to the next steps.
 
 Let's plot the domains without the sites first:
 
