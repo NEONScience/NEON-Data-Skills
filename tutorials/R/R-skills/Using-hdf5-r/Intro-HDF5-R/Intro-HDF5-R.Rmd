@@ -4,7 +4,7 @@ title: "Introduction to HDF5 Files in R"
 description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
 dateCreated: 2015-05-20 15:22:52
 authors: Leah A. Wasser
-contributors:
+contributors: Donal O'Leary
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5
 topics: HDF5
@@ -107,7 +107,6 @@ Now, let's create a basic H5 file with one group and one dataset in it.
 
 # Create hdf5 file
 h5createFile("vegData.h5")
-h5createFile()
 
 # create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")

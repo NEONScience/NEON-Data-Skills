@@ -1,4 +1,4 @@
-## ----load libraries-----------------------------------------------------------------------
+## ----load libraries---------------------------------------------------------------------
 
 # Install rhdf5 package (only need to run if not already installed)
 #install.packages("BiocManager")
@@ -13,11 +13,10 @@ library("rhdf5")
 
 
 
-## ----create_new_hdf5_file-----------------------------------------------------------------
+## ----create_new_hdf5_file---------------------------------------------------------------
 
 # Create hdf5 file
 h5createFile("vegData.h5")
-h5createFile()
 
 # create a group called aNEONSite within the H5 file
 h5createGroup("vegData.h5", "aNEONSite")
@@ -26,13 +25,13 @@ h5createGroup("vegData.h5", "aNEONSite")
 h5ls("vegData.h5")
 
 
-## ----create_sample_data-------------------------------------------------------------------
+## ----create_sample_data-----------------------------------------------------------------
 # create some sample, numeric data 
 a <- rnorm(n=40, m=1, sd=1) 
 someData <- matrix(a,nrow=20,ncol=2)
 
 
-## ----add_data_to_file---------------------------------------------------------------------
+## ----add_data_to_file-------------------------------------------------------------------
 
 # add some sample data to the H5 file located in the aNEONSite group
 # we'll call the dataset "temperature"
@@ -43,7 +42,7 @@ h5ls("vegData.h5")
 
 
 
-## ----view_h5_contents---------------------------------------------------------------------
+## ----view_h5_contents-------------------------------------------------------------------
 
 # we can look at everything too 
 # but be cautious using this command!
@@ -54,7 +53,7 @@ H5close()
 
 
 
-## ----add-attributes-to-file---------------------------------------------------------------
+## ----add-attributes-to-file-------------------------------------------------------------
 
 # open the file, create a class
 fid <- H5Fopen("vegData.h5")
@@ -69,7 +68,7 @@ h5writeAttribute(did, attr="Meters",
 
 
 
-## ----group-attributes---------------------------------------------------------------------
+## ----group-attributes-------------------------------------------------------------------
 # let's add some attributes to the group
 did2 <- H5Gopen(fid, "aNEONSite/")
 
@@ -88,7 +87,7 @@ H5Fclose(fid)
 
 
 
-## ----read & review attributes-------------------------------------------------------------
+## ----read & review attributes-----------------------------------------------------------
 
 # look at the attributes of the precip_data dataset
 h5readAttributes(file = "vegData.h5", 
@@ -110,14 +109,14 @@ H5close()
 
 
 
-## ----access-plot-data---------------------------------------------------------------------
+## ----access-plot-data-------------------------------------------------------------------
 
 # create a quick plot of the data
 hist(testSubset2)
 
 
 
-## ----challenge-code-HDF5-file, echo=FALSE-------------------------------------------------
+## ----challenge-code-HDF5-file, echo=FALSE-----------------------------------------------
 
 # options(stringsAsFactors = FALSE)
 # newData <- read.csv("D17_2013_SJER_vegStr.csv")
