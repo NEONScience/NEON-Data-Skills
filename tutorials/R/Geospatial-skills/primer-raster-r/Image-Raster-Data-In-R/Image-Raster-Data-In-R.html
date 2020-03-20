@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Raster Data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial will walk you through the fundamental principles of working 
+with image raster data in R.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this activity, you will be able to:
+
+* Import multiple image rasters and create a stack of rasters.
+* Plot three band RGB images in R.
+* Export single band and multiple band image rasters in R.
+
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+This data download contains several files. You will only need the RGB .tif files
+for this tutorial. The path to this file is: NEON-DS-Field-Site-Spatial-Data/SJER/RGB/* . 
+The other data files in the downloaded data directory are used for related tutorials. 
+You should set your working directory to the parent directory of the downloaded 
+data to follow the code exactly. 
+
+## Recommended Reading
+
+You may benefit from reviewing these related resources prior to this tutorial: 
+
+* <a href="https://www.neonscience.org/raster-res-extent-pixels-r" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R* tutorial.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank" > Please read through *Raster Data in R - The Basics* tutorial.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The raster R package documentation.</a>
+
+</div>
+
+<h2>Raster Data</h2>
+
+<p>Raster or &ldquo;gridded&rdquo; data are data that are saved in pixels. In the spatial world, 
+each pixel represents an area on the Earth&#39;s surface. An color image raster is 
+a bit different from other rasters in that it has multiple bands. Each band 
+represents reflectance values for a particular color or spectra of light. If the 
+image is RGB, then the bands are in the red, green and blue portions of the 
+electromagnetic spectrum. These colors together create what we know as a full 
+color image.</p>
+
+<figure>
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png">
+   <figcaption>A color image at the NEON San Joaquin Experimental Range (SJER) 
+   field site in California. Each pixel in the image represents the combined
+   reflectance in the red, green and blue portions of the electromagnetic spectrum.
+   Source: National Ecological Observatory Network (NEON)</figcaption>
+</figure>
+
+<h2>Work with Multiple Rasters</h2>
+
+<p>In 
+<a href="https://www.neonscience.org/raster-data-r" target="_blank">a previous tutorial</a>, 
+we loaded a single raster into R. We made sure we knew the <code>CRS</code> 
+(coordinate reference system) and extent of the dataset among other key metadata 
+attributes. This raster was a Digital Elevation Model so there was only a single
+raster that represented the ground elevation in each pixel. When we work with 
+color images, there are multiple rasters to represent each band. Here we&#39;ll learn
+to work with multiple rasters together. </p>
+
+<h3>Raster Stacks</h3>
+
+<p>A raster stack is a collection of raster layers. Each raster layer in the raster 
+stack needs to have the same </p>
+
+<ul>
+<li>projection (CRS), </li>
+<li>spatial extent and </li>
+<li>resolution. </li>
+</ul>
+
+<p>You might use raster stacks for different reasons. For instance, you might want to 
+group a time series of rasters representing precipitation or temperature into 
+one R object. Or, you might want to create a color images from red, green and 
+blue band derived rasters.</p>
+
+<p>In this tutorial, we will stack three bands from a multi-band image together to 
+create a composite RGB image.</p>
+
+<p>First let&#39;s load the R packages that we need: <code>sp</code> and <code>raster</code>. </p>
+
+<pre><code># load the raster, sp, and rgdal packages
+library(raster)
+library(sp)
+library(rgdal)
+
+# set the working directory to the data
+#setwd(&quot;pathToDirHere&quot;)
+</code></pre>
+
+<p>Next, let&#39;s create a raster stack with bands representing </p>
+
+<ul>
+<li>blue: band 19, 473.8nm</li>
+<li>green: band 34, 548.9nm </li>
+<li>red; band 58, 669.1nm </li>
+</ul>
+
+<p>This can be done by individually assigning each file path as an object. </p>
+
+<pre><code># import tiffs
+band19 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif&quot;
+band34 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif&quot;
+band58 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif&quot;
+</code></pre>
+
+<p>Note that if we wanted to create a stack from all the files in a directory (folder)
+you can easily do this with the <code>list.files()</code> function. We would use 
+<code>full.names=TRUE</code> to ensure that R will store the directory path in our list of
+rasters.</p>
+
+<pre><code># create list of files to make raster stack
+rasterlist1 &lt;-  list.files(&#39;RGB&#39;, full.names=TRUE)
+</code></pre>
+
+<p>Or, if your directory is consistes of some .tif files and other file types you 
+don&#39;t want in your stack, you can ask R to only list those files with a .tif 
+extension.</p>
+
+<pre><code>rasterlist2 &lt;-  list.files(&#39;RGB&#39;, full.names=TRUE, pattern=&quot;tif&quot;) 
+</code></pre>
+
+<p>Back to creating our raster stack with three bands.  We only want three of the 
+bands in the RGB directory and not the fourth <code>band90</code>, so will create the stack
+from the bands we loaded individually. We do this with the <code>stack()</code> function. </p>
+
+<pre><code># create raster stack
+rgbRaster &lt;- stack(band19,band34,band58)
+
+# example syntax for stack from a list
+#rstack1 &lt;- stack(rasterlist1)
+</code></pre>
+
+<p>This has now created a stack of rasters three thick. Let&#39;s view them. </p>
+
+<pre><code># check attributes
+rgbRaster
+
+## class      : RasterStack 
+## dimensions : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+## resolution : 1, 1  (x, y)
+## extent     : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      : band19, band34, band58 
+## min values :     84,    116,    123 
+## max values :  13805,  15677,  14343
+
+# plot stack
+plot(rgbRaster)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/view-stack-1.png" alt=" "/></p>
+
+<p>From the attributes we see the CRS, resolution, and extent of all three rasters. 
+The we can see each raster plotted. Notice the different shading between the 
+different bands. This is because the landscape relects in the red, green, and 
+blue spectra differently. </p>
+
+<p>Check out the scale bars. What do they represent? </p>
+
+<p>This reflectance data are radiances corrected for atmospheric effects. The data 
+are typically unitless and ranges from 0-1. NEON Airborne Observation Platform
+data, where these rasters come from, has a scale factor of 10,000. </p>
+
+<h2>Plot an RGB Image</h2>
+
+<p>You can plot a composite RGB image from a raster stack. You need to specify the 
+order of the bands when you do this. In our raster stack, band 19, which is the 
+blue band, is first in the stack, whereas band 58, which is the red band, is last. 
+Thus the order for a RGB image is 3,2,1 to ensure the red band is rendered first 
+as red. </p>
+
+<p>Thinking ahead to next time: If you know you want to create composite RGB images, 
+think about the order of your rasters when you make the stack so the RGB=1,2,3. </p>
+
+<p>We will plot the raster with the <code>rgbRaster()</code> function and the need these 
+following arguments: </p>
+
+<ul>
+<li>R object to plot</li>
+<li>which layer of the stack is which color</li>
+<li>stretch: allows for increased contrast. Options are &ldquo;lin&rdquo; &amp; &ldquo;hist&rdquo;.</li>
+</ul>
+
+<p>Let&#39;s try it. </p>
+
+<pre><code># plot an RGB version of the stack
+plotRGB(rgbRaster,r=3,g=2,b=1, stretch = &quot;lin&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/plot-rgb-1.png" alt=" "/></p>
+
+<p>Note: read the <code>raster</code> package documentation for other arguments that can be 
+added (like <code>scale</code>) to improve or modify the image. </p>
+
+<h2>Explore Raster Values - Histograms</h2>
+
+<p>You can also explore the data. Histograms allow us to view the distrubiton of 
+values in the pixels. </p>
+
+<pre><code># view histogram of reflectance values for all rasters
+hist(rgbRaster)
+
+## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
+## raster cells were used. 100000 values used.
+
+## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
+## raster cells were used. 100000 values used.
+
+## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
+## raster cells were used. 100000 values used.
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/hist-1.png" alt=" "/></p>
+
+<p>Note about the warning messages: R defaults to only showing the first 100,000 
+values in the histogram so if you have a large raster you may not be seeing all 
+the values. This saves your from long waits, or crashing R, if you have large
+datasets. </p>
+
+<h2>Crop Rasters</h2>
+
+<p>You can crop all rasters within a raster stack the same way you&#39;d do it with a 
+single raster. </p>
+
+<pre><code># determine the desired extent
+rgbCrop &lt;- c(256770.7,256959,4112140,4112284)
+
+# crop to desired extent
+rgbRaster_crop &lt;- crop(rgbRaster, rgbCrop)
+
+# view cropped stack
+plot(rgbRaster_crop)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/stack-crop-1.png" alt=" "/></p>
+
+<p><div id="ds-challenge" markdown="1"></p>
+
+<h3>Challenge: Plot Cropped RGB</h3>
+
+<p>Plot this new cropped stack as an RGB image. 
+</div></p>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/challenge-code-plot-crop-rgb-1.png" alt=" "/></p>
+
+<h2>Raster Bricks in R</h2>
+
+<p>In our <code>rgbRaster</code> object we have a list of rasters in a stack. These rasters 
+are all the same extent, CRS and resolution. By creating a <strong>raster brick</strong> we 
+will create one raster object that contains all of the rasters so that we can 
+use this object to quickly create RGB images. Raster bricks are more efficient 
+objects to use when processing larger datasets. This is because the computer 
+doesn&#39;t have to spend energy finding the data - it is contained within the object.</p>
+
+<pre><code># create raster brick
+rgbBrick &lt;- brick(rgbRaster)
+
+# check attributes
+rgbBrick
+
+## class      : RasterBrick 
+## dimensions : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
+## resolution : 1, 1  (x, y)
+## extent     : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : band19, band34, band58 
+## min values :     84,    116,    123 
+## max values :  13805,  15677,  14343
+</code></pre>
+
+<p>While the brick might seem similar to the stack (see attributes above), we can 
+see that it&#39;s very different when we look at the size of the object.</p>
+
+<ul>
+<li>the brick contains <strong>all of the data</strong> stored in one object</li>
+<li>the stack contains links or references to the files stored on your computer</li>
+</ul>
+
+<p>Use <code>object.size()</code> to see the size of an R object. </p>
+
+<pre><code># view object size
+object.size(rgbBrick)
+
+## 5760536 bytes
+
+object.size(rgbRaster)
+
+## 44128 bytes
+
+# view raster brick
+plotRGB(rgbBrick,r=3,g=2,b=1, stretch = &quot;Lin&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/rBrick-size-1.png" alt=" "/></p>
+
+<p>Notice the faster plotting? For a smaller raster like this the difference is 
+slight, but for larger raster it can be considerable. </p>
+
+<h2>Write to GeoTIFF</h2>
+
+<p>We can write out the raster in GeoTIFF format as well. When we do this it will 
+copy the CRS, extent and resolution information so the data will read properly 
+into a GIS program as well. Note that this writes the raster in the order they 
+are in. In our case, the blue (band 19) is first but most programs expect the 
+red band first (RGB). </p>
+
+<p>One way around this is to generate a new raster stack with the rasters in the 
+proper order - red, green and blue format. Or, just always create your stacks
+R-&gt;G-&gt;B to start!!!</p>
+
+<pre><code># Make a new stack in the order we want the data in 
+orderRGBstack &lt;- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
+
+# write the geotiff
+# change overwrite=TRUE to FALSE if you want to make sure you don&#39;t overwrite your files!
+writeRaster(orderRGBstack,&quot;rgbRaster.tif&quot;,&quot;GTiff&quot;, overwrite=TRUE)
+</code></pre>
+
+<h2>Import A Multi-Band Image into R</h2>
+
+<p>You can import a multi-band image into R too. To do this, you import the file as 
+a stack rather than a raster (which brings in just one band). Let&#39;s import the 
+raster than we just created above.</p>
+
+<pre><code># import multi-band raster as stack
+multiRasterS &lt;- stack(&quot;rgbRaster.tif&quot;) 
+
+# import multi-band raster direct to brick
+multiRasterB &lt;- brick(&quot;rgbRaster.tif&quot;) 
+
+# view raster
+plot(multiRasterB)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-1.png" alt=" "/></p>
+
+<pre><code>plotRGB(multiRasterB,r=1,g=2,b=3, stretch=&quot;lin&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-2.png" alt=" "/></p>
+
+</body>
+
+</html>

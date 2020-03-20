@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Shapefile Metadata &amp; Attributes</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial explains what shapefile attributes are and how to work with 
+shapefile attributes in R. It also covers how to identify and query shapefile
+attributes, as well as subset shapefiles by specific attribute values. 
+Finally, we will review how to plot a shapefile according to a set of attribute 
+values.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+ * Query shapefile attributes.
+ * Subset shapefiles using specific attribute values.
+ * Plot a shapefile, colored by unique attribute values.
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Download Data
+{% include/dataSubsets/_data_Site-Layout-Files.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Shapefile Metadata &amp; Attributes</h2>
+
+<p>When we import a shapefile into R, the <code>readOGR()</code> function automatically
+stores metadata and attributes associated with the file.</p>
+
+<h2>Load the Data</h2>
+
+<p>To work with vector data in R, we can use the <code>rgdal</code> library. The <code>raster</code> 
+package also allows us to explore metadata using similar commands for both
+raster and vector files. </p>
+
+<p>We will import three shapefiles. The first is our <code>AOI</code> or area of
+interest boundary polygon that we worked with in 
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank"><em>Open and Plot Shapefiles in R</em></a>.
+The second is a shapefile containing the location of roads and trails within the
+field site. The third is a file containing the Fisher tower location.</p>
+
+<p>If you completed the
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank"><em>Open and Plot Shapefiles in R</em></a>.
+tutorial, you can skip this code.</p>
+
+<pre><code># load packages
+# rgdal: for vector work; sp package should always load with rgdal. 
+library(rgdal)  
+# raster: for metadata/attributes- vectors or rasters
+library (raster)   
+
+# set working directory to data folder
+# setwd(&quot;pathToDirHere&quot;)
+
+# Import a polygon shapefile
+aoiBoundary_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV&quot;,
+                            &quot;HarClip_UTMZ18&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HarClip_UTMZ18&quot;
+## with 1 features
+## It has 1 fields
+## Integer64 fields read as strings:  id
+
+# Import a line shapefile
+lines_HARV &lt;- readOGR( &quot;NEON-DS-Site-Layout-Files/HARV&quot;, &quot;HARV_roads&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HARV_roads&quot;
+## with 13 features
+## It has 15 fields
+
+# Import a point shapefile 
+point_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV&quot;,
+                      &quot;HARVtower_UTM18N&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HARVtower_UTM18N&quot;
+## with 1 features
+## It has 14 fields
+</code></pre>
+
+<h2>Query Shapefile Metadata</h2>
+
+<p>Remember, as covered in 
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank"><em>Open and Plot Shapefiles in R</em></a>.,
+we can view metadata associated with an R object using:</p>
+
+<ul>
+<li><code>class()</code> - Describes the type of vector data stored in the object.</li>
+<li><code>length()</code> - How many features are in this spatial object?</li>
+<li>object <code>extent()</code> - The spatial extent (geographic area covered by) features 
+in the object.</li>
+<li>coordinate reference system (<code>crs()</code>) - The spatial projection that the data are
+in. </li>
+</ul>
+
+<p>Let&#39;s explore the metadata for our <code>point_HARV</code> object. </p>
+
+<pre><code># view class
+class(x = point_HARV)
+
+## [1] &quot;SpatialPointsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;
+
+# x= isn&#39;t actually needed; it just specifies which object
+# view features count
+length(point_HARV)
+
+## [1] 1
+
+# view crs - note - this only works with the raster package loaded
+crs(point_HARV)
+
+## CRS arguments:
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+# view extent- note - this only works with the raster package loaded
+extent(point_HARV)
+
+## class      : Extent 
+## xmin       : 732183.2 
+## xmax       : 732183.2 
+## ymin       : 4713265 
+## ymax       : 4713265
+
+# view metadata summary
+point_HARV
+
+## class       : SpatialPointsDataFrame 
+## features    : 1 
+## extent      : 732183.2, 732183.2, 4713265, 4713265  (xmin, xmax, ymin, ymax)
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## variables   : 14
+## names       : Un_ID, Domain, DomainName,       SiteName, Type,       Sub_Type,     Lat,      Long, Zone,       Easting,       Northing,                Ownership,    County, annotation 
+## value       :     A,      1,  Northeast, Harvard Forest, Core, Advanced Tower, 42.5369, -72.17266,   18, 732183.193774, 4713265.041137, Harvard University, LTER, Worcester,         C1
+</code></pre>
+
+<h2>About Shapefile Attributes</h2>
+
+<p>Shapefiles often contain an associated database or spreadsheet of values called
+<strong>attributes</strong> that describe the vector features in the shapefile. You can think
+of this like a spreadsheet with rows and columns. Each column in the spreadsheet
+is an individual <strong>attribute</strong> that describes an object. Shapefile attributes
+include measurements that correspond to the geometry of the shapefile features.</p>
+
+<p>For example, the <code>HARV_Roads</code> shapefile (<code>lines_HARV</code> object) contains an
+attribute called <code>TYPE</code>. Each line in the shapefile has an associated <code>TYPE</code> 
+which describes the type of road (woods road, footpath, boardwalk, or 
+stone wall).</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
+    <figcaption>The shapefile format allows us to store attributes for each
+    feature (vector object) stored in the shapefile. The attribute table, is 
+    similar to a spreadsheet. There is a row for each feature. The first column
+    contains the unique ID of the feature. We can add additional columns that
+    describe the feature. Image Source: National Ecological Observatory Network
+    (NEON) 
+    </figcaption>
+</figure>
+
+<p>We can look at all of the associated data attributes by printing the contents of
+the <code>data</code> slot with <code>objectName@data</code>. We can use the base R <code>length</code> 
+function to count the number of attributes associated with a spatial object too.</p>
+
+<pre><code># just view the attributes &amp; first 6 attribute values of the data
+head(lines_HARV@data)
+
+##   OBJECTID_1 OBJECTID       TYPE             NOTES MISCNOTES RULEID          MAPLABEL
+## 0         14       48 woods road Locust Opening Rd      &lt;NA&gt;      5 Locust Opening Rd
+## 1         40       91   footpath              &lt;NA&gt;      &lt;NA&gt;      6              &lt;NA&gt;
+## 2         41      106   footpath              &lt;NA&gt;      &lt;NA&gt;      6              &lt;NA&gt;
+## 3        211      279 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
+## 4        212      280 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
+## 5        213      281 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
+##   SHAPE_LENG             LABEL BIKEHORSE RESVEHICLE RECMAP Shape_Le_1
+## 0 1297.35706 Locust Opening Rd         Y         R1      Y 1297.10617
+## 1  146.29984              &lt;NA&gt;         Y         R1      Y  146.29983
+## 2  676.71804              &lt;NA&gt;         Y         R2      Y  676.71807
+## 3  231.78957              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;  231.78962
+## 4   45.50864              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;   45.50859
+## 5  198.39043              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;  198.39041
+##                              ResVehic_1                  BicyclesHo
+## 0    R1 - All Research Vehicles Allowed Bicycles and Horses Allowed
+## 1    R1 - All Research Vehicles Allowed Bicycles and Horses Allowed
+## 2 R2 - 4WD/High Clearance Vehicles Only Bicycles and Horses Allowed
+## 3                                  &lt;NA&gt;                        &lt;NA&gt;
+## 4                                  &lt;NA&gt;                        &lt;NA&gt;
+## 5                                  &lt;NA&gt;                        &lt;NA&gt;
+
+# how many attributes are in our vector data object?
+length(lines_HARV@data)
+
+## [1] 15
+</code></pre>
+
+<p>We can view the individual <strong>name of each attribute</strong> using the
+<code>names(lines_HARV@data)</code> method in R. We could also view just the first 6 rows
+of attribute values using  <code>head(lines_HARV@data)</code>. </p>
+
+<p>Let&#39;s give it a try.</p>
+
+<pre><code># view just the attribute names for the lines_HARV spatial object
+names(lines_HARV@data)
+
+##  [1] &quot;OBJECTID_1&quot; &quot;OBJECTID&quot;   &quot;TYPE&quot;       &quot;NOTES&quot;      &quot;MISCNOTES&quot;  &quot;RULEID&quot;    
+##  [7] &quot;MAPLABEL&quot;   &quot;SHAPE_LENG&quot; &quot;LABEL&quot;      &quot;BIKEHORSE&quot;  &quot;RESVEHICLE&quot; &quot;RECMAP&quot;    
+## [13] &quot;Shape_Le_1&quot; &quot;ResVehic_1&quot; &quot;BicyclesHo&quot;
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Attributes for Different Spatial Classes
+Explore the attributes associated with the point_HARV and aoiBoundary_HARV 
+spatial objects. 
+
+1. How many attributes do each have?
+2. Who owns the site in the point_HARV data object?
+3. Which of the following is NOT an attribute of the point data object?
+
+    A) Latitude      B) County     C) Country
+</div>
+
+<h2>Explore Values within One Attribute</h2>
+
+<p>We can explore individual values stored within a particular attribute.
+Again, comparing attributes to a spreadsheet or a <code>data.frame</code>, this is similar
+to exploring values in a column. We can do this using the <code>$</code> and the name of
+the attribute: <code>objectName$attributeName</code>. </p>
+
+<pre><code># view all attributes in the lines shapefile within the TYPE field
+lines_HARV$TYPE
+
+##  [1] woods road footpath   footpath   stone wall stone wall stone wall stone wall stone wall
+##  [9] stone wall boardwalk  woods road woods road woods road
+## Levels: boardwalk footpath stone wall woods road
+
+# view unique values within the &quot;TYPE&quot; attributes
+levels(lines_HARV@data$TYPE)
+
+## [1] &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+</code></pre>
+
+<p>Notice that two of our TYPE attribute values consist of two separate words: 
+stone wall and woods road. There are really four unique TYPE values, not six 
+TYPE values.  </p>
+
+<h3>Subset Shapefiles</h3>
+
+<p>We can use the <code>objectName$attributeName</code> syntax to select a subset of features
+from a spatial object in R. </p>
+
+<pre><code># select features that are of TYPE &quot;footpath&quot;
+# could put this code into other function to only have that function work on
+# &quot;footpath&quot; lines
+lines_HARV[lines_HARV$TYPE == &quot;footpath&quot;,]
+
+## class       : SpatialLinesDataFrame 
+## features    : 2 
+## extent      : 731954.5, 732232.3, 4713131, 4713726  (xmin, xmax, ymin, ymax)
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## variables   : 15
+## names       : OBJECTID_1, OBJECTID,     TYPE, NOTES, MISCNOTES, RULEID, MAPLABEL,    SHAPE_LENG, LABEL, BIKEHORSE, RESVEHICLE, RECMAP,    Shape_Le_1,                            ResVehic_1,                  BicyclesHo 
+## min values  :         40,       91, footpath,    NA,        NA,      6,       NA, 146.299844868,    NA,         Y,         R1,      Y, 146.299831389,    R1 - All Research Vehicles Allowed, Bicycles and Horses Allowed 
+## max values  :         41,      106, footpath,    NA,        NA,      6,       NA,  676.71804248,    NA,         Y,         R2,      Y, 676.718065323, R2 - 4WD/High Clearance Vehicles Only, Bicycles and Horses Allowed
+
+# save an object with only footpath lines
+footpath_HARV &lt;- lines_HARV[lines_HARV$TYPE == &quot;footpath&quot;,]
+footpath_HARV
+
+## class       : SpatialLinesDataFrame 
+## features    : 2 
+## extent      : 731954.5, 732232.3, 4713131, 4713726  (xmin, xmax, ymin, ymax)
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## variables   : 15
+## names       : OBJECTID_1, OBJECTID,     TYPE, NOTES, MISCNOTES, RULEID, MAPLABEL,    SHAPE_LENG, LABEL, BIKEHORSE, RESVEHICLE, RECMAP,    Shape_Le_1,                            ResVehic_1,                  BicyclesHo 
+## min values  :         40,       91, footpath,    NA,        NA,      6,       NA, 146.299844868,    NA,         Y,         R1,      Y, 146.299831389,    R1 - All Research Vehicles Allowed, Bicycles and Horses Allowed 
+## max values  :         41,      106, footpath,    NA,        NA,      6,       NA,  676.71804248,    NA,         Y,         R2,      Y, 676.718065323, R2 - 4WD/High Clearance Vehicles Only, Bicycles and Horses Allowed
+
+# how many features are in our new object
+length(footpath_HARV)
+
+## [1] 2
+</code></pre>
+
+<p>Our subsetting operation reduces the <code>features</code> count from 13 to 2. This means
+that only two feature lines in our spatial object have the attribute
+&ldquo;TYPE=footpath&rdquo;.</p>
+
+<p>We can plot our subsetted shapefiles.</p>
+
+<pre><code># plot just footpaths
+plot(footpath_HARV,
+     lwd=6,
+     main=&quot;NEON Harvard Forest Field Site\n Footpaths&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-1.png" alt=" "/></p>
+
+<p>Interesting. Above, it appeared as if we had 2 features in our footpaths subset.
+Why does the plot look like there is only one feature?</p>
+
+<p>Let&#39;s adjust the colors used in our plot. If we have 2 features in our vector
+object, we can plot each using a unique color by assigning unique colors (<code>col=</code>)
+to our features. We use the syntax</p>
+
+<p><code>col=&quot;c(&quot;colorOne&quot;,&quot;colorTwo&quot;)</code></p>
+
+<p>to do this.</p>
+
+<pre><code># plot just footpaths
+plot(footpath_HARV,
+     col=c(&quot;green&quot;,&quot;blue&quot;), # set color for each feature 
+     lwd=6,
+     main=&quot;NEON Harvard Forest Field Site\n Footpaths \n Feature one = blue, Feature two= green&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-unique-colors-1.png" alt=" "/></p>
+
+<p>Now, we see that there are in fact two features in our plot! </p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Subset Spatial Line Objects
+Subset out all:
+
+1. boardwalk from the lines layer and plot it.
+2. stone wall features from the lines layer and plot it. 
+
+For each plot, color each feature using a unique color.
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-2.png" alt=" "/></p>
+
+<h2>Plot Lines by Attribute Value</h2>
+
+<p>To plot vector data with the color determined by a set of attribute values, the 
+attribute values must be class = <code>factor</code>. A <strong>factor</strong> is similar to a category</p>
+
+<ul>
+<li>you can group vector objects by a particular category value - for example you 
+can group all lines of <code>TYPE=footpath</code>. However, in R, a factor can also have 
+a determined <em>order</em>. </li>
+</ul>
+
+<p>By default, R will import spatial object attributes as <code>factors</code>.</p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** If our data attribute values are not 
+read in as factors, we can convert the categorical 
+attribute values using as.factor().
+</div>
+
+<pre><code># view the original class of the TYPE column
+class(lines_HARV$TYPE)
+
+## [1] &quot;factor&quot;
+
+# view levels or categories - note that there are no categories yet in our data!
+# the attributes are just read as a list of character elements.
+levels(lines_HARV$TYPE)
+
+## [1] &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+
+# Convert the TYPE attribute into a factor
+# Only do this IF the data do not import as a factor!
+# lines_HARV$TYPE &lt;- as.factor(lines_HARV$TYPE)
+# class(lines_HARV$TYPE)
+# levels(lines_HARV$TYPE)
+
+# how many features are in each category or level?
+summary(lines_HARV$TYPE)
+
+##  boardwalk   footpath stone wall woods road 
+##          1          2          6          4
+</code></pre>
+
+<p>When we use <code>plot()</code>, we can specify the colors to use for each attribute using
+the <code>col=</code> element. To ensure that R renders each feature by it&#39;s associated 
+factor / attribute value, we need to create a <code>vector</code> or colors - one for each 
+feature, according to it&#39;s associated attribute value / <code>factor</code> value. </p>
+
+<p>To create this vector we can use the following syntax:</p>
+
+<p><code>c(&quot;colorOne&quot;, &quot;colorTwo&quot;,&quot;colorThree&quot;)[object$factor]</code></p>
+
+<p>Note in the above example we have </p>
+
+<ol>
+<li>a vector of colors - one for each factor value (unique attribute value)</li>
+<li>the attribute itself (<code>[object$factor]</code>) of class <code>factor</code>.</li>
+</ol>
+
+<p>Let&#39;s give this a try.</p>
+
+<pre><code># Check the class of the attribute - is it a factor?
+class(lines_HARV$TYPE)
+
+## [1] &quot;factor&quot;
+
+# how many &quot;levels&quot; or unique values does the factor have?
+# view factor values
+levels(lines_HARV$TYPE)
+
+## [1] &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+
+# count the number of unique values or levels
+length(levels(lines_HARV$TYPE))
+
+## [1] 4
+
+# create a color palette of 4 colors - one for each factor level
+roadPalette &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)
+roadPalette
+
+## [1] &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# create a vector of colors - one for each feature in our vector object
+# according to its attribute value
+roadColors &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)[lines_HARV$TYPE]
+roadColors
+
+##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
+## [10] &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+
+# plot the lines data, apply a diff color to each factor level)
+plot(lines_HARV, 
+     col=roadColors,
+     lwd=3,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/palette-and-plot-1.png" alt=" "/></p>
+
+<h3>Adjust Line Width</h3>
+
+<p>We can also adjust the width of our plot lines using <code>lwd</code>. We can set all lines
+to be thicker or thinner using <code>lwd=</code>. </p>
+
+<pre><code># make all lines thicker
+plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails\n All Lines Thickness=6&quot;,
+     lwd=6)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/adjust-line-width-1.png" alt=" "/></p>
+
+<h3>Adjust Line Width by Attribute</h3>
+
+<p>If we want a unique line width for each factor level or attribute category
+in our spatial object, we can use the same syntax that we used for colors, above.</p>
+
+<p><code>lwd=c(&quot;widthOne&quot;, &quot;widthTwo&quot;,&quot;widthThree&quot;)[object$factor]</code></p>
+
+<p>Note that this requires the attribute to be of class <code>factor</code>. Let&#39;s give it a 
+try.</p>
+
+<pre><code>class(lines_HARV$TYPE)
+
+## [1] &quot;factor&quot;
+
+levels(lines_HARV$TYPE)
+
+## [1] &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+
+# create vector of line widths
+lineWidths &lt;- (c(1,2,3,4))[lines_HARV$TYPE]
+# adjust line width by level
+# in this case, boardwalk (the first level) is the widest.
+plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails \n Line width varies by TYPE Attribute Value&quot;,
+     lwd=lineWidths)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/line-width-unique-1.png" alt=" "/></p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Plot Line Width by Attribute 
+We can customize the width of each line, according to specific attribute value,
+too. To do this, we create a vector of line width values, and map that vector
+to the factor levels - using the same syntax that we used above for colors.
+HINT: lwd=(vector of line width thicknesses)[spatialObject$factorAttribute]
+
+Create a plot of roads using the following line thicknesses:
+
+1. woods road lwd=8
+2. Boardwalks lwd = 2
+3. footpath lwd=4
+4. stone wall lwd=3
+ 
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-1.png" alt=" "/></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
+we can create an vector of numbers, each of which specifies the thickness of each
+feature in our SpatialLinesDataFrame by factor level (category): c(6,4,1,2)[lines_HARV$TYPE]
+</div>
+
+<h2>Add Plot Legend</h2>
+
+<p>We can add a legend to our plot too. When we add a legend, we use the following
+elements to specify labels and colors:</p>
+
+<ul>
+<li><code>bottomright</code>: We specify the <strong>location</strong> of our legend by using a default 
+keyword. We could also use <code>top</code>, <code>topright</code>, etc.</li>
+<li><code>levels(objectName$attributeName)</code>: Label the <strong>legend elements</strong> using the
+categories of <code>levels</code> in an attribute (e.g., levels(lines_HARV$TYPE) means use
+the levels boardwalk, footpath, etc).</li>
+<li><code>fill=</code>: apply unique <strong>colors</strong> to the boxes in our legend. <code>palette()</code> is 
+the default set of colors that R applies to all plots. </li>
+</ul>
+
+<p>Let&#39;s add a legend to our plot.</p>
+
+<pre><code>plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails\n Default Legend&quot;)
+
+# we can use the color object that we created above to color the legend objects
+roadPalette
+
+## [1] &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# add a legend to our map
+legend(&quot;bottomright&quot;,   # location of legend
+      legend=levels(lines_HARV$TYPE), # categories or elements to render in 
+             # the legend
+      fill=roadPalette) # color palette to use to fill objects in legend.
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/add-legend-to-plot-1.png" alt=" "/></p>
+
+<p>We can tweak the appearance of our legend too.</p>
+
+<ul>
+<li><code>bty=n</code>: turn off the legend BORDER</li>
+<li><code>cex</code>: change the font size</li>
+</ul>
+
+<p>Let&#39;s try it out.</p>
+
+<pre><code>plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails \n Modified Legend&quot;)
+# add a legend to our map
+legend(&quot;bottomright&quot;, 
+       legend=levels(lines_HARV$TYPE), 
+       fill=roadPalette, 
+       bty=&quot;n&quot;, # turn off the legend border
+       cex=.8) # decrease the font / legend size
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/modify-legend-plot-1.png" alt=" "/></p>
+
+<p>We can modify the colors used to plot our lines by creating a new color vector,
+directly in the plot code too rather than creating a separate object.</p>
+
+<p><code>col=(newColors)[lines_HARV$TYPE]</code></p>
+
+<p>Let&#39;s try it!</p>
+
+<pre><code># manually set the colors for the plot!
+newColors &lt;- c(&quot;springgreen&quot;, &quot;blue&quot;, &quot;magenta&quot;, &quot;orange&quot;)
+newColors
+
+## [1] &quot;springgreen&quot; &quot;blue&quot;        &quot;magenta&quot;     &quot;orange&quot;
+
+# plot using new colors
+plot(lines_HARV, 
+     col=(newColors)[lines_HARV$TYPE],
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails \n Pretty Colors&quot;)
+
+# add a legend to our map
+legend(&quot;bottomright&quot;, 
+       levels(lines_HARV$TYPE), 
+       fill=newColors, 
+       bty=&quot;n&quot;, cex=.8)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-different-colors-1.png" alt=" "/></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
+using the palette method. For example palette(rainbow(6)) or
+palette(terrain.colors(6)). You can reset the palette colors using
+palette(&ldquo;default&rdquo;)!
+</div> 
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Plot Lines by Attribute
+Create a plot that emphasizes only roads where bicycles and horses are allowed.
+To emphasize this, make the lines where bicycles are not allowed THINNER than
+the roads where bicycles are allowed.
+NOTE: this attribute information is located in the lines_HARV$BicyclesHo 
+attribute.
+
+Be sure to add a title and legend to your map! You might consider a color
+palette that has all bike/horse-friendly roads displayed in a bright color. All
+other lines can be grey.
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-2-1.png" alt=" "/></p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Plot Polygon by Attribute
+
+1. Create a map of the State boundaries in the United States using the data
+located in your downloaded data folder: NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014. 
+Apply a fill color to each state using its region value. Add a legend.
+
+2. Using the NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp shapefile, 
+create a map of study plot locations, with each point colored by the soil type
+(soilTypeOr).  **Question:** How many different soil types are there at this particular field site? 
+
+3. BONUS &ndash; modify the field site plot above. Plot each point,
+using a different symbol. HINT: you can assign the symbol using pch= value. 
+You can create a vector object of symbols by factor level using the syntax
+syntax that we used above to create a vector of lines widths and colors:
+pch=c(15,17)[lines_HARV$soilTypeOr]. Type ?pch to learn more about pch or 
+use google to find a list of pch symbols that you can use in R.
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-3.png" alt=" "/></p>
+
+</body>
+
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>neonUtilities package</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial goes over how to use the neonUtilities R package 
+(formerly the neonDataStackR package).</p>
+
+<p>The package contains several functions:</p>
+
+<ul>
+<li><code>stackByTable()</code>: Takes zip files downloaded from the 
+<a href="http://data.neonscience.org" target="_blank">Data Portal</a> or 
+downloaded by <code>zipsByProduct()</code>, unzips them, and joins 
+the monthly files by data table to create a single file per table.</li>
+<li><code>zipsByProduct()</code>: A wrapper for the 
+<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+<code>stackByTable()</code>.</li>
+<li><code>loadByProduct()</code>: Combines the functionality of <code>zipsByProduct()</code> and 
+<code>stackByTable()</code>: Downloads the specified data, stacks the files, and 
+loads the files to the R environment.</li>
+<li><code>getPackage()</code>: A wrapper for the NEON API; downloads one 
+site-by-month zip file at a time.</li>
+<li><code>byFileAOP()</code>: A wrapper for the NEON API; downloads remote 
+sensing data based on data product, site, and year criteria. 
+Preserves the file structure of the original data.</li>
+<li><code>byTileAOP()</code>: Downloads remote sensing data for the specified 
+data product, subset to tiles that intersect a list of 
+coordinates.</li>
+<li><code>readTableNEON()</code>: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.</li>
+<li><code>transformFileToGeoCSV()</code>: Converts any NEON data file in 
+csv format into a new file with GeoCSV headers.</li>
+</ul>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> If you are only interested in joining data 
+files downloaded from the NEON Data Portal, you will only need to use 
+stackByTable(). Follow the instructions in the first section of the 
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
+</div>
+
+<h2>neonUtilities package</h2>
+
+<p>This package is intended to provide a toolbox of basic functionality 
+for working with NEON data. It currently contains the functions 
+listed above, but it is under development and more will be added in 
+the future. To report bugs or request new features, post an issue in the GitHub 
+repo 
+<a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">issues page</a>.</p>
+
+<p>First, we must install and load the <code>neonUtilities</code> package.</p>
+
+<pre><code># install neonUtilities - can skip if already installed
+install.packages(&quot;neonUtilities&quot;)
+# load neonUtilities
+library(neonUtilities)
+</code></pre>
+
+<h2>Download files and load directly to R: loadByProduct()</h2>
+
+<p>The most popular function in <code>neonUtilities</code> is <code>loadByProduct()</code>. 
+This function downloads data from the NEON API, merges the site-by-month 
+files, and loads the resulting data tables into the R environment, 
+assigning each data type to the appropriate R class. It combines the 
+actions of the <code>zipsByProduct()</code>, <code>stackByTable()</code>, and <code>readTableNEON()</code> 
+functions, described below.</p>
+
+<p>This is a popular choice because it ensures you&#39;re always working with the 
+latest data, and it ends with ready-to-use tables in R. However, if you 
+use it in a workflow you run repeatedly, keep in mind it will re-download 
+the data every time.</p>
+
+<p><code>loadByProduct()</code> works on most observational (OS) and sensor (IS) data, 
+but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
+data, and some of the data tables in the microbial data products. For 
+functions that download AOP data, see the <code>byFileAOP()</code> and <code>byTileAOP()</code> 
+sections in this tutorial. For functions that work with SAE data, see 
+the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.</p>
+
+<p>The inputs to <code>loadByProduct()</code> control which data to download and how 
+to manage the processing:</p>
+
+<ul>
+<li><code>dpID</code>: the data product ID, e.g. DP1.00002.001</li>
+<li><code>site</code>: defaults to &ldquo;all&rdquo;, meaning all sites with available data; 
+can be a vector of 4-letter NEON site codes, e.g. 
+<code>c(&quot;HARV&quot;,&quot;CPER&quot;,&quot;ABBY&quot;)</code>.</li>
+<li><code>startdate</code> and <code>enddate</code>: defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.</li>
+<li><code>package</code>: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn&#39;t one, the basic package will be 
+downloaded.</li>
+<li><code>avg</code>: defaults to &ldquo;all&rdquo;, to download all data; or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data.</li>
+<li><code>savepath</code>: the file path you want to download to; defaults to the 
+working directory.</li>
+<li><code>check.size</code>: T or F: should the function pause before downloading 
+data and warn you about the size of your download? Defaults to T; if 
+you are using this function within a script or batch process you 
+will want to set it to F.</li>
+<li><code>nCores</code>: Number of cores to use for parallel processing. Defaults 
+to 1, i.e. no parallelization.</li>
+</ul>
+
+<p>The <code>dpID</code> is the data product identifier of the data you want to 
+download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">
+Explore Data Products page</a>.
+It will be in the form DP#.#####.###</p>
+
+<p>Let&#39;s get triple-aspirated air temperature data (DP1.00003.001) 
+from Moab and Onaqui (MOAB and ONAQ), from May&ndash;August 2018, and 
+name the data object <code>trip.temp</code>:</p>
+
+<pre><code>trip.temp &lt;- loadByProduct(dpID=&quot;DP1.00003.001&quot;, 
+                           site=c(&quot;MOAB&quot;,&quot;ONAQ&quot;),
+                           startdate=&quot;2018-05&quot;, 
+                           enddate=&quot;2018-08&quot;)
+
+
+Continuing will download files totaling approximately 7.994569 MB. Do you want to proceed y/n: y
+Downloading 8 files
+  |========================================================================================================| 100%
+
+Unpacking zip files using 1 cores.
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Stacking operation across a single core.
+Stacking table TAAT_1min
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Stacking table TAAT_30min
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=00s  
+Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+Copied the most recent publication of variable definition file to /stackedFiles
+Finished: Stacked 2 data tables and 2 metadata tables!
+Stacking took 0.8517601 secs
+</code></pre>
+
+<p>The object returned by <code>loadByProduct()</code> is a named list of data 
+frames. To work with each of them, select them from the list 
+using the <code>$</code> operator.</p>
+
+<pre><code>names(trip.temp)
+View(trip.temp$TAAT_30min)
+</code></pre>
+
+<p>If you prefer to extract each table from the list and work 
+with it as an independent object, you can use the 
+<code>list2env()</code> function:</p>
+
+<pre><code>list2env(trip.temp, .GlobalEnv)
+</code></pre>
+
+<p>For more details about the contents of the data tables and metadata tables, 
+check out the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.</p>
+
+<p>If you want to be able to close R and come back to these data without 
+re-downloading, you&#39;ll want to save the tables locally. We recommend 
+also saving the variables file, both so you&#39;ll have it to refer to, and 
+so you can use it with <code>readTableNEON()</code> (see below).</p>
+
+<pre><code>write.csv(TAAT_30min, 
+          &quot;~/Downloads/TAAT_30min.csv&quot;, 
+          row.names=F)
+write.csv(variables_00003, 
+          &quot;~/Downloads/variables_00003.csv&quot;, 
+          row.names=F)
+</code></pre>
+
+<p>But, if you want to save files locally and load them into R (or another 
+platform) each time you run a script, instead of downloading from the API 
+every time, you may prefer to use <code>zipsByProduct()</code> and <code>stackByTable()</code> 
+instead of <code>loadByProduct()</code>.</p>
+
+<h2>Join data files: stackByTable()</h2>
+
+<p>The function <code>stackByTable()</code> joins the month-by-site files from a data 
+download. The output will yield data grouped into new files by table name. 
+For example, the single aspirated air temperature data product contains 1 
+minute and 30 minute interval data. The output from this function is one 
+.csv with 1 minute data and one .csv with 30 minute data. </p>
+
+<p>Depending on your file size this function may run for a while. For 
+example, in testing for this tutorial, 124 MB of temperature data took 
+about 4 minutes to stack. A progress bar will display while the 
+stacking is in progress. </p>
+
+<h3>Download the Data</h3>
+
+<p>To stack data from the Portal, first download the data of interest from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
+To stack data downloaded from the API, see the <code>zipsByProduct()</code> section 
+below.</p>
+
+<p>Your data will download from the Portal in a single zipped file. </p>
+
+<p>The stacking function will only work on zipped Comma Separated Value (.csv) 
+files and not the NEON data stored in other formats (HDF5, etc). </p>
+
+<h3>Run <code>stackByTable()</code></h3>
+
+<p>The example data below are single-aspirated air temperature. </p>
+
+<p>To run the <code>stackByTable()</code> function, input the file path to the 
+downloaded and zipped file. </p>
+
+<pre><code># stack files - Mac OSX file path shown
+stackByTable(filepath=&quot;~neon/data/NEON_temp-air-single.zip&quot;)
+
+
+Unpacking zip files
+  |=========================================================================================| 100%
+Stacking table SAAT_1min
+  |=========================================================================================| 100%
+Stacking table SAAT_30min
+  |=========================================================================================| 100%
+Finished: All of the data are stacked into  2  tables!
+Copied the first available variable definition file to /stackedFiles and renamed as variables.csv
+Stacked SAAT_1min which has 424800 out of the expected 424800 rows (100%).
+Stacked SAAT_30min which has 14160 out of the expected 14160 rows (100%).
+Stacking took 6.233922 secs
+All unzipped monthly data folders have been removed.
+</code></pre>
+
+<p>From the single-aspirated air temperature data we are given two final tables. 
+One with 1 minute intervals: <strong>SAAT_1min</strong> and one for 30 minute intervals: 
+<strong>SAAT_30min</strong>.  </p>
+
+<p>In the same directory as the zipped file, you should now have an unzipped 
+directory of the same name. When you open this you will see a new directory 
+called <strong>stackedFiles</strong>. This directory contains one or more .csv files 
+(depends on the data product you are working with) with all the data from 
+the months &amp; sites you downloaded. There will also be a single copy of the 
+associated variables, validation, and sensor_positions files, if applicable 
+(validation files are only available for observational data products, and 
+sensor position files are only available for instrument data products).</p>
+
+<p>These .csv files are now ready for use with the program of your choice.</p>
+
+<p>To read the data tables into R, we recommend using <code>readTableNEON()</code>, 
+which will assign each column to the relevant R class, based on the 
+metadata in the variables file. This ensures time stamps and missing 
+data are interpreted correctly in R.</p>
+
+<pre><code>SAAT30 &lt;- readTableNEON(
+  dataFile=&#39;~/stackedFiles/SAAT_30min.csv&#39;,
+  varFile=&#39;~/stackedFiles/variables_00002.csv&#39;
+)
+</code></pre>
+
+<h3>Other options</h3>
+
+<p>Other input options in <code>stackByTable()</code> are:</p>
+
+<ul>
+<li><code>savepath</code> : allows you to specify the file path 
+where you want the stacked files to go, overriding the default. </li>
+<li><code>saveUnzippedFiles</code> : allows you to keep the unzipped, unstacked 
+files from an intermediate stage of the process; by default they 
+are discarded.</li>
+</ul>
+
+<p>Example usage:</p>
+
+<pre><code>stackByTable(filepath=&quot;~neon/data/NEON_temp-air-single.zip&quot;, 
+             savepath=&quot;~data/allTemperature&quot;, saveUnzippedFiles=T)
+</code></pre>
+
+<h2>Download files to be stacked: zipsByProduct()</h2>
+
+<p>The function <code>zipsByProduct()</code> is a wrapper for the NEON API, it 
+downloads zip files for the data product specified and stores them in 
+a format that can then be passed on to <code>stackByTable()</code>.</p>
+
+<p>Input options for <code>zipsByProduct()</code> are the same as those for 
+<code>loadByProduct()</code> described above, except for <code>nCores</code>.</p>
+
+<p>Here, we&#39;ll download single-aspirated air temperature (DP1.00002.001) 
+data from Wind River Experimental Forest (WREF) for April and May of 
+2019.</p>
+
+<pre><code>zipsByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
+              startdate=&quot;2019-04&quot;, enddate=&quot;2019-05&quot;,
+              package=&quot;basic&quot;, check.size=T)
+
+
+Continuing will download files totaling approximately 12.750557 MB. Do you want to proceed y/n: y
+Downloading 2 files
+  |========================================================================================================| 100%
+2 files downloaded to /Users/neon/filesToStack00002
+</code></pre>
+
+<p>Downloaded files can now be passed to <code>stackByTable()</code> to be 
+stacked.</p>
+
+<pre><code>stackByTable(filepath=&quot;/Users/neon/filesToStack00002&quot;)
+</code></pre>
+
+<p>For many sensor data products, download sizes can get 
+very large, and <code>stackByTable()</code> takes a long time. The 
+1-minute or 2-minute files are much larger than the 
+longer averaging intervals, so if you don&#39;t need high-
+frequency data, the <code>avg</code> input option lets you choose 
+which averaging interval to download.</p>
+
+<p>This option is only applicable to sensor (IS) data, 
+since OS data are not averaged.</p>
+
+<p>Download only the 30-minute data for single-aspirated 
+air temperature at WREF:</p>
+
+<pre><code>zipsByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
+              startdate=&quot;2019-04&quot;, enddate=&quot;2019-05&quot;,
+              package=&quot;basic&quot;, avg=30, check.size=T)
+
+
+Continuing will download files totaling approximately 2.101936 MB. Do you want to proceed y/n: y
+Downloading 17 files
+  |========================================================================================================| 100%
+17 files downloaded to /Users/neon/filesToStack00002
+</code></pre>
+
+<p>The 30-minute files can be stacked as usual, and can 
+be read into R using <code>readTableNEON()</code>:</p>
+
+<pre><code>stackByTable(filepath=&quot;/Users/neon/filesToStack00002&quot;)
+SAAT30 &lt;- readTableNEON(
+  dataFile=&#39;/Users/neon/filesToStack00002/stackedFiles/SAAT_30min.csv&#39;,
+  varFile=&#39;/Users/neon/filesToStack00002/stackedFiles/variables_00002.csv&#39;
+)
+</code></pre>
+
+<h2>Download a single zip file: getPackage()</h2>
+
+<p>If you only need a single site-month (e.g., to test code 
+you&#39;re writing), the <code>getPackage()</code> function can be used to 
+download a single zip file. Here we&#39;ll download the 
+November 2017 temperature data from HARV.</p>
+
+<pre><code>getPackage(&quot;DP1.00002.001&quot;, site_code=&quot;HARV&quot;, 
+           year_month=&quot;2017-11&quot;, package=&quot;basic&quot;)
+</code></pre>
+
+<p>The file should now be saved to your working directory.</p>
+
+<h2>Download remote sensing files: byFileAOP()</h2>
+
+<p>Remote sensing data files can be very large, and NEON remote sensing 
+(AOP) data are stored in a directory structure that makes them easier 
+to navigate. <code>byFileAOP()</code> downloads AOP files from the API while 
+preserving their directory structure. This provides a convenient way 
+to access AOP data programmatically.</p>
+
+<p>Be aware that downloads from <code>byFileAOP()</code> can take a VERY long time, 
+depending on the data you request and your connection speed. You 
+may need to run the function and then leave your machine on and 
+downloading for an extended period of time.</p>
+
+<p>Here the example download is the Ecosystem Structure data product at 
+Hop Brook (HOPB) in 2017; we use this as the example because it&#39;s a 
+relatively small year-site-product combination.</p>
+
+<pre><code>byFileAOP(&quot;DP3.30015.001&quot;, site=&quot;HOPB&quot;, 
+          year=&quot;2017&quot;, check.size=T)
+
+
+Continuing will download 36 files totaling approximately 140.3 MB . Do you want to proceed y/n: y
+trying URL &#39;https://neon-aop-product.s3.data.neonscience.org:443/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_716000_4704000_CHM.tif?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20180410T233031Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3599&amp;X-Amz-Credential=pub-internal-read%2F20180410%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=92833ebd10218f4e2440cb5ea78d1c8beac4ee4c10be5c6aeefb72d18cf6bd78&#39;
+Content type &#39;application/octet-stream&#39; length 4009489 bytes (3.8 MB)
+==================================================
+downloaded 3.8 MB
+
+(Further URLs omitted for space. Function returns a message 
+  for each URL it attempts to download from)
+
+Successfully downloaded  36  files.
+NEON_D01_HOPB_DP3_716000_4704000_CHM.tif downloaded to /Users/neon/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
+NEON_D01_HOPB_DP3_716000_4705000_CHM.tif downloaded to /Users/neon/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
+
+(Further messages omitted for space.)
+</code></pre>
+
+<p>The files should now be downloaded to a new folder in your 
+working directory.</p>
+
+<h2>Download remote sensing files for specific coordinates: byTileAOP()</h2>
+
+<p>Often when using remote sensing data, we only want data covering a
+certain area - usually the area where we have coordinated ground 
+sampling. <code>byTileAOP()</code> queries for data tiles containing a 
+specified list of coordinates. It only works for the tiled, AKA 
+mosaicked, versions of the remote sensing data, i.e. the ones with 
+data product IDs beginning with &ldquo;DP3&rdquo;.</p>
+
+<p>Here, we&#39;ll download tiles of vegetation indices data (DP3.30026.001) 
+corresponding to select observational sampling plots. For more information 
+about accessing NEON spatial data, see the 
+<a href="https://www.neonscience.org/neon-api-usage" target="_blank">
+API tutorial</a> and the in-development <a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" 
+target="_blank">
+geoNEON package</a>.</p>
+
+<p>For now, assume we&#39;ve used the API to look up the plot centroids of 
+plots SOAP_009 and SOAP_011 at the Soaproot Saddle site. You can 
+also look these up in the Spatial Data folder of the 
+<a href="https://data.neonscience.org/documents" target="_blank">
+document library</a>. 
+The coordinates of the two plots in UTMs are 298755,4101405 and 
+299296,4101461. These are 40x40m plots, so in looking for tiles 
+that contain the plots, we want to include a 20m buffer. The 
+&ldquo;buffer&rdquo; is actually a square, it&#39;s a delta applied equally to 
+both the easting and northing coordinates.</p>
+
+<pre><code>byTileAOP(dpID=&quot;DP3.30026.001&quot;, site=&quot;SOAP&quot;, 
+          year=&quot;2018&quot;, easting=c(298755,299296),
+          northing=c(4101405,4101461),
+          buffer=20)
+
+
+trying URL &#39;https://neon-aop-product.s3.data.neonscience.org:443/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices/NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20190313T225238Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20190313%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=e9ae6858242b48df0677457e31ea3d86b2f20ac2cf43d5fc02847bbaf2e1da47&#39;
+Content type &#39;application/octet-stream&#39; length 47798759 bytes (45.6 MB)
+==================================================
+downloaded 45.6 MB
+
+(Further URLs omitted for space. Function returns a message 
+  for each URL it attempts to download from)
+
+Successfully downloaded  2  files.
+NEON_D17_SOAP_DP3_298000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
+NEON_D17_SOAP_DP3_299000_4101000_VegIndices.zip downloaded to /Users/neon/DP3.30026.001/2018/FullSite/D17/2018_SOAP_3/L3/Spectrometer/VegIndices
+</code></pre>
+
+<p>The 2 tiles covering the SOAP_009 and SOAP_011 plots have<br/>
+been downloaded.</p>
+
+<h2>Convert files to GeoCSV: transformFileToGeoCSV()</h2>
+
+<p><code>transformFileToGeoCSV()</code> takes a NEON csv file, plus its 
+corresponding variables file, and writes out a new version of the 
+file with 
+<a href="http://geows.ds.iris.edu/documents/GeoCSV.pdf" target="_blank">GeoCSV</a>
+headers. This allows for compatibility with data 
+provided by 
+<a href="http://www.unavco.org/" target="_blank">UNAVCO</a> 
+and other facilities.</p>
+
+<p>Inputs to <code>transformFileToGeoCSV()</code> are the file path to the data 
+file, the file path to the variables file, and the file path where
+you want to write out the new version. It works on both single 
+site-month files and on stacked files.</p>
+
+<p>In this example, we&#39;ll convert the November 2017 temperature data<br/>
+from HARV that we downloaded with <code>getPackage()</code> earlier. First, 
+you&#39;ll need to unzip the file so you can get to the data files. 
+Then we&#39;ll select the file for the tower top, which we can 
+identify by the 050 in the VER field (see the 
+<a href="http://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
+page for more information).</p>
+
+<pre><code>transformFileToGeoCSV(&quot;~/NEON.D01.HARV.DP1.00002.001.000.050.030.SAAT_30min.2017-11.basic.20171207T181046Z.csv&quot;, 
+                      &quot;~/NEON.D01.HARV.DP1.00002.001.variables.20171207T181046Z.csv&quot;,
+                      &quot;~/SAAT_30min_geo.csv&quot;)
+</code></pre>
+
+</body>
+
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Load .csv, Setup Plots</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>Want to use plot centroid values (marking the center of a plot) in x,y format 
+to get the plot boundaries of a certain size around the centroid? This tutorial
+is for you! </p>
+
+<p>If the plot is a circle, we can generate the plot boundary using a buffer 
+function in R or a GIS program. However, creating a <strong>square</strong> 
+boundary around a centroid requires an alternate approach. This tutorial 
+presents a way to create square polygons of a given radius (referring to half 
+of the plot&#39;s width) for each plot centroid location in a dataset.</p>
+
+<p><strong>Special thanks</strong> to 
+<a href="http://stackoverflow.com/users/489704/jbaums" target="_blank"> jbaums</a>
+from StackOverflow for helping with the SpatialPolygons code!</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this activity, you will be able to: 
+
+* Create square polygons around a centroid point. 
+* Export shapefiles from R using the writeOGR() function.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Download Data
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+This data download contains several files. You will only need the SJERPlotCentroids.csv
+file for this tutorial. The path to this file is: NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv . 
+The other data files in the downloaded data directory are used for related tutorials. 
+You should set your working directory to the parent directory of the downloaded 
+data to follow the code exactly. 
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<p>Our x,y coordinate centroids come in a &ldquo;.csv&rdquo; (Comma Separated Value) file with 
+the plot ID that goes with the data. The data we are using today were collected 
+at the National Ecological Observatory Network field site at the 
+San Joaquin Experimental Range (SJER) in California. </p>
+
+<h2>Load .csv, Setup Plots</h2>
+
+<p>To work with our spatial data in R, we can use the <code>rgdal</code> package and the 
+<code>sp</code> package. Once we&#39;ve loaded these packages and set the working directory to
+the where our .csv file with the data is located, we can load our data. </p>
+
+<pre><code># load the sp and rgdal packages
+
+library(sp)
+library(rgdal)
+
+# set working directory to data folder
+#setwd(&quot;pathToDirHere&quot;)
+
+
+# read in the NEON plot centroid data 
+# `stringsAsFactors=F` ensures character strings don&#39;t import as factors
+centroids &lt;- read.csv(&quot;NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv&quot;, stringsAsFactors=FALSE)
+</code></pre>
+
+<p>Let&#39;s look at our data. This can be done several ways but one way is to view 
+the structure (<code>str()</code>) of the data. </p>
+
+<pre><code># view data structure
+str(centroids)
+
+## &#39;data.frame&#39;:    18 obs. of  5 variables:
+##  $ Plot_ID : chr  &quot;SJER1068&quot; &quot;SJER112&quot; &quot;SJER116&quot; &quot;SJER117&quot; ...
+##  $ Point   : chr  &quot;center&quot; &quot;center&quot; &quot;center&quot; &quot;center&quot; ...
+##  $ northing: num  4111568 4111299 4110820 4108752 4110476 ...
+##  $ easting : num  255852 257407 256839 256177 255968 ...
+##  $ Remarks : logi  NA NA NA NA NA NA ...
+</code></pre>
+
+<p>We can see that our data consists of five distinct types of data:</p>
+
+<ul>
+<li>Plot_ID: denotes the plot</li>
+<li>Point: denotes where the point is taken &ndash; all are centroids</li>
+<li>northing: northing coordinate for point</li>
+<li>easting: easting coordinate for point</li>
+<li>Remarks: any other remarks from those collecting the data</li>
+</ul>
+
+<p>It would be nice to have a metadata file with this .csv to confirm the coordinate
+reference system (CRS) that the points are in, however, without one, based on 
+the numbers, we can assume it is in Universal Transverse Mercator (UTM). And 
+since we know the data are from the San Joaquin Experimental Range, that is in
+UTM zone 11N. </p>
+
+<h2>Part 1: Create Plot Boundary</h2>
+
+<p>Now that we understand our centroid data file, we need to set how large our plots
+are going to be. The next piece of code sets the &ldquo;radius&rdquo;&ldquo; for the plots. 
+This radius will later be used to calculate vertex locations that define the plot 
+perimeter. </p>
+
+<p>In this case, let&#39;s use a <strong>radius of 20m</strong>. This means that the edge of each plot 
+(not the corner) is 20m from the centroid. Overall this will create a 40 m x 40 m 
+square plot. </p>
+
+<p>Units: Radius is in meters, matching the UTM CRS. If you&#39;re coordinates were in 
+lat/long or some other CRS than you&#39;d need to modify the code. </p>
+
+<p>Plot Orientation: Our code is based on simple geometry and assumes that plots 
+are oriented North-South. If you wanted a different orientation, 
+adjust the math accordingly to find the corners. </p>
+
+<pre><code># set the radius for the plots
+radius &lt;- 20 # radius in meters
+
+# define the plot edges based upon the plot radius. 
+
+yPlus &lt;- centroids$northing+radius
+xPlus &lt;- centroids$easting+radius
+yMinus &lt;- centroids$northing-radius
+xMinus &lt;- centroids$easting-radius
+</code></pre>
+
+<p>When combining the coordinates for the vertices, it is important to close the 
+polygon. This means that a square will have 5 instead of 4 vertices. The fifth 
+vertex is identical to the first vertex. Thus, by repeating the first vertex 
+coordinate (xMinus,yPlus) the polygon will be closed. </p>
+
+<p>The <code>cbind()</code> function allows use to combine or bind together data by column. Make
+sure to create the vertices in an order that makes sense. We recommend starting 
+at the NE and proceeding clockwise. </p>
+
+<pre><code># calculate polygon coordinates for each plot centroid. 
+square=cbind(xMinus,yPlus,  # NW corner
+    xPlus, yPlus,  # NE corner
+    xPlus,yMinus,  # SE corner
+    xMinus,yMinus, # SW corner
+    xMinus,yPlus)  # NW corner again - close ploygon
+</code></pre>
+
+<p>Next, we will associate the centroid plot ID, from the .csv file, with the plot 
+perimeter polygon that we create below. First, we extract the Plot_ID from our 
+data. Note that because we set <code>stringsAsFactor</code> to false when importing, we can 
+extract the Plot_IDs using the code below. If we hadn&#39;t do that, our IDs would 
+come in as factors and we&#39;d thus have to use the code
+<code>ID=as.character(centroids$Plot_ID)</code>. </p>
+
+<pre><code># Extract the plot ID information
+ID=centroids$Plot_ID
+</code></pre>
+
+<p>We are now left with two key &quot;groups&rdquo; of data:</p>
+
+<ul>
+<li>a dataframe <code>square</code> which has the points for our new 40x40m plots</li>
+<li>a list<code>ID</code> with the <code>Plot_ID</code>s for each new 40x40m plot</li>
+</ul>
+
+<p>If all we wanted to do was get these points, we&#39;d be done. But no, we want to 
+be able to create maps with our new plots as polygons and have them as spatial 
+data objects for later analyses.</p>
+
+<h2>Part 2: Create Spatial Polygons</h2>
+
+<p>Now we need to convert our dataframe <code>square</code> into a SpatialPolygon object. This
+particular step is somewhat confusing. Please consider reading up on the 
+SpatialPolygon object in R
+<a href="https://cran.r-project.org/web/packages/sp/sp.pdf" target="_blank"> in 
+the <code>sp</code> package documentation (pg 86) </a> 
+or check out this 
+<a href="http://stackoverflow.com/questions/26620373/spatialpolygons-creating-a-set-of-polygons-in-r-from-coordinates" target="_blank"> StackOverflow thread</a>. </p>
+
+<p>Two general consideration: </p>
+
+<p>First, spatial polygons require a list of lists. Each list contains the xy 
+coordinates of each vertex in the polygon - in order. It is always important 
+to include the closing vertex as we discussed above &ndash; you&#39;ll have to repeat the 
+first vertex coordinate.</p>
+
+<p>Second, we need to specify the CRS string for our new polygon. We will do this
+with a <code>proj4string</code>. We can either type in the <code>proj4string</code> (as we do below) or
+we can grab the string from another file that has CRS information.
+To do this, we&#39;d use the syntax: </p>
+
+<p><code>proj4string =CRS(as.character(FILE-NAME@crs))</code> </p>
+
+<p>For example, if we imported a GeoTIFF file called &ldquo;canopy&rdquo; that was in a 
+UTM coordinate system, we could type <code>proj4string-CRS(as.character(canopy@crs))</code>. </p>
+
+<h3>Method 1: mapply function</h3>
+
+<p>We&#39;ll do this in two different ways. The first, using the <code>mapply()</code> function
+is far more efficient. However, the function hides a bit of what is going on so
+next we&#39;ll show how it is done without the function so you understand it.</p>
+
+<pre><code># create spatial polygons from coordinates
+polys &lt;- SpatialPolygons(mapply(function(poly, id) 
+        {
+      xy &lt;- matrix(poly, ncol=2, byrow=TRUE)
+      Polygons(list(Polygon(xy)), ID=id)
+      }, 
+    split(square, row(square)), ID),
+    proj4string=CRS(as.character(&quot;+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;)))
+</code></pre>
+
+<p>Let&#39;s create a simple plot to see our new SpatialPolygon data. </p>
+
+<pre><code># plot the new polygons
+plot(polys)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polys-plot-1.png" alt=" "/></p>
+
+<p>Yay! We created polygons for all of our plots! </p>
+
+<h3>Method 2: Using loops</h3>
+
+<p>Let&#39;s do the process again with simpler R code so that we understand how the 
+process works. Keep in mind that loops are less efficient to process your data 
+but don&#39;t hide as much under the box. Once you understand how this works, we 
+recommend the <code>mapply()</code> function for your actual data processing. </p>
+
+<pre><code># First, initialize a list that will later be populated
+# a, as a placeholder, since this is temporary
+a &lt;- vector(&#39;list&#39;, length(2))
+
+# loop through each centroid value and create a polygon
+# this is where we match the ID to the new plot coordinates
+for (i in 1:nrow(centroids)) {  # for each for in object centroids
+      a[[i]]&lt;-Polygons(list(Polygon(matrix(square[i, ], ncol=2, byrow=TRUE))), ID[i]) 
+      # make it an Polygon object with the Plot_ID from object ID
+    }
+
+# convert a to SpatialPolygon and assign CRS
+polysB&lt;-SpatialPolygons(a,proj4string=CRS(as.character(&quot;+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;)))
+</code></pre>
+
+<p>Let&#39;s see if it worked with another simple plot. </p>
+
+<pre><code># plot the new polygons
+plot(polysB)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysB-plot-1.png" alt=" "/></p>
+
+<p>Good. The two methods return the same plots. We now have our new plots saved as 
+a SpatialPolygon but how do we share that with our colleagues? One way is to turn
+them into shapefiles, which can be read into R, Python, QGIS, ArcGIS, and many
+other programs. </p>
+
+<h2>Part 3: Export to Shapefile</h2>
+
+<p>Before you can export a shapefile, you need to convert the <code>SpatialPolygons</code> to a 
+<code>SpatialPolygonDataFrame</code>. Note that in this step you could add additional 
+attribute data if you wanted to! </p>
+
+<pre><code># Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
+polys.df &lt;- SpatialPolygonsDataFrame(polys, data.frame(id=ID, row.names=ID))
+</code></pre>
+
+<p>Let&#39;s check out the results before we export. And we can add color this time. </p>
+
+<pre><code>plot(polys.df, col=rainbow(50, alpha=0.5))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysdf-plot-1.png" alt=" "/></p>
+
+<p>When we want to export a spatial object from R as a shapefile, <code>writeOGR()</code> is a 
+nice function. It writes not only the shapefile, but also the associated 
+Coordinate Reference System (CRS) information as long as it is associated with 
+the spatial object (e.g., if it was identified when creating the SpatialPolygons 
+object). </p>
+
+<p>To do this we need the following arguments:</p>
+
+<ol>
+<li>the name of the spatial object (<code>polys.df</code>)</li>
+<li>file path from the current working directory for the directory where we want 
+to save our shapefile. If we want it in our current directory we can simply use <code>&#39;.&#39;</code>.
+3.the name of the new shapefile (<code>2014Plots_SJER</code>)</li>
+<li>the driver which specifies the file format (<code>ESRI Shapefile</code>)</li>
+</ol>
+
+<p>We can now export the spatial object as a shapefile.</p>
+
+<pre><code># write the shapefiles 
+writeOGR(polys.df, &#39;.&#39;, &#39;2014Plots_SJER&#39;, &#39;ESRI Shapefile&#39;)
+
+## Error in writeOGR(polys.df, &quot;.&quot;, &quot;2014Plots_SJER&quot;, &quot;ESRI Shapefile&quot;): layer exists, use a new layer name
+</code></pre>
+
+<p>And there you have it &ndash; a shapefile with a square plot boundary around your
+centroids. Bring this shapefile into QGIS or whatever GIS package you prefer 
+and have a look! </p>
+
+<p>For more on working with shapefiles in R, check out our 
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> <em>Working with Vector Data in R</em> series </a>.</p>
+
+</body>
+
+</html>

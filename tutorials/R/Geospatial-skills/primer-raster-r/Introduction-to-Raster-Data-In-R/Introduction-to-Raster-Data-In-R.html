@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>What is Raster Data?</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This activity will walk you through the fundamental principles of working 
+with raster data in R.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this activity, you will be able to:
+* Describe what a raster dataset is and its fundamental attributes.
+* Import rasters into R using the raster library.
+* Perform raster calculations in R.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster**:  install.packages(&ldquo;raster&rdquo;)
+* **rgdal**: install.packages(&ldquo;rgdal&rdquo;)
+
+### Data to Download
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+The LiDAR and imagery data used to create the rasters in this dataset were 
+collected over the San Joaquin field site located in California (NEON Domain 17) 
+and processed at <a href="https://www.neonscience.org/" target="_blank" >NEON </a> 
+headquarters. The entire dataset can be accessed by request from the NEON website. 
+
+This data download contains several files used in related tutorials. The path to 
+the files we will be using in this tutorial is:
+NEON-DS-Field-Site-Spatial-Data/SJER/. 
+You should set your working directory to the parent directory of the downloaded 
+data to follow the code exactly. 
+
+
+## Recommended Reading
+* <a href="https://www.neonscience.org/raster-res-extent-pixels-r" target="_blank"> The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> Read more about the raster package in R</a>
+
+</div>
+
+<h2>What is Raster Data?</h2>
+
+<p>Raster or &ldquo;gridded&rdquo; data are data that are saved in pixels. In the spatial world, 
+each pixel represents an area on the Earth&#39;s surface. For example in the raster 
+below, each pixel represents a particular land cover class that would be found in 
+that location in the real world. </p>
+
+<p>More on rasters in the
+<a href="https://www.neonscience.org/raster-res-extent-pixels-r"> <em>The Relationship Between Raster Resolution, Spatial extent &amp; Number of Pixels</em> tutorial</a>. </p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/NLCD06_conus_lg.gif">
+   <figcaption>The National Land Cover dataset (NLCD) is an example of a commonly used 
+raster dataset. Each pixel in the Landsat derived raster represents a land cover
+class. Source:  <a href = "https://www.mrlc.gov/"> Multi-Resolution Land Characteristics Consortium</a>.</figcaption>
+
+</figure>
+
+<p>To work with rasters in R, we need two key packages, <code>sp</code> and <code>raster</code>. 
+To install the raster package you can use <code>install.packages(&#39;raster&#39;)</code>. 
+When you install the raster package, <code>sp</code> should also install. Also install the 
+<code>rgdal</code> package <code>install.packages(&#39;rgdal&#39;)</code>. Among other things, <code>rgdal</code> will 
+allow us to export rasters to GeoTIFF format.</p>
+
+<p>Once installed we can load the packages and start working with raster data. </p>
+
+<pre><code># load the raster, sp, and rgdal packages
+library(raster)
+library(sp)
+library(rgdal)
+
+# set working directory to data folder
+#setwd(&quot;pathToDirHere&quot;)
+</code></pre>
+
+<p>Next, let&#39;s load a raster containing elevation data into our environment. And
+look at the attributes. </p>
+
+<pre><code># load raster in an R object called &#39;DEM&#39;
+DEM &lt;- raster(&quot;NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif&quot;)
+
+# look at the raster attributes. 
+DEM
+
+## class      : RasterLayer 
+## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+## names      : SJER2013_DTM
+</code></pre>
+
+<p>Notice a few things about this raster. </p>
+
+<ul>
+<li> <code>dimensions</code>: the &ldquo;size&rdquo; of the file in pixels
+
+<ul>
+<li><code>nrow</code>, <code>ncol</code>: the number of rows and columns in the data (imagine a spreadsheet or a matrix). </li>
+<li><code>ncells</code>: the total number of pixels or cells that make up the raster.</li>
+</ul></li>
+<li> <code>resolution</code>: the size of each pixel (in meters in this case). 1 meter pixels 
+means that each pixel represents a 1m x 1m area on the earth&#39;s surface.</li>
+<li> <code>extent</code>: the spatial extent of the raster. This value will be in the same 
+coordinate units as the coordinate reference system of the raster.</li>
+<li> <code>coord ref</code>: the coordinate reference system string for the raster. This 
+raster is in UTM (Universal Trans Mercator) zone 11 with a datum of WGS 84. 
+<a href="http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">More on UTM here</a>.</li>
+</ul>
+
+<h2>Work with Rasters in R</h2>
+
+<p>Now that we have the raster loaded into R, let&#39;s grab some key raster attributes.</p>
+
+<h3>Define Min/Max Values</h3>
+
+<p>By default this raster doesn&#39;t have the min or max values associated with it&#39;s attributes
+Let&#39;s change that by using the <code>setMinMax()</code> function. </p>
+
+<pre><code># calculate and save the min and max values of the raster to the raster object
+DEM &lt;- setMinMax(DEM)
+
+# view raster attributes
+DEM
+
+## class      : RasterLayer 
+## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+## names      : SJER2013_DTM 
+## values     : 228.1, 518.66  (min, max)
+</code></pre>
+
+<p>Notice the <code>values</code> is now part of the attributes and shows the min and max values
+for the pixels in the raster. What these min and max values represent depends on
+what is represented by each pixel in the raster. </p>
+
+<p>You can also view the rasters min and max values and the range of values contained
+within the pixels.</p>
+
+<pre><code>#Get min and max cell values from raster
+#NOTE: this code may fail if the raster is too large
+cellStats(DEM, min)
+
+## [1] 228.1
+
+cellStats(DEM, max)
+
+## [1] 518.66
+
+cellStats(DEM, range)
+
+## [1] 228.10 518.66
+</code></pre>
+
+<h3>View CRS</h3>
+
+<p>First, let&#39;s consider the Coordinate Reference System (CRS). </p>
+
+<pre><code>#view coordinate reference system
+DEM@crs
+
+## CRS arguments:
+##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+</code></pre>
+
+<p>This raster is located in UTM Zone 11. </p>
+
+<figure>
+  <a href="https://upload.wikimedia.org/wikipedia/commons/8/8d/Utm-zones-USA.svg">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Utm-zones-USA.svg"></a>
+  <figcaption>The UTM coordinate reference system breaks the world into 60 latitude zones.</figcaption>
+</figure>
+
+<h3>View Extent</h3>
+
+<p>If you want to know the exact boundaries of your raster that is in the <code>extent</code> 
+slot. </p>
+
+<pre><code># view raster extent
+DEM@extent
+
+## class      : Extent 
+## xmin       : 254570 
+## xmax       : 258869 
+## ymin       : 4107302 
+## ymax       : 4112362
+</code></pre>
+
+<h3>Raster Pixel Values</h3>
+
+<p>We can also create a histogram to view the distribution of values in our raster.
+Note that the max number of pixels that R will plot by default is 100,000. We
+can tell it to plot more using the <code>maxpixels</code> attribute. Be careful with this, 
+if your raster is large this can take a long time or crash your program. </p>
+
+<p>Since our raster is a digital elevation model, we know that each pixel contains 
+elevation data about our area of interest. In this case the units are meters. </p>
+
+<p>This is an easy and quick data checking tool. Are there any totally weird values?</p>
+
+<pre><code># the distribution of values in the raster
+hist(DEM, main=&quot;Distribution of elevation values&quot;, 
+     col= &quot;purple&quot;, 
+     maxpixels=22000000)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/histogram-1.png" alt=" "/></p>
+
+<p>It looks like we have a lot of land around 325m and 425m. </p>
+
+<h2>Plot Raster Data</h2>
+
+<p>Let&#39;s take a look at our raster now that we know a bit more about it. We can do
+a simple plot with the <code>plot()</code> function. </p>
+
+<pre><code># plot the raster
+# note that this raster represents a small region of the NEON SJER field site
+plot(DEM, 
+         main=&quot;Digital Elevation Model, SJER&quot;) # add title with main
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-raster-1.png" alt=" "/></p>
+
+<p>R has an <code>image()</code> function that allows you to control the way a raster is
+rendered on the screen. The <code>plot()</code> function in R has a base setting for the number
+of pixels that it will plot (100,000 pixels). The image command thus might be 
+better for rendering larger rasters.</p>
+
+<pre><code># create a plot of our raster
+image(DEM)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-1.png" alt=" "/></p>
+
+<pre><code># specify the range of values that you want to plot in the DEM
+# just plot pixels between 250 and 300 m in elevation
+image(DEM, zlim=c(250,300))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-2.png" alt=" "/></p>
+
+<pre><code># we can specify the colors too
+col &lt;- terrain.colors(5)
+image(DEM, zlim=c(250,375), main=&quot;Digital Elevation Model (DEM)&quot;, col=col)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-3.png" alt=" "/></p>
+
+<h3>Plotting with Colors</h3>
+
+<p>In the above example. <code>terrain.colors()</code> tells R to create a palette of colors 
+within the <code>terrain.colors</code> color ramp. There are other palettes that you can 
+use as well include <code>rainbow</code> and <code>heat.colors</code>. </p>
+
+<ul>
+<li><a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">More on color palettes in R here.</a></li>
+<li><a href="http://www.r-bloggers.com/color-palettes-in-r/" target="_blank">Another good post on colors.</a></li>
+<li><p><a href="http://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf" target="_blank">RColorBrewer is another powerful tool to create sets of colors.</a></p>
+
+<p><div id="ds-challenge" markdown="1"></p>
+
+<h3>Challenge: Plotting Rasters</h3></li>
+</ul>
+
+<p>Explore colors more: </p>
+
+<ul>
+<li>What happens if you change the number of colors in the <code>terrain.colors()</code> function?</li>
+<li>What happens if you change the <code>zlim</code> values in the <code>image()</code> function?</li>
+<li>What are the other attributes that you can specify when using the <code>image()</code> function?</li>
+</ul>
+
+<p></div></p>
+
+<h2>Breaks and Colorbars in R</h2>
+
+<p>A digital elevation model (DEM) is an example of a continuous raster. It 
+contains elevation values for a range. For example, elevations values in a 
+DEM might include any set of values between 200 m and 500 m. Given this range, 
+you can plot DEM pixels using a gradient of colors. </p>
+
+<p>By default, R will assign the gradient of colors uniformly across the full 
+range of values in the data. In our case, our DEM has values between 250 and 500. 
+However, we can adjust the &ldquo;breaks&rdquo; which represent the numeric locations where 
+the colors change if we want too.</p>
+
+<pre><code># add a color map with 5 colors
+col=terrain.colors(5)
+
+# add breaks to the colormap (6 breaks = 5 segments)
+brk &lt;- c(250, 300, 350, 400, 450, 500)
+
+plot(DEM, col=col, breaks=brk, main=&quot;DEM with more breaks&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-with-breaks-1.png" alt=" "/></p>
+
+<p>We can also customize the legend appearance. </p>
+
+<pre><code># First, expand right side of clipping rectangle to make room for the legend
+# turn xpd off
+par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
+
+# Second, plot w/ no legend
+plot(DEM, col=col, breaks=brk, main=&quot;DEM with a Custom (but flipped) Legend&quot;, legend = FALSE)
+
+# Third, turn xpd back on to force the legend to fit next to the plot.
+par(xpd = TRUE)
+
+# Fourth, add a legend - &amp; make it appear outside of the plot
+legend(par()$usr[2], 4110600,
+        legend = c(&quot;lowest&quot;, &quot;a bit higher&quot;, &quot;middle ground&quot;, &quot;higher yet&quot;, &quot;highest&quot;), 
+        fill = col)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/legend-play-1.png" alt=" "/></p>
+
+<p>Notice that the legend is in reverse order in the previous plot. Let’s fix that.
+We need to both reverse the order we have the legend laid out and reverse the 
+the color fill with the <code>rev()</code> colors. </p>
+
+<pre><code># Expand right side of clipping rect to make room for the legend
+par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+#DEM with a custom legend
+plot(DEM, col=col, breaks=brk, main=&quot;DEM with a Custom Legend&quot;,legend = FALSE)
+#turn xpd back on to force the legend to fit next to the plot.
+par(xpd = TRUE)
+#add a legend - but make it appear outside of the plot
+legend( par()$usr[2], 4110600,
+        legend = c(&quot;Highest&quot;, &quot;Higher yet&quot;, &quot;Middle&quot;,&quot;A bit higher&quot;, &quot;Lowest&quot;), 
+        fill = rev(col))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/flip-legend-1.png" alt=" "/></p>
+
+<p>Try the code again but only make one of the changes &ndash; reverse order or reverse
+colors&ndash; what happens? </p>
+
+<p>The raster plot now inverts the elevations! This is a good reason to understand 
+your data so that a simple visualization error doesn&#39;t have you reversing the 
+slope or some other error. </p>
+
+<p>We can add a custom color map with fewer breaks as well.</p>
+
+<pre><code>#add a color map with 4 colors
+col=terrain.colors(4)
+#add breaks to the colormap (6 breaks = 5 segments)
+brk &lt;- c(200, 300, 350, 400,500)
+plot(DEM, col=col, breaks=brk, main=&quot;DEM with fewer breaks&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/add-color-map-1.png" alt=" "/></p>
+
+<p>A discrete dataset has a set of unique categories or classes. One example could 
+be land use classes. The example below shows elevation zones generated using the 
+same DEM.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/DEM_DiscreteLegend.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/DEM_DiscreteLegend.png"></a>
+    <figcaption>A DEM with discrete classes. In this case, the classes relate to regions of elevation values.</figcaption>
+</figure>
+
+<h2>Basic Raster Math</h2>
+
+<p>We can also perform calculations on our raster. For instance, we could multiply
+all values within the raster by 2.</p>
+
+<pre><code>#multiple each pixel in the raster by 2
+DEM2 &lt;- DEM * 2
+
+DEM2
+
+## class      : RasterLayer 
+## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : SJER2013_DTM 
+## values     : 456.2, 1037.32  (min, max)
+
+#plot the new DEM
+plot(DEM2, main=&quot;DEM with all values doubled&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/raster-math-1.png" alt=" "/></p>
+
+<h2>Cropping Rasters in R</h2>
+
+<p>You can crop rasters in R using different methods. You can crop the raster directly 
+drawing a box in the plot area. To do this, first plot the raster. Then define 
+the crop extent by clicking twice: </p>
+
+<ol>
+<li>Click in the UPPER LEFT hand corner where you want the crop 
+box to begin. </li>
+<li>Click again in the LOWER RIGHT hand corner to define where the box ends.</li>
+</ol>
+
+<p>You&#39;ll see a red box on the plot. NOTE that this is a manual process that can be
+used to quickly define a crop extent.</p>
+
+<pre><code>#plot the DEM
+plot(DEM)
+#Define the extent of the crop by clicking on the plot
+cropbox1 &lt;- drawExtent()
+#crop the raster, then plot the new cropped raster
+DEMcrop1 &lt;- crop(DEM, cropbox1)
+
+#plot the cropped extent
+plot(DEMcrop1)
+</code></pre>
+
+<p>You can also manually assign the extent coordinates to be used to crop a raster. 
+We&#39;ll need the extent defined as (<code>xmin</code>, <code>xmax</code>, <code>ymin</code> , <code>ymax</code>) to do this. 
+This is how we&#39;d crop using a GIS shapefile (with a rectangular shape)</p>
+
+<pre><code>#define the crop extent
+cropbox2 &lt;-c(255077.3,257158.6,4109614,4110934)
+#crop the raster
+DEMcrop2 &lt;- crop(DEM, cropbox2)
+#plot cropped DEM
+plot(DEMcrop2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/cropDEMManual-1.png" alt=" "/></p>
+
+<p><div id="ds-challenge" markdown="1"></p>
+
+<h3>Challenge: Plot a Digital Surface Model</h3>
+
+<p>Use what you&#39;ve learned to open and plot a Digital Surface Model. </p>
+
+<ul>
+<li>Create an R object called <code>DSM</code> from the raster: <code>DigitalSurfaceModel/SJER2013_DSM.tif</code>. </li>
+<li>Convert the raster data from m to feet. What is that conversion again? Oh, right 1m = ~3.3ft. </li>
+<li>Plot the <code>DSM</code> in feet using a custom color map. </li>
+<li>Create numeric breaks that make sense given the distribution of the data. 
+Hint, your breaks might represent <code>high elevation</code>, <code>medium elevation</code>, 
+<code>low elevation</code>. 
+</div></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/challenge-code-name-1.png" alt=" "/></p>
+
+<h2>Image (RGB) Data in R</h2>
+
+<p>Go to our tutorial 
+<a href="image-raster-data-r" target="_blank"><em>Image Raster Data in R - An Intro</em> </a>
+to learn more about working with image formatted rasters in R.</p>
+
+</body>
+
+</html>

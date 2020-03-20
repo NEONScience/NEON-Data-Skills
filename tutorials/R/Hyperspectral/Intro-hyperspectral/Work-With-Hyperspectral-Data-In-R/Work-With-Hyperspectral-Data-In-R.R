@@ -1,4 +1,4 @@
-## ----install-load-library, results="hide"----------------------------------------------------------------
+## ----install-load-library, results="hide"-------------------------------------------------
 
 # Load `raster` and `rhdf5` packages and read NIS data into R
 library(raster)
@@ -14,12 +14,12 @@ setwd(wd)
 f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 
-## ----view-file-strux, eval=FALSE, comment=NA-------------------------------------------------------------
+## ----view-file-strux, eval=FALSE, comment=NA----------------------------------------------
 # look at the HDF5 file structure 
 View(h5ls(f,all=T))
 
 
-## ----read-band-wavelength-attributes---------------------------------------------------------------------
+## ----read-band-wavelength-attributes------------------------------------------------------
 
 # get information about the wavelengths of this dataset
 wavelengthInfo <- h5readAttributes(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
@@ -27,7 +27,7 @@ wavelengthInfo
 
 
 
-## ----read-band-wavelengths-------------------------------------------------------------------------------
+## ----read-band-wavelengths----------------------------------------------------------------
 # read in the wavelength information from the HDF5 file
 wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 head(wavelengths)
@@ -35,7 +35,7 @@ tail(wavelengths)
 
 
 
-## ----get-reflectance-shape-------------------------------------------------------------------------------
+## ----get-reflectance-shape----------------------------------------------------------------
 
 # First, we need to extract the reflectance metadata:
 reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
@@ -53,7 +53,7 @@ nBands
 
 
 
-## ----get-reflectance-shape-2-----------------------------------------------------------------------------
+## ----get-reflectance-shape-2--------------------------------------------------------------
 # Extract or "slice" data for band 9 from the HDF5 file
 b9 <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
 
@@ -62,7 +62,7 @@ class(b9)
 
 
 
-## ----convert-to-matrix-----------------------------------------------------------------------------------
+## ----convert-to-matrix--------------------------------------------------------------------
 
 # convert from array to matrix by selecting only the first band
 b9 <- b9[1,,]
@@ -72,7 +72,7 @@ class(b9)
 
 
 
-## ----read-attributes-plot--------------------------------------------------------------------------------
+## ----read-attributes-plot-----------------------------------------------------------------
     
 # look at the metadata for the reflectance dataset
 h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data")
@@ -86,7 +86,7 @@ image(log(b9))
 
 
 
-## ----hist-data-------------------------------------------------------------------------------------------
+## ----hist-data----------------------------------------------------------------------------
 
 # Plot range of reflectance values as a histogram to view range
 # and distribution of values.
@@ -99,7 +99,7 @@ hist(b9, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
 
 
-## ----set-values-NA---------------------------------------------------------------------------------------
+## ----set-values-NA------------------------------------------------------------------------
 
 # there is a no data value in our raster - let's define it
 myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
@@ -113,13 +113,13 @@ image(b9)
 
 
 
-## ----plot-log--------------------------------------------------------------------------------------------
+## ----plot-log-----------------------------------------------------------------------------
 
 image(log(b9))
 
 
 
-## ----transpose-data--------------------------------------------------------------------------------------
+## ----transpose-data-----------------------------------------------------------------------
 
 # We need to transpose x and y values in order for our 
 # final image to plot properly
@@ -127,7 +127,7 @@ b9 <- t(b9)
 image(log(b9), main="Transposed Image")
 
 
-## ----define-CRS------------------------------------------------------------------------------------------
+## ----define-CRS---------------------------------------------------------------------------
 
 # Extract the EPSG from the h5 dataset
 myEPSG <- h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
@@ -155,7 +155,7 @@ image(log(b9r),
 
 
 
-## ----define-extent---------------------------------------------------------------------------------------
+## ----define-extent------------------------------------------------------------------------
 # Grab the UTM coordinates of the spatial extent
 xMin <- reflInfo$Spatial_Extent_meters[1]
 xMax <- reflInfo$Spatial_Extent_meters[2]
@@ -174,7 +174,7 @@ b9r
 
 
 
-## ----plot-colors-raster----------------------------------------------------------------------------------
+## ----plot-colors-raster-------------------------------------------------------------------
 
 # let's change the colors of our raster and adjust the zlims 
 col <- terrain.colors(25)
@@ -188,7 +188,7 @@ image(b9r,
 
 
 
-## ----write-raster,  eval=FALSE, comment=NA---------------------------------------------------------------
+## ----write-raster,  eval=FALSE, comment=NA------------------------------------------------
 
 # write out the raster as a geotiff
 writeRaster(b9r,

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Read Wavelength Values</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Extract and plot a single spectral signature from an HDF5 file.
+* Work with groups and datasets within an HDF5 file.
+
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### R Libraries to Install:
+
+* **rhdf5**: install.packages(&ldquo;BiocManager&rdquo;), BiocManager::install(&ldquo;rhdf5&rdquo;)
+* **plyr**: install.packages(&lsquo;plyr&rsquo;)
+* **ggplot2**: install.packages(&lsquo;ggplot2&rsquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
+ R - Adapted from Software Carpentry.</a>
+
+
+### Data to Download
+{% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
+
+***
+{% include/_greyBox-wd-rscript.html %}
+
+***
+### Recommended Skills
+
+For this tutorial, you should be comfortable reading data from a HDF5 file and 
+have a general familiarity with hyperspectral data. If you aren&rsquo;t familiar with 
+these steps already, we highly recommend you work through the 
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
+*Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
+before moving on to this tutorial.
+
+</div> 
+
+<p>Everything on our planet reflects electromagnetic radiation from the Sun, and 
+different types of land cover often have dramatically different refelectance 
+properties across the spectrum. One of the most powerful aspects of the NEON 
+Imaging Spectrometer (a.k.a. NEON&#39;s hyperspectral imager) is that it can 
+accurately measure these reflectance properties at a very high spectral resolution. 
+When you plot the reflectance values across the observed spectrum, you will see 
+that different land cover types (vegetation, pavement, bare soils, etc.) have 
+distinct patterns in their reflectance values, a feature that we call the 
+&#39;spectral signature&#39; of a particular land cover class. </p>
+
+<p>In this tutorial, we will extract a single pixel&#39;s worth of reflectance 
+values to plot a spectral signature for that pixel. In order to plot the 
+spectral signature for a given pixel in this hyperspectral dataset, we will 
+need to extract the reflectance values for that pixel, and pair those with the 
+wavelengths that are represented in those measurements. We will also need to 
+adjust the reflectance values by the scaling factor that is saved as an 
+&#39;attribute&#39; in the HDF5 file. First, let&#39;s start by defining the working 
+directory and reading in the example dataset.</p>
+
+<pre><code># Call required packages
+library(rhdf5)
+library(plyr)
+library(ggplot2)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd &lt;- &quot;~/Documents/data/&quot; #This will depend on your local environment
+setwd(wd)
+</code></pre>
+
+<p>Now, we need to access the H5 file.</p>
+
+<pre><code># Define the file name to be opened
+f &lt;- paste0(wd,&quot;NEON_hyperspectral_tutorial_example_subset.h5&quot;)
+# look at the HDF5 file structure 
+h5ls(f,all=T) 
+
+##                                           group                     name         ltype
+## 0                                             /                     SJER H5L_TYPE_HARD
+## 1                                         /SJER              Reflectance H5L_TYPE_HARD
+## 2                             /SJER/Reflectance                 Metadata H5L_TYPE_HARD
+## 3                    /SJER/Reflectance/Metadata        Coordinate_System H5L_TYPE_HARD
+## 4  /SJER/Reflectance/Metadata/Coordinate_System Coordinate_System_String H5L_TYPE_HARD
+## 5  /SJER/Reflectance/Metadata/Coordinate_System                EPSG Code H5L_TYPE_HARD
+## 6  /SJER/Reflectance/Metadata/Coordinate_System                 Map_Info H5L_TYPE_HARD
+## 7  /SJER/Reflectance/Metadata/Coordinate_System                    Proj4 H5L_TYPE_HARD
+## 8                    /SJER/Reflectance/Metadata            Spectral_Data H5L_TYPE_HARD
+## 9      /SJER/Reflectance/Metadata/Spectral_Data               Wavelength H5L_TYPE_HARD
+## 10                            /SJER/Reflectance         Reflectance_Data H5L_TYPE_HARD
+##    corder_valid corder cset       otype num_attrs  dclass          dtype  stype rank
+## 0         FALSE      0    0   H5I_GROUP         0                                  0
+## 1         FALSE      0    0   H5I_GROUP         5                                  0
+## 2         FALSE      0    0   H5I_GROUP         0                                  0
+## 3         FALSE      0    0   H5I_GROUP         0                                  0
+## 4         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
+## 5         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
+## 6         FALSE      0    0 H5I_DATASET         1  STRING     H5T_STRING SIMPLE    1
+## 7         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
+## 8         FALSE      0    0   H5I_GROUP         0                                  0
+## 9         FALSE      0    0 H5I_DATASET         3   FLOAT H5T_IEEE_F64LE SIMPLE    1
+## 10        FALSE      0    0 H5I_DATASET        13 INTEGER  H5T_STD_I32LE SIMPLE    3
+##                dim          maxdim
+## 0                                 
+## 1                                 
+## 2                                 
+## 3                                 
+## 4                1               1
+## 5                1               1
+## 6                1               1
+## 7                1               1
+## 8                                 
+## 9              107             107
+## 10 107 x 500 x 500 107 x 500 x 500
+</code></pre>
+
+<h2>Read Wavelength Values</h2>
+
+<p>Next, let&#39;s read in the wavelength center associated with each band in the HDF5 
+file. We will later match these with the reflectance values and show both in 
+our final spectral signature plot.</p>
+
+<pre><code># read in the wavelength information from the HDF5 file
+wavelengths &lt;- h5read(f,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
+</code></pre>
+
+<h2>Extract Z-dimension data slice</h2>
+
+<p>Next, we will extract all reflectance values for one pixel. This makes up the 
+spectral signature or profile of the pixel. To do that, we&#39;ll use the <code>h5read()</code> 
+function. Here we pick an arbitrary pixel at <code>(100,35)</code>, and use the <code>NULL</code> 
+value to select <em>all</em> bands from that location.</p>
+
+<pre><code># extract all bands from a single pixel
+aPixel &lt;- h5read(f,&quot;/SJER/Reflectance/Reflectance_Data&quot;,index=list(NULL,100,35))
+
+# The line above generates a vector of reflectance values.
+# Next, we reshape the data and turn them into a dataframe
+b &lt;- adply(aPixel,c(1))
+
+# create clean data frame
+aPixeldf &lt;- b[2]
+
+# add wavelength data to matrix
+aPixeldf$Wavelength &lt;- wavelengths
+
+head(aPixeldf)
+
+##    V1 Wavelength
+## 1 720   381.5437
+## 2 337   401.5756
+## 3 336   421.6075
+## 4 399   441.6394
+## 5 406   461.6713
+## 6 426   481.7032
+</code></pre>
+
+<h2>Scale Factor</h2>
+
+<p>Then, we can pull the spatial attributes that we&#39;ll need to adjust the reflectance 
+values. Often, large raster data contain floating point (values with decimals) information.
+However, floating point data consume more space (yield a larger file size) compared
+to integer values. Thus, to keep the file sizes smaller, the data will be scaled
+by a factor of 10, 100, 10000, etc. This <code>scale factor</code> will be noted in the data attributes.</p>
+
+<pre><code># grab scale factor from the Reflectance attributes
+reflectanceAttr &lt;- h5readAttributes(f,&quot;/SJER/Reflectance/Reflectance_Data&quot; )
+
+scaleFact &lt;- reflectanceAttr$Scale_Factor
+
+# add scaled data column to DF
+aPixeldf$scaled &lt;- (aPixeldf$V1/as.vector(scaleFact))
+
+# make nice column names
+names(aPixeldf) &lt;- c(&#39;Reflectance&#39;,&#39;Wavelength&#39;,&#39;ScaledReflectance&#39;)
+head(aPixeldf)
+
+##   Reflectance Wavelength ScaledReflectance
+## 1         720   381.5437            0.0720
+## 2         337   401.5756            0.0337
+## 3         336   421.6075            0.0336
+## 4         399   441.6394            0.0399
+## 5         406   461.6713            0.0406
+## 6         426   481.7032            0.0426
+</code></pre>
+
+<h2>Plot Spectral Signature</h2>
+
+<p>Now we&#39;re ready to plot our spectral signature!</p>
+
+<pre><code>ggplot(data=aPixeldf)+
+   geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+   xlab(&quot;Wavelength (nm)&quot;)+
+   ylab(&quot;Reflectance&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Plot-Hyperspectral-Spectra/rfigs/plot-spectra-1.png" alt=" "/></p>
+
+</body>
+
+</html>

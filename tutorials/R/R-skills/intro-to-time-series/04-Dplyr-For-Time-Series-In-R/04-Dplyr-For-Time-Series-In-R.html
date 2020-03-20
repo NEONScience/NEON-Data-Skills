@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Introduction to dplyr</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>In this tutorial, we will use the <code>group_by</code>, <code>summarize</code>and <code>mutate</code> functions
+in the <code>dplyr</code> package to efficiently manipulate atmospheric data collected at
+the NEON Harvard Forest Field Site. We will use pipes to efficiently perform
+multiple tasks within a single chunk of code.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+ * Explain several ways to manipulate data using functions in the dplyr
+ package in R.
+ * Use group-by(), summarize(), and mutate() functions. 
+ * Write and understand R code with pipes for cleaner, efficient coding.
+ * Use the year() function from the lubridate package to extract year from a
+ date-time class variable. 
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded on
+your computer to complete this tutorial.
+
+### Install R Packages
+* **lubridate:** install.packages(&ldquo;lubridate&rdquo;)
+* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
+* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+{% include/dataSubsets/_data_Met-Time-Series.html %}
+
+****
+{% include/_greyBox-wd-rscript.html %}
+
+****
+
+### Additional Resources
+
+* NEON Data Skills tutorial on 
+<a href="https://www.neonscience.org/grepl-filter-piping-dplyr-r" target="_blank"> spatial data and piping with dplyr</a>  
+* Data Carpentry lesson&rsquo;s on 
+<a href="http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html" target="_blank">Aggregating and Analyzing Data with dplyr</a> 
+* <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> dplyr package description</a>.
+* <a href="http://blog.rstudio.org/2014/01/17/introducing-dplyr/" target="_blank">RStudio Introduction to dplyr</a>
+
+</div>
+
+<h2>Introduction to dplyr</h2>
+
+<p>The <code>dplyr</code> package simplifies and increases efficiency of complicated yet
+commonly performed data &ldquo;wrangling&rdquo; (manipulation / processing) tasks. It uses
+the <code>data_frame</code> object as both an input and an output.</p>
+
+<h3>Load the Data</h3>
+
+<p>We will need the <code>lubridate</code> and the <code>dplyr</code> packages to complete this tutorial.</p>
+
+<p>We will also use the 15-minute average atmospheric data subsetted to 2009-2011 
+for the NEON Harvard Forest Field Site. This subset was created in the
+<a href="https://www.neonscience.org/dc-subset-data-no-data-values-r" target="_blank"><em>Subsetting Time Series Data</em> tutorial</a>.</p>
+
+<p>If this object isn&#39;t already created, please load the <code>.csv</code> version: 
+<code>NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv</code>. Be
+sure to convert the date-time column to a POSIXct class after the <code>.csv</code> is
+loaded. </p>
+
+<pre><code># it&#39;s good coding practice to load packages at the top of a script
+
+library(lubridate) # work with dates
+library(dplyr)     # data manipulation (filter, summarize, mutate)
+library(ggplot2)   # graphics
+library(gridExtra) # tile several plots next to each other
+library(scales)
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+
+# 15-min Harvard Forest met data, 2009-2011
+harMet15.09.11&lt;- read.csv(
+  file=&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv&quot;,
+  stringsAsFactors = FALSE
+  )
+# convert datetime to POSIXct
+harMet15.09.11$datetime&lt;-as.POSIXct(harMet15.09.11$datetime,
+                    format = &quot;%Y-%m-%d %H:%M&quot;,
+                    tz = &quot;America/New_York&quot;)
+</code></pre>
+
+<h2>Explore The Data</h2>
+
+<p>Remember that we are interested in the drivers of phenology including - 
+air temperature, precipitation, and PAR (photosynthetic active radiation - or
+the amount of visible light). Using the 15-minute averaged data, we could easily
+plot each of these variables.  </p>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/15-min-plots-1.png" alt=" "/></p>
+
+<p>However, summarizing the data at a coarser scale (e.g., daily, weekly, by
+season, or by year) may be easier to visually interpret during initial stages of
+data exploration. </p>
+
+<h3>Extract Year from a Date-Time Column</h3>
+
+<p>To summarize by year efficiently, it is helpful to have a year column that we
+can use to <code>group</code> by. We can use the <code>lubridate</code> function <code>year()</code> to extract
+the year only from a <code>date-time</code> class R column. </p>
+
+<pre><code># create a year column
+harMet15.09.11$year &lt;- year(harMet15.09.11$datetime)
+</code></pre>
+
+<p>Using <code>names()</code> we see that we now have a <code>year</code> column in our <code>data_frame</code>.</p>
+
+<pre><code># check to make sure it worked
+names(harMet15.09.11)
+
+##  [1] &quot;X&quot;        &quot;datetime&quot; &quot;jd&quot;       &quot;airt&quot;     &quot;f.airt&quot;   &quot;rh&quot;       &quot;f.rh&quot;     &quot;dewp&quot;    
+##  [9] &quot;f.dewp&quot;   &quot;prec&quot;     &quot;f.prec&quot;   &quot;slrr&quot;     &quot;f.slrr&quot;   &quot;parr&quot;     &quot;f.parr&quot;   &quot;netr&quot;    
+## [17] &quot;f.netr&quot;   &quot;bar&quot;      &quot;f.bar&quot;    &quot;wspd&quot;     &quot;f.wspd&quot;   &quot;wres&quot;     &quot;f.wres&quot;   &quot;wdir&quot;    
+## [25] &quot;f.wdir&quot;   &quot;wdev&quot;     &quot;f.wdev&quot;   &quot;gspd&quot;     &quot;f.gspd&quot;   &quot;s10t&quot;     &quot;f.s10t&quot;   &quot;year&quot;
+
+str(harMet15.09.11$year)
+
+##  int [1:105108] 2009 2009 2009 2009 2009 2009 2009 2009 2009 2009 ...
+</code></pre>
+
+<p>Now that we have added a year column to our <code>data_frame</code>, we can use <code>dplyr</code> to 
+summarize our data.</p>
+
+<h2>Manipulate Data using dplyr</h2>
+
+<p>Let&#39;s start by extracting a yearly air temperature value for the Harvard Forest
+data. To calculate a yearly average, we need to:</p>
+
+<ol>
+<li>Group our data by year.</li>
+<li>Calculate the mean precipitation value for each group (ie for each year).</li>
+</ol>
+
+<p>We will use <code>dplyr</code> functions <code>group_by</code> and <code>summarize</code> to perform these steps.</p>
+
+<pre><code># Create a group_by object using the year column 
+HARV.grp.year &lt;- group_by(harMet15.09.11, # data_frame object
+                          year) # column name to group by
+
+# view class of the grouped object
+class(HARV.grp.year)
+
+## [1] &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+</code></pre>
+
+<p>The <code>group_by</code> function creates a &ldquo;grouped&rdquo; object. We can then use this
+grouped object to quickly calculate summary statistics by group - in this case,
+year. For example, we can count how many measurements were made each year using
+the <code>tally()</code> function. We can then use the <code>summarize</code> function to calculate
+the mean air temperature value each year.</p>
+
+<pre><code># how many measurements were made each year?
+tally(HARV.grp.year)
+
+## # A tibble: 3 x 2
+##    year     n
+##   &lt;int&gt; &lt;int&gt;
+## 1  2009 35036
+## 2  2010 35036
+## 3  2011 35036
+
+# what is the mean airt value per year?
+summarize(HARV.grp.year, 
+          mean(airt)   # calculate the annual mean of airt
+          ) 
+
+##   mean(airt)
+## 1         NA
+</code></pre>
+
+<p>Why did this return a <code>NA</code> value for years 2009 and 2010? We know there are some
+values for both years. Let&#39;s check our data for <code>NoData</code> values.</p>
+
+<pre><code># are there NoData values?
+sum(is.na(HARV.grp.year$airt))
+
+## [1] 2
+
+# where are the no data values
+# just view the first 6 columns of data
+HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
+
+## # A tibble: 2 x 6
+##        X datetime               jd  airt f.airt    rh
+##    &lt;int&gt; &lt;dttm&gt;              &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;
+## 1 158360 2009-07-08 14:15:00   189    NA M         NA
+## 2 203173 2010-10-18 09:30:00   291    NA M         NA
+</code></pre>
+
+<p>It appears as if there are two <code>NoData</code> values (in 2009 and 2010) that are
+causing R to return a <code>NA</code> for the mean for those years. As we learned
+previously, we can use <code>na.rm</code> to tell R to ignore those values and calculate
+the final mean value.</p>
+
+<pre><code># calculate mean but remove NA values
+summarize(HARV.grp.year, 
+          mean(airt, na.rm = TRUE)
+          )
+
+##   mean(airt, na.rm = TRUE)
+## 1                 8.467904
+</code></pre>
+
+<p>Great! We&#39;ve now used the <code>group_by</code> function to create groups for each year 
+of our data. We then calculated a summary mean value per year using <code>summarize</code>.</p>
+
+<h3>dplyr Pipes</h3>
+
+<p>The above steps utilized several steps of R code and created 1 R object - 
+<code>HARV.grp.year</code>. We can combine these steps using <code>pipes</code> in the <code>dplyr</code> 
+package.</p>
+
+<p>We can use <code>pipes</code> to string functions or processing steps together. The output 
+of each step is fed directly into the next step using the syntax: <code>%&gt;%</code>. This 
+means we don&#39;t need to save the output of each intermediate step as a new R
+object.</p>
+
+<p>A few notes about piping syntax:</p>
+
+<ul>
+<li>A pipe begins with the object name that we will be manipulating, in our case
+<code>harMet15.09.11</code>.</li>
+<li>It then links that object with first manipulation step using <code>%&gt;%</code>.</li>
+<li>Finally, the first function is called, in our case <code>group_by(year)</code>. Note
+that because we specified the object name in step one above, we can just use the
+column name</li>
+</ul>
+
+<p>So, we have: <code>harMet15.09.11 %&gt;% group_by(year)</code></p>
+
+<ul>
+<li>We can then add an additional function (or more functions!) to our pipe. For
+example, we can tell R to <code>tally</code> or count the number of measurements per
+year.</li>
+</ul>
+
+<p><code>harMet15.09.11 %&gt;% group_by(year) %&gt;% tally()</code></p>
+
+<p>Let&#39;s try it!</p>
+
+<pre><code># how many measurements were made a year?
+harMet15.09.11 %&gt;% 
+  group_by(year) %&gt;%  # group by year
+  tally() # count measurements per year
+
+## # A tibble: 3 x 2
+##    year     n
+##   &lt;int&gt; &lt;int&gt;
+## 1  2009 35036
+## 2  2010 35036
+## 3  2011 35036
+</code></pre>
+
+<p>Piping allows us to efficiently perform operations on our <code>data_frame</code> in that:</p>
+
+<ol>
+<li>It allows us to condense our code, without naming intermediate steps.</li>
+<li>The dplyr package is optimized to ensure fast processing!</li>
+</ol>
+
+<p>We can use pipes to summarize data by year too:</p>
+
+<pre><code># what was the annual air temperature average 
+year.sum &lt;- harMet15.09.11 %&gt;% 
+  group_by(year) %&gt;%  # group by year
+  summarize(mean(airt, na.rm=TRUE))
+
+# what is the class of the output?
+year.sum
+
+##   mean(airt, na.rm = TRUE)
+## 1                 8.467904
+
+# view structure of output
+str(year.sum)
+
+## &#39;data.frame&#39;:    1 obs. of  1 variable:
+##  $ mean(airt, na.rm = TRUE): num 8.47
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Using Pipes
+Use piping to create a data_frame called jday.avg that contains the average 
+airt per Julian day (harMet15.09.11$jd). Plot the output using qplot.
+
+</div>
+
+<pre><code>## Error in names(jday.avg) &lt;- c(&quot;jday&quot;, &quot;meanAirTemp&quot;): &#39;names&#39; attribute [2] must be the same length as the vector [1]
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/pipe-demo-1.png" alt=" "/></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:**  Older dplyr versions used the %.%
+syntax to designate a pipe. Pipes are sometimes referred to as chains. 
+</div>
+
+<h2>Other dplyr Functions</h2>
+
+<p><code>dplyr</code> works based on a series of <em>verb</em> functions that allow us to manipulate
+the data in different ways: </p>
+
+<ul>
+<li><code>filter()</code> &amp; <code>slice()</code>: filter rows based on values in specified columns</li>
+<li><code>group-by()</code>: group all data by a column</li>
+<li><code>arrange()</code>: sort data by values in specified columns </li>
+<li><code>select()</code> &amp; <code>rename()</code>: view and work with data from only specified columns</li>
+<li><code>distinct()</code>: view and work with only unique values from specified columns</li>
+<li><code>mutate()</code> &amp; <code>transmute()</code>: add new data to a data frame</li>
+<li><code>summarise()</code>: calculate the specified summary statistics</li>
+<li><code>sample_n()</code> &amp; <code>sample_frac()</code>: return a random sample of rows</li>
+</ul>
+
+<p>(List modified from the CRAN <code>dplyr</code> 
+<a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf" target="_blank"> package description</a>. )</p>
+
+<p>The syntax for all <code>dplyr</code> functions is similar: </p>
+
+<ul>
+<li>the first argument is the target <code>data_frame</code>, </li>
+<li>the subsequent arguments dictate what to do with that <code>data_frame</code> and </li>
+<li>the output is a new data frame. </li>
+</ul>
+
+<h3>Group by a Variable (or Two)</h3>
+
+<p>Our goal for this tutorial is to view drivers of annual phenology patterns.
+Specifically, we want to explore daily average temperature throughout the year.
+This means we need to calculate average temperature, for each day, across three
+years. To do this we can use the <code>group_by()</code> function as we did earlier.
+However this time, we can group by two variables: year and Julian Day (jd) as follows:</p>
+
+<p><code>group_by(year, jd)</code></p>
+
+<p>Let&#39;s begin by counting or <code>tally</code>ing the total measurements per Julian day (or
+year day) using the <code>group_by()</code> function and pipes. </p>
+
+<pre><code>harMet15.09.11 %&gt;%         # use the harMet15.09.11 data_frame
+  group_by(year, jd) %&gt;%   # group data by Year &amp; Julian day
+  tally()                  # tally (count) observations per jd / year
+
+## # A tibble: 1,096 x 3
+## # Groups:   year [3]
+##     year    jd     n
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2009     1    96
+##  2  2009     2    96
+##  3  2009     3    96
+##  4  2009     4    96
+##  5  2009     5    96
+##  6  2009     6    96
+##  7  2009     7    96
+##  8  2009     8    96
+##  9  2009     9    96
+## 10  2009    10    96
+## # … with 1,086 more rows
+</code></pre>
+
+<p>The output shows we have 96 values for each day. Is that what we expect? </p>
+
+<pre><code>24*4  # 24 hours/day * 4 15-min data points/hour
+
+## [1] 96
+</code></pre>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:**  If Julian days weren&rsquo;t already in our 
+data, we could use the yday() function from the lubridate package 
+to create a new column containing Julian day 
+values. More information in this
+<a href="https://www.neonscience.org/julian-day-conversion-r" target="_blank"> NEON Data Skills tutorial</a>. 
+</div>
+
+<h3>Summarize by Group</h3>
+
+<p>We can use <code>summarize()</code> function to calculate a summary output value for each
+&ldquo;group&rdquo; - in this case Julian day per year. Let&#39;s calculate the mean air
+temperature for each Julian day per year. Note that we are still using
+<code>na.rm=TRUE</code> to tell R to skip <code>NA</code> values.</p>
+
+<pre><code>harMet15.09.11 %&gt;%         # use the harMet15.09.11 data_frame
+  group_by(year, jd) %&gt;%   # group data by Year &amp; Julian day
+  summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
+
+##   mean_airt
+## 1  8.467904
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Summarization & Calculations with dplyr
+We can use sum to calculate the total rather than mean value for each Julian
+Day. Using this information, do the following:
+
+1. Calculate total prec for each Julian Day over the 3 years - name your
+data_frame total.prec. 
+2. Create a plot of Daily Total Precipitation for 2009-2011. 
+3. Add a title and x and y axis labels.
+4. If you use qplot to create your plot, use
+colour=as.factor(total.prec$year) to color the data points by year.
+
+</div>
+
+<pre><code>## Error: Aesthetics must be either length 1 or the same as the data (1): colour
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-answer-1.png" alt=" "/></p>
+
+<h3>Mutate - Add data_frame Columns to dplyr Output</h3>
+
+<p>We can use the <code>mutate()</code> function of <code>dplyr</code> to add additional columns of
+information to a data_frame. For instance, we added the year column
+independently at the very beginning of the tutorial. However, we can add the
+year using a <code>dplyr</code> pipe that also summarizes our data. To do this, we would
+use the syntax:</p>
+
+<p><code>mutate(year2 = year(datetime))</code></p>
+
+<p>year2 is the name of the column that will be added to the output <code>dplyr</code>
+data_frame.</p>
+
+<pre><code>harMet15.09.11 %&gt;%
+  mutate(year2 = year(datetime)) %&gt;%
+  group_by(year2, jd) %&gt;%
+  summarize(mean_airt = mean(airt, na.rm = TRUE))
+
+##   mean_airt
+## 1  8.467904
+</code></pre>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** The mutate function is similar to
+transform() in base R. However,mutate() allows us to create and 
+immediately use the variable (year2).
+</div>
+
+<h2>Save dplyr Output as data_frame</h2>
+
+<p>We can save output from a <code>dplyr</code> pipe as a new R object to use for quick
+plotting. </p>
+
+<pre><code>harTemp.daily.09.11&lt;-harMet15.09.11 %&gt;%
+                    mutate(year2 = year(datetime)) %&gt;%
+                    group_by(year2, jd) %&gt;%
+                    summarize(mean_airt = mean(airt, na.rm = TRUE))
+
+head(harTemp.daily.09.11)
+
+##   mean_airt
+## 1  8.467904
+</code></pre>
+
+<h3>Add Date-Time To dplyr Output</h3>
+
+<p>In the challenge above, we created a plot of daily precipitation data using
+<code>qplot</code>. However, the x-axis ranged from 0-366 (Julian Days for the year). It
+would have been easier to create a meaningful plot across all three years if we
+had a continuous date variable in our <code>data_frame</code> representing the year and
+date for each summary value. </p>
+
+<p>We can add the the <code>datetime</code> column value to our <code>data_frame</code> by adding an
+additional argument to the <code>summarize()</code> function. In this case, we will add the
+<code>first</code> datetime value that R encounters when summarizing data by group as
+follows:</p>
+
+<p><code>datetime = first(datetime)</code></p>
+
+<p>Our new summarize statement in our pipe will look like this:</p>
+
+<p><code>summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))</code></p>
+
+<p>Let&#39;s try it!</p>
+
+<pre><code># add in a datatime column
+harTemp.daily.09.11 &lt;- harMet15.09.11 %&gt;%
+  mutate(year3 = year(datetime)) %&gt;%
+  group_by(year3, jd) %&gt;%
+  summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
+
+# view str and head of data
+str(harTemp.daily.09.11)
+
+## &#39;data.frame&#39;:    1 obs. of  2 variables:
+##  $ mean_airt: num 8.47
+##  $ datetime : POSIXct, format: &quot;2009-01-01&quot;
+
+head(harTemp.daily.09.11)
+
+##   mean_airt   datetime
+## 1  8.467904 2009-01-01
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Combined dplyr Skills
+
+1. Plot daily total precipitation from 2009-2011 as we did in the previous
+challenge. However this time, use the new syntax that you learned (mutate and
+summarize to add a datetime column to your output data_frame).
+2. Create a data_frame of the average *monthly* air temperature for 2009-2011.
+Name the new data frame harTemp.monthly.09.11. Plot your output.
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-2.png" alt=" "/></p>
+
+</body>
+
+</html>

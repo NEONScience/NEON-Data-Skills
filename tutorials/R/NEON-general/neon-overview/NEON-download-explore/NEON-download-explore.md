@@ -1,0 +1,392 @@
+---
+syncID: 5f9c4048a27749c19ee8ecfc78806363
+title: "Download and Explore NEON Data"
+description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
+dateCreated: '2018-11-07'
+authors: [Claire K. Lunch]
+contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
+estimatedTime: 1 - 2 hours
+packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
+topics: data-management, rep-sci
+languageTool: R, API
+code1: R/download-explore/NEON-download-explore.R
+tutorialSeries:
+urlTitle: download-explore-neon-data
+---
+
+This tutorial covers downloading NEON data, using the Data Portal and 
+the neonUtilities R package, as well as basic instruction in beginning to 
+explore and work with the downloaded data, including guidance in 
+navigating data documentation.
+
+## NEON data
+There are 3 basic categories of NEON data:
+
+1. Remote sensing (AOP) - Data collected by the airborne observation platform, 
+e.g. LIDAR, surface reflectance
+1. Observational (OS) - Data collected by a human in the field, or in an 
+analytical laboratory, e.g. beetle identification, foliar isotopes
+1. Instrumentation (IS) - Data collected by an automated, streaming sensor, e.g. 
+net radiation, soil carbon dioxide. This category also includes the eddy 
+covariance (EC) data, which are processed and structured in a unique way, distinct 
+from other instrumentation data (see <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Tutorial for EC data</a> for details).
+
+This lesson covers all three types of data. The download procedures are 
+similar for all types, but data navigation differs significantly by type.
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+* Download NEON data using the neonUtilities package.
+* Understand downloaded data sets and load them into R for analyses.
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **devtools**: Needed to install packages from GitHub
+* **neonUtilities**: Basic functions for accessing NEON data
+* **raster**: Raster package; needed for remote sensing data
+* **geoNEON**: For working with NEON spatial data
+* **rhdf5**: HDF5 package; optional, needed only for eddy covariance data
+
+Some of these packages are on CRAN and can be installed by 
+`install.packages()`, others need to be installed from 
+other repositories:
+
+
+    install.packages("devtools")
+    install.packages("neonUtilities")
+    install.packages("raster")
+    devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+    install.packages("BiocManager")
+    BiocManager::install("rhdf5")
+
+
+### Additional Resources
+
+* <a href="https://www.neonscience.org/neonDataStackR" target="_blank">Tutorial for neonUtilities.</a> Some overlap with this tutorial but goes into more detail about the neonUtilities package.
+* <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial for using neonUtilities from a Python environment.</a>
+* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
+* <a href="https://github.com/NEONScience/NEON-geolocation/geoNEON" target="_blank">GitHub repository for geoNEON</a>
+
+</div>
+
+## Getting started: Download data from the Portal and load packages
+
+Go to the 
+<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> 
+and download some data! Almost any IS or OS data product can be used for this 
+section of the tutorial, but we will proceed assuming you've downloaded 
+Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
+results, download three months of data from two sites. The downloaded file 
+should be a zip file named NEON_par.zip. For this tutorial, we will be using 
+PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.
+
+Now switch over to R and load all the packages installed above.
+
+
+    # load packages
+    library(neonUtilities)
+    library(geoNEON)
+    library(raster)
+    library(rhdf5)
+    
+    # Set global option to NOT convert all character variables to factors
+    options(stringsAsFactors=F)
+
+
+## Stack the downloaded data files: stackByTable()
+
+The `stackByTable()` function will unzip and join the files in the 
+downloaded zip file.
+
+
+    # Modify the file path to match the path to your zip file
+    stackByTable("~/Downloads/NEON_par.zip")
+
+In the same directory as the zipped file, you should now have an unzipped 
+folder of the same name. When you open this you will see a new folder 
+called **stackedFiles**, which should contain five files: 
+**PARPAR_30min.csv**, **PARPAR_1min.csv**, **sensor_positions.csv**, 
+**variables.csv**, and **readme.txt**.
+
+We'll look at these files in more detail below.
+
+## Download files and load directly to R: loadByProduct()
+
+In the section above, we downloaded a .zip file from the data portal to
+our downloads folder, then used the stackByTable() function to transform
+those data into a usable format. However, there is a faster way to load
+data directly into the R Global Environment using `loadByProduct()`.
+
+The most popular function in `neonUtilities` is `loadByProduct()`. 
+This function downloads data from the NEON API, merges the site-by-month 
+files, and loads the resulting data tables into the R environment, 
+assigning each data type to the appropriate R class. This is a popular 
+choice because it ensures you're always working with the latest data, 
+and it ends with ready-to-use tables in R. However, if you use it in
+a workflow you run repeatedly, keep in mind it will re-download the 
+data every time.
+
+`loadByProduct()` works on most observational (OS) and sensor (IS) data, 
+but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
+data, and some of the data tables in the microbial data products. For 
+functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
+sections in this tutorial. For functions that work with SAE data, see 
+the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.
+
+The inputs to `loadByProduct()` control which data to download and how 
+to manage the processing:
+
+* `dpID`: the data product ID, e.g. DP1.00002.001
+* `site`: defaults to "all", meaning all sites with available data; 
+can be a vector of 4-letter NEON site codes, e.g. 
+`c("HARV","CPER","ABBY")`.
+* `startdate` and `enddate`: defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.
+* `package`: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
+* `avg`: defaults to "all", to download all data; or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data.
+* `savepath`: the file path you want to download to; defaults to the 
+working directory.
+* `check.size`: T or F: should the function pause before downloading 
+data and warn you about the size of your download? Defaults to T; if 
+you are using this function within a script or batch process you 
+will want to set it to F.
+* `nCores`: Number of cores to use for parallel processing. Defaults 
+to 1, i.e. no parallelization.
+* `forceParallel`: If the data volume to be processed does not meet 
+minimum requirements to run in parallel, this overrides.
+
+The `dpID` is the data product identifier of the data you want to 
+download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">
+Explore Data Products page</a>.
+It will be in the form DP#.#####.###
+
+Here, we'll download woody vegetation structure data from 
+Wind River Experimental Forest (WREF).
+
+
+    veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
+                  package="expanded", check.size=T)
+
+    ## Error in zipsByProduct(dpID = dpID, site = site, startdate = startdate, : Download halted.
+
+The object returned by `loadByProduct()` is a named list of data 
+frames. To work with each of them, select them from the list 
+using the `$` operator.
+
+
+    names(veg_str)
+    View(veg_str$vst_perplotperyear)
+
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can use the 
+`list2env()` function:
+
+
+    list2env(veg_str, .GlobalEnv)
+
+    ## Error in list2env(veg_str, .GlobalEnv): object 'veg_str' not found
+
+If you want to be able to close R and come back to these data without 
+re-downloading, you'll want to save the tables locally. We recommend 
+also saving the variables file, both so you'll have it to refer to, and 
+so you can use it with `readTableNEON()` (see below).
+
+
+    write.csv(vst_apparentindividual, 
+              "~/Downloads/vst_apparentindividual.csv", 
+              row.names=F)
+    write.csv(variables_10098, 
+              "~/Downloads/variables_10098.csv", 
+              row.names=F)
+
+But, if you want to save files locally and load them into R (or another 
+platform) each time you run a script, instead of downloading from the API 
+every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
+instead of `loadByProduct()`, as we did in the first section above. Details
+can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+
+## Download remote sensing data: byFileAOP() and byTileAOP()
+
+Remote sensing data files are very large, so downloading them 
+can take a long time. `byFileAOP()` and `byTileAOP()` enable 
+easier programmatic downloads, but be aware it can take a very 
+long time to download large amounts of data.
+
+Input options for the AOP functions are:
+
+* `dpID`: the data product ID, e.g. DP1.00002.001
+* `site`: the 4-letter code of a single site, e.g. HARV
+* `year`: the 4-digit year to download
+* `savepath`: the file path you want to download to; defaults to the 
+working directory
+* `check.size`: T or F: should the function pause before downloading 
+data and warn you about the size of your download? Defaults to T; if 
+you are using this function within a script or batch process you 
+will want to set it to F.
+* `easting`: `byTileAOP()` only. Vector of easting UTM coordinates whose 
+corresponding tiles you want to download
+* `northing`: `byTileAOP()` only. Vector of northing UTM coordinates 
+whose corresponding tiles you want to download
+* `buffer`: `byTileAOP()` only. Size in meters of buffer to include 
+around coordinates when deciding which tiles to download
+
+Here, we'll download one tile of Ecosystem structure (Canopy Height 
+Model) (DP3.30015.001) from WREF in 2017.
+
+
+    byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
+              easting=580000, northing=5075000, savepath="~/Downloads")
+
+    ## Error in byTileAOP("DP3.30015.001", site = "WREF", year = "2017", check.size = T, : Download halted.
+
+In the directory indicated in `savepath`, you should now have a folder 
+named `DP3.30015.001` with several nested subfolders, leading to a tif 
+file of a canopy height model tile. We'll look at this in more detail 
+below.
+
+## Navigate data downloads: IS
+
+Let's take a look at the PAR data we downloaded earlier. We'll 
+read in the 30-minute file using the function `readTableNEON()`, 
+which uses the `variables.csv` file to assign data types to each 
+column of data:
+
+
+    par30 <- readTableNEON(
+      dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+      varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+    View(par30)
+
+The first four columns are added by `stackByTable()` when it merges 
+files across sites, months, and tower heights. The final column, 
+`publicationDate`, is the date-time stamp indicating when the data 
+were published. This can be used as an indicator for whether data 
+have been updated since the last time you downloaded them.
+
+The remaining columns are described by the variables file:
+
+
+    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+    View(parvar)
+
+The variables file shows you the definition and units for each column 
+of data.
+
+Now that we know what we're looking at, let's plot PAR from the top 
+tower level:
+
+
+    plot(PARMean~startDateTime, 
+         data=par30[which(par30$verticalPosition=="080"),],
+         type="l")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-1.png)
+
+Looks good! The sun comes up and goes down every day, and some days 
+are cloudy. If you want to dig in a little deeper, try plotting PAR 
+from lower tower levels on the same axes to see light attenuation 
+through the canopy.
+
+## Navigate data downloads: OS
+
+Let's take a look at the vegetation structure data. OS data products 
+are simple in that the data generally tabular, and data volumes are 
+lower than the other NEON data types, but they are complex in that 
+almost all consist of multiple tables containing information collected 
+at different times in different ways. Complexity in working with OS 
+data involves bringing those data together.
+
+As with the IS data, the variables file can tell you more about 
+the data. OS data also come with a validation file, which contains 
+information about the validation and controlled data entry that 
+were applied to the data:
+
+
+    View(variables_10098)
+    
+    View(validation_10098)
+
+OS data products each come with a Data Product User Guide, 
+which can be downloaded with the data or accessed from the 
+document library on the Data Portal. Here, we'll use 
+information that can be found in the User Guide about 
+how to (1) calculate stem locations for each tree and (2) how 
+to join the mapping and individual data.
+
+First, use the `geoNEON` package to calculate stem locations:
+
+
+    names(vst_mappingandtagging) #this object was created using list2env() above
+
+    ## Error in eval(expr, envir, enclos): object 'vst_mappingandtagging' not found
+
+    vegmap <- geoNEON::getLocTOS(vst_mappingandtagging, "vst_mappingandtagging")
+
+    ## Error in data.frame(data): object 'vst_mappingandtagging' not found
+
+    names(vegmap)
+
+    ## Error in eval(expr, envir, enclos): object 'vegmap' not found
+
+And now merge the mapping data with the individual measurements. 
+`individualID` is the linking variable, the others are included 
+to avoid having duplicate columns.
+
+
+    veg <- merge(vst_apparentindividual, vegmap, by=c("individualID","namedLocation",
+                                      "domainID","siteID","plotID"))
+
+    ## Error in merge(vst_apparentindividual, vegmap, by = c("individualID", : object 'vst_apparentindividual' not found
+
+Using the merged data, now we can map the stems in plot 85 
+(plot chosen at random). Note that the coordinates are in 
+meters but stem diameters are in cm. Furthermore, the symbols()
+function wants the radii, not the diameters, of the circles, so
+we divide by 2 to convert diameters to radii after unit conversion.
+
+
+    symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
+            veg$adjNorthing[which(veg$plotID=="WREF_085")], 
+            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
+            xlab="Easting", ylab="Northing", inches=F)
+
+    ## Error in symbols(veg$adjEasting[which(veg$plotID == "WREF_085")], veg$adjNorthing[which(veg$plotID == : object 'veg' not found
+
+## Navigate data downloads: AOP
+
+To work with AOP data, the best bet is the `raster` package. 
+It has functionality for most analyses you might want to do.
+
+We'll use it to read in the tile we downloaded:
+
+
+    chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+
+The `raster` package includes plotting functions:
+
+
+    plot(chm, col=topo.colors(6))
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-aop-1.png)
+
+
+

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>The Data Approach</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial explores working with date and time field in R. We will overview
+the differences between <code>as.Date</code>, <code>POSIXct</code> and <code>POSIXlt</code> as used to convert
+a date / time field in character (string) format to a date-time format that is 
+recognized by R. This conversion supports efficient plotting, subsetting and
+analysis of time series data.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Describe various date-time classes and data structure in R. 
+* Explain the difference between POSIXct and POSIXlt data classes are and 
+why POSIXct may be preferred for some tasks. 
+* Convert a column containing date-time information in character
+format to a date-time R class.
+* Convert a date-time column to different date-time classes. 
+* Write out a date-time class object in different ways (month-day,
+month-day-year, etc). 
+
+## Things You’ll Need To Complete This Tutorials
+You will need the most current version of R and, preferably, RStudio loaded on
+your computer to complete this tutorial.
+
+### Install R Packages
+* **lubridate:** install.packages(&ldquo;lubridate&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+{% include/dataSubsets/_data_Met-Time-Series.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+</div>
+
+<h2>The Data Approach</h2>
+
+<p><a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank"><em>Intro to Time Series Data in R</em> tutorial</a>
+we imported a time series dataset in <code>.csv</code> format into R. We learned how to 
+quickly plot these data by converting the date column to an R <code>Date</code> class.
+In this tutorial we will explore how to work with a column that contains both a
+date AND a time stamp.</p>
+
+<p>We will use functions from both base R and the <code>lubridate</code> package to work 
+with date-time data classes.</p>
+
+<pre><code># Load packages required for entire script
+library(lubridate)  #work with dates
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+</code></pre>
+
+<h2>Import CSV File</h2>
+
+<p>First, let&#39;s import our time series data. We are interested in temperature, 
+precipitation and photosynthetically active radiation (PAR) - metrics that are 
+strongly associated with vegetation green-up and brown down (phenology or 
+phenophase timing). We will use the <code>hf001-10-15min-m.csv</code> file 
+that contains atmospheric data for the NEON Harvard Forest field site,
+aggregated at 15-minute intervals. </p>
+
+<pre><code># Load csv file of 15 min meteorological data from Harvard Forest
+# Factors=FALSE so strings, series of letters/words/numerals, remain characters
+harMet_15Min &lt;- read.csv(
+  file=&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv&quot;,
+  stringsAsFactors = FALSE)
+</code></pre>
+
+<h2>Date and Time Data</h2>
+
+<p>Let&#39;s revisit the data structure of our <code>harMet_15Min</code> object. What is the class
+of the <code>date-time</code> column?</p>
+
+<pre><code># view column data class
+class(harMet_15Min$datetime)
+
+## [1] &quot;character&quot;
+
+# view sample data
+head(harMet_15Min$datetime)
+
+## [1] &quot;2005-01-01T00:15&quot; &quot;2005-01-01T00:30&quot; &quot;2005-01-01T00:45&quot; &quot;2005-01-01T01:00&quot;
+## [5] &quot;2005-01-01T01:15&quot; &quot;2005-01-01T01:30&quot;
+</code></pre>
+
+<p>Our <code>datetime</code> column is stored as a <code>character</code> class. We need to convert it to 
+date-time class. What happens when we use the <code>as.Date</code> method that we learned
+about in the 
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank"><em>Intro to Time Series Data in R</em>  tutorial</a>?</p>
+
+<pre><code># convert column to date class
+dateOnly_HARV &lt;- as.Date(harMet_15Min$datetime)
+
+# view data
+head(dateOnly_HARV)
+
+## [1] &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot;
+</code></pre>
+
+<p>When we use <code>as.Date</code>, we lose the time stamp. </p>
+
+<h3>Explore Date and Time Classes</h3>
+
+<h4>R - Date Class - as.Date</h4>
+
+<p>As we just saw, the <code>as.Date</code> format doesn&#39;t store any time information. When we
+use the<code>as.Date</code> method to convert a date stored as a character class to an R
+<code>date</code> class, it will ignore all values after the date string.</p>
+
+<pre><code># Convert character data to date (no time) 
+myDate &lt;- as.Date(&quot;2015-10-19 10:15&quot;)   
+str(myDate)
+
+##  Date[1:1], format: &quot;2015-10-19&quot;
+
+# what happens if the date has text at the end?
+myDate2 &lt;- as.Date(&quot;2015-10-19Hello&quot;)   
+str(myDate2)
+
+##  Date[1:1], format: &quot;2015-10-19&quot;
+</code></pre>
+
+<p>As we can see above the <code>as.Date()</code> function will convert the characters that it
+recognizes to be part of a date into a date class and ignore all other 
+characters in the string. </p>
+
+<h4>R - Date-Time - The POSIX classes</h4>
+
+<p>If we have a column containing both date and time we need to use a class that
+stores both date AND time. Base R offers two closely related classes for date
+and time: <code>POSIXct</code> and <code>POSIXlt</code>. </p>
+
+<h4>POSIXct</h4>
+
+<p>The <code>as.POSIXct</code> method converts a date-time string into a <code>POSIXct</code> class. </p>
+
+<pre><code># Convert character data to date and time.
+timeDate &lt;- as.POSIXct(&quot;2015-10-19 10:15&quot;)   
+str(timeDate)
+
+##  POSIXct[1:1], format: &quot;2015-10-19 10:15:00&quot;
+
+timeDate
+
+## [1] &quot;2015-10-19 10:15:00 MDT&quot;
+</code></pre>
+
+<p><code>as.POSIXct</code> stores both a date and time with an associated time zone. The
+default time zone selected, is the time zone that your computer is set to which
+is most often your local time zone. </p>
+
+<p><code>POSIXct</code> stores date and time in seconds with the number of seconds beginning
+at 1 January 1970. Negative numbers are used to store dates prior to 1970. 
+Thus, the <code>POSIXct</code> format stores each date and time a single value in units of
+seconds. Storing the data this way, optimizes use in <code>data.frames</code> and speeds up
+computation, processing and conversion to other formats. </p>
+
+<pre><code># to see the data in this &#39;raw&#39; format, i.e., not formatted according to the 
+# class type to show us a date we recognize, use the `unclass()` function.
+unclass(timeDate)
+
+## [1] 1445271300
+## attr(,&quot;tzone&quot;)
+## [1] &quot;&quot;
+</code></pre>
+
+<p>Here we see the number of seconds from 1 January 1970 to 9 October 2015
+(<code>1445271300</code>). Also, we see that a time zone (<code>tzone</code>) is associated with the value in seconds. </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** The unclass method in R allows you
+to view how a particular R object is stored.
+</div>
+
+<h4>POSIXlt</h4>
+
+<p>The <code>POSIXct</code> format is optimized for storage and computation. However, humans 
+aren&#39;t quite as computationally efficient as computers! Also, we often want to 
+quickly extract some portion of the data (e.g., months). The <code>POSIXlt</code> class 
+stores date and time information in a format that we are used to seeing (e.g., 
+second, min, hour, day of month, month, year, numeric day of year, etc). </p>
+
+<pre><code># Convert character data to POSIXlt date and time
+timeDatelt&lt;- as.POSIXlt(&quot;2015-10-19 10:15&quot;)  
+str(timeDatelt)
+
+##  POSIXlt[1:1], format: &quot;2015-10-19 10:15:00&quot;
+
+timeDatelt
+
+## [1] &quot;2015-10-19 10:15:00 MDT&quot;
+
+unclass(timeDatelt)
+
+## $sec
+## [1] 0
+## 
+## $min
+## [1] 15
+## 
+## $hour
+## [1] 10
+## 
+## $mday
+## [1] 19
+## 
+## $mon
+## [1] 9
+## 
+## $year
+## [1] 115
+## 
+## $wday
+## [1] 1
+## 
+## $yday
+## [1] 291
+## 
+## $isdst
+## [1] 1
+## 
+## $zone
+## [1] &quot;MDT&quot;
+## 
+## $gmtoff
+## [1] NA
+</code></pre>
+
+<p>When we convert a string to <code>POSIXlt</code>, and view it in R, it still looks
+similar to the <code>POSIXct</code> format. However, <code>unclass()</code> shows us that the data are
+stored differently. The <code>POSIXlt</code> class stores the hour, minute, second, day,
+month, and year separately.</p>
+
+<h4>Months in POSIXlt</h4>
+
+<p><code>POSIXlt</code> has a few quirks. First, the month values stored in the <code>POSIXlt</code>
+object use <code>zero-based indexing</code>. This means that month #1 (January) is stored
+as 0, and month #2 (February) is stored as 1. Notice in the output above,
+October is stored as the 9th month (<code>$mon = 9</code>).</p>
+
+<h4>Years in POSIXlt</h4>
+
+<p>Years are also stored differently in the <code>POSIXlt</code> class. Year values are stored
+using a base index value of 1900. Thus, 2015 is stored as 115 (<code>$year = 115</code> </p>
+
+<ul>
+<li>115 years since 1900).</li>
+</ul>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** To learn more about how R stores
+information within date-time and other objects check out the R documentation
+by using ? (e.g., ?POSIXlt). NOTE: you can use this same syntax to learn
+about particular functions (e.g., ?ggplot).  
+</div>
+
+<p>Having dates classified as separate components makes <code>POSIXlt</code> computationally
+more resource intensive to use in <code>data.frames</code>. This slows things down! We will
+thus use <code>POSIXct</code> for this tutorial.  </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** There are other R packages that
+support date-time data classes, including readr, zoo and chron.  
+</div>
+
+<h2>Convert to Date-time Class</h2>
+
+<p>When we convert from a character to a date-time class we need to tell R how 
+the date and time information are stored in each string. To do this, we can use
+<code>format=</code>. Let&#39;s have a look at one of our date-time strings to determine it&#39;s 
+format.</p>
+
+<pre><code># view one date-time field
+harMet_15Min$datetime[1]
+
+## [1] &quot;2005-01-01T00:15&quot;
+</code></pre>
+
+<p>Looking at the results above, we see that our data are stored in the format:
+Year-Month-Day &ldquo;T&rdquo; Hour:Minute (<code>2005-01-01T00:15</code>). We can use this information 
+to populate our <code>format</code> string using the following designations for the
+components of the date-time data:</p>
+
+<ul>
+<li>%Y - year </li>
+<li>%m - month</li>
+<li>%d - day</li>
+<li>%H:%M - hours:minutes</li>
+</ul>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** A list of options for date-time format
+is available in the strptime function help: help(strptime). Check it out!   
+</div>
+
+<p>The &ldquo;T&rdquo; inserted into the middle of <code>datetime</code> isn&#39;t a standard character for 
+date and time, however we can tell R where the character is so it can ignore 
+it and interpret the correct date and time as follows:
+<code>format=&quot;%Y-%m-%dT%H:%M&quot;</code>.  </p>
+
+<pre><code># convert single instance of date/time in format year-month-day hour:min:sec
+as.POSIXct(harMet_15Min$datetime[1],format=&quot;%Y-%m-%dT%H:%M&quot;)
+
+## [1] &quot;2005-01-01 00:15:00 MST&quot;
+
+## The format of date-time MUST match the specified format or the data will not
+# convert; see what happens when you try it a different way or without the &quot;T&quot;
+# specified
+as.POSIXct(harMet_15Min$datetime[1],format=&quot;%d-%m-%Y%H:%M&quot;)
+
+## [1] NA
+
+as.POSIXct(harMet_15Min$datetime[1],format=&quot;%Y-%m-%d%H:%M&quot;)
+
+## [1] NA
+</code></pre>
+
+<p>Using the syntax we&#39;ve learned, we can convert the entire <code>datetime</code> column into 
+<code>POSIXct</code> class.</p>
+
+<pre><code>new.date.time &lt;- as.POSIXct(harMet_15Min$datetime,
+                            format=&quot;%Y-%m-%dT%H:%M&quot; #format time
+                            )
+
+# view output
+head(new.date.time)
+
+## [1] &quot;2005-01-01 00:15:00 MST&quot; &quot;2005-01-01 00:30:00 MST&quot; &quot;2005-01-01 00:45:00 MST&quot;
+## [4] &quot;2005-01-01 01:00:00 MST&quot; &quot;2005-01-01 01:15:00 MST&quot; &quot;2005-01-01 01:30:00 MST&quot;
+
+# what class is the output
+class(new.date.time)
+
+## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;
+</code></pre>
+
+<h3>About Time Zones</h3>
+
+<p>Above, we successfully converted our data into a date-time class. However, what 
+<code>timezone</code> is the output <code>new.date.time</code> object that we created using? </p>
+
+<p><code>2005-04-15 03:30:00 MDT</code></p>
+
+<p>It appears as if our data were assigned MDT (which is the timezone of the
+computer where these tutorials were processed originally - in Colorado - Mountain
+Time). However, we know from the metadata, explored in the
+<a href="https://www.neonscience.org/dc-metadata-importance-eml-r" target="_blank"><em>Why Metadata Are Important: How to Work with Metadata in Text &amp; EML Format</em> tutorial</a>,
+that these data were stored in Eastern Standard Time.</p>
+
+<h3>Assign Time Zone</h3>
+
+<p>When we convert a date-time formatted column to <code>POSIXct</code> format, we need to
+assign an associated <strong>time zone</strong>. If we don&#39;t assign a time zone,R will 
+default to the local time zone that is defined on your computer. 
+There are individual designations for different time zones and time zone 
+variants (e.g., does the time occur during daylight savings time). </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Codes for time zones can be found in this 
+<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">time zone table</a>. 
+</div>
+
+<p>The code for the Eastern time zone that is the closest match to the NEON Harvard
+Forest field site is <code>America/New_York</code>. Let&#39;s convert our <code>datetime</code> field 
+one more time, and define the associated timezone (<code>tz=</code>).</p>
+
+<pre><code># assign time zone to just the first entry
+as.POSIXct(harMet_15Min$datetime[1],
+            format = &quot;%Y-%m-%dT%H:%M&quot;,
+            tz = &quot;America/New_York&quot;)
+
+## [1] &quot;2005-01-01 00:15:00 EST&quot;
+</code></pre>
+
+<p>The output above, shows us that the time zone is now correctly set as EST.  </p>
+
+<h3>Convert to Date-time Data Class</h3>
+
+<p>Now, using the syntax that we learned above, we can convert the entire
+<code>datetime</code> column to a <code>POSIXct</code> class.</p>
+
+<pre><code># convert to POSIXct date-time class
+harMet_15Min$datetime &lt;- as.POSIXct(harMet_15Min$datetime,
+                                format = &quot;%Y-%m-%dT%H:%M&quot;,
+                                tz = &quot;America/New_York&quot;)
+
+# view structure and time zone of the newly defined datetime column
+str(harMet_15Min$datetime)
+
+##  POSIXct[1:376800], format: &quot;2005-01-01 00:15:00&quot; &quot;2005-01-01 00:30:00&quot; &quot;2005-01-01 00:45:00&quot; ...
+
+tz(harMet_15Min$datetime)
+
+## [1] &quot;America/New_York&quot;
+</code></pre>
+
+<p>Now that our <code>datetime</code> data are properly identified as a <code>POSIXct</code> date-time
+data class we can continue on and look at the patterns of precipitation,
+temperature, and PAR through time. </p>
+
+</body>
+
+</html>

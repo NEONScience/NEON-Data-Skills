@@ -105,21 +105,9 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
     # Load `raster` and `rhdf5` packages and read NIS data into R
     library(raster)
-
-    ## Loading required package: sp
-
     library(rhdf5)
     library(rgdal)
-
-    ## rgdal: version: 1.4-8, (SVN revision 845)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 2.4.2, released 2019/06/28
-    ##  Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rgdal/gdal
-    ##  GDAL binary built with GEOS: FALSE 
-    ##  Loaded PROJ.4 runtime: Rel. 5.2.0, September 15th, 2018, [PJ_VERSION: 520]
-    ##  Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rgdal/proj
-    ##  Linking to sp version: 1.3-2
-
+    
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
     wd <- "~/Documents/data/" #This will depend on your local environment
@@ -179,6 +167,9 @@ HDF5 file. Let's start by learning about the wavelengths described within this f
     ## 
     ## $Units
     ## [1] "nanometers"
+    ## 
+    ## $dim
+    ## [1] 107
 
 Next, we can use the `h5read` function to read the data contained within the
 HDF5 file. Let's read in the wavelengths of the band centers:

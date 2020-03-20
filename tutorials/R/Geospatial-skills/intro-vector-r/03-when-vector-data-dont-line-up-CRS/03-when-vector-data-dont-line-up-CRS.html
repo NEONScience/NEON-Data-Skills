@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Working With Spatial Data From Different Sources</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>In this tutorial, we will create a base map of our study site using a United States 
+state and country boundary accessed from the 
+<a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html" target="_blank"> United States Census Bureau</a>. 
+We will learn how to map vector data that are in different <code>CRS</code> and thus 
+don&#39;t line up on a map. </p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Identify the CRS of a spatial dataset.
+* Differentiate between with geographic vs. projected coordinate reference systems.
+* Use the proj4 string format which is one format used used to 
+store & reference the CRS of a spatial object.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Data to Download
+{% include/dataSubsets/_data_Site-Layout-Files.html %}
+
+{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Working With Spatial Data From Different Sources</h2>
+
+<p>To support a project, we often need to gather spatial datasets for from 
+different sources and/or data that cover different spatial <code>extents</code>. Spatial
+data from different sources and that cover different extents are often in
+different Coordinate Reference Systems (CRS). </p>
+
+<p>Some reasons for data being in different CRS include:</p>
+
+<ol>
+<li>The data are stored in a particular CRS convention used by the data
+provider which might be a federal agency, or a state planning office.</li>
+<li>The data are stored in a particular CRS that is customized to a region.
+For instance, many states prefer to use a <strong>State Plane</strong> projection customized
+for that state.</li>
+</ol>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    </a>
+    <figcaption>Maps of the United States using data in different projections. 
+    Notice the differences in shape associated with each different projection.
+    These differences are a direct result of the calculations used to &ldquo;flatten&rdquo; 
+    the data onto a 2-dimensional map. Often data are stored purposefully in a
+    particular projection that optimizes the relative shape and size of
+    surrounding geographic boundaries (states, counties, countries, etc). 
+    Source: M. Corey, 
+    <a href="https://source.opennews.org/articles/choosing-right-map-projection/" target="_blank"> opennews.org</a> 
+    </figcaption>
+</figure>
+
+<p>Check out this short video from 
+<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank">Buzzfeed</a> 
+highlighting how map projections can make continents 
+seems proportionally larger or smaller than they actually are!</p>
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+
+<p>In this tutorial we will learn how to identify and manage spatial data 
+in different projections. We will learn how to <code>reproject</code> the data so that they
+are in the same projection to support plotting / mapping. Note that these skills
+are also required for any geoprocessing / spatial analysis. Data need to be in
+the same CRS to ensure accurate results.</p>
+
+<p>We will use the <code>rgdal</code> and <code>raster</code> libraries in this tutorial. </p>
+
+<pre><code># load packages
+library(rgdal)  # for vector work; sp package should always load with rgdal. 
+library (raster)   # for metadata/attributes- vectors or rasters
+
+# set working directory to data folder
+# setwd(&quot;pathToDirHere&quot;)
+</code></pre>
+
+<h2>Import US Boundaries - Census Data</h2>
+
+<p>There are many good sources of boundary base layers that we can use to create a 
+basemap. Some R packages even have these base layers built in to support quick
+and efficient mapping. In this tutorial, we will use boundary layers for the 
+United States, provided by the
+<a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html" target="_blank"> United States Census Bureau.</a></p>
+
+<p>It is useful to have shapefiles to work with because we can add additional
+attributes to them if need be - for project specific mapping.</p>
+
+<h2>Read US Boundary File</h2>
+
+<p>We will use the <code>readOGR()</code> function to import the
+<code>/US-Boundary-Layers/US-State-Boundaries-Census-2014</code> layer into R. This layer
+contains the boundaries of all continental states in the U.S. Please note that
+these data have been modified and reprojected from the original data downloaded
+from the Census website to support the learning goals of this tutorial.</p>
+
+<pre><code># Read the .csv file
+State.Boundary.US &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;,
+          &quot;US-State-Boundaries-Census-2014&quot;)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, layer: &quot;US-State-Boundaries-Census-2014&quot;
+## with 58 features
+## It has 10 fields
+## Integer64 fields read as strings:  ALAND AWATER
+
+## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-State-Boundaries-
+## Census-2014&quot;): Z-dimension discarded
+
+# look at the data structure
+class(State.Boundary.US)
+
+## [1] &quot;SpatialPolygonsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;
+</code></pre>
+
+<p>Note: the Z-dimension warning is normal. The <code>readOGR()</code> function doesn&#39;t import 
+z (vertical dimension or height) data by default. This is because not all
+shapefiles contain z dimension data. </p>
+
+<p>Next, let&#39;s plot the U.S. states data.</p>
+
+<pre><code># view column names
+plot(State.Boundary.US, 
+     main=&quot;Map of Continental US State Boundaries\n US Census Bureau Data&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/find-coordinates-1.png" alt=" "/></p>
+
+<h2>U.S. Boundary Layer</h2>
+
+<p>We can add a boundary layer of the United States to our map - to make it look
+nicer. We will import 
+<code>NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States</code>.
+If we specify a thicker line width using <code>lwd=4</code> for the border layer, it will 
+make our map pop!</p>
+
+<pre><code># Read the .csv file
+Country.Boundary.US &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;,
+          &quot;US-Boundary-Dissolved-States&quot;)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, layer: &quot;US-Boundary-Dissolved-States&quot;
+## with 1 features
+## It has 9 fields
+## Integer64 fields read as strings:  ALAND AWATER
+
+## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-Boundary-Dissolved-
+## States&quot;): Z-dimension discarded
+
+# look at the data structure
+class(Country.Boundary.US)
+
+## [1] &quot;SpatialPolygonsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;
+
+# view column names
+plot(State.Boundary.US, 
+     main=&quot;Map of Continental US State Boundaries\n US Census Bureau Data&quot;,
+     border=&quot;gray40&quot;)
+
+# view column names
+plot(Country.Boundary.US, 
+     lwd=4, 
+     border=&quot;gray18&quot;,
+     add=TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/check-out-coordinates-1.png" alt=" "/></p>
+
+<p>Next, let&#39;s add the location of a flux tower where our study area is.
+As we are adding these layers, take note of the class of each object. </p>
+
+<pre><code># Import a point shapefile 
+point_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV/&quot;,
+                      &quot;HARVtower_UTM18N&quot;)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HARVtower_UTM18N&quot;
+## with 1 features
+## It has 14 fields
+
+class(point_HARV)
+
+## [1] &quot;SpatialPointsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;
+
+# plot point - looks ok? 
+plot(point_HARV, 
+     pch = 19, 
+     col = &quot;purple&quot;,
+     main=&quot;Harvard Fisher Tower Location&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/explore-units-1.png" alt=" "/></p>
+
+<p>The plot above demonstrates that the tower point location data are readable and 
+will plot! Let&#39;s next add it as a layer on top of the U.S. states and boundary
+layers in our basemap plot.</p>
+
+<pre><code># plot state boundaries  
+plot(State.Boundary.US, 
+     main=&quot;Map of Continental US State Boundaries \n with Tower Location&quot;,
+     border=&quot;gray40&quot;)
+
+# add US border outline 
+plot(Country.Boundary.US, 
+     lwd=4, 
+     border=&quot;gray18&quot;,
+     add=TRUE)
+
+# add point tower location
+plot(point_HARV, 
+     pch = 19, 
+     col = &quot;purple&quot;,
+     add=TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/layer-point-on-states-1.png" alt=" "/></p>
+
+<p>What do you notice about the resultant plot? Do you see the tower location in 
+purple in the Massachusetts area? No! What went wrong?</p>
+
+<p>Let&#39;s check out the CRS (<code>crs()</code>) of both datasets to see if we can identify any
+issues that might cause the point location to not plot properly on top of our
+U.S. boundary layers.</p>
+
+<pre><code># view CRS of our site data
+crs(point_HARV)
+
+## CRS arguments:
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+# view crs of census data
+crs(State.Boundary.US)
+
+## CRS arguments:
+##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+crs(Country.Boundary.US)
+
+## CRS arguments:
+##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+</code></pre>
+
+<p>It looks like our data are in different CRS. We can tell this by looking at
+the CRS strings in <code>proj4</code> format.</p>
+
+<h2>Understanding CRS in Proj4 Format</h2>
+
+<p>The CRS for our data are given to us by R in <code>proj4</code> format. Let&#39;s break
+down the pieces of <code>proj4</code> string. The string contains all of the individual
+CRS elements that R or another GIS might need. Each element is specified
+with a <code>+</code> sign, similar to how a <code>.csv</code> file is delimited or broken up by 
+a <code>,</code>. After each <code>+</code> we see the CRS element being defined. For example
+projection (<code>proj=</code>) and datum (<code>datum=</code>).</p>
+
+<h3>UTM Proj4 String</h3>
+
+<p>Our project string for <code>point_HARV</code> specifies the UTM projection as follows: </p>
+
+<p><code>+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0</code> </p>
+
+<ul>
+<li><strong>proj=utm:</strong> the projection is UTM, UTM has several zones.</li>
+<li><strong>zone=18:</strong> the zone is 18</li>
+<li><strong>datum=WGS84:</strong> the datum WGS84 (the datum refers to the  0,0 reference for
+the coordinate system used in the projection)</li>
+<li><strong>units=m:</strong> the units for the coordinates are in METERS.</li>
+<li><strong>ellps=WGS84:</strong> the ellipsoid (how the earth&#39;s  roundness is calculated) for 
+the data is WGS84</li>
+</ul>
+
+<p>Note that the <code>zone</code> is unique to the UTM projection. Not all CRS will have a 
+zone.</p>
+
+<h3>Geographic (lat / long) Proj4 String</h3>
+
+<p>Our project string for <code>State.boundary.US</code> and <code>Country.boundary.US</code> specifies
+the lat/long projection as follows: </p>
+
+<p><code>+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code> </p>
+
+<ul>
+<li><strong>proj=longlat:</strong> the data are in a geographic (latitude and longitude)
+coordinate system</li>
+<li><strong>datum=WGS84:</strong> the datum WGS84 (the datum refers to the  0,0 reference for
+the coordinate system used in the projection) </li>
+<li><strong>ellps=WGS84:</strong> the ellipsoid (how the earth&#39;s roundness is calculated)
+is WGS84</li>
+</ul>
+
+<p>Note that there are no specified units above. This is because this geographic 
+coordinate reference system is in latitude and longitude which is most 
+often recorded in <em>Decimal Degrees</em>.</p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** the last portion of each proj4 string 
+is +towgs84=0,0,0 . This is a conversion factor that is used if a datum 
+conversion is required. We will not deal with datums in this tutorial series.
+</div>
+
+<h2>CRS Units - View Object Extent</h2>
+
+<p>Next, let&#39;s view the extent or spatial coverage for the <code>point_HARV</code> spatial
+object compared to the <code>State.Boundary.US</code> object.</p>
+
+<pre><code># extent for HARV in UTM
+extent(point_HARV)
+
+## class      : Extent 
+## xmin       : 732183.2 
+## xmax       : 732183.2 
+## ymin       : 4713265 
+## ymax       : 4713265
+
+# extent for object in geographic
+extent(State.Boundary.US)
+
+## class      : Extent 
+## xmin       : -124.7258 
+## xmax       : -66.94989 
+## ymin       : 24.49813 
+## ymax       : 49.38436
+</code></pre>
+
+<p>Note the difference in the units for each object. The extent for
+<code>State.Boundary.US</code> is in latitude and longitude which yields smaller numbers
+representing decimal degree units. Our tower location point is in UTM, is 
+represented in meters.</p>
+
+<hr/>
+
+<h2>Proj4 &amp; CRS Resources</h2>
+
+<ul>
+<li><a href="http://proj.maptools.org/faq.html" target="_blank">More information on the proj4 format.</a></li>
+<li><a href="http://spatialreference.org" target="_blank">A fairly comprehensive list of CRS by format.</a></li>
+<li>To view a list of datum conversion factors, type <code>projInfo(type = &quot;datum&quot;)</code> 
+into the R console. </li>
+</ul>
+
+<hr/>
+
+<h2>Reproject Vector Data</h2>
+
+<p>Now we know our data are in different CRS. To address this, we have to modify
+or <strong>reproject</strong> the data so they are all in the <strong>same</strong> CRS. We can use
+<code>spTransform()</code> function to reproject our data. When we reproject the data, we
+specify the CRS that we wish to transform our data to. This CRS contains
+the datum, units and other information that R needs to <strong>reproject</strong> our data.</p>
+
+<p>The <code>spTransform()</code> function requires two inputs:</p>
+
+<ol>
+<li>the name of the object that you wish to transform</li>
+<li>the CRS that you wish to transform that object too. In this case we can 
+use the <code>crs()</code> of the <code>State.Boundary.US</code> object as follows:
+<code>crs(State.Boundary.US)</code></li>
+</ol>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** spTransform() will only work if your 
+original spatial object has a CRS assigned to it AND if that CRS is the 
+correct CRS!
+</div>
+
+<p>Next, let&#39;s reproject our point layer into the geographic - latitude and
+longitude <code>WGS84</code> coordinate reference system (CRS).</p>
+
+<pre><code># reproject data
+point_HARV_WGS84 &lt;- spTransform(point_HARV,
+                                crs(State.Boundary.US))
+
+# what is the CRS of the new object
+crs(point_HARV_WGS84)
+
+## CRS arguments:
+##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+# does the extent look like decimal degrees?
+extent(point_HARV_WGS84)
+
+## class      : Extent 
+## xmin       : -72.17266 
+## xmax       : -72.17266 
+## ymin       : 42.5369 
+## ymax       : 42.5369
+</code></pre>
+
+<p>Once our data are reprojected, we can try to plot again.</p>
+
+<pre><code># plot state boundaries  
+plot(State.Boundary.US, 
+     main=&quot;Map of Continental US State Boundaries\n With Fisher Tower Location&quot;,
+     border=&quot;gray40&quot;)
+
+# add US border outline 
+plot(Country.Boundary.US, 
+     lwd=4, 
+     border=&quot;gray18&quot;,
+     add=TRUE)
+
+# add point tower location
+plot(point_HARV_WGS84, 
+     pch = 19, 
+     col = &quot;purple&quot;,
+     add=TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/plot-again-1.png" alt=" "/></p>
+
+<p>Reprojecting our data ensured that things line up on our map! It will also 
+allow us to perform any required geoprocessing (spatial calculations /
+transformations) on our data.</p>
+
+<div id="ds-challenge" markdown="1">
+## Challenge - Reproject Spatial Data
+
+Create a map of the North Eastern United States as follows:
+
+1. Import and plot Boundary-US-State-NEast.shp. Adjust line width as necessary.
+2. **Reproject** the layer into UTM zone 18 north.
+3. Layer the Fisher Tower point location point_HARV on top of the above plot.
+4. Add a **title** to your plot.
+5. Add a **legend** to your plot that shows both the state boundary (line) and
+the Tower location point.
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/challenge-code-MASS-Map-1.png" alt=" "/></p>
+
+</body>
+
+</html>

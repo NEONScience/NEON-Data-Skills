@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Load the Data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial builds upon 
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank"><em>the previous tutorial</em></a>,
+to work with shapefile attributes in R and explores how to plot multiple 
+shapefiles using base R graphics. It then covers
+how to create a custom legend with colors and symbols that match your plot.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+ * Plot multiple shapefiles using base R graphics.
+ * Apply custom symbology to spatial objects in a plot in R.
+ * Customize a baseplot legend in R.
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Download Data
+{% include/dataSubsets/_data_Site-Layout-Files.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Load the Data</h2>
+
+<p>To work with vector data in R, we can use the <code>rgdal</code> library. The <code>raster</code> 
+package also allows us to explore metadata using similar commands for both
+raster and vector files. </p>
+
+<p>We will import three shapefiles. The first is our <code>AOI</code> or <em>area of
+interest</em> boundary polygon that we worked with in 
+<a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank"><em>Open and Plot Shapefiles in R</em></a>.
+The second is a shapefile containing the location of roads and trails within the
+field site. The third is a file containing the Harvard Forest Fisher tower
+location. These latter two we worked with in the
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank"><em>Explore Shapefile Attributes &amp; Plot Shapefile Objects by Attribute Value in R</em></a> tutorial.</p>
+
+<pre><code># load packages
+# rgdal: for vector work; sp package should always load with rgdal. 
+library(rgdal)  
+# raster: for metadata/attributes- vectors or rasters
+library(raster)   
+
+# set working directory to data folder
+# setwd(&quot;pathToDirHere&quot;)
+
+# Import a polygon shapefile 
+aoiBoundary_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV&quot;,
+                            &quot;HarClip_UTMZ18&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HarClip_UTMZ18&quot;
+## with 1 features
+## It has 1 fields
+## Integer64 fields read as strings:  id
+
+# Import a line shapefile
+lines_HARV &lt;- readOGR( &quot;NEON-DS-Site-Layout-Files/HARV&quot;, &quot;HARV_roads&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HARV_roads&quot;
+## with 13 features
+## It has 15 fields
+
+# Import a point shapefile 
+point_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV&quot;,
+                      &quot;HARVtower_UTM18N&quot;, stringsAsFactors = T)
+
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Site-Layout-Files/HARV&quot;, layer: &quot;HARVtower_UTM18N&quot;
+## with 1 features
+## It has 14 fields
+</code></pre>
+
+<h2>Plot Data</h2>
+
+<p>In the 
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank"><em>Explore Shapefile Attributes &amp; Plot Shapefile Objects by Attribute Value in R</em></a> tutorial
+we created a plot where we customized the width of each line in a spatial object
+according to a factor level or category. To do this, we create a vector of
+colors containing a color value for EACH feature in our spatial object grouped
+by factor level or category.</p>
+
+<pre><code># view the factor levels
+levels(lines_HARV$TYPE)
+
+## [1] &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+
+# create vector of line width values
+lineWidth &lt;- c(2,4,3,8)[lines_HARV$TYPE]
+# view vector
+lineWidth
+
+##  [1] 8 4 4 3 3 3 3 3 3 2 8 8 8
+
+# create a color palette of 4 colors - one for each factor level
+roadPalette &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)
+roadPalette
+
+## [1] &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# create a vector of colors - one for each feature in our vector object
+# according to its attribute value
+roadColors &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)[lines_HARV$TYPE]
+roadColors
+
+##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
+## [10] &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+
+# create vector of line width values
+lineWidth &lt;- c(2,4,3,8)[lines_HARV$TYPE]
+# view vector
+lineWidth
+
+##  [1] 8 4 4 3 3 3 3 3 3 2 8 8 8
+
+# in this case, boardwalk (the first level) is the widest.
+plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails \nLine Width Varies by Type Attribute Value&quot;,
+     lwd=lineWidth)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-unique-lines-1.png" alt=" "/></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
+we can create a vector of numbers, each of which specifies the thickness of each
+feature in our SpatialLinesDataFrame by factor level (category): c(6,4,1,2)[lines_HARV$TYPE]
+</div>
+
+<h2>Add Plot Legend</h2>
+
+<p>In the 
+<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank"><em>the previous tutorial</em></a>,
+we also learned how to add a basic legend to our plot.</p>
+
+<ul>
+<li><code>bottomright</code>: We specify the <strong>location</strong> of our legend by using a default 
+keyword. We could also use <code>top</code>, <code>topright</code>, etc.</li>
+<li><code>levels(objectName$attributeName)</code>: Label the <strong>legend elements</strong> using the
+categories of <code>levels</code> in an attribute (e.g., levels(lines_HARV$TYPE) means use
+the levels boardwalk, footpath, etc).</li>
+<li><code>fill=</code>: apply unique <strong>colors</strong> to the boxes in our legend. <code>palette()</code> is 
+the default set of colors that R applies to all plots. </li>
+</ul>
+
+<p>Let&#39;s add a legend to our plot.</p>
+
+<pre><code>plot(lines_HARV, 
+     col=roadColors,
+     main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails\n Default Legend&quot;)
+
+# we can use the color object that we created above to color the legend objects
+roadPalette
+
+## [1] &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# add a legend to our map
+legend(&quot;bottomright&quot;, 
+       legend=levels(lines_HARV$TYPE), 
+       fill=roadPalette, 
+       bty=&quot;n&quot;, # turn off the legend border
+       cex=.8) # decrease the font / legend size
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-legend-to-plot-1.png" alt=" "/></p>
+
+<p>However, what if we want to create a more complex plot with many shapefiles
+and unique symbols that need to be represented clearly in a legend?</p>
+
+<h2>Plot Multiple Vector Layers</h2>
+
+<p>Now, let&#39;s create a plot that combines our tower location (<code>point_HARV</code>), 
+site boundary (<code>aoiBoundary_HARV</code>) and roads (<code>lines_HARV</code>) spatial objects. We
+will need to build a <strong>custom legend</strong> as well.</p>
+
+<p>To begin, create a plot with the site boundary as the first layer. Then layer 
+the tower location and road data on top using <code>add=TRUE</code>.</p>
+
+<pre><code># Plot multiple shapefiles
+plot(aoiBoundary_HARV, 
+     col = &quot;grey93&quot;, 
+     border=&quot;grey&quot;,
+     main=&quot;NEON Harvard Forest Field Site&quot;)
+
+plot(lines_HARV, 
+     col=roadColors,
+     add = TRUE)
+
+plot(point_HARV, 
+     add  = TRUE, 
+     pch = 19, 
+     col = &quot;purple&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-many-shapefiles-1.png" alt=" "/></p>
+
+<pre><code># assign plot to an object for easy modification!
+plot_HARV&lt;- recordPlot()
+</code></pre>
+
+<h2>Customize Your Legend</h2>
+
+<p>Next, let&#39;s build a custom legend using the symbology (the colors and symbols)
+that we used to create the plot above. To do this,  we will need to build three 
+things:</p>
+
+<ol>
+<li>A list of all &ldquo;labels&rdquo; (the text used to describe each element in the legend
+to use in the legend. </li>
+<li>A list of colors used to color each feature in our plot.</li>
+<li>A list of symbols to use in the plot. NOTE: we have a combination of points,
+lines and polygons in our plot. So we will need to customize our symbols!</li>
+</ol>
+
+<p>Let&#39;s create objects for the labels, colors and symbols so we can easily reuse
+them. We will start with the labels.</p>
+
+<pre><code># create a list of all labels
+labels &lt;- c(&quot;Tower&quot;, &quot;AOI&quot;, levels(lines_HARV$TYPE))
+labels
+
+## [1] &quot;Tower&quot;      &quot;AOI&quot;        &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+
+# render plot
+plot_HARV
+
+# add a legend to our map
+legend(&quot;bottomright&quot;, 
+       legend=labels, 
+       bty=&quot;n&quot;, # turn off the legend border
+       cex=.8) # decrease the font / legend size
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/create-custom-labels-1.png" alt=" "/></p>
+
+<p>Now we have a legend with the labels identified. Let&#39;s add colors to each legend
+element next. We can use the vectors of colors that we created earlier to do this.</p>
+
+<pre><code># we have a list of colors that we used above - we can use it in the legend
+roadPalette
+
+## [1] &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# create a list of colors to use 
+plotColors &lt;- c(&quot;purple&quot;, &quot;grey&quot;, roadPalette)
+plotColors
+
+## [1] &quot;purple&quot; &quot;grey&quot;   &quot;blue&quot;   &quot;green&quot;  &quot;grey&quot;   &quot;purple&quot;
+
+# render plot
+plot_HARV
+
+# add a legend to our map
+legend(&quot;bottomright&quot;, 
+       legend=labels, 
+       fill=plotColors,
+       bty=&quot;n&quot;, # turn off the legend border
+       cex=.8) # decrease the font / legend size
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-colors-1.png" alt=" "/></p>
+
+<p>Great - now we have a legend however this legend uses boxes to symbolize each 
+element in the plot. It might be better if the lines were symbolized as a line 
+and the points, symbolized as a symbol. We can customize this using
+<code>pch=</code> in our legend: <strong>16</strong> is a point symbol, <strong>15</strong> is a box. </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** To view a short list of pch symbols, 
+type ?pch into the R console. 
+</div>
+
+<pre><code># create a list of pch values
+# these are the symbols that will be used for each legend value
+# ?pch will provide more information on values
+plotSym &lt;- c(16,15,15,15,15,15)
+plotSym
+
+## [1] 16 15 15 15 15 15
+
+# Plot multiple shapefiles
+plot_HARV
+
+# to create a custom legend, we need to fake it
+legend(&quot;bottomright&quot;, 
+       legend=labels,
+       pch=plotSym, 
+       bty=&quot;n&quot;, 
+       col=plotColors,
+       cex=.8)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/custom-symbols-1.png" alt=" "/></p>
+
+<p>Now we&#39;ve added a point symbol to represent our point element in the plot. However
+it might be more useful to use line symbols in our legend
+rather than squares to represent the line data. We can create line symbols, 
+using <code>lty = ()</code>. We have a total of 6 elements in our legend:</p>
+
+<ol>
+<li>A Tower Location</li>
+<li>An Area of Interest (AOI)</li>
+<li>and <strong>4</strong> Road types (levels)</li>
+</ol>
+
+<p>The <code>lty</code> list designates, in order, which of those elements should be
+designated as a line (<code>1</code>) and which should be designated as a symbol (<code>NA</code>).
+Our object will thus look like <code>lty = c(NA,NA,1,1,1,1)</code>. This tells R to use a
+line element forthe 3-6 elements in our legend only. </p>
+
+<p>Once we do this, we need to <strong>modify</strong> our <code>pch</code> element. Each <strong>line</strong> element
+(3-6) should be represented by a <code>NA</code> value - this tells R to not use a
+symbol, but to instead use a line.</p>
+
+<pre><code># create line object
+lineLegend = c(NA,NA,1,1,1,1)
+lineLegend
+
+## [1] NA NA  1  1  1  1
+
+plotSym &lt;- c(16,15,NA,NA,NA,NA)
+plotSym
+
+## [1] 16 15 NA NA NA NA
+
+# plot multiple shapefiles
+plot_HARV
+
+# build a custom legend
+legend(&quot;bottomright&quot;, 
+       legend=labels, 
+       lty = lineLegend,
+       pch=plotSym, 
+       bty=&quot;n&quot;, 
+       col=plotColors,
+       cex=.8)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/refine-legend-1.png" alt=" "/></p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Plot Polygon by Attribute
+
+1. Using the NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp shapefile, 
+create a map of study plot locations, with each point colored by the soil type
+(soilTypeOr). How many different soil types are there at this particular field 
+site? Overlay this layer on top of the lines_HARV layer (the roads). Create a 
+custom legend that applies line symbols to lines and point symbols to the points.
+
+2. Modify the plot above. Tell R to plot each point, using a different
+symbol of pch value. HINT: to do this, create a vector object of symbols by 
+factor level using the syntax described above for line width: 
+c(15,17)[lines_HARV$soilTypeOr]. Overlay this on top of the AOI Boundary. 
+Create a custom legend.
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-2.png" alt=" "/></p>
+
+</body>
+
+</html>

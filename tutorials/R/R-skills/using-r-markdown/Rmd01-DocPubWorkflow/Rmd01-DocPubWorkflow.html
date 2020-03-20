@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Documentation Is Important</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial we will work with the <code>knitr</code> and <code>rmarkdown</code> packages within
+<code>RStudio</code> to learn how to effectively and efficiently document and publish our
+workflows online.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+At the end of this activity, you will be able to:
+
+* Explain why documenting and publishing one&rsquo;s code is important.
+* Describe two tools that enable ease of publishing code & output: R Markdown and 
+the knitr package. 
+
+</div>
+
+<h2>Documentation Is Important</h2>
+
+<p>As we read in
+<a href="https://www.neonscience.org/rep-sci-intro" target="_blank"> the Reproducible Science overview</a>,
+the four facets of reproducible science are:</p>
+
+<ul>
+<li>Documentation</li>
+<li>Organization,</li>
+<li>Automation and</li>
+<li>Dissemination.</li>
+</ul>
+
+<p>This week we will learn about the R Markdown file format (and R package) which
+can be used with the <code>knitr</code> package to document and publish (disseminate) your
+code and code output.</p>
+
+<p><a class="link--button link--arrow" href="http://neonscience.github.io/slide-shows/share-publish-archive-slideshow.html" target= "_blank"> View Slideshow: Share, Publish &amp; Archive - from the Reproducible Science Curriculum</a></p>
+
+<h2>The Tools We Will Use</h2>
+
+<h3>R Markdown</h3>
+
+<blockquote>
+<p>“R Markdown is an authoring format that enables easy creation of dynamic
+documents, presentations, and reports from R. It combines the core syntax of
+markdown (an easy to write plain text format) with embedded R code chunks that
+are run so their output can be included in the final document. R Markdown
+documents are fully reproducible (they can be automatically regenerated whenever
+underlying R code or data changes).&ldquo;
+&ndash; <a href="http://rmarkdown.rstudio.com/" target="_blank">RStudio documentation</a>.</p>
+</blockquote>
+
+<p>We use markdown syntax in R Markdown (.rmd) files to document workflows and
+to share data processing, analysis and visualization outputs. We can also use it
+to create documents that combine R code, output and text.</p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Most of the
+<a href="https://github.com/NEONScience/NEON-Data-Skills/" target="_blank">NEON Data Skills educational resources</a> on this site are built using R Markdown files.
+</div>
+
+<h3>Why R Markdown?</h3>
+
+<p>There are many advantages to using R Markdown in your work:</p>
+
+<ul>
+<li>Human readable syntax.</li>
+<li>Simple syntax - it can be learned quickly.</li>
+<li>All components of your work are clearly documented. You don&#39;t have to remember
+what steps, assumptions, tests were used.</li>
+<li>You can easily extend or refine analyses by modifying existing or adding new
+code blocks.</li>
+<li>Analysis results can be disseminated in various formats including HTML, PDF,
+slide shows and more.</li>
+<li>Code and data can be shared with a colleague to replicate the workflow.</li>
+</ul>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:**
+<a href="https://rpubs.com/" target= "_blank ">RPubs</a>
+is a quick way to share and publish code.
+</div>
+
+<h2>Knitr</h2>
+
+<p>The <code>knitr</code> package for R allows us to create readable documents from R Markdown
+files.</p>
+
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
+    </a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
+    </a>
+    <figcaption>R Markdown script (left) and the HTML produced from the knit R 
+    Markdown script (right). Source: National Ecological Observatory Network (NEON)
+    </figcaption>
+</figure>  
+
+<blockquote>
+<p>The knitr package was designed to be a transparent engine for dynamic report
+generation with R &ndash;
+<a href="http://yihui.name/knitr/" target="_blank"> Yihui Xi &ndash; knitr package creator</a></p>
+</blockquote>
+
+<p>In the next tutorial we will learn more about working with the R Markdown format in RStudio.</p>
+
+</body>
+
+</html>

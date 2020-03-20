@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Crop a Raster to Vector Extent</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial explains how to crop a raster using the extent of a vector
+shapefile. We will also cover how to extract values from a raster that occur
+within a set of polygons, or in a buffer (surrounding) region around a set of
+points.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+ * Crop a raster to the extent of a vector layer.
+ * Extract values from raster that correspond to a vector file
+ overlay.
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **sp:** install.packages(&ldquo;sp&rdquo;)
+
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data
+{% include/dataSubsets/_data_Site-Layout-Files.html %}
+{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Crop a Raster to Vector Extent</h2>
+
+<p>We often work with spatial layers that have different spatial extents.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"></a>
+    <figcaption>The spatial extent of a shapefile or R spatial object represents
+    the geographic &ldquo;edge&rdquo; or location that is the furthest north, south east and 
+    west. Thus is represents the overall geographic coverage of the spatial 
+    object. Image Source: National Ecological Observatory Network (NEON) 
+    </figcaption>
+</figure>
+
+<p>The graphic below illustrates the extent of several of the spatial layers that 
+we have worked with in this vector data tutorial series:</p>
+
+<ul>
+<li>Area of interest (AOI) &ndash; blue</li>
+<li>Roads and trails &ndash; purple</li>
+<li>Vegetation plot locations &ndash; black</li>
+</ul>
+
+<p>and a raster file, that we will introduce this tutorial: </p>
+
+<ul>
+<li>A canopy height model (CHM) in GeoTIFF format &ndash; green</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extents-1.png" alt=" "/></p>
+
+<p>Frequent use cases of cropping a raster file include reducing file size and
+creating maps.</p>
+
+<p>Sometimes we have a raster file that is much larger than our study area or area
+of interest. It is often most efficient to crop the raster to the extent of our
+study area to keep reduce file sizes as we process our data.</p>
+
+<p>Cropping a raster can also be useful when creating pretty maps so that the
+raster layer matches the extent of the desired vector layers.</p>
+
+<h3>Import Data</h3>
+
+<p>We will begin by importing four vector shapefiles (field site boundary,
+roads/trails, tower location, and veg study plot locations) and one raster
+GeoTIFF file, a Canopy Height Model for the Harvard Forest, Massachusetts.
+These data can be used to create maps that characterize our study location.</p>
+
+<p>If you have completed the Vector 00-04 tutorials in this 
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> <em>Introduction to Working with Vector Data in R</em> </a>
+series, you can skip this code as you have already created these object.)</p>
+
+<pre><code># load necessary packages
+library(rgdal)  # for vector work; sp package should always load with rgdal. 
+library (raster)
+
+# set working directory to data folder
+# setwd(&quot;pathToDirHere&quot;)
+
+# Imported in Vector 00: Vector Data in R - Open &amp; Plot Data
+# shapefile 
+aoiBoundary_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV/&quot;,
+                            &quot;HarClip_UTMZ18&quot;)
+# Import a line shapefile
+lines_HARV &lt;- readOGR( &quot;NEON-DS-Site-Layout-Files/HARV/&quot;,
+                       &quot;HARV_roads&quot;)
+# Import a point shapefile 
+point_HARV &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/HARV/&quot;,
+                      &quot;HARVtower_UTM18N&quot;)
+
+# Imported in  Vector 02: .csv to Shapefile in R
+# import raster Canopy Height Model (CHM)
+chm_HARV &lt;- 
+  raster(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif&quot;)
+</code></pre>
+
+<h2>Crop a Raster Using Vector Extent</h2>
+
+<p>We can use the <code>crop</code> function to crop a raster to the extent of another spatial 
+object. To do this, we need to specify the raster to be cropped and the spatial
+object that will be used to crop the raster. R will use the <code>extent</code> of the
+spatial object as the cropping boundary.</p>
+
+<pre><code># plot full CHM
+plot(chm_HARV,
+     main=&quot;LiDAR CHM - Not Cropped\nNEON Harvard Forest Field Site&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-1.png" alt=" "/></p>
+
+<pre><code># crop the chm
+chm_HARV_Crop &lt;- crop(x = chm_HARV, y = aoiBoundary_HARV)
+
+# plot full CHM
+plot(extent(chm_HARV),
+     lwd=4,col=&quot;springgreen&quot;,
+     main=&quot;LiDAR CHM - Cropped\nNEON Harvard Forest Field Site&quot;,
+     xlab=&quot;easting&quot;, ylab=&quot;northing&quot;)
+
+plot(chm_HARV_Crop,
+     add=TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-2.png" alt=" "/></p>
+
+<p>We can see from the plot above that the full CHM extent (plotted in green) is
+much larger than the resulting cropped raster. Our new cropped CHM now has the 
+same extent as the <code>aoiBoundary_HARV</code> object that was used as a crop extent 
+(blue boarder below).</p>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-crop-extent-1.png" alt=" "/></p>
+
+<p>We can look at the extent of all the other objects. </p>
+
+<pre><code># lets look at the extent of all of our objects
+extent(chm_HARV)
+
+## class      : Extent 
+## xmin       : 731453 
+## xmax       : 733150 
+## ymin       : 4712471 
+## ymax       : 4713838
+
+extent(chm_HARV_Crop)
+
+## class      : Extent 
+## xmin       : 732128 
+## xmax       : 732251 
+## ymin       : 4713209 
+## ymax       : 4713359
+
+extent(aoiBoundary_HARV)
+
+## class      : Extent 
+## xmin       : 732128 
+## xmax       : 732251.1 
+## ymin       : 4713209 
+## ymax       : 4713359
+</code></pre>
+
+<p>Which object has the largest extent?  Our plot location extent is not the 
+largest but is larger than the AOI Boundary. It would be nice to see our
+vegetation plot locations with the Canopy Height Model information.</p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Crop to Vector Points Extent
+
+1. Crop the Canopy Height Model to the extent of the study plot locations. 
+2. Plot the vegetation plot location points on top of the Canopy Height Model. 
+
+If you completed the
+<a href="https://www.neonscience.org/dc-csv-to-shapefile-r" target="_blank">*.csv to Shapefile in R* tutorial</a>
+you have these plot locations as the spatial R spatial object
+plot.locationsSp_HARV. Otherwise, import the locations from the
+\HARV\PlotLocations_HARV.shp shapefile in the downloaded data. 
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-crop-raster-points-1.png" alt=" "/></p>
+
+<p>In the plot above, created in the challenge, all the vegetation plot locations
+(blue) appear on the Canopy Height Model raster layer except for one. One is
+situated on the white space. Why? </p>
+
+<p>A modification of the first figure in this tutorial is below, showing the 
+relative extents of all the spatial objects. Notice that the extent for our 
+vegetation plot layer (black) extends further west than the extent of our CHM 
+raster (bright green). The crop function will make a raster extent smaller, it 
+will not expand the extent in areas where there are no data. Thus, extent of our
+vegetation plot layer will still extend further west than the extent of our 
+(cropped) raster data (dark green).</p>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/raster-extents-cropped-1.png" alt=" "/></p>
+
+<h2>Define an Extent</h2>
+
+<p>We can also use an <code>extent()</code> method to define an extent to be used as a cropping
+boundary. This creates an object of class <code>extent</code>.</p>
+
+<pre><code># extent format (xmin,xmax,ymin,ymax)
+new.extent &lt;- extent(732161.2, 732238.7, 4713249, 4713333)
+class(new.extent)
+
+## [1] &quot;Extent&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;raster&quot;
+</code></pre>
+
+<p>Once we have defined the extent, we can use the <code>crop</code> function to crop our
+raster. </p>
+
+<pre><code># crop raster
+CHM_HARV_manualCrop &lt;- crop(x = chm_HARV, y = new.extent)
+
+# plot extent boundary and newly cropped raster
+plot(aoiBoundary_HARV, 
+     main = &quot;Manually Cropped Raster\n NEON Harvard Forest Field Site&quot;)
+plot(new.extent, 
+     col=&quot;brown&quot;, 
+     lwd=4,
+     add = TRUE)
+plot(CHM_HARV_manualCrop, 
+     add = TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/crop-using-drawn-extent-1.png" alt=" "/></p>
+
+<p>Notice that our manual <code>new.extent</code> (in red) is smaller than the
+<code>aoiBoundary_HARV</code> and that the raster is now the same as the <code>new.extent</code>
+object.</p>
+
+<p>See the documentation for the <code>extent()</code> function for more ways
+to create an <code>extent</code> object: <code>??raster::extent</code></p>
+
+<h2>Extract Raster Pixels Values Using Vector Polygons</h2>
+
+<p>Often we want to extract values from a raster layer for particular locations - 
+for example, plot locations that we are sampling on the ground. </p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferSquare.png">
+    <img src="{{ site.baseulr }}/images/spatialData/BufferSquare.png"></a>
+    <figcaption> Extract raster information using a polygon boundary. We can
+    extract all pixel values within 20m of our x,y point of interest. These can 
+    then be summarized into some value of interest (e.g. mean, maximum, total).
+    Source: National Ecological Observatory Network (NEON).
+    </figcaption>
+</figure>
+
+<p>To do this in R, we use the <code>extract()</code> function. The <code>extract()</code> function
+requires:</p>
+
+<ul>
+<li>The raster that we wish to extract values from,</li>
+<li>The vector layer containing the polygons that we wish to use as a boundary or 
+boundaries,</li>
+<li>we can tell it to store the output values in a <code>data.frame</code> using
+<code>df=TRUE</code> (optional, default is to NOT return a <code>data.frame</code>) .</li>
+</ul>
+
+<p>We will begin by extracting all canopy height pixel values located within our
+<code>aoiBoundary</code> polygon which surrounds the tower located at the NEON Harvard
+Forest field site. </p>
+
+<pre><code># extract tree height for AOI
+# set df=TRUE to return a data.frame rather than a list of values
+tree_height &lt;- raster::extract(x = chm_HARV, 
+                       y = aoiBoundary_HARV, 
+                       df = TRUE)
+
+# view the object
+head(tree_height)
+
+##   ID HARV_chmCrop
+## 1  1        21.20
+## 2  1        23.85
+## 3  1        23.83
+## 4  1        22.36
+## 5  1        23.95
+## 6  1        23.89
+
+nrow(tree_height)
+
+## [1] 18450
+</code></pre>
+
+<p>When we use the extract command, R extracts the value for each pixel located 
+within the boundary of the polygon being used to perform the extraction - in
+this case the <code>aoiBoundary</code> object (1 single polygon). In this case, the
+function extracted values from 18,450 pixels.</p>
+
+<p>The <code>extract</code> function returns a <code>list</code> of values as default. You can tell R 
+to summarize the data in some way or to return the data as a <code>data.frame</code>
+(<code>df=TRUE</code>).</p>
+
+<p>We can create a histogram of tree height values within the boundary to better
+understand the structure or height distribution of trees. We can also use the 
+<code>summary()</code> function to view descriptive statistics including min, max and mean
+height values. These values help us better understand vegetation at our field
+site.</p>
+
+<pre><code># view histogram of tree heights in study area
+hist(tree_height$HARV_chmCrop, 
+     main=&quot;Histogram of CHM Height Values (m) \nNEON Harvard Forest Field Site&quot;,
+     col=&quot;springgreen&quot;,
+     xlab=&quot;Tree Height&quot;, ylab=&quot;Frequency of Pixels&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extract-histogram-1.png" alt=" "/></p>
+
+<pre><code># view summary of values
+summary(tree_height$HARV_chmCrop)
+
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2.03   21.36   22.81   22.43   23.97   38.17
+</code></pre>
+
+<ul>
+<li>Check out the documentation for the <code>extract()</code> function for more details 
+(<code>??raster::extract</code>).</li>
+</ul>
+
+<h2>Summarize Extracted Raster Values</h2>
+
+<p>We often want to extract summary values from a raster. We can tell R the type
+of summary statistic we are interested in using the <code>fun=</code> method. Let&#39;s extract
+a mean height value for our AOI. </p>
+
+<pre><code># extract the average tree height (calculated using the raster pixels)
+# located within the AOI polygon
+av_tree_height_AOI &lt;- raster::extract(x = chm_HARV, 
+                              y = aoiBoundary_HARV,
+                              fun=mean, 
+                              df=TRUE)
+
+# view output
+av_tree_height_AOI
+
+##   ID HARV_chmCrop
+## 1  1     22.43018
+</code></pre>
+
+<p>It appears that the mean height value, extracted from our LiDAR data derived
+canopy height model is 22.43 meters.</p>
+
+<h2>Extract Data using x,y Locations</h2>
+
+<p>We can also extract pixel values from a raster by defining a buffer or area 
+surrounding individual point locations using the <code>extract()</code> function. To do this
+we define the summary method (<code>fun=mean</code>) and the buffer distance (<code>buffer=20</code>)
+which represents the radius of a circular region around each point.</p>
+
+<p>The units of the buffer are the same units of the data <code>CRS</code>.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png"></a>
+     <figcaption> Extract raster information using a buffer region. All pixels
+    that are touched by the buffer region are included in the extract. 
+    Source: National Ecological Observatory Network (NEON).
+    </figcaption>
+</figure>
+
+<p>Let&#39;s put this into practice by figuring out the average tree height in the 
+20m around the tower location. </p>
+
+<pre><code># what are the units of our buffer
+crs(point_HARV)
+
+## CRS arguments:
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+# extract the average tree height (height is given by the raster pixel value)
+# at the tower location
+# use a buffer of 20 meters and mean function (fun) 
+av_tree_height_tower &lt;- raster::extract(x = chm_HARV, 
+                                y = point_HARV, 
+                                buffer=20,
+                                fun=mean, 
+                                df=TRUE)
+
+# view data
+head(av_tree_height_tower)
+
+##   ID HARV_chmCrop
+## 1  1     22.38812
+
+# how many pixels were extracted
+nrow(av_tree_height_tower)
+
+## [1] 1
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Extract Raster Height Values For Plot Locations
+
+Use the plot location points shapefile HARV/plot.locations_HARV.shp or spatial
+object plot.locationsSp_HARV to extract an average tree height value for the
+area within 20m of each vegetation plot location in the study area.
+
+Create a simple plot showing the mean tree height of each plot using the plot()
+function in base-R.
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-extract-plot-tHeight-1.png" alt=" "/></p>
+
+</body>
+
+</html>

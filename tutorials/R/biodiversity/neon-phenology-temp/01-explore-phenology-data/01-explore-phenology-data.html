@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Explore Phenology Data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>Many organisms, including plants, show patterns of change across seasons - 
+the different stages of this observable change are called phenophases. In this 
+tutorial we explore how to work with NEON plant phenophase data. </p>
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * work with &ldquo;stacked&rdquo; NEON Plant Phenology Observation data. 
+ * correctly format date data. 
+ * use dplyr functions to filter data.
+ * plot time series data in a bar plot using ggplot the function. 
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
+* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
+
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+
+{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+
+****
+{% include/_greyBox-wd-rscript.html %}
+
+****
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> data portal </a>
+* NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>
+* RStudio&rsquo;s <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
+* <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
+* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo API wrapper on CRAN </a>
+
+</div>
+
+<p>Plants change throughout the year - these are phenophases. 
+Why do they change? </p>
+
+<h2>Explore Phenology Data</h2>
+
+<p>The following sections provide a brief overview of the NEON plant phenology 
+observation data. When designing a research project using this data, you 
+need to consult the 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. </p>
+
+<p><em>The following description of the NEON Plant Phenology Observation data is modified 
+from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.</em></p>
+
+<h3>NEON Plant Phenology Observation Data</h3>
+
+<p>NEON collects plant phenology data and provides it as NEON data product 
+<strong>NEON.DP1.10055</strong>.</p>
+
+<p>The plant phenology observations data product provides in-situ observations of 
+the phenological status and intensity of tagged plants (or patches) during 
+discrete observations events. </p>
+
+<p>Sampling occurs at all terrestrial field sites at site and season specific 
+intervals. Three species for phenology observation are selected based on relative 
+abundance in the Tower airshed. There are 30 individuals of each target species 
+monitored at each transect. </p>
+
+<h4>Status-based Monitoring</h4>
+
+<p>NEON employs status-based monitoring, in which the phenological condition of an 
+individual is reported any time that individual is observed. At every observations 
+bout, records are generated for every phenophase that is occurring and for every 
+phenophase not occurring. With this approach, events (such as leaf emergence in 
+Mediterranean climates, or flowering in many desert species) that may occur 
+multiple times during a single year, can be captured. Continuous reporting of
+phenophase status enables quantification of the duration of phenophases rather 
+than just their date of onset while allows enabling the explicit quantification 
+of uncertainty in phenophase transition dates that are introduced by monitoring 
+in discrete temporal bouts.</p>
+
+<p>Specific products derived from this sampling include the observed phenophase 
+status (whether or not a phenophase is occurring) and the intensity of 
+phenophases for individuals in which phenophase status = ‘yes’. Phenophases 
+reported are derived from the USA National Phenology Network (USA-NPN) categories. 
+The number of phenophases observed varies by growth form and ranges from 1 
+phenophase (cactus) to 7 phenophases (semi-evergreen broadleaf). 
+In this tutorial we will focus only on the state of the phenophase, not the 
+phenophase intensity data. </p>
+
+<h4>Phenology Transects</h4>
+
+<p>Plant phenology observations occurs at all terrestrial NEON sites along an 800 
+meter square loop transect (primary) and within a 200 m x 200 m plot located 
+within view of a canopy level, tower-mounted, phenology camera.</p>
+
+<p><figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-pheno-temp-timeseries/NEONphenoTransect.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-pheno-temp-timeseries/NEONphenoTransect.png"></a>
+    <figcaption> Diagram of a phenology transect layout, with meter layout marked.
+    Point-level geolocations are recorded at eight referecne points along the 
+    perimeter, plot-level geolaocation at the plot centoid (star). 
+    Source: National Ecological Observatory Network (NEON)
+    </figcaption>
+</figure></p>
+
+<h4>Timing of Observations</h4>
+
+<p>At each site, there are: </p>
+
+<ul>
+<li>~50 observation bouts per year. </li>
+<li>no more that 100 sampling points per phenology transect.</li>
+<li>no more than 9 sampling points per phenocam plot. </li>
+<li>1 bout per year to collect annual size and disease status measurements from 
+each sampling point.</li>
+</ul>
+
+<h4>Available Data Tables</h4>
+
+<p>In the downloaded data packet, data are available in two main files</p>
+
+<ul>
+<li><strong>phe_statusintensity:</strong> Plant phenophase status and intensity data </li>
+<li><strong>phe_perindividual:</strong> Geolocation and taxonomic identification for phenology plants</li>
+<li><strong>phe_perindividualperyear:</strong> recorded once a year, essentially the &ldquo;metadata&rdquo; 
+about the plant: DBH, height, etc. </li>
+</ul>
+
+<p>There are other files in each download including a <strong>readme</strong> with information on 
+the data product and the download; a <strong>variables</strong> file that defines the 
+term descriptions, data types, and units; a <strong>validation</strong> file with ata entry validation and 
+parsing rules; and an <strong>XML</strong> with machine readable metadata. </p>
+
+<h2>Stack NEON Data</h2>
+
+<p>NEON data are delivered in a site and year-month format. When you download data,
+you will get a single zipped file containing a directory for each month and site that you&#39;ve 
+requested data for. Dealing with these separate tables from even one or two sites
+over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
+<strong>neonUtilities</strong> that takes the unzipped downloaded file and joining the data 
+files. The teaching data downloaded with this tutorial is already stacked. If you
+are working with other NEON data, please go through the tutorial to stack the data
+in 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">R</a> or in <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Python</a> 
+and then return to this tutorial. </p>
+
+<h2>Work with NEON Data</h2>
+
+<p>When we do this for phenology data we get three files, one for each data table, 
+with all the data from your site and date range of interest. </p>
+
+<p>Let&#39;s start by loading our data of interest. </p>
+
+<pre><code>library(dplyr)
+library(ggplot2)
+library(lubridate)  
+
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+
+
+# Read in data
+ind &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv&#39;, 
+        stringsAsFactors = FALSE )
+
+## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/pheno/
+## phe_perindividual.csv&#39;: No such file or directory
+
+## Error in file(file, &quot;rt&quot;): cannot open the connection
+
+status &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv&#39;, 
+        stringsAsFactors = FALSE)
+
+## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/pheno/
+## phe_statusintensity.csv&#39;: No such file or directory
+
+## Error in file(file, &quot;rt&quot;): cannot open the connection
+</code></pre>
+
+<p>Let&#39;s explore the data. Let&#39;s get to know what the <code>ind</code> dataframe looks like.</p>
+
+<pre><code># What are the fieldnames in this dataset?
+names(ind)
+
+## Error in eval(expr, envir, enclos): object &#39;ind&#39; not found
+
+# how many rows are in the data?
+nrow(ind)
+
+## Error in nrow(ind): object &#39;ind&#39; not found
+
+# look at the first six rows of data.
+head(ind)
+
+## Error in head(ind): object &#39;ind&#39; not found
+
+# look at the structure of the dataframe.
+str(ind)
+
+## Error in str(ind): object &#39;ind&#39; not found
+</code></pre>
+
+<p>Note that if you first open you data file in Excel, you might see 06/14/2014 as 
+the format instead of 2014-06-14. Excel can do some <del>weird</del> interesting things
+to dates.</p>
+
+<h4>Individual locations</h4>
+
+<p>To get the specific location data of each individual you would need to do some 
+math, or you can use the NEON geolocation 
+<a href="https://github.com/NEONScience/NEON-geolocation" target="_blank"> <strong>geoNEON</strong></a>. </p>
+
+<p>Now let&#39;s look at the status data. </p>
+
+<pre><code># What variables are included in this dataset?
+names(status)
+
+## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+
+nrow(status)
+
+## Error in nrow(status): object &#39;status&#39; not found
+
+head(status)
+
+## Error in head(status): object &#39;status&#39; not found
+
+str(status)
+
+## Error in str(status): object &#39;status&#39; not found
+
+# date range
+min(status$date)
+
+## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+
+max(status$date)
+
+## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+</code></pre>
+
+<p>The <code>uid</code> is not important to understanding the data so we are going to remove <code>uid</code>. 
+However, if you are every reporting an error in the data you should include this
+with your report. </p>
+
+<pre><code>ind &lt;- select(ind,-uid)
+
+## Error in select(ind, -uid): object &#39;ind&#39; not found
+
+status &lt;- select (status, -uid)
+
+## Error in select(status, -uid): object &#39;status&#39; not found
+</code></pre>
+
+<h2>Clean up the Data</h2>
+
+<ul>
+<li>remove duplicates (full rows)</li>
+<li>convert date</li>
+<li>retain only the latest <code>editedDate</code> in the perIndividual table.</li>
+</ul>
+
+<h3>Remove Duplicates</h3>
+
+<p>The individual table (ind) file is included in each site by month-year file. As 
+a result when all the tables are stacked there are many duplicates. </p>
+
+<p>Let&#39;s remove any duplicates that exist.</p>
+
+<pre><code># remove duplicates
+## expect many
+
+ind_noD &lt;- distinct(ind)
+
+## Error in distinct(ind): object &#39;ind&#39; not found
+
+nrow(ind_noD)
+
+## Error in nrow(ind_noD): object &#39;ind_noD&#39; not found
+
+status_noD&lt;-distinct(status)
+
+## Error in distinct(status): object &#39;status&#39; not found
+
+nrow(status_noD)
+
+## Error in nrow(status_noD): object &#39;status_noD&#39; not found
+</code></pre>
+
+<h3>Variable Overlap between Tables</h3>
+
+<p>From the initial inspection of the data we can see there is overlap in variable
+names between the fields. </p>
+
+<p>Let&#39;s see what they are.</p>
+
+<pre><code># where is there an intersection of names
+sameName &lt;- intersect(names(status_noD), names(ind_noD))
+
+## Error in intersect(names(status_noD), names(ind_noD)): object &#39;status_noD&#39; not found
+
+sameName
+
+## Error in eval(expr, envir, enclos): object &#39;sameName&#39; not found
+</code></pre>
+
+<p>There are several fields that overlap between the datasets. Some of these are
+expected to be the same and will be what we join on. </p>
+
+<p>However, some of these will have different values in each table. We want to keep 
+those distinct value and not join on them. </p>
+
+<p>We want to rename common fields before joining:</p>
+
+<ul>
+<li>editedDate</li>
+<li>measuredBy</li>
+<li>recordedBy</li>
+<li>samplingProtocolVersion</li>
+<li>remarks</li>
+<li>dataQF</li>
+</ul>
+
+<p>Now we want to rename the variables that would have duplicate names. We can 
+rename all the variables in the status object to have &ldquo;Stat&rdquo; at the end of the 
+variable name. </p>
+
+<pre><code># rename status editedDate
+status_noD &lt;- rename(status_noD, editedDateStat=editedDate, 
+        measuredByStat=measuredBy, recordedByStat=recordedBy, 
+        samplingProtocolVersionStat=samplingProtocolVersion, 
+        remarksStat=remarks, dataQFStat=dataQF)
+
+## Error in rename(status_noD, editedDateStat = editedDate, measuredByStat = measuredBy, : object &#39;status_noD&#39; not found
+</code></pre>
+
+<h3>Convert to Date</h3>
+
+<p>Our <code>addDate</code> and <code>date</code> columns are stored as a <code>character</code> class. We need to 
+convert it to a date class. The <code>as.Date()</code> function in base R will do this. </p>
+
+<pre><code># convert column to date class
+ind_noD$editedDate &lt;- as.Date(ind_noD$editedDate)
+
+## Error in as.Date(ind_noD$editedDate): object &#39;ind_noD&#39; not found
+
+str(ind_noD$editedDate)
+
+## Error in str(ind_noD$editedDate): object &#39;ind_noD&#39; not found
+
+status_noD$date &lt;- as.Date(status_noD$date)
+
+## Error in as.Date(status_noD$date): object &#39;status_noD&#39; not found
+
+str(status_noD$date)
+
+## Error in str(status_noD$date): object &#39;status_noD&#39; not found
+</code></pre>
+
+<p>The individual (ind) table contains all instances that any of the location or 
+taxonomy data of an individual was updated. Therefore there are many rows for
+some individuals.  We only want the latest <code>editedDate</code> on ind. </p>
+
+<pre><code># retain only the max of the date for each individualID
+ind_last &lt;- ind_noD %&gt;%
+    group_by(individualID) %&gt;%
+    filter(editedDate==max(editedDate))
+
+## Error in eval(lhs, parent, parent): object &#39;ind_noD&#39; not found
+
+# oh wait, duplicate dates, retain only one
+ind_lastnoD &lt;- ind_last %&gt;%
+    group_by(editedDate, individualID) %&gt;%
+    filter(row_number()==1)
+
+## Error in eval(lhs, parent, parent): object &#39;ind_last&#39; not found
+</code></pre>
+
+<h3>Join Dataframes</h3>
+
+<p>Now we can join the two data frames on all the variables with the same name. 
+We use a <code>left_join()</code> from the dpylr package because we want to match all the 
+rows from the &ldquo;left&rdquo; (first) dateframe to any rows that also occur in the &ldquo;right&rdquo;
+ (second) dataframe.  </p>
+
+<p>Check out RStudio&#39;s 
+ <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
+ for other types of joins. </p>
+
+<pre><code># Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
+phe_ind &lt;- left_join(status_noD, ind_lastnoD)
+
+## Error in left_join(status_noD, ind_lastnoD): object &#39;status_noD&#39; not found
+</code></pre>
+
+<p>Ack!  Two different data types.  Why?  Notice that when we checked for intersecting variable names, <code>data</code> was one of these variables. We didn&#39;t change the <code>data</code> column in the ind object from a <code>character</code> class to a date class. But, we actually don&#39;t want to combine these two <code>date</code> columns.</p>
+
+<p>Try it again.  </p>
+
+<p>We can rename the <code>date</code> column in ind so that the two dataframes can now join together.</p>
+
+<pre><code># rename variables in ind
+ind_noD &lt;- rename(ind_noD, addDate = date)
+
+## Error in rename(ind_noD, addDate = date): object &#39;ind_noD&#39; not found
+
+# Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
+phe_ind &lt;- left_join(status_noD, ind_lastnoD)
+
+## Error in left_join(status_noD, ind_lastnoD): object &#39;status_noD&#39; not found
+</code></pre>
+
+<p>Worked this time! 
+Now that we have clean datasets we can begin looking into our particular data to 
+address our research question: do plants show patterns of changes in phenophase 
+across season?</p>
+
+<h2>Patterns in Phenophase</h2>
+
+<p>From our larger dataset (several sites, species, phenophases), let&#39;s create a
+dataframe with only the data from a single site, species, and phenophase and 
+call it <code>phe_1sp</code>.</p>
+
+<h2>Select Site(s) of Interest</h2>
+
+<p>To do this, we&#39;ll first select our site of interest. Note how we set this up 
+with an object that is our site of interest. This will allow us to more easily change 
+which site or sites if we want to adapt our code later. </p>
+
+<pre><code># set site of interest
+siteOfInterest &lt;- &quot;SCBI&quot;
+
+# use filter to select only the site of Interest 
+## using %in% allows one to add a vector if you want more than one site. 
+## could also do it with == instead of %in% but won&#39;t work with vectors
+
+phe_1sp &lt;- filter(phe_ind, siteID %in% siteOfInterest)
+
+## Error in filter(phe_ind, siteID %in% siteOfInterest): object &#39;phe_ind&#39; not found
+</code></pre>
+
+<h2>Select Species of Interest</h2>
+
+<p>And now select a single species of interest. For now let&#39;s choose the flowering 
+tree <em>Liriodendron tulipifera</em> (LITU). </p>
+
+<pre><code># see which species are present
+unique(phe_1sp$taxonID)
+
+## Error in unique(phe_1sp$taxonID): object &#39;phe_1sp&#39; not found
+
+speciesOfInterest &lt;- &quot;LITU&quot;
+
+#subset to just &quot;LITU&quot;
+# here just use == but could also use %in%
+phe_1sp &lt;- filter(phe_1sp, taxonID==speciesOfInterest)
+
+## Error in filter(phe_1sp, taxonID == speciesOfInterest): object &#39;phe_1sp&#39; not found
+
+# check that it worked
+unique(phe_1sp$taxonID)
+
+## Error in unique(phe_1sp$taxonID): object &#39;phe_1sp&#39; not found
+</code></pre>
+
+<h2>Select Phenophase of Interest</h2>
+
+<p>And, perhaps a single phenophase. </p>
+
+<pre><code># see which species are present
+unique(phe_1sp$phenophaseName)
+
+## Error in unique(phe_1sp$phenophaseName): object &#39;phe_1sp&#39; not found
+
+phenophaseOfInterest &lt;- &quot;Leaves&quot;
+
+#subset to just the phenosphase of Interest 
+phe_1sp &lt;- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
+
+## Error in filter(phe_1sp, phenophaseName %in% phenophaseOfInterest): object &#39;phe_1sp&#39; not found
+
+# check that it worked
+unique(phe_1sp$phenophaseName)
+
+## Error in unique(phe_1sp$phenophaseName): object &#39;phe_1sp&#39; not found
+</code></pre>
+
+<h2>Total in Phenophase of Interest</h2>
+
+<p>The <code>phenophaseState</code> is recorded as &ldquo;yes&rdquo; or &ldquo;no&rdquo; that the individual is in that
+phenophase. The <code>phenophaseIntensity</code> are categories for how much of the indvidual
+is in that state. For now, we will stick with <code>phenophaseState</code>. </p>
+
+<p>We can now calculate the total individual with that state. </p>
+
+<p>Here we use pipes <code>%&gt;%</code> from the dpylr package to &ldquo;pass&rdquo; objects onto the next
+function. </p>
+
+<pre><code># Total in status by day
+sampSize &lt;- count(phe_1sp, date)
+
+## Error in count(phe_1sp, date): object &#39;phe_1sp&#39; not found
+
+inStat &lt;- phe_1sp %&gt;%
+    group_by(date) %&gt;%
+  count(phenophaseStatus)
+
+## Error in eval(lhs, parent, parent): object &#39;phe_1sp&#39; not found
+
+inStat &lt;- full_join(sampSize, inStat, by=&quot;date&quot;)
+
+## Error in full_join(sampSize, inStat, by = &quot;date&quot;): object &#39;sampSize&#39; not found
+
+# Retain only Yes
+inStat_T &lt;- filter(inStat, phenophaseStatus %in% &quot;yes&quot;)
+
+## Error in filter(inStat, phenophaseStatus %in% &quot;yes&quot;): object &#39;inStat&#39; not found
+</code></pre>
+
+<p>Now that we have the data we can plot it. </p>
+
+<h2>Plot with ggplot</h2>
+
+<p>The <code>ggplot()</code> function within the <code>ggplot2</code> package gives us considerable control
+over plot appearance. Three basic elements are needed for <code>ggplot()</code> to work:</p>
+
+<ol>
+<li>The <strong>data_frame:</strong> containing the variables that we wish to plot,</li>
+<li><strong><code>aes</code> (aesthetics):</strong> which denotes which variables will map to the x-, y-
+(and other) axes,<br/></li>
+<li>**<code>geom_XXXX</code> (geometry):** which defines the data&#39;s graphical representation
+(e.g. points (<code>geom_point</code>), bars (<code>geom_bar</code>), lines (<code>geom_line</code>), etc).</li>
+</ol>
+
+<p>The syntax begins with the base statement that includes the <code>data_frame</code>
+(<code>inStat_T</code>) and associated x (<code>date</code>) and y (<code>n</code>) variables to be
+plotted:</p>
+
+<p><code>ggplot(inStat_T, aes(date, n))</code></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** For a more detailed introduction to 
+using ggplot(), visit 
+<a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank"> *Time Series 05: Plot Time Series with ggplot2 in R* tutorial</a>. 
+</div>
+
+<h3>Bar Plots with ggplot</h3>
+
+<p>To successfully plot, the last piece that is needed is the <code>geom</code>etry type. 
+To create a bar plot, we set the <code>geom</code> element from to <code>geom_bar()</code>.  </p>
+
+<p>The default setting for a ggplot bar plot -  <code>geom_bar()</code> - is a histogram
+designated by <code>stat=&quot;bin&quot;</code>. However, in this case, we want to plot count values. 
+We can use <code>geom_bar(stat=&quot;identity&quot;)</code> to force ggplot to plot actual values.</p>
+
+<pre><code># plot number of individuals in leaf
+phenoPlot &lt;- ggplot(inStat_T, aes(date, n.y)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) 
+
+## Error in ggplot(inStat_T, aes(date, n.y)): object &#39;inStat_T&#39; not found
+
+phenoPlot
+
+## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
+
+# Now let&#39;s make the plot look a bit more presentable
+phenoPlot &lt;- ggplot(inStat_T, aes(date, n.y)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
+    ggtitle(&quot;Total Individuals in Leaf&quot;) +
+    xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
+    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(text = element_text(size=18))
+
+## Error in ggplot(inStat_T, aes(date, n.y)): object &#39;inStat_T&#39; not found
+
+phenoPlot
+
+## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
+</code></pre>
+
+<p>We could also covert this to percentage and plot that. </p>
+
+<pre><code># convert to percent
+inStat_T$percent&lt;- ((inStat_T$n.y)/inStat_T$n.x)*100
+
+## Error in eval(expr, envir, enclos): object &#39;inStat_T&#39; not found
+
+# plot percent of leaves
+phenoPlot_P &lt;- ggplot(inStat_T, aes(date, percent)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
+    ggtitle(&quot;Proportion in Leaf&quot;) +
+    xlab(&quot;Date&quot;) + ylab(&quot;% of Individuals&quot;) +
+    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(text = element_text(size=18))
+
+## Error in ggplot(inStat_T, aes(date, percent)): object &#39;inStat_T&#39; not found
+
+phenoPlot_P
+
+## Error in eval(expr, envir, enclos): object &#39;phenoPlot_P&#39; not found
+</code></pre>
+
+<p>The plots demonstrate that, while the 2016 data show the nice expected pattern 
+of increasing leaf-out, peak, and drop-off, we seem to be missing the increase 
+in leaf-out in 2015. Looking at the data, we see that there was no data collected
+before May of 2015 &ndash; we&#39;re missing most of leaf out!</p>
+
+<h2>Filter by Date</h2>
+
+<p>That may create problems with downstream analyses. Let&#39;s filter the dataset to 
+include just 2016.</p>
+
+<pre><code># use filter to select only the site of Interest 
+phe_1sp_2016 &lt;- filter(inStat_T, date &gt;= &quot;2016-01-01&quot;)
+
+## Error in filter(inStat_T, date &gt;= &quot;2016-01-01&quot;): object &#39;inStat_T&#39; not found
+
+# did it work?
+range(phe_1sp_2016$date)
+
+## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2016&#39; not found
+</code></pre>
+
+<p>How does that look? </p>
+
+<pre><code># Now let&#39;s make the plot look a bit more presentable
+phenoPlot16 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
+    ggtitle(&quot;Total Individuals in Leaf&quot;) +
+    xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
+    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(text = element_text(size=18))
+
+## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object &#39;phe_1sp_2016&#39; not found
+
+phenoPlot16
+
+## Error in eval(expr, envir, enclos): object &#39;phenoPlot16&#39; not found
+</code></pre>
+
+<h2>Drivers of Phenology</h2>
+
+<p>Now that we see that there are differences in and shifts in phenophases, what 
+are the drivers of phenophases?</p>
+
+<p>The NEON phenology measurements track sensitive and easily observed indicators 
+of biotic responses to climate variability by monitoring the timing and duration 
+of phenological stagesin plant communities. Plant phenology is affected by forces 
+such as temperature, timing and duration of pest infestations and disease outbreaks, 
+water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
+feedbacks to trophic interactions, carbon sequestration, community composition 
+and ecosystem function.  (quoted from 
+<a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)</p>
+
+<pre><code>## Error in is.data.frame(x): object &#39;phe_1sp_2016&#39; not found
+</code></pre>
+
+</body>
+
+</html>

@@ -165,3 +165,5 @@ for (files in rmd.files) {
 #unlink(paste0(wd_processing_doc,"/",subPath,"*"), recursive = TRUE)
 
 ########################### end script
+#files=rmd.files[13]
+#files
