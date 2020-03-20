@@ -307,8 +307,6 @@ We can now export the spatial object as a shapefile.
     # write the shapefiles 
     writeOGR(polys.df, '.', '2014Plots_SJER', 'ESRI Shapefile')
 
-    ## Error in writeOGR(polys.df, ".", "2014Plots_SJER", "ESRI Shapefile"): layer exists, use a new layer name
-
 And there you have it -- a shapefile with a square plot boundary around your
 centroids. Bring this shapefile into QGIS or whatever GIS package you prefer 
 and have a look! 

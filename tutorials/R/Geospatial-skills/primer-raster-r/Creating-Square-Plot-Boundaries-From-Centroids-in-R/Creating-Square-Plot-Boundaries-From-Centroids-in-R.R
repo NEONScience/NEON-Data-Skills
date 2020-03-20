@@ -1,4 +1,4 @@
-## ----load-data----------------------------------------------------------------------------
+## ----load-data-----------------------------------------------------------------------------------
 # load the sp and rgdal packages
 
 library(sp)
@@ -13,12 +13,12 @@ library(rgdal)
 centroids <- read.csv("NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE)
 
 
-## ----view-data----------------------------------------------------------------------------
+## ----view-data-----------------------------------------------------------------------------------
 # view data structure
 str(centroids)
 
 
-## ----set-radius---------------------------------------------------------------------------
+## ----set-radius----------------------------------------------------------------------------------
 # set the radius for the plots
 radius <- 20 # radius in meters
 
@@ -31,7 +31,7 @@ xMinus <- centroids$easting-radius
 
 
 
-## ----create-perimeter---------------------------------------------------------------------
+## ----create-perimeter----------------------------------------------------------------------------
 # calculate polygon coordinates for each plot centroid. 
 square=cbind(xMinus,yPlus,  # NW corner
 	xPlus, yPlus,  # NE corner
@@ -41,14 +41,14 @@ square=cbind(xMinus,yPlus,  # NW corner
 
 
 
-## ----get-id-------------------------------------------------------------------------------
+## ----get-id--------------------------------------------------------------------------------------
 
 # Extract the plot ID information
 ID=centroids$Plot_ID
 
 
 
-## ----mapply-------------------------------------------------------------------------------
+## ----mapply--------------------------------------------------------------------------------------
 # create spatial polygons from coordinates
 polys <- SpatialPolygons(mapply(function(poly, id) 
 		{
@@ -59,13 +59,13 @@ polys <- SpatialPolygons(mapply(function(poly, id)
 	proj4string=CRS(as.character("+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")))
 
 
-## ----polys-plot---------------------------------------------------------------------------
+## ----polys-plot----------------------------------------------------------------------------------
 # plot the new polygons
 plot(polys)
 
 
 
-## ----looping-it---------------------------------------------------------------------------
+## ----looping-it----------------------------------------------------------------------------------
 # First, initialize a list that will later be populated
 # a, as a placeholder, since this is temporary
 a <- vector('list', length(2))
@@ -82,23 +82,23 @@ polysB<-SpatialPolygons(a,proj4string=CRS(as.character("+proj=utm +zone=11 +datu
 
 
 
-## ----polysB-plot--------------------------------------------------------------------------
+## ----polysB-plot---------------------------------------------------------------------------------
 # plot the new polygons
 plot(polysB)
 
 
 
-## ----create-spdf--------------------------------------------------------------------------
+## ----create-spdf---------------------------------------------------------------------------------
 
 # Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
 polys.df <- SpatialPolygonsDataFrame(polys, data.frame(id=ID, row.names=ID))
 
 
-## ----polysdf-plot-------------------------------------------------------------------------
+## ----polysdf-plot--------------------------------------------------------------------------------
 plot(polys.df, col=rainbow(50, alpha=0.5))
 
 
-## ----write-ogr----------------------------------------------------------------------------
+## ----write-ogr-----------------------------------------------------------------------------------
 
 # write the shapefiles 
 writeOGR(polys.df, '.', '2014Plots_SJER', 'ESRI Shapefile')
