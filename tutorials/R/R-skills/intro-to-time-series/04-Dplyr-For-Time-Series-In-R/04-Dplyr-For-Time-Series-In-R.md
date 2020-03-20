@@ -4,7 +4,7 @@ title: "Time Series 04: Subset and Manipulate Time Series Data with dplyr"
 description: "In this tutorial, we will use the group_by, summarize and mutate functions in the `dplyr` package to efficiently manipulate atmospheric data collected at the NEON Harvard Forest Field Site. We will use pipes to efficiently perform multiple tasks within a single chunk of code."
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: Michael Patterson
+contributors: Michael Patterson, Donal O'Leary
 estimatedTime:
 packagesLibraries: ggplot2, dplyr, lubridate
 topics: time-series, phenology
@@ -130,10 +130,11 @@ Using `names()` we see that we now have a `year` column in our `data_frame`.
     # check to make sure it worked
     names(harMet15.09.11)
 
-    ##  [1] "X"        "datetime" "jd"       "airt"     "f.airt"   "rh"       "f.rh"     "dewp"    
-    ##  [9] "f.dewp"   "prec"     "f.prec"   "slrr"     "f.slrr"   "parr"     "f.parr"   "netr"    
-    ## [17] "f.netr"   "bar"      "f.bar"    "wspd"     "f.wspd"   "wres"     "f.wres"   "wdir"    
-    ## [25] "f.wdir"   "wdev"     "f.wdev"   "gspd"     "f.gspd"   "s10t"     "f.s10t"   "year"
+    ##  [1] "X"        "datetime" "jd"       "airt"     "f.airt"   "rh"       "f.rh"    
+    ##  [8] "dewp"     "f.dewp"   "prec"     "f.prec"   "slrr"     "f.slrr"   "parr"    
+    ## [15] "f.parr"   "netr"     "f.netr"   "bar"      "f.bar"    "wspd"     "f.wspd"  
+    ## [22] "wres"     "f.wres"   "wdir"     "f.wdir"   "wdev"     "f.wdev"   "gspd"    
+    ## [29] "f.gspd"   "s10t"     "f.s10t"   "year"
 
     str(harMet15.09.11$year)
 
@@ -165,7 +166,12 @@ The `group_by` function creates a "grouped" object. We can then use this
 grouped object to quickly calculate summary statistics by group - in this case,
 year. For example, we can count how many measurements were made each year using
 the `tally()` function. We can then use the `summarize` function to calculate
-the mean air temperature value each year.
+the mean air temperature value each year. Note that "summarize" is a common 
+function name across many different packages. If you happen to have two packages 
+loaded at the same time that both have a "summarize" function, you may not get 
+the results that you expect. Therefore, we will "disambiguate" our function by 
+specifying which package it comes from using the double colon notation 
+`dplyr::summarize()`.
 
 
     # how many measurements were made each year?
@@ -179,12 +185,16 @@ the mean air temperature value each year.
     ## 3  2011 35036
 
     # what is the mean airt value per year?
-    summarize(HARV.grp.year, 
+    dplyr::summarize(HARV.grp.year, 
               mean(airt)   # calculate the annual mean of airt
               ) 
 
-    ##   mean(airt)
-    ## 1         NA
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt)`
+    ##   <int>        <dbl>
+    ## 1  2009        NA   
+    ## 2  2010        NA   
+    ## 3  2011         8.75
 
 Why did this return a `NA` value for years 2009 and 2010? We know there are some
 values for both years. Let's check our data for `NoData` values.
@@ -212,12 +222,16 @@ the final mean value.
 
 
     # calculate mean but remove NA values
-    summarize(HARV.grp.year, 
+    dplyr::summarize(HARV.grp.year, 
               mean(airt, na.rm = TRUE)
               )
 
-    ##   mean(airt, na.rm = TRUE)
-    ## 1                 8.467904
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt, na.rm = TRUE)`
+    ##   <int>                      <dbl>
+    ## 1  2009                       7.63
+    ## 2  2010                       9.03
+    ## 3  2011                       8.75
 
 Great! We've now used the `group_by` function to create groups for each year 
 of our data. We then calculated a summary mean value per year using `summarize`.
@@ -275,19 +289,24 @@ We can use pipes to summarize data by year too:
     # what was the annual air temperature average 
     year.sum <- harMet15.09.11 %>% 
       group_by(year) %>%  # group by year
-      summarize(mean(airt, na.rm=TRUE))
+      dplyr::summarize(mean(airt, na.rm=TRUE))
     
     # what is the class of the output?
     year.sum
 
-    ##   mean(airt, na.rm = TRUE)
-    ## 1                 8.467904
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt, na.rm = TRUE)`
+    ##   <int>                      <dbl>
+    ## 1  2009                       7.63
+    ## 2  2010                       9.03
+    ## 3  2011                       8.75
 
     # view structure of output
     str(year.sum)
 
-    ## 'data.frame':	1 obs. of  1 variable:
-    ##  $ mean(airt, na.rm = TRUE): num 8.47
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':	3 obs. of  2 variables:
+    ##  $ year                    : int  2009 2010 2011
+    ##  $ mean(airt, na.rm = TRUE): num  7.63 9.03 8.75
 
 
 <div id="ds-challenge" markdown="1">
@@ -296,9 +315,6 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
 
 </div>
-
-
-    ## Error in names(jday.avg) <- c("jday", "meanAirTemp"): 'names' attribute [2] must be the same length as the vector [1]
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/pipe-demo-1.png)
 
@@ -387,10 +403,23 @@ temperature for each Julian day per year. Note that we are still using
 
     harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
       group_by(year, jd) %>%   # group data by Year & Julian day
-      summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
+      dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
 
-    ##   mean_airt
-    ## 1  8.467904
+    ## # A tibble: 1,096 x 3
+    ## # Groups:   year [3]
+    ##     year    jd mean_airt
+    ##    <int> <int>     <dbl>
+    ##  1  2009     1    -15.1 
+    ##  2  2009     2     -9.14
+    ##  3  2009     3     -5.54
+    ##  4  2009     4     -6.35
+    ##  5  2009     5     -2.41
+    ##  6  2009     6     -4.92
+    ##  7  2009     7     -2.59
+    ##  8  2009     8     -3.23
+    ##  9  2009     9     -9.92
+    ## 10  2009    10    -11.1 
+    ## # … with 1,086 more rows
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Summarization & Calculations with dplyr
@@ -405,9 +434,6 @@ data_frame `total.prec`.
 `colour=as.factor(total.prec$year)` to color the data points by year.
 
 </div>
-
-
-    ## Error: Aesthetics must be either length 1 or the same as the data (1): colour
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-answer-1.png)
 
@@ -427,10 +453,23 @@ data_frame.
     harMet15.09.11 %>%
       mutate(year2 = year(datetime)) %>%
       group_by(year2, jd) %>%
-      summarize(mean_airt = mean(airt, na.rm = TRUE))
+      dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
 
-    ##   mean_airt
-    ## 1  8.467904
+    ## # A tibble: 1,096 x 3
+    ## # Groups:   year2 [3]
+    ##    year2    jd mean_airt
+    ##    <int> <int>     <dbl>
+    ##  1  2009     1    -15.1 
+    ##  2  2009     2     -9.14
+    ##  3  2009     3     -5.54
+    ##  4  2009     4     -6.35
+    ##  5  2009     5     -2.41
+    ##  6  2009     6     -4.92
+    ##  7  2009     7     -2.59
+    ##  8  2009     8     -3.23
+    ##  9  2009     9     -9.92
+    ## 10  2009    10    -11.1 
+    ## # … with 1,086 more rows
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
@@ -446,12 +485,20 @@ plotting.
     harTemp.daily.09.11<-harMet15.09.11 %>%
                         mutate(year2 = year(datetime)) %>%
                         group_by(year2, jd) %>%
-                        summarize(mean_airt = mean(airt, na.rm = TRUE))
+                        dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
     
     head(harTemp.daily.09.11)
 
-    ##   mean_airt
-    ## 1  8.467904
+    ## # A tibble: 6 x 3
+    ## # Groups:   year2 [1]
+    ##   year2    jd mean_airt
+    ##   <int> <int>     <dbl>
+    ## 1  2009     1    -15.1 
+    ## 2  2009     2     -9.14
+    ## 3  2009     3     -5.54
+    ## 4  2009     4     -6.35
+    ## 5  2009     5     -2.41
+    ## 6  2009     6     -4.92
 
 ### Add Date-Time To dplyr Output
 In the challenge above, we created a plot of daily precipitation data using
@@ -478,19 +525,36 @@ Let's try it!
     harTemp.daily.09.11 <- harMet15.09.11 %>%
       mutate(year3 = year(datetime)) %>%
       group_by(year3, jd) %>%
-      summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
+      dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
     
     # view str and head of data
     str(harTemp.daily.09.11)
 
-    ## 'data.frame':	1 obs. of  2 variables:
-    ##  $ mean_airt: num 8.47
-    ##  $ datetime : POSIXct, format: "2009-01-01"
+    ## Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	1096 obs. of  4 variables:
+    ##  $ year3    : int  2009 2009 2009 2009 2009 2009 2009 2009 2009 2009 ...
+    ##  $ jd       : int  1 2 3 4 5 6 7 8 9 10 ...
+    ##  $ mean_airt: num  -15.13 -9.14 -5.54 -6.35 -2.41 ...
+    ##  $ datetime : POSIXct, format: "2009-01-01 00:15:00" "2009-01-02 00:15:00" ...
+    ##  - attr(*, "groups")=Classes 'tbl_df', 'tbl' and 'data.frame':	3 obs. of  2 variables:
+    ##   ..$ year3: int  2009 2010 2011
+    ##   ..$ .rows:List of 3
+    ##   .. ..$ : int  1 2 3 4 5 6 7 8 9 10 ...
+    ##   .. ..$ : int  367 368 369 370 371 372 373 374 375 376 ...
+    ##   .. ..$ : int  732 733 734 735 736 737 738 739 740 741 ...
+    ##   ..- attr(*, ".drop")= logi TRUE
 
     head(harTemp.daily.09.11)
 
-    ##   mean_airt   datetime
-    ## 1  8.467904 2009-01-01
+    ## # A tibble: 6 x 4
+    ## # Groups:   year3 [1]
+    ##   year3    jd mean_airt datetime           
+    ##   <int> <int>     <dbl> <dttm>             
+    ## 1  2009     1    -15.1  2009-01-01 00:15:00
+    ## 2  2009     2     -9.14 2009-01-02 00:15:00
+    ## 3  2009     3     -5.54 2009-01-03 00:15:00
+    ## 4  2009     4     -6.35 2009-01-04 00:15:00
+    ## 5  2009     5     -2.41 2009-01-05 00:15:00
+    ## 6  2009     6     -4.92 2009-01-06 00:15:00
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Combined dplyr Skills

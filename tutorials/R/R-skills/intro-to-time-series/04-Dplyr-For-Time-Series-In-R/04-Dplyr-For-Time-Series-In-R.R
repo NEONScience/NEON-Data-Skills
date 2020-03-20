@@ -1,4 +1,4 @@
-## ----load-data----------------------------------------------------------------------------
+## ----load-data--------------------------------------------------------------------------
 
 # it's good coding practice to load packages at the top of a script
 
@@ -22,7 +22,7 @@ harMet15.09.11$datetime<-as.POSIXct(harMet15.09.11$datetime,
                     tz = "America/New_York")
 
 
-## ----15-min-plots, echo=FALSE-------------------------------------------------------------
+## ----15-min-plots, echo=FALSE-----------------------------------------------------------
 
 a <- ggplot(harMet15.09.11, aes(x=datetime, y=airt)) + 
            geom_point(na.rm=TRUE, size = .1) +
@@ -47,19 +47,19 @@ grid.arrange(a,b,c, ncol=2)
 
 
 
-## ----dplyr-lubridate-2--------------------------------------------------------------------
+## ----dplyr-lubridate-2------------------------------------------------------------------
 # create a year column
 harMet15.09.11$year <- year(harMet15.09.11$datetime)
 
 
-## ----dplyr-lubridate-3--------------------------------------------------------------------
+## ----dplyr-lubridate-3------------------------------------------------------------------
 
 # check to make sure it worked
 names(harMet15.09.11)
 str(harMet15.09.11$year)
 
 
-## ----group-by-dplyr-----------------------------------------------------------------------
+## ----group-by-dplyr---------------------------------------------------------------------
 
 # Create a group_by object using the year column 
 HARV.grp.year <- group_by(harMet15.09.11, # data_frame object
@@ -69,18 +69,18 @@ HARV.grp.year <- group_by(harMet15.09.11, # data_frame object
 class(HARV.grp.year)
 
 
-## ----tally-by-year------------------------------------------------------------------------
+## ----tally-by-year----------------------------------------------------------------------
 # how many measurements were made each year?
 tally(HARV.grp.year)
 
 # what is the mean airt value per year?
-summarize(HARV.grp.year, 
+dplyr::summarize(HARV.grp.year, 
           mean(airt)   # calculate the annual mean of airt
           ) 
 
 
 
-## ----check-data---------------------------------------------------------------------------
+## ----check-data-------------------------------------------------------------------------
 # are there NoData values?
 sum(is.na(HARV.grp.year$airt))
 
@@ -90,15 +90,15 @@ HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
 
 
 
-## ----calculate-mean-value-----------------------------------------------------------------
+## ----calculate-mean-value---------------------------------------------------------------
 # calculate mean but remove NA values
-summarize(HARV.grp.year, 
+dplyr::summarize(HARV.grp.year, 
           mean(airt, na.rm = TRUE)
           )
 
 
 
-## ----using-pipes--------------------------------------------------------------------------
+## ----using-pipes------------------------------------------------------------------------
 
 # how many measurements were made a year?
 harMet15.09.11 %>% 
@@ -107,11 +107,11 @@ harMet15.09.11 %>%
 
 
 
-## ----summ-data----------------------------------------------------------------------------
+## ----summ-data--------------------------------------------------------------------------
 # what was the annual air temperature average 
 year.sum <- harMet15.09.11 %>% 
   group_by(year) %>%  # group by year
-  summarize(mean(airt, na.rm=TRUE))
+  dplyr::summarize(mean(airt, na.rm=TRUE))
 
 # what is the class of the output?
 year.sum
@@ -119,12 +119,12 @@ year.sum
 str(year.sum)
 
 
-## ----pipe-demo, echo = FALSE--------------------------------------------------------------
+## ----pipe-demo, echo = FALSE------------------------------------------------------------
 
 # create dataframe
 jday.avg <- harMet15.09.11 %>%      # within the harMet15.09.11 data
             group_by(jd) %>%      # group the data by the Julian day
-            summarize((mean(airt,na.rm=TRUE)))  # summarize temp per julian day
+            dplyr::summarize((mean(airt,na.rm=TRUE)))  # summarize temp per julian day
 names(jday.avg) <- c("jday","meanAirTemp")
 
 # plot average air temperature by Julian day
@@ -134,27 +134,27 @@ qplot(jday.avg$jday, jday.avg$meanAirTemp,
 
 
 
-## ----dplyr-group--------------------------------------------------------------------------
+## ----dplyr-group------------------------------------------------------------------------
 harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
   group_by(year, jd) %>%   # group data by Year & Julian day
   tally()                  # tally (count) observations per jd / year
 
 
-## ----simple-math--------------------------------------------------------------------------
+## ----simple-math------------------------------------------------------------------------
 24*4  # 24 hours/day * 4 15-min data points/hour
 
 
-## ----dplyr-summarize----------------------------------------------------------------------
+## ----dplyr-summarize--------------------------------------------------------------------
 harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
   group_by(year, jd) %>%   # group data by Year & Julian day
-  summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
+  dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
 
 
-## ----challenge-answer, echo=FALSE---------------------------------------------------------
+## ----challenge-answer, echo=FALSE-------------------------------------------------------
 # calculate total percip by year & day
 total.prec <- harMet15.09.11 %>%
   group_by(year, jd) %>%
-  summarize(sum_prec = sum(prec, na.rm = TRUE)) 
+  dplyr::summarize(sum_prec = sum(prec, na.rm = TRUE)) 
 
 # plot precip
 qplot(total.prec$jd, total.prec$sum_prec,
@@ -164,42 +164,42 @@ qplot(total.prec$jd, total.prec$sum_prec,
 
 
 
-## ----dplyr-mutate-------------------------------------------------------------------------
+## ----dplyr-mutate-----------------------------------------------------------------------
 
 harMet15.09.11 %>%
   mutate(year2 = year(datetime)) %>%
   group_by(year2, jd) %>%
-  summarize(mean_airt = mean(airt, na.rm = TRUE))
+  dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
 
 
 
-## ----dplyr-create-data-frame--------------------------------------------------------------
+## ----dplyr-create-data-frame------------------------------------------------------------
 
 harTemp.daily.09.11<-harMet15.09.11 %>%
                     mutate(year2 = year(datetime)) %>%
                     group_by(year2, jd) %>%
-                    summarize(mean_airt = mean(airt, na.rm = TRUE))
+                    dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
 
 head(harTemp.daily.09.11)
 
 
-## ----dplyr-dataframe----------------------------------------------------------------------
+## ----dplyr-dataframe--------------------------------------------------------------------
 # add in a datatime column
 harTemp.daily.09.11 <- harMet15.09.11 %>%
   mutate(year3 = year(datetime)) %>%
   group_by(year3, jd) %>%
-  summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
+  dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
 
 # view str and head of data
 str(harTemp.daily.09.11)
 head(harTemp.daily.09.11)
 
 
-## ----challenge-code-dplyr, results="hide", include=TRUE, echo=FALSE-----------------------
+## ----challenge-code-dplyr, results="hide", include=TRUE, echo=FALSE---------------------
 # 1
 total.prec2 <- harMet15.09.11 %>%
   group_by(year, jd) %>%
-  summarize(sum_prec = sum(prec, na.rm = TRUE), datetime = first(datetime)) 
+  dplyr::summarize(sum_prec = sum(prec, na.rm = TRUE), datetime = first(datetime)) 
 
 qplot(x=total.prec2$datetime, y=total.prec2$sum_prec,
     main="Total Daily Precipitation 2009-2011\nNEON Harvard Forest Field Site",
@@ -209,7 +209,7 @@ qplot(x=total.prec2$datetime, y=total.prec2$sum_prec,
 harTemp.monthly.09.11 <- harMet15.09.11 %>%
   mutate(month = month(datetime), year= year(datetime)) %>%
   group_by(month, year) %>%
-  summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
+  dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
 
 qplot(harTemp.monthly.09.11$datetime, harTemp.monthly.09.11$mean_airt,
   main="Monthly Mean Air Temperature 2009-2011\nNEON Harvard Forest Field Site",
