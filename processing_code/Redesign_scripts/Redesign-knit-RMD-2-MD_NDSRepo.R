@@ -18,10 +18,13 @@
 require(knitr)
 require(markdown)
 
-# do not put '/' at the end of your directory name
+# Choose the directory under 'tutorials' to knit
+# You can choose a high-level directory and this script will search
+# that directory recursively, knitting every .Rmd within it.
+# Note: do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
           "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
-          "R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral")
+          "R/R-skills/Using-hdf5-r/Intro-HDF5-R")
 
 #################### Set up Input Variables #############################
 
@@ -72,7 +75,7 @@ rmd.files <- list.files(file.path(gitRepoPath, "tutorials", subDir),
 # so is #42 nCLIMDIV-Palmer-Drought-In-R.Rmd
 # Should update with paste0(wd,...) to make it work again!
 
-rmd.files <- c(rmd.files[1:40], rmd.files[43:61])
+#rmd.files <- c(rmd.files[1:40], rmd.files[43:61])
 
 setwd(wd_processing_doc)
 
