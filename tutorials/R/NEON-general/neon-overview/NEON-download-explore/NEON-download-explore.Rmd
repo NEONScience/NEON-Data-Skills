@@ -191,10 +191,16 @@ It will be in the form DP#.#####.###
 Here, we'll download woody vegetation structure data from 
 Wind River Experimental Forest (WREF).
 
-```{r run-loadByProduct, results="hide", message=FALSE, warning=FALSE}
+```{r run-loadByProduct, results="hide", eval=FALSE, comment=NA}
 
 veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
               package="expanded", check.size=T)
+
+```
+```{r run-loadByProduct-hidden, include=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
+
+veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
+              package="expanded", check.size=F)
 
 ```
 
@@ -269,13 +275,18 @@ around coordinates when deciding which tiles to download
 Here, we'll download one tile of Ecosystem structure (Canopy Height 
 Model) (DP3.30015.001) from WREF in 2017.
 
-```{r aop-tile, results="hide", message=FALSE, warning=FALSE}
+```{r aop-tile, results="hide", eval=FALSE, comment=NA}
 
 byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
           easting=580000, northing=5075000, savepath="~/Downloads")
 
 ```
+```{r aop-tile-hidden, include=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
 
+byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = F,
+          easting=580000, northing=5075000, savepath="~/Downloads")
+
+```
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
 file of a canopy height model tile. We'll look at this in more detail 

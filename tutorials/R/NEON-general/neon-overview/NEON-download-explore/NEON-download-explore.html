@@ -337,8 +337,6 @@ Wind River Experimental Forest (WREF).</p>
 
 <pre><code>veg_str &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, site=&quot;WREF&quot;, 
               package=&quot;expanded&quot;, check.size=T)
-
-## Error in zipsByProduct(dpID = dpID, site = site, startdate = startdate, : Download halted.
 </code></pre>
 
 <p>The object returned by <code>loadByProduct()</code> is a named list of data 
@@ -355,7 +353,7 @@ with it as an independent object, you can use the
 
 <pre><code>list2env(veg_str, .GlobalEnv)
 
-## Error in list2env(veg_str, .GlobalEnv): object &#39;veg_str&#39; not found
+## &lt;environment: R_GlobalEnv&gt;
 </code></pre>
 
 <p>If you want to be able to close R and come back to these data without 
@@ -409,8 +407,6 @@ Model) (DP3.30015.001) from WREF in 2017.</p>
 
 <pre><code>byTileAOP(&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, year=&quot;2017&quot;, check.size = T,
           easting=580000, northing=5075000, savepath=&quot;~/Downloads&quot;)
-
-## Error in byTileAOP(&quot;DP3.30015.001&quot;, site = &quot;WREF&quot;, year = &quot;2017&quot;, check.size = T, : Download halted.
 </code></pre>
 
 <p>In the directory indicated in <code>savepath</code>, you should now have a folder 
@@ -490,16 +486,8 @@ to join the mapping and individual data.</p>
 <p>First, use the <code>geoNEON</code> package to calculate stem locations:</p>
 
 <pre><code>names(vst_mappingandtagging) #this object was created using list2env() above
-
-## Error in eval(expr, envir, enclos): object &#39;vst_mappingandtagging&#39; not found
-
 vegmap &lt;- geoNEON::getLocTOS(vst_mappingandtagging, &quot;vst_mappingandtagging&quot;)
-
-## Error in data.frame(data): object &#39;vst_mappingandtagging&#39; not found
-
 names(vegmap)
-
-## Error in eval(expr, envir, enclos): object &#39;vegmap&#39; not found
 </code></pre>
 
 <p>And now merge the mapping data with the individual measurements. 
@@ -508,8 +496,6 @@ to avoid having duplicate columns.</p>
 
 <pre><code>veg &lt;- merge(vst_apparentindividual, vegmap, by=c(&quot;individualID&quot;,&quot;namedLocation&quot;,
                                   &quot;domainID&quot;,&quot;siteID&quot;,&quot;plotID&quot;))
-
-## Error in merge(vst_apparentindividual, vegmap, by = c(&quot;individualID&quot;, : object &#39;vst_apparentindividual&#39; not found
 </code></pre>
 
 <p>Using the merged data, now we can map the stems in plot 85 
@@ -522,9 +508,9 @@ we divide by 2 to convert diameters to radii after unit conversion.</p>
         veg$adjNorthing[which(veg$plotID==&quot;WREF_085&quot;)], 
         circles=veg$stemDiameter[which(veg$plotID==&quot;WREF_085&quot;)]/100/2, 
         xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;, inches=F)
-
-## Error in symbols(veg$adjEasting[which(veg$plotID == &quot;WREF_085&quot;)], veg$adjNorthing[which(veg$plotID == : object &#39;veg&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-vst-1.png" alt=" "/></p>
 
 <h2>Navigate data downloads: AOP</h2>
 
