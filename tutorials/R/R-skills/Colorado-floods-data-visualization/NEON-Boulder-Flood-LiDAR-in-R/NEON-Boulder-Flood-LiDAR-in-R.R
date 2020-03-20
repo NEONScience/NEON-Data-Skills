@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries------------------------------------------------------------------------------
 # load libraries
 library(raster)   # work with raster files
 library(rgdal)    # work with raster files
@@ -7,7 +7,7 @@ library(rgdal)    # work with raster files
 #setwd("working-dir-path-here")
 
 
-## ----open-DTMs----------------------------------------------------------------------------
+## ----open-DTMs-----------------------------------------------------------------------------------
 # Load DTMs into R
 DTM_pre <- raster("disturb-events-co13/lidar/pre-flood/preDTM3.tif")
 DTM_post <- raster("disturb-events-co13/lidar/post-flood/postDTM3.tif")
@@ -18,14 +18,14 @@ DTM_post
 
 
 
-## ----open-hillshade-----------------------------------------------------------------------
+## ----open-hillshade------------------------------------------------------------------------------
 # import DSM hillshade
 DTMpre_hill <- raster("disturb-events-co13/lidar/pre-flood/preDTMhill3.tif")
 DTMpost_hill <- raster("disturb-events-co13/lidar/post-flood/postDTMhill3.tif")
 
 
 
-## ----plot-rasters-------------------------------------------------------------------------
+## ----plot-rasters--------------------------------------------------------------------------------
 
 # plot Pre-flood w/ hillshade
 plot(DTMpre_hill,
@@ -54,7 +54,7 @@ plot(DTM_post,
 
 
 
-## ----create-difference-model--------------------------------------------------------------
+## ----create-difference-model---------------------------------------------------------------------
 # DoD: erosion to be neg, deposition to be positive, therefore post - pre
 DoD <- DTM_post-DTM_pre
 
@@ -64,13 +64,13 @@ plot(DoD,
 
 
 
-## ----hist-DoD-----------------------------------------------------------------------------
+## ----hist-DoD------------------------------------------------------------------------------------
 # histogram of values in DoD
 hist(DoD)
 
 
 
-## ----pretty-diff-model--------------------------------------------------------------------
+## ----pretty-diff-model---------------------------------------------------------------------------
 # Color palette for 5 categories
 difCol5 = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6")
 
@@ -94,38 +94,39 @@ plot(DoD,
 
 
 
-## ----crop-raster-man, eval=FALSE----------------------------------------------------------
-## # plot the rasters you want to crop from
-## plot(DTMpost_hill,
-##         col=grey(1:100/100),  # create a color ramp of grey colors
-##         legend=FALSE,
-##         main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
-##         axes=FALSE)
-## 
-## plot(DoD,
-##         breaks = c(-5,-1,-0.5,0.5,1,10),
-##         col= difCol5,
-##         axes=FALSE,
-##         alpha=0.4,
-##         add =T)
-## 
-## # crop by designating two opposite corners
-## cropbox1<-drawExtent()
-## 
+## ----crop-raster-man, eval=FALSE, comment=NA-----------------------------------------------------
+# plot the rasters you want to crop from 
+plot(DTMpost_hill,
+        col=grey(1:100/100),  # create a color ramp of grey colors
+        legend=FALSE,
+        main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
+        axes=FALSE)
+
+plot(DoD,
+        breaks = c(-5,-1,-0.5,0.5,1,10),
+        col= difCol5,
+        axes=FALSE,
+        alpha=0.4,
+        add =T)
+
+# crop by designating two opposite corners
+cropbox1 <- drawExtent()  
 
 
-## ----crop-raster-man-view-----------------------------------------------------------------
+
+
+## ----crop-raster-man-view------------------------------------------------------------------------
 # view the extent of the cropbox1
 cropbox1
 
 
 
-## ----crop-raster-coords-------------------------------------------------------------------
+## ----crop-raster-coords--------------------------------------------------------------------------
 # desired coordinates of the box
 cropbox2<-c(473792.6,474999,4434526,4435453)
 
 
-## ----plot-crop-raster---------------------------------------------------------------------
+## ----plot-crop-raster----------------------------------------------------------------------------
 # crop desired layers to this cropbox
 DTM_pre_crop <- crop(DTM_pre, cropbox2)
 DTM_post_crop <- crop(DTM_post, cropbox2)

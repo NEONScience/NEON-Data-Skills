@@ -4,7 +4,7 @@ title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Und
 description: This tutorial teaches how to use Digital Terrain Models derived from LiDAR data to create Digital Elevation Models of Differences that allow us to measure the change in elevation of an area after a disturbance event. 	
 dateCreated: 2015-05-18
 authors: Leah A. Wasser, Megan A. Jones
-contributors:	
+contributors:	Donal O'Leary
 estimatedTime:	
 packagesLibraries: rgdal, raster
 topics: time-series, meteorology, data-viz
@@ -312,7 +312,7 @@ by manually drawing a box.
             add =T)
     
     # crop by designating two opposite corners
-    cropbox1<-drawExtent()  
+    cropbox1 <- drawExtent()  
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png">
@@ -329,7 +329,11 @@ When we call this new object, we can view the new extent.
     # view the extent of the cropbox1
     cropbox1
 
-    ## Error in eval(expr, envir, enclos): object 'cropbox1' not found
+    ## class      : Extent 
+    ## xmin       : 473814 
+    ## xmax       : 474982 
+    ## ymin       : 4434537 
+    ## ymax       : 4435390
 
 It is a good idea to write this new extent down, so that you can use the extent
 again the next time you use the script. 
