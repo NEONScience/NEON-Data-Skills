@@ -1,4 +1,4 @@
-### <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a> 
+<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
 
 To complete this tutorial, you will use data available from the NEON 2017 Data
 Institute teaching dataset available for download. 

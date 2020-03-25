@@ -1,4 +1,4 @@
-###<a href="https://ndownloader.figshare.com/files/5401253"> NEON Teaching Data Subset: SJER-Data Institute 2016</a>
+<h3><a href="https://ndownloader.figshare.com/files/5401253"> NEON Teaching Data Subset: SJER-Data Institute 2016</a></h3>
 
 The LiDAR and imagery data used to create this raster teaching data subset were 
 collected over the 

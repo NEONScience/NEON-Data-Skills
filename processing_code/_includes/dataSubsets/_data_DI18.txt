@@ -1,4 +1,4 @@
-### NEON Teaching Data Subset: Data Institute 2018 
+<h3> NEON Teaching Data Subset: Data Institute 2018</h3> 
 
 To complete these materials, you will use data available from the NEON 2018 Data
 Institute teaching datasets available for download. 

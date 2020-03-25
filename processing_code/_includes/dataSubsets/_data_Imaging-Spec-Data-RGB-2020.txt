@@ -1,5 +1,5 @@
-###<a href="https://ndownloader.figshare.com/files/21767328">
-Download NEON Teaching Data Subset: RGB Image of SJER</a>
+<h3><a href="https://ndownloader.figshare.com/files/21767328">
+Download NEON Teaching Data Subset: RGB Image of SJER</a></h3>
 
 This RGB image is derived from hyperspectral remote sensing data collected on the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 

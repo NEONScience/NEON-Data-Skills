@@ -1,5 +1,5 @@
 
-### <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a>
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
 
 The LiDAR and imagery data used to create this raster teaching data subset 
 were collected over the 
