@@ -63,10 +63,31 @@ preferably, RStudio loaded on your computer.
 We will use the file below in the optional challenge activity at the end of this 
 tutorial.
 
-{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
+<h3><a href="https://ndownloader.figshare.com/files/7024985" > NEON Teaching Data Subset: Sample Tower Temperature - HDF5 </a></h3>
+
+These temperature data were collected by the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank">flux towers at field sites across the US</a>.
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7024985" class="link--button link--arrow">
+Download Dataset </a>
+
+
+
 
 ***
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 ***
 
 ### Additional Resources

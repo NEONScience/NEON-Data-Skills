@@ -36,7 +36,39 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-{% include/dataSubsets/_data_DI18.html %}
+<h3> NEON Teaching Data Subset: Data Institute 2018</h3> 
+
+To complete these materials, you will use data available from the NEON 2018 Data
+Institute teaching datasets available for download. 
+
+The combined data sets below contain about 10 GB of data. Please consider how 
+large your hard drive is prior to downloading. If needed you may want to use an 
+external hard drive. 
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a>
+and processed at NEON headquarters.
+All NEON data products can be accessed on the 
+<a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
+
+<a href="https://neondata.sharefile.com/d-s7788427bae04c6c9" target="_blank"class="link--button link--arrow">
+Download Lidar & Hyperspectral Dataset</a>
+
+<a href="https://neondata.sharefile.com/d-s58db39240bf49ac8" target="_blank" class="link--button link--arrow">
+Download the Biomass Calculation Dataset</a>
+
+The link below contains all the data from the 2017 Data Institute (17 GB). <strong>For 2018, we ONLY 
+need the data in the CHEQ, F07A, and PRIN subfolders.</strong> To minimize the size of your
+download, please select only these subdirectories to download.
+
+<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" target="_blank"class="link--button link--arrow">
+Download Uncertainty Exercises Dataset</a>
+
+
+
+
 
 [[nid:7512]]
 

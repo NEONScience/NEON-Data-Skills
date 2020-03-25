@@ -45,7 +45,21 @@ your computer to complete this tutorial.
 
 ### Download Data
 
-{% include/dataSubsets/_data_Data-Institute-16-TEAK.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/5407877">Download NEON Teaching Data Subset: TEAK-Data Institute 2016</a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank">National Ecological Observatory Network's </a> (NEON)
+<a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle field site </a>
+and processed at NEON 
+headquarters. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/5407877" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 You will want to create a **data** directory for all the Data Institute teaching 
 datasets. We suggest the pathway be `~/Documents/data/NEONDI-2016` or 

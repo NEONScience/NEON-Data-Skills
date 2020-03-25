@@ -36,5 +36,7 @@ for(file in all.files){
     # Finally, look for any more {% include... %} text in the file and repeat as necessary
     files_vector=sub(p,"\\1",file_text) ## to extract file name
   }
+  
+  # Write edited file back before moving on to the next
   write_file(file_text, path=file)
 }

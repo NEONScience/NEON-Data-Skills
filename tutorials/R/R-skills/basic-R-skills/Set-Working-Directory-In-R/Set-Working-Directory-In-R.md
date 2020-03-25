@@ -40,8 +40,37 @@ To complete this lesson you will need the most current version of R and,
 preferably, RStudio loaded on your computer.
 
 ### Download Data
-{% include/dataSubsets/_data_Met-Time-Series.html %}
-{% include/dataSubsets/_data_Site-Layout-Files.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/3701572" > NEON Teaching Data Subset: Meteorological Data for Harvard Forest</a></h3>
+
+The data used in this lesson were collected at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest field site</a>. 
+These data are proxy data for what will be available for 30 years on the
+ <a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>
+for the Harvard Forest and other field sites located across the United States.
+
+<a href="https://ndownloader.figshare.com/files/3701572" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
+
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 </div>
 

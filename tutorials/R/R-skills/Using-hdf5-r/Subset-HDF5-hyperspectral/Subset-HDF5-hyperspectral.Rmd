@@ -48,10 +48,37 @@ size. The download linked here is the original large file, and therefore you may
 choose to skip this tutorial and download if you are on a slow internet connection 
 or have file size limitations on your device.
 
-{% include/dataSubsets/_data_Imaging-Spec-Data-Full-Tile-H5-2020.html %}
+<h3><a href="https://ndownloader.figshare.com/files/21788199">
+
+Download NEON Teaching Dataset: Full Tile Imaging Spectrometer Data - HDF5 (652Mb)</a></h3>
+
+These hyperspectral remote sensing data provide information on the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Exerimental Range field site</a>.
+
+These data were collected over the San Joaquin field site located in California 
+(Domain 17) in March of 2019 and processed at NEON headquarters. This particular mosaic tile is 
+named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. The entire dataset can be accessed by 
+request from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/21788199" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
 
 ***
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 ***
 
 ### Recommended Skills

@@ -39,10 +39,44 @@ preferably, RStudio loaded on your computer.
 
 
 ### Data to Download
-{% include/dataSubsets/_data_Imaging-Spec-Data-H5-2020.html %}
+<h3><a href="https://ndownloader.figshare.com/files/21754221">
+Download NEON Teaching Data Subset: Imaging Spectrometer Data - HDF5 </a></h3>
+
+These hyperspectral remote sensing data provide information on the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin 
+Exerimental Range field site</a> in March of 2019.
+The data were collected over the San Joaquin field site located in California 
+(Domain 17) and processed at NEON headquarters. This data subset is derived from 
+the mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow">
+Download Dataset</a>
+
+**Remember** that the example dataset linked here only has 1 out of every 4 bands
+included in a full NEON hyperspectral dataset (this substantially reduces the file 
+size!). When we refer to bands in this tutorial, we will note the band numbers for 
+this example dataset, which are different from NEON production data. To convert 
+a band number (b) from this example data subset to the equivalent band in a full 
+NEON hyperspectral file (b'), use the following equation: b' = 1+4*(b-1).
+
+
+
+
 
 ***
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 ***
 ### Recommended Skills

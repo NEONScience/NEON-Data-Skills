@@ -45,7 +45,32 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-{% include/dataSubsets/_data_DI17.html %}
+<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
+
+To complete this tutorial, you will use data available from the NEON 2017 Data
+Institute teaching dataset available for download. 
+
+Caution: This dataset includes all the data for the 2017 Data Institute, 
+including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
+Ensure that you have sufficient space on your 
+hard drive before you begin the download. If not, download to an external 
+hard drive and make sure to correct for the change in file path when working 
+through the tutorial.
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a>
+and processed at NEON headquarters.
+The entire dataset can be accessed on the 
+<a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
+
+<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
 
 ### Recommended prerequisites
 

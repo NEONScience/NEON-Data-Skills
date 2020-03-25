@@ -39,7 +39,21 @@ on your computer to complete this tutorial.
 
 ### Download Data
 
-{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></h3>
+
+These remote sensing data files provide information on the vegetation at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a> 
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle</a> 
+field sites. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
  
 </div>
 

@@ -42,8 +42,35 @@ NOTE: The first file downloaded has an .HDF5 file extension, the second file
 downloaded above has an .h5 extension. Both extensions represent the HDF5 data 
 type.
 
-{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
-{% include/dataSubsets/_data_Imaging-Spec-Data-H5.html %}
+<h3><a href="https://ndownloader.figshare.com/files/7024985" > NEON Teaching Data Subset: Sample Tower Temperature - HDF5 </a></h3>
+
+These temperature data were collected by the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank">flux towers at field sites across the US</a>.
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7024985" class="link--button link--arrow">
+Download Dataset </a>
+
+
+
+<h3><a href="https://ndownloader.figshare.com/files/7024271">
+Download NEON Teaching Data Subset: Imaging Spectrometer Data - HDF5 </a></h3>
+
+These hyperspectral remote sensing data provide information on the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Exerimental Range field site.</a>
+The data were collected over the San Joaquin field site located in California 
+(Domain 17) and processed at NEON headquarters. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7024271" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
 
 </div>
 
