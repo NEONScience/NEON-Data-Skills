@@ -1,0 +1,15 @@
+###<a href="https://ndownloader.figshare.com/files/7024955">NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a>
+
+
+This .las file contains sample LiDAR point cloud data collected by
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> Airborne Observation Platform</a> 
+group. The .las file format is a commonly used file format to store LIDAR point 
+cloud data. NEON data are available on the
+<a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>. 
+
+<a href="https://ndownloader.figshare.com/files/7024955" class="link--button link--arrow">
+Download NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a>
+
+
+

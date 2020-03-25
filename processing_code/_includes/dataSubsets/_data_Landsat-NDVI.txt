@@ -1,0 +1,20 @@
+###<a href="https://ndownloader.figshare.com/files/4933582">NEON Teaching Data Subset: Landsat-derived NDVI raster files</a>
+
+
+The imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a>
+field sites.  
+The imagery was created by the U.S. Geological Survey (USGS) using a 
+<a href="http://eros.usgs.gov/#/Find_Data/Products_and_Data_Available/MSS" target="_blank" >  multispectral scanner</a>
+on a <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite.</a>
+The data files are Geographic Tagged Image-File Format (GeoTIFF).
+
+<a href="https://ndownloader.figshare.com/files/4933582" class="link--button link--arrow">
+Download Dataset</a>
+
+
+

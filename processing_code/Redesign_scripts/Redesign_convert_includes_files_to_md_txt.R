@@ -4,8 +4,8 @@
 # Here, make two lists, the sub_patterns to search for, and the sub_replacement to replace with
 # <h3> to ###
 # references to relative links
-sub_patterns=c("<h2>","<h3>","<h4>", "href=\"/")
-sub_replacement=c("##","###","####", "href=\"https://www.neonscience.org/")
+sub_patterns=c("<b>","</b>","<h2>","<h3>","<h4>", "href=\"/")
+sub_replacement=c("**","**","##","###","####", "href=\"https://www.neonscience.org/")
 
 
 ## Remove:
@@ -14,7 +14,7 @@ sub_replacement=c("##","###","####", "href=\"https://www.neonscience.org/")
 remove_list=c("</h2>","</h3>","</h4>","<p>","</p>")
 
 
-html.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/processing_code/_includes/old-dataSubsets",
+html.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/processing_code/_includes/old-tutorialSeries",
                         pattern="\\.html$", full.names = TRUE, recursive = TRUE)
 
 for (file in html.files){
@@ -36,7 +36,7 @@ for (file in html.files){
   # write modified .txt file out
   fn=basename(file)
   fn=gsub(".html",".txt",fn,fixed=TRUE)
-  fn=paste0("/Users/olearyd/Git/dev-aten/NEON-Data-Skills/processing_code/_includes/dataSubsets/",fn)
+  fn=paste0("/Users/olearyd/Git/dev-aten/NEON-Data-Skills/processing_code/_includes/tutorialSeries/",fn)
   writeLines(fl.md, fn)
   close(fileConn)      
   
