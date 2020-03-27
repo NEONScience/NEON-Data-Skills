@@ -1,17 +1,19 @@
 ---
-syncID: 63635a0daf0c417090e5c38c3103a09a
 title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
-description: "Learn how to use the filter, group_by, and summarize functions with piping in R's dplyr package. And combine these with grepl to select portions of character strings."
-dateCreated: 2015-05-27
-authors: Natalie Robinson, Kate Thibault
-contributors: 
-estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: dplyr
-topics: data-analysis
-languagesTool: R
-dataProduct: 
 code1: R/R-nonSeries-lessons/R-dplyr-GREPL-Summarise-Piping.R
-tutorialSeries: 
+contributors: 
+dataProduct: null
+dateCreated: '2015-05-27'
+description: Learn how to use the filter, group_by, and summarize functions with piping
+  in R's dplyr package. And combine these with grepl to select portions of character
+  strings.
+estimatedTime: 1.0 - 1.5 Hours
+languagesTool: R
+packagesLibraries: dplyr
+syncID: 63635a0daf0c417090e5c38c3103a09a
+authors: Natalie Robinson, Kate Thibault, Donal O'Leary
+topics: data-analysis
+tutorialSeries: null
 urlTitle: grepl-filter-piping-dplyr-r
 ---
 
@@ -33,15 +35,9 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities**: `install.packages("neonUtilities")` tools for working with NEON data
 * **dplyr**: `install.packages("dplyr")` used for data manipulation
 
-### Data to Download:
-<a href="https://www.neonscience.org/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="link--button link--arrow">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a>
-
-<a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
-
-Please note that NEON Small Mammal data are now delivered in a slightly different
-format. This data format here is provide to accompany this tutorial on dplyr only. 
 </div>
 
 
@@ -120,38 +116,70 @@ For example, if we want to find the mean body weight of male mice, we'd do this:
 This is read as "from data frame `myMammalData`, select only males and return 
 the mean weight as a new list `mean_weight`".
 
-## Use dplyr
+## Download Small Mammal Data
 
-Now let's use some of the functions with NEON small mammal capture data from 
-Harvard Forest (within Domain 01). This site is located in the heart of the 
-Lyme disease epidemic.
+Before we get started, we will need to download our data to investigate. To 
+do so, we will use the `loadByProduct()` function from the `neonUtilities` 
+package to download data straight from the NEON servers. To learn more about 
+this function, please see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore NEON data tutorial here.</a>
 
-```{r load-dplyr-library-import-data}
+Let's look at the NEON small mammal capture data from Harvard Forest (within 
+Domain 01) for all of 2014. This site is located in the heart of the Lyme 
+disease epidemic.
 
-# install dplyr library -- only if it isn't already installed
-#install.packages('dplyr')
+<a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements here.</a>
 
-# load library
+```{r load-dplyr-library-import-data, eval=FALSE, comment=NA}
+
+# load packages
 library(dplyr)
+library(neonUtilities)
 
-# set working directory to the location of the NEON mammal data downloaded
-# via the link above.
-#setwd('insert path to data files here')
-
-# read in the NEON small mammal capture data
-myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', 
-                   header = T, 
-                   stringsAsFactors = FALSE, strip.white = TRUE, 
-                   na.strings = '')
+# load the NEON small mammal capture data
+loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
+                 startdate = "2014-01", enddate = "2014-12", 
+                 check.size = T) # Console requires your response!
 
 # if you'd like, check out the data
 #str(myData)
 ```
+```{r load-dplyr-library-import-data-hidden, include=FALSE}
 
-For the rest of this tutorial, we are only going to be working with:
+library(dplyr)
+library(neonUtilities)
+
+# load the NEON small mammal capture data
+loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
+                 startdate = "2014-01", enddate = "2014-12", 
+                 check.size = F) # set to F in hidden code chunk
+                                 # to allow knitting to process correctly
+
+```
+
+The `loadByProduct()` function calls the NEON server, downloads the monthly 
+data files, and 'stacks' them together to form two tables of data called 
+'mam_pertrapnight' and 'mam_perplotnight'. It also saves the readme file, 
+explanations of variables, and validation metadata, and combines these all into 
+a single 'list' that we called 'loadData'. The only part of this list that we 
+really need for this tutorial is the 'mam_pertrapnight' table, so let's extract 
+just that one and call it 'myData'.
+
+```{r extract-pertrapnight}
+
+myData <- loadData$mam_pertrapnight
+
+class(myData) # Confirm that 'myData' is a data.frame
+
+```
+
+## Use dplyr
+
+For the rest of this tutorial, we are only going to be working with three 
+variables within 'myData':
 
 * `scientificName` a string of "Genus species"
 * `sex` a string with "F", "M", or "U" 
+* `identificationQualifier` a string noting uncertainty in the species identification
 
 ## filter()
 This function: 
@@ -194,6 +222,39 @@ print(paste('In 2014, NEON technicians captured',
                    sep = ' '))
 ```
 
+That's awesome that we can quickly and easily count the number of female 
+Peromyscus maniculatus that were captured at Harvard Forest in 2014. However, 
+there is a slight problem. There are two Peromyscus species that are common 
+in Harvard Forest: Peromyscus maniculatus (deer mouse) and Peromyscus leucopus 
+(white-footed mouse). These species are difficult to distinguish in the field, 
+leading to some uncertainty in the identification, which is noted in the 
+'identificationQualifier' data field by the term "cf. species" or "aff. species".
+(For more information on these terms and 'open nomenclature' please <a href="https://en.wikipedia.org/wiki/Open_nomenclature" target="_blank">see this great Wiki article here</a>).
+When the field technician is certain of their identification (or if they forget 
+to note their uncertainty), identificationQualifier will be `NA`. Let's run the 
+same code as above, but this time specifying that we want only those observations 
+that are unambiguous identifications.
+
+```{r dplyr-filter-function-uncertainty}
+
+# filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
+# two equals signs (==) signifies "is"
+data_PeroManicFemalesCertain <- filter(myData, 
+                   scientificName == 'Peromyscus maniculatus', 
+                   sex == 'F',
+                   identificationQualifier =="NA")
+
+# Count the number of un-ambiguous identifications
+nrow(data_PeroManicFemalesCertain)
+
+```
+
+Woah! So every single observation of a Peromyscus maniculatus had some level 
+of uncertainty that the individual may actually be Peromyscus leucopus. This 
+is understandable given the difficulty of field identification for these species. 
+Given this challenge, it will be best for us to consider these mice at the genus 
+level. We can accomplish this by searching for only the genus name in the 
+'scientificName' field using the `grepl()` function.
 
 ## grepl()
 This is a function in the base package (e.g., it isn't part of `dplyr`) that is 
@@ -209,11 +270,11 @@ Here, we present a very simple example.
 each element of the input character vector
 
 Let's use `grepl` to learn more about our possible disease vectors. In reality, 
-all species of *Peromyscus* are viable players in Lyme disease transmission, so 
-we really should be looking at all species of *Peromyscus*. Since we don't have 
-genera split out as a separate field, we have to search within the 
-`scientificName` string for the genus -- this is a simple example of pattern 
-matching.
+all species of *Peromyscus* are viable players in Lyme disease transmission, and 
+they are difficult to distinguise in a field setting, so we really should be looking
+at all species of *Peromyscus*. Since we don't have genera split out as a separate 
+field, we have to search within the `scientificName` string for the genus -- this is 
+a simple example of pattern matching.
 
 We can use the `dplyr` function `filter()` in combination with the base function
 `grepl()` to accomplish this.
@@ -244,14 +305,14 @@ functionality for working with databases (local and remote) that does not
 require knowledge of SQL. How handy! 
 
 The `group_by()` function in `dplyr` allows you to perform functions on a subset 
-of a dataset without having to create multiple new objects or construct for 
+of a dataset without having to create multiple new objects or construct `for()` 
 loops. The combination of `group_by()` and `summarise()` are great for 
 generating simple summaries (counts, sums) of grouped data. 
 
 NOTE: Be continentious about using `summarise` with other summary functions! You
 need to think about weighting for means and variances, and `summarize` doesn't 
-work precisely for medians if there is any missing data (e.g., there was no value
-recorded, maybe for a good reason!).
+work precisely for medians if there is any missing data (e.g., if there was no value
+recorded, maybe it was for a good reason!).
 
 Continuing with our small mammal data, since the diversity of the entire small 
 mammal community has been shown to impact disease dynamics among the key 
@@ -270,18 +331,29 @@ countsBySpSex <- summarise(dataBySpSex, n_individuals = n())
 # view the data (just top 10 rows)
 head(countsBySpSex, 10)
 
-# hmm, it looks like on data entry some females were recorded as `F` and some 
-# as `f`.  R is interpreting these as different "sexes". We would need to 
-# remember this if we want to filter all females or go back and clean the 
-# the original data.
-
 ```
 
 Note: the output of step 1 (`dataBySpSex`) does not look any different than the 
 original dataframe (`myData`), but the application of subsequent functions (e.g.,
 summarise) to this new dataframe will produce distinctly different results than 
-if you tried the same operations on the original.  Try it if you want to see the
-difference!
+if you tried the same operations on the original. Try it if you want to see the
+difference! This is because the `group_by()` function converted `dataBySpSex` into 
+a "grouped_df" rather than just a "data.frame". In order to confirm this, try using 
+the `class()` function on both `myData` and `dataBySpSex`. You can also read the 
+help documentation for this function by running the code: `?group_by()`
+
+```{r compare-classes}
+
+# View help file for group_by() function
+?group_by()
+
+# View class of 'myData' object
+class(myData)
+
+# View class of 'dataBySpSex' object
+class(dataBySpSex)
+
+```
 
 ## Pipe functions together
 
