@@ -1,17 +1,19 @@
 ---
-syncID: 63635a0daf0c417090e5c38c3103a09a
 title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
-description: "Learn how to use the filter, group_by, and summarize functions with piping in R's dplyr package. And combine these with grepl to select portions of character strings."
-dateCreated: 2015-05-27
-authors: Natalie Robinson, Kate Thibault
-contributors: 
-estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: dplyr
-topics: data-analysis
-languagesTool: R
-dataProduct: 
 code1: R/R-nonSeries-lessons/R-dplyr-GREPL-Summarise-Piping.R
-tutorialSeries: 
+contributors: 
+dataProduct: null
+dateCreated: '2015-05-27'
+description: Learn how to use the filter, group_by, and summarize functions with piping
+  in R's dplyr package. And combine these with grepl to select portions of character
+  strings.
+estimatedTime: 1.0 - 1.5 Hours
+languagesTool: R
+packagesLibraries: dplyr
+syncID: 63635a0daf0c417090e5c38c3103a09a
+authors: Natalie Robinson, Kate Thibault, Donal O'Leary
+topics: data-analysis
+tutorialSeries: null
 urlTitle: grepl-filter-piping-dplyr-r
 ---
 
@@ -33,15 +35,9 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities**: `install.packages("neonUtilities")` tools for working with NEON data
 * **dplyr**: `install.packages("dplyr")` used for data manipulation
 
-### Data to Download:
-<a href="https://www.neonscience.org/data/NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv" target="_blank" class="link--button link--arrow">Download the Sample National Ecological Observatory Network (NEON) Mammal Data HERE.</a>
-
-<a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements, here. </a>
-
-Please note that NEON Small Mammal data are now delivered in a slightly different
-format. This data format here is provide to accompany this tutorial on dplyr only. 
 </div>
 
 
@@ -120,41 +116,56 @@ For example, if we want to find the mean body weight of male mice, we'd do this:
 This is read as "from data frame `myMammalData`, select only males and return 
 the mean weight as a new list `mean_weight`".
 
-## Use dplyr
+## Download Small Mammal Data
 
-Now let's use some of the functions with NEON small mammal capture data from 
-Harvard Forest (within Domain 01). This site is located in the heart of the 
-Lyme disease epidemic.
+Before we get started, we will need to download our data to investigate. To 
+do so, we will use the `loadByProduct()` function from the `neonUtilities` 
+package to download data straight from the NEON servers. To learn more about 
+this function, please see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore NEON data tutorial here.</a>
+
+Let's look at the NEON small mammal capture data from Harvard Forest (within 
+Domain 01) for all of 2014. This site is located in the heart of the Lyme 
+disease epidemic.
+
+<a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements here.</a>
 
 
-    # install dplyr library -- only if it isn't already installed
-    #install.packages('dplyr')
-    
-    # load library
+    # load packages
     library(dplyr)
+    library(neonUtilities)
     
-    # set working directory to the location of the NEON mammal data downloaded
-    # via the link above.
-    #setwd('insert path to data files here')
+    # load the NEON small mammal capture data
+    loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
+                     startdate = "2014-01", enddate = "2014-12", 
+                     check.size = T) # Console requires your response!
     
-    # read in the NEON small mammal capture data
-    myData <- read.csv('NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv', 
-                       header = T, 
-                       stringsAsFactors = FALSE, strip.white = TRUE, 
-                       na.strings = '')
-
-    ## Warning in file(file, "rt"): cannot open file
-    ## 'NEON.D01.HARV.DP1.10072.001.mam_capturedata.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
     # if you'd like, check out the data
     #str(myData)
 
-For the rest of this tutorial, we are only going to be working with:
+
+The `loadByProduct()` function calls the NEON server, downloads the monthly 
+data files, and 'stacks' them together to form two tables of data called 
+'mam_pertrapnight' and 'mam_perplotnight'. It also saves the readme file, 
+explanations of variables, and validation metadata, and combines these all into 
+a single 'list' that we called 'loadData'. The only part of this list that we 
+really need for this tutorial is the 'mam_pertrapnight' table, so let's extract 
+just that one and call it 'myData'.
+
+
+    myData <- loadData$mam_pertrapnight
+    
+    class(myData) # Confirm that 'myData' is a data.frame
+
+    ## [1] "data.frame"
+
+## Use dplyr
+
+For the rest of this tutorial, we are only going to be working with three 
+variables within 'myData':
 
 * `scientificName` a string of "Genus species"
 * `sex` a string with "F", "M", or "U" 
+* `identificationQualifier` a string noting uncertainty in the species identification
 
 ## filter()
 This function: 
@@ -176,9 +187,7 @@ disease-causing bacterium.
     data_PeroManicFemales <- filter(myData, 
                        scientificName == 'Peromyscus maniculatus', 
                        sex == 'F')
-
-    ## Error in filter(myData, scientificName == "Peromyscus maniculatus", sex == : object 'myData' not found
-
+    
     # Note how we were able to put multiple conditions into the filter statement,
     # pretty cool!
 
@@ -189,7 +198,7 @@ So we have a dataframe with our female *P. mainculatus* but how many are there?
     # would could simply count the number of rows in the new dataset
     nrow(data_PeroManicFemales)
 
-    ## Error in nrow(data_PeroManicFemales): object 'data_PeroManicFemales' not found
+    ## [1] 98
 
     # or we could write is as a sentence
     print(paste('In 2014, NEON technicians captured',
@@ -197,8 +206,40 @@ So we have a dataframe with our female *P. mainculatus* but how many are there?
                        'female Peromyscus maniculatus at Harvard Forest.',
                        sep = ' '))
 
-    ## Error in nrow(data_PeroManicFemales): object 'data_PeroManicFemales' not found
+    ## [1] "In 2014, NEON technicians captured 98 female Peromyscus maniculatus at Harvard Forest."
 
+That's awesome that we can quickly and easily count the number of female 
+Peromyscus maniculatus that were captured at Harvard Forest in 2014. However, 
+there is a slight problem. There are two Peromyscus species that are common 
+in Harvard Forest: Peromyscus maniculatus (deer mouse) and Peromyscus leucopus 
+(white-footed mouse). These species are difficult to distinguish in the field, 
+leading to some uncertainty in the identification, which is noted in the 
+'identificationQualifier' data field by the term "cf. species" or "aff. species".
+(For more information on these terms and 'open nomenclature' please <a href="https://en.wikipedia.org/wiki/Open_nomenclature" target="_blank">see this great Wiki article here</a>).
+When the field technician is certain of their identification (or if they forget 
+to note their uncertainty), identificationQualifier will be `NA`. Let's run the 
+same code as above, but this time specifying that we want only those observations 
+that are unambiguous identifications.
+
+
+    # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
+    # two equals signs (==) signifies "is"
+    data_PeroManicFemalesCertain <- filter(myData, 
+                       scientificName == 'Peromyscus maniculatus', 
+                       sex == 'F',
+                       identificationQualifier =="NA")
+    
+    # Count the number of un-ambiguous identifications
+    nrow(data_PeroManicFemalesCertain)
+
+    ## [1] 0
+
+Woah! So every single observation of a Peromyscus maniculatus had some level 
+of uncertainty that the individual may actually be Peromyscus leucopus. This 
+is understandable given the difficulty of field identification for these species. 
+Given this challenge, it will be best for us to consider these mice at the genus 
+level. We can accomplish this by searching for only the genus name in the 
+'scientificName' field using the `grepl()` function.
 
 ## grepl()
 This is a function in the base package (e.g., it isn't part of `dplyr`) that is 
@@ -214,11 +255,11 @@ Here, we present a very simple example.
 each element of the input character vector
 
 Let's use `grepl` to learn more about our possible disease vectors. In reality, 
-all species of *Peromyscus* are viable players in Lyme disease transmission, so 
-we really should be looking at all species of *Peromyscus*. Since we don't have 
-genera split out as a separate field, we have to search within the 
-`scientificName` string for the genus -- this is a simple example of pattern 
-matching.
+all species of *Peromyscus* are viable players in Lyme disease transmission, and 
+they are difficult to distinguise in a field setting, so we really should be looking
+at all species of *Peromyscus*. Since we don't have genera split out as a separate 
+field, we have to search within the `scientificName` string for the genus -- this is 
+a simple example of pattern matching.
 
 We can use the `dplyr` function `filter()` in combination with the base function
 `grepl()` to accomplish this.
@@ -229,16 +270,14 @@ We can use the `dplyr` function `filter()` in combination with the base function
     data_PeroFemales <- filter(myData,
                        grepl('Peromyscus', scientificName),
                        sex == 'F')
-
-    ## Error in filter(myData, grepl("Peromyscus", scientificName), sex == "F"): object 'myData' not found
-
+    
     # how many female Peromyscus are in the dataset
     print(paste('In 2014, NEON technicians captured',
                        nrow(data_PeroFemales),
                        'female Peromyscus spp. at Harvard Forest.',
                        sep = ' '))
 
-    ## Error in nrow(data_PeroFemales): object 'data_PeroFemales' not found
+    ## [1] "In 2014, NEON technicians captured 618 female Peromyscus spp. at Harvard Forest."
 
 ## group_by() + summarise()
 An alternative to using the filter function to subset the data (and make a new 
@@ -250,14 +289,14 @@ functionality for working with databases (local and remote) that does not
 require knowledge of SQL. How handy! 
 
 The `group_by()` function in `dplyr` allows you to perform functions on a subset 
-of a dataset without having to create multiple new objects or construct for 
+of a dataset without having to create multiple new objects or construct `for()` 
 loops. The combination of `group_by()` and `summarise()` are great for 
 generating simple summaries (counts, sums) of grouped data. 
 
 NOTE: Be continentious about using `summarise` with other summary functions! You
 need to think about weighting for means and variances, and `summarize` doesn't 
-work precisely for medians if there is any missing data (e.g., there was no value
-recorded, maybe for a good reason!).
+work precisely for medians if there is any missing data (e.g., if there was no value
+recorded, maybe it was for a good reason!).
 
 Continuing with our small mammal data, since the diversity of the entire small 
 mammal community has been shown to impact disease dynamics among the key 
@@ -269,29 +308,50 @@ code, using `group_by` and `summarise`.
     # how many of each species & sex were there?
     # step 1: group by species & sex
     dataBySpSex <- group_by(myData, scientificName, sex)
-
-    ## Error in group_by(myData, scientificName, sex): object 'myData' not found
-
+    
     # step 2: summarize the number of individuals of each using the new df
     countsBySpSex <- summarise(dataBySpSex, n_individuals = n())
-
-    ## Error in summarise(dataBySpSex, n_individuals = n()): object 'dataBySpSex' not found
-
+    
     # view the data (just top 10 rows)
     head(countsBySpSex, 10)
 
-    ## Error in head(countsBySpSex, 10): object 'countsBySpSex' not found
-
-    # hmm, it looks like on data entry some females were recorded as `F` and some 
-    # as `f`.  R is interpreting these as different "sexes". We would need to 
-    # remember this if we want to filter all females or go back and clean the 
-    # the original data.
+    ## # A tibble: 10 x 3
+    ## # Groups:   scientificName [5]
+    ##    scientificName          sex   n_individuals
+    ##    <chr>                   <chr>         <int>
+    ##  1 Blarina brevicauda      F                60
+    ##  2 Blarina brevicauda      M                 8
+    ##  3 Blarina brevicauda      U                22
+    ##  4 Blarina brevicauda      <NA>             19
+    ##  5 Glaucomys volans        M                 1
+    ##  6 Mammalia sp.            U                 1
+    ##  7 Mammalia sp.            <NA>              1
+    ##  8 Microtus pennsylvanicus F                 2
+    ##  9 Myodes gapperi          F               103
+    ## 10 Myodes gapperi          M               109
 
 Note: the output of step 1 (`dataBySpSex`) does not look any different than the 
 original dataframe (`myData`), but the application of subsequent functions (e.g.,
 summarise) to this new dataframe will produce distinctly different results than 
-if you tried the same operations on the original.  Try it if you want to see the
-difference!
+if you tried the same operations on the original. Try it if you want to see the
+difference! This is because the `group_by()` function converted `dataBySpSex` into 
+a "grouped_df" rather than just a "data.frame". In order to confirm this, try using 
+the `class()` function on both `myData` and `dataBySpSex`. You can also read the 
+help documentation for this function by running the code: `?group_by()`
+
+
+    # View help file for group_by() function
+    ?group_by()
+    
+    # View class of 'myData' object
+    class(myData)
+
+    ## [1] "data.frame"
+
+    # View class of 'dataBySpSex' object
+    class(dataBySpSex)
+
+    ## [1] "grouped_df" "tbl_df"     "tbl"        "data.frame"
 
 ## Pipe functions together
 
@@ -312,13 +372,16 @@ females, `grepl` to get only Peromyscus spp., `group_by` individual species, and
                      filter(grepl('Peromyscus', scientificName), sex == "F") %>%
                        group_by(scientificName) %>%
                           summarise(n_individuals = n()) 
-
-    ## Error in eval(lhs, parent, parent): object 'myData' not found
-
+    
     # view the data
     dataBySpFem
 
-    ## Error in eval(expr, envir, enclos): object 'dataBySpFem' not found
+    ## # A tibble: 3 x 2
+    ##   scientificName         n_individuals
+    ##   <chr>                          <int>
+    ## 1 Peromyscus leucopus              515
+    ## 2 Peromyscus maniculatus            98
+    ## 3 Peromyscus sp.                     5
 
 Cool!  
 
@@ -335,42 +398,34 @@ to accomplish the same task.
     # First, subset the data to only female Peromyscus
     dataFemPero  <- myData[myData$sex=='F' & 
                        grepl('Peromyscus',myData$scientificName),]
-
-    ## Error in eval(expr, envir, enclos): object 'myData' not found
-
+    
     # Option 1 --------------------------------
     # Use aggregate and then rename columns
     dataBySpFem_agg <-aggregate(dataFemPero$sex ~ dataFemPero$scientificName, 
                        data = dataFemPero, FUN = length)
-
-    ## Error in eval(m$data, parent.frame()): object 'dataFemPero' not found
-
     names(dataBySpFem_agg) <- c('scientificName','n_individuals')
-
-    ## Error in names(dataBySpFem_agg) <- c("scientificName", "n_individuals"): object 'dataBySpFem_agg' not found
-
+    
     # view output
     dataBySpFem_agg
 
-    ## Error in eval(expr, envir, enclos): object 'dataBySpFem_agg' not found
+    ##           scientificName n_individuals
+    ## 1    Peromyscus leucopus           515
+    ## 2 Peromyscus maniculatus            98
+    ## 3         Peromyscus sp.             5
 
     # Option 2 --------------------------------------------------------
     # Do it by hand
     
     # Get the unique scientificNames in the subset
     sppInDF <- unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificName)])
-
-    ## Error in unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificName)]): object 'dataFemPero' not found
-
+    
     # Use a loop to calculate the numbers of individuals of each species
     sciName <- vector(); numInd <- vector()
     for (i in sppInDF){
       sciName <- c(sciName,i)
       numInd <- c(numInd, length(which(dataFemPero$scientificName==i)))
     }
-
-    ## Error in eval(expr, envir, enclos): object 'sppInDF' not found
-
+    
     #Create the desired output data frame
     dataBySpFem_byHand <- data.frame('scientificName'=sciName, 
                        'n_individuals'=numInd)
@@ -378,7 +433,9 @@ to accomplish the same task.
     # view output
     dataBySpFem_byHand
 
-    ## [1] scientificName n_individuals 
-    ## <0 rows> (or 0-length row.names)
+    ##           scientificName n_individuals
+    ## 1    Peromyscus leucopus           515
+    ## 2 Peromyscus maniculatus            98
+    ## 3         Peromyscus sp.             5
 
 
