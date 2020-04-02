@@ -15,7 +15,6 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -197,14 +196,11 @@ depend on your research questions. Here, we're going to only download and work
 with the 30 minute interval data as we're primarily interest in longer term (daily, 
 weekly, annual) patterns. 
 
-## Load Data
-
-First, set up your R enviornment by loading the necessary packages and seting your 
-working environment. 
+## Import Data
+This tutorial uses 30 minute temperature data from the single aspirated temperature sensors mounted on level 03 of the NEON tower.
 
 ```{r setup-env}
 # Install needed package (only uncomment & run if not already installed)
-#install.packages("neonUtilities")`
 #install.packages("ggplot2")`
 #install.packages("dplyr")`
 #install.packages("tidyr")`
@@ -212,12 +208,11 @@ working environment.
 #install.packages("scales")`
 
 # Load required libraries
-library(neonUtilities)
 library(ggplot2)  # for plotting
 library(dplyr)  # for data munging
 library(tidyr)  # for data munging
-#library(lubridate)
-#library(scales)
+library(lubridate)
+library(scales)
 
 
 # set working directory 
@@ -225,46 +220,22 @@ wd <- "~/Documents/data/" # Change this to match your local environment
 setwd(wd)
 ```
 
-After loading the required packages, we'll use the `loadByProduct` function to 
-access our data of interest. 
-In addition to our data product (DP1.00002.001), site (SCBI), date range 
-(January 2018 to December 2018), and averaging interval (30 min); we also need 
-to decide if we want the `basic` or `expanded` package. The basic package include
-all the data and at least a final quality flag. The expanded package will include
-intermediate quality flags as well. For our purposes today, we'll go with the basic
-package. 
 
-NEON data products can become very large files sizes very fast. Always start with
-`check.size = T` in this function to ensure that you don't try to download a 
-terabyte of data onto your laptop poor coffee shop wifi. Once you are comfortable
-with your download size, you can change it to False (`F`) to make the script run 
-without manual inputs. 
-
-This downloads over 8MB of data. If this is too large, use a smaller date range. 
-If you opt to do this, your figures and some output may look differnet later in 
-the tutorial. 
 
 ```{r import-data}
 
-temp30 <- loadByProduct(dpID = "DP1.00003.001", 
-												site = "SCBI", 
-												startdate = "2018-01",
-												enddate = "2018-12",
-												package = "basic", 
-												avg = "30", 
-												check.size=T) 
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(scales)
 
-```
+# set working directory to ensure R can find the file we wish to import
+# setwd("working-dir-path-here")
 
-If you can't access the data directly through the API, you can also complete this 
-tutorial with the example data set downloaed from the link above and using the
-following code. 
-
-```{r import-csv, eval=F}
-###UPDATE THE FILE PATHS######
-# Read in data with readTableNEON() to use the variables file to designate variable types
-#temp30 <- readTableNEON(dataFile="~NEON-pheno-temp-timeseries/temp/SAAT_30min.csv",
-#													varFile="~NEON-pheno-temp-timeseries/temp/variables.csv")
+# Read in data
+temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', stringsAsFactors = FALSE)
 
 ```
 
