@@ -208,6 +208,7 @@ This tutorial uses 30 minute temperature data from the single aspirated temperat
 #install.packages("scales")`
 
 # Load required libraries
+
 library(ggplot2)  # for plotting
 library(dplyr)  # for data munging
 library(tidyr)  # for data munging
@@ -239,6 +240,7 @@ temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', strin
 
 ```
 
+
 ## Explore Temperature Data
 
 Now that you have the data, let's take a look at the readme and understand 
@@ -250,6 +252,20 @@ str(temp30_sites)
 ```
 
 View readme and variables file. This will guide you on what the data are.
+
+## Select Site(s) of Interest	
+Currently, we have data from several sites in our dataset. Let's start by 	
+limiting the data to our site of interest. 	
+The following format allows us to easily change sites or select data from 	
+multiple sites.
+
+```{r filter-site}	
+# set site of interest	
+siteOfInterest <- c("SCBI")	
+# use filter to select only the site of Interest 	
+# using %in% allows one to add a vector if you want more than one site. 	
+temp30 <- filter(temp30_sites, siteID%in%siteOfInterest)	
+```
 
 ## Quality Flags
 
