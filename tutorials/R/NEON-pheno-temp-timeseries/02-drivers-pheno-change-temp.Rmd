@@ -284,7 +284,7 @@ What about null (`NA`) data?
 # Are there NA's in your data? Count 'em up
 sum(is.na(temp30$tempSingleMean) )
 
-mean(temp30$tempSingleMean, )
+mean(temp30$tempSingleMean)
 ```
 
 Why was there no output? 
