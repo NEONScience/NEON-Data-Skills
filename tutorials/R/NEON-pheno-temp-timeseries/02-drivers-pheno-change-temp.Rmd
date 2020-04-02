@@ -9,22 +9,23 @@ estimatedTime:
 packagesLibraries: dplyr, ggplot2, lubridate
 topics: time-series, meteorology
 languagesTool: R
-dataProduct: NEON.DP1.00002, NEON.DP1.00003
+dataProduct: DP1.00002.001, DP1.00003.001
 code1: R/NEON-pheno-temp-timeseries/02-drivers-pheno-change-temp.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
-
 ---
 
-In this tutorial, we explore the NEON single-aspirated air temperature data. We
-start using data that has already been "stacked" using the 
-<a href="{{ site.baseurl }}/neonDataStackR-temp" target="_blank"> neonDataStackR package</a>. 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+In this tutorial, we explore the NEON single-aspirated air temperature data. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
 
-This lesson is part of a series on how to work with both discrete and continuous
-time series data. 
-
+This tutorial is part of a series on how to work with both discrete and continuous
+time series data with NEON plant phenology and temperature data products. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -41,6 +42,7 @@ You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 * **scales:** `install.packages("scales")`
@@ -75,45 +77,55 @@ on your computer to complete this tutorial.
 
 </div>
 
-## Explore Temperature Data 
+## Explore NEON Air Temperature Data 
 
-The following sections provide a brief overview of the NEON single aspirated
-air temperature data. When designing a research project using this data, you 
-need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
-
-### NEON Air Temperature Data
-
-Temperature is continuously monitored by NEON a by two methods. At terrestrial 
-sites temperature for the top of the tower will be derived from the triple 
+Air temperature is continuously monitored by NEON by two methods. At terrestrial 
+sites temperature for the top of the tower will be derived from a triple 
 redundant aspirated air temperature sensor. This is provided as NEON data 
-product **NEON.DP1.00003**.  Single Aspirated Air Temperature 
-Sensors (SAATS) are deployed to develop temperature profiles at the tower at NEON
-terrestrial sites and on the micromet station at NEON aquatic sites. This is 
-provided as NEON data product 
-**NEON.DP1.00002**.
+product **DP1.00003.001**. Single Aspirated Air Temperature Sensors (SAATS) are 
+deployed to develop temperature profiles at the tower at NEON terrestrial sites 
+and on the meteorological stations at NEON aquatic sites. This is provided as 
+NEON data product **DP1.00002.001**. These data are also available as part of the
+NEON Mobile Deployment Platforms. 
 
-#### Single-aspirated Air Temperature
+When designing a research project using this data, you should consult the 
+<a href="http://data.neonscience.org/data-products/DP1.10002.001" target="_blank">documents associated with this or any data product</a> 
+and not rely solely on this summary. 
 
-Temperature profiles will be ascertained by deploying SAATS at various heights 
-on the core tower infrastructure and mobile platforms. Air temperature at 
-aquatic sites will be measured using a single SAAT at a standard height of 3m 
-above ground level. Air temperature for this data product is provided as 
-one- and thirty-minute averages of 1 Hz observations. Temperature observations 
-are made using platinum resistance thermometers, which are housed in a fan 
-aspirated shield to reduce radiative bias. The temperature is measured in Ohms 
-and subsequently converted to degrees Celsius. Details on the conversion can be
-found in the associated Algorithm Theoretic Basis Document (ATBD). 
+### Single-aspirated Air Temperature
 
-#### Available Data Tables
+Air temperature profiles are ascertained by deploying SAATS at various heights 
+on NEON tower infrastructure. Air temperature at aquatic sites is measured 
+using a single SAAT at a standard height of 3m above ground level. Air temperature 
+for this data product is provided as one- and thirty-minute averages of 1 Hz 
+observations. Temperature observations are made using platinum resistance 
+thermometers, which are housed in a fan aspirated shield to reduce radiative 
+bias. The temperature is measured in Ohms and subsequently converted to degrees 
+Celsius during data processing. Details on the conversion can be found in the 
+associated Algorithm Theoretic Basis Document (ATBD) for any instrumented data 
+product. 
 
-When downloaded, data comes with several .csv file for each site and month-year 
-selected. There is a 1-minute average and a 30-minute average for each level at 
-which there is a sensor. It is important to understand the file names to know 
-which file is which. 
+### Available Data Tables
 
-The readme associated with the data provides the following information: 
-The file naming convention for sensor data files is **NEON.DOM.SITE.DPL.PRNUM.REV.TERMS.HOR.VER.TMI.DESC** 
+The SAAT data product has two available data tables that are delivered for each
+site and month-year selected. In addition, there are several metadate files that
+provide you with additional useful information.
+
+* a **readme** with information on the data product and the download; 
+* a **variables** file that defines the term descriptions, data types, and units; 
+* a **validation** file with data entry validation and parsing rules; and 
+* an **XML** file with machine readable metadata. 
+
+For the data tables, there are both a 1-minute average and a 30-minute 
+average available. If you download data directly off the portal, you will get 
+one of these files for each level on the tower for each site & month-year selected. 
+
+### File Naming Conventions
+It is important to understand the file names to know which file is which. The 
+readme associated with the data provides the following information: 
+
+The file naming convention for sensor data files is
+**NEON.DOM.SITE.DPL.PRNUM.REV.TERMS.HOR.VER.TMI.DESC** 
 
 where:
 
@@ -150,27 +162,65 @@ interval is 30-minute averaged data (030; the other option in our data is 1 minu
 averaging. Finally there is the abbreviated description that is more human readable
 and tells us again that it is single-aspirated air temperature at 30 minute averages.  
 
-## Stack NEON Data
+## Access NEON Data
 
-All the above data are delivered in a site and year-month format. When you download data,
-you will get a single zipped file containing a directory for each month and site that you've 
-requested data for. Dealing with these separate files from even one or two sites
-over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
-**neonUtilities** that takes the unzipped downloaded file and joining the data 
-files. 
+There are several ways to access NEON data, directly from the NEON data portal, 
+access through a data parner (select data products only), writing code to 
+directly pull data from the NEON API, or, as we'll use here, using the neonUtilities
+package which is a wrapper for the API with useful function to make working with 
+the data easier. 
 
-For more on this function check out the 
-<a href="{{ site.baseurl }}neonDataStackR" target="_blank"> *Use the neonDataStackR package to access NEON data* tutorial</a>. 
+### Data Downloaded Direct from Portal
+If you prefer to work with data that are downloaded from the data portal, please 
+review the *Getting started* and *Stack the downloaded data* sections of the
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank"> *Download and Explore NEON Data* tutorial</a>. 
+This will get you to the point where you can upload your data from sites or dates
+of interest and resume this tutorial. 
 
-When we do this for our temperature data we get two files, one for 1 minute SAAT
-and 30 minute SAAT, with all the data from your site and date range of interest. 
+### Data of Interest
+This tutorial is part of series working with discrete, plant phenology data and 
+(near) continuous temperature data. Our overall "research" question is to see if 
+there is any correlation between the plant phenology and the temperature. 
+Therefore, we will want to work with data that 
+aligns with the plant phenology data that we worked with in the first tutorial. 
+If you are only interested in working with the temperature data, you do not need
+to complete the previous tutorial. 
 
-Let's start by loading our data of interest.
+Our data of interest will the the temperature data from 2018 from NEON's 
+Smithsonian Conservation Biology Institute (SCBI) field site located in Virginia
+near the northern terminus of the Blue Ridge Mountains. 
+
+NEON single aspirated air temperature data is available in two averaging intervals, 
+1 minute and 30 minute intervals. Which data you want to work with is going to 
+depend on your research questions. Here, we're going to only download and work 
+with the 30 minute interval data as we're primarily interest in longer term (daily, 
+weekly, annual) patterns. 
 
 ## Import Data
+This tutorial uses 30 minute temperature data from the single aspirated temperature sensors mounted on level 03 of the NEON tower.
 
-This tutorial uses 30 minute temperature data from the single aspirated
-temperature sensors mounted on level 03 of the NEON tower.
+```{r setup-env}
+# Install needed package (only uncomment & run if not already installed)
+#install.packages("ggplot2")`
+#install.packages("dplyr")`
+#install.packages("tidyr")`
+#install.packages("lubridate")`
+#install.packages("scales")`
+
+# Load required libraries
+
+library(ggplot2)  # for plotting
+library(dplyr)  # for data munging
+library(tidyr)  # for data munging
+library(lubridate)
+library(scales)
+
+
+# set working directory 
+wd <- "~/Documents/data/" # Change this to match your local environment
+setwd(wd)
+```
+
 
 
 ```{r import-data}
@@ -190,7 +240,8 @@ temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', strin
 
 ```
 
-## Explore Temp. Data
+
+## Explore Temperature Data
 
 Now that you have the data, let's take a look at the readme and understand 
 what's in the data. 
@@ -202,23 +253,18 @@ str(temp30_sites)
 
 View readme and variables file. This will guide you on what the data are.
 
-## Select Site(s) of Interest
+## Select Site(s) of Interest	
+Currently, we have data from several sites in our dataset. Let's start by 	
+limiting the data to our site of interest. 	
+The following format allows us to easily change sites or select data from 	
+multiple sites.
 
-Currently, we have data from several sites in our dataset. Let's start by 
-limiting the data to our site of interest. 
-
-The following format allows us to easily change sites or select data from 
-multiple sites. 
-
-```{r filter-site}
-
-# set site of interest
-siteOfInterest <- c("SCBI")
-
-# use filter to select only the site of Interest 
-# using %in% allows one to add a vector if you want more than one site. 
-temp30 <- filter(temp30_sites, siteID%in%siteOfInterest)
-
+```{r filter-site}	
+# set site of interest	
+siteOfInterest <- c("SCBI")	
+# use filter to select only the site of Interest 	
+# using %in% allows one to add a vector if you want more than one site. 	
+temp30 <- filter(temp30_sites, siteID%in%siteOfInterest)	
 ```
 
 ## Quality Flags
@@ -503,7 +549,9 @@ Depending on exactly what question you are asking you may prefer to use one over
 the other. For many applications, the mean temperature of the one or 30 minute
 interval will provide the best representation of the data. 
 
-Let's plot it. 
+Let's plot it. (This is a plot of a large amount of data. It can take 1-2 mins 
+to process. It is not essential for completing the next steps if this takes too 
+much of your computer memory?)
 
 ```{r plot-temp}
 # plot temp data
