@@ -241,7 +241,7 @@ plot the locations of the mammal traps:
 
 ``` {r mam-grids}
 
-plot(mam.loc$easting, mam.loc$northing, pch=".",
+plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
      xlab="Easting", ylab="Northing")
 
 ```
@@ -251,8 +251,8 @@ see a square for each grid. Let's zoom in on a single plot:
 
 ``` {r plot-ONAQ019}
 
-plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
+     mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
      pch=".", xlab="Easting", ylab="Northing")
 
 ```
@@ -261,13 +261,13 @@ Now let's add a layer of data to see which of these traps caught a mammal:
 
 ``` {r plot-captures}
 
-plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
+     mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
      pch=".", xlab="Easting", ylab="Northing")
 
-points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003" & 
+points(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003" & 
                                mam.loc$trapStatus=="5 - capture")], 
-     mam.loc$northing[which(mam.loc$plotID=="ONAQ_003" &
+     mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003" &
                               mam.loc$trapStatus=="5 - capture")],
      pch=19, col="blue")
 

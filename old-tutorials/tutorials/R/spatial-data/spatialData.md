@@ -42,8 +42,27 @@ load the libraries for each:
     # run every time you start a script
     library(sp)
     library(rgdal)
+
+    ## rgdal: version: 1.4-8, (SVN revision 845)
+    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
+    ##  Loaded GDAL runtime: GDAL 2.4.2, released 2019/06/28
+    ##  Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rgdal/gdal
+    ##  GDAL binary built with GEOS: FALSE 
+    ##  Loaded PROJ.4 runtime: Rel. 5.2.0, September 15th, 2018, [PJ_VERSION: 520]
+    ##  Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rgdal/proj
+    ##  Linking to sp version: 1.3-2
+
     library(rgeos)
+
+    ## rgeos version: 0.5-1, (SVN revision 614)
+    ##  GEOS runtime version: 3.7.2-CAPI-1.11.2 
+    ##  Linking to sp version: 1.3-1 
+    ##  Polygon checking: TRUE
+
     library(ggplot2)
+
+    ## Need help getting started? Try the R Graphics Cookbok: https://r-graphics.org
+
     library(ggthemes)
     library(neonUtilities)
     library(geoNEON)
@@ -131,14 +150,11 @@ The readme file contains descriptions for each of the columns in the
 tabular files.
 
 
-    ##  [1] "country"    "state"      "county"     "domain"     "domainID"  
-    ##  [6] "siteNam"    "siteID"     "plotType"   "subtype"    "subSpec"   
-    ## [11] "plotID"     "plotSize"   "plotDim"    "pointID"    "latitude"  
-    ## [16] "longitude"  "datum"      "utmZone"    "easting"    "northng"   
-    ## [21] "horzUncert" "elevatn"    "vertUncert" "minElev"    "maxElev"   
-    ## [26] "slope"      "aspect"     "nlcdClass"  "soilOrder"  "crdSource" 
-    ## [31] "date"       "filtPos"    "plotPdop"   "plotHdop"   "appMods"   
-    ## [36] "plotEdg"
+    ##  [1] "country"    "state"      "county"     "domain"     "domainID"   "siteNam"    "siteID"     "plotType"  
+    ##  [9] "subtype"    "subSpec"    "plotID"     "plotSize"   "plotDim"    "pointID"    "latitude"   "longitude" 
+    ## [17] "datum"      "utmZone"    "easting"    "northng"    "horzUncert" "elevatn"    "vertUncert" "minElev"   
+    ## [25] "maxElev"    "slope"      "aspect"     "nlcdClass"  "soilOrder"  "crdSource"  "date"       "filtPos"   
+    ## [33] "plotPdop"   "plotHdop"   "appMods"    "plotEdg"
 
 You can use these files to navigate the spatial layout of sampling for 
 TOS: mosquitoes, beetles, plants, birds, etc. In this tutorial, we'll be 
@@ -166,41 +182,27 @@ The spatial data are in the `pertrapnight` table.
 
     head(mam$mam_pertrapnight[,1:18])
 
-    ##                                    uid
-    ## 1 b77289db-b760-48c4-9190-44a4d5949ce2
-    ## 2 7a3b267d-a686-4e44-8aaa-64647dea7dec
-    ## 3 bbae3ee3-a78e-47d9-a0ea-aa33c1d5066a
-    ## 4 6d13e869-18ca-48d9-9eb2-3ea83aa5f508
-    ## 5 b9876f71-7065-4f83-8920-452d1aba0e69
-    ## 6 a7e09389-cf74-4fc4-8ccf-ea90ec8924ff
-    ##                               nightuid           namedLocation domainID
-    ## 1 98ae24a1-32e8-41d6-8f59-f3760894b25f ONAQ_003.mammalGrid.mam      D15
-    ## 2 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam      D15
-    ## 3 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
-    ## 4 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
-    ## 5 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam      D15
-    ## 6 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
-    ##   siteID   plotID trapCoordinate    plotType  nlcdClass decimalLatitude
-    ## 1   ONAQ ONAQ_003             G8 distributed shrubScrub        40.20623
-    ## 2   ONAQ ONAQ_005             I5 distributed shrubScrub        40.18075
-    ## 3   ONAQ ONAQ_020             A1 distributed shrubScrub        40.18389
-    ## 4   ONAQ ONAQ_020             G2 distributed shrubScrub        40.18389
-    ## 5   ONAQ ONAQ_005            D10 distributed shrubScrub        40.18075
-    ## 6   ONAQ ONAQ_020             H9 distributed shrubScrub        40.18389
-    ##   decimalLongitude geodeticDatum coordinateUncertainty elevation
-    ## 1        -112.4285         WGS84                  45.4    1604.6
-    ## 2        -112.4297         WGS84                  45.3    1607.9
-    ## 3        -112.4367         WGS84                  45.1    1627.6
-    ## 4        -112.4367         WGS84                  45.1    1627.6
-    ## 5        -112.4297         WGS84                  45.3    1607.9
-    ## 6        -112.4367         WGS84                  45.1    1627.6
-    ##   elevationUncertainty             trapStatus   trapType collectDate
-    ## 1                  0.2 6 - trap set and empty ShermanXLK  2018-08-14
-    ## 2                  0.4 6 - trap set and empty ShermanXLK  2018-08-14
-    ## 3                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
-    ## 4                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
-    ## 5                  0.4 6 - trap set and empty ShermanXLK  2018-08-14
-    ## 6                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
+    ##                                    uid                             nightuid           namedLocation domainID
+    ## 1 e806918e-7b0f-49df-b93b-8aab86e4ff0e 98ae24a1-32e8-41d6-8f59-f3760894b25f ONAQ_003.mammalGrid.mam      D15
+    ## 2 711e0c7a-efc3-41ea-9ff9-52bb753a055f 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam      D15
+    ## 3 91a8c6c4-6519-483d-8aa3-1ab536427069 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
+    ## 4 c3e09bc4-2acf-477f-be61-3170beceef51 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
+    ## 5 0bb83d77-07c7-4f39-9fd1-cd3e3328d91f 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam      D15
+    ## 6 256dd5c3-a72f-4084-932b-022f33623aaf 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam      D15
+    ##   siteID   plotID trapCoordinate    plotType  nlcdClass decimalLatitude decimalLongitude geodeticDatum
+    ## 1   ONAQ ONAQ_003             G8 distributed shrubScrub        40.20623        -112.4285         WGS84
+    ## 2   ONAQ ONAQ_005             I5 distributed shrubScrub        40.18075        -112.4297         WGS84
+    ## 3   ONAQ ONAQ_020             A1 distributed shrubScrub        40.18389        -112.4367         WGS84
+    ## 4   ONAQ ONAQ_020             G2 distributed shrubScrub        40.18389        -112.4367         WGS84
+    ## 5   ONAQ ONAQ_005            D10 distributed shrubScrub        40.18075        -112.4297         WGS84
+    ## 6   ONAQ ONAQ_020             H9 distributed shrubScrub        40.18389        -112.4367         WGS84
+    ##   coordinateUncertainty elevation elevationUncertainty             trapStatus   trapType collectDate
+    ## 1                  45.4    1604.6                  0.2 6 - trap set and empty ShermanXLK  2018-08-14
+    ## 2                  45.3    1607.9                  0.4 6 - trap set and empty ShermanXLK  2018-08-14
+    ## 3                  45.1    1627.6                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
+    ## 4                  45.1    1627.6                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
+    ## 5                  45.3    1607.9                  0.4 6 - trap set and empty ShermanXLK  2018-08-14
+    ## 6                  45.1    1627.6                  0.1 6 - trap set and empty ShermanXLK  2018-08-14
 
 But there's a limitation here - the latitudes and longitudes provided 
 are for the plots, not for the traps. Take a look at the coordinates 
@@ -348,10 +350,8 @@ What columns have been added by `getLocTOS()`?
 
     names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
 
-    ## [1] "points"                   "utmZone"                 
-    ## [3] "northing"                 "easting"                 
-    ## [5] "adjCoordinateUncertainty" "adjDecimalLatitude"      
-    ## [7] "adjDecimalLongitude"      "adjElevation"            
+    ## [1] "points"                   "utmZone"                  "adjNorthing"              "adjEasting"              
+    ## [5] "adjCoordinateUncertainty" "adjDecimalLatitude"       "adjDecimalLongitude"      "adjElevation"            
     ## [9] "adjElevationUncertainty"
 
 Now we have adjusted latitude, longitude, and elevation, and the 
@@ -359,7 +359,7 @@ corresponding easting and northing. We can use the easting and northing to
 plot the locations of the mammal traps:
 
 
-    plot(mam.loc$easting, mam.loc$northing, pch=".",
+    plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
          xlab="Easting", ylab="Northing")
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/spatial-data/spatialData/mam-grids-1.png)
@@ -368,8 +368,8 @@ Each grid has 100 points, so even with each trap plotted as a . we can only
 see a square for each grid. Let's zoom in on a single plot:
 
 
-    plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-         mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+    plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
+         mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
          pch=".", xlab="Easting", ylab="Northing")
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/spatial-data/spatialData/plot-ONAQ019-1.png)
@@ -377,13 +377,13 @@ see a square for each grid. Let's zoom in on a single plot:
 Now let's add a layer of data to see which of these traps caught a mammal:
 
 
-    plot(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003")], 
-         mam.loc$northing[which(mam.loc$plotID=="ONAQ_003")], 
+    plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
+         mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
          pch=".", xlab="Easting", ylab="Northing")
     
-    points(mam.loc$easting[which(mam.loc$plotID=="ONAQ_003" & 
+    points(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003" & 
                                    mam.loc$trapStatus=="5 - capture")], 
-         mam.loc$northing[which(mam.loc$plotID=="ONAQ_003" &
+         mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003" &
                                   mam.loc$trapStatus=="5 - capture")],
          pch=19, col="blue")
 
@@ -412,11 +412,9 @@ monthly package, and read the sensor positions file into R:
                       sep=",", header=T)
     names(pos)
 
-    ##  [1] "HOR.VER"            "start"              "end"               
-    ##  [4] "referenceStart"     "referenceEnd"       "xOffset"           
-    ##  [7] "yOffset"            "zOffset"            "pitch"             
-    ## [10] "roll"               "azimuth"            "referenceLatitude" 
-    ## [13] "referenceLongitude" "referenceElevation"
+    ##  [1] "HOR.VER"            "start"              "end"                "referenceStart"     "referenceEnd"      
+    ##  [6] "xOffset"            "yOffset"            "zOffset"            "pitch"              "roll"              
+    ## [11] "azimuth"            "referenceLatitude"  "referenceLongitude" "referenceElevation"
 
 The sensor locations are indexed by the HOR.VER indices - see the 
 <a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
