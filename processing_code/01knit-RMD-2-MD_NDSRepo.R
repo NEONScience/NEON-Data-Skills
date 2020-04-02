@@ -22,13 +22,8 @@ dirs <- c("R/eddy4r/",
 
 # set directory (order above) that you'd like to build
 
-<<<<<<< HEAD
-
-subDir <- dirs[1] 
-
-=======
 subDir <- dirs[3]
->>>>>>> parent of 70a5ba2a... link updates
+
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"

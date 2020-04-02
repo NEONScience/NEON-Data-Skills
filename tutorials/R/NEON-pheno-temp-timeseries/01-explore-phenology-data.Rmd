@@ -39,6 +39,7 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 
@@ -186,17 +187,18 @@ your figures and some output may look differnet later in the tutorial.
 
 ```{r loadStuff}
 
+library(neonUtilities)
 library(dplyr)
 library(ggplot2)
-library(lubridate)  
 
 options(stringsAsFactors=F) #used to prevent factors
 
 # set working directory to ensure R can find the file we wish to import
 # setwd("working-dir-path-here")
 
+## Two options for accessing data - programmatic or from the example dataset
+# Read data from data portal 
 
-<<<<<<< HEAD
 phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
 										 startdate = "2017-01", enddate="2019-12", 
 										 check.size = F) 
@@ -207,14 +209,12 @@ ind <- phe$phe_perindividual  #individual information
 status <- phe$phe_statusintensity  #status & intensity info
 
 ## If choosing to use example dataset downloaded from this tutorial.
-=======
->>>>>>> parent of 70a5ba2a... link updates
 # Read in data
-ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
-		stringsAsFactors = FALSE )
+#ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
+#		stringsAsFactors = FALSE )
 
-status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
-		stringsAsFactors = FALSE)
+#status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
+#		stringsAsFactors = FALSE)
 
 ```
 
@@ -245,6 +245,7 @@ and then automatically converts the data to the correct date type in R.
 the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
 to dates.)
 
+#### Phenology status
 Now let's look at the status data. 
 
 ```{r look-status}
@@ -261,22 +262,11 @@ max(status$date)
 
 ```
 
-The `uid` is not important to understanding the data so we are going to remove `uid`. 
-However, if you are every reporting an error in the data you should include this
-with your report. 
-
-```{r remove-uid}
-
-ind <- select(ind,-uid)
-status <- select (status, -uid)
-
-``` 
-
 ## Clean up the Data
 
 * remove duplicates (full rows)
-* convert date
-* retain only the latest `editedDate` in the perIndividual table.
+* convert to date format
+* retain only the most recent `editedDate` in the perIndividual and status table.
 
 ### Remove Duplicates
 
@@ -313,8 +303,7 @@ Let's see what they are.
 ```{r same-fieldnames}
 
 # where is there an intersection of names
-sameName <- intersect(names(status_noD), names(ind_noD))
-sameName
+intersect(names(status_noD), names(ind_noD))
 
 ```
 
@@ -322,17 +311,10 @@ There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. 
 
 However, some of these will have different values in each table. We want to keep 
-<<<<<<< HEAD
 those distinct value and not join on them. Therefore, we can rename these 
 fields before joining:
 
 * date
-=======
-those distinct value and not join on them. 
-
-We want to rename common fields before joining:
-
->>>>>>> parent of 70a5ba2a... link updates
 * editedDate
 * measuredBy
 * recordedBy
@@ -347,7 +329,6 @@ variable name.
 
 ```{r rename-column}
 
-<<<<<<< HEAD
 # in Status table rename like columns 
 status_noD <- rename(status_noD, dateStat=date, 
 										 editedDateStat=editedDate, measuredByStat=measuredBy, 
@@ -358,33 +339,6 @@ status_noD <- rename(status_noD, dateStat=date,
 ```
 
 ### Filter to last editedDate
-=======
-# rename status editedDate
-status_noD <- rename(status_noD, editedDateStat=editedDate, 
-		measuredByStat=measuredBy, recordedByStat=recordedBy, 
-		samplingProtocolVersionStat=samplingProtocolVersion, 
-		remarksStat=remarks, dataQFStat=dataQF)
-
-
-```
-
-
-### Convert to Date
-
-Our `addDate` and `date` columns are stored as a `character` class. We need to 
-convert it to a date class. The `as.Date()` function in base R will do this. 
-
-```{r as-date-only }
-
-# convert column to date class
-ind_noD$editedDate <- as.Date(ind_noD$editedDate)
-str(ind_noD$editedDate)
-
-status_noD$date <- as.Date(status_noD$date)
-str(status_noD$date)
-
-```
->>>>>>> parent of 70a5ba2a... link updates
 
 The individual (ind) table contains all instances that any of the location or 
 taxonomy data of an individual was updated. Therefore there are many rows for
@@ -396,7 +350,7 @@ ind_last <- ind_noD %>%
 	group_by(individualID) %>%
 	filter(editedDate==max(editedDate))
 
-# oh wait, duplicate dates, retain only one
+# oh wait, duplicate dates, retain only the most recent editedDate
 ind_lastnoD <- ind_last %>%
 	group_by(editedDate, individualID) %>%
 	filter(row_number()==1)
@@ -419,25 +373,8 @@ rows from the "left" (first) dateframe to any rows that also occur in the "right
 # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
 phe_ind <- left_join(status_noD, ind_lastnoD)
 
-
 ```
 
-Ack!  Two different data types.  Why?  Notice that when we checked for intersecting variable names, `data` was one of these variables. We didn't change the `data` column in the ind object from a `character` class to a date class. But, we actually don't want to combine these two `date` columns.
-
-Try it again.  
-
-We can rename the `date` column in ind so that the two dataframes can now join together.
-
-```{r join-dfs}
-# rename variables in ind
-ind_noD <- rename(ind_noD, addDate = date)
-
-# Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
-phe_ind <- left_join(status_noD, ind_lastnoD)
-
-```
-
-Worked this time! 
 Now that we have clean datasets we can begin looking into our particular data to 
 address our research question: do plants show patterns of changes in phenophase 
 across season?
@@ -480,7 +417,6 @@ view both
 # see which species are present - taxon ID only
 unique(phe_1st$taxonID)
 
-<<<<<<< HEAD
 # see which species are present - taxon ID + species name
 unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=' - ')) 
 
@@ -491,8 +427,6 @@ By writing it this way, we could also add a list of species to the `speciesOfInt
 object to select for multiple species. 
 
 ```{r filter-species}
-=======
->>>>>>> parent of 70a5ba2a... link updates
 speciesOfInterest <- "LITU"
 
 #subset to just "LITU"
@@ -511,12 +445,12 @@ And, perhaps a single phenophase.
 
 ```{r filter-phenophase}
 
-# see which species are present
+# see which phenophases are present
 unique(phe_1sp$phenophaseName)
 
 phenophaseOfInterest <- "Leaves"
 
-#subset to just the phenosphase of Interest 
+#subset to just the phenosphase of interest 
 phe_1sp <- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
 
 # check that it worked
@@ -694,13 +628,8 @@ Let's filter to just 2018 data.
 
 ```{r filter-to-2018}
 
-<<<<<<< HEAD
 # use filter to select only the date of interest 
 phe_1sp_2018 <- filter(inStat_T, dateStat >= "2018-01-01" & dateStat <= "2018-12-31")
-=======
-# use filter to select only the site of Interest 
-phe_1sp_2016 <- filter(inStat_T, date >= "2016-01-01")
->>>>>>> parent of 70a5ba2a... link updates
 
 # did it work?
 range(phe_1sp_2018$dateStat)
@@ -732,7 +661,6 @@ in this series as you already have the data frame in your environment. Of course
 if you close R and then come back to it, you will need to re-load this data and 
 instructions for that are provided in the relevant tutorials. 
 
-<<<<<<< HEAD
 ```{r write-csv, eval=F}
 # Write .csv - this step is optional 
 # This will write to your current working directory, change as desired.
@@ -742,10 +670,5 @@ write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=
 # pheno data file. 
 
 #write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
-=======
-```{r write-csv, echo = FALSE}
-# Write .csv (this will be read in new in subsuquent lessons)
-write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
->>>>>>> parent of 70a5ba2a... link updates
 
 ```

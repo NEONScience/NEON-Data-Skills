@@ -223,7 +223,9 @@ of data. If this is too large, use a smaller date range.
     status <- phe$phe_statusintensity  #status & intensity info
     
     
-    ## If choosing to use example dataset downloaded from this tutorial.
+If you choose to use example dataset downloaded in the box at the start of this 
+tutorial, use this code to load the data. 
+
     # Read in data
     #ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
     #		stringsAsFactors = FALSE )
