@@ -9,7 +9,7 @@ estimatedTime:
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
 languagesTool: R
-dataProduct: NEON.DP1.10055
+dataProduct: DP1.10055.001
 code1: R/NEON-pheno-temp-timeseries/01-explore-phenology-data.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
@@ -28,7 +28,7 @@ tutorial we explore how to work with NEON plant phenophase data.
 ## Objectives
 After completing this activity, you will be able to:
 
- * work with "stacked" NEON Plant Phenology Observation data. 
+ * work with "stJonesacked" NEON Plant Phenology Observation data. 
  * correctly format date data. 
  * use dplyr functions to filter data.
  * plot time series data in a bar plot using ggplot the function. 
@@ -81,16 +81,16 @@ from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_us
 ### NEON Plant Phenology Observation Data
 
 NEON collects plant phenology data and provides it as NEON data product 
-**NEON.DP1.10055**.
+**DP1.10055.001**.
 
 The plant phenology observations data product provides in-situ observations of 
 the phenological status and intensity of tagged plants (or patches) during 
 discrete observations events. 
 
 Sampling occurs at all terrestrial field sites at site and season specific 
-intervals. Three species for phenology observation are selected based on relative 
-abundance in the Tower airshed. There are 30 individuals of each target species 
-monitored at each transect. 
+intervals. During Phase I (dominant species) sampling (pre-2021), three species 
+with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
+will begin, with <=20 species with 5 or more individuals sampled will occcur.
 
 #### Status-based Monitoring
 
@@ -137,7 +137,7 @@ At each site, there are:
 * ~50 observation bouts per year. 
 * no more that 100 sampling points per phenology transect.
 * no more than 9 sampling points per phenocam plot. 
-* 1 bout per year to collect annual size and disease status measurements from 
+* 1 annual measurement per year to collect annual size and disease status measurements from 
 each sampling point.
 
 
@@ -153,8 +153,8 @@ about the plant: DBH, height, etc.
 
 There are other files in each download including a **readme** with information on 
 the data product and the download; a **variables** file that defines the 
-term descriptions, data types, and units; a **validation** file with ata entry validation and 
-parsing rules; and an **XML** with machine readable metadata. 
+term descriptions, data types, and units; a **validation** file with data entry 
+validation and parsing rules; and an **XML** with machine readable metadata. 
 
 ## Stack NEON Data
 
@@ -181,8 +181,9 @@ date from the NEON Domain 02 sites:
 * Smithsonian Conservation Biology Institute (SCBI)
 * Smithsonian Environmental Research Center (SERC)
 
-And we'll use data from January 2017 to December 2019.  This downloads over 9MB
-of data. If this is too large, use a smaller date range. 
+And we'll use data from January 2017 to December 2019. This downloads over 9MB
+of data. If this is too large, use a smaller date range. If you opt to do this, 
+your figures and some output may look differnet later in the tutorial. 
 
 ```{r loadStuff}
 
@@ -207,7 +208,6 @@ phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"),
 ind <- phe$phe_perindividual  #individual information
 status <- phe$phe_statusintensity  #status & intensity info
 
-
 ## If choosing to use example dataset downloaded from this tutorial.
 # Read in data
 #ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
@@ -224,6 +224,9 @@ Let's explore the data. Let's get to know what the `ind` dataframe looks like.
 # What are the fieldnames in this dataset?
 names(ind)
 
+# Unsure of what some of the variables are you? Look at the variables table!
+View(phe$variables_10055)
+
 # how many rows are in the data?
 nrow(ind)
 
@@ -238,7 +241,7 @@ str(ind)
 Notice that the neonUtilities package read the data type from the variables file
 and then automatically converts the data to the correct date type in R. 
 
-(Note that if you first openned your data file in Excel, you might see 06/14/2014 as 
+(Note that if you first opened your data file in Excel, you might see 06/14/2014 as 
 the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
 to dates.)
 
@@ -403,14 +406,27 @@ phe_1st <- filter(phe_ind, siteID %in% siteOfInterest)
 
 ## Select Species of Interest
 
-And now select a single species of interest. For now let's choose the flowering 
-tree *Liriodendron tulipifera* (LITU). 
+Now we may only want to view a single species or a set of species. Let's first 
+look at the species that are present in our data. We could do this just by looking
+at the `taxonID` field which give the four letter UDSA plant code for each 
+species. But if we don't know all the plant codes, we can get a bit fancier and 
+view both 
 
 ```{r filter-species}
 
-# see which species are present
+# see which species are present - taxon ID only
 unique(phe_1st$taxonID)
 
+# see which species are present - taxon ID + species name
+unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=' - ')) 
+
+```
+
+For now, let's choose only the flowering tree *Liriodendron tulipifera* (LITU). 
+By writing it this way, we could also add a list of species to the `speciesOfInterest`
+object to select for multiple species. 
+
+```{r filter-species}
 speciesOfInterest <- "LITU"
 
 #subset to just "LITU"
@@ -594,7 +610,7 @@ are the drivers of phenophases?
 
 The NEON phenology measurements track sensitive and easily observed indicators 
 of biotic responses to climate variability by monitoring the timing and duration 
-of phenological stagesin plant communities. Plant phenology is affected by forces 
+of phenological stages in plant communities. Plant phenology is affected by forces 
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
 feedbacks to trophic interactions, carbon sequestration, community composition 
@@ -636,18 +652,23 @@ phenoPlot18
 
 ```
 
+Now that we've filtered down to just the 2018 data from SCBI for LITU in leaf, 
+we may want to save that subsetted data for another use. To do that you can write
+the data frame to a .csv file. 
 
+You do not need to follow this step if you are continuing on to the next tutorials
+in this series as you already have the data frame in your environment. Of course
+if you close R and then come back to it, you will need to re-load this data and 
+instructions for that are provided in the relevant tutorials. 
 
 ```{r write-csv, eval=F}
-# Write .csv (this will be read in new in subsuquent lessons)
+# Write .csv - this step is optional 
 # This will write to your current working directory, change as desired.
 write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 #If you are using the downloaded example date, this code will write it to the 
-#data file. 
+# pheno data file. 
 
 #write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
 
 ```
-
-
