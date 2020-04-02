@@ -139,7 +139,7 @@ identifier for the data product:
     req
 
     ## Response [https://data.neonscience.org/api/v0/products/DP1.10003.001]
-    ##   Date: 2020-01-03 04:37
+    ##   Date: 2020-04-01 23:10
     ##   Status: 200
     ##   Content-Type: application/json;charset=UTF-8
     ##   Size: 24.2 kB
@@ -156,18 +156,14 @@ list. This is typical of JSON-formatted data returned by APIs. We can use the
     req.content <- content(req, as="parsed")
     names(req.content$data)
 
-    ##  [1] "productCodeLong"              "productCode"                 
-    ##  [3] "productCodePresentation"      "productName"                 
-    ##  [5] "productDescription"           "productStatus"               
-    ##  [7] "productCategory"              "productHasExpanded"          
-    ##  [9] "productScienceTeamAbbr"       "productScienceTeam"          
-    ## [11] "productPublicationFormatType" "productAbstract"             
-    ## [13] "productDesignDescription"     "productStudyDescription"     
-    ## [15] "productBasicDescription"      "productExpandedDescription"  
-    ## [17] "productSensor"                "productRemarks"              
-    ## [19] "themes"                       "changeLogs"                  
-    ## [21] "specs"                        "keywords"                    
-    ## [23] "siteCodes"
+    ##  [1] "productCodeLong"              "productCode"                  "productCodePresentation"     
+    ##  [4] "productName"                  "productDescription"           "productStatus"               
+    ##  [7] "productCategory"              "productHasExpanded"           "productScienceTeamAbbr"      
+    ## [10] "productScienceTeam"           "productPublicationFormatType" "productAbstract"             
+    ## [13] "productDesignDescription"     "productStudyDescription"      "productBasicDescription"     
+    ## [16] "productExpandedDescription"   "productSensor"                "productRemarks"              
+    ## [19] "themes"                       "changeLogs"                   "specs"                       
+    ## [22] "keywords"                     "siteCodes"
 
 You can see all of the infoamtion by running the line `print(req.content)`, but
 this will result in a very long printout in your console. Instead, you can view
@@ -295,113 +291,61 @@ version is not as human readable but is readable by the `fromJSON()` function.
     ## 3   3729      NEON.DOC.014041vJ
     ## 
     ## $data$keywords
-    ##  [1] "Animalia"              "distance sampling"    
-    ##  [3] "Aves"                  "diversity"            
-    ##  [5] "invasive"              "vertebrates"          
-    ##  [7] "native"                "point counts"         
-    ##  [9] "taxonomy"              "animals"              
-    ## [11] "landbirds"             "species composition"  
-    ## [13] "avian"                 "population"           
-    ## [15] "birds"                 "Chordata"             
-    ## [17] "community composition" "introduced"           
+    ##  [1] "birds"                 "diversity"             "taxonomy"              "community composition"
+    ##  [5] "distance sampling"     "avian"                 "species composition"   "population"           
+    ##  [9] "vertebrates"           "invasive"              "introduced"            "native"               
+    ## [13] "landbirds"             "animals"               "Animalia"              "Aves"                 
+    ## [17] "Chordata"              "point counts"         
     ## 
     ## $data$siteCodes
-    ##    siteCode
-    ## 1      ABBY
-    ## 2      BARR
-    ## 3      BART
-    ## 4      BLAN
-    ## 5      BONA
-    ## 6      CLBJ
-    ## 7      CPER
-    ## 8      DCFS
-    ## 9      DEJU
-    ## 10     DELA
-    ## 11     DSNY
-    ## 12     GRSM
-    ## 13     GUAN
-    ## 14     HARV
-    ## 15     HEAL
-    ## 16     JERC
-    ## 17     JORN
-    ## 18     KONA
-    ## 19     KONZ
-    ## 20     LAJA
-    ## 21     LENO
-    ## 22     MLBS
-    ## 23     MOAB
-    ## 24     NIWO
-    ## 25     NOGP
-    ## 26     OAES
-    ## 27     ONAQ
-    ## 28     ORNL
-    ## 29     OSBS
-    ## 30     PUUM
-    ## 31     RMNP
-    ## 32     SCBI
-    ## 33     SERC
-    ## 34     SJER
-    ## 35     SOAP
-    ## 36     SRER
-    ## 37     STEI
-    ## 38     STER
-    ## 39     TALL
-    ## 40     TEAK
-    ## 41     TOOL
-    ## 42     TREE
-    ## 43     UKFS
-    ## 44     UNDE
-    ## 45     WOOD
-    ## 46     WREF
-    ## 47     YELL
-    ##                                                                    availableMonths
-    ## 1                                      2017-05, 2017-06, 2018-06, 2018-07, 2019-05
-    ## 2                                                        2017-07, 2018-07, 2019-06
-    ## 3                                      2015-06, 2016-06, 2017-06, 2018-06, 2019-06
-    ## 4                             2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 5                                               2017-06, 2018-06, 2018-07, 2019-06
-    ## 6                                               2017-05, 2018-04, 2019-04, 2019-05
-    ## 7                    2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06
-    ## 8                                      2017-06, 2017-07, 2018-07, 2019-06, 2019-07
-    ## 9                                                        2017-06, 2018-06, 2019-06
-    ## 10                                              2015-06, 2017-06, 2018-05, 2019-06
-    ## 11                                     2015-06, 2016-05, 2017-05, 2018-05, 2019-05
-    ## 12                                     2016-06, 2017-05, 2017-06, 2018-05, 2019-05
-    ## 13                                     2015-05, 2017-05, 2018-05, 2019-05, 2019-06
-    ## 14                            2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
-    ## 15                                     2017-06, 2018-06, 2018-07, 2019-06, 2019-07
-    ## 16                                              2016-06, 2017-05, 2018-06, 2019-06
-    ## 17                                     2017-04, 2017-05, 2018-04, 2018-05, 2019-04
-    ## 18                                                       2018-05, 2018-06, 2019-06
-    ## 19                                              2017-06, 2018-05, 2018-06, 2019-06
-    ## 20                                              2017-05, 2018-05, 2019-05, 2019-06
-    ## 21                                                       2017-06, 2018-05, 2019-06
-    ## 22                                                                2018-06, 2019-05
-    ## 23                                              2015-06, 2017-05, 2018-05, 2019-05
-    ## 24                                              2015-07, 2017-07, 2018-07, 2019-07
-    ## 25                                                       2017-07, 2018-07, 2019-07
-    ## 26                                     2017-05, 2017-06, 2018-04, 2018-05, 2019-05
-    ## 27                                              2017-05, 2018-05, 2018-06, 2019-05
-    ## 28                                     2016-05, 2016-06, 2017-05, 2018-06, 2019-05
-    ## 29                                              2016-05, 2017-05, 2018-05, 2019-05
-    ## 30                                                                         2018-04
-    ## 31                            2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07
-    ## 32 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 33                                              2017-05, 2017-06, 2018-05, 2019-05
-    ## 34                                                       2017-04, 2018-04, 2019-04
-    ## 35                                                       2017-05, 2018-05, 2019-05
-    ## 36                                              2017-05, 2018-04, 2018-05, 2019-04
-    ## 37                   2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 38                   2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06
-    ## 39                                     2015-06, 2016-07, 2017-06, 2018-06, 2019-05
-    ## 40                                              2017-06, 2018-06, 2019-06, 2019-07
-    ## 41                                                       2017-06, 2018-07, 2019-06
-    ## 42                                              2016-06, 2017-06, 2018-06, 2019-06
-    ## 43                                                       2017-06, 2018-06, 2019-06
-    ## 44                                     2016-06, 2016-07, 2017-06, 2018-06, 2019-06
-    ## 45                                     2015-07, 2017-07, 2018-07, 2019-06, 2019-07
-    ## 46                                                       2018-06, 2019-05, 2019-06
-    ## 47                                                                2018-06, 2019-06
+    ##    siteCode                                                                 availableMonths
+    ## 1      ABBY                                     2017-05, 2017-06, 2018-06, 2018-07, 2019-05
+    ## 2      BARR                                                       2017-07, 2018-07, 2019-06
+    ## 3      BART                                     2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+    ## 4      BLAN                            2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 5      BONA                                              2017-06, 2018-06, 2018-07, 2019-06
+    ## 6      CLBJ                                              2017-05, 2018-04, 2019-04, 2019-05
+    ## 7      CPER                   2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06
+    ## 8      DCFS                                     2017-06, 2017-07, 2018-07, 2019-06, 2019-07
+    ## 9      DEJU                                                       2017-06, 2018-06, 2019-06
+    ## 10     DELA                                              2015-06, 2017-06, 2018-05, 2019-06
+    ## 11     DSNY                                     2015-06, 2016-05, 2017-05, 2018-05, 2019-05
+    ## 12     GRSM                                     2016-06, 2017-05, 2017-06, 2018-05, 2019-05
+    ## 13     GUAN                                     2015-05, 2017-05, 2018-05, 2019-05, 2019-06
+    ## 14     HARV                            2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+    ## 15     HEAL                                     2017-06, 2018-06, 2018-07, 2019-06, 2019-07
+    ## 16     JERC                                              2016-06, 2017-05, 2018-06, 2019-06
+    ## 17     JORN                                     2017-04, 2017-05, 2018-04, 2018-05, 2019-04
+    ## 18     KONA                                                       2018-05, 2018-06, 2019-06
+    ## 19     KONZ                                              2017-06, 2018-05, 2018-06, 2019-06
+    ## 20     LAJA                                              2017-05, 2018-05, 2019-05, 2019-06
+    ## 21     LENO                                                       2017-06, 2018-05, 2019-06
+    ## 22     MLBS                                                                2018-06, 2019-05
+    ## 23     MOAB                                              2015-06, 2017-05, 2018-05, 2019-05
+    ## 24     NIWO                                              2015-07, 2017-07, 2018-07, 2019-07
+    ## 25     NOGP                                                       2017-07, 2018-07, 2019-07
+    ## 26     OAES                                     2017-05, 2017-06, 2018-04, 2018-05, 2019-05
+    ## 27     ONAQ                                              2017-05, 2018-05, 2018-06, 2019-05
+    ## 28     ORNL                                     2016-05, 2016-06, 2017-05, 2018-06, 2019-05
+    ## 29     OSBS                                              2016-05, 2017-05, 2018-05, 2019-05
+    ## 30     PUUM                                                                         2018-04
+    ## 31     RMNP                            2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07
+    ## 32     SCBI 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 33     SERC                                              2017-05, 2017-06, 2018-05, 2019-05
+    ## 34     SJER                                                       2017-04, 2018-04, 2019-04
+    ## 35     SOAP                                                       2017-05, 2018-05, 2019-05
+    ## 36     SRER                                              2017-05, 2018-04, 2018-05, 2019-04
+    ## 37     STEI                   2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 38     STER                   2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06
+    ## 39     TALL                                     2015-06, 2016-07, 2017-06, 2018-06, 2019-05
+    ## 40     TEAK                                              2017-06, 2018-06, 2019-06, 2019-07
+    ## 41     TOOL                                                       2017-06, 2018-07, 2019-06
+    ## 42     TREE                                              2016-06, 2017-06, 2018-06, 2019-06
+    ## 43     UKFS                                                       2017-06, 2018-06, 2019-06
+    ## 44     UNDE                                     2016-06, 2016-07, 2017-06, 2018-06, 2019-06
+    ## 45     WOOD                                     2015-07, 2017-07, 2018-07, 2019-06, 2019-07
+    ## 46     WREF                                                       2018-06, 2019-05, 2019-06
+    ## 47     YELL                                                                2018-06, 2019-06
     ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              availableDataUrls
     ## 1                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2019-05
     ## 2                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2019-06
@@ -503,73 +447,56 @@ you need to iterate this code, GET fails if you give it more than one URL.
     brd.files$data$files
 
     ##                               crc32
-    ## 1  e0adb3146b5cce59eea09864145efcb1
-    ## 2  d84b496cf950b5b96e762473beda563a
-    ## 3  4438e5e050fc7be5949457f42089a397
-    ## 4  df102cb4cfdce092cda3c0942c9d9b67
-    ## 5  6d15da01c03793da8fc6d871e6659ea8
-    ## 6  e67f1ae72760a63c616ec18108453aaa
-    ## 7  f37931d46213246dccf2a161211c9afe
-    ## 8  a2c47410a6a0f49d0b1cf95be6238604
-    ## 9  2ad379ae44f4e87996bdc3dee70a0794
-    ## 10 e67f1ae72760a63c616ec18108453aaa
-    ## 11 d76cfc5443ac27a058fab1d319d31d34
-    ## 12 6ba91b6e109ff14d1911dcaad9febeb9
-    ## 13 22e3353dabb8b154768dc2eee9873718
-    ## 14 680a2f53c0a9d1b0ab4f8814bda5b399
-    ## 15 f37931d46213246dccf2a161211c9afe
-    ## 16 6d15da01c03793da8fc6d871e6659ea8
-    ##                                                                               name
-    ## 1     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv
-    ## 2                          NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt
-    ## 3                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip
-    ## 4           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml
-    ## 5                      NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv
-    ## 6                       NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv
-    ## 7      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv
-    ## 8                           NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv
-    ## 9  NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv
-    ## 10                      NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv
-    ## 11        NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv
-    ## 12          NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml
-    ## 13               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip
-    ## 14                         NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt
-    ## 15  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv
-    ## 16                     NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv
-    ##      size
-    ## 1  346679
-    ## 2   12784
-    ## 3   67816
-    ## 4   70539
-    ## 5   10084
-    ## 6    7337
-    ## 7   23521
-    ## 8   46349
-    ## 9  367402
-    ## 10   7337
-    ## 11   1012
-    ## 12  78750
-    ## 13  79998
-    ## 14  13063
-    ## 15  23521
-    ## 16  10084
+    ## 1  f37931d46213246dccf2a161211c9afe
+    ## 2  4438e5e050fc7be5949457f42089a397
+    ## 3  d84b496cf950b5b96e762473beda563a
+    ## 4  e67f1ae72760a63c616ec18108453aaa
+    ## 5  e0adb3146b5cce59eea09864145efcb1
+    ## 6  df102cb4cfdce092cda3c0942c9d9b67
+    ## 7  6d15da01c03793da8fc6d871e6659ea8
+    ## 8  d76cfc5443ac27a058fab1d319d31d34
+    ## 9  6ba91b6e109ff14d1911dcaad9febeb9
+    ## 10 a2c47410a6a0f49d0b1cf95be6238604
+    ## 11 f37931d46213246dccf2a161211c9afe
+    ## 12 6d15da01c03793da8fc6d871e6659ea8
+    ## 13 2ad379ae44f4e87996bdc3dee70a0794
+    ## 14 22e3353dabb8b154768dc2eee9873718
+    ## 15 e67f1ae72760a63c616ec18108453aaa
+    ## 16 680a2f53c0a9d1b0ab4f8814bda5b399
+    ##                                                                               name   size
+    ## 1      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv  23521
+    ## 2                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip  67816
+    ## 3                          NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  12784
+    ## 4                       NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
+    ## 5     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv 346679
+    ## 6           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  70539
+    ## 7                      NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
+    ## 8         NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv   1012
+    ## 9           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  78750
+    ## 10                          NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv  46349
+    ## 11  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv  23521
+    ## 12                     NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
+    ## 13 NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv 367402
+    ## 14               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip  79998
+    ## 15                      NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
+    ## 16                         NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  13063
     ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        url
-    ## 1        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=7cc79d2d8a3ffc607ea6d92a5eb70803133e0c30b46790f383c44a03fafecffe
-    ## 2                             https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=581346fd86b47bcadc546dc9408972001cf5c63fd9dc1fa13759de4426925751
-    ## 3                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=672fd8b0f77344d901372f1afd48e31cf8648cf857c6d524dcabc57304ecb769
-    ## 4              https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=8ea58b1262ecb48314a88e202e6b118ef8b562aaca777438614ca83c61f8dc75
-    ## 5                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=99797662468874dcc91f418a6d0d60f6ec51e079f8884a1cccac74d4ce172abc
-    ## 6                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9e1e9ef8492e15b10202111ddb97ab0a5b00fb42ff40fdf58583304008fcef26
-    ## 7         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=26ad240cc6d2abe57df8bed9e791e8a8378d932337b901b110adc6cecd4128ac
-    ## 8                           https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=a96d16c1878eeec5bd2097fddf0e84155fed96f96f740802db57c2f245714801
-    ## 9  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9b3b0c9484368039c06d96a016658b64119d5b242bb8c58cab85ae0f45e01c42
-    ## 10                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=17eee2fc280f937183d8166698668040a7c5ed7d4ae153a73e5369bd02497e62
-    ## 11        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=c465f032c3ee07c117e8bc0d544e752daeac5eeadda1836fe7f6e40a922fc1d3
-    ## 12          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=43e75941f5767c03f35a2e5028ad85f635e548f167ad65f8e421dd9b7315ebb6
-    ## 13               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9c8506a2ddf0deca836a1f16ac3e2011aa8bf4a4a5af43746bdc8f14240bf5b9
-    ## 14                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=2d93214a888bdc6fc14fe2d141065ffd0bd656b432f1038749806f0576c35a31
-    ## 15  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fc25aecbb81cb2fad754ba365ce7f91a9ecafcdfcf3a7e7519e534e1562d098e
-    ## 16                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200103T043736Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=bb368c86d7096907535702118df91ee4dfe6fa09a38f1c2c83ab058e2ecec2ce
+    ## 1         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=5c059ae4f82946010ba8312ad2b4f4df0f6e36c7bebae4ce8b1e04d3528fb07d
+    ## 2                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9834175a330302a0366a13c37611e7cf218612ebbf8b31663bc4d8bfe4cdd48f
+    ## 3                             https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=0423ba112b280c00459534038f819cb5bf49e5fe50a71b4437524ccb603fb686
+    ## 4                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fe3c33a9cf9774c498e5d464abd38100d4fc827ddc31f27b088dd59654a5c68a
+    ## 5        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=96905725239140f389d94113f11a9ddddf008e840f0ce3c1ff92614eef2b10fa
+    ## 6              https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=a00ef580de57068aa109ff895a934ef8142e4b67328460eb641edbe28a5fb5a8
+    ## 7                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fcc628606e087d2427f4f9a307c0daaee9446693ef634d3d41b7e8f1d1d15b0b
+    ## 8         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=4d8bbb9a37dff5035e0a9cae4735e83816f3cf0e5ad13d8174b5166b4e76f8dd
+    ## 9           https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=504ebd8ddccb3cfed9805eac903a3f722e8f8e786ec3f09ec78a2853f8f6304a
+    ## 10                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=0cef49e6ded0a541fd9de0fcb5d9ff564fd1e821c79526f9b0d1abcbe670c83a
+    ## 11  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=44c4a785410323fbb520ebdc5012488fb6c620417936adfc8b2aad9c499a5008
+    ## 12                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=57772ec94df0fd227dde63892030a90ec483bb5121653ebaac02c3e72688e17b
+    ## 13 https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=30f618eb80aa2665d64e16370bb6803eb8483b905314ca46ebc3e15d3e49bb6e
+    ## 14               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9d9793d472ff279f7d7e2ea0de5cccaa3da18437ccef2aa5c6e8489879660aec
+    ## 15                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=c3d9125e44a8ce36d07aa95878de95d2444bf7ff920e2ef856a0666937da6710
+    ## 16                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200401T231018Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200401%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=7a6b5cc7fe0e5ebf84c1624caedff947623d47314608f103175b22ec98c317b0
 
 In this output, `name` and `url` are key fields. It provides us with the names 
 of the files available for this site and month, and URLs where we can get the 
@@ -701,16 +628,16 @@ queries for Soil Temperature, DP1.00041.001. Let's use data from Moab in March
 
     tmp.files$data$files$name[1:10]   # Let's print the first 10
 
-    ##  [1] "NEON.D13.MOAB.DP1.00041.001.20170308-20170401.xml"                                      
-    ##  [2] "NEON.D13.MOAB.DP1.00041.001.004.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [3] "NEON.DP1.00041.001_readme.txt"                                                          
-    ##  [4] "NEON.D13.MOAB.DP1.00041.001.002.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [5] "NEON.D13.MOAB.DP1.00041.001.002.506.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [6] "NEON.D13.MOAB.DP1.00041.001.004.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [7] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
-    ##  [8] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [9] "NEON.D13.MOAB.DP1.00041.001.004.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ## [10] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [1] "NEON.D13.MOAB.DP1.00041.001.004.507.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
+    ##  [2] "NEON.D13.MOAB.DP1.00041.001.003.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [3] "NEON.D13.MOAB.DP1.00041.001.003.501.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
+    ##  [4] "NEON.D13.MOAB.DP1.00041.001.002.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [5] "NEON.D13.MOAB.DP1.00041.001.005.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
+    ##  [6] "NEON.D13.MOAB.DP1.00041.001.005.505.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [7] "NEON.D13.MOAB.DP1.00041.001.003.502.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
+    ##  [8] "NEON.D13.MOAB.DP1.00041.001.002.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [9] "NEON.DP1.00041.001_readme.txt"                                                          
+    ## [10] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
 
 These file names start and end the same way as the observational files, but the 
 middle is a little more cryptic. The structure from beginning to end is: 
@@ -792,16 +719,11 @@ we'll look at the flight over San Joaquin Experimental Range (SJER) in March
     # this list of files is very long, so we'll just look at the first ten
     head(cam.files$data$files$name, 10)
 
-    ##  [1] "17032816_EH021656(20170328190122)-0643_ort.tif"
-    ##  [2] "17032816_EH021656(20170328193441)-0911_ort.tif"
-    ##  [3] "17032816_EH021656(20170328181707)-0287_ort.tif"
-    ##  [4] "17032816_EH021656(20170328195954)-1152_ort.tif"
-    ##  [5] "17032816_EH021656(20170328193135)-0892_ort.tif"
-    ##  [6] "17032816_EH021656(20170328192926)-0862_ort.tif"
-    ##  [7] "17032816_EH021656(20170328191737)-0768_ort.tif"
-    ##  [8] "17032816_EH021656(20170328193501)-0915_ort.tif"
-    ##  [9] "17032816_EH021656(20170328192011)-0803_ort.tif"
-    ## [10] "17032816_EH021656(20170328181821)-0304_ort.tif"
+    ##  [1] "17032816_EH021656(20170328192541)-0843_ort.tif" "17032816_EH021656(20170328184300)-0501_ort.tif"
+    ##  [3] "17032816_EH021656(20170328175848)-0138_ort.tif" "17032816_EH021656(20170328184314)-0504_ort.tif"
+    ##  [5] "17032816_EH021656(20170328182833)-0378_ort.tif" "17032816_EH021656(20170328182749)-0368_ort.tif"
+    ##  [7] "17032816_EH021656(20170328182959)-0398_ort.tif" "17032816_EH021656(20170328195330)-1087_ort.tif"
+    ##  [9] "17032816_EH021656(20170328174708)-0028_ort.tif" "17032816_EH021656(20170328175244)-0079_ort.tif"
 
 File names for AOP data are more variable than for IS or OS data; 
 different AOP data products use different naming conventions. 
@@ -871,9 +793,8 @@ data products, both aquatic and terrestrial.
     # view named location
     head(brd.point$namedLocation)
 
-    ## [1] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
-    ## [4] WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd WOOD_013.birdGrid.brd
-    ## 7 Levels: WOOD_006.birdGrid.brd ... WOOD_020.birdGrid.brd
+    ## [1] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
+    ## [5] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
 
 Here we see the first six entries in the `namedLocation` column which tells us
 the names of the Terrestrial Observation plots where the bird surveys were 
@@ -979,22 +900,20 @@ We can query the locations endpoint of the API for the first named location,
     ## [1] "https://data.neonscience.org/api/v0/locations/WOOD"
     ## 
     ## $data$locationChildren
-    ## [1] "WOOD_013.birdGrid.brd.B2" "WOOD_013.birdGrid.brd.A2"
-    ## [3] "WOOD_013.birdGrid.brd.C3" "WOOD_013.birdGrid.brd.A3"
-    ## [5] "WOOD_013.birdGrid.brd.B3" "WOOD_013.birdGrid.brd.C1"
-    ## [7] "WOOD_013.birdGrid.brd.A1" "WOOD_013.birdGrid.brd.B1"
-    ## [9] "WOOD_013.birdGrid.brd.C2"
+    ## [1] "WOOD_013.birdGrid.brd.B3" "WOOD_013.birdGrid.brd.C1" "WOOD_013.birdGrid.brd.A1" "WOOD_013.birdGrid.brd.B1"
+    ## [5] "WOOD_013.birdGrid.brd.C2" "WOOD_013.birdGrid.brd.B2" "WOOD_013.birdGrid.brd.A2" "WOOD_013.birdGrid.brd.C3"
+    ## [9] "WOOD_013.birdGrid.brd.A3"
     ## 
     ## $data$locationChildrenUrls
-    ## [1] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B2"
-    ## [2] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A2"
-    ## [3] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C3"
-    ## [4] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A3"
-    ## [5] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B3"
-    ## [6] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C1"
-    ## [7] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A1"
-    ## [8] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B1"
-    ## [9] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C2"
+    ## [1] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B3"
+    ## [2] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C1"
+    ## [3] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A1"
+    ## [4] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B1"
+    ## [5] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C2"
+    ## [6] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B2"
+    ## [7] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A2"
+    ## [8] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C3"
+    ## [9] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A3"
 
 Note spatial information under `$data$[nameOfCoordinate]` and under 
 `$data$locationProperties`. Also note `$data$locationChildren`: these are the 
@@ -1013,11 +932,11 @@ initial download:
     # extract the spatial data
     brd.point.loc <- getLocByName(brd.point)
 
-    ##   |                                                                         |                                                                 |   0%  |                                                                         |=========                                                        |  14%  |                                                                         |===================                                              |  29%  |                                                                         |============================                                     |  43%  |                                                                         |=====================================                            |  57%  |                                                                         |==============================================                   |  71%  |                                                                         |========================================================         |  86%  |                                                                         |=================================================================| 100%
+    ##   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |===============                                                                                         |  14%  |                                                                                                                |==============================                                                                          |  29%  |                                                                                                                |=============================================                                                           |  43%  |                                                                                                                |===========================================================                                             |  57%  |                                                                                                                |==========================================================================                              |  71%  |                                                                                                                |=========================================================================================               |  86%  |                                                                                                                |========================================================================================================| 100%
 
     # plot bird point locations 
     # note that decimal degrees is also an option in the data
-    symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+    symbols(brd.point.loc$easting, brd.point.loc$northing, 
             circles=brd.point.loc$coordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -1028,11 +947,11 @@ And use `getLocTOS()` to calculate the point locations of observations.
 
     brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
-    ##   |                                                                         |                                                                 |   0%  |                                                                         |=                                                                |   2%  |                                                                         |==                                                               |   3%  |                                                                         |===                                                              |   5%  |                                                                         |====                                                             |   6%  |                                                                         |=====                                                            |   8%  |                                                                         |======                                                           |  10%  |                                                                         |=======                                                          |  11%  |                                                                         |========                                                         |  13%  |                                                                         |=========                                                        |  14%  |                                                                         |==========                                                       |  16%  |                                                                         |===========                                                      |  17%  |                                                                         |============                                                     |  19%  |                                                                         |=============                                                    |  21%  |                                                                         |==============                                                   |  22%  |                                                                         |===============                                                  |  24%  |                                                                         |=================                                                |  25%  |                                                                         |==================                                               |  27%  |                                                                         |===================                                              |  29%  |                                                                         |====================                                             |  30%  |                                                                         |=====================                                            |  32%  |                                                                         |======================                                           |  33%  |                                                                         |=======================                                          |  35%  |                                                                         |========================                                         |  37%  |                                                                         |=========================                                        |  38%  |                                                                         |==========================                                       |  40%  |                                                                         |===========================                                      |  41%  |                                                                         |============================                                     |  43%  |                                                                         |=============================                                    |  44%  |                                                                         |==============================                                   |  46%  |                                                                         |===============================                                  |  48%  |                                                                         |================================                                 |  49%  |                                                                         |=================================                                |  51%  |                                                                         |==================================                               |  52%  |                                                                         |===================================                              |  54%  |                                                                         |====================================                             |  56%  |                                                                         |=====================================                            |  57%  |                                                                         |======================================                           |  59%  |                                                                         |=======================================                          |  60%  |                                                                         |========================================                         |  62%  |                                                                         |=========================================                        |  63%  |                                                                         |==========================================                       |  65%  |                                                                         |===========================================                      |  67%  |                                                                         |============================================                     |  68%  |                                                                         |=============================================                    |  70%  |                                                                         |==============================================                   |  71%  |                                                                         |===============================================                  |  73%  |                                                                         |================================================                 |  75%  |                                                                         |==================================================               |  76%  |                                                                         |===================================================              |  78%  |                                                                         |====================================================             |  79%  |                                                                         |=====================================================            |  81%  |                                                                         |======================================================           |  83%  |                                                                         |=======================================================          |  84%  |                                                                         |========================================================         |  86%  |                                                                         |=========================================================        |  87%  |                                                                         |==========================================================       |  89%  |                                                                         |===========================================================      |  90%  |                                                                         |============================================================     |  92%  |                                                                         |=============================================================    |  94%  |                                                                         |==============================================================   |  95%  |                                                                         |===============================================================  |  97%  |                                                                         |================================================================ |  98%  |                                                                         |=================================================================| 100%
+    ##   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |==                                                                                                      |   2%  |                                                                                                                |===                                                                                                     |   3%  |                                                                                                                |=====                                                                                                   |   5%  |                                                                                                                |=======                                                                                                 |   6%  |                                                                                                                |========                                                                                                |   8%  |                                                                                                                |==========                                                                                              |  10%  |                                                                                                                |============                                                                                            |  11%  |                                                                                                                |=============                                                                                           |  13%  |                                                                                                                |===============                                                                                         |  14%  |                                                                                                                |=================                                                                                       |  16%  |                                                                                                                |==================                                                                                      |  17%  |                                                                                                                |====================                                                                                    |  19%  |                                                                                                                |=====================                                                                                   |  21%  |                                                                                                                |=======================                                                                                 |  22%  |                                                                                                                |=========================                                                                               |  24%  |                                                                                                                |==========================                                                                              |  25%  |                                                                                                                |============================                                                                            |  27%  |                                                                                                                |==============================                                                                          |  29%  |                                                                                                                |===============================                                                                         |  30%  |                                                                                                                |=================================                                                                       |  32%  |                                                                                                                |===================================                                                                     |  33%  |                                                                                                                |====================================                                                                    |  35%  |                                                                                                                |======================================                                                                  |  37%  |                                                                                                                |========================================                                                                |  38%  |                                                                                                                |=========================================                                                               |  40%  |                                                                                                                |===========================================                                                             |  41%  |                                                                                                                |=============================================                                                           |  43%  |                                                                                                                |==============================================                                                          |  44%  |                                                                                                                |================================================                                                        |  46%  |                                                                                                                |==================================================                                                      |  48%  |                                                                                                                |===================================================                                                     |  49%  |                                                                                                                |=====================================================                                                   |  51%  |                                                                                                                |======================================================                                                  |  52%  |                                                                                                                |========================================================                                                |  54%  |                                                                                                                |==========================================================                                              |  56%  |                                                                                                                |===========================================================                                             |  57%  |                                                                                                                |=============================================================                                           |  59%  |                                                                                                                |===============================================================                                         |  60%  |                                                                                                                |================================================================                                        |  62%  |                                                                                                                |==================================================================                                      |  63%  |                                                                                                                |====================================================================                                    |  65%  |                                                                                                                |=====================================================================                                   |  67%  |                                                                                                                |=======================================================================                                 |  68%  |                                                                                                                |=========================================================================                               |  70%  |                                                                                                                |==========================================================================                              |  71%  |                                                                                                                |============================================================================                            |  73%  |                                                                                                                |==============================================================================                          |  75%  |                                                                                                                |===============================================================================                         |  76%  |                                                                                                                |=================================================================================                       |  78%  |                                                                                                                |===================================================================================                     |  79%  |                                                                                                                |====================================================================================                    |  81%  |                                                                                                                |======================================================================================                  |  83%  |                                                                                                                |=======================================================================================                 |  84%  |                                                                                                                |=========================================================================================               |  86%  |                                                                                                                |===========================================================================================             |  87%  |                                                                                                                |============================================================================================            |  89%  |                                                                                                                |==============================================================================================          |  90%  |                                                                                                                |================================================================================================        |  92%  |                                                                                                                |=================================================================================================       |  94%  |                                                                                                                |===================================================================================================     |  95%  |                                                                                                                |=====================================================================================================   |  97%  |                                                                                                                |======================================================================================================  |  98%  |                                                                                                                |========================================================================================================| 100%
 
     # plot bird point locations 
     # note that decimal degrees is also an option in the data
-    symbols(brd.point.pt$easting, brd.point.pt$northing, 
+    symbols(brd.point.pt$adjEasting, brd.point.pt$adjNorthing, 
             circles=brd.point.pt$adjCoordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -1106,30 +1025,24 @@ possible, and the matches are indicated in the column headers.
 
     loon.list$data
 
-    ##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName
-    ## 1          BIRD    ARLO            ARLO      Gavia arctica
-    ## 2          BIRD    COLO            COLO        Gavia immer
-    ## 3          BIRD    PALO            PALO     Gavia pacifica
-    ## 4          BIRD    RTLO            RTLO     Gavia stellata
-    ## 5          BIRD    YBLO            YBLO      Gavia adamsii
-    ##   dwc:scientificNameAuthorship dwc:taxonRank dwc:vernacularName
-    ## 1                   (Linnaeus)       species        Arctic Loon
-    ## 2                   (Brunnich)       species        Common Loon
-    ## 3                   (Lawrence)       species       Pacific Loon
-    ## 4                (Pontoppidan)       species  Red-throated Loon
-    ## 5                 (G. R. Gray)       species Yellow-billed Loon
-    ##      dwc:nameAccordingToID dwc:kingdom dwc:phylum dwc:class   dwc:order
-    ## 1 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
-    ## 2 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
-    ## 3 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
-    ## 4 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
-    ## 5 doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes
-    ##   dwc:family dwc:genus gbif:subspecies gbif:variety
-    ## 1   Gaviidae     Gavia              NA           NA
-    ## 2   Gaviidae     Gavia              NA           NA
-    ## 3   Gaviidae     Gavia              NA           NA
-    ## 4   Gaviidae     Gavia              NA           NA
-    ## 5   Gaviidae     Gavia              NA           NA
+    ##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName dwc:scientificNameAuthorship dwc:taxonRank
+    ## 1          BIRD    ARLO            ARLO      Gavia arctica                   (Linnaeus)       species
+    ## 2          BIRD    COLO            COLO        Gavia immer                   (Brunnich)       species
+    ## 3          BIRD    PALO            PALO     Gavia pacifica                   (Lawrence)       species
+    ## 4          BIRD    RTLO            RTLO     Gavia stellata                (Pontoppidan)       species
+    ## 5          BIRD    YBLO            YBLO      Gavia adamsii                 (G. R. Gray)       species
+    ##   dwc:vernacularName    dwc:nameAccordingToID dwc:kingdom dwc:phylum dwc:class   dwc:order dwc:family dwc:genus
+    ## 1        Arctic Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae     Gavia
+    ## 2        Common Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae     Gavia
+    ## 3       Pacific Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae     Gavia
+    ## 4  Red-throated Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae     Gavia
+    ## 5 Yellow-billed Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae     Gavia
+    ##   gbif:subspecies gbif:variety
+    ## 1              NA           NA
+    ## 2              NA           NA
+    ## 3              NA           NA
+    ## 4              NA           NA
+    ## 5              NA           NA
 
 To get the entire list for a particular taxonomic type, use the 
 `taxonTypeCode` query. Be cautious with this query, the PLANT taxonomic 
@@ -1146,50 +1059,28 @@ the first 10 taxa:
     mam.list <- fromJSON(content(mam.req, as="text"))
     mam.list$data[1:10,]
 
-    ##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName
-    ## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii
-    ## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres
-    ## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus
-    ## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus
-    ## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni
-    ## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.
-    ## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra
-    ## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa
-    ## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes
-    ## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus
-    ##    dwc:scientificNameAuthorship dwc:taxonRank
-    ## 1           Audubon and Bachman       species
-    ## 2                       Merriam       species
-    ## 3                       Merriam       species
-    ## 4                       Goldman    subspecies
-    ## 5                       Merriam       species
-    ## 6                          <NA>         genus
-    ## 7                        Taylor    subspecies
-    ## 8                    Rafinesque       species
-    ## 9                       Merriam       species
-    ## 10                         True       species
-    ##               dwc:vernacularName taxonProtocolCategory
-    ## 1      Harriss Antelope Squirrel         opportunistic
-    ## 2        Texas Antelope Squirrel         opportunistic
-    ## 3  Whitetailed Antelope Squirrel         opportunistic
-    ## 4                           <NA>         opportunistic
-    ## 5      Nelsons Antelope Squirrel         opportunistic
-    ## 6                           <NA>         opportunistic
-    ## 7                           <NA>            non-target
-    ## 8                       Sewellel            non-target
-    ## 9               Whitefooted Vole                target
-    ## 10                 Red Tree Vole                target
-    ##    dwc:nameAccordingToID
-    ## 1   isbn: 978 0801882210
-    ## 2   isbn: 978 0801882210
-    ## 3   isbn: 978 0801882210
-    ## 4   isbn: 978 0801882210
-    ## 5   isbn: 978 0801882210
-    ## 6   isbn: 978 0801882210
-    ## 7   isbn: 978 0801882210
-    ## 8   isbn: 978 0801882210
-    ## 9   isbn: 978 0801882210
-    ## 10  isbn: 978 0801882210
+    ##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName dwc:scientificNameAuthorship
+    ## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii          Audubon and Bachman
+    ## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres                      Merriam
+    ## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus                      Merriam
+    ## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus                      Goldman
+    ## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni                      Merriam
+    ## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.                         <NA>
+    ## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra                       Taylor
+    ## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa                   Rafinesque
+    ## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes                      Merriam
+    ## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus                         True
+    ##    dwc:taxonRank            dwc:vernacularName taxonProtocolCategory dwc:nameAccordingToID
+    ## 1        species     Harriss Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 2        species       Texas Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 3        species Whitetailed Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 4     subspecies                          <NA>         opportunistic  isbn: 978 0801882210
+    ## 5        species     Nelsons Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 6          genus                          <NA>         opportunistic  isbn: 978 0801882210
+    ## 7     subspecies                          <NA>            non-target  isbn: 978 0801882210
+    ## 8        species                      Sewellel            non-target  isbn: 978 0801882210
+    ## 9        species              Whitefooted Vole                target  isbn: 978 0801882210
+    ## 10       species                 Red Tree Vole                target  isbn: 978 0801882210
     ##                                                                                                                                                 dwc:nameAccordingToTitle
     ## 1  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 2  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
@@ -1201,105 +1092,72 @@ the first 10 taxa:
     ## 8  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 9  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 10 Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
-    ##    dwc:kingdom gbif:subkingdom gbif:infrakingdom gbif:superdivision
-    ## 1     Animalia              NA                NA                 NA
-    ## 2     Animalia              NA                NA                 NA
-    ## 3     Animalia              NA                NA                 NA
-    ## 4     Animalia              NA                NA                 NA
-    ## 5     Animalia              NA                NA                 NA
-    ## 6     Animalia              NA                NA                 NA
-    ## 7     Animalia              NA                NA                 NA
-    ## 8     Animalia              NA                NA                 NA
-    ## 9     Animalia              NA                NA                 NA
-    ## 10    Animalia              NA                NA                 NA
-    ##    gbif:division gbif:subdivision gbif:infradivision gbif:parvdivision
-    ## 1             NA               NA                 NA                NA
-    ## 2             NA               NA                 NA                NA
-    ## 3             NA               NA                 NA                NA
-    ## 4             NA               NA                 NA                NA
-    ## 5             NA               NA                 NA                NA
-    ## 6             NA               NA                 NA                NA
-    ## 7             NA               NA                 NA                NA
-    ## 8             NA               NA                 NA                NA
-    ## 9             NA               NA                 NA                NA
-    ## 10            NA               NA                 NA                NA
-    ##    gbif:superphylum dwc:phylum gbif:subphylum gbif:infraphylum
-    ## 1                NA   Chordata             NA               NA
-    ## 2                NA   Chordata             NA               NA
-    ## 3                NA   Chordata             NA               NA
-    ## 4                NA   Chordata             NA               NA
-    ## 5                NA   Chordata             NA               NA
-    ## 6                NA   Chordata             NA               NA
-    ## 7                NA   Chordata             NA               NA
-    ## 8                NA   Chordata             NA               NA
-    ## 9                NA   Chordata             NA               NA
-    ## 10               NA   Chordata             NA               NA
-    ##    gbif:superclass dwc:class gbif:subclass gbif:infraclass gbif:superorder
-    ## 1               NA  Mammalia            NA              NA              NA
-    ## 2               NA  Mammalia            NA              NA              NA
-    ## 3               NA  Mammalia            NA              NA              NA
-    ## 4               NA  Mammalia            NA              NA              NA
-    ## 5               NA  Mammalia            NA              NA              NA
-    ## 6               NA  Mammalia            NA              NA              NA
-    ## 7               NA  Mammalia            NA              NA              NA
-    ## 8               NA  Mammalia            NA              NA              NA
-    ## 9               NA  Mammalia            NA              NA              NA
-    ## 10              NA  Mammalia            NA              NA              NA
-    ##    dwc:order gbif:suborder gbif:infraorder gbif:section gbif:subsection
-    ## 1   Rodentia            NA              NA           NA              NA
-    ## 2   Rodentia            NA              NA           NA              NA
-    ## 3   Rodentia            NA              NA           NA              NA
-    ## 4   Rodentia            NA              NA           NA              NA
-    ## 5   Rodentia            NA              NA           NA              NA
-    ## 6   Rodentia            NA              NA           NA              NA
-    ## 7   Rodentia            NA              NA           NA              NA
-    ## 8   Rodentia            NA              NA           NA              NA
-    ## 9   Rodentia            NA              NA           NA              NA
-    ## 10  Rodentia            NA              NA           NA              NA
-    ##    gbif:superfamily    dwc:family gbif:subfamily gbif:tribe gbif:subtribe
-    ## 1                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 2                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 3                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 4                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 5                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 6                NA     Sciuridae        Xerinae  Marmotini            NA
-    ## 7                NA Aplodontiidae           <NA>       <NA>            NA
-    ## 8                NA Aplodontiidae           <NA>       <NA>            NA
-    ## 9                NA    Cricetidae    Arvicolinae       <NA>            NA
-    ## 10               NA    Cricetidae    Arvicolinae       <NA>            NA
-    ##           dwc:genus dwc:subgenus gbif:subspecies gbif:variety
-    ## 1  Ammospermophilus         <NA>              NA           NA
-    ## 2  Ammospermophilus         <NA>              NA           NA
-    ## 3  Ammospermophilus         <NA>              NA           NA
-    ## 4  Ammospermophilus         <NA>              NA           NA
-    ## 5  Ammospermophilus         <NA>              NA           NA
-    ## 6  Ammospermophilus         <NA>              NA           NA
-    ## 7        Aplodontia         <NA>              NA           NA
-    ## 8        Aplodontia         <NA>              NA           NA
-    ## 9         Arborimus         <NA>              NA           NA
-    ## 10        Arborimus         <NA>              NA           NA
-    ##    gbif:subvariety gbif:form gbif:subform speciesGroup dwc:specificEpithet
-    ## 1               NA        NA           NA         <NA>            harrisii
-    ## 2               NA        NA           NA         <NA>           interpres
-    ## 3               NA        NA           NA         <NA>            leucurus
-    ## 4               NA        NA           NA         <NA>            leucurus
-    ## 5               NA        NA           NA         <NA>             nelsoni
-    ## 6               NA        NA           NA         <NA>                 sp.
-    ## 7               NA        NA           NA         <NA>                rufa
-    ## 8               NA        NA           NA         <NA>                rufa
-    ## 9               NA        NA           NA         <NA>             albipes
-    ## 10              NA        NA           NA         <NA>         longicaudus
-    ##    dwc:infraspecificEpithet
-    ## 1                      <NA>
-    ## 2                      <NA>
-    ## 3                      <NA>
-    ## 4                    tersus
-    ## 5                      <NA>
-    ## 6                      <NA>
-    ## 7                     nigra
-    ## 8                      <NA>
-    ## 9                      <NA>
-    ## 10                     <NA>
+    ##    dwc:kingdom gbif:subkingdom gbif:infrakingdom gbif:superdivision gbif:division gbif:subdivision
+    ## 1     Animalia              NA                NA                 NA            NA               NA
+    ## 2     Animalia              NA                NA                 NA            NA               NA
+    ## 3     Animalia              NA                NA                 NA            NA               NA
+    ## 4     Animalia              NA                NA                 NA            NA               NA
+    ## 5     Animalia              NA                NA                 NA            NA               NA
+    ## 6     Animalia              NA                NA                 NA            NA               NA
+    ## 7     Animalia              NA                NA                 NA            NA               NA
+    ## 8     Animalia              NA                NA                 NA            NA               NA
+    ## 9     Animalia              NA                NA                 NA            NA               NA
+    ## 10    Animalia              NA                NA                 NA            NA               NA
+    ##    gbif:infradivision gbif:parvdivision gbif:superphylum dwc:phylum gbif:subphylum gbif:infraphylum
+    ## 1                  NA                NA               NA   Chordata             NA               NA
+    ## 2                  NA                NA               NA   Chordata             NA               NA
+    ## 3                  NA                NA               NA   Chordata             NA               NA
+    ## 4                  NA                NA               NA   Chordata             NA               NA
+    ## 5                  NA                NA               NA   Chordata             NA               NA
+    ## 6                  NA                NA               NA   Chordata             NA               NA
+    ## 7                  NA                NA               NA   Chordata             NA               NA
+    ## 8                  NA                NA               NA   Chordata             NA               NA
+    ## 9                  NA                NA               NA   Chordata             NA               NA
+    ## 10                 NA                NA               NA   Chordata             NA               NA
+    ##    gbif:superclass dwc:class gbif:subclass gbif:infraclass gbif:superorder dwc:order gbif:suborder
+    ## 1               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 2               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 3               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 4               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 5               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 6               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 7               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 8               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 9               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 10              NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ##    gbif:infraorder gbif:section gbif:subsection gbif:superfamily    dwc:family gbif:subfamily gbif:tribe
+    ## 1               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 2               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 3               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 4               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 5               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 6               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 7               NA           NA              NA               NA Aplodontiidae           <NA>       <NA>
+    ## 8               NA           NA              NA               NA Aplodontiidae           <NA>       <NA>
+    ## 9               NA           NA              NA               NA    Cricetidae    Arvicolinae       <NA>
+    ## 10              NA           NA              NA               NA    Cricetidae    Arvicolinae       <NA>
+    ##    gbif:subtribe        dwc:genus dwc:subgenus gbif:subspecies gbif:variety gbif:subvariety gbif:form
+    ## 1             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 2             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 3             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 4             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 5             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 6             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 7             NA       Aplodontia         <NA>              NA           NA              NA        NA
+    ## 8             NA       Aplodontia         <NA>              NA           NA              NA        NA
+    ## 9             NA        Arborimus         <NA>              NA           NA              NA        NA
+    ## 10            NA        Arborimus         <NA>              NA           NA              NA        NA
+    ##    gbif:subform speciesGroup dwc:specificEpithet dwc:infraspecificEpithet
+    ## 1            NA         <NA>            harrisii                     <NA>
+    ## 2            NA         <NA>           interpres                     <NA>
+    ## 3            NA         <NA>            leucurus                     <NA>
+    ## 4            NA         <NA>            leucurus                   tersus
+    ## 5            NA         <NA>             nelsoni                     <NA>
+    ## 6            NA         <NA>                 sp.                     <NA>
+    ## 7            NA         <NA>                rufa                    nigra
+    ## 8            NA         <NA>                rufa                     <NA>
+    ## 9            NA         <NA>             albipes                     <NA>
+    ## 10           NA         <NA>         longicaudus                     <NA>
 
 To get information about a single taxon, use the `scientificname` 
 query. This query will not do a fuzzy match, so you need to query 
@@ -1326,16 +1184,12 @@ result:
     am.list <- fromJSON(content(am.req, as="text"))
     am.list$data
 
-    ##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName
-    ## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.
-    ##   dwc:scientificNameAuthorship dwc:taxonRank  dwc:vernacularName
-    ## 1                      Standl.       species little sand verbena
-    ##                         dwc:nameAccordingToID dwc:kingdom    dwc:phylum
-    ## 1 http://plants.usda.gov (accessed 8/25/2014)     Plantae Magnoliophyta
-    ##       dwc:class      dwc:order    dwc:family dwc:genus gbif:subspecies
-    ## 1 Magnoliopsida Caryophyllales Nyctaginaceae   Abronia              NA
-    ##   gbif:variety
-    ## 1           NA
+    ##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName dwc:scientificNameAuthorship dwc:taxonRank
+    ## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.                      Standl.       species
+    ##    dwc:vernacularName                       dwc:nameAccordingToID dwc:kingdom    dwc:phylum     dwc:class
+    ## 1 little sand verbena http://plants.usda.gov (accessed 8/25/2014)     Plantae Magnoliophyta Magnoliopsida
+    ##        dwc:order    dwc:family dwc:genus gbif:subspecies gbif:variety
+    ## 1 Caryophyllales Nyctaginaceae   Abronia              NA           NA
 
 ## Stacking NEON data 
 

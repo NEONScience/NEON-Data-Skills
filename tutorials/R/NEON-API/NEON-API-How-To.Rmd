@@ -555,7 +555,7 @@ brd.point.loc <- getLocByName(brd.point)
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+symbols(brd.point.loc$easting, brd.point.loc$northing, 
         circles=brd.point.loc$coordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -570,7 +570,7 @@ brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.pt$easting, brd.point.pt$northing, 
+symbols(brd.point.pt$adjEasting, brd.point.pt$adjNorthing, 
         circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
