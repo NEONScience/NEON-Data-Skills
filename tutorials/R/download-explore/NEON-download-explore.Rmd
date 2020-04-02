@@ -8,9 +8,16 @@ contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 estimatedTime: 1 - 2 hours
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
+<<<<<<< HEAD
 languageTool: R, API
 code1: R/download-explore/NEON-download-explore.R
 tutorialSeries:
+=======
+languagesTool: R, API
+dataProduct:
+code1: R/download-explore/NEON-download-explore
+tutorialSeries: 
+>>>>>>> parent of 70a5ba2a... link updates
 urlTitle: download-explore-neon-data
 ---
 

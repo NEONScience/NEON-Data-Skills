@@ -450,8 +450,8 @@ different AOP data products use different naming conventions.
 File formats differ by product as well.
 
 This particular product, camera imagery, is stored in TIFF files. 
-For AOP data products naming conventions and file formats, see 
-<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">the file naming conventions page</a>.
+For a full list of AOP data products, their naming conventions, and 
+their file formats, see <link pending>.
 
 Instead of reading a TIFF into R, we'll download it to the working 
 directory. This is one option for getting AOP files from the API; if 
