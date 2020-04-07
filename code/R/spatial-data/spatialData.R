@@ -132,7 +132,7 @@ head(mam$mam_pertrapnight[,1:18])
 
 
 
-## ----print-ONAQ019---------------------------------------------------
+## ----print-ONAQ020---------------------------------------------------
 # view all trap locations in one plot
 mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
                      c("trapCoordinate","decimalLatitude",

@@ -114,7 +114,7 @@ To continue, please download three files from the NEON website:
 * **Field Site csv:** generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> (bottom of table). 
 
 The Field Site location data is also available in as a Shapefile and KMZ on the 
-Spatial Data and Maps page. We use the file from the site list to demostrate 
+Spatial Data and Maps page. We use the file from the site list to demonstrate 
 alternative ways to work with spatial data. 
 
 ## Map NEON domains 
@@ -139,7 +139,7 @@ The data come is as a Large SpatialPolygonsDataFrame, which unfortunately, ggplo
 can't use. Therefore, we'll need to make a few changes to the data structure to 
 convert it to a DataFrame that ggplot can use. 
 
-```{r create-df}
+```{r create-df, warning=FALSE}
 
 # First, add a new column termed "id" composed of the row names of the data
 neonDomains@data$id <- rownames(neonDomains@data)
@@ -180,7 +180,7 @@ domainMap
 
 ## Map NEON field sites
 Now we have a map of all the NEON domains. Onto this map, let's plot the NEON 
-field site locations. To do this we need to load and expore this data. 
+field site locations. To do this we need to load and explore this data. 
 
 ```{r load-explore-sites}
 # read in the data
@@ -294,7 +294,7 @@ mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
 ```
 
 Data downloaded this way are stored in R as a large list. For this tutorial, 
-we'll work with the individual dataframes within this large list. Alternativel, 
+we'll work with the individual dataframes within this large list. Alternatively, 
 each dataframe can be assigned as its own object. 
 
 To find the spatial data for any given data product, view the variables files to
@@ -308,7 +308,7 @@ View(mam$variables_10072)
 
 Looking through the variables, we can see that the spatial data (decimalLatitude and 
 decimalLongitude) are in the `pertrapnight` table. We can look at the first few
-enteries of the table. 
+entries of the table. 
 
 ```{r print-mam}
 
@@ -319,7 +319,7 @@ head(mam$mam_pertrapnight[,1:18])
 Did you notice that traps A1 and G2 in plot ONAQ_020 have the same location data?
 Let's check all the coordinates for all traps within a single plot. 
 
-```{r print-ONAQ019}
+```{r print-ONAQ020}
 # view all trap locations in one plot
 mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
                      c("trapCoordinate","decimalLatitude",
@@ -344,7 +344,7 @@ can get these data for you.
 The `getLocTOS()` function in the `geoNEON` package uses the NEON API to 
 access NEON location data and then makes protocol-specific calculations 
 to return precise locations for each sampling effort. This function works for a 
-subset of NEON TOS data prodcuts. The list of tables and data products that can 
+subset of NEON TOS data products. The list of tables and data products that can 
 be entered is in the 
 <a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" target="_blank">package documentation on GitHub</a>. 
 
@@ -380,7 +380,7 @@ names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
 ```
 
 Now we have adjusted latitude, longitude, and elevation, and the 
-corresponding easting and northing UTM data. We also have coordinate uncertainy 
+corresponding easting and northing UTM data. We also have coordinate uncertainty 
 data for these coordinates. 
 
 We can use the easting and northing data to plot the locations of the mammal traps. 
@@ -410,7 +410,7 @@ trapping grid is a 10 x 10 plot of traps.
 Now, let's add a layer of data to see which of these traps caught a mammal during
 the August 2018 sampling bout. To do this we need to look at our variables file
 again and see what variable gives us information about captures. We can see that
-**trapStatus** provides the information on what happended to each trap. It has 
+**trapStatus** provides the information on what happened to each trap. It has 
 categorical data on the status: 
 
 * 0 - no data

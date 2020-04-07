@@ -119,7 +119,7 @@ To continue, please download three files from the NEON website:
 * **Field Site csv:** generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> (bottom of table). 
 
 The Field Site location data is also available in as a Shapefile and KMZ on the 
-Spatial Data and Maps page. We use the file from the site list to demostrate 
+Spatial Data and Maps page. We use the file from the site list to demonstrate 
 alternative ways to work with spatial data. 
 
 ## Map NEON domains 
@@ -149,120 +149,6 @@ convert it to a DataFrame that ggplot can use.
     # Now, use tidy() to convert to a dataframe
     # if you previously used fortify(), this does the same thing. 
     neonDomains_points<- tidy(neonDomains, region="id")
-
-    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to
-    ## character
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to
-    ## character
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
-
-    ## Warning in bind_rows_(x, .id): binding character and factor vector,
-    ## coercing into character vector
 
     # Finally, merge the new data with the data from our spatial object
     neonDomainsDF <- merge(neonDomains_points, neonDomains@data, by = "id")
@@ -310,7 +196,7 @@ y axis.
 
 ## Map NEON field sites
 Now we have a map of all the NEON domains. Onto this map, let's plot the NEON 
-field site locations. To do this we need to load and expore this data. 
+field site locations. To do this we need to load and explore this data. 
 
 
     # read in the data
@@ -468,7 +354,7 @@ If downloading data using the `neonUtilties` package is new to you, check out th
                          check.size=F)
 
 Data downloaded this way are stored in R as a large list. For this tutorial, 
-we'll work with the individual dataframes within this large list. Alternativel, 
+we'll work with the individual dataframes within this large list. Alternatively, 
 each dataframe can be assigned as its own object. 
 
 To find the spatial data for any given data product, view the variables files to
@@ -477,10 +363,10 @@ figure out which data table the spatial data are contained in.
 
     #
     View(mam$variables_10072)
-
+enteries
 Looking through the variables, we can see that the spatial data (decimalLatitude and 
 decimalLongitude) are in the `pertrapnight` table. We can look at the first few
-enteries of the table. 
+entries of the table. 
 
 
     head(mam$mam_pertrapnight[,1:18])
@@ -545,294 +431,7 @@ Let's check all the coordinates for all traps within a single plot.
     ## 9               G5        40.18389        -112.4367
     ## 12              G6        40.18389        -112.4367
     ## 14              A5        40.18389        -112.4367
-    ## 15              F5        40.18389        -112.4367
-    ## 17             E10        40.18389        -112.4367
-    ## 19              D1        40.18389        -112.4367
-    ## 23              D8        40.18389        -112.4367
-    ## 27              J7        40.18389        -112.4367
-    ## 29              E1        40.18389        -112.4367
-    ## 31             A10        40.18389        -112.4367
-    ## 32              H3        40.18389        -112.4367
-    ## 33             I10        40.18389        -112.4367
-    ## 46              C4        40.18389        -112.4367
-    ## 50              J4        40.18389        -112.4367
-    ## 51              F3        40.18389        -112.4367
-    ## 53              B8        40.18389        -112.4367
-    ## 58              J2        40.18389        -112.4367
-    ## 62              F7        40.18389        -112.4367
-    ## 64              B6        40.18389        -112.4367
-    ## 68              I3        40.18389        -112.4367
-    ## 69              F9        40.18389        -112.4367
-    ## 71              C9        40.18389        -112.4367
-    ## 72              J8        40.18389        -112.4367
-    ## 79             G10        40.18389        -112.4367
-    ## 83              J9        40.18389        -112.4367
-    ## 86             D10        40.18389        -112.4367
-    ## 89              I8        40.18389        -112.4367
-    ## 90              D7        40.18389        -112.4367
-    ## 92              E6        40.18389        -112.4367
-    ## 96              I1        40.18389        -112.4367
-    ## 99              I5        40.18389        -112.4367
-    ## 103             E7        40.18389        -112.4367
-    ## 105             F4        40.18389        -112.4367
-    ## 107             J5        40.18389        -112.4367
-    ## 108             A8        40.18389        -112.4367
-    ## 109             E2        40.18389        -112.4367
-    ## 115            H10        40.18389        -112.4367
-    ## 117             H5        40.18389        -112.4367
-    ## 119             B9        40.18389        -112.4367
-    ## 120             I6        40.18389        -112.4367
-    ## 121             C6        40.18389        -112.4367
-    ## 125             J6        40.18389        -112.4367
-    ## 138             G8        40.18389        -112.4367
-    ## 146             G7        40.18389        -112.4367
-    ## 147             H1        40.18389        -112.4367
-    ## 152             A7        40.18389        -112.4367
-    ## 153             H4        40.18389        -112.4367
-    ## 155             C3        40.18389        -112.4367
-    ## 158             C8        40.18389        -112.4367
-    ## 159             B4        40.18389        -112.4367
-    ## 160             G1        40.18389        -112.4367
-    ## 164             I2        40.18389        -112.4367
-    ## 169            J10        40.18389        -112.4367
-    ## 171             H6        40.18389        -112.4367
-    ## 176             F2        40.18389        -112.4367
-    ## 183             D6        40.18389        -112.4367
-    ## 184             G4        40.18389        -112.4367
-    ## 190             H8        40.18389        -112.4367
-    ## 197             E4        40.18389        -112.4367
-    ## 201             A9        40.18389        -112.4367
-    ## 205             J3        40.18389        -112.4367
-    ## 212             G3        40.18389        -112.4367
-    ## 216            B10        40.18389        -112.4367
-    ## 218             A3        40.18389        -112.4367
-    ## 219             D4        40.18389        -112.4367
-    ## 222            C10        40.18389        -112.4367
-    ## 223             B7        40.18389        -112.4367
-    ## 224             C2        40.18389        -112.4367
-    ## 228            F10        40.18389        -112.4367
-    ## 234             E5        40.18389        -112.4367
-    ## 235             E9        40.18389        -112.4367
-    ## 239             C5        40.18389        -112.4367
-    ## 240             F1        40.18389        -112.4367
-    ## 241             I9        40.18389        -112.4367
-    ## 246             D9        40.18389        -112.4367
-    ## 249             A4        40.18389        -112.4367
-    ## 250             D5        40.18389        -112.4367
-    ## 251             A6        40.18389        -112.4367
-    ## 255             B1        40.18389        -112.4367
-    ## 260             E3        40.18389        -112.4367
-    ## 261             H7        40.18389        -112.4367
-    ## 262             C7        40.18389        -112.4367
-    ## 263             D3        40.18389        -112.4367
-    ## 265             B5        40.18389        -112.4367
-    ## 268             F6        40.18389        -112.4367
-    ## 272             A2        40.18389        -112.4367
-    ## 273             C1        40.18389        -112.4367
-    ## 275             H2        40.18389        -112.4367
-    ## 278             D2        40.18389        -112.4367
-    ## 279             B2        40.18389        -112.4367
-    ## 284             G9        40.18389        -112.4367
-    ## 288             J1        40.18389        -112.4367
-    ## 291             I7        40.18389        -112.4367
-    ## 296             B3        40.18389        -112.4367
-    ## 297             I4        40.18389        -112.4367
-    ## 299             E8        40.18389        -112.4367
-    ## 301             I1        40.18389        -112.4367
-    ## 302             G3        40.18389        -112.4367
-    ## 303             F3        40.18389        -112.4367
-    ## 304             D7        40.18389        -112.4367
-    ## 309             F7        40.18389        -112.4367
-    ## 312             B6        40.18389        -112.4367
-    ## 319             G1        40.18389        -112.4367
-    ## 322             G9        40.18389        -112.4367
-    ## 323             J2        40.18389        -112.4367
-    ## 329             G6        40.18389        -112.4367
-    ## 330             B7        40.18389        -112.4367
-    ## 339             C4        40.18389        -112.4367
-    ## 340             H6        40.18389        -112.4367
-    ## 341            D10        40.18389        -112.4367
-    ## 349             J3        40.18389        -112.4367
-    ## 350             B1        40.18389        -112.4367
-    ## 355            G10        40.18389        -112.4367
-    ## 357             A8        40.18389        -112.4367
-    ## 359             G5        40.18389        -112.4367
-    ## 360             G2        40.18389        -112.4367
-    ## 362             C9        40.18389        -112.4367
-    ## 363             B8        40.18389        -112.4367
-    ## 376             E7        40.18389        -112.4367
-    ## 382             F1        40.18389        -112.4367
-    ## 383             E9        40.18389        -112.4367
-    ## 384             H1        40.18389        -112.4367
-    ## 385             G4        40.18389        -112.4367
-    ## 386             H2        40.18389        -112.4367
-    ## 388             A5        40.18389        -112.4367
-    ## 392             E2        40.18389        -112.4367
-    ## 396             B4        40.18389        -112.4367
-    ## 405             B5        40.18389        -112.4367
-    ## 408             E6        40.18389        -112.4367
-    ## 411             A3        40.18389        -112.4367
-    ## 413             J5        40.18389        -112.4367
-    ## 414             I2        40.18389        -112.4367
-    ## 424             E8        40.18389        -112.4367
-    ## 431             F4        40.18389        -112.4367
-    ## 432             I9        40.18389        -112.4367
-    ## 434             D6        40.18389        -112.4367
-    ## 435             A2        40.18389        -112.4367
-    ## 439             F8        40.18389        -112.4367
-    ## 442            C10        40.18389        -112.4367
-    ## 445             G8        40.18389        -112.4367
-    ## 450             J1        40.18389        -112.4367
-    ## 451             E3        40.18389        -112.4367
-    ## 452             A1        40.18389        -112.4367
-    ## 455             E4        40.18389        -112.4367
-    ## 456             B9        40.18389        -112.4367
-    ## 461             C7        40.18389        -112.4367
-    ## 466             G7        40.18389        -112.4367
-    ## 468            J10        40.18389        -112.4367
-    ## 472             F9        40.18389        -112.4367
-    ## 475             I7        40.18389        -112.4367
-    ## 477             H9        40.18389        -112.4367
-    ## 479             I3        40.18389        -112.4367
-    ## 481            H10        40.18389        -112.4367
-    ## 482             A9        40.18389        -112.4367
-    ## 490             E1        40.18389        -112.4367
-    ## 492             E5        40.18389        -112.4367
-    ## 493             C1        40.18389        -112.4367
-    ## 494             H4        40.18389        -112.4367
-    ## 497             C2        40.18389        -112.4367
-    ## 498             I4        40.18389        -112.4367
-    ## 501             F2        40.18389        -112.4367
-    ## 505            B10        40.18389        -112.4367
-    ## 508            F10        40.18389        -112.4367
-    ## 509             D4        40.18389        -112.4367
-    ## 513             H8        40.18389        -112.4367
-    ## 514             J6        40.18389        -112.4367
-    ## 520             J8        40.18389        -112.4367
-    ## 521             F5        40.18389        -112.4367
-    ## 528            I10        40.18389        -112.4367
-    ## 529             C6        40.18389        -112.4367
-    ## 532             C8        40.18389        -112.4367
-    ## 533             F6        40.18389        -112.4367
-    ## 535             D8        40.18389        -112.4367
-    ## 537             D1        40.18389        -112.4367
-    ## 542             I8        40.18389        -112.4367
-    ## 543             A6        40.18389        -112.4367
-    ## 546             D9        40.18389        -112.4367
-    ## 547            E10        40.18389        -112.4367
-    ## 550             I6        40.18389        -112.4367
-    ## 551             I5        40.18389        -112.4367
-    ## 563             H3        40.18389        -112.4367
-    ## 566             A4        40.18389        -112.4367
-    ## 567            A10        40.18389        -112.4367
-    ## 570             D2        40.18389        -112.4367
-    ## 571             B3        40.18389        -112.4367
-    ## 572             H7        40.18389        -112.4367
-    ## 578             C3        40.18389        -112.4367
-    ## 582             D3        40.18389        -112.4367
-    ## 583             J9        40.18389        -112.4367
-    ## 584             H5        40.18389        -112.4367
-    ## 589             J7        40.18389        -112.4367
-    ## 592             D5        40.18389        -112.4367
-    ## 593             J4        40.18389        -112.4367
-    ## 594             A7        40.18389        -112.4367
-    ## 595             C5        40.18389        -112.4367
-    ## 599             B2        40.18389        -112.4367
-    ## 601             I1        40.18389        -112.4367
-    ## 603             F2        40.18389        -112.4367
-    ## 608             G9        40.18389        -112.4367
-    ## 610             J2        40.18389        -112.4367
-    ## 611             J4        40.18389        -112.4367
-    ## 612             H2        40.18389        -112.4367
-    ## 613             C3        40.18389        -112.4367
-    ## 617             I5        40.18389        -112.4367
-    ## 619             E5        40.18389        -112.4367
-    ## 624             H3        40.18389        -112.4367
-    ## 625             E6        40.18389        -112.4367
-    ## 632             C8        40.18389        -112.4367
-    ## 635             B1        40.18389        -112.4367
-    ## 636             F3        40.18389        -112.4367
-    ## 647             A1        40.18389        -112.4367
-    ## 649             A5        40.18389        -112.4367
-    ## 652             E4        40.18389        -112.4367
-    ## 655            G10        40.18389        -112.4367
-    ## 658             J9        40.18389        -112.4367
-    ## 659             G3        40.18389        -112.4367
-    ## 660             C1        40.18389        -112.4367
-    ## 661             D6        40.18389        -112.4367
-    ## 665             J6        40.18389        -112.4367
-    ## 666             D3        40.18389        -112.4367
-    ## 669             I2        40.18389        -112.4367
-    ## 672             I6        40.18389        -112.4367
-    ## 674             F7        40.18389        -112.4367
-    ## 675            J10        40.18389        -112.4367
-    ## 682             D5        40.18389        -112.4367
-    ## 692             J1        40.18389        -112.4367
-    ## 693             H5        40.18389        -112.4367
-    ## 695            E10        40.18389        -112.4367
-    ## 698             D7        40.18389        -112.4367
-    ## 699             I9        40.18389        -112.4367
-    ## 702             B7        40.18389        -112.4367
-    ## 710             G7        40.18389        -112.4367
-    ## 712             J8        40.18389        -112.4367
-    ## 717             E8        40.18389        -112.4367
-    ## 718             B3        40.18389        -112.4367
-    ## 721             H4        40.18389        -112.4367
-    ## 727            B10        40.18389        -112.4367
-    ## 729             F9        40.18389        -112.4367
-    ## 731             H8        40.18389        -112.4367
-    ## 732             F5        40.18389        -112.4367
-    ## 734             G8        40.18389        -112.4367
-    ## 735             H9        40.18389        -112.4367
-    ## 736            H10        40.18389        -112.4367
-    ## 740             G6        40.18389        -112.4367
-    ## 741             A4        40.18389        -112.4367
-    ## 742             D2        40.18389        -112.4367
-    ## 744             F8        40.18389        -112.4367
-    ## 747             G5        40.18389        -112.4367
-    ## 749             A6        40.18389        -112.4367
-    ## 754             C6        40.18389        -112.4367
-    ## 755             B5        40.18389        -112.4367
-    ## 758             H1        40.18389        -112.4367
-    ## 760             G1        40.18389        -112.4367
-    ## 762             J7        40.18389        -112.4367
-    ## 765             G4        40.18389        -112.4367
-    ## 768             J5        40.18389        -112.4367
-    ## 770             C2        40.18389        -112.4367
-    ## 772             D4        40.18389        -112.4367
-    ## 775             B6        40.18389        -112.4367
-    ## 776             I8        40.18389        -112.4367
-    ## 780             B2        40.18389        -112.4367
-    ## 781             C7        40.18389        -112.4367
-    ## 785             H6        40.18389        -112.4367
-    ## 786            F10        40.18389        -112.4367
-    ## 787            I10        40.18389        -112.4367
-    ## 795             I3        40.18389        -112.4367
-    ## 804             H7        40.18389        -112.4367
-    ## 805             C9        40.18389        -112.4367
-    ## 818             F6        40.18389        -112.4367
-    ## 822            C10        40.18389        -112.4367
-    ## 824             I4        40.18389        -112.4367
-    ## 830             F1        40.18389        -112.4367
-    ## 833             E9        40.18389        -112.4367
-    ## 835             G2        40.18389        -112.4367
-    ## 836             A8        40.18389        -112.4367
-    ## 839             B9        40.18389        -112.4367
-    ## 840             C5        40.18389        -112.4367
-    ## 843             E3        40.18389        -112.4367
-    ## 844             A2        40.18389        -112.4367
-    ## 845             C4        40.18389        -112.4367
-    ## 846             D1        40.18389        -112.4367
-    ## 849             E2        40.18389        -112.4367
-    ## 850             E1        40.18389        -112.4367
-    ## 852             J3        40.18389        -112.4367
-    ## 854            D10        40.18389        -112.4367
-    ## 855             D9        40.18389        -112.4367
-    ## 865             F4        40.18389        -112.4367
-    ## 873             B8        40.18389        -112.4367
-    ## 874             I7        40.18389        -112.4367
-    ## 880             E7        40.18389        -112.4367
-    ## 882            A10        40.18389        -112.4367
+    ## ... several hundred rows removed for your viewing pleasure ...
     ## 884             D8        40.18389        -112.4367
     ## 891             A9        40.18389        -112.4367
     ## 892             B4        40.18389        -112.4367
@@ -856,7 +455,7 @@ can get these data for you.
 The `getLocTOS()` function in the `geoNEON` package uses the NEON API to 
 access NEON location data and then makes protocol-specific calculations 
 to return precise locations for each sampling effort. This function works for a 
-subset of NEON TOS data prodcuts. The list of tables and data products that can 
+subset of NEON TOS data products. The list of tables and data products that can 
 be entered is in the 
 <a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" target="_blank">package documentation on GitHub</a>. 
 
@@ -894,7 +493,7 @@ What additional data are now available in the data obtained by `getLocTOS()`?
     ## [9] "adjElevationUncertainty"
 
 Now we have adjusted latitude, longitude, and elevation, and the 
-corresponding easting and northing UTM data. We also have coordinate uncertainy 
+corresponding easting and northing UTM data. We also have coordinate uncertainty 
 data for these coordinates. 
 
 We can use the easting and northing data to plot the locations of the mammal traps. 
@@ -924,7 +523,7 @@ trapping grid is a 10 x 10 plot of traps.
 Now, let's add a layer of data to see which of these traps caught a mammal during
 the August 2018 sampling bout. To do this we need to look at our variables file
 again and see what variable gives us information about captures. We can see that
-**trapStatus** provides the information on what happended to each trap. It has 
+**trapStatus** provides the information on what happened to each trap. It has 
 categorical data on the status: 
 
 * 0 - no data
