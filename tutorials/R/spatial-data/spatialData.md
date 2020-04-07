@@ -28,7 +28,10 @@ other data products.
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* ADD
+* access NEON spatial data from the website and through data downloaded with the neonUtilities package. 
+* create a simple map with NEON domains and field site locations. 
+* access and plot specific sampling locations for TOS data products. 
+* access and use sensor location data. 
 
 ## Things You’ll Need To Complete This Tutorial
 
