@@ -38,7 +38,6 @@ the RStudio IDE to work with R.
 
 ### Working Directory
 
-
 </div>
 
 
@@ -52,11 +51,8 @@ already installed, and load the libraries for each.
 # run once to get the package, and re-run if you need to get updates
 install.packages("sp")  # working with spatial data
 install.packages("rgdal")  # working with spatial data
-#install.packages("rgeos")  # working with spatial data
 install.packages("broom")  # tidy up data
 install.packages("ggplot2")  # plotting
-#install.packages("ggthemes")  # applying consistent themes to plots
-install.packages("maptools")  # working with spatial data & ggplot
 install.packages("neonUtilities")  # work with NEON data
 install.packages("devtools")  # to use the install_github() function
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NEON spatial data
@@ -69,11 +65,8 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NE
 # run every time you start a script
 library(sp)
 library(rgdal)
-#library(rgeos)
 library(broom)
 library(ggplot2)
-#library(ggthemes)
-#library(maptools)
 library(neonUtilities)
 library(geoNEON)
 
@@ -289,7 +282,7 @@ August 2018 to investigate.
 If downloading data using the `neonUtilties` package is new to you, check out the 
 <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
 
-``` {r get-mam-data, results="hide"}
+```{r get-mam-data, results="hide"}
 # load mammal data
 mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
                      startdate="2018-08", enddate="2018-08",
@@ -480,38 +473,45 @@ par <- loadByProduct(dpID="DP1.00024.001", site="TREE",
 Now we can specifically look at the sensor positions file.
 
 ```{r sens-pos}
-
+# create object for sens. pos. file
 pos <- par$sensor_positions_00024
+
+# view names
 names(pos)
 
 ```
 
-### TESTING ###
+The sensor locations are indexed by the `HOR.VER` variable - see the 
+<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
+page for more details. 
 
-```{r load}
-pos <- read.delim("NEON_par/NEON.D05.TREE.DP1.00024.001.2018-07.basic.20190314T150344Z/NEON.D05.TREE.DP1.00024.001.sensor_positions.20190314T150344Z.csv", sep=",", header=T)
+Using `unique()` we can view all the locations indexes in this file. 
+
+```{r par-levs}
+# view names
+unique(pos$HOR.VER)
 
 ```
 
-The sensor locations are indexed by the HOR.VER indices - see the 
-<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
-page for more details about these indices. Here, the PAR data are collected at 
-each level of the tower (HOR=000), so only the VER index varies (VER=010-060).
+PAR data are collected at multiple levels of the NEON tower but along a single 
+vertical plane. We see this reflected in the data where HOR=000 (all data collected)
+at the tower location. The VER index varies (VER = 010 to 060) showing that the 
+vertical position is changing and that PAR is measured at six different levels.
 
-The x, y, and z offsets in the sensor positions file are in meters, and are 
-relative to the reference latitude, longitude, and elevation in the file. 
+The x, y, and z offsets in the sensor positions file are the relative distance, 
+in meters, to the reference latitude, longitude, and elevation in the file. 
 
-In the The HOR and VER indices in the sensor positions file correspond to the 
-`verticalPosition` and `horizontalPosition` fields in `par$PARPAR_30min`, 
-although R has stripped off the leading zeroes from both indices.
+The HOR and VER indices in the sensor positions file correspond to the 
+`verticalPosition` and `horizontalPosition` fields in `par$PARPAR_30min`.
 
-Use the `aggregate()` function to calculate mean PAR at each vertical 
+Since our goal is to plot a profile of the PAR through the canopy, we need to 
+start by using the `aggregate()` function to calculate mean PAR at each vertical 
 position on the tower over the month.
 
 ``` {r par-ver-mean}
 # calc mean PAR at each level
 parMean <- aggregate(par$PARPAR_30min$PARMean, 
-                   by=list(pr$PARPAR_30min$verticalPosition),
+                   by=list(par$PARPAR_30min$verticalPosition),
                    FUN=mean, na.rm=T)
 
 ```
@@ -519,7 +519,7 @@ parMean <- aggregate(par$PARPAR_30min$PARMean,
 And now we can plot mean PAR relative to elevation on the tower since that is the 
 zOffset. 
 
-``` {r par-plot}
+```{r par-plot}
 
 # plot PAR
 plot(parMean$x, pos$zOffset, type="b", pch=20,
