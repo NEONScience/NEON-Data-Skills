@@ -165,7 +165,7 @@ map, this means our longitude is plotted on the x axis and latitude is on our
 y axis. 
 
 ```{r plot-domains, fig.width=8, fig.height=6}
-
+# plot domains
 domainMap <- ggplot(neonDomainsDF) + 
         geom_map(map = neonDomainsDF,
                 aes(x = long, y = lat, map_id = id),
@@ -193,7 +193,7 @@ interest. For now, we can see that there are both **Latitude** and **Longitude**
 data so we can plot this data onto our previous map. 
 
 ```{r plot-sites, fig.width=8, fig.height=6}
-# plot the 
+# plot the sites
 neonMap <- domainMap + 
         geom_point(data=neonSites, 
                    aes(x=Longitude, y=Latitude))
@@ -213,15 +213,17 @@ aquatic sites in blue. We can choose darker shades for core sites and lighter
 ones for relocatable sites. 
 
 ```{r sites-color, fig.width=8, fig.height=6}
-# color is determined by the order that the unique values show up. check
+# color is determined by the order that the unique values show up. Check order
+unique(neonSites$Site.Type)
 
+# add color
 sitesMap <- neonMap + 
         geom_point(data=neonSites, 
                       aes(x=Longitude, y=Latitude, color=Site.Type)) + 
-           scale_color_manual(values=c("blue4", "springgreen4", 
-                                       "blue", "olivedrab"),
+           scale_color_manual(values=c("lightskyblue", "forest green", 
+                                       "blue4", "light green"),
                               name="",
-                              breaks=unique(sites$Site.Type))
+                              breaks=unique(neonSites$Site.Type))
 sitesMap
 
 ```
