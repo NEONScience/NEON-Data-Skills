@@ -36,7 +36,6 @@ After completing this tutorial you will be able to:
 You will need a current version of R to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
 
-### Working Directory
 
 </div>
 
