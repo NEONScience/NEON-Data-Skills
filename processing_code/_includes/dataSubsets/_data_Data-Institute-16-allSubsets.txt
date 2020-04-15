@@ -1,0 +1,17 @@
+<h3> <a href="https://ndownloader.figshare.com/articles/3205075/versions/12">NEON Teaching Data Subset: Data Institute 2016</a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank">National Ecological Observatory Network's </a> (NEON)
+<a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle</a>, 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank">Soaproot Saddle </a> and
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank">San Joaquin Experimental Range</a>
+field sites and processed at NEON 
+headquarters. The entire dataset can be accessed by request from the 
+<a href="data.neonscience.org" target="_blank"> NEON Airborne Data request page</a>
+ on the NEON website.
+
+<a href="https://ndownloader.figshare.com/articles/3205075/versions/12" class="link--button link--arrow">
+Download Dataset</a>
+
+

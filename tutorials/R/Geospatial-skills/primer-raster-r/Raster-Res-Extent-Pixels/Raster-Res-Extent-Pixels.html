@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Spatial Resolution</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives:
+
+After completing this activity, you will be able to:
+
+* Explain the key attributes required to work with raster data including: spatial 
+extent, coordinate reference system and spatial resolution.
+* Describe what a spatial extent is and how it relates to resolution.
+* Explain the basics of coordinate reference systems.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster**: install.packages(&ldquo;raster&rdquo;)
+* **rgdal**: install.packages(&ldquo;rgdal&rdquo;)
+
+### Data to Download
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+<p>The LiDAR and imagery data used to create the rasters in this dataset were 
+collected over the San Joaquin field site located in California (NEON Domain 17) 
+and processed at <a href="https://www.neonscience.org/" target="_blank" >NEON </a> 
+headquarters. The entire dataset can be accessed by request from the NEON website.</p>  
+
+This data download contains several files used in related tutorials. The path to 
+the files we will be using in this tutorial is:
+NEON-DS-Field-Site-Spatial-Data/SJER/.  
+You should set your working directory to the parent directory of the downloaded 
+data to follow the code exactly. 
+
+</div>
+
+<p>This tutorial will overview the key attributes of a raster object, including 
+spatial extent, resolution and coordinate reference system. When working within
+a GIS system often these attributes are accounted for. However, it is important
+to be more familiar with them when working in non-GUI environments such as 
+ R or even <code>Python</code>.</p>
+
+<p>In order to correctly spatially reference a raster that is not already georeferenced,
+you will also need to identify:</p>
+
+<ol>
+<li>The lower left hand corner coordinates of the raster.</li>
+<li>The number of columns and rows that the raster dataset contains.</li>
+</ol>
+
+<h2>Spatial Resolution</h2>
+
+<p>A raster consists of a series of pixels, each with the same dimensions 
+and shape. In the case of rasters derived from airborne sensors, each pixel 
+represents an area of space on the Earth&#39;s surface. The size of the area on the 
+surface that each pixel covers is known as the spatial resolution of the image. 
+For instance, an image that has a 1 m spatial resolution means that each pixel in 
+the image represents a 1 m x 1 m area.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
+    <figcaption>The spatial resolution of a raster refers the size of each cell 
+    in meters. This size in turn relates to the area on the ground that the pixel 
+    represents. Source: National Ecological Observatory Network (NEON) </figcaption>
+</figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster1.png">
+    <figcaption>A raster at the same extent with more pixels will have a higher
+    resolution (it looks more &ldquo;crisp&rdquo;). A raster that is stretched over the same
+    extent with fewer pixels will look more blury and will be of lower resolution. 
+    Source: National Ecological Observatory Network (NEON)
+    </figcaption>
+</figure>
+
+<h2>Load the Data</h2>
+
+<p>Let&#39;s open up a raster in R to see how the attributes are stored. We are 
+going to work with a Digital Terrain Model from the San Joaquin Experimental 
+Range in California. </p>
+
+<pre><code># load packages 
+library(raster)  
+library(rgdal)
+
+# Load raster in an R object called &#39;DEM&#39;
+DEM &lt;- raster(&quot;NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif&quot;)  
+
+# set working directory to data folder
+#setwd(&quot;pathToDirHere&quot;)
+
+
+# View raster attributes 
+DEM
+
+## class      : RasterLayer 
+## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+## names      : SJER2013_DTM
+</code></pre>
+
+<p>Note that this raster (in GeoTIFF format) already has an extent, resolution, and 
+CRS defined. The resolution in both x and y directions is 1. The CRS tells us 
+that the x,y units of the data are meters (m). </p>
+
+<h2>Spatial Extent</h2>
+
+<p>The spatial extent of a raster, represents the &ldquo;X, Y&rdquo; coordinates of the corners 
+of the raster in geographic space. This information, in addition to the cell 
+size or spatial resolution, tells the program how to place or render each pixel 
+in 2 dimensional space.  Tools like R, using supporting packages such as <code>rgdal</code> 
+and associated raster tools have functions that allow you to view and define the 
+extent of a new raster. </p>
+
+<pre><code># View the extent of the raster
+DEM@extent
+
+## class      : Extent 
+## xmin       : 254570 
+## xmax       : 258869 
+## ymin       : 4107302 
+## ymax       : 4112362
+</code></pre>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster2.png">
+    <figcaption>If you double the extent value of a raster - the pixels will be
+    stretched over the larger area making it look more &ldquo;blury&rdquo;.  Source: National
+    Ecological Observatory Network (NEON)
+    </figcaption>
+</figure>
+
+<h3>Calculating Raster Extent</h3>
+
+<p>Extent and spatial resolution are closely connected. To calculate the extent of a 
+raster, we first need the bottom <strong>left hand</strong> (X,Y) coordinate of the raster. In 
+the case of the UTM coordinate system which is in meters, to calculate
+the raster&#39;s extent, we can add the number of columns and rows to the X,Y corner 
+coordinate location of the raster, multiplied by the resolution (the pixel size) 
+of the raster.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_corners.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_corners.png"></a>
+   
+    <figcaption>To be located geographically, a raster&rsquo;s location needs to be 
+    defined in geographic space (i.e., on a spatial grid). The spatial extent 
+    defines the four corners of a raster within a given coordinate reference 
+    system. Source: National Ecological Observatory Network. </figcaption>
+</figure>
+
+<p>Let&#39;s explore that next, using a blank raster that we create. </p>
+
+<pre><code># create a raster from the matrix - a &quot;blank&quot; raster of 4x4
+myRaster1 &lt;- raster(nrow=4, ncol=4)
+
+# assign &quot;data&quot; to raster: 1 to n based on the number of cells in the raster
+myRaster1[]&lt;- 1:ncell(myRaster1)
+
+# view attributes of the raster
+myRaster1
+
+## class      : RasterLayer 
+## dimensions : 4, 4, 16  (nrow, ncol, ncell)
+## resolution : 90, 45  (x, y)
+## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 1, 16  (min, max)
+
+# is the CRS defined?
+myRaster1@crs
+
+## CRS arguments:
+##  +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0
+</code></pre>
+
+<p>Wait, why is the CRS defined on this new raster? This is the default values
+for something created with the <code>raster()</code> function if nothing is defined. </p>
+
+<p>Let&#39;s get back to looking at more attributes. </p>
+
+<pre><code># what is the raster extent?
+myRaster1@extent
+
+## class      : Extent 
+## xmin       : -180 
+## xmax       : 180 
+## ymin       : -90 
+## ymax       : 90
+
+# plot raster
+plot(myRaster1, main=&quot;Raster with 16 pixels&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/create-raster-cont-1.png" alt=" "/></p>
+
+<p>Here we see our raster with the value of 1 to 16 in each pixel. </p>
+
+<p>We can resample the raster as well to adjust the resolution. If we want a <strong>higher
+resolution</strong> raster, we will apply a grid with <strong>more pixels</strong> within the same extent.
+If we want a <strong>lower resolution</strong> raster, we will apply a grid with <strong>fewer pixels</strong>
+within the same extent.</p>
+
+<p>One way to do this is to create a raster of the resolution you want and then 
+<code>resample()</code> your original raster. The resampling will be done for either
+nearest neighbor assignments (for categorical data) or bilinear interpolation (for
+numerical data). </p>
+
+<pre><code>## HIGHER RESOLUTION
+# Create 32 pixel raster
+myRaster2 &lt;- raster(nrow=8, ncol=8)
+
+# resample 16 pix raster with 32 pix raster
+# use bilinear interpolation with our numeric data
+myRaster2 &lt;- resample(myRaster1, myRaster2, method=&#39;bilinear&#39;)
+
+# notice new dimensions, resolution, &amp; min/max 
+myRaster2
+
+## class      : RasterLayer 
+## dimensions : 8, 8, 64  (nrow, ncol, ncell)
+## resolution : 45, 22.5  (x, y)
+## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : -0.25, 17.25  (min, max)
+
+# plot 
+plot(myRaster2, main=&quot;Raster with 32 pixels&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-1.png" alt=" "/></p>
+
+<pre><code>## LOWER RESOLUTION
+myRaster3 &lt;- raster(nrow=2, ncol=2)
+myRaster3 &lt;- resample(myRaster1, myRaster3, method=&#39;bilinear&#39;)
+myRaster3
+
+## class      : RasterLayer 
+## dimensions : 2, 2, 4  (nrow, ncol, ncell)
+## resolution : 180, 90  (x, y)
+## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 3.5, 13.5  (min, max)
+
+plot(myRaster3, main=&quot;Raster with 4 pixels&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-2.png" alt=" "/></p>
+
+<pre><code>## SINGLE PIXEL RASTER
+myRaster4 &lt;- raster(nrow=1, ncol=1)
+myRaster4 &lt;- resample(myRaster1, myRaster4, method=&#39;bilinear&#39;)
+myRaster4
+
+## class      : RasterLayer 
+## dimensions : 1, 1, 1  (nrow, ncol, ncell)
+## resolution : 360, 180  (x, y)
+## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 7.666667, 7.666667  (min, max)
+
+plot(myRaster4, main=&quot;Raster with 1 pixel&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-3.png" alt=" "/></p>
+
+<p>To more easily compare them, let&#39;s create a graphic layout with 4 rasters in it. 
+Notice that each raster has the same extent but each a different resolution 
+because it has a different number of pixels spread out over the same extent.</p>
+
+<pre><code># change graphical parameter to 2x2 grid
+par(mfrow=c(2,2))
+
+# arrange plots in order you wish to see them
+plot(myRaster2, main=&quot;Raster with 32 pixels&quot;)
+plot(myRaster1, main=&quot;Raster with 16 pixels&quot;)
+plot(myRaster3, main=&quot;Raster with 4 pixels&quot;)
+plot(myRaster4, main=&quot;Raster with 2 pixels&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/quad-layout-1.png" alt=" "/></p>
+
+<pre><code># change graphical parameter back to 1x1 
+par(mfrow=c(1,1))
+</code></pre>
+
+<h4>Extent &amp; Coordinate Reference Systems</h4>
+
+<figure>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png"></a>
+    <figcaption>The X and Y min and max values relate to the coordinate system 
+    that the file is in, see below. </figcaption>
+</figure>
+
+<h2>Coordinate Reference System &amp; Projection Information</h2>
+
+<blockquote>
+<p>A spatial reference system (SRS) or coordinate reference system (CRS) is a 
+coordinate-based local, regional or global system used to locate geographical 
+entities. &ndash; Wikipedia</p>
+</blockquote>
+
+<p>The earth is round. This is not an new concept by any means, however we need to 
+remember this when we talk about coordinate reference systems associated with 
+spatial data. When we make maps on paper or on a computer screen, we are moving 
+from a 3 dimensional space (the globe) to 2 dimensions (our computer screens or 
+a piece of paper). To keep this short, the projection of a dataset relates to 
+how the data are &ldquo;flattened&rdquo; in geographic space so our human eyes and brains 
+can make sense of the information in 2 dimensions. </p>
+
+<p>The projection refers to the mathematical calculations performed to &ldquo;flatten the 
+data&rdquo; in into 2D space. The coordinate system references to the x and y coordinate 
+space that is associated with the projection used to flatten the data. If you 
+have the same dataset saved in two different projections, these two files won&#39;t 
+line up correctly when rendered together.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg"></a>
+    <figcaption>Maps of the United States in different projections. Notice the 
+    differences in shape associated with each different projection. These 
+    differences are a direct result of the calculations used to &ldquo;flatten&rdquo; the 
+    data onto a 2 dimensional map. Source: M. Corey, opennews.org</figcaption>
+</figure>
+
+<p><a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Read more about projections.</a></p>
+
+<h4>How Map Projections Can Fool the Eye</h4>
+
+<p>Check out this short video,
+<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> by Buzzfeed</a>, highlighting how map projections can make continents 
+seems proportionally larger or smaller than they actually are!</p>
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+
+<h2>What Makes Spatial Data Line Up On A Map?</h2>
+
+<p>There are lots of great resources that describe coordinate reference systems and 
+projections in greater detail. However, for the purposes of this activity, what 
+is important to understand is that data from the same location but saved in 
+different projections <strong>will not line up in any GIS or other program</strong>. Thus 
+it&#39;s important when working with spatial data in a program like R or <code>Python</code> 
+to identify the coordinate reference system applied to the data, and to grab 
+that information and retain it when you process / analyze the data.</p>
+
+<p>For a library of CRS information: 
+<a href="http://spatialreference.org/ref/epsg/" target="_blank">A great online 
+library of CRS information.</a></p>
+
+<h2>CRS proj4 Strings</h2>
+
+<p>The rgdal package has all the common ESPG codes with proj4string built in. We 
+can see them by creating an object of the function <code>make_ESPG()</code>. </p>
+
+<pre><code># make sure you loaded rgdal package at the top of your script
+
+# create an object with all ESPG codes
+epsg = make_EPSG()
+
+# use View(espg) to see the full table - doesn&#39;t render on website well
+#View(epsg)
+
+# View top 5 entries
+head(epsg, 5)
+
+##   code       note
+## 1 3819   # HD1909
+## 2 3821    # TWD67
+## 3 3824    # TWD97
+## 4 3889     # IGRS
+## 5 3906 # MGI 1901
+##                                                                                            prj4
+## 1 +proj=longlat +ellps=bessel +towgs84=595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408 +no_defs
+## 2                                                         +proj=longlat +ellps=aust_SA +no_defs
+## 3                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
+## 4                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
+## 5                            +proj=longlat +ellps=bessel +towgs84=682,-203,480,0,0,0,0 +no_defs
+</code></pre>
+
+<h3>Define the extent</h3>
+
+<p>In the above raster example, we created several simple raster objects in R. 
+R defaulted to a global lat/long extent. We can define the exact extent that we 
+need to use too. </p>
+
+<p>Let&#39;s create a new raster with the same projection as our original DEM. We know 
+that our data are in UTM zone 11N. For the sake of this exercise, let say we 
+want to create a raster with the left hand corner coordinate at:  </p>
+
+<ul>
+<li>xmin = 254570</li>
+<li>ymin = 4107302</li>
+</ul>
+
+<p>The resolution of this new raster will be <code>1 meter</code> and we will be working
+in UTM (meters). First, let&#39;s set up the raster. </p>
+
+<pre><code># create 10x20 matrix with values 1-8. 
+newMatrix  &lt;- (matrix(1:8, nrow = 10, ncol = 20))
+
+# convert to raster
+rasterNoProj &lt;- raster(newMatrix)
+rasterNoProj
+
+## class      : RasterLayer 
+## dimensions : 10, 20, 200  (nrow, ncol, ncell)
+## resolution : 0.05, 0.1  (x, y)
+## extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : 1, 8  (min, max)
+</code></pre>
+
+<p>Now we can define the new raster&#39;s extent by defining the lower left corner of
+the raster.</p>
+
+<pre><code>## Define the xmin and ymin (the lower left hand corner of the raster)
+
+# 1. define xMin &amp; yMin objects.
+xMin = 254570
+yMin = 4107302
+
+# 2. grab the cols and rows for the raster using @ncols and @nrows
+rasterNoProj@ncols
+
+## [1] 20
+
+rasterNoProj@nrows
+
+## [1] 10
+
+# 3. raster resolution
+res &lt;- 1.0
+
+# 4. add the numbers of cols and rows to the x,y corner location, 
+# result = we get the bounds of our raster extent. 
+xMax &lt;- xMin + (rasterNoProj@ncols * res)
+yMax &lt;- yMin + (rasterNoProj@nrows * res)
+
+# 5.create a raster extent class
+rasExt &lt;- extent(xMin,xMax,yMin,yMax)
+rasExt
+
+## class      : Extent 
+## xmin       : 254570 
+## xmax       : 254590 
+## ymin       : 4107302 
+## ymax       : 4107312
+
+# 6. apply the extent to our raster
+rasterNoProj@extent &lt;- rasExt
+
+# Did it work? 
+rasterNoProj
+
+## class      : RasterLayer 
+## dimensions : 10, 20, 200  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : 1, 8  (min, max)
+
+# or view extent only
+rasterNoProj@extent
+
+## class      : Extent 
+## xmin       : 254570 
+## xmax       : 254590 
+## ymin       : 4107302 
+## ymax       : 4107312
+</code></pre>
+
+<p>Now we have an extent associated with our raster which places it in space!</p>
+
+<pre><code># plot new raster
+plot(rasterNoProj, main=&quot;Raster in UTM coordinates, 1 m resolution&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/plot-raster-our-extent-1.png" alt=" "/></p>
+
+<p>Notice that the coordinates show up on our plot now. </p>
+
+<div id="ds-challenge" markdown="1">
+## Challenges: Resample Rasters
+
+Now apply your skills in a new way! 
+
+* Resample rasterNoProj from 1 meter to 10 meter resolution. Plot it next to the 1 m 
+resolution raster. Use: par(mfrow=c(1,2)) to create side by side plots.
+* What happens to the extent if you change the resolution to 1.5 when calculating 
+the raster&rsquo;s extent properties??
+
+</div>
+
+<h2>Define Projection of a Raster</h2>
+
+<p>We can define the projection of a raster that has a known CRS already. Sometimes
+we download data that have projection information associated with them but the CRS
+is not defined either in the GeoTIFF tags or in the raster itself. If this is the 
+case, we can simply assign the raster the correct projection. </p>
+
+<p><strong>Be careful doing this</strong> - it is <strong>not</strong> the same thing as reprojecting your data.</p>
+
+<p>Let&#39;s define the projection for our newest raster using the DEM raster that 
+already has defined CRS. NOTE: in this case we have to know that our raster is 
+in this projection already so we don&#39;t run the risk of assigning the wrong projection
+to the data.</p>
+
+<pre><code># view CRS from raster of interest
+rasterNoProj@crs
+
+## CRS arguments: NA
+
+# view the CRS of our DEM object.
+DEM@crs
+
+## CRS arguments:
+##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+
+# define the CRS using a CRS of another raster
+rasterNoProj@crs &lt;- DEM@crs
+
+# look at the attributes
+rasterNoProj
+
+## class      : RasterLayer 
+## dimensions : 10, 20, 200  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 1, 8  (min, max)
+
+# view just the crs
+rasterNoProj@crs
+
+## CRS arguments:
+##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+</code></pre>
+
+<p>IMPORTANT: the above code <strong>does not reproject</strong> the raster. It simply defines the
+Coordinate Reference System based upon the CRS of another raster. If you want to
+actually change the CRS of a raster, you need to use the <code>projectRaster</code> function.</p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Assign CRS
+
+You can set the CRS and extent of a raster using the syntax 
+rasterWithoutReference@crs <- rasterWithReference@crs` and 
+`rasterWithoutReference@extent <- rasterWithReference@extent`. Using this information: 
+
+* open `band90.tif` in the `rasterLayers_tif` folder and plot it. (You could consider looking
+at it in <a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a> first 
+to compare it to the other rasters.)  
+* Does it line up with our DEM? Look closely at the extent and pixel size. Does anything look off? 
+* Fix what is missing. 
+* (Advanced step) Export a new GeoTIFF Do things line up in 
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS?</a>
+
+The code below creates a raster and seeds it with some data. Experiment with the 
+code. 
+
+* What happens to the resulting raster&rsquo;s resolution when you change the range 
+of lat and long values to 5 instead of 10? Try 20, 50 and 100? 
+* What is the relationship between the extent and the raster resolution?
+
+</div>
+
+<pre><code>## Challenge Example Code 
+
+# set latLong
+latLong &lt;- data.frame(longitude=seq( 0,10,1), latitude=seq( 0,10,1))
+
+# make spatial points dataframe, which will have a spatial extent
+sp &lt;- SpatialPoints( latLong[ c(&quot;longitude&quot; , &quot;latitude&quot;) ], proj4string = CRS(&quot;+proj=longlat +datum=WGS84&quot;) )
+
+# make raster based on the extent of your data
+r &lt;- raster(nrow=5, ncol=5, extent( sp ) )
+
+r[]  &lt;- 1
+r[]  &lt;- sample(0:50,25)
+r
+
+## class      : RasterLayer 
+## dimensions : 5, 5, 25  (nrow, ncol, ncell)
+## resolution : 2, 2  (x, y)
+## extent     : 0, 10, 0, 10  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : 1, 48  (min, max)
+</code></pre>
+
+<h2>Reprojecting Data</h2>
+
+<p>If you run into multiple spatial datasets with varying projections, you can 
+always <strong>reproject</strong> the data so that they are all in the same projection. Python 
+and R both have reprojection tools that perform this task.</p>
+
+<pre><code># reproject raster data from UTM to CRS of Lat/Long WGS84
+reprojectedData1 &lt;- projectRaster(rasterNoProj, 
+                                 crs=&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;)
+
+# note that the extent has been adjusted to account for the NEW crs
+reprojectedData1@crs
+
+## CRS arguments:
+##  +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0
+
+reprojectedData1@extent
+
+## class      : Extent 
+## xmin       : -119.761 
+## xmax       : -119.7607 
+## ymin       : 37.07988 
+## ymax       : 37.08
+
+# note the range of values in the output data
+reprojectedData1
+
+## class      : RasterLayer 
+## dimensions : 13, 22, 286  (nrow, ncol, ncell)
+## resolution : 1.12e-05, 9e-06  (x, y)
+## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 0.64765, 8.641957  (min, max)
+
+# use nearest neighbor interpolation method to ensure that the values stay the same
+reprojectedData2 &lt;- projectRaster(rasterNoProj, 
+                                 crs=&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;, 
+                                 method = &quot;ngb&quot;)
+
+
+# note that the min and max values have now been forced to stay within the same range.
+reprojectedData2
+
+## class      : RasterLayer 
+## dimensions : 13, 22, 286  (nrow, ncol, ncell)
+## resolution : 1.12e-05, 9e-06  (x, y)
+## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
+## source     : memory
+## names      : layer 
+## values     : 1, 8  (min, max)
+</code></pre>
+
+</body>
+
+</html>

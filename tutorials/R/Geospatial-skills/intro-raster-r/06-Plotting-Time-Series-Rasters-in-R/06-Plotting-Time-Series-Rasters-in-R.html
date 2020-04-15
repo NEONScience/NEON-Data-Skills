@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Get Started</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial covers how to improve plotting output using the <code>rasterVis</code> package
+in R. Specifically it covers using <code>levelplot()</code> and adding meaningful custom
+names to bands within a <code>RasterStack</code>. </p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Be able to assign custom names to bands in a RasterStack for prettier
+plotting.
+* Understand advanced plotting of rasters using the rasterVis package and
+levelplot.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+* **rasterVis:** install.packages(&ldquo;rasterVis&rdquo;)
+
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+#### Data to Download
+{% include/dataSubsets/_data_Landsat-NDVI.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Get Started</h2>
+
+<p>In this tutorial, we are working with the same set of rasters used in the
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> <em>Raster Time Series Data in R</em> </a>
+tutorial. These data are derived from the Landsat satellite and stored in 
+<code>GeoTIFF</code> format. Each raster covers the 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>.  </p>
+
+<p>If you have not already created the RasterStack, originally created in 
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> <em>Raster Time Series Data in R</em> </a>,
+please create it now. </p>
+
+<pre><code># import libraries
+library(raster)
+library(rgdal)
+library(rasterVis) 
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+
+# Create list of NDVI file paths
+all_NDVI_HARV &lt;- list.files(&quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI&quot;, full.names = TRUE, pattern = &quot;.tif$&quot;)
+
+# Create a time series raster stack
+NDVI_HARV_stack &lt;- stack(all_NDVI_HARV)
+
+# apply scale factor
+NDVI_HARV_stack &lt;- NDVI_HARV_stack/10000
+</code></pre>
+
+<h2>Plot Raster Time Series Data</h2>
+
+<p>We can use the <code>plot</code> function to plot our raster time series data.</p>
+
+<pre><code># view a histogram of all of the rasters
+# nc specifies number of columns
+plot(NDVI_HARV_stack, 
+     zlim = c(.15, 1), 
+     nc = 4)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png" alt=" "/></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** The range of values for NDVI is 0-1. 
+However, the data stored in our raster ranges from 0 - 10,000. If we view the 
+metadata for the original .tif files, we will see a scale factor of 10,000 is
+defined.
+Multiplying values with decimal places by a factor of 10, allows the data to be 
+stored in integer format (no decimals) rather than a floating point format 
+(containing decimals). This keeps the file size smaller. 
+</div>
+
+<p>Our plot is nice however, it&#39;s missing some key elements including, easily
+readable titles. It also contains a legend that is repeated for each image. We
+can use <code>levelplot</code> from the <code>rasterVis</code> package to make our plot prettier! </p>
+
+<ul>
+<li><a href="http://oscarperpinan.github.io/rastervis/" target="_blank">More on
+the <code>rasterVis</code> package</a></li>
+</ul>
+
+<p>The syntax for the <code>levelplot()</code> function is similar to that for the <code>plot()</code>
+function. We use <code>main=&quot;TITLE&quot;</code> to add a title to the entire plot series.</p>
+
+<pre><code># create a `levelplot` plot
+levelplot(NDVI_HARV_stack,
+          main=&quot;Landsat NDVI\nNEON Harvard Forest&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/levelplot-time-series-1.png" alt=" "/></p>
+
+<h2>Adjust the Color Ramp</h2>
+
+<p>Next, let&#39;s adjust the color ramp used to render the rasters. First, we
+can change the red color ramp to a green one that is more visually suited to our 
+NDVI (greenness) data using the <code>colorRampPalette()</code> function in combination with 
+<code>colorBrewer</code>. </p>
+
+<pre><code># use colorbrewer which loads with the rasterVis package to generate
+# a color ramp of yellow to green
+cols &lt;- colorRampPalette(brewer_pal(palette = &quot;YlGn&quot;)(9))
+# create a level plot - plot
+levelplot(NDVI_HARV_stack,
+        main=&quot;Landsat NDVI -- Improved Colors \nNEON Harvard Forest Field Site&quot;,
+        col.regions=cols)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/change-color-ramp-1.png" alt=" "/></p>
+
+<p>The yellow to green color ramp visually represents NDVI well given it&#39;s a
+measure of greenness. Someone looking at the plot can quickly understand that
+pixels that are more green, have a higher NDVI value. </p>
+
+<ul>
+<li>For all of the <code>brewer_pal</code> ramp names see the 
+<a href="http://www.datavis.ca/sasmac/brewerpal.html" target="_blank">
+brewerpal page</a>.</li>
+</ul>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Cynthia Brewer, the creator of 
+ColorBrewer, offers an online tool to help choose suitable color ramps, or to 
+create your own. <a href="http://colorbrewer2.org/" target="_blank">
+ColorBrewer 2.0; Color Advise for Cartography </a>  
+</div>
+
+<h2>Refine Plot &amp; Tile Labels</h2>
+
+<p>Next, let&#39;s label each raster in our plot with the Julian day that the raster
+represents. The current names come from the band (layer names) stored in the
+<code>RasterStack</code> and first part each name is the Julian day. </p>
+
+<p>To create a more meaningful label we can remove the &ldquo;x&rdquo; and replace it with
+&ldquo;day&rdquo; using the <code>gsub()</code> function in R. The syntax is as follows:
+<code>gsub(&quot;StringToReplace&quot;,&quot;TextToReplaceIt&quot;, Robject)</code>. </p>
+
+<p>First let&#39;s remove &ldquo;_HARV_NDVI_crop&rdquo; from each label. </p>
+
+<pre><code># view names for each raster layer
+names(NDVI_HARV_stack)
+
+##  [1] &quot;X005_HARV_ndvi_crop&quot; &quot;X037_HARV_ndvi_crop&quot; &quot;X085_HARV_ndvi_crop&quot; &quot;X133_HARV_ndvi_crop&quot;
+##  [5] &quot;X181_HARV_ndvi_crop&quot; &quot;X197_HARV_ndvi_crop&quot; &quot;X213_HARV_ndvi_crop&quot; &quot;X229_HARV_ndvi_crop&quot;
+##  [9] &quot;X245_HARV_ndvi_crop&quot; &quot;X261_HARV_ndvi_crop&quot; &quot;X277_HARV_ndvi_crop&quot; &quot;X293_HARV_ndvi_crop&quot;
+## [13] &quot;X309_HARV_ndvi_crop&quot;
+
+# use gsub to modify label names.that we&#39;ll use for the plot 
+rasterNames  &lt;- gsub(&quot;X&quot;,&quot;Day &quot;, names(NDVI_HARV_stack))
+
+# view Names
+rasterNames
+
+##  [1] &quot;Day 005_HARV_ndvi_crop&quot; &quot;Day 037_HARV_ndvi_crop&quot; &quot;Day 085_HARV_ndvi_crop&quot;
+##  [4] &quot;Day 133_HARV_ndvi_crop&quot; &quot;Day 181_HARV_ndvi_crop&quot; &quot;Day 197_HARV_ndvi_crop&quot;
+##  [7] &quot;Day 213_HARV_ndvi_crop&quot; &quot;Day 229_HARV_ndvi_crop&quot; &quot;Day 245_HARV_ndvi_crop&quot;
+## [10] &quot;Day 261_HARV_ndvi_crop&quot; &quot;Day 277_HARV_ndvi_crop&quot; &quot;Day 293_HARV_ndvi_crop&quot;
+## [13] &quot;Day 309_HARV_ndvi_crop&quot;
+
+# Remove HARV_NDVI_crop from the second part of the string 
+rasterNames  &lt;- gsub(&quot;_HARV_ndvi_crop&quot;,&quot;&quot;,rasterNames)
+
+# view names for each raster layer
+rasterNames
+
+##  [1] &quot;Day 005&quot; &quot;Day 037&quot; &quot;Day 085&quot; &quot;Day 133&quot; &quot;Day 181&quot; &quot;Day 197&quot; &quot;Day 213&quot; &quot;Day 229&quot;
+##  [9] &quot;Day 245&quot; &quot;Day 261&quot; &quot;Day 277&quot; &quot;Day 293&quot; &quot;Day 309&quot;
+</code></pre>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Instead of substituting &ldquo;x&rdquo; and
+&ldquo;_HARV_NDVI_crop&rdquo; separately, we could have used use the vertical bar character 
+( | ) to replace more than one element.
+For example &ldquo;X|_HARV&rdquo; tells R to replace all instances of both &ldquo;X&rdquo; and &ldquo;_HARV&rdquo;
+in the string. Example code to remove &ldquo;x&rdquo; an &ldquo;_HARV&hellip;&rdquo;:
+gsub(&ldquo;X|_HARV_NDVI_crop&rdquo;,&ldquo; |  &rdquo;,&ldquo;rasterNames&rdquo;) 
+</div>
+
+<p>Once the names for each band have been reassigned, we can render our plot with
+the new labels using <code>names.attr=rasterNames</code>. </p>
+
+<pre><code># use level plot to create a nice plot with one legend and a 4x4 layout.
+levelplot(NDVI_HARV_stack,
+          layout=c(4, 4), # create a 4x4 layout for the data
+          col.regions=cols, # add a color ramp
+          main=&quot;Landsat NDVI - Julian Days \nHarvard Forest 2011&quot;,
+          names.attr=rasterNames)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/create-levelplot-1.png" alt=" "/></p>
+
+<p>We can adjust the columns of our plot too using <code>layout=c(cols,rows)</code>. Below
+we adjust the layout to be a matrix of 5 columns and 3 rows.</p>
+
+<pre><code># use level plot to create a nice plot with one legend and a 4x4 layout.
+levelplot(NDVI_HARV_stack,
+          layout=c(5, 3), # create a 5x3 layout for the data
+          col.regions=cols, # add a color ramp
+          main=&quot;Landsat NDVI - Julian Days \nHarvard Forest 2011&quot;,
+          names.attr=rasterNames)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/adjust-layout-1.png" alt=" "/></p>
+
+<p>Finally, <code>scales</code> allows us to modify the x and y-axis scale. Let&#39;s simply
+remove the axis ticks from the plot with <code>scales =list(draw=FALSE)</code>.</p>
+
+<pre><code># use level plot to create a nice plot with one legend and a 4x4 layout.
+levelplot(NDVI_HARV_stack,
+          layout=c(5, 3), # create a 5x3 layout for the data
+          col.regions=cols, # add a color ramp
+          main=&quot;Landsat NDVI - Julian Days \nHarvard Forest 2011&quot;,
+          names.attr=rasterNames,
+          scales=list(draw=FALSE )) # remove axes labels &amp; ticks
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/remove-axis-ticks-1.png" alt=" "/></p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Divergent Color Ramps 
+When we used gsub to modify the tile labels we replaced the beginning of each 
+tile title with &ldquo;Day&rdquo;. A more descriptive name could be &ldquo;Julian Day&rdquo;.
+
+1. Create a plot and label each tile &ldquo;Julian Day&rdquo; with the julian day value
+following.
+2. Change the colorramp to a divergent brown to green color ramp to
+represent the data. *Hint:* Use the 
+<a href="http://www.datavis.ca/sasmac/brewerpal.html" target="_blank"> brewerpal page</a>
+to help choose a color ramp. 
+
+**Questions:**
+Does having a divergent color ramp represent the data
+better than a sequential color ramp (like &ldquo;YlGn&rdquo;)? Can you think of other data
+sets where a divergent color ramp may be best? 
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png" alt=" "/></p>
+
+</body>
+
+</html>

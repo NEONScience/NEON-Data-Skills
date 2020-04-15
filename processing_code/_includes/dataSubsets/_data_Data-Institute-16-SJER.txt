@@ -1,0 +1,14 @@
+<h3><a href="https://ndownloader.figshare.com/files/5401253"> NEON Teaching Data Subset: SJER-Data Institute 2016</a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank">National Ecological Observatory Network's </a> (NEON)
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank">San Joaquin Experimental Range field site </a>
+and processed at NEON 
+headquarters. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/5401253" class="link--button link--arrow">
+Download Dataset</a>
+
+

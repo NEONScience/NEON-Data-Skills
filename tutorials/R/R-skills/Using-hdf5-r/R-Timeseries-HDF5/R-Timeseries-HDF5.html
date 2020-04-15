@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>rhdf5 package &amp; R</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>In this tutorial, we&#39;ll work with 
+<a href="https://www.neonscience.org/data-collection/flux-tower-measurements target="_blank"> temperature data collected using sensors on a flux tower</a> 
+by 
+<a href="https://www.neonscience.org/" target="_blank">the National Ecological Observatory Network (NEON)</a>. 
+Here the data are provided in HDF5 format to allow for the exploration of this 
+format. More information about NEON temperature data can be found on the 
+<a href="http://data.neonscience.org" target="_blank">the NEON Data Portal</a>. 
+Please note that at the present time temperature data are published on the data 
+portal as a flat .csv file and not as an HDF5 file. NEON data products currently 
+released in HDF5 include eddy covariance data and remote sensing data.</p>
+
+<p>We&#39;ll examine our HDF5 file as if we knew nothing about it. We will 
+view its structure, extract metadata and visualize data contained 
+within datasets in the HDF5 file. We will also use use loops and custom 
+functions to efficiently examine data with a complex nested structure 
+using advanced tools like <code>dplyr</code>.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+
+After completing this tutorial, you will be able to:
+
+* Explore an HDF5 file and access groups and datasets 
+in R.
+* Explain the basics of manipulating big datasets using indexing, 
+loops, and dplyr.
+* Refine your data plotting skills using ggplot in R.
+* Apply a variety of data manipulation tasks including identifying data types 
+given a new dataset, string parsing, and working with & formatting date information.
+
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### R Libraries to Install:
+
+* **rhdf5**
+* **ggplot2** for plotting: install.packages(&ldquo;ggplot2&rdquo;)
+* **dplyr** for data manipulation: install.packages(&ldquo;dplyr&rdquo;)
+* **scales** for plotting dates: install.packages(&ldquo;scales&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+### Data to Download
+We will use the file below in the optional challenge activity at the end of this 
+tutorial.
+
+{% include/dataSubsets/_data_Sample-Tower-Temp-H5.html %}
+
+***
+{% include/_greyBox-wd-rscript.html %}
+***
+
+### Additional Resources
+
+Consider reviewing the documentation for the <a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
+
+</div>
+
+<h2>rhdf5 package &amp; R</h2>
+
+<p>To access HDF5 files in R, we&#39;ll use <code>rhdf5</code> which is part of the 
+<a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> suite of 
+R packages.</p>
+
+<p>It might also be useful to install 
+<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">HDFView</a> 
+which will allow you to explore the contents of an HDF5 file visually using a 
+graphic interface. </p>
+
+<pre><code># Install rhdf5 library
+#install.packages(&quot;BiocManager&quot;)
+#BiocManager::install(&quot;rhdf5&quot;)
+
+
+library(&quot;rhdf5&quot;)
+# also load ggplot2 and dplyr
+library(&quot;ggplot2&quot;)
+library(&quot;dplyr&quot;)
+# a nice R packages that helps with date formatting is scale.
+library(&quot;scales&quot;)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files
+#setwd(&quot;working-dir-path-here&quot;)
+</code></pre>
+
+<h3>HDF5 Quick Review</h3>
+
+<p>The HDF5 format is a self-contained directory structure. In HDF5 files though 
+&ldquo;directories&rdquo; are called &ldquo;<strong>groups</strong>&rdquo; and &ldquo;<strong>files</strong>&rdquo; are called &ldquo;<strong>datasets</strong>&rdquo;. 
+Each element in an hdf5 file can have metadata attached to it making HDF5 files 
+&ldquo;self-describing&rdquo;.</p>
+
+<p><a href="https://www.neonscience.org/about-hdf5" target="_blank">Read more about HDF5 in this Data Skills tutorial. </a></p>
+
+<h2>Explore the HDF5 File Structure</h2>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**The Data:** The temperature data used in this 
+tutorial were collected by a temperature sensor mounted on a National Ecological 
+Observatory Network (NEON) flux tower at the <a href="https://www.neonscience.org/field-sites/field-sites-map/OSBS" target="_blank">NEON field site - Ordway Swisher Biological Station (OSBS)</a>. 
+Learn more about 
+<a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank">flux data here.</a>
+</div>
+
+<p>Let&#39;s first explore an HDF5 file that we know nothing about using the R function, 
+<code>h5ls</code>.</p>
+
+<pre><code># Identify file path (be sure to adjust the path to match your file structure!)
+f &lt;- &quot;NEONDSTowerTemperatureData.hdf5&quot;
+# View structure of file
+h5ls(f)
+
+##                               group        name       otype   dclass  dim
+## 0                                 /   Domain_03   H5I_GROUP              
+## 1                        /Domain_03        OSBS   H5I_GROUP              
+## 2                   /Domain_03/OSBS       min_1   H5I_GROUP              
+## 3             /Domain_03/OSBS/min_1      boom_1   H5I_GROUP              
+## 4      /Domain_03/OSBS/min_1/boom_1 temperature H5I_DATASET COMPOUND 4323
+## 5             /Domain_03/OSBS/min_1      boom_2   H5I_GROUP              
+## 6      /Domain_03/OSBS/min_1/boom_2 temperature H5I_DATASET COMPOUND 4323
+## 7             /Domain_03/OSBS/min_1      boom_3   H5I_GROUP              
+## 8      /Domain_03/OSBS/min_1/boom_3 temperature H5I_DATASET COMPOUND 4323
+## 9             /Domain_03/OSBS/min_1      boom_5   H5I_GROUP              
+## 10     /Domain_03/OSBS/min_1/boom_5 temperature H5I_DATASET COMPOUND 4323
+## 11            /Domain_03/OSBS/min_1   tower_top   H5I_GROUP              
+## 12  /Domain_03/OSBS/min_1/tower_top temperature H5I_DATASET COMPOUND 4323
+## 13                  /Domain_03/OSBS      min_30   H5I_GROUP              
+## 14           /Domain_03/OSBS/min_30      boom_1   H5I_GROUP              
+## 15    /Domain_03/OSBS/min_30/boom_1 temperature H5I_DATASET COMPOUND  147
+## 16           /Domain_03/OSBS/min_30      boom_2   H5I_GROUP              
+## 17    /Domain_03/OSBS/min_30/boom_2 temperature H5I_DATASET COMPOUND  147
+## 18           /Domain_03/OSBS/min_30      boom_3   H5I_GROUP              
+## 19    /Domain_03/OSBS/min_30/boom_3 temperature H5I_DATASET COMPOUND  147
+## 20           /Domain_03/OSBS/min_30      boom_5   H5I_GROUP              
+## 21    /Domain_03/OSBS/min_30/boom_5 temperature H5I_DATASET COMPOUND  147
+## 22           /Domain_03/OSBS/min_30   tower_top   H5I_GROUP              
+## 23 /Domain_03/OSBS/min_30/tower_top temperature H5I_DATASET COMPOUND  147
+## 24                                /   Domain_10   H5I_GROUP              
+## 25                       /Domain_10        STER   H5I_GROUP              
+## 26                  /Domain_10/STER       min_1   H5I_GROUP              
+## 27            /Domain_10/STER/min_1      boom_1   H5I_GROUP              
+## 28     /Domain_10/STER/min_1/boom_1 temperature H5I_DATASET COMPOUND 4323
+## 29            /Domain_10/STER/min_1      boom_2   H5I_GROUP              
+## 30     /Domain_10/STER/min_1/boom_2 temperature H5I_DATASET COMPOUND 4323
+## 31            /Domain_10/STER/min_1      boom_3   H5I_GROUP              
+## 32     /Domain_10/STER/min_1/boom_3 temperature H5I_DATASET COMPOUND 4323
+## 33                  /Domain_10/STER      min_30   H5I_GROUP              
+## 34           /Domain_10/STER/min_30      boom_1   H5I_GROUP              
+## 35    /Domain_10/STER/min_30/boom_1 temperature H5I_DATASET COMPOUND  147
+## 36           /Domain_10/STER/min_30      boom_2   H5I_GROUP              
+## 37    /Domain_10/STER/min_30/boom_2 temperature H5I_DATASET COMPOUND  147
+## 38           /Domain_10/STER/min_30      boom_3   H5I_GROUP              
+## 39    /Domain_10/STER/min_30/boom_3 temperature H5I_DATASET COMPOUND  147
+</code></pre>
+
+<p>Note that <code>h5ls</code> returns the structure of the HDF5 file structure including the 
+group and dataset names and associated types and sizes of each object. In our file, 
+there are datasets that are <code>compound</code> in this file. Compound class means there
+are a combination of datatypes within the datasets (e.g. numbers, strings, etc)<br/>
+contained within that group.</p>
+
+<p>Also note that you can add the <code>recursive</code> variable to the <code>h5ls</code> command to set 
+the number of nested levels that the command returns. Give it a try.</p>
+
+<pre><code>#specify how many &quot;levels&quot; of nesting are returns in the command
+h5ls(f,recursive=2)
+
+##        group      name     otype dclass dim
+## 0          / Domain_03 H5I_GROUP           
+## 1 /Domain_03      OSBS H5I_GROUP           
+## 2          / Domain_10 H5I_GROUP           
+## 3 /Domain_10      STER H5I_GROUP
+
+h5ls(f,recursive=3)
+
+##             group      name     otype dclass dim
+## 0               / Domain_03 H5I_GROUP           
+## 1      /Domain_03      OSBS H5I_GROUP           
+## 2 /Domain_03/OSBS     min_1 H5I_GROUP           
+## 3 /Domain_03/OSBS    min_30 H5I_GROUP           
+## 4               / Domain_10 H5I_GROUP           
+## 5      /Domain_10      STER H5I_GROUP           
+## 6 /Domain_10/STER     min_1 H5I_GROUP           
+## 7 /Domain_10/STER    min_30 H5I_GROUP
+</code></pre>
+
+<h2>The Data Structure</h2>
+
+<p>Looking at the <code>h5ls</code> output, we see this H5 file has a nested group and dataset 
+structure. Below, we will slice out temperature data which is located within the 
+following path:
+ <code>Domain_03 --&gt; OSBS --&gt; min_1 --&gt; boom_1 --&gt; temperature</code></p>
+
+<p>Take note that this path is 4 groups &ldquo;deep&rdquo; and leads to one dataset called 
+temperature in this part of the HDF5 file as follows:</p>
+
+<ul>
+<li><strong>Domain_03</strong> - A NEON domain is an ecologically unique region. Domain 3 is 
+one of 20 regions that <a href="https://www.neonscience.org/field-sites/spatiotemporal-design" target="_blank" >NEON uses to organize its network spatially </a>.</li>
+<li><strong>OSBS</strong> - a group representing data from the <a href="https://www.neonscience.org/field-sites/field-sites-map/OSBS" target="_blank"> Ordway Swisher Biological Station (OSBS).</a></li>
+<li><strong>min_1</strong> - A group representing the mean temperature data value for every for 
+one minute in time. Temperature data are often collected at high frequencies (20 hz 
+or 20 measurements a second) or more. A typical data product derived from high 
+frequency tempearture data are an average value. In this case, all measurements 
+are averaged every minute.<br/></li>
+<li><strong>boom_1</strong> - Boom 1 is the first and lowest arm or level on the tower. Towers 
+often contain arms where the sensors are mounted, that reach out horizontally 
+away from the tower (see figure below). The tower at Ordway Swisher has a total 
+of 6 booms (booms 1-5 and the tower top). </li>
+</ul>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png"></a>
+    <figcaption>A NEON tower contains booms, or arms, that house sensors at varying 
+    heights along the tower.</figcaption>
+</figure>
+
+<pre><code># read in temperature data
+temp &lt;- h5read(f,&quot;/Domain_03/OSBS/min_1/boom_1/temperature&quot;)
+
+# view the first few lines of the data 
+head(temp)
+
+##                    date numPts     mean      min      max    variance      stdErr
+## 1 2014-04-01 00:00:00.0     60 15.06154 14.96886 15.15625 0.002655015 0.006652087
+## 2 2014-04-01 00:01:00.0     60 14.99858 14.93720 15.04274 0.001254117 0.004571866
+## 3 2014-04-01 00:02:00.0     60 15.26231 15.03502 15.56683 0.041437537 0.026279757
+## 4 2014-04-01 00:03:00.0     60 15.45351 15.38553 15.53449 0.001174759 0.004424851
+## 5 2014-04-01 00:04:00.0     60 15.35306 15.23799 15.42346 0.003526443 0.007666423
+## 6 2014-04-01 00:05:00.0     60 15.12807 15.05846 15.23494 0.003764170 0.007920616
+##   uncertainty
+## 1  0.01620325
+## 2  0.01306111
+## 3  0.05349682
+## 4  0.01286833
+## 5  0.01788372
+## 6  0.01831239
+
+# generate a quick plot of the data, type=l for &quot;line&quot;
+plot(temp$mean,type=&#39;l&#39;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/readPlotData-1.png" alt=" "/></p>
+
+<p>We can make our plot look nicer by adding date values to the x axis. However, in 
+order to list dates on the X axis, we need to assign the date field a date format 
+so that R knows how to read and organize the labels on the axis.</p>
+
+<p>Let&#39;s clean up the plot above. We can first add dates to the x axis. In order to 
+list dates, we need to specify the format that the date field is in.</p>
+
+<pre><code># First read in the time as UTC format
+temp$date &lt;- as.POSIXct(temp$date ,format = &quot;%Y-%m-%d %H:%M:%S&quot;, tz = &quot;GMT&quot;)
+
+# Create a plot using ggplot2 package
+OSBS_Plot &lt;- ggplot(temp,aes(x=date,y=mean))+
+  geom_path()+
+  ylab(&quot;Mean temperature&quot;) + 
+  xlab(&quot;Date in UTC&quot;)+
+  ggtitle(&quot;3 Days of Temperature Data at Ordway Swisher&quot;)
+
+OSBS_Plot
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plot-temp-data-1.png" alt=" "/></p>
+
+<p>Let&#39;s have a close look at this plot. Notice anything unusual with it?</p>
+
+<p>Hint: When would you expect the temperature to be the warmest during the day?</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg"></a>
+    <figcaption>In many parts of the world, we&rsquo;d expect the maximum temperature
+    to occur during late afternoon. Source: <a href="http://web.gccaz.edu/~lnewman/gph111/topic_units/temperature1/temperature/heating-curve.jpg" target="_blank"> Lynn Newman </a></figcaption>
+</figure>
+
+<p>In this case, our data are in 
+<a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" target="_blank">UTC time zone.</a> 
+The UTC time zone is a standardized time zone that does not observe daylight 
+savings time. If your data are in UTC, then you will need to convert them to 
+the local time zone where the data are collected for the dates and times to 
+make sense when you plot &amp; analyze your data. </p>
+
+<p>For example, find your local time zone on this 
+<a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">
+wikipedia page.</a> 
+How many hours difference is UTC from your local time?</p>
+
+<p>To adjust for time, we need to tell R that the time zone where the data are 
+collected is Eastern Standard time since our data were collected at OSBS. We
+can use the <code>attributes</code> function to set the time zone.</p>
+
+<pre><code># convert to local time for pretty plotting
+attributes(temp$date)$tzone &lt;- &quot;US/Eastern&quot;
+
+# now, plot the data!
+OSBS_Plot2 &lt;- ggplot(temp,aes(x=date,y=mean))+
+  geom_path()+
+  ylab(&quot;Mean temperature&quot;) + xlab(&quot;Date in Eastern Standard Time&quot;)+
+  theme_bw()+
+  ggtitle(&quot;3 Days of Temperature Data at Ordway Swisher&quot;)
+
+# let&#39;s check out the plot
+OSBS_Plot2
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/fix-time-zone-1.png" alt=" "/></p>
+
+<p>Now the temperature peaks occur mid-afternoon when we&#39;d expect them. </p>
+
+<p><a href="http://www.statmethods.net/advgraphs/ggplot2.html" target="_blank"> More on customizing plots here</a>.</p>
+
+<h3>Extracting metadata</h3>
+
+<p>Metadata can be stored directly within HDF5 files and attached to each <code>group</code> or<br/>
+<code>dataset</code> in the file - or to the file itself. To read the metadata for elements 
+in a HDF5 file in R we use the <code>h5readAttributes</code> function.</p>
+
+<p>To view the groups and datasets in our file, we will grab the nested structure, 
+five &#39;levels&#39; down gets us to the temperature dataset</p>
+
+<pre><code># view temp data on &quot;5th&quot; level
+fiu_struct &lt;- h5ls(f,recursive=5)
+
+# have a look at the structure.
+fiu_struct
+
+##                               group        name       otype   dclass  dim
+## 0                                 /   Domain_03   H5I_GROUP              
+## 1                        /Domain_03        OSBS   H5I_GROUP              
+## 2                   /Domain_03/OSBS       min_1   H5I_GROUP              
+## 3             /Domain_03/OSBS/min_1      boom_1   H5I_GROUP              
+## 4      /Domain_03/OSBS/min_1/boom_1 temperature H5I_DATASET COMPOUND 4323
+## 5             /Domain_03/OSBS/min_1      boom_2   H5I_GROUP              
+## 6      /Domain_03/OSBS/min_1/boom_2 temperature H5I_DATASET COMPOUND 4323
+## 7             /Domain_03/OSBS/min_1      boom_3   H5I_GROUP              
+## 8      /Domain_03/OSBS/min_1/boom_3 temperature H5I_DATASET COMPOUND 4323
+## 9             /Domain_03/OSBS/min_1      boom_5   H5I_GROUP              
+## 10     /Domain_03/OSBS/min_1/boom_5 temperature H5I_DATASET COMPOUND 4323
+## 11            /Domain_03/OSBS/min_1   tower_top   H5I_GROUP              
+## 12  /Domain_03/OSBS/min_1/tower_top temperature H5I_DATASET COMPOUND 4323
+## 13                  /Domain_03/OSBS      min_30   H5I_GROUP              
+## 14           /Domain_03/OSBS/min_30      boom_1   H5I_GROUP              
+## 15    /Domain_03/OSBS/min_30/boom_1 temperature H5I_DATASET COMPOUND  147
+## 16           /Domain_03/OSBS/min_30      boom_2   H5I_GROUP              
+## 17    /Domain_03/OSBS/min_30/boom_2 temperature H5I_DATASET COMPOUND  147
+## 18           /Domain_03/OSBS/min_30      boom_3   H5I_GROUP              
+## 19    /Domain_03/OSBS/min_30/boom_3 temperature H5I_DATASET COMPOUND  147
+## 20           /Domain_03/OSBS/min_30      boom_5   H5I_GROUP              
+## 21    /Domain_03/OSBS/min_30/boom_5 temperature H5I_DATASET COMPOUND  147
+## 22           /Domain_03/OSBS/min_30   tower_top   H5I_GROUP              
+## 23 /Domain_03/OSBS/min_30/tower_top temperature H5I_DATASET COMPOUND  147
+## 24                                /   Domain_10   H5I_GROUP              
+## 25                       /Domain_10        STER   H5I_GROUP              
+## 26                  /Domain_10/STER       min_1   H5I_GROUP              
+## 27            /Domain_10/STER/min_1      boom_1   H5I_GROUP              
+## 28     /Domain_10/STER/min_1/boom_1 temperature H5I_DATASET COMPOUND 4323
+## 29            /Domain_10/STER/min_1      boom_2   H5I_GROUP              
+## 30     /Domain_10/STER/min_1/boom_2 temperature H5I_DATASET COMPOUND 4323
+## 31            /Domain_10/STER/min_1      boom_3   H5I_GROUP              
+## 32     /Domain_10/STER/min_1/boom_3 temperature H5I_DATASET COMPOUND 4323
+## 33                  /Domain_10/STER      min_30   H5I_GROUP              
+## 34           /Domain_10/STER/min_30      boom_1   H5I_GROUP              
+## 35    /Domain_10/STER/min_30/boom_1 temperature H5I_DATASET COMPOUND  147
+## 36           /Domain_10/STER/min_30      boom_2   H5I_GROUP              
+## 37    /Domain_10/STER/min_30/boom_2 temperature H5I_DATASET COMPOUND  147
+## 38           /Domain_10/STER/min_30      boom_3   H5I_GROUP              
+## 39    /Domain_10/STER/min_30/boom_3 temperature H5I_DATASET COMPOUND  147
+
+# now we can use this object to pull group paths from our file!
+fiu_struct[3,1]
+
+## [1] &quot;/Domain_03/OSBS&quot;
+
+## Let&#39;s view the metadata for the OSBS group
+OSBS  &lt;- h5readAttributes(f,fiu_struct[3,1])
+
+# view the attributes
+OSBS
+
+## $LatLon
+## [1] &quot;29.68927/-81.99343&quot;
+## 
+## $`Site Name`
+## [1] &quot;Ordway-Swisher Biological Station Site&quot;
+</code></pre>
+
+<p>Now we can grab the latitude and longitude for our data from the attributes. </p>
+
+<pre><code># view lat/long
+OSBS$LatLon
+
+## [1] &quot;29.68927/-81.99343&quot;
+</code></pre>
+
+<p>Note, for continued use we may want to convert the format from decimal degrees 
+to a different format as this format is more difficult to extract from R!</p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Further exploration
+
+1. Explore the H5 file further. View attributes for other groups within the file. 
+If you have HDFView installed, compare what you see in R to what you see 
+in the file visually using the HDFviewer.
+
+2. How would you rewrite the metadata for each site to make it more user friendly? 
+Discuss with your neighbor. Map out an H5 file that might be structured in a 
+better way to store your data.
+
+</div> 
+
+<h2>Workflows to Extract and Plot From Multiple Groups</h2>
+
+<p>The NEON HDF5 file that we are working with contains temperature data collected 
+for three days (a very small subset of the available data) by one sensor. What if 
+we wanted to create a plot that compared data across sensors or sites? To do this, 
+we need to compare data stored within different nested <code>groups</code> within our H5 file.</p>
+
+<h3>Complex Data</h3>
+
+<p>Data are from different sensors located at different levels at one NEON Field Site,
+this multi-nested data can lead to a complex structure. Likely, you&#39;ll want to 
+work with data from multiple sensors or levels to address your research questions. </p>
+
+<p>Let&#39;s first compare data across temperature sensors located at one site. First, we&#39;ll 
+loop through the HDF5 file and build a new data frame that contains temperature 
+data for each boom on the tower. We&#39;ll use the 1-minute averaged data from the NEON 
+field site: Ordway Swisher Biological Station located in Florida.</p>
+
+<pre><code># use dplyr to subset data by dataset name (temperature)
+# and site / 1 minute average
+newStruct &lt;- fiu_struct %&gt;% filter(grepl(&quot;temperature&quot;,name),
+                                   grepl(&quot;OSBS/min_1&quot;,group))
+
+#create final paths to access each temperature dataset
+paths &lt;- paste(newStruct$group,newStruct$name,sep=&quot;/&quot;)
+
+#create a new, empty data.frame
+OSBS_temp &lt;- data.frame()
+</code></pre>
+
+<p>The above code uses <code>dplyr</code> to filter data. Let&#39;s break the code down. 
+<a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank">
+Read more about the <code>dplyr</code> package here</a></p>
+
+<ul>
+<li><code>fiu_struct</code>, defined above in the code, is the structure of our HDF5 file 
+that we returned using <code>h5ls</code>.</li>
+<li><code>grepl</code> looks for a text pattern. Type <code>help(grepl)</code> to learn more. If we want 
+to return all &ldquo;paths&rdquo; in the HDF file that contain the word <code>temperature</code> in 
+the <code>$name</code> column, then we type <code>grepl(&quot;temperature&quot;,name)</code></li>
+<li><code>filter</code> allows us to look for multiple strings in one command. <code>help(filter)</code></li>
+<li><code>%&gt;%</code> is a <code>pipe</code> - syntax specific to the <code>dplyr</code> package. It allows you to 
+&#39;chain&#39; or combine multiple queries together into one, concise, line of code. </li>
+</ul>
+
+<p>Pulling this together, type, <code>fiu_struct %&gt;% filter(grepl(&quot;OSBS/min_1&quot;,group))</code> 
+in to the R console. What happens?</p>
+
+<p>Next, we will create a loop that will populate the final <code>data.frame</code> that contains 
+information for all booms in the site that we want to plot.</p>
+
+<pre><code>#loop through each temp dataset and add to data.frame
+for(i in paths){
+  datasetName &lt;- i
+  print(datasetName) 
+  #read in each dataset in the H5 list
+  dat &lt;- h5read(f,datasetName)
+  # add boom name to data.frame
+  print(strsplit(i,&quot;/&quot;)[[1]][5]) 
+  dat$boom &lt;- strsplit(i,&quot;/&quot;)[[1]][5]
+  OSBS_temp &lt;- rbind(OSBS_temp,dat)
+}
+
+## [1] &quot;/Domain_03/OSBS/min_1/boom_1/temperature&quot;
+## [1] &quot;boom_1&quot;
+## [1] &quot;/Domain_03/OSBS/min_1/boom_2/temperature&quot;
+## [1] &quot;boom_2&quot;
+## [1] &quot;/Domain_03/OSBS/min_1/boom_3/temperature&quot;
+## [1] &quot;boom_3&quot;
+## [1] &quot;/Domain_03/OSBS/min_1/boom_5/temperature&quot;
+## [1] &quot;boom_5&quot;
+## [1] &quot;/Domain_03/OSBS/min_1/tower_top/temperature&quot;
+## [1] &quot;tower_top&quot;
+</code></pre>
+
+<p>The loop above iterates through the file and grabs the temperature data for each 
+boom in the 1 minute data series for Ordway. It also adds the boom name to the 
+end of the <code>data.frame</code> as follows: </p>
+
+<ul>
+<li><code>for i in path$path</code>: loop through each <code>path</code> in the <code>path</code> object. NOTE: 
+the boom 4 sensor was not operational when this HDF5 file was created, which is 
+why there is no boom 4 in our list! Thus we will need do iterate through the 
+data 5 times instead of 6.</li>
+<li><code>dat &lt;- h5read(f,i)</code>: read in the temperature dataset from our hdf5 file (f) 
+for path <code>i</code>.</li>
+<li> <code>dat$boom &lt;- strsplit(i,&quot;/&quot;)[[1]][5]: add the boom name to a column called 
+</code>boom in our data.frame</li>
+<li> <code>ord_temp &lt;- rbind(ord_temp,dat)</code>: append dataset to the end of the data.frame</li>
+</ul>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Modify Loops
+
+Modify the loop above so that it adds both the boom name, the site name and 
+the data type (1 minute) as columns in our data frame.
+
+</div>
+
+<h3>Cleaning Up Dates</h3>
+
+<p>The dates field in our data frame aren&#39;t imported by default in &ldquo;date format&rdquo;. 
+We need to tell R to format the information as a date. Formatting out date fields 
+also allows us to properly label the x axis of our plots.</p>
+
+<p>Once the dates have been formatted we can create a plot with cleaner X axis labels.</p>
+
+<pre><code>#fix the dates
+OSBS_temp$date &lt;- as.POSIXct(OSBS_temp$date,format = &quot;%Y-%m-%d %H:%M:%S&quot;, tz = &quot;EST&quot;)
+
+#plot the data
+OSBS_allPlot &lt;-ggplot(OSBS_temp,aes(x=date,y=mean,group=boom,colour=boom))+
+  geom_path()+
+  ylab(&quot;Mean temperature&quot;) + xlab(&quot;Date&quot;)+
+  theme_bw()+
+  ggtitle(&quot;3 Days of temperature data at Ordway Swisher&quot;)+
+  scale_x_datetime(breaks=pretty_breaks(n=4))
+
+OSBS_allPlot
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plotBoomData-1.png" alt=" "/></p>
+
+<h2>Data from different sites</h2>
+
+<p>Next, let&#39;s compare temperature at two different sites: Ordway Swisher Biological 
+Station (OSBS) located in Florida and North Sterling (STER) located in north 
+central Colorado. This time we&#39;ll plot data averaged every 30 minutes instead of 
+every minute. We&#39;ll need to modify our search strings a bit. But we can still 
+re-use most of the code that we just built.</p>
+
+<pre><code># grab just the paths to temperature data, 30 minute average
+pathStrux &lt;- fiu_struct %&gt;% filter(grepl(&quot;temperature&quot;,name), 
+                                   grepl(&quot;min_30&quot;,group)) 
+# create final paths
+paths &lt;- paste(pathStrux$group,pathStrux$name,sep=&quot;/&quot;)
+
+# create empty dataframe
+temp_30 &lt;- data.frame()
+
+for(i in paths){
+  #create columns for boom name and site name
+  boom &lt;-  strsplit(i,&quot;/&quot;)[[1]][5]
+  site &lt;- strsplit(i,&quot;/&quot;)[[1]][3]
+  dat &lt;- h5read(f,i)
+  dat$boom &lt;- boom
+  dat$site &lt;- site
+ temp_30 &lt;- rbind(temp_30,dat)
+}
+
+# Assign the date field to a &quot;date&quot; format in R
+temp_30$date &lt;- as.POSIXct(temp_30$date,format = &quot;%Y-%m-%d %H:%M:%S&quot;)
+
+# generate a mean temperature for every date across booms
+temp30_sum &lt;- temp_30 %&gt;% group_by(date,site) %&gt;% summarise(mean = mean(mean))
+
+# Create plot!
+compPlot &lt;- ggplot(temp30_sum,aes(x=date,y=mean,group=site,colour=site)) + 
+  geom_path()+ylab(&quot;Mean temperature, 30 Minute Average&quot;) + 
+  xlab(&quot;Date&quot;)+
+  theme_bw()+
+  ggtitle(&quot;Comparison of OSBS (FL) vs STER (CO)&quot;) +
+  scale_x_datetime( breaks=pretty_breaks(n=4))
+
+compPlot
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/compareGroupData-1.png" alt=" "/></p>
+
+</body>
+
+</html>

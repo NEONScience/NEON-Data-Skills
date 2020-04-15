@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Intro to dplyr</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+
+After completing this tutorial, you will be able to:
+
+* Filter data, alone and combined with simple pattern matching grepl().
+* Use the group_by function in dplyr.
+* Use the summarise function in dplyr.
+* &ldquo;Pipe&rdquo;&ldquo; functions using dplyr syntax.
+
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities**: install.packages(&quot;neonUtilities&rdquo;) tools for working with NEON data
+* **dplyr**: install.packages(&ldquo;dplyr&rdquo;) used for data manipulation
+
+</div>
+
+<h2>Intro to dplyr</h2>
+
+<p>When working with data frames in R, it is often useful to manipulate and 
+summarize data. The <code>dplyr</code> package in R offers one of the most comprehensive 
+group of functions to perform common manipulation tasks. In addition, the 
+<code>dplyr</code> functions are often of a simpler syntax than most other data manipulation 
+functions in R.</p>
+
+<h2>Elements of dplyr</h2>
+
+<p>There are several elements of <code>dplyr</code> that are unique to the library, and that
+do very cool things!</p>
+
+<h3>Functions for manipulating data</h3>
+
+<p>The text below was exerpted from the
+<a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank"> R CRAN dpylr vignettes.</a></p>
+
+<p>Dplyr aims to provide a function for each basic verb of data manipulating, like:</p>
+
+<ul>
+<li><code>filter()</code> (and <code>slice()</code>)
+
+<ul>
+<li>filter rows based on values in specified columns</li>
+</ul></li>
+<li><code>arrange()</code>
+
+<ul>
+<li>sort data by values in specified columns </li>
+</ul></li>
+<li><code>select()</code> (and <code>rename()</code>)
+
+<ul>
+<li>view and work with data from only specified columns</li>
+</ul></li>
+<li><code>distinct()</code>
+
+<ul>
+<li>view and work with only unique values from specified columns</li>
+</ul></li>
+<li><code>mutate()</code> (and <code>transmute()</code>)
+
+<ul>
+<li>add new data to the data frame</li>
+</ul></li>
+<li><code>summarise()</code>
+
+<ul>
+<li>calculate specified summary statistics on data</li>
+</ul></li>
+<li><code>sample_n()</code> and <code>sample_frac()</code>
+
+<ul>
+<li>return a random sample of rows</li>
+</ul></li>
+</ul>
+
+<h3>Format of function calls</h3>
+
+<p>The single table verb functions share these features:</p>
+
+<ul>
+<li>The first argument is a <code>data.frame</code> (or a dplyr special class tbl_df).
+
+<ul>
+<li><code>dplyr</code> can work with data.frames as is, but if you&#39;re dealing with large
+data it&#39;s worthwhile to convert them to a tbl_df, to avoid printing 
+a lot of data to the screen.</li>
+</ul></li>
+<li>The subsequent arguments describe how to manipulate the data (e.g., based on
+which columns, using which summary statistics), and you can refer to columns
+directly (without using $).</li>
+<li>The result is a new <code>data.frame</code>.</li>
+<li>Function calls do not generate &#39;side-effects&#39;; you always have to assign the
+results to an object</li>
+</ul>
+
+<h3>Grouped operations</h3>
+
+<p>Certain functions (e.g., group_by, summarise, and other &#39;aggregate functions&#39;)
+allow you to get information for groups of data, in one fell swoop. This is like 
+performing database functions with knowing SQL or any other db specific code. 
+Powerful stuff!</p>
+
+<h3>Piping</h3>
+
+<p>We often need to get a subset of data using one function, and then use 
+another function to do something with that subset (and we may do this multiple 
+times). This leads to nesting functions, which can get messy and hard to keep 
+track of. Enter &#39;piping&#39;, dplyr&#39;s way of feeding the output of one function into 
+another, and so on, without the hassleof parentheses and brackets. Piping looks 
+like:</p>
+
+<pre><code>data frame %&gt;%
+    function to apply first %&gt;%
+        function to apply second %&gt;%
+            function to apply third
+</code></pre>
+
+<p>For example, if we want to find the mean body weight of male mice, we&#39;d do this:</p>
+
+<pre><code>myMammalData %&gt;%
+    filter(sex==&#39;m&#39;) %&gt;%
+        summarise (mean_weight = mean(weight))
+</code></pre>
+
+<p>This is read as &ldquo;from data frame <code>myMammalData</code>, select only males and return 
+the mean weight as a new list <code>mean_weight</code>&rdquo;.</p>
+
+<h2>Download Small Mammal Data</h2>
+
+<p>Before we get started, we will need to download our data to investigate. To 
+do so, we will use the <code>loadByProduct()</code> function from the <code>neonUtilities</code> 
+package to download data straight from the NEON servers. To learn more about 
+this function, please see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore NEON data tutorial here.</a></p>
+
+<p>Let&#39;s look at the NEON small mammal capture data from Harvard Forest (within 
+Domain 01) for all of 2014. This site is located in the heart of the Lyme 
+disease epidemic.</p>
+
+<p><a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank">Read more about NEON terrestrial measurements here.</a></p>
+
+<pre><code># load packages
+library(dplyr)
+library(neonUtilities)
+
+# load the NEON small mammal capture data
+loadData &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, site = &quot;HARV&quot;, 
+                 startdate = &quot;2014-01&quot;, enddate = &quot;2014-12&quot;, 
+                 check.size = T) # Console requires your response!
+
+# if you&#39;d like, check out the data
+#str(myData)
+</code></pre>
+
+<p>The <code>loadByProduct()</code> function calls the NEON server, downloads the monthly 
+data files, and &#39;stacks&#39; them together to form two tables of data called 
+&#39;mam_pertrapnight&#39; and &#39;mam_perplotnight&#39;. It also saves the readme file, 
+explanations of variables, and validation metadata, and combines these all into 
+a single &#39;list&#39; that we called &#39;loadData&#39;. The only part of this list that we 
+really need for this tutorial is the &#39;mam_pertrapnight&#39; table, so let&#39;s extract 
+just that one and call it &#39;myData&#39;.</p>
+
+<pre><code>myData &lt;- loadData$mam_pertrapnight
+
+class(myData) # Confirm that &#39;myData&#39; is a data.frame
+
+## [1] &quot;data.frame&quot;
+</code></pre>
+
+<h2>Use dplyr</h2>
+
+<p>For the rest of this tutorial, we are only going to be working with three 
+variables within &#39;myData&#39;:</p>
+
+<ul>
+<li><code>scientificName</code> a string of &ldquo;Genus species&rdquo;</li>
+<li><code>sex</code> a string with &ldquo;F&rdquo;, &ldquo;M&rdquo;, or &ldquo;U&rdquo; </li>
+<li><code>identificationQualifier</code> a string noting uncertainty in the species identification</li>
+</ul>
+
+<h2>filter()</h2>
+
+<p>This function: </p>
+
+<ul>
+<li>extracts only a subset of rows from a data frame according to specified
+conditions</li>
+<li>is similar to the base function <code>subset()</code>, but with simpler syntax</li>
+<li>inputs: data object, any number of conditional statements on the named columns of the data object</li>
+<li>output: a data object of the same class as the input object (e.g., 
+data.frame in, data.frame out) with only those rows that meet the conditions</li>
+</ul>
+
+<p>For example, let&#39;s create a new dataframe that contains only female <em>Peromyscus 
+mainculatus</em>, one of the key small mammal players in the life cycle of Lyme 
+disease-causing bacterium.</p>
+
+<pre><code># filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
+# two equals signs (==) signifies &quot;is&quot;
+data_PeroManicFemales &lt;- filter(myData, 
+                   scientificName == &#39;Peromyscus maniculatus&#39;, 
+                   sex == &#39;F&#39;)
+
+# Note how we were able to put multiple conditions into the filter statement,
+# pretty cool!
+</code></pre>
+
+<p>So we have a dataframe with our female <em>P. mainculatus</em> but how many are there? </p>
+
+<pre><code># how many female P. maniculatus are in the dataset
+# would could simply count the number of rows in the new dataset
+nrow(data_PeroManicFemales)
+
+## [1] 98
+
+# or we could write is as a sentence
+print(paste(&#39;In 2014, NEON technicians captured&#39;,
+                   nrow(data_PeroManicFemales),
+                   &#39;female Peromyscus maniculatus at Harvard Forest.&#39;,
+                   sep = &#39; &#39;))
+
+## [1] &quot;In 2014, NEON technicians captured 98 female Peromyscus maniculatus at Harvard Forest.&quot;
+</code></pre>
+
+<p>That&#39;s awesome that we can quickly and easily count the number of female 
+Peromyscus maniculatus that were captured at Harvard Forest in 2014. However, 
+there is a slight problem. There are two Peromyscus species that are common 
+in Harvard Forest: Peromyscus maniculatus (deer mouse) and Peromyscus leucopus 
+(white-footed mouse). These species are difficult to distinguish in the field, 
+leading to some uncertainty in the identification, which is noted in the 
+&#39;identificationQualifier&#39; data field by the term &ldquo;cf. species&rdquo; or &ldquo;aff. species&rdquo;.
+(For more information on these terms and &#39;open nomenclature&#39; please <a href="https://en.wikipedia.org/wiki/Open_nomenclature" target="_blank">see this great Wiki article here</a>).
+When the field technician is certain of their identification (or if they forget 
+to note their uncertainty), identificationQualifier will be <code>NA</code>. Let&#39;s run the 
+same code as above, but this time specifying that we want only those observations 
+that are unambiguous identifications.</p>
+
+<pre><code># filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
+# two equals signs (==) signifies &quot;is&quot;
+data_PeroManicFemalesCertain &lt;- filter(myData, 
+                   scientificName == &#39;Peromyscus maniculatus&#39;, 
+                   sex == &#39;F&#39;,
+                   identificationQualifier ==&quot;NA&quot;)
+
+# Count the number of un-ambiguous identifications
+nrow(data_PeroManicFemalesCertain)
+
+## [1] 0
+</code></pre>
+
+<p>Woah! So every single observation of a Peromyscus maniculatus had some level 
+of uncertainty that the individual may actually be Peromyscus leucopus. This 
+is understandable given the difficulty of field identification for these species. 
+Given this challenge, it will be best for us to consider these mice at the genus 
+level. We can accomplish this by searching for only the genus name in the 
+&#39;scientificName&#39; field using the <code>grepl()</code> function.</p>
+
+<h2>grepl()</h2>
+
+<p>This is a function in the base package (e.g., it isn&#39;t part of <code>dplyr</code>) that is 
+part of the suite of Regular Expressions functions. <code>grepl</code> uses regular 
+expressions to match patterns in character strings. Regular expressions offer 
+very powerful and useful tricks for data manipulation. They can be complicated 
+and therefore are a challenge to learn, but well worth it! </p>
+
+<p>Here, we present a very simple example.</p>
+
+<ul>
+<li>inputs: pattern to match, character vector to search for a match</li>
+<li>output: a logical vector indicating whether the pattern was found within 
+each element of the input character vector</li>
+</ul>
+
+<p>Let&#39;s use <code>grepl</code> to learn more about our possible disease vectors. In reality, 
+all species of <em>Peromyscus</em> are viable players in Lyme disease transmission, and 
+they are difficult to distinguise in a field setting, so we really should be looking
+at all species of <em>Peromyscus</em>. Since we don&#39;t have genera split out as a separate 
+field, we have to search within the <code>scientificName</code> string for the genus &ndash; this is 
+a simple example of pattern matching.</p>
+
+<p>We can use the <code>dplyr</code> function <code>filter()</code> in combination with the base function
+<code>grepl()</code> to accomplish this.</p>
+
+<pre><code># combine filter &amp; grepl to get all Peromyscus (a part of the 
+# scientificName string)
+data_PeroFemales &lt;- filter(myData,
+                   grepl(&#39;Peromyscus&#39;, scientificName),
+                   sex == &#39;F&#39;)
+
+# how many female Peromyscus are in the dataset
+print(paste(&#39;In 2014, NEON technicians captured&#39;,
+                   nrow(data_PeroFemales),
+                   &#39;female Peromyscus spp. at Harvard Forest.&#39;,
+                   sep = &#39; &#39;))
+
+## [1] &quot;In 2014, NEON technicians captured 618 female Peromyscus spp. at Harvard Forest.&quot;
+</code></pre>
+
+<h2>group_by() + summarise()</h2>
+
+<p>An alternative to using the filter function to subset the data (and make a new 
+data object in the process), is to calculate summary statistics based on some 
+grouping factor. We&#39;ll use <code>group_by()</code>, which does basically the same thing as 
+SQL or other tools for interacting with relational databases. For those 
+unfamiliar with SQL, no worries - <code>dplyr</code> provides lots of additional 
+functionality for working with databases (local and remote) that does not 
+require knowledge of SQL. How handy! </p>
+
+<p>The <code>group_by()</code> function in <code>dplyr</code> allows you to perform functions on a subset 
+of a dataset without having to create multiple new objects or construct <code>for()</code> 
+loops. The combination of <code>group_by()</code> and <code>summarise()</code> are great for 
+generating simple summaries (counts, sums) of grouped data. </p>
+
+<p>NOTE: Be continentious about using <code>summarise</code> with other summary functions! You
+need to think about weighting for means and variances, and <code>summarize</code> doesn&#39;t 
+work precisely for medians if there is any missing data (e.g., if there was no value
+recorded, maybe it was for a good reason!).</p>
+
+<p>Continuing with our small mammal data, since the diversity of the entire small 
+mammal community has been shown to impact disease dynamics among the key 
+reservoir species, we really want to know more about the demographics of the 
+whole community. We can quickly generate counts by species and sex in 2 lines of
+code, using <code>group_by</code> and <code>summarise</code>.</p>
+
+<pre><code># how many of each species &amp; sex were there?
+# step 1: group by species &amp; sex
+dataBySpSex &lt;- group_by(myData, scientificName, sex)
+
+# step 2: summarize the number of individuals of each using the new df
+countsBySpSex &lt;- summarise(dataBySpSex, n_individuals = n())
+
+# view the data (just top 10 rows)
+head(countsBySpSex, 10)
+
+## # A tibble: 10 x 3
+## # Groups:   scientificName [5]
+##    scientificName          sex   n_individuals
+##    &lt;chr&gt;                   &lt;chr&gt;         &lt;int&gt;
+##  1 Blarina brevicauda      F                60
+##  2 Blarina brevicauda      M                 8
+##  3 Blarina brevicauda      U                22
+##  4 Blarina brevicauda      &lt;NA&gt;             19
+##  5 Glaucomys volans        M                 1
+##  6 Mammalia sp.            U                 1
+##  7 Mammalia sp.            &lt;NA&gt;              1
+##  8 Microtus pennsylvanicus F                 2
+##  9 Myodes gapperi          F               103
+## 10 Myodes gapperi          M               109
+</code></pre>
+
+<p>Note: the output of step 1 (<code>dataBySpSex</code>) does not look any different than the 
+original dataframe (<code>myData</code>), but the application of subsequent functions (e.g.,
+summarise) to this new dataframe will produce distinctly different results than 
+if you tried the same operations on the original. Try it if you want to see the
+difference! This is because the <code>group_by()</code> function converted <code>dataBySpSex</code> into 
+a &ldquo;grouped_df&rdquo; rather than just a &ldquo;data.frame&rdquo;. In order to confirm this, try using 
+the <code>class()</code> function on both <code>myData</code> and <code>dataBySpSex</code>. You can also read the 
+help documentation for this function by running the code: <code>?group_by()</code></p>
+
+<pre><code># View help file for group_by() function
+?group_by()
+
+# View class of &#39;myData&#39; object
+class(myData)
+
+## [1] &quot;data.frame&quot;
+
+# View class of &#39;dataBySpSex&#39; object
+class(dataBySpSex)
+
+## [1] &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+</code></pre>
+
+<h2>Pipe functions together</h2>
+
+<p>We created multiple new data objects during our explorations of <code>dplyr</code> 
+functions, above. While this works, we can produce the same results more 
+efficiently by chaining functions together and creating only one new data object
+that encapsulates all of the previously sought information: <code>filter</code> on only 
+females, <code>grepl</code> to get only Peromyscus spp., <code>group_by</code> individual species, and
+<code>summarise</code> the numbers of individuals.</p>
+
+<pre><code># combine several functions to get a summary of the numbers of individuals of 
+# female Peromyscus species in our dataset.
+# remember %&gt;% are &quot;pipes&quot; that allow us to pass information from one function 
+# to the next. 
+
+dataBySpFem &lt;- myData %&gt;%
+                 filter(grepl(&#39;Peromyscus&#39;, scientificName), sex == &quot;F&quot;) %&gt;%
+                   group_by(scientificName) %&gt;%
+                      summarise(n_individuals = n()) 
+
+# view the data
+dataBySpFem
+
+## # A tibble: 3 x 2
+##   scientificName         n_individuals
+##   &lt;chr&gt;                          &lt;int&gt;
+## 1 Peromyscus leucopus              515
+## 2 Peromyscus maniculatus            98
+## 3 Peromyscus sp.                     5
+</code></pre>
+
+<p>Cool!  </p>
+
+<h2>Base R only</h2>
+
+<p>So that is nice, but we had to install a new package <code>dplyr</code>. You might ask, 
+&ldquo;Is it really worth it to learn new commands if I can do this is base R.&rdquo;  While
+we think &ldquo;yes&rdquo;, why don&#39;t you see for yourself.  Here is the base R code needed 
+to accomplish the same task.</p>
+
+<pre><code># For reference, the same output but using R&#39;s base functions
+
+# First, subset the data to only female Peromyscus
+dataFemPero  &lt;- myData[myData$sex==&#39;F&#39; &amp; 
+                   grepl(&#39;Peromyscus&#39;,myData$scientificName),]
+
+# Option 1 --------------------------------
+# Use aggregate and then rename columns
+dataBySpFem_agg &lt;-aggregate(dataFemPero$sex ~ dataFemPero$scientificName, 
+                   data = dataFemPero, FUN = length)
+names(dataBySpFem_agg) &lt;- c(&#39;scientificName&#39;,&#39;n_individuals&#39;)
+
+# view output
+dataBySpFem_agg
+
+##           scientificName n_individuals
+## 1    Peromyscus leucopus           515
+## 2 Peromyscus maniculatus            98
+## 3         Peromyscus sp.             5
+
+# Option 2 --------------------------------------------------------
+# Do it by hand
+
+# Get the unique scientificNames in the subset
+sppInDF &lt;- unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificName)])
+
+# Use a loop to calculate the numbers of individuals of each species
+sciName &lt;- vector(); numInd &lt;- vector()
+for (i in sppInDF){
+  sciName &lt;- c(sciName,i)
+  numInd &lt;- c(numInd, length(which(dataFemPero$scientificName==i)))
+}
+
+#Create the desired output data frame
+dataBySpFem_byHand &lt;- data.frame(&#39;scientificName&#39;=sciName, 
+                   &#39;n_individuals&#39;=numInd)
+
+# view output
+dataBySpFem_byHand
+
+##           scientificName n_individuals
+## 1    Peromyscus leucopus           515
+## 2 Peromyscus maniculatus            98
+## 3         Peromyscus sp.             5
+</code></pre>
+
+</body>
+
+</html>

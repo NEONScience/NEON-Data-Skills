@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Read &amp; Plot Image</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>In this tutorial, you will learn how to </p>
+
+<ol>
+<li>perform basic image processing and </li>
+<li>estimate image haziness as an indication of fog, cloud or other natural or artificial factors using the <code>hazer</code>R package.</li>
+</ol>
+
+<h2>Read &amp; Plot Image</h2>
+
+<p>We will use several packages in this tutorial. All are available from CRAN.</p>
+
+<pre><code># load packages
+library(hazer)
+library(jpeg)
+library(data.table)
+</code></pre>
+
+<p>Before we start the image processing steps, let&#39;s read in and plot an image. This
+image is an example image that comes with the <em>hazer</em> package. </p>
+
+<pre><code># read the path to the example image
+jpeg_file &lt;- system.file(package = &#39;hazer&#39;, &#39;pointreyes.jpg&#39;)
+
+# read the image as an array
+rgb_array &lt;- jpeg::readJPEG(jpeg_file)
+
+# plot the RGB array on the active device panel
+
+
+# first set the margin in this order:(bottom, left, top, right)
+par(mar=c(0,0,3,0))  
+plotRGBArray(rgb_array, bty = &#39;n&#39;, main = &#39;Point Reyes National Seashore&#39;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/read-image-1.png" alt=" "/></p>
+
+<p>When we work with images, all data we work with is generally on the scale of each
+individual pixel in the image. Therefore, for large images we will be working with
+large matrices that hold the value for each pixel. Keep this in mind before opening 
+some of the matrices we&#39;ll be creating this tutorial as it can take a while for 
+them to load. </p>
+
+<h2>Histogram of RGB channels</h2>
+
+<p>A histogram of the colors can be useful to understanding what our image is made
+up of. Using the <code>density()</code> function from the base <em>stats</em> package, we can extract 
+density distribution of each color channel.</p>
+
+<pre><code># color channels can be extracted from the matrix
+red_vector &lt;- rgb_array[,,1]
+green_vector &lt;- rgb_array[,,2]
+blue_vector &lt;- rgb_array[,,3]
+
+# plotting 
+par(mar=c(5,4,4,2)) 
+plot(density(red_vector), col = &#39;red&#39;, lwd = 2, 
+         main = &#39;Density function of the RGB channels&#39;, ylim = c(0,5))
+lines(density(green_vector), col = &#39;green&#39;, lwd = 2)
+lines(density(blue_vector), col = &#39;blue&#39;, lwd = 2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/histogram-1.png" alt=" "/></p>
+
+<p>In <em>hazer</em> we can also extract three basic elements of an RGB image :</p>
+
+<ol>
+<li>Brightness</li>
+<li>Darkness</li>
+<li>Contrast</li>
+</ol>
+
+<h2>Brightness</h2>
+
+<p>The brightness matrix comes from the maximum value of the R, G, or B channel. We 
+can extract and show the brightness matrix using the <code>getBrightness()</code> function. </p>
+
+<pre><code># extracting the brightness matrix
+brightness_mat &lt;- getBrightness(rgb_array)
+
+# unlike the RGB array which has 3 dimensions, the brightness matrix has only two 
+# dimensions and can be shown as a grayscale image,
+# we can do this using the same plotRGBArray function
+par(mar=c(0,0,3,0))
+plotRGBArray(brightness_mat, bty = &#39;n&#39;, main = &#39;Brightness matrix&#39;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-1.png" alt=" "/></p>
+
+<p>Here the grayscale is used to show the value of each pixel&#39;s maximum brightness 
+of the R, G or B color channel. </p>
+
+<p>To extract a single brightness value for the image, depending on our needs we can 
+perform some statistics or we can just use the mean of this matrix. </p>
+
+<pre><code># the main quantiles
+quantile(brightness_mat)
+
+#&gt;         0%        25%        50%        75%       100% 
+#&gt; 0.09019608 0.43529412 0.62745098 0.80000000 0.91764706
+
+
+# create histogram
+par(mar=c(5,4,4,2))
+hist(brightness_mat)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-adv-1.png" alt=" "/></p>
+
+<p>Why are we getting so many images up in the high range of the brightness? Where
+does this correlate to on the RGB image? </p>
+
+<h2>Darkness</h2>
+
+<p>Darkness is determined by the minimum of the R, G or B color channel.
+Similarly, we can extract and show the darkness matrix using the <code>getDarkness()</code> function.</p>
+
+<pre><code># extracting the darkness matrix
+darkness_mat &lt;- getDarkness(rgb_array)
+
+# the darkness matrix has also two dimensions and can be shown as a grayscale image
+par(mar=c(0,0,3,0))
+plotRGBArray(darkness_mat, bty = &#39;n&#39;, main = &#39;Darkness matrix&#39;)
+
+# main quantiles
+quantile(darkness_mat)
+
+#&gt;         0%        25%        50%        75%       100% 
+#&gt; 0.03529412 0.23137255 0.36470588 0.47843137 0.83529412
+
+
+# histogram
+par(mar=c(5,4,4,2))
+hist(darkness_mat)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-2.png" alt=" "/></p>
+
+<h2>Contrast</h2>
+
+<p>The contrast of an image is the difference between the darkness and brightness 
+of the image. The contrast matrix is calculated by difference between the 
+darkness and brightness matrices. </p>
+
+<p>The contrast of the image can quickly be extracted using the <code>getContrast()</code> function.</p>
+
+<pre><code># extracting the contrast matrix
+contrast_mat &lt;- getContrast(rgb_array)
+
+# the contrast matrix has also 2D and can be shown as a grayscale image
+par(mar=c(0,0,3,0))
+plotRGBArray(contrast_mat, bty = &#39;n&#39;, main = &#39;Contrast matrix&#39;)
+
+# main quantiles
+quantile(contrast_mat)
+
+#&gt;        0%       25%       50%       75%      100% 
+#&gt; 0.0000000 0.1450980 0.2470588 0.3333333 0.4509804
+
+
+# histogram
+par(mar=c(5,4,4,2))
+hist(contrast_mat)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-2.png" alt=" "/></p>
+
+<h2>Image fogginess &amp; haziness</h2>
+
+<p>Haziness of an image can be estimated using the <code>getHazeFactor()</code> function. This 
+function is based on the method described in 
+<a href="https://www.omicsonline.org/open-access/detecting-foggy-images-and-estimating-the-haze-degree-factor-jcsb.1000226.pdf">Mao et al. (2014)</a>. 
+The technique was originally developed to for <em>&ldquo;detecting foggy images and 
+estimating the haze degree factor&rdquo;</em> for a wide range of outdoor conditions.</p>
+
+<p>The function returns a vector of two numeric values: </p>
+
+<ol>
+<li> <strong>haze</strong> as the haze degree and </li>
+<li> <strong>A0</strong> as the global atmospheric light, as it is explained in the original paper. </li>
+</ol>
+
+<p>The PhenoCam standards classify any image with the haze degree greater 
+than 0.4 as a significantly foggy image.</p>
+
+<pre><code># extracting the haze matrix
+haze_degree &lt;- getHazeFactor(rgb_array)
+
+print(haze_degree)
+
+#&gt; $haze
+#&gt; [1] 0.2251633
+#&gt; 
+#&gt; $A0
+#&gt; [1] 0.7105258
+</code></pre>
+
+<p>Here we have the haze values for our image. Note that the values might be 
+slightly different due to rounding errors on different platforms. </p>
+
+<h2>Process sets of images</h2>
+
+<p>We can use <code>for</code> loops or the <code>lapply</code> functions to extract the haze values for 
+a stack of images. </p>
+
+<p>You can download the related datasets from 
+<a href="http://bit.ly/2F8w2Ia">here (direct download)</a>. </p>
+
+<p>Download and extract the zip file to be used as input data for the following step.</p>
+
+<pre><code># to download via R
+dir.create(&#39;data&#39;)
+
+#&gt; Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
+
+destfile = &#39;data/pointreyes.zip&#39;
+download.file(destfile = destfile, mode = &#39;wb&#39;, url = &#39;http://bit.ly/2F8w2Ia&#39;)
+unzip(destfile, exdir = &#39;data&#39;)  
+
+
+# set up the input image directory
+#pointreyes_dir &lt;- &#39;/path/to/image/directory/&#39;
+pointreyes_dir &lt;- &#39;data/pointreyes/&#39;
+
+# get a list of all .jpg files in the directory
+pointreyes_images &lt;- dir(path = pointreyes_dir, 
+                         pattern = &#39;*.jpg&#39;,
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+</code></pre>
+
+<p>Now we can use a for loop to process all of the images to get the haze and A0 
+values. </p>
+
+<p>(Note, this loop may take a while to process.)</p>
+
+<pre><code># number of images
+n &lt;- length(pointreyes_images)
+
+# create an empty matrix to fill with haze and A0 values
+haze_mat &lt;- data.table()
+
+# the process takes a bit, a progress bar lets us know it is working.
+pb &lt;- txtProgressBar(0, n, style = 3)
+
+#&gt; 
+</code></pre>
+
+<p>|<br/>
+  |                                                                                  |   0%</p>
+
+<pre><code>for(i in 1:n) {
+  image_path &lt;- pointreyes_images[i]
+  img &lt;- jpeg::readJPEG(image_path)
+  haze &lt;- getHazeFactor(img)
+
+  haze_mat &lt;- rbind(haze_mat, 
+                    data.table(file = image_path, 
+                               haze = haze[1], 
+                               A0 = haze[2]))
+
+  setTxtProgressBar(pb, i)
+}
+
+#&gt; 
+</code></pre>
+
+<p>|<br/>
+  |=                                                                                 |   1%
+  |<br/>
+  |==                                                                                |   3%
+  |<br/>
+  |===                                                                               |   4%
+  |<br/>
+  |=====                                                                             |   6%
+  |<br/>
+  |======                                                                            |   7%
+  |<br/>
+  |=======                                                                           |   8%
+  |<br/>
+  |========                                                                          |  10%
+  |<br/>
+  |=========                                                                         |  11%
+  |<br/>
+  |==========                                                                        |  13%
+  |<br/>
+  |============                                                                      |  14%
+  |<br/>
+  |=============                                                                     |  15%
+  |<br/>
+  |==============                                                                    |  17%
+  |<br/>
+  |===============                                                                   |  18%
+  |<br/>
+  |================                                                                  |  20%
+  |<br/>
+  |=================                                                                 |  21%
+  |<br/>
+  |==================                                                                |  23%
+  |<br/>
+  |====================                                                              |  24%
+  |<br/>
+  |=====================                                                             |  25%
+  |<br/>
+  |======================                                                            |  27%
+  |<br/>
+  |=======================                                                           |  28%
+  |<br/>
+  |========================                                                          |  30%
+  |<br/>
+  |=========================                                                         |  31%
+  |<br/>
+  |===========================                                                       |  32%
+  |<br/>
+  |============================                                                      |  34%
+  |<br/>
+  |=============================                                                     |  35%
+  |<br/>
+  |==============================                                                    |  37%
+  |<br/>
+  |===============================                                                   |  38%
+  |<br/>
+  |================================                                                  |  39%
+  |<br/>
+  |=================================                                                 |  41%
+  |<br/>
+  |===================================                                               |  42%
+  |<br/>
+  |====================================                                              |  44%
+  |<br/>
+  |=====================================                                             |  45%
+  |<br/>
+  |======================================                                            |  46%
+  |<br/>
+  |=======================================                                           |  48%
+  |<br/>
+  |========================================                                          |  49%
+  |<br/>
+  |==========================================                                        |  51%
+  |<br/>
+  |===========================================                                       |  52%
+  |<br/>
+  |============================================                                      |  54%
+  |<br/>
+  |=============================================                                     |  55%
+  |<br/>
+  |==============================================                                    |  56%
+  |<br/>
+  |===============================================                                   |  58%
+  |<br/>
+  |=================================================                                 |  59%
+  |<br/>
+  |==================================================                                |  61%
+  |<br/>
+  |===================================================                               |  62%
+  |<br/>
+  |====================================================                              |  63%
+  |<br/>
+  |=====================================================                             |  65%
+  |<br/>
+  |======================================================                            |  66%
+  |<br/>
+  |=======================================================                           |  68%
+  |<br/>
+  |=========================================================                         |  69%
+  |<br/>
+  |==========================================================                        |  70%
+  |<br/>
+  |===========================================================                       |  72%
+  |<br/>
+  |============================================================                      |  73%
+  |<br/>
+  |=============================================================                     |  75%
+  |<br/>
+  |==============================================================                    |  76%
+  |<br/>
+  |================================================================                  |  77%
+  |<br/>
+  |=================================================================                 |  79%
+  |<br/>
+  |==================================================================                |  80%
+  |<br/>
+  |===================================================================               |  82%
+  |<br/>
+  |====================================================================              |  83%
+  |<br/>
+  |=====================================================================             |  85%
+  |<br/>
+  |======================================================================            |  86%
+  |<br/>
+  |========================================================================          |  87%
+  |<br/>
+  |=========================================================================         |  89%
+  |<br/>
+  |==========================================================================        |  90%
+  |<br/>
+  |===========================================================================       |  92%
+  |<br/>
+  |============================================================================      |  93%
+  |<br/>
+  |=============================================================================     |  94%
+  |<br/>
+  |===============================================================================   |  96%
+  |<br/>
+  |================================================================================  |  97%
+  |<br/>
+  |================================================================================= |  99%
+  |<br/>
+  |==================================================================================| 100%</p>
+
+<p>Now we have a matrix with haze and A0 values for all our images. Let&#39;s 
+compare top five images with low and high haze values.</p>
+
+<pre><code>haze_mat[,haze:=unlist(haze)]
+
+top10_high_haze &lt;-  haze_mat[order(haze), file][1:5]
+top10_low_haze &lt;-  haze_mat[order(-haze), file][1:5]
+
+par(mar= c(0,0,0,0), mfrow=c(5,2), oma=c(0,0,3,0))
+
+for(i in 1:5){
+  img &lt;- readJPEG(top10_low_haze[i])
+  plot(0:1,0:1, type=&#39;n&#39;, axes= FALSE, xlab= &#39;&#39;, ylab = &#39;&#39;)
+  rasterImage(img, 0, 0, 1, 1)
+
+  img &lt;- readJPEG(top10_high_haze[i])
+  plot(0:1,0:1, type=&#39;n&#39;, axes= FALSE, xlab= &#39;&#39;, ylab = &#39;&#39;)
+  rasterImage(img, 0, 0, 1, 1)
+}
+
+mtext(&#39;Separating out foggy images of Point Reyes, CA&#39;, font = 2, outer = TRUE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/plot-foggy-clear-1.png" alt=" "/></p>
+
+<p>Let&#39;s classify those into hazy and non-hazy as per the PhenoCam standard of 0.4. </p>
+
+<pre><code># classify image as hazy: T/F
+haze_mat[haze&gt;0.4,foggy:=TRUE]
+haze_mat[haze&lt;=0.4,foggy:=FALSE]
+
+head(haze_mat)
+
+#&gt;                                                 file      haze        A0 foggy
+#&gt; 1: data/pointreyes//pointreyes_2017_01_01_120056.jpg 0.2249810 0.6970257 FALSE
+#&gt; 2: data/pointreyes//pointreyes_2017_01_06_120210.jpg 0.2339372 0.6826148 FALSE
+#&gt; 3: data/pointreyes//pointreyes_2017_01_16_120105.jpg 0.2312940 0.7009978 FALSE
+#&gt; 4: data/pointreyes//pointreyes_2017_01_21_120105.jpg 0.4536108 0.6209055  TRUE
+#&gt; 5: data/pointreyes//pointreyes_2017_01_26_120106.jpg 0.2297961 0.6813884 FALSE
+#&gt; 6: data/pointreyes//pointreyes_2017_01_31_120125.jpg 0.4206842 0.6315728  TRUE
+</code></pre>
+
+<p>Now we can save all the foggy images to a new folder that will retain the
+foggy images but keep them separate from the non-foggy ones that we want to 
+analyze. </p>
+
+<pre><code># identify directory to move the foggy images to
+foggy_dir &lt;- paste0(pointreyes_dir, &#39;foggy&#39;)
+clear_dir &lt;- paste0(pointreyes_dir, &#39;clear&#39;)
+
+# if a new directory, create new directory at this file path
+dir.create(foggy_dir,  showWarnings = FALSE)
+dir.create(clear_dir,  showWarnings = FALSE)
+
+# copy the files to the new directories
+file.copy(haze_mat[foggy==TRUE,file], to = foggy_dir)
+
+#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [15] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [29] FALSE FALSE
+
+
+file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
+
+#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [15] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [29] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+</code></pre>
+
+<p>Now that we have our images separated, we can get the full list of haze
+values only for those images that are not classified as &ldquo;foggy&rdquo;.  </p>
+
+<pre><code># this is an alternative approach instead of a for loop
+
+# loading all the images as a list of arrays
+pointreyes_clear_images &lt;- dir(path = clear_dir, 
+                         pattern = &#39;*.jpg&#39;,
+                         ignore.case = TRUE, 
+                         full.names = TRUE)
+
+img_list &lt;- lapply(pointreyes_clear_images, FUN = jpeg::readJPEG)
+
+# getting the haze value for the list
+# patience - this takes a bit of time
+haze_list &lt;- t(sapply(img_list, FUN = getHazeFactor))
+
+# view first few entries
+head(haze_list)
+
+#&gt;      haze      A0       
+#&gt; [1,] 0.224981  0.6970257
+#&gt; [2,] 0.2339372 0.6826148
+#&gt; [3,] 0.231294  0.7009978
+#&gt; [4,] 0.2297961 0.6813884
+#&gt; [5,] 0.2152078 0.6949932
+#&gt; [6,] 0.345584  0.6789334
+</code></pre>
+
+<p>We can then use these values for further analyses and data correction. </p>
+
+<hr/>
+
+<p>The <em>hazer</em> R package is developed and maintained by 
+<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
+The most recent release is available from 
+<a href="https://github.com/bnasr/hazer" target="_blank"><a href="https://github.com/bnasr/hazer">https://github.com/bnasr/hazer</a></a>.</p>
+
+</body>
+
+</html>

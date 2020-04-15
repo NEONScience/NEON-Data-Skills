@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>About Raster Time Series Data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial covers how to work with and plot a raster time series, using an 
+R <code>RasterStack</code> object. It also covers practical assessment of data quality in
+remote sensing derived imagery.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+
+After completing this tutorial, you will be able to:
+
+* Understand the format of a time series raster dataset.
+* Know how to work with time series rasters. 
+* Be able to efficiently import a set of rasters stored in a single directory.
+* Be able to plot and explore time series raster data using the plot()
+function in R.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+
+* <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+#### Data to Download
+{% include/dataSubsets/_data_Landsat-NDVI.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+****
+
+### Additional Resources
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
+Read more about the raster package in R.</a>
+
+</div>
+
+<h2>About Raster Time Series Data</h2>
+
+<p>A raster data file can contain one single band or many bands. If the raster data
+contains imagery data, each band may represent reflectance for a different 
+wavelength (color or type of light) or set of wavelengths - for
+example red, green and blue. A multi-band raster may two or more bands or layers
+of data collected at different times for the same <strong>extent</strong> (region) and of the 
+same <strong>resolution</strong>.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg"></a>
+    <figcaption>A multi-band raster dataset can contain time series data. 
+    Source: National Ecological Observatory Network (NEON). 
+    </figcaption>
+</figure>
+
+<p>The raster data that we will use in this tutorial are located in the
+(<code>NEON-DS-Landsat-NDVI\HARV\2011\NDVI</code>) directory and cover part of the 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>.</p>
+
+<p>In this tutorial, we will:</p>
+
+<ol>
+<li>Import NDVI data in <code>GeoTIFF</code> format.</li>
+<li>Import, explore and plot NDVI data derived for several dates throughout the
+year. </li>
+<li>View the RGB imagery used to derived the NDVI time series to better
+understand unusual/outlier values. </li>
+</ol>
+
+<h2>NDVI Data</h2>
+
+<p>The Normalized Difference Vegetation Index or NDVI is a quantitative index of 
+greenness ranging from 0-1 where 0 represents minimal or no greenness and 1 
+represents maximum greenness. </p>
+
+<p>NDVI is often used for a quantitative proxy measure of vegetation health, cover
+and phenology (life cycle stage) over large areas. Our NDVI data are a Landsat
+derived single band product saved as a GeoTIFF for different times of the year. </p>
+
+<figure>
+ <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
+ <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+    <figcaption>NDVI is calculated from the visible and near-infrared light
+    reflected by vegetation. Healthy vegetation (left) absorbs most of the
+    visible light that hits it, and reflects a large portion of
+    near-infrared light. Unhealthy or sparse vegetation (right) reflects more
+    visible light and less near-infrared light. Image & Caption Source: NASA 
+    </figcaption>
+</figure>
+
+<ul>
+<li><a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/measuring_vegetation_2.php" target="_blank">
+More on NDVI from NASA</a></li>
+</ul>
+
+<h2>RGB Data</h2>
+
+<p>While the NDVI data are a single band product, the RGB images that contain the
+red band used to derive NDVI, contain 3 (of the 7) 30m resolution bands
+available from Landsat data. The RGB directory contains RGB images for each time
+period that NDVI is available.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <figcaption>A &ldquo;true&rdquo; color image consists of 3 bands - red, green and blue. 
+    When composited or rendered together in a GIS, or even a image-editor like
+    Photoshop the bands create a color image. 
+    Source: National Ecological Observatory Network (NEON).  
+    </figcaption>
+</figure>
+
+<h3>Getting Started</h3>
+
+<p>In this tutorial, we will use the <code>raster</code> and <code>rgdal</code> libraries.</p>
+
+<pre><code># load packages
+library(raster)
+library(rgdal)
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+</code></pre>
+
+<p>To begin, we will create a list of raster files using the <code>list.files()</code> 
+function in R. This list will be used to generate a <code>RasterStack</code>. We will
+only add files to our list with a <code>.tif</code> extension using the syntax
+<code>pattern=&quot;.tif$&quot;</code>.</p>
+
+<p>If we specify <code>full.names=TRUE</code>, the full path for each file will be added to
+the list. </p>
+
+<pre><code># Create list of NDVI file paths
+# assign path to object = cleaner code
+NDVI_HARV_path &lt;- &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI&quot; 
+all_NDVI_HARV &lt;- list.files(NDVI_HARV_path,
+                            full.names = TRUE,
+                            pattern = &quot;.tif$&quot;)
+
+# view list - note the full path, relative to our working directory, is included
+all_NDVI_HARV
+
+##  [1] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/005_HARV_ndvi_crop.tif&quot;
+##  [2] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/037_HARV_ndvi_crop.tif&quot;
+##  [3] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/085_HARV_ndvi_crop.tif&quot;
+##  [4] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/133_HARV_ndvi_crop.tif&quot;
+##  [5] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/181_HARV_ndvi_crop.tif&quot;
+##  [6] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/197_HARV_ndvi_crop.tif&quot;
+##  [7] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/213_HARV_ndvi_crop.tif&quot;
+##  [8] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/229_HARV_ndvi_crop.tif&quot;
+##  [9] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/245_HARV_ndvi_crop.tif&quot;
+## [10] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/261_HARV_ndvi_crop.tif&quot;
+## [11] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/277_HARV_ndvi_crop.tif&quot;
+## [12] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/293_HARV_ndvi_crop.tif&quot;
+## [13] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/309_HARV_ndvi_crop.tif&quot;
+</code></pre>
+
+<p>Now we have a list of all GeoTIFF files in the <code>NDVI</code> directory for Harvard
+Forest. Next, we will create a <code>RasterStack</code> from this list using the <code>stack()</code> 
+function. </p>
+
+<pre><code># Create a raster stack of the NDVI time series
+NDVI_HARV_stack &lt;- stack(all_NDVI_HARV)
+</code></pre>
+
+<p>We can explore the GeoTIFF tags (the embedded metadata) in a <code>stack</code> using the
+same syntax that we used on single-band raster objects in R including: <code>crs()</code>
+(coordinate reference system), <code>extent()</code> and <code>res()</code> (resolution; specifically
+<code>yres()</code> and <code>xres()</code>).</p>
+
+<pre><code># view crs of rasters
+crs(NDVI_HARV_stack)
+
+## CRS arguments:
+##  +proj=utm +zone=19 +ellps=WGS84 +units=m +no_defs
+
+# view extent of rasters in stack
+extent(NDVI_HARV_stack)
+
+## class      : Extent 
+## xmin       : 239415 
+## xmax       : 239535 
+## ymin       : 4714215 
+## ymax       : 4714365
+
+# view the y resolution of our rasters
+yres(NDVI_HARV_stack)
+
+## [1] 30
+
+# view the x resolution of our rasters
+xres(NDVI_HARV_stack)
+
+## [1] 30
+</code></pre>
+
+<p>Notice that the CRS is <code>+proj=utm +zone=19 +ellps=WGS84 +units=m +no_defs</code>. The
+CRS is in UTM Zone 19.  If you have completed the previous tutorials in 
+this 
+<a href="https://www.neonscience.org/raster-data-series" target="_blank">raster data in R series</a>,
+you may have noticed that the UTM zone for the NEON collected remote sensing 
+data was in Zone 18 rather than Zone 19. Why are the Landsat data in Zone 19?  </p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg"></a>
+    <figcaption> Landsat imagery swaths are over 170 km N-S and 180 km E-W. As 
+    a result a given image may overlap two UTM zones. The designated zone is 
+    determined by the zone that the majority of the image is in.  In this
+    example, our point of interest is in UTM Zone 18 but the Landsat image will 
+    be classified as UTM Zone 19. Source: National Ecological Observatory 
+    Network (NEON).  
+    </figcaption>
+</figure>
+
+<p>The width of a Landsat scene is extremely wide - spanning over 170km north to 
+south and 180km east to west. This means that Landsat data often cover multiple 
+UTM zones. When the data are processed, the zone in which the majority of the
+data cover, is the zone which is used for the final CRS. Thus, our field site at
+Harvard Forest is located in UTM Zone 18, but the Landsat data are in a <code>CRS</code> of
+UTM Zone 19.</p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Raster Metadata
+Answer the following questions about our RasterStack.
+
+1. What is the CRS?
+2. What is the x and y resolution of the data? 
+3. What units is the above resolution in?
+
+</div>
+
+<h2>Plotting Time Series Data</h2>
+
+<p>Once we have created our <code>RasterStack</code>, we can visualize our data. We can use
+the <code>plot()</code> command to quickly plot a <code>RasterStack</code>.</p>
+
+<pre><code># view a plot of all of the rasters
+# &#39;nc&#39; specifies number of columns (we will have 13 plots)
+plot(NDVI_HARV_stack, 
+     zlim = c(1500, 10000), 
+     nc = 4)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png" alt=" "/></p>
+
+<p>Have a look at the range of NDVI values observed in the plot above. We know that
+the accepted values for NDVI range from 0-1. Why does our data range from
+0 - 10,000? </p>
+
+<h2>Scale Factors</h2>
+
+<p>The metadata for this NDVI data specifies a scale factor: 10,000. A scale factor
+is sometimes used to maintain smaller file sizes by removing decimal places. 
+Storing data in integer format keeps files sizes smaller.</p>
+
+<p>Let&#39;s apply the scale factor before we go any further. Conveniently, we can 
+quickly apply this factor using raster math on the entire stack as follows:</p>
+
+<p><code>raster_stack_object_name / 10000</code></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** We can make this plot  
+even prettier by fixing the individual tile names, adding an plot title and by
+using the (levelplot) function. This is covered in the NEON Data Skills 
+<a href="https://www.neonscience.org/dc-raster-rastervis-levelplot-r" target="_blank">*Plot Time Series Rasters in R*</a>
+tutorial. 
+</div>
+
+<pre><code># apply scale factor to data
+NDVI_HARV_stack &lt;- NDVI_HARV_stack/10000
+# plot stack with scale factor applied
+# apply scale factor to limits to ensure uniform plottin
+plot(NDVI_HARV_stack,
+     zlim = c(.15, 1),  
+     nc = 4)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png" alt=" "/></p>
+
+<h2>Take a Closer Look at Our Data</h2>
+
+<p>Let&#39;s take a closer look at the plots of our data. Note that Massachusetts, 
+where the NEON Harvard Forest Field Site is located has a fairly consistent
+fall, winter, spring and summer season where vegetation turns green in the
+spring, continues to grow throughout the summer, and begins to change colors and
+senesce in the fall through winter. Do you notice anything that seems unusual
+about the patterns of greening and browning observed in the plots above?</p>
+
+<p>Hint: the number after the &ldquo;X&rdquo; in each tile title is the Julian day which in
+this case represents the number of days into each year. If you are unfamiliar
+with Julian day, check out the NEON Data Skills 
+<a href="https://www.neonscience.org/julian-day-conversion-r" target="_blank"><em>Converting to Julian Day</em> tutorial </a>.
+tutorial.</p>
+
+<h2>View Distribution of Raster Values</h2>
+
+<p>In the above exercise, we viewed plots of our NDVI time series and noticed a 
+few images seem to be unusually light. However this was only a visual
+representation of potential issues in our data. What is another way we can look
+at these data that is quantitative? </p>
+
+<p>Next we will use histograms to explore the distribution of NDVI values stored in
+each raster.</p>
+
+<pre><code># create histograms of each raster
+hist(NDVI_HARV_stack, 
+     xlim = c(0, 1))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png" alt=" "/></p>
+
+<p>It seems like things get green in the spring and summer like we expect, but the 
+data at Julian days 277 and 293 are unusual. It appears as if the vegetation got
+green in the spring, but then died back only to get green again towards the end 
+of the year. Is this right?</p>
+
+<h3>Explore Unusual Data Patterns</h3>
+
+<p>The NDVI data that we are using comes from 2011, perhaps a strong freeze around
+Julian day 277 could cause a vegetation to senesce early, however in the eastern
+United States, it seems unusual that it would proceed to green up again shortly 
+thereafter. </p>
+
+<p>Let&#39;s next view some temperature data for our field site to see whether there 
+were some unusual fluctuations that may explain this pattern of greening and
+browning seen in the NDVI data.</p>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png" alt=" "/></p>
+
+<p>There are no significant peaks or dips in the temperature during the late summer
+or early fall time period that might account for patterns seen in the NDVI data.</p>
+
+<p>What is our next step? </p>
+
+<p>Let&#39;s have a look at the source Landsat imagery that was partially used used to 
+derive our NDVI rasters to try to understand what appears to be outlier NDVI values.</p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Examine RGB Raster Files
+
+1. View the imagery located in the /NEON-DS-Landsat-NDVI/HARV/2011 directory. 
+2. Plot the RGB images for the Julian days 277 and 293 then plot and compare
+those images to jdays 133 and 197.
+3. Does the RGB imagery from these two days explain the low NDVI values observed
+on these days?  
+
+HINT: if you want to plot 4 images in a tiled set, you can use 
+par(mfrow=c(2,2)) to create a 2x2 tiled layout. When you are done, be sure to
+reset your layout using: par(mfrow=c(1,1)).
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png" alt=" "/></p>
+
+<h2>Explore The Data&#39;s Source</h2>
+
+<p>The third challenge question, &ldquo;Does the RGB imagery from these two days explain 
+the low NDVI values observed on these days?&rdquo; highlights the importance of
+exploring the source of a derived data product. In this case, the NDVI data
+product was derived from (created using) Landsat imagery - specifically the red
+and near-infrared bands.</p>
+
+<p>When we look at the RGB collected at Julian days 277 and 293 we see that most of
+the image is filled with clouds. The very low NDVI values resulted from cloud
+cover — a common challenge that we encounter when working with satellite remote
+sensing imagery.  </p>
+
+</body>
+
+</html>

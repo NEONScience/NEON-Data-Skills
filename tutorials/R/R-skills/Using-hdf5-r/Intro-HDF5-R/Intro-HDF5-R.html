@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>About HDF5</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Understand how HDF5 files can be created and structured in R using the 
+rhdf5 libraries.
+* Understand the three key HDF5 elements: the HDF5 file itself, groups, and datasets.
+* Understand how to add and read attributes from an HDF5 file.
+
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### R Libraries to Install:
+
+* **rhdf5**: The rhdf5 package is hosted on Bioconductor not CRAN. Directions for installation are in the first code chunk. 
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Data to Download
+
+We will use the file below in the optional challenge activity at the end of this 
+tutorial.
+
+{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+
+***
+{% include/_greyBox-wd-rscript.html %} 
+
+***
+
+### Additional Resources
+
+Consider reviewing the documentation for the 
+<a href="http://www.bioconductor.org/packages/release/bioc/manuals/rhdf5/man/rhdf5.pdf" target="_blank">RHDF5 package</a>.
+
+</div>
+
+<h2>About HDF5</h2>
+
+<p>The HDF5 file can store large, heterogeneous datasets that include metadata. It 
+also supports efficient <code>data slicing</code>, or extraction of particular subsets of a 
+dataset which means that you don&#39;t have to read  large files read into the 
+computers memory / RAM in their entirety in order work with them. </p>
+
+<p><a href="https://www.neonscience.org/about-hdf5" target="_blank">Read more about HDF5 here.</a></p>
+
+<h2>HDF5 in R</h2>
+
+<p>To access HDF5 files in R, we will use the <code>rhdf5</code> library which is part of 
+the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
+suite of R libraries. It might also be useful to install 
+<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
+free HDF5 viewer</a> 
+which will allow you to explore the contents of an HDF5 file using a graphic interface.</p>
+
+<p><a href="https://www.neonscience.org/explore-data-hdfview/" target="_blank">More about working with HDFview and a hands-on activity here.</a></p>
+
+<p>First, let&#39;s get R setup. We will use the rhdf5 library. To access HDF5 files in 
+R, we will use the rhdf5 library which is part of the Bioconductor suite of R 
+packages. As of Aug. 2017 this package was not yet on CRAN. </p>
+
+<pre><code># Install rhdf5 package (only need to run if not already installed)
+#install.packages(&quot;BiocManager&quot;)
+#BiocManager::install(&quot;rhdf5&quot;)
+
+# Call the R HDF5 Library
+library(&quot;rhdf5&quot;)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files
+#setwd(&quot;working-dir-path-here&quot;)
+</code></pre>
+
+<p>Read more about the 
+<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf" target="_blank"> <code>rhdf5</code> package here.</a></p>
+
+<h2>Create an HDF5 File in R</h2>
+
+<p>Now, let&#39;s create a basic H5 file with one group and one dataset in it. </p>
+
+<pre><code># Create hdf5 file
+h5createFile(&quot;vegData.h5&quot;)
+
+## file &#39;/Users/olearyd/Git/data/vegData.h5&#39; already exists.
+
+## [1] FALSE
+
+# create a group called aNEONSite within the H5 file
+h5createGroup(&quot;vegData.h5&quot;, &quot;aNEONSite&quot;)
+
+## Can not create group. Object with name &#39;aNEONSite&#39; already exists.
+
+## [1] FALSE
+
+# view the structure of the h5 we&#39;ve created
+h5ls(&quot;vegData.h5&quot;)
+
+##        group        name       otype dclass    dim
+## 0          /   aNEONSite   H5I_GROUP              
+## 1 /aNEONSite temperature H5I_DATASET  FLOAT 20 x 2
+</code></pre>
+
+<p>Next, let&#39;s create some dummy data to add to our H5 file.</p>
+
+<pre><code># create some sample, numeric data 
+a &lt;- rnorm(n=40, m=1, sd=1) 
+someData &lt;- matrix(a,nrow=20,ncol=2)
+</code></pre>
+
+<p>Write the sample data to the H5 file.</p>
+
+<pre><code># add some sample data to the H5 file located in the aNEONSite group
+# we&#39;ll call the dataset &quot;temperature&quot;
+h5write(someData, file = &quot;vegData.h5&quot;, name=&quot;aNEONSite/temperature&quot;)
+
+# let&#39;s check out the H5 structure again
+h5ls(&quot;vegData.h5&quot;)
+
+##        group        name       otype dclass    dim
+## 0          /   aNEONSite   H5I_GROUP              
+## 1 /aNEONSite temperature H5I_DATASET  FLOAT 20 x 2
+</code></pre>
+
+<p>View a &ldquo;dump&rdquo; of the entire HDF5 file. NOTE: use this command with CAUTION if you
+are working with larger datasets!</p>
+
+<pre><code># we can look at everything too 
+# but be cautious using this command!
+h5dump(&quot;vegData.h5&quot;)
+
+## $aNEONSite
+## $aNEONSite$temperature
+##                      [,1]               [,2]
+##  [1,]  0.8516866634224054  2.836360277910956
+##  [2,]  1.0712367752260255  1.500407921473993
+##  [3,]  0.3864554517773209  1.648012234083583
+##  [4,] -0.1305657183599631 -0.294542945275954
+##  [5,]  1.1089364337402188 -2.384281100803952
+##  [6,]  1.5022904863665651  0.510932859782056
+##  [7,]  0.1805362186718872  0.704540760801228
+##  [8,]  3.1547079852453983  1.159945530320169
+##  [9,] -0.1335530312943478  0.640871548408018
+## [10,]  0.8273741184865043  1.621706350309156
+## [11,]  2.3813435216340038  1.643019784381709
+## [12,]  2.2747612084834912  0.212686978709758
+## [13,]  0.0748886601528383  0.376472326711012
+## [14,] -0.4422175796197136 -0.055197564530804
+## [15,]  0.4033320710861770  1.287695402027157
+## [16,]  0.4693081359628845  2.410268667282963
+## [17,]  1.6760724722226619  0.815221535235379
+## [18,] -0.2188460893731798  2.732246123492854
+## [19,]  1.8237998342574666  0.709802145998186
+## [20,]  0.5004911517283539  0.193789028958291
+
+# Close the file. This is good practice.
+H5close()
+</code></pre>
+
+<h2>Add Metadata (attributes)</h2>
+
+<p>Let&#39;s add some metadata (called attributes in HDF5 land) to our dummy temperature
+data. First, open up the file.</p>
+
+<pre><code># open the file, create a class
+fid &lt;- H5Fopen(&quot;vegData.h5&quot;)
+# open up the dataset to add attributes to, as a class
+did &lt;- H5Dopen(fid, &quot;aNEONSite/temperature&quot;)
+
+# Provide the NAME and the ATTR (what the attribute says) for the attribute.
+h5writeAttribute(did, attr=&quot;Here is a description of the data&quot;,
+                 name=&quot;Description&quot;)
+h5writeAttribute(did, attr=&quot;Meters&quot;,
+                 name=&quot;Units&quot;)
+</code></pre>
+
+<p>Now we can add some attributes to the file. </p>
+
+<pre><code># let&#39;s add some attributes to the group
+did2 &lt;- H5Gopen(fid, &quot;aNEONSite/&quot;)
+
+h5writeAttribute(did2, attr=&quot;San Joaquin Experimental Range&quot;,
+                 name=&quot;SiteName&quot;)
+
+h5writeAttribute(did2, attr=&quot;Southern California&quot;,
+                 name=&quot;Location&quot;)
+
+# close the files, groups and the dataset when you&#39;re done writing to them!
+H5Dclose(did)
+
+H5Gclose(did2)
+
+H5Fclose(fid)
+</code></pre>
+
+<h2>Working with an HDF5 File in R</h2>
+
+<p>Now that we&#39;ve created our H5 file, let&#39;s use it! First, let&#39;s have a look at 
+the attributes of the dataset and group in the file.</p>
+
+<pre><code># look at the attributes of the precip_data dataset
+h5readAttributes(file = &quot;vegData.h5&quot;, 
+                 name = &quot;aNEONSite/temperature&quot;)
+
+## $Description
+## [1] &quot;Here is a description of the data&quot;
+## 
+## $Units
+## [1] &quot;Meters&quot;
+
+# look at the attributes of the aNEONsite group
+h5readAttributes(file = &quot;vegData.h5&quot;, 
+                 name = &quot;aNEONSite&quot;)
+
+## $Location
+## [1] &quot;Southern California&quot;
+## 
+## $SiteName
+## [1] &quot;San Joaquin Experimental Range&quot;
+
+# let&#39;s grab some data from the H5 file
+testSubset &lt;- h5read(file = &quot;vegData.h5&quot;, 
+                 name = &quot;aNEONSite/temperature&quot;)
+
+testSubset2 &lt;- h5read(file = &quot;vegData.h5&quot;, 
+                 name = &quot;aNEONSite/temperature&quot;,
+                 index=list(NULL,1))
+H5close()
+</code></pre>
+
+<p>Once we&#39;ve extracted data from our H5 file, we can work with it
+in R. </p>
+
+<pre><code># create a quick plot of the data
+hist(testSubset2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/rfigs/access-plot-data-1.png" alt=" "/></p>
+
+<p><div id="ds-challenge" markdown="1"></p>
+
+<h3>Challenge: Work with HDF5 Files</h3>
+
+<p>Time to practice the skills you&#39;ve learned. Open up the D17_2013_SJER_vegStr.csv 
+in R. </p>
+
+<ul>
+<li>Create a new HDF5 file called <code>vegStructure</code>.</li>
+<li>Add a group in your HDF5 file called <code>SJER</code>. </li>
+<li>Add the veg structure data to that folder.</li>
+<li>Add some attributes the SJER group and to the data. </li>
+<li>Now, repeat the above with the D17_2013_SOAP_vegStr csv.</li>
+<li>Name your second group SOAP</li>
+</ul>
+
+<p>Hint: <code>read.csv()</code> is a good way to read in .csv files. </p>
+
+<p></div></p>
+
+</body>
+
+</html>

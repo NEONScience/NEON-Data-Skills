@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Plotly - Interactive (and Online) Plots</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h2>Plotly - Interactive (and Online) Plots</h2>
+
+<p><a href="https://plot.ly/" target="_blank"> Plotly</a> 
+bills itself as &ldquo;a collaborative platform for modern data science&rdquo;. You can use
+it to build  interactive plots that can easily be shared with others (like
+the
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood" target="_blank"> <em>Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods</em> lessons</a>). </p>
+
+<p>You will need an free online Plotly account to post &amp; share you plots online. But
+you can create the plots and use them on your local computer without an account.
+If you do not wish to share plots online you can skip to 
+<strong>Step 3: Create Plotly plot</strong>. </p>
+
+<p>Additional information on the <code>plotly</code> R package can be found 
+<a href="https://plot.ly/r/getting-started/" target="_blank"> on the Plotly R Getting Started page</a>.  </p>
+
+<p>Note: Plotly doesn&#39;t just work with R &ndash; other programs include Python, MATLAB,
+Excel, and JavaScript. </p>
+
+<h3>Step 1: Create account</h3>
+
+<p>If you do not already have an account, you need to set up an account by visiting
+the <a href="https://plot.ly/" target="_blank" >Plotly</a> website and following
+the directions there.</p>
+
+<h3>Step 2: Connect account to R</h3>
+
+<p>To share plots from R (or RStudio) to Plotly, you have to connect to your 
+account.  This is done through an API (Application Program Interface). You can
+find your username &amp; API key in your profile settings on the Plotly website 
+under the &ldquo;API key&rdquo; menu option.  </p>
+
+<p>To link your account to your R, use the following commands, substituting in your
+own username &amp; key as appropriate. </p>
+
+<pre><code># set plotly user name
+Sys.setenv(&quot;plotly_username&quot;=&quot;YOUR_USERNAME&quot;)
+# set plotly API key
+Sys.setenv(&quot;plotly_api_key&quot;=&quot;YOUR_KEY&quot;)
+</code></pre>
+
+<h3>Step 3: Create Plotly plot</h3>
+
+<p>There are lots of ways to plot with the plotly package. We briefly describe two 
+basic functions <code>plotly()</code> and <code>ggplotly()</code>. For more information on plotting in
+R with Plotly, check out the 
+<a href="https://plot.ly/r/" target="_blank"> Plotly R library page</a>. </p>
+
+<p>Here we use the example dataframe <code>economics</code> that comes with the package. </p>
+
+<pre><code># load packages
+library(ggplot2) # to create plots and feed to ggplotly()
+library(plotly)  # to create interactive plots
+
+# view str of example dataset
+str(economics)
+
+## Classes &#39;spec_tbl_df&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;: 574 obs. of  6 variables:
+##  $ date    : Date, format: &quot;1967-07-01&quot; &quot;1967-08-01&quot; ...
+##  $ pce     : num  507 510 516 512 517 ...
+##  $ pop     : num  198712 198911 199113 199311 199498 ...
+##  $ psavert : num  12.6 12.6 11.9 12.9 12.8 11.8 11.7 12.3 11.7 12.3 ...
+##  $ uempmed : num  4.5 4.7 4.6 4.9 4.7 4.8 5.1 4.5 4.1 4.6 ...
+##  $ unemploy: num  2944 2945 2958 3143 3066 ...
+
+# plot with the plot_ly function
+unempPerCapita &lt;- plot_ly(x =economics$date, y = economics$unemploy/economics$pop)
+</code></pre>
+
+<p>To make your plotly plot in R, run the following line:</p>
+
+<pre><code>unempPerCapita 
+</code></pre>
+
+<p>Note: This plot is interactive within the R environment but is not as posted on
+this website. </p>
+
+<p>If you already use ggplot to create your plots, you can directly turn your 
+ggplot objects into interactive plots with <code>ggplotly()</code>. </p>
+
+<pre><code>## plot with ggplot, then ggplotly
+
+unemployment &lt;- ggplot(economics, aes(date,unemploy)) + geom_line()
+unemployment
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/data-visualization-tools/DataVis-plotly-R/rfigs/ggplotly-1.png" alt=" "/></p>
+
+<p>To make your plotly plot in R, run the following line:</p>
+
+<pre><code>ggplotly(unemployment)
+</code></pre>
+
+<p>Note: This plot is interactive within the R environment but is not as posted on
+this website. </p>
+
+<h3>Step 4: Publish to Plotly</h3>
+
+<p>The function <code>plotly_POST()</code> allows you to post any plotly plot to your account. </p>
+
+<pre><code># publish plotly plot to your plotly online account
+api_create(unemployment)
+</code></pre>
+
+<h2>Examples</h2>
+
+<p>The plots below were generated using R code that harnesses the power of the
+<code>ggplot2</code> and the <code>plotly</code> packages. The plotly code utilizes the 
+<a href="http://ropensci.org/packages/" target="_blank">RopenSci <code>plotly</code> packages - check them out!</a></p>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/24.embed?width=460&height=293"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/6.embed?width=460&height=345"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/16.embed?width=800&height=600"></iframe>
+
+<iframe width="640" height="360" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~leahawasser/19.embed?width=800&height=600"></iframe>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**Data Tip** Are you a Python user? Use matplotlib 
+to create and publish visualizations.
+</div>
+
+</body>
+
+</html>

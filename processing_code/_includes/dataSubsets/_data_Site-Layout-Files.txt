@@ -1,0 +1,16 @@
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
+
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+

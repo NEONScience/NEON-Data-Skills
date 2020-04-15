@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Create an Rmd File</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>You will need to have the <code>rmarkdown</code> and <code>knitr</code>
+packages installed on your computer prior to completing this tutorial. Refer to 
+the setup materials to get these installed. </p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+At the end of this activity, you will:
+
+* Know how to create an R Markdown file in RStudio.
+* Be able to write a script with text and R code chunks.
+* Create an R Markdown document ready to be ‘knit’ into an HTML document to
+share your code and results.
+
+## Things You’ll Need To Complete This Tutorial
+
+You will need the most current version of R and, preferably, RStudio loaded on 
+your computer to complete this tutorial.
+
+### Install R Packages
+
+
+* **knitr:** install.packages(&ldquo;knitr&rdquo;)
+* **rmarkdown:** install.packages(&ldquo;rmarkdown&rdquo;)
+* **raster:** install.packages(&ldquo;raster&rdquo;)
+* **rgdal:** install.packages(&ldquo;rgdal&rdquo;)
+
+### Download Data
+
+{% include/dataSubsets/_data_Data-Institute-16-TEAK.html %}
+
+You will want to create a **data** directory for all the Data Institute teaching 
+datasets. We suggest the pathway be ~/Documents/data/NEONDI-2016 or 
+the equivalent for your operating system. Once you&rsquo;ve downloaded and unzipped 
+the dataset, move it to this directory. 
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png"></a>
+    <figcaption> The <strong>data</strong> directory with the teaching data subset. This is the suggested organization for all Data Institute teaching data subsets. 
+    Source: National Ecological Observatory Network (NEON)
+    </figcaption>
+</figure>
+
+
+## Additional Resources
+* <a href="http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf" target="_blank"> R Markdown Cheatsheet</a>: a very handy reference for using R
+Markdown
+* <a href="http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf" target="_blank"> R Markdown Reference Guide</a>: a more expensive reference for R
+Markdown
+* <a href="http://rmarkdown.rstudio.com/articles_intro.html" target="_blank"> Introduction to R Markdown by Garrett Grolemund</a>: a tutorial for learning R Markdown
+
+</div>
+
+<h2>Create an Rmd File</h2>
+
+<h3>RMarkdown in RStudio Video</h3>
+
+<p>Our goal in this series is to document our workflow. We can do this by </p>
+
+<ol>
+<li>Creating an R Markdown (RMD) file in R studio and</li>
+<li>Rendering that RMD file to HTML using <code>knitr</code>. </li>
+</ol>
+
+<p>Watch this 6:38 minute video below to learn more about how you can convert an R Markdown
+file to HTML (or other formats) using <code>knitr</code> in RStudio. 
+The text size in the video is small so you may want to watch the video in
+full screen mode.</p>
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/DNS7i2m4sB0" frameborder="0" allowfullscreen></iframe>
+
+<p>Now that you have a sense of how R Markdown can be used in RStudio, you are 
+ready to create your own RMD document. Do the following: </p>
+
+<ol>
+<li>Create a new R Markdown file and choose HTML as the desired output format.</li>
+<li>Enter a Title (Explore NEON LiDAR Data) and Author Name (your name). Then click OK.</li>
+<li>Save the file using the following format: <strong>LastName-institute-week3.rmd</strong>
+NOTE: The document title is not the same as the file name.</li>
+<li>Hit the knit button in RStudio (as is done in the video above). What happens?</li>
+</ol>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
+    <figcaption> Location of the knit button in RStudio in Version 0.99.486.
+    Source: National Ecological Observatory Network (NEON)
+    </figcaption>
+</figure>
+
+<p>If everything went well, you should have an HTML format (web page) output
+after you hit the knit button. Note that this HTML output is built from a 
+combination of code and documentation that was written using markdown syntax.</p>
+
+<p>Next, we&#39;ll break down the structure of an R Markdown file. </p>
+
+<h2>Understand Structure of an R Markdown file</h2>
+
+<p><figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png"></a>
+    <figcaption>Screenshot of a new R Markdown document in RStudio. Notice the different
+    parts of the document. 
+    Source: National Ecological Observatory Network (NEON)<br/>
+    </figcaption>
+</figure></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Screenshots on this page are
+from RStudio with appearance preferences set to Twilight with Monaco font. You 
+can change the appearance of your RStudio by **Tools** > **Options**
+(or **Global Options** depending on the operating system). For more, see the
+<a href="https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio" target="_blank">Customizing RStudio page</a>.
+</div>
+
+<p>Let&#39;s next review the structure of an R Markdown (<code>.Rmd</code>) file. There are three
+main content types:</p>
+
+<ul>
+<li><strong>Header:</strong> the text at the top of the document, written in <em>YAML</em> format.</li>
+<li><strong>Markdown sections:</strong> text that describes your workflow written using <em>markdown syntax</em>.</li>
+<li><strong>Code chunks:</strong> Chunks of R code that can be run and also can be rendered
+using knitr to an output document. </li>
+</ul>
+
+<p>Next let&#39;s explore each section type.</p>
+
+<h3>Header &ndash; YAML block</h3>
+
+<p>An R Markdown file always starts with header written using 
+<a href="https://en.wikipedia.org/wiki/YAML" target="_blank">YAML syntax</a>. 
+There are four default elements in the RStudio generated YAML header: </p>
+
+<ul>
+<li><strong>title:</strong> the title of your document. Note, this is not the same as the file name.</li>
+<li><strong>author:</strong> who wrote the document.</li>
+<li><strong>date:</strong> by default this is the date that the file is created.</li>
+<li><strong>output:</strong> what format will the output be in. We will use HTML.</li>
+</ul>
+
+<p>A YAML header may be structured differently depending upon how your are using it.
+Learn more on the
+<a href="http://rmarkdown.rstudio.com/authoring_quick_tour.html#output_options" target="_blank"> R Markdown documentation page</a>.</p>
+
+<div id="ds-challenge" markdown="1">
+## Activity: R Markdown YAML
+Customize the header of your .Rmd file as follows: 
+
+* **Title:** Provide a title that fits the code that will be in your RMD.  
+* **Author:** Add your name here. 
+* **Output:** Leave the default output setting: html_document. 
+We will be rendering an HTML file.
+
+</div>
+
+<h3>R Markdown Text/Markdown Blocks</h3>
+
+<p>An RMD document contains a mixture of code chunks and markdown blocks where 
+you can describe aspects of your processing workflow. The markdown blocks use the 
+<strong>same</strong> markdown syntax that we learned last week in week 2 materials. In these blocks
+you might describe the data that you are using, how it&#39;s being processed and
+and what the outputs are. You may even add some information that interprets
+the outputs. </p>
+
+<p>When you render your document to HTML, this markdown will appear as text on the 
+output HTML document. </p>
+
+<p><a href="http://rmarkdown.rstudio.com/authoring_basics.html" target="_blank"> Learn More about RStudio Markdown Basics</a></p>
+
+<h3>Explore Your R Markdown File</h3>
+
+<p>Look closely at the pre-populated markdown and R code chunks in your RMD file. </p>
+
+<p>Does any of the markdown syntax look familiar?</p>
+
+<ul>
+<li>Are any words in bold?</li>
+<li>Are any words in italics?</li>
+<li>Are any words highlighted as code?</li>
+</ul>
+
+<p>If you are unsure, the answers are at the bottom of this page.</p>
+
+<p><div id="ds-challenge" markdown="1"></p>
+
+<h2>Activity: R Markdown Text</h2>
+
+<ol>
+<li>Remove the template markdown and code chunks added to the RMD file by RStudio. 
+(Be sure to keep the YAML header!)</li>
+<li>At the very top of your RMD document - after the YAML header, add
+the bio and short research description that you wrote last week in markdown syntax to
+the RMD file. </li>
+<li>Between your profile and the research descriptions, add a header that says 
+<strong>About My Project</strong> (or something similar). </li>
+<li>Add a new header stating <strong>R Markdown Activity</strong> and text below that explaining 
+that this page demonstrates using some of the NEON Teakettle LiDAR data products
+in R. The wording of this text should clearly describe the code and outputs that
+you will be adding the page.</li>
+</ol>
+
+<p></div></p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**Data Tip**: You can add code output or an R object
+name to markdown segments of an RMD. For more, view this
+<a href="http://rmarkdown.rstudio.com/authoring_quick_tour.html#inline_r_code" target="_blank"> R Markdown documentation</a>.
+</div>
+
+<h3>Code chunks</h3>
+
+<p>Code chunks are where your R code goes. All code chunks start and end with
+<code>```</code> – three backticks or graves. On 
+your keyboard, the backticks can be found on the same key as the tilde. 
+Graves are not the same as an apostrophe!</p>
+
+<p>The initial line of a code chunk must appear as:</p>
+
+<pre><code> ```{r chunk-name-with-no-spaces} 
+# code goes here
+ ```</code></pre>
+
+<p>The <code>r</code> part of the chunk header identifies this chunk as an R code chunk and is 
+mandatory. Next to the <code>{r}</code>, there is a chunk name. This name is not required 
+for basic knitting however, it is good practice to give each chunk a unique 
+name as it is required for more advanced knitting approaches. </p>
+
+<div id="ds-challenge" markdown="1">
+
+## Activity: Add Code Chunks to Your R Markdown File
+
+Continue working on your document. Below the last section that you&rsquo;ve just added, 
+create a code chunk that loads the packages required to work with raster data 
+in R, and sets the working directory.
+
+<pre><code>```{r setup-read-data }
+   library(rgdal)
+   library(raster)
+
+   # set working directory to ensure R can find the file we wish to import
+   setwd("~/Documents/data/NEONDI-2016/")
+
+ ```</code></pre>
+
+(For help setting the working directory, see the NEON Data Skills tutorial
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
+
+Then, add another chunk that loads the TEAK_lidarDSM raster file.
+
+<pre><code>```{r load-dsm-raster }
+
+   # import dsm
+   teak_dsm <- raster("NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarDSM.tif")
+   
+ ```</code></pre>
+
+Now run the code in this chunk. 
+
+You can run code chunks: 
+
+* **Line-by-line:** with cursor on current line, Ctrl + Enter (Windows/Linux) or
+Command + Enter (Mac OS X).
+* **By chunk:** You can run the entire chunk (or multiple chunks) by
+clicking on the Chunks dropdown button in the upper right corner of the script
+environment and choosing the appropriate option. Keyboard shortcuts are
+available for these options.
+
+</div>
+
+<h3>Code chunk options</h3>
+
+<p>You can also add arguments or options to each code chunk. These arguments allow 
+you to customize how or if you want code to be
+processed or appear on the output HTML document. Code chunk arguments are added on 
+the first line of a code
+chunk after the name, within the curly brackets.</p>
+
+<p>The example below, is a code chunk that will not be &ldquo;run&rdquo;, or evaluated, by R. 
+The code within the chunk will appear on the output document, however there
+will be no outputs from the code.</p>
+
+<pre><code>```{r intro-option, eval=FALSE}
+# the code here will not be processed by R 
+# but it will appear on your output document
+1+2
+ ```</code></pre>
+
+<p>We use <code>eval=FALSE</code> often when the chunk is exporting an file that we don&#39;t
+need to re-export but we want to document the code used to export the file. </p>
+
+<p>Three common code chunk options are:</p>
+
+<ul>
+<li><code>eval = FALSE</code>: Do not <strong>eval</strong>uate (or run) this code chunk when
+knitting the RMD document. The code in this chunk will still render in our knitted
+HTML output, however it will not be evaluated or run by R.</li>
+<li><code>echo=FALSE</code>: Hide the code in the output. The code is
+evaluated when the RMD file is knit, however only the output is rendered on the 
+output document.</li>
+<li><code>results=hide</code>: The code chunk will be evaluated but the results or the code 
+will not be rendered on the output document. This is useful if you are viewing the 
+structure of a large object (e.g. outputs of a large <code>data.frame</code>).</li>
+</ul>
+
+<p>Multiple code chunk options can be used for the same chunk. For more on code
+chunk options, read
+<a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html" target="_blank"> the RStudio documentation</a>
+or the
+<a href="http://yihui.name/knitr/demo/output/" target="_blank"> knitr documentation</a>.</p>
+
+<div id="ds-challenge" markdown="1">
+## Activity: Add More Code to Your R Markdown
+
+Update your RMD file as follows:
+
+* Add a **new code chunk** that plots the TEAK_lidarDSM raster object that you imported above. 
+Experiment with plot colors and be sure to add a plot title. 
+* Run the code chunk that you just added to your RMD document in R (e.g. run in console, not 
+knitting). Does it create a plot with a title?
+* In another new code chunk, import and plot another raster file from the NEON data subset 
+that you downloaded. The TEAK_lidarCHM is a good raster to plot.
+* Finally, create histograms for both rasters that you&rsquo;ve imported into R. 
+* Be sure to document your steps as you go using both **code comments** and 
+**markdown syntax** in between the code chunks.
+
+For help opening and plotting raster data in R, see the NEON Data Skills tutorial
+<a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank">*Plot Raster Data in R*</a>. 
+
+We will knit this document to HTML in the next tutorial. 
+</div>
+
+<p>Now continue on to the next tutorial
+to learn how to knit this document into a HTML file.</p>
+
+<div id="ds-challenge" markdown="1">
+## Answers to the Default Text Markdown Syntax Questions
+
+* Are any words in bold? - Yes, “Knit” on line 10
+* Are any words in italics? - No
+* Are any words highlighted as code? - Yes, “echo = FALSE” on line 22
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Cleaning Time Series Data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial explores how to deal with <code>NoData</code> values encountered in a time
+series dataset, in R. It also covers how to subset large files by date and
+export the results to a <code>.csv</code> (text) file.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+ * Subset data by date. 
+ * Search for NA or missing data values. 
+ * Describe different possibilities on how to deal with missing data. 
+
+## Things You’ll Need To Complete This Tutorial 
+You will need the most current version of R and, preferably, RStudio loaded on
+your computer to complete this tutorial.
+
+### Install R Packages
+
+* **lubridate:** install.packages(&ldquo;lubridate&rdquo;)
+* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+{% include/dataSubsets/_data_Met-Time-Series.html %}
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+
+</div>
+
+<h2>Cleaning Time Series Data</h2>
+
+<p>It is common to encounter, large files containing more
+data than we need for our analysis. It is also common to encounter <code>NoData</code>
+values that we need to account for when analyzing our data. </p>
+
+<p>In this tutorial, we&#39;ll learn how to both manage <code>NoData</code> values and also 
+subset and export a portion of an R object as a new <code>.csv</code> file. </p>
+
+<p>In this tutorial, we will work with atmospheric data, containing air temperature, 
+precipitation, and photosynthetically active radiation (PAR) data  - metrics
+that are key drivers of phenology. Our study area is the 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest Field Site.</a></p>
+
+<h2>Import Timeseries Data</h2>
+
+<p>We will use the <code>lubridate</code> and <code>ggplot2</code> packages. Let&#39;s load those first.</p>
+
+<p>If you have not already done so, import the <code>hf001-10-15min-m.csv</code> file, which
+contains atmospheric data for Harvard Forest. Convert the <code>datetime</code> column
+to a <code>POSIXct</code> class as covered in the tutorial: 
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank"><em>Dealing With Dates &amp; Times in R - as.Date, POSIXct, POSIXlt</em></a>.</p>
+
+<pre><code># Load packages required for entire script
+library(lubridate)  # work with dates
+library(ggplot2)  # plotting
+
+# set working directory to ensure R can find the file we wish to import
+# setwd(&quot;working-dir-path-here&quot;)
+
+# Load csv file containing 15 minute averaged atmospheric data 
+# for the NEON Harvard Forest Field Site
+
+# Factors=FALSE so data are imported as numbers and characters 
+harMet_15Min &lt;- read.csv(
+  file=&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv&quot;,
+  stringsAsFactors = FALSE)
+
+# convert to POSIX date time class - US Eastern Time Zone
+harMet_15Min$datetime &lt;- as.POSIXct(harMet_15Min$datetime,
+                                format = &quot;%Y-%m-%dT%H:%M&quot;,
+                                tz = &quot;America/New_York&quot;)
+</code></pre>
+
+<h2>Subset by Date</h2>
+
+<p>Our <code>.csv</code> file contains nearly a decade&#39;s worth of data which makes for a large
+file. The time period we are interested in for our study is:</p>
+
+<ul>
+<li>Start Time: 1 January 2009</li>
+<li>End Time: 31 Dec 2011</li>
+</ul>
+
+<p>Let&#39;s subset the data to only contain these three years. We can use the 
+<code>subset()</code> function, with the syntax:
+<code>NewObject &lt;- subset ( ObjectToBeSubset, CriteriaForSubsetting )</code>.  </p>
+
+<p>We will set our criteria to be any <code>datetime</code> that:</p>
+
+<ol>
+<li>Is greater than or equal to 1 Jan 2009 at 0:00 
+<strong>AND</strong> </li>
+<li>Is less than or equal to 31 Dec 2011 at 23:59.</li>
+</ol>
+
+<p>We also need to specify the <code>timezone</code> so R can handle daylight savings and
+leap year.</p>
+
+<pre><code># subset data - 2009-2011
+harMet15.09.11 &lt;- subset(harMet_15Min,
+                         datetime &gt;= as.POSIXct(&#39;2009-01-01 00:00&#39;,
+                                                tz = &quot;America/New_York&quot;) &amp;
+                         datetime &lt;= as.POSIXct(&#39;2011-12-31 23:59&#39;,
+                                               tz = &quot;America/New_York&quot;))
+
+# View first and last records in the object 
+head(harMet15.09.11[1])
+
+##                   datetime
+## 140255 2009-01-01 00:00:00
+## 140256 2009-01-01 00:15:00
+## 140257 2009-01-01 00:30:00
+## 140258 2009-01-01 00:45:00
+## 140259 2009-01-01 01:00:00
+## 140260 2009-01-01 01:15:00
+
+tail(harMet15.09.11[1])
+
+##                   datetime
+## 245369 2011-12-31 22:30:00
+## 245370 2011-12-31 22:45:00
+## 245371 2011-12-31 23:00:00
+## 245372 2011-12-31 23:15:00
+## 245373 2011-12-31 23:30:00
+## 245374 2011-12-31 23:45:00
+</code></pre>
+
+<p>It worked! The first entry is 1 January 2009 at 00:00 and the last entry is 31
+December 2011 at 23:45.</p>
+
+<h3>Export data.frame to .CSV</h3>
+
+<p>We can export this subset in <code>.csv</code> format to use in other analyses or to 
+share with colleagues using <code>write.csv</code>. </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** Remember, to give your output files
+concise, yet descriptive names so you can identify what it contains in the
+future. By default, the .csv file will be written to your working directory. 
+</div>
+
+<pre><code># write harMet15 subset data to .csv
+write.csv(harMet15.09.11, 
+          file=&quot;Met_HARV_15min_2009_2011.csv&quot;)
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Subset & Plot Data
+
+1. Create a plot of precipitation for the month of July 2010 in Harvard
+Forest.  Be sure to label x and y axes. Also be sure to give your plot a title. 
+
+2. Create a plot of dew point (dewp) for the year 2011 at Harvard Forest.
+
+**Bonus challenge:** Complete this challenge using the available daily data 
+instead of the 15-minute data. What will need to change in your subsetting code?
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-2.png" alt=" "/></p>
+
+<h2>Managing Missing Data: NoData values</h2>
+
+<h3>Find NoData Values</h3>
+
+<p>If we are lucky when working with external data, the <code>NoData</code> value is clearly
+specified
+in the metadata. No data values can be stored differently:</p>
+
+<ul>
+<li><strong>NA / nan:</strong> Sometimes this value is <code>NA</code> or <code>nan</code> (not a number). </li>
+<li><strong>A Designated Numeric Value (e.g. -9999):</strong> Character strings such as <code>NA</code> can 
+not always be stored along side of numeric values in some file formats. Sometimes 
+you&#39;ll encounter numeric placeholders for <code>noData</code> values such as
+<code>-9999</code> (a value often used in the GIS / Remote Sensing and Micrometerology 
+domains.</li>
+<li><strong>Blank Values:</strong> sometimes <code>noData</code> values are left blank. Blanks are 
+particularly problematic because we can&#39;t be certain if a data value is 
+purposefully missing (not measured that day or a bad measurement) or if someone 
+unintentionally deleted it.</li>
+</ul>
+
+<p>Because the actual value used to designate missing data can vary depending upon 
+what data we are working with, it is important to always check the metadata for
+the files associated <code>NoData</code> value. If the value is <code>NA</code>, we are in luck, R
+will recognize and flag this value as <code>NoData</code>. If the value is numeric (e.g.,
+<code>-9999</code>), then we might need to assign this value to <code>NA</code>.</p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** NA values will be ignored when
+performing calculations in R. However a NoData value of -9999 will be
+recognized as an integer and processed accordingly. If you encounter a numeric
+NoData value be sure to assign it to NA in R:
+objectName[objectName==-9999] <- NA`
+</div>
+
+<p>In the
+<a href="https://www.neonscience.org/dc-metadata-importance-eml-r" target="_blank"><em>Why Metadata Are Important: How to Work with Metadata in Text &amp; EML Format</em> tutorial</a>,
+we viewed the metadata for these data and discovered that missing values are
+designated using <code>NA</code> - a common <code>NoData</code> value placeholder. </p>
+
+<blockquote>
+<p><strong>Excerpt from the metadata:</strong> <code>airt: average air temperature. Average of daily 
+averages. (unit: celsius / missing value: NA)</code></p>
+</blockquote>
+
+<h3>Check For NoData Values</h3>
+
+<p>We can quickly check for <code>NoData</code> values in our data using the<code>is.na()</code> 
+function. By asking for the <code>sum()</code> of <code>is.na()</code> we can see how many NA/ missing
+values we have. </p>
+
+<pre><code># Check for NA values
+sum(is.na(harMet15.09.11$datetime))
+
+## [1] 0
+
+sum(is.na(harMet15.09.11$airt))
+
+## [1] 2
+
+# view rows where the air temperature is NA 
+harMet15.09.11[is.na(harMet15.09.11$airt),]
+
+##                   datetime  jd airt f.airt rh f.rh dewp f.dewp prec f.prec slrr f.slrr parr
+## 158360 2009-07-08 14:15:00 189   NA      M NA    M   NA      M    0         290         485
+## 203173 2010-10-18 09:30:00 291   NA      M NA    M   NA      M    0          NA      M   NA
+##        f.parr netr f.netr bar f.bar wspd f.wspd wres f.wres wdir f.wdir wdev f.wdev gspd
+## 158360         139         NA     M  2.1         1.8          86          29         5.2
+## 203173      M   NA      M  NA     M   NA      M   NA      M   NA      M   NA      M   NA
+##        f.gspd s10t f.s10t
+## 158360        20.7       
+## 203173      M 10.9
+</code></pre>
+
+<p>The results above tell us there are <code>NoData</code> values in the <code>datetime</code> column.
+However, there are <code>NoData</code> values in other variables.  </p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: NoData Values
+
+How many NoData values are in the precipitation (prec) and PAR (parr)
+columns of our data?
+
+</div>
+
+<h3>Deal with NoData Values</h3>
+
+<p>When we encounter <code>NoData</code> values (blank, NaN, -9999, etc.) in our data we
+need to decide how to deal with them. By default R treats <code>NoData</code> values
+designated with a <code>NA</code> as a missing value rather than a zero. This is good, as a
+value of zero (no rain today) is not the same as missing data (e.g. we didn&#39;t
+measure the amount of rainfall today). </p>
+
+<p>How we deal with <code>NoData</code> values will depend on:</p>
+
+<ul>
+<li>the data type we are working with</li>
+<li>the analysis we are conducting </li>
+<li>the significance of the gap or missing value</li>
+</ul>
+
+<p>Many functions in R contains a <code>na.rm=</code> option which will allow you to tell R
+to ignore <code>NA</code> values in your data when performing calculations.</p>
+
+<h3>To Gap Fill? Or Not?</h3>
+
+<p>Sometimes we might need to &ldquo;gap fill&rdquo; our data. This means we will interpolate 
+or estimate missing values often using statistical methods. Gap filling can be 
+complex and is beyond the scope of this tutorial. The take away from this
+is simply that it is important to acknowledge missing values in your data and to 
+carefully consider how you wish to account for them during analysis. </p>
+
+<p>Other resources:</p>
+
+<ol>
+<li><p>R code for dealing with missing data: 
+<a href="http://www.statmethods.net/input/missingdata.html" target="_blank"> Quick-R: Missing Data</a> </p></li>
+<li><p>The Institute for Digital Research and Education has an 
+<a href="http://www.ats.ucla.edu/stat/r/faq/missing.htm" target="_blank"> R FAQ on Missing Values</a>.</p></li>
+</ol>
+
+<h3>Managing NoData Values in Our Data</h3>
+
+<p>For this tutorial, we are exploring the patterns of precipitation,
+and temperature as they relate to green-up and brown-down of vegetation at 
+Harvard Forest. To view overall trends during these early exploration stages, it 
+is okay for us to leave out the <code>NoData</code> values in our plots. </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** If we wanted to perform more advanced 
+statistical analysis, we might consider gap-filling as our next step. Many data 
+products, from towers such as FluxNet include a higher level, gap-filled
+product that we can download. 
+<a href="http://www.archive.arm.gov/Carbon/gapfilling/gapfilling.html" target="_blank">More on Gap Filling</a>
+</div>
+
+<h3>NoData Values Can Impact Calculations</h3>
+
+<p>It is important to consider <code>NoData</code> values when performing calculations on our
+data. For example, R will not properly calculate certain functions if there
+are <code>NA</code> values in the data, unless we explicitly tell it to ignore them. </p>
+
+<pre><code># calculate mean of air temperature
+mean(harMet15.09.11$airt)
+
+## [1] NA
+
+# are there NA values in our data?
+sum(is.na(harMet15.09.11$airt))
+
+## [1] 2
+</code></pre>
+
+<p>R will not return a value for the mean as there <code>NA</code> values in the air 
+temperature column. Because there are only 2 missing values (out of 105,108) for 
+air temperature, we aren&#39;t that worried about a skewed 3 year mean. We can tell 
+R to ignore noData values in the mean calculations using <code>na.rm=</code>
+(NA.remove).</p>
+
+<pre><code># calculate mean of air temperature, ignore NA values
+mean(harMet15.09.11$airt, 
+     na.rm=TRUE)
+
+## [1] 8.467904
+</code></pre>
+
+<p>We now see that the 3-year average air temperature is 8.5°C.  </p>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Import, Understand Metadata, and Clean a Data Set
+We have been using the 15-minute data from the Harvard Forest. However, overall
+we are interested in larger scale patterns of greening-up and browning-down.  
+Thus a daily summary is sufficient for us to see overall trends.
+
+1. Import the Daily Meteorological data from the Harvard Forest (if you haven&rsquo;t
+already done so in the
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">*Intro to Time Series Data in R*</a> tutorial.)
+2. Check the metadata to see what the column names are for the variable of
+interest (precipitation, air temperature, PAR, day and time ).
+3. If needed, convert the data class of different columns.
+4. Check for missing data and decide what to do with any that exist.
+5. Subset out the data for the duration of our study: 2009-2011. Name the object 
+&ldquo;harMetDaily.09.11&rdquo;.
+6. Export the subset to a .csv file. 
+7. Create a plot of Daily Air Temperature for 2009-2011. Be sure to label, x-
+and y-axes. Also give the plot a title! 
+
+</div>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/Challenge-code-harMet.daily-1.png" alt=" "/></p>
+
+</body>
+
+</html>

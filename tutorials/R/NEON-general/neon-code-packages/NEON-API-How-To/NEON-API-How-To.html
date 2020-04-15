@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>NEON data</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This is a tutorial in pulling data from the NEON API or Application 
+Programming Interface. The tutorial uses R and the R package httr, but the core 
+information about the API is applicable to other languages and approaches.</p>
+
+<h2>NEON data</h2>
+
+<p>There are 3 basic categories of NEON data:</p>
+
+<ol>
+<li>Observational - Data collected by a human in the field, or in an analytical 
+laboratory, e.g. beetle identification, foliar isotopes</li>
+<li>Instrumentation - Data collected by an automated, streaming sensor, e.g. net 
+radiation, soil carbon dioxide</li>
+<li>Remote sensing - Data collected by the airborne observation platform, e.g. 
+LIDAR, surface reflectance</li>
+</ol>
+
+<p>This lesson covers all three types of data, but we recommend proceeding 
+through the lesson in order and not skipping ahead, since the query principles 
+are explained in the first section, on observational data.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+* Pull observational, instrumentation, and geolocation data from the NEON API.
+* Transform API-accessed data from JSON to tabular format for analyses.
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **httr:** install.packages(&ldquo;httr&rdquo;)
+* **jsonlite:** install.packages(&ldquo;jsonlite&rdquo;)
+* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
+* **devtools:** install.packages(&ldquo;devtools&rdquo;)
+* **downloader:** install.packages(&ldquo;downloader&rdquo;)
+* **geoNEON:** devtools::install_github(&ldquo;NEONScience/NEON-geolocation/geoNEON&rdquo;)
+* **neonUtilities:** devtools::install_github(&ldquo;NEONScience/NEON-utilities/neonUtilities&rdquo;)
+
+Note, you must have devtools installed & loaded, prior to loading geoNEON or neonUtilities. 
+
+### Additional Resources
+
+* <a href="http://data.neonscience.org/data-api" target="_blank">Webpage for the NEON API</a>
+* <a href="https://github.com/NEONScience/neon-data-api" target="_blank">GitHub repository for the NEON API</a>
+* <a href="https://github.com/ropenscilabs/nneo" target="_blank"> ROpenSci wrapper for the NEON API</a> (not covered in this tutorial)
+
+</div>
+
+<h2>What is an API?</h2>
+
+<p>If you are unfamiliar with the concept of an API, think of  an API as a 
+‘middle person&#39; that provides a communication path for a software application 
+to obtain information from a digital data source. APIs are becoming a very 
+common means of sharing digital information. Many of the apps that you use on 
+your computer or mobile device to produce maps, charts, reports, and other 
+useful forms of information pull data from multiple sources using APIs. In 
+the ecological and environmental sciences, many researchers use APIs to 
+programmatically pull data into their analyses. (Quoted from the NEON Observatory
+Blog story: 
+<a href="https://www.neonscience.org/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)</p>
+
+<h2>Anatomy of an API call</h2>
+
+<p>An example API call: <a href="http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07">http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07</a></p>
+
+<p>This includes the base URL, endpoint, and target.</p>
+
+<h3>Base URL:</h3>
+
+<p><span style="color:#A00606;font-weight:bold"><a href="http://data.neonscience.org/api/v0">http://data.neonscience.org/api/v0</a></span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span></p>
+
+<p>Specifics are appended to this in order to get the data or metadata you&#39;re 
+looking for, but all calls to this API will include the base URL. For the NEON 
+API, this is <a href="http://data.neonscience.org/api/v0">http://data.neonscience.org/api/v0</a> &ndash;
+not clickable, because the base URL by itself will take you nowhere!</p>
+
+<h3>Endpoints:</h3>
+
+<p><span style="color:#A2A4A3"><a href="http://data.neonscience.org/api/v0">http://data.neonscience.org/api/v0</a></span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#A2A4A3">/DP1.10003.001/WOOD/2015-07</span></p>
+
+<p>What type of data or metadata are you looking for?</p>
+
+<ul>
+<li><p><strong>~/products</strong>
+Information about one or all of NEON&#39;s data products</p></li>
+<li><p><strong>~/sites</strong>
+Information about data availability at the site specified in the call</p></li>
+<li><p><strong>~/locations</strong>
+Spatial data for the NEON locations specified in the call</p></li>
+<li><p><strong>~/data</strong>
+Data! By product, site, and date (in monthly chunks).</p></li>
+</ul>
+
+<h3>Targets:</h3>
+
+<p><span style="color:#A2A4A3"><a href="http://data.neonscience.org/api/v0/data">http://data.neonscience.org/api/v0/data</a></span><span style="color:#A00606;font-weight:bold">/DP1.10003.001/WOOD/2015-07</span></p>
+
+<p>The specific data product, site, or location you want to get data for.</p>
+
+<h2>Observational data (OS)</h2>
+
+<p>Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>.</p>
+
+<p>We&#39;ll pick Breeding landbird point counts, DP1.10003.001</p>
+
+<p>First query the products endpoint of the API to find out which sites and dates 
+have data available. In the products endpoint, the target is the numbered 
+identifier for the data product:</p>
+
+<pre><code># Load the necessary libraries
+library(httr)
+library(jsonlite)
+library(dplyr, quietly=T)
+library(downloader)
+
+# Request data using the GET function &amp; the API call
+req &lt;- GET(&quot;http://data.neonscience.org/api/v0/products/DP1.10003.001&quot;)
+req
+
+## Response [https://data.neonscience.org/api/v0/products/DP1.10003.001]
+##   Date: 2020-03-20 01:56
+##   Status: 200
+##   Content-Type: application/json;charset=UTF-8
+##   Size: 24.2 kB
+</code></pre>
+
+<p>The object returned from <code>GET()</code> has many layers of information. Entering the 
+name of the object gives you some basic information about what you downloaded. </p>
+
+<p>The <code>content()</code> function returns the contents in the form of a highly nested 
+list. This is typical of JSON-formatted data returned by APIs. We can use the
+<code>names()</code> function to view the different types of information within this list.</p>
+
+<pre><code># View requested data
+req.content &lt;- content(req, as=&quot;parsed&quot;)
+names(req.content$data)
+
+##  [1] &quot;productCodeLong&quot;              &quot;productCode&quot;                 
+##  [3] &quot;productCodePresentation&quot;      &quot;productName&quot;                 
+##  [5] &quot;productDescription&quot;           &quot;productStatus&quot;               
+##  [7] &quot;productCategory&quot;              &quot;productHasExpanded&quot;          
+##  [9] &quot;productScienceTeamAbbr&quot;       &quot;productScienceTeam&quot;          
+## [11] &quot;productPublicationFormatType&quot; &quot;productAbstract&quot;             
+## [13] &quot;productDesignDescription&quot;     &quot;productStudyDescription&quot;     
+## [15] &quot;productBasicDescription&quot;      &quot;productExpandedDescription&quot;  
+## [17] &quot;productSensor&quot;                &quot;productRemarks&quot;              
+## [19] &quot;themes&quot;                       &quot;changeLogs&quot;                  
+## [21] &quot;specs&quot;                        &quot;keywords&quot;                    
+## [23] &quot;siteCodes&quot;
+</code></pre>
+
+<p>You can see all of the infoamtion by running the line <code>print(req.content)</code>, but
+this will result in a very long printout in your console. Instead, you can view
+list items individually. Here, we highlight a couple of interesting examples:</p>
+
+<pre><code># View Abstract
+req.content$data$productAbstract
+
+## [1] &quot;This data product contains the quality-controlled, native sampling resolution data from NEON&#39;s breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see the user guide, protocols, and science design listed in the Documentation section in [this data product&#39;s details webpage](https://data.neonscience.org/data-products/DP1.10003.001). \n\nLatency:\nThe expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata:  120\n\nbrd_perpoint:  120\n\nbrd_personnel:  120\n\nbrd_references:  120&quot;
+
+# View Available months and associated URLs for Onaqui, Utah - ONAQ
+req.content$data$siteCodes[[27]]
+
+## $siteCode
+## [1] &quot;ONAQ&quot;
+## 
+## $availableMonths
+## $availableMonths[[1]]
+## [1] &quot;2017-05&quot;
+## 
+## $availableMonths[[2]]
+## [1] &quot;2018-05&quot;
+## 
+## $availableMonths[[3]]
+## [1] &quot;2018-06&quot;
+## 
+## $availableMonths[[4]]
+## [1] &quot;2019-05&quot;
+## 
+## 
+## $availableDataUrls
+## $availableDataUrls[[1]]
+## [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2017-05&quot;
+## 
+## $availableDataUrls[[2]]
+## [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-05&quot;
+## 
+## $availableDataUrls[[3]]
+## [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-06&quot;
+## 
+## $availableDataUrls[[4]]
+## [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2019-05&quot;
+</code></pre>
+
+<p>To get a more accessible view of which sites have data for which months, you&#39;ll 
+need to extract data from the nested list. There are a variety of ways to do this, 
+in this tutorial we&#39;ll explore a couple of them. Here we&#39;ll use <code>fromJSON()</code>, in 
+the jsonlite package, which doesn&#39;t fully flatten the nested list, but gets us 
+the part we need. To use it, we need a text version of the content. The text 
+version is not as human readable but is readable by the <code>fromJSON()</code> function. </p>
+
+<pre><code># make this JSON readable -&gt; &quot;text&quot;
+req.text &lt;- content(req, as=&quot;text&quot;)
+
+# Flatten data frame to see available data. 
+avail &lt;- jsonlite::fromJSON(req.text, simplifyDataFrame=T, flatten=T)
+avail
+
+## $data
+## $data$productCodeLong
+## [1] &quot;NEON.DOM.SITE.DP1.10003.001&quot;
+## 
+## $data$productCode
+## [1] &quot;DP1.10003.001&quot;
+## 
+## $data$productCodePresentation
+## [1] &quot;NEON.DP1.10003&quot;
+## 
+## $data$productName
+## [1] &quot;Breeding landbird point counts&quot;
+## 
+## $data$productDescription
+## [1] &quot;Count, distance from observer, and taxonomic identification of breeding landbirds observed during point counts&quot;
+## 
+## $data$productStatus
+## [1] &quot;ACTIVE&quot;
+## 
+## $data$productCategory
+## [1] &quot;Level 1 Data Product&quot;
+## 
+## $data$productHasExpanded
+## [1] TRUE
+## 
+## $data$productScienceTeamAbbr
+## [1] &quot;TOS&quot;
+## 
+## $data$productScienceTeam
+## [1] &quot;Terrestrial Observation System (TOS)&quot;
+## 
+## $data$productPublicationFormatType
+## [1] &quot;TOS Data Product Type&quot;
+## 
+## $data$productAbstract
+## [1] &quot;This data product contains the quality-controlled, native sampling resolution data from NEON&#39;s breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see the user guide, protocols, and science design listed in the Documentation section in [this data product&#39;s details webpage](https://data.neonscience.org/data-products/DP1.10003.001). \n\nLatency:\nThe expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata:  120\n\nbrd_perpoint:  120\n\nbrd_personnel:  120\n\nbrd_references:  120&quot;
+## 
+## $data$productDesignDescription
+## [1] &quot;Depending on the size of the site, sampling for this product occurs either at either randomly distributed individual points or grids of nine points each. At larger sites, point count sampling occurs at five to fifteen 9-point grids, with grid centers collocated with distributed base plot centers (where plant, beetle, and/or soil sampling may also occur), if possible. At smaller sites (i.e., sites that cannot accommodate a minimum of 5 grids) point counts occur at the southwest corner (point 21) of 5-25 distributed base plots. Point counts are conducted once per breeding season at large sites and twice per breeding season at smaller sites. Point counts are six minutes long, with each minute tracked by the observer, following a two-minute settling-in period. All birds are recorded to species and sex, whenever possible, and the distance to each individual or flock is measured with a laser rangefinder, except in the case of flyovers.&quot;
+## 
+## $data$productStudyDescription
+## [1] &quot;This sampling occurs at all NEON terrestrial sites.&quot;
+## 
+## $data$productBasicDescription
+## [1] &quot;The basic package contains the per point metadata table that includes data pertaining to the observer and the weather conditions and the count data table that includes all of the observational data.&quot;
+## 
+## $data$productExpandedDescription
+## [1] &quot;The expanded package includes two additional tables and two additional fields within the count data table. The personnel table provides institutional information about each observer, as well as their performance on identification quizzes, where available. The references tables provides the list of resources used by an observer to identify birds. The additional fields in the countdata table are family and nativeStatusCode, which are derived from the NEON master list of birds.&quot;
+## 
+## $data$productSensor
+## NULL
+## 
+## $data$productRemarks
+## [1] &quot;Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables. Taxonomic IDs of species of concern have been &#39;fuzzed&#39;; see data package readme files for more information.&quot;
+## 
+## $data$themes
+## [1] &quot;Organisms, Populations, and Communities&quot;
+## 
+## $data$changeLogs
+## NULL
+## 
+## $data$specs
+##   specId             specNumber
+## 1   3656      NEON.DOC.000916vC
+## 2   2565 NEON_bird_userGuide_vA
+## 3   3729      NEON.DOC.014041vJ
+## 
+## $data$keywords
+##  [1] &quot;birds&quot;                 &quot;diversity&quot;             &quot;taxonomy&quot;             
+##  [4] &quot;community composition&quot; &quot;distance sampling&quot;     &quot;avian&quot;                
+##  [7] &quot;species composition&quot;   &quot;population&quot;            &quot;vertebrates&quot;          
+## [10] &quot;invasive&quot;              &quot;introduced&quot;            &quot;native&quot;               
+## [13] &quot;landbirds&quot;             &quot;animals&quot;               &quot;Animalia&quot;             
+## [16] &quot;Aves&quot;                  &quot;Chordata&quot;              &quot;point counts&quot;         
+## 
+## $data$siteCodes
+##    siteCode                                                                 availableMonths
+## 1      ABBY                                     2017-05, 2017-06, 2018-06, 2018-07, 2019-05
+## 2      BARR                                                       2017-07, 2018-07, 2019-06
+## 3      BART                                     2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+## 4      BLAN                            2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+## 5      BONA                                              2017-06, 2018-06, 2018-07, 2019-06
+## 6      CLBJ                                              2017-05, 2018-04, 2019-04, 2019-05
+## 7      CPER                   2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06
+## 8      DCFS                                     2017-06, 2017-07, 2018-07, 2019-06, 2019-07
+## 9      DEJU                                                       2017-06, 2018-06, 2019-06
+## 10     DELA                                              2015-06, 2017-06, 2018-05, 2019-06
+## 11     DSNY                                     2015-06, 2016-05, 2017-05, 2018-05, 2019-05
+## 12     GRSM                                     2016-06, 2017-05, 2017-06, 2018-05, 2019-05
+## 13     GUAN                                     2015-05, 2017-05, 2018-05, 2019-05, 2019-06
+## 14     HARV                            2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+## 15     HEAL                                     2017-06, 2018-06, 2018-07, 2019-06, 2019-07
+## 16     JERC                                              2016-06, 2017-05, 2018-06, 2019-06
+## 17     JORN                                     2017-04, 2017-05, 2018-04, 2018-05, 2019-04
+## 18     KONA                                                       2018-05, 2018-06, 2019-06
+## 19     KONZ                                              2017-06, 2018-05, 2018-06, 2019-06
+## 20     LAJA                                              2017-05, 2018-05, 2019-05, 2019-06
+## 21     LENO                                                       2017-06, 2018-05, 2019-06
+## 22     MLBS                                                                2018-06, 2019-05
+## 23     MOAB                                              2015-06, 2017-05, 2018-05, 2019-05
+## 24     NIWO                                              2015-07, 2017-07, 2018-07, 2019-07
+## 25     NOGP                                                       2017-07, 2018-07, 2019-07
+## 26     OAES                                     2017-05, 2017-06, 2018-04, 2018-05, 2019-05
+## 27     ONAQ                                              2017-05, 2018-05, 2018-06, 2019-05
+## 28     ORNL                                     2016-05, 2016-06, 2017-05, 2018-06, 2019-05
+## 29     OSBS                                              2016-05, 2017-05, 2018-05, 2019-05
+## 30     PUUM                                                                         2018-04
+## 31     RMNP                            2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07
+## 32     SCBI 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+## 33     SERC                                              2017-05, 2017-06, 2018-05, 2019-05
+## 34     SJER                                                       2017-04, 2018-04, 2019-04
+## 35     SOAP                                                       2017-05, 2018-05, 2019-05
+## 36     SRER                                              2017-05, 2018-04, 2018-05, 2019-04
+## 37     STEI                   2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+## 38     STER                   2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06
+## 39     TALL                                     2015-06, 2016-07, 2017-06, 2018-06, 2019-05
+## 40     TEAK                                              2017-06, 2018-06, 2019-06, 2019-07
+## 41     TOOL                                                       2017-06, 2018-07, 2019-06
+## 42     TREE                                              2016-06, 2017-06, 2018-06, 2019-06
+## 43     UKFS                                                       2017-06, 2018-06, 2019-06
+## 44     UNDE                                     2016-06, 2016-07, 2017-06, 2018-06, 2019-06
+## 45     WOOD                                     2015-07, 2017-07, 2018-07, 2019-06, 2019-07
+## 46     WREF                                                       2018-06, 2019-05, 2019-06
+## 47     YELL                                                                2018-06, 2019-06
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              availableDataUrls
+## 1                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2019-05
+## 2                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2019-06
+## 3                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2019-06
+## 4                                                                                                                                                                                                                 https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-06
+## 5                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2019-06
+## 6                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-05
+## 7                                                                                                                                            https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2019-06
+## 8                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-07
+## 9                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2019-06
+## 10                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2019-06
+## 11                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2019-05
+## 12                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2019-05
+## 13                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-06
+## 14                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2019-06
+## 15                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-07
+## 16                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2019-06
+## 17                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2019-04
+## 18                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2019-06
+## 19                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2019-06
+## 20                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-06
+## 21                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2019-06
+## 22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2019-05
+## 23                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2019-05
+## 24                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2019-07
+## 25                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2019-07
+## 26                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2019-05
+## 27                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2019-05
+## 28                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2019-05
+## 29                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2019-05
+## 30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/PUUM/2018-04
+## 31                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-07
+## 32 https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-06
+## 33                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2019-05
+## 34                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2019-04
+## 35                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2019-05
+## 36                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2019-04
+## 37                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-06
+## 38                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-06
+## 39                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2019-05
+## 40                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-07
+## 41                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2019-06
+## 42                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2019-06
+## 43                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2019-06
+## 44                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2019-06
+## 45                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-07
+## 46                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-06
+## 47                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2019-06
+</code></pre>
+
+<p>The object contains a lot of information about the data product, including: </p>
+
+<ul>
+<li>keywords under <code>$data$keywords</code>, </li>
+<li>references for documentation under <code>$data$specs</code>, </li>
+<li>data availability by site and month under <code>$data$siteCodes</code>, and </li>
+<li>specific URLs for the API calls for each site and month under 
+<code>$data$siteCodes$availableDataUrls</code>.</li>
+</ul>
+
+<p>We need <code>$data$siteCodes</code> to tell us what we can download.
+<code>$data$siteCodes$availableDataUrls</code> allows us to avoid writing the API 
+calls ourselves in the next steps.</p>
+
+<pre><code># get data availability list for the product
+bird.urls &lt;- unlist(avail$data$siteCodes$availableDataUrls)
+length(bird.urls) #total number of URLs
+
+## [1] 204
+
+bird.urls[1:10] #show first 10 URLs available
+
+##  [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-05&quot;
+##  [2] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-06&quot;
+##  [3] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-06&quot;
+##  [4] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-07&quot;
+##  [5] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2019-05&quot;
+##  [6] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2017-07&quot;
+##  [7] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2018-07&quot;
+##  [8] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2019-06&quot;
+##  [9] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2015-06&quot;
+## [10] &quot;https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2016-06&quot;
+</code></pre>
+
+<p>These are the URLs showing us what files are available for each month where 
+there are data. </p>
+
+<p>Let&#39;s look at the bird data from Woodworth (WOOD) site from July 2015. We can do 
+this by using the above code but now specifying which site/date we want using 
+the <code>grep()</code> function. </p>
+
+<p>Note that if there were only one month of data from a site, you could leave 
+off the date in the function. If you want date from more than one site/month 
+you need to iterate this code, GET fails if you give it more than one URL. </p>
+
+<pre><code># get data availability for WOOD July 2015
+brd &lt;- GET(bird.urls[grep(&quot;WOOD/2015-07&quot;, bird.urls)])
+brd.files &lt;- jsonlite::fromJSON(content(brd, as=&quot;text&quot;))
+
+# view just the available data files 
+brd.files$data$files
+
+##                               crc32
+## 1  f37931d46213246dccf2a161211c9afe
+## 2  d84b496cf950b5b96e762473beda563a
+## 3  df102cb4cfdce092cda3c0942c9d9b67
+## 4  e67f1ae72760a63c616ec18108453aaa
+## 5  4438e5e050fc7be5949457f42089a397
+## 6  6d15da01c03793da8fc6d871e6659ea8
+## 7  e0adb3146b5cce59eea09864145efcb1
+## 8  2ad379ae44f4e87996bdc3dee70a0794
+## 9  6ba91b6e109ff14d1911dcaad9febeb9
+## 10 680a2f53c0a9d1b0ab4f8814bda5b399
+## 11 e67f1ae72760a63c616ec18108453aaa
+## 12 a2c47410a6a0f49d0b1cf95be6238604
+## 13 f37931d46213246dccf2a161211c9afe
+## 14 d76cfc5443ac27a058fab1d319d31d34
+## 15 22e3353dabb8b154768dc2eee9873718
+## 16 6d15da01c03793da8fc6d871e6659ea8
+##                                                                               name   size
+## 1      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv  23521
+## 2                          NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  12784
+## 3           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  70539
+## 4                       NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
+## 5                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip  67816
+## 6                      NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
+## 7     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv 346679
+## 8  NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv 367402
+## 9           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  78750
+## 10                         NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  13063
+## 11                      NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
+## 12                          NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv  46349
+## 13  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv  23521
+## 14        NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv   1012
+## 15               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip  79998
+## 16                     NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        url
+## 1         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3599&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=de1bd5b1fab84b8a689025ce3dbff6bb67e7c33ee767a24202d334263b2d7164
+## 2                             https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=4cfbbe4f29d6fb449ba4a7824e2d7208a966f5fed7ed4f95fed8177e91f0f3ce
+## 3              https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=1652d0a02c7043b3abe8cedf0870143a1c5ee6aff83656d9100f4913ae356871
+## 4                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=7ca394e4f4781a57ba5fe27aea33efb5163c88ee1e6e76a603f3770b0e120e13
+## 5                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=6f984f61ee29ac693d83c18edf675192c0b74e684e5c2d6d1b6ec31ccf2b826d
+## 6                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=fa90734065c4904424c6752d6538271cbe6bebcd7cf371b52777aaa1cb82ea3c
+## 7        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=2a54ceb4b09443804dac4e06decafacb647338ed4eae6cd9f92b87cb6a5d2525
+## 8  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=e0010bc4bf141a80e7786e40cb66129b678c998934b22f6047e4a98db0b5ee78
+## 9           https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=046256d84e2c030aafd631e5cb0e0bb2e3862fcbfb1f4c1fab0f18a13d8c83b9
+## 10                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=423419f3fb91a015bd586ee6b5d034cafbf727acacac5fce36bed2570ef8a7d8
+## 11                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=0e2d8cea8d352581b419981184f85463884510d129ab1c50251de88784cb7c49
+## 12                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=607cddbda93e59cd69c2b0a07b8789a9ad542a4d8bfc2182c16412080c591b6a
+## 13  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=42bb21b974fada807205bf7ed65cbf96efa2b1315603421f40a774c1e9d3013b
+## 14        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3599&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=936ecdac97dc86fbf95b7f349cca61bb777bfbeb35f2871737788619246b331a
+## 15               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=430638cd7e295d5eb882068895b8a0e6d692daf837543487cd825f4d16b7c2dd
+## 16                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20200320T015624Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3599&amp;X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Signature=d39d5b4e4d917bbbc17d9bc55f272a5169ae0f6174f7ff5993b1deba07ede487
+</code></pre>
+
+<p>In this output, <code>name</code> and <code>url</code> are key fields. It provides us with the names 
+of the files available for this site and month, and URLs where we can get the 
+files. We&#39;ll use the file names to pick which ones we want.</p>
+
+<p>The available files include both <strong>data</strong> and <strong>metadata</strong>, and both the <strong>basic</strong>
+and <strong>expanded</strong> data packages. Typically the expanded package includes additional 
+quality or uncertainty data, either in additional files or additional fields 
+than in the basic files. Basic and expanded data packages are available for 
+most NEON data products (some only have basic). Metadata are described by file 
+name below.</p>
+
+<p>The format for most of the file names is:</p>
+
+<p><strong>NEON.[domain number].[site code].[data product ID].[file-specific name].
+[date of file creation]</strong></p>
+
+<p>Some files omit the domain and site, since they&#39;re not specific to a 
+location, like the data product readme. The date of file creation uses the 
+ISO6801 format, in this case 20170720T182547Z, and can be used to determine 
+whether data have been updated since the last time you downloaded.</p>
+
+<p>Available files in our query for July 2015 at Woodworth are all of the following
+(leaving off the initial NEON.D09.WOOD.10003.001): </p>
+
+<ul>
+<li><p><strong>~.2015-07.expanded.20170720T182547Z.zip:</strong> zip of all files in the expanded 
+package</p></li>
+<li><p><strong>~.brd_countdata.2015-07.expanded.20170720T182547Z.csv:</strong> count data table, 
+expanded package version: counts of birds at each point</p></li>
+<li><p><strong>~.brd_perpoint.2015-07.expanded.20170720T182547Z.csv:</strong> point data table, 
+expanded package version: metadata at each observation point</p></li>
+<li><p><strong>NEON.Bird Conservancy of the Rockies.brd_personnel.csv:</strong> personnel data 
+table, accuracy scores for bird observers</p></li>
+<li><p><strong>~.2015-07.basic.20170720T182547Z.zip:</strong> zip of all files in the basic package</p></li>
+<li><p><strong>~.brd_countdata.2015-07.basic.20170720T182547Z.csv:</strong> count data table, 
+basic package version: counts of birds at each point</p></li>
+<li><p><strong>~.brd_perpoint.2015-07.basic.20170720T182547Z.csv:</strong> point data table, 
+basic package version: metadata at each observation point</p></li>
+<li><p><strong>NEON.DP1.10003.001_readme.txt:</strong> readme for the data product (not specific 
+to dates or location). Appears twice in the list, since it&#39;s in both the basic 
+and expanded package</p></li>
+<li><p><strong>~.20150101-20160613.xml:</strong> Ecological Metadata Language (EML) file. Appears 
+twice in the list, since it&#39;s in both the basic and expanded package</p></li>
+<li><p><strong>~.validation.20170720T182547Z.csv:</strong> validation file for the data product, 
+lists input data and data entry rules. Appears twice in the list, since it&#39;s in 
+both the basic and expanded package</p></li>
+<li><p><strong>~.variables.20170720T182547Z.csv:</strong> variables file for the data product, 
+lists data fields in downloaded tables. Appears twice in the list, since it&#39;s 
+in both the basic and expanded package</p></li>
+</ul>
+
+<p>We&#39;ll get the data tables for the point data and count data in the basic 
+package. The list of files doesn&#39;t return in the same order every time, so we 
+won&#39;t use position in the list to select. Plus, we want code we can re-use 
+when getting data from other sites and other months. So we select files 
+based on the data table name and the package name.</p>
+
+<pre><code># Get both files
+brd.count &lt;- read.delim(brd.files$data$files$url
+                        [intersect(grep(&quot;countdata&quot;, 
+                                        brd.files$data$files$name),
+                                    grep(&quot;basic&quot;, 
+                                         brd.files$data$files$name))], 
+                        sep=&quot;,&quot;)
+
+brd.point &lt;- read.delim(brd.files$data$files$url
+                        [intersect(grep(&quot;perpoint&quot;, 
+                                        brd.files$data$files$name),
+                                    grep(&quot;basic&quot;, 
+                                         brd.files$data$files$name))], 
+                        sep=&quot;,&quot;)
+</code></pre>
+
+<p>Now we have the data and can access it in R. Just to show that the files we 
+pulled have actual data in them, let&#39;s make a quick graphic:</p>
+
+<pre><code># Cluster by species 
+clusterBySp &lt;- brd.count %&gt;%
+  dplyr::group_by(scientificName) %&gt;%
+  dplyr::summarise(total=sum(clusterSize, na.rm=T))
+
+# Reorder so list is ordered most to least abundance
+clusterBySp &lt;- clusterBySp[order(clusterBySp$total, decreasing=T),]
+
+# Plot
+barplot(clusterBySp$total, names.arg=clusterBySp$scientificName, 
+        ylab=&quot;Total&quot;, cex.names=0.5, las=2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-bird-data-1.png" alt=" "/></p>
+
+<p>Wow! There are lots of <em>Agelaius phoeniceus</em> (Red-winged Blackbirds) at WOOD in July. </p>
+
+<h2>Instrumentation data (IS)</h2>
+
+<p>The process is essentially the same for sensor data. We&#39;ll do the same series of 
+queries for Soil Temperature, DP1.00041.001. Let&#39;s use data from Moab in March 
+2017 this time.</p>
+
+<pre><code># Request soil temperature data availability info
+req.soil &lt;- GET(&quot;http://data.neonscience.org/api/v0/products/DP1.00041.001&quot;)
+
+# make this JSON readable
+# Note how we&#39;ve change this from two commands into one here
+avail.soil &lt;- jsonlite::fromJSON(content(req.soil, as=&quot;text&quot;), simplifyDataFrame=T, flatten=T)
+
+# get data availability list for the product
+temp.urls &lt;- unlist(avail.soil$data$siteCodes$availableDataUrls)
+
+# get data availability from location/date of interest
+tmp &lt;- GET(temp.urls[grep(&quot;MOAB/2017-03&quot;, temp.urls)])
+tmp.files &lt;- jsonlite::fromJSON(content(tmp, as=&quot;text&quot;))
+length(tmp.files$data$files$name) # There are a lot of available files
+
+## [1] 188
+
+tmp.files$data$files$name[1:10]   # Let&#39;s print the first 10
+
+##  [1] &quot;NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv&quot; 
+##  [2] &quot;NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [3] &quot;NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [4] &quot;NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv&quot; 
+##  [5] &quot;NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [6] &quot;NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [7] &quot;NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [8] &quot;NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv&quot;
+##  [9] &quot;NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv&quot; 
+## [10] &quot;NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv&quot;
+</code></pre>
+
+<p>These file names start and end the same way as the observational files, but the 
+middle is a little more cryptic. The structure from beginning to end is: </p>
+
+<p><strong>NEON.[domain number].[site code].[data product ID].00000.
+[soil plot number].[depth].[averaging interval].[data table name].
+[year]-[month].[data package].[date of file creation]</strong></p>
+
+<p>So <strong>NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
+2017-03.basic.20170804T063725Z.csv</strong> is the: </p>
+
+<ul>
+<li>NEON (<code>NEON.</code>)</li>
+<li>Domain 13 (<code>.D13.</code>)</li>
+<li>Moab field site (<code>.MOAB.</code>) </li>
+<li>soil temperature data (<code>.DP1.00041.001.</code>)</li>
+<li>(internal NEON identifier, always 00000 in published data) (<code>.00000.</code>)</li>
+<li>collected in Soil Plot 2, (<code>.002.</code>)</li>
+<li>at the 4th depth below the surface (<code>.504.</code>)</li>
+<li>and reported as a 30-minute mean of (<code>.030.</code> and <code>.ST_30_minute.</code>)</li>
+<li>only for the period of March 2017 (<code>.2017-03.</code>)</li>
+<li>and provided in a basic data package (<code>.basic.</code>)</li>
+<li>published on Aug 4, 2017 at 06:37:25 GMT (<code>.20170804T063725Z.</code>).</li>
+</ul>
+
+<p>More information about interpreting file names can be found in the readme that 
+accompanies each download.</p>
+
+<p>Let&#39;s get data (and the URL) for only the plot and depth described above by selecting 
+<code>002.504.030</code> and the word <code>basic</code> in the file name.</p>
+
+<p>Go get it:</p>
+
+<pre><code>soil.temp &lt;- read.delim(tmp.files$data$files$url
+                        [intersect(grep(&quot;002.504.030&quot;, 
+                                        tmp.files$data$files$name),
+                                   grep(&quot;basic&quot;, 
+                                        tmp.files$data$files$name))], 
+                        sep=&quot;,&quot;)
+</code></pre>
+
+<p>Now we have the data and can use it to conduct our analyses. To take 
+a quick look at it, let&#39;s plot the mean soil temperature by date. </p>
+
+<pre><code># plot temp ~ date
+plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime, 
+                                       format=&quot;%Y-%m-%d T %H:%M:%S Z&quot;), 
+     pch=&quot;.&quot;, xlab=&quot;Date&quot;, ylab=&quot;T&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-soil-data-1.png" alt=" "/></p>
+
+<p>As we&#39;d expect we see daily fluctuation in soil temperature. </p>
+
+<h2>Remote sensing data (AOP)</h2>
+
+<p>Again, the process of determining which sites and time periods have data, and 
+finding the URLs for those data, is the same as for the other data types. We&#39;ll 
+go looking for High resolution orthorectified camera imagery, DP1.30010, and 
+we&#39;ll look at the flight over San Joaquin Experimental Range (SJER) in March 
+2017.</p>
+
+<pre><code># Request camera data availability info
+req.aop &lt;- GET(&quot;http://data.neonscience.org/api/v0/products/DP1.30010.001&quot;)
+
+# make this JSON readable
+# Note how we&#39;ve changed this from two commands into one here
+avail.aop &lt;- jsonlite::fromJSON(content(req.aop, as=&quot;text&quot;), 
+                      simplifyDataFrame=T, flatten=T)
+
+# get data availability list for the product
+cam.urls &lt;- unlist(avail.aop$data$siteCodes$availableDataUrls)
+
+# get data availability from location/date of interest
+cam &lt;- GET(cam.urls[intersect(grep(&quot;SJER&quot;, cam.urls),
+                              grep(&quot;2017&quot;, cam.urls))])
+cam.files &lt;- jsonlite::fromJSON(content(cam, as=&quot;text&quot;))
+
+# this list of files is very long, so we&#39;ll just look at the first ten
+head(cam.files$data$files$name, 10)
+
+##  [1] &quot;17032816_EH021656(20170328184247)-0498_ort.tif&quot;
+##  [2] &quot;17032816_EH021656(20170328184725)-0521_ort.tif&quot;
+##  [3] &quot;17032816_EH021656(20170328193635)-0935_ort.tif&quot;
+##  [4] &quot;17032816_EH021656(20170328200600)-1201_ort.tif&quot;
+##  [5] &quot;17032816_EH021656(20170328191712)-0762_ort.tif&quot;
+##  [6] &quot;17032816_EH021656(20170328194816)-1039_ort.tif&quot;
+##  [7] &quot;17032816_EH021656(20170328195705)-1115_ort.tif&quot;
+##  [8] &quot;17032816_EH021656(20170328174846)-0049_ort.tif&quot;
+##  [9] &quot;17032816_EH021656(20170328181119)-0239_ort.tif&quot;
+## [10] &quot;17032816_EH021656(20170328184233)-0495_ort.tif&quot;
+</code></pre>
+
+<p>File names for AOP data are more variable than for IS or OS data; 
+different AOP data products use different naming conventions. 
+File formats differ by product as well.</p>
+
+<p>This particular product, camera imagery, is stored in TIFF files. 
+For a full list of AOP data products, their naming conventions, and 
+their file formats, see <link pending>.</p>
+
+<p>Instead of reading a TIFF into R, we&#39;ll download it to the working 
+directory. This is one option for getting AOP files from the API; if 
+you plan to work with the files in R, you&#39;ll need to know how to 
+read the relevant file types into R. We hope to add tutorials for 
+this in the near future.</p>
+
+<p>To download the TIFF file, we use the <code>downloader</code> package, and we&#39;ll 
+select a file based on the time stamp in the file name: <code>20170328192931</code></p>
+
+<pre><code>download(cam.files$data$files$url[grep(&quot;20170328192931&quot;, 
+                                       cam.files$data$files$name)],
+         paste(getwd(), &quot;/SJER_image.tif&quot;, sep=&quot;&quot;), mode=&quot;wb&quot;)
+</code></pre>
+
+<p>The image, below, of the San Joaquin Experimental Range should now be in your 
+working directory.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SJER_tile_20170328192931.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/site-images/SJER_tile_20170328192931.png"></a>
+    <figcaption> An example of camera data (DP1.30010.001) from the San Joaquin 
+    Experimental Range. Source: National Ecological Observatory Network (NEON) 
+    </figcaption>
+</figure>
+
+<h2>Geolocation data</h2>
+
+<p>You may have noticed some of the spatial data referenced above are a bit vague, 
+e.g. &ldquo;soil plot 2, 4th depth below the surface.&rdquo;</p>
+
+<p>How to get spatial data and what to do with it depends on which type of 
+data you&#39;re working with.</p>
+
+<h4>Instrumentation data (both aquatic and terrestrial)</h4>
+
+<p>Stay tuned - spatial data for instruments are in the process of entry into 
+the NEON database.</p>
+
+<h4>Observational data - Aquatic</h4>
+
+<p>Latitude, longitude, elevation, and associated uncertainties are included in 
+data downloads. Most products also include an &ldquo;additional coordinate uncertainty&rdquo; 
+that should be added to the provided uncertainty. Additional spatial data, such 
+as northing and easting, can be downloaded from the API.</p>
+
+<h4>Observational data - Terrestrial</h4>
+
+<p>Latitude, longitude, elevation, and associated uncertainties are included in 
+data downloads. These are the coordinates and uncertainty of the sampling plot; 
+for many protocols it is possible to calculate a more precise location. 
+Instructions for doing this are in the respective data product user guides, and 
+code is in the <code>geoNEON</code> package on GitHub.</p>
+
+<h3>Querying a single named location</h3>
+
+<p>Let&#39;s look at the named locations in the bird data we downloaded above. To do this, 
+look for the field called <code>namedLocation</code>, which is present in all observational 
+data products, both aquatic and terrestrial.</p>
+
+<pre><code># view named location
+head(brd.point$namedLocation)
+
+## [1] &quot;WOOD_013.birdGrid.brd&quot; &quot;WOOD_013.birdGrid.brd&quot; &quot;WOOD_013.birdGrid.brd&quot;
+## [4] &quot;WOOD_013.birdGrid.brd&quot; &quot;WOOD_013.birdGrid.brd&quot; &quot;WOOD_013.birdGrid.brd&quot;
+</code></pre>
+
+<p>Here we see the first six entries in the <code>namedLocation</code> column which tells us
+the names of the Terrestrial Observation plots where the bird surveys were 
+conducted. </p>
+
+<p>We can query the locations endpoint of the API for the first named location, 
+<code>WOOD_013.birdGrid.brd</code>. </p>
+
+<pre><code># location data 
+req.loc &lt;- GET(&quot;http://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd&quot;)
+
+# make this JSON readable
+brd.WOOD_013 &lt;- jsonlite::fromJSON(content(req.loc, as=&quot;text&quot;))
+brd.WOOD_013
+
+## $data
+## $data$locationDescription
+## [1] &quot;Plot \&quot;WOOD_013\&quot; at site \&quot;WOOD\&quot;&quot;
+## 
+## $data$locationName
+## [1] &quot;WOOD_013.birdGrid.brd&quot;
+## 
+## $data$locationType
+## [1] &quot;OS Plot - brd&quot;
+## 
+## $data$domainCode
+## [1] &quot;D09&quot;
+## 
+## $data$siteCode
+## [1] &quot;WOOD&quot;
+## 
+## $data$locationDecimalLatitude
+## [1] 47.13912
+## 
+## $data$locationDecimalLongitude
+## [1] -99.23243
+## 
+## $data$locationElevation
+## [1] 579.31
+## 
+## $data$locationUtmEasting
+## [1] 482375.7
+## 
+## $data$locationUtmNorthing
+## [1] 5220650
+## 
+## $data$locationUtmHemisphere
+## [1] &quot;N&quot;
+## 
+## $data$locationUtmZone
+## [1] 14
+## 
+## $data$alphaOrientation
+## [1] 0
+## 
+## $data$betaOrientation
+## [1] 0
+## 
+## $data$gammaOrientation
+## [1] 0
+## 
+## $data$xOffset
+## [1] 0
+## 
+## $data$yOffset
+## [1] 0
+## 
+## $data$zOffset
+## [1] 0
+## 
+## $data$locationProperties
+##                             locationPropertyName locationPropertyValue
+## 1                    Value for Coordinate source            GeoXH 6000
+## 2               Value for Coordinate uncertainty                  0.28
+## 3                              Value for Country          unitedStates
+## 4                               Value for County              Stutsman
+## 5                Value for Elevation uncertainty                  0.48
+## 6                   Value for Filtered positions                   121
+## 7                       Value for Geodetic datum                 WGS84
+## 8     Value for Horizontal dilution of precision                     1
+## 9                    Value for Maximum elevation                579.31
+## 10                   Value for Minimum elevation                569.79
+## 11 Value for National Land Cover Database (2001)   grasslandHerbaceous
+## 12                     Value for Plot dimensions           500m x 500m
+## 13                             Value for Plot ID              WOOD_013
+## 14                           Value for Plot size                250000
+## 15                        Value for Plot subtype              birdGrid
+## 16                           Value for Plot type           distributed
+## 17    Value for Positional dilution of precision                   2.4
+## 18            Value for Reference Point Position                    B2
+## 19                        Value for Slope aspect                238.91
+## 20                      Value for Slope gradient                  2.83
+## 21                     Value for Soil type order             Mollisols
+## 22                      Value for State province                    ND
+## 23               Value for Subtype Specification            ninePoints
+## 24                            Value for UTM Zone                   14N
+## 
+## $data$locationParent
+## [1] &quot;WOOD&quot;
+## 
+## $data$locationParentUrl
+## [1] &quot;https://data.neonscience.org/api/v0/locations/WOOD&quot;
+## 
+## $data$locationChildren
+## [1] &quot;WOOD_013.birdGrid.brd.B3&quot; &quot;WOOD_013.birdGrid.brd.C1&quot; &quot;WOOD_013.birdGrid.brd.A1&quot;
+## [4] &quot;WOOD_013.birdGrid.brd.B1&quot; &quot;WOOD_013.birdGrid.brd.C2&quot; &quot;WOOD_013.birdGrid.brd.B2&quot;
+## [7] &quot;WOOD_013.birdGrid.brd.A2&quot; &quot;WOOD_013.birdGrid.brd.C3&quot; &quot;WOOD_013.birdGrid.brd.A3&quot;
+## 
+## $data$locationChildrenUrls
+## [1] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B3&quot;
+## [2] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C1&quot;
+## [3] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A1&quot;
+## [4] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B1&quot;
+## [5] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C2&quot;
+## [6] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B2&quot;
+## [7] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A2&quot;
+## [8] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C3&quot;
+## [9] &quot;https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A3&quot;
+</code></pre>
+
+<p>Note spatial information under <code>$data$[nameOfCoordinate]</code> and under 
+<code>$data$locationProperties</code>. Also note <code>$data$locationChildren</code>: these are the 
+finer scale locations that can be used to calculate precise spatial data for 
+bird observations.</p>
+
+<p>For convenience, we&#39;ll use the <code>geoNEON</code> package to make the calculations. 
+First we&#39;ll use <code>getLocByName()</code> to get the additional spatial information 
+available through the API, and look at the spatial resolution available in the 
+initial download:</p>
+
+<pre><code># load the geoNEON package
+library(geoNEON)
+
+# extract the spatial data
+brd.point.loc &lt;- getLocByName(brd.point)
+
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                                                  |   0%
+  |<br/>
+  |============                                                                      |  14%
+  |<br/>
+  |=======================                                                           |  29%
+  |<br/>
+  |===================================                                               |  43%
+  |<br/>
+  |===============================================                                   |  57%
+  |<br/>
+  |===========================================================                       |  71%
+  |<br/>
+  |======================================================================            |  86%
+  |<br/>
+  |==================================================================================| 100%</p>
+
+<pre><code># plot bird point locations 
+# note that decimal degrees is also an option in the data
+symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+        circles=brd.point.loc$coordinateUncertainty, 
+        xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;, tck=0.01, inches=F)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-extr-NL-1.png" alt=" "/></p>
+
+<p>And use <code>getLocTOS()</code> to calculate the point locations of observations.</p>
+
+<pre><code>brd.point.pt &lt;- getLocTOS(brd.point, &quot;brd_perpoint&quot;)
+
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                                                  |   0%
+  |<br/>
+  |=                                                                                 |   2%
+  |<br/>
+  |===                                                                               |   3%
+  |<br/>
+  |====                                                                              |   5%
+  |<br/>
+  |=====                                                                             |   6%
+  |<br/>
+  |=======                                                                           |   8%
+  |<br/>
+  |========                                                                          |  10%
+  |<br/>
+  |=========                                                                         |  11%
+  |<br/>
+  |==========                                                                        |  13%
+  |<br/>
+  |============                                                                      |  14%
+  |<br/>
+  |=============                                                                     |  16%
+  |<br/>
+  |==============                                                                    |  17%
+  |<br/>
+  |================                                                                  |  19%
+  |<br/>
+  |=================                                                                 |  21%
+  |<br/>
+  |==================                                                                |  22%
+  |<br/>
+  |====================                                                              |  24%
+  |<br/>
+  |=====================                                                             |  25%
+  |<br/>
+  |======================                                                            |  27%
+  |<br/>
+  |=======================                                                           |  29%
+  |<br/>
+  |=========================                                                         |  30%
+  |<br/>
+  |==========================                                                        |  32%
+  |<br/>
+  |===========================                                                       |  33%
+  |<br/>
+  |=============================                                                     |  35%
+  |<br/>
+  |==============================                                                    |  37%
+  |<br/>
+  |===============================                                                   |  38%
+  |<br/>
+  |=================================                                                 |  40%
+  |<br/>
+  |==================================                                                |  41%
+  |<br/>
+  |===================================                                               |  43%
+  |<br/>
+  |====================================                                              |  44%
+  |<br/>
+  |======================================                                            |  46%
+  |<br/>
+  |=======================================                                           |  48%
+  |<br/>
+  |========================================                                          |  49%
+  |<br/>
+  |==========================================                                        |  51%
+  |<br/>
+  |===========================================                                       |  52%
+  |<br/>
+  |============================================                                      |  54%
+  |<br/>
+  |==============================================                                    |  56%
+  |<br/>
+  |===============================================                                   |  57%
+  |<br/>
+  |================================================                                  |  59%
+  |<br/>
+  |=================================================                                 |  60%
+  |<br/>
+  |===================================================                               |  62%
+  |<br/>
+  |====================================================                              |  63%
+  |<br/>
+  |=====================================================                             |  65%
+  |<br/>
+  |=======================================================                           |  67%
+  |<br/>
+  |========================================================                          |  68%
+  |<br/>
+  |=========================================================                         |  70%
+  |<br/>
+  |===========================================================                       |  71%
+  |<br/>
+  |============================================================                      |  73%
+  |<br/>
+  |=============================================================                     |  75%
+  |<br/>
+  |==============================================================                    |  76%
+  |<br/>
+  |================================================================                  |  78%
+  |<br/>
+  |=================================================================                 |  79%
+  |<br/>
+  |==================================================================                |  81%
+  |<br/>
+  |====================================================================              |  83%
+  |<br/>
+  |=====================================================================             |  84%
+  |<br/>
+  |======================================================================            |  86%
+  |<br/>
+  |========================================================================          |  87%
+  |<br/>
+  |=========================================================================         |  89%
+  |<br/>
+  |==========================================================================        |  90%
+  |<br/>
+  |===========================================================================       |  92%
+  |<br/>
+  |=============================================================================     |  94%
+  |<br/>
+  |==============================================================================    |  95%
+  |<br/>
+  |===============================================================================   |  97%
+  |<br/>
+  |================================================================================= |  98%
+  |<br/>
+  |==================================================================================| 100%</p>
+
+<pre><code># plot bird point locations 
+# note that decimal degrees is also an option in the data
+symbols(brd.point.pt$easting, brd.point.pt$northing, 
+        circles=brd.point.pt$adjCoordinateUncertainty, 
+        xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;, tck=0.01, inches=F)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-calc-NL-1.png" alt=" "/></p>
+
+<p>Now you can see the individual points where the respective point counts were 
+located. </p>
+
+<h2>Taxonomy</h2>
+
+<p>NEON maintains accepted taxonomies for many of the taxonomic identification 
+data we collect. NEON taxonomies are available for query via the API; they 
+are also provided via an interactive user interface, the <a href="http://data.neonscience.org/static/taxon.html" target="_blank">Taxon Viewer</a>.</p>
+
+<p>NEON taxonomy data provides the reference information for how NEON 
+validates taxa; an identification must appear in the taxonomy lists 
+in order to be accepted into the NEON database. Additions to the lists 
+are reviewed regularly. The taxonomy lists also provide the author 
+of the scientific name, and the reference text used.</p>
+
+<p>The taxonomy endpoint of the API works a little bit differently from the 
+other endpoints. In the &ldquo;Anatomy of an API Call&rdquo; section above, each 
+endpoint has a single type of target - a data product number, a named 
+location name, etc. For taxonomic data, there are multiple query 
+options, and some of them can be used in combination.
+For example, a query for taxa in the Pinaceae family:</p>
+
+<p><span style="color:#A2A4A3"><a href="http://data.neonscience.org/api/v0/taxonomy">http://data.neonscience.org/api/v0/taxonomy</a></span><span style="color:#A00606;font-weight:bold">/?family=Pinaceae</span></p>
+
+<p>The available types of queries are listed in the <a href="http://data.neonscience.org/data-api#!/taxonomy/Get_taxonomy" target="_blank">taxonomy section</a> 
+of the API web page. Briefly, they are:</p>
+
+<ul>
+<li><code>taxonTypeCode</code>: Which of the taxonomies maintained by NEON are you 
+looking for? BIRD, FISH, PLANT, etc. Cannot be used in combination 
+with the taxonomic rank queries.</li>
+<li>each of the major taxonomic ranks from genus through kingdom</li>
+<li><code>scientificname</code>: Genus + specific epithet (+ authority). Search is 
+by exact match only, see final example below.</li>
+<li><code>verbose</code>: Do you want the short (<code>false</code>) or long (<code>true</code>) response</li>
+<li><code>offset</code>: Skip this number of items in the list. Defaults to 50.</li>
+<li><code>limit</code>: Result set will be truncated at this length. Defaults to 50.</li>
+</ul>
+
+<p>Staff on the NEON project have plans to modify the settings for <code>offset</code> 
+and <code>limit</code>, such that <code>offset</code> will default to 0 and <code>limit</code> will default 
+to ∞, but in the meantime users will want to set these manually. They are 
+set to non-default values in the examples below.</p>
+
+<p>For the first example, let&#39;s query for the loon family, Gaviidae, in the 
+bird taxonomy. Note that query parameters are case-sensitive.</p>
+
+<pre><code>loon.req &lt;- GET(&quot;http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&amp;offset=0&amp;limit=500&quot;)
+</code></pre>
+
+<p>Parse the results into a list using <code>fromJSON()</code>:</p>
+
+<pre><code>loon.list &lt;- jsonlite::fromJSON(content(loon.req, as=&quot;text&quot;))
+</code></pre>
+
+<p>And look at the <code>$data</code> element of the results, which contains:</p>
+
+<ul>
+<li>The full taxonomy of each taxon</li>
+<li>The short taxon code used by NEON (taxonID/acceptedTaxonID)</li>
+<li>The author of the scientific name (scientificNameAuthorship)</li>
+<li>The vernacular name, if applicable</li>
+<li>The reference text used (nameAccordingToID)</li>
+</ul>
+
+<p>The terms used for each field are matched to Darwin Core (dwc) and 
+the Global Biodiversity Information Facility (gbif) terms, where 
+possible, and the matches are indicated in the column headers.</p>
+
+<pre><code>loon.list$data
+
+##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName dwc:scientificNameAuthorship
+## 1          BIRD    ARLO            ARLO      Gavia arctica                   (Linnaeus)
+## 2          BIRD    COLO            COLO        Gavia immer                   (Brunnich)
+## 3          BIRD    PALO            PALO     Gavia pacifica                   (Lawrence)
+## 4          BIRD    RTLO            RTLO     Gavia stellata                (Pontoppidan)
+## 5          BIRD    YBLO            YBLO      Gavia adamsii                 (G. R. Gray)
+##   dwc:taxonRank dwc:vernacularName    dwc:nameAccordingToID dwc:kingdom dwc:phylum
+## 1       species        Arctic Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
+## 2       species        Common Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
+## 3       species       Pacific Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
+## 4       species  Red-throated Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
+## 5       species Yellow-billed Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
+##   dwc:class   dwc:order dwc:family dwc:genus gbif:subspecies gbif:variety
+## 1      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+## 2      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+## 3      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+## 4      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+## 5      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+</code></pre>
+
+<p>To get the entire list for a particular taxonomic type, use the 
+<code>taxonTypeCode</code> query. Be cautious with this query, the PLANT taxonomic 
+list has several hundred thousand entries.</p>
+
+<p>For an example, let&#39;s look up the small mammal taxonomic list, which 
+is one of the shorter ones, and use the <code>verbose=true</code> option to see 
+a more extensive list of taxon data, including many taxon ranks that 
+aren&#39;t populated for these taxa. For space here, we display only 
+the first 10 taxa:</p>
+
+<pre><code>mam.req &lt;- GET(&quot;http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&amp;offset=0&amp;limit=500&amp;verbose=true&quot;)
+mam.list &lt;- jsonlite::fromJSON(content(mam.req, as=&quot;text&quot;))
+mam.list$data[1:10,]
+
+##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName
+## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii
+## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres
+## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus
+## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus
+## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni
+## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.
+## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra
+## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa
+## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes
+## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus
+##    dwc:scientificNameAuthorship dwc:taxonRank            dwc:vernacularName
+## 1           Audubon and Bachman       species     Harriss Antelope Squirrel
+## 2                       Merriam       species       Texas Antelope Squirrel
+## 3                       Merriam       species Whitetailed Antelope Squirrel
+## 4                       Goldman    subspecies                          &lt;NA&gt;
+## 5                       Merriam       species     Nelsons Antelope Squirrel
+## 6                          &lt;NA&gt;         genus                          &lt;NA&gt;
+## 7                        Taylor    subspecies                          &lt;NA&gt;
+## 8                    Rafinesque       species                      Sewellel
+## 9                       Merriam       species              Whitefooted Vole
+## 10                         True       species                 Red Tree Vole
+##    taxonProtocolCategory dwc:nameAccordingToID
+## 1          opportunistic  isbn: 978 0801882210
+## 2          opportunistic  isbn: 978 0801882210
+## 3          opportunistic  isbn: 978 0801882210
+## 4          opportunistic  isbn: 978 0801882210
+## 5          opportunistic  isbn: 978 0801882210
+## 6          opportunistic  isbn: 978 0801882210
+## 7             non-target  isbn: 978 0801882210
+## 8             non-target  isbn: 978 0801882210
+## 9                 target  isbn: 978 0801882210
+## 10                target  isbn: 978 0801882210
+##                                                                                                                                                 dwc:nameAccordingToTitle
+## 1  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 2  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 3  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 4  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 5  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 6  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 7  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 8  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 9  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+## 10 Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
+##    dwc:kingdom gbif:subkingdom gbif:infrakingdom gbif:superdivision gbif:division
+## 1     Animalia              NA                NA                 NA            NA
+## 2     Animalia              NA                NA                 NA            NA
+## 3     Animalia              NA                NA                 NA            NA
+## 4     Animalia              NA                NA                 NA            NA
+## 5     Animalia              NA                NA                 NA            NA
+## 6     Animalia              NA                NA                 NA            NA
+## 7     Animalia              NA                NA                 NA            NA
+## 8     Animalia              NA                NA                 NA            NA
+## 9     Animalia              NA                NA                 NA            NA
+## 10    Animalia              NA                NA                 NA            NA
+##    gbif:subdivision gbif:infradivision gbif:parvdivision gbif:superphylum dwc:phylum
+## 1                NA                 NA                NA               NA   Chordata
+## 2                NA                 NA                NA               NA   Chordata
+## 3                NA                 NA                NA               NA   Chordata
+## 4                NA                 NA                NA               NA   Chordata
+## 5                NA                 NA                NA               NA   Chordata
+## 6                NA                 NA                NA               NA   Chordata
+## 7                NA                 NA                NA               NA   Chordata
+## 8                NA                 NA                NA               NA   Chordata
+## 9                NA                 NA                NA               NA   Chordata
+## 10               NA                 NA                NA               NA   Chordata
+##    gbif:subphylum gbif:infraphylum gbif:superclass dwc:class gbif:subclass gbif:infraclass
+## 1              NA               NA              NA  Mammalia            NA              NA
+## 2              NA               NA              NA  Mammalia            NA              NA
+## 3              NA               NA              NA  Mammalia            NA              NA
+## 4              NA               NA              NA  Mammalia            NA              NA
+## 5              NA               NA              NA  Mammalia            NA              NA
+## 6              NA               NA              NA  Mammalia            NA              NA
+## 7              NA               NA              NA  Mammalia            NA              NA
+## 8              NA               NA              NA  Mammalia            NA              NA
+## 9              NA               NA              NA  Mammalia            NA              NA
+## 10             NA               NA              NA  Mammalia            NA              NA
+##    gbif:superorder dwc:order gbif:suborder gbif:infraorder gbif:section gbif:subsection
+## 1               NA  Rodentia            NA              NA           NA              NA
+## 2               NA  Rodentia            NA              NA           NA              NA
+## 3               NA  Rodentia            NA              NA           NA              NA
+## 4               NA  Rodentia            NA              NA           NA              NA
+## 5               NA  Rodentia            NA              NA           NA              NA
+## 6               NA  Rodentia            NA              NA           NA              NA
+## 7               NA  Rodentia            NA              NA           NA              NA
+## 8               NA  Rodentia            NA              NA           NA              NA
+## 9               NA  Rodentia            NA              NA           NA              NA
+## 10              NA  Rodentia            NA              NA           NA              NA
+##    gbif:superfamily    dwc:family gbif:subfamily gbif:tribe gbif:subtribe        dwc:genus
+## 1                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 2                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 3                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 4                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 5                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 6                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
+## 7                NA Aplodontiidae           &lt;NA&gt;       &lt;NA&gt;            NA       Aplodontia
+## 8                NA Aplodontiidae           &lt;NA&gt;       &lt;NA&gt;            NA       Aplodontia
+## 9                NA    Cricetidae    Arvicolinae       &lt;NA&gt;            NA        Arborimus
+## 10               NA    Cricetidae    Arvicolinae       &lt;NA&gt;            NA        Arborimus
+##    dwc:subgenus gbif:subspecies gbif:variety gbif:subvariety gbif:form gbif:subform
+## 1          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 2          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 3          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 4          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 5          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 6          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 7          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 8          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 9          &lt;NA&gt;              NA           NA              NA        NA           NA
+## 10         &lt;NA&gt;              NA           NA              NA        NA           NA
+##    speciesGroup dwc:specificEpithet dwc:infraspecificEpithet
+## 1          &lt;NA&gt;            harrisii                     &lt;NA&gt;
+## 2          &lt;NA&gt;           interpres                     &lt;NA&gt;
+## 3          &lt;NA&gt;            leucurus                     &lt;NA&gt;
+## 4          &lt;NA&gt;            leucurus                   tersus
+## 5          &lt;NA&gt;             nelsoni                     &lt;NA&gt;
+## 6          &lt;NA&gt;                 sp.                     &lt;NA&gt;
+## 7          &lt;NA&gt;                rufa                    nigra
+## 8          &lt;NA&gt;                rufa                     &lt;NA&gt;
+## 9          &lt;NA&gt;             albipes                     &lt;NA&gt;
+## 10         &lt;NA&gt;         longicaudus                     &lt;NA&gt;
+</code></pre>
+
+<p>To get information about a single taxon, use the <code>scientificname</code> 
+query. This query will not do a fuzzy match, so you need to query 
+the exact name of the taxon in the NEON taxonomy. Because of this, 
+the query will be most useful when you already have NEON data in 
+hand and are looking for more information about a specific taxon. 
+Querying on <code>scientificname</code> is unlikely to be an efficient way to 
+figure out if NEON recognizes a particular taxon.</p>
+
+<p>In addition, scientific names contain spaces, which are not 
+allowed in a URL. The spaces need to be replaced with the URL 
+encoding replacement, %20.</p>
+
+<p>For an example, let&#39;s look up the little sand verbena, <em>Abronia 
+minor Standl.</em> Searching for <em>Abronia minor</em> will fail, because 
+the NEON taxonomy for this species includes the authority. The 
+search will also fail with spaces. Search for 
+<code>Abronia%20minor%20Standl.</code>, and in this case we can omit 
+<code>offset</code> and <code>limit</code> because we know there can only be a single 
+result:</p>
+
+<pre><code>am.req &lt;- GET(&quot;http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.&quot;)
+am.list &lt;- jsonlite::fromJSON(content(am.req, as=&quot;text&quot;))
+am.list$data
+
+##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName dwc:scientificNameAuthorship
+## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.                      Standl.
+##   dwc:taxonRank  dwc:vernacularName                       dwc:nameAccordingToID dwc:kingdom
+## 1       species little sand verbena http://plants.usda.gov (accessed 8/25/2014)     Plantae
+##      dwc:phylum     dwc:class      dwc:order    dwc:family dwc:genus gbif:subspecies
+## 1 Magnoliophyta Magnoliopsida Caryophyllales Nyctaginaceae   Abronia              NA
+##   gbif:variety
+## 1           NA
+</code></pre>
+
+<h2>Stacking NEON data</h2>
+
+<p>At the top of this tutorial, we installed the <code>neonUtilities</code> package. 
+This is a custom R package that stacks the monthly files provided by 
+the NEON data portal into a single continuous file for each type of 
+data table in the download. It currently handles files downloaded from 
+the data portal, but not files pulled from the API. That functionality 
+will be added soon!</p>
+
+<p>For a guide to using <code>neonUtilities</code> on data downloaded from the portal, 
+look <a href="https://www.neonscience.org/neonDataStackR" target="_blank">here</a>.</p>
+
+</body>
+
+</html>

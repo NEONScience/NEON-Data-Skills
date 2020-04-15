@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>About Packages in R</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial provides the basics of installing and working with packages in R.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to: 
+
+* Describe the basics of an R package
+* Install a package in R
+* Call (use) an installed R package
+* Update a package in R
+* View the packages installed on your computer 
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, RStudio loaded
+on your computer to complete this tutorial.
+
+
+****
+
+{% include/_greyBox-wd-rscript.html %}
+***
+
+## Additional Resources
+
+* More on packages from <a href="http://www.statmethods.net/interface/packages.html" target="_blank">Quick-R</a>.
+* <a href="http://www.r-bloggers.com/installing-r-packages/" target="_blank">Article on R-bloggers about installing packages in R</a>. 
+
+
+</div>
+
+<h2>About Packages in R</h2>
+
+<p>Packages are collections of R functions, data, and compiled code in a 
+well-defined format. When you install a package it gives you access to a set 
+of commands that are not available in the base R set of functions. The directory
+where packages are stored is called the library. R comes with a standard set of 
+packages. Others are available for download and installation. Once installed, 
+they have to be loaded into the session to be used.</p>
+
+<h2>Installing Packages in R</h2>
+
+<p>To install a package you have to know where to get the package.  Most established
+packages are available from 
+<a href="http://cran.r-project.org/" target="_blank">&ldquo;CRAN&rdquo;</a> or the Comprehensive
+R Archive Network. </p>
+
+<p>Packages download from specific CRAN &ldquo;mirrors&rdquo;&ldquo; where the packages are saved 
+(assuming that a binary, or set of installation files, is available for your 
+operating system). If you have not set a preferred CRAN mirror in your 
+<code>options()</code>, then a menu will pop up asking you to choose a location from which 
+you&#39;d like to install your packages.</p>
+
+<p>To install any package from CRAN, you use <code>install.packages()</code>.  You only need to 
+install packages the first time you use R (or after updating to a new version). </p>
+
+<pre><code># install the ggplot2 package
+install.packages(&quot;ggplot2&quot;)  
+</code></pre>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**R Tip:** You can just type this into the command 
+line of R to install each package. Once a package is installed, you don&rsquo;t have 
+to install it again while using the version of R!
+</div>
+
+<h2>Use a Package</h2>
+
+<p>Once a package is installed (basically the functions are downloaded to your 
+computer), you need to &quot;call&rdquo; the package into the current session of R.  This 
+is essentially like saying, &ldquo;Hey R, I will be using these functions now, please 
+have them ready to go&rdquo;.  You have to do this ever time you start a new R session,
+so this should be at the top of your script. </p>
+
+<p>When you want to call a package, use <code>library(PackageNameHere)</code>. You may also 
+see some people using <code>require()</code> &ndash; while that works in most cases, it does 
+function slightly differently and best practice is to use <code>library()</code>.  </p>
+
+<pre><code># load the package
+library(ggplot2)
+</code></pre>
+
+<h2>What Packages are Installed Now?</h2>
+
+<p>If you want to use a package, but aren&#39;t sure if you&#39;ve installed it before,
+you can check! In code you, can use <code>installed.packages()</code>.  </p>
+
+<pre><code># check installed packages
+installed.packages()
+</code></pre>
+
+<p>If you are using RStudio, you can also check out the Packages tab. It will list
+all the currently installed packages and have a check mark next to them if they 
+are currently loaded and ready to use. You can also update and install packages
+from this tab.  While you can &ldquo;call&rdquo; a package from here too by checking the box
+I wouldn&#39;t recommend this as calling the package isn&#39;t in your script and you 
+if you run the script again this could trip you up!</p>
+
+<h2>Updating Packages</h2>
+
+<p>Sometimes packages are updated by the users who created them. Updating packages 
+can sometimes make changes to both the package and also to how your code runs. 
+** If you already have a lot of code using a package, be cautious about updating 
+packages as some functionality may change or disappear.**  </p>
+
+<p>Otherwise, go ahead and update old packages so things are up to date.</p>
+
+<p>In code you, can use <code>old.packages()</code> to check to see what packages are out of 
+date. </p>
+
+<p><code>update.packages()</code> will update all packages in the known libraries 
+interactively. This can take a while if you haven&#39;t done it recently! To update 
+everything without any user intervention, use the <code>ask = FALSE</code> argument.</p>
+
+<p>If you only want to update a single package, the best way to do it is using
+<code>install.packages()</code> again.</p>
+
+<pre><code># list all packages where an update is available
+old.packages()
+
+# update all available packages
+update.packages()
+
+# update, without prompts for permission/clarification
+update.packages(ask = FALSE)
+
+# update only a specific package use install.packages()
+install.packages(&quot;plotly&quot;)
+</code></pre>
+
+<p>In <a href="http://www.rstudio.com/" target="_blank">RStudio</a>, you can also 
+manage packages using Tools -&gt; Install Packages.</p>
+
+<div id="ds-challenge" markdown="1">
+
+### Challenge: Installing Packages
+
+Check to see if you can install the dplyr package or a package of interest to
+you. 
+
+1. Check to see if the dplyr package is installed on your computer.
+1. If it is not installed, install the &ldquo;dplyr&rdquo; package in R.
+1. If installed, is it up to date? 
+
+</div>
+
+</body>
+
+</html>
