@@ -1,16 +1,16 @@
 ---
-syncID: 8346bef7292b46a09a76a0171b05662c
 title: "Getting Started with the R Programming Language"
-description: "This tutorial presents the basics of using R."
-dateCreated: 2014-11-04
-authors: Leah A. Wasser - Adapted from Software Carpentry
-contributors: Donal O'Leary
-estimatedTime:
-packagesLibaries:
-topics: data-analysis
-languagesTool: R
-dataProduct:
 code1: /R/R-basics/R-Basics-Getting-Started.R
+contributors: Donal O'Leary
+dataProduct: null
+dateCreated: '2014-11-04'
+description: This tutorial presents the basics of using R.
+estimatedTime: null
+languagesTool: R
+packagesLibaries: null
+syncID: 8346bef7292b46a09a76a0171b05662c
+authors: Leah A. Wasser - Adapted from Software Carpentry
+topics: data-analysis
 tutorialSeries: R-basics
 urlTitle: getting-started-r
 ---
@@ -135,13 +135,28 @@ contain spaces.
 ``` {r basic-input}
 
 # assigning values to objects 
-b <- 60 * 60
+secondsPerHour <- 60 * 60
 
-hours <- 365 * 24
+hoursPerYear <- 365 * 24
+
 
 # object names can't contain spaces.  Use a period, underscore, or camelCase to 
 # create longer names
 temp_HARV <- 90
+par.OSBS <- 180
+```
+
+We can then return the value of an `object` we created.
+``` {r basic-output3}
+secondsPerHour
+hoursPerYear
+```
+
+Or create a new `object` with existing ones.
+``` {r basic-output4}
+secondsPerYear <- secondsPerHour * hoursPerYear
+
+secondsPerYear
 ```
 
 The *result* of the operation on the right hand side of `<-` is *assigned* to 
@@ -222,7 +237,7 @@ R has many different **data structures**. These include
 * array
 
 These data structures vary by the dimensionality of the data and if they can 
-handle data of different types (homogenous vs heterogeneous).
+handle data elements of a simgle type (**homogeneous**) or multiple types (**heterogeneous**).
 
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |
@@ -255,7 +270,7 @@ R has 6 atomic vector types.
 By *atomic*, we mean the vector only holds data of a single type.
 
 - **character**: `"a"`, `"swc"`
-- **numeric**: `2`, `15.5`
+- **numeric**: `2`, `15.5`(also called **double**)
 - **integer**: `2L` (the `L` tells R to store this as an integer)
 - **logical**: `TRUE`, `FALSE`
 - **complex**: `1+4i` (complex numbers with real and imaginary parts)
@@ -276,19 +291,20 @@ x <- "april"
 # return the type of the object
 typeof(x)
 
-# 
+# does x have any metadata?
 attributes(x)
 
-# assign all values 1 to 10 to the object y
+# assign all integers 1 to 10 as an atomic vector to the object y
 y <- 1:10
 y
 
 typeof(y)
 
-# how many 
+# how many values does the vector y contain?
 length(y)
 
-# 
+# coerce the integer vector y to a numeric vector
+# store the result in the object z
 z <- as.numeric(y)
 z
 
@@ -371,8 +387,10 @@ str(z)
 You can also add to a list
 
 ``` {r add-list}
-	z <- c(z, "Annette")
-	z
+# c function combines z and "Annette" into a single vector
+# store result back to z
+z <- c(z, "Annette")
+z
 ```
 
 More examples of how to create vectors
@@ -410,6 +428,16 @@ Try it out in the console.
 
 # non numeric return
 0/0
+```
+### Indexing
+
+Vectors have positions, these positions are ordered and can be called using 
+`object[index]`
+
+``` {r indexing}
+# index
+z[2]
+
 ```
 
 Objects can have **attributes**. Attribues are part of the object. These include:
@@ -489,13 +517,14 @@ dim(m)
 ```
 
 Matrices in R are by default filled column-wise. You can also use the `byrow` 
-argument to specify how the matrix is filled. 
+argument to specify how the matrix is filled.
 
 ``` {r matrix2}
-# create a matrix. Notice R fills them by columns
+# create a matrix. Notice R fills them by columns by default
 m2 <- matrix(1:6, nrow = 2, ncol = 3)
 m2
 
+# set the byrow argument to TRUE to fill by rows
 m2_row <- matrix(c(1:6), nrow = 2, ncol = 3, byrow = TRUE)
 m2_row
 ```
@@ -526,6 +555,24 @@ rbind(x, y)
 
 ```
 
+### Matrix Indexing
+
+We can call elements of a matrix with square brackets just like a vector, except
+now we must specify a row and a column.
+```{r matrix-index}
+z <- matrix(c("a","b","c","d","e","f"), nrow=3, ncol=2)
+z
+
+# call element in the third row, second column
+z[3,2]
+
+# leaving the row blank will return contents of the whole column
+# note: the column's contents are displayed as a vector (horizontally)
+z[,2]
+
+# return the contents of the second row
+z[2,]
+```
 ### List
 
 In R, lists act as containers. Unlike atomic vectors, the contents of a list are 
@@ -549,6 +596,7 @@ class(x)
 x <- vector("list", length = 5)  ## empty list
 length(x)
 
+#call the 1st element of list x
 x[[1]]
 
 
@@ -565,11 +613,18 @@ Questions:
 
 Try it out.
 
-``` {r analytics }
 
+We can also give the elements of our list names, then call those elements with the `$` operator.
+``` {r analytics }
+# note 'iris' is an example data frame included with R
+# the head() function simply calls the first 6 rows of the data frame
 xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
 xlist
 
+# see names of our list elements
+names(xlist)
+
+# call individual elements by name
 xlist$a
  
 xlist$b
@@ -633,21 +688,29 @@ as.character(x)
 
 ```
 
+To see the integer version of the factor levels, use `as.numeric`
+
+``` {r conv-factor1}
+as.numeric(x)
+```
+
 To convert a factor to a numeric vector, go via a character. Compare
 
-``` {r conv-facor }
+``` {r conv-factor2 }
 
 f <- factor(c(1, 5, 10, 2))
 
-as.numeric(f)  ## wrong!
+as.numeric(f)  ## wrong! returns the assigned integer for each level
 
-as.numeric(as.character(f))
+as.character(f) ## returns a character string of each number
+
+as.numeric(as.character(f)) ## coerce the character strings to numbers
 
 ``` 
 
 
-In modeling functions, it is important to know what the baseline level is. This 
-is the first factor but by default the ordering is determined by alphanumerical 
+In modeling functions, it is important to know what the 'baseline' level is. This 
+is the first factor, but by default the ordering is determined by alphanumerical 
 order of elements. You can change this by speciying the `levels` (another option 
 is to use the function `relevel()`).
 
@@ -657,7 +720,7 @@ x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
 x
 ```
 
-### Data Frame
+### Data Frames
 
 A data frame is a very important data type in R. It's pretty much the *de facto*
 data structure for most tabular data and what we use for statistics.  
@@ -667,7 +730,7 @@ data structure for most tabular data and what we use for statistics.
 same length.  
 * Data frames can have additional attributes such as `rownames()`, which can 
 be useful for annotating data, like `subject_id` or `sample_id`. But most of 
-the time they are not used.  
+the time they are not used.
 
 Some additional information on data frames:
 
@@ -721,16 +784,6 @@ A recap of the different data types
 | 2-D | matrix | data frame |
 | none| array| |
 
-### Indexing
-
-Vectors have positions, these positions are ordered and can be called using 
-`object[index]`
-
-``` {r indexing}
-# index
-letters[2]
-
-```
 
 ### Functions
 
