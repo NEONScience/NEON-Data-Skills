@@ -1,7 +1,7 @@
 ---
-title: "Filter, Piping and GREPL Using R DPLYR - An Intro"
+title: "Filter, Piping, and GREPL Using R DPLYR - An Intro"
 code1: R/R-nonSeries-lessons/R-dplyr-GREPL-Summarise-Piping.R
-contributors: 
+contributors: null
 dataProduct: null
 dateCreated: '2015-05-27'
 description: Learn how to use the filter, group_by, and summarize functions with piping
@@ -26,7 +26,7 @@ After completing this tutorial, you will be able to:
 * Filter data, alone and combined with simple pattern matching grepl().
 * Use the group_by function in dplyr.
 * Use the summarise function in dplyr.
-* "Pipe"" functions using dplyr syntax.
+* "Pipe" functions using dplyr syntax.
 
 
 ## Things You’ll Need To Complete This Tutorial
@@ -77,14 +77,17 @@ Dplyr aims to provide a function for each basic verb of data manipulating, like:
 ### Format of function calls
 The single table verb functions share these features:
 
-  * The first argument is a `data.frame` (or a dplyr special class tbl_df).
+  * The first argument is a `data.frame` (or a dplyr special class tbl_df, known 
+    as a 'tibble').
       * `dplyr` can work with data.frames as is, but if you're dealing with large
-        data it's worthwhile to convert them to a tbl_df, to avoid printing 
-        a lot of data to the screen.
+        data it's worthwhile to convert them to a tibble, to avoid printing 
+        a lot of data to the screen. You can do this with the function `as_tibble()`.
+      * Calling the class function on a tibble will return the vector
+        `c("tbl_df", "tbl", "data.frame")`.
   * The subsequent arguments describe how to manipulate the data (e.g., based on
     which columns, using which summary statistics), and you can refer to columns
     directly (without using $).
-  * The result is a new `data.frame`.
+  * The result is always a new tibble.
   * Function calls do not generate 'side-effects'; you always have to assign the
     results to an object
   
@@ -99,19 +102,37 @@ We often need to get a subset of data using one function, and then use
 another function to do something with that subset (and we may do this multiple 
 times). This leads to nesting functions, which can get messy and hard to keep 
 track of. Enter 'piping', dplyr's way of feeding the output of one function into 
-another, and so on, without the hassleof parentheses and brackets. Piping looks 
-like:
+another, and so on, without the hassleof parentheses and brackets. 
 
-	data frame %>%
-		function to apply first %>%
-			function to apply second %>%
-				function to apply third
+Let's say we want to start with the data frame `my_data`, apply `function1()`, then 
+`function2()`, and then `function3()`. This is what that looks like without piping:
+
+```{r example-nested-functions, eval=FALSE}
+  function3(function2(function1(my_data)))
+```
+
+This is messy, difficult to read, and the reverse of the order our functions 
+actually occur. If any of these functions needed additional arguments, the readability
+would be even worse!
+
+The piping operator `%>%` takes everything in front of it and "pipes" it into the 
+first argument of the function after. So now our example looks like this:
+
+```{r example-piped-functions, eval=FALSE}
+  my_data %>%
+    function1() %>%
+      function2() %>%
+        function3()
+```   
+This runs identically to the original nested version!
 
 For example, if we want to find the mean body weight of male mice, we'd do this:
 
-	myMammalData %>%
-		filter(sex=='m') %>%
-			summarise (mean_weight = mean(weight))
+```{r example-mammal-data, eval=FALSE}
+	myMammalData %>%                            # start with a data frame
+		filter(sex=='M') %>%                      # first filter for rows where sex is male
+			summarise (mean_weight = mean(weight))  # find the mean of the weight column, store as mean_weight
+```
 
 This is read as "from data frame `myMammalData`, select only males and return 
 the mean weight as a new list `mean_weight`".
@@ -136,12 +157,15 @@ library(dplyr)
 library(neonUtilities)
 
 # load the NEON small mammal capture data
+# NOTE: the check.size = TRUE argument means the function 
+# will require confirmation from you that you want to load 
+# the quantity of data requested
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = T) # Console requires your response!
+                 check.size = TRUE)
 
 # if you'd like, check out the data
-#str(myData)
+str(loadData)
 ```
 ```{r load-dplyr-library-import-data-hidden, include=FALSE}
 
@@ -178,7 +202,7 @@ For the rest of this tutorial, we are only going to be working with three
 variables within 'myData':
 
 * `scientificName` a string of "Genus species"
-* `sex` a string with "F", "M", or "U" 
+* `sex` a string with "F", "M", or "U"
 * `identificationQualifier` a string noting uncertainty in the species identification
 
 ## filter()
@@ -307,7 +331,7 @@ require knowledge of SQL. How handy!
 The `group_by()` function in `dplyr` allows you to perform functions on a subset 
 of a dataset without having to create multiple new objects or construct `for()` 
 loops. The combination of `group_by()` and `summarise()` are great for 
-generating simple summaries (counts, sums) of grouped data. 
+generating simple summaries (counts, sums) of grouped data.
 
 NOTE: Be continentious about using `summarise` with other summary functions! You
 need to think about weighting for means and variances, and `summarize` doesn't 
@@ -320,7 +344,7 @@ reservoir species, we really want to know more about the demographics of the
 whole community. We can quickly generate counts by species and sex in 2 lines of
 code, using `group_by` and `summarise`.
 
-```{r dplyr group_by & summarise}
+```{r dplyr-group_by-summarise}
 # how many of each species & sex were there?
 # step 1: group by species & sex
 dataBySpSex <- group_by(myData, scientificName, sex)
@@ -343,9 +367,6 @@ the `class()` function on both `myData` and `dataBySpSex`. You can also read the
 help documentation for this function by running the code: `?group_by()`
 
 ```{r compare-classes}
-
-# View help file for group_by() function
-?group_by()
 
 # View class of 'myData' object
 class(myData)
@@ -374,7 +395,7 @@ females, `grepl` to get only Peromyscus spp., `group_by` individual species, and
 dataBySpFem <- myData %>%
                  filter(grepl('Peromyscus', scientificName), sex == "F") %>%
                    group_by(scientificName) %>%
-                      summarise(n_individuals = n()) 
+                      summarise(n_individuals = n())
 
 # view the data
 dataBySpFem
