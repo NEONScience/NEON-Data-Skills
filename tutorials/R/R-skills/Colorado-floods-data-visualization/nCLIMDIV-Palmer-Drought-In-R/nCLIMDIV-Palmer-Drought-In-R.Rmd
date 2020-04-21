@@ -1,17 +1,20 @@
 ---
-syncID: f596d3620a6449089341d08bc3375b43
-title: "Data Activity: Visualize Palmer Drought Severity Index Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This tutorial walks through how to download and visualize Palmer Drought Severity Index data in R. The data specifically downloaded for this activity allows one to to better understand a driver of the 2013 Colorado floods."
-dateCreated: 2015-05-18
-authors: Leah A. Wasser, Megan A. Jones, Mariela Perignon	
-contributors: 
-estimatedTime: 
-packagesLibraries: ggplot2, plotly
-topics: time-series, meteorology, data-viz
-languagesTool: R
-dataProduct: 
+title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
+  Understand the 2013 Colorado Floods'
 code1: teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
-tutorialSeries: 
+contributors: null
+dataProduct: null
+dateCreated: '2015-05-18'
+description: This tutorial walks through how to download and visualize Palmer Drought
+  Severity Index data in R. The data specifically downloaded for this activity allows
+  one to to better understand a driver of the 2013 Colorado floods.
+estimatedTime: null
+languagesTool: R
+packagesLibraries: ggplot2, plotly
+syncID: f596d3620a6449089341d08bc3375b43
+authors: Leah A. Wasser, Megan A. Jones, Mariela Perignon
+topics: time-series, meteorology, data-viz
+tutorialSeries: null
 urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 ---
 
@@ -220,7 +223,7 @@ We want to convert these numbers into a date field. We might be able to use the
 `as.Date` function to convert our string of numbers into a date that R will 
 recognize.
 
-```{r convert-year-month }
+```{r convert-year-month, eval= F, comment=NA}
 # convert to date, and create a new Date column 
 nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 
