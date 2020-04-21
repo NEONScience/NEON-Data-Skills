@@ -84,7 +84,7 @@ with: point, line or polygon.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png"> alt = "A figure detailing the three different types of vector objects: points, lines, and polygons." </a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png" alt = "The three different types of vector objects: points, lines, and polygons." > </a>
     <figcaption> There are 3 types of vector objects: points, lines or 
     polygons. Each object type has a different structure. 
     Image Source: National Ecological Observatory Network (NEON) 
@@ -228,7 +228,7 @@ in the CRS **UTM zone 18N**. The CRS is critical to interpreting the object
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"> alt="A figure depicting how different vector types are represented within a given spatial extent." </a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png" alt="The three different vector types represented within a given spatial extent." > </a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial object. 
@@ -249,7 +249,7 @@ attributes stored with it.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"> alt="A figure depicting example attribute tables for each different type of vector object."</a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png" alt="Example attribute tables for each different type of vector object."></a>
     <figcaption>Each spatial feature in an R spatial object has the same set of 
     associated attributes that describe or characterize the feature.
     Attribute data are stored in a separate *.dbf file. Attribute data can be
