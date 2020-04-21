@@ -119,7 +119,8 @@ to import a `.csv` file. We will use the `ggplot2` package to plot our data.
 library(ggplot2)   # efficient, pretty plotting - required for qplot function
 
 # set working directory to ensure R can find the file we wish to import
-wd<-"~/Documents/"
+# provide the location for where you've unzipped the lesson data
+wd <- "~/Documents/"
 
 ```
 
@@ -232,7 +233,7 @@ Certain functions can be performed on certain data classes and not on others.
 
 For example:
 
-```{r data-class-examples, message=TRUE, warning=TRUE}
+```{r data-class-examples, message=TRUE, warning=FALSE}
 
 a <- "mouse"
 b <- "sparrow"
