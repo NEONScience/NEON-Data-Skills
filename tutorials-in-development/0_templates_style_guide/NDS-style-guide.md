@@ -4,7 +4,7 @@ title: "NEON Data Skills Style Guide"
 description: "This is an example page with the css styled."
 dateCreated:   2015-08-01
 authors: Megan A. Jones
-contributors: Leslie Goldman
+contributors: Leslie Goldman, Donal O'Leary
 estimatedTime: 
 packagesLibraries: raster, rhdf5, rgdal
 topics: data-analysis, data-visualization, HDF5, spatial-data-gis
@@ -151,7 +151,47 @@ The data used in this tutorial were collected at the
 Download Dataset (.zip of .csv files)</a>
 
 ### Working Directory
-[Donal to add text]
+Setting and understanding the working directory is a common challenge
+for most beginner R programmers. To make matters worse, the working
+directory becomes much more complicated when 'knitting' an .Rmd file to
+a .md file, when running individual .Rmd file code chunks, and when 
+doing any of the above programmatically as a batch using the 
+'processing_code' files. In order to ensure expected behavior for all
+known use cases, as of early 2020 we are migrating to a new method to
+define and call the working directory for tutorials that read in or write
+out data. 
+
+We accomplish this by explicetly defining the working directory at the
+beginning of the tutorial, and then using paste0(wd, ...) to give the full
+file path each and every time that we read or write data. Note that the 
+working directory definition includes a `/` character at the end of the
+string so that you can easily append this `wd` with a filename or directory
+extension to make a complete filepath.
+
+For example, here are the first few lines of the recently updated 'work with hyperspectral data' tutorial (bold added for emphasis): 
+
+`# set working directory to ensure R can find the file we wish to import`
+`# and where we want to save our files. Be sure to move the download into `
+`# your working directory! `
+
+    `wd <- "~/Documents/data/" #This will depend on your local environment` 
+    `setwd(wd)`
+
+`# Define the file name to be opened `
+
+    `f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")` 
+
+And again later in the tutorial when writing out a result: 
+
+`# write out the raster as a geotiff `
+
+    `writeRaster(b9r, 
+            file=paste0(wd,"band9.tif"), 
+            format="GTiff", 
+            overwrite=TRUE)` 
+            
+We still link to the working directory tutorial in this section. Donal will
+be updating that tutorial ASAP
 
 ## Additional Resources
 You can list any additional resources you'd like to link to if needed. 
