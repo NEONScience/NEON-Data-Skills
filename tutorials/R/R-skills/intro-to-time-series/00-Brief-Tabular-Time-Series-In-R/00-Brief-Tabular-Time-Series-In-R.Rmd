@@ -1,19 +1,28 @@
 ---
-syncID: e833b177aa534b27b7dc35e264615e17
-title: "Time Series 00: Intro to Time Series Data in R - Managing Date/Time Formats & Simple Plots using ggplot2"
-description: "This tutorial will demonstrate how to import a time series dataset stored in .csv format into R. It will explore data classes and will walk through how to convert date data, stored as a character string, into a date class that R can recognize and plot efficiently."
-dateCreated:  2015-10-22
-authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: 
-estimatedTime:
-packagesLibraries: ggplot2
-topics: time-series, phenology
-languagesTool: R
-dataProduct:
+title: 'Time Series 00: Intro to Time Series Data in R - Managing Date/Time Formats
+  & Simple Plots using ggplot2'
 code1: /R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R.R
+contributors: Collin Storlie
+dataProduct: null
+dateCreated: '2015-10-22'
+description: This tutorial will demonstrate how to import a time series dataset stored
+  in .csv format into R. It will explore data classes and will walk through how to
+  convert date data, stored as a character string, into a date class that R can recognize
+  and plot efficiently.
+estimatedTime: null
+languagesTool: R
+packagesLibraries: ggplot2
+syncID: e833b177aa534b27b7dc35e264615e17
+authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
+topics: time-series, phenology
 tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
+
+```{r setup, cache = F, include=F}
+knitr::opts_chunk$set(error = TRUE)
+#Allows knitting with errors in code
+```
 
 This tutorial will demonstrate how to import a time series dataset stored in `.csv`
 format into R. It will explore data classes for columns in a `data.frame` and 
@@ -82,7 +91,7 @@ flux tower</a>
 at the NEON Harvard Forest field site. We are interested in exploring 
 changes in temperature, precipitation, PAR and day 
 length throughout the year -- metrics that impact changes in the timing of plant 
-<a href="http://budburst.org/documents/871408/2090280/U1_WhatIsPhenology_Background_Final.pdf" target="_blank">phenophases (phenology)</a>. 
+<a href="http://budburst.org/phenology-defined#what-is-phenology" target="_blank">phenophases (phenology)</a>. 
 
 
 ## About .csv Format
@@ -110,7 +119,7 @@ to import a `.csv` file. We will use the `ggplot2` package to plot our data.
 library(ggplot2)   # efficient, pretty plotting - required for qplot function
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd<-"~/Documents/"
 
 ```
 
@@ -128,7 +137,7 @@ Once our working directory is set, we can import the file using `read.csv()`.
 
 # Load csv file of daily meteorological data from Harvard Forest
 harMet.daily <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"),
       stringsAsFactors = FALSE
       )
 ```
@@ -162,7 +171,7 @@ using `as.factor()`. Therefore it is often best to read in a file with
 `stringsAsFactors = FALSE`.
 
 ## Data.Frames in R
-The `read.csv()` imports our `.csv` into a `data.frame` object in R. `data.frame`s 
+The `read.csv()` imports our `.csv` into a `data.frame` object in R. `data.frames` 
 are ideal for working with tabular data - they are similar to a spreadsheet.
 
 ``` {r dataframe}
@@ -223,7 +232,7 @@ Certain functions can be performed on certain data classes and not on others.
 
 For example:
 
-```{r data-class-examples }
+```{r data-class-examples, message=TRUE, warning=TRUE}
 
 a <- "mouse"
 b <- "sparrow"
