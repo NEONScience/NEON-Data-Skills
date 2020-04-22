@@ -1,17 +1,19 @@
 ---
-syncID: 53641e3826d3401abc682d5896010539
-title: "Data Activity: Visualize Precipitation Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize precipitation data in R to better understand the drivers and impacts of the 2013 Colorado floods."	
-dateCreated: 2015-05-18
-authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
-contributors:	
-estimatedTime:	
-packagesLibraries: ggplot2, plotly
-topics: time-series, meteorology, data-viz
+title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
+  2013 Colorado Floods'
+code1: teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R
+contributors: null
+dataProduct: null
+dateCreated: '2015-05-18'
+description: This lesson walks through the steps need to download and visualize precipitation
+  data in R to better understand the drivers and impacts of the 2013 Colorado floods.
+estimatedTime: null
 languagesTool: R
-dataProduct:
-code1: teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R	
-tutorialSeries:
+packagesLibraries: ggplot2, plotly
+syncID: 53641e3826d3401abc682d5896010539
+authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
+topics: time-series, meteorology, data-viz
+tutorialSeries: null
 urlTitle: da-viz-coop-precip-data-R
 ---
 
@@ -44,22 +46,16 @@ RStudio to write your code.
 * **ggplot2:** `install.packages("ggplot2")`
 * **plotly:** `install.packages("plotly")`
 
+
 #### Data Download & Directory Preparation
 
 Part of this lesson is to access and download the data directly from NOAA's 
-National Climate Divisional Database. If instead you would prefer to download 
-the data as a single compressed file, it can be downloaded from the 
-<a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>.  
+National Climate Divisional Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the 
+<a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>.
 
-To more easily follow along with this lesson, use the same organization for your 
-files and folders as we did. First, create a `data` directory (folder) within 
-your `Documents` directory. If you downloaded the compressed data file above, 
-unzip this file and place the `distub-events-co13` folder within the `data` 
-directory you created. If you are planning to access the data directly as 
-described in the lesson, create a new directory called `distub-events-co13` 
+To more easily follow along with this lesson, use the same organization for your files and folders as we did. First, create a `data` directory (folder) withinyour `Documents` directory. If you downloaded the compressed data file above,unzip this file and place the `distub-events-co13` folder within the `data`directory you created. If you are planning to access the data directly as described in the lesson, create a new directory called`distub-events-co13`
 wihin your `data` folder and then within it create another directory called 
-`precip`. If you choose to save your files elsewhere in your file structure, you 
-will need to modify the directions in the lesson to set your working directory 
+`precip`. If you choose to save your files elsewhere in your file structure, you will need to modify the directions in the lesson to set your working directory 
 accordingly.
 
 </div>
