@@ -91,7 +91,7 @@ You should now be able to work in the notebook.
 Download the NEON GeoTiFF file of a digital terrain model (dtm) of the San Joaquin Experimental Range.
 Click this link to download dtm data: https://ndownloader.figshare.com/articles/2009586/versions/10. This will download a zippped full of data originally from a NEON data carpentry tutorial (https://datacarpentry.org/geospatial-workshop/data/).
 
-Once downloaded, navigate through the folder to C:NEON-DS-Airborne-Remote-Sensing.zip\NEON-DS-Airborne-Remote-Sensing\SJER\DTM and save this file to your own personal working directory.
+Once downloaded, navigate through the folder to C:NEON-DS-Airborne-Remote-Sensing.zip\NEON-DS-Airborne-Remote-Sensing\SJER\DTM and save this file onto your own personal working directory.
 . 
 
 ###Open GEOTIFF file in Jupyter Notebooks using gdal
@@ -108,7 +108,7 @@ If you have trouble, ensure that 'gdal' is installed on your current environment
 
 Place the downloaded dtm file in a repository of your choice (or your current 
 working directory). Navigate to that directory. 
-	 cd <'C:/file-path-here'>
+	 wd= '/your-file-path-here' #Input the directory to where you saved the .tif file
 
 
 ### Import the TIFF
@@ -116,8 +116,8 @@ working directory). Navigate to that directory.
 Import the NEON GeoTiFF file of the digital terrain model (DTM) </a> 
 from San Joaquin Experimental Range. Open the file using the `gdal.Open` command.Determine the size of the raster and (optional) plot the raster.
 
-#Use gdal to open tiff file
- <SJER_DTM = gdal.Open('C:/yourfullfilepathhere/SJER_dtmCrop.tif')>
+#Use GDAL to open GEOTIFF file stored in your directory
+ SJER_DTM = gdal.Open(wd + 'SJER_dtmCrop.tif')>
 
 
 #Determine the raster size. 
