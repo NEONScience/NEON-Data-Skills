@@ -1,19 +1,28 @@
 ---
-syncID: 2e8e865ff45e47f2b1ba26c0992baa9e
-title: "Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt"
-description: "This tutorial explores working with date and time classes in R. We will overview the differences between As.Date, POSIXct and POSIXlt as used to convert a date/time field in character (string) format to a date-time format that is recognized by R. This conversion supports efficient plotting, subsetting and analysis of time series data."
-dateCreated: 2015-10-22
-authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: Leah A. Wasser
-estimatedTime:
-packagesLibraries: lubridate
-topics: time-series, phenology
-languagesTool: R
-dataProduct:
+title: 'Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt'
 code1: /R/dc-tabular-time-series/02-Time-Date-Classes-POSIX-In
+contributors: Leah A. Wasser
+dataProduct: null
+dateCreated: '2015-10-22'
+description: This tutorial explores working with date and time classes in R. We will
+  overview the differences between As.Date, POSIXct and POSIXlt as used to convert
+  a date/time field in character (string) format to a date-time format that is recognized
+  by R. This conversion supports efficient plotting, subsetting and analysis of time
+  series data.
+estimatedTime: null
+languagesTool: R
+packagesLibraries: lubridate
+syncID: 2e8e865ff45e47f2b1ba26c0992baa9e
+authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
+topics: time-series, phenology
 tutorialSeries: tabular-time-series
 urlTitle: dc-convert-date-time-POSIX-r
 ---
+
+```{r setup, cache = F, include=F}
+knitr::opts_chunk$set(error = TRUE)
+#Allows knitting with errors in code
+```
 
 
 This tutorial explores working with date and time field in R. We will overview
@@ -104,11 +113,18 @@ phenophase timing). We will use the `hf001-10-15min-m.csv` file
 that contains atmospheric data for the NEON Harvard Forest field site,
 aggregated at 15-minute intervals. 
 
+```{r }
+#Set the working directory and place your downloaded data there
+#Download the data from the following URL -- https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
+work.dir <- "~/Documents/"
+```
+
 ```{r read-data-csv }
 # Load csv file of 15 min meteorological data from Harvard Forest
+# https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
 # Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min <- read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
+  file=paste0(work.dir,"hf001-10-15min-m.csv"),
   stringsAsFactors = FALSE)
 ```
 
