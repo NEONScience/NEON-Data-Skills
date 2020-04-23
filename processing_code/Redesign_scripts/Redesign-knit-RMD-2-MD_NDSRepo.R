@@ -22,19 +22,20 @@ require(markdown)
 # You can choose a high-level directory and this script will search
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
-dirs <- c("R/eddy4r",
-          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
+dirs <- c("R/R-skills",
+          "R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R",
           "R/R-skills/Using-hdf5-r/Intro-HDF5-R")
+
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[3] 
+subDir <- dirs[2] 
 
 # Inputs - Where the git repo is on your computer
 ### CHANGE AFTER MIGRATION
-gitRepoPath <-"~/Git/dev-aten/NEON-Data-Skills"
+gitRepoPath <-"C:/Users/fsanchez/Documents/FS_R/NEON_Tutorials/"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
@@ -47,7 +48,7 @@ gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "~/Git/data"
+wd_processing_doc <- "C:/Users/fsanchez/Documents/data"
 
 # set the base url for images and links in the md file
 ### CHANGE AFTER MIGRATION
@@ -57,7 +58,7 @@ base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-
 # how to reference raw images on github:
 # https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
 opts_knit$set(base.url = base.url)
-opts_knit$set(root.dir = '~/Git/data/')
+opts_knit$set(root.dir = 'C:/Users/fsanchez/Documents/FS_R/NEON_Tutorials')
 
 #################### Get List of RMD files to Render #############################
 
@@ -170,3 +171,4 @@ for (files in rmd.files) {
 ########################### end script
 #files=rmd.files[13]
 #files
+
