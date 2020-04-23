@@ -2,7 +2,7 @@
 title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
   2013 Colorado Floods'
 code1: teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R
-contributors: null
+contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
 description: This lesson walks through the steps need to download and visualize precipitation
@@ -18,7 +18,7 @@ urlTitle: da-viz-coop-precip-data-R
 ---
 
 
-Several factors contributed to extreme flooding that occurred in Boulder,
+Several factors contributed to extreme flooding that occurred in Boulder, 
 Colorado in 2013. In this data activity, we explore and visualize the data for 
 precipitation (rainfall) data collected by the National Weather Service's 
 Cooperative Observer Program. The tutorial is part of the Data Activities that can be used 
@@ -37,7 +37,7 @@ After completing this tutorial, you will be able to:
 * Subset data by date (if completing Additional Resources code).
 * Set a NoData Value to NA in R (if completing Additional Resources code). 
 
-### Things You'll Need To Complete This Lesson
+## Things You'll Need To Complete This Lesson
 Please be sure you have the most current version of R and, preferably,
 RStudio to write your code.
 
@@ -47,18 +47,24 @@ RStudio to write your code.
 * **plotly:** `install.packages("plotly")`
 
 
-#### Data Download & Directory Preparation
+### Data to Download 
 
 Part of this lesson is to access and download the data directly from NOAA's 
 National Climate Divisional Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the 
 <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>.
 
-To more easily follow along with this lesson, use the same organization for your files and folders as we did. First, create a `data` directory (folder) withinyour `Documents` directory. If you downloaded the compressed data file above,unzip this file and place the `distub-events-co13` folder within the `data`directory you created. If you are planning to access the data directly as described in the lesson, create a new directory called`distub-events-co13`
-wihin your `data` folder and then within it create another directory called 
-`precip`. If you choose to save your files elsewhere in your file structure, you will need to modify the directions in the lesson to set your working directory 
-accordingly.
+
+**Set Working Directory** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce learned skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
+
 
 ## Research Question 
 What were the patterns of precipitation leading up to the 2013 flooding events
@@ -82,20 +88,22 @@ datasets that can be found and downloaded via the
 The precipitation data that we will use is from the 
 <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/cooperative-observer-network-coop" target="_blank">Cooperative Observer Network (COOP)</a>. 
 
-> "Through the National Weather Service (NWS) Cooperative Observer Program
+> "_Through the National Weather Service (NWS) Cooperative Observer Program
 (COOP), more than 10,000 volunteers take daily weather observations at National 
 Parks, seashores, mountaintops, and farms as well as in urban and suburban 
 areas. COOP data usually consist of daily maximum and minimum temperatures, 
-snowfall, and 24-hour precipitation totals." 
+snowfall, and 24-hour precipitation totals._" 
 > Quoted from NOAA's National Centers for Environmental Information
 
-Data are collected at different stations, often on paper data sheets like the one 
-below, and then entered into a central database where we can access that data and 
-download it in the .csv (Comma Separated Values) format.
+Data are collected at different stations, often on paper data sheets like the 
+one below, and then entered into a central database where we can access that data 
+and download it in the .csv (Comma Separated Values) format.
 
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png">
-   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png"></a>
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png"
+   alt = "An example of a data sheet used to collect precipitation data for the Cooperative Observer network">
+   </a>
    <figcaption> An example of the data sheets used to collect the precipitation
    data for the Cooperative Observer Network. Source: Cooperative Observer 
    Network, NOAA
@@ -118,11 +126,14 @@ The COOP site Boulder 2 (Station ID:050843) is centrally located in Boulder, CO.
 
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png">
-   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"></a>
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"
+   alt = " Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO. >
+   </a>
    <figcaption> Cooperative Observer Network station 050843 is located in 
    central Boulder, CO. Source: National Centers for Environmental Information 
    </figcaption>
 </figure>
+
 
 Then we must decide what type of data we want to download for that station. As 
 shown in the image below, we selected:
@@ -134,12 +145,15 @@ shown in the image below, we selected:
 
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
-   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"></a>
-   <figcaption> An example of the data sheets used to collect the precipitation
-   data for the Cooperative Observer Network. Source: National Ecological
-   Observatory Network (NEON)  
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"
+alt = " Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
+   </a>
+   <figcaption> Climate Data Online search page for the central Boulder, CO, station:050843
    </figcaption>
 </figure>
+
+
+
 
 Once the data are entered and you select `Search`, you will be directed to a 
 new page with a map. You can find out more information about the data by selecting
@@ -164,7 +178,7 @@ On the options page, we want to make sure we select:
 On the next page you must enter an email address for the dataset to be sent 
 to.  
 
-#### Step 3: Get the data
+### Step 3: Get the data
 As this is a small dataset, it won't take long for you to get an email telling 
 you the dataset is ready. Follow the link in the email to download your dataset.
 You can also view documentation (metadata) for the data.  
@@ -183,12 +197,16 @@ We will use `ggplot2` to efficiently plot our data and `plotly` to create i
 nteractive plots.
 
 ```{r load-libraries}
-# set your working directory
-#setwd("working-dir-path-here") 
-
 # load packages
 library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
+
+
+# set your working directory to ensure R can find the file we wish to import 
+# and where we want to save our files. Be sure to move the download into 
+# your working direectory!
+wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+setwd(wd)
 
 ```
 
@@ -204,7 +222,7 @@ library(webshot) # embed the plotly plots
 
 ## Import Precipitation Data
 
-We will use the `805325-Preciptation_Daily_2003-2013.csv` file
+We will use the `805325-Preciptation_daily_2003-2013.csv` file
 in this analysis. This dataset is the daily precipitation date from the COOP 
 station 050843 in Boulder, CO for 1 January 2003 through 31 December 2013. 
 
@@ -215,10 +233,11 @@ the R object structure.
 
 ```{r import-precip}
 
-# import precip data into R data.frame
-precip.boulder <- read.csv("disturb-events-co13/precip/805325-precip_daily_2003-2013.csv",
-                           stringsAsFactors = FALSE,
-                           header = TRUE)
+# import precip data into R data.frame by 
+# defining the file name to be opened
+precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
+
+
 # view first 6 lines of the data
 head(precip.boulder)
 
@@ -526,13 +545,12 @@ The full dataset takes considerable time to download, so we recommend you use th
 
 As an added challenge, aggregate the data by month instead of by day.  
 
-``` {r all-boulder-station-data, echo=FALSE, results="hide", include=FALSE}
+``` {r all-boulder-station-data, echo=FALSE, results="hide", include=TRUE}
 
 # read in data
-prec.boulder.all <- read.csv("disturb-events-co13/precip/805333-precip_daily_1948-2013.csv",
-                           stringsAsFactors = FALSE,
-                           header = TRUE)
-
+prec.boulder.all <- read.csv(paste0(wd,"disturb-events-co13/precip/805333-precip_daily_1948-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
+                             
+                        
 # assing NoData values to NA
 prec.boulder.all$HPCP[prec.boulder.all$HPCP==999.99] <- NA 
 
