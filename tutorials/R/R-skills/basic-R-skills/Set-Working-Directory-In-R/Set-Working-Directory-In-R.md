@@ -177,6 +177,95 @@ same but without that directory.
 	 </figcaption>
 </figure> 
 
+## Directory vs. Folder
+
+"Directory" and "Folder" both refer to the same thing. Folder makes a lot of sense when we
+think of an
+isolated folder as a "bin" containing many files. However, the analogy to a
+physical file folder falters when we start thinking about the relationship 
+between different folders and how we tell a computer to find a specific folder. 
+This is why the term directory is often preferred. Any directory (folder) can 
+hold other directories and/or files. When we set the *working directory*, we 
+are telling the computer the location of the directory (or folder) to start with
+ when looking for other files or directories, or to save any output to. 
+
+
+## Full, Base, and Relative Paths
+
+The data downloaded and unzipped in the previous steps are located within a 
+nested set of directories: 
+ 
+ * primary-level/home directory: **neon**
+	+ This directory isn't obvious as we are within this directory once we log
+	into the computer. 
+	+ You will see your own user ID.
+ * secondary-level directory:   **neon/Documents**
+ * tertiary-level directory: 	**neon/Documents/data**
+ * quaternary-level directory:  **neon/Documents/data/NEON-DS-Met-Time-Series**
+ * quaternary-level directory:  **neon/Documents/data/NEON-DS-Site-Layout-Shapefiles** 
+
+### Full & Base Path
+The **full path** is essentially the complete "directions" for how to find the 
+desired directory or file. It **always** starts with the home directory or root
+(e.g., `/Users/neon/`). A full path is the **base path** when used to set 
+the working directory to a specific directory. The base path for the
+ `NEON-DS-Met-Time-Series` directory would be:
+
+	 /Users/neon/Documents/data/NEON-DS-Met-Time-Series 
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** File or directory paths and the home 
+directory will appear slightly different in different operating systems. 
+Linux will appear as
+ `/home/neon/`. Windows will be similar to `C:\Documents and Settings\neon\` or
+ `C:\Users\neon\`. The format varies by Windows version. Make special note of 
+the direction of the slashes. Mac OS X and Unix format will appear as
+ `/Users/neon/`. This tutorial will show Mac OS X output unless specifically
+noted. 
+</div>
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Full File Path
+Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
+the format of the operating system you are currently using.
+
+Bonus: Write the path as for one of the other operating systems. 
+</div>
+
+### Relative Path
+A relative path is a path to a directory or file that is starts from the
+location determined by the working directory. If our working directory is set
+to the **data** directory,
+
+	 /Users/neon/Documents/data/
+
+we can then create a relative path for all directories and files within the
+**data** directory. 
+
+<figure>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png"></a>
+	 <figcaption> Screenshot of the data directory containing the both NEON Data 
+	 Skills Teaching Subsets. Source: National Ecological Observatory Network
+	 (NEON) 
+	 </figcaption>
+</figure> 
+
+The relative path for the `meanNDVI_HARV_2011.csv` file would be: 
+
+	 NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv
+
+<div id="ds-challenge" markdown="1">
+### Challenge: Relative File Path
+Use the format of your current operating system:
+
+1. Write out the **full path** to for the `Boundary-US-State-Mass.shp` file. 
+2. Write out the **relative path** for the `Boundary-US-State-Mass.shp` file
+assuming that the working directory is set to `/Users/neon/Documents/data/`. 
+
+Bonus: Write the paths as for one of the other operating systems. 
+</div>
+
 
 ## The R Working Directory
 In R, the working directory is the directory where R starts when looking for 
@@ -340,106 +429,3 @@ contents of the working directory in the Files pane.
 </figure> 
 
 ***
-***
-
-## Directory vs. Folder
-
-"Directory" and "Folder" both refer to the same thing. Folder makes a lot of sense when we
-think of an
-isolated folder as a "bin" containing many files. However, the analogy to a
-physical file folder falters when we start thinking about the relationship 
-between different folders and how we tell a computer to find a specific folder. 
-This is why the term directory is often preferred. Any directory (folder) can 
-hold other directories and/or files. When we set the *working directory*, we 
-are telling the computer the location of the directory (or folder) to start with
- when looking for other files or directories, or to save any output to. 
-
-
-***
-***
-
-## Full, Base, and Relative Paths
-
-<figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png"></a>
-	 <figcaption> Screenshot of the <b>neon</b> directory with the nested 
-	 <b>Documents</b>, <b>data</b>, <b>NEON-DS-Met-Time-Series</b>, and other 
-	 directories. Source: National Ecological Observatory Network
-	 (NEON) 
-	 </figcaption>
-</figure> 
-
-The data downloaded and unzipped in the previous steps are located within a 
-nested set of directories: 
- 
- * primary-level/home directory: **neon**
-	+ This directory isn't obvious as we are within this directory once we log
-	into the computer. 
-	+ You will see your own user ID.
- * secondary-level directory:   **neon/Documents**
- * tertiary-level directory: 	**neon/Documents/data**
- * quaternary-level directory:  **neon/Documents/data/NEON-DS-Met-Time-Series**
- * quaternary-level directory:  **neon/Documents/data/NEON-DS-Site-Layout-Shapefiles** 
-
-### Full & Base Path
-The **full path** is essentially the complete "directions" for how to find the 
-desired directory or file. It **always** starts with the home directory or root
-(e.g., `/Users/neon/`). A full path is the **base path** when used to set 
-the working directory to a specific directory. The base path for the
- `NEON-DS-Met-Time-Series` directory would be:
-
-	 /Users/neon/Documents/data/NEON-DS-Met-Time-Series 
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** File or directory paths and the home 
-directory will appear slightly different in different operating systems. 
-Linux will appear as
- `/home/neon/`. Windows will be similar to `C:\Documents and Settings\neon\` or
- `C:\Users\neon\`. The format varies by Windows version. Make special note of 
-the direction of the slashes. Mac OS X and Unix format will appear as
- `/Users/neon/`. This tutorial will show Mac OS X output unless specifically
-noted. 
-</div>
-
-<div id="ds-challenge" markdown="1">
-### Challenge: Full File Path
-Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
-the format of the operating system you are currently using. 
-
-Bonus: Write the path as for one of the other operating systems. 
-</div>
-
-### Relative Path
-A relative path is a path to a directory or file that is starts from the
-location determined by the working directory. If our working directory is set
-to the **data** directory,
-
-	 /Users/neon/Documents/data/
-
-we can then create a relative path for all directories and files within the
-**data** directory. 
-
-<figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png"></a>
-	 <figcaption> Screenshot of the data directory containing the both NEON Data 
-	 Skills Teaching Subsets. Source: National Ecological Observatory Network
-	 (NEON) 
-	 </figcaption>
-</figure> 
-
-The relative path for the `meanNDVI_HARV_2011.csv` file would be: 
-
-	 NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv
-
-<div id="ds-challenge" markdown="1">
-### Challenge: Relative File Path
-Use the format of your current operating system:
-
-1. Write out the **full path** to for the `Boundary-US-State-Mass.shp` file. 
-2. Write out the **relative path** for the `Boundary-US-State-Mass.shp` file
-assuming that the working directory is set to `/Users/neon/Documents/data/`. 
-
-Bonus: Write the paths as for one of the other operating systems. 
-</div>
