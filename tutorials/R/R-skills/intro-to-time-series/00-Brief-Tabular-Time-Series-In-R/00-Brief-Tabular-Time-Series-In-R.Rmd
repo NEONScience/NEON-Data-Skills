@@ -3,7 +3,7 @@ title: 'Time Series 00: Intro to Time Series Data in R - Managing Date/Time Form
   & Simple Plots using ggplot2'
 code1: /R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R.R
 contributors: Collin Storlie
-dataProduct: null
+dataProduct: DP4.00001.001
 dateCreated: '2015-10-22'
 description: This tutorial will demonstrate how to import a time series dataset stored
   in .csv format into R. It will explore data classes and will walk through how to
@@ -17,7 +17,6 @@ authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 topics: time-series, phenology
 tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
-dataProduct: DP4.00001.001
 ---
 
 This tutorial will demonstrate how to import a time series dataset stored in `.csv`
@@ -300,12 +299,11 @@ object that the variables are stored in.
 `main="Title string"`.
 </div>
 
-```{r plot-data }
+```{r plot-data, fig.cap='Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site' }
 # quickly plot air temperature
 qplot(x=date, y=airt, 
       data=harMet.daily,
       main="Daily Air Temperature\nNEON Harvard Forest Field Site")
-
 ```
 
 We have successfully plotted some data. However, what is happening on the 
@@ -350,7 +348,7 @@ Now that we have adjusted the date, let's plot again. Notice that it plots
 much more quickly now that R recognizes `date` as a date class. R can 
 aggregate ticks on the x-axis by year instead of trying to plot every day!
 
-```{r qplot-data}
+```{r qplot-data, fig.cap='Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site'}
 # quickly plot the data and include a title using main=""
 # In title string we can use '\n' to force the string to break onto a new line
 qplot(x=date,y=airt, 
@@ -373,7 +371,7 @@ Hint: you can modify the X and Y axis labels using `xlab="label text"` and
 
 </div>
 
-```{r challenge-code-plotting, echo=FALSE}
+```{r challenge-code-plotting, echo=FALSE, fig.cap=c('Relationship Between Daily Precipitation and Time at Harvard Forest Research Site','Relationship Between Daily Precipitation and Daily Air Temperature at Harvard Forest Research Site')}
 # 1
 qplot(x=date,y=prec, 
       data=harMet.daily,
