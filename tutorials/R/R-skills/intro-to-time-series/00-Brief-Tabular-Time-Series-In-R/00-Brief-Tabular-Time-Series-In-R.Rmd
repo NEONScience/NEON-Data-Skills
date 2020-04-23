@@ -17,12 +17,8 @@ authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 topics: time-series, phenology
 tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
+dataProduct: DP4.00001.001
 ---
-
-```{r setup, cache = F, include=F}
-knitr::opts_chunk$set(error = TRUE)
-#Allows knitting with errors in code
-```
 
 This tutorial will demonstrate how to import a time series dataset stored in `.csv`
 format into R. It will explore data classes for columns in a `data.frame` and 
@@ -89,7 +85,7 @@ precipitation and other metrics) collected by sensors mounted on a
 <a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank">
 flux tower</a> 
 at the NEON Harvard Forest field site. We are interested in exploring 
-changes in temperature, precipitation, PAR and day 
+changes in temperature, precipitation, Photosynthetically Active Radiation (PAR) and day 
 length throughout the year -- metrics that impact changes in the timing of plant 
 <a href="http://budburst.org/phenology-defined#what-is-phenology" target="_blank">phenophases (phenology)</a>. 
 
