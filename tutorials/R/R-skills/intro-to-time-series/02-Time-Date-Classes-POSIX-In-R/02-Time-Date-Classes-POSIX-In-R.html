@@ -407,19 +407,19 @@ library(lubridate)  #work with dates</code></pre>
 ## 
 ##     date, intersect, setdiff, union</code></pre>
 <pre class="r"><code># set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)</code></pre>
+setwd(&quot;working-dir-path-here&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;working-dir-path-here&quot;): cannot change working directory</code></pre>
 </div>
 <div id="import-csv-file" class="section level2">
 <h2>Import CSV File</h2>
-<p>First, let’s import our time series data. We are interested in temperature, precipitation and photosynthetically active radiation (PAR) - metrics that are strongly associated with vegetation green-up and brown down (phenology or phenophase timing). We will use the <code>hf001-10-15min-m.csv</code> file that contains atmospheric data for the NEON Harvard Forest field site, aggregated at 15-minute intervals.</p>
+<p>First, let’s import our time series data. We are interested in temperature, precipitation and photosynthetically active radiation (PAR) - metrics that are strongly associated with vegetation green-up and brown down (phenology or phenophase timing). We will use the <code>hf001-10-15min-m.csv</code> file that contains atmospheric data for the NEON Harvard Forest field site, aggregated at 15-minute intervals. Download the dataset for these exercises <a href="https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv" target="_blank">here</a>.</p>
 <pre class="r"><code>#Set the working directory and place your downloaded data there
-#Download the data from the following URL -- https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
-work.dir &lt;- &quot;~/Documents/&quot;</code></pre>
+wd &lt;- &quot;~/Documents/&quot;</code></pre>
 <pre class="r"><code># Load csv file of 15 min meteorological data from Harvard Forest
 # https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
 # Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min &lt;- read.csv(
-  file=paste0(work.dir,&quot;hf001-10-15min-m.csv&quot;),
+  file=paste0(wd,&quot;hf001-10-15min-m.csv&quot;),
   stringsAsFactors = FALSE)</code></pre>
 </div>
 <div id="date-and-time-data" class="section level2">
