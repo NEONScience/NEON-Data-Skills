@@ -145,4 +145,4 @@ plt.show()
 		attrs.create("Wavelengths", data=wavelengthData)
 		f.close()
 ```
-This new file "VegetationSpectra.h5" will appear in your personal working directory that you set at the beginning of this tutorial.
+This new file "VegetationSpectra.h5" should appear in your personal working directory that you set at the beginning of this tutorial.
