@@ -15,12 +15,6 @@ tutorialSeries: tabular-time-series
 urlTitle: dc-metadata-importance-eml-r
 ---
 
-```{r setup, cache = F, include=F}
-knitr::opts_chunk$set(error = TRUE)
-#Allows knitting with errors in code
-```
-
-
 This tutorial covers what metadata are, and why we need to work with
 metadata. It covers the 3 most common metadata formats: text file format, 
 web page format and Ecological Metadata Language (EML).
