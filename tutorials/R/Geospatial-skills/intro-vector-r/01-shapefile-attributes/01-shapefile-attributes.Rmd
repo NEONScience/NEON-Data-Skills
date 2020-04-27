@@ -266,7 +266,7 @@ that only two feature lines in our spatial object have the attribute
 
 We can plot our subsetted shapefiles.
 
-```{r plot-subset-shapefile}
+```{r plot-subset-shapefile, fig.cap="Foothpaths at NEON Harvard Forest Field Site."}
 # plot just footpaths
 plot(footpath_HARV,
      lwd=6,
@@ -285,7 +285,7 @@ to our features. We use the syntax
 
 to do this.
 
-```{r plot-subset-shapefile-unique-colors }
+```{r plot-subset-shapefile-unique-colors, fig.cap="Foothpaths at NEON Harvard Forest Field Site with color varied by feature type." }
 # plot just footpaths
 plot(footpath_HARV,
      col=c("green","blue"), # set color for each feature 
@@ -307,7 +307,7 @@ Subset out all:
 For each plot, color each feature using a unique color.
 </div>
 
-```{r challenge-code-feature-subset, results="hide", echo=FALSE}
+```{r challenge-code-feature-subset, results="hide", echo=FALSE, fig.cap=c("Boardwalks at NEON Harvard Forest Field Site with color varied by feature type.", "Stone walls at NEON Harvard Forest Field Site with color varied by feature type.")}
 
 # save an object with only boardwalk lines
 boardwalk_HARV<-lines_HARV[lines_HARV$TYPE == "boardwalk",]
@@ -388,7 +388,7 @@ Note in the above example we have:
 Let's give this a try.
 
 
-``` {r palette-and-plot}
+``` {r palette-and-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level.}
 # Check the class of the attribute - is it a factor?
 class(lines_HARV$TYPE)
 
@@ -418,7 +418,7 @@ plot(lines_HARV,
 We can also adjust the width of our plot lines using `lwd`. We can set all lines
 to be thicker or thinner using `lwd=`. 
 
-```{r adjust-line-width}
+```{r adjust-line-width, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and uniformly thick line width."}
 # make all lines thicker
 plot(lines_HARV, 
      col=roadColors,
@@ -437,7 +437,7 @@ in our spatial object, we can use the same syntax that we used for colors, above
 Note that this requires the attribute to be of class `factor`. Let's give it a 
 try.
 
-```{r line-width-unique }
+```{r line-width-unique, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value." }
 class(lines_HARV$TYPE)
 levels(lines_HARV$TYPE)
 # create vector of line widths
@@ -466,7 +466,7 @@ Create a plot of roads using the following line thicknesses:
  
 </div>
 
-```{r bicycle-map, include=TRUE, results="hide", echo=FALSE}
+```{r bicycle-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by specific attribute value."}
 
 # view the factor levels
 levels(lines_HARV$TYPE)
@@ -503,7 +503,7 @@ the default set of colors that R applies to all plots.
 
 Let's add a legend to our plot.
 
-```{r add-legend-to-plot }
+```{r add-legend-to-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."}
 plot(lines_HARV, 
      col=roadColors,
      main="NEON Harvard Forest Field Site\n Roads & Trails\n Default Legend")
@@ -526,7 +526,7 @@ We can tweak the appearance of our legend too.
 
 Let's try it out.
 
-```{r modify-legend-plot }
+```{r modify-legend-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a modified legend." }
 
 plot(lines_HARV, 
      col=roadColors,
@@ -547,7 +547,7 @@ directly in the plot code rather than creating a separate object.
 
 Let's try it!
 
-```{r plot-different-colors}
+```{r plot-different-colors, fig.cap="Roads and trails at NEON Harvard Forest Field Site with manually set colors and with a modified legend."}
 
 # manually set the colors for the plot!
 newColors <- c("springgreen", "blue", "magenta", "orange")
@@ -587,7 +587,7 @@ other lines can be grey.
 
 </div>
 
-```{r bicycle-map-2, include=TRUE, results="hide", echo=FALSE}
+```{r bicycle-map-2, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads where Bikes and Horses are Allowed on NEON Harvard Forest Field Site with lines varied by attribute factor and with a modified legend. "}
 # view levels 
 levels(lines_HARV$BicyclesHo)
 # make sure the attribute is of class "Factor"
@@ -646,7 +646,7 @@ use google to find a list of pch symbols that you can use in R.
 
 </div>
 
-``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE}
+``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap=c("Contiguous U.S. State Boundaries with color varied by region and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and one symbol for all types and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and unique symbols for each type and with a modified legend.")}
 ## 1
 # Read the shapefile file
 State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
