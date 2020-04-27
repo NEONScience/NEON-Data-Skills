@@ -153,7 +153,7 @@ more about NEON terrestrial measurements here.</a>
     # the quantity of data requested
     loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                      startdate = "2014-01", enddate = "2014-12", 
-                     check.size = TRUE)
+                     check.size = TRUE) # Console requires your response!
 
     # if you'd like, check out the data
     str(loadData)
@@ -381,6 +381,9 @@ code: `?group_by()`
 
     ## [1] "grouped_df" "tbl_df"     "tbl"        "data.frame"
 
+    # View help file for group_by() function
+    ?group_by()
+
 Pipe functions together
 -----------------------
 
@@ -451,7 +454,7 @@ the base R code needed to accomplish the same task.
     # Use a loop to calculate the numbers of individuals of each species
     sciName <- vector(); numInd <- vector()
     for (i in sppInDF){
-      sciName <- c(sciName,i)
+      sciName <- c(sciName, i)
       numInd <- c(numInd, length(which(dataFemPero$scientificName==i)))
     }
 

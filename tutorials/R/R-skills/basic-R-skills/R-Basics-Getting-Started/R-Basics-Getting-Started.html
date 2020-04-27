@@ -418,7 +418,7 @@ summary {
 # for clean, easy to read comments, use a space between the # and text. 
 
 # there is a line of code below this comment
- a &lt;- 1+2</code></pre>
+ a &lt;- 1 + 2</code></pre>
 </div>
 <div id="basic-operations-in-r" class="section level2">
 <h2>Basic Operations in R</h2>
@@ -431,8 +431,8 @@ summary {
 <p>or by typing words, with the command <code>writeLines()</code>. Words that you want to be recognized as text (as opposed to a field name or other text that signifies an object) must be enclosed within quotes.</p>
 <pre class="r"><code># have R write words
 
-writeLines(&quot;hello world&quot;)</code></pre>
-<pre><code>## hello world</code></pre>
+writeLines(&quot;Hello World&quot;)</code></pre>
+<pre><code>## Hello World</code></pre>
 <p>We can assign our results to an <code>object</code> and name the object. Objects names cannot contain spaces.</p>
 <pre class="r"><code># assigning values to objects 
 secondsPerHour &lt;- 60 * 60
@@ -553,7 +553,7 @@ ls()</code></pre>
 <p>By <em>atomic</em>, we mean the vector only holds data of a single type.</p>
 <ul>
 <li><strong>character</strong>: <code>&quot;a&quot;</code>, <code>&quot;swc&quot;</code></li>
-<li><strong>numeric</strong>: <code>2</code>, <code>15.5</code>(also called <strong>double</strong>)</li>
+<li><strong>numeric</strong>: <code>2</code>, <code>15.5</code></li>
 <li><strong>integer</strong>: <code>2L</code> (the <code>L</code> tells R to store this as an integer)</li>
 <li><strong>logical</strong>: <code>TRUE</code>, <code>FALSE</code></li>
 <li><strong>complex</strong>: <code>1+4i</code> (complex numbers with real and imaginary parts)</li>
@@ -571,16 +571,16 @@ ls()</code></pre>
 x &lt;- &quot;april&quot;
 
 # return the type of the object
-typeof(x)</code></pre>
+class(x)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code># does x have any metadata?
+<pre class="r"><code># does x have any attributes?
 attributes(x)</code></pre>
 <pre><code>## NULL</code></pre>
 <pre class="r"><code># assign all integers 1 to 10 as an atomic vector to the object y
 y &lt;- 1:10
 y</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>typeof(y)</code></pre>
+<pre class="r"><code>class(y)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code># how many values does the vector y contain?
 length(y)</code></pre>
@@ -590,8 +590,8 @@ length(y)</code></pre>
 z &lt;- as.numeric(y)
 z</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>typeof(z)</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>class(z)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>A vector is a collection of elements that are most commonly <code>character</code>, <code>logical</code>, <code>integer</code> or <code>numeric</code>.</p>
 <p>You can create an empty vector with <code>vector()</code>. (By default the mode is <code>logical</code>. You can be more explicit as shown in the examples below.) It is more common to use direct constructors such as <code>character()</code>, <code>numeric()</code>, etc.</p>
 <pre class="r"><code>x &lt;- vector()
@@ -672,11 +672,15 @@ seq(10)</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="r"><code># specify values for seq()
 seq(from = 1, to = 10, by = 0.1)</code></pre>
-<pre><code>##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1  2.2  2.3  2.4  2.5  2.6  2.7  2.8
-## [20]  2.9  3.0  3.1  3.2  3.3  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1  4.2  4.3  4.4  4.5  4.6  4.7
-## [39]  4.8  4.9  5.0  5.1  5.2  5.3  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5  6.6
-## [58]  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9  8.0  8.1  8.2  8.3  8.4  8.5
-## [77]  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3  9.4  9.5  9.6  9.7  9.8  9.9 10.0</code></pre>
+<pre><code>##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0
+## [12]  2.1  2.2  2.3  2.4  2.5  2.6  2.7  2.8  2.9  3.0  3.1
+## [23]  3.2  3.3  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1  4.2
+## [34]  4.3  4.4  4.5  4.6  4.7  4.8  4.9  5.0  5.1  5.2  5.3
+## [45]  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4
+## [56]  6.5  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5
+## [67]  7.6  7.7  7.8  7.9  8.0  8.1  8.2  8.3  8.4  8.5  8.6
+## [78]  8.7  8.8  8.9  9.0  9.1  9.2  9.3  9.4  9.5  9.6  9.7
+## [89]  9.8  9.9 10.0</code></pre>
 <p>You can also get non-numeric outputs.</p>
 <ul>
 <li><code>Inf</code> is infinity. You can have either positive or negative infinity.</li>
@@ -924,16 +928,26 @@ x</code></pre>
 <pre class="r"><code>as.numeric(x)</code></pre>
 <pre><code>## [1] 2 1 1 2 2</code></pre>
 <p>To convert a factor to a numeric vector, go via a character. Compare</p>
-<pre class="r"><code>f &lt;- factor(c(1, 5, 10, 2))
+<pre class="r"><code>f &lt;- factor(c(1, 5, 5, 10, 2, 2, 2))
 
-as.numeric(f)  ## wrong! returns the assigned integer for each level</code></pre>
-<pre><code>## [1] 1 3 4 2</code></pre>
-<pre class="r"><code>as.character(f) ## returns a character string of each number</code></pre>
-<pre><code>## [1] &quot;1&quot;  &quot;5&quot;  &quot;10&quot; &quot;2&quot;</code></pre>
+levels(f)       ## returns just the four levels present in our factor</code></pre>
+<pre><code>## [1] &quot;1&quot;  &quot;2&quot;  &quot;5&quot;  &quot;10&quot;</code></pre>
+<pre class="r"><code>as.numeric(f)   ## wrong! returns the assigned integer for each level</code></pre>
+<pre><code>## [1] 1 3 3 4 2 2 2</code></pre>
+<pre class="r"><code>                ## integer corresponds to the position of that number in levels(f)
+
+as.character(f) ## returns a character string of each number</code></pre>
+<pre><code>## [1] &quot;1&quot;  &quot;5&quot;  &quot;5&quot;  &quot;10&quot; &quot;2&quot;  &quot;2&quot;  &quot;2&quot;</code></pre>
 <pre class="r"><code>as.numeric(as.character(f)) ## coerce the character strings to numbers</code></pre>
-<pre><code>## [1]  1  5 10  2</code></pre>
+<pre><code>## [1]  1  5  5 10  2  2  2</code></pre>
 <p>In modeling functions, it is important to know what the ‘baseline’ level is. This is the first factor, but by default the ordering is determined by alphanumerical order of elements. You can change this by speciying the <code>levels</code> (another option is to use the function <code>relevel()</code>).</p>
-<pre class="r"><code>x &lt;- factor(c(&quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;), levels = c(&quot;yes&quot;, &quot;no&quot;))
+<pre class="r"><code># the default result (because N comes before Y alphabetically)
+x &lt;- factor(c(&quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;))
+x</code></pre>
+<pre><code>## [1] yes no  yes
+## Levels: no yes</code></pre>
+<pre class="r"><code># now let&#39;s try again, this time specifying the order of our levels
+x &lt;- factor(c(&quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;), levels = c(&quot;yes&quot;, &quot;no&quot;))
 x</code></pre>
 <pre><code>## [1] yes no  yes
 ## Levels: yes no</code></pre>
@@ -985,7 +999,7 @@ dat</code></pre>
 <li><code>names()</code> - shows the <code>names</code> attribute for a data frame, which gives the column names.</li>
 </ul>
 <p>See that it is actually a special list:</p>
-<pre class="r"><code>list()</code></pre>
+<pre class="r"><code>list() </code></pre>
 <pre><code>## list()</code></pre>
 <pre class="r"><code>is.list(iris)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
@@ -1038,7 +1052,7 @@ y</code></pre>
 <pre class="r"><code># call up a help search
 help.start()</code></pre>
 <pre><code>## If nothing happens, you should open
-## &#39;http://127.0.0.1:12649/doc/html/index.html&#39; yourself</code></pre>
+## &#39;http://127.0.0.1:26483/doc/html/index.html&#39; yourself</code></pre>
 <pre class="r"><code># help (documentation) for a package
 ?? ggplot2
 

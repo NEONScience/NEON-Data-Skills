@@ -477,7 +477,7 @@ library(neonUtilities)
 # the quantity of data requested
 loadData &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, site = &quot;HARV&quot;, 
                  startdate = &quot;2014-01&quot;, enddate = &quot;2014-12&quot;, 
-                 check.size = TRUE)
+                 check.size = TRUE) # Console requires your response!
 
 # if you&#39;d like, check out the data
 str(loadData)</code></pre>
@@ -597,6 +597,8 @@ class(myData)</code></pre>
 <pre class="r"><code># View class of &#39;dataBySpSex&#39; object
 class(dataBySpSex)</code></pre>
 <pre><code>## [1] &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code># View help file for group_by() function
+?group_by()</code></pre>
 </div>
 <div id="pipe-functions-together" class="section level2">
 <h2>Pipe functions together</h2>
@@ -651,7 +653,7 @@ sppInDF &lt;- unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificNam
 # Use a loop to calculate the numbers of individuals of each species
 sciName &lt;- vector(); numInd &lt;- vector()
 for (i in sppInDF){
-  sciName &lt;- c(sciName,i)
+  sciName &lt;- c(sciName, i)
   numInd &lt;- c(numInd, length(which(dataFemPero$scientificName==i)))
 }
 

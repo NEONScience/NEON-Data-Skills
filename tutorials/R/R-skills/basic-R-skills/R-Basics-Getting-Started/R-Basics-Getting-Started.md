@@ -93,7 +93,7 @@ and will also help others understand your scripts and analyses.
     # for clean, easy to read comments, use a space between the # and text. 
 
     # there is a line of code below this comment
-     a <- 1+2
+     a <- 1 + 2
 
 Basic Operations in R
 ---------------------
@@ -116,9 +116,9 @@ signifies an object) must be enclosed within quotes.
 
     # have R write words
 
-    writeLines("hello world")
+    writeLines("Hello World")
 
-    ## hello world
+    ## Hello World
 
 We can assign our results to an `object` and name the object. Objects
 names cannot contain spaces.
@@ -282,7 +282,7 @@ R has 6 atomic vector types.
 By *atomic*, we mean the vector only holds data of a single type.
 
 -   **character**: `"a"`, `"swc"`
--   **numeric**: `2`, `15.5`(also called **double**)
+-   **numeric**: `2`, `15.5`
 -   **integer**: `2L` (the `L` tells R to store this as an integer)
 -   **logical**: `TRUE`, `FALSE`
 -   **complex**: `1+4i` (complex numbers with real and imaginary parts)
@@ -300,11 +300,11 @@ Let’s look at some examples:
     x <- "april"
 
     # return the type of the object
-    typeof(x)
+    class(x)
 
     ## [1] "character"
 
-    # does x have any metadata?
+    # does x have any attributes?
     attributes(x)
 
     ## NULL
@@ -315,7 +315,7 @@ Let’s look at some examples:
 
     ##  [1]  1  2  3  4  5  6  7  8  9 10
 
-    typeof(y)
+    class(y)
 
     ## [1] "integer"
 
@@ -331,9 +331,9 @@ Let’s look at some examples:
 
     ##  [1]  1  2  3  4  5  6  7  8  9 10
 
-    typeof(z)
+    class(z)
 
-    ## [1] "double"
+    ## [1] "numeric"
 
 A vector is a collection of elements that are most commonly `character`,
 `logical`, `integer` or `numeric`.
@@ -471,11 +471,15 @@ You can also create vectors as a sequence of numbers.
     # specify values for seq()
     seq(from = 1, to = 10, by = 0.1)
 
-    ##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1  2.2  2.3  2.4  2.5  2.6  2.7  2.8
-    ## [20]  2.9  3.0  3.1  3.2  3.3  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1  4.2  4.3  4.4  4.5  4.6  4.7
-    ## [39]  4.8  4.9  5.0  5.1  5.2  5.3  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5  6.6
-    ## [58]  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9  8.0  8.1  8.2  8.3  8.4  8.5
-    ## [77]  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3  9.4  9.5  9.6  9.7  9.8  9.9 10.0
+    ##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0
+    ## [12]  2.1  2.2  2.3  2.4  2.5  2.6  2.7  2.8  2.9  3.0  3.1
+    ## [23]  3.2  3.3  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1  4.2
+    ## [34]  4.3  4.4  4.5  4.6  4.7  4.8  4.9  5.0  5.1  5.2  5.3
+    ## [45]  5.4  5.5  5.6  5.7  5.8  5.9  6.0  6.1  6.2  6.3  6.4
+    ## [56]  6.5  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5
+    ## [67]  7.6  7.7  7.8  7.9  8.0  8.1  8.2  8.3  8.4  8.5  8.6
+    ## [78]  8.7  8.8  8.9  9.0  9.1  9.2  9.3  9.4  9.5  9.6  9.7
+    ## [89]  9.8  9.9 10.0
 
 You can also get non-numeric outputs.
 
@@ -853,25 +857,39 @@ To see the integer version of the factor levels, use `as.numeric`
 
 To convert a factor to a numeric vector, go via a character. Compare
 
-    f <- factor(c(1, 5, 10, 2))
+    f <- factor(c(1, 5, 5, 10, 2, 2, 2))
 
-    as.numeric(f)  ## wrong! returns the assigned integer for each level
+    levels(f)       ## returns just the four levels present in our factor
 
-    ## [1] 1 3 4 2
+    ## [1] "1"  "2"  "5"  "10"
+
+    as.numeric(f)   ## wrong! returns the assigned integer for each level
+
+    ## [1] 1 3 3 4 2 2 2
+
+                    ## integer corresponds to the position of that number in levels(f)
 
     as.character(f) ## returns a character string of each number
 
-    ## [1] "1"  "5"  "10" "2"
+    ## [1] "1"  "5"  "5"  "10" "2"  "2"  "2"
 
     as.numeric(as.character(f)) ## coerce the character strings to numbers
 
-    ## [1]  1  5 10  2
+    ## [1]  1  5  5 10  2  2  2
 
 In modeling functions, it is important to know what the ‘baseline’ level
 is. This is the first factor, but by default the ordering is determined
 by alphanumerical order of elements. You can change this by speciying
 the `levels` (another option is to use the function `relevel()`).
 
+    # the default result (because N comes before Y alphabetically)
+    x <- factor(c("yes", "no", "yes"))
+    x
+
+    ## [1] yes no  yes
+    ## Levels: no yes
+
+    # now let's try again, this time specifying the order of our levels
     x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
     x
 
@@ -934,7 +952,7 @@ You can manually create a data frame using `data.frame`.
 
 See that it is actually a special list:
 
-    list()
+    list() 
 
     ## list()
 
@@ -1002,7 +1020,7 @@ bottom. You can use `help()` or more simply `??()`
     help.start()
 
     ## If nothing happens, you should open
-    ## 'http://127.0.0.1:12649/doc/html/index.html' yourself
+    ## 'http://127.0.0.1:26483/doc/html/index.html' yourself
 
     # help (documentation) for a package
     ?? ggplot2

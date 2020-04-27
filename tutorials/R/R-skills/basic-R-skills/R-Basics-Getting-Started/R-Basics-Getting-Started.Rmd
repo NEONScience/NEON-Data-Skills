@@ -102,7 +102,7 @@ understand your scripts and analyses.
 # for clean, easy to read comments, use a space between the # and text. 
 
 # there is a line of code below this comment
- a <- 1+2
+ a <- 1 + 2
 
 ```
 
@@ -125,7 +125,7 @@ object) must be enclosed within quotes.
 ``` {r basic-output2}
 # have R write words
 
-writeLines("hello world")
+writeLines("Hello World")
 
 ```
 
@@ -270,7 +270,7 @@ R has 6 atomic vector types.
 By *atomic*, we mean the vector only holds data of a single type.
 
 - **character**: `"a"`, `"swc"`
-- **numeric**: `2`, `15.5`(also called **double**)
+- **numeric**: `2`, `15.5`
 - **integer**: `2L` (the `L` tells R to store this as an integer)
 - **logical**: `TRUE`, `FALSE`
 - **complex**: `1+4i` (complex numbers with real and imaginary parts)
@@ -289,16 +289,16 @@ Let's look at some examples:
 x <- "april"
 
 # return the type of the object
-typeof(x)
+class(x)
 
-# does x have any metadata?
+# does x have any attributes?
 attributes(x)
 
 # assign all integers 1 to 10 as an atomic vector to the object y
 y <- 1:10
 y
 
-typeof(y)
+class(y)
 
 # how many values does the vector y contain?
 length(y)
@@ -308,7 +308,7 @@ length(y)
 z <- as.numeric(y)
 z
 
-typeof(z)
+class(z)
 
 ```
 
@@ -698,9 +698,12 @@ To convert a factor to a numeric vector, go via a character. Compare
 
 ``` {r conv-factor2 }
 
-f <- factor(c(1, 5, 10, 2))
+f <- factor(c(1, 5, 5, 10, 2, 2, 2))
 
-as.numeric(f)  ## wrong! returns the assigned integer for each level
+levels(f)       ## returns just the four levels present in our factor
+
+as.numeric(f)   ## wrong! returns the assigned integer for each level
+                ## integer corresponds to the position of that number in levels(f)
 
 as.character(f) ## returns a character string of each number
 
@@ -715,7 +718,11 @@ order of elements. You can change this by speciying the `levels` (another option
 is to use the function `relevel()`).
 
 ``` {r name}
+# the default result (because N comes before Y alphabetically)
+x <- factor(c("yes", "no", "yes"))
+x
 
+# now let's try again, this time specifying the order of our levels
 x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
 x
 ```
@@ -768,7 +775,7 @@ See that it is actually a special list:
 
 ``` {r list2}
 
-list()
+list() 
 
 is.list(iris)
 

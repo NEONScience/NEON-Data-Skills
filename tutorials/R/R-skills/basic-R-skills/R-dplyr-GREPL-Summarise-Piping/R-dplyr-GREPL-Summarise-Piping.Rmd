@@ -162,7 +162,7 @@ library(neonUtilities)
 # the quantity of data requested
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = TRUE)
+                 check.size = TRUE) # Console requires your response!
 
 # if you'd like, check out the data
 str(loadData)
@@ -375,6 +375,11 @@ class(myData)
 class(dataBySpSex)
 
 ```
+```{r compare-classes-2, eval=FALSE}
+# View help file for group_by() function
+?group_by()
+
+```
 
 ## Pipe functions together
 
@@ -436,7 +441,7 @@ sppInDF <- unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificName)]
 # Use a loop to calculate the numbers of individuals of each species
 sciName <- vector(); numInd <- vector()
 for (i in sppInDF){
-  sciName <- c(sciName,i)
+  sciName <- c(sciName, i)
   numInd <- c(numInd, length(which(dataFemPero$scientificName==i)))
 }
 
