@@ -1,17 +1,20 @@
 ---
-syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
-title: "Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods."	
-dateCreated: 2015-05-18
-authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon	
-contributors: 
-estimatedTime: 
-packagesLibraries: ggplot2, plotly
-topics: time-series, meteorology, data-viz
+title: 'Data Activity: Visualize Stream Discharge Data in R to Better Understand the
+  2013 Colorado Floods'
+code1: teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R
+contributors: null
+dataProduct: null
+dateCreated: '2015-05-18'
+description: This lesson walks through the steps need to download and visualize USGS
+  Stream Discharge data in R to better understand the drivers and impacts of the 2013
+  Colorado floods.
+estimatedTime: null
 languagesTool: R
-dataProduct:
-code1: teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R	
-tutorialSeries: 
+packagesLibraries: ggplot2, plotly
+syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
+authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
+topics: time-series, meteorology, data-viz
+tutorialSeries: null
 urlTitle: da-viz-usgs-stream-discharge-data-R
 ---
 
@@ -176,7 +179,7 @@ Let's import our data.
 and read it in directly using `read.csv()` function and then skip to the **View 
 Data Structure** section).
 
-```{r import-discharge-2 }
+```{r import-discharge-2}
 
 #import data
 discharge <- read.csv("disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt",
