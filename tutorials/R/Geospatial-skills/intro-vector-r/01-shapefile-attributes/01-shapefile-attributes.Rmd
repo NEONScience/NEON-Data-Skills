@@ -388,7 +388,7 @@ Note in the above example we have:
 Let's give this a try.
 
 
-``` {r palette-and-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level.}
+``` {r palette-and-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level."}
 # Check the class of the attribute - is it a factor?
 class(lines_HARV$TYPE)
 
