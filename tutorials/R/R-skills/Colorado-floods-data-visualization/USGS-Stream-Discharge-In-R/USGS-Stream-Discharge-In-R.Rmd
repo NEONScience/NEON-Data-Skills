@@ -189,8 +189,6 @@ discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharg
 #view first few lines
 head(discharge)
 
-View(discharge)
-
 ```
 
 When we import these data, we can see that the first row of data is a second
@@ -371,7 +369,7 @@ package doesn't (yet?) recognize the `limits` method of subsetting.
 
 Here we create a new R object with entries corresponding to just the dates we want and then plot that data. 
 
-```{r plotly-discharge-data, fig.cap= Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."}
+```{r plotly-discharge-data, fig.cap= "Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."}
 
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 

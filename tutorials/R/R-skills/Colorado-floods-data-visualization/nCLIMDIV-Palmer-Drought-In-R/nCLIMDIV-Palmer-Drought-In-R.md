@@ -362,12 +362,13 @@ We can create an interactive version of our plot using `plot.ly`. We should simp
 
     ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 
-    ## Warning in normalizePath(path.expand(path), winslash,
-    ## mustWork): path[1]="webshot1d204f938b9.png": The system
+    ## Warning in normalizePath(path.expand(path),
+    ## winslash, mustWork):
+    ## path[1]="webshot47e0506b58fe.png": The system
     ## cannot find the file specified
 
     ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\RtmpkhPoVW\file1d20458830b9\webshot1d204f938b9.png':
+    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e033042ba9\webshot47e0506b58fe.png':
     ## No such file or directory
 
     ## Error in file(con, "rb"): cannot open the connection
@@ -396,12 +397,13 @@ In the future, you could just skip the `ggplot()` step and plot directly with
 
     ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 
-    ## Warning in normalizePath(path.expand(path), winslash,
-    ## mustWork): path[1]="webshot1d2034bcb41.png": The system
+    ## Warning in normalizePath(path.expand(path),
+    ## winslash, mustWork):
+    ## path[1]="webshot47e049d448c0.png": The system
     ## cannot find the file specified
 
     ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\RtmpkhPoVW\file1d208754a49\webshot1d2034bcb41.png':
+    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e033b4b4f\webshot47e049d448c0.png':
     ## No such file or directory
 
     ## Error in file(con, "rb"): cannot open the connection
@@ -448,7 +450,9 @@ If you zoom in on the
 <a href="http://gis.ncdc.noaa.gov/map/viewer/#app=cdo&cfg=cdo&theme=indices&layers=01&node=gis" target="_blank"> Divisional Map</a>,
 you can see that Boulder, CO is in the **CO-04 Platte River Drainage**. 
 
-Use the divisional data and the process you've just learned to create a plot of the PDSI for Colorado Division 04 to compare to the plot for the state of Colorado that you've already made. 
+Use the divisional data and the process you've just learned to create a plot of 
+the PDSI for Colorado Division 04 to compare to the plot for the state of 
+Colorado that you've already made. 
 
 If you are using the downloaded dataset accompanying this lesson,  this data can be found at "drought/CDODiv8868227122048_COdiv04.txt".  
 
@@ -458,7 +462,11 @@ If you are using the downloaded dataset accompanying this lesson,  this data can
 <div id="ds-challenge" markdown="1">
 ### Challenge: Do different measures show the same pattern?
 
-The nCLIMDIV dataset includes not only the Palmer Drought Severity Index  but also several other measures of precipitation, drought, and  temperature. Choose one and repeat the steps above to see if a different  but related measure shows a similar pattern. Make sure to go back to the  metadata so that you understand what the index or measurement you choose  represents.
+The nCLIMDIV dataset includes not only the Palmer Drought Severity Index 
+but also several other measures of precipitation, drought, and  temperature. 
+Choose one and repeat the steps above to see if a different  but related 
+measure shows a similar pattern. Make sure to go back to the 
+metadata so that you understand what the index or measurement you choose represents.
 
 
 
@@ -467,8 +475,9 @@ The nCLIMDIV dataset includes not only the Palmer Drought Severity Index  but al
 ## Additional Resources
 
 ### No Data Values
-If you choose to explore other time frames or spatial scales you may come across data that appear as if they have a negative value `-99.99`. If this were real, it would be a *very severe*
-drought!  
+If you choose to explore other time frames or spatial scales you may 
+come across data that appear as if they have a negative value `-99.99`. 
+If this were real, it would be a *very severe* drought!   
 
 ![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-NDV-plot-only-1.png)
 
@@ -574,13 +583,13 @@ Let's subset the data.
     # check to make sure it worked
     head(nCLIMDIV2005.2015$Date)  # head() shows first 6 lines
 
-    ## [1] "2005-01-01" "2005-02-01" "2005-03-01" "2005-04-01"
-    ## [5] "2005-05-01" "2005-06-01"
+    ## [1] "2005-01-01" "2005-02-01" "2005-03-01"
+    ## [4] "2005-04-01" "2005-05-01" "2005-06-01"
 
     tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
 
-    ## [1] "2015-07-01" "2015-08-01" "2015-09-01" "2015-10-01"
-    ## [5] "2015-11-01" "2015-12-01"
+    ## [1] "2015-07-01" "2015-08-01" "2015-09-01"
+    ## [4] "2015-10-01" "2015-11-01" "2015-12-01"
 
 Now we can plot this decade of data. Hint, we can copy/paste and edit the 
 previous code.
@@ -602,12 +611,13 @@ previous code.
 
     ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 
-    ## Warning in normalizePath(path.expand(path), winslash,
-    ## mustWork): path[1]="webshot1d2049f86a1f.png": The system
+    ## Warning in normalizePath(path.expand(path),
+    ## winslash, mustWork):
+    ## path[1]="webshot47e048ed4250.png": The system
     ## cannot find the file specified
 
     ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\RtmpkhPoVW\file1d202dfa33ee\webshot1d2049f86a1f.png':
+    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e0c226944\webshot47e048ed4250.png':
     ## No such file or directory
 
     ## Error in file(con, "rb"): cannot open the connection

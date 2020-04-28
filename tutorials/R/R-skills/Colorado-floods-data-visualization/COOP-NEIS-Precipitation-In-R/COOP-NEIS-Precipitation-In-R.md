@@ -316,7 +316,7 @@ plot the data. We can convert it to a date/time class using `as.POSIXct()`.
     # double check structure
     str(precip.boulder$DateTime)
 
-    ##  POSIXct[1:1840], format: "2003-01-01 01:00:00" "2003-02-01 01:00:00" ...
+    ##  POSIXct[1:1840], format: "2003-01-01 01:00:00" ...
 
 * For more information on date/time classes, see the NEON tutorial 
 <a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
@@ -568,12 +568,13 @@ Let's turn our plot into an interactive Plotly plot.
     # view plotly plot in R
     ggplotly(precPlot_flood2)
 
-    ## Warning in normalizePath(path.expand(path), winslash,
-    ## mustWork): path[1]="webshot1d202bb358c8.png": The system
+    ## Warning in normalizePath(path.expand(path),
+    ## winslash, mustWork):
+    ## path[1]="webshot47e06fcd5c8a.png": The system
     ## cannot find the file specified
 
     ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\RtmpkhPoVW\file1d205b0049c0\webshot1d202bb358c8.png':
+    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e025414f05\webshot47e06fcd5c8a.png':
     ## No such file or directory
 
     ## Error in file(con, "rb"): cannot open the connection
@@ -596,12 +597,13 @@ As an added challenge, aggregate the data by month instead of by day.
 
     ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 
-    ## Warning in normalizePath(path.expand(path), winslash,
-    ## mustWork): path[1]="webshot1d205ef527de.png": The system
+    ## Warning in normalizePath(path.expand(path),
+    ## winslash, mustWork):
+    ## path[1]="webshot47e037fe29bb.png": The system
     ## cannot find the file specified
 
     ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\RtmpkhPoVW\file1d205e0d3e51\webshot1d205ef527de.png':
+    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e065715da0\webshot47e037fe29bb.png':
     ## No such file or directory
 
     ## Error in file(con, "rb"): cannot open the connection

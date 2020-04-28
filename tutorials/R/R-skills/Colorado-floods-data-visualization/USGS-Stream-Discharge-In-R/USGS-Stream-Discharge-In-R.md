@@ -1,17 +1,19 @@
 ---
-syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
-title: "Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods"	
-description: "This lesson walks through the steps need to download and visualize USGS Stream Discharge data in R to better understand the drivers and impacts of the 2013 Colorado floods."	
-dateCreated: 2015-05-18
-authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon	
-contributors: 
-estimatedTime: 
-packagesLibraries: ggplot2, plotly
-topics: time-series, meteorology, data-viz
+title: 'Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods'
+code1: teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R
+contributors: Felipe Sanchez
+dataProduct: null
+dateCreated: '2015-05-18'
+description: This lesson walks through the steps needed to download and visualize USGS
+  Stream Discharge data in R to better understand the drivers and impacts of the 2013
+  Colorado floods.
+estimatedTime: null
 languagesTool: R
-dataProduct:
-code1: teaching-modules/disturb-events-co13/USGS-Stream-Discharge-In-R.R	
-tutorialSeries: 
+packagesLibraries: ggplot2, plotly
+syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
+authors: Megan A. Jones, Leah A. Wasser, Mariela Perignon
+topics: time-series, meteorology, data-viz
+tutorialSeries: null
 urlTitle: da-viz-usgs-stream-discharge-data-R
 ---
 
@@ -49,9 +51,15 @@ learning objectives you may prefer to use the
 provided teaching data subset that can be downloaded from the <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account
 on FigShare</a>.
 
-To more easily follow along with this lesson, use the same organization for your files and folders as we did. First, create a `data` directory (folder) within your `Documents` directory. If you downloaded the compressed data file above, unzip this file and place the `distub-events-co13` folder within the `data` directory you created. If you are planning to access the data directly as described in the lesson, create a new directory called `distub-events-co13` wihin your `data` folder and then within it create another directory called `discharge`. If you choose to save your files
-elsewhere in your file structure, you will need to modify the directions in the lesson to set your working 
-directory accordingly.
+**Set Working Directory** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that  
+reinforce learned skills. If available, the code for challenge solutions is found 
+in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 </div>
 
@@ -79,6 +87,7 @@ For more on stream discharge by USGS.</a>
 
 <figure>
 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif">
+alt = " Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif"></a>
 <figcaption>
 The USGS tracks stream discharge through time at locations across the United 
@@ -135,25 +144,22 @@ choice and save as a .csv. Note, you can also download the teaching dataset
 We will use `ggplot2` to efficiently plot our data and `plotly` to create interactive plots.
 
 
-    # set your working directory
-    #setwd("working-dir-path-here")
-    
     # load packages
     library(ggplot2) # create efficient, professional plots
     library(plotly) # create cool interactive plots
+    
+    ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
+    wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+    setwd(wd)
 
 ##  Import USGS Stream Discharge Data Into R
 
-Now that we better understand the data that we are working with, let's import it
-into R. First, open up the `discharge/06730200-discharge_daily_1986-2013.txt` 
-file in a text editor.
+Now that we better understand the data that we are working with, let's import it into R. First, open up the `discharge/06730200-discharge_daily_1986-2013.txt` file in a text editor. 
 
 What do you notice about the structure of the file?
 
-The first 24 lines are descriptive text and not actual data. Also notice that 
-this file is separated by tabs, not commas. We will need to specify the 
-**tab delimiter** when we import our data.We will use the `read.csv()` function
-to import it into an R object. 
+The first 24 lines are descriptive text and not actual data. Also notice that this file is separated by tabs, not commas. We will need to specify the 
+**tab delimiter** when we import our data.We will use the `read.csv()` function to import it into an R object. 
 
 When we use `read.csv()`, we need to define several attributes of the file 
 including:
@@ -165,8 +171,7 @@ those lines when it imports the data using `skip=25`.
 3. Our data have a header, which is similar to column names in a spreadsheet. We 
 will tell R to set `header=TRUE` to ensure the headers are imported as column
 names rather than data values.
-4. Finally we will set `stringsAsFactors = FALSE` to ensure our data come in a 
-individual values.
+4. Finally we will set `stringsAsFactors = FALSE` to ensure our data come in as individual values.
 
 Let's import our data.
 
@@ -176,22 +181,25 @@ Data Structure** section).
 
 
     #import data
-    discharge <- read.csv("disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt",
-                          sep="\t",
-                          skip=24,
-                          header=TRUE,
-                          stringsAsFactors = FALSE)
+    discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
     
     #view first few lines
     head(discharge)
 
-    ##   agency_cd  site_no   datetime X17663_00060_00003 X17663_00060_00003_cd
-    ## 1        5s      15s        20d                14n                   10s
-    ## 2      USGS 06730200 1986-10-01                 30                     A
-    ## 3      USGS 06730200 1986-10-02                 30                     A
-    ## 4      USGS 06730200 1986-10-03                 30                     A
-    ## 5      USGS 06730200 1986-10-04                 30                     A
-    ## 6      USGS 06730200 1986-10-05                 30                     A
+    ##   agency_cd  site_no   datetime
+    ## 1        5s      15s        20d
+    ## 2      USGS 06730200 1986-10-01
+    ## 3      USGS 06730200 1986-10-02
+    ## 4      USGS 06730200 1986-10-03
+    ## 5      USGS 06730200 1986-10-04
+    ## 6      USGS 06730200 1986-10-05
+    ##   X17663_00060_00003 X17663_00060_00003_cd
+    ## 1                14n                   10s
+    ## 2                 30                     A
+    ## 3                 30                     A
+    ## 4                 30                     A
+    ## 5                 30                     A
+    ## 6                 30                     A
 
 When we import these data, we can see that the first row of data is a second
 header row rather than actual data. We can remove the second row of header 
@@ -229,7 +237,10 @@ in R.
     #view names
     names(discharge)
 
-    ## [1] "agency_cd"             "site_no"               "datetime"              "X17663_00060_00003"   
+    ## [1] "agency_cd"            
+    ## [2] "site_no"              
+    ## [3] "datetime"             
+    ## [4] "X17663_00060_00003"   
     ## [5] "X17663_00060_00003_cd"
 
     #rename the fifth column to disValue representing discharge value
@@ -239,7 +250,8 @@ in R.
     #view names
     names(discharge)
 
-    ## [1] "agency_cd" "site_no"   "datetime"  "disValue"  "qualCode"
+    ## [1] "agency_cd" "site_no"   "datetime" 
+    ## [4] "disValue"  "qualCode"
 
 ## View Data Structure
 
@@ -308,7 +320,7 @@ To learn more about different date/time classes, see the
     ## 'data.frame':	9954 obs. of  5 variables:
     ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
     ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
-    ##  $ datetime : POSIXct, format: "1986-10-01" "1986-10-02" "1986-10-03" ...
+    ##  $ datetime : POSIXct, format:  ...
     ##  $ disValue : int  30 30 30 30 30 30 30 30 30 31 ...
     ##  $ qualCode : chr  "A" "A" "A" "A" ...
 
@@ -326,7 +338,7 @@ be, `NA` or `-9999` are common values
     # check for "strange" values that could be an NA indicator
     hist(discharge$disValue)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/no-data-values-1.png)
+![Histogram of discharge value. X-axis represents discharge values and the Y-axis shows the frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/no-data-values-1.png)
 
 Excellent! The data contains no NoData values.  
 
@@ -341,7 +353,7 @@ package to create our plot.
       ggtitle("Stream Discharge (CFS) for Boulder Creek") +
       xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
+![ Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
 
 #### Questions: 
 
@@ -365,7 +377,7 @@ October 15 2013.
     start.end <- c(startTime,endTime)
     start.end
 
-    ## [1] "2013-08-15 MDT" "2013-10-15 MDT"
+    ## [1] "2013-08-15 EDT" "2013-10-15 EDT"
 
     # plot the data - Aug 15-October 15
     ggplot(discharge,
@@ -375,9 +387,10 @@ October 15 2013.
           xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
           ggtitle("Stream Discharge (CFS) for Boulder Creek\nAugust 15 - October 15, 2013")
 
-    ## Warning: Removed 9892 rows containing missing values (geom_point).
+    ## Warning: Removed 9892 rows containing missing values
+    ## (geom_point).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/define-time-subset-1.png)
+![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/define-time-subset-1.png)
 
 We get a warning message because we are "ignoring" lots of the data in the
 dataset.
@@ -413,7 +426,7 @@ Here we create a new R object with entries corresponding to just the dates we wa
     
     disPlot.plotly
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-1.png)
+![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-1.png)
 
     # add title and labels
     disPlot.plotly <- disPlot.plotly + 
@@ -423,7 +436,7 @@ Here we create a new R object with entries corresponding to just the dates we wa
     
     disPlot.plotly
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-2.png)
+![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-2.png)
 
 You can now display your interactive plot in R using the following command: 
 
