@@ -289,7 +289,7 @@ summary(aoiBoundary_HARV)
 Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
 `plot()`.
 
-``` {r plot-shapefile}
+``` {r plot-shapefile, fig.cap="Area of Interest Boundary (NEON Harvard Forest Field Site)"}
 # create a plot of the shapefile
 # 'lwd' sets the line width
 # 'col' sets internal color
@@ -351,7 +351,7 @@ we would when creating a map in a typical GIS application like QGIS.
 We can use `main=""` to give our plot a title. If we want the title to span two
 lines, we use `\n` where the line should break.
 
-```{r plot-multiple-shapefiles }
+```{r plot-multiple-shapefiles, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads."}
 # Plot multiple shapefiles
 plot(aoiBoundary_HARV, col = "lightgreen", 
      main="NEON Harvard Forest\nField Site")
@@ -383,7 +383,7 @@ the <a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank" 
 tutorials. 
 </div>
 
-```{r challenge-vector-raster-overlay, echo=FALSE }
+```{r challenge-vector-raster-overlay, echo=FALSE, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads with a Canopy Height Model overlay." }
 
 # import CHM
 chm_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
