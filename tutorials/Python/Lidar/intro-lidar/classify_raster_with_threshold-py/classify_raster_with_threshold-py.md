@@ -4,7 +4,7 @@ title: "Classify a Raster Using Threshold Values in Python - 2017"
 description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." 
 dateCreated: 2017-06-21 
 authors: Bridget Hass
-contributors: 
+contributors: Max Burner
 estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
 topics: lidar, raster, remote-sensing
@@ -245,7 +245,7 @@ print('% non-zero:',round(100*np.count_nonzero(chm_array)/(rows*cols),2))
 
 ```python
 # Define the plot_band_array function from Day 1
-def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='spectral'):
+def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='Spectral'):
     plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
     if cbar == 'on':
         cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
