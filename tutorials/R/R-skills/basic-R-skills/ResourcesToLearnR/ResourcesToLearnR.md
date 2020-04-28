@@ -4,7 +4,7 @@ title: "Resources for Learning R"
 description: "A brief overview of available resource to get started learning R."
 dateCreated: 2018-04-19
 authors: Megan A. Jones
-contributors: 
+contributors: Garrett M. Williams
 estimatedTime:
 packagesLibaries:
 topics: data-management

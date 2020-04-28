@@ -1,7 +1,7 @@
 ---
 title: "Filter, Piping, and GREPL Using R DPLYR - An Intro"
 code1: R/R-nonSeries-lessons/R-dplyr-GREPL-Summarise-Piping.R
-contributors: null
+contributors: Garrett M. Williams
 dataProduct: null
 dateCreated: '2015-05-27'
 description: Learn how to use the filter, group_by, and summarize functions with piping
@@ -375,7 +375,7 @@ class(myData)
 class(dataBySpSex)
 
 ```
-```{r compare-classes-2, eval=FALSE}
+```{r compare-classes-2, eval=FALSE, comment=NA}
 # View help file for group_by() function
 ?group_by()
 

@@ -4,7 +4,7 @@ title: "Download a NEON Teaching Data Subset & Set A Working Directory In R"
 description: "This tutorial explains how to set a working directory in R. The working directory points to a directory or folder on the computer where data that you wish to work with in R is stored."
 dateCreated:  2015-12-07
 authors: Megan A. Jones
-contributors: Leah A. Wasser
+contributors: Leah A. Wasser, Garrett M. Williams
 estimatedTime: 
 packagesLibraries:
 topics: data-management
