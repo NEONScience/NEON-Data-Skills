@@ -2,7 +2,7 @@
 title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
   Understand the 2013 Colorado Floods'
 code1: teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
-contributors: null
+contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
 description: This tutorial walks through how to download and visualize Palmer Drought
@@ -20,7 +20,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 
 
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
-R and Plot.ly. The tutorial is part of the Data Activities that can be used 
+R and Plotly. The tutorial is part of the Data Activities that can be used 
 with the 
 <a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
@@ -45,15 +45,22 @@ RStudio to write your code.
 * **ggplot2:** `install.packages("ggplot2")`
 * **plotly:** `install.packages("plotly")`
 
-#### Data Download & Directory Preparation
+#### Data to Download 
 
 Part of this lesson is to access and download the data directly from NOAA's National 
-Climate Divisional Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account
+Climate Divisional Database. If instead you would prefer to download the data as a  
+single compressed file, it can be downloaded from the <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account
 on FigShare</a>.  
 
-To more easily follow along with this lesson, use the same organization for your files and folders as we did. First, create a `data` directory (folder) within your `Documents` directory. If you downloaded the compressed data file above, unzip this file and place the `distub-events-co13` folder within the `data` directory you created. If you are planning to access the data directly as described in the lesson, create a new directory called `distub-events-co13` wihin your `data` folder and then within it create another directory called `drought`. If you choose to save your files
-elsewhere in your file structure, you will need to modify the directions in the lesson to set your working 
-directory accordingly.
+**Set Working Directory** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that  
+reinforce learned skills. If available, the code for challenge solutions is found 
+in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 </div>
 
@@ -68,9 +75,12 @@ to calculate water supply and demand. The values of the Palmer Drought Severity 
 (values <-4.0) through **near normal** (-.49 to .49) to **extremely moist** (>4.0).
 
 ## Access the Data
-This section of the tutorial describes how to access and download the data directly from NOAA's National 
-Climate Divisional Database. You can also download the pre-compiled data as a compressed file following the directions in the Data Download section at the top of this lesson. Even if you choose to use the pre-compiled data, 
-you should still go through this section to learn about the data we are using and the metadata that accompanies it. 
+This section of the tutorial describes how to access and download the data  
+directly from NOAA's National Climate Divisional Database. You can also 
+download the pre-compiled data as a compressed file following the directions 
+in the Data Download section at the top of this lesson. Even if you choose to 
+use the pre-compiled data, you should still go through this section to learn 
+about the data we are using and the metadata that accompanies it. 
 
 The data used in this tutorial comes from 
 <a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> NOAA's Climate Divisional Database (nCLIMDIV)</a>. 
@@ -82,7 +92,8 @@ Explore the
 <a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> nCLIMDIV portal </a>
 to learn more about the data they provide and how to retrieve it. 
 
-The nCLIMDIV page shows several boxes where we can enter search criteria to find the particular datasets we need. First, though, we should figure out: 
+The nCLIMDIV page shows several boxes where we can enter search criteria to find 
+the particular datasets we need. First, though, we should figure out: 
 
 * what data are available, 
 * what format the data are available in, 
@@ -135,8 +146,8 @@ Now that we know a bit more about the contents of the dataset, we can access and
 the particular data we need explore the drought leading up to the 2013 flooding 
 events in Colorado.
 
-Let's look at a 25-year period from 1990-2015. We will enter the following information on the `State` tab to get our
-desired dataset:
+Let's look at a 25-year period from 1990-2015. We will enter the following  
+information on the `State` tab to get our desired dataset:
 
 * Select Nation: US
 * Select State: Colorado
@@ -195,27 +206,29 @@ variable name for each column. We will use `header=TRUE` when we import the
 data to tell R to use that first row as a list of column names rather than a row of data.
 
 ```{r import-drought-data }
-# Set working directory to the data directory
-#setwd("working-dir-path-here")
+## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
+wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+setwd(wd)
 
 # Import CO state-wide nCLIMDIV data
-nCLIMDIV <- read.csv("disturb-events-co13/drought/CDODiv8506877122044_CO.txt", header = TRUE)
+nCLIMDIV <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8506877122044_CO.txt"), header = TRUE)
 
 # view data structure
 str(nCLIMDIV)
 ```
 
-Using `head()` or `str()` allows us to view just a sampling of our data. One of the 
-first things we always check is if whether the format that R interpreted the data to be in is the 
-format we want. 
+
+Using `head()` or `str()` allows us to view just a sampling of our data. 
+One of the first things we always check is if whether the format that R  
+interpreted the data to be in is the format we want. 
 
 The Palmer Drought Severity Index (PDSI) is a number, so it was imported correctly!
 
 ## Date Fields
 
-Let's have a look at the date field in our data, which has the column name `YearMonth`. Viewing the 
-structure, it appears as if it is not in a standard date format. It imported into R 
-as an integer (`int`).
+Let's have a look at the date field in our data, which has the column name `YearMonth`. 
+Viewing the structure, it appears as if it is not in a standard date format. 
+It imported into R as an integer (`int`).
 
 `$ YearMonth: int  199001 199002 199003 199004 199005  ...`
 
@@ -257,7 +270,7 @@ We've now successfully converted our integer class `YearMonth` column into the
 ## Plot the Data
 Next, let's plot the data using `ggplot()`.
 
-```{r create-quick-palmer-plot }
+```{r create-quick-palmer-plot, fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index." }
 
 # plot the Palmer Drought Index (PDSI)
 palmer.drought <- ggplot(data=nCLIMDIV,
@@ -283,7 +296,7 @@ Great - we've successfully created a plot!
 These last two questions are a bit hard to determine from this plot. Let's look 
 at a quick summary of our data to help us out.
 
-```{r summary-stats}
+```{r summary-stats, fig.cap= "Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency." }
 #view summary stats of the Palmer Drought Severity Index
 summary(nCLIMDIV$PDSI)
 
@@ -296,13 +309,12 @@ hist(nCLIMDIV$PDSI,   # the date we want to use
 ```
 
 Now we can see that the "median" year is slightly wet (0.180) but the 
-"mean" year is slightly dry (-0.310), although both are within the "near-normal" range
-of -0.41 to 0.41.  
-We can also see that there is a longer tail on the dry side of the histogram 
-than on the wet side.
+"mean" year is slightly dry (-0.310), although both are within the "near-normal" 
+range of -0.41 to 0.41. We can also see that there is a longer tail on the dry side 
+of the histogram than on the wet side.
 
-Both of these figures only give us a static view of the data.  There are 
-package in R that allow us to create figures that can be published
+Both of these figures only give us a static view of the data. There are 
+packages in R that allow us to create figures that can be published
 to the web and allow us to explore the data in a more interactive way.
 
 ## Plotly - Interactive (and Online) Plots
@@ -347,7 +359,7 @@ Until that happens, we can build our plot again using the `plot_ly()` function.
 In the future, you could just skip the `ggplot()` step and plot directly with 
 `plot_ly()`. 
 
-```{r create-plotly-drought-plot}
+```{r create-plotly-drought-plot, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index." }
 # use plotly function to create plot
 palmer.drought_plotly <- plot_ly(nCLIMDIV,    # the R object dataset
 	type= "bar", # the type of graph desired
@@ -377,9 +389,7 @@ flooding?
 
 ### Step 3: Push to Plotly online
 
-Once the plot is built with a Plotly related function (`plot_ly` or `ggplotly`)
-you can post the plot to your online account. Make sure you are signed in to Plotly to
-complete this step. 
+Once the plot is built with a Plotly related function (`plot_ly` or `ggplotly`) you can post the plot to your online account. Make sure you are signed in to Plotly to complete this step. 
 
 ``` {r post-plotly, eval=FALSE}
 # publish plotly plot to your plot.ly online account when you are happy with it
@@ -389,37 +399,39 @@ api_create(palmer.drought_plotly)
 ```
 
 #### Questions
-Now that we can see the online Plotly user interface, we can explore our plots
-a bit more. 
+Now that we can see the online Plotly user interface, we can explore our plots a bit more. 
 
-1. Each plot can have comments added below the plot to serve as a caption. What would
-be appropriate information to add for this plot? 
-1. Who might you want to share this plot with? What tools are there to share this
-plot? 
+1. Each plot can have comments added below the plot to serve as a caption. What would be appropriate information to add for this plot? 
+1. Who might you want to share this plot with? What tools are there to share this plot? 
 
 
 <div id="ds-challenge" markdown="1">
 
 ### Challenge: Does spatial scale affect the pattern? 
 
-In the steps above we have been looking at data aggregated across the entire
-state of Colorado. What if we look just at the watershed that includes the Boulder area where our investigation is centered?
+In the steps above we have been looking at data aggregated across the entire state of Colorado. What if we look just at the watershed that includes the Boulder area where our investigation is centered?
 
 If you zoom in on the 
 <a href="http://gis.ncdc.noaa.gov/map/viewer/#app=cdo&cfg=cdo&theme=indices&layers=01&node=gis" target="_blank"> Divisional Map</a>,
 you can see that Boulder, CO is in the **CO-04 Platte River Drainage**. 
 
-Use the divisional data and the process you've just learned to create a plot of
+Use the divisional data and the process you've just learned to create a plot of 
 the PDSI for Colorado Division 04 to compare to the plot for the state of 
 Colorado that you've already made. 
 
-If you are using the downloaded dataset accompanying this lesson, this data can be 
-found at "drought/CDODiv8868227122048_COdiv04.txt".  
+If you are using the downloaded dataset accompanying this lesson,  this data can be found at "drought/CDODiv8868227122048_COdiv04.txt".  
 
-```{r challenge-Div04, include=FALSE, echo=FALSE, results="hide"}
+```{r challenge-Div04, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide", eval=FALSE}
+
+library(ggplot2)  
+library(plotly)
+
+wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+setwd(wd)
 
 # Import CO state-wide nCLIMDIV data
-nCLIMDIV.co04 <- read.csv("disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt", header = TRUE)
+nCLIMDIV.co04 <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt"),
+                          header = TRUE)
 
 # view data structure
 str(nCLIMDIV.co04)
@@ -460,13 +472,13 @@ palmer.drought.co04_plotly
 <div id="ds-challenge" markdown="1">
 ### Challenge: Do different measures show the same pattern?
 
-The nCLIMDIV dataset includes not only the Palmer Drought Severity Index but 
-also several other measures of precipitation, drought, and temperature. Choose one
-and repeat the steps above to see if a different but related measure shows a 
-similar pattern. Make sure to go back to the metadata so that you understand what
-the index or measurement you choose represents.  
+The nCLIMDIV dataset includes not only the Palmer Drought Severity Index 
+but also several other measures of precipitation, drought, and  temperature. 
+Choose one and repeat the steps above to see if a different  but related 
+measure shows a similar pattern. Make sure to go back to the 
+metadata so that you understand what the index or measurement you choose represents.
 
-``` {r challenge-PHSI, echo=FALSE, results="hide", include=FALSE}
+``` {r challenge-PHSI, echo=FALSE,fig.cap ="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.",results="hide", include=FALSE}
 
 # our example code uses the Palmer Hydrological Drought Index (PHDI)
 
@@ -504,13 +516,22 @@ palmer.hydro
 ## Additional Resources
 
 ### No Data Values
-If you choose to explore other time frames or spatial scales you may come across
-data that appear as if they have a negative value `-99.99`. If this were real, it would be a *very severe*
-drought!  
+If you choose to explore other time frames or spatial scales you may 
+come across data that appear as if they have a negative value `-99.99`. 
+If this were real, it would be a *very severe* drought!   
 
-```{r palmer-NDV-plot-only, echo=FALSE, results="hide"}
-# NoData Value in the nCLIMDIV data from 1990-199 US spatial scale 
-nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
+```{r palmer-NDV-plot-only, echo=FALSE,fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.",results="hide"}
+
+library(ggplot2)  
+library(plotly)
+
+wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+setwd(wd)
+
+# NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
+nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"),
+                        header = TRUE)
+
 
 #add a day of the month to each year-month combination
 nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
@@ -533,13 +554,9 @@ palmer.droughtUS
 
 This value is just a common placeholder for a **No Data Value**. 
 
-Think about what happens if the instruments failed for a little while and stopped producing meaningful data. The instruments can't 
-record 0 for this Index because 0 means "normal" levels. Using a blank entry isn't 
-a good idea for several reason: they cause problems for software reading a file,
-they can mess up table structure, and you don't know if the data was missing
-(someone forgot to enter it) or if no data were available. Therefore, a 
-placeholder value is often used. This value changes between disciplines 
-but `-9999` or `-99.99` are common.  
+Think about what happens if the instruments failed for a little while and stopped producing meaningful data. The instruments can't record 0 for this Index because 0  means "normal" levels. Using a blank entry isn't a good idea for several 
+reason: they cause problems for software reading a file, they can mess up table structure, and you don't know if the data was missing (someone forgot to enter it) 
+or if no data were available. Therefore, a placeholder value is often used. This   value changes between disciplines but `-9999` or `-99.99` are common.   
 
 In R, we need to assign this placeholder value to `NA`, which is R's 
 representation of a null or NoData value. If we don't, R will include the `-99.99` value whenever calculations are performed
@@ -548,9 +565,13 @@ or plots are created. By defining the placeholders as `NA`, R will correctly int
 Using the nCLIMDIV dataset for the entire US, this is how we'd assign the placeholder
 value to NA and plot the data.
 
-```{r palmer-no-data-values}
+```{r palmer-no-data-values, fig.cap=c(" Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.","Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.", "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.")}
+
+wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+setwd(wd)
+
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
-nCLIMDIV_US <- read.csv("disturb-events-co13/drought/CDODiv5138116888828_US.txt", header = TRUE)
+nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"), header = TRUE)
 
 # add a day of the month to each year-month combination
 nCLIMDIV_US$Date <- paste0(nCLIMDIV_US$YearMonth,"01")
@@ -630,7 +651,7 @@ tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
 Now we can plot this decade of data. Hint, we can copy/paste and edit the 
 previous code.
 
-```{r plotly-decade}
+```{r plotly-decade, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 2005 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed."}
 
 # use plotly function to create plot
 palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset

@@ -306,7 +306,7 @@ str(precip.boulder$DateTime)
 We've also learned that missing values, also known as NoData
 values, are labelled with the placeholder `999.99`. Do we have any NoData values in our data? 
 
-```{r no-data-values-hist}
+```{r no-data-values-hist, fig.cap= "Histogram displaying the frquency of total precipitation in inches for the recorded hour."}
 
 # histogram - would allow us to see 999.99 NA values 
 # or other "weird" values that might be NA if we didn't know the NA value
@@ -347,7 +347,7 @@ the missing data?
 Now that we've cleaned up the data, we can view it. To do this we will plot using 
 `ggplot()` from the `ggplot2` package. 
 
-```{r plot-precip-hourly}
+```{r plot-precip-hourly,  fig.cap= "Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively." }
 #plot the data
 precPlot_hourly <- ggplot(data=precip.boulder,  # the data frame
       aes(DateTime, HPCP)) +   # the variables of interest
@@ -373,7 +373,7 @@ There are several ways to aggregate the data.
 If you only want to view the data plotted by date you need to create a column
 with only dates (no time) and then re-plot. 
 
-```{r daily-summaries }
+```{r daily-summaries, fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # convert DATE to a Date class 
 # (this will strip the time, but that is saved in DateTime)
@@ -430,7 +430,7 @@ head(precip.boulder_daily)
 
 Now we can plot the daily data. 
 
-```{r daily-prec-plot}
+```{r daily-prec-plot,  fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # plot daily data
 precPlot_daily <- ggplot(data=precip.boulder_daily,  # the data frame
@@ -462,7 +462,7 @@ by creating a subset of the data and protting it separately.
 To see only a subset of the larger plot, we can simply set limits for the 
 scale on the x-axis with `scale_x_date()`. 
 
-```{r plot-Aug-Oct-2013}
+```{r plot-Aug-Oct-2013,  fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # First, define the limits -- 2 months around the floods
 limits <- as.Date(c("2013-08-15", "2013-10-15"))
@@ -489,7 +489,7 @@ of just a date class, you need to use `scale_x_datetime()`.
 #### Subset The Data
 
 Now let's create a subset of the data and plot it. 
-```{r subset-data}
+```{r subset-data, fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # subset 2 months around flood
 precip.boulder_AugOct <- subset(precip.boulder_daily, 
@@ -523,7 +523,7 @@ Let's turn our plot into an interactive Plotly plot.
 
 ```
 
-```{r plotly-precip-data, message=FALSE }
+```{r plotly-precip-data,fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.", message=FALSE }
 
 # view plotly plot in R
 ggplotly(precPlot_flood2)
@@ -545,7 +545,7 @@ The full dataset takes considerable time to download, so we recommend you use th
 
 As an added challenge, aggregate the data by month instead of by day.  
 
-``` {r all-boulder-station-data, echo=FALSE, results="hide", include=TRUE}
+``` {r all-boulder-station-data, echo=FALSE, results="hide", include=TRUE, fig.cap= "Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # read in data
 prec.boulder.all <- read.csv(paste0(wd,"disturb-events-co13/precip/805333-precip_daily_1948-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
