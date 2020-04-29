@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------
+## ----load-libraries--------------------------
 # load packages
 library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
@@ -9,7 +9,7 @@ setwd(wd)
 
 
 
-## ----import-discharge-2-------------------------
+## ----import-discharge-2----------------------
 
 #import data
 discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
@@ -19,7 +19,7 @@ head(discharge)
 
 
 
-## ----remove-second-header-----------------------
+## ----remove-second-header--------------------
 # nrow: how many rows are in the R object
 nrow(discharge)
 
@@ -29,7 +29,7 @@ nrow(discharge)
 discharge <- discharge[2:nrow(discharge),]
 
 
-## ----rename-headers-----------------------------
+## ----rename-headers--------------------------
 #view names
 names(discharge)
 
@@ -42,13 +42,13 @@ names(discharge)
 
 
 
-## ----view-data-structure------------------------
+## ----view-data-structure---------------------
 #view structure of data
 str(discharge)
 
 
 
-## ----adjust-data-structure----------------------
+## ----adjust-data-structure-------------------
 # view class of the disValue column
 class(discharge$disValue)
 
@@ -59,12 +59,12 @@ str(discharge)
 
 
 
-## ----convert-time-------------------------------
+## ----convert-time----------------------------
 #view class
 class(discharge$datetime)
 
 #convert to date/time class - POSIX
-discharge$datetime <- as.POSIXct(discharge$datetime)
+discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
 
 #recheck data structure
 str(discharge)
@@ -80,7 +80,7 @@ hist(discharge$disValue)
 
 
 
-## ----plot-flood-data, fig.cap= " Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second."----
+## ----plot-flood-data, fig.cap= "Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second."----
 
 ggplot(discharge, aes(datetime, disValue)) +
   geom_point() +
@@ -92,12 +92,8 @@ ggplot(discharge, aes(datetime, disValue)) +
 ## ----define-time-subset, fig.cap= "Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."----
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.POSIXct("2013-08-15 00:00:00")
-endTime <- as.POSIXct("2013-10-15 00:00:00")
+start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
 
-# create a start and end time R object
-start.end <- c(startTime,endTime)
-start.end
 
 # plot the data - Aug 15-October 15
 ggplot(discharge,
@@ -109,14 +105,14 @@ ggplot(discharge,
 
 
 
-## ----plotly-discharge-data, fig.cap= "Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."----
+## ----plotly-discharge-data, fig.cap="Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.", eval=FALSE, comment=NA----
 
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 
                         datetime >= as.POSIXct('2013-08-15 00:00',
-                                              tz = "America/Denver") & 
+                                              tz = "us/mountain") & 
                         datetime <= as.POSIXct('2013-10-15 23:59', 
-                                              tz = "America/Denver"))
+                                              tz = "us/mountain"))
 
 # plot the data
 disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
@@ -134,18 +130,18 @@ disPlot.plotly <- disPlot.plotly +
 disPlot.plotly
 
 
-## ----view-plotly, eval=F, comment=NA------------
+## ----view-plotly, eval=F, comment=NA---------
 # view plotly plot in R
 ggplotly(disPlot.plotly)
 
 
-## ----pub-plotly, eval=FALSE---------------------
-## # set username
-## Sys.setenv("plotly_username"="yourUserNameHere")
-## # set user key
-## Sys.setenv("plotly_api_key"="yourUserKeyHere")
-## 
-## # publish plotly plot to your plotly online account if you want.
-## api_create(disPlot.plotly)
-## 
+## ----pub-plotly, eval=FALSE, comment=NA------
+# set username
+Sys.setenv("plotly_username"="yourUserNameHere")
+# set user key
+Sys.setenv("plotly_api_key"="yourUserKeyHere")
+
+# publish plotly plot to your plotly online account if you want. 
+api_create(disPlot.plotly)
+
 

@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------
+## ----load-libraries--------------------------
 # load libraries
 library(raster)   # work with raster files
 library(rgdal)    # work with raster files
@@ -8,7 +8,7 @@ wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local envir
 setwd(wd)
 
 
-## ----open-DTMs----------------------------------
+## ----open-DTMs-------------------------------
 # Load DTMs into R
 DTM_pre <- raster(paste0(wd,"disturb-events-co13/lidar/pre-flood/preDTM3.tif"))
 DTM_post <- raster(paste0(wd,"disturb-events-co13/lidar/post-flood/postDTM3.tif"))
@@ -19,12 +19,11 @@ DTM_post
 
 
 
-## ----open-hillshade-----------------------------
+## ----open-hillshade--------------------------
 
 # Creating hillshade for DTM_pre & DTM_post
 # In order to generate the hillshde, we need both the slope and the aspect of
 # the extent we are working on. 
-
 
 DTM_pre_slope <- terrain(DTM_pre, opt="slope",units = "radians")
 DTM_pre_aspect <- terrain(DTM_pre, opt ="aspect", units = "radians")
@@ -65,7 +64,7 @@ plot(DTM_post,
 
 
 
-## ----create-difference-model, fig.cap="Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)."----
+## ----create-difference-model, fig.cap= "Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)."----
 # DoD: erosion to be neg, deposition to be positive, therefore post - pre
 DoD <- DTM_post-DTM_pre
 
@@ -126,18 +125,18 @@ cropbox1 <- drawExtent()
 
 
 
-## ----crop-raster-man-view-----------------------
+## ----crop-raster-man-view--------------------
 # view the extent of the cropbox1
 cropbox1
 
 
 
-## ----crop-raster-coords-------------------------
+## ----crop-raster-coords----------------------
 # desired coordinates of the box
 cropbox2<-c(473792.6,474999,4434526,4435453)
 
 
-## ----plot-crop-raster, fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.", "Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change,Post-flood,in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")----
+## ----plot-crop-raster, fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.","Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")----
 # crop desired layers to this cropbox
 DTM_pre_crop <- crop(DTM_pre, cropbox2)
 DTM_post_crop <- crop(DTM_post, cropbox2)

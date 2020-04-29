@@ -89,7 +89,7 @@ explores three important landscape models that are commonly used.
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"
-alt = Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.>
+alt = "Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.">
   </a>
   <figcaption>Digital Terrain Models, Digital Surface Models and Canopy Height
   	Models are three common LiDAR-derived data products. The digital terrain model
@@ -159,7 +159,6 @@ The default azimuth for many hillshades is 315 degrees -- to the NW.
 # In order to generate the hillshde, we need both the slope and the aspect of
 # the extent we are working on. 
 
-
 DTM_pre_slope <- terrain(DTM_pre, opt="slope",units = "radians")
 DTM_pre_aspect <- terrain(DTM_pre, opt ="aspect", units = "radians")
 DTM_pre_hillshade <- hillShade(DTM_pre_slope, DTM_pre_aspect)
@@ -217,7 +216,7 @@ A **D**igital Elevation Model **o**f **D**ifference (DoD) is a model of the
 change (or difference) between two other digital elevation models - in our case
 DTMs.  
 
-```{r create-difference-model, fig.cap="Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)." }
+```{r create-difference-model, fig.cap= "Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)." }
 # DoD: erosion to be neg, deposition to be positive, therefore post - pre
 DoD <- DTM_post-DTM_pre
 
@@ -361,7 +360,7 @@ cropbox2<-c(473792.6,474999,4434526,4435453)
 Once you have the crop box defined, either manually or using the coordinate, you 
 then crop the desired layer to the crop box. 
 
-```{r plot-crop-raster, fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.", "Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change,Post-flood,in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")}
+```{r plot-crop-raster, fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.","Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")}
 # crop desired layers to this cropbox
 DTM_pre_crop <- crop(DTM_pre, cropbox2)
 DTM_post_crop <- crop(DTM_post, cropbox2)

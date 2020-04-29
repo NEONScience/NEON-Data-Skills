@@ -272,7 +272,7 @@ month.
     # check to see it works
     str(nCLIMDIV$Date)
 
-    ##  Date[1:300], format: "1991-01-01" "1991-02-01" "1991-03-01" ...
+    ##  Date[1:300], format: "1991-01-01" "1991-02-01" ...
 
 We've now successfully converted our integer class `YearMonth` column into the 
 `Date` column in a date class. 
@@ -309,8 +309,10 @@ at a quick summary of our data to help us out.
     #view summary stats of the Palmer Drought Severity Index
     summary(nCLIMDIV$PDSI)
 
-    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    ##  -9.090  -1.702   0.180  -0.310   1.705   5.020
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu. 
+    ##  -9.090  -1.702   0.180  -0.310   1.705 
+    ##    Max. 
+    ##   5.020
 
     #view histogram of the data
     hist(nCLIMDIV$PDSI,   # the date we want to use
@@ -360,19 +362,6 @@ We can create an interactive version of our plot using `plot.ly`. We should simp
     palmer.drought_ggplotly <- ggplotly(palmer.drought)  
     palmer.drought_ggplotly
 
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-
-    ## Warning in normalizePath(path.expand(path),
-    ## winslash, mustWork):
-    ## path[1]="webshot47e0506b58fe.png": The system
-    ## cannot find the file specified
-
-    ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e033042ba9\webshot47e0506b58fe.png':
-    ## No such file or directory
-
-    ## Error in file(con, "rb"): cannot open the connection
-
 That doesn't look right. The current `plotly` package has a bug! This
 bug has been reported and a fix may come out in future updates to the package.
 
@@ -390,23 +379,6 @@ In the future, you could just skip the `ggplot()` step and plot directly with
     	title=("Palmer Drought Severity Index - Colorado 1991-2015"))
     
     palmer.drought_plotly
-
-    ## Warning: 'bar' objects don't have these attributes: 'title'
-    ## Valid attributes include:
-    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'meta', 'selectedpoints', 'hoverinfo', 'hoverlabel', 'stream', 'transforms', 'uirevision', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'texttemplate', 'hovertext', 'hovertemplate', 'textposition', 'insidetextanchor', 'textangle', 'textfont', 'insidetextfont', 'outsidetextfont', 'constraintext', 'cliponaxis', 'orientation', 'base', 'offset', 'width', 'marker', 'offsetgroup', 'alignmentgroup', 'selected', 'unselected', 'r', 't', '_deprecated', 'error_x', 'error_y', 'xcalendar', 'ycalendar', 'xaxis', 'yaxis', 'idssrc', 'customdatasrc', 'metasrc', 'hoverinfosrc', 'xsrc', 'ysrc', 'textsrc', 'texttemplatesrc', 'hovertextsrc', 'hovertemplatesrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule', '_bbox'
-
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-
-    ## Warning in normalizePath(path.expand(path),
-    ## winslash, mustWork):
-    ## path[1]="webshot47e049d448c0.png": The system
-    ## cannot find the file specified
-
-    ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e033b4b4f\webshot47e049d448c0.png':
-    ## No such file or directory
-
-    ## Error in file(con, "rb"): cannot open the connection
 
 #### Questions
 Check out the differences between the `ggplot()` and the `plot_ly()` plot.
@@ -457,6 +429,9 @@ Colorado that you've already made.
 If you are using the downloaded dataset accompanying this lesson,  this data can be found at "drought/CDODiv8868227122048_COdiv04.txt".  
 
 
+
+
+
 </div>
 
 <div id="ds-challenge" markdown="1">
@@ -495,9 +470,6 @@ Using the nCLIMDIV dataset for the entire US, this is how we'd assign the placeh
 value to NA and plot the data.
 
 
-    wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-    setwd(wd)
-    
     # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
     nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"), header = TRUE)
     
@@ -510,14 +482,14 @@ value to NA and plot the data.
     # check to see it works
     str(nCLIMDIV_US$Date)
 
-    ##  Date[1:312], format: "1990-01-01" "1990-02-01" "1990-03-01" ...
+    ##  Date[1:312], format: "1990-01-01" "1990-02-01" ...
 
     # view histogram of data -- great way to check the data range
     hist(nCLIMDIV_US$PDSI,
          main="Histogram of PDSI values",
          col="springgreen4")
 
-![ Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-1.png)
+![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-1.png)
 
     # easy to see the "wrong" values near 100
     # check for these values using min() - what is the minimum value?
@@ -604,23 +576,6 @@ previous code.
             title=("Palmer Drought Severity Index - Colorado 2005-2015"))
     
     palmer_plotly0515
-
-    ## Warning: 'bar' objects don't have these attributes: 'title'
-    ## Valid attributes include:
-    ## 'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'meta', 'selectedpoints', 'hoverinfo', 'hoverlabel', 'stream', 'transforms', 'uirevision', 'x', 'x0', 'dx', 'y', 'y0', 'dy', 'text', 'texttemplate', 'hovertext', 'hovertemplate', 'textposition', 'insidetextanchor', 'textangle', 'textfont', 'insidetextfont', 'outsidetextfont', 'constraintext', 'cliponaxis', 'orientation', 'base', 'offset', 'width', 'marker', 'offsetgroup', 'alignmentgroup', 'selected', 'unselected', 'r', 't', '_deprecated', 'error_x', 'error_y', 'xcalendar', 'ycalendar', 'xaxis', 'yaxis', 'idssrc', 'customdatasrc', 'metasrc', 'hoverinfosrc', 'xsrc', 'ysrc', 'textsrc', 'texttemplatesrc', 'hovertextsrc', 'hovertemplatesrc', 'textpositionsrc', 'basesrc', 'offsetsrc', 'widthsrc', 'rsrc', 'tsrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule', '_bbox'
-
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-
-    ## Warning in normalizePath(path.expand(path),
-    ## winslash, mustWork):
-    ## path[1]="webshot47e048ed4250.png": The system
-    ## cannot find the file specified
-
-    ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e0c226944\webshot47e048ed4250.png':
-    ## No such file or directory
-
-    ## Error in file(con, "rb"): cannot open the connection
 
 
     # publish plotly plot to your plot.ly online account when you are happy with it

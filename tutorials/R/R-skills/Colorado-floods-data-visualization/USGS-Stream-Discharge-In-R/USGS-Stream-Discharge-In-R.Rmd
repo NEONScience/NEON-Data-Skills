@@ -87,7 +87,7 @@ For more on stream discharge by USGS.</a>
 
 <figure>
 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif">
-alt = " Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
+alt = "Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif"></a>
 <figcaption>
 The USGS tracks stream discharge through time at locations across the United 
@@ -280,7 +280,7 @@ To learn more about different date/time classes, see the
 class(discharge$datetime)
 
 #convert to date/time class - POSIX
-discharge$datetime <- as.POSIXct(discharge$datetime)
+discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
 
 #recheck data structure
 str(discharge)
@@ -308,7 +308,7 @@ Excellent! The data contains no NoData values.
 Finally, we are ready to plot our data. We will use `ggplot` from the `ggplot2`
 package to create our plot.
 
-```{r plot-flood-data, fig.cap= " Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second." }
+```{r plot-flood-data, fig.cap= "Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second." }
 
 ggplot(discharge, aes(datetime, disValue)) +
   geom_point() +
@@ -333,12 +333,8 @@ October 15 2013.
 ```{r define-time-subset, fig.cap= "Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."  }
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.POSIXct("2013-08-15 00:00:00")
-endTime <- as.POSIXct("2013-10-15 00:00:00")
+start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
 
-# create a start and end time R object
-start.end <- c(startTime,endTime)
-start.end
 
 # plot the data - Aug 15-October 15
 ggplot(discharge,
@@ -369,14 +365,14 @@ package doesn't (yet?) recognize the `limits` method of subsetting.
 
 Here we create a new R object with entries corresponding to just the dates we want and then plot that data. 
 
-```{r plotly-discharge-data, fig.cap= "Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second."}
+```{r plotly-discharge-data, fig.cap="Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.", eval=FALSE, comment=NA}
 
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 
                         datetime >= as.POSIXct('2013-08-15 00:00',
-                                              tz = "America/Denver") & 
+                                              tz = "us/mountain") & 
                         datetime <= as.POSIXct('2013-10-15 23:59', 
-                                              tz = "America/Denver"))
+                                              tz = "us/mountain"))
 
 # plot the data
 disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
@@ -403,7 +399,7 @@ ggplotly(disPlot.plotly)
 
 If you are satisfied with your plot you can now publish it to your Plotly account. 
 
-``` {r pub-plotly, eval=FALSE}
+``` {r pub-plotly, eval=FALSE, comment=NA}
 # set username
 Sys.setenv("plotly_username"="yourUserNameHere")
 # set user key

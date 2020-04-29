@@ -67,8 +67,7 @@ of setting the working directory in R can be found here.</a>
 
 
 ## Research Question 
-What were the patterns of precipitation leading up to the 2013 flooding events
-in Colorado? 
+What were the patterns of precipitation leading up to the 2013 flooding  events in Colorado? 
 
 ## Precipitation Data 
 The heavy **precipitation (rain)** that occurred in September 2013 caused much 
@@ -127,7 +126,7 @@ The COOP site Boulder 2 (Station ID:050843) is centrally located in Boulder, CO.
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png">
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"
-   alt = " Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO. >
+   alt = "Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO." >
    </a>
    <figcaption> Cooperative Observer Network station 050843 is located in 
    central Boulder, CO. Source: National Centers for Environmental Information 
@@ -146,7 +145,7 @@ shown in the image below, we selected:
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"
-alt = " Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
+alt = "Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
    </a>
    <figcaption> Climate Data Online search page for the central Boulder, CO, station:050843
    </figcaption>
@@ -210,13 +209,13 @@ setwd(wd)
 
 ```
 
-```{r load-libraries-hidden, echo=FALSE, results="hide"}
+```{r load-libraries-hidden, echo=FALSE, eval=FALSE, comment=FALSE, results="hide"}
 # this package is only added to get the webpage derived from this code to render
 # the plotly graphs.  It is NOT needed for any of the analysis or data 
 # visualizations.
 
-# install.packages("webshot")
-# webshot::install_phantomjs() 
+#install.packages("webshot")
+#webshot::install_phantomjs() 
 library(webshot) # embed the plotly plots
 ```
 
@@ -235,8 +234,8 @@ the R object structure.
 
 # import precip data into R data.frame by 
 # defining the file name to be opened
-precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
 
+precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
 
 # view first 6 lines of the data
 head(precip.boulder)
@@ -347,7 +346,7 @@ the missing data?
 Now that we've cleaned up the data, we can view it. To do this we will plot using 
 `ggplot()` from the `ggplot2` package. 
 
-```{r plot-precip-hourly,  fig.cap= "Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively." }
+```{r plot-precip-hourly, fig.cap= "Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively." }
 #plot the data
 precPlot_hourly <- ggplot(data=precip.boulder,  # the data frame
       aes(DateTime, HPCP)) +   # the variables of interest
@@ -430,7 +429,7 @@ head(precip.boulder_daily)
 
 Now we can plot the daily data. 
 
-```{r daily-prec-plot,  fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
+```{r daily-prec-plot, fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 
 # plot daily data
 precPlot_daily <- ggplot(data=precip.boulder_daily,  # the data frame
@@ -515,7 +514,7 @@ precPlot_flood2
 
 Let's turn our plot into an interactive Plotly plot. 
 
-``` {r plotly-prep, eval=FALSE}
+``` {r plotly-prep, eval=FALSE, comment=NA}
 
 # setup your plot.ly credentials; if not already set up
 #Sys.setenv("plotly_username"="your.user.name.here")
@@ -523,13 +522,13 @@ Let's turn our plot into an interactive Plotly plot.
 
 ```
 
-```{r plotly-precip-data,fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.", message=FALSE }
+```{r plotly-precip-data,eval=FALSE, comment=NA, fig.cap= "Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.", message=FALSE }
 
 # view plotly plot in R
 ggplotly(precPlot_flood2)
 ```
 
-```{r plotly-post-precip-data, eval=FALSE }
+```{r plotly-post-precip-data, eval=FALSE, comment=NA }
 # publish plotly plot to your plot.ly online account when you are happy with it
 api_create(precPlot_flood2)
 
@@ -546,11 +545,9 @@ The full dataset takes considerable time to download, so we recommend you use th
 As an added challenge, aggregate the data by month instead of by day.  
 
 ``` {r all-boulder-station-data, echo=FALSE, results="hide", include=TRUE, fig.cap= "Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
-
 # read in data
 prec.boulder.all <- read.csv(paste0(wd,"disturb-events-co13/precip/805333-precip_daily_1948-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
                              
-                        
 # assing NoData values to NA
 prec.boulder.all$HPCP[prec.boulder.all$HPCP==999.99] <- NA 
 
@@ -584,7 +581,10 @@ precPlot_all <- ggplot(data=prec.boulder.all_monthly, aes(DATE,PRECIP)) +
   ggtitle("Total Monthly Precipitation \n Boulder, CO Station") 
 
 precPlot_all
+```
 
+
+``` {r plotly-all-boulder-station-data, echo=FALSE, results="hide",eval=FALSE, comment=NA, include=TRUE, fig.cap= "Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."}
 # create Plotly plot in R
 ggplotly(precPlot_all)
 

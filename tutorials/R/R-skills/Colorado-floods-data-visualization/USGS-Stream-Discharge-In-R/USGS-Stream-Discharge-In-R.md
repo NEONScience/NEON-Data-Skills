@@ -87,7 +87,7 @@ For more on stream discharge by USGS.</a>
 
 <figure>
 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif">
-alt = " Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
+alt = "Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif"></a>
 <figcaption>
 The USGS tracks stream discharge through time at locations across the United 
@@ -312,7 +312,7 @@ To learn more about different date/time classes, see the
     ## [1] "character"
 
     #convert to date/time class - POSIX
-    discharge$datetime <- as.POSIXct(discharge$datetime)
+    discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
     
     #recheck data structure
     str(discharge)
@@ -353,7 +353,7 @@ package to create our plot.
       ggtitle("Stream Discharge (CFS) for Boulder Creek") +
       xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
 
-![ Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
+![Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
 
 #### Questions: 
 
@@ -370,15 +370,9 @@ October 15 2013.
 
 
     # Define Start and end times for the subset as R objects that are the time class
-    startTime <- as.POSIXct("2013-08-15 00:00:00")
-    endTime <- as.POSIXct("2013-10-15 00:00:00")
+    start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
     
-    # create a start and end time R object
-    start.end <- c(startTime,endTime)
-    start.end
-
-    ## [1] "2013-08-15 EDT" "2013-10-15 EDT"
-
+    
     # plot the data - Aug 15-October 15
     ggplot(discharge,
           aes(datetime,disValue)) +
@@ -415,9 +409,9 @@ Here we create a new R object with entries corresponding to just the dates we wa
     # subset out some of the data - Aug 15 - October 15
     discharge.aug.oct2013 <- subset(discharge, 
                             datetime >= as.POSIXct('2013-08-15 00:00',
-                                                  tz = "America/Denver") & 
+                                                  tz = "us/mountain") & 
                             datetime <= as.POSIXct('2013-10-15 23:59', 
-                                                  tz = "America/Denver"))
+                                                  tz = "us/mountain"))
     
     # plot the data
     disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
@@ -425,9 +419,7 @@ Here we create a new R object with entries corresponding to just the dates we wa
             geom_point(size=3)     # makes the points larger than default
     
     disPlot.plotly
-
-![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-1.png)
-
+          
     # add title and labels
     disPlot.plotly <- disPlot.plotly + 
     	theme(axis.title.x = element_blank()) +
@@ -435,8 +427,6 @@ Here we create a new R object with entries corresponding to just the dates we wa
     	ggtitle("Stream Discharge - Boulder Creek 2013")
     
     disPlot.plotly
-
-![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plotly-discharge-data-2.png)
 
 You can now display your interactive plot in R using the following command: 
 

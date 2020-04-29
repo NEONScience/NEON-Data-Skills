@@ -1,11 +1,11 @@
-## ----load-libraries-----------------------------
+## ----load-libraries--------------------------
 
 library(ggplot2)   # create efficient, professional plots
 library(plotly)    # create interactive plots
 
 
 
-## ----load-libraries-hidden, echo=FALSE, results="hide"----
+## ----load-libraries-hidden, echo=FALSE,eval=FALSE, comment=NA, results="hide"----
 # this library is only added to get the webpage derived from this code to render
 # the plotly graphs.  It is NOT needed for any of the analysis or data 
 # visualizations.
@@ -15,7 +15,7 @@ library(plotly)    # create interactive plots
 library(webshot) # embed the plotly plots
 
 
-## ----import-drought-data------------------------
+## ----import-drought-data---------------------
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
 wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
 setwd(wd)
@@ -27,13 +27,13 @@ nCLIMDIV <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8506877122044_
 str(nCLIMDIV)
 
 
-## ----convert-year-month, eval= F, comment=NA----
+## ----convert-year-month, eval= FALSE, comment=NA----
 # convert to date, and create a new Date column 
 nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 
 
 
-## ----convert-date-------------------------------
+## ----convert-date----------------------------
 #add a day of the month to each year-month combination
 nCLIMDIV$Date <- paste0(nCLIMDIV$YearMonth,"01")
 
@@ -70,23 +70,23 @@ hist(nCLIMDIV$PDSI,   # the date we want to use
 
 
 
-## ----set-plotly-creds, eval=FALSE---------------
-## # set plotly user name
-## Sys.setenv("plotly_username"="YOUR_plotly_username")
-## 
-## # set plotly API key
-## Sys.setenv("plotly_api_key"="YOUR_api_key")
-## 
+## ----set-plotly-creds, eval=FALSE, comment=NA----
+# set plotly user name
+Sys.setenv("plotly_username"="YOUR_plotly_username")
+
+# set plotly API key
+Sys.setenv("plotly_api_key"="YOUR_api_key")
 
 
-## ----create-ggplotly-drought--------------------
+
+## ----create-ggplotly-drought, eval=FALSE, comment=NA----
 
 # Use existing ggplot plot & view as plotly plot in R
 palmer.drought_ggplotly <- ggplotly(palmer.drought)  
 palmer.drought_ggplotly
 
 
-## ----create-plotly-drought-plot, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index."----
+## ----create-plotly-drought-plot, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", eval=FALSE, comment=NA----
 # use plotly function to create plot
 palmer.drought_plotly <- plot_ly(nCLIMDIV,    # the R object dataset
 	type= "bar", # the type of graph desired
@@ -99,61 +99,57 @@ palmer.drought_plotly
 
 
 
-## ----post-plotly, eval=FALSE--------------------
-## # publish plotly plot to your plot.ly online account when you are happy with it
-## # skip this step if you haven't connected a Plotly account
-## 
-## api_create(palmer.drought_plotly)
+## ----post-plotly, eval=FALSE, comment=NA-----
+# publish plotly plot to your plot.ly online account when you are happy with it
+# skip this step if you haven't connected a Plotly account
+
+api_create(palmer.drought_plotly)
 
 
-## ----challenge-Div04, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide", eval=FALSE----
-## 
-## library(ggplot2)
-## library(plotly)
-## 
-## wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-## setwd(wd)
-## 
-## # Import CO state-wide nCLIMDIV data
-## nCLIMDIV.co04 <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt"),
-##                           header = TRUE)
-## 
-## # view data structure
-## str(nCLIMDIV.co04)
-## 
-## #add a day of the month to each year-month combination
-## nCLIMDIV.co04$Date <- paste0(nCLIMDIV.co04$YearMonth,"01")
-## 
-## #convert to date
-## nCLIMDIV.co04$Date <- as.Date(nCLIMDIV.co04$Date, format="%Y%m%d")
-## 
-## # check to see it works
-## str(nCLIMDIV.co04$Date)
-## 
-## # plot the Palmer Drought Index (PDSI) w/ ggplot
-## palmer.drought.co04 <- ggplot(data=nCLIMDIV.co04,
-## 			 aes(Date,PDSI)) +  # x is Date & y is drought index
-## 	     geom_bar(stat="identity",position = "identity") +   # bar plot
-##        xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
-##        ggtitle("Palmer Drought Severity Index - Platte River Drainage")   # title on 2 lines (\n)
-## 
-## # view the plot
-## palmer.drought.co04
-## 
-## # --OR-- we could use plotly
-## # use plotly function to create plot
-## palmer.drought.co04_plotly <- plot_ly(nCLIMDIV.co04,    # the R object dataset
-## 				type= "bar", # the type of graph desired
-## 				x=nCLIMDIV.co04$Date,      # our x data
-## 				y=nCLIMDIV.co04$PDSI,      # our y data
-## 				orientation="v",   # for bars to orient vertically ("h" for horizontal)
-##         title=("Palmer Drought Severity Index - Platte River Drainage"))
-## 
-## palmer.drought.co04_plotly
-## 
+## ----challenge-Div04, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide"----
+
+# Import CO state-wide nCLIMDIV data
+nCLIMDIV.co04 <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt"),
+                          header = TRUE)
+
+# view data structure
+str(nCLIMDIV.co04)
+
+#add a day of the month to each year-month combination
+nCLIMDIV.co04$Date <- paste0(nCLIMDIV.co04$YearMonth,"01")
+
+#convert to date
+nCLIMDIV.co04$Date <- as.Date(nCLIMDIV.co04$Date, format="%Y%m%d")
+
+# check to see it works
+str(nCLIMDIV.co04$Date)
+
+# plot the Palmer Drought Index (PDSI) w/ ggplot
+palmer.drought.co04 <- ggplot(data=nCLIMDIV.co04,
+			 aes(Date,PDSI)) +  # x is Date & y is drought index
+	     geom_bar(stat="identity",position = "identity") +   # bar plot 
+       xlab("Date") + ylab("Palmer Drought Severity Index") +  # axis labels
+       ggtitle("Palmer Drought Severity Index - Platte River Drainage")   # title on 2 lines (\n)
+
+# view the plot
+palmer.drought.co04
 
 
-## ----challenge-PHSI, echo=FALSE,fig.cap ="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.",results="hide", include=FALSE----
+## ----challenge-Div04-plotly, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide", eval=FALSE, comment=NA----
+# --OR-- we could use plotly
+# use plotly function to create plot
+palmer.drought.co04_plotly <- plot_ly(nCLIMDIV.co04,    # the R object dataset
+				type= "bar", # the type of graph desired
+				x=nCLIMDIV.co04$Date,      # our x data 
+				y=nCLIMDIV.co04$PDSI,      # our y data
+				orientation="v",   # for bars to orient vertically ("h" for horizontal)
+        title=("Palmer Drought Severity Index - Platte River Drainage"))
+
+palmer.drought.co04_plotly
+
+
+
+## ----challenge-PHSI, echo=FALSE, fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.",results="hide", include=FALSE----
 
 # our example code uses the Palmer Hydrological Drought Index (PHDI)
 
@@ -188,12 +184,6 @@ palmer.hydro
 
 ## ----palmer-NDV-plot-only, echo=FALSE,fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.",results="hide"----
 
-library(ggplot2)  
-library(plotly)
-
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-setwd(wd)
-
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
 nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"),
                         header = TRUE)
@@ -218,10 +208,7 @@ palmer.droughtUS
 
 
 
-## ----palmer-no-data-values, fig.cap=c(" Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.","Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.", "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.")----
-
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-setwd(wd)
+## ----palmer-no-data-values, fig.cap=c("Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.","Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.", "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.")----
 
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
 nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"), header = TRUE)
@@ -268,7 +255,7 @@ ggplot(data=nCLIMDIV_US,
 
 
 
-## ----subset-decade------------------------------
+## ----subset-decade---------------------------
 
 # subset out data between 2005 and 2015 
 nCLIMDIV2005.2015 <- subset(nCLIMDIV,    # our R object dataset 
@@ -281,7 +268,7 @@ tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
 
 
 
-## ----plotly-decade, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 2005 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed."----
+## ----plotly-decade, fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 2005 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.", eval=FALSE, comment=NA----
 
 # use plotly function to create plot
 palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
@@ -294,10 +281,10 @@ palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
 palmer_plotly0515
 
 
-## ----plotlyPost, eval=FALSE---------------------
-## # publish plotly plot to your plot.ly online account when you are happy with it
-## # skip this step if you haven't connected a Plotly account
-## 
-## api_create(palmer_plotly0515)
-## 
+## ----plotlyPost, eval=FALSE, comment=NA------
+# publish plotly plot to your plot.ly online account when you are happy with it
+# skip this step if you haven't connected a Plotly account
+
+api_create(palmer_plotly0515)
+
 

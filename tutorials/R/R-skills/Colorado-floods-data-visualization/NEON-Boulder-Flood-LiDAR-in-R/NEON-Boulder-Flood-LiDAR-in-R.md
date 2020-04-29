@@ -89,7 +89,7 @@ explores three important landscape models that are commonly used.
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"
-alt = Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.>
+alt = "Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.">
   </a>
   <figcaption>Digital Terrain Models, Digital Surface Models and Canopy Height
   	Models are three common LiDAR-derived data products. The digital terrain model
@@ -171,7 +171,6 @@ The default azimuth for many hillshades is 315 degrees -- to the NW.
     # Creating hillshade for DTM_pre & DTM_post
     # In order to generate the hillshde, we need both the slope and the aspect of
     # the extent we are working on. 
-    
     
     DTM_pre_slope <- terrain(DTM_pre, opt="slope",units = "radians")
     DTM_pre_aspect <- terrain(DTM_pre, opt ="aspect", units = "radians")

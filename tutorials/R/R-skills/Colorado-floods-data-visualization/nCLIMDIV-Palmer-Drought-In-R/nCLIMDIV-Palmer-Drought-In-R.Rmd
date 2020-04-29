@@ -186,7 +186,7 @@ library(plotly)    # create interactive plots
 
 ```
 
-```{r load-libraries-hidden, echo=FALSE, results="hide"}
+```{r load-libraries-hidden, echo=FALSE,eval=FALSE, comment=NA, results="hide"}
 # this library is only added to get the webpage derived from this code to render
 # the plotly graphs.  It is NOT needed for any of the analysis or data 
 # visualizations.
@@ -236,7 +236,7 @@ We want to convert these numbers into a date field. We might be able to use the
 `as.Date` function to convert our string of numbers into a date that R will 
 recognize.
 
-```{r convert-year-month, eval= F, comment=NA}
+```{r convert-year-month, eval= FALSE, comment=NA}
 # convert to date, and create a new Date column 
 nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 
@@ -331,7 +331,7 @@ First, we need to connect our R session to our Plotly account. If you only want
 to create interactive plots and not share them on a Plotly account, you can skip
 this step.  
 
-``` {r set-plotly-creds, eval=FALSE}
+``` {r set-plotly-creds, eval=FALSE, comment=NA}
 # set plotly user name
 Sys.setenv("plotly_username"="YOUR_plotly_username")
 
@@ -345,7 +345,7 @@ Sys.setenv("plotly_api_key"="YOUR_api_key")
 We can create an interactive version of our plot using `plot.ly`. We should simply be able to use our existing ggplot `palmer.drought` with the 
 `ggplotly()` function to create an interactive plot. 
 
-```{r create-ggplotly-drought}
+```{r create-ggplotly-drought, eval=FALSE, comment=NA}
 
 # Use existing ggplot plot & view as plotly plot in R
 palmer.drought_ggplotly <- ggplotly(palmer.drought)  
@@ -359,7 +359,7 @@ Until that happens, we can build our plot again using the `plot_ly()` function.
 In the future, you could just skip the `ggplot()` step and plot directly with 
 `plot_ly()`. 
 
-```{r create-plotly-drought-plot, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index." }
+```{r create-plotly-drought-plot, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", eval=FALSE, comment=NA }
 # use plotly function to create plot
 palmer.drought_plotly <- plot_ly(nCLIMDIV,    # the R object dataset
 	type= "bar", # the type of graph desired
@@ -391,7 +391,7 @@ flooding?
 
 Once the plot is built with a Plotly related function (`plot_ly` or `ggplotly`) you can post the plot to your online account. Make sure you are signed in to Plotly to complete this step. 
 
-``` {r post-plotly, eval=FALSE}
+``` {r post-plotly, eval=FALSE, comment=NA}
 # publish plotly plot to your plot.ly online account when you are happy with it
 # skip this step if you haven't connected a Plotly account
 
@@ -421,13 +421,7 @@ Colorado that you've already made.
 
 If you are using the downloaded dataset accompanying this lesson,  this data can be found at "drought/CDODiv8868227122048_COdiv04.txt".  
 
-```{r challenge-Div04, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide", eval=FALSE}
-
-library(ggplot2)  
-library(plotly)
-
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-setwd(wd)
+```{r challenge-Div04, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide"}
 
 # Import CO state-wide nCLIMDIV data
 nCLIMDIV.co04 <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8868227122048_COdiv04.txt"),
@@ -454,7 +448,10 @@ palmer.drought.co04 <- ggplot(data=nCLIMDIV.co04,
 
 # view the plot
 palmer.drought.co04
+```
 
+
+```{r challenge-Div04-plotly, fig.cap= "Bar graph of the Palmer Drought Severity Index for the Platte River Drainage during years 1991 through 2015. X-axis is Date and Y-axis is drought index.", include=FALSE, echo=FALSE, results="hide", eval=FALSE, comment=NA}
 # --OR-- we could use plotly
 # use plotly function to create plot
 palmer.drought.co04_plotly <- plot_ly(nCLIMDIV.co04,    # the R object dataset
@@ -478,7 +475,7 @@ Choose one and repeat the steps above to see if a different  but related
 measure shows a similar pattern. Make sure to go back to the 
 metadata so that you understand what the index or measurement you choose represents.
 
-``` {r challenge-PHSI, echo=FALSE,fig.cap ="Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.",results="hide", include=FALSE}
+``` {r challenge-PHSI, echo=FALSE, fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.",results="hide", include=FALSE}
 
 # our example code uses the Palmer Hydrological Drought Index (PHDI)
 
@@ -522,12 +519,6 @@ If this were real, it would be a *very severe* drought!
 
 ```{r palmer-NDV-plot-only, echo=FALSE,fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.",results="hide"}
 
-library(ggplot2)  
-library(plotly)
-
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-setwd(wd)
-
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
 nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"),
                         header = TRUE)
@@ -565,10 +556,7 @@ or plots are created. By defining the placeholders as `NA`, R will correctly int
 Using the nCLIMDIV dataset for the entire US, this is how we'd assign the placeholder
 value to NA and plot the data.
 
-```{r palmer-no-data-values, fig.cap=c(" Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.","Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.", "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.")}
-
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
-setwd(wd)
+```{r palmer-no-data-values, fig.cap=c("Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.","Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.", "Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.")}
 
 # NoData Value in the nCLIMDIV data from 1990-2015 US spatial scale 
 nCLIMDIV_US <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv5138116888828_US.txt"), header = TRUE)
@@ -651,7 +639,7 @@ tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
 Now we can plot this decade of data. Hint, we can copy/paste and edit the 
 previous code.
 
-```{r plotly-decade, fig.cap="Bar graph of the Palmer Drought Severity Index for Colorado during years 2005 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed."}
+```{r plotly-decade, fig.cap= "Bar graph of the Palmer Drought Severity Index for Colorado during years 2005 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.", eval=FALSE, comment=NA}
 
 # use plotly function to create plot
 palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
@@ -664,7 +652,7 @@ palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
 palmer_plotly0515
 ```
 
-```{r plotlyPost, eval=FALSE}
+```{r plotlyPost, eval=FALSE, comment=NA}
 # publish plotly plot to your plot.ly online account when you are happy with it
 # skip this step if you haven't connected a Plotly account
 

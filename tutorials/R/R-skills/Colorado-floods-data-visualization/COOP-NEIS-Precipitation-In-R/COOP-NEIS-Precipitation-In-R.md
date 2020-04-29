@@ -67,8 +67,7 @@ of setting the working directory in R can be found here.</a>
 
 
 ## Research Question 
-What were the patterns of precipitation leading up to the 2013 flooding events
-in Colorado? 
+What were the patterns of precipitation leading up to the 2013 flooding  events in Colorado? 
 
 ## Precipitation Data 
 The heavy **precipitation (rain)** that occurred in September 2013 caused much 
@@ -127,7 +126,7 @@ The COOP site Boulder 2 (Station ID:050843) is centrally located in Boulder, CO.
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png">
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"
-   alt = " Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO. >
+   alt = "Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO." >
    </a>
    <figcaption> Cooperative Observer Network station 050843 is located in 
    central Boulder, CO. Source: National Centers for Environmental Information 
@@ -146,7 +145,7 @@ shown in the image below, we selected:
  <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"
-alt = " Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
+alt = "Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
    </a>
    <figcaption> Climate Data Online search page for the central Boulder, CO, station:050843
    </figcaption>
@@ -224,32 +223,32 @@ the R object structure.
 
     # import precip data into R data.frame by 
     # defining the file name to be opened
-    precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
     
+    precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
     
     # view first 6 lines of the data
     head(precip.boulder)
 
-    ##       STATION    STATION_NAME ELEVATION LATITUDE
-    ## 1 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 2 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 3 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 4 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 5 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 6 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ##   LONGITUDE           DATE HPCP Measurement.Flag
-    ## 1 -105.2811 20030101 01:00  0.0                g
-    ## 2 -105.2811 20030201 01:00  0.0                g
-    ## 3 -105.2811 20030202 19:00  0.2                 
-    ## 4 -105.2811 20030202 22:00  0.1                 
-    ## 5 -105.2811 20030203 02:00  0.1                 
-    ## 6 -105.2811 20030205 02:00  0.1                 
-    ##   Quality.Flag
-    ## 1             
-    ## 2             
-    ## 3             
-    ## 4             
-    ## 5             
+    ##       STATION    STATION_NAME ELEVATION
+    ## 1 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 2 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 3 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 4 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 5 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 6 COOP:050843 BOULDER 2 CO US    1650.5
+    ##   LATITUDE LONGITUDE           DATE HPCP
+    ## 1 40.03389 -105.2811 20030101 01:00  0.0
+    ## 2 40.03389 -105.2811 20030201 01:00  0.0
+    ## 3 40.03389 -105.2811 20030202 19:00  0.2
+    ## 4 40.03389 -105.2811 20030202 22:00  0.1
+    ## 5 40.03389 -105.2811 20030203 02:00  0.1
+    ## 6 40.03389 -105.2811 20030205 02:00  0.1
+    ##   Measurement.Flag Quality.Flag
+    ## 1                g             
+    ## 2                g             
+    ## 3                              
+    ## 4                              
+    ## 5                              
     ## 6
 
     # view structure of data
@@ -404,7 +403,7 @@ with only dates (no time) and then re-plot.
     # double check conversion
     str(precip.boulder$DATE)
 
-    ##  Date[1:1840], format: "2003-01-01" "2003-02-01" "2003-02-03" ...
+    ##  Date[1:1840], format: "2003-01-01" "2003-02-01" ...
 
     precPlot_daily1 <- ggplot(data=precip.boulder,  # the data frame
           aes(DATE, HPCP)) +   # the variables of interest
@@ -568,17 +567,6 @@ Let's turn our plot into an interactive Plotly plot.
     # view plotly plot in R
     ggplotly(precPlot_flood2)
 
-    ## Warning in normalizePath(path.expand(path),
-    ## winslash, mustWork):
-    ## path[1]="webshot47e06fcd5c8a.png": The system
-    ## cannot find the file specified
-
-    ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e025414f05\webshot47e06fcd5c8a.png':
-    ## No such file or directory
-
-    ## Error in file(con, "rb"): cannot open the connection
-
 
     # publish plotly plot to your plot.ly online account when you are happy with it
     api_create(precPlot_flood2)
@@ -595,18 +583,8 @@ As an added challenge, aggregate the data by month instead of by day.
 
 ![Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/all-boulder-station-data-1.png)
 
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 
-    ## Warning in normalizePath(path.expand(path),
-    ## winslash, mustWork):
-    ## path[1]="webshot47e037fe29bb.png": The system
-    ## cannot find the file specified
 
-    ## Warning in file(con, "rb"): cannot open file 'C:
-    ## \Users\fsanchez\AppData\Local\Temp\Rtmp8mlAql\file47e065715da0\webshot47e037fe29bb.png':
-    ## No such file or directory
-
-    ## Error in file(con, "rb"): cannot open the connection
 
 </div>
 
@@ -626,27 +604,34 @@ inches.
     # view & check to make sure conversion occurred
     head(precip.boulder)
 
-    ##       STATION    STATION_NAME ELEVATION LATITUDE
-    ## 1 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 2 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 3 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 4 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 5 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ## 6 COOP:050843 BOULDER 2 CO US    1650.5 40.03389
-    ##   LONGITUDE       DATE HPCP Measurement.Flag
-    ## 1 -105.2811 2003-01-01  0.0                g
-    ## 2 -105.2811 2003-02-01  0.0                g
-    ## 3 -105.2811 2003-02-03  0.2                 
-    ## 4 -105.2811 2003-02-03  0.1                 
-    ## 5 -105.2811 2003-02-03  0.1                 
-    ## 6 -105.2811 2003-02-05  0.1                 
-    ##   Quality.Flag            DateTime PRECIP
-    ## 1              2003-01-01 01:00:00  0.000
-    ## 2              2003-02-01 01:00:00  0.000
-    ## 3              2003-02-02 19:00:00  0.002
-    ## 4              2003-02-02 22:00:00  0.001
-    ## 5              2003-02-03 02:00:00  0.001
-    ## 6              2003-02-05 02:00:00  0.001
+    ##       STATION    STATION_NAME ELEVATION
+    ## 1 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 2 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 3 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 4 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 5 COOP:050843 BOULDER 2 CO US    1650.5
+    ## 6 COOP:050843 BOULDER 2 CO US    1650.5
+    ##   LATITUDE LONGITUDE       DATE HPCP
+    ## 1 40.03389 -105.2811 2003-01-01  0.0
+    ## 2 40.03389 -105.2811 2003-02-01  0.0
+    ## 3 40.03389 -105.2811 2003-02-03  0.2
+    ## 4 40.03389 -105.2811 2003-02-03  0.1
+    ## 5 40.03389 -105.2811 2003-02-03  0.1
+    ## 6 40.03389 -105.2811 2003-02-05  0.1
+    ##   Measurement.Flag Quality.Flag
+    ## 1                g             
+    ## 2                g             
+    ## 3                              
+    ## 4                              
+    ## 5                              
+    ## 6                              
+    ##              DateTime PRECIP
+    ## 1 2003-01-01 01:00:00  0.000
+    ## 2 2003-02-01 01:00:00  0.000
+    ## 3 2003-02-02 19:00:00  0.002
+    ## 4 2003-02-02 22:00:00  0.001
+    ## 5 2003-02-03 02:00:00  0.001
+    ## 6 2003-02-05 02:00:00  0.001
 
 #### Question
 Compare `HPCP` and `PRECIP`. Did we do the conversion correctly?  
