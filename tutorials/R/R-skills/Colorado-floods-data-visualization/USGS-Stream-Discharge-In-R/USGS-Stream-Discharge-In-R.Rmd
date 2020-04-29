@@ -280,7 +280,7 @@ To learn more about different date/time classes, see the
 class(discharge$datetime)
 
 #convert to date/time class - POSIX
-discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
+discharge$datetime <- as.POSIXct(discharge$datetime, tz ="America/Denver")
 
 #recheck data structure
 str(discharge)
@@ -335,7 +335,6 @@ October 15 2013.
 # Define Start and end times for the subset as R objects that are the time class
 start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
 
-
 # plot the data - Aug 15-October 15
 ggplot(discharge,
       aes(datetime,disValue)) +
@@ -370,9 +369,9 @@ Here we create a new R object with entries corresponding to just the dates we wa
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 
                         datetime >= as.POSIXct('2013-08-15 00:00',
-                                              tz = "us/mountain") & 
+                                              tz = "America/Denver") & 
                         datetime <= as.POSIXct('2013-10-15 23:59', 
-                                              tz = "us/mountain"))
+                                              tz = "America/Denver"))
 
 # plot the data
 disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
