@@ -201,9 +201,6 @@ HDF5 file. Let's start by learning about the wavelengths described within this f
     ## 
     ## $Units
     ## [1] "nanometers"
-    ## 
-    ## $dim
-    ## [1] 107
 
 Next, we can use the `h5read` function to read the data contained within the
 HDF5 file. Let's read in the wavelengths of the band centers:

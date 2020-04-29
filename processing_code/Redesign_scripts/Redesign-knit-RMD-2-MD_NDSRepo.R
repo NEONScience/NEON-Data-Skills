@@ -22,10 +22,9 @@ require(markdown)
 # You can choose a high-level directory and this script will search
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
-dirs <- c("R/R-skills",
-          "R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R",
+dirs <- c("R/eddy4r",
+          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
           "R/R-skills/Using-hdf5-r/Intro-HDF5-R")
-
 
 #################### Set up Input Variables #############################
 
@@ -35,21 +34,20 @@ subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 ### CHANGE AFTER MIGRATION
-gitRepoPath <-"C:/Users/fsanchez/Documents/FS_R/NEON_Tutorials/NEON-Data-Skills"
+gitRepoPath <-"~/Git/dev-aten/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
 # Where do you keep your data for the tutorials? Previously, this was in 
 # "~/Git/data" but then it doesn't work with new wd style. This should help people 
 # who want to knit the documents themselves.
-
 # dataPath <- "~/Documents/data"
 ### Deprecating this because ~/Git/data must be working dir for fig paths to work
 
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "C:/Users/fsanchez/Documents/data"
+wd_processing_doc <- "~/Git/data"
 
 # set the base url for images and links in the md file
 ### CHANGE AFTER MIGRATION
@@ -59,18 +57,15 @@ base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-
 # how to reference raw images on github:
 # https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
 opts_knit$set(base.url = base.url)
-opts_knit$set(root.dir = 'C:/Users/fsanchez/Documents/FS_R/NEON_Tutorials/NEON-Data-Skills')
+opts_knit$set(root.dir = wd_processing_doc)
 
 #################### Get List of RMD files to Render #############################
-
-## Does not get RMD files
 
 # get a list of files to knit / purl
 rmd.files <- list.files(file.path(gitRepoPath, "tutorials", subDir),
                         pattern="\\.Rmd$", full.names = TRUE, recursive = TRUE)
 
 
-rmd.files
 
 #################### Set up Image Directory #############################
 
@@ -175,4 +170,3 @@ for (files in rmd.files) {
 ########################### end script
 #files=rmd.files[13]
 #files
-
