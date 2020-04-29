@@ -57,7 +57,7 @@ base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-
 # how to reference raw images on github:
 # https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
 opts_knit$set(base.url = base.url)
-opts_knit$set(root.dir = '~/Git/data/')
+opts_knit$set(root.dir = wd_processing_doc)
 
 #################### Get List of RMD files to Render #############################
 
