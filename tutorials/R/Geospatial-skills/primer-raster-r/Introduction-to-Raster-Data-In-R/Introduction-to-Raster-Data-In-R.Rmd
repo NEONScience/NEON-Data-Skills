@@ -106,6 +106,10 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
+setwd("C:/Users/mccahill/Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/RGB")
+
+#Cannot set working directory, will use paste0 command for these tutorials
+wd <- ("C:/Users/mccahill/Documents/Github/")
 
 ```	
 
@@ -114,7 +118,7 @@ look at the attributes.
 
 ```{r load-raster}
 # load raster in an R object called 'DEM'
-DEM <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif")
+DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
 
 # look at the raster attributes. 
 DEM
@@ -311,6 +315,8 @@ plot(DEM, col=col, breaks=brk, main="DEM with a Custom (but flipped) Legend", le
 # Third, turn xpd back on to force the legend to fit next to the plot.
 par(xpd = TRUE)
 
+#Run the entire code block to plot* 
+
 # Fourth, add a legend - & make it appear outside of the plot
 legend(par()$usr[2], 4110600,
         legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
@@ -329,6 +335,8 @@ par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
 plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
 #turn xpd back on to force the legend to fit next to the plot.
 par(xpd = TRUE)
+
+#Run entire code block to plot*
 #add a legend - but make it appear outside of the plot
 legend( par()$usr[2], 4110600,
         legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
@@ -398,8 +406,12 @@ used to quickly define a crop extent.
 
 #plot the DEM
 plot(DEM)
+
 #Define the extent of the crop by clicking on the plot
-cropbox1 <- drawExtent()
+cropbox1 <- drawExtent(show=TRUE, col="red")
+
+#Cannot crop via directly clicking on plot
+
 #crop the raster, then plot the new cropped raster
 DEMcrop1 <- crop(DEM, cropbox1)
 
@@ -441,8 +453,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 ```{r challenge-code-name, include=TRUE, results="hide", echo=FALSE}
 
 # load raster in an R object called 'DEM'
-DSM <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
-
+DSM <- rasterDSM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
 # convert from m to ft
 DSM2 <- DSM * 3.3
 
