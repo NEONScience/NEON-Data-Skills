@@ -132,6 +132,9 @@ library(rgdal)
 
 # set the working directory to the data
 #setwd("pathToDirHere")
+wd <- ("C:/Users/mccahill/Documents/Github/")
+setwd(wd)
+
 ```
 
 Next, let's create a raster stack with bands representing 
@@ -145,9 +148,14 @@ This can be done by individually assigning each file path as an object.
 ```{r import-tiffs}
 
 # import tiffs
-band19 <- "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif"
-band34 <- "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif"
-band58 <- "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif"
+band19 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif")
+band34 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif")
+band58 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif")
+
+# View their attributes to check that they loaded correctly:
+band19
+band34
+band58
 ```
 
 Note that if we wanted to create a stack from all the files in a directory (folder)
@@ -157,15 +165,21 @@ rasters.
 
 ``` {r list-files}
 # create list of files to make raster stack
-rasterlist1 <-  list.files('RGB', full.names=TRUE)
+rasterlist1 <- list.files(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB", full.names=TRUE))
+
+rasterlist1
+
 ```
 
-Or, if your directory is consistes of some .tif files and other file types you 
+Or, if your directory consists of some .tif files and other file types you 
 don't want in your stack, you can ask R to only list those files with a .tif 
 extension.
 
 ```{r list-files-tif}
-rasterlist2 <-  list.files('RGB', full.names=TRUE, pattern="tif") 
+rasterlist2 <-  list.files(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB", full.names=TRUE, pattern="tif"))
+
+rasterlist2
+
 ```
 
 Back to creating our raster stack with three bands.  We only want three of the 
@@ -180,7 +194,7 @@ rgbRaster <- stack(band19,band34,band58)
 #rstack1 <- stack(rasterlist1)
 ```
 
-This has now created a stack of rasters three thick. Let's view them. 
+This has now created a stack that is three rasters thick. Let's view them. 
 
 ``` {r view-stack}
 # check attributes
@@ -332,7 +346,8 @@ orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
 
 # write the geotiff
 # change overwrite=TRUE to FALSE if you want to make sure you don't overwrite your files!
-writeRaster(orderRGBstack,"rgbRaster.tif","GTiff", overwrite=TRUE)
+writeRaster(orderRGBstack,paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif"),"GTiff", overwrite=TRUE)
+                           
 ```
 
 
@@ -344,10 +359,10 @@ raster than we just created above.
 ``` {r import-multi-raster}
 
 # import multi-band raster as stack
-multiRasterS <- stack("rgbRaster.tif") 
+multiRasterS <- stack(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif")) 
 
 # import multi-band raster direct to brick
-multiRasterB <- brick("rgbRaster.tif") 
+multiRasterB <- brick(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif")) 
 
 # view raster
 plot(multiRasterB)

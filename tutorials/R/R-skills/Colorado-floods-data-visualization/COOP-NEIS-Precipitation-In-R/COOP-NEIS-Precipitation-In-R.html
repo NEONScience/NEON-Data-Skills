@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Research Question</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>Several factors contributed to extreme flooding that occurred in Boulder, 
+Colorado in 2013. In this data activity, we explore and visualize the data for 
+precipitation (rainfall) data collected by the National Weather Service&#39;s 
+Cooperative Observer Program. The tutorial is part of the Data Activities that can be used 
+with the 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> <em>Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module</em></a>. </p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this tutorial, you will be able to:
+
+* Download precipitation data from 
+<a href="http://www.ncdc.noaa.gov/" target="_blank">NOAA&rsquo;s National Centers for Environmental Information</a>. 
+* Plot precipitation data in R. 
+* Publish & share an interactive plot of the data using Plotly. 
+* Subset data by date (if completing Additional Resources code).
+* Set a NoData Value to NA in R (if completing Additional Resources code). 
+
+## Things You&rsquo;ll Need To Complete This Lesson
+Please be sure you have the most current version of R and, preferably,
+RStudio to write your code.
+
+### R Libraries to Install:
+
+* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
+* **plotly:** install.packages(&ldquo;plotly&rdquo;)
+
+
+### Data to Download 
+
+Part of this lesson is to access and download the data directly from NOAA&rsquo;s 
+National Climate Divisional Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the 
+<a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>.
+
+
+**Set Working Directory** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce learned skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
+
+
+</div>
+
+<h2>Research Question</h2>
+
+<p>What were the patterns of precipitation leading up to the 2013 flooding  events in Colorado? </p>
+
+<h2>Precipitation Data</h2>
+
+<p>The heavy <strong>precipitation (rain)</strong> that occurred in September 2013 caused much 
+damage during the 2013 flood by, among other things, increasing 
+<strong>stream discharge (flow)</strong>. In this lesson we will download, explore, and 
+visualize the precipitation data collected during this time to better understand 
+this important flood driver.</p>
+
+<h2>Where can we get precipitation data?</h2>
+
+<p>The precipitation data are obtained through 
+ <a href="http://www.ncdc.noaa.gov/" target="_blank">NOAA&#39;s National Centers for Environmental Information</a> 
+(formerly the National Climatic Data Center). There are numerous climatic 
+datasets that can be found and downloaded via the 
+<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">Climate Data Online Search portal</a>. </p>
+
+<p>The precipitation data that we will use is from the 
+<a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/cooperative-observer-network-coop" target="_blank">Cooperative Observer Network (COOP)</a>. </p>
+
+<blockquote>
+<p>&ldquo;<em>Through the National Weather Service (NWS) Cooperative Observer Program
+(COOP), more than 10,000 volunteers take daily weather observations at National 
+Parks, seashores, mountaintops, and farms as well as in urban and suburban 
+areas. COOP data usually consist of daily maximum and minimum temperatures, 
+snowfall, and 24-hour precipitation totals.</em>&rdquo; 
+Quoted from NOAA&#39;s National Centers for Environmental Information</p>
+</blockquote>
+
+<p>Data are collected at different stations, often on paper data sheets like the 
+one below, and then entered into a central database where we can access that data 
+and download it in the .csv (Comma Separated Values) format.</p>
+
+<p><figure>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/COOP_SampleDataSheet.png"
+   alt = "An example of a data sheet used to collect precipitation data for the Cooperative Observer network">
+   </a>
+   <figcaption> An example of the data sheets used to collect the precipitation
+   data for the Cooperative Observer Network. Source: Cooperative Observer 
+   Network, NOAA
+   </figcaption>
+</figure></p>
+
+<h2>Obtain the Data</h2>
+
+<p>If you have not already opened the 
+<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">Climate Data
+Online Search portal</a>, do so now. </p>
+
+<p>Note: If you are using the pre-compiled data subset that can be downloaded as a 
+compressed file above, you should still read through this section to know where 
+the data comes from before proceeding with the lesson. </p>
+
+<h4>Step 1: Search for the data</h4>
+
+<p>To obtain data we must first choose a location of interest. 
+The COOP site Boulder 2 (Station ID:050843) is centrally located in Boulder, CO. </p>
+
+<p><figure>
+   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/LocationOfPrecipStation.png"
+   alt = "Map dislaying Cooperative Observer Network station 050843, located in central Boulder, CO." >
+   </a>
+   <figcaption> Cooperative Observer Network station 050843 is located in 
+   central Boulder, CO. Source: National Centers for Environmental Information 
+   </figcaption>
+</figure></p>
+
+<p>Then we must decide what type of data we want to download for that station. As 
+shown in the image below, we selected:</p>
+
+<ul>
+<li>the desired date range (1 January 2003 to 31 December 2013),</li>
+<li>the type of dataset (&ldquo;Precipitation Hourly&rdquo;),</li>
+<li>the search type (&ldquo;Stations&rdquo;) and </li>
+<li><p>the search term (e.g. the # for the station located in central Boulder, CO: 050843). </p>
+
+<figure>
+<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"
+alt = "Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
+</a>
+<figcaption> Climate Data Online search page for the central Boulder, CO, station:050843
+</figcaption>
+</figure></li>
+</ul>
+
+<p>Once the data are entered and you select <code>Search</code>, you will be directed to a 
+new page with a map. You can find out more information about the data by selecting
+<code>View Full Details</code>. 
+Notice that this dataset goes all the way back to 1 August 1948! However, we&#39;ve 
+selected only a portion of this time frame. </p>
+
+<h4>Step 2: Request the data</h4>
+
+<p>Once you are sure this is the data that you want, you need to request it by 
+selecting <code>Add to Cart</code>. The data can then be downloaded as a <strong>.csv</strong> file 
+which we will use to conduct our analyses. Be sure to double check the date 
+range before downloading. </p>
+
+<p>On the options page, we want to make sure we select: </p>
+
+<ul>
+<li>Station Name</li>
+<li>Geographic Location (this gives us longitude &amp; latitude; optional)</li>
+<li>Include Data Flags (this gives us information if the data are problematic)</li>
+<li>Units (Standard)</li>
+<li>Precipitation (w/ HPCP automatically checked)</li>
+</ul>
+
+<p>On the next page you must enter an email address for the dataset to be sent 
+to.  </p>
+
+<h3>Step 3: Get the data</h3>
+
+<p>As this is a small dataset, it won&#39;t take long for you to get an email telling 
+you the dataset is ready. Follow the link in the email to download your dataset.
+You can also view documentation (metadata) for the data.<br/>
+Each data subset is downloaded with a unique order number.  The order number in 
+our example dataset is 805325.  If you are using a dataset you&#39;ve downloaded 
+yourself, make sure to substitute in your own order number in the code below. </p>
+
+<p>To ensure that we remember what our data file is, we&#39;ve added a descriptor to 
+the order number: <code>805325-precip_daily_2003-2013</code>. You may wish to do the same. </p>
+
+<h1>Work with Precipitation Data</h1>
+
+<h2>R Libraries</h2>
+
+<p>We will use <code>ggplot2</code> to efficiently plot our data and <code>plotly</code> to create i
+nteractive plots.</p>
+
+<pre><code># load packages
+library(ggplot2) # create efficient, professional plots
+library(plotly) # create cool interactive plots
+
+
+# set your working directory to ensure R can find the file we wish to import 
+# and where we want to save our files. Be sure to move the download into 
+# your working direectory!
+wd &lt;- &quot;C:/Users/fsanchez/Documents/data/&quot; # This will depend on your local environment
+setwd(wd)
+</code></pre>
+
+<h2>Import Precipitation Data</h2>
+
+<p>We will use the <code>805325-Preciptation_daily_2003-2013.csv</code> file
+in this analysis. This dataset is the daily precipitation date from the COOP 
+station 050843 in Boulder, CO for 1 January 2003 through 31 December 2013. </p>
+
+<p>Since the data format is a .csv, we can use <code>read.csv</code> to import the data. After
+we import the data, we can take a look at the first few lines using <code>head()</code>, 
+which defaults to the first 6 rows, of the <code>data.frame</code>. Finally, we can explore
+the R object structure.</p>
+
+<pre><code># import precip data into R data.frame by 
+# defining the file name to be opened
+
+precip.boulder &lt;- read.csv(paste0(wd,&quot;disturb-events-co13/precip/805325-precip_daily_2003-2013.csv&quot;), stringsAsFactors = FALSE, header = TRUE )
+
+# view first 6 lines of the data
+head(precip.boulder)
+
+##       STATION    STATION_NAME ELEVATION
+## 1 COOP:050843 BOULDER 2 CO US    1650.5
+## 2 COOP:050843 BOULDER 2 CO US    1650.5
+## 3 COOP:050843 BOULDER 2 CO US    1650.5
+## 4 COOP:050843 BOULDER 2 CO US    1650.5
+## 5 COOP:050843 BOULDER 2 CO US    1650.5
+## 6 COOP:050843 BOULDER 2 CO US    1650.5
+##   LATITUDE LONGITUDE           DATE HPCP
+## 1 40.03389 -105.2811 20030101 01:00  0.0
+## 2 40.03389 -105.2811 20030201 01:00  0.0
+## 3 40.03389 -105.2811 20030202 19:00  0.2
+## 4 40.03389 -105.2811 20030202 22:00  0.1
+## 5 40.03389 -105.2811 20030203 02:00  0.1
+## 6 40.03389 -105.2811 20030205 02:00  0.1
+##   Measurement.Flag Quality.Flag
+## 1                g             
+## 2                g             
+## 3                              
+## 4                              
+## 5                              
+## 6
+
+# view structure of data
+str(precip.boulder)
+
+## &#39;data.frame&#39;:    1840 obs. of  9 variables:
+##  $ STATION         : chr  &quot;COOP:050843&quot; &quot;COOP:050843&quot; &quot;COOP:050843&quot; &quot;COOP:050843&quot; ...
+##  $ STATION_NAME    : chr  &quot;BOULDER 2 CO US&quot; &quot;BOULDER 2 CO US&quot; &quot;BOULDER 2 CO US&quot; &quot;BOULDER 2 CO US&quot; ...
+##  $ ELEVATION       : num  1650 1650 1650 1650 1650 ...
+##  $ LATITUDE        : num  40 40 40 40 40 ...
+##  $ LONGITUDE       : num  -105 -105 -105 -105 -105 ...
+##  $ DATE            : chr  &quot;20030101 01:00&quot; &quot;20030201 01:00&quot; &quot;20030202 19:00&quot; &quot;20030202 22:00&quot; ...
+##  $ HPCP            : num  0 0 0.2 0.1 0.1 ...
+##  $ Measurement.Flag: chr  &quot;g&quot; &quot;g&quot; &quot; &quot; &quot; &quot; ...
+##  $ Quality.Flag    : chr  &quot; &quot; &quot; &quot; &quot; &quot; &quot; &quot; ...
+</code></pre>
+
+<h2>About the Data</h2>
+
+<p>Viewing the structure of these data, we can see that different types of data are included in 
+this file. </p>
+
+<ul>
+<li><strong>STATION</strong> and <strong>STATION_NAME</strong>: Identification of the COOP station.</li>
+<li><strong>ELEVATION, LATITUDE</strong> and <strong>LONGITUDE</strong>: The spatial location of the station.</li>
+<li><strong>DATE</strong>: Gives the date in the format: YYYYMMDD HH:MM. Notice that DATE is 
+currently class <code>chr</code>, meaning the data are interpreted as a character class and 
+not as a date. </li>
+<li><strong>HPCP</strong>: The total precipitation given in inches 
+(since we selected <code>Standard</code> for the units), recorded
+for the hour ending at the time specified by DATE. Importantly, the metadata 
+(see below) notes that the value 999.99 indicates missing data. Also important, 
+hours with no precipitation are not recorded.</li>
+<li><strong>Measurement Flag</strong>: Indicates if there are any abnormalities with the 
+measurement of the data. Definitions of each flag can be found in Table 2 of the
+documentation. </li>
+<li><strong>Quality Flag</strong>: Indicates if there are any potential quality problems with 
+the data. Definitions of each flag can be found in Table 3 of the documentation. </li>
+</ul>
+
+<p>Additional information about the data, known as metadata, is available in the 
+<code>PRECIP_HLY_documentation.pdf</code> file that can be downloaded along with the data. 
+(Note, as of Sept. 2016, there is a mismatch in the data downloaded and the
+documentation. The differences are in the units and missing data value: 
+inches/999.99 (standard) or millimeters/25399.75 (metric)).</p>
+
+<h2>Clean the Data</h2>
+
+<p>Before we can start plotting and working with the data we always need to check 
+several important factors: </p>
+
+<ul>
+<li>data class: is R interpreting the data the way we expect it. The function 
+<code>str()</code> is an important tools for this. </li>
+<li>NoData Values: We need to know if our data contains a specific value that 
+means &ldquo;data are missing&rdquo; and if this value has been assigned to NA in R. </li>
+</ul>
+
+<h3>Convert Date-Time</h3>
+
+<p>As we&#39;ve noted, the date field is in a character class. We can convert it to a date/time
+class that will allow R to correctly interpret the data and allow us to easily 
+plot the data. We can convert it to a date/time class using <code>as.POSIXct()</code>. </p>
+
+<pre><code># convert to date/time and retain as a new field
+precip.boulder$DateTime &lt;- as.POSIXct(precip.boulder$DATE, 
+                                  format=&quot;%Y%m%d %H:%M&quot;) 
+                                  # date in the format: YearMonthDay Hour:Minute 
+
+# double check structure
+str(precip.boulder$DateTime)
+
+##  POSIXct[1:1840], format: &quot;2003-01-01 01:00:00&quot; ...
+</code></pre>
+
+<ul>
+<li>For more information on date/time classes, see the NEON tutorial 
+<a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> <em>Dealing With Dates &amp; Times in R - as.Date, POSIXct, POSIXlt</em></a>.</li>
+</ul>
+
+<h3>NoData Values</h3>
+
+<p>We&#39;ve also learned that missing values, also known as NoData
+values, are labelled with the placeholder <code>999.99</code>. Do we have any NoData values in our data? </p>
+
+<pre><code># histogram - would allow us to see 999.99 NA values 
+# or other &quot;weird&quot; values that might be NA if we didn&#39;t know the NA value
+hist(precip.boulder$HPCP)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/no-data-values-hist-1.png" alt="Histogram displaying the frquency of total precipitation in inches for the recorded hour."/></p>
+
+<p>Looking at the histogram, it looks like we have mostly low values (which makes sense) but a few values
+up near 1000 &ndash; likely 999.99. We can assign these entries to be <code>NA</code>, the value that
+R interprets as no data.  </p>
+
+<pre><code># assing NoData values to NA
+precip.boulder$HPCP[precip.boulder$HPCP==999.99] &lt;- NA 
+
+# check that NA values were added; 
+# we can do this by finding the sum of how many NA values there are
+sum(is.na(precip.boulder))
+
+## [1] 94
+</code></pre>
+
+<p>There are 94 NA values in our dataset. This is missing data. </p>
+
+<h4>Questions:</h4>
+
+<ol>
+<li>Do we need to worry about the missing data?<br/></li>
+<li>Could they affect our analyses?<br/></li>
+</ol>
+
+<p>This depends on what questions we are asking.  Here we are looking at 
+general patterns in the data across 10 years. Since we have just over 3650 
+days in our entire dataset, missing 94 probably won&#39;t affect the general trends
+we are looking at.  </p>
+
+<p>Can you think of a research question where we would need to be concerned about
+the missing data? </p>
+
+<h2>Plot Precipitation Data</h2>
+
+<p>Now that we&#39;ve cleaned up the data, we can view it. To do this we will plot using 
+<code>ggplot()</code> from the <code>ggplot2</code> package. </p>
+
+<pre><code>#plot the data
+precPlot_hourly &lt;- ggplot(data=precip.boulder,  # the data frame
+      aes(DateTime, HPCP)) +   # the variables of interest
+      geom_bar(stat=&quot;identity&quot;) +   # create a bar graph
+      xlab(&quot;Date&quot;) + ylab(&quot;Precipitation (Inches)&quot;) +  # label the x &amp; y axes
+      ggtitle(&quot;Hourly Precipitation - Boulder Station\n 2003-2013&quot;)  # add a title
+
+precPlot_hourly
+
+## Warning: Removed 94 rows containing missing values
+## (position_stack).
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-precip-hourly-1.png" alt="Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."/></p>
+
+<p>As we can see, plots of hourly date lead to very small numbers and is difficult
+to represent all information on a figure. Hint: If you can&#39;t see any bars on your
+plot you might need to zoom in on it. </p>
+
+<p>Plots and comparison of daily precipitation would be easier to view. </p>
+
+<h2>Plot Daily Precipitation</h2>
+
+<p>There are several ways to aggregate the data. </p>
+
+<h4>Daily Plots</h4>
+
+<p>If you only want to view the data plotted by date you need to create a column
+with only dates (no time) and then re-plot. </p>
+
+<pre><code># convert DATE to a Date class 
+# (this will strip the time, but that is saved in DateTime)
+precip.boulder$DATE &lt;- as.Date(precip.boulder$DateTime, # convert to Date class
+                                  format=&quot;%Y%m%d %H:%M&quot;) 
+                                  #DATE in the format: YearMonthDay Hour:Minute 
+
+# double check conversion
+str(precip.boulder$DATE)
+
+##  Date[1:1840], format: &quot;2003-01-01&quot; &quot;2003-02-01&quot; ...
+
+precPlot_daily1 &lt;- ggplot(data=precip.boulder,  # the data frame
+      aes(DATE, HPCP)) +   # the variables of interest
+      geom_bar(stat=&quot;identity&quot;) +   # create a bar graph
+      xlab(&quot;Date&quot;) + ylab(&quot;Precipitation (Inches)&quot;) +  # label the x &amp; y axes
+      ggtitle(&quot;Daily Precipitation - Boulder Station\n 2003-2013&quot;)  # add a title
+
+precPlot_daily1
+
+## Warning: Removed 94 rows containing missing values
+## (position_stack).
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-summaries-1.png" alt="Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively."/></p>
+
+<p>R will automatically combine all data from the same day and plot it as one entry.  </p>
+
+<h4>Daily Plots &amp; Data</h4>
+
+<p>If you want to record the combined hourly data for each day, you need to create a new data frame to store the daily data. We can 
+use the <code>aggregate()</code> function to combine all the hourly data into daily data. 
+We will use the date class DATE field we created in the previous code for this. </p>
+
+<pre><code># aggregate the Precipitation (PRECIP) data by DATE
+precip.boulder_daily &lt;-aggregate(precip.boulder$HPCP,   # data to aggregate
+    by=list(precip.boulder$DATE),  # variable to aggregate by
+    FUN=sum,   # take the sum (total) of the precip
+    na.rm=TRUE)  # if the are NA values ignore them
+    # if this is FALSE any NA value will prevent a value be totalled
+
+# view the results
+head(precip.boulder_daily)
+
+##      Group.1   x
+## 1 2003-01-01 0.0
+## 2 2003-02-01 0.0
+## 3 2003-02-03 0.4
+## 4 2003-02-05 0.2
+## 5 2003-02-06 0.1
+## 6 2003-02-07 0.1
+</code></pre>
+
+<p>So we now have daily data but the column names don&#39;t mean anything. We can 
+give them meaningful names by using the <code>names()</code> function. Instead of naming the column of 
+precipitation values with the original <code>HPCP</code>, let&#39;s call it <code>PRECIP</code>.</p>
+
+<pre><code># rename the columns
+names(precip.boulder_daily)[names(precip.boulder_daily)==&quot;Group.1&quot;] &lt;- &quot;DATE&quot;
+names(precip.boulder_daily)[names(precip.boulder_daily)==&quot;x&quot;] &lt;- &quot;PRECIP&quot;
+
+# double check rename
+head(precip.boulder_daily)
+
+##         DATE PRECIP
+## 1 2003-01-01    0.0
+## 2 2003-02-01    0.0
+## 3 2003-02-03    0.4
+## 4 2003-02-05    0.2
+## 5 2003-02-06    0.1
+## 6 2003-02-07    0.1
+</code></pre>
+
+<p>Now we can plot the daily data. </p>
+
+<pre><code># plot daily data
+precPlot_daily &lt;- ggplot(data=precip.boulder_daily,  # the data frame
+      aes(DATE, PRECIP)) +   # the variables of interest
+      geom_bar(stat=&quot;identity&quot;) +   # create a bar graph
+      xlab(&quot;Date&quot;) + ylab(&quot;Precipitation (Inches)&quot;) +  # label the x &amp; y axes
+      ggtitle(&quot;Daily Precipitation - Boulder Station\n 2003-2013&quot;)  # add a title
+
+precPlot_daily
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-prec-plot-1.png" alt="Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively."/></p>
+
+<p>Compare this plot to the plot we created using the first method. Are they the same? </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**R Tip:** This manipulation, or aggregation, of data
+can also be done with the package plyr using the summarize() function.
+</div>
+
+<h2>Subset the Data</h2>
+
+<p>Instead of looking at the data for the full decade, let&#39;s now focus on just the
+2 months surrounding the flood on 11-15 September. We&#39;ll focus on the window from 15 
+August to 15 October. </p>
+
+<p>Just like aggregating, we can accomplish this by interacting with the larger plot through the graphical interface or 
+by creating a subset of the data and protting it separately.</p>
+
+<h4>Subset Within Plot</h4>
+
+<p>To see only a subset of the larger plot, we can simply set limits for the 
+scale on the x-axis with <code>scale_x_date()</code>. </p>
+
+<pre><code># First, define the limits -- 2 months around the floods
+limits &lt;- as.Date(c(&quot;2013-08-15&quot;, &quot;2013-10-15&quot;))
+
+# Second, plot the data - Flood Time Period
+precPlot_flood &lt;- ggplot(data=precip.boulder_daily,
+      aes(DATE, PRECIP)) +
+      geom_bar(stat=&quot;identity&quot;) +
+      scale_x_date(limits=limits) +
+      xlab(&quot;Date&quot;) + ylab(&quot;Precipitation (Inches)&quot;) +
+      ggtitle(&quot;Precipitation - Boulder Station\n August 15 - October 15, 2013&quot;)
+
+precPlot_flood
+
+## Warning: Removed 777 rows containing missing values
+## (position_stack).
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-Aug-Oct-2013-1.png" alt="Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively."/></p>
+
+<p>Now we can easily see the dramatic rainfall event in mid-September! </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i>**R Tip:** If you are using a date-time class, instead
+of just a date class, you need to use scale_x_datetime().
+</div>
+
+<h4>Subset The Data</h4>
+
+<p>Now let&#39;s create a subset of the data and plot it. </p>
+
+<pre><code># subset 2 months around flood
+precip.boulder_AugOct &lt;- subset(precip.boulder_daily, 
+                        DATE &gt;= as.Date(&#39;2013-08-15&#39;) &amp; 
+                                                DATE &lt;= as.Date(&#39;2013-10-15&#39;))
+
+# check the first &amp; last dates
+min(precip.boulder_AugOct$DATE)
+
+## [1] &quot;2013-08-21&quot;
+
+max(precip.boulder_AugOct$DATE)
+
+## [1] &quot;2013-10-10&quot;
+
+# create new plot
+precPlot_flood2 &lt;- ggplot(data=precip.boulder_AugOct, aes(DATE,PRECIP)) +
+  geom_bar(stat=&quot;identity&quot;) +
+  xlab(&quot;Time&quot;) + ylab(&quot;Precipitation (inches)&quot;) +
+  ggtitle(&quot;Daily Total Precipitation \n Boulder Creek 2013&quot;) 
+
+precPlot_flood2 
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/subset-data-1.png" alt="Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively."/></p>
+
+<h2>Interactive Plots - Plotly</h2>
+
+<p>Let&#39;s turn our plot into an interactive Plotly plot. </p>
+
+<pre><code># setup your plot.ly credentials; if not already set up
+#Sys.setenv(&quot;plotly_username&quot;=&quot;your.user.name.here&quot;)
+#Sys.setenv(&quot;plotly_api_key&quot;=&quot;your.key.here&quot;)
+
+
+# view plotly plot in R
+ggplotly(precPlot_flood2)
+
+
+# publish plotly plot to your plot.ly online account when you are happy with it
+api_create(precPlot_flood2)
+</code></pre>
+
+<div id="ds-challenge" markdown="1">
+
+### Challenge: Plot Precip for Boulder Station Since 1948
+
+The Boulder precipitation station has been recording data since 1948. Use the 
+steps above to create a plot of the full record of precipitation at this station (1948 - 2013).
+The full dataset takes considerable time to download, so we recommend you use the dataset provided in the compressed file (&ldquo;805333-precip_daily_1948-2013.csv&rdquo;). 
+
+As an added challenge, aggregate the data by month instead of by day.  
+
+![Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/all-boulder-station-data-1.png)
+
+
+
+
+</div>
+
+<h2>Additional Resources</h2>
+
+<h3>Units &amp; Scale</h3>
+
+<p>If you are using a dataset downloaded before 2016, the units were in 
+<strong>hundredths of an inch</strong>, this isn&#39;t the most useful measure. You might want to
+create a new column <code>PRECIP</code> that contains the data from <code>HPCP</code> converted to 
+inches.  </p>
+
+<pre><code># convert from 100th inch by dividing by 100
+precip.boulder$PRECIP&lt;-precip.boulder$HPCP/100
+
+# view &amp; check to make sure conversion occurred
+head(precip.boulder)
+
+##       STATION    STATION_NAME ELEVATION
+## 1 COOP:050843 BOULDER 2 CO US    1650.5
+## 2 COOP:050843 BOULDER 2 CO US    1650.5
+## 3 COOP:050843 BOULDER 2 CO US    1650.5
+## 4 COOP:050843 BOULDER 2 CO US    1650.5
+## 5 COOP:050843 BOULDER 2 CO US    1650.5
+## 6 COOP:050843 BOULDER 2 CO US    1650.5
+##   LATITUDE LONGITUDE       DATE HPCP
+## 1 40.03389 -105.2811 2003-01-01  0.0
+## 2 40.03389 -105.2811 2003-02-01  0.0
+## 3 40.03389 -105.2811 2003-02-03  0.2
+## 4 40.03389 -105.2811 2003-02-03  0.1
+## 5 40.03389 -105.2811 2003-02-03  0.1
+## 6 40.03389 -105.2811 2003-02-05  0.1
+##   Measurement.Flag Quality.Flag
+## 1                g             
+## 2                g             
+## 3                              
+## 4                              
+## 5                              
+## 6                              
+##              DateTime PRECIP
+## 1 2003-01-01 01:00:00  0.000
+## 2 2003-02-01 01:00:00  0.000
+## 3 2003-02-02 19:00:00  0.002
+## 4 2003-02-02 22:00:00  0.001
+## 5 2003-02-03 02:00:00  0.001
+## 6 2003-02-05 02:00:00  0.001
+</code></pre>
+
+<h4>Question</h4>
+
+<p>Compare <code>HPCP</code> and <code>PRECIP</code>. Did we do the conversion correctly?  </p>
+
+</body>
+
+</html>
