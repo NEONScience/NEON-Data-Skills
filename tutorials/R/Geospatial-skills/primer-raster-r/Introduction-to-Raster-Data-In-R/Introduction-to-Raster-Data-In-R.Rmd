@@ -106,6 +106,8 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
+wd <- ("C:/Users/mccahill/Documents/Github/")
+setwd(wd)
 
 ```	
 
@@ -114,7 +116,7 @@ look at the attributes.
 
 ```{r load-raster}
 # load raster in an R object called 'DEM'
-DEM <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif")
+DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
 
 # look at the raster attributes. 
 DEM
@@ -329,6 +331,7 @@ par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
 plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
 #turn xpd back on to force the legend to fit next to the plot.
 par(xpd = TRUE)
+
 #add a legend - but make it appear outside of the plot
 legend( par()$usr[2], 4110600,
         legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
@@ -394,12 +397,14 @@ box to begin.
 You'll see a red box on the plot. NOTE that this is a manual process that can be
 used to quickly define a crop extent.
 
-```{r cropDEM, eval=FALSE}
+```{r cropDEM, eval=FALSE, comment=NA}
 
 #plot the DEM
 plot(DEM)
+
 #Define the extent of the crop by clicking on the plot
 cropbox1 <- drawExtent()
+
 #crop the raster, then plot the new cropped raster
 DEMcrop1 <- crop(DEM, cropbox1)
 
@@ -441,8 +446,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 ```{r challenge-code-name, include=TRUE, results="hide", echo=FALSE}
 
 # load raster in an R object called 'DEM'
-DSM <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif")
-
+DSM <- rasterDSM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
 # convert from m to ft
 DSM2 <- DSM * 3.3
 
