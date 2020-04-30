@@ -132,10 +132,8 @@ library(rgdal)
 
 # set the working directory to the data
 #setwd("pathToDirHere")
-setwd("C:/Users/mccahill/Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/RGB")
-
-#Cannot set working directory, will use paste0 command for these tutorials
 wd <- ("C:/Users/mccahill/Documents/Github/")
+setwd(wd)
 
 ```
 

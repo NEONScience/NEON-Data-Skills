@@ -106,10 +106,8 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-setwd("C:/Users/mccahill/Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/RGB")
-
-#Cannot set working directory, will use paste0 command for these tutorials
 wd <- ("C:/Users/mccahill/Documents/Github/")
+setwd(wd)
 
 ```	
 
@@ -315,8 +313,6 @@ plot(DEM, col=col, breaks=brk, main="DEM with a Custom (but flipped) Legend", le
 # Third, turn xpd back on to force the legend to fit next to the plot.
 par(xpd = TRUE)
 
-#Run the entire code block to plot* 
-
 # Fourth, add a legend - & make it appear outside of the plot
 legend(par()$usr[2], 4110600,
         legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
@@ -336,7 +332,6 @@ plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
 #turn xpd back on to force the legend to fit next to the plot.
 par(xpd = TRUE)
 
-#Run entire code block to plot*
 #add a legend - but make it appear outside of the plot
 legend( par()$usr[2], 4110600,
         legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
@@ -402,15 +397,13 @@ box to begin.
 You'll see a red box on the plot. NOTE that this is a manual process that can be
 used to quickly define a crop extent.
 
-```{r cropDEM, eval=FALSE}
+```{r cropDEM, eval=FALSE, comment=NA}
 
 #plot the DEM
 plot(DEM)
 
 #Define the extent of the crop by clicking on the plot
-cropbox1 <- drawExtent(show=TRUE, col="red")
-
-#Cannot crop via directly clicking on plot
+cropbox1 <- drawExtent()
 
 #crop the raster, then plot the new cropped raster
 DEMcrop1 <- crop(DEM, cropbox1)
