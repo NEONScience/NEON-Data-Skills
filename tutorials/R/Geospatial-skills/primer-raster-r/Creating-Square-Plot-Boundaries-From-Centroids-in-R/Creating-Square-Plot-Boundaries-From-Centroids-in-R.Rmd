@@ -106,11 +106,13 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-
+wd <- ("C:/Users/mccahill/Documents/GitHub/")
+setwd(wd)
 
 # read in the NEON plot centroid data 
 # `stringsAsFactors=F` ensures character strings don't import as factors
-centroids <- read.csv("C:/Users/mccahill/Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE)
+centroids <- read.csv(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv", stringsAsFactors=FALSE))
+
 ```
 
 Let's look at our data. This can be done several ways but one way is to view 
