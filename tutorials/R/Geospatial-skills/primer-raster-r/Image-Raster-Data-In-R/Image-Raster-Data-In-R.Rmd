@@ -152,6 +152,7 @@ band19 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif")
 band34 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif")
 band58 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif")
 
+# View their attributes to check that they loaded correctly:
 band19
 band34
 band58
@@ -170,7 +171,7 @@ rasterlist1
 
 ```
 
-Or, if your directory is consistes of some .tif files and other file types you 
+Or, if your directory consists of some .tif files and other file types you 
 don't want in your stack, you can ask R to only list those files with a .tif 
 extension.
 
@@ -193,7 +194,7 @@ rgbRaster <- stack(band19,band34,band58)
 #rstack1 <- stack(rasterlist1)
 ```
 
-This has now created a stack of rasters three thick. Let's view them. 
+This has now created a stack that is three rasters thick. Let's view them. 
 
 ``` {r view-stack}
 # check attributes
