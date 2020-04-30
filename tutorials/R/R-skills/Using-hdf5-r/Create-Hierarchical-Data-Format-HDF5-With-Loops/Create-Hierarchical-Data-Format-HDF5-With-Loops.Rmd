@@ -65,14 +65,14 @@ HDF5 here. </a>
 ## HDF5 in R
 
 To access HDF5 files in R, you need base 
-<a href="http://www.hdfgroup.org/HDF5/release/obtain5.html#obtain" target="_blank">HDF5 
+<a href="https://www.hdfgroup.org/downloads/hdf5/" target="_blank">HDF5 
 libraries</a> 
 installed on your computer. 
 It might also be useful to install 
-<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the free HDF5 
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">the free HDF5 
 viewer</a>
 which will allow you to explore the contents of an HDF5 file visually using a 
-graphic interface. <a href="site.basurl/explore-data-hdfview " target="_blank">More about 
+graphic interface. <a href="https://www.neonscience.org/explore-data-hdfview" target="_blank">More about 
 working with HDFview and a hands-on activity here.</a>
 
 The package we'll be using is `rhdf5` which is part of the 
@@ -96,7 +96,7 @@ wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd) 
 ```
 
-<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf" target="_blank">Read more about the `rhdf5` package here.</a>
+<a href="http://www.bioconductor.org/packages/release/bioc/html/rhdf5.html" target="_blank">Read more about the `rhdf5` package here.</a>
 
 ## Create an HDF5 File in R
 
@@ -327,7 +327,7 @@ Hint: You may be interested in these tutorials:
 
 * <a href="https://www.neonscience.org/explore-data-hdfview" target="_blank"> HDFView: 
 Exploring HDF5 Files in the Free HDFview Tool </a>. 
-* <a href="{{ site.baseurl }}setup-qgis-h5view#install-hdfview" target="_blank"> Install 
+* <a href="https://www.neonscience.org/setup-qgis-h5view#install-hdfview" target="_blank"> Install 
 HDF5View </a>. 
 
 </div>
