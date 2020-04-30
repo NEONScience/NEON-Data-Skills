@@ -5,10 +5,10 @@ description: "This tutorial explains how to set a working directory in R. The wo
 dateCreated:  2015-12-07
 authors: Megan A. Jones
 contributors: Leah A. Wasser, Garrett M. Williams
-estimatedTime: 
+estimatedTime:
 packagesLibraries:
 topics: data-management
-languagesTool:
+languagesTool: R
 dataProduct:
 code1:
 tutorialSeries:
@@ -22,7 +22,7 @@ in R. The working directory points to a directory or folder on the computer
 where data that you wish to work with in R is stored. Along the way it teaches
 how to download and unzip the data files that accompany many NEON Data Skills 
 tutorials and the concepts of file paths – use the menu bar at right to navigate 
-to your desired topic.  
+to your desired topic.
 
 <div id="ds-objectives" markdown="1">
 
@@ -66,8 +66,7 @@ The Harvard Forest shapefiles are from the
 archives. US Country and State Boundary layers are from the 
 <a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
 
-<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
-Download Dataset</a>
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">Download Dataset</a>
 
 
 
@@ -76,8 +75,9 @@ Download Dataset</a>
 
 ## Set Up For NEON Data Skills Tutorials
 Many NEON data tutorials utilize teaching data subsets which are hosted on the 
-NEON Data Skills fig**share** repository. If a data subset is required for a tutorial it can be 
-downloaded at the top of each tutorial in the **Download Data** section. 
+NEON Data Skills fig**share** repository. If a data subset is required for a 
+tutorial it can be downloaded at the top of each tutorial in the **Download 
+Data** section. 
 
 Prior to working with any data in R, we must set the **working directory** to
 the location of the data files. Setting the working directory tells R where 
@@ -93,7 +93,7 @@ subsets to be accessed in the tutorial without resetting the working directory.
 </div>
 
 * Wondering why we're saying **directory** instead of **folder**?  See our
-discussion of Directory vs. Folder at the end of this tutorial. 
+ discussion of Directory vs. Folder at the end of this tutorial. 
 
 ## Download & Uncompress the Data
 
@@ -110,7 +110,7 @@ activity and will be downloaded at that time.
 
 <figure>
 	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png"></a>
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png" alt="Example Download Data box containing two download buttons, one labeled 'Download NEON Teaching Data Subset: Meteorological Data for Harvard Forest' and another labeled 'Download NEON Teaching Data Subset: Site Layout Shapefiles"></a>
 	 <figcaption> Screenshot of the <b>Download Data </b> button at the top of 
 	 NEON Data Skills tutorials. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -148,8 +148,8 @@ appropriate file path to your **data** directory.
 Fourth, we need to unzip/uncompress the file so that the data files can be 
 accessed. Use your favorite tool that can unpackage/open .zip files (e.g.,
 winzip, Archive Utility, etc). The files will now be accessible in a directory 
-named `NEON-DS-Met-Time-Series` containing all the subdirectories and files that
- make up the dataset or the subdirectories and files will be unzipped directly 
+named `NEON-DS-Met-Time-Series` containing all the subdirectories and files that 
+make up the dataset or the subdirectories and files will be unzipped directly 
 into the data directory. If the latter happens, they need to be moved into a 
 `data/NEON-DS-Met-Time-Series` directory.
 
@@ -158,7 +158,7 @@ into the data directory. If the latter happens, they need to be moved into a
 ### Challenge: Download and Unzip Teaching Data Subset
 Want to make sure you have these steps down! Prepare the 
 **Site Layout Shapefiles Teaching Data Subset** so that the files
-are accessible and ready to be opened inR. 
+are accessible and ready to be opened in R. 
 </div>
 
 
@@ -179,15 +179,15 @@ same but without that directory.
 
 ## Directory vs. Folder
 
-"Directory" and "Folder" both refer to the same thing. Folder makes a lot of sense when we
-think of an
-isolated folder as a "bin" containing many files. However, the analogy to a
-physical file folder falters when we start thinking about the relationship 
-between different folders and how we tell a computer to find a specific folder. 
-This is why the term directory is often preferred. Any directory (folder) can 
-hold other directories and/or files. When we set the *working directory*, we 
-are telling the computer the location of the directory (or folder) to start with
- when looking for other files or directories, or to save any output to. 
+"Directory" and "Folder" both refer to the same thing. Folder makes a lot of 
+sense when we think of an isolated folder as a "bin" containing many files. 
+However, the analogy to a physical file folder falters when we start thinking 
+about the relationship between different folders and how we tell a computer to 
+find a specific folder. This is why the term directory is often preferred. Any 
+directory (folder) can hold other directories and/or files. When we set the 
+*working directory*, we are telling the computer the location of the directory 
+(or folder) to start with when looking for other files or directories, or to 
+save any output to. 
 
 
 ## Full, Base, and Relative Paths
@@ -249,7 +249,7 @@ we can then create a relative path for all directories and files within the
 	 Skills Teaching Subsets. Source: National Ecological Observatory Network
 	 (NEON) 
 	 </figcaption>
-</figure> 
+</figure>
 
 The relative path for the `meanNDVI_HARV_2011.csv` file would be: 
 
@@ -277,12 +277,12 @@ have a **base file path** set as our **working directory** and then all file
 paths written in our scripts only consist of the file path relative to that base
  path (a **relative path**). 
 
-* If you are unfamiliar with the term **full path**, **base path**, or **relative
- path**, please see the section below on *Full, Base, and Relative Paths*
+* If you are unfamiliar with the term **full path**, **base path**, or 
+**relative path**, please see the section below on *Full, Base, and Relative Paths*
 for a more detailed explanation before continuing with this tutorial.  
 
 ### Find a Full Path to a File in Unknown Location
-If you are unsure of the path to a specific directory or file, you can
+If you are unsure of the path to a specific directory or file, you can 
 find this information for a particular file/directory of interest by looking in 
 the:
 
@@ -346,7 +346,7 @@ the full path to the desired directory.
 Now, set your working directory to the directory where you have the data saved. 
 There is no R output from `setwd()`. If we want to check that the working
 directory is correctly set we can use `getwd()`.
- 
+
 #### Example Windows File Path
 Notice the the backslashes used in Windows paths must be changed to slashes in
 R. 

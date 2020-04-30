@@ -21,7 +21,7 @@ designed for data analysis. R is extremely useful for data management,
 statistics and analyzing data. 
 
 This tutorial should be seem more as a reference on the basics of R and not a 
-tutorial for learning to use R. Here we define many of the basics, however, this 
+tutorial for learning to use R. Here we define many of the basics, however, this
 can get overwhelming if you are brand new to R. 
 
 <div id="ds-objectives" markdown="1">
@@ -44,12 +44,12 @@ on your computer to complete this tutorial.
 **Set Working Directory:** This lesson assumes that you have set your working 
 directory to the location of the downloaded and unzipped data subsets. 
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
+**R Script & Challenge Code:** NEON data lessons often contain challenges that
+reinforce learned skills. If available, the code for challenge solutions is 
+found in the downloadable R script of the entire lesson, available in the footer
+of each lesson page.
 
 
 </div>
@@ -57,8 +57,8 @@ downloadable R script of the entire lesson, available in the footer of each less
 ## The Very Basics of R
 
 R is a versatile, open source programming language that was specifically 
-designed for data analysis. R is extremely useful for data management, statistics and 
-analyzing data. 
+designed for data analysis. R is extremely useful for data management, 
+statistics and analyzing data. 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Cool Fact:** R was inspired by the programming language <a href="http://en.wikipedia.org/wiki/S_(programming_language)" target="_blank">S</a>.  
@@ -69,7 +69,8 @@ R is:
 * Open source software under a 
 <a href="http://en.wikipedia.org/wiki/GNU_General_Public_License" target="_blank">GNU General Public License (GPL)</a>.  
 * A good alternative to commercial analysis tools. R has over 5,000 user 
-contributed packages (as of 2014) and is widely used both in academia and industry.  
+contributed packages (as of 2014) and is widely used both in academia and 
+industry.  
 * Available on all platforms.  
 * Not just for statistics, but also general purpose programming.   
 * Supported by a large and growing community of peers.  
@@ -114,7 +115,7 @@ typing in math
 # basic math
 3 + 5
 
-12/7
+12 / 7
 
 ```
 
@@ -129,8 +130,8 @@ writeLines("Hello World")
 
 ```
 
-We can assign our results to an `object` and name the object. Objects names cannot
-contain spaces. 
+We can assign our results to an `object` and name the object. Objects names 
+cannot contain spaces. 
 
 ``` {r basic-input}
 
@@ -173,10 +174,10 @@ to issues down the line.
 
 ``` {r assignment-operator}
 # this is preferred syntax
-a <- 1+2 
+a <- 1 + 2 
 
 # this is NOT preferred syntax
-a = 1+2 
+a = 1 + 2 
 ```
 
 <div id="ds-dataTip" markdown="1">
@@ -237,7 +238,8 @@ R has many different **data structures**. These include
 * array
 
 These data structures vary by the dimensionality of the data and if they can 
-handle data elements of a simgle type (**homogeneous**) or multiple types (**heterogeneous**).
+handle data elements of a simgle type (**homogeneous**) or multiple types 
+(**heterogeneous**).
 
 | Dimensions | Homogenous | Heterogeneous |
 | :-----: | :--: | :--: |
@@ -275,7 +277,8 @@ By *atomic*, we mean the vector only holds data of a single type.
 - **logical**: `TRUE`, `FALSE`
 - **complex**: `1+4i` (complex numbers with real and imaginary parts)
 
-R provides many functions to examine features of vectors and other objects, for example
+R provides many functions to examine features of vectors and other objects, for 
+example
 
 1. `typeof()` - what is it?  
 2. `length()` - how long is it? What about two dimensional objects?  
@@ -327,7 +330,7 @@ x <- vector()
 vector("character", length = 10)
 
 # create character vector with length of 5
-character(5)  
+character(5)
 
 # numeric vector length=5
 numeric(5)
@@ -335,11 +338,12 @@ numeric(5)
 # logical vector length=5
 logical(5)
 
-# create a list with combine `c()`
+# create a list or vector with combine `c()`
+# this is the function used to create vectors and lists most of the time
 x <- c(1, 2, 3)
 x
 length(x)
-typeof(x)
+class(x)
 ```
 
 `x` is a numeric vector. These are the most common kind. They are numeric 
@@ -351,11 +355,11 @@ decimal points). To explicitly create integers (no decimal points), add an
 # a numeric vector with integers (L)
 x1 <- c(1L, 2L, 3L)
 x1
-typeof(x1)
+class(x1)
 
 # or using as.integer()
 x2 <- as.integer(x)
-typeof(x2)
+class(x2)
 ```
 
 You can also have logical vectors. 
@@ -364,7 +368,7 @@ You can also have logical vectors.
 # logical vector 
 y <- c(TRUE, TRUE, FALSE, FALSE)
 y
-typeof(y)
+class(y)
 ```
 
 Finally, you can have character vectors.
@@ -373,20 +377,21 @@ Finally, you can have character vectors.
 # character vector
 z <- c("Sarah", "Tracy", "Jon")
 z
-typeof(z)
-length(z)
 
-# what class is it
+# what class is it?
 class(z)
 
-# what is the structure
+#how many elements does it contain?
+length(z)
+
+# what is the structure?
 str(z)
 
 ```
 
-You can also add to a list
+You can also add to a list or vector
 
-``` {r add-list}
+``` {r add-vector}
 # c function combines z and "Annette" into a single vector
 # store result back to z
 z <- c(z, "Annette")
@@ -399,7 +404,7 @@ More examples of how to create vectors
 * x <- c(TRUE, FALSE)
 * x <- c("a", "b", "c", "d", "e")
 * x <- 9:100
-* x <- c(1 + (0+0i), 2 + (0+4i))
+* x <- c(1 + (0 + 0i), 2 + (0 + 4i))
 
 
 You can also create vectors as a sequence of numbers.
@@ -438,9 +443,18 @@ Vectors have positions, these positions are ordered and can be called using
 # index
 z[2]
 
+# to call multiple items (a subset of our data), we can put a vector of which 
+# items we want in the brackets
+group1 <- c(1, 4)
+z[group1]
+
+# this is especially useful with a sequence vector
+z[1:3]
+
 ```
 
-Objects can have **attributes**. Attribues are part of the object. These include:
+Objects can have **attributes**. Attribues are part of the object. These 
+include:
 
 * **names**: the field or variable name within the object 
 * **dimnames**:
@@ -467,7 +481,7 @@ nchar("NEON Data Skills")
 #### Heterogeneous Data - Mixing Types?
 
 When you mix types, R will create a resulting vector that is the least common 
-denominator. The coercion will move towards the one that's easiest to **coerce** 
+denominator. The coercion will move towards the one that's easiest to **coerce**
 to.
 
 Guess what the following do:
@@ -481,8 +495,10 @@ Were you correct?
 ``` {r challenge-code-types-hetero}
 n <- c(1.7, "a")
 n
+
 o <- c(TRUE, 2)
 o
+
 p <- c("a", TRUE)
 p
 ```
@@ -495,10 +511,10 @@ the `as.<class_name>`.
 as.numeric("1")
 
 # make values charactor
-as.character(c(1:2))
+as.character(1)
 
 # make values 
-as.factor(c("male","female"))
+as.factor(c("male", "female"))
 ```
 
 ### Matrix
@@ -536,11 +552,13 @@ Another way to shape your matrix is to bind columns `cbind()` or rows `rbind()`.
 # create vector with 1:10
 m3 <- 1:10
 m3
+
 class(m3)
 
 # set the dimensions so it becomes a matrix
 dim(m3) <- c(2, 5)
 m3
+
 class(m3)
 
 # create matrix from two vectors
@@ -560,18 +578,20 @@ rbind(x, y)
 We can call elements of a matrix with square brackets just like a vector, except
 now we must specify a row and a column.
 ```{r matrix-index}
-z <- matrix(c("a","b","c","d","e","f"), nrow=3, ncol=2)
+z <- matrix(c("a", "b", "c", "d", "e", "f"), nrow = 3, ncol = 2)
 z
 
 # call element in the third row, second column
-z[3,2]
+z[3, 2]
 
 # leaving the row blank will return contents of the whole column
 # note: the column's contents are displayed as a vector (horizontally)
-z[,2]
+z[, 2]
+
+class(z[, 2])
 
 # return the contents of the second row
-z[2,]
+z[2, ]
 ```
 ### List
 
@@ -589,7 +609,7 @@ list of the required length can be created using `vector()`
 
 ``` {r list}
 
-x <- list(1, "a", TRUE, 1 + (0+4i))
+x <- list(1, "a", TRUE, 1 + (0 + 4i))
 x
 class(x)
 
@@ -609,12 +629,13 @@ x <- as.list(x)
 Questions: 
 
 1. What is the class of `x[1]`?
-1. What about `x[[1]]`?
+2. What about `x[[1]]`?
 
 Try it out.
 
 
-We can also give the elements of our list names, then call those elements with the `$` operator.
+We can also give the elements of our list names, then call those elements with 
+the `$` operator.
 ``` {r analytics }
 # note 'iris' is an example data frame included with R
 # the head() function simply calls the first 6 rows of the data frame
@@ -659,7 +680,8 @@ Some string methods will coerce factors to strings, while others will throw an
 error.
 
 * Sometimes factors can be left unordered. Example: male, female.
-* Other times you might want factors to be ordered (or ranked). Example: low, medium, high.
+* Other times you might want factors to be ordered (or ranked). Example: low,  
+ medium, high.
 * Underlying it's represented by numbers 1, 2, 3.
 * They are better than using simple integer labels because factors are what are 
 called self describing. male and female is more descriptive than 1s and 2s. 
@@ -712,7 +734,7 @@ as.numeric(as.character(f)) ## coerce the character strings to numbers
 ``` 
 
 
-In modeling functions, it is important to know what the 'baseline' level is. This 
+In modeling functions, it is important to know what the 'baseline' level is. This
 is the first factor, but by default the ordering is determined by alphanumerical 
 order of elements. You can change this by speciying the `levels` (another option 
 is to use the function `relevel()`).
@@ -769,9 +791,9 @@ dat
 * `ncol()` - number of columns
 * `str()` - structure of each column
 * `names()` - shows the `names` attribute for a data frame, which gives the 
-column names.
+ column names.
 
-See that it is actually a special list:
+See that it is actually a special type of list:
 
 ``` {r list2}
 
@@ -783,6 +805,12 @@ class(iris)
 
 ```
 
+Instead of a list of single items, a data frame is a list of vectors!
+
+``` {r list3}
+# see the class of a single variable column within iris: "Sepal.Length"
+class(iris$Sepal.Length)
+```
 A recap of the different data types
 
 | Dimensions | Homogenous | Heterogeneous |
@@ -813,18 +841,18 @@ y
 
 All functions come with a help screen. It is critical that you learn to read the
 help screens since they provide important information on what the function does, 
-how it works, and usually sample examples at the very bottom. You can use `help()`
-or more simply `??()` 
+how it works, and usually sample examples at the very bottom. You can use 
+`help(function)` or more simply `??function`
 
 ```{r help}
 # call up a help search
 help.start()
 
 # help (documentation) for a package
-?? ggplot2
+??ggplot2
 
 # help for a function
-?? sum()
+??sum()
 
 ```
 

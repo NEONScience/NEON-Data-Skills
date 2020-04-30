@@ -6,7 +6,7 @@ dateCreated: 2014-05-06
 authors:
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries:
+packagesLibraries: raster, rasterVis, rgdal, rgeos, rmarkdown, knitr, plyr, dplyr, ggplot2, plotly
 topics:
 subtopics: 
 languagesTool: R
@@ -28,7 +28,8 @@ install the needed R packages.
 Please make sure all of these packages are installed and up to date on your 
 computer prior to the Institute.
 
-* `install.packages(c("raster", "rasterVis", "rgdal", "rgeos", "rmarkdown", "knitr", "plyr", "dplyr", "ggplot2", "plotly"))`
+* `install.packages(c("raster", "rasterVis", "rgdal", "rgeos", "rmarkdown", `
+  `"knitr", "plyr", "dplyr", "ggplot2", "plotly"))`
 * The `rhdf5` package is not on CRAN and must be downloaded directly from 
 Bioconductor. The can be done using these two commands directly in your R 
 console. 
