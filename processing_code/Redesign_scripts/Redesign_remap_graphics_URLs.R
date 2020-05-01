@@ -15,6 +15,7 @@ graphics.files <- graphics.files[!grepl("py-figs/", x = graphics.files, fixed = 
 
 # Find all files to change
 Rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
+
                         pattern="\\.Rmd$", full.names = TRUE, recursive = TRUE)
 md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
                        pattern="\\.md$", full.names = TRUE, recursive = TRUE)
@@ -24,6 +25,7 @@ ipynb.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
                           pattern="\\.ipynb$", full.names = TRUE, recursive = TRUE)
 
 all.files=c(Rmd.files, md.files, html.files, ipynb.files)
+
 
 for (file in all.files){
   print(file)
