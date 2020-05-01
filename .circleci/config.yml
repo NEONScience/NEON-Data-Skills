@@ -26,6 +26,6 @@ workflows:
         jobs:
           - build:
               filters:
-                branches:
+                branches: 
                   only:
-                    - master
+                    - dev-aten
