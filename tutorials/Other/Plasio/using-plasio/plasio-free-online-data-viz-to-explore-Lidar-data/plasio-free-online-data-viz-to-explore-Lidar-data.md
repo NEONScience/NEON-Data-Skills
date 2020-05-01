@@ -173,8 +173,8 @@ values in an image processing software or even in Photoshop).
 Drag the slider back and forth. Notice that you can brighten up the data using the slider.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/intensitySlider.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/intensitySlider.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_intensitySlider.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_intensitySlider.png"></a>
 	<figcaption> The intensity scaling slider is located below the color map 
 tool so it's easy to miss. Drag the slider back and forth to adjust the range 
 of intensity values and to brighten up the lidar point clouds.
