@@ -72,8 +72,8 @@ a raster containing only **south facing** pixels where **canopy height > 20m.**
 The graphic below illustrates raster masking.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_masks.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_masks.jpg"></a>
 	<figcaption> Masks can be used to highlight desired parameters. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>

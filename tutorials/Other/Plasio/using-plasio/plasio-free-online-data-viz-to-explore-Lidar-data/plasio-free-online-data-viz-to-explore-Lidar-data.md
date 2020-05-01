@@ -59,8 +59,8 @@ Download NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a>
 #### Example visualization of LiDAR data 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/biomass.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/biomass.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/biomass.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/biomass.png"></a>
 	<figcaption> LiDAR data collected over Grand Mesa, Colorado as a part of 
 	instrument testing and calibration by the National Ecological Observatory Network 
 	Airborne Observation Platform (NEON AOP).
@@ -129,8 +129,8 @@ plas.io toolbar in the "Data" section.
 NICE! You should see something similar to the screenshot below:
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/plasio_dataImport.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/plasio_dataImport.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_dataImport.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_dataImport.png"></a>
 	<figcaption> NEON lidar data in the plas.io online tool. 
 	</figcaption>
 </figure>
@@ -155,8 +155,8 @@ returned.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_Intensity.jpg" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_Intensity.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_Intensity.jpg" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_Intensity.jpg"></a>
 	<figcaption> Lidar intensity values represent the amount of light energy that
 	reflected off of an object and returned to the sensor. 
 	</figcaption>
@@ -197,8 +197,8 @@ higher. Some common classes include:
 - 6 Building
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Plasio_ColorScheme_KendraSand.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Plasio_ColorScheme_KendraSand.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png"></a>
 	<figcaption> Blue and Orange gradient color scheme submitted by Kendra Sand.
 	What color scheme is your favorite?
 	</figcaption>

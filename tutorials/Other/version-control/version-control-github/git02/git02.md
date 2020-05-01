@@ -112,8 +112,8 @@ acceptance. We will explore pull requests more in the <a href="https://www.neons
 Git 06 tutorial.</a>
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-MasterScreenshot-tabs.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-MasterScreenshot-tabs.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-MasterScreenshot-tabs.png"></a>
 	<figcaption> Screenshot of the NEON Data Institute central repository (note, 
 	there has been a slight change in the repo name).
 	The github.com search bar is at the top of the page. Notice there are 6
@@ -142,16 +142,16 @@ copy of the repo that you create in **your account**. You can fork any repo at
 any time by clicking the fork button in the upper right hand corner on github.com.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/GitHubGuides_Bootcamp-Fork.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/GitHubGuides_Bootcamp-Fork.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/GitHubGuides_Bootcamp-Fork.png" width="70%"></a>
 	<figcaption> Click on the "Fork" button to fork any repo. Source:
 <a href="https://guides.github.com/activities/forking/" target="_blank">GitHub Guides</a>.  
 	</figcaption>
 </figure>
 
 <figure>
- <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png">
- <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git_fork_emphasis.png" width="70%"></a>
+ <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png">
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"></a>
  <figcaption>When we fork a repo in github.com, we are telling Git to create an
  exact copy of the repo that we're forking in our own github.com account.
  Once the repo is in our own account, we can edit it as we now own that fork.

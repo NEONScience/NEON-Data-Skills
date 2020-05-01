@@ -94,11 +94,11 @@ The `knitr` package for R allows us to create readable documents from R Markdown
 files.
 
 <figure class="half">
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/rmd-file.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/rmd-file.png">
 	</a>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/knitr-output.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/knitr-output.png">
 	</a>
 	<figcaption>R Markdown script (left) and the HTML produced from the knit R 
 	Markdown script (right). Source: National Ecological Observatory Network (NEON)

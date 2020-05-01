@@ -82,7 +82,7 @@ More on rasters in the
 <a href="https://www.neonscience.org/raster-res-extent-pixels-r"> *The Relationship Between Raster Resolution, Spatial extent & Number of Pixels* tutorial</a>. 
 
 <figure>
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/NLCD06_conus_lg.gif">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NLCD06_conus_lg.gif">
    <figcaption>The National Land Cover dataset (NLCD) is an example of a commonly used 
 raster dataset. Each pixel in the Landsat derived raster represents a land cover
 class. Source:  <a href = "https://www.mrlc.gov/"> Multi-Resolution Land Characteristics Consortium</a>.</figcaption>
@@ -362,7 +362,7 @@ be land use classes. The example below shows elevation zones generated using the
 same DEM.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/DEM_DiscreteLegend.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/DEM_DiscreteLegend.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/DEM_DiscreteLegend.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/DEM_DiscreteLegend.png"></a>
     <figcaption>A DEM with discrete classes. In this case, the classes relate to regions of elevation values.</figcaption>
 </figure>
 

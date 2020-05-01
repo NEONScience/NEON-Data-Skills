@@ -363,7 +363,7 @@ plt.show()
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/lidar-uncertainty/output_31_2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_31_2.png)
 
 Here we can see that the mean difference is almost zero at 0.023 m, and the variation in less than the DSM at 0.163 m. 
 

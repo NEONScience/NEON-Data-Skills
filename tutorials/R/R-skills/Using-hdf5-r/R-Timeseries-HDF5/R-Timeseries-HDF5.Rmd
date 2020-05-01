@@ -244,8 +244,8 @@ Let's have a close look at this plot. Notice anything unusual with it?
 Hint: When would you expect the temperature to be the warmest during the day?
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/heating-curve_LNewman.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/heating-curve_LNewman.jpg"></a>
     <figcaption>In many parts of the world, we'd expect the maximum temperature
     to occur during late afternoon. Source: <a href="http://web.gccaz.edu/~lnewman/gph111/topic_units/temperature1/temperature/heating-curve.jpg" target="_blank"> Lynn Newman </a></figcaption>
 </figure>

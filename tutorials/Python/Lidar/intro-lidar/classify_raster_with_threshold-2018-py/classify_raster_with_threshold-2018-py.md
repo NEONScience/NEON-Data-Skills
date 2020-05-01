@@ -375,8 +375,8 @@ Create the following threshold classified outputs:
     * South: 135-225 degrees
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>

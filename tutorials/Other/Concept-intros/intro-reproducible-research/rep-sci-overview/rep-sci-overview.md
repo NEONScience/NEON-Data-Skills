@@ -47,8 +47,8 @@ Reproducible Science Curriculum.
 ## A Gap In Understanding
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/RepSci/UnderstandingGap_RepSciCur.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/RepSci/UnderstandingGap_RepSciCur.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/UnderstandingGap_RepSciCur.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/UnderstandingGap_RepSciCur.png"></a>
 	<figcaption> Obstacles slowing adoption of reproducible science practices.
 	Source: <a href="http://reproducible-science-curriculum.github.io/rr-ropensci-talk/#/6" target="_blank">Reproducible Science Curriculum</a>
 	</figcaption>
@@ -57,8 +57,8 @@ Reproducible Science Curriculum.
 ## Reproducibility and Your Research
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/RepSci/Good-better-best_RepSciCur_PengScience.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/RepSci/Good-better-best_RepSciCur_PengScience.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg"></a>
 	<figcaption> Reproducibility spectrum for published research.
 	Source: Peng, RD Reproducible Research in Computational Science Science (2011): 1226–1227 via <a href="http://reproducible-science-curriculum.github.io/bosc2015/#/15" target="_blank">Reproducible Science Curriculum</a>
 	</figcaption>

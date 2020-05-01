@@ -86,7 +86,7 @@ electromagnetic spectrum. These colors together create what we know as a full
 color image.
 
 <figure>
-   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png">
+   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png">
    <figcaption>A color image at the NEON San Joaquin Experimental Range (SJER) 
    field site in California. Each pixel in the image represents the combined
    reflectance in the red, green and blue portions of the electromagnetic spectrum.

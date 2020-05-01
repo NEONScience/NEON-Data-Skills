@@ -209,8 +209,8 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGB_bands.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGB_bands.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGB_bands.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGB_bands.jpg"></a>
 	<figcaption> NEON Imaging Spectrometer bands and their respective nanometers. Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
@@ -309,8 +309,8 @@ of a displayed image, as we will show how to do below.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.
@@ -522,4 +522,4 @@ plot_band_array(sercSubset_FCI,clipExt,(0,0.5),title='SERC Subset CIR Image',cba
     Band 19 Center Wavelength = 674.11 nm
     
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-functions-rgb-images/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)

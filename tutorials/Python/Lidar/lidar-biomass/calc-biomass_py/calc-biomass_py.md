@@ -191,7 +191,7 @@ plt.savefig(just_chm_file_split[0]+'_'+just_chm_file_split[1]+'_'+just_chm_file_
 
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-biomass-py/output_14_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_14_0.png)
 
 
 
@@ -240,8 +240,8 @@ Plot the raster of local maximums. The following figure shows the difference in
 finding local maximums for a filtered vs. non-filtered CHM.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/raster-classification-filter-vs-nonfilter.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/raster-classification-filter-vs-nonfilter.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg"></a>
 	<figcaption> The difference in finding local maximums for a filtered vs. 
 	non-filtered CHM. 
 	Source: National Ecological Observatory Network (NEON) 
@@ -290,8 +290,8 @@ labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/raster-classification-watershed-segments.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/raster-classification-watershed-segments.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster-classification-watershed-segments.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster-classification-watershed-segments.png"></a>
 	<figcaption> A raster classified based on watershed segmentation. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>

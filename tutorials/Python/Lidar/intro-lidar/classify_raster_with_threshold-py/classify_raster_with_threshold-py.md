@@ -310,7 +310,7 @@ print('mean:',round(np.mean(chm_nonzero_nonan_array),2),'m')
     mean: 19.23 m
     
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify-raster-thresholds/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
 
 From the histogram we can see that the majority of the trees are < 45m. We can 
 replot the CHM array, this time adjusting the color bar to better visualize the 
@@ -520,8 +520,8 @@ dataset. This time, our classifications will be:
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>

@@ -102,8 +102,8 @@ as a Canopy Height Model (CHM) and represents the actual height of trees,
 buildings, etc. with the influence of ground elevation removed.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>

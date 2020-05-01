@@ -87,8 +87,8 @@ As discussed in the
 a raster can contain 1 or more bands.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png">
     </a>
     <figcaption>A raster can contain one or more bands. We can use the
     raster function to import one single band from a single OR multi-band
@@ -110,8 +110,8 @@ electromagnetic spectrum. The pixel brightness for each band, when composited
 creates the colors that we see in an image. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg"></a>
     <figcaption>A color image consists of 3 bands - red, green and blue. When
     rendered together in a GIS, or even a tool like Photoshop or any other
     image software, they create a color image. 
@@ -419,8 +419,8 @@ the image might improve clarity and contrast using  `stretch="lin"` or
 `stretch="hist"`.  
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_dark.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_dark.jpg">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 0, a
     darker image is rendered by default. We can stretch the values to extend to
@@ -430,8 +430,8 @@ the image might improve clarity and contrast using  `stretch="lin"` or
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_light.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_light.jpg">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 255, a
     lighter image is rendered by default. We can stretch the values to extend to

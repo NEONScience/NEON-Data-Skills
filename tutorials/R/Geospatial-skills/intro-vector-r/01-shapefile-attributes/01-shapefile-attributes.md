@@ -199,8 +199,8 @@ which describes the type of road (woods road, footpath, boardwalk, or
 stone wall).
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png"></a>
     <figcaption>The shapefile format allows us to store attributes for each
     feature (vector object) stored in the shapefile. The attribute table, is 
     similar to a spreadsheet. There is a row for each feature. The first column

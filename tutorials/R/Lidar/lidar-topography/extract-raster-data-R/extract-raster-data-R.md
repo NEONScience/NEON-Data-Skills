@@ -294,7 +294,7 @@ extent of each plot (where trees were measured). We will then extract all CHM pi
 that fall within the plot boundary to use to estimate tree height for that plot.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png">
     <figcaption>When a circular buffer is applied to a raster, some pixels fall 
     fully within the buffer but some are partially excluded. Values for all 
     pixels in the specified raster that fall within the circular buffer are 
