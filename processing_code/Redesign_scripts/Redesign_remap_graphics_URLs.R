@@ -36,9 +36,8 @@ for (file in all.files){
   for(i in 1:length(graphics.files)){
     
     p=paste0("/graphics/\\S+/",basename(graphics.files[i]))
-    #p=paste0("graphics")
     rep_text=paste0("/graphics/",graphics.files[i])
-    fl=gsub(p,rep_text,fl)
+    fl=gsub(p,rep_text,fl) # Replace pattern "p" with replacement text "rep_text"
     
   }
   
