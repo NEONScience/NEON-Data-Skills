@@ -1,20 +1,20 @@
-## ----install-packages, eval=FALSE---------------------------------------------------------
+## ----install-packages, eval=FALSE-----------------------------
 ## # install the ggplot2 package
 ## install.packages("ggplot2")
 
 
-## ----load-package-------------------------------------------------------------------------
+## ----load-package---------------------------------------------
 # load the package
 library(ggplot2)
 
 
-## ----installed-packages, eval=FALSE-------------------------------------------------------
+## ----installed-packages, eval=FALSE---------------------------
 ## 
 ## # check installed packages
 ## installed.packages()
 
 
-## ----update-packages, eval=FALSE----------------------------------------------------------
+## ----update-packages, eval=FALSE------------------------------
 ## 
 ## # list all packages where an update is available
 ## old.packages()
@@ -30,7 +30,7 @@ library(ggplot2)
 ## 
 
 
-## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE----------------
+## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE----
 
 # check installed packages for dplyr
 installed.packages()
