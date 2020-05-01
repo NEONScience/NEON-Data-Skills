@@ -1,17 +1,20 @@
 ---
-syncID: f578b1b20ef9483183a8c0abbf417440
-title: "Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand the 2013 Colorado Floods"
-description: This tutorial teaches how to use Digital Terrain Models derived from LiDAR data to create Digital Elevation Models of Differences that allow us to measure the change in elevation of an area after a disturbance event. 	
-dateCreated: 2015-05-18
-authors: Leah A. Wasser, Megan A. Jones
-contributors:	Donal O'Leary
-estimatedTime:	
-packagesLibraries: rgdal, raster
-topics: time-series, meteorology, data-viz
+title: 'Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand
+  the 2013 Colorado Floods'
+code1: teaching-modules/disturb-events-co13/NEON-Boulder-Flood-LiDAR-in-R.R
+contributors: Donal O'Leary, Felipe Sanchez
+dataProduct: null
+dateCreated: '2015-05-18'
+description: This tutorial teaches how to use Digital Terrain Models derived from
+  LiDAR data to create Digital Elevation Models of Differences that allow us to measure
+  the change in elevation of an area after a disturbance event.
+estimatedTime: null
 languagesTool: R
-dataProduct:
-code1: teaching-modules/disturb-events-co13/NEON-Boulder-Flood-LiDAR-in-R.R	
-tutorialSeries:
+packagesLibraries: rgdal, raster
+syncID: f578b1b20ef9483183a8c0abbf417440
+authors: Leah A. Wasser, Megan A. Jones
+topics: time-series, meteorology, data-viz
+tutorialSeries: null
 urlTitle: da-viz-neon-lidar-co13flood-R
 ---
 
@@ -47,11 +50,15 @@ RStudio to write your code.
 The data for this data activity can be downloaded directly from the 
 <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>. 
 
-So that we all have organized data in the same location, create a `data` directory 
-(folder) within your `Documents` directory. Simply put the 
-entire unzipped directory in the `data` directory you just created. If you choose to save 
-elsewhere you will need to modify the directions below to set your working 
-directory accordingly.
+**Set Working Directory** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that  
+reinforce learned skills. If available, the code for challenge solutions is found 
+in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 </div>
 
@@ -81,7 +88,9 @@ explores three important landscape models that are commonly used.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"></a>
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"
+alt = "Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.">
+  </a>
   <figcaption>Digital Terrain Models, Digital Surface Models and Canopy Height
   	Models are three common LiDAR-derived data products. The digital terrain model
   	allows scientists to study changes in terrain (topography) over time.
@@ -117,8 +126,9 @@ set our working directory to the location of our data.
     library(raster)   # work with raster files
     library(rgdal)    # work with raster files
     
-    # set working directory to ensure R can find the file we wish to import
-    #setwd("working-dir-path-here")
+    ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
+    wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+    setwd(wd)
 
 Then we can read in two DTMs. The first DTM `preDTM3.tif` is a model from data
 collected 26-27 June 2013 and the `postDTM3.tif` is a model from data collected
@@ -126,8 +136,8 @@ on 8 October 2013.
 
 
     # Load DTMs into R
-    DTM_pre <- raster("disturb-events-co13/lidar/pre-flood/preDTM3.tif")
-    DTM_post <- raster("disturb-events-co13/lidar/post-flood/postDTM3.tif")
+    DTM_pre <- raster(paste0(wd,"disturb-events-co13/lidar/pre-flood/preDTM3.tif"))
+    DTM_post <- raster(paste0(wd,"disturb-events-co13/lidar/post-flood/postDTM3.tif"))
     
     # View raster structure
     DTM_pre
@@ -137,7 +147,7 @@ on 8 October 2013.
     ## resolution : 1, 1  (x, y)
     ## extent     : 473000, 475000, 4434000, 4436000  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=13 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/olearyd/Git/data/disturb-events-co13/lidar/pre-flood/preDTM3.tif 
+    ## source     : C:/Users/fsanchez/Documents/data/disturb-events-co13/lidar/pre-flood/preDTM3.tif 
     ## names      : preDTM3
 
     DTM_post
@@ -147,7 +157,7 @@ on 8 October 2013.
     ## resolution : 1, 1  (x, y)
     ## extent     : 473000, 475000, 4434000, 4436000  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=13 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/olearyd/Git/data/disturb-events-co13/lidar/post-flood/postDTM3.tif 
+    ## source     : C:/Users/fsanchez/Documents/data/disturb-events-co13/lidar/post-flood/postDTM3.tif 
     ## names      : postDTM3
 
 Among the information we now about our data from looking at the raster structure, 
@@ -158,9 +168,17 @@ what the terrain would look like in shadow with the sun at a specific azimuth.
 The default azimuth for many hillshades is 315 degrees -- to the NW.  
 
 
-    # import DSM hillshade
-    DTMpre_hill <- raster("disturb-events-co13/lidar/pre-flood/preDTMhill3.tif")
-    DTMpost_hill <- raster("disturb-events-co13/lidar/post-flood/postDTMhill3.tif")
+    # Creating hillshade for DTM_pre & DTM_post
+    # In order to generate the hillshde, we need both the slope and the aspect of
+    # the extent we are working on. 
+    
+    DTM_pre_slope <- terrain(DTM_pre, opt="slope",units = "radians")
+    DTM_pre_aspect <- terrain(DTM_pre, opt ="aspect", units = "radians")
+    DTM_pre_hillshade <- hillShade(DTM_pre_slope, DTM_pre_aspect)
+    
+    DTM_post_slope <- terrain(DTM_post, opt="slope",units = "radians")
+    DTM_post_aspect <- terrain(DTM_post, opt ="aspect", units = "radians")
+    DTM_post_hillshade <- hillShade(DTM_post_slope, DTM_post_aspect)
 
 Now we can plot the raster objects (DTM & hillshade) together by using `add=TRUE`
 when plotting the second plot. To be able to see the first (hillshade) plot,
@@ -169,33 +187,33 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
 
 
     # plot Pre-flood w/ hillshade
-    plot(DTMpre_hill,
-            col=grey(1:100/100),  # create a color ramp of grey colors for hillshade
+    plot(DTM_pre_hillshade,
+            col=grey(1:90/100),  # create a color ramp of grey colors for hillshade
             legend=FALSE,         # no legend, we don't care about the grey of the hillshade
             main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
             axes=FALSE)           # makes for a cleaner plot, if the coordinates aren't necessary
     
     plot(DTM_pre, 
             axes=FALSE,
-            alpha=0.5,   # sets how transparent the object will be (0=transparent, 1=not transparent)
-            add=T)  # add=TRUE (or T), add plot to the previous plotting frame
+            alpha=0.3,   # sets how transparent the object will be (0=transparent, 1=not transparent)
+            add=TRUE)  # add=TRUE (or T), add plot to the previous plotting frame
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
+![Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
 
     # plot Post-flood w/ hillshade
     # note, no add=T in this code, so new plotting frame. 
-    plot(DTMpost_hill,
-            col=grey(1:100/100),  
+    plot(DTM_post_hillshade,
+            col=grey(1:90/100),  
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPost-Flood",
             axes=FALSE)
     
     plot(DTM_post, 
             axes=FALSE,
-            alpha=0.5,
+            alpha=0.3,
             add=T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
+![Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
 
 #### Questions? 
 
@@ -218,7 +236,7 @@ DTMs.
             main="Digital Elevation Model of Difference (DoD)",
             axes=FALSE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
+![Digital Elevation Model of Difference showing the difference between digital elevation models (DTM).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
 
 Here we have our DoD, but it is a bit hard to read. What does the scale bar tell
 us?  
@@ -234,7 +252,7 @@ the values in the `DoD` raster object.
     # histogram of values in DoD
     hist(DoD)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/hist-DoD-1.png)
+![Histogram of values showing the distribution of values in the Digital Elevation Model of Difference. The values are plotted on the X-axis and the frquency on the Y-axis.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/hist-DoD-1.png)
 
 Most of the areas have a very small elevation change. To make the map easier to
 read, we can do two things. 
@@ -266,8 +284,8 @@ Let's now implement these two changes in our code.
     #difCol7 = c("#d73027","#fc8d59","#fee090","#ffffbf","#e0f3f8","#91bfdb","#4575b4")
     
     # plot hillshade first
-    plot(DTMpost_hill,
-            col=grey(1:100/100),  # create a color ramp of grey colors
+    plot(DTM_post_hillshade,
+            col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
             main="Elevation Change Post Flood\nFour Mile Canyon Creek, Boulder County",
             axes=FALSE)
@@ -277,10 +295,10 @@ Let's now implement these two changes in our code.
             breaks = c(-5,-1,-0.5,0.5,1,10),
             col= difCol5,
             axes=FALSE,
-            alpha=0.4,
+            alpha=0.3,
             add =T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
+![Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
 
 #### Question
 Do you think this is the best color scheme or set point for the breaks? Create
@@ -298,8 +316,8 @@ by manually drawing a box.
 
 
     # plot the rasters you want to crop from 
-    plot(DTMpost_hill,
-            col=grey(1:100/100),  # create a color ramp of grey colors
+    plot(DTM_post_hillshade,
+            col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
             axes=FALSE)
@@ -308,7 +326,7 @@ by manually drawing a box.
             breaks = c(-5,-1,-0.5,0.5,1,10),
             col= difCol5,
             axes=FALSE,
-            alpha=0.4,
+            alpha=0.3,
             add =T)
     
     # crop by designating two opposite corners
@@ -316,7 +334,9 @@ by manually drawing a box.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png"></a>
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/drawExtent.png"
+  alt= "Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County. Figure also includes crop window inlay around the area of interest.">
+  </a>
 </figure>
 
 After executing the `drawExtent()` function, we now physically click on the plot
@@ -356,55 +376,68 @@ then crop the desired layer to the crop box.
     DTM_pre_crop <- crop(DTM_pre, cropbox2)
     DTM_post_crop <- crop(DTM_post, cropbox2)
     DTMpre_hill_crop <- crop(DTMpre_hill,cropbox2)
+
+    ## Error in crop(DTMpre_hill, cropbox2): object 'DTMpre_hill' not found
+
     DTMpost_hill_crop <- crop(DTMpost_hill,cropbox2)
+
+    ## Error in crop(DTMpost_hill, cropbox2): object 'DTMpost_hill' not found
+
     DoD_crop <- crop(DoD, cropbox2)
     
     # plot all again using the cropped layers
     
     # PRE
     plot(DTMpre_hill_crop,
-            col=grey(1:100/100),  # create a color ramp of grey colors
+            col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
             axes=FALSE)
+
+    ## Error in plot(DTMpre_hill_crop, col = grey(1:90/100), legend = FALSE, : object 'DTMpre_hill_crop' not found
+
     # note \n in the title forces a line break in the title
     plot(DTM_pre_crop, 
             axes=FALSE,
-            alpha=0.5,
+            alpha=0.3,
             add=T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-1.png)
+    ## Error in graphics::rasterImage(x, e[1], e[3], e[2], e[4], interpolate = interpolate): plot.new has not been called yet
 
     # POST
     # plot Post-flood w/ hillshade
     plot(DTMpost_hill_crop,
-            col=grey(1:100/100),  # create a color ramp of grey colors
+            col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPost-Flood",
             axes=FALSE)
-    
+
+    ## Error in plot(DTMpost_hill_crop, col = grey(1:90/100), legend = FALSE, : object 'DTMpost_hill_crop' not found
+
     plot(DTM_post_crop, 
             axes=FALSE,
-            alpha=0.5,
+            alpha=0.3,
             add=T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-2.png)
+    ## Error in graphics::rasterImage(x, e[1], e[3], e[2], e[4], interpolate = interpolate): plot.new has not been called yet
 
     # CHANGE - DoD
     plot(DTMpost_hill_crop,
-            col=grey(1:100/100),  # create a color ramp of grey colors
+            col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
             main="Elevation Change Post Flood\nFour Mile Canyon Creek, Boulder County",
             axes=FALSE)
-    
+
+    ## Error in plot(DTMpost_hill_crop, col = grey(1:90/100), legend = FALSE, : object 'DTMpost_hill_crop' not found
+
     plot(DoD_crop,
             breaks = c(-5,-1,-0.5,0.5,1,10),
             col= difCol5,
             axes=FALSE,
-            alpha=0.4,
+            alpha=0.3,
             add =T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-3.png)
+    ## Error in graphics::rasterImage(x, e[1], e[3], e[2], e[4], interpolate = interpolate): plot.new has not been called yet
 
 Now you have a graphic of your particular area of interest. 
 

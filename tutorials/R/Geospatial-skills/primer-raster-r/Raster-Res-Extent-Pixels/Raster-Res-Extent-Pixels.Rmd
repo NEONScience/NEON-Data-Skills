@@ -115,11 +115,13 @@ Range in California.
 library(raster)  
 library(rgdal)
 
-# Load raster in an R object called 'DEM'
-DEM <- raster("NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif")  
-
 # set working directory to data folder
 #setwd("pathToDirHere")
+wd <- ("C:/Users/mccahill/Documents/GitHub/")
+setwd(wd)
+
+# Load raster in an R object called 'DEM'
+DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))  
 
 ```
 
