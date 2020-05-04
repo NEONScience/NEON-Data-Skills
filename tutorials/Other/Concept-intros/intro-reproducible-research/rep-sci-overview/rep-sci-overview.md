@@ -3,7 +3,7 @@ syncID: 6e908b9477034bc9b4a23b37c16a2455
 title: "The Importance of Reproducible Science"
 description: "This page outlines the tools and resources that you will need to complete the Data Institute activities."
 dateCreated: 2014-05-06
-authors:
+authors: Megan A. Jones
 contributors: Felipe Sanchez
 estimatedTime: 1.0 Hour
 packagesLibraries:
