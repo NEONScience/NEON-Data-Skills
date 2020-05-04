@@ -7,7 +7,7 @@ authors:
 contributors:
 estimatedTime:
 packagesLibraries:
-topics:
+topics: data management, rep-sci
 language: 
 tutorialSeries: 
 languagesTool: git

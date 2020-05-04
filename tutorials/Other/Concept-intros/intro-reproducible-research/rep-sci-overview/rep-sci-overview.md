@@ -4,7 +4,7 @@ title: "The Importance of Reproducible Science"
 description: "This page outlines the tools and resources that you will need to complete the Data Institute activities."
 dateCreated: 2014-05-06
 authors:
-contributors:
+contributors: Felipe Sanchez
 estimatedTime: 1.0 Hour
 packagesLibraries:
 topics: data-management, rep-sci
@@ -48,7 +48,9 @@ Reproducible Science Curriculum.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/UnderstandingGap_RepSciCur.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/UnderstandingGap_RepSciCur.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/UnderstandingGap_RepSciCur.png"
+	alt="Image of a Twitter post submitted by Tracy Steal highlighting the obstacles slowing adoption of reproducible science pratices. These are: People are unaware there is a problem, 100% reproducibility is hard, One workflow does not fit all, Lack of motivation, and are scared of intial time investments.">
+	</a>
 	<figcaption> Obstacles slowing adoption of reproducible science practices.
 	Source: <a href="http://reproducible-science-curriculum.github.io/rr-ropensci-talk/#/6" target="_blank">Reproducible Science Curriculum</a>
 	</figcaption>
@@ -58,7 +60,9 @@ Reproducible Science Curriculum.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg"
+	alt="Graphic showing the spectrum of reproducibility for published research. From left to right, left being not reproducible and right being the gold standard, we have publication only, publication plus code, publication plus code and data, publication with linked and executable code and data, and full replication.">
+	</a>
 	<figcaption> Reproducibility spectrum for published research.
 	Source: Peng, RD Reproducible Research in Computational Science Science (2011): 1226–1227 via <a href="http://reproducible-science-curriculum.github.io/bosc2015/#/15" target="_blank">Reproducible Science Curriculum</a>
 	</figcaption>

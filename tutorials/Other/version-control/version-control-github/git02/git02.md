@@ -4,10 +4,10 @@ title: "Git 02: GitHub.com - Repos & Forks"
 description: "This tutorial teaches you how to fork, or copy, an existing GitHub repository."
 dateCreated: 2016-05-06
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-management, data-analysis
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:
@@ -113,7 +113,9 @@ Git 06 tutorial.</a>
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-MasterScreenshot-tabs.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-MasterScreenshot-tabs.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-MasterScreenshot-tabs.png"
+	alt="Screenshot of the NEON Data Institute central repository on github.com highlighting the search bar, and six tabs below the repository name including: Code, Issues, Pull Request, Pulse, Graphics, and Settings.">
+	</a>
 	<figcaption> Screenshot of the NEON Data Institute central repository (note, 
 	there has been a slight change in the repo name).
 	The github.com search bar is at the top of the page. Notice there are 6
@@ -143,7 +145,9 @@ any time by clicking the fork button in the upper right hand corner on github.co
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/GitHubGuides_Bootcamp-Fork.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/GitHubGuides_Bootcamp-Fork.png" width="70%"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/GitHubGuides_Bootcamp-Fork.png" width="70%"
+	alt="Graphic showing the fork button as it appears on the upper right hand corner of the github website.">
+	</a>
 	<figcaption> Click on the "Fork" button to fork any repo. Source:
 <a href="https://guides.github.com/activities/forking/" target="_blank">GitHub Guides</a>.  
 	</figcaption>
@@ -151,7 +155,9 @@ any time by clicking the fork button in the upper right hand corner on github.co
 
 <figure>
  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png">
- <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"></a>
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"
+ alt="Graphic showing a fork of the central repository, which creates an exact copy of the repository in our own github account.">
+ </a>
  <figcaption>When we fork a repo in github.com, we are telling Git to create an
  exact copy of the repo that we're forking in our own github.com account.
  Once the repo is in our own account, we can edit it as we now own that fork.
