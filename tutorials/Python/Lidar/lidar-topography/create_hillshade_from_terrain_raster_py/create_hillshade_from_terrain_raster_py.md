@@ -265,7 +265,7 @@ plt.title('TEAK Hillshade + DTM')
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/create-hillshade-py/output_13_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_13_1.png)
 
 
 ### Calculate CHM & Overlay on Top of Hillshade

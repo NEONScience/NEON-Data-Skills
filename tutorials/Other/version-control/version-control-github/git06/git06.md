@@ -51,8 +51,8 @@ You won't need to repeat those steps.
 
 
 <figure class="half">
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png" width="70%"></a>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-loop.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-loop.png" width="70%"></a>
 	<figcaption> When you want to add materials from your repo to the central repo, 
@@ -69,8 +69,8 @@ information from your forked repo to the central repo in GitHub is done using a
 **pull request**.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-push-pr.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-push-pr.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-push-pr.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-push-pr.png"></a>
 	<figcaption>LEFT: To sync changes made and committed to the repo from your
 	local computer, you will first <strong> push </strong> the changes from your
 	local repo to your fork on github.com. RIGHT: Then, you will submit a
@@ -109,8 +109,8 @@ information from your forked repo to the central repo in GitHub is done using a
 To start a pull request, click the pull request button on the main repo page.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-PR.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-PR.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-PR.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-PR.png"></a>
 	<figcaption> Location of the Pull Request button on a fork of the NEON
 Data Institute participants repo (Note, screenshot shows a previous version of 
 the repo, however, the button is in the same location). Source: National Ecological Observatory
@@ -147,8 +147,8 @@ code. Non-binary files will just show up as a fully new file if it had any chang
 Look over the changes and make sure nothing looks surprising.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-PRscreenshot-diffs.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-PRscreenshot-diffs.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-PRscreenshot-diffs.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-PRscreenshot-diffs.png"></a>
 	<figcaption> In this split view, shows the differences between the older (LEFT)
 	and newer (RIGHT) document. Deletions are highlighted in red and additions
 	are highlighted in green.
@@ -167,8 +167,8 @@ Give your pull request a title and write a brief description of your changes.
 When you’re done with your message, click Create pull request!
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-PRscreenshot-titlePR-fork.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-PRscreenshot-titlePR-fork.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-PRscreenshot-titlePR-fork.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-PRscreenshot-titlePR-fork.png"></a>
 	<figcaption> All pull requests titles should be concise and descriptive of
 	the content in the pull request. More detailed notes can be left in the comments
 	box.

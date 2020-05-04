@@ -198,7 +198,7 @@ mymu        = PlotSpectraAndMean(SomeSpectra, Wv, 3)
     (346,)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_PCA/output_13_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_13_1.png)
 
 
 

@@ -77,12 +77,12 @@ emphasize vegetation and help us classify or identify where vegetation is locate
 on the ground.
 
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"></a>
 <figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/NIR_G_B.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"></a>
 <figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
 

@@ -87,8 +87,8 @@ brief lesson on
 explores three important landscape models that are commonly used. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png"
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png"
 alt = "Image of the three most common LiDAR-derived products: Digital Surface Models (DSM), Digital Terain Models (DTM), and Canopy Height Models (CHM). The Digital Terrain Model allows scientist to study changes in terrair (topography) over time.">
   </a>
   <figcaption>Digital Terrain Models, Digital Surface Models and Canopy Height

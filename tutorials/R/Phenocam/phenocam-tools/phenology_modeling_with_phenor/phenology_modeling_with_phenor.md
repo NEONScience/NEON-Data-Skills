@@ -319,7 +319,11 @@ In the next code chunk, we will format the phenocam transition date data
       )
 
     ## Processing 1 sites
-    ##   |                                                                                          |                                                                                  |   0%  |                                                                                          |==================================================================================| 100%
+    ## 
+  |                                                                                        
+  |                                                                                  |   0%
+  |                                                                                        
+  |==================================================================================| 100%
 
     # When internal = TRUE, the data will be returned to the R
     # workspace, otherwise the data will be saved to disk.

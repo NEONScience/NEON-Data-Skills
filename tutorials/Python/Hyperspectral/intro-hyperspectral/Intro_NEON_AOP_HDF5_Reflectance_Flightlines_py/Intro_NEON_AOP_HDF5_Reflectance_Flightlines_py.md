@@ -404,8 +404,8 @@ exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and
 the Scale_Factor=10000.0.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/hdfview_SERCrefl.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/hdfview_SERCrefl.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdfview_SERCrefl.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdfview_SERCrefl.png"></a>
 	<figcaption> Screenshot of the NEON HDF5 file format.
 	Source: National Ecological Observatory Network
 	</figcaption>
@@ -690,8 +690,8 @@ using the image's histogram. Stretching the histogram can improve the contrast
 of a displayed image, as we will show how to do below. 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.

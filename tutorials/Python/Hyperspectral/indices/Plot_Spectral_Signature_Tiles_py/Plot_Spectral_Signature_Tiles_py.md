@@ -107,8 +107,8 @@ will explore this concept more in the next lesson, where we will caluclate
 vegetation indices. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/ReflectanceCurves_waterVegSoil.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/ReflectanceCurves_waterVegSoil.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/ReflectanceCurves_waterVegSoil.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/ReflectanceCurves_waterVegSoil.png"></a>
 	<figcaption> Example spectra of water, green grass, dry grass, and soil. Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>

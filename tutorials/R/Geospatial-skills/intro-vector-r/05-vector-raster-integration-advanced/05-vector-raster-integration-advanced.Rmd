@@ -98,8 +98,8 @@ downloadable R script of the entire lesson, available in the footer of each less
 We often work with spatial layers that have different spatial extents.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png" alt="The three different vector types represented within a given spatial extent."></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" alt="The three different vector types represented within a given spatial extent."></a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial 
@@ -401,8 +401,8 @@ Often we want to extract values from a raster layer for particular locations -
 for example, plot locations that we are sampling on the ground. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferSquare.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferSquare.png" alt="Extraction of raster information using a polygon boundary."></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferSquare.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferSquare.png" alt="Extraction of raster information using a polygon boundary."></a>
     <figcaption> Extract raster information using a polygon boundary. We can
     extract all pixel values within 20m of our x,y point of interest. These can 
     then be summarized into some value of interest (e.g. mean, maximum, total).
@@ -500,8 +500,8 @@ which represents the radius of a circular region around each point.
 The units of the buffer are the same units of the data `CRS`.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/BufferCircular.png" alt="Extraction of raster information using a buffer region."></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png" alt="Extraction of raster information using a buffer region."></a>
      <figcaption> Extract raster information using a buffer region. All pixels
     that are touched by the buffer region are included in the extract. 
     Source: National Ecological Observatory Network (NEON).

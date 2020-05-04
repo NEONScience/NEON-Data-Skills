@@ -67,8 +67,8 @@ the equivalent for your operating system. Once you've downloaded and unzipped
 the dataset, move it to this directory. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/FileStructureScreenShot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png"></a>
 	<figcaption> The <strong>data</strong> directory with the teaching data subset. This is the suggested organization for all Data Institute teaching data subsets. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -112,8 +112,8 @@ NOTE: The document title is not the same as the file name.
 4. Hit the knit button in RStudio (as is done in the video above). What happens?
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/KnitButton-screenshot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -129,8 +129,8 @@ Next, we'll break down the structure of an R Markdown file.
 ## Understand Structure of an R Markdown file
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/NewRmd-html-screenshot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png"></a>
 	<figcaption>Screenshot of a new R Markdown document in RStudio. Notice the different
 	parts of the document. 
 	Source: National Ecological Observatory Network (NEON)  

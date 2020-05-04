@@ -6,45 +6,43 @@
 
 graphics.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/graphics", 
                              full.names = F, recursive = T)
-graphics.no.rfigs <- graphics.files[!grepl("rfigs/", x = graphics.files, fixed = T)]
+# Remove all paths that are rfigs
+graphics.files <- graphics.files[!grepl("rfigs/", x = graphics.files, fixed = T)]
 
-#setwd("~/Git/dev-aten/NEON-Data-Skills/processing_code/Redesign_scripts/")
-#write.csv(graphics.files, file="list_of_graphics_files_before_move.csv")
+# Remove all paths that are pyfigs
+graphics.files <- graphics.files[!grepl("py-figs/", x = graphics.files, fixed = T)]
 
-# Read all .Rmd, .md, and .html files and concatenate the lists together
 
-master_dir <- "~/Git/dev-aten/NEON-Data-Skills"
+# Find all files to change
+Rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
 
-# Find all .Rmd files
-# Do this again for .md files!
-Rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials",
                         pattern="\\.Rmd$", full.names = TRUE, recursive = TRUE)
-md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials",
+md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
                        pattern="\\.md$", full.names = TRUE, recursive = TRUE)
-html.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials",
-                       pattern="\\.html$", full.names = TRUE, recursive = TRUE)
+html.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
+                         pattern="\\.html$", full.names = TRUE, recursive = TRUE)
+ipynb.files <- list.files("~/Git/dev-aten/NEON-Data-Skills",
+                          pattern="\\.ipynb$", full.names = TRUE, recursive = TRUE)
 
-all.files=c(Rmd.files, md.files, html.files)
+all.files=c(Rmd.files, md.files, html.files, ipynb.files)
 
 
-# Loop through that list
 for (file in all.files){
-  
+  print(file)
   # open .md (or .Rmd) file
   fileConn <- file(file)
-  fl.md <- readLines(fileConn)
+  fl <- readLines(fileConn)
   
-  for(i in 1:length(remap_key[[1]])){
+  for(i in 1:length(graphics.files)){
     
-    # use "fixed=TRUE" to read in string literally as-is with no special characters (important for . and {})
-    fl.md <- gsub(remap_key[i,1], remap_key[i,2], fl.md, fixed=TRUE)
+    p=paste0("/graphics/\\S+/",basename(graphics.files[i]))
+    rep_text=paste0("/graphics/",graphics.files[i])
+    fl=gsub(p,rep_text,fl) # Replace pattern "p" with replacement text "rep_text"
     
   }
-
+  
   # write modified .md file out
-  writeLines(fl.md, fileConn)
+  writeLines(fl, fileConn)
   close(fileConn)      
   
 } #END file
-
-

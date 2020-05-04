@@ -179,7 +179,7 @@ suggest the following five cover types (exact location shown below).
 
 As shown here:
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/Click_points.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"></a>
 <figcaption> Five different land cover types chosen for this study (magenta dots) in the order listed above (red numbers).</figcaption>
 </figure>
 

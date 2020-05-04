@@ -482,8 +482,8 @@ assign the plot extent using `xlims` and `ylims`. We can grab the extent
 values from the spatial object that has a larger extent. Let's try it.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png"></a>
     <figcaption>The spatial extent of a shapefile or R spatial object
     represents the geographic <b> edge </b> or location that is the furthest
     north, south, east and west. Thus is represents the overall geographic

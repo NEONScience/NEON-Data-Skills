@@ -32,9 +32,9 @@ Model and gives you the height of the objects (in a forest, the trees) that are
 on the surface of the earth.
 
 <figure class="third">
-    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/dem.png"></a>
-    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/dsm.png"></a>
-    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/chm.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dem.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dsm.png"></a>
+    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/chm.png"></a>
     
     <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
      Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
@@ -48,8 +48,8 @@ points may be located anywhere in space are not aligned within any particular
 grid.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/Lidar_points.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_points.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_points.png"></a>
 	<figcaption> Representative point cloud data. Source: National Ecological 
 	Observatory Network (NEON)  
 	</figcaption>
@@ -83,8 +83,8 @@ means that each pixel represents a 1m by 1m area on the ground.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/raster_concept.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png"></a>
 	<figcaption> Raster or “gridded” data are stored as a grid of values which 
 	are rendered on a map as pixels. Each pixel value represents an area on the 
 	Earth’s surface.  Source: National Ecological Observatory Network (NEON)  
@@ -149,7 +149,7 @@ process our raster in this way.
 
 <figure>
     <a href="https://www.neonscience.org/gridding-interpolation-spatial-data-gif" target="_blank">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/gridding.gif"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  

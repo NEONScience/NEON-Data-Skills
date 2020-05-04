@@ -58,8 +58,8 @@ using `git push`.
 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-add-commit.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-add-commit.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-add-commit.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-add-commit.png"></a>
 	<figcaption>After a Git repo has been cloned locally, you can now work on
 	any file in the repo. You use <code>git pull</code> to pull changes in your
 	fork on github.com down to your computer to ensure both repos are in sync.
@@ -203,8 +203,8 @@ in the shell. This allows you to keep track of change that you've made and what
 ## Why Add, then Commit?
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_git-staging-area.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_git-staging-area.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_git-staging-area.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_git-staging-area.svg"></a>
 	<figcaption> You can think of Git as taking snapshots of changes over the
 life of a project. <code> git add</code> specifies what will go in a snapshot (putting things
  in the staging area), and <code> git commit </code> then actually takes the snapshot and
@@ -296,8 +296,8 @@ line on your computer, there in the same directory (**participants/pre-institute
 laptop?
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-file.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/Git-ForkScreenshot-file.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-file.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-file.png"></a>
 	<figcaption>An example .md file located within the
 	<strong> participants/2017-RemoteSensing/pre-institute2-git </strong> of a Data Institute repo fork.
 Source: National Ecological Observatory Network (NEON)

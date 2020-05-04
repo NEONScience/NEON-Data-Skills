@@ -382,7 +382,7 @@ plt.savefig('CHEQ_20160912_3_tarp_absolute_diff.png',dpi=300,orientation='landsc
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_23_0.png)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-validation/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
 
 
 From this we are able to see that the 48% tarp actually has larger absolute 

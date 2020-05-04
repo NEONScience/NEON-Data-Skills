@@ -112,8 +112,8 @@ For instance, many states prefer to use a **State Plane** projection customized
 for that state.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     </a>
     <figcaption>Maps of the United States using data in different projections. 
     Notice the differences in shape associated with each different projection.

@@ -107,8 +107,8 @@ as a tape: if you rewind the tape and start at the base document, then you can
 play back each change and end up with your latest version.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_play-changes.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_play-changes.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_play-changes.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_play-changes.svg"></a>
 	<figcaption> A version control system saves changes to a document, sequentially
   as you add and commit them to the system.
 	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
@@ -123,8 +123,8 @@ The benefit of version control when you are in a collaborative environment is th
 two users can make independent changes to the same document.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_versions.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_versions.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_versions.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_versions.svg"></a>
 	<figcaption> Different versions of the same document can be saved within a
   version control system.
 	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
@@ -136,8 +136,8 @@ where both users modified the same part of the same document in different
 ways) you can review two sets of changes on the same base document.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_merge.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_merge.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_merge.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_merge.svg"></a>
 	<figcaption>Two sets of changes to the same base document can be reviewed
 	together, within a version control system <strong> if </strong> there are no conflicts (areas
 	where both users <strong> modified the same part of the same document in different ways</strong>).
@@ -204,8 +204,8 @@ Each participant in the institute will be contributing to the NEON central
 repository using the same workflow! Pretty cool stuff.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png" width="70%"></a>
 	<figcaption>The NEON central repository is the final working version of our
 	project. You can <strong>fork</strong> or create a copy of this repository
 	into your github.com account. You can then copy or <code>clone</code> your

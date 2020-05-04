@@ -4,7 +4,7 @@ title: "Installing & Updating Packages in R"
 description: "This tutorial provides the basics of installing and working with packages in R."
 dateCreated: 2014-10-27
 authors: Leah A. Wasser - Modified From Data Carpentry and Software Carpentry 
-contributors:
+contributors: Garrett M. Williams
 estimatedTime:
 packagesLibraries:
 topics: data-analysis
@@ -45,7 +45,7 @@ of setting the working directory in R can be found here.</a>
 learned skills. If available, the code for challenge solutions is found in the
 downloadable R script of the entire lesson, available in the footer of each lesson page.
 
-***
+****
 
 ## Additional Resources
 
@@ -81,7 +81,7 @@ install packages the first time you use R (or after updating to a new version).
 
 ``` {r install-packages, eval=FALSE}
 # install the ggplot2 package
-install.packages("ggplot2")  
+install.packages("ggplot2") 
 ```
 
 <div id="ds-dataTip" markdown="1">

@@ -87,15 +87,15 @@ For instance, an image that has a 1 m spatial resolution means that each pixel i
 the image represents a 1 m x 1 m area.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell 
     in meters. This size in turn relates to the area on the ground that the pixel 
     represents. Source: National Ecological Observatory Network (NEON) </figcaption>
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster1.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_multiple_resolutions.png">
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
     extent with fewer pixels will look more blury and will be of lower resolution. 
@@ -152,7 +152,7 @@ DEM@extent
 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png">
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".  Source: National
     Ecological Observatory Network (NEON)
@@ -168,8 +168,8 @@ coordinate location of the raster, multiplied by the resolution (the pixel size)
 of the raster.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_corners.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_corners.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_corners.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_corners.png"></a>
    
     <figcaption>To be located geographically, a raster's location needs to be 
     defined in geographic space (i.e., on a spatial grid). The spatial extent 
@@ -273,8 +273,8 @@ par(mfrow=c(1,1))
 #### Extent & Coordinate Reference Systems
 
 <figure>
-  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png"></a>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png"></a>
     <figcaption>The X and Y min and max values relate to the coordinate system 
     that the file is in, see below. </figcaption>
 </figure>
@@ -300,8 +300,8 @@ have the same dataset saved in two different projections, these two files won't
 line up correctly when rendered together.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/USMapDifferentProjections_MCorey_Opennews-org.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg"></a>
     <figcaption>Maps of the United States in different projections. Notice the 
     differences in shape associated with each different projection. These 
     differences are a direct result of the calculations used to "flatten" the 

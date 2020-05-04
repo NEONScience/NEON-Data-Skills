@@ -61,8 +61,8 @@ represents the center point value of the wavelengths represented in that band.
 Thus in a band spanning 695-700 nm, the center would be 697.5).
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png"></a>
     <figcaption>Imaging spectrometers collect reflected light information within 
     defined bands or regions of the electromagnetic spectrum. Source: National 
     Ecological Observatory Network (NEON) </figcaption>
@@ -82,8 +82,8 @@ hyperspectral dataset. This value represents the spread of the band around that
 center point. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/FWHM2.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/FWHM2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/FWHM2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/FWHM2.png"></a>
     <figcaption>The Full Width Half Max (FWHM) of a band relates to the distance 
     in nanometers between the band center and the edge of the band. In this 
     case, the FWHM for Band C is 5 nm.</figcaption>
