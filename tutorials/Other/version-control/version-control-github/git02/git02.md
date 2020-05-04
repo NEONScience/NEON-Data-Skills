@@ -11,7 +11,7 @@ topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:
-tutorialSeries: git-github
+tutorialSeries: [git-github]
 urlTitle: github-forks-repos
 ---
 
