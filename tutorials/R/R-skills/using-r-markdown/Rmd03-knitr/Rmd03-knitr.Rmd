@@ -25,7 +25,7 @@ R Markdown into a rendered document (HTML, PDF, etc).
 At the end of this activity, you will:
 
 * Be able to produce (‘knit’) an HTML file from a R Markdown file.
-* Know how to modify chuck options to change the output in your HTML file.
+* Know how to modify chunk options to change the output in your HTML file.
 
 ## Things You’ll Need To Complete This Tutorial
 
