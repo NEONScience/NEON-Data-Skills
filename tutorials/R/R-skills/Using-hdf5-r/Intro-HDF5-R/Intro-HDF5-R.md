@@ -4,7 +4,7 @@ title: "Introduction to HDF5 Files in R"
 description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
 dateCreated: 2015-05-20 15:22:52
 authors: Leah A. Wasser
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Alison Dernbach
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5
 topics: HDF5
@@ -93,7 +93,7 @@ computers memory / RAM in their entirety in order work with them.
 To access HDF5 files in R, we will use the `rhdf5` library which is part of 
 the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
 suite of R libraries. It might also be useful to install 
-<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">the 
 free HDF5 viewer</a> 
 which will allow you to explore the contents of an HDF5 file using a graphic interface.
 
@@ -102,7 +102,7 @@ which will allow you to explore the contents of an HDF5 file using a graphic int
 
 First, let's get R setup. We will use the rhdf5 library. To access HDF5 files in 
 R, we will use the rhdf5 library which is part of the Bioconductor suite of R 
-packages. As of Aug. 2017 this package was not yet on CRAN. 
+packages. As of May 2020 this package was not yet on CRAN. 
 
 
     # Install rhdf5 package (only need to run if not already installed)
@@ -114,10 +114,11 @@ packages. As of Aug. 2017 this package was not yet on CRAN.
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files
-    #setwd("working-dir-path-here")
+    wd <- "~/Git/data/" #This will depend on your local environment 
+    setwd(wd) 
 
 Read more about the 
-<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf" target="_blank"> `rhdf5` package here.</a>
+<a href="http://www.bioconductor.org/packages/release/bioc/html/rhdf5.html" target="_blank"> `rhdf5` package here.</a>
 
 ## Create an HDF5 File in R
 
@@ -127,23 +128,18 @@ Now, let's create a basic H5 file with one group and one dataset in it.
     # Create hdf5 file
     h5createFile("vegData.h5")
 
-    ## file '/Users/olearyd/Git/data/vegData.h5' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     # create a group called aNEONSite within the H5 file
     h5createGroup("vegData.h5", "aNEONSite")
 
-    ## Can not create group. Object with name 'aNEONSite' already exists.
-
-    ## [1] FALSE
+    ## [1] TRUE
 
     # view the structure of the h5 we've created
     h5ls("vegData.h5")
 
-    ##        group        name       otype dclass    dim
-    ## 0          /   aNEONSite   H5I_GROUP              
-    ## 1 /aNEONSite temperature H5I_DATASET  FLOAT 20 x 2
+    ##   group      name     otype dclass dim
+    ## 0     / aNEONSite H5I_GROUP
 
 Next, let's create some dummy data to add to our H5 file.
 
@@ -176,27 +172,27 @@ are working with larger datasets!
 
     ## $aNEONSite
     ## $aNEONSite$temperature
-    ##                      [,1]               [,2]
-    ##  [1,]  0.8516866634224054  2.836360277910956
-    ##  [2,]  1.0712367752260255  1.500407921473993
-    ##  [3,]  0.3864554517773209  1.648012234083583
-    ##  [4,] -0.1305657183599631 -0.294542945275954
-    ##  [5,]  1.1089364337402188 -2.384281100803952
-    ##  [6,]  1.5022904863665651  0.510932859782056
-    ##  [7,]  0.1805362186718872  0.704540760801228
-    ##  [8,]  3.1547079852453983  1.159945530320169
-    ##  [9,] -0.1335530312943478  0.640871548408018
-    ## [10,]  0.8273741184865043  1.621706350309156
-    ## [11,]  2.3813435216340038  1.643019784381709
-    ## [12,]  2.2747612084834912  0.212686978709758
-    ## [13,]  0.0748886601528383  0.376472326711012
-    ## [14,] -0.4422175796197136 -0.055197564530804
-    ## [15,]  0.4033320710861770  1.287695402027157
-    ## [16,]  0.4693081359628845  2.410268667282963
-    ## [17,]  1.6760724722226619  0.815221535235379
-    ## [18,] -0.2188460893731798  2.732246123492854
-    ## [19,]  1.8237998342574666  0.709802145998186
-    ## [20,]  0.5004911517283539  0.193789028958291
+    ##              [,1]       [,2]
+    ##  [1,]  0.33155432  2.4054446
+    ##  [2,]  1.14305151  1.3329978
+    ##  [3,] -0.57253964  0.5915846
+    ##  [4,]  2.82950139  0.4669748
+    ##  [5,]  0.47549005  1.5871517
+    ##  [6,] -0.04144519  1.9470377
+    ##  [7,]  0.63300177  1.9532294
+    ##  [8,] -0.08666231  0.6942748
+    ##  [9,] -0.90739256  3.7809783
+    ## [10,]  1.84223101  1.3364965
+    ## [11,]  2.04727590  1.8736805
+    ## [12,]  0.33825921  3.4941913
+    ## [13,]  1.80738042  0.5766373
+    ## [14,]  1.26130759  2.2307994
+    ## [15,]  0.52882731  1.6021497
+    ## [16,]  1.59861449  0.8514808
+    ## [17,]  1.42037674  1.0989390
+    ## [18,] -0.65366487  2.5783750
+    ## [19,]  1.74865593  1.6069304
+    ## [20,] -0.38986048 -1.9471878
 
     # Close the file. This is good practice.
     H5close()
@@ -280,7 +276,7 @@ in R.
     # create a quick plot of the data
     hist(testSubset2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/rfigs/access-plot-data-1.png)
+![Histogram showing frequency of temperature values](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/rfigs/access-plot-data-1.png)
 
  <div id="ds-challenge" markdown="1">
 ### Challenge: Work with HDF5 Files
