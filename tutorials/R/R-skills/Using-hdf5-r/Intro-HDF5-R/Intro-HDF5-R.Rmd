@@ -4,7 +4,7 @@ title: "Introduction to HDF5 Files in R"
 description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
 dateCreated: 2015-05-20 15:22:52
 authors: Leah A. Wasser
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Alison Dernbach
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5
 topics: HDF5
@@ -115,7 +115,8 @@ library("rhdf5")
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files
-#setwd("working-dir-path-here")
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
 
 ```
 
@@ -245,7 +246,7 @@ H5close()
 Once we've extracted data from our H5 file, we can work with it
 in R. 
 
-``` {r access-plot-data}
+``` {r access-plot-data, fig.cap="Histogram showing frequency of temperature values"}
 
 # create a quick plot of the data
 hist(testSubset2)
