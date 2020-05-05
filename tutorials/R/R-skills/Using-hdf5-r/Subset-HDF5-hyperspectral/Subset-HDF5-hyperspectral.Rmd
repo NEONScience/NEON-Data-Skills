@@ -2,7 +2,7 @@
 syncID: 884cc5915a3842c1ab6617b060797fab
 title: "Subsetting NEON HDF5 hyperspectral files to reduce file size"
 code1: HDF5/Subset-HDF5-hyperspectral.R
-contributors: Megan Jones
+contributors: Megan Jones, Alison Dernbach
 dataProudct: DP3.30006.001, DP1.30006.001, DP1.30008.001, DP4.00200.001
 dateCreated: 2020-02-04
 description: Take a large NEON hyperspectral HDF5 file and extract only the information that you need, then save as a new HDF5 file. For an example, we will take an existing hyperspectral dataset (~600Mb) and reduce it in size for subsequent tutorials.
@@ -57,9 +57,9 @@ These hyperspectral remote sensing data provide information on the
 <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Exerimental Range field site</a>.
 
 These data were collected over the San Joaquin field site located in California 
-(Domain 17) in March of 2019 and processed at NEON headquarters. This particular mosaic tile is 
-named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. The entire dataset can be accessed by 
-request from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+(Domain 17) in March of 2019 and processed at NEON headquarters. This particular 
+mosaic tile is named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. The entire 
+dataset can be accessed by request from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
 <a href="https://ndownloader.figshare.com/files/21788199" class="link--button link--arrow">
 Download Dataset</a>
@@ -303,7 +303,7 @@ h5write(obj=wavelengths, file=f,
 ## Spatial Subsetting
 
 Even after spectral subsetting, our file size would be greater than 100Mb. 
-herefore, we will also perform a *spatial* subsetting process to further 
+Therefore, we will also perform a *spatial* subsetting process to further 
 reduce our file size. Now, we need to figure out which part of the full image 
 that we want to extract for our subset. It takes a number of steps in order 
 to read in a band of data and plot the reflectance values - all of which are 
@@ -322,7 +322,7 @@ it is weird that `NULL` indicates "all" in this circumstance, but that is the
 default behavior for this, and many other, functions).
 
 
-```{r plot-example-band}
+```{r plot-example-band, fig.cap="Hyperspectral reflectance plot"}
 # Extract or "slice" data for band 58 from the HDF5 file
 b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
              index=list(58,NULL,NULL))
@@ -352,7 +352,7 @@ we need to select rows 1 through 500 (bottom half), and columns 501 through 1000
 a `list` of three dimenstions for this example - in the order of bands, columns, 
 rows. 
 
-```{r plot-example-band-subset}
+```{r plot-example-band-subset, fig.cap="Subset of the hyperspectral reflectance plot"}
 subset_rows <- 1:500
 subset_columns <- 501:1000
 # Extract or "slice" data for band 44 from the HDF5 file
