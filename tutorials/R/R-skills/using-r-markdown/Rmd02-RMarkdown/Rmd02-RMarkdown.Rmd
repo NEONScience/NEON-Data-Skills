@@ -4,7 +4,7 @@ title: "Document Code with R Markdown"
 description: "This tutorial cover how to use R Markdown files to document code."
 dateCreated: 2016-01-01
 authors:
-contributors:
+contributors: Ben Shetterly
 estimatedTime:
 packagesLibraries: [knitr, rmarkdown]
 topics: data-management
@@ -68,7 +68,8 @@ the dataset, move it to this directory.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png"
+	alt="Mac OS Finder window with directory structure showing 'NEONDI-2016' folder contents"></a>
 	<figcaption> The <strong>data</strong> directory with the teaching data subset. This is the suggested organization for all Data Institute teaching data subsets. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -113,7 +114,9 @@ NOTE: The document title is not the same as the file name.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"
+	alt="RStudio window with R Markdown template of new document and 'Knit HTML' button 
+circled."></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -130,7 +133,9 @@ Next, we'll break down the structure of an R Markdown file.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png"
+	alt="RStudio window with R Markdown template of new document, including header, 
+markdown, and code chunk."></a>
 	<figcaption>Screenshot of a new R Markdown document in RStudio. Notice the different
 	parts of the document. 
 	Source: National Ecological Observatory Network (NEON)  
