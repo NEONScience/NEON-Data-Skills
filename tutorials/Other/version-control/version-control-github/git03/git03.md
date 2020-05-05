@@ -5,10 +5,10 @@ description: "This tutorial teaches you how to clone or copy a
 GitHub repository to your local computer."
 dateCreated: 2016-05-06
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-management
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:
@@ -42,7 +42,9 @@ By forking the NEON repo, we created a copy of it in our github.com account.
 
 <figure>
  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png">
- <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"></a>
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"
+ alt="Graphic showing a fork of the central repository, which creates an exact copy of the repository in our own github account.">
+ </a>
  <figcaption>When you fork a reposiotry on the github.com website, you are creating a
  duplicate copy of it in your github.com account. This is useful as a backup
  of the material. It also allows you to edit the material without modifying
@@ -56,7 +58,9 @@ laptop, so that we can efficiently add to and edit repo content.
 
 <figure>
  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_clone.png">
- <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_clone.png" width="70%"></a>
+ <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_clone.png" width="70%"
+ alt="Graphic showing the workflow of creating a clone from the forked copy of the central repository, which creates an exact copy of the forked repository to your own computer. This process allows you to make edits to the documents on your own computer, and also serves as another backup of the materials.">
+ </a>
  <figcaption>When you clone a repository to your local computer, you are creating a
  copy of that same repo <strong>locally </strong> on your computer. This
  allows you to edit files on your computer. And, of course, it is also yet another
@@ -76,7 +80,9 @@ this should be `YOUR-USER-NAME/DI-NEON-participants`.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-clone.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-clone.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-clone.png"
+	alt="Screenshot of the NEON Data Institute forked repository on your personal github.com account. The image highlights the clone or download button, which allows you to copy the URL that you will need to clone the repository or download the files in the repository as a .zip file.">
+	</a>
 	<figcaption>The clone or download drop down allows you to copy the URL that
 	you will need to clone a repository. Download allows you to download a .zip file
 	containing all of the files in the repo.
