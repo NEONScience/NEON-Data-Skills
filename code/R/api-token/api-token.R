@@ -27,19 +27,19 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
 
 
 
-## ----useSys.setenv, eval=FALSE, comment=NA-----------------------------------------------------------------------
+## ----useTokenName, eval=FALSE, comment=NA------------------------------------------------------------------------
 
-Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
-                        token=Sys.getenv("NEON_TOKEN"))
+                        token=NEON_TOKEN)
 
 
 
 ## ----scriptToSource, eval=FALSE, comment=NA----------------------------------------------------------------------
 
-Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 
 
@@ -62,5 +62,13 @@ Sys.getenv("HOME")
 ## ----Renviron, eval=FALSE, comment=NA----------------------------------------------------------------------------
 
 NEON_TOKEN=PASTE YOUR TOKEN HERE
+
+
+
+## ----useEnvtToken, eval=FALSE, comment=NA------------------------------------------------------------------------
+
+foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                        package="expanded", check.size=F,
+                        token=Sys.getenv("NEON_TOKEN"))
 
 

@@ -151,53 +151,55 @@ Your API token is unique to your account, so don't share it!
 
 If you're writing code that will be available publicly, such as in a GitHub 
 repository, you'll need to save your token locally, and pull it into your 
-code with an alias. There are a few ways to do this. Here, we'll assign the 
-token to an environment variable.
-
-The simplest way to assign an environment variable is using the `Sys.setenv()` 
-function to set the variable, and `Sys.getenv()` to get it back:
+code with an alias. There are a few ways to do this. Here, we'll simply 
+assign the token to a variable name.
 
 
-    Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+    NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
     
     foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                             package="expanded", check.size=F,
-                            token=Sys.getenv("NEON_TOKEN"))
+                            token=NEON_TOKEN)
 
-Unfortunately, when you close your R session, this environment variable will 
-be cleared, so you'd have to re-set the variable in every session. We'll 
+Of course, when you close your R session, the `NEON_TOKEN` variable will 
+be cleared, so you'd have to re-create the variable in every session. We'll 
 show two options for doing this smoothly:
 
-* Option 1: Save the token in a file, and `source()` that file at the start of 
-every script. This is fairly simple but requires a line of code in every 
-script.
+* Option 1: Save the token in a local file, and `source()` that file at the 
+start of every script. This is fairly simple but requires a line of code in 
+every script.
 
-* Option 2: Add the token to a `.Renviron` file. This is a little harder to 
-set up initially, and you must be using RStudio for it to work, but once it's 
-done, it's done globally, and it will work in every script you run.
-
-Once either of these options is in place, you'll be able to access your token 
-with `Sys.getenv("NEON_TOKEN")`.
+* Option 2: Add the token to a `.Renviron` file to create an environment 
+variable that gets loaded when you open RStudio. This is a little harder 
+to set up initially, and you must be using RStudio for it to work, but 
+once it's done, it's done globally, and it will work in every script you 
+run.
 
 ### Option 1: Save token in a local file
 
 Open a new, empty R script. Put a single line of code in the script:
 
 
-    Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+    NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 Save this file in a logical place on your machine, somewhere that won't be 
-visible publicly. Let's call it `neon_token_source.R` and say you've saved it 
-to the `/data` folder on your machine. Then, at the start of every script 
-where you're going to use the NEON API, you would run this line of code:
+visible publicly. Let's call it `neon_token_source.R`, and let's say you've 
+saved it to the `/data` folder on your machine. Then, at the start of every 
+script where you're going to use the NEON API, you would run this line of 
+code:
 
 
     source("/data/neon_token_source.R")
 
+Then you'll be able to use `token=NEON_TOKEN` when you run `neonUtilities` 
+functions, and you can share your code without accidentally sharing your 
+token.
+
 ### Option 2: Save token to the RStudio environment
 
-To determine where to put the `.Renviron` file, check which directory RStudio 
-is using as your home directory:
+To create a persistent environment variable, we use a `.Renviron` file. 
+Before creating a file, check which directory RStudio is using as your home 
+directory:
 
 
     # For Windows:
@@ -206,9 +208,9 @@ is using as your home directory:
     # For Mac/Linux:
     Sys.getenv("HOME")
 
-Check the directory to see if you already have a `.Renviron` file, **using the 
-file browse pane in RStudio**. Files that begin with `.` are hidden by default, 
-but RStudio recognizes files that begin with `.R` and displays them.
+Check the home directory to see if you already have a `.Renviron` file, **using 
+the file browse pane in RStudio**. Files that begin with `.` are hidden by 
+default, but RStudio recognizes files that begin with `.R` and displays them.
 
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png">
@@ -221,11 +223,21 @@ If you already have a `.Renviron` file, open it and follow the instructions
 below to add to it. If you don't have one, create one using File -> New File 
 -> Text File in the RStudio menus.
 
-Add one line to the text file. In this option, don't use the `Sys.setenv()` 
-function, and don't use quotes around the token value.
+Add one line to the text file. In this option, there are no quotes around the 
+token value.
 
 
     NEON_TOKEN=PASTE YOUR TOKEN HERE
 
-Save the file as `.Renviron`, in the RStudio home directory identified above.
+Save the file as `.Renviron`, in the RStudio home directory identified above. 
+Re-start RStudio to load the environment.
+
+Once your token is assigned to an environment variable, use the function 
+`Sys.getenv()` to access it. For example, in `loadByProduct()`:
+
+
+    foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                            package="expanded", check.size=F,
+                            token=Sys.getenv("NEON_TOKEN"))
+
 
