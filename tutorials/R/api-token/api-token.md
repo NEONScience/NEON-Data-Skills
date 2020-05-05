@@ -112,27 +112,21 @@ way.
 
 First, we need to load the `neonUtilities` package:
 
-```{r loadStuff, eval=FALSE, comment=NA}
 
-# install neonUtilities - can skip if already installed
-install.packages("neonUtilities")
-
-# load neonUtilities
-library(neonUtilities)
-
-```
+    # install neonUtilities - can skip if already installed
+    install.packages("neonUtilities")
+    
+    # load neonUtilities
+    library(neonUtilities)
 
 Now we'll use the `loadByProduct()` function to download data. Your 
 API token is entered as the optional `token` input parameter. For 
 this example, we'll download Plant foliar traits (DP1.10026.001).
 
-```{r getCFC, eval=FALSE, comment=NA}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token="PASTE YOUR TOKEN HERE")
-
-```
+    foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                            package="expanded", check.size=F,
+                            token="PASTE YOUR TOKEN HERE")
 
 You should now have data saved in the `foliar` object; the API 
 silently used your token. If you've downloaded data without a 
@@ -143,16 +137,13 @@ downloading data or otherwise accessing the API; you can use the
 `token` input with all of them. For example, when downloading 
 remote sensing data:
 
-```{r getAOP, eval=FALSE, comment=NA}
 
-chm <- byTileAOP(dpID="DP3.30015.001", site="WREF", 
-                 year=2017, check.size=F,
-                 easting=c(571000,578000), 
-                 northing=c(5079000,5080000), 
-                 savepath="/data",
-                 token="PASTE YOUR TOKEN HERE")
-
-```
+    chm <- byTileAOP(dpID="DP3.30015.001", site="WREF", 
+                     year=2017, check.size=F,
+                     easting=c(571000,578000), 
+                     northing=c(5079000,5080000), 
+                     savepath="/data",
+                     token="PASTE YOUR TOKEN HERE")
 
 ## Token management for open code
 
@@ -166,15 +157,12 @@ token to an environment variable.
 The simplest way to assign an environment variable is using the `Sys.setenv()` 
 function to set the variable, and `Sys.getenv()` to get it back:
 
-```{r useSys.setenv, eval=FALSE, comment=NA}
 
-Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
-
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token=Sys.getenv("NEON_TOKEN"))
-
-```
+    Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+    
+    foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                            package="expanded", check.size=F,
+                            token=Sys.getenv("NEON_TOKEN"))
 
 Unfortunately, when you close your R session, this environment variable will 
 be cleared, so you'd have to re-set the variable in every session. We'll 
@@ -195,37 +183,28 @@ with `Sys.getenv("NEON_TOKEN")`.
 
 Open a new, empty R script. Put a single line of code in the script:
 
-```{r scriptToSource, eval=FALSE, comment=NA}
 
-Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
-
-```
+    Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
 
 Save this file in a logical place on your machine, somewhere that won't be 
 visible publicly. Let's call it `neon_token_source.R` and say you've saved it 
 to the `/data` folder on your machine. Then, at the start of every script 
 where you're going to use the NEON API, you would run this line of code:
 
-```{r source, eval=FALSE, comment=NA}
 
-source("/data/neon_token_source.R")
-
-```
+    source("/data/neon_token_source.R")
 
 ### Option 2: Save token to the RStudio environment
 
 To determine where to put the `.Renviron` file, check which directory RStudio 
 is using as your home directory:
 
-```{r getdir, eval=FALSE, comment=NA}
 
-# For Windows:
-Sys.getenv("R_USER")
-
-# For Mac/Linux:
-Sys.getenv("HOME")
-
-```
+    # For Windows:
+    Sys.getenv("R_USER")
+    
+    # For Mac/Linux:
+    Sys.getenv("HOME")
 
 Check the directory to see if you already have a `.Renviron` file, **using the 
 file browse pane in RStudio**. Files that begin with `.` are hidden by default, 
@@ -245,11 +224,8 @@ below to add to it. If you don't have one, create one using File -> New File
 Add one line to the text file. In this option, don't use the `Sys.setenv()` 
 function, and don't use quotes around the token value.
 
-```{r Renviron, eval=FALSE, comment=NA}
 
-NEON_TOKEN=PASTE YOUR TOKEN HERE
-
-```
+    NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 Save the file as `.Renviron`, in the RStudio home directory identified above.
 
