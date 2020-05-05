@@ -142,9 +142,9 @@ token before, you may notice this is faster!
 Your API token is unique to your account, so don't share it!
 
 If you're writing code that will be available publicly, such as in a GitHub 
-repository, you'll need to save your token locally, and only reference it in 
-your code. There are a few ways to do this. Here, we'll assign the token to 
-an environment variable.
+repository, you'll need to save your token locally, and pull it into your 
+code with an alias. There are a few ways to do this. Here, we'll assign the 
+token to an environment variable.
 
 The simplest way to assign an environment variable is using the `Sys.setenv()` 
 function to set the variable, and `Sys.getenv()` to get it back:
@@ -160,19 +160,39 @@ foliar <- loadByProduct(dpID="DP1.10026.001", site="all",
 ```
 
 Unfortunately, when you close your R session, this environment variable will 
-be cleared, so you'd have to re-run `Sys.setenv()` in every session. We'll 
+be cleared, so you'd have to re-set the variable in every session. We'll 
 show two options for doing this smoothly:
 
-Option 1: Save the token in a file, and `source()` that file at the start of 
+* Option 1: Save the token in a file, and `source()` that file at the start of 
 every script. This is simpler!
 
-Option 2: Add the token to a `.Renviron` file. This is harder to set up 
-initially, and you must be using RStudio for it to work, but once it's done, 
-it's done globally, and it will work in every script you run.
+* Option 2: Add the token to a `.Renviron` file. This is a little harder to 
+set up initially, and you must be using RStudio for it to work, but once it's 
+done, it's done globally, and it will work in every script you run.
+
+Once either of these options is in place, you'll be able to use your token 
+with `Sys.getenv("NEON_TOKEN")`.
 
 ### Option 1: Save token in a local file
 
+Open a new, empty R script. Put a single line of code in the script:
 
+```{r scriptToSource, eval=FALSE}
+
+Sys.setenv(NEON_TOKEN="PASTE YOUR TOKEN HERE")
+
+```
+
+Save this file in a logical place on your machine, somewhere that won't be 
+visible publicly. Let's call it `neon_token_source.R` and say you've saved it 
+to the `/data` folder on your machine. Then, at the start of every script 
+where you're going to use the NEON API, you would run this line of code:
+
+```{r source, eval=FALSE}
+
+source("/data/neon_token_source.R")
+
+```
 
 ### Option 2: Save token to the RStudio environment
 
@@ -189,6 +209,29 @@ Sys.getenv("HOME")
 
 ```
 
+Check the directory to see if you already have a `.Renviron` file, **using the 
+file browse pane in RStudio**. Files that begin with `.` are hidden by default, 
+but RStudio recognizes files that begin with `.R` and displays them.
 
+<figure>
+	<a href="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png">
+	<img src="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png"></a>
+	<figcaption>Screenshot of file browse pane with .Renviron file. 
+	</figcaption>
+</figure>
 
+If you already have a `.Renviron` file, open it and follow the instructions 
+below to add to it. If you don't have one, create one using File -> New File 
+-> Text File in the RStudio menus.
+
+Add one line to the text file. In this option, don't use the `Sys.setenv()` 
+function, and don't use quotes around the token value.
+
+```{r Renviron, eval=FALSE}
+
+NEON_TOKEN=PASTE YOUR TOKEN HERE
+
+```
+
+Save the file as `.Renviron`, in the RStudio home directory identified above.
 
