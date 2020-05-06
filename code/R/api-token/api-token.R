@@ -8,11 +8,17 @@ library(neonUtilities)
 
 
 
+## ----nameToken, eval=FALSE, comment=NA---------------------------------------------------------------------------
+
+NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
+
+
+
 ## ----getCFC, eval=FALSE, comment=NA------------------------------------------------------------------------------
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
-                        token="PASTE YOUR TOKEN HERE")
+                        token=NEON_TOKEN)
 
 
 
@@ -23,17 +29,7 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
                  easting=c(571000,578000), 
                  northing=c(5079000,5080000), 
                  savepath="/data",
-                 token="PASTE YOUR TOKEN HERE")
-
-
-
-## ----useTokenName, eval=FALSE, comment=NA------------------------------------------------------------------------
-
-NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
-
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token=NEON_TOKEN)
+                 token=NEON_TOKEN)
 
 
 

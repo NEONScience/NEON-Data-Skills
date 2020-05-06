@@ -3,7 +3,7 @@ syncID: 7a3d01f3a2a84e6092774e2d21e13a16
 title: "Using an API Token when Accessing NEON Data"
 description: "Get an API token tied to your NEON user account, and use it for faster download speeds when accessing NEON data via the neonUtilities package."
 dateCreated: 2020-05-04
-authors: [Claire K. Lunch, Megan A. Jones, Donal O'Leary]
+authors: [Claire K. Lunch]
 contributors:
 estimatedTime: 20 minutes
 packagesLibraries: neonUtilities
@@ -106,9 +106,8 @@ Click on the Copy button to copy your API token to the clipboard:
 
 ## Use API token in neonUtilities 
 
-In a moment, we'll walk through saving your token somewhere secure but 
-accessible to your code. But first let's try out using the token the easy 
-way.
+In the next section, we'll walk through saving your token somewhere secure but 
+accessible to your code. But first let's try out using the token the easy way.
 
 First, we need to load the `neonUtilities` package:
 
@@ -122,6 +121,15 @@ library(neonUtilities)
 
 ```
 
+NEON API tokens are very long, so it would be annoying to keep pasting the 
+entire text string into functions. Assign your token an object name:
+
+```{r nameToken, eval=FALSE, comment=NA}
+
+NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
+
+```
+
 Now we'll use the `loadByProduct()` function to download data. Your 
 API token is entered as the optional `token` input parameter. For 
 this example, we'll download Plant foliar traits (DP1.10026.001).
@@ -130,7 +138,7 @@ this example, we'll download Plant foliar traits (DP1.10026.001).
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
-                        token="PASTE YOUR TOKEN HERE")
+                        token=NEON_TOKEN)
 
 ```
 
@@ -150,7 +158,7 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
                  easting=c(571000,578000), 
                  northing=c(5079000,5080000), 
                  savepath="/data",
-                 token="PASTE YOUR TOKEN HERE")
+                 token=NEON_TOKEN)
 
 ```
 
@@ -159,24 +167,11 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
 Your API token is unique to your account, so don't share it!
 
 If you're writing code that will be available publicly, such as in a GitHub 
-repository, you'll need to save your token locally, and pull it into your 
-code with an alias. There are a few ways to do this. Let's start by simply 
-assigning the token to a variable name.
-
-```{r useTokenName, eval=FALSE, comment=NA}
-
-NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
-
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token=NEON_TOKEN)
-
-```
-
-Of course, this is visible to anyone you share your code with, and when you 
-close your R session, the `NEON_TOKEN` variable will be cleared, so you'd 
-have to re-create the variable in every session. We'll show two options for 
-doing this smoothly:
+repository, you can't include the line of code above where we assigned 
+your token to `NEON_TOKEN`, since your token is fully visible in the code 
+there. Instead, you'll need to save your token locally, and pull it into your 
+code without displaying it. There are a few ways to do this, we'll show 
+two options here.
 
 * Option 1: Save the token in a local file, and `source()` that file at the 
 start of every script. This is fairly simple but requires a line of code in 
@@ -199,10 +194,10 @@ NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 ```
 
 Save this file in a logical place on your machine, somewhere that won't be 
-visible publicly. Let's call it `neon_token_source.R`, and let's say you've 
-saved it to the `/data` folder on your machine. Then, at the start of every 
-script where you're going to use the NEON API, you would run this line of 
-code:
+visible publicly. Let's call the file `neon_token_source.R`, and let's say 
+you've saved it to the `/data` folder on your machine. Then, at the start of 
+every script where you're going to use the NEON API, you would run this line 
+of code:
 
 ```{r source, eval=FALSE, comment=NA}
 
