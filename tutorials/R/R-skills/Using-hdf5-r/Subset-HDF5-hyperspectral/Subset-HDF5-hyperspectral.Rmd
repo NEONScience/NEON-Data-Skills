@@ -322,7 +322,7 @@ it is weird that `NULL` indicates "all" in this circumstance, but that is the
 default behavior for this, and many other, functions).
 
 
-```{r plot-example-band, fig.cap="Hyperspectral reflectance plot"}
+```{r plot-example-band, fig.cap="Aerial image of a school campus that includes features like buildings, roads, and trees"}
 # Extract or "slice" data for band 58 from the HDF5 file
 b58 <- h5read(f_full,name = "SJER/Reflectance/Reflectance_Data",
              index=list(58,NULL,NULL))
@@ -352,7 +352,7 @@ we need to select rows 1 through 500 (bottom half), and columns 501 through 1000
 a `list` of three dimenstions for this example - in the order of bands, columns, 
 rows. 
 
-```{r plot-example-band-subset, fig.cap="Subset of the hyperspectral reflectance plot"}
+```{r plot-example-band-subset, fig.cap="A subset of the image above that now focuses on part of a water feature and a baseball diamond surrounded by bare ground and trees"}
 subset_rows <- 1:500
 subset_columns <- 501:1000
 # Extract or "slice" data for band 44 from the HDF5 file
