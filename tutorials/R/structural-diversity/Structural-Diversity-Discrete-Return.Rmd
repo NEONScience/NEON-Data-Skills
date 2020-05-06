@@ -1,5 +1,5 @@
 ---
-title: "Forest-Structural-Diversity-Discrete-Return"
+title: "Calculating Forest Structural Diversity Metrics from NEON LiDAR Data"
 code1: R/structural-diversity/Structural-Diversity-Discrete-Return.R
 contributors: Jeff Atkins, Keith Krause, Atticus Stovall
 dataProduct: null
