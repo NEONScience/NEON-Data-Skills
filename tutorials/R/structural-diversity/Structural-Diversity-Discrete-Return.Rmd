@@ -85,8 +85,7 @@ has several sensors including discrete-return LiDAR, which is useful for measuri
 
 We will be comparing the structural diversity of two NEON sites that vary in their structural characteristics. 
 
-First, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target=
-_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by Quercus rubra, Acer rubrum, and Aralia nudicaulis.
+First, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by Quercus rubra, Acer rubrum, and Aralia nudicaulis.
 
 Second, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a>, which is a high elevation forested NEON site in California. TEAK is an evergreen forest dominated by Abies magnifica, Abies concolor, Pinus jeffreyi, and Pinus contorta. 
 
