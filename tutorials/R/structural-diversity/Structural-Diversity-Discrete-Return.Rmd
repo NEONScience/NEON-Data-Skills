@@ -186,7 +186,7 @@ plot(data.40m)
 Now that we have our area of interest normalized and clipped, we can proceed with calculating 
 our structural diversity metrics. These metrics are described by LaRue et al. in <a href="https://www.preprints.org/manuscript/202003.0339/v1" target="_blank">Preprint DOI: 10.20944/preprints202003.0339.v1</a>
 
-```{r calculate-structural-diversity-metrics}
+```{r calculate-structural-diversity-metrics fig.cap="Canopy Height Model (CHM) of HARV study area"}
 
 ############# Structural diversity metrics  ##################################
 
