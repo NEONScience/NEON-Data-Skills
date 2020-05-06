@@ -2,12 +2,12 @@
 syncID: 79f902f6c0264f16a9be13f50560860a
 title: "Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
 code1: hyperspectral/Plot-Hyperspectral-Spectra.R
-contributors: null
+contributors: Felipe Sanchez
 dateCreated: 2015-08-08 20:49:52
 description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
-dataProduct: null
+dataProduct: DP3.30006.001
 packagesLibraries: rhdf5, raster, rgdal, plyr
 authors: Leah A. Wasser, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
@@ -203,7 +203,7 @@ head(aPixeldf)
 
 Now we're ready to plot our spectral signature!
 
-```{r plot-spectra, fig.width=9, fig.height=6}
+```{r plot-spectra, fig.width=9, fig.height=6, fig.cap="Spectral signature plot with wavelenght in nanometers on the x-axis and reflectance on the y-axis."}
 
 ggplot(data=aPixeldf)+
    geom_line(aes(x=Wavelength, y=ScaledReflectance))+
