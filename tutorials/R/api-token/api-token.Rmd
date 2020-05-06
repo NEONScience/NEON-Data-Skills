@@ -1,5 +1,5 @@
 ---
-syncID: 7a3d01f3a2a84e6092774e2d21e13a16
+syncID: 99d22b526c1a4a88847259a4d05b46af
 title: "Using an API Token when Accessing NEON Data"
 description: "Get an API token tied to your NEON user account, and use it for faster download speeds when accessing NEON data via the neonUtilities package."
 dateCreated: 2020-05-04
