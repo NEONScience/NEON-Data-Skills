@@ -118,7 +118,10 @@ Note that this function can read in both `.las` and `.laz` file formats.
 ############ Read in LiDAR data ###########
 #2017 1 km2 tile .laz file type for HARV and TEAK
 
-#Watch out for outlier Z points - this function also allows for the ability to filter outlier points well above or below the landscape (-drop_z_blow and -drop_z_above). See how we have done this here for you.
+#Watch out for outlier Z points - this function also allows for the
+#ability to filter outlier points well above or below the landscape
+#(-drop_z_blow and -drop_z_above). See how we have done this here 
+#for you.
 
 HARV <- readLAS(paste0(wd,"NEON_D01_HARV_DP1_727000_4702000_classified_point_cloud_colorized.laz"),
                 filter = "-drop_z_below 150 -drop_z_above 325")
