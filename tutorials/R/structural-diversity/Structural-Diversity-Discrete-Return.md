@@ -1,6 +1,6 @@
 ---
-title: "Forest-Structural-Diversity-Discrete-Return"
-code1: hyperspectral/Plot-Hyperspectral-Spectra.R
+title: "Calculating Forest Structural Diversity Metrics from NEON LiDAR Data"
+code1: R/structural-diversity/Structural-Diversity-Discrete-Return.R
 contributors: Jeff Atkins, Keith Krause, Atticus Stovall
 dataProduct: null
 dateCreated: '2020-05-01'
@@ -47,7 +47,7 @@ https://www.neonscience.org/field-sites/field-sites-map/HARV" target=
 _blank">Harvard Forest (HARV)</a> and 
 <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a> sites.
 
-<a href="https://drive.google.com/open?id=1Aemh0IVKvC-LoMj2AXr9k8rDQk77l8k7" target="_blank"> __Link to download .laz files on Google Drive Here.__</a>
+<a href="https://drive.google.com/open?id=1Aemh0IVKvC-LoMj2AXr9k8rDQk77l8k7" target="_blank"> **Link to download .laz files on Google Drive Here.**</a>
 
 ***
 ### Recommended Skills
@@ -85,9 +85,7 @@ has several sensors including discrete-return LiDAR, which is useful for measuri
 
 We will be comparing the structural diversity of two NEON sites that vary in their structural characteristics. 
 
-First, we will look at <a href="
-https://www.neonscience.org/field-sites/field-sites-map/HARV" target=
-_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by Quercus rubra, Acer rubrum, and Aralia nudicaulis.
+First, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by Quercus rubra, Acer rubrum, and Aralia nudicaulis.
 
 Second, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a>, which is a high elevation forested NEON site in California. TEAK is an evergreen forest dominated by Abies magnifica, Abies concolor, Pinus jeffreyi, and Pinus contorta. 
 
@@ -100,11 +98,11 @@ directory to the location where we saved the input LiDAR .laz files that can be
 downloaded from the NEON Data Portal.
 
 
-    ############################ Packages ############################################## 
+    ############### Packages ################### 
     library(lidR)
     library(gstat)
     
-    ############################ Set working director ##################################
+    ############### Set working director ######
     #set the working of the downloaded tutorial folder
     wd <- "~/Git/data/" #This will depend on your local machine
     setwd(wd)
@@ -113,19 +111,25 @@ Next, we will read in the LiDAR data using the `lidR::readLAS()` function.
 Note that this function can read in both `.las` and `.laz` file formats.
 
 
-    ########################## Read in LiDAR data ######################################
+    ############ Read in LiDAR data ###########
     #2017 1 km2 tile .laz file type for HARV and TEAK
     
-    #Watch out for outlier Z points - this function also allows for the ability to filter outlier points well above or below the landscape (-drop_z_blow and -drop_z_above). See how we have done this here for you.
+    #Watch out for outlier Z points - this function also allows for the
+    #ability to filter outlier points well above or below the landscape
+    #(-drop_z_blow and -drop_z_above). See how we have done this here 
+    #for you.
     
-    HARV <- readLAS(paste0(wd,"NEON_D01_HARV_DP1_727000_4702000_classified_point_cloud_colorized.laz"), filter = "-drop_z_below 150 -drop_z_above 325")
+    HARV <- readLAS(paste0(wd,"NEON_D01_HARV_DP1_727000_4702000_classified_point_cloud_colorized.laz"),
+                    filter = "-drop_z_below 150 -drop_z_above 325")
     
-    TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_cloud_colorized.laz"), filter = "-drop_z_below 1694 -drop_z_above 2500")
+    TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_cloud_colorized.laz"),
+                    filter = "-drop_z_below 1694 -drop_z_above 2500")
 
 
-    ############################ Look at data specs ##################################
-    #Let's check out the extent, coordinate system, and a 3D plot of each .laz file
-    #Note that on Mac computers you may need to install XQuartz for 3D plots - see xquartz.org
+    ############## Look at data specs ######
+    #Let's check out the extent, coordinate system, and a 3D plot of each 
+    #.laz file. Note that on Mac computers you may need to install 
+    #XQuartz for 3D plots - see xquartz.org
     summary(HARV)
     plot(HARV)
     
@@ -141,38 +145,51 @@ that is quite a bit larger than our area of interest to avoid edge effects. To b
 clip out an area of 200 x 200 m, normalize it, and then clip out our smaller area of interest.
 
 
-    ############################ Correct for elevation #################################
-    #We're going to choose a 40 x 40 m spatial extent, which is the extent for NEON base plots. 
-    #First set the center of where you want the plot to be (note easting and northing works in 
-    #units of m because these data are in a UTM proejction as shown in the summary above).
+    ############## Correct for elevation #####
+    #We're going to choose a 40 x 40 m spatial extent, which is the
+    #extent for NEON base plots. 
+    #First set the center of where you want the plot to be (note easting 
+    #and northing works in units of m because these data are in a UTM 
+    #proejction as shown in the summary above).
     x <- 727500 #easting 
     y <- 4702500 #northing
     
-    #Cut out a 200 x 200 m buffer by adding 100 m to easting and northing coordinates (x,y).
-    data.200m <- lasclipRectangle(HARV, xleft = (x - 100), ybottom = (y - 100), 
-                                  xright = (x + 100), ytop = (y + 100))
+    #Cut out a 200 x 200 m buffer by adding 100 m to easting and 
+    #northing coordinates (x,y).
+    data.200m <- 
+       lasclipRectangle(HARV,
+                        xleft = (x - 100), ybottom = (y - 100),
+                        xright = (x + 100), ytop = (y + 100))
     
-    #Correct for ground height using a kriging function to interpolate elevation from ground points in the .laz file.
-    #If the function will not run, then you may need to checkfor outliers ab adjusting the 'drop_z_' 
-    #arguments when reading in the .laz files.
+    #Correct for ground height using a kriging function to interpolate 
+    #elevation from ground points in the .laz file.
+    #If the function will not run, then you may need to checkfor outliers
+    #by adjusting the 'drop_z_' arguments when reading in the .laz files.
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 7 degenerated ground points. Some X Y coordinates were repeated but with different Z
-    ## coordinates. min Z were retained.
+    ## Warning: There were 7 degenerated ground points. Some X Y coordinates were
+    ## repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
-    #Will often give a warning if not all points could be corrected, but visually check to see if it corrected for ground height. 
+    #Will often give a warning if not all points could be corrected, 
+    #but visually check to see if it corrected for ground height. 
     plot(data.200m)
-    #There's only a few uncorrected points and we'll fix these in the next step. 
+    #There's only a few uncorrected points and we'll fix these in 
+    #the next step. 
     
-    #Clip 20 m out from each side of the easting and northing coordinates (x,y).
-    data.40m <- lasclipRectangle(data.200m, xleft = (x - 20), ybottom = (y - 20), 
-                                 xright = (x + 20), ytop = (y + 20))
+    #Clip 20 m out from each side of the easting and northing 
+    #coordinates (x,y).
+    data.40m <- 
+       lasclipRectangle(data.200m, 
+                        xleft = (x - 20), ybottom = (y - 20),
+                        xright = (x + 20), ytop = (y + 20))
     
-    data.40m@data$Z[data.40m@data$Z <= .5] <- NA  #Filters out all z_vals below .5 m as we are less 
-    #interested in vegetation very close to the ground and more on shrubs/trees.
-    #You could change it to zero or another height depending on interests. 
+    data.40m@data$Z[data.40m@data$Z <= .5] <- NA  
+    #This line filters out all z_vals below .5 m as we are less 
+    #interested in vegetation very close to the ground and more 
+    #on shrubs/trees. You could change it to zero or another 
+    #height depending on interests. 
     
     #visualize the clipped plot point cloud
     plot(data.40m) 
@@ -181,11 +198,12 @@ Now that we have our area of interest normalized and clipped, we can proceed wit
 our structural diversity metrics. These metrics are described by LaRue et al. in <a href="https://www.preprints.org/manuscript/202003.0339/v1" target="_blank">Preprint DOI: 10.20944/preprints202003.0339.v1</a>
 
 
-    ############# Structural diversity metrics  ##################################
+    ############# Structural diversity metrics  ######
     
-    #GENERATE CANOPY HEIGHT MODEL (CHM) (i.e. a 1 m2 raster grid of vegetations heights)
-    #generate CHM of plot point cloud
-    #res argument specifies pixel size in meters and dsmtin is a simple Delaunay triangulation for raster interpolation
+    #GENERATE CANOPY HEIGHT MODEL (CHM) (i.e. a 1 m2 raster grid of 
+    #vegetations heights)
+    #res argument specifies pixel size in meters and dsmtin is a 
+    #simple Delaunay triangulation for raster interpolation
     chm <- grid_canopy(data.40m, res = 1, dsmtin())  
     
     #visualize CHM
@@ -202,20 +220,25 @@ our structural diversity metrics. These metrics are described by LaRue et al. in
     max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
     
     #RUMPLE
-    #calculate rumple, a ratio of outer canopy surface area to ground surface area (1600 m^2)
+    #calculate rumple, a ratio of outer canopy surface area to 
+    #ground surface area (1600 m^2)
     rumple <- rumple_index(chm) 
     
     #TOP RUGOSITY
-    #top rugosity, the standard deviation of pixel values in chm and is a measure of outer canopy roughness
+    #top rugosity, the standard deviation of pixel values in chm and 
+    #is a measure of outer canopy roughness
     top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
     
     #DEEP GAPS & DEEP GAP FRACTION
-    cells <- length(chm@data@values) #number of cells in raster (also area in m2)
+    #number of cells in raster (also area in m2)
+    cells <- length(chm@data@values) 
     chm.0 <- chm
     chm.0[is.na(chm.0)] <- 0 #replace NAs with zeros in CHM
-    zeros <- which(chm.0@data@values == 0) #create variable for the number of deep gaps, 1 m^2 canopy gaps
+    #create variable for the number of deep gaps, 1 m^2 canopy gaps
+    zeros <- which(chm.0@data@values == 0) 
     deepgaps <- length(zeros) #number of deep gaps
-    #deep gap fraction, the number of deep gaps in the chm relative to total number of chm pixels
+    #deep gap fraction, the number of deep gaps in the chm relative 
+    #to total number of chm pixels
     deepgap.fraction <- deepgaps/cells 
     
     #COVER FRACTION
@@ -223,7 +246,8 @@ our structural diversity metrics. These metrics are described by LaRue et al. in
     cover.fraction <- 1 - deepgap.fraction 
     
     #HEIGHT SD
-    #height SD, the standard deviation of height values for all points in the plot point cloud
+    #height SD, the standard deviation of height values for all points 
+    #in the plot point cloud
     vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
 
     ## Warning: 'lasmetrics' is deprecated.
@@ -231,29 +255,36 @@ our structural diversity metrics. These metrics are described by LaRue et al. in
     ## See help("Deprecated")
 
     #SD of VERTICAL SD of HEIGHT
-    #rasterize plot point cloud and calculate the standard deviation of height values at a resolution of 1 m^2
+    #rasterize plot point cloud and calculate the standard deviation 
+    #of height values at a resolution of 1 m^2
     sd.1m2 <- grid_metrics(data.40m, sd(Z), 1)
-    #standard deviation of the calculated standard deviations from previous line 
-    #measure of internal and external canopy complexity
+    #standard deviation of the calculated standard deviations 
+    #from previous line 
+    #This is a measure of internal and external canopy complexity
     sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
      
     
-    #some of the next few functions won't handle NAs, so we need to filter these out of a vector of Z points
+    #some of the next few functions won't handle NAs, so we need 
+    #to filter these out of a vector of Z points
     Zs <- data.40m@data$Z
     Zs <- Zs[!is.na(Zs)]
     
     #ENTROPY 
     #entropy, quantifies diversity & evenness of point cloud heights 
     #by = 1 partitions point cloud in 1 m tall horizontal slices 
-    #ranges from 0-1, with 1 being more evenly distributed points across the 1 m tall slices 
+    #ranges from 0-1, with 1 being more evenly distributed points 
+    #across the 1 m tall slices 
     entro <- entropy(Zs, by = 1) 
     
     #GAP FRACTION PROFILE 
-    #gap fraction profile, assesses the distribution of gaps in the canopy volume 
+    #gap fraction profile, assesses the distribution of gaps in the 
+    #canopy volume 
     #dz = 1 partitions point cloud in 1 m horizontal slices 
-    #z0 is set to a reasonable height based on the age and height of the study sites 
+    #z0 is set to a reasonable height based on the age and height of 
+    #the study sites 
     gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3) 
-    #defines gap fraction profile as the average gap fraction in each 1 m horizontal slice assessed in the previous line
+    #defines gap fraction profile as the average gap fraction in each 
+    #1 m horizontal slice assessed in the previous line
     GFP.AOP <- mean(gap_frac$gf) 
     
     #VAI
@@ -262,68 +293,81 @@ our structural diversity metrics. These metrics are described by LaRue et al. in
     #dz = 1 partitions point cloud in 1 m horizontal slices 
     #z0 is set to the same height as gap fraction profile above
     LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
-    #vegetation area index, sum of leaf area density values for all horizontal slices assessed in previous line
+    #vegetation area index, sum of leaf area density values for 
+    #all horizontal slices assessed in previous line
     VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
     
     #VCI
-    #vertical complexity index, fixed normalization of entropy metric calculated above
+    #vertical complexity index, fixed normalization of entropy 
+    #metric calculated above
     #set zmax comofortably above maximum canopy height
-    #by = 1 assesses the metric based on 1 m horizontal slices in the canopy
+    #by = 1 assesses the metric based on 1 m horizontal slices in 
+    #the canopy
     VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
 
 We now have 13 metrics of structural diversity, which we can arrange into a single table:
 
 
     #OUTPUT CALCULATED METRICS INTO A TABLE
-    #creates a dataframe row, out.plot, containing plot descriptors and calculated metrics
-    HARV_structural_diversity <- data.frame(matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht,
-                                                     rumple, deepgaps, 
-                                                     deepgap.fraction, cover.fraction,
-                                                     top.rugosity, vert.sd, sd.sd, entro,
-                                                     GFP.AOP, VAI.AOP, VCI.AOP), ncol = 15)) 
+    #creates a dataframe row, out.plot, containing plot descriptors 
+    #and calculated metrics
+    HARV_structural_diversity <- 
+       data.frame(matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht, 
+                           rumple, deepgaps,deepgap.fraction,
+                           cover.fraction,top.rugosity, vert.sd, 
+                           sd.sd, entro,GFP.AOP, VAI.AOP, VCI.AOP),
+                         ncol = 15)) 
     
     #provide descriptive names for the calculated metrics
-    colnames(HARV_structural_diversity) <- c("easting", "northing", "mean.max.canopy.ht.aop", "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop", "deepgap.fraction.aop",
-                       "cover.fraction.aop", "top.rugosity.aop", "vert.sd.aop", "sd.sd.aop", "entropy.aop", "GFP.AOP.aop", "VAI.AOP.aop", "VCI.AOP.aop") 
+    colnames(HARV_structural_diversity) <- 
+       c("easting", "northing", "mean.max.canopy.ht.aop",
+         "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
+         "deepgap.fraction.aop","cover.fraction.aop", 
+         "top.rugosity.aop", "vert.sd.aop", "sd.sd.aop", 
+         "entropy.aop", "GFP.AOP.aop", "VAI.AOP.aop", "VCI.AOP.aop") 
     
     #View the results
     HARV_structural_diversity 
 
-    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-    ## 1  727500  4702500               17.47636           24.1664   2.807299            7             0.004375
-    ##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
-    ## 1           0.995625         4.323543    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
+    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## 1  727500  4702500               17.47636           24.1664   2.807299
+    ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## 1            7             0.004375           0.995625         4.323543
+    ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## 1    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
 
 Now that we have run through how to measure each structural diversity metric, let's create a 
 convenient function to run these a little faster on the TEAK site for a comparisons of structural 
 diversity with HARV. 
 
 
-    ####################################################################################
-    #-----------------------------------------------------------------------------------
     #Let's correct for elevation and measure structural diversity for TEAK
     x <- 316400 
     y <- 4091700
     
-    data.200m <- lasclipRectangle(TEAK, xleft = (x - 100), ybottom = (y - 100), 
+    data.200m <- lasclipRectangle(TEAK, 
+                                  xleft = (x - 100), ybottom = (y - 100),
                                   xright = (x + 100), ytop = (y + 100))
     plot(data.200m)
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates were repeated. They were removed.
+    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates
+    ## were repeated. They were removed.
 
-    ## Warning: There were 41 degenerated ground points. Some X Y coordinates were repeated but with different Z
-    ## coordinates. min Z were retained.
+    ## Warning: There were 41 degenerated ground points. Some X Y coordinates were
+    ## repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
-    data.40m <- lasclipRectangle(data.200m, xleft = (x - 20), ybottom = (y - 20), 
+    data.40m <- lasclipRectangle(data.200m, 
+                                 xleft = (x - 20), ybottom = (y - 20),
                                  xright = (x + 20), ytop = (y + 20))
     data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
     plot(data.40m)
     
     
-    #Zip up all the code we previously used and write function to run all 14 metrics in a single function. 
+    #Zip up all the code we previously used and write function to 
+    #run all 14 metrics in a single function. 
     structural_diversity_metrics <- function(data.40m) {
        chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
        mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
@@ -348,15 +392,19 @@ diversity with HARV.
        LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
        VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
        VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
-       out.plot <- data.frame(matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht, rumple,
-                                       deepgaps, deepgap.fraction, cover.fraction,
-                                       top.rugosity, vert.sd, sd.sd, entro, GFP.AOP, VAI.AOP,
-                                       VCI.AOP), ncol = 15)) 
-       colnames(out.plot) <- c("easting", "northing", "mean.max.canopy.ht.aop",
-                               "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
-                               "deepgap.fraction.aop", "cover.fraction.aop","top.rugosity.aop",
-                               "vert.sd.aop","sd.sd.aop", "entropy.aop", "GFP.AOP.aop",
-                               "VAI.AOP.aop", "VCI.AOP.aop") 
+       out.plot <- data.frame(
+          matrix(c(x, y, mean.max.canopy.ht,max.canopy.ht, 
+                   rumple,deepgaps, deepgap.fraction, 
+                   cover.fraction, top.rugosity, vert.sd, 
+                   sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
+                 ncol = 15)) 
+       colnames(out.plot) <- 
+          c("easting", "northing", "mean.max.canopy.ht.aop",
+            "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
+            "deepgap.fraction.aop", "cover.fraction.aop",
+            "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
+            "entropy.aop", "GFP.AOP.aop",
+            "VAI.AOP.aop", "VCI.AOP.aop") 
        print(out.plot)
     }
     
@@ -366,14 +414,17 @@ diversity with HARV.
     ## Use 'cloud_metrics' instead.
     ## See help("Deprecated")
 
-    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-    ## 1  316400  4091700               18.26802          40.60467   5.060158           76               0.0475
-    ##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
-    ## 1             0.9525         10.18562    11.56424  4.320685   0.8390816   0.9683643    2.455946   0.6766286
+    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## 1  316400  4091700               18.26802          40.60467   5.060158
+    ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## 1           76               0.0475             0.9525         10.18562
+    ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## 1    11.56424  4.320685   0.8390816   0.9683643    2.455946   0.6766286
 How does the structural diversity of the evergreen, sparse TEAK forest compare to the dense, mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
 
 
-    combined_results=rbind(HARV_structural_diversity, TEAK_structural_diversity)
+    combined_results=rbind(HARV_structural_diversity, 
+                           TEAK_structural_diversity)
     
     # Add row names for clarity
     row.names(combined_results)=c("HARV","TEAK")
@@ -381,12 +432,12 @@ How does the structural diversity of the evergreen, sparse TEAK forest compare t
     # Take a look to compare
     combined_results
 
-    ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-    ## HARV  727500  4702500               17.47636          24.16640   2.807299            7             0.004375
-    ## TEAK  316400  4091700               18.26802          40.60467   5.060158           76             0.047500
-    ##      cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop
-    ## HARV           0.995625         4.323543    5.941824  2.272381   0.9147319   0.8638870    6.659670
-    ## TEAK           0.952500        10.185618   11.564239  4.320685   0.8390816   0.9683643    2.455946
-    ##      VCI.AOP.aop
-    ## HARV   0.6393701
-    ## TEAK   0.6766286
+    ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## HARV  727500  4702500               17.47636          24.16640   2.807299
+    ## TEAK  316400  4091700               18.26802          40.60467   5.060158
+    ##      deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## HARV            7             0.004375           0.995625         4.323543
+    ## TEAK           76             0.047500           0.952500        10.185618
+    ##      vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## HARV    5.941824  2.272381   0.9147319   0.8638870    6.659670   0.6393701
+    ## TEAK   11.564239  4.320685   0.8390816   0.9683643    2.455946   0.6766286
