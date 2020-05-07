@@ -1,5 +1,5 @@
 ---
-title: "Forest-Structural-Diversity-Discrete-Return"
+title: "Calculating Forest Structural Diversity Metrics from NEON LiDAR Data"
 code1: R/structural-diversity/Structural-Diversity-Discrete-Return.R
 contributors: Jeff Atkins, Keith Krause, Atticus Stovall
 dataProduct: null
@@ -24,7 +24,7 @@ After completing this tutorial, you will be able to:
 * Read a NEON LiDAR file (laz) into R
 * Visualize a spatial subset of the LiDAR tile
 * Correct a spatial subset of the LiDAR tile for topographic varation
-* Calculate 14 structural diversity metrics described in <a href="https://www.preprints.org/manuscript/202003.0339/v1" target="_blank">Preprint DOI: 10.20944/preprints202003.0339.v1</a>
+* Calculate 13 structural diversity metrics described in <a href="https://doi.org/10.3390/rs12091407" target="_blank">LaRue, Wagner, et al. (2020) </a>
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
@@ -42,9 +42,7 @@ on Packages in R - Adapted from Software Carpentry.</a>
 ### Data to Download
 
 For this tutorial, we will be using two .laz files containing NEON 
-AOP point clouds for 1km tiles from the <a href="
-https://www.neonscience.org/field-sites/field-sites-map/HARV" target=
-_blank">Harvard Forest (HARV)</a> and 
+AOP point clouds for 1km tiles from the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">Harvard Forest (HARV)</a> and 
 <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a> sites.
 
 <a href="https://drive.google.com/open?id=1Aemh0IVKvC-LoMj2AXr9k8rDQk77l8k7" target="_blank"> **Link to download .laz files on Google Drive Here.**</a>
@@ -77,7 +75,7 @@ forested locations. In this tutorial, you will be introduced to a few tools
 that will help you to explore and quantify forest structure using LiDAR data 
 collected at two field sites of the 
 <a href="https://www.neonscience.org/" target="_blank"> 
-National Ecological Observatory Network.</a>. 
+National Ecological Observatory Network</a>. 
 
 ##The NEON AOP 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> The NEON Airborne Observation Platform (AOP) </a>. 
@@ -89,8 +87,7 @@ First, we will look at <a href="https://www.neonscience.org/field-sites/field-si
 
 Second, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a>, which is a high elevation forested NEON site in California. TEAK is an evergreen forest dominated by Abies magnifica, Abies concolor, Pinus jeffreyi, and Pinus contorta. 
 
-As you can imagine, these two forest types vary in their structural attributes. We can quantify 
-these differences by calculating several different structural diversity metrics, and comparing 
+As you can imagine, these two forest types will have both similarities and differences in their structural attributes. We can quantify these attributes by calculating several different structural diversity metrics, and comparing 
 the results.
 
 To begin, we first need to load our required R packages, and set our working 
@@ -102,7 +99,7 @@ downloaded from the NEON Data Portal.
     library(lidR)
     library(gstat)
     
-    ############### Set working director ######
+    ############### Set working directory ######
     #set the working of the downloaded tutorial folder
     wd <- "~/Git/data/" #This will depend on your local machine
     setwd(wd)
@@ -132,13 +129,29 @@ Note that this function can read in both `.las` and `.laz` file formats.
     #XQuartz for 3D plots - see xquartz.org
     summary(HARV)
     plot(HARV)
-    
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/HARV1km2.JPG">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/HARV1km2.JPG"
+    alt="1 km-squared point cloud from Harvard Forest showing a gentle slope covered in a continuous canopy of mixed forest.">
+    </a>
+</figure>
+
+
     summary(TEAK)
     plot(TEAK)
 
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/TEAK1km2.JPG">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/TEAK1km2.JPG"
+    alt="1 km-squared point cloud from Lower Teakettle showing mountainous terrain covered in a patchy conifer forest, with tall, skinny conifers clearly visible emerging from the discontinuous canopy.">
+    </a>
+</figure>
+
 To begin, we will take a look at the structural diversity of the dense mixed deciduous/evergreen 
-forest of HARV. We're goign to choose a 40 x 40 m spatial extent for our analysis, but first we 
-need to normalize the vertical dimention values of this LiDAR point cloud from an absolute elevation 
+forest of HARV. We're going to choose a 40 x 40 m spatial extent for our analysis, but first we 
+need to normalize the height values of this LiDAR point cloud from an absolute elevation 
 above mean sea level to height above the ground using the `lidR::lasnormalize()` function. This 
 function relies on spatial interpolation, and therefore we want to perform this step on an area 
 that is quite a bit larger than our area of interest to avoid edge effects. To be safe, we will 
@@ -187,23 +200,29 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     
     data.40m@data$Z[data.40m@data$Z <= .5] <- NA  
     #This line filters out all z_vals below .5 m as we are less 
-    #interested in vegetation very close to the ground and more 
-    #on shrubs/trees. You could change it to zero or another 
-    #height depending on interests. 
+    #interested in shrubs/trees. 
+    #You could change it to zero or another height depending on interests. 
     
     #visualize the clipped plot point cloud
     plot(data.40m) 
 
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/HARV40mx40m.JPG">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/HARV40mx40m.JPG"
+    alt="40 meter by 40 meter point cloud from Harvard Forest showing a cross-section of the forest structure with a complex canopy- and sub-canopy structure with many rounded crowns, characteristic of a deciduous-dominated section of forest.">
+    </a>
+</figure>
+
 Now that we have our area of interest normalized and clipped, we can proceed with calculating 
-our structural diversity metrics. These metrics are described by LaRue et al. in <a href="https://www.preprints.org/manuscript/202003.0339/v1" target="_blank">Preprint DOI: 10.20944/preprints202003.0339.v1</a>
+our structural diversity metrics. 
 
 
     ############# Structural diversity metrics  ######
     
     #GENERATE CANOPY HEIGHT MODEL (CHM) (i.e. a 1 m2 raster grid of 
     #vegetations heights)
-    #res argument specifies pixel size in meters and dsmtin is a 
-    #simple Delaunay triangulation for raster interpolation
+    #res argument specifies pixel size in meters and dsmtin is 
+    #for raster interpolation
     chm <- grid_canopy(data.40m, res = 1, dsmtin())  
     
     #visualize CHM
@@ -337,7 +356,7 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
     ## 1    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
 
 Now that we have run through how to measure each structural diversity metric, let's create a 
-convenient function to run these a little faster on the TEAK site for a comparisons of structural 
+convenient function to run these a little faster on the TEAK site for a comparison of structural 
 diversity with HARV. 
 
 
@@ -348,14 +367,14 @@ diversity with HARV.
     data.200m <- lasclipRectangle(TEAK, 
                                   xleft = (x - 100), ybottom = (y - 100),
                                   xright = (x + 100), ytop = (y + 100))
-    plot(data.200m)
+    
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
     ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates
     ## were repeated. They were removed.
 
-    ## Warning: There were 41 degenerated ground points. Some X Y coordinates were
-    ## repeated but with different Z coordinates. min Z were retained.
+    ## Warning: There were 41 degenerated ground points. Some X Y coordinates
+    ## were repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
@@ -364,10 +383,17 @@ diversity with HARV.
                                  xright = (x + 20), ytop = (y + 20))
     data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
     plot(data.40m)
-    
-    
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/TEAK40mx40m.JPG">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/TEAK40mx40m.JPG"
+    alt="40 meter by 40 meter point cloud from Lower Teakettle showing a cross-section of the forest structure with several tall, pointed conifers separated by deep gaps in the canopy.">
+    </a>
+</figure>
+
+
     #Zip up all the code we previously used and write function to 
-    #run all 14 metrics in a single function. 
+    #run all 13 metrics in a single function. 
     structural_diversity_metrics <- function(data.40m) {
        chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
        mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
@@ -420,7 +446,8 @@ diversity with HARV.
     ## 1           76               0.0475             0.9525         10.18562
     ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
     ## 1    11.56424  4.320685   0.8390816   0.9683643    2.455946   0.6766286
-How does the structural diversity of the evergreen, sparse TEAK forest compare to the dense, mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
+
+How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
 
 
     combined_results=rbind(HARV_structural_diversity, 
@@ -435,9 +462,12 @@ How does the structural diversity of the evergreen, sparse TEAK forest compare t
     ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
     ## HARV  727500  4702500               17.47636          24.16640   2.807299
     ## TEAK  316400  4091700               18.26802          40.60467   5.060158
-    ##      deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
-    ## HARV            7             0.004375           0.995625         4.323543
-    ## TEAK           76             0.047500           0.952500        10.185618
-    ##      vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
-    ## HARV    5.941824  2.272381   0.9147319   0.8638870    6.659670   0.6393701
-    ## TEAK   11.564239  4.320685   0.8390816   0.9683643    2.455946   0.6766286
+    ##      deepgaps.aop deepgap.fraction.aop cover.fraction.aop
+    ## HARV            7             0.004375           0.995625
+    ## TEAK           76             0.047500           0.952500
+    ##      top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop
+    ## HARV         4.323543    5.941824  2.272381   0.9147319   0.8638870
+    ## TEAK        10.185618   11.564239  4.320685   0.8390816   0.9683643
+    ##      VAI.AOP.aop VCI.AOP.aop
+    ## HARV    6.659670   0.6393701
+    ## TEAK    2.455946   0.6766286

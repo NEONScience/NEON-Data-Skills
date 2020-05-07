@@ -1,17 +1,17 @@
-## ----call-libraries, results="hide"--------------------------------------
+## ----call-libraries, results="hide"-------------------------------------
 
 ############### Packages ################### 
 library(lidR)
 library(gstat)
 
-############### Set working director ######
+############### Set working directory ######
 #set the working of the downloaded tutorial folder
 wd <- "~/Git/data/" #This will depend on your local machine
 setwd(wd)
 
 
 
-## ----read-in-lidar-data--------------------------------------------------
+## ----read-in-lidar-data-------------------------------------------------
 
 ############ Read in LiDAR data ###########
 #2017 1 km2 tile .laz file type for HARV and TEAK
@@ -30,7 +30,7 @@ TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_clo
 
 
 
-## ----plot-and-summarize-laz-file, eval=F, comment=NA---------------------
+## ----plot-and-summarize-laz-file, eval=F, comment=NA--------------------
 ############## Look at data specs ######
 #Let's check out the extent, coordinate system, and a 3D plot of each 
 #.laz file. Note that on Mac computers you may need to install 
@@ -38,11 +38,13 @@ TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_clo
 summary(HARV)
 plot(HARV)
 
+
+## ----plot-teak-1km2-point-cloud, eval=F, comment=NA---------------------
 summary(TEAK)
 plot(TEAK)
 
 
-## ----correct-for-elevation-----------------------------------------------
+## ----correct-for-elevation----------------------------------------------
 
 ############## Correct for elevation #####
 #We're going to choose a 40 x 40 m spatial extent, which is the
@@ -82,9 +84,8 @@ data.40m <-
 
 data.40m@data$Z[data.40m@data$Z <= .5] <- NA  
 #This line filters out all z_vals below .5 m as we are less 
-#interested in vegetation very close to the ground and more 
-#on shrubs/trees. You could change it to zero or another 
-#height depending on interests. 
+#interested in shrubs/trees. 
+#You could change it to zero or another height depending on interests. 
 
 #visualize the clipped plot point cloud
 plot(data.40m) 
@@ -96,8 +97,8 @@ plot(data.40m)
 
 #GENERATE CANOPY HEIGHT MODEL (CHM) (i.e. a 1 m2 raster grid of 
 #vegetations heights)
-#res argument specifies pixel size in meters and dsmtin is a 
-#simple Delaunay triangulation for raster interpolation
+#res argument specifies pixel size in meters and dsmtin is 
+#for raster interpolation
 chm <- grid_canopy(data.40m, res = 1, dsmtin())  
 
 #visualize CHM
@@ -194,7 +195,7 @@ VAI.AOP <- sum(LADen$lad, na.rm=TRUE)
 VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
 
 
-## ----output-HARV-metrics-------------------------------------------------
+## ----output-HARV-metrics------------------------------------------------
 #OUTPUT CALCULATED METRICS INTO A TABLE
 #creates a dataframe row, out.plot, containing plot descriptors 
 #and calculated metrics
@@ -218,7 +219,7 @@ HARV_structural_diversity
 
 
 
-## ----calculate-structural-diversity-metrics-TEAK-------------------------
+## ----calculate-structural-diversity-metrics-TEAK------------------------
 #Let's correct for elevation and measure structural diversity for TEAK
 x <- 316400 
 y <- 4091700
@@ -226,7 +227,7 @@ y <- 4091700
 data.200m <- lasclipRectangle(TEAK, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
-plot(data.200m)
+
 dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 data.200m <- lasnormalize(data.200m, dtm)
 
@@ -237,8 +238,10 @@ data.40m@data$Z[data.40m@data$Z <= .5] <- 0
 plot(data.40m)
 
 
+## ----structural-diversity-function--------------------------------------
+
 #Zip up all the code we previously used and write function to 
-#run all 14 metrics in a single function. 
+#run all 13 metrics in a single function. 
 structural_diversity_metrics <- function(data.40m) {
    chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
    mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
@@ -283,7 +286,7 @@ TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
-## ----combine results-----------------------------------------------------
+## ----combine results----------------------------------------------------
 
 combined_results=rbind(HARV_structural_diversity, 
                        TEAK_structural_diversity)
