@@ -17,15 +17,15 @@ urlTitle: api-token
 
 NEON data can be downloaded from either the NEON Data Portal or the NEON API. 
 When downloading from the Data Portal, you can create a user account. Read 
-about the benefits of an account on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>.
+about the benefits of an account on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>. You can also use your account to create a token for using the 
+API. Your token is unique to your account, so don't share it.
 
 Using a token is optional! You can download data without a token, and 
-without a user account. Using a token when downloading data via the API links 
-your downloads to your user account, as well as enabling faster download 
-speeds. As NEON Data Portal development continues, additional benefits will 
-be added to accounts and tokens, such as allowing you to access your own 
-download history, and to be notified of updates to data products you've 
-downloaded.
+without a user account. Using a token when downloading data via the API, 
+including when using the neonUtilities package, links your downloads to 
+your user account, as well as enabling faster download speeds. For more 
+information about token usage and benefits, see the 
+<a href="https://data.neonscience.org/data-api" target="_blank">NEON API documentation</a> page.
 
 For now, in addition to faster downloads, using a token helps NEON to track 
 data downloads. Using **anonymized** user information, we can then calculate 
@@ -47,8 +47,8 @@ After completing this activity, you will be able to:
  * Use your token when downloading data with neonUtilities 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, `RStudio` loaded
-on your computer to complete this tutorial.
+You will need a version of R (3.4.1 or higher) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
 
 ### Install R Packages
 
@@ -78,7 +78,7 @@ the bottom of the My Account page, you should see this bar:
 
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png"></a>
+	<img src="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png" alt="Account page on NEON Data Portal showing Get API Token button."></a>
 	<figcaption>Screenshot of account page button to Get API Token. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -88,7 +88,7 @@ Click the 'GET API TOKEN' button. After a moment, you should see this:
 
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png"></a>
+	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
 	<figcaption>Screenshot of account page with API token created. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -98,8 +98,8 @@ Click on the Copy button to copy your API token to the clipboard:
 
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png"></a>
-	<figcaption>Screenshot of account page with API token created. 
+	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
+	<figcaption>Screenshot of account page with API token and copy button. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
 </figure>
@@ -113,7 +113,9 @@ First, we need to load the `neonUtilities` package:
 
 ```{r loadStuff, eval=FALSE, comment=NA}
 
-# install neonUtilities - can skip if already installed
+# install neonUtilities - can skip if already installed, but
+# API tokens are only enabled in neonUtilities v1.3.4 and higher
+# if your version number is lower, re-install
 install.packages("neonUtilities")
 
 # load neonUtilities
@@ -166,26 +168,26 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
 
 Your API token is unique to your account, so don't share it!
 
-If you're writing code that will be available publicly, such as in a GitHub 
-repository, you can't include the line of code above where we assigned 
+If you're writing code that will be shared with colleagues or available 
+publicly, such as in a GitHub repository or supplemental materials of a 
+published paper, you can't include the line of code above where we assigned 
 your token to `NEON_TOKEN`, since your token is fully visible in the code 
-there. Instead, you'll need to save your token locally, and pull it into your 
-code without displaying it. There are a few ways to do this, we'll show 
-two options here.
+there. Instead, you'll need to save your token locally on your computer, 
+and pull it into your code without displaying it. There are a few ways to 
+do this, we'll show two options here.
 
 * Option 1: Save the token in a local file, and `source()` that file at the 
 start of every script. This is fairly simple but requires a line of code in 
 every script.
 
 * Option 2: Add the token to a `.Renviron` file to create an environment 
-variable that gets loaded when you open RStudio. This is a little harder 
-to set up initially, and you must be using RStudio for it to work, but 
-once it's done, it's done globally, and it will work in every script you 
-run.
+variable that gets loaded when you open R. This is a little harder to set 
+up initially, but once it's done, it's done globally, and it will work in 
+every script you run.
 
-### Option 1: Save token in a local file
+## Option 1: Save token in a local file
 
-Open a new, empty R script. Put a single line of code in the script:
+Open a new, empty R script (.R). Put a single line of code in the script:
 
 ```{r scriptToSource, eval=FALSE, comment=NA}
 
@@ -209,10 +211,10 @@ Then you'll be able to use `token=NEON_TOKEN` when you run `neonUtilities`
 functions, and you can share your code without accidentally sharing your 
 token.
 
-### Option 2: Save token to the RStudio environment
+## Option 2: Save token to the R environment
 
 To create a persistent environment variable, we use a `.Renviron` file. 
-Before creating a file, check which directory RStudio is using as your home 
+Before creating a file, check which directory R is using as your home 
 directory:
 
 ```{r getdir, eval=FALSE, comment=NA}
@@ -226,12 +228,13 @@ Sys.getenv("HOME")
 ```
 
 Check the home directory to see if you already have a `.Renviron` file, **using 
-the file browse pane in RStudio**. Files that begin with `.` are hidden by 
-default, but RStudio recognizes files that begin with `.R` and displays them.
+the file browse pane in RStudio**, or using another file browse method with 
+hidden files shown. Files that begin with `.` are hidden by default, but 
+RStudio recognizes files that begin with `.R` and displays them.
 
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png"></a>
+	<img src="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png" alt="File browse pane in RStudio showing .Renviron file."></a>
 	<figcaption>Screenshot of file browse pane with .Renviron file. 
 	</figcaption>
 </figure>
@@ -250,7 +253,8 @@ NEON_TOKEN=PASTE YOUR TOKEN HERE
 ```
 
 Save the file as `.Renviron`, in the RStudio home directory identified above. 
-Re-start RStudio to load the environment.
+Double check the spelling, this will not work if you have a typo. Re-start 
+R to load the environment.
 
 Once your token is assigned to an environment variable, use the function 
 `Sys.getenv()` to access it. For example, in `loadByProduct()`:

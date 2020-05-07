@@ -1,6 +1,8 @@
 ## ----loadStuff, eval=FALSE, comment=NA---------------------------------------------------------------------------
 
-# install neonUtilities - can skip if already installed
+# install neonUtilities - can skip if already installed, but
+# API tokens are only enabled in neonUtilities v1.3.4 and higher
+# if your version number is lower, re-install
 install.packages("neonUtilities")
 
 # load neonUtilities
