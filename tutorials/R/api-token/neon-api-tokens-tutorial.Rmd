@@ -9,9 +9,9 @@ estimatedTime: 20 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
-code1: R/api-token/api-token.R
+code1: R/api-token/neon-api-tokens-tutorial.R
 tutorialSeries:
-urlTitle: api-token
+urlTitle: neon-api-tokens-tutorial
 
 ---
 
