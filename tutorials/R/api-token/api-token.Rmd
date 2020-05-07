@@ -71,7 +71,9 @@ then use it in neonUtilities when downloading data.
 ## Get a NEON API Token 
 
 The first step is create a NEON user account, if you don't have one. 
-Follow the instructions on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">Data Portal User Accounts</a> page.
+Follow the instructions on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">Data Portal User Accounts</a> page. If you do already 
+have an account, go to <a href="https://data.neonscience.org/home" target="_blank">the NEON Data Portal</a>, 
+sign in, and go to your My Account profile page.
 
 Once you have an account, you can create an API token for yourself. At 
 the bottom of the My Account page, you should see this bar: 
