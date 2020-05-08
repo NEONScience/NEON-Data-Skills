@@ -81,9 +81,6 @@ the bottom of the My Account page, you should see this bar:
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png">
 	<img src="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png" alt="Account page on NEON Data Portal showing Get API Token button."></a>
-	<figcaption>Screenshot of account page button to Get API Token. 
-	Source: National Ecological Observatory Network (NEON)
-	</figcaption>
 </figure>
 
 Click the 'GET API TOKEN' button. After a moment, you should see this:
@@ -91,9 +88,6 @@ Click the 'GET API TOKEN' button. After a moment, you should see this:
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png">
 	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
-	<figcaption>Screenshot of account page with API token created. 
-	Source: National Ecological Observatory Network (NEON)
-	</figcaption>
 </figure>
 
 Click on the Copy button to copy your API token to the clipboard:
@@ -101,9 +95,6 @@ Click on the Copy button to copy your API token to the clipboard:
 <figure>
 	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png">
 	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
-	<figcaption>Screenshot of account page with API token and copy button. 
-	Source: National Ecological Observatory Network (NEON)
-	</figcaption>
 </figure>
 
 ## Use API token in neonUtilities 
