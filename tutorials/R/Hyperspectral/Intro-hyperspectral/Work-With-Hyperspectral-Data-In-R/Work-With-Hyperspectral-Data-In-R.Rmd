@@ -370,7 +370,7 @@ note of 1) the scale factor and 2) the data ignore value. Then we can plot the
 band 9 data. Plotting spatial data as a visual "data check" is a good idea to 
 make sure processing is being performed correctly and all is well with the image. 
 
-```{r read-attributes-plot, fig.cap=c("Plot of reflectance values for band 9 data. This plot shows a very washed out image lacking any detail.","Plot of log transformed reflectance values for band 9 data." Log transformation improved the visibility of details in the image, but it is still not great.")}
+```{r read-attributes-plot, fig.cap=c("Plot of reflectance values for band 9 data. This plot shows a very washed out image lacking any detail.","Plot of log transformed reflectance values for band 9 data. Log transformation improved the visibility of details in the image, but it is still not great.")}
     
 # look at the metadata for the reflectance dataset
 h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data")
@@ -391,7 +391,7 @@ still not great.
 Let's look at the distribution of reflectance values in 
 our data to figure out what is going on.
 
-```{r hist-data, fig.cap=c("Histogram of reflectance values for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis.","Histogram of reflectance values between 0 and 5000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis.","Histogram of reflectance values between 5000 and 15000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis.")}
+```{r hist-data, fig.cap=c("Histogram of reflectance values for band 9. The x-axis represents the reflectance values and ranges from 0 to 8000. The frequency of these values is on the y-axis. The histogram shows reflectance values are skewed to the right, where the majority of the values lie between 0 and 1000. We can conclude that reflectance values are not equally distributed across the range of reflectance values, resulting in a washed out image.","Histogram of reflectance values between 0 and 5000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis. The x-axis limit has been set 5000 in order to better visualize the distribution of reflectance values. We can confirm that the majority of the values are indeed within the 0 to 4000 range.","Histogram of reflectance values between 5000 and 15000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis. Plot shows that a very few number of pixels have reflectance values larger than 5,000. These values are skewing how the image is being rendered and heavily impacting the way the image is drawn on our monitor.")}
 
 # Plot range of reflectance values as a histogram to view range
 # and distribution of values.
@@ -426,7 +426,7 @@ Remember that the metadata for the `Reflectance` dataset designated -9999 as
 `data ignore value`. Thus, let's set all pixels with a value == -9999 to `NA` 
 (no value). If we do this, R won't try to render these pixels.
 
-```{r set-values-NA, fig.cap="Plot of reflectance values for band 9 data with values equal to -9999 set to NA."}
+```{r set-values-NA, fig.cap="Plot of reflectance values for band 9 data with values equal to -9999 set to NA. Image data in raster format will often contain no data values, which may be attributed to the sensor not collecting data in that area of the image or to processing results which yield null values. Reflectance datasets designate -9999 as data ignore values. As such, we will reassign -9999 values to NA so R won't try to render these pixels."}
 
 # there is a no data value in our raster - let's define it
 myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
@@ -462,7 +462,7 @@ what's called an `image stretch`. We will learn how to stretch our image data,
 later. For now, let's plot the values as the log function on the pixel 
 reflectance values to factor out those larger values. 
 
-```{r plot-log, fig.cap="Plot of log transformed reflectance values for the previous b9 image." }
+```{r plot-log, fig.cap="Plot of log transformed reflectance values for the previous b9 image. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by doing whats called an image stretch." }
 
 image(log(b9))
 
@@ -476,11 +476,11 @@ Notice a difference?
 <figure class="half">
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"
-    alt="RGB image of the SJER field site.">
+    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brakish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot.">
     </a>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png"
-    alt="Plot of log transformed reflectance values for the b9 image previously plotted.">
+    alt="Plot of log transformed reflectance values for the b9 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by doing whats called an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns.">
     </a>
     <figcaption>LEFT: The image as it should look. RIGHT: the image that we outputted from the code above. Notice a difference?</figcaption>
 </figure>
@@ -500,7 +500,7 @@ will deal with this issue by creating a proper georeferenced (spatially located)
 raster in R. The raster format will read in pixels following the same methods 
 as other GIS and imaging processing software like QGIS and ENVI do.
 
-```{r transpose-data, fig.cap="Plot showing the transposed image of the log transformed reflectance values of b9."}
+```{r transpose-data, fig.cap="Plot showing the transposed image of the log transformed reflectance values of b9. The orientation of the image is rotated in our log transformed image, because R reads in the matrices starting from the upper left hand corner."}
 
 # We need to transpose x and y values in order for our 
 # final image to plot properly
@@ -533,7 +533,7 @@ First, we need to define the Coordinate reference system (CRS) of the raster.
 To do that, we can first grab the EPSG code from the HDF5 attributes, and covert the
 EPSG to a CRS string. Then we can assign that CRS to the raster object.
 
-```{r define-CRS, fig.cap="Plot of the properly oriented raster image of the band 9 data.In order to orient the image correctly, the coordinate reference system was defined and assigned to the raster object.X-axis represents the UTM Easting values, and the Y-axis represents the Northing values."}
+```{r define-CRS, fig.cap="Plot of the properly oriented raster image of the band 9 data. In order to orient the image correctly, the coordinate reference system was defined and assigned to the raster object. X-axis represents the UTM Easting values, and the Y-axis represents the Northing values."}
 
 # Extract the EPSG from the h5 dataset
 myEPSG <- h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
@@ -599,7 +599,7 @@ b9r
 
 We can adjust the colors of our raster too if we want.
 
-```{r  plot-colors-raster, fig.cap="Plot of the properly oriented raster image of B9 with custom colors."}
+```{r  plot-colors-raster, fig.cap="Plot of the properly oriented raster image of B9 with custom colors. We can adjust the colors of the image by adjusting the z limits, which in this case makes the highly reflective surfaces more vibrant. This color adjustment is more apparent in the bottom left of the image, where the parking lot, buildings and bare surfaces are located. X-axis represents the UTM Easting values, and the Y-axis represents the Northing values."}
 
 # let's change the colors of our raster and adjust the zlims 
 col <- terrain.colors(25)

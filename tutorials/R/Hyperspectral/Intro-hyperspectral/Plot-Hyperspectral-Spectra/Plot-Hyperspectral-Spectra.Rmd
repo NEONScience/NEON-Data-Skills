@@ -203,7 +203,7 @@ head(aPixeldf)
 
 Now we're ready to plot our spectral signature!
 
-```{r plot-spectra, fig.width=9, fig.height=6, fig.cap="Spectral signature plot with wavelenght in nanometers on the x-axis and reflectance on the y-axis."}
+```{r plot-spectra, fig.width=9, fig.height=6, fig.cap="Spectral signature plot with wavelength in nanometers on the x-axis and reflectance on the y-axis."}
 
 ggplot(data=aPixeldf)+
    geom_line(aes(x=Wavelength, y=ScaledReflectance))+
