@@ -6,10 +6,10 @@ dateCreated: 2016-01-01
 authors:
 contributors: Ben Shetterly
 estimatedTime:
-packagesLibraries: [knitr, rmarkdown]
-topics: data-management
+packagesLibraries: knitr, rmarkdown
+topics: data-management, rep-sci
 languagesTool: R
-dataProducts:
+dataProducts: 
 code1:
 tutorialSeries: [RMarkdown]
 urlTitle: rmd-use-knitr

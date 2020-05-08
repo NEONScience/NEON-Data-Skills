@@ -7,7 +7,7 @@ authors:
 contributors: Ben Shetterly
 estimatedTime:
 packagesLibraries:
-topics: data-management
+topics: data-management, rep-sci
 languagesTool: R
 dataProduct:
 code1:
