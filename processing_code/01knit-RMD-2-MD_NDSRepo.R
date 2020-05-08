@@ -16,13 +16,14 @@ dirs <- c("R/eddy4r/",
           "R/download-explore/",
           "R/spatial-data/",
           "R/NEON-API/",
-          "hyperspectral/")
+          "hyperspectral/",
+          "R/api-token/")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[3]
+subDir <- dirs[11]
 
 
 # Inputs - Where the git repo is on your computer
