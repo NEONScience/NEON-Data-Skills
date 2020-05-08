@@ -3,8 +3,9 @@ syncID: 30c2794722da4e4fb27f27f1e9364415
 title: "Document & Publish Your Workflow: Jupyter Notebooks"
 description: "This tutorial introduces the importance of tools supporting documenting & publishing a workflow using the Python kernel of Jupyter Notebooks."
 dateCreated: 2017-06-12
+dateUpdated: 2020-04-20
 authors: Megan A. Jones
-contributors:
+contributors: Maria Paula Mugnani
 estimatedTime:
 packagesLibraries:
 topics: data-management, rep-sci
@@ -38,7 +39,7 @@ As we read in
 the four facets of reproducible science are:
 
 * Documentation
-* Organization,
+* Organization
 * Automation and
 * Dissemination.
 
@@ -61,15 +62,15 @@ to share data processing, analysis and visualization outputs. We can also use it
 to create documents that combine code in your language of choice, output and text.  
 
 The Jupyter Notebooks grew out of iPython. *Jupyter* is a close acronym meaning 
-Julia, Python, and R. Which were the first languages outside Python that the Jupyter
-application was designed for. Jupyter Notebooks now support over
+Julia, Python, and R, which were the first languages outside Python that the Jupyter
+application was designed for. Jupyter Notebooks now supports over
 40 coding languages. You may still find some references to iPython in materials
 related to Jupyter Notebooks. This series will focus on using Jupyter Notebooks with Python, 
 but the information presented can apply to other languages as well. 
 
 The Jupyter Notebooks application is a browser-based application. Therefore, you 
-need an updated browser (the Jupyter people recommend Mozilla Firefox or Google 
-Chrome, but not Microsoft Explorer).  When installed on your computer you can 
+need an updated browser (the Jupyter programmers recommend Mozilla Firefox or Google 
+Chrome, but not Microsoft Explorer). When installed on your computer, you can 
 always access the app even without internet access.  You can also use Jupyter 
 installed on a remote server. For example, Jupyter runs a 
 <a href="https://try.jupyter.org/" target="_blank"> training (temporary) server based version</a>. 
@@ -84,10 +85,10 @@ what steps, assumptions, tests were used.
 * You can easily extend or refine analyses by modifying existing or adding new
 code blocks.
 * Analysis results can be disseminated in various formats including HTML, PDF,
-slide shows and more.
+slideshows and more.
 * Code and data can be shared with a colleague to replicate the workflow.
 
-## Explore Example of Notebooks 
+## Explore Examples of Notebooks 
 
 Before we jump into how to work with notebooks, check out a few shared notebooks.
 As you look at these different notebooks, what aspects of the layout do you like,
@@ -95,7 +96,7 @@ what don't you like?  Is there a place in your current workflow that these
 notebooks would be useful?  
 
 * <a href="https://github.com/jupyter/jupyter/wiki/A-gallery-of-interesting-Jupyter-Notebooks" target="_blank">Jupyter's GitHub Wiki: A gallery of interesting Jupyter Notebooks</a>. 
-Not only is this a great collection of example notebooks but also it is a valuable
+Not only is this a great collection of example notebooks, but also it is a valuable
 resource to learn other skills associated with using Python and Jupyter Notebooks. 
 * <a href="http://nb.bianp.net/sort/views/" target="_blank">Fabian Pedregosa's Notebook Gallery</a>
 
