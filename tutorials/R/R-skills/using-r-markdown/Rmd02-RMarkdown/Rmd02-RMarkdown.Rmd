@@ -349,18 +349,18 @@ Three common code chunk options are:
 * `eval = FALSE`: Do not **eval**uate (or run) this code chunk when
 knitting the RMD document. The code in this chunk will still render in our knitted
 HTML output, however it will not be evaluated or run by R.
-* `echo=FALSE`: Hide the code in the output. The code is
+* `echo = FALSE`: Hide the code in the output. The code is
 evaluated when the RMD file is knit, however only the output is rendered on the 
 output document.
-* `results=hide`: The code chunk will be evaluated but the results or the code 
+* `results = hide`: The code chunk will be evaluated but the results of the code 
 will not be rendered on the output document. This is useful if you are viewing the 
 structure of a large object (e.g. outputs of a large `data.frame`).
 
 Multiple code chunk options can be used for the same chunk. For more on code
 chunk options, read
-<a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html" target="_blank"> the RStudio documentation</a>
+<a href="https://bookdown.org/yihui/rmarkdown/r-code.html" target="_blank">R Markdown: The Definitive Guide</a>
 or the
-<a href="http://yihui.name/knitr/demo/output/" target="_blank"> knitr documentation</a>.
+<a href="https://yihui.org/knitr/options/#chunk-options" target="_blank"> knitr documentation</a>.
 
 <div id="ds-challenge" markdown="1">
 ## Activity: Add More Code to Your R Markdown
