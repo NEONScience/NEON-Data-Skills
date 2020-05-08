@@ -8,6 +8,10 @@ install.packages("neonUtilities")
 # load neonUtilities
 library(neonUtilities)
 
+# set working directory
+wd <- "~/data" # this will depend on your local machine
+setwd(wd)
+
 
 
 ## ----nameToken, eval=FALSE, comment=NA---------------------------------------------------------------------------
@@ -30,7 +34,7 @@ chm <- byTileAOP(dpID="DP3.30015.001", site="WREF",
                  year=2017, check.size=F,
                  easting=c(571000,578000), 
                  northing=c(5079000,5080000), 
-                 savepath="/data",
+                 savepath=wd,
                  token=NEON_TOKEN)
 
 
@@ -43,7 +47,7 @@ NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 ## ----source, eval=FALSE, comment=NA------------------------------------------------------------------------------
 
-source("/data/neon_token_source.R")
+source(paste0(wd, "/neon_token_source.R"))
 
 
 

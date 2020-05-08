@@ -111,7 +111,8 @@ Click on the Copy button to copy your API token to the clipboard:
 In the next section, we'll walk through saving your token somewhere secure but 
 accessible to your code. But first let's try out using the token the easy way.
 
-First, we need to load the `neonUtilities` package:
+First, we need to load the `neonUtilities` package and set the working 
+directory:
 
 
     # install neonUtilities - can skip if already installed, but
@@ -121,6 +122,10 @@ First, we need to load the `neonUtilities` package:
     
     # load neonUtilities
     library(neonUtilities)
+    
+    # set working directory
+    wd <- "~/data" # this will depend on your local machine
+    setwd(wd)
 
 NEON API tokens are very long, so it would be annoying to keep pasting the 
 entire text string into functions. Assign your token an object name:
@@ -151,7 +156,7 @@ remote sensing data:
                      year=2017, check.size=F,
                      easting=c(571000,578000), 
                      northing=c(5079000,5080000), 
-                     savepath="/data",
+                     savepath=wd,
                      token=NEON_TOKEN)
 
 ## Token management for open code
@@ -183,13 +188,13 @@ Open a new, empty R script (.R). Put a single line of code in the script:
     NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 Save this file in a logical place on your machine, somewhere that won't be 
-visible publicly. Let's call the file `neon_token_source.R`, and let's say 
-you've saved it to the `/data` folder on your machine. Then, at the start of 
+visible publicly. Here, let's call the file `neon_token_source.R`, and 
+save it to the working directory. Then, at the start of 
 every script where you're going to use the NEON API, you would run this line 
 of code:
 
 
-    source("/data/neon_token_source.R")
+    source(paste0(wd, "/neon_token_source.R"))
 
 Then you'll be able to use `token=NEON_TOKEN` when you run `neonUtilities` 
 functions, and you can share your code without accidentally sharing your 
