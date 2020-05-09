@@ -86,8 +86,8 @@ the bottom of the My Account page, you should see this bar:
 Click the 'GET API TOKEN' button. After a moment, you should see this:
 
 <figure>
-	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
+	<a href="{{ site.baseurl }}/images/NEON-api-token/account-page-token-view.png">
+	<img src="{{ site.baseurl }}/images/NEON-api-token/account-page-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
 </figure>
 
 Click on the Copy button to copy your API token to the clipboard:
