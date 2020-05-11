@@ -1,18 +1,20 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries-------------------------------------------------------------------------
 # load packages
 library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 
 
-## ----import-NDVI-rasters------------------------------------------------------------------
+## ----import-NDVI-rasters--------------------------------------------------------------------
 
 # Create list of NDVI file paths
 # assign path to object = cleaner code
-NDVI_HARV_path <- "NEON-DS-Landsat-NDVI/HARV/2011/NDVI" 
+NDVI_HARV_path <- paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/NDVI") 
 all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             full.names = TRUE,
                             pattern = ".tif$")
@@ -22,14 +24,14 @@ all_NDVI_HARV
 
 
 
-## ----create-timeSeries-raster-stack-------------------------------------------------------
+## ----create-timeSeries-raster-stack---------------------------------------------------------
 
 # Create a raster stack of the NDVI time series
 NDVI_HARV_stack <- stack(all_NDVI_HARV)
 
 
 
-## ----explore-RasterStack-tags-------------------------------------------------------------
+## ----explore-RasterStack-tags---------------------------------------------------------------
 # view crs of rasters
 crs(NDVI_HARV_stack)
 
@@ -44,14 +46,14 @@ xres(NDVI_HARV_stack)
 
 
 
-## ----challenge-code-raster-metadata, eval=FALSE, echo=FALSE-------------------------------
+## ----challenge-code-raster-metadata, eval=FALSE, echo=FALSE---------------------------------
 ## # 1. UTM zone 19 WGS 84
 ## # 2. 30x30 meters
 ## # 3. meters
 ## 
 
 
-## ----plot-time-series---------------------------------------------------------------------
+## ----plot-time-series, fig.cap="Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack"----
 
 # view a plot of all of the rasters
 # 'nc' specifies number of columns (we will have 13 plots)
@@ -61,7 +63,7 @@ plot(NDVI_HARV_stack,
 
 
 
-## ----apply-scale-factor-------------------------------------------------------------------
+## ----apply-scale-factor, fig.cap="Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack with a scale factor of 10,000"----
 
 # apply scale factor to data
 NDVI_HARV_stack <- NDVI_HARV_stack/10000
@@ -73,7 +75,7 @@ plot(NDVI_HARV_stack,
 
 
 
-## ----view-stack-histogram-----------------------------------------------------------------
+## ----view-stack-histogram, fig.cap="Histograms of all the NDVI rasters of NEON's site Harvard Forest in the raster stack"----
 
 # create histograms of each raster
 hist(NDVI_HARV_stack, 
@@ -81,12 +83,12 @@ hist(NDVI_HARV_stack,
 
 
 
-## ----view-temp-data, echo=FALSE, warning=FALSE--------------------------------------------
+## ----view-temp-data, fig.cap="Scatterplot of daily mean air temperature at NEON's site Harvard Forest", echo=FALSE, warning=FALSE----
 
 library(ggplot2)
 library(scales)
 harMetDaily <- 
-  read.csv("NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv",
+  read.csv(paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"),
                  stringsAsFactors = FALSE)
 
 # set the field to be a date field
@@ -111,34 +113,34 @@ myPlot
 
 
 
-## ----view-all-rgb, echo=FALSE-------------------------------------------------------------
+## ----view-all-rgb, fig.cap="Two sets of NDVI images for NEON's site Harvard Forest making a small time series", echo=FALSE----
 
 # reset layout
 par(mfrow=c(2,2))
 
 # open up file for Jday 277 
 RGB_277 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif"))
 
 plotRGB(RGB_277)
 
 # open up file for jday 293
 RGB_293 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif"))
 
 plotRGB(RGB_293)
 
 # view a few other images
 # open up file for jday 133
 RGB_133 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif"))
 
 plotRGB(RGB_133, 
         stretch="lin")
 
 # open up file for jday 197
 RGB_197 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/197_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/197_HARV_landRGB.tif"))
 
 plotRGB(RGB_197, 
         stretch="lin")

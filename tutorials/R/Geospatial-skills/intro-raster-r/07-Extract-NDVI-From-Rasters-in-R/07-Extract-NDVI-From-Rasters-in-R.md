@@ -4,13 +4,13 @@ title: "Raster 07: Extract NDVI Summary Values from a Raster Time Series"
 description: "This tutorial covers how to extract and plot NDVI pixel values from a raster time series stack in R. We will use ggplot2 to plot our data."	
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal, ggplot2
 topics: 
 subtopics: raster, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
 code1:  /R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-ndvi-calc-raster-time-series
@@ -104,10 +104,12 @@ tutorials so you may be able to skip this first step!).
     library(ggplot2)
     
     # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    # be sure that the downloaded file is in this directory
+    setwd(wd)
     
     # Create list of NDVI file paths
-    all_HARV_NDVI <- list.files("NEON-DS-Landsat-NDVI/HARV/2011/NDVI",
+    all_HARV_NDVI <- list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/NDVI"),
                                 full.names = TRUE,
                                 pattern = ".tif$")
     
@@ -336,7 +338,7 @@ in `ggplot()` see the tutorial on
       xlab("Julian Days") + ylab("Mean NDVI") +
       theme(text = element_text(size=20))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png)
+![Scatterplot of mean NDVI for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png)
 
 <div id="ds-challenge" markdown="1">
 
@@ -346,7 +348,7 @@ Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png)
+![Scatterplot of mean NDVI for NEON's site San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png)
 
 ## Compare NDVI from Two Different Sites in One Plot
 Comparison of plots is often easiest when both plots are side by side. Or, even 
@@ -368,7 +370,7 @@ of columns and exact same column names to be bound.
     	# scale_colour : match previous plots
       theme(text = element_text(size=20))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png)
+![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot NDVI with Date
@@ -377,7 +379,7 @@ on the x-axis.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png)
+![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png)
 
 ## Remove Outlier Data
 As we look at these plots we see variation in greenness across the year.
@@ -395,7 +397,7 @@ However the code demonstrates one way to plot multiple RGB rasters in a grid.
 
     # open up RGB imagery
     
-    rgb.allCropped <-  list.files("NEON-DS-Landsat-NDVI/HARV/2011/RGB/", 
+    rgb.allCropped <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/"), 
                                   full.names=TRUE, 
                                   pattern = ".tif$")
     # create a layout
@@ -410,7 +412,7 @@ However the code demonstrates one way to plot multiple RGB rasters in a grid.
     # reset layout
     par(mfrow=c(1,1))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png)
+![Time series of RGB images showing greenness over time for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png)
 
 Notice that the data points with very low NDVI values can be associated with
 images that are filled with clouds. Thus, we can attribute the low NDVI values
@@ -420,7 +422,7 @@ Is the same thing happening at SJER?
 
 
     # open up the cropped files
-    rgb.allCropped.SJER <-  list.files("NEON-DS-Landsat-NDVI/SJER/2011/RGB/", 
+    rgb.allCropped.SJER <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB/"), 
                                   full.names=TRUE, 
                                   pattern = ".tif$")
     # create a layout
@@ -434,15 +436,17 @@ Is the same thing happening at SJER?
     
     for (aFile in rgb.allCropped.SJER)
       {NDVI.rastStack <- stack(aFile)
-      if (aFile =="NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif")
+      if (aFile ==paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif"))
         {plotRGB(NDVI.rastStack) }
       else { plotRGB(NDVI.rastStack, stretch="lin") }
     }
-    
+
+    ## Error in grDevices::rgb(RGB[, 1], RGB[, 2], RGB[, 3], alpha = alpha, max = scale): color intensity NA, not in 0:255
+
     # reset layout
     par(mfrow=c(1,1))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png)
+![Time series of RGB images showing greenness over time for NEON's site San Joaquin Experimental Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png)
 
 Without significant additional processing, we will not be able to retrieve a
 strong reflection from vegetation, from a remotely sensed image that is 
@@ -484,7 +488,7 @@ Now we can create another plot without the suspect data.
       xlab("Julian Days") + ylab("Mean NDVI") +
       theme(text = element_text(size=20))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png)
+![Scatterplot of mean NDVI with outliers removed for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png)
   
 Now our outlier data points are removed and the pattern of "green-up" and
 "brown-down" makes a bit more sense.
@@ -540,7 +544,7 @@ the row names.
 
     # create a .csv of mean NDVI values being sure to give descriptive name
     # write.csv(DateFrameName, file="NewFileName")
-    write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
+    write.csv(NDVI_HARV_toWrite, file=paste0(wd,"meanNDVI_HARV_2011.csv"))
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Write to .csv

@@ -4,12 +4,12 @@ title: "Raster 00: Intro to Raster Data in R"
 description: "This tutorial reviews the fundamental principles, packages and metadata/raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work with rasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format."	
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: DP3.30024.001, DP1.30010.001
 code1: /R/dc-spatial-raster/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 urlTitle: dc-raster-data-r
@@ -93,11 +93,73 @@ map as pixels. Each pixel value represents an area on the Earth's surface.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png"
+    alt="Satellite (raster) image with an inset map of a smaller extent. The inset map's structure is further shown as a grid of numeric values represented by colors on a the legend." >
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
 </figure>
+
+## Raster Data in R
+
+Let's first import a raster dataset into R and explore its metadata.
+To open rasters in R, we will use the `raster` and `rgdal` packages.
+
+
+    # load libraries
+    library(raster)
+
+    ## Loading required package: sp
+
+    library(rgdal)
+
+    ## rgdal: version: 1.4-8, (SVN revision 845)
+    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
+    ##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
+    ##  Path to GDAL shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/gdal
+    ##  GDAL binary built with GEOS: TRUE 
+    ##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
+    ##  Path to PROJ.4 shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/proj
+    ##  Linking to sp version: 1.4-1
+
+    # set working directory to ensure R can find the file we wish to import
+    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    # be sure that the downloaded file is in this directory
+    setwd(wd)
+
+## Open a Raster in R
+We can use the `raster("path-to-raster-here")` function to open a raster in R. 
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:**  OBJECT NAMES! To improve code 
+readability, file and object names should be used that make it clear what is in 
+the file. The data for this tutorial were collected over from Harvard Forest so 
+we'll use a naming convention of `datatype_HARV`. 
+</div>
+
+
+    # Load raster into R
+    DSM_HARV <- raster(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+    
+    # View raster structure
+    DSM_HARV 
+
+    ## class      : RasterLayer 
+    ## dimensions : 1367, 1697, 2319799  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## names      : HARV_dsmCrop 
+    ## values     : 305.07, 416.07  (min, max)
+
+    # plot raster
+    # note \n in the title forces a line break in the title
+    plot(DSM_HARV, 
+         main="NEON Digital Surface Model\nHarvard Forest")
+
+![Digital surface model showing the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png)
+
 
 ## Types of Data Stored in Raster Format
 Raster data can be continuous or categorical. Continuous rasters can have a 
@@ -107,17 +169,21 @@ range of quantitative values. Some examples of continuous rasters include:
 2. Maps of tree height derived from LiDAR data.
 3. Elevation values for a region. 
 
-A map of elevation for Harvard Forest derived from the 
+The raster we loaded and plotted earlier was a digital surface model, or a map of the elevation for Harvard Forest derived from the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> 
-NEON AOP LiDAR sensor</a> 
-is below. Elevation is represented as continuous numeric variable in this map. 
+NEON AOP LiDAR sensor</a>. Elevation is represented as a continuous numeric variable in this map. 
 The legend shows the continuous range of values in the data from around 300 to 
 420 meters.
 
 
 
+    # render DSM for tutorial content background
+    DSM_HARV <- raster(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+    
+    # code output here - DEM rendered on the screen
+    plot(DSM_HARV, main="Continuous Elevation Map\n NEON Harvard Forest Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png)
+![Continuous elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png)
 
 Some rasters contain categorical data where each pixel represents a discrete
 class such as a landcover type (e.g., "forest" or "grassland") rather than a
@@ -131,7 +197,8 @@ maps include:
 #### Categorical Landcover Map for the United States 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NLCD06_conus_lg.gif ">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NLCD06_conus_lg.gif">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NLCD06_conus_lg.gif"
+    alt="Map of the different landcover types of the continental United States each represented by different colors." >
     </a>
     <figcaption> Map of the United States showing landcover as categorical data.
     Each color is a different landcover category.  Source: 
@@ -143,7 +210,32 @@ maps include:
 #### Categorical Elevation Map of the NEON Harvard Forest Site
 The legend of this map shows the colors representing each discrete class. 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png)
+
+    # Demonstration image for the tutorial
+    
+    # add a color map with 5 colors
+    col=terrain.colors(3)
+    # add breaks to the colormap (4 breaks = 3 segments)
+    brk <- c(250,350, 380,500)
+    
+    # Expand right side of clipping rect to make room for the legend
+    par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+    # DEM with a custom legend
+    plot(DSM_HARV, 
+    	col=col, 
+    	breaks=brk, 
+    	main="Classified Elevation Map\nNEON Harvard Forest Field Site",
+    	legend = FALSE
+    	)
+    
+    # turn xpd back on to force the legend to fit next to the plot.
+    par(xpd = TRUE)
+    # add a legend - but make it appear outside of the plot
+    legend( par()$usr[2], 4713700,
+            legend = c("High Elevation", "Middle","Low Elevation"), 
+            fill = rev(col))
+
+![Classified elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png)
 
 ## What is a GeoTIFF??
 Raster data can come in many different formats. In this tutorial, we will use the 
@@ -167,54 +259,6 @@ More about the  `.tif` format:
 * <a href="https://en.wikipedia.org/wiki/GeoTIFF" target="_blank"> GeoTIFF on Wikipedia</a>
 * <a href="https://trac.osgeo.org/geotiff/" target="_blank"> OSGEO TIFF documentation</a>
 
-## Raster Data in R
-
-Let's first import a raster dataset into R and explore its metadata.
-To open rasters in R, we will use the `raster` and `rgdal` packages.
-
-
-    # load libraries
-    library(raster)
-    library(rgdal)
-    
-    # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
-
-## Open a Raster in R
-We can use the `raster("path-to-raster-here")` function to open a raster in R. 
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:**  OBJECT NAMES! To improve code 
-readability, file and object names should be used that make it clear what is in 
-the file. The data for this tutorial were collected over from Harvard Forest so 
-we'll use a naming convention of `datatype_HARV`. 
-</div>
-
-
-    # Load raster into R
-    DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-    
-    # View raster structure
-    DSM_HARV 
-
-    ## class      : RasterLayer 
-    ## dimensions : 1367, 1697, 2319799  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
-    ## names      : HARV_dsmCrop 
-    ## values     : 305.07, 416.07  (min, max)
-
-    # plot raster
-    # note \n in the title forces a line break in the title
-    plot(DSM_HARV, 
-         main="NEON Digital Surface Model\nHarvard Forest")
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png)
-
-Here is a map showing the elevation of our site in Harvard Forest. 
-
 ## Coordinate Reference System
 The Coordinate Reference System or `CRS` tells R where the raster is located
 in geographic space. It also tells R what method should be used to "flatten"
@@ -222,7 +266,8 @@ or project the raster in geographic space.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg"
+    alt="Four different map projections (Mercator, UTM Zone 11N, U.S. National Atlas Equal Area, and WGS84) of the continental United States demonstrating that each projection produces a map with a different shape and proportions.">
     </a>
     <figcaption> Maps of the United States in different projections. Notice the 
     differences in shape associated with each different projection. These 
@@ -278,13 +323,14 @@ projection.
 
 <figure>
     <a href="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Utm-zones-USA.svg/720px-Utm-zones-USA.svg.png"></a>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Utm-zones-USA.svg/720px-Utm-zones-USA.svg.png"
+    alt="Image showing the ten different UTM zones (10-19) across the continental United States."></a>
    	<figcaption> The UTM zones across the continental United States. Source: 
    	Chrismurf, wikimedia.org.
 		</figcaption>
 </figure>
 
-The CRS in this case is in a `PROJ 4` format. This means that the projection
+The CRS in this case is in a `PROJ` format. This means that the projection
 information is strung together as a series of text elements, each of which 
 begins with a `+` sign. 
 
@@ -306,7 +352,8 @@ The spatial extent is the geographic area that the raster data covers.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png"
+    alt="Image of three different spatial extent types: Points extent, lines extent, and polygons extent. Points extent shows three points along the edge of a square object. Lines extent shows a line drawn with three points along the edge of a square object. Polygons extent shows a polygon drawn with three points inside of a square object.">
     </a>
     <figcaption> Image Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -324,7 +371,8 @@ Given our data resolution is 1 x 1, this means that each pixel represents a
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_resolution.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_resolution.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_resolution.png"
+    alt="Four images of a raster over the same extent, but at four different resolutions from 8 meters to 1 meter. At 8 meters, the image is really blurry. At 1m, the image is really clear. At 4 and 2 meters, the image is somewhere in the intermediate.">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -379,13 +427,39 @@ region.
 In the image below, the pixels that are black have `NoDataValue`s.
 The camera did not collect data in these areas. 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png)
+
+    # no data demonstration code - not being taught 
+    # Use stack function to read in all bands
+    RGB_stack <- 
+      stack(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
+    
+    # Create an RGB image from the raster stack
+    par(col.axis="white",col.lab="white",tck=0)
+    plotRGB(RGB_stack, r = 1, g = 2, b = 3, 
+            axes=TRUE, main="Raster With NoData Values\nRendered in Black")
+
+![Colorized raster image with NoDataValues around the edge rendered in black](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png)
 
 In the next image, the black edges have been assigned `NoDataValue`. R doesn't 
 render pixels that contain a specified `NoDataValue`. R assigns missing data 
 with the `NoDataValue` as `NA`.
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png)
+
+    # reassign cells with 0,0,0 to NA
+    # this is simply demonstration code - we will not teach this.
+    f <- function(x) {
+      x[rowSums(x == 0) == 3, ] <- NA
+      x}
+    
+    newRGBImage <- calc(RGB_stack, f)
+    
+    
+    par(col.axis="white",col.lab="white",tck=0)
+    # Create an RGB image from the raster stack
+    plotRGB(newRGBImage, r = 1, g = 2, b = 3,
+            axes=TRUE, main="Raster With No Data Values\nNoDataValue= NA")
+
+![Colorized raster image with NoDataValues around the edge removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png)
 
 ### NoData Value Standard 
 
@@ -438,7 +512,7 @@ identifying outliers and bad data values in our raster data.
     ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster
     ## cells were used. 100000 values used.
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
+![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
 
 
 Notice that a warning is shown when R creates the histogram. 
@@ -472,7 +546,7 @@ in a histogram can be problematic when dealing with very large datasets.
          ylab="Frequency",
          col="wheat4")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png)
+![Histogram showing the distribution of digital surface model values with all pixel values included](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png)
 
 Note that the shape of both histograms looks similar to the previous one that
  was created using a representative 10,000 pixel subset of our raster data. The 
@@ -486,7 +560,8 @@ the raster: surface elevation in meters for one time period.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png"
+    alt="Left: 3D image of a raster with only one band. Right: 3D image showing four separate layers of a multi band raster."></a>
     <figcaption>Source: National Ecological Observatory Network (NEON).
     </figcaption>
 </figure>
@@ -518,7 +593,7 @@ function to view raster metadata before we open a file in R.
 
 
     # view attributes before opening file
-    GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+    GDALinfo(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
     ## rows        1367 
     ## columns     1697 
@@ -532,7 +607,7 @@ function to view raster metadata before we open a file in R.
     ## oblique.y   0 
     ## driver      GTiff 
     ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-    ## file        NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## file        C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## apparent band summary:
     ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
     ## 1 Float64           TRUE       -9999          1       1697

@@ -1,7 +1,21 @@
-## ----demonstrate-RGB-Image, echo=FALSE----------------------------------------------------
+## ----load-libraries-------------------------------------------------------------------------
+
+# work with raster data
+library(raster)
+# export GeoTIFFs and other core GIS functions
+library(rgdal)
+
+# set working directory to ensure R can find the file we wish to import
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
+
+
+
+## ----demonstrate-RGB-Image, fig.cap="Red, green, and blue bands of NEON's site Harvard Forest", echo=FALSE----
 # Use stack function to read in all bands
 RGB_stack_HARV <- 
-  stack("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+  stack(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
 
 names(RGB_stack_HARV) <- c("Red Band","Green Band","Blue Band")
 
@@ -18,7 +32,7 @@ plot(RGB_stack_HARV,
 
 
 
-## ----plot-RGB-now, echo=FALSE, message=FALSE----------------------------------------------
+## ----plot-RGB-now, fig.cap="Composite image of NEON's site Harvard Forest", echo=FALSE, message=FALSE----
 # Create an RGB image from the raster stack
 
 original_par <-par() # create original par for easy reversal at end
@@ -30,29 +44,17 @@ box(col="white")
 
 
 
-## ----reset-par, echo=FALSE, results="hide", warning=FALSE---------------------------------
+## ----reset-par, echo=FALSE, results="hide", warning=FALSE-----------------------------------
 par(original_par) # go back to original par
 
 
 
-## ----load-libraries-----------------------------------------------------------------------
-
-# work with raster data
-library(raster)
-# export GeoTIFFs and other core GIS functions
-library(rgdal)
-
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
-
-
-
-## ----read-single-band---------------------------------------------------------------------
+## ----read-single-band, fig.cap="Red band of NEON's site Harvard Forest"---------------------
  
 # Read in multi-band raster with raster function. 
 # Default is the first band only.
 RGB_band1_HARV <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
 
 # create a grayscale color palette to use for the image.
 grayscale_colors <- gray.colors(100,            # number of different color levels 
@@ -73,7 +75,7 @@ plot(RGB_band1_HARV,
 RGB_band1_HARV
 
 
-## ----min-max-image------------------------------------------------------------------------
+## ----min-max-image--------------------------------------------------------------------------
 # view min value
 minValue(RGB_band1_HARV)
 
@@ -81,10 +83,10 @@ minValue(RGB_band1_HARV)
 maxValue(RGB_band1_HARV)
 
 
-## ----read-specific-band-------------------------------------------------------------------
+## ----read-specific-band, fig.cap="Green band of NEON's site Harvard Forest"-----------------
 # Can specify which band we want to read in
 RGB_band2_HARV <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", 
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"), 
            band = 2)
 
 # plot band 2
@@ -98,7 +100,7 @@ RGB_band2_HARV
 
 
 
-## ----challenge1-answer, eval=FALSE, echo=FALSE--------------------------------------------
+## ----challenge1-answer, eval=FALSE, echo=FALSE----------------------------------------------
 ## 
 ## # We'd expect a *brighter* value for the forest in band 2 (green) than in
 ## # band 1 (red) because the leaves on trees of most often appear "green" -
@@ -106,18 +108,18 @@ RGB_band2_HARV
 ## 
 
 
-## ----intro-to-raster-stacks---------------------------------------------------------------
+## ----intro-to-raster-stacks-----------------------------------------------------------------
 
 # Use stack function to read in all bands
 RGB_stack_HARV <- 
-  stack("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+  stack(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
 
 # view attributes of stack object
 RGB_stack_HARV
 
 
 
-## ----plot-raster-layers-------------------------------------------------------------------
+## ----plot-raster-layers, fig.cap=c("Histograms of each RGB band showing the distribution of values for NEON's site Harvard Forest","Raster of each RGB band for NEON's site Harvard Forest","Band 2 of NEON's site Harvard Forest")----
 # view raster attributes
 RGB_stack_HARV@layers
 
@@ -142,7 +144,7 @@ plot(RGB_stack_HARV[[2]],
 
 
 
-## ----plot-rgb-image-----------------------------------------------------------------------
+## ----plot-rgb-image, fig.cap="Composite RGB image of NEON's site Harvard Forest"------------
 
 # Create an RGB image from the raster stack
 plotRGB(RGB_stack_HARV, 
@@ -150,7 +152,7 @@ plotRGB(RGB_stack_HARV,
 
 
 
-## ----image-stretch------------------------------------------------------------------------
+## ----image-stretch, fig.cap=c("Composite RGB image of NEON's site Harvard Forest", "Composite RGB image of NEON's site Harvard Forest with slightly more contrast")----
 
 # what does stretch do?
 plotRGB(RGB_stack_HARV,
@@ -165,10 +167,10 @@ plotRGB(RGB_stack_HARV,
 
 
 
-## ----challenge-code-NoData, echo=FALSE, results="hide"------------------------------------
+## ----challenge-code-NoData, fig.cap="Composite RGB image of NEON's site Harvard Forest with NAvalues removed", echo=FALSE, results="hide"----
 # 1.
 # view attributes
-GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
+GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif"))
 
 # 2 Yes it has NoData values as they are assigned as -9999 
 # 3 3 bands
@@ -176,7 +178,7 @@ GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
 # 4
 # reading in file
 HARV_NA<- 
-  stack("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
+  stack(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif"))
 
 # 5
 plotRGB(HARV_NA, 
@@ -187,11 +189,11 @@ plotRGB(HARV_NA,
 # defined in the tiff tags, thus R renders them as black as the reflectance
 # values are 0. The black edges in the other file are defined as -9999 and R
 # renders them as NA.
-GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
 
 
 
-## ----raster-bricks------------------------------------------------------------------------
+## ----raster-bricks, fig.cap="Composite RGB image of NEON's site Harvard Forest"-------------
 
 # view size of the RGB_stack object that contains our 3 band image
 object.size(RGB_stack_HARV)
@@ -204,13 +206,13 @@ object.size(RGB_brick_HARV)
 
 
 
-## ----plot-brick---------------------------------------------------------------------------
+## ----plot-brick-----------------------------------------------------------------------------
 # plot brick
 plotRGB(RGB_brick_HARV)
 
 
 
-## ----challenge-code-calling-methods, include=TRUE, results="hide", echo=FALSE-------------
+## ----challenge-code-calling-methods, include=TRUE, results="hide", echo=FALSE---------------
 # 1
 # methods for calling a stack
 methods(class=class(RGB_stack_HARV))
