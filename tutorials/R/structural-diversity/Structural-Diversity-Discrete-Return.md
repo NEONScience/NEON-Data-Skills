@@ -77,7 +77,7 @@ collected at two field sites of the
 <a href="https://www.neonscience.org/" target="_blank"> 
 National Ecological Observatory Network</a>. 
 
-##NEON AOP Discrete Return LIDAR
+## NEON AOP Discrete Return LIDAR
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> The NEON Airborne Observation Platform (AOP) </a>. 
 has several sensors including discrete-return LiDAR, which is useful for measuring forest structural diversity that can be summarized into four categories of metrics: (1) canopy height, (2) canopy cover and openness, and (3) canopy heterogeneity (internal and external), and (4) vegetation area.
 
