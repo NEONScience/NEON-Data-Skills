@@ -15,6 +15,7 @@ topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
 urlTitle: structural-diversity-discrete-return
 ---
+<div><div class="label-inline field--authors-label">FUNDING SOURCE:</div> these materials were developed with additional support from NSF MSB-NES # 1924942 to Elizabeth LaRue.</div>
 
 <div id="ds-objectives" markdown="1">
 
@@ -61,7 +62,6 @@ and
 </div> 
 
 ## Introduction to Structural Diversity Metrics
-
 Forest structure influences many important ecological processes, including 
 biogeochemical cycling, wildfires, species richness and diversity, and many 
 others. Quantifying forest structure, hereafter referred to as "structural 
@@ -77,7 +77,7 @@ collected at two field sites of the
 <a href="https://www.neonscience.org/" target="_blank"> 
 National Ecological Observatory Network</a>. 
 
-##The NEON AOP 
+## NEON AOP Discrete Return LIDAR
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> The NEON Airborne Observation Platform (AOP) </a>. 
 has several sensors including discrete-return LiDAR, which is useful for measuring forest structural diversity that can be summarized into four categories of metrics: (1) canopy height, (2) canopy cover and openness, and (3) canopy heterogeneity (internal and external), and (4) vegetation area.
 
@@ -90,6 +90,7 @@ Second, we will look at <a href="https://www.neonscience.org/field-sites/field-s
 As you can imagine, these two forest types will have both similarities and differences in their structural attributes. We can quantify these attributes by calculating several different structural diversity metrics, and comparing 
 the results.
 
+## Loading the LIDAR Products
 To begin, we first need to load our required R packages, and set our working 
 directory to the location where we saved the input LiDAR .laz files that can be 
 downloaded from the NEON Data Portal.
@@ -149,6 +150,7 @@ Note that this function can read in both `.las` and `.laz` file formats.
     </a>
 </figure>
 
+## Normalizing Tree Height to Ground
 To begin, we will take a look at the structural diversity of the dense mixed deciduous/evergreen 
 forest of HARV. We're going to choose a 40 x 40 m spatial extent for our analysis, but first we 
 need to normalize the height values of this LiDAR point cloud from an absolute elevation 
@@ -213,6 +215,7 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     </a>
 </figure>
 
+## Calculating Structural Diversity Metrics
 Now that we have our area of interest normalized and clipped, we can proceed with calculating 
 our structural diversity metrics. 
 
@@ -265,7 +268,7 @@ our structural diversity metrics.
     cover.fraction <- 1 - deepgap.fraction 
     
     #HEIGHT SD
-    #height SD, the standard deviation of height values for all points 
+    #height SD, the standard deviation of height values for all points
     #in the plot point cloud
     vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
 
@@ -355,6 +358,7 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
     ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
     ## 1    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
 
+## Combining Everything Into One Function
 Now that we have run through how to measure each structural diversity metric, let's create a 
 convenient function to run these a little faster on the TEAK site for a comparison of structural 
 diversity with HARV. 
@@ -447,6 +451,7 @@ diversity with HARV.
     ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
     ## 1    11.56424  4.320685   0.8390816   0.9683643    2.455946   0.6766286
 
+## Comparing Metrics Between Forests
 How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
 
 

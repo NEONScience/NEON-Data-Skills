@@ -139,7 +139,7 @@ deepgap.fraction <- deepgaps/cells
 cover.fraction <- 1 - deepgap.fraction 
 
 #HEIGHT SD
-#height SD, the standard deviation of height values for all points 
+#height SD, the standard deviation of height values for all points
 #in the plot point cloud
 vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
 
