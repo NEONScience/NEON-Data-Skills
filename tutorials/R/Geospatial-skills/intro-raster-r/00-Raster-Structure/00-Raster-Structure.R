@@ -1,21 +1,38 @@
-## ----load-libraries-1, results='hide', echo=FALSE-----------------------------------------
-
+## ----load-libraries--------------------------------------------------------------------------------------
+# load libraries
 library(raster)
 library(rgdal)
 
+# set working directory to ensure R can find the file we wish to import
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
+
+
+## ----open-raster, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest"----
+# Load raster into R
+DSM_HARV <- raster(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+
+# View raster structure
+DSM_HARV 
+
+# plot raster
+# note \n in the title forces a line break in the title
+plot(DSM_HARV, 
+     main="NEON Digital Surface Model\nHarvard Forest")
 
 
 
-## ----elevation-map, echo=FALSE------------------------------------------------------------
+## ----elevation-map, fig.cap="Continuous elevation map of NEON's site Harvard Forest"---------------------
 # render DSM for tutorial content background
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV <- raster(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 # code output here - DEM rendered on the screen
 plot(DSM_HARV, main="Continuous Elevation Map\n NEON Harvard Forest Field Site")
 
 
 
-## ----classified-elevation-map, echo=FALSE-------------------------------------------------
+## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest"----------
 # Demonstration image for the tutorial
 
 # add a color map with 5 colors
@@ -41,30 +58,7 @@ legend( par()$usr[2], 4713700,
         fill = rev(col))
 
 
-## ----load-libraries-----------------------------------------------------------------------
-# load libraries
-library(raster)
-library(rgdal)
-
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
-
-
-## ----open-raster--------------------------------------------------------------------------
-# Load raster into R
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-
-# View raster structure
-DSM_HARV 
-
-# plot raster
-# note \n in the title forces a line break in the title
-plot(DSM_HARV, 
-     main="NEON Digital Surface Model\nHarvard Forest")
-
-
-
-## ----view-resolution-units----------------------------------------------------------------
+## ----view-resolution-units-------------------------------------------------------------------------------
 # view resolution units
 crs(DSM_HARV)
 
@@ -74,11 +68,11 @@ myCRS
 
 
 
-## ----resolution-units---------------------------------------------------------------------
+## ----resolution-units------------------------------------------------------------------------------------
 crs(DSM_HARV)
 
 
-## ----set-min-max--------------------------------------------------------------------------
+## ----set-min-max-----------------------------------------------------------------------------------------
 
 # This is the code if min/max weren't calculated: 
 # DSM_HARV <- setMinMax(DSM_HARV) 
@@ -91,11 +85,11 @@ maxValue(DSM_HARV)
 
 
 
-## ----demonstrate-no-data-black, echo=FALSE------------------------------------------------
+## ----demonstrate-no-data-black, fig.cap="Colorized raster image with NoDataValues around the edge rendered in black"----
 # no data demonstration code - not being taught 
 # Use stack function to read in all bands
 RGB_stack <- 
-  stack("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+  stack(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
 
 # Create an RGB image from the raster stack
 par(col.axis="white",col.lab="white",tck=0)
@@ -104,7 +98,7 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
 
 
 
-## ----demonstrate-no-data, echo=FALSE------------------------------------------------------
+## ----demonstrate-no-data, fig.cap="Colorized raster image with NoDataValues around the edge removed"-----
 # reassign cells with 0,0,0 to NA
 # this is simply demonstration code - we will not teach this.
 f <- function(x) {
@@ -121,7 +115,7 @@ plotRGB(newRGBImage, r = 1, g = 2, b = 3,
  
 
 
-## ----view-raster-histogram----------------------------------------------------------------
+## ----view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000"----
 
 # view histogram of data
 hist(DSM_HARV,
@@ -132,7 +126,7 @@ hist(DSM_HARV,
 
 
 
-## ----view-raster-histogram2---------------------------------------------------------------
+## ----view-raster-histogram2, fig.cap="Histogram showing the distribution of digital surface model values with all pixel values included"----
 
 # View the total number of pixels (cells) in is our raster 
 ncell(DSM_HARV)
@@ -147,22 +141,22 @@ hist(DSM_HARV,
 
 
 
-## ----view-raster-bands--------------------------------------------------------------------
+## ----view-raster-bands-----------------------------------------------------------------------------------
 
 # view number of bands
 nlayers(DSM_HARV)
 
 
 
-## ----view-attributes-gdal-----------------------------------------------------------------
+## ----view-attributes-gdal--------------------------------------------------------------------------------
 
 # view attributes before opening file
-GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+GDALinfo(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 
 
-## ----challenge-code-attributes, eval=FALSE, echo=FALSE------------------------------------
-## GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
+## ----challenge-code-attributes, eval=FALSE, echo=FALSE---------------------------------------------------
+## GDALinfo(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
 ## 
 ## # ANSWERS ###
 ## # 1. If this file has the same CRS as DSM_HARV?  Yes: UTM Zone 18, WGS84, meters.

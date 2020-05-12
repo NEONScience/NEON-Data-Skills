@@ -4,10 +4,10 @@ title: "Git 05: Git Add Changes - Commit"
 description: "This tutorial covers how to edit a local version of a Git repository and then commit changes to it to be tracked in the Git version control system."
 dateCreated: 2016-05-06
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-management
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:
@@ -59,7 +59,9 @@ using `git push`.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-add-commit.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-add-commit.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-add-commit.png"
+	alt="Graphic showing distributed version control workflow. After the repository has been cloned to your local computeryou can work on any file in the repository. You can use git pull to pull changes in your fork on github.com to your computer to ensure both repositories are in sync. Edits to the file on your computer will not be recognized by Git until you add and commit them as tracked changes in your repository.">
+	</a>
 	<figcaption>After a Git repo has been cloned locally, you can now work on
 	any file in the repo. You use <code>git pull</code> to pull changes in your
 	fork on github.com down to your computer to ensure both repos are in sync.
@@ -204,7 +206,10 @@ in the shell. This allows you to keep track of change that you've made and what
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_git-staging-area.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_git-staging-area.svg"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_git-staging-area.svg"
+	alt="Graphic showing the workflow of using the git add and git commit command. You can think of Git as taking snapshots of changes over the
+life of a project. Git add specifies what will go in a snapshot, and git commit then actually takes the snapshot and makes a permanent record of it.">
+	</a>
 	<figcaption> You can think of Git as taking snapshots of changes over the
 life of a project. <code> git add</code> specifies what will go in a snapshot (putting things
  in the staging area), and <code> git commit </code> then actually takes the snapshot and
@@ -297,7 +302,9 @@ laptop?
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-file.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-file.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Git-ForkScreenshot-file.png"
+	alt="Screenshot of a forked NEON Data Instituterepository on github.com displaying an example .md file within the repository.">
+	</a>
 	<figcaption>An example .md file located within the
 	<strong> participants/2017-RemoteSensing/pre-institute2-git </strong> of a Data Institute repo fork.
 Source: National Ecological Observatory Network (NEON)
