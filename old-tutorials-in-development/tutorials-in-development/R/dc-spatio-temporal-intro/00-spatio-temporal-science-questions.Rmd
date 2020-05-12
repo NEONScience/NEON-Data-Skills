@@ -486,7 +486,7 @@ structure (density and height) information. LiDAR can also be used to find the
 location of roads and streams (a way to initially create the shapefiles
 mentioned above).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLLWiknuNGd50GI8OZf3EBo6PMx04xcoFa" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=EYbhNSUnIdU&feature=youtu.be" frameborder="0" allowfullscreen></iframe>
 
 
 ### Sources of LiDAR Data
