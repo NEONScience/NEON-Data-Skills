@@ -34,7 +34,7 @@ page will introduce fundamental LiDAR (or lidar) concepts including:
 
 Scientists often need to characterize vegetation over large regions to answer
 research questions at the ecosystem or regional scale. Therefore, we need tools
-we need tools that can estimate key characteristics over large areas because 
+that can estimate key characteristics over large areas because 
 we don’t have the resources to measure each and every tree or shrub. 
 
 <figure>
@@ -170,7 +170,7 @@ points is known as a LiDAR point cloud.
 
 The commonly used file format to store LIDAR point cloud data is called .las 
 which is a format supported by the American Society of Photogrammetry and Remote 
-Sensing (ASPRS). Recently, the <a href= "http://www.laszip.org/" target="_blank"> .laz</a> 
+Sensing (ASPRS). Recently, the <a href= "https://laszip.org" target="_blank"> .laz</a> 
 format has been developed by Martin Isenberg of LasTools. The differences is that .laz is a 
 highly compressed version of .las.
 
@@ -224,7 +224,7 @@ various methods.
 
 ## Additional Resources
 
-*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">las file format</a>?
+*	What is the LAS format? <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">las file format</a>?
 *	Using .las with Python? <a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank">las: python ingest</a>
 *	Specifications for <a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank">las v1.3</a>
 
