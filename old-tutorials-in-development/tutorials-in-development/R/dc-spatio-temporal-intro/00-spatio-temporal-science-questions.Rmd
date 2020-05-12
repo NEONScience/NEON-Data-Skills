@@ -4,10 +4,10 @@ title: "Spatial Intro 00: Answer a Spatio-temporal Research Question with Data"
 description: "This tutorial provides an overview of finding spatial data to support a research question. It covers some of the key data sources, providers and places that one can use to find data."
 dateCreated: 2015-10-23
 authors: Megan A. Jones, Leah A. Wasser
-contributors: Natalie Robinson
+contributors: Natalie Robinson, Alison Dernbach
 estimatedTime: 
-packagesLibraries: 
-topics: data-management, spatial-data-gis, metadata, remote-sensing, 
+packagesLibraries: rgdal
+topics: data-management, spatial-data-gis, metadata, remote-sensing 
 languagesTool: R
 dataProduct: 
 code1: 
@@ -80,9 +80,9 @@ data.
 ## Our Research Question: - Explore (Regional) Drivers and Patterns of Plant Phenology
 
 For this series, and the associated 
-<a href="/vector-data-series" target="_blank">*Intro to Vector Data in R*</a>,
-<a href="/raster-data-series" target="_blank">*Introduction to Working with Raster Data*</a>, and
-<a href="/tabular-time-series" target="_blank">*Introduction to Working With Time Series Data in Text Formats* </a> series, 
+<a href="https://www.neonscience.org/vector-data-series" target="_blank">*Intro to Vector Data in R*</a>,
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank">*Introduction to Working with Raster Data*</a>, and
+<a href="https://www.neonscience.org/tabular-time-series" target="_blank">*Introduction to Working With Time Series Data in Text Formats* </a> series, 
 our research question is *What are (regional) drivers and patterns of plant phenology?* 
 
 Our science topic for all of the tutorials in these series is plant phenology.
@@ -97,8 +97,8 @@ to trends observed in greening and browning of vegetation.
 different sites.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/dc-spatio-temporal-intro/NDVI_Plot.png">
-	<img src="{{ site.baseurl }}/images/dc-spatio-temporal-intro/NDVI_Plot.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/NDVI_Plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/NDVI_Plot.png" alt="Greeness on the y-axis of this graph peaks during the summer months."></a>
 	<figcaption>
 	An example plot of NDVI (Normalized Difference Vegetative Index). We see when the
 	vegetation is greener (a larger value) throughout a year or a growing season.
@@ -110,24 +110,30 @@ Our study area includes two National Ecological Observatory Network (NEON) field
 sites in the United States:
 
 * Site One:the 
-<a href="/field-sites/field-sites-map/HARV" target="_blank">**Harvard Forest (HARV)** </a>
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">**Harvard Forest (HARV)** </a>
 located in Massachusetts in the northeastern United States.
 * Site Two: the 
-<a href="/field-sites/field-sites-map/SJER" target="_blank">San Joaquin Experimental Range (SJER) </a>
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank">San Joaquin Experimental Range (SJER) </a>
 located in the central region of the US state of California.
 
 Both sites are mapped below:
 
-```{r Field-Site-Map, include=TRUE, echo=FALSE, results="hide", message =FALSE, warning=FALSE}
+```{r Field-Site-Map, include=TRUE, echo=FALSE, results="hide", message =FALSE, warning=FALSE, fig.cap="Map of the United States with state borders shown and two NEON sites in Massachusetts and California highlighted."}
 
 # create a map that shows the location of BOTH field sites.
 # add a legend with a point for each site.
 library(rgdal)
+
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
+
 # Read the Shapefiles
-State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
+State.Boundary.US <- readOGR(paste0(wd,"NEON-DS-Site-Layout-Files/US-Boundary-Layers"),
           "US-State-Boundaries-Census-2014")
 
-Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
+Boundary.US <- readOGR(paste0(wd,"NEON-DS-Site-Layout-Files/US-Boundary-Layers"),
           "US-Boundary-Dissolved-States")
 
 # Plot the locations
@@ -252,7 +258,7 @@ This video explains how remote sensing cameras (spectral sensors) work.
 are another source of phenology data at the site scale. Phenocams are often
 mounted on towers and capture repeat photography of vegetation each day. Learn
 more about the
-<a href="http://budburst.org/what-is-phenocam">phenocam Citizen Science collaboration- Season Spotter</a>.
+<a href="https://budburst.org">phenocam Citizen Science collaboration- Season Spotter</a>.
 </div>
 
 ### NDVI Measures Plant Greenness
@@ -265,8 +271,8 @@ an ideal data product used to estimate the timing of plant "green-up" and
 "brown-down" over large areas.
 
 <figure>
- <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg">
- <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+ <a href="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg">
+ <img src="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg" alt="A green tree on the left absorbs most of the visible light and reflects half of near-infrared light while a brown tree on the right reflects more visible light and less near-infrared light. The green tree has a higher NDVI calculation."></a>
     <figcaption> NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -281,8 +287,8 @@ the year. In this figure, each plot presents a snapshot of the NDVI values
 across an area of 120m x 150m.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/dc-spatio-temporal-intro/NDVI-Landsat-RS.png">
-	<img src="{{ site.baseurl }}/images/dc-spatio-temporal-intro/NDVI-Landsat-RS.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/NDVI-Landsat-RS.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/NDVI-Landsat-RS.png" alt="Boxes representing various selected days of the year show Landsat data that is more green during days in the middle of the year and less green at the beginning and end of the year."></a>
 	<figcaption> Remote sensing data can be used to measure the greening and
 	browning of plants over larger areas. Because these data are often collected
 	repeatedly using satellites orbiting the earth, it provides a nice time series
@@ -304,11 +310,11 @@ phenocams capture near-infrared light.
 There are many sources that allow us to request and freely download remote
 sensing imagery and products like NDVI. The National Ecological Observatory Network
 (NEON) provides remote sensing data for all of their 81 field sites. This data
-can be accessed through their <a http://datadata portal or an API. 
+can be accessed through <a href="http://data.neonscience.org" target="_blank">the NEON Data Portal</a> or an API. 
 
 For the United States, another popular data provider is the United States Geological Survey.
 
-* <a href="http://phenology.cr.usgs.gov/get_data_main.php" target="_blank">Remote Sensing Phenology</a>
+* <a href="https://www.usgs.gov/land-resources/eros/phenology/data-tools" target="_blank">Remote Sensing Phenology</a>
 * <a href="http://glovis.usgs.gov/" target="_blank">USGS GLOVIS</a>
 * <a href="http://landsatlook.usgs.gov/" target="_blank">Landsat Look Viewer</a>
 
@@ -363,7 +369,7 @@ intensity, wind speed and more.
 
 Some sources of climate data:
 
-* <a href="/data-collection/flux-tower-measurements" target="_blank"> **National Ecological Observatory Network (NEON):** </a>
+* <a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank"> **National Ecological Observatory Network (NEON):** </a>
 data from a network of flux towers, that measure temperature,
 precipitation, wind speed, light intensity and more. Field sites are located
 across the United States. Data can be downloaded from the
@@ -378,8 +384,8 @@ maintained by NOAA.
 Many LTER sites have micrometerology towers that collect climatic data.
 
 <figure>
-  <a href="{{ site.baseurl }}/images/NEON-general/NEONtower-STER.jpg">
-	<img src="{{ site.baseurl }}/images/NEON-general/NEONtower-STER.jpg">
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower_STER.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower_STER.jpg" alt="A flux tower in an open field.">
 	</a>
 	<figcaption>A flux tower located at the NEON Field Site in Sterling, Colorado, USA.
 	Flux towers have sensors mounted on different heights on the tower that collect
@@ -417,10 +423,10 @@ available at 15-minute and daily intervals.
 
  <figure class="half">
 	<a href="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-fall.jpg">
-	<img src="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-fall.jpg">
+	<img src="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-fall.jpg" alt="A meteorological station with trees in the fall.">
 	</a>
 	<a href="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-winter.jpg">
-	<img src="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-winter.jpg">
+	<img src="http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/metsta-winter.jpg" alt="The same meterological station but in the winter.">
 	</a>
 	<figcaption>The Fischer Meteorological Station in two seasons. Source:
 	<a href="http://harvardforest.fas.harvard.edu/" target="_blank"> Harvard Forest</a>
@@ -492,7 +498,7 @@ Canopy Height Models (CHM), that map elevation and vegetation height
 respectively, or other LiDAR-derived data available for researchers.
 
 
-* <a href="/data/airborne-data" target="_blank"> **NEON airborne observation platform** data</a>
+* <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing/tips-getting-airborne-data" target="_blank"> **NEON airborne observation platform** data</a>
 * <a href="http://www.opentopography.org/" target="_blank">**Open Topography**: </a>
 a great source of free LiDAR data in the US.
 * <a href="http://earthexplorer.usgs.gov/" target="_blank"> **USGS LiDAR data**</a>
@@ -505,7 +511,7 @@ information and sometimes have online repositories to access the data.
 
 #### NEON Airborne Observation Platform (AOP)
 The
-<a href="/data-collection/airborne-remote-sensing" target="_blank"> NEON airborne observation platform </a>
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON airborne observation platform </a>
 (AOP) collects annual remote sensing data over NEON field sites using sensors
 mounted on an airplane. The AOP consists of a hyperspectral imaging
 spectrometer, a full waveform and discrete return LiDAR, and a high-resolution
@@ -542,7 +548,7 @@ provide automated, near-surface remote sensing of canopy phenology across the
 northeastern United States and adjacent areas of Canada.
 
 #### Additional Remote Sensing Data Sources
-* <a href="http://phenology.cr.usgs.gov/get_data_main.php" target="_blank">**USGS/EROS Center**</a>:
+* <a href="https://www.usgs.gov/land-resources/eros/phenology/data-tools" target="_blank">**USGS/EROS Center**</a>:
 remote sensing phenology data
 * <a href="http://landsat.gsfc.nasa.gov/" target="_blank">**NASA Landsat**</a>:
 Landsat imagery data for the globe
