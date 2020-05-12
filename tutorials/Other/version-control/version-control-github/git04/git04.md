@@ -4,10 +4,10 @@ title: "Git 04: Markdown Files"
 description: "This tutorial covers the basics of writing a document using the markdown language."
 dateCreated: 2016-05-06
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-analysis
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:

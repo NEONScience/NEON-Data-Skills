@@ -4,7 +4,7 @@ title: "Introduction to HDF5 Files in R"
 description: "Learn how to build a HDF5 file in R from scratch! Add groups, datasets and attributes. Read data out from the file."
 dateCreated: 2015-05-20 15:22:52
 authors: Leah A. Wasser
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Alison Dernbach
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5
 topics: HDF5
@@ -93,7 +93,7 @@ computers memory / RAM in their entirety in order work with them.
 To access HDF5 files in R, we will use the `rhdf5` library which is part of 
 the <a href="http://www.bioconductor.org" target="_blank">Bioconductor</a> 
 suite of R libraries. It might also be useful to install 
-<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">the 
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">the 
 free HDF5 viewer</a> 
 which will allow you to explore the contents of an HDF5 file using a graphic interface.
 
@@ -102,7 +102,7 @@ which will allow you to explore the contents of an HDF5 file using a graphic int
 
 First, let's get R setup. We will use the rhdf5 library. To access HDF5 files in 
 R, we will use the rhdf5 library which is part of the Bioconductor suite of R 
-packages. As of Aug. 2017 this package was not yet on CRAN. 
+packages. As of May 2020 this package was not yet on CRAN. 
 
 ```{r load libraries}
 
@@ -115,12 +115,13 @@ library("rhdf5")
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files
-#setwd("working-dir-path-here")
+wd <- "~/Git/data/" #This will depend on your local environment 
+setwd(wd) 
 
 ```
 
 Read more about the 
-<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf" target="_blank"> `rhdf5` package here.</a>
+<a href="http://www.bioconductor.org/packages/release/bioc/html/rhdf5.html" target="_blank"> `rhdf5` package here.</a>
 
 ## Create an HDF5 File in R
 
@@ -245,7 +246,7 @@ H5close()
 Once we've extracted data from our H5 file, we can work with it
 in R. 
 
-``` {r access-plot-data}
+``` {r access-plot-data, fig.cap="Histogram showing frequency of temperature values"}
 
 # create a quick plot of the data
 hist(testSubset2)
