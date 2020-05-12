@@ -435,7 +435,7 @@ The packages and functions maybe useful when creating grids in R.
 The QGIS processing toolbox provides easy access to Grass commands. 
 
 ### GrassGIS commands
-* More documentation on GRASS GIS Integration 
+* Check out the documentation on GRASS GIS Integration 
 <a href="https://docs.qgis.org/3.10/en/docs/user_manual/grass_integration/grass_integration.html#starting-the-grass-plugin" target="_blank">*Starting the GRASS plugin* </a>
 
 The following commands may be useful if you are working with GrassGIS. 
