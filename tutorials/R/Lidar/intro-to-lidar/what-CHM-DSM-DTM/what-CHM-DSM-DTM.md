@@ -18,26 +18,26 @@ urlTitle: chm-dsm-dtm-gridded-lidar-data
 
 ## Common LiDAR Data Products
 
-* <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This 
-product represents the elevation of the ground.
-* <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This 
-represents the elevation of the tallest surfaces at that point. Imagine draping 
+* <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This product represents the elevation of the ground.
+* <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This represents the elevation of the tallest surfaces at that point. Imagine draping 
 a sheet over the canopy of a forest, the DEM contours with the heights of the 
 trees where there are trees but the elevation of the ground when there is a 
-clearing in the forest.
+clearing in the forest. 
 
-* <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This 
-represents the difference between a Digital Terrain Model and a Digital Surface 
+* <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This represents the difference between a Digital Terrain Model and a Digital Surface 
 Model and gives you the height of the objects (in a forest, the trees) that are 
 on the surface of the earth.
 
 <figure class="third">
     <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dem.png"></a>
+    DTM
     <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dsm.png"></a>
+    DSM
     <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/chm.png"></a>
+    CHM
     
     <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
-     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right). 
+     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right).
      Click on the images to view interactive 3D models. </figcaption>
 </figure>
 
