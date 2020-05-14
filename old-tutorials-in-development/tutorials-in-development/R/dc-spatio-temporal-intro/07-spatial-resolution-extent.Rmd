@@ -52,7 +52,7 @@ preferably, RStudio loaded on your computer.
 
 * **NAME:** `install.packages("NAME")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
 
 ### Download Data
 
@@ -87,7 +87,7 @@ and
 * Read more on coordinate systems in the
 <a href="http://docs.qgis.org/2.0/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
 QGIS documentation.</a>
-* NEON Data Skills Lesson <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* NEON Data Skills Lesson <a href="https://www.neonscience.org/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 
 </div>
 
@@ -127,8 +127,8 @@ DEM@extent
 ```
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
@@ -136,7 +136,7 @@ DEM@extent
 
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialData/raster2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster2.png">
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
@@ -180,15 +180,15 @@ For instance, an image that has a 1 m spatial resolution means that each pixel i
 the image represents a 1 m x 1 m area.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
 </figure>
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialData/raster1.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster1.png">
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
     extent with fewer pixels will look more blury and will be of lower resolution.

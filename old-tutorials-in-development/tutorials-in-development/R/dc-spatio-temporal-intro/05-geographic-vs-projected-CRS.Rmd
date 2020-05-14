@@ -56,7 +56,7 @@ preferably, `RStudio` loaded on your computer.
 
 * **NAME:** `install.packages("NAME")`
 
-[More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+[More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
 
 ### Download Data
 
@@ -80,14 +80,14 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
 of a lesson series introducing
-[spatial data and data management in `R` ]({{ site.baseurl }}tutorial/URL).
+[spatial data and data management in `R` ](https://www.neonscience.org/tutorial/URL).
 It is also part of a larger
-[spatio-temporal Data Carpentry Workshop ]({{ site.baseurl }}workshops/spatio-temporal-workshop)
+[spatio-temporal Data Carpentry Workshop ](https://www.neonscience.org/workshops/spatio-temporal-workshop)
 that includes working with  
-[raster data in `R` ]({{ site.baseurl }}tutorial/spatial-raster-series),
-[vector data in `R` ]({{ site.baseurl }}tutorial/spatial-vector-series)
+[raster data in `R` ](https://www.neonscience.org/tutorial/spatial-raster-series),
+[vector data in `R` ](https://www.neonscience.org/tutorial/spatial-vector-series)
 and  
-[tabular time series in `R` ]({{ site.baseurl }}tutorial/tabular-time-series).
+[tabular time series in `R` ](https://www.neonscience.org/tutorial/tabular-time-series).
 
 ****
 
@@ -96,7 +96,7 @@ and
 * Read more on coordinate systems in the
 <a href="http://docs.qgis.org/2.0/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
 QGIS documentation.</a>
-* NEON Data Skills Lesson <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* NEON Data Skills Lesson <a href="https://www.neonscience.org/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 
 </div>
 

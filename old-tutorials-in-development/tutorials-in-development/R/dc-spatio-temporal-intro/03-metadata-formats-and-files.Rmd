@@ -60,7 +60,7 @@ the data.
 * NOTE: You have to call the devtools library `library(devtools)` first, and then `install_github` will work.
 * **eml** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
 
 ****
 
@@ -596,7 +596,7 @@ file that conforms to the Ecological Metadata Language (EML) specifications.
 ### Challenge: Find & Explore Metadata
 
 Refer back to the list of possible data sources at the end of
-[*Answer a Spatio-temporal Research Question with Data: Where to Start?*]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
+[*Answer a Spatio-temporal Research Question with Data: Where to Start?*](https://www.neonscience.org/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
 Choose a site that is relevant to your interests and then find a dataset. For
 this dataset find the metadata and answer the following questions:
 
