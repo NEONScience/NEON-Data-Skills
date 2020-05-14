@@ -258,8 +258,8 @@ have been developed.
 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatio-temporal-intro/LatLongfromGlobeCenter-ESRI.gif">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatio-temporal-intro/LatLongfromGlobeCenter-ESRI.gif"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/LatLongfromGlobeCenter-ESRI.gif">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/LatLongfromGlobeCenter-ESRI.gif"></a>
 	<figcaption>A geographic coordinate system locates latitude and longitude
 	location using angles. Thus the spacing of each line of latitude moving north
 	and south is not uniform.

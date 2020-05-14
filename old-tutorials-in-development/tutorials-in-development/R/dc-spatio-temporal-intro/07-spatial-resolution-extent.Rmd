@@ -127,8 +127,8 @@ DEM@extent
 ```
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
@@ -180,8 +180,8 @@ For instance, an image that has a 1 m spatial resolution means that each pixel i
 the image represents a 1 m x 1 m area.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
