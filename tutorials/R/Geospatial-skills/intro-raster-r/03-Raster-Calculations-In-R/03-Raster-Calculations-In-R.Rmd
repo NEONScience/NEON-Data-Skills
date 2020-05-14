@@ -210,7 +210,7 @@ like we might explore a dataset that we collected in the field.
 Height Model (`CHM_HARV`) that we just created?
 2. What are two ways you can check this range of data in `CHM_HARV`? 
 3. What is the distribution of all the pixel values in the CHM? 
-4. Plot a histogram with 6 bins instead of the default and change the color of
+4. Plot a histogram with 8 bins instead of the default and change the color of
 the histogram. 
 5. Plot the `CHM_HARV` raster using breaks that make sense for the data. Include
 a appropriate color palette for the data, plot title and no axes ticks / labels. 
@@ -233,8 +233,7 @@ hist(CHM_HARV,
      col="lightgreen",
      main = "Histogram of Canopy Height Model\nNEON Harvard Forest Field Site",
      maxpixels=ncell(CHM_HARV),
-     breaks=6)
-## ISSUE - Donal, look here. It will not produce a histogram with six breaks (only 8).
+     breaks=8)
 
 # 5
 myCol=terrain.colors(4)
