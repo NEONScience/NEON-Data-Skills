@@ -127,10 +127,9 @@ NDVI is often used for a quantitative proxy measure of vegetation health, cover
 and phenology (life cycle stage) over large areas. Our NDVI data are a Landsat
 derived single band product saved as a GeoTIFF for different times of the year. 
 
-##ISSUE - Donal, look here. This image no longer exists.Don't forget to add alt text and change the caption for the new image.
 <figure>
- <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
- <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+ <a href="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg"> 
+ <img src="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg" alt="NDVI is calculated from the visible and near-infrared light reflected by vegetation. Healthy vegetation absorbs most of the visible light that hits it, and reflects a large portion of near-infrared light. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light."></a>
     <figcaption>NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -166,22 +165,10 @@ In this tutorial, we will use the `raster` and `rgdal` libraries.
 
     # load packages
     library(raster)
-
-    ## Loading required package: sp
-
     library(rgdal)
-
-    ## rgdal: version: 1.4-8, (SVN revision 845)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
-    ##  Path to GDAL shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/gdal
-    ##  GDAL binary built with GEOS: TRUE 
-    ##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
-    ##  Path to PROJ.4 shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/proj
-    ##  Linking to sp version: 1.4-1
-
+    
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
 
@@ -204,19 +191,19 @@ the list.
     # view list - note the full path, relative to our working directory, is included
     all_NDVI_HARV
 
-    ##  [1] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/005_HARV_ndvi_crop.tif"
-    ##  [2] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/037_HARV_ndvi_crop.tif"
-    ##  [3] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/085_HARV_ndvi_crop.tif"
-    ##  [4] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/133_HARV_ndvi_crop.tif"
-    ##  [5] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/181_HARV_ndvi_crop.tif"
-    ##  [6] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/197_HARV_ndvi_crop.tif"
-    ##  [7] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/213_HARV_ndvi_crop.tif"
-    ##  [8] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/229_HARV_ndvi_crop.tif"
-    ##  [9] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/245_HARV_ndvi_crop.tif"
-    ## [10] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/261_HARV_ndvi_crop.tif"
-    ## [11] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/277_HARV_ndvi_crop.tif"
-    ## [12] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/293_HARV_ndvi_crop.tif"
-    ## [13] "C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/309_HARV_ndvi_crop.tif"
+    ##  [1] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/005_HARV_ndvi_crop.tif"
+    ##  [2] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/037_HARV_ndvi_crop.tif"
+    ##  [3] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/085_HARV_ndvi_crop.tif"
+    ##  [4] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/133_HARV_ndvi_crop.tif"
+    ##  [5] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/181_HARV_ndvi_crop.tif"
+    ##  [6] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/197_HARV_ndvi_crop.tif"
+    ##  [7] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/213_HARV_ndvi_crop.tif"
+    ##  [8] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/229_HARV_ndvi_crop.tif"
+    ##  [9] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/245_HARV_ndvi_crop.tif"
+    ## [10] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/261_HARV_ndvi_crop.tif"
+    ## [11] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/277_HARV_ndvi_crop.tif"
+    ## [12] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/293_HARV_ndvi_crop.tif"
+    ## [13] "/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/309_HARV_ndvi_crop.tif"
 
 Now we have a list of all GeoTIFF files in the `NDVI` directory for Harvard
 Forest. Next, we will create a `RasterStack` from this list using the `stack()` 
@@ -386,6 +373,14 @@ thereafter.
 Let's next view some temperature data for our field site to see whether there 
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.
+
+
+    ## 
+    ## Attaching package: 'scales'
+
+    ## The following object is masked from 'package:readr':
+    ## 
+    ##     col_factor
 
 ![Scatterplot of daily mean air temperature at NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png)
 

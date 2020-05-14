@@ -40,6 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 * **rasterVis:** `install.packages("rasterVis")`
+* **RColorBrewer:** `install.packages("RColorBrewer")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -96,21 +97,11 @@ please create it now.
     # import libraries
     library(raster)
     library(rgdal)
-    library(rasterVis) 
-
-    ## Loading required package: lattice
-
-    ## Loading required package: latticeExtra
-
-    ## 
-    ## Attaching package: 'latticeExtra'
-
-    ## The following object is masked from 'package:ggplot2':
-    ## 
-    ##     layer
-
+    library(rasterVis)
+    library(RColorBrewer)
+    
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
     
@@ -129,9 +120,7 @@ We can use the `plot` function to plot our raster time series data.
 
     # view a plot of all of the rasters
     # nc specifies number of columns
-    plot(NDVI_HARV_stack, 
-         zlim = c(.15, 1), 
-         nc = 4)
+    plot(NDVI_HARV_stack, nc = 4)
 
 ![Plot of all the NDVI rasters for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png)
 
@@ -172,9 +161,6 @@ NDVI (greenness) data using the `colorRampPalette()` function in combination wit
     # use colorbrewer which loads with the rasterVis package to generate
     # a color ramp of yellow to green
     cols <- colorRampPalette(brewer.pal(9,"YlGn"))
-
-    ## Error in brewer.pal(9, "YlGn"): could not find function "brewer.pal"
-
     # create a level plot - plot
     levelplot(NDVI_HARV_stack,
             main="Landsat NDVI -- Improved Colors \nNEON Harvard Forest Field Site",
@@ -305,5 +291,4 @@ better than a sequential color ramp (like "YlGn")? Can you think of other data
 sets where a divergent color ramp may be best? 
 </div>
 
-
-    ## Error in brewer.pal(9, "BrBG"): could not find function "brewer.pal"
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 5x3 layout, a divergent color palette, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png)

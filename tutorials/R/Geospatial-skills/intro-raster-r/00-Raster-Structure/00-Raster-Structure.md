@@ -108,22 +108,10 @@ To open rasters in R, we will use the `raster` and `rgdal` packages.
 
     # load libraries
     library(raster)
-
-    ## Loading required package: sp
-
     library(rgdal)
-
-    ## rgdal: version: 1.4-8, (SVN revision 845)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
-    ##  Path to GDAL shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/gdal
-    ##  GDAL binary built with GEOS: TRUE 
-    ##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
-    ##  Path to PROJ.4 shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/proj
-    ##  Linking to sp version: 1.4-1
-
+    
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
 
@@ -149,7 +137,7 @@ we'll use a naming convention of `datatype_HARV`.
     ## resolution : 1, 1  (x, y)
     ## extent     : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
     ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## names      : HARV_dsmCrop 
     ## values     : 305.07, 416.07  (min, max)
 
@@ -509,8 +497,8 @@ identifying outliers and bad data values in our raster data.
          ylab="Frequency",
          col="wheat")
 
-    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster
-    ## cells were used. 100000 values used.
+    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
+    ## were used. 100000 values used.
 
 ![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
 
@@ -607,7 +595,7 @@ function to view raster metadata before we open a file in R.
     ## oblique.y   0 
     ## driver      GTiff 
     ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-    ## file        C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## file        ~/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## apparent band summary:
     ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
     ## 1 Float64           TRUE       -9999          1       1697

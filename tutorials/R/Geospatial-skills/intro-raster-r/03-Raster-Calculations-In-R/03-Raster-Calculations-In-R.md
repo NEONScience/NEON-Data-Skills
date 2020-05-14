@@ -125,7 +125,7 @@ NEON Harvard Forest Field site.
     library(raster)
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
     
@@ -144,7 +144,7 @@ NEON Harvard Forest Field site.
     ## oblique.y   0 
     ## driver      GTiff 
     ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-    ## file        C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif 
+    ## file        ~/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif 
     ## apparent band summary:
     ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
     ## 1 Float64           TRUE       -9999          1       1697
@@ -168,7 +168,7 @@ NEON Harvard Forest Field site.
     ## oblique.y   0 
     ## driver      GTiff 
     ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-    ## file        C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+    ## file        ~/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## apparent band summary:
     ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
     ## 1 Float64           TRUE       -9999          1       1697
@@ -256,7 +256,7 @@ like we might explore a dataset that we collected in the field.
 Height Model (`CHM_HARV`) that we just created?
 2. What are two ways you can check this range of data in `CHM_HARV`? 
 3. What is the distribution of all the pixel values in the CHM? 
-4. Plot a histogram with 6 bins instead of the default and change the color of
+4. Plot a histogram with 8 bins instead of the default and change the color of
 the histogram. 
 5. Plot the `CHM_HARV` raster using breaks that make sense for the data. Include
 a appropriate color palette for the data, plot title and no axes ticks / labels. 

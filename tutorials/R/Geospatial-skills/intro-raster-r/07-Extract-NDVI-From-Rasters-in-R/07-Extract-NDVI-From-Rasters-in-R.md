@@ -104,7 +104,7 @@ tutorials so you may be able to skip this first step!).
     library(ggplot2)
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
     

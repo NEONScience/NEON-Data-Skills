@@ -1,11 +1,12 @@
-## ----load-libraries-data--------------------------------------------------------------------
+## ----load-libraries-data------------------------------------------------------------------------
 # import libraries
 library(raster)
 library(rgdal)
-library(rasterVis) 
+library(rasterVis)
+library(RColorBrewer)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+wd <- "~/Git/data/" # this will depend on your local environment environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
@@ -23,9 +24,7 @@ NDVI_HARV_stack <- NDVI_HARV_stack/10000
 ## ----plot-time-series, fig.cap="Plot of all the NDVI rasters for NEON's site Harvard Forest"----
 # view a plot of all of the rasters
 # nc specifies number of columns
-plot(NDVI_HARV_stack, 
-     zlim = c(.15, 1), 
-     nc = 4)
+plot(NDVI_HARV_stack, nc = 4)
 
 
 
@@ -47,7 +46,7 @@ levelplot(NDVI_HARV_stack,
 
 
 
-## ----clean-up-names-------------------------------------------------------------------------
+## ----clean-up-names-----------------------------------------------------------------------------
 
 # view names for each raster layer
 names(NDVI_HARV_stack)

@@ -1,9 +1,9 @@
-## ----load-libraries-------------------------------------------------------------------------
+## ----load-libraries-----------------------------------------------------------------------------
 # load raster package
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+wd <- "~/Git/data/" # this will depend on your local environment environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
@@ -63,8 +63,7 @@ hist(CHM_HARV,
      col="lightgreen",
      main = "Histogram of Canopy Height Model\nNEON Harvard Forest Field Site",
      maxpixels=ncell(CHM_HARV),
-     breaks=6)
-## ISSUE - Donal, look here. It will not produce a histogram with six breaks (only 8).
+     breaks=8)
 
 # 5
 myCol=terrain.colors(4)
@@ -85,7 +84,7 @@ plot(CHM_ov_HARV,
   main="Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site")
 
 
-## ----write-raster---------------------------------------------------------------------------
+## ----write-raster-------------------------------------------------------------------------------
 # export CHM object to new GeotIFF
 writeRaster(CHM_ov_HARV, paste0(wd,"chm_HARV.tiff"),
             format="GTiff",  # specify output format - GeoTIFF

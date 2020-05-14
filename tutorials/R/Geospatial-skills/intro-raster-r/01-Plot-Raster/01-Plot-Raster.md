@@ -96,22 +96,10 @@ please create it now.
 
     # if they are not already loaded
     library(rgdal)
-
-    ## Loading required package: sp
-
-    ## rgdal: version: 1.4-8, (SVN revision 845)
-    ##  Geospatial Data Abstraction Library extensions to R successfully loaded
-    ##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
-    ##  Path to GDAL shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/gdal
-    ##  GDAL binary built with GEOS: TRUE 
-    ##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
-    ##  Path to PROJ.4 shared files: C:/Users/jbrown1/Documents/R/win-library/3.6/rgdal/proj
-    ##  Linking to sp version: 1.4-1
-
     library(raster)
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+    wd <- "~/Git/data/" # this will depend on your local environment environment
     # be sure that the downloaded file is in this directory
     setwd(wd)
     
@@ -146,8 +134,8 @@ break values.
          col="wheat3",  # changes bin color
          xlab= "Elevation (m)")  # label the x-axis
 
-    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster
-    ## cells were used. 100000 values used.
+    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
+    ## were used. 100000 values used.
 
 ![Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/create-histogram-breaks-1.png)
 
@@ -158,7 +146,7 @@ break values.
 
     DSMhist$counts
 
-    ## [1] 32067 67485   448
+    ## [1] 31850 67690   460
 
 Warning message!? Remember, the default for the histogram is to include only a
 subset of 100,000 values. We could force it to show all the pixel values or we

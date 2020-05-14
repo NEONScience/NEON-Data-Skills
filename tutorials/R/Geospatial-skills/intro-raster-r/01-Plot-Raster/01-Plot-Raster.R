@@ -1,10 +1,10 @@
-## ----load-libraries-------------------------------------------------------------------------
+## ----load-libraries-----------------------------------------------------------------------------
 # if they are not already loaded
 library(rgdal)
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+wd <- "~/Git/data/" # this will depend on your local environment environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
@@ -66,7 +66,7 @@ plot(DSM_HARV,
 
 
 
-## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE----------------------
+## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE--------------------------
 # Find min & max
 DSM_HARV@data
 

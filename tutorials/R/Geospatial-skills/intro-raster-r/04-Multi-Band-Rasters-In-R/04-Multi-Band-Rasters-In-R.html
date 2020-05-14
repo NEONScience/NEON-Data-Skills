@@ -282,7 +282,7 @@ library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-wd &lt;- &quot;C:/Users/jbrown1/Documents/R Projects/data/&quot; # this will depend on your local environment
+wd &lt;- &quot;~/Git/data/&quot; # this will depend on your local environment environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 </code></pre>
@@ -346,7 +346,7 @@ RGB_band1_HARV
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho 
 ## values     : 0, 255  (min, max)
 </code></pre>
@@ -417,7 +417,7 @@ RGB_band2_HARV
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho 
 ## values     : 0, 255  (min, max)
 </code></pre>
@@ -486,7 +486,7 @@ RGB_stack_HARV@layers
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.1 
 ## values     : 0, 255  (min, max)
 ## 
@@ -498,7 +498,7 @@ RGB_stack_HARV@layers
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.2 
 ## values     : 0, 255  (min, max)
 ## 
@@ -510,7 +510,7 @@ RGB_stack_HARV@layers
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.3 
 ## values     : 0, 255  (min, max)
 
@@ -523,7 +523,7 @@ RGB_stack_HARV[[1]]
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : C:/Users/jbrown1/Documents/R Projects/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
+## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.1 
 ## values     : 0, 255  (min, max)
 
@@ -677,7 +677,7 @@ RGB_brick_HARV &lt;- brick(RGB_stack_HARV)
 # view size of the brick
 object.size(RGB_brick_HARV)
 
-## 170897168 bytes
+## 13856 bytes
 </code></pre>
 
 <p>Notice that in the <code>RasterBrick</code>, all of the bands are stored within the actual 

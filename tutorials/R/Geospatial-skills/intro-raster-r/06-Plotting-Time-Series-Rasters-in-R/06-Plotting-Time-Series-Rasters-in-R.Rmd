@@ -40,6 +40,7 @@ on your computer to complete this tutorial.
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
 * **rasterVis:** `install.packages("rasterVis")`
+* **RColorBrewer:** `install.packages("RColorBrewer")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -96,7 +97,8 @@ please create it now.
 # import libraries
 library(raster)
 library(rgdal)
-library(rasterVis) 
+library(rasterVis)
+library(RColorBrewer)
 
 # set working directory to ensure R can find the file we wish to import
 wd <- "~/Git/data/" # this will depend on your local environment environment
@@ -120,9 +122,7 @@ We can use the `plot` function to plot our raster time series data.
 ```{r plot-time-series, fig.cap="Plot of all the NDVI rasters for NEON's site Harvard Forest"}
 # view a plot of all of the rasters
 # nc specifies number of columns
-plot(NDVI_HARV_stack, 
-     zlim = c(.15, 1), 
-     nc = 4)
+plot(NDVI_HARV_stack, nc = 4)
 
 ``` 
 
