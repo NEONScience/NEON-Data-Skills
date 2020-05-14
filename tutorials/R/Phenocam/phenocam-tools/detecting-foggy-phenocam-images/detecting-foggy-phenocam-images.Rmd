@@ -95,6 +95,8 @@ In *hazer* we can also extract three basic elements of an RGB image :
 2. Darkness
 3. Contrast
 
+Let's explain and extact the three elements, one at a time.
+
 ## Brightness
 
 The brightness matrix comes from the maximum value of the R, G, or B channel. We 
@@ -115,7 +117,7 @@ plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 Here the grayscale is used to show the value of each pixel's maximum brightness 
 of the R, G or B color channel. 
 
-To extract a single brightness value for the image, depending on our needs we can 
+To extract a single brightness value for the image, depending on our needs, we can 
 perform some statistics or we can just use the mean of this matrix. 
 
 ```{r brightness-adv, fig.height=5, fig.width=8}
@@ -128,8 +130,7 @@ hist(brightness_mat)
 
 ```
 
-Why are we getting so many images up in the high range of the brightness? Where
-does this correlate to on the RGB image? 
+Consider the histogram in relation to the RGB image. Why are we getting so many image pixels up in the high range of the brightness? Where does this correlate to on the RGB image?
 
 ## Darkness
 
@@ -152,6 +153,9 @@ quantile(darkness_mat)
 par(mar=c(5,4,4,2))
 hist(darkness_mat)
 ```
+
+
+Consider the RGB image and the histogram. What aspects of the image may be contributing to the frequency of darker pixels?
 
 ## Contrast
 
@@ -326,7 +330,7 @@ file.copy(haze_mat[foggy==FALSE,file], to = clear_dir)
 ```
 
 Now that we have our images separated, we can get the full list of haze
-values only for those images that are not classified as "foggy".  
+values only for those images that are not classified as "foggy"(0.4 or less haze).  
 
 ```{r process-series-apply, fig.height=5, fig.width=8}
 # this is an alternative approach instead of a for loop

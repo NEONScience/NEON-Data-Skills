@@ -4,12 +4,12 @@ title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
-contributors: 
+contributors: Felipe Sanchez
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
-dataProudct:
+dataProudct: DP3.30006.001
 code1: HYPERSPECTRAL/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
 urlTitle: create-raster-stack-hsi-hdf5-r
@@ -109,12 +109,16 @@ emphasize vegetation and help us classify or identify where vegetation is locate
 on the ground.
 
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"
+    alt="An image showing portion of the San Joaquin Experimental Range field site using red, green and blue bands. The example dataset bands are 14,9,4; bands 58,34,19 in the full NEON dataset.">
+    </a>
 <figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"
+    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands to create an infra red image. The example dataset bands are 22,9,4; bands 90,34,19 in the full NEON dataset.">
+    </a>
 <figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
 
@@ -197,8 +201,8 @@ step in the
 This will allow us to process multiple bands in bulk.
 
 The function `band2Rast` slices a band of data from the HDF5 file, and
-extracts the reflectance. It them converts the data to a matrix, converts it to
-a raster and returns a spatially corrected raster for the specified band. 
+extracts the reflectance. It then converts the data into a matrix, converts it to
+a raster, and finally returns a spatially corrected raster for the specified band. 
 
 The function requires the following variables:
 
@@ -287,7 +291,7 @@ co-incident rasters.
 Next, add the names of the bands to the raster so we can easily keep track of 
 the bands in the list.
 
-```{r plot-raster-stack }
+```{r plot-raster-stack, fig.cap="Raster plot of band 14 from the raster stack created. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8."}
 
 # Create a list of band names
 bandNames <- paste("Band_",unlist(rgb),sep="")
@@ -309,7 +313,7 @@ plot(rgbStack$Band_14, main="Band 14")
 
 We can play with the color ramps too if we want:
 
-```{r plot-HSI-raster}
+```{r plot-HSI-raster, fig.cap=c("Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors funtion. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.","Raster plot of band 14 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.","Raster plot of band 14 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.")}
 
 # change the colors of our raster 
 myCol <- terrain.colors(25)
@@ -329,7 +333,7 @@ image(rgbStack$Band_14, main="Band 14", col=myCol, zlim=c(0,.5))
 The `plotRGB` function allows you to combine three bands to create an image. 
 
 
-```{r plot-RGB-Image}
+```{r plot-RGB-Image, fig.cap="RGB image of a portion of the SJER field site using 3 bands fom the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image."}
 # create a 3 band RGB image
 plotRGB(rgbStack,
         r=1,g=2,b=3,
@@ -388,7 +392,7 @@ aggregate bands when using hyperspectral data. This example is using individual
 bands to perform the NDVI calculation. Using individual bands is not necessarily 
 the best way to calculate NDVI from hyperspectral data! 
 
-```{r create-NDVI }
+```{r create-NDVI, fig.cap=c("Raster plot of a portion of the SJER field site showing calculated NDVI values. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from -1 to 1.","Raster plot of a portion of the SJER field site showing calculated NDVI values with predefined breaks at 0, 0.25, 0.5, 05, and 1. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from 0 to 1.")  }
 
 # Calculate NDVI
 # select bands to use in calculation (red, NIR)
