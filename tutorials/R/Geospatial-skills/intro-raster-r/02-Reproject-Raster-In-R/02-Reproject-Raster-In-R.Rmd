@@ -104,7 +104,7 @@ library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+wd <- "~/Git/data/" # this will depend on your local environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
@@ -264,7 +264,7 @@ plot(DTM_hill_UTMZ18N_HARV,
 
 # overlay the DTM on top of the hillshade
 plot(DTM_HARV,
-     col=rainbow(100),
+     col=terrain.colors(100),
      alpha=0.4,
      add=T,
      legend=F)
