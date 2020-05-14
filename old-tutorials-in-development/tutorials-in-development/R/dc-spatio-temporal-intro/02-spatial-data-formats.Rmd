@@ -3,13 +3,14 @@ layout: post
 title: "Spatial Intro 02: Spatial Data Formats -- Intro to Shapefiles (Vector
 Data) and GeoTIFFs (Raster Data)"
 date:   2015-10-28
-authors: [Leah A. Wasser, Megan A. Jones]
-contributors: [ ]
+authors: Leah A. Wasser, Megan A. Jones
+contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: [raster, rgdal, sp]
+packagesLibraries: raster, rgdal, sp
 category: [self-paced-tutorial]
-tags: [R, spatial-data-gis]
+topics: spatial-data-gis, raster
+languagesTool: R
 mainTag: spatial-data-management-series
 workshopSeries: [spatial-data-management-series]
 description: "This tutorial covers the basics of key data formats that may
@@ -55,7 +56,16 @@ formats.
 * **rgdal:** `install.packages("rgdal")`
 
 
-{% include/_greyBox-wd-rscript.html %}
+***
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 ****
 
@@ -77,7 +87,7 @@ environment, use a shared data directory.
 
 ## One Dataset - Many Files
 
-While text files often are self contained (one CSV) is composed of one unique file,
+While text files often are self contained (one CSV) and composed of one unique file,
 many spatial formats contain several files. For instance, a shapefile (discussed
 below) contains 3 or more files, all of which must retain the same NAME and be
 stored in the same file directory, in order for you to be able to work with them.
@@ -94,7 +104,7 @@ raster and vector data.
 
 ## Vector Data - Points, Lines, Polygons
 
-Vector data, are often used to store things like road and plot locations,
+Vector data are often used to store things like road and plot locations,
 boundaries of states, countries and lakes.
 
 Vector data are composed of discrete geometric locations (x,y values) known as
@@ -103,8 +113,8 @@ of the vertices determines the type of vector that we are working
 with: **point**, **line** or **polygon**.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/pnt_line_poly.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/pnt_line_poly.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png">
+    <img src=""https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png" alt="Points shown as individual locations, lines are connected points, and polygons have 3 or more vertices, or points, that are closed."></a>
     <figcaption> There are 3 types of vector objects: points, lines or
     polygons. Each vector object type has a different structure.
     Image Source: National Ecological Observatory Network (NEON)
@@ -141,14 +151,19 @@ type of vector data**: points, lines or polygons.
 library(raster) # commands to view metadata from vector objects
 library(rgdal) # library of common GIS functions
 
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
+
 # Open shapefile
-roads_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV","HARV_roads")
+roads_HARV <- readOGR(paste0(wd,"NEON-DS-Site-Layout-Files/HARV","HARV_roads"))
 
 # view slots available for the object
 slotNames(roads_HARV)
 
 # view all methods available for that object
-# methods(class = class(roads_HARV))
+methods(class = class(roads_HARV))
 
 ```
 
@@ -189,8 +204,8 @@ may have a name, length, number of lanes, speed limit, type of road and other
 attributes stored with it.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png">
-    <img src="{{ site.baseurl }}/images/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png" alt="Example attribute tables for point, line, and polygon data."></a>
     <figcaption>Each spatial feature in an R spatial object has the same set of
     associated attributes that describe or characterize the feature.
     Attribute data are stored in a separate *.dbf file. Attribute data can be
@@ -210,12 +225,11 @@ head(roads_HARV@data, 3)
 
 In the map below of the Harvard Forest field site, there are many different features
 with different spatial object types. We will learn to create maps like this in
-the
-[*Introduction to Working with Vector Data in R* tutorial series]({{ site.basurl }}/tutorial-series/vector-data-series/).
+the <a href="https://www.neonscience.org/vector-data-series" target="_blank"> *Introduction to Working with Vector Data in R* tutorial series</a>
 
 <figure>
-    <a href="{{ site.baseurl }}/images/dc-spatio-temporal-intro/plot-color.png">
-    <img src="{{ site.baseurl }}/images/dc-spatio-temporal-intro/plot-color.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/plot-color.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/plot-color.png" alt="A simple map of a field site with points representing soil types and lines representing roads or footpaths."></a>
     <figcaption>The map above contains point and line format vector data. We will
     create a map like this in the vector data tutorial series.
     Image Source: National Ecological Observatory Network (NEON)
@@ -274,18 +288,16 @@ file types together. And when you share a shapefile with a colleague, it is
 important to zip up all of these files into one package before you send it to
 them!
 
-We cover working with shapefiles in `R` in the
-[*Introduction to Working With Vector Data in R* series](http://neondataskills.org/tutorial-series/vector-data-series/).
+We cover working with shapefiles in `R` in the <a href="https://www.neonscience.org/vector-data-series" target="_blank"> *Introduction to Working with Vector Data in R* tutorial series</a>.
 
 ### Vector Data in .CSV Format
 
 The shapefile format is one (very common) way to store vector data. However,
-you may encounter is in other formats. For example, sometimes, point data are
+you may encounter it in other formats. For example, sometimes, point data are
 stored as a Comma Separated Value (.CSV) format.
 
 
-We cover working with vector points in .csv format in the
-[tutorial: Convert from .csv to a Shapefile in R.](http://neondataskills.org/Vector 04: Convert from .csv to a Shapefile in R).
+We cover working with vector points in .csv format in the <a href="https://www.neonscience.org/dc-csv-to-shapefile-r" target="_blank"> *Convert from .csv to a Shapefile in R* tutorial</a>.
 
 ## Raster Data
 
@@ -294,8 +306,9 @@ as pixels. Each pixel contains a value that represents an area on the Earth's
 surface.
 
 <figure>
-    <a href="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
-    <img src="{{site.baseurl}}/images/dc-spatial-raster/raster_concept.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png" 
+    alt="Satellite (raster) image with an inset map of a smaller extent. The inset map's structure is further shown as a grid of numeric values represented by colors on a the legend.">
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -331,7 +344,7 @@ tags can include the following raster metadata:
 4. The `resolution` of the data
 
 
-We will explore metadata in tif files in the next, tutorial -
+We will explore metadata in tif files in the next tutorial -
 [Spatial Intro 03: Data About Data -- Intro to Metadata File Formats and Structure]({{ site.baseurl }}R/metadata-file-formats-structures)
 
 IMPORTANT: just because a `.tif` file can store metadata tags, doesn't mean
@@ -356,8 +369,7 @@ exampleRaster <- writeRaster(rasterObject,  # object to export/write
                              NAflag = -9999)  # your desired NA or noData value
 ```
 
-We cover writing `NA` values using the `writeRaster` function in R in
-[*Raster Calculations in R - Subtract One Raster from Another and Extract Pixel Values For Defined Locations* tutorial](http://neondataskills.org/R/Raster-Calculations-In-R).
+We cover writing `NA` values using the `writeRaster` function in R in <a href="https://www.neonscience.org/dc-raster-calculations-r" target="_blank"> *Raster Calculations in R - Subtract One Raster from Another and Extract Pixel Values For Defined Locations* tutorial</a>.
 
 <i class="fa fa-star"></i> **Data Note:** `Tif tags` - metadata tags stored
 within a `tif` or `GeoTIFF` file are also what your camera uses to store
