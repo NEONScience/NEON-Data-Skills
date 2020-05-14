@@ -1,20 +1,22 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries-------------------------------------------------------------------------
 # load raster package
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # view info about the dtm & dsm raster data that we will work with.
-GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
-GDALinfo("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif"))
+GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 
 
-## ----load-plot-data-----------------------------------------------------------------------
+## ----load-plot-data, fig.cap=c("Digital terrain model showing the ground surface of NEON's site Harvard Forest","Digital surface model showing the elevation of NEON's site Harvard Forest")----
 # load the DTM & DSM rasters
-DTM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DTM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif"))
+DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 # create a quick plot of each to see what we're dealing with
 plot(DTM_HARV,
@@ -24,7 +26,7 @@ plot(DSM_HARV,
      main="Digital Surface Model \n NEON Harvard Forest Field Site")
 
 
-## ----raster-math--------------------------------------------------------------------------
+## ----raster-math, fig.cap="Canopy height model showing the height of the trees of NEON's site Harvard Forest"----
 # Raster math example
 CHM_HARV <- DSM_HARV - DTM_HARV 
 
@@ -35,7 +37,7 @@ plot(CHM_HARV,
 
 
 
-## ----create-hist--------------------------------------------------------------------------
+## ----create-hist, fig.cap="Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest"----
 # histogram of CHM_HARV
 hist(CHM_HARV,
   col="springgreen4",
@@ -45,7 +47,7 @@ hist(CHM_HARV,
 
 
 
-## ----challenge-code-CHM-HARV,  include=TRUE, results="hide", echo=FALSE-------------------
+## ----challenge-code-CHM-HARV,  include=TRUE, results="hide", fig.cap=c("Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest with six breaks", "Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest with four breaks"), echo=FALSE----
 # 1) 
 minValue(CHM_HARV)
 maxValue(CHM_HARV)
@@ -62,6 +64,8 @@ hist(CHM_HARV,
      main = "Histogram of Canopy Height Model\nNEON Harvard Forest Field Site",
      maxpixels=ncell(CHM_HARV),
      breaks=6)
+## ISSUE - Donal, look here. It will not produce a histogram with six breaks (only 8).
+
 # 5
 myCol=terrain.colors(4)
 plot(CHM_HARV,
@@ -72,7 +76,7 @@ plot(CHM_HARV,
 
 
 
-## ----raster-overlay-----------------------------------------------------------------------
+## ----raster-overlay, fig.cap="Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest produced by the overlay() function"----
 CHM_ov_HARV<- overlay(DSM_HARV,
                       DTM_HARV,
                       fun=function(r1, r2){return(r1-r2)})
@@ -81,9 +85,9 @@ plot(CHM_ov_HARV,
   main="Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site")
 
 
-## ----write-raster-------------------------------------------------------------------------
+## ----write-raster---------------------------------------------------------------------------
 # export CHM object to new GeotIFF
-writeRaster(CHM_ov_HARV, "chm_HARV.tiff",
+writeRaster(CHM_ov_HARV, paste0(wd,"chm_HARV.tiff"),
             format="GTiff",  # specify output format - GeoTIFF
             overwrite=TRUE, # CAUTION: if this is true, it will overwrite an
                             # existing file
@@ -91,12 +95,12 @@ writeRaster(CHM_ov_HARV, "chm_HARV.tiff",
 
 
 
-## ----challenge-code-SJER-CHM,include=TRUE, results="hide", echo=FALSE---------------------
+## ----challenge-code-SJER-CHM,include=TRUE, results="hide", fig.cap=c("Histogram of digital terrain model showing the distribution of the ground surface of NEON's site San Joaquin Experimental Range", "Histogram of digital surface model showing the distribution of the elevation of NEON's site San Joaquin Experimental Range", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range", "Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range"), echo=FALSE----
 # 1.
 # load the DTM
-DTM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
+DTM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif"))
 # load the DSM
-DSM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+DSM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif"))
 
 # check CRS, units, etc
 DTM_SJER
@@ -135,7 +139,7 @@ plot(CHM_SJER,
 
 # 4 
 # Write to object to file
-writeRaster(CHM_SJER,"chm_ov_SJER.tiff",
+writeRaster(CHM_SJER,paste0(wd,"chm_ov_SJER.tiff"),
             format="GTiff", 
             overwrite=TRUE, 
             NAflag=-9999)

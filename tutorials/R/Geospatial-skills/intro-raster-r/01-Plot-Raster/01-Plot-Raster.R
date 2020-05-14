@@ -1,24 +1,26 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries-------------------------------------------------------------------------
 # if they are not already loaded
 library(rgdal)
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # import raster
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 
 
-## ----hist-raster--------------------------------------------------------------------------
+## ----hist-raster, fig.cap="Digital surface model showing the continuous elevation of NEON's site Harvard Forest"----
 # Plot raster object
 plot(DSM_HARV,
      main="Digital Surface Model\nNEON Harvard Forest Field Site")
 
 
 
-## ----create-histogram-breaks--------------------------------------------------------------
+## ----create-histogram-breaks, fig.cap="Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest"----
 # Plot distribution of raster values 
 DSMhist<-hist(DSM_HARV,
      breaks=3,
@@ -32,7 +34,7 @@ DSMhist$counts
 
 
 
-## ----plot-with-breaks---------------------------------------------------------------------
+## ----plot-with-breaks, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with three breaks"----
 # plot using breaks.
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -41,7 +43,7 @@ plot(DSM_HARV,
 
 
 
-## ----add-plot-title-----------------------------------------------------------------------
+## ----add-plot-title, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with UTM Westing Coordinate (m) on the x-axis and UTM Northing Coordinate (m) on the y-axis"----
 # Assign color to a object for repeat use/ ease of changing
 myCol = terrain.colors(3)
 
@@ -54,7 +56,7 @@ plot(DSM_HARV,
      ylab = "UTM Northing Coordinate (m)")
 
 
-## ----turn-off-axes------------------------------------------------------------------------
+## ----turn-off-axes,fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with no axes"----
 # or we can turn off the axis altogether
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -64,7 +66,7 @@ plot(DSM_HARV,
 
 
 
-## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE--------------------
+## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE----------------------
 # Find min & max
 DSM_HARV@data
 
@@ -84,10 +86,10 @@ plot(DSM_HARV,
 
 
 
-## ----hillshade----------------------------------------------------------------------------
+## ----hillshade, fig.cap="Hillshade digital surface model showing the elevation of NEON's site Harvard Forest in grayscale"----
 # import DSM hillshade
 DSM_hill_HARV <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_HARV,
@@ -98,7 +100,7 @@ plot(DSM_hill_HARV,
 
 
 
-## ----overlay-hillshade--------------------------------------------------------------------
+## ----overlay-hillshade, fig.cap="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site Harvard Forest"----
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_HARV,
@@ -115,20 +117,21 @@ plot(DSM_HARV,
      legend=F)
 
 
-## ----challenge-hillshade-layering, echo=FALSE---------------------------------------------
+## ----challenge-hillshade-layering, fig.cap=c("Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site San Joaquin Experiment Range","Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON's site San Joaquin Experiment Range"), echo=FALSE----
 # CREATE DSM MAPS
 # import DSM 
-DSM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMcrop.tif")
+DSM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMcrop.tif"))
 # import DSM hillshade
 DSM_hill_SJER <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_SJER,
     col=grey(1:100/100),  #create a color ramp of grey colors
     legend=F,
     main="DSM with Hillshade\n NEON SJER Field Site",
-    axes=FALSE)
+    xlab = "UTM Westing Coordinate", 
+    ylab = "UTM Northing Coordinate")
 
 # add the DSM on top of the hillshade
 plot(DSM_SJER,
@@ -139,17 +142,17 @@ plot(DSM_SJER,
 
 # CREATE SJER DTM MAP
 # import DTM 
-DTM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMcrop.tif")
+DTM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMcrop.tif"))
 # import DTM hillshade
 DTM_hill_SJER <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DTM_hill_SJER,
     col=grey(1:100/100),  #create a color ramp of grey colors
     legend=F,
     main="DTM with Hillshade\n NEON SJER Field Site",
-    axes=FALSE)
+    axes=F)
 
 # add the DSM on top of the hillshade
 plot(DTM_SJER,

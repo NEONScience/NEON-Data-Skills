@@ -4,13 +4,13 @@ title: "Raster 07: Extract NDVI Summary Values from a Raster Time Series"
 description: "This tutorial covers how to extract and plot NDVI pixel values from a raster time series stack in R. We will use ggplot2 to plot our data."	
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal, ggplot2
 topics: 
 subtopics: raster, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
 code1:  /R/dc-spatial-raster/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-ndvi-calc-raster-time-series
@@ -105,10 +105,12 @@ library(rgdal)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # Create list of NDVI file paths
-all_HARV_NDVI <- list.files("NEON-DS-Landsat-NDVI/HARV/2011/NDVI",
+all_HARV_NDVI <- list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/NDVI"),
                             full.names = TRUE,
                             pattern = ".tif$")
 
@@ -290,7 +292,7 @@ Joaquin Experimental Range field sites. NDVI data for SJER are located in the
 
 ```{r challenge-answers, include=TRUE, results="hide", echo=FALSE} 
 # Create list of NDVI file paths
-NDVI_path_SJER <- "NEON-DS-Landsat-NDVI/SJER/2011/NDVI"
+NDVI_path_SJER <- paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/NDVI")
 all_NDVI_SJER <- list.files(NDVI_path_SJER,
                             full.names = TRUE,
                             pattern = ".tif$")
@@ -340,7 +342,7 @@ If you are unfamiliar with `ggplot()` or would like to learn more about plotting
 in `ggplot()` see the tutorial on
 <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank"> *Plotting Time Series with ggplot in R* </a>.
 
-```{r ggplot-data }
+```{r ggplot-data, fig.cap="Scatterplot of mean NDVI for NEON's site Harvard Forest in 2011"}
 
 # plot NDVI
 ggplot(avg_NDVI_HARV, aes(julianDay, meanNDVI), na.rm=TRUE) +
@@ -359,7 +361,7 @@ Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>
 
-```{r challenge-code-ggplot-data, echo=FALSE }
+```{r challenge-code-ggplot-data, fig.cap="Scatterplot of mean NDVI for NEON's site San Joaquin Experimental Range in 2011", echo=FALSE }
 
 # plot NDVI
 ggplot(avg_NDVI_SJER, aes(julianDay, meanNDVI)) +
@@ -376,7 +378,7 @@ better, if both sets of data are plotted in the same plot. We can do this by
 binding the two datasets together. The date frames must have the same number
 of columns and exact same column names to be bound.  
 
-```{r merge-df-single-plot}
+```{r merge-df-single-plot, fig.cap="Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011"}
 # Merge Data Frames
 NDVI_HARV_SJER <- rbind(avg_NDVI_HARV,avg_NDVI_SJER)  
   
@@ -399,7 +401,7 @@ on the x-axis.
 
 </div>
 
-```{r challenge-code-plot2, echo=FALSE}
+```{r challenge-code-plot2, fig.cap="Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis", echo=FALSE}
 # plot NDVI values for both sites
 ggplot(NDVI_HARV_SJER, aes(Date, meanNDVI, colour=site)) +
   geom_point(size=4,aes(group=site)) + 
@@ -424,10 +426,10 @@ Let's look at the RGB images from Harvard Forest.
 NOTE: the code below uses loops which we will not teach in this tutorial. 
 However the code demonstrates one way to plot multiple RGB rasters in a grid.
 
-```{r view-all-rgb-Harv }
+```{r view-all-rgb-Harv, fig.cap="Time series of RGB images showing greenness over time for NEON's site Harvard Forest"}
 # open up RGB imagery
 
-rgb.allCropped <-  list.files("NEON-DS-Landsat-NDVI/HARV/2011/RGB/", 
+rgb.allCropped <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/"), 
                               full.names=TRUE, 
                               pattern = ".tif$")
 # create a layout
@@ -450,9 +452,9 @@ to high levels of cloud cover.
 
 Is the same thing happening at SJER?
 
-```{r view-all-rgb-SJER }
+```{r view-all-rgb-SJER, fig.cap="Time series of RGB images showing greenness over time for NEON's site San Joaquin Experimental Range"}
 # open up the cropped files
-rgb.allCropped.SJER <-  list.files("NEON-DS-Landsat-NDVI/SJER/2011/RGB/", 
+rgb.allCropped.SJER <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB/"), 
                               full.names=TRUE, 
                               pattern = ".tif$")
 # create a layout
@@ -466,7 +468,7 @@ par(mfrow=c(5,4))
 
 for (aFile in rgb.allCropped.SJER)
   {NDVI.rastStack <- stack(aFile)
-  if (aFile =="NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif")
+  if (aFile ==paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif"))
     {plotRGB(NDVI.rastStack) }
   else { plotRGB(NDVI.rastStack, stretch="lin") }
 }
@@ -508,7 +510,7 @@ avg_NDVI_HARV_clean$meanNDVI<0.1
 
 Now we can create another plot without the suspect data. 
 
-```{r plot-clean-HARV}
+```{r plot-clean-HARV, fig.cap="Scatterplot of mean NDVI with outliers removed for NEON's site Harvard Forest in 2011"}
 
 # plot without questionable data
 
@@ -564,7 +566,7 @@ head(NDVI_HARV_toWrite)
 ```{r write-csv, eval=FALSE}
 # create a .csv of mean NDVI values being sure to give descriptive name
 # write.csv(DateFrameName, file="NewFileName")
-write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
+write.csv(NDVI_HARV_toWrite, file=paste0(wd,"meanNDVI_HARV_2011.csv"))
 
 ```
 
