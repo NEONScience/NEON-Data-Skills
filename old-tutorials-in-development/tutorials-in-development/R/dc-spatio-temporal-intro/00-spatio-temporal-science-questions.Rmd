@@ -25,17 +25,53 @@ places that you can look to find data for your study are / research question.
 
 <div id="ds-objectives" markdown="1">
 
-## Objectives
-
+## Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Identifying types of data we might need to answer a spatio-temporal research question.
 * Find NEON spatial data at data.neonscience.org.
 * Explain that one can work with data from different sites to compare areas.
 
-***
+## Things You’ll Need To Complete This Tutorial
 
-{% include/_greyBox-wd-rscript.html %}
+You will need the most current version of R and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **rgdal:** `install.packages("rgdal")`
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Download Data
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
+
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+****
+
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
@@ -257,8 +293,8 @@ This video explains how remote sensing cameras (spectral sensors) work.
 <a href="http://phenocam.sr.unh.edu/webcam/" target="_blank">Phenocam data </a>
 are another source of phenology data at the site scale. Phenocams are often
 mounted on towers and capture repeat photography of vegetation each day. Learn
-more about the
-<a href="https://budburst.org">phenocam Citizen Science collaboration- Season Spotter</a>.
+more about
+<a href="https://www.neonscience.org/data-collection/phenocams">NEON phenocams here</a>.
 </div>
 
 ### NDVI Measures Plant Greenness
