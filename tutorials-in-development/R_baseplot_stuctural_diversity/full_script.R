@@ -60,9 +60,12 @@ make_buffered_las <- function(plot_spdf, tile_las, buffer = 50){
   data.buffered <- lasnormalize(data.buffered, dtm)
   
   
-  
+  #Extract plot area from normlazed data; in other words, remove buffer
   data.plot <- lidR::lasclipRectangle(data.buffered, xleft = (x - in_radius), xright = (x + in_radius),
                                       ytop = (y + in_radius), ybottom = (y - in_radius))
+  
+  #Remove unreliable values
+  data.plot@data$Z[data.plot@data$Z <= .5] <- NA
   
   
   
@@ -72,7 +75,8 @@ make_buffered_las <- function(plot_spdf, tile_las, buffer = 50){
   
 }
 
-#Given am normalized LAS object for a plot, this function calculates and returns diversity indices
+#Given am normalized LAS object for a plot, and SP dataframe row for the same plot, this function calculates and returns
+# a named list of diversity indices
 structural_diversity_metrics <- function(data.40m, plot_spatPolyDF) {
   x <- plot_spatPolyDF$easting
   y <- plot_spatPolyDF$northing
@@ -89,7 +93,7 @@ structural_diversity_metrics <- function(data.40m, plot_spatPolyDF) {
   deepgap.fraction <- deepgaps/cells 
   cover.fraction <- 1 - deepgap.fraction 
   vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
-  sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
+  sd.1m2 <- grid_metrics(data.40m, sd(Z, na.rm = TRUE), 1) 
   sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
   Zs <- data.40m@data$Z
   Zs <- Zs[!is.na(Zs)]
@@ -114,8 +118,8 @@ structural_diversity_metrics <- function(data.40m, plot_spatPolyDF) {
 }
 
 
-#Given a distributed plot spatial dataframe and the LAS object of a lidar point cloud covering tile with plot, 
-#  this function should calculate diversity metrics for the area around the plot.
+#Given spatial dataframe row for a distributed plot, and the LAS object of a lidar point cloud covering tile with plot, 
+#  this function calculates diversity metrics for the area around the plot.
 
 
 plot_diversity_metrics <- function(plot_spdf, in_LAS){
