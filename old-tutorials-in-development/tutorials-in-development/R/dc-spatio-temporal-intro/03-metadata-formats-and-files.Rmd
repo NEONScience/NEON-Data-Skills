@@ -60,11 +60,20 @@ the data.
 * NOTE: You have to call the devtools library `library(devtools)` first, and then `install_github` will work.
 * **eml** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 
 ### Additional Resources
@@ -587,7 +596,7 @@ file that conforms to the Ecological Metadata Language (EML) specifications.
 ### Challenge: Find & Explore Metadata
 
 Refer back to the list of possible data sources at the end of
-[*Answer a Spatio-temporal Research Question with Data: Where to Start?*]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
+[*Answer a Spatio-temporal Research Question with Data: Where to Start?*](https://www.neonscience.org/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
 Choose a site that is relevant to your interests and then find a dataset. For
 this dataset find the metadata and answer the following questions:
 
