@@ -1,0 +1,63 @@
+---
+syncID: 
+title: "Download and work with NEON Aquatic Instrument Data "
+description: Tutorial for downloading NEON AIS data using the neonUtilities package and then exploring and understanding the downloaded data including seperating out into collection locations using the HOR variable. 
+dateCreated: '2020-05-19'
+authors: Bobby Hensley
+contributors: Megan Jones
+estimatedTime: 
+packagesLibraries: neonUtilities
+topics: data-management, rep-sci
+languageTool: R, API
+code1: R/download-explore/download-NEON-AIS-data.R
+tutorialSeries:
+urlTitle: download-neon-ais-data
+---
+
+This tutorial covers downloading NEON aquatic instrument system (AIS) data, using the 
+neonUtilities R package, as well as basic instruction in beginning to 
+explore and work with the downloaded data, including guidance in 
+navigating data documentation and understanding how to seperate data using the 
+horizontal (HOR) variable. 
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+* Download NEON AIS data using the neonUtilities package.
+* Understand downloaded data sets and load them into R for analyses.
+
+## Things You’ll Need To Complete This Tutorial
+To complete this tutorial you will need the most current version of R and, 
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **neonUtilities**: Basic functions for accessing NEON data
+
+Some of these packages are on CRAN and can be installed by 
+`install.packages()`, others need to be installed from 
+other repositories:
+
+```{r packages, eval=FALSE}
+
+install.packages("devtools")
+install.packages("neonUtilities")
+install.packages("raster")
+devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+install.packages("BiocManager")
+BiocManager::install("rhdf5")
+
+```
+
+
+### Additional Resources
+
+* <a href="https://www.neonscience.org/neonDataStackR" target="_blank">Tutorial for neonUtilities.</a> Some overlap with this tutorial but goes into more detail about the neonUtilities package.
+* <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial for using neonUtilities from a Python environment.</a>
+* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
+* <a href="https://github.com/NEONScience/NEON-geolocation/geoNEON" target="_blank">GitHub repository for geoNEON</a>
+
+</div>
