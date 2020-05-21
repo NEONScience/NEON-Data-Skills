@@ -321,35 +321,27 @@ get_unique_coordinates <- function(coords_df, boundaries_df){
 
 
 
-#Function takes sitecode and product code, returns most recent year-month for which liDAR data is available
-
-most_recent_data <- function(SITECODE_, PRODUCTCODE_){
+#Function takes coordinates of tile as string, date, and site; returns named vector with file name and url
+find_point_cloud <- function(coords, DATE, SITECODE){
+  #Define Request Parameters
+  PRODUCTCODE <- 'DP1.30003.001'
   SERVER <- 'https://data.neonscience.org/api/v0/'
   
-  site_req <- GET(paste0(SERVER,'sites/',SITECODE_))
-  site_data <- fromJSON(content(site_req, as = 'text'), flatten = T, simplifyDataFrame = T)$data
-  
-  dates <- site_data$dataProducts[site_data$dataProducts$dataProductCode == PRODUCTCODE_,]$availableMonths
-  return(dates[[1]][length(dates[[1]])])
-}
-
-
-
-#Function takes coordinates of tile as string, date, and site; returns named vector with file name and url
-find_point_cloud <- function(coords, in_data){
-
+  #Make data request
+  data_req <- GET(paste0(SERVER,'data/',PRODUCTCODE,'/',SITECODE,'/',DATE))
+  data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyDataFrame = T)
   
   #Get name of file
-  file_name <- in_data$data$files[intersect(
-    grep(coords, in_data$data$files$name),
-    grep('.laz', in_data$data$files$name)
+  file_name <- data_avail$data$files[intersect(
+    grep(coords, data_avail$data$files$name),
+    grep('.laz', data_avail$data$files$name)
   ),'name']
   
   
   #Get URL of file
-  file_url <- in_data$data$files[intersect(
-    grep(coords, in_data$data$files$name),
-    grep('.laz', in_data$data$files$name)
+  file_url <- data_avail$data$files[intersect(
+    grep(coords, data_avail$data$files$name),
+    grep('.laz', data_avail$data$files$name)
   ),'url']
   
   
@@ -402,46 +394,7 @@ find_point_cloud <- function(coords, in_data){
 
 
 
-#Function takes row of file df, coords df, and plots sp_df; calculates structural diversity metrics for each
-#  plot located in tile and returns results as dataframe
-assemble_tile_metrics <- function(file_tile, coorddf, plot_sdf){
-  
-  plot_ids <- coorddf[(coorddf$coord_String == file_tile$coords),]$plotID
-  
-  plots <- plot_sdf[(plot_sdf$plotID %in% plot_ids),]
-  tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
-  
-  
-  #Prepare empty data frame
-  N <- length(plots[,1])
-  DF <- data.frame(plotID = rep('',N),
-                   x = rep(NA,N),
-                   y = rep(NA,N),
-                   mean.max.canopy.ht = rep(NA,N),
-                   max.canopy.ht = rep(NA,N), 
-                   rumple = rep(NA,N),
-                   deepgaps = rep(NA,N),
-                   deepgap.fraction = rep(NA,N),
-                   cover.fraction = rep(NA,N),
-                   top.rugosity = rep(NA,N),
-                   vert.sd = rep(NA,N), 
-                   sd.sd = rep(NA,N),
-                   entro = rep(NA,N),
-                   GFP.AOP = rep(NA,N),
-                   VAI.AOP = rep(NA,N),
-                   VCI.AOP = rep(NA,N)) 
-  
-  if(N != 0){
-    for(i in seq(1,N)){
-      DF[i,1] <- as.character(plots[i,]$plotID)
-      DF[i,(2:16)] <- plot_diversity_metrics(plots[i,], tile_LAS)
-    }
-  }
-  
-  
-  return(DF)
-  
-}
+
 
 #Function takes row of boundary coordinates nested list, plot polygons spatial df, and file df
 #Gets two point cloud files needed for plot and combines them in one object, calculates diversity metrics
@@ -475,24 +428,27 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
 build_metrics_df <- function(this_plots_spdf, this_coords_df, this_files_df, this_boundaries_df){
   #Initialize empty dataframe
   bound_N <- length(this_boundaries_df)
+  norm_N <- length(this_coords_df$plotID)
+  N <- bound_N + norm_N
   
-  DF <- data.frame(plotID = rep('',bound_N),
-                   x = rep(NA,bound_N),
-                   y = rep(NA,bound_N),
-                   mean.max.canopy.ht = rep(NA,bound_N),
-                   max.canopy.ht = rep(NA,bound_N), 
-                   rumple = rep(NA,bound_N),
-                   deepgaps = rep(NA,bound_N),
-                   deepgap.fraction = rep(NA,bound_N),
-                   cover.fraction = rep(NA,bound_N),
-                   top.rugosity = rep(NA,bound_N),
-                   vert.sd = rep(NA,bound_N), 
-                   sd.sd = rep(NA,bound_N),
-                   entro = rep(NA,bound_N),
-                   GFP.AOP = rep(NA,bound_N),
-                   VAI.AOP = rep(NA,bound_N),
-                   VCI.AOP = rep(NA,bound_N)) 
+  DF <- data.frame(plotID = rep('',N),
+                   x = rep(NA,N),
+                   y = rep(NA,N),
+                   mean.max.canopy.ht = rep(NA,N),
+                   max.canopy.ht = rep(NA,N), 
+                   rumple = rep(NA,N),
+                   deepgaps = rep(NA,N),
+                   deepgap.fraction = rep(NA,N),
+                   cover.fraction = rep(NA,N),
+                   top.rugosity = rep(NA,N),
+                   vert.sd = rep(NA,N), 
+                   sd.sd = rep(NA,N),
+                   entro = rep(NA,N),
+                   GFP.AOP = rep(NA,N),
+                   VAI.AOP = rep(NA,N),
+                   VCI.AOP = rep(NA,N)) 
   
+
   #Add rows for boundary plots
   if(bound_N > 0){
     for(i in seq(1, bound_N)){
@@ -502,13 +458,26 @@ build_metrics_df <- function(this_plots_spdf, this_coords_df, this_files_df, thi
   }
   
   
-  
   #Create metrics data for non-boundary plots by file, and merge with DF
-  file_N <- length(this_files_df[,1])
-  
-  for(i in seq(1,file_N)){
-    new_file_DF <- assemble_tile_metrics(this_files_df[i,],this_coords_df,this_plots_spdf)
-    DF <- rbind(DF, new_file_DF)
+  k <- bound_N + 1
+  for(i in seq(1,length(this_files_df$name))){
+    file_tile <- this_files_df[i,]
+    plot_ids <- this_coords_df[(this_coords_df$coord_String == file_tile$coords),]$plotID
+    
+    coord_plots <- this_plots_spdf[(this_plots_spdf$plotID %in% plot_ids),]
+
+    
+    coord_N = length(coord_plots$plotID)
+
+    
+    if(coord_N != 0){
+      tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
+      for(j in seq(1,coord_N)){
+        DF[k,1] <- as.character(coord_plots[j,]$plotID)
+        DF[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+        k <- k + 1
+      }
+    }
   }
   
   DF <- arrange(DF, plotID)
@@ -532,12 +501,32 @@ build_metrics_df <- function(this_plots_spdf, this_coords_df, this_files_df, thi
 #MAIN
 
 
+#Function takes site code, returns list of all .laz files needed to cover all baseplots of that site
+main_files <- function(sitecode){
+  #Load TOS Plot Shape Files into R
+  base_plots_SPDF <- generate_baseplot_spdf('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp', sitecode)
+  
+  #Plot base plots
+  plot(base_plots_SPDF, border = 'blue')
+  
+  #Get coordinates for all plots not on a tile boundary, then split by whether plot is on a boundary
+  coord_df <- build_plot_frame(base_plots_SPDF)
+  
+  boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
+  coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
+  
+  #Get coordinates for plots on boundary tiles
+  boundary_list <- build_plot_pseudo_frame(base_plots_SPDF, boundary_df)
+  
+  #Get unique coordinates, coordinates for each necessary tile
+  coord_unique <- get_unique_coordinates(coord_df, boundary_list)
+  
+  #Get file names and urls for all necessary tiles
+  files_df <- ldply(coord_unique, find_point_cloud, SITECODE = sitecode, DATE = '2019-06')
 
-
-
-
-
-
+  
+  return(files_df)
+}
 
 
 
@@ -546,9 +535,9 @@ build_metrics_df <- function(this_plots_spdf, this_coords_df, this_files_df, thi
 #Function takes site code, returns dataframe of structural diversity metrics for all site baseplots
 #Currently requires the necessary point cloud files to already be present in working directory.
 
-main <- function(SITECODE){
+main <- function(sitecode){
   #Load TOS Plot Shape Files into R
-  base_plots_SPDF <- generate_baseplot_spdf('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp', SITECODE)
+  base_plots_SPDF <- generate_baseplot_spdf('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp', sitecode)
   
   #Plot base plots
   plot(base_plots_SPDF, border = 'blue')
@@ -556,11 +545,8 @@ main <- function(SITECODE){
   #Get coordinates for all plots not on a tile boundary, then split by whether plot is on a boundary
   coord_df <- build_plot_frame(base_plots_SPDF)
   
-  
   boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
   coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
-  
-
   
   #Get coordinates for plots on boundary tiles
   boundary_list <- build_plot_pseudo_frame(base_plots_SPDF, boundary_df)
@@ -568,76 +554,17 @@ main <- function(SITECODE){
   #Get unique coordinates, coordinates for each necessary tile
   coord_unique <- get_unique_coordinates(coord_df, boundary_list)
   
-
-  
   #Get file names and urls for all necessary tiles
-  
-    #Define Request Parameters
-  SERVER <- 'https://data.neonscience.org/api/v0/'
-  PRODUCTCODE <- 'DP1.30003.001'
-  DATE <- most_recent_data(SITECODE, PRODUCTCODE)
+  files_df <- ldply(coord_unique, find_point_cloud, SITECODE = sitecode, DATE = '2019-06')
   
   
+  #build final dataframe of stuctural diversity metrics
+  metric_df <- build_metrics_df(base_plots_SPDF, coord_df, files_df, boundary_list)
   
-    #Check latest available date
-  ###
-  
-    #Make data request
-  data_req <- GET(paste0(SERVER,'data/',PRODUCTCODE,'/',SITECODE,'/',DATE))
-  data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyDataFrame = T)
-  
-  
-  files_df <- ldply(coord_unique, find_point_cloud, in_data = data_avail)
-  
-  
-  file_N <- length(coord_unique)
-  
-  
-
-  #files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
-  
-  #base <- 'NEON_D17_SOAP_DP1_XX_classified_point_cloud_colorized.laz'
-  
-  #for(i in seq(1,length(coord_unique))){
-   # files_df[i,]$name <- gsub('XX', coord_unique[i],base)
-    #files_df[i,]$coords <- coord_unique[i]
-  #}
-
-  
-  #Check that required files are present, recording any that aren't
-  
-  files_present = rep(TRUE, length(coord_unique))
-  
-
-  for(i in seq(1:length(coord_unique))){
-    name <- files_df[i,]$name
-
-    if(!file.exists(name)){
-      print(paste0('Missing Required File: ',name))
-      files_present[i] <- FALSE
-    }
-  }
-  
-
-  
-  #If required files are present, build final dataframe of stuctural diversity metrics
-  #  Otherwise, return the dataframe of file names and urls
-  
-  if(all(files_present)){
-    metric_df <- build_metrics_df(base_plots_SPDF, coord_df, files_df, boundary_list)
-    
-
-    return(metric_df)
-  }
-  else{
-    
-    return(files_df[!files_present,])
-  }
-
+  return(metric_df)
 }
 
 
 DF <- main('SOAP')
-
 
 
