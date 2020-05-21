@@ -18,14 +18,14 @@ library(ggplot2)
 ## ----download-data----------------------------------------------------------------------------------------
 # download data of interest - Water Quality
 waq<-loadByProduct(dpID="DP1.20288.001", site="BLDE", 
-										 startdate="2019-10", enddate="2019-11", 
-										 package="expanded", 
-										 token = Sys.getenv("NEON_TOKEN"),
-										 check.size = F)
+				startdate="2019-10", enddate="2019-11", 
+				package="expanded", 
+				token = Sys.getenv("NEON_TOKEN"),
+				check.size = F)
 
 
 
-## ----challenge-code-download-nitrate, echo=FALSE----------------------------------------------------------
+## ----challenge-code-download-nitrate, echo=FALSE, results='hide', message=FALSE---------------------------
 # download data of interest - Nitrate in Suface Water
 nitr<-loadByProduct(dpID="DP1.20033.001", site="BLDE", 
 											 startdate="2019-10", enddate="2019-11", 
@@ -84,7 +84,7 @@ wqual
 
 
 
-## ----challenge-code-plot-nitrate, echo=FALSE--------------------------------------------------------------
+## ----challenge-code-plot-nitrate, echo=FALSE, results='hide', message=FALSE-------------------------------
 # create DataFrame
 nitrate <- nitr$NSW_15_minute
 

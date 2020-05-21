@@ -133,10 +133,10 @@ respectively.
 
     # download data of interest - Water Quality
     waq<-loadByProduct(dpID="DP1.20288.001", site="BLDE", 
-    										 startdate="2019-10", enddate="2019-11", 
-    										 package="expanded", 
-    										 token = Sys.getenv("NEON_TOKEN"),
-    										 check.size = F)
+    				startdate="2019-10", enddate="2019-11", 
+    				package="expanded", 
+    				token = Sys.getenv("NEON_TOKEN"),
+    				check.size = F)
 
     ## 
     ## Downloading files totaling approximately 3.6 MiB
@@ -149,7 +149,7 @@ respectively.
     ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 1 data tables and 2 metadata tables!
-    ## Stacking took 2.634474 secs
+    ## Stacking took 2.92318 secs
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Download Nitrate Data
@@ -166,18 +166,6 @@ between the "expanded" and "basic" packages is?
 </div>
 
 
-    ## 
-    ## Downloading files totaling approximately 73.3 KiB
-    ## Downloading 2 files
-    ##   |                                                                                                          |                                                                                                  |   0%  |                                                                                                          |==================================================================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table NSW_15_minute
-    ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 1 data tables and 2 metadata tables!
-    ## Stacking took 0.08701515 secs
 
 ## Files Associated with Downloads
 
@@ -303,8 +291,5 @@ Using what you've learned above, create a plot of the mean nitrate for the
 surface water, comparing as many sensors as are available in the data set.
 
 </div>
-
-
-    ## [1] "102"
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/download-ais-data/download-NEON-AIS-data/challenge-code-plot-nitrate-1.png)
