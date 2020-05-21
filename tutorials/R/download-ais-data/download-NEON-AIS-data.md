@@ -67,22 +67,18 @@ data every time.
 Before we get the NEON data, we need to install (if not already done) and load 
 the neonUtilities R package. 
 
-```{r set-up-env, eval=F}
-# Install neonUtilities package if you have not yet.
-install.packages("neonUtilities")
-install.packages("ggplot2")
 
-```
+    # Install neonUtilities package if you have not yet.
+    install.packages("neonUtilities")
+    install.packages("ggplot2")
 
-```{r load-packages}
-# Set global option to NOT convert all character variables to factors
-options(stringsAsFactors=F)
 
-# Load required packages
-library(neonUtilities)
-library(ggplot2)
-
-```
+    # Set global option to NOT convert all character variables to factors
+    options(stringsAsFactors=F)
+    
+    # Load required packages
+    library(neonUtilities)
+    library(ggplot2)
 
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing. The following are frequently used inputs: 
@@ -134,15 +130,26 @@ data, remove the `token = Sys.getenv(NEON_TOKEN)` line of code. We have
 check your download size first. This code downloads 3.6 MiB and 289.4 KiB 
 respectively.
 
-```{r download-data}
-# download data of interest - Water Quality
-waq<-loadByProduct(dpID="DP1.20288.001", site="BLDE", 
-										 startdate="2019-10", enddate="2019-11", 
-										 package="expanded", 
-										 token = Sys.getenv("NEON_TOKEN"),
-										 check.size = F)
 
-```
+    # download data of interest - Water Quality
+    waq<-loadByProduct(dpID="DP1.20288.001", site="BLDE", 
+    										 startdate="2019-10", enddate="2019-11", 
+    										 package="expanded", 
+    										 token = Sys.getenv("NEON_TOKEN"),
+    										 check.size = F)
+
+    ## 
+    ## Downloading files totaling approximately 3.6 MiB
+    ## Downloading 2 files
+    ##   |                                                                                                          |                                                                                                  |   0%  |                                                                                                          |==================================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table waq_instantaneous
+    ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 1 data tables and 2 metadata tables!
+    ## Stacking took 2.634474 secs
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Download Nitrate Data
@@ -158,33 +165,33 @@ Using what you've learned above, can you modify the code to download data for th
 between the "expanded" and "basic" packages is? 
 </div>
 
-```{r challenge-code-download-nitrate, echo=FALSE}
-# download data of interest - Nitrate in Suface Water
-nitr<-loadByProduct(dpID="DP1.20033.001", site="BLDE", 
-											 startdate="2019-10", enddate="2019-11", 
-											 package="expanded", 
-											 token = Sys.getenv("NEON_TOKEN"),
-											 check.size = F)
 
-# #1. 73.3 KiB 
-# #2. You can change check.size to True (T), and compare "basic" vs "expaneded"
-# package types. The basic package is 66.2 KiB. 
-
-```
+    ## 
+    ## Downloading files totaling approximately 73.3 KiB
+    ## Downloading 2 files
+    ##   |                                                                                                          |                                                                                                  |   0%  |                                                                                                          |==================================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table NSW_15_minute
+    ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 1 data tables and 2 metadata tables!
+    ## Stacking took 0.08701515 secs
 
 ## Files Associated with Downloads
 
 The data we've downloaded comes as an object that is a named list of objects. 
 To work with each of them, select them from the list using the `$` operator. 
 
-```{r loadBy-list}
-# view all components of the list
-names(waq)
 
-# View the dataFrame
-View(waq$waq_instantaneous)
+    # view all components of the list
+    names(waq)
 
-```
+    ## [1] "readme_20288"           "sensor_positions_20288" "variables_20288"        "waq_instantaneous"
+
+    # View the dataFrame
+    View(waq$waq_instantaneous)
 
 We can see that there are four objects in the downloaded water quality data. One 
 dataframe of data (`waq_instantaneous`) and three metadata files. 
@@ -193,15 +200,14 @@ If you'd like you can use the `$` operator to assign an object from an item in
 the list. If you prefer to extract each table from the list and work with it as an 
 independent objects, which we will do, you can use the `list2env()` function. 
 
-``` {r unlist}
 
-# assign the dataFrame in the list as an object
-#wqInst <- waq$waq_instantaneous
+    # assign the dataFrame in the list as an object
+    #wqInst <- waq$waq_instantaneous
+    
+    # unlist the vari
+    list2env(waq, .GlobalEnv)
 
-# unlist the vari
-list2env(waq, .GlobalEnv)
-
-```
+    ## <environment: R_GlobalEnv>
 
 So what exactly are these four files and why would you want to use them? 
 
@@ -252,11 +258,11 @@ You'll frequenty want to know which sensor locations are represented in your
 data. We can do this by looking for the `unique()` position designations in 
 `horizontalPostions`. 
 
-```{r num-locations}
-# which sensor locations?
-unique(waq_instantaneous$horizontalPosition)
 
-```
+    # which sensor locations?
+    unique(waq_instantaneous$horizontalPosition)
+
+    ## [1] "101" "102"
 
 We can see that there are two sensor positions at BLDE during October and November
 2019. As the locations of sensors can change at sites over time, it is a good 
@@ -266,12 +272,10 @@ analyses.
 Now we can use this information to split the data into that from the upstream 
 sensor (101) and the downstream sensor (102). 
 
-```{r split-hor}
-# seperate data from sensors
-waqUp<-waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
-waqDown<-waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
 
-```
+    # seperate data from sensors
+    waqUp<-waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
+    waqDown<-waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
 
 ## Plot Data
 
@@ -279,18 +283,18 @@ Now that we have our data seperated into the upstream and downstream data, let's
 plot both of the data sets together. We want to create a plot of the measures of
 Dissolved Oxygen from the two differnet sensors. 
 
-```{r plot-wqual}
-# plot
-wqual <- ggplot() +
-	geom_line(data = waqUp, aes(startDateTime, dissolvedOxygen), na.rm=TRUE, color="purple",) +
-	geom_line(data = waqDown, aes(startDateTime, dissolvedOxygen), na.rm=TRUE, color="orange",) +
-	geom_line( na.rm = TRUE)+
-	ylim(0, 20) + ylab("Dissolved Oxygen (mg/L)") +
-	xlab(" ")
 
-wqual
+    # plot
+    wqual <- ggplot() +
+    	geom_line(data = waqUp, aes(startDateTime, dissolvedOxygen), na.rm=TRUE, color="purple",) +
+    	geom_line(data = waqDown, aes(startDateTime, dissolvedOxygen), na.rm=TRUE, color="orange",) +
+    	geom_line( na.rm = TRUE)+
+    	ylim(0, 20) + ylab("Dissolved Oxygen (mg/L)") +
+    	xlab(" ")
+    
+    wqual
 
-```
+![ ]({{ site.baseurl }}/images/rfigs/R/download-ais-data/download-NEON-AIS-data/plot-wqual-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Nitrate Data
@@ -300,21 +304,7 @@ surface water, comparing as many sensors as are available in the data set.
 
 </div>
 
-```{r challenge-code-plot-nitrate, echo=FALSE}
-# create DataFrame
-nitrate <- nitr$NSW_15_minute
 
-# which sensor locations?
-unique(nitrate$horizontalPosition)
+    ## [1] "102"
 
-##Yes, there is only one horizonatalPosition. This is because nitrate is only 
-##collected at the downstream sensor location. 
-
-# plot
-NO3plot <- ggplot(nitrate, aes(startDateTime, surfWaterNitrateMean)) +
-	geom_line(na.rm=TRUE, color="blue",) + 
-	ylab("NO3-N (uM)") + xlab(" ")
-
-NO3plot
-
-```
+![ ]({{ site.baseurl }}/images/rfigs/R/download-ais-data/download-NEON-AIS-data/challenge-code-plot-nitrate-1.png)
