@@ -174,6 +174,23 @@ and then return to this tutorial.
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
 
+First, we need to set up our R environment. 
+
+```{r set-up}
+
+library(neonUtilities)
+library(dplyr)
+library(ggplot2)
+
+options(stringsAsFactors=F) #used to prevent factors
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd <- "~/Documents/data/" # Change this to match your local environment
+setwd(wd)
+
+```
+
 Let's start by loading our data of interest. For this series, we'll work with 
 date from the NEON Domain 02 sites:
 
@@ -185,22 +202,19 @@ And we'll use data from January 2017 to December 2019. This downloads over 9MB
 of data. If this is too large, use a smaller date range. If you opt to do this, 
 your figures and some output may look differnet later in the tutorial. 
 
-```{r loadStuff}
+With this information, we can download our data. If you are not using a NEON token
+to download your data, remove the `token = Sys.getenv(NEON_TOKEN)` line of code 
+(learn more about NEON API tokens in the 
+<a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
 
-library(neonUtilities)
-library(dplyr)
-library(ggplot2)
-
-options(stringsAsFactors=F) #used to prevent factors
-
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+```{r load-data}
 
 ## Two options for accessing data - programmatic or from the example dataset
 # Read data from data portal 
 
 phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
 										 startdate = "2017-01", enddate="2019-12", 
+										 token = Sys.getenv("NEON_TOKEN"),
 										 check.size = F) 
 # if you aren't sure you can handle the data file size use check.size = T. 
 
@@ -412,7 +426,7 @@ at the `taxonID` field which give the four letter UDSA plant code for each
 species. But if we don't know all the plant codes, we can get a bit fancier and 
 view both 
 
-```{r filter-species}
+```{r unique-species}
 
 # see which species are present - taxon ID only
 unique(phe_1st$taxonID)
