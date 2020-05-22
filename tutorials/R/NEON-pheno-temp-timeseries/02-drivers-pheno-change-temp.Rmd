@@ -15,11 +15,6 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-
 In this tutorial, we explore the NEON single-aspirated air temperature data. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
@@ -45,10 +40,7 @@ on your computer to complete this tutorial.
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-* **scales:** `install.packages("scales")`
 * **tidyr:** `install.packages("tidyr")`
-* **lubridate:** `install.packages("lubridate")`
-
 
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -171,21 +163,21 @@ of interest and resume this tutorial.
 ## Import Data
 
 First, we need to set up our enviornment with the packages needed for this tutorial. 
+
 ```{r setup-env}
 # Install needed package (only uncomment & run if not already installed)
-#install.packages("ggplot2")`
-#install.packages("dplyr")`
-#install.packages("tidyr")`
-#install.packages("lubridate")`
-#install.packages("scales")`
+#install.packages("neonUtilities")
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+
 
 # Load required libraries
-
+library(neonUtilities)  # for accessing NEON data
 library(ggplot2)  # for plotting
 library(dplyr)  # for data munging
 library(tidyr)  # for data munging
-library(lubridate)
-library(scales)
+
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
@@ -216,15 +208,27 @@ This will download 7.7 MiB of data. `check.size` is set to false (`F`) to improv
 of the script but is always a good idea to view the size with true (`T`) before 
 downloading a new dataset. 
 
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
+
 ```{r import-data}
 
-# download data of interest - Nitrate in Suface Water
+# download data of interest - Single Aspirated Air Temperature
 saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI", 
 										startdate="2018-01", enddate="2018-12", 
 										package="basic", 
 										avg = "30",
 										token = Sys.getenv("NEON_TOKEN"),
 										check.size = F)
+
+##If choosing to use example dataset downloaded from this tutorial: 
+
+# Stack multiple files within the downloaded phenology data
+#stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack00002", folder = T)
+
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#SAAT_30min <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/SAAT_30min.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
 
 ```
 
@@ -236,6 +240,12 @@ what's in the data. The data (`saat`) come in as a large list of four items.
 ```{r data-structure}
 # View the list
 View(saat)
+
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
+#View(var)
+
 ```
 
 So what exactly are these four files and why would you want to use them? 
@@ -256,8 +266,8 @@ Since we want to work with the individual files, let's create indivdiual objects
 from the large list. There are several ways to do this, including the following 
 two. 
 
-``` {r unlist}
-
+```{r unlist}
+# if using the pre-downloaded data - you can skip this part.
 # assign individual dataFrames in the list as an object
 #SAAT_30min <- saat$SAAT_30min
 
@@ -268,7 +278,7 @@ list2env(saat, .GlobalEnv)
 
 Now we the four files as seperate R objects. But what is in our data file?
 
-``` {r contents}
+```{r contents}
 
 # what is in the data?
 str(SAAT_30min)
@@ -512,9 +522,17 @@ tempPlot_dayMax3m
 
 Now we have the temperature data matching our Phenology data from the previous 
 tutorial, we want to save it to our computer to use in future analyses (or the
-next tutorial).
+next tutorial). This is optional if you are continuing as you already have this 
+data in R. 
 
-```{r write-csv, echo=FALSE }
-# Write .csv (this will be read in new in subsuquent lessons)
-write.csv(temp_day, file="NEON-pheno-temp-timeseries/temp/NEONsaat_daily_SCBI_2018.csv", row.names=F)
+```{r write-csv, eval = FALSE}
+# Write .csv - this step is optional 
+# This will write to your current working directory, change as desired.
+write.csv( temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
+
+#If you are using the downloaded example date, this code will write it to the 
+# pheno data file. Note - this file is already a part of the download.
+
+#write.csv(temp_day , file="NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv", row.names=F)
+
 ```

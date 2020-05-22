@@ -15,10 +15,6 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 Many organisms, including plants, show patterns of change across seasons - 
 the different stages of this observable change are called phenophases. In this 
 tutorial we explore how to work with NEON plant phenophase data. 
@@ -28,8 +24,7 @@ tutorial we explore how to work with NEON plant phenophase data.
 ## Objectives
 After completing this activity, you will be able to:
 
- * work with "stJonesacked" NEON Plant Phenology Observation data. 
- * correctly format date data. 
+ * work with NEON Plant Phenology Observation data. 
  * use dplyr functions to filter data.
  * plot time series data in a bar plot using ggplot the function. 
 
@@ -43,15 +38,18 @@ on your computer to complete this tutorial.
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 
-
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
-****
-{% include/_greyBox-wd-rscript.html %}
+<a href = " ">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -177,12 +175,18 @@ with all the data from your site and date range of interest.
 First, we need to set up our R environment. 
 
 ```{r set-up}
+# install needed package (only uncomment & run if not already installed)
+#install.packages("neonUtilities")
+#install.packages("dplyr")
+#install.packages("ggplot2")
 
+# load needed packages
 library(neonUtilities)
 library(dplyr)
 library(ggplot2)
 
-options(stringsAsFactors=F) #used to prevent factors
+
+options(stringsAsFactors=F) #keep strings as character type not factors
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
@@ -202,10 +206,14 @@ And we'll use data from January 2017 to December 2019. This downloads over 9MB
 of data. If this is too large, use a smaller date range. If you opt to do this, 
 your figures and some output may look differnet later in the tutorial. 
 
-With this information, we can download our data. If you are not using a NEON token
-to download your data, remove the `token = Sys.getenv(NEON_TOKEN)` line of code 
-(learn more about NEON API tokens in the 
+With this information, we can download our data using the neonUtiltlies package. 
+If you are not using a NEON token to download your data, remove the 
+`token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
+in the 
 <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
+
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
 
 ```{r load-data}
 
@@ -222,15 +230,20 @@ phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"),
 ind <- phe$phe_perindividual  #individual information
 status <- phe$phe_statusintensity  #status & intensity info
 
-## If choosing to use example dataset downloaded from this tutorial.
-# Read in data
-#ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
-#		stringsAsFactors = FALSE )
 
-#status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
-#		stringsAsFactors = FALSE)
+##If choosing to use example dataset downloaded from this tutorial: 
+
+# Stack multiple files within the downloaded phenology data
+#stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack10055", folder = T)
+
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#ind <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_perindividual.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+
+#status <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_statusintensity.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
 
 ```
+
 
 Let's explore the data. Let's get to know what the `ind` dataframe looks like.
 
@@ -240,6 +253,10 @@ names(ind)
 
 # Unsure of what some of the variables are you? Look at the variables table!
 View(phe$variables_10055)
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+#View(var)
 
 # how many rows are in the data?
 nrow(ind)
@@ -431,7 +448,7 @@ view both
 # see which species are present - taxon ID only
 unique(phe_1st$taxonID)
 
-# see which species are present - taxon ID + species name
+# or see which species are present with taxon ID + species name
 unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=' - ')) 
 
 ```
@@ -681,8 +698,8 @@ instructions for that are provided in the relevant tutorials.
 write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 #If you are using the downloaded example date, this code will write it to the 
-# pheno data file. 
+# pheno data file. Note - this file is already a part of the download.
 
-#write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
+#write.csv( phe_1sp_2018 , file="NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 ```
