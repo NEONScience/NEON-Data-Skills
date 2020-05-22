@@ -176,6 +176,7 @@ round1000 <- function(x){
 #Generate Base Plots Spatial Polygon DF, and plot
 
 SITECODE = 'SOAP'
+#SITECODE = 'ABBY'
 
 NEON_all_plots <- readOGR('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
@@ -319,9 +320,11 @@ get_boundary_plot_coords <- function(plot_spdf_row){
   options(scipen = 99999)
   x <- as.numeric(plot_spdf_row[19])
   y <- as.numeric(plot_spdf_row[20])
+
   
   east <- round1000(x)
   north <- round1000(y)
+
   
   
   boundary_vec <- is_on_boundary(x,y)
@@ -354,9 +357,9 @@ get_boundary_plot_coords <- function(plot_spdf_row){
 
 
 #Fill list with plot IDs and tile coordinates for plots on tile boundaries
-for(i in seq(1,4)){
+for(i in seq(1,length(bad_plots$plotID))){
   row <- list(plotID = '', coords = character())
-  row[['plotID']] <- as.character(bad_plots[i,]$plotID)
+  row[['plotID']] <- as.character(bad_plots@data[i,]$plotID)
   row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
   boundary_list[[i]] <- row
 }
@@ -423,7 +426,7 @@ data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyData
 
 
 
-
+rm(data_req)
 
 
 
@@ -436,9 +439,8 @@ file_N <- length(coord_unique)
 
 files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
 
-
 for(i in seq(1,file_N)){
-  
+
   #Get name of file
   file_name <- data_avail$data$files[intersect(
     grep(coord_unique[i], data_avail$data$files$name),
@@ -453,17 +455,51 @@ for(i in seq(1,file_N)){
   ),'url']
   
   
+  if(length(file_name) != 0){
+    files_df[i,] <- list(name = file_name, url = file_url, coords = coord_unique[i])
+  }else{
+    print("Warning: There was no LiDAR file for one of the provided coordinates")
+    files_df[i,] <- list(name = 'bad coord', url = 'bad_coord', coords = coord_unique[i])
+  }
   
-  files_df[i,] <- list(name = file_name, url = file_url, coords = coord_unique[i])
 }
 
-#Remove iterating variables and reponses
+#Remove iterating variables and reponses, and any empty rows
 rm(file_name, file_url)
 
+#Seperate out bad coordinates
+
+bad_coords <- files_df[files_df$name == 'bad coord',]$coords
+files_df <- files_df[files_df$name != 'bad coord',]
 
 
+#Remove bad coordinates from coord_unique
+coord_unique <- setdiff(coord_unique, bad_coords)
 
 
+#Remove any non-boundary plots with bad coordinates
+bad_plot_num <- as.character(length(coord_df[coord_df$coord_String %in% bad_coords,'coord_string']))
+print(paste0('Removed ',bad_plot_num,' non-boundary plots with missing tiles'))
+coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
+
+
+#Remove any boundary plots with bad coordinates
+new_list <- list()
+bad_plot_num <- 0
+for(i in seq(1,length(boundary_list))){
+  alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
+  beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
+  if(!(alpha|beta)){
+    new_list[[i]] <- boundary_list[[i]]
+  }else{
+    bad_plot_num <- bad_plot_num + 1
+  }
+}
+
+boundary_list <- new_list
+if(bad_plot_num > 0){
+  print(paste0('Removed ',as.character(bad_plot_num),' boundary plots with missing tiles'))
+}
 
 
 
@@ -472,11 +508,11 @@ rm(file_name, file_url)
 for(i in seq(1:length(coord_unique))){
   if(!file.exists(files_df[i,]$name)){
     #Try downloading file using full URL
-    download.file(files_df[i,]$url, destdir = paste0(getwd(),'/',files_df[i,]$name))
+    download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
     if(!file.exists(files_df[i,]$name)){
       #Try downloading file using trimmed url
       download.file(paste0(strsplit(files_df[1,]$url, '.laz')[[1]][1], '.laz'),
-                    destdir = paste0(getwd(),'/',files_df[i,]$name))
+                    destfile = paste0(getwd(),'/',files_df[i,]$name))
     }
     
   }
@@ -624,5 +660,9 @@ for(i in seq(1,length(coord_unique))){
 #Sort output dataframe rows by plot id
 metric_df <- arrange(metric_df, plotID)
 
+#Uninstall files when done
+for(file_ in files_df){
+  file.remove(file_)
+}
 
 print(metric_df)
