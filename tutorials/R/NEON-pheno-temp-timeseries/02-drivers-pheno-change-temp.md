@@ -1,7 +1,7 @@
 ---
 syncID: dca9f480763e4d9f816f51abcf77f70a
 title: "Work with NEON's Single-Aspirated Air Temperature Data"
-description: "This tutorial demonstrates how to work with NEON single-asperated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
+description: "This tutorial demonstrates how to work with NEON single-aspirated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg, Josh Roberti
@@ -14,9 +14,6 @@ code1: R/NEON-pheno-temp-timeseries/02-drivers-pheno-change-temp.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
 ---
-
-
-
 
 In this tutorial, we explore the NEON single-aspirated air temperature data. 
 We then discuss how to interpret the variables, how to work with date-time and 
@@ -43,12 +40,22 @@ on your computer to complete this tutorial.
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-* **scales:** `install.packages("scales")`
 * **tidyr:** `install.packages("tidyr")`
-* **lubridate:** `install.packages("lubridate")`
-
 
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
+
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
+
+****
 
 ## Additional Resources
 
@@ -97,7 +104,7 @@ product.
 ### Available Data Tables
 
 The SAAT data product has two available data tables that are delivered for each
-site and month-year selected. In addition, there are several metadate files that
+site and month-year selected. In addition, there are several metadata files that
 provide you with additional useful information.
 
 * a **readme** with information on the data product and the download; 
@@ -154,7 +161,7 @@ and tells us again that it is single-aspirated air temperature at 30 minute aver
 ## Access NEON Data
 
 There are several ways to access NEON data, directly from the NEON data portal, 
-access through a data parner (select data products only), writing code to 
+access through a data partner (select data products only), writing code to 
 directly pull data from the NEON API, or, as we'll use here, using the neonUtilities
 package which is a wrapper for the API with useful function to make working with 
 the data easier. 
@@ -168,22 +175,22 @@ of interest and resume this tutorial.
 
 ## Import Data
 
-First, we need to set up our enviornment with the packages needed for this tutorial. 
+First, we need to set up our environment with the packages needed for this tutorial. 
+
 
     # Install needed package (only uncomment & run if not already installed)
-    #install.packages("ggplot2")`
-    #install.packages("dplyr")`
-    #install.packages("tidyr")`
-    #install.packages("lubridate")`
-    #install.packages("scales")`
+    #install.packages("neonUtilities")
+    #install.packages("ggplot2")
+    #install.packages("dplyr")
+    #install.packages("tidyr")
+    
     
     # Load required libraries
-    
+    library(neonUtilities)  # for accessing NEON data
     library(ggplot2)  # for plotting
     library(dplyr)  # for data munging
     library(tidyr)  # for data munging
-    library(lubridate)
-    library(scales)
+    
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
@@ -213,8 +220,11 @@ This will download 7.7 MiB of data. `check.size` is set to false (`F`) to improv
 of the script but is always a good idea to view the size with true (`T`) before 
 downloading a new dataset. 
 
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
 
-    # download data of interest - Nitrate in Suface Water
+
+    # download data of interest - Single Aspirated Air Temperature
     saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI", 
     										startdate="2018-01", enddate="2018-12", 
     										package="basic", 
@@ -225,14 +235,23 @@ downloading a new dataset.
     ## 
     ## Downloading files totaling approximately 7.7 MiB
     ## Downloading 63 files
-    ##   |                                                                                            |                                                                                    |   0%  |                                                                                            |=                                                                                   |   2%  |                                                                                            |===                                                                                 |   3%  |                                                                                            |====                                                                                |   5%  |                                                                                            |=====                                                                               |   6%  |                                                                                            |=======                                                                             |   8%  |                                                                                            |========                                                                            |  10%  |                                                                                            |=========                                                                           |  11%  |                                                                                            |===========                                                                         |  13%  |                                                                                            |============                                                                        |  15%  |                                                                                            |==============                                                                      |  16%  |                                                                                            |===============                                                                     |  18%  |                                                                                            |================                                                                    |  19%  |                                                                                            |==================                                                                  |  21%  |                                                                                            |===================                                                                 |  23%  |                                                                                            |====================                                                                |  24%  |                                                                                            |======================                                                              |  26%  |                                                                                            |=======================                                                             |  27%  |                                                                                            |========================                                                            |  29%  |                                                                                            |==========================                                                          |  31%  |                                                                                            |===========================                                                         |  32%  |                                                                                            |============================                                                        |  34%  |                                                                                            |==============================                                                      |  35%  |                                                                                            |===============================                                                     |  37%  |                                                                                            |=================================                                                   |  39%  |                                                                                            |==================================                                                  |  40%  |                                                                                            |===================================                                                 |  42%  |                                                                                            |=====================================                                               |  44%  |                                                                                            |======================================                                              |  45%  |                                                                                            |=======================================                                             |  47%  |                                                                                            |=========================================                                           |  48%  |                                                                                            |==========================================                                          |  50%  |                                                                                            |===========================================                                         |  52%  |                                                                                            |=============================================                                       |  53%  |                                                                                            |==============================================                                      |  55%  |                                                                                            |===============================================                                     |  56%  |                                                                                            |=================================================                                   |  58%  |                                                                                            |==================================================                                  |  60%  |                                                                                            |===================================================                                 |  61%  |                                                                                            |=====================================================                               |  63%  |                                                                                            |======================================================                              |  65%  |                                                                                            |========================================================                            |  66%  |                                                                                            |=========================================================                           |  68%  |                                                                                            |==========================================================                          |  69%  |                                                                                            |============================================================                        |  71%  |                                                                                            |=============================================================                       |  73%  |                                                                                            |==============================================================                      |  74%  |                                                                                            |================================================================                    |  76%  |                                                                                            |=================================================================                   |  77%  |                                                                                            |==================================================================                  |  79%  |                                                                                            |====================================================================                |  81%  |                                                                                            |=====================================================================               |  82%  |                                                                                            |======================================================================              |  84%  |                                                                                            |========================================================================            |  85%  |                                                                                            |=========================================================================           |  87%  |                                                                                            |===========================================================================         |  89%  |                                                                                            |============================================================================        |  90%  |                                                                                            |=============================================================================       |  92%  |                                                                                            |===============================================================================     |  94%  |                                                                                            |================================================================================    |  95%  |                                                                                            |=================================================================================   |  97%  |                                                                                            |=================================================================================== |  98%  |                                                                                            |====================================================================================| 100%
+    ##   |                                                                                              |                                                                                      |   0%  |                                                                                              |=                                                                                     |   2%  |                                                                                              |===                                                                                   |   3%  |                                                                                              |====                                                                                  |   5%  |                                                                                              |======                                                                                |   6%  |                                                                                              |=======                                                                               |   8%  |                                                                                              |========                                                                              |  10%  |                                                                                              |==========                                                                            |  11%  |                                                                                              |===========                                                                           |  13%  |                                                                                              |============                                                                          |  15%  |                                                                                              |==============                                                                        |  16%  |                                                                                              |===============                                                                       |  18%  |                                                                                              |=================                                                                     |  19%  |                                                                                              |==================                                                                    |  21%  |                                                                                              |===================                                                                   |  23%  |                                                                                              |=====================                                                                 |  24%  |                                                                                              |======================                                                                |  26%  |                                                                                              |========================                                                              |  27%  |                                                                                              |=========================                                                             |  29%  |                                                                                              |==========================                                                            |  31%  |                                                                                              |============================                                                          |  32%  |                                                                                              |=============================                                                         |  34%  |                                                                                              |===============================                                                       |  35%  |                                                                                              |================================                                                      |  37%  |                                                                                              |=================================                                                     |  39%  |                                                                                              |===================================                                                   |  40%  |                                                                                              |====================================                                                  |  42%  |                                                                                              |=====================================                                                 |  44%  |                                                                                              |=======================================                                               |  45%  |                                                                                              |========================================                                              |  47%  |                                                                                              |==========================================                                            |  48%  |                                                                                              |===========================================                                           |  50%  |                                                                                              |============================================                                          |  52%  |                                                                                              |==============================================                                        |  53%  |                                                                                              |===============================================                                       |  55%  |                                                                                              |=================================================                                     |  56%  |                                                                                              |==================================================                                    |  58%  |                                                                                              |===================================================                                   |  60%  |                                                                                              |=====================================================                                 |  61%  |                                                                                              |======================================================                                |  63%  |                                                                                              |=======================================================                               |  65%  |                                                                                              |=========================================================                             |  66%  |                                                                                              |==========================================================                            |  68%  |                                                                                              |============================================================                          |  69%  |                                                                                              |=============================================================                         |  71%  |                                                                                              |==============================================================                        |  73%  |                                                                                              |================================================================                      |  74%  |                                                                                              |=================================================================                     |  76%  |                                                                                              |===================================================================                   |  77%  |                                                                                              |====================================================================                  |  79%  |                                                                                              |=====================================================================                 |  81%  |                                                                                              |=======================================================================               |  82%  |                                                                                              |========================================================================              |  84%  |                                                                                              |==========================================================================            |  85%  |                                                                                              |===========================================================================           |  87%  |                                                                                              |============================================================================          |  89%  |                                                                                              |==============================================================================        |  90%  |                                                                                              |===============================================================================       |  92%  |                                                                                              |================================================================================      |  94%  |                                                                                              |==================================================================================    |  95%  |                                                                                              |===================================================================================   |  97%  |                                                                                              |===================================================================================== |  98%  |                                                                                              |======================================================================================| 100%
     ## 
     ## Stacking operation across a single core.
     ## Stacking table SAAT_30min
     ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 1 data tables and 2 metadata tables!
-    ## Stacking took 0.570662 secs
+    ## Stacking took 0.7399869 secs
+
+    ##If choosing to use example dataset downloaded from this tutorial: 
+    
+    # Stack multiple files within the downloaded phenology data
+    #stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack00002", folder = T)
+    
+    # read in data - readTableNEON uses the variables file to assign the correct
+    # data type for each variable
+    #SAAT_30min <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/SAAT_30min.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
 
 ## Explore Temperature Data
 
@@ -242,6 +261,11 @@ what's in the data. The data (`saat`) come in as a large list of four items.
 
     # View the list
     View(saat)
+    
+    # if using the pre-downloaded data, you need to read in the variables file 
+    # or open and look at it on your desktop
+    #var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
+    #View(var)
 
 So what exactly are these four files and why would you want to use them? 
 
@@ -251,17 +275,18 @@ minute averaged data we only have one data table `SAAT_30min`.
 * **readme_xxxxx**: The readme file, with the corresponding 5 digits from the data
 product number, provides you with important information relevant to the data 
 product and the specific instance of downloading the data.
-* **sensor_postions_xxxxx**: this file contains information about the coordinates 
+* **sensor_positions_xxxxx**: this file contains information about the coordinates 
 of each sensor, relative to a reference location. 
 * **variables_xxxxx**: this file contains all the variables found in the associated
 data table(s). This includes full definitions, units, and other important 
 information. 
 
-Since we want to work with the individual files, let's create indivdiual objects
+Since we want to work with the individual files, let's create individual objects
 from the large list. There are several ways to do this, including the following 
 two. 
 
 
+    # if using the pre-downloaded data - you can skip this part.
     # assign individual dataFrames in the list as an object
     #SAAT_30min <- saat$SAAT_30min
     
@@ -270,7 +295,7 @@ two.
 
     ## <environment: R_GlobalEnv>
 
-Now we the four files as seperate R objects. But what is in our data file?
+Now we the four files as separate R objects. But what is in our data file?
 
 
     # what is in the data?
@@ -374,7 +399,7 @@ much of your computer memory.)
     # plot temp data
     tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
         geom_point() +
-        ggtitle("Single Asperated Air Temperature") +
+        ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))
@@ -432,7 +457,7 @@ Now we can plot it with the clean data.
     # plot temp data
     tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
         geom_point() +
-        ggtitle("Single Asperated Air Temperature") +
+        ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))
@@ -532,6 +557,15 @@ Let's plot just the first three months of the year.
 
 Now we have the temperature data matching our Phenology data from the previous 
 tutorial, we want to save it to our computer to use in future analyses (or the
-next tutorial).
+next tutorial). This is optional if you are continuing as you already have this 
+data in R. 
 
 
+    # Write .csv - this step is optional 
+    # This will write to your current working directory, change as desired.
+    write.csv( temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
+    
+    #If you are using the downloaded example date, this code will write it to the 
+    # pheno data file. Note - this file is already a part of the download.
+    
+    #write.csv(temp_day , file="NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv", row.names=F)
