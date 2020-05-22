@@ -49,7 +49,7 @@ files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperatur
 tutorial series. The data are in the format you would receive if downloading them
 using the `zipsByProduct()` function in the neonUtilities package. 
 
-<a href = " ">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -71,7 +71,7 @@ Why do they change?
 The following sections provide a brief overview of the NEON plant phenology 
 observation data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
 
 *The following description of the NEON Plant Phenology Observation data is modified 
 from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.*
@@ -88,7 +88,7 @@ discrete observations events.
 Sampling occurs at all terrestrial field sites at site and season specific 
 intervals. During Phase I (dominant species) sampling (pre-2021), three species 
 with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
-will begin, with <=20 species with 5 or more individuals sampled will occcur.
+will begin, with <=20 species with 5 or more individuals sampled will occur.
 
 #### Status-based Monitoring
 
@@ -122,8 +122,8 @@ within view of a canopy level, tower-mounted, phenology camera.
 	<a href="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png">
 	<img src="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png"></a>
 	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
-	Point-level geolocations are recorded at eight referecne points along the 
-	perimeter, plot-level geolaocation at the plot centoid (star). 
+	Point-level geolocations are recorded at eight reference points along the 
+	perimeter, plot-level geolocation at the plot centroid (star). 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
 </figure>
@@ -204,9 +204,9 @@ date from the NEON Domain 02 sites:
 
 And we'll use data from January 2017 to December 2019. This downloads over 9MB
 of data. If this is too large, use a smaller date range. If you opt to do this, 
-your figures and some output may look differnet later in the tutorial. 
+your figures and some output may look different later in the tutorial. 
 
-With this information, we can download our data using the neonUtiltlies package. 
+With this information, we can download our data using the neonUtilities package. 
 If you are not using a NEON token to download your data, remove the 
 `token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
 in the 
@@ -392,7 +392,7 @@ ind_lastnoD <- ind_last %>%
 
 Now we can join the two data frames on all the variables with the same name. 
 We use a `left_join()` from the dpylr package because we want to match all the 
-rows from the "left" (first) dateframe to any rows that also occur in the "right"
+rows from the "left" (first) dataframe to any rows that also occur in the "right"
  (second) dataframe.  
  
  Check out RStudio's 
@@ -504,7 +504,7 @@ For this activity, we're going to only look at the primary plots.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
 the Data Product User Guide and use the variables files with the data download 
-to find the corresponding varibles names.
+to find the corresponding variables names.
 </div>
 
 ```{r filter-plot-type}
@@ -522,7 +522,7 @@ unique(phe_1spPrimary$subtypeSpecification)
 ## Total in Phenophase of Interest
 
 The `phenophaseState` is recorded as "yes" or "no" that the individual is in that
-phenophase. The `phenophaseIntensity` are categories for how much of the indvidual
+phenophase. The `phenophaseIntensity` are categories for how much of the individual
 is in that state. For now, we will stick with `phenophaseState`. 
 
 We can now calculate the total number of individuals with that state. We use 
@@ -651,7 +651,7 @@ and ecosystem function.  (quoted from
 ## Filter by Date
 
 In the next part of this series, we will be exploring temperature as a driver of
-phenology. Temperture date is quite large (NEON provides this in 1 minute or 30
+phenology. Temperature date is quite large (NEON provides this in 1 minute or 30
 minute intervals) so let's trim our phenology date down to only one year so that 
 we aren't working with as large a data. 
 

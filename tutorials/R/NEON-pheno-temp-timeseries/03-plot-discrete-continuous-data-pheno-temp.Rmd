@@ -44,7 +44,14 @@ on your computer to complete this tutorial.
 
 ### Download Data 
 
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 </div>
 
@@ -86,18 +93,18 @@ phe_1sp_2018$dateStat <- as.Date(phe_1sp_2018$dateStat)
 
 ```
 
-## Seperate Plots, Same Panel
+## Separate Plots, Same Panel
 
 In this dataset, we have phenology and temperature data from the Smithsonian
 Conservation Biology Institute (SCBI) NEON field site. There are a variety of ways 
 we may want to look at this data, including aggregated at the site level, by
-a single plot, or viewing all plots at the same time but in seperate plots. In 
+a single plot, or viewing all plots at the same time but in separate plots. In 
 the *Work With NEON's Plant Phenology Data* and the 
 *Work with NEON's Single-Aspirated Air Temperature Data* tutorials, we created 
-seperate plots of the number of individuals who had leaves at different times 
+separate plots of the number of individuals who had leaves at different times 
 of the year and the temperature in 2018.
 
-However, plot the data next to eachother to aid comparisons. The `grid.arrange()` 
+However, plot the data next to each other to aid comparisons. The `grid.arrange()` 
 function from the gridExtra package can help us do this. 
 
 ```{r stacked-plots}
@@ -124,7 +131,7 @@ July in one should line up with July in the other) plus we want the dates to
 display in the same format(e.g. 2016-07 vs. Jul vs Jul 2018).
 
 ## Format Dates in Axis Labels
-The date format parameter can be adujusted with `scale_x_date`. Let's format the x-axis
+The date format parameter can be adjusted with `scale_x_date`. Let's format the x-axis
 ticks so they read "month" (`%b`) in both graphs. We will use the syntax:
 
 `scale_x_date(labels=date_format("%b"")`
@@ -167,7 +174,7 @@ x-axis which makes it harder to see trends.
 Now let's work to align the values on the x-axis. We can do this in two ways, 
 1) setting the x-axis to have the same date range or 2) by filtering the dataset 
 itself to only include the overlapping data. Depending on what you are trying to 
-demostrate and if you're doing additional analyses and want only the overlapping 
+demonstrate and if you're doing additional analyses and want only the overlapping 
 data, you may prefer one over the other. Let's try both. 
 
 ### Set range of x-axis

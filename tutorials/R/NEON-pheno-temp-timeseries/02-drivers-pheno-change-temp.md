@@ -1,7 +1,7 @@
 ---
 syncID: dca9f480763e4d9f816f51abcf77f70a
 title: "Work with NEON's Single-Aspirated Air Temperature Data"
-description: "This tutorial demonstrates how to work with NEON single-asperated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
+description: "This tutorial demonstrates how to work with NEON single-aspirated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg, Josh Roberti
@@ -43,6 +43,19 @@ on your computer to complete this tutorial.
 * **tidyr:** `install.packages("tidyr")`
 
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data 
+
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
+
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
+
+****
 
 ## Additional Resources
 
@@ -91,7 +104,7 @@ product.
 ### Available Data Tables
 
 The SAAT data product has two available data tables that are delivered for each
-site and month-year selected. In addition, there are several metadate files that
+site and month-year selected. In addition, there are several metadata files that
 provide you with additional useful information.
 
 * a **readme** with information on the data product and the download; 
@@ -148,7 +161,7 @@ and tells us again that it is single-aspirated air temperature at 30 minute aver
 ## Access NEON Data
 
 There are several ways to access NEON data, directly from the NEON data portal, 
-access through a data parner (select data products only), writing code to 
+access through a data partner (select data products only), writing code to 
 directly pull data from the NEON API, or, as we'll use here, using the neonUtilities
 package which is a wrapper for the API with useful function to make working with 
 the data easier. 
@@ -162,7 +175,7 @@ of interest and resume this tutorial.
 
 ## Import Data
 
-First, we need to set up our enviornment with the packages needed for this tutorial. 
+First, we need to set up our environment with the packages needed for this tutorial. 
 
 
     # Install needed package (only uncomment & run if not already installed)
@@ -229,7 +242,7 @@ commented out code in the second half of this code chunk.
     ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 1 data tables and 2 metadata tables!
-    ## Stacking took 1.380123 secs
+    ## Stacking took 0.7399869 secs
 
     ##If choosing to use example dataset downloaded from this tutorial: 
     
@@ -262,13 +275,13 @@ minute averaged data we only have one data table `SAAT_30min`.
 * **readme_xxxxx**: The readme file, with the corresponding 5 digits from the data
 product number, provides you with important information relevant to the data 
 product and the specific instance of downloading the data.
-* **sensor_postions_xxxxx**: this file contains information about the coordinates 
+* **sensor_positions_xxxxx**: this file contains information about the coordinates 
 of each sensor, relative to a reference location. 
 * **variables_xxxxx**: this file contains all the variables found in the associated
 data table(s). This includes full definitions, units, and other important 
 information. 
 
-Since we want to work with the individual files, let's create indivdiual objects
+Since we want to work with the individual files, let's create individual objects
 from the large list. There are several ways to do this, including the following 
 two. 
 
@@ -282,7 +295,7 @@ two.
 
     ## <environment: R_GlobalEnv>
 
-Now we the four files as seperate R objects. But what is in our data file?
+Now we the four files as separate R objects. But what is in our data file?
 
 
     # what is in the data?
@@ -386,7 +399,7 @@ much of your computer memory.)
     # plot temp data
     tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
         geom_point() +
-        ggtitle("Single Asperated Air Temperature") +
+        ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))
@@ -444,7 +457,7 @@ Now we can plot it with the clean data.
     # plot temp data
     tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
         geom_point() +
-        ggtitle("Single Asperated Air Temperature") +
+        ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))

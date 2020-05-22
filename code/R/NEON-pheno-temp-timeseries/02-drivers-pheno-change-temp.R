@@ -102,7 +102,7 @@ sum(is.na(SAAT_30min_noNA$tempSingleMean))
 # plot temp data
 tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
     geom_point() +
-    ggtitle("Single Asperated Air Temperature") +
+    ggtitle("Single Aspirated Air Temperature") +
     xlab("Date") + ylab("Temp (C)") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
@@ -124,7 +124,7 @@ sum(SAAT_30minC$finalQF==1)
 # plot temp data
 tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
     geom_point() +
-    ggtitle("Single Asperated Air Temperature") +
+    ggtitle("Single Aspirated Air Temperature") +
     xlab("Date") + ylab("Temp (C)") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
