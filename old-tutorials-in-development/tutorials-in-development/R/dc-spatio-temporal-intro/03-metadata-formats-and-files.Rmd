@@ -123,7 +123,7 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 </div>
 
-```{r elevation-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Plot of raster data with a color scale in units of meters."}
+```{r elevation-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Plot of raster data with a color scale in unknown units."}
 library(raster)
 # render DSM for lesson content background
 DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
