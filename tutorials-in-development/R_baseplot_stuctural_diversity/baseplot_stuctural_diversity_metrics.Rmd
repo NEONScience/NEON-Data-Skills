@@ -238,8 +238,7 @@ The extracted data includes the longitude and latitude of each base plot's cente
 ```{r round_1000}
 ####FUNCTION: Round value down to nearest multiple of 1000
 round1000 <- function(x){
-  y = floor(x/1000)
-  return(y*1000)
+  return(1000*floor(x/1000))
 }
 
 ```
@@ -383,7 +382,7 @@ boundary_list <- list()
 rm(boundary_df)
 
 #Fill list with plot IDs and tile coordinates for plots on tile boundaries
-for(i in seq(1,length(bad_plots$plotID))){
+for(i in 1:nrow(bad_plots@data)){
   row <- list(plotID = '', coords = character())
   row[['plotID']] <- as.character(bad_plots[i,]$plotID)
   row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
@@ -408,7 +407,7 @@ bound_N <- length(boundary_list)
 coord_unique <- as.vector(coord_df$coord_String)
 
 #Append coordinates from boundary plot nested list to coordinate vector
-for(i in seq(1,bound_N)){
+for(i in 1:bound_N){
   coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
 }
 
@@ -479,7 +478,7 @@ HOWEVER, there is one big problem. What if it turns out that no liDAR point clou
 
 #Prepare storage for bad coordinates
 
-for(i in seq(1,file_N)){
+for(i in 1:file_N){
 
   #Get name of file
   file_name <- data_avail$data$files[intersect(
@@ -525,7 +524,7 @@ coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
 #Remove any boundary plots with bad coordinates
 new_list <- list()
 bad_plot_num <- 0
-for(i in seq(1,length(boundary_list))){
+for(i in 1:length(boundary_list)){
   alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
   beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
   if(!(alpha|beta)){
@@ -550,7 +549,7 @@ I've noticed that sometimes these files won't install properly unless you trim o
 
 ```{r install_files}
 #Install any files not already present
-for(i in seq(1:length(coord_unique))){
+for(i in 1:length(coord_unique)){
   if(!file.exists(files_df[i,]$name)){
     #Try downloading file using full URL
     download.file(files_df[i,]$url, destdir = paste0(getwd(),'/',files_df[i,]$name))
@@ -594,7 +593,7 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
   merged_LAS <- readLAS(paste0(getwd(),'/',files_sub[1,]$name))
     
   #Get additional LAS objects and combine with first
-  for(i in seq(2,N)){
+  for(i in 2:N){
     new_LAS <- readLAS(paste0(getwd(),'/',files_sub[i,]$name))
     merged_LAS <- rbind(merged_LAS, new_LAS)
   }
@@ -612,7 +611,7 @@ With our functions defined, we can proceed with making the final dataframe of st
 
 ```{r metrics_df_initialize}
 #Initialize empty dataframe
-norm_N <- length(coord_df$plotID)
+norm_N <- nrow(coord_df)
 N <- bound_N + norm_N  
   
 metric_df <- data.frame(plotID = rep('',N),
@@ -640,7 +639,7 @@ Now we add values for the first few rows, by calculating metrics for each of the
 
 #Add rows for boundary plots
 if(bound_N > 0){
-  for(i in seq(1, bound_N)){
+  for(i in 1:bound_N){
     metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
     metric_df[i,(2:16)] <- calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df)
   }
@@ -655,7 +654,7 @@ We use an outer loop with iterator *i* to go through the liDAR tiles, an inner l
 #Create metrics data for non-boundary plots by file, and assign to final dataframe
 k <- bound_N + 1
   
-for(i in seq(1,length(coord_unique))){
+for(i in 1:length(coord_unique)){
   file_tile <- files_df[i,]
   plot_ids <- coord_df[(coord_df$coord_String == file_tile$coords),]$plotID
   
@@ -665,7 +664,7 @@ for(i in seq(1,length(coord_unique))){
   coord_N = length(coord_plots$plotID)
   
   if(coord_N != 0){
-    for(j in seq(1,coord_N)){
+    for(j in 1:coord_N){
       metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
       metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
       k <- k + 1
