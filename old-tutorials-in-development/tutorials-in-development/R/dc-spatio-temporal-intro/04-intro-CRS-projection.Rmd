@@ -3,13 +3,14 @@ layout: post
 title: "Spatial Intro 04: Intro to Coordinate Reference Systems & Spatial
 Projections"
 date: 2015-10-26
-authors: [Leah A. Wasser, Megan A. Jones]
-contributors: [ ]
+authors: Leah A. Wasser, Megan A. Jones
+contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: [ ]
+packagesLibraries: rgdal, ggplot2, rgeos, raster
 category: [self-paced-tutorial]
-tags: [R, spatial-data-gis]
+topics: spatial-data-gis
+languagesTool: R
 mainTag: spatial-data-management-series
 workshopSeries: [spatial-data-management-series]
 description: "This lesson covers the key spatial attributes that are needed to work with
@@ -23,7 +24,6 @@ permalink: R/intro-to-coordinate-reference-systems
 comments: true
 ---
 
-{% include _toc.html %}
 
 ## About
 
@@ -50,19 +50,20 @@ preferably, `RStudio` loaded on your computer.
 
 ### Install R Packages
 
-* **NAME:** `install.packages("NAME")`
+* **rgdal:** `install.packages("rgdal")`
+* **ggplot2:** `install.packages("ggplot2")`
+* **rgeos:** `install.packages("rgeos")`
+* **raster:** `install.packages("raster")`
 
-[More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
 
 If you want to follow along, please download
 
-<a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/" target="_blank"  class="btn btn-success">
-Download "land" - Natural Earth Global Continent Boundary Layer</a>
+Natural Earth Global Continent Boundary Layer - <a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/" target="_blank"  class="btn btn-success">"Download land"</a>
 
-<a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-graticules/" target="_blank" class="btn btn-success">
-Download all Graticules - Natural Earth Global Graticules Layer</a>
+Natural Earth Global Graticules Layer - <a href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-graticules/" target="_blank" class="btn btn-success">"Download all"</a>
 
 ****
 
@@ -81,20 +82,20 @@ downloadable R script of the entire lesson, available in the footer of each less
 of a lesson series introducing
 [spatial data and data management in `R` ](https://www.neonscience.org/tutorial/URL).
 It is also part of a larger
-[spatio-temporal Data Carpentry Workshop ](https://www.neonscience.org/workshops/spatio-temporal-workshop)
-that includes working with  
-[raster data in `R`](https://www.neonscience.org/tutorial/spatial-raster-series),
-[vector data in `R`](https://www.neonscience.org/tutorial/spatial-vector-series)
-and  
-[tabular time series in `R`](https://www.neonscience.org/tutorial/tabular-time-series).
+<a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
+that includes working with
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`* </a>,
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`* </a>, 
+and<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> *tabular time series in `R`*</a>.
+
 
 ****
 
 ### Additional Resources
 * Read more on coordinate systems in the
-<a href="http://docs.qgis.org/2.0/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
-QGIS documentation.</a>
-* NEON Data Skills Lesson <a href="https://www.neonscience.org/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+<a href="https://docs.qgis.org/3.10/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
+QGIS documentation</a>
+* NEON Data Skills Lesson <a href="https://www.neonscience.org/raster-res-extent-pixels-r/" target="_blank">*The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R*</a>
 
 </div>
 
@@ -106,8 +107,8 @@ look proportionally larger or smaller than they actually are!
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
 
 * For more on types of projections, visit
-<a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Datums/003r00000008000000/" target="_blank"> ESRI's ArcGIS reference on projection types.</a>.  
-* Read more about <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank"> choosing a projection/datum.</a>
+<a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Datums/003r00000008000000/" target="_blank"> ESRI's ArcGIS reference on projection types</a>.  
+* Read more about <a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank"> choosing a projection/datum</a>.
 
 
 ## What is a Coordinate Reference System
@@ -116,35 +117,32 @@ To define the location of something we often use a coordinate system. This syste
 consists of an X and a Y value, located within a 2 (or more) -dimensional space.
 
 <figure>
-	<a href="http://open.senecac.on.ca/clea/label/projectImages/15_276_xy-grid.jpg">
-	<img src="http://open.senecac.on.ca/clea/label/projectImages/15_276_xy-grid.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/2D_Coordinates.jpg">
+	<img src="https://openpress.usask.ca/introgeomatics/chapter/frames-of-reference-and-coordinate-systems/" alt="An X, Y grid with points expressed as ordered pairs."></a>
 	<figcaption> We use coordinate systems with X, Y (and sometimes Z axes) to
 	define the location of objects in space.
-	Source: http://open.senecac.on.ca
+	Source: https://openpress.usask.ca/
 	</figcaption>
 </figure>
 
-While the above coordinate system is 2-dimensional, we live on a 3-dimensional
-earth that happens to be "round". To define the location of objects on the earth, which is round, we need
-a coordinate system that adapts to the Earth's shape. When we make maps on paper
-or on a flat computer screen, we move from a 3-Dimensional space (the globe) to
-a 2-Dimensional space (our computer
-screens or a piece of paper). The components of the CRS define how the
-"flattening" of data that exists in a 3-D globe space. The CRS also defines the
-the coordinate system itself.
+While the above coordinate system is 2-dimensional, we live on a 3-dimensional 
+earth that happens to be "round". To define the location of objects on the earth, 
+which is round, we need a coordinate system that adapts to the Earth's shape. When 
+we make maps on paper or on a flat computer screen, we move from a 3-Dimensional 
+space (the globe) to a 2-Dimensional space (our computer screens or a piece of paper). 
+The components of the CRS define how the "flattening" of data that exists in a 3-D 
+globe space. The CRS also defines the the coordinate system itself.
 
 <figure>
 	<a href="http://ayresriverblog.com/wp-content/uploads/2011/05/image.png">
-	<img src="http://ayresriverblog.com/wp-content/uploads/2011/05/image.png"></a>
+	<img src="http://ayresriverblog.com/wp-content/uploads/2011/05/image.png"
+	alt="A point on the globe on the left translates to an X and Y point on a flat map on the right."></a>
 	<figcaption>A CRS defines the translation between a location on the round earth
 	and that same location, on a flattened, 2 dimensional coordinate system.
 	Source: http://ayresriverblog.com
 	</figcaption>
 </figure>
 
-> A coordinate reference system (CRS) is a
-coordinate-based local, regional or global system used to locate geographical
-entities. -- Wikipedia
 
 ## The Components of a CRS
 
@@ -175,7 +173,6 @@ tasks.
 <i class="fa fa-star"></i> **Data Tip:** Spatialreference.org provides an
 excellent <a href="http://spatialreference.org/ref/epsg/" target="_blank">online
 library of CRS information.</a>
-{: .notice}
 
 ### Coordinate System & Units
 
@@ -190,18 +187,20 @@ units are Degrees and the coordinate system itself is **latitude** and
 the central meridian on the globe (0,0).
 
 
-```{r lat-long-example }
+```{r lat-long-example, fig.cap="A map of the world plotted with X and Y axes labeled in degrees."}
 
 library(rgdal)
 library(ggplot2)
 library(rgeos)
 library(raster)
 
-# be sure to set your working directory
-# setwd("~/Documents/data")
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the unzipped download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
 
 # read shapefile
-worldBound <- readOGR(dsn="Global/Boundaries/ne_110m_land",
+worldBound <- readOGR(dsn="ne_110m_land",
                       layer="ne_110m_land")
 
 # convert to dataframe
@@ -228,9 +227,9 @@ in decimal **degrees** (latitude, longitude):
 Let's create a second map with the locations overlayed on top of the continental
 boundary layer.
 
-```{r add-lat-long-locations }
+```{r add-lat-long-locations, fig.cap="The same world map from above but with 3 points added."}
 
-# define locations of Boulder, CO and Oslo, Norway
+# define locations of Boulder, CO, Oslo, Norway, and Mallorca, Spain
 # store them in a data.frame format
 loc.df <- data.frame(lon=c(-105.2519, 10.7500, 2.9833),
                 lat=c(40.0274, 59.9500, 39.6167))
@@ -259,7 +258,8 @@ have been developed.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/LatLongfromGlobeCenter-ESRI.gif">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/LatLongfromGlobeCenter-ESRI.gif"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/LatLongfromGlobeCenter-ESRI.gif"
+	alt="Three-dimensional globe with a section cut out to show 40 degrees north measured from the center of the globe."></a>
 	<figcaption>A geographic coordinate system locates latitude and longitude
 	location using angles. Thus the spacing of each line of latitude moving north
 	and south is not uniform.
@@ -274,7 +274,7 @@ We can view the same data above, in another CRS - `Robinson`. `Robinson` is a
 different shape compared to the map that we created above in the `CRS`:  
 **Geographic lat/long WGS84**.
 
-```{r global-map-robinson }
+```{r global-map-robinson, fig.cap="A map of the world that is slightly compressed along the X axis compared to the map above. The axes are labeled in meters."}
 
 # reproject from longlat to robinson
 worldBound_robin <- spTransform(worldBound,
@@ -297,7 +297,7 @@ robMap
 Now what happens if you try to add the same Lat / Long coordinate locations that
 we used above, to our map, with the `CRS` of `Robinsons`?
 
-```{r add-locations-robinson }
+```{r add-locations-robinson, fig.cap="The same Robinson map from above with one point shown in the center at 0,0."}
 
 # add a point to the map
 newMap <- robMap + geom_point(data=loc.df,
@@ -314,9 +314,9 @@ in a different `CRS`, that the points are not in the correct location. We need
 to first convert the points to the  new projection - a process often referred
 to as **reprojection** but performed by the `spTransform()` function in `R`.
 
-```{r reproject-robinson }
+```{r reproject-robinson, fig.cap="The Robinson map with the points in the correct locations."}
 
-# define locations of Boulder, CO and Oslo, Norway
+# define locations of Boulder, CO, Oslo, Norway, and Mallorca, Spain
 loc.df
 
 # convert to spatial Points data frame
@@ -357,13 +357,13 @@ NOTE: The code for this map can
 be found in the .R document that is available for download at the bottom of this
 page!
 
-```{r plot-w-graticules, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+```{r plot-w-graticules, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.cap="The two maps with different projections plotted next to each other with latitude and longitude lines."}
+
 #this is not taught in the lesson but use it to display ggplot next to each other
 require(gridExtra)
 
 # turn off axis elements in ggplot for better visual comparison
 newTheme <- list(theme(line = element_blank(),
-      line = element_blank(),
       axis.text.x = element_blank(),
       axis.text.y = element_blank(),
       axis.ticks = element_blank(), #turn off ticks
@@ -372,12 +372,13 @@ newTheme <- list(theme(line = element_blank(),
       legend.position="none")) #turn off legend
 
 ## add graticules
-graticule <- readOGR("Global/Boundaries/ne_110m_graticules_all",
+graticule <- readOGR(dsn="ne_110m_graticules_all",
                      layer="ne_110m_graticules_15")
-# convert spatial object into a ggplot ready, data.frame
+
+# convert spatial object into a ggplot ready data.frame
 graticule_df <- fortify(graticule)
 
-bbox <- readOGR("Global/Boundaries/ne_110m_graticules_all", layer="ne_110m_wgs84_bounding_box")
+bbox <- readOGR(dsn="ne_110m_graticules_all", layer="ne_110m_wgs84_bounding_box")
 bbox_df<- fortify(bbox)
 
 
@@ -401,7 +402,6 @@ bbox_robin <- spTransform(bbox, CRS("+proj=robin"))  # reproject bounding box
 bbox_robin_df <- fortify(bbox_robin)
 
 # plot using robinson
-
 finalRobMap <- ggplot(bbox_robin_df, aes(long,lat, group=group)) +
   geom_polygon(fill="white") +
   geom_polygon(data=worldBound_df_robin, aes(long,lat, group=group, fill=hole)) +
@@ -447,9 +447,9 @@ the data!
 various countries. Are there any signs of distortion in certain areas on either
 map? Which one is better?
 
-2. Look at the image below - which depicts maps of the United States in 4 different
+2. Look at the image below which depicts maps of the United States in 4 different
 `CRS`s. What visual differences do you notice in each map? Look up each projection
-online, what elements (shape,area or distance) does each projection used in
+online. What elements (shape, distance or area) does each projection used in
 the graphic below optimize?
 
 </div>
@@ -463,17 +463,18 @@ the graphic below optimize?
 ## north...
 
 # What each CRS optimizes:
-## Mercator:
-## ALbers Equal Area
-## UTM Zone 11n
-## Geographic WGS84 (lat/lon):
+## Mercator: distance
+## Albers Equal Area: area
+## UTM Zone 11n: distance
+## Geographic WGS84 (lat/lon): shape
 ```
 
 ***
 
 <figure>
-    <a href="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
-    <img src="https://source.opennews.org/media/cache/b9/4f/b94f663c79024f0048ae7b4f88060cb5.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg"
+    alt="Four maps of the United States each distorted differently.">
     </a>
 
     <figcaption>Maps of the United States in different CRS including Mercator
