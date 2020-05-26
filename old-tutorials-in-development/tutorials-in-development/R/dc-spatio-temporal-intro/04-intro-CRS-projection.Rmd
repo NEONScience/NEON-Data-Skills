@@ -189,7 +189,7 @@ library(raster)
 
 # set working directory to ensure R can find the file we wish to import and where 
 # we want to save our files. Be sure to move the unzipped download into your working directory! 
-wd <- "~/Downloads/" #This will depend on your local environment 
+wd <- "~/Git/data/" #This will depend on your local environment 
 setwd(wd) 
 
 # read shapefile
