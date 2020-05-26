@@ -79,8 +79,7 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
-of a lesson series introducing
-[spatial data and data management in `R` ](https://www.neonscience.org/tutorial/URL).
+of a lesson series introducing #####UPDATE URL BEFORE PUBLISHING##### <a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`* </a>.
 It is also part of a larger
 <a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
 that includes working with
@@ -117,11 +116,11 @@ To define the location of something we often use a coordinate system. This syste
 consists of an X and a Y value, located within a 2 (or more) -dimensional space.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/2D_Coordinates.jpg">
-	<img src="https://openpress.usask.ca/introgeomatics/chapter/frames-of-reference-and-coordinate-systems/" alt="An X, Y grid with points expressed as ordered pairs."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Cartesian-coordinate-system.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Cartesian-coordinate-system.png" alt="An X, Y grid with points expressed as ordered pairs."></a>
 	<figcaption> We use coordinate systems with X, Y (and sometimes Z axes) to
 	define the location of objects in space.
-	Source: https://openpress.usask.ca/
+	Source: https://wikipedia.org
 	</figcaption>
 </figure>
 
@@ -463,7 +462,7 @@ the graphic below optimize?
 ## north...
 
 # What each CRS optimizes:
-## Mercator: distance
+## Mercator: shape
 ## Albers Equal Area: area
 ## UTM Zone 11n: distance
 ## Geographic WGS84 (lat/lon): shape
