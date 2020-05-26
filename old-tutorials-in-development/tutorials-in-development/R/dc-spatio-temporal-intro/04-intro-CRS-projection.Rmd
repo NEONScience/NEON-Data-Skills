@@ -473,9 +473,8 @@ the graphic below optimize?
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg"
-    alt="Four maps of the United States each distorted differently.">
+    alt="Four maps of the United States that are distorted differently. The Mercator map has a straight border with Canada while the Albers equal area map is curved along the northern border. The United States is rotated slightly counterclockwise in the UTM map. The WGS 84 map looks stretched horizontally and compressed vertically.">
     </a>
-
     <figcaption>Maps of the United States in different CRS including Mercator
     (upper left), Albers equal area (lower left), UTM (Upper RIGHT) and
     WGS84 Geographic (Lower RIGHT).
