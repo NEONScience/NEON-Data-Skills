@@ -136,8 +136,7 @@ plot_diversity_metrics <- function(plot_spdf, in_LAS){
 
 
 round1000 <- function(x){
-  y = floor(x/1000)
-  return(y*1000)
+  return(1000*floor(x/1000))
 }
 
 
@@ -357,7 +356,7 @@ get_boundary_plot_coords <- function(plot_spdf_row){
 
 
 #Fill list with plot IDs and tile coordinates for plots on tile boundaries
-for(i in seq(1,length(bad_plots$plotID))){
+for(i in 1:nrow(bad_plots@data)){
   row <- list(plotID = '', coords = character())
   row[['plotID']] <- as.character(bad_plots@data[i,]$plotID)
   row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
@@ -381,7 +380,7 @@ bound_N <- length(boundary_list)
 coord_unique <- as.vector(coord_df$coord_String)
 
 #Append coordinates from boundary plot nested list to coordinate vector
-for(i in seq(1,bound_N)){
+for(i in 1:bound_N){
   coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
 }
 
@@ -439,7 +438,7 @@ file_N <- length(coord_unique)
 
 files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
 
-for(i in seq(1,file_N)){
+for(i in 1:file_N){
 
   #Get name of file
   file_name <- data_avail$data$files[intersect(
@@ -486,7 +485,7 @@ coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
 #Remove any boundary plots with bad coordinates
 new_list <- list()
 bad_plot_num <- 0
-for(i in seq(1,length(boundary_list))){
+for(i in 1:length(boundary_list)){
   alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
   beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
   if(!(alpha|beta)){
@@ -505,7 +504,7 @@ if(bad_plot_num > 0){
 
 
 #Install any files not already present
-for(i in seq(1:length(coord_unique))){
+for(i in 1:length(coord_unique)){
   if(!file.exists(files_df[i,]$name)){
     #Try downloading file using full URL
     download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
@@ -531,9 +530,6 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
   #Extract rows for required files, record number of extracted rows
   files_sub <- file_df[file_df$coords %in% boundary_plot$coords,]
   N <- length(files_sub$coords)
-  for(i in seq(1,N)){
-    print(files_sub[i,]$name)
-  }
   
   plot_data <- plots_spdf[plots_spdf$plotID == boundary_plot$plotID,]
   
@@ -541,7 +537,7 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
   merged_LAS <- readLAS(paste0(getwd(),'/',files_sub[1,]$name))
     
   #Get additional LAS objects and combine with first
-  for(i in seq(2,N)){
+  for(i in 2:N){
     new_LAS <- readLAS(paste0(getwd(),'/',files_sub[i,]$name))
     merged_LAS <- rbind(merged_LAS, new_LAS)
   }
@@ -558,52 +554,11 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
   
   
   
-###FUNCTION: Assemble tile metrics
-  
-#Function takes row of file df, coords df, and plots sp_df; calculates structural diversity metrics for each
-#  plot located in tile and returns results as dataframe
-assemble_tile_metrics <- function(file_tile, coorddf, plot_sdf){
-  
-  plot_ids <- coorddf[(coorddf$coord_String == file_tile$coords),]$plotID
-  
-  plots <- plot_sdf[(plot_sdf$plotID %in% plot_ids),]
-  tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
-  
-  
-  #Prepare empty data frame
-  N <- length(plots$plotID)
-  DF <- data.frame(plotID = rep('',N),
-                   x = rep(NA,N),
-                   y = rep(NA,N),
-                   mean.max.canopy.ht = rep(NA,N),
-                   max.canopy.ht = rep(NA,N), 
-                   rumple = rep(NA,N),
-                   deepgaps = rep(NA,N),
-                   deepgap.fraction = rep(NA,N),
-                   cover.fraction = rep(NA,N),
-                   top.rugosity = rep(NA,N),
-                   vert.sd = rep(NA,N), 
-                   sd.sd = rep(NA,N),
-                   entro = rep(NA,N),
-                   GFP.AOP = rep(NA,N),
-                   VAI.AOP = rep(NA,N),
-                   VCI.AOP = rep(NA,N)) 
-  
-  if(N != 0){
-    for(i in seq(1,N)){
-      DF[i,1] <- as.character(plots[i,]$plotID)
-      DF[i,(2:16)] <- plot_diversity_metrics(plots[i,], tile_LAS)
-    }
-  }
-  
-  
-  return(DF)
-  
-}
+
 
 #Record number of plots not on tile boundaries
 
-norm_N <- length(coord_df$plotID)
+norm_N <- nrow(coord_df)
 N <- bound_N + norm_N
 
 #Initialize empty dataframe

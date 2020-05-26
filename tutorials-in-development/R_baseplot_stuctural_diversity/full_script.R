@@ -165,8 +165,7 @@ plot_diversity_metrics <- function(plot_spdf, in_LAS){
 
 
 round1000 <- function(x){
-  y = floor(x/1000)
-  return(y*1000)
+  return(1000*floor(x/1000))
 }
 
 
@@ -291,7 +290,7 @@ build_plot_pseudo_frame <- function(in_polygons, bad_plot_df){
   #make empty pseudo_dataframe
   out <- list()
   
-  for(i in seq(1,length(bad_plots$plotID))){
+  for(i in 1:nrow(bad_plots@data)){
     row <- list(plotID = '', coords = character())
     row[['plotID']] <- as.character(bad_plots[i,]$plotID)
     row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
@@ -302,15 +301,15 @@ build_plot_pseudo_frame <- function(in_polygons, bad_plot_df){
 }
 
 #Function takes coordinate dataframe and boundary coordinate pseudo-dataframe, returns list of all unique coordinates
-get_unique_coordinates <- function(coords_df, boundaries_df){
-  N <- length(boundaries_df)
+get_unique_coordinates <- function(coords_df, boundaries_pdf){
+  N <- length(boundaries_pdf)
   
   #Get vector of coordinates from plot coordinates dataframe
   out_coords <- as.vector(coords_df$coord_String)
   
   #Append coordinates from boundary plot nested list to coordinate vector
   for(i in seq(1,N)){
-    out_coords <- append(out_coords, boundaries_df[[i]][['coords']])
+    out_coords <- append(out_coords, boundaries_pdf[[i]][['coords']])
   }
   
   out_coords <- unique(out_coords)
@@ -571,7 +570,6 @@ main_files <- function(sitecode){
   
   #Get coordinates for all plots not on a tile boundary, then split by whether plot is on a boundary
   coord_df <- build_plot_frame(base_plots_SPDF)
-  
   boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
   coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
   
