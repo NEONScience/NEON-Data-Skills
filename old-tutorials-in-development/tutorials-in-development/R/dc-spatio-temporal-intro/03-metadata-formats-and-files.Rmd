@@ -123,7 +123,7 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 </div>
 
-```{r elevation-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Plot of raster data with a color scale and unknown units."}
+```{r elevation-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Plot of raster data with a color scale in units of meters."}
 library(raster)
 # render DSM for lesson content background
 DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
@@ -246,7 +246,6 @@ that you are working with, **DOWNLOAD AND SAVE IT** immediately to the directory
 on your computer where you saved the data. It is also a good idea to document
 the URL where you found the metadata and the data in a "readme" text file that
 is also stored with the data!
-{: .notice}
 
 
 ## Embedded Metadata - GeoTIFF
@@ -271,7 +270,6 @@ include the following raster metadata:
 <i class="fa fa-star"></i> **Data Note:**  Your camera uses embedded tags to store
 information about pictures that you take including the camera make and model,
 and the time the image was taken.
-{: .notice }
 
 More about the  `.tif` format:
 
@@ -511,7 +509,6 @@ x and y coordinates and create a quick context map. We will use `ggmap` to creat
 (e.g. from a raster, line or polygon object) we'd want the bounding box, not
 just a point within the extent. We need the extent to properly geolocate and
 process the data.
-{: .notice}
 
 
 ```{r map-location, warning=FALSE, message=FALSE, fig.cap='Map of Massachusetts, U.S.A., showing location of Harvard Forest'}
