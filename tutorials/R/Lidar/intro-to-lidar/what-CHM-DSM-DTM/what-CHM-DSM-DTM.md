@@ -4,7 +4,7 @@ title:  "What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data"
 description: "Understand LiDAR data product formats and learn the basics of how a LiDAR data are processed."
 dateCreated:   2014-07-21 
 authors: Leah A. Wasser
-contributors:
+contributors: Kelley A. McCahill
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: lidar, remote-sensing
@@ -14,33 +14,6 @@ code1:
 tutorialSeries: [intro-lidar-r-series]
 urlTitle: chm-dsm-dtm-gridded-lidar-data
 ---
-
-
-## Common LiDAR Data Products
-
-* <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank">Digital Terrain Model</a> - This product represents the elevation of the ground.
-* <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank">Digital Surface Model</a> - This represents the elevation of the tallest surfaces at that point. Imagine draping 
-a sheet over the canopy of a forest, the DEM contours with the heights of the 
-trees where there are trees but the elevation of the ground when there is a 
-clearing in the forest. 
-
-* <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank">Canopy Height Model</a> - This represents the difference between a Digital Terrain Model and a Digital Surface 
-Model and gives you the height of the objects (in a forest, the trees) that are 
-on the surface of the earth.
-
-<figure class="third">
-    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dem.png"></a>
-    DTM
-    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dsm.png"></a>
-    DSM
-    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/chm.png"></a>
-    CHM
-    
-    <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;left), 
-     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; right).
-     Click on the images to view interactive 3D models. </figcaption>
-</figure>
-
 
 ## LiDAR Point Clouds 
 Each point in a LiDAR dataset has a X, Y, Z value and other attributes. The 
@@ -59,14 +32,58 @@ LiDAR point clouds are typically available in a .las file format. The .las file
 format is a compressed format that can better handle the millions of points that 
 are often associated with LiDAR data point clouds.
 
+
+## Common LiDAR Data Products
+
+The Digital Terrain Model (DTM) product represents the elevation of the ground, while
+the Digital Surface Model (DSM) product represents the elevation of the tallest
+surfaces at that point. Imagine draping 
+a sheet over the canopy of a forest, the Digital Elevation Model (DEM) contours with
+the heights of the trees where there are trees but the elevation of the ground when
+there is a clearing in the forest. 
+* <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/DSM-DTM.png"
+target="_blank">DSM and DTM</a>
+
+The Canopy height model represents the difference between a Digital Terrain Model and a
+Digital Surface Model (DSM - DTM = CHM) and gives you the height of the objects (in a
+forest, the trees) that are on the surface of the earth.
+*<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png"
+target="_blank">DSM, DTM and CHM</a>
+
+
 ### Free Point Cloud Viewers for LiDAR Point Clouds
-- <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest Service RSAC</a>
+- <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest
+Service RSAC</a>
 - <a href="http://www.danielgm.net/cc/" target="_blank">Cloud compare</a>
 - <a href="http://plas.io" target="_blank">Plas.io website</a>
 
 For more on viewing LiDAR point cloud data using the Plas.io online
 viewer, see our tutorial 
-<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank">
+*Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+
+Check out our Structural Diversity tutorial for another useful LiDAR point cloud viewer
+available through RStudio,
+<a href="https://www.neonscience.org/structural-diversity-discrete-return">
+*Calculating Forest Structural Diversity Metrics from NEON LiDAR Data* </a>
+
+
+## 3D Models of NEON Site: SJER (San Juaquin Experimental Range) 
+
+Click on the images to view interactive 3D models of <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER">San Juaquin Experimental Range site.</a>
+
+<figure class="third">
+    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dem.png"></a>
+    DTM
+    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dsm.png"></a>
+    DSM
+    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/chm.png"></a>
+    CHM
+    
+    <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;top), 
+     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; bottom).
+    </figcaption>
+</figure>
 
 
 ### Gridded, or Raster, LiDAR Data Products
@@ -165,7 +182,7 @@ data in space.
 2. Interpolation considers the values of points outside of the cell in addition
 to points within the cell to calculate a value. Interpolation is useful because 
 it can provide us with some ability to predict or calculate cell values in areas 
-where there are no data (or no points). And to quantify the error associated with those 
+where there are no data (or no points). And to quantify the error associated with those
 predictions which is useful to know, if you are doing research. 
 
 
