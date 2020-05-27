@@ -4,13 +4,13 @@ title: "Raster 04: Work With Multi-Band Rasters - Image Data in R"
 description: "This tutorial explores how to import and plot a multi-band raster in R. It also covers how to plot a three-band color image using the plotRGB function in R."	
 dateCreated:2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 subtopics: 
 languagesTool: R
-dataProduct: 
+dataProduct: DP1.30010.001
 code1: /R/dc-spatial-raster/04-Multi-Band-Rasters-In-R.R	
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-multiband-rasters-r
@@ -87,8 +87,9 @@ As discussed in the
 a raster can contain 1 or more bands.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/single_multi_raster.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/single_multi_raster.png"
+    alt="Left: 3D image of a raster with only one band. Right: 3D image showing four separate layers of a multi band raster.">
     </a>
     <figcaption>A raster can contain one or more bands. We can use the
     raster function to import one single band from a single OR multi-band
@@ -110,47 +111,15 @@ electromagnetic spectrum. The pixel brightness for each band, when composited
 creates the colors that we see in an image. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg"
+    alt="A graphic depicting the three different color bands (red, green, and blue) of a satellite image and how they create a basic color image when composited."></a>
     <figcaption>A color image consists of 3 bands - red, green and blue. When
     rendered together in a GIS, or even a tool like Photoshop or any other
     image software, they create a color image. 
 	Source: National Ecological Observatory Network (NEON).  
     </figcaption>
 </figure>
-
-We can plot each band of a multi-band image individually. 
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** In many GIS applications, a single band 
-would render as a single image in grayscale. We will therefore use a grayscale 
-palette to render individual bands. 
-</div>
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
-
-Or we can composite all three bands together to make a color image.
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png)
-
-In a multi-band dataset, the rasters will always have the same *extent*,
-*CRS* and *resolution*.  
-
-
-
-
-## Other Types of Multi-band Raster Data
-
-Multi-band raster data might also contain:
-
-1. **Time series:** the same variable, over the same area, over time. Check out 
-<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* tutorial </a>
-to learn more about time series stacks.
-2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
-(multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
-Data Skills
-<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
-tutorial for more about working with hyperspectral data cubes.
 
 ## Getting Started with Multi-Band Data in R
 To work with multi-band raster data we will use the `raster` and `rgdal`
@@ -163,7 +132,9 @@ packages.
     library(rgdal)
     
     # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    wd <- "~/Git/data/" # this will depend on your local environment environment
+    # be sure that the downloaded file is in this directory
+    setwd(wd)
 
 In this tutorial, the multi-band data that we are working with is imagery
 collected using the 
@@ -172,6 +143,24 @@ high resolution camera over the
 <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. 
 Each RGB image is a 3-band raster. The same steps would apply to 
 working with a multi-spectral image with 4 or more bands - like Landsat imagery.
+We can plot each band of a multi-band image individually. 
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** In many GIS applications, a single band 
+would render as a single image in grayscale. We will therefore use a grayscale 
+palette to render individual bands. 
+</div>
+
+![Red, green, and blue bands of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
+
+Or we can composite all three bands together to make a color image.
+
+![Composite image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png)
+
+In a multi-band dataset, the rasters will always have the same *extent*,
+*CRS* and *resolution*.  
+
+
 
 If we read a `rasterStack` into R using the `raster()` function, it only reads
 in the first band. We can plot this band using the plot function. 
@@ -180,7 +169,7 @@ in the first band. We can plot this band using the plot function.
     # Read in multi-band raster with raster function. 
     # Default is the first band only.
     RGB_band1_HARV <- 
-      raster("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+      raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
     
     # create a grayscale color palette to use for the image.
     grayscale_colors <- gray.colors(100,            # number of different color levels 
@@ -196,7 +185,7 @@ in the first band. We can plot this band using the plot function.
          axes=FALSE,
          main="RGB Imagery - Band 1-Red\nNEON Harvard Forest Field Site") 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png)
+![Red band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png)
 
     # view attributes: Check out dimension, CRS, resolution, values attributes, and 
     # band.
@@ -256,7 +245,7 @@ want to work with). To import the green band, we would use `band=2`.
 
     # Can specify which band we want to read in
     RGB_band2_HARV <- 
-      raster("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", 
+      raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"), 
                band = 2)
     
     # plot band 2
@@ -265,7 +254,7 @@ want to work with). To import the green band, we would use `band=2`.
          axes=FALSE,
          main="RGB Imagery - Band 2- Green\nNEON Harvard Forest Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png)
+![Green band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png)
 
     # view attributes of band 2 
     RGB_band2_HARV
@@ -290,6 +279,19 @@ darker or lighter in band 2 (the green band) compared to band 1 (the red band)?
 
 
 
+## Other Types of Multi-band Raster Data
+
+Multi-band raster data might also contain:
+
+1. **Time series:** the same variable, over the same area, over time. Check out 
+<a href="https://www.neonscience.org/dc-raster-time-series-r" target="_blank"> *Raster Time Series Data in R* tutorial </a>
+to learn more about time series stacks.
+2. **Multi or hyperspectral imagery:** image rasters that have 4 or more
+(multi-spectral) or more than 10-15 (hyperspectral) bands. Check out the NEON
+Data Skills
+<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> **Imaging Spectroscopy HDF5 in R** tutorial</a> 
+tutorial for more about working with hyperspectral data cubes.
+
 ## Raster Stacks in R
 Next, we will work with all three image bands (red, green and blue) as an R
 `RasterStack` object. We will then plot a 3-band composite, or full color,
@@ -300,7 +302,7 @@ To bring in all bands of a multi-band raster, we use the`stack()` function.
 
     # Use stack function to read in all bands
     RGB_stack_HARV <- 
-      stack("NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+      stack(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
     
     # view attributes of stack object
     RGB_stack_HARV
@@ -380,7 +382,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     plot(RGB_stack_HARV, 
          col=grayscale_colors)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png)
+![Histograms of each RGB band showing the distribution of values for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png)![Raster of each RGB band for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png)
 
     # revert to a single plot layout 
     par(mfrow=c(1,1)) 
@@ -390,7 +392,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
          main="Band 2\n NEON Harvard Forest Field Site",
          col=grayscale_colors)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png)
+![Band 2 of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png)
 
 
 ### Create A Three Band Image
@@ -412,15 +414,16 @@ Let's plot our 3-band image.
     plotRGB(RGB_stack_HARV, 
             r = 1, g = 2, b = 3)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png)
+![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png)
 
 The image above looks pretty good. We can explore whether applying a stretch to
 the image might improve clarity and contrast using  `stretch="lin"` or 
 `stretch="hist"`.  
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_dark.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_dark.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_dark.jpg"
+    alt="Graphic depicting stretching pixel brightness values to make a dark satellite image brighter">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 0, a
     darker image is rendered by default. We can stretch the values to extend to
@@ -430,8 +433,9 @@ the image might improve clarity and contrast using  `stretch="lin"` or
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/imageStretch_light.jpg">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_light.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/imageStretch_light.jpg"
+    alt="Graphic depicting stretching pixel brightness values to make a bright satellite image darker">
     </a>
     <figcaption>When the range of pixel brightness values is closer to 255, a
     lighter image is rendered by default. We can stretch the values to extend to
@@ -447,14 +451,14 @@ the image might improve clarity and contrast using  `stretch="lin"` or
             scale=800,
             stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png)
+![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png)
 
     plotRGB(RGB_stack_HARV,
             r = 1, g = 2, b = 3, 
             scale=800,
             stretch = "hist")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png)
+![Composite RGB image of NEON's site Harvard Forest with slightly more contrast](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png)
 
 In this case, the stretch doesn't enhance the contrast our image significantly
 given the distribution of reflectance (or brightness) values is distributed well
@@ -481,7 +485,7 @@ tutorial.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png)
+![Composite RGB image of NEON's site Harvard Forest with NAvalues removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
@@ -517,7 +521,7 @@ and `brick` R objects.
     # view size of the brick
     object.size(RGB_brick_HARV)
 
-    ## 170897168 bytes
+    ## 13856 bytes
 
 Notice that in the `RasterBrick`, all of the bands are stored within the actual 
 object. Thus, the `RasterBrick` object size is much larger than the

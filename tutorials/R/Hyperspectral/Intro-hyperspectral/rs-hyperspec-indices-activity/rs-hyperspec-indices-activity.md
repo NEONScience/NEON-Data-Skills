@@ -5,8 +5,8 @@ description: "This page details the remote sensing hyperspectral imaging indices
 dateCreated: 2017-06-01
 estimatedTime: 30 mins
 packagesLibraries: 
-topics:
-languagesTool: 
+topics: hyperspectral, HDF5, remote-sensing
+languagesTool: R
 dataProduct:
 code1:
 tutorialSeries: 

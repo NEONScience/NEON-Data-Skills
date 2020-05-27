@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Additional Resources</title>
+<title> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -193,7 +193,24 @@ on your computer to complete this tutorial.
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
-{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ### TEST BUTTON CSS
 
@@ -202,7 +219,15 @@ on your computer to complete this tutorial.
 
 <hr/>
 
-<p>{% include/_greyBox-wd-rscript.html %}</p>
+<p><strong>Set Working Directory:</strong> This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. </p>
+
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a></p>
+
+<p><strong>R Script &amp; Challenge Code:</strong> NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.</p>
 
 <hr/>
 
@@ -225,8 +250,9 @@ as a Canopy Height Model (CHM) and represents the actual height of trees,
 buildings, etc. with the influence of ground elevation removed.</p>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/lidarTree-height.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png"
+    ALT="Series of three images depicting the differences between a digital surface model (DSM), a digital terrain model (DTM), and a canopy height model (CHM). DSM - DTM = CHM."
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
@@ -249,10 +275,12 @@ NEON Harvard Forest Field site.</p>
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+wd &lt;- &quot;~/Git/data/&quot; # this will depend on your local environment environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # view info about the dtm &amp; dsm raster data that we will work with.
-GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;)
+GDALinfo(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;))
 
 ## rows        1367 
 ## columns     1697 
@@ -266,7 +294,7 @@ GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;)
 ## oblique.y   0 
 ## driver      GTiff 
 ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-## file        NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif 
+## file        ~/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif 
 ## apparent band summary:
 ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
 ## 1 Float64           TRUE       -9999          1       1697
@@ -276,7 +304,7 @@ GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;)
 ## Metadata:
 ## AREA_OR_POINT=Area
 
-GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;)
+GDALinfo(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;))
 
 ## rows        1367 
 ## columns     1697 
@@ -290,7 +318,7 @@ GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;)
 ## oblique.y   0 
 ## driver      GTiff 
 ## projection  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
-## file        NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
+## file        ~/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
 ## apparent band summary:
 ##    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
 ## 1 Float64           TRUE       -9999          1       1697
@@ -312,21 +340,21 @@ GDALinfo(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;)
 <p>Let&#39;s load the data. </p>
 
 <pre><code># load the DTM &amp; DSM rasters
-DTM_HARV &lt;- raster(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;)
-DSM_HARV &lt;- raster(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;)
+DTM_HARV &lt;- raster(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;))
+DSM_HARV &lt;- raster(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif&quot;))
 
 # create a quick plot of each to see what we&#39;re dealing with
 plot(DTM_HARV,
      main=&quot;Digital Terrain Model \n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code>plot(DSM_HARV,
      main=&quot;Digital Surface Model \n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-2.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <h2>Two Ways to Perform Raster Calculations</h2>
 
@@ -360,7 +388,7 @@ plot(CHM_HARV,
      axes=FALSE) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-math-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-math-1.png" alt="Canopy height model showing the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Let&#39;s have a look at the distribution of values in our newly created
 Canopy Height Model (CHM).</p>
@@ -373,7 +401,7 @@ hist(CHM_HARV,
   xlab=&quot;Tree Height (m) &quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/create-hist-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/create-hist-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?</p>
@@ -387,14 +415,14 @@ like we might explore a dataset that we collected in the field.
 Height Model (CHM_HARV) that we just created?
 2. What are two ways you can check this range of data in CHM_HARV? 
 3. What is the distribution of all the pixel values in the CHM? 
-4. Plot a histogram with 6 bins instead of the default and change the color of
+4. Plot a histogram with 8 bins instead of the default and change the color of
 the histogram. 
 5. Plot the CHM_HARV raster using breaks that make sense for the data. Include
 a appropriate color palette for the data, plot title and no axes ticks / labels. 
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-3.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-2.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with six breaks"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-3.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with four breaks"/></p>
 
 <h2>Overlay Function: Efficient Raster Calculations</h2>
 
@@ -438,7 +466,7 @@ plot(CHM_ov_HARV,
   main=&quot;Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-overlay-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-overlay-1.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest produced by the overlay() function"/></p>
 
 <p>How do the plots of the CHM created with manual raster math and the <code>overlay()</code>
 function compare?  </p>
@@ -463,7 +491,7 @@ by default writes the output file to your working directory unless you specify a
 full file path.</p>
 
 <pre><code># export CHM object to new GeotIFF
-writeRaster(CHM_ov_HARV, &quot;chm_HARV.tiff&quot;,
+writeRaster(CHM_ov_HARV, paste0(wd,&quot;chm_HARV.tiff&quot;),
             format=&quot;GTiff&quot;,  # specify output format - GeoTIFF
             overwrite=TRUE, # CAUTION: if this is true, it will overwrite an
                             # existing file
@@ -515,7 +543,7 @@ both datasets!
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-3.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-4.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-5.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-1.png" alt="Histogram of digital terrain model showing the distribution of the ground surface of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-2.png" alt="Histogram of digital surface model showing the distribution of the elevation of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-3.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-4.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-5.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>What do these two histograms tell us about the vegetation structure at Harvard 
 and SJER?</p>

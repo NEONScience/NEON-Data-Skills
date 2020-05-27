@@ -4,7 +4,7 @@ title: "Classify a Raster Using Threshold Values in Python - 2018"
 description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." 
 dateCreated: 2018-07-04 
 authors: Bridget Hass
-contributors: 
+contributors: Max Burner
 estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, os, copy
 topics: lidar, raster, remote-sensing
@@ -298,7 +298,7 @@ plot_band_array(chm_array,
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classify_raster_with_threshold-2018-py/output_26_0.png)
 
 ## Threshold Based Raster Classification
-Next, we will create a classified raster object. To do this, we will use the se the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
+Next, we will create a classified raster object. To do this, we will use the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
 - Class 1: **CHM = 0 m** 
 - Class 2: **0m < CHM <= 10m**
 - Class 3: **10m < CHM <= 20m**
@@ -375,8 +375,8 @@ Create the following threshold classified outputs:
     * South: 135-225 degrees
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/NSEWclassification_BozEtAl2015.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg"></a>
 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>

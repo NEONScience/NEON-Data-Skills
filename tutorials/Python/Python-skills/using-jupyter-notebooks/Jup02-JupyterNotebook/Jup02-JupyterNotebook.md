@@ -3,8 +3,9 @@ syncID: 5c9102aaeba748e38ce6e84741697413
 title: "Introduction to using Jupyter Notebooks"
 description: "This tutorial cover how to use Jupyter Notebooks to document code."
 dateCreated: 2017-06-12
+dateUpdated: 2020-04-20
 authors: Megan A. Jones
-contributors: 
+contributors: Maria Paula Mugnani
 estimatedTime:
 packagesLibraries:
 topics: data-management, rep-sci
@@ -51,36 +52,36 @@ following directions pertain directly to the set up for the 2018 Data Institute
 on Remote Sensing with Reproducible Workflows, however, you can adapt them to 
 the specific Python version and packages you wish to work with.  
 
-If you haven't yet created a Python 3.5 environment, you'll need to do 
+If you haven't yet created a Python 3.8 environment (released October 2019), you'll need to do 
 that now. Refer back to the Python section of the <a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">installation instructions</a>, 
-and create the 3.5 environment:
+and create the 3.8 environment. After installing Anaconda Navigator onto your computer, open the Anaconda Prompt applicationand type the following into the prompy window:
 
-`conda create -n p35 python=3.5 anaconda`
+`conda create -n p38 python=3.8 anaconda`
 
-And activate the Python 3.5 environment:
+And activate the Python 3.8 environment:
 
 On Mac:
 
-`source activate p35`
+`source activate p38`
 
 On Windows:
 
-`activate p35`
+`activate p38`
 
 
-In your terminal application, navigate to the directory (`cd`)  where you
+In the terminal application, navigate to the directory (`cd`)  where you
 want the Jupyter Notebooks to be saved (or where they already exist). 
 
-Once here, we want to create a new Jupyter kernel for the Python 3.5 conda environment 
-(p35) that we'll be using with Jupyter Notebooks. 
+Once here, we want to create a new Jupyter kernel for the Python 3.8 conda environment 
+(p38) that we'll be using with Jupyter Notebooks. 
 
-With the p35 environment activated, in your Command Prompt/Terminal, type: 
+With the p38 environment activated, in your Command Prompt/Terminal, type: 
 
-`python -m ipykernel install --user --name p35 --display-name "Python 3.5 NEON-RSDI"`
+`python -m ipykernel install --user --name p38 --display-name "Python 3.8 NEON-RSDI"`
 
 This command tells Python to create a new ipy (aka Jupyter Notebook) kernel using
-the Python environment we set up and called "p35". Then we tell it to use the display
-name for this new kernel as "Python 3.5 NEON-RSDI". You will use this 
+the Python environment we set up and called "p38". Then we tell it to use the display
+name for this new kernel as "Python 3.8 NEON-RSDI". You will use this 
 name to identify the specific kernel you want to work with in the Notebook space, 
 so name it descriptively, especially if you think you'll be using several different 
 kernels.  
@@ -122,7 +123,7 @@ window and select `New` (the expanded menu is shown in the screen shot above).
 This will give you several options for new notebook kernels depending on what
 is installed on your computer. In the above screenshot, there are two available 
 Python kernels and one Matlab kernel. When starting a notebook, you should choose 
-`Python 3` if it are available or `conda(root)` . 
+`Python 3` if it is available or `conda(root)` . 
 
 Once you start a new notebook, you will be brought to the following screen.
 
@@ -148,7 +149,7 @@ Python code as well as text that will be formatted in a nicely readable format.
 
 ## Selecting a Kernel
 
-You'll be prompted to select a kernel when you open a new notebook, however, if 
+A kernel is a server that enables you to run commands within Jupyter Notebook. It is visible via a prompt window that logs all your actions in the notebook, making it helpful to refer to when encountering errors. You'll be prompted to select a kernel when you open a new notebook, however, if 
 you are opening an existing notebook you will want to ensure that you are 
 using the correct kernel. The commands for selecting and changing kernels are in 
 the **Kernel** menu. 
@@ -182,7 +183,7 @@ All code you write in the notebook will be in the code cell. You can write
 single lines, to entire loops, to complete functions. As an example, we can 
 write and evaluate a print statement in a code cell, as is shown below. 
 
-To exectue the code, we can simply hit `Shift + Enter` while our cursor is in the 
+If you would like to write several lines of code, hit `Enter` to continue entering code into another line. To execute the code, we can simply hit `Shift + Enter` while our cursor is in the 
 code cell.
 
 	 # This is a comment and is not read by Python
@@ -190,9 +191,9 @@ code cell.
 
 	 Hello! This is the print function. Python will print this line below
 
-We can also write a for loop as an example of executing multiple lines of code at once.
+We can also write a 'for' loop as an example of executing multiple lines of code at once.
 
-	 # Write a basic for loop.
+	 # Write a basic for loop. In this case a range of numbers 0-4.
 	 for i in range(5):
     # Multiply the value of i by two and assign it to a variable. 
     temp_variable = 2 * i
@@ -218,7 +219,7 @@ For more keyboard shortcuts, check out weidadeyue's
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  Code cells can be executed in any 
 order. This means that you can overwrite your current variables by running 
-things out of order. When coding in notebooks, be cautions of the order in 
+things out of order. When coding in notebooks, be cautious of the order in 
 which you run cells.
 </div>
 
@@ -233,16 +234,16 @@ the kernel and using multiple kernels (e.g., Python and R) in one notebook.
 
 *The following information is adapted from Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>*
 
-Arguably the most useful component of the Jupyter notebook is the ability to 
+Arguably the most useful component of the Jupyter Notebook is the ability to 
 interweave code and explanatory text into a single, coherent document. Through
 out the Data Institute (and one's everyday workflow), we encourage all code and 
 plots should be accompanied with explanatory text. 
 
-Each cell in a notebook can exist either as a code cell or as text-formatting 
+Each cell in a notebook can exist either as a code cell or as a text-formatting 
 cell called a markdown cell. Markdown is a mark-up language that very easily 
-converts to other typesetting formats such as HTML and PDF. 
+converts to other type-setting formats such as HTML and PDF. 
 
-Whenever you make a new cell, it's default assignment will be a code cell. 
+Whenever you make a new cell, its default assignment will be a code cell. 
 This means when you want to write text, you will need to specifically change it 
 to a markdown cell. You can do this by clicking on the drop-down menu that reads code' 
 (highlighted in red in the second figure of this page) and selecting 'Markdown'. 
@@ -283,13 +284,13 @@ or via the command line by using the following lines:
 	 jupyter nbconvert --to pdf notebook_name.ipynb 
 
 Where "notebook_name.ipynb" matches the name of the notebook you want to convert. Prior to 
-converting the notebook you must be in the same working directory as your notebook or use
+converting the notebook, you must be in the same working directory as your notebook or use
 the correct file path from your current working directory. 
 
 Converting to PDF requires both Pandoc and LaTeX to be installed. You can find 
 out more in the <a href="https://nbconvert.readthedocs.io/en/latest/usage.html#" target="_blank">ReadTheDoc for nbconvert</a>. 
 
-If you prefer to convert to a different format, like html, you simply change the 
+If you prefer to convert to a different format, like HTML, you simply change the 
 file type. 
 	 jupyter nbconvert --to html notebook_name.ipynb 
 Read more on what formats you can convert to and more about the 
@@ -306,7 +307,7 @@ Read more on what formats you can convert to and more about the
 Much of the material above is adapted from 
 <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks </a>. 
 * Jupyter Project's <a href="https://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Running%20Code.ipynb" target="_blank"> Running Code </a> 
-* 
+
 
 
 ### Using Python 

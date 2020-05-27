@@ -110,8 +110,8 @@ from NEON production data.
 
 
 <figure>
-  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/DataCube.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/DataCube.png"></a>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/DataCube.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/DataCube.png"></a>
 	<figcaption>A data cube of NEON hyperspectral data. Each layer in the cube 
   represents a band.</figcaption>
 </figure>
@@ -201,9 +201,6 @@ HDF5 file. Let's start by learning about the wavelengths described within this f
     ## 
     ## $Units
     ## [1] "nanometers"
-    ## 
-    ## $dim
-    ## [1] 107
 
 Next, we can use the `h5read` function to read the data contained within the
 HDF5 file. Let's read in the wavelengths of the band centers:
@@ -226,8 +223,8 @@ vector that we just imported and check out the data located at index 6 -
 `wavelengths[6]`).
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/bluelight.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/bluelight.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/bluelight_EMSpectrum.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/bluelight_EMSpectrum.png"></a>
     <figcaption>482 nanometers falls within the blue portion of the electromagnetic spectrum. Source: National Ecological Observatory Network </figcaption>
 </figure>
 
@@ -249,8 +246,8 @@ that covers 800 nm-805 nm might have a FWHM of 5 nm and a wavelength value of
 802.5 nm. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrumZoomed.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png"></a>
     <figcaption>Bands represent a range of values (types of light) within the 
     electromagnetic spectrum. Values for each band are often represented as the 
     center point value of each band. Source: National Ecological Observatory 
@@ -399,8 +396,8 @@ types <a href="http://www.statmethods.net/input/datatypes.html">here</a>
 (links to external site, DataCamp).
 
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/matrix.png"></a>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/R/array.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/matrix.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/array.png"></a>
     <figcaption>Right: a matrix has only 2 dimensions. Left: an array has more than 2 dimensions.</figcaption>
 </figure>
 
@@ -557,10 +554,10 @@ image looks like when plotted. The bottom on is an RGB version of the same image
 Notice a difference? 
 
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/RGBImage_2.png"></a>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/SJER_Flipped.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/SJER_Flipped.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png"></a>
     <figcaption>LEFT: The image as it should look. RIGHT: the image that we outputted from the code above. Notice a difference?</figcaption>
 </figure>
 
@@ -684,8 +681,8 @@ HDF5 file "Reflectance_Data" group attributes that we saved before as `reflInfo`
     ## values     : 0, 9210  (min, max)
 
 <figure>
-		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png">
-		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/sat_image_lat_lon.png"></a>
+		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png"></a>
 		<figcaption>The extent of a raster represents the spatial location of each 
 		corner. The coordinate units will be determined by the spatial projection/
 		coordinate reference system that the data are in. Source: National Ecological

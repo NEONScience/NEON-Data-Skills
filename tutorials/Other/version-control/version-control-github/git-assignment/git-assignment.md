@@ -3,11 +3,11 @@ syncID: 31383d0105344f06bca692be74798305
 title: "Assignment: Version Control with GitHub"
 description: "Data Institute Assignment: The page lists the requirements for the week 2 assignment on version control and GitHub."
 dateCreated: 2016-06-02
-authors:
+authors: Megan A. Jones
 contributors:
 estimatedTime:
 packagesLibraries:
-topics:
+topics: data management, rep-sci
 language: 
 tutorialSeries: 
 languagesTool: git

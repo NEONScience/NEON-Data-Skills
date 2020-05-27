@@ -1,43 +1,44 @@
-## ----function-farKelv---------------------------------------------------------------------
+## ----function-farKelv-----------------------------------------
 fahr_to_kelvin <- function(temp) {
 	kelvin <- ((temp - 32) * (5/9)) + 273.15
 	kelvin
-	}
+}
 
 
 
-## ----function-format, eval=FALSE----------------------------------------------------------
+## ----function-format, eval=FALSE------------------------------
 ## 
 ## FunctionNameHere <- function(Input-variable-here){
 ## 	what-to-do-here
 ## 	what-to-return-here
-## 	}
+## }
 ## 
 
 
-## ----call-function------------------------------------------------------------------------
+## ----call-function--------------------------------------------
 # call function for F=32 degrees
 fahr_to_kelvin(32)
 
 # We could use `paste()` to create a sentence with the answer
-paste('The boiling point of water (212 Fahrenheit) is', fahr_to_kelvin(212),'degrees Kelvin.')
+paste('The boiling point of water (212 Fahrenheit) is', 
+      fahr_to_kelvin(212),
+      'degrees Kelvin.')
 
 
-
-## ----funct-test---------------------------------------------------------------------------
+## ----funct-test-----------------------------------------------
 fahr_to_kelvin_test <- function(temp) {
-	kelvin <- ((temp - 32) * (5/9)) + 273.15
-	}
+	kelvin <- ((temp - 32) * (5 / 9)) + 273.15
+}
 
 
 
-## ----funct-test-2-------------------------------------------------------------------------
+## ----funct-test-2---------------------------------------------
 
 fahr_to_kelvin_test(32)
 
 
 
-## ----funct-test-3-------------------------------------------------------------------------
+## ----funct-test-3---------------------------------------------
 # assign to a
 a <- fahr_to_kelvin_test(32)
 
@@ -45,26 +46,55 @@ a <- fahr_to_kelvin_test(32)
 a
 
 
-## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE----------------
+## ----scope----------------------------------------------------
+x <- 1:3
+x
+
+# define a function to add 1 to the temporary variable 'input'
+plus_one <- function(input) {
+  input <- input + 1
+}
+
+# run our function
+plus_one(x)
+
+# x has not actually changed outside of the function
+x
+
+
+## ----scope-2--------------------------------------------------
+plus_one <- function(input) {
+  output <- input + 1     # store results to output variable
+  output                  # return output variable
+}
+
+# assign the results of our function to x
+x <- plus_one(x)
+x
+
+
+
+## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE----
 
 kelvin_to_celsius <- function(temp) {
 	Celsius <- temp - 273.15
 	Celsius
-	}
+}
 	
 paste('absolute zero (0 Kelvin) in Celsius:', kelvin_to_celsius(0))
 	
 
 
-## ----compound-function--------------------------------------------------------------------
+## ----compound-function----------------------------------------
 
 # use two functions (F->K & K->C) to create a new one (F->C)
 fahr_to_celsius <- function(temp) {
 	temp_k <- fahr_to_kelvin(temp)
 	temp_c <- kelvin_to_celsius(temp_k)
 	temp_c
-	}
+}
 	
-paste('freezing point of water (32 Fahrenheit) in Celsius:', fahr_to_celsius(32.0))
+paste('freezing point of water (32 Fahrenheit) in Celsius:', 
+      fahr_to_celsius(32.0))
 
 

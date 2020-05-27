@@ -370,8 +370,8 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGBcombined.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectrum_RGBcombined.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGBcombined.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGBcombined.png"></a>
 	<figcaption> NEON Imaging Spectrometer bands and their respective center wavelengths (nm). Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
@@ -450,8 +450,8 @@ We can also try out some image processing routines to better visualize the refle
 Histogram equalization is a method in image processing of contrast adjustment using the image's histogram. Stretching the histogram can improve the contrast of a displayed image by eliminating very high or low reflectance values that skew the display of the image. 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.

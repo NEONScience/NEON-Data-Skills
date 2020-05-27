@@ -4,14 +4,14 @@ title: "Git 07: Updating Your Repo by Setting Up a Remote"
 description: "This tutorial covers how to set up a repository to update your local repo with any any changes from the central repo."
 dateCreated: 2017-06-20
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-management 
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct: 
 code1:
-tutorialSeries: git-github
+tutorialSeries: [git-github]
 urlTitle: git-setup-remote
 
 ---
@@ -57,10 +57,14 @@ local repo by setting up the local repo as a "remote". A "remote" repo is any
 repo which is not the repo that you are currently working in. 
 
 <figure class="half">
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png" width="70%"
+	alt="Graphic showing the entire workflow after you have forked and cloned the repository. You will fork and clone the repository only once.">
+	</a>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-loop.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-loop.png" width="70%"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-loop.png" width="70%"
+	alt="Graphic showing the entire workflow once a repository has been established. Subsequent updates to the forked repository from the central repository will be made by setting it up as a remote and pulling from it using the git pull command.">
+	</a>
 	<figcaption>LEFT: You will fork and clone a repo only <strong> once </strong>. RIGHT: After that,
 	you will update your fork from the central repository by setting
 	it up as a remote and pulling from it with <code> git pull </code>.
@@ -98,9 +102,11 @@ be in the most current copy. Hence the conflict.
 
 <figure>
 	<a href="https://developer.atlassian.com/blog/2015/01/a-better-pull-request/merge-conflict.png">
-	<img src="https://developer.atlassian.com/blog/2015/01/a-better-pull-request/merge-conflict.png"></a>
+	<img src="https://developer.atlassian.com/blog/2015/01/a-better-pull-request/merge-conflict.png"
+	alt="Graphic showing how merge conflicts may occur when updates are made. Merge conflicts occur when the same part of a script or document has been changed simultaneously and Git can't determine which change should be applied.">
+	</a>
 	<figcaption> Merge conflicts occur when the same part of a script or
-	document has been changed simultaneously and Git can’t determine should be
+	document has been changed simultaneously and Git can’t determine which change should be
 	applied. Source: Atlassian
 	</figcaption>
 </figure>

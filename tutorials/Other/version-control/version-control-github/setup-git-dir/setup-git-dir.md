@@ -7,7 +7,7 @@ authors: Materials adapted from Software Carpentry by NEON staff
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries:
-topics: data-management
+topics: data-management, rep-sci
 subtopics: 
 languagesTool: git, bash
 dataProduct:
@@ -40,7 +40,7 @@ This section is an abbreviated form of
 <a href="http://swcarpentry.github.io/shell-novice/" target="_blank">Software Carpentry’s The Unix Shell for Novice’s</a> 
 workshop lesson series. Content and wording (including all the above) is heavily
 copied and credit is due to those creators 
-(<a href=" https://github.com/swcarpentry/shell-novice/blob/gh-pages/AUTHORS" target="_blank">full author list</a>).
+(<a href="https://github.com/swcarpentry/shell-novice/blob/gh-pages/AUTHORS" target="_blank">full author list</a>).
 
 Our goal with shell is to:
 

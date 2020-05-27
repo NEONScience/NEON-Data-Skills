@@ -4,7 +4,7 @@ title: "Time Series 03: Cleaning & Subsetting Time Series Data in R - NoData Val
 description: "This tutorial explores how to deal with NoData values encountered in a time series dataset, in R. It also covers how to subset large data files by date and export the results to a csv (text format) file."
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: Leah A. Wasser
+contributors: Leah A. Wasser, Collin J. Storlie
 estimatedTime:
 packagesLibraries: ggplot2, lubridate
 topics: time-series, phenology
@@ -100,14 +100,14 @@ library(lubridate)  # work with dates
 library(ggplot2)  # plotting
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Documents/"
 
 # Load csv file containing 15 minute averaged atmospheric data 
 # for the NEON Harvard Forest Field Site
 
 # Factors=FALSE so data are imported as numbers and characters 
 harMet_15Min <- read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv"),
   stringsAsFactors = FALSE)
 
 # convert to POSIX date time class - US Eastern Time Zone
@@ -168,7 +168,7 @@ future. By default, the `.csv` file will be written to your working directory.
 ``` {r write-csv}
 # write harMet15 subset data to .csv
 write.csv(harMet15.09.11, 
-          file="Met_HARV_15min_2009_2011.csv")
+          file=paste0(wd,"Met_HARV_15min_2009_2011.csv"))
 
 ```
 
@@ -185,7 +185,7 @@ instead of the 15-minute data. What will need to change in your subsetting code?
 
 </div>
 
-``` {r challenge-code-subsetting, include=TRUE, results="hide", echo=FALSE}
+``` {r challenge-code-subsetting, include=TRUE, results="hide", echo=FALSE, fig.cap=c("Daily Rainfall at Harvard Forest for the month of July, 2010","Daily Dewpoint at Harvard Forest for the month of July, 2011")}
 
 # subset out data points from July 2010
 harMet15_July2010 <- subset(harMet15.09.11,
@@ -242,7 +242,7 @@ If we are lucky when working with external data, the `NoData` value is clearly
 specified
 in the metadata. No data values can be stored differently:
 
-* **NA / nan:** Sometimes this value is `NA` or `nan` (not a number). 
+* **NA / NaN:** Sometimes this value is `NA` or `NaN` (not a number). 
 * **A Designated Numeric Value (e.g. -9999):** Character strings such as `NA` can 
 not always be stored along side of numeric values in some file formats. Sometimes 
 you'll encounter numeric placeholders for `noData` values such as
@@ -291,7 +291,7 @@ sum(is.na(harMet15.09.11$airt))
 harMet15.09.11[is.na(harMet15.09.11$airt),]
 ```
 
-The results above tell us there are `NoData` values in the `datetime` column.
+The results above tell us there are `NoData` values in the `airt` column.
 However, there are `NoData` values in other variables.  
 
 <div id="ds-challenge" markdown="1">
@@ -337,9 +337,6 @@ Other resources:
 
 1. R code for dealing with missing data: 
 <a href="http://www.statmethods.net/input/missingdata.html" target="_blank"> Quick-R: Missing Data</a> 
- 
-2. The Institute for Digital Research and Education has an 
-<a href="http://www.ats.ucla.edu/stat/r/faq/missing.htm" target="_blank"> R FAQ on Missing Values</a>.
 
 ### Managing NoData Values in Our Data
 For this tutorial, we are exploring the patterns of precipitation,
@@ -406,10 +403,10 @@ and y-axes. Also give the plot a title!
 
 </div>
 
-``` {r Challenge-code-harMet.daily, include=TRUE, results="hide", echo=FALSE}
+``` {r Challenge-code-harMet.daily, include=TRUE, results="hide", echo=FALSE, fig.cap="Relationship between Date and Daily Average Temperature at Harvard Forest between 2009 and 2012"}
 
 # 1. import daily file
-harMet.daily <- read.csv("NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv", 
+harMet.daily <- read.csv(paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"), 
       stringsAsFactors = FALSE)
 # view file structure
 str(harMet.daily)

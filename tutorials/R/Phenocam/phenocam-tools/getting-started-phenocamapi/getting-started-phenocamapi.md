@@ -400,73 +400,99 @@ learn how to do that next.
                            days = 15, # which days on month(s)
                            download_dir = tmp_dir) # where on your computer
 
-    #>   |                                                                                          |                                                                                  |   0%  |                                                                                          |=======                                                                           |   8%
+    #> 
+  |                                                                                        
+  |                                                                                  |   0%
+  |                                                                                        
+  |=======                                                                           |   8%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_01_15_120109.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |==============                                                                    |  17%
+    #> 
+  |                                                                                        
+  |==============                                                                    |  17%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_02_15_120108.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |====================                                                              |  25%
+    #> 
+  |                                                                                        
+  |====================                                                              |  25%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_03_15_120151.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |===========================                                                       |  33%
+    #> 
+  |                                                                                        
+  |===========================                                                       |  33%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_04_15_120110.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |==================================                                                |  42%
+    #> 
+  |                                                                                        
+  |==================================                                                |  42%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_05_15_120108.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |=========================================                                         |  50%
+    #> 
+  |                                                                                        
+  |=========================================                                         |  50%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_06_15_120120.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |================================================                                  |  58%
+    #> 
+  |                                                                                        
+  |================================================                                  |  58%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_07_15_120109.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |=======================================================                           |  67%
+    #> 
+  |                                                                                        
+  |=======================================================                           |  67%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_08_15_120110.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |==============================================================                    |  75%
+    #> 
+  |                                                                                        
+  |==============================================================                    |  75%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_09_15_120110.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |====================================================================              |  83%
+    #> 
+  |                                                                                        
+  |====================================================================              |  83%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_10_15_120112.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |===========================================================================       |  92%
+    #> 
+  |                                                                                        
+  |===========================================================================       |  92%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_11_15_120111.jpg was already
     #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
 
-    #>   |                                                                                          |==================================================================================| 100%
+    #> 
+  |                                                                                        
+  |==================================================================================| 100%
 
     #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
     #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_12_15_120108.jpg was already

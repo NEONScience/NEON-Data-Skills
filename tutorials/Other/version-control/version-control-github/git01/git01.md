@@ -4,10 +4,10 @@ title: "Git 01: Intro to Git Version Control"
 description: "This tutorial introduces the importance of version control in scientific workflows."
 dateCreated: 2016-05-06
 authors: Megan A. Jones
-contributors:
+contributors: Felipe Sanchez
 estimatedTime:
 packagesLibraries:
-topics: data-analysis
+topics: data-management, rep-sci
 languagesTool: git
 dataProduct:
 code1:
@@ -41,7 +41,9 @@ It also allows us to revert changes to a previous point in time.
 
 <figure>
 	<a href="http://www.phdcomics.com/comics/archive/phd101212s.gif">
-	<img src="http://www.phdcomics.com/comics/archive/phd101212s.gif"></a>
+	<img src="http://www.phdcomics.com/comics/archive/phd101212s.gif"
+	alt="Cartoon showing a graduate student and his advisor going through several iterations, and respective changes to the name, of a document.">
+	</a>
 	<figcaption> Many of us have used the "append a date" to a file name version
  of version control at some point in our lives.  Source: "Piled Higher and
 Deeper" by Jorge Cham <a href="http://www.phdcomics.com" target="_blank"> www.phdcomics.com</a>
@@ -107,9 +109,11 @@ as a tape: if you rewind the tape and start at the base document, then you can
 play back each change and end up with your latest version.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_play-changes.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_play-changes.svg"></a>
-	<figcaption> A version control system saves changes to a document, sequentially
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_play-changes.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_play-changes.svg"
+alt="Graphic showing how a version control system saves changes to a document, sequentially, as you add and commit them to the system.">
+	</a>
+	<figcaption> A version control system saves changes to a document, sequentially,
   as you add and commit them to the system.
 	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
 	</figcaption>
@@ -123,8 +127,10 @@ The benefit of version control when you are in a collaborative environment is th
 two users can make independent changes to the same document.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_versions.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_versions.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_versions.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_versions.svg"
+alt="Graphic showing how different versions of the same document can be saved within a version control system.">
+	</a>
 	<figcaption> Different versions of the same document can be saved within a
   version control system.
 	Source: <a href="http://swcarpentry.github.io/git-novice/01-basics" target="_blank"> Software Carpentry </a>
@@ -136,8 +142,10 @@ where both users modified the same part of the same document in different
 ways) you can review two sets of changes on the same base document.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_merge.svg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/SWC_Git_merge.svg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_merge.svg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/SWC_Git_merge.svg"
+	alt="Graphic showing how two sets of changes to the same bsae document can be reviewed together within a version control system if there are no conflicts.">
+	</a>
 	<figcaption>Two sets of changes to the same base document can be reviewed
 	together, within a version control system <strong> if </strong> there are no conflicts (areas
 	where both users <strong> modified the same part of the same document in different ways</strong>).
@@ -158,7 +166,9 @@ many copies (or forks in GitHub world) of the repository.
 
 <figure>
  <a href="https://git-scm.com/book/en/v2/book/01-introduction/images/distributed.png">
- <img src="https://git-scm.com/book/en/v2/book/01-introduction/images/distributed.png" width="70%"></a>
+ <img src="https://git-scm.com/book/en/v2/book/01-introduction/images/distributed.png" width="70%"
+ alt="Graphic showing one of the advantages of using a distributed version control system. In a version control system, there are many copies of the repository, thus if any server or computer dies, any of the client repositories can be copied and used to restore the data.">
+ </a>
  <figcaption>One advantage of a distributed version control system is that there
  are many copies of the repository. Thus, if any server or computer dies, any of
   the client repositories can be copied and used to restore the data! Every clone
@@ -175,7 +185,9 @@ copy of the repository at any time.
 
 <figure>
  <a href="http://betterexplained.com/wp-content/uploads/version_control/distributed/distributed_example.png">
- <img src="http://betterexplained.com/wp-content/uploads/version_control/distributed/distributed_example.png"></a>
+ <img src="http://betterexplained.com/wp-content/uploads/version_control/distributed/distributed_example.png"
+ alt="Graphic showing an example of the use of a distributed version control system. In this example, Joe, Sue, and Eve are all working together to update a central repository. Each user has their own copy of the repository, and can contribute to the central repository at a any time.">
+ </a>
  <figcaption>Distributed version control models allow many users to
 contribute to the same central document.
  Source: <a href="http://betterexplained.com/wp-content/uploads/version_control/distributed/distributed_example.png" target="_blank"> Better Explained </a>
@@ -204,8 +216,10 @@ Each participant in the institute will be contributing to the NEON central
 repository using the same workflow! Pretty cool stuff.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute2-git/git-fork-clone-flow.png" width="70%"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git-fork-clone-flow.png" width="70%"
+	alt="Graphic showing the workflow of working with the NEON central repository. Workflow includes: Forking or creating a copy of the central repository into your personal github account. Cloning your fork to your local computer, where you can make edits. Pushing or transferring those edits back to your local fork, and submitting a pull request to update the central repository.">
+	</a>
 	<figcaption>The NEON central repository is the final working version of our
 	project. You can <strong>fork</strong> or create a copy of this repository
 	into your github.com account. You can then copy or <code>clone</code> your

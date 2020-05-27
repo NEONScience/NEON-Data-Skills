@@ -4,7 +4,7 @@ title: "HDFView: Exploring HDF5 Files in the Free HDFview Tool"
 description: "Explore HDF5 files and the groups and datasets contained within, using the free HDFview tool. See how HDF5 files can be structured and explore metadata. Explore both spatial and temporal data stored in HDF5!"
 dateCreated: 2014-11-19
 authors: Leah A. Wasser
-contributors:
+contributors: Alison Dernbach
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: HDF5
@@ -35,11 +35,11 @@ After completing this activity, you will be able to:
 
 Install the free HDFView application. This application allows you to explore 
 the contents of an HDF5 file easily. 
-<a href="http://www.hdfgroup.org/products/java/release/download.html" target="_blank">Click here to go to the download page. </a>
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">Click here to go to the download page. </a>
 
 ## Data to Download
 NOTE: The first file downloaded has an .HDF5 file extension, the second file 
-downloaded above has an .h5 extension. Both extensions represent the HDF5 data 
+downloaded below has an .h5 extension. Both extensions represent the HDF5 data 
 type.
 
 <h3><a href="https://ndownloader.figshare.com/files/7024985" > NEON Teaching Data Subset: Sample Tower Temperature - HDF5 </a></h3>
@@ -111,16 +111,15 @@ The first thing that we will do is open an HDF5 file in the viewer to get a
 
 To begin, open the HDFView application.
 Within the HDFView application, select File --> Open and navigate to the folder 
-where you saved the `fiuTestFile.hdf5` file on your computer. Open this file in 
-HDFView.
+where you saved the `NEONDSTowerTemperatureData.hdf5` file on your computer. Open this file in HDFView.
 
 If you **click on the name** of the HDF5 file in the left hand window of HDFView, 
 you can view metadata for the file. This will be located in the bottom window of 
 the application.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/OpenFIU.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/OpenFIU.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/OpenFIU.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/OpenFIU.png" alt="HDFView screenshot showing folders for Domain 3 and Domain 10 under the HDF5 file name"></a>
     <figcaption>If you click on the file name within the viewer, you can view 
     any stored metadata for that file, at the bottom of the viewer. You may have 
     to click on the metadata tab at the bottom of the viewer.</figcaption>
@@ -159,8 +158,8 @@ by a temperature sensor mounted on a National Ecological Observatory Network (NE
 </div>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEONtower.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEONtower.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png" alt="Illustration of a NEON tower with arms containing sensors extending horizontally off of the tower structure"></a>
     <figcaption>A NEON flux tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>
 </figure>
 
@@ -184,7 +183,7 @@ explore this HDF5 dataset within the HDFViewer.
 ### Part 2: Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/aop_0.jpg"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/aop_0.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/aop_siteillustration.jpg"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/aop_siteillustration.jpg" alt="Illutration of a NEON site with field scientists on the ground and an airborne observation plane flying above"></a>
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
@@ -206,9 +205,9 @@ reflected light energy. Each pixel will contain several hundred bands worth of
 reflectance data.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/LandsatVsHyper-01.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/LandsatVsHyper-01.png"></a>
-    <figcaption>A hyperspectral instruments records reflected light energy across 
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png" alt="A hyperspectral resolution graph and a landsat TM resolution graph each showing different reflectance values across wavelengths for five differnt plants"></a>
+    <figcaption>A hyperspectral instrument records reflected light energy across 
     very narrow bands. The NEON Imaging Spectrometer collects 428 bands of 
     information for each pixel on the ground.</figcaption>
 </figure>

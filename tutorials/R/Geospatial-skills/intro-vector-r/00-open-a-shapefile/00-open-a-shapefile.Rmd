@@ -4,18 +4,18 @@ title: "Vector 00: Open and Plot Shapefiles in R - Getting Started with Point, L
 description: "This spatial data tutorial explains the how to open and plot shapefiles containing point, line and polygon vector data in R."
 dateCreated: 2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
-contributors: Sarah Newman
+contributors: Sarah Newman, Maya R. Stahl
 estimatedTime:
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: 
 code1: /R/dc-spatial-vector/00-open-a-shapefile.R
 tutorialSeries: vector-data-series
 urlTitle: dc-open-shapefiles-r
 ---
 
-In this tutorial, we will open and plot point, line and polygon vector data 
+In this tutorial, we will open and plot point, line and polygon vector data
 stored in shapefile format in R.
 
 <div id="ds-objectives" markdown="1">
@@ -41,7 +41,6 @@ on your computer to complete this tutorial.
 * **sp:** `install.packages("sp")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
 
 ## Download Data
 <h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
@@ -84,8 +83,8 @@ of the vertices, determines the type of vector that we are working
 with: point, line or polygon.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/pnt_line_poly.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png" alt = "The three different types of vector objects: points, lines, and polygons." > </a>
     <figcaption> There are 3 types of vector objects: points, lines or 
     polygons. Each object type has a different structure. 
     Image Source: National Ecological Observatory Network (NEON) 
@@ -228,8 +227,8 @@ in the CRS **UTM zone 18N**. The CRS is critical to interpreting the object
 `extent` values as it specifies units. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/spatial_extent.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" alt="The three different vector types represented within a given spatial extent." > </a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial object. 
@@ -249,8 +248,8 @@ may have a name, length, number of lanes, speed limit, type of road and other
 attributes stored with it. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png" alt="Example attribute tables for each different type of vector object."></a>
     <figcaption>Each spatial feature in an R spatial object has the same set of 
     associated attributes that describe or characterize the feature.
     Attribute data are stored in a separate *.dbf file. Attribute data can be
@@ -290,7 +289,7 @@ summary(aoiBoundary_HARV)
 Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
 `plot()`.
 
-``` {r plot-shapefile}
+``` {r plot-shapefile, fig.cap="Area of Interest Boundary (NEON Harvard Forest Field Site)"}
 # create a plot of the shapefile
 # 'lwd' sets the line width
 # 'col' sets internal color
@@ -352,7 +351,7 @@ we would when creating a map in a typical GIS application like QGIS.
 We can use `main=""` to give our plot a title. If we want the title to span two
 lines, we use `\n` where the line should break.
 
-```{r plot-multiple-shapefiles }
+```{r plot-multiple-shapefiles, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads."}
 # Plot multiple shapefiles
 plot(aoiBoundary_HARV, col = "lightgreen", 
      main="NEON Harvard Forest\nField Site")
@@ -384,7 +383,7 @@ the <a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank" 
 tutorials. 
 </div>
 
-```{r challenge-vector-raster-overlay, echo=FALSE }
+```{r challenge-vector-raster-overlay, echo=FALSE, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads with a Canopy Height Model overlay." }
 
 # import CHM
 chm_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")

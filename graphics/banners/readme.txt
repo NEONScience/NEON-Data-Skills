@@ -1,1 +1,0 @@
-output images @ 1150 x 288

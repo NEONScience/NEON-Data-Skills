@@ -2,7 +2,7 @@
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
 code1: HYPERSPECTRAL/Select-Pixels-Compare-Spectral-Signatures.R
-contributors: Megan Jones
+contributors: Megan Jones, Felipe Sanchez
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 Hours
@@ -153,7 +153,7 @@ Now, we read in the RGB image that we created in an earlier tutorial and plot it
 If you didn't make this image before, you can download it from the link at the top 
 of this page.
 
-```{r read-in-RGB-and-plot}
+```{r read-in-RGB-and-plot, fig.cap="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image. At the top right of the image, there is dark, brakish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot."}
 
 # Read in RGB image as a 'stack' rather than a plain 'raster'
 rgbStack <- stack(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"))
@@ -179,7 +179,9 @@ suggest the following five cover types (exact location shown below).
 
 As shown here:
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/Click_points.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"
+    alt="RGB image of a portion of the SJER field site using 3 bands fom the raster stack. Also displayed are points labeled with numbers one through five, representing five cover types selected using the interactive click function from the raster package. At the top right of the image, the dark, brakish water has been selected as point 5. The tops of a cluster of trees on the top left of the image has been selected as point 2. At the center of the image, the baseball field with low grass has been selected as point 1. At the bottom left of the image the top of a building has been selected as point 3, and the adjacent gravel lot has been selected as point 4. Plotting parameters have been changed to enhance visibility.">
+    </a>
 <figcaption> Five different land cover types chosen for this study (magenta dots) in the order listed above (red numbers).</figcaption>
 </figure>
 
@@ -250,7 +252,7 @@ each of the pixels that we clicked. In order to color our lines by the different
 land cover types, we will first reshape our data using the `melt()` function, then
 plot the spectral signatures.
 
-```{r plot-spectral-signatures, fig.width=9, fig.height=6}
+```{r plot-spectral-signatures, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."}
 # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
 Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
@@ -277,7 +279,7 @@ lower and upper bound of each of those atmopheric absopbtion bands is specified
 in the HDF5 file. Let's read those bands and plot rectangles where the 
 reflectance measurements are obscured by atmospheric absorbtion. 
 
-```{r mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6}
+```{r mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Added to the plot are two rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."}
 
 # grab Reflectance metadata (which contains absorption band limits)
 reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
@@ -303,7 +305,7 @@ within the atmospheric absorbtion bands. For our final step, let's take all
 reflectance values from within each absorbtion band and set them to `NA` to 
 remove the noisy sections from the plot.
 
-```{r remove-absorbtion-band-reflectances, fig.width=9, fig.height=6}
+```{r remove-absorbtion-band-reflectances, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Values falling within the two rectangles from the previous image have been set to NA and ommited from the plot. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."}
 
 # Duplicate the spectral signatures into a new data.frame
 Pixel.melt.masked <- Pixel.melt

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Raster Projection in R</title>
+<title> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -191,11 +191,37 @@ on your computer to complete this tutorial.
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
-{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 ****
 
@@ -221,17 +247,19 @@ library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+wd &lt;- &quot;~/Git/data/&quot; # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 </code></pre>
 
 <p>Let&#39;s create a map of the Harvard Forest Digital Terrain Model 
 (<code>DTM_HARV</code>) draped or layered on top of the hillshade (<code>DTM_hill_HARV</code>).</p>
 
 <pre><code># import DTM
-DTM_HARV &lt;- raster(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;)
+DTM_HARV &lt;- raster(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif&quot;))
 # import DTM hillshade
 DTM_hill_HARV &lt;- 
-  raster(&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhill_WGS84.tif&quot;)
+  raster(paste0(wd,&quot;NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhill_WGS84.tif&quot;))
 
 # plot hillshade using a grayscale color ramp 
 plot(DTM_hill_HARV,
@@ -247,7 +275,7 @@ plot(DTM_HARV,
      legend=FALSE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/import-DTM-hillshade-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/import-DTM-hillshade-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Our results are curious - the Digital Terrain Model (<code>DTM_HARV</code>) did not plot on
 top of our hillshade. The hillshade plotted just fine on it&#39;s own. Let&#39;s try to 
@@ -266,7 +294,7 @@ plot(DTM_HARV,
      main=&quot;Digital Terrain Model\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-DTM-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-DTM-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Our DTM seems to contain data and plots just fine. Let&#39;s next check the
  Coordinate Reference System (CRS) and compare it to our hillshade.</p>
@@ -393,7 +421,7 @@ plot(DTM_hill_UTMZ18N_HARV,
 
 # overlay the DTM on top of the hillshade
 plot(DTM_HARV,
-     col=rainbow(100),
+     col=terrain.colors(100),
      alpha=0.4,
      add=T,
      legend=F)
@@ -413,7 +441,7 @@ field site using the SJER_DSMhill_WGS84.tif and SJER_dsmCrop.tif files.
 Reproject the data as necessary to make things line up!
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/challenge-code-reprojection-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/challenge-code-reprojection-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site San Joaquin Experimental Range"/></p>
 
 <div id="ds-challenge" markdown="1">
 If you completed the San Joaquin plotting challenge in the

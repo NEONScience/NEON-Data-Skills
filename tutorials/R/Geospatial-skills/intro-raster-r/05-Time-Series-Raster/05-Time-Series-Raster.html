@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>About Raster Time Series Data</title>
+<title><a href="https://ndownloader.figshare.com/files/4933582">NEON Teaching Data Subset: Landsat-derived NDVI raster files</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -191,11 +191,40 @@ on your computer to complete this tutorial.
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
-{% include/dataSubsets/_data_Landsat-NDVI.html %}
+<h3><a href="https://ndownloader.figshare.com/files/4933582">NEON Teaching Data Subset: Landsat-derived NDVI raster files</a></h3>
+
+
+The imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a>
+field sites.  
+The imagery was created by the U.S. Geological Survey (USGS) using a 
+<a href="http://eros.usgs.gov/#/Find_Data/Products_and_Data_Available/MSS" target="_blank" >  multispectral scanner</a>
+on a <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite.</a>
+The data files are Geographic Tagged Image-File Format (GeoTIFF).
+
+<a href="https://ndownloader.figshare.com/files/4933582" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 ****
 
@@ -215,8 +244,9 @@ of data collected at different times for the same <strong>extent</strong> (regio
 same <strong>resolution</strong>.</p>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/GreennessOverTime.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/GreennessOverTime.jpg"
+    alt="Graphic depicting a time series of the greenness over time of the United States"></a>
     <figcaption>A multi-band raster dataset can contain time series data. 
     Source: National Ecological Observatory Network (NEON). 
     </figcaption>
@@ -247,8 +277,8 @@ and phenology (life cycle stage) over large areas. Our NDVI data are a Landsat
 derived single band product saved as a GeoTIFF for different times of the year. </p>
 
 <figure>
- <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
- <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+ <a href="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg"> 
+ <img src="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg" alt="NDVI is calculated from the visible and near-infrared light reflected by vegetation. Healthy vegetation absorbs most of the visible light that hits it, and reflects a large portion of near-infrared light. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light."></a>
     <figcaption>NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -270,8 +300,9 @@ available from Landsat data. The RGB directory contains RGB images for each time
 period that NDVI is available.</p>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg"
+    alt="A graphic depicting the three different color bands (red, green, and blue) of a satellite image and how they create a basic color image when composited."></a>
     <figcaption>A &ldquo;true&rdquo; color image consists of 3 bands - red, green and blue. 
     When composited or rendered together in a GIS, or even a image-editor like
     Photoshop the bands create a color image. 
@@ -288,7 +319,9 @@ library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+wd &lt;- &quot;~/Git/data/&quot; # this will depend on your local environment environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 </code></pre>
 
 <p>To begin, we will create a list of raster files using the <code>list.files()</code> 
@@ -301,7 +334,7 @@ the list. </p>
 
 <pre><code># Create list of NDVI file paths
 # assign path to object = cleaner code
-NDVI_HARV_path &lt;- &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI&quot; 
+NDVI_HARV_path &lt;- paste0(wd,&quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI&quot;) 
 all_NDVI_HARV &lt;- list.files(NDVI_HARV_path,
                             full.names = TRUE,
                             pattern = &quot;.tif$&quot;)
@@ -309,19 +342,19 @@ all_NDVI_HARV &lt;- list.files(NDVI_HARV_path,
 # view list - note the full path, relative to our working directory, is included
 all_NDVI_HARV
 
-##  [1] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/005_HARV_ndvi_crop.tif&quot;
-##  [2] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/037_HARV_ndvi_crop.tif&quot;
-##  [3] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/085_HARV_ndvi_crop.tif&quot;
-##  [4] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/133_HARV_ndvi_crop.tif&quot;
-##  [5] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/181_HARV_ndvi_crop.tif&quot;
-##  [6] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/197_HARV_ndvi_crop.tif&quot;
-##  [7] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/213_HARV_ndvi_crop.tif&quot;
-##  [8] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/229_HARV_ndvi_crop.tif&quot;
-##  [9] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/245_HARV_ndvi_crop.tif&quot;
-## [10] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/261_HARV_ndvi_crop.tif&quot;
-## [11] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/277_HARV_ndvi_crop.tif&quot;
-## [12] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/293_HARV_ndvi_crop.tif&quot;
-## [13] &quot;NEON-DS-Landsat-NDVI/HARV/2011/NDVI/309_HARV_ndvi_crop.tif&quot;
+##  [1] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/005_HARV_ndvi_crop.tif&quot;
+##  [2] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/037_HARV_ndvi_crop.tif&quot;
+##  [3] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/085_HARV_ndvi_crop.tif&quot;
+##  [4] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/133_HARV_ndvi_crop.tif&quot;
+##  [5] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/181_HARV_ndvi_crop.tif&quot;
+##  [6] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/197_HARV_ndvi_crop.tif&quot;
+##  [7] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/213_HARV_ndvi_crop.tif&quot;
+##  [8] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/229_HARV_ndvi_crop.tif&quot;
+##  [9] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/245_HARV_ndvi_crop.tif&quot;
+## [10] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/261_HARV_ndvi_crop.tif&quot;
+## [11] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/277_HARV_ndvi_crop.tif&quot;
+## [12] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/293_HARV_ndvi_crop.tif&quot;
+## [13] &quot;/Users/olearyd/Git/data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI/309_HARV_ndvi_crop.tif&quot;
 </code></pre>
 
 <p>Now we have a list of all GeoTIFF files in the <code>NDVI</code> directory for Harvard
@@ -371,8 +404,9 @@ you may have noticed that the UTM zone for the NEON collected remote sensing
 data was in Zone 18 rather than Zone 19. Why are the Landsat data in Zone 19?  </p>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/UTM_zones_18-19.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/UTM_zones_18-19.jpg"
+    alt="Image of the UTM zones of with United States with an inset image of NEON's Harvard Forest tower location demonstrating it is in UTM zone 18."></a>
     <figcaption> Landsat imagery swaths are over 170 km N-S and 180 km E-W. As 
     a result a given image may overlap two UTM zones. The designated zone is 
     determined by the zone that the majority of the image is in.  In this
@@ -411,7 +445,7 @@ plot(NDVI_HARV_stack,
      nc = 4)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
 
 <p>Have a look at the range of NDVI values observed in the plot above. We know that
 the accepted values for NDVI range from 0-1. Why does our data range from
@@ -445,7 +479,7 @@ plot(NDVI_HARV_stack,
      nc = 4)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack with a scale factor of 10,000"/></p>
 
 <h2>Take a Closer Look at Our Data</h2>
 
@@ -477,7 +511,7 @@ hist(NDVI_HARV_stack,
      xlim = c(0, 1))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png" alt="Histograms of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
 
 <p>It seems like things get green in the spring and summer like we expect, but the 
 data at Julian days 277 and 293 are unusual. It appears as if the vegetation got
@@ -495,7 +529,15 @@ thereafter. </p>
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.</p>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png" alt=" "/></p>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;
+
+## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png" alt="Scatterplot of daily mean air temperature at NEON&#39;s site Harvard Forest"/></p>
 
 <p>There are no significant peaks or dips in the temperature during the late summer
 or early fall time period that might account for patterns seen in the NDVI data.</p>
@@ -520,7 +562,7 @@ reset your layout using: par(mfrow=c(1,1)).
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png" alt="Two sets of NDVI images for NEON&#39;s site Harvard Forest making a small time series"/></p>
 
 <h2>Explore The Data&#39;s Source</h2>
 

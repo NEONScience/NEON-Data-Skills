@@ -4,10 +4,10 @@ title: "Working With Time Series Data Within a Nested HDF5 File in R"
 description: "Explore, extract and visualize temporal temperature data collected from a NEON flux tower from multiple sites and sensors in R. Learn how to extract metadata and how to use nested loops and dplyr to perform more advanced queries and data manipulation."
 dateCreated: 2014-11-17
 authors: Leah A Wasser, Ted Hart
-contributors: Elizabeth Webb
+contributors: Elizabeth Webb, Alison Dernbach
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, ggplot2, dplyr
-topics: HDF5, data-management
+packagesLibraries: rhdf5, ggplot2, dplyr, scales
+topics: HDF5, data-management, time-series
 languagesTool: R
 dataProduct:
 code1: /HDF5/R-Timeseries-HDF5.R
@@ -102,7 +102,7 @@ To access HDF5 files in R, we'll use `rhdf5` which is part of the
 R packages.
 
 It might also be useful to install 
-<a href="http://www.hdfgroup.org/products/java/hdfview/" target="_blank">HDFView</a> 
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">HDFView</a> 
 which will allow you to explore the contents of an HDF5 file visually using a 
 graphic interface. 
 
@@ -122,7 +122,8 @@ library("scales")
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files
-#setwd("working-dir-path-here")
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
 ```
 
 
@@ -198,13 +199,13 @@ of 6 booms (booms 1-5 and the tower top).
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png" alt="A NEON tower illustration with booms that house sensors"></a>
     <figcaption>A NEON tower contains booms, or arms, that house sensors at varying 
     heights along the tower.</figcaption>
 </figure>
 
 
-```{r readPlotData}
+```{r readPlotData, fig.cap="Line graph of oscillating average temperature"}
 # read in temperature data
 temp <- h5read(f,"/Domain_03/OSBS/min_1/boom_1/temperature")
 
@@ -223,7 +224,7 @@ so that R knows how to read and organize the labels on the axis.
 Let's clean up the plot above. We can first add dates to the x axis. In order to 
 list dates, we need to specify the format that the date field is in.
 
-```{r plot-temp-data}
+```{r plot-temp-data, fig.cap="Line graph of oscillating average temperature with dates labeled on the x axis"}
 
 
 # First read in the time as UTC format
@@ -244,10 +245,10 @@ Let's have a close look at this plot. Notice anything unusual with it?
 Hint: When would you expect the temperature to be the warmest during the day?
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/heating-curve_LNewman.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/heating-curve_LNewman.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/heating-curve_LNewman.jpg" alt="Graph of Earth's outgoing longwave radiation showing a minimum temperature in the morning and a maximum temperature in the late afternoon"></a>
     <figcaption>In many parts of the world, we'd expect the maximum temperature
-    to occur during late afternoon. Source: <a href="http://web.gccaz.edu/~lnewman/gph111/topic_units/temperature1/temperature/heating-curve.jpg" target="_blank"> Lynn Newman </a></figcaption>
+    to occur during late afternoon. Source: <a href="https://www.gccaz.edu/directory/lynn-newman" target="_blank"> Lynn Newman </a></figcaption>
 </figure>
 
 In this case, our data are in 
@@ -266,7 +267,7 @@ To adjust for time, we need to tell R that the time zone where the data are
 collected is Eastern Standard time since our data were collected at OSBS. We
 can use the `attributes` function to set the time zone.
 
-```{r fix-time-zone}
+```{r fix-time-zone, fig.cap="Line graph of average temperature lowest in the morning and highest in the afternoon"}
 
 # convert to local time for pretty plotting
 attributes(temp$date)$tzone <- "US/Eastern"
@@ -374,7 +375,7 @@ OSBS_temp <- data.frame()
 ```
 
 The above code uses `dplyr` to filter data. Let's break the code down. 
-<a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html" target="_blank">
+<a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/dplyr.html" target="_blank">
 Read more about the `dplyr` package here</a>
 
 - `fiu_struct`, defined above in the code, is the structure of our HDF5 file 
@@ -421,7 +422,7 @@ why there is no boom 4 in our list! Thus we will need do iterate through the
 data 5 times instead of 6.
 - `dat <- h5read(f,i)`: read in the temperature dataset from our hdf5 file (f) 
 for path `i`.
--  `dat$boom <- strsplit(i,"/")[[1]][5]: add the boom name to a column called 
+-  `dat$boom <- strsplit(i,"/")[[1]][5]`: add the boom name to a column called 
 `boom` in our data.frame
 -  `ord_temp <- rbind(ord_temp,dat)`: append dataset to the end of the data.frame
 
@@ -429,8 +430,8 @@ for path `i`.
 <div id="ds-challenge" markdown="1">
 ### Challenge: Modify Loops
 
-Modify the loop above so that it adds both the boom name, the site name and 
-the data type (1 minute) as columns in our data frame.
+Modify the loop above so that it adds the site name and the data type (1 minute) 
+as columns in our data frame.
 
 </div>
 
@@ -441,7 +442,7 @@ also allows us to properly label the x axis of our plots.
 
 Once the dates have been formatted we can create a plot with cleaner X axis labels.
 
-```{r plotBoomData}
+```{r plotBoomData, fig.cap="Line graph of average temperature with different colors for each boom's data"}
 
 #fix the dates
 OSBS_temp$date <- as.POSIXct(OSBS_temp$date,format = "%Y-%m-%d %H:%M:%S", tz = "EST")
@@ -466,7 +467,7 @@ central Colorado. This time we'll plot data averaged every 30 minutes instead of
 every minute. We'll need to modify our search strings a bit. But we can still 
 re-use most of the code that we just built.
 
-```{r compareGroupData}
+```{r compareGroupData, fig.cap="Average temperatures for the warmer Florida site and cooler Colorado site plotted on the same line graph"}
 # grab just the paths to temperature data, 30 minute average
 pathStrux <- fiu_struct %>% filter(grepl("temperature",name), 
                                    grepl("min_30",group)) 

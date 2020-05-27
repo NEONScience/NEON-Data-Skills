@@ -4,9 +4,9 @@ title: "Time Series 01: Why Metadata Are Important: How to Work with Metadata in
 description: "This tutorial covers what metadata are, and why we need to work with metadata. It covers the 3 most common metadata formats: text file format, web page format and Ecological Metadata Language (EML)."
 dateCreated:  2015-10-22
 authors: Leah A. Wasser, Megan A. Jones, Marisa Guarinello
-contributors:
+contributors: Collin Storlie
 estimatedTime:
-packagesLibraries: eml, ggmap
+packagesLibraries: EML, ggmap, tmaptools
 topics: metadata, time-series
 languagesTool: R
 dataProduct:
@@ -47,7 +47,8 @@ install `EML` directly from GitHub (the package is in development and is not
 yet on CRAN). You will need to install `devtools` to do this. 
  
 * **ggmap:** `install.packages("ggmap")`
-* **devtools:** `install.packages("devtools")` 
+* **tmaptools:** `install.packages("tmaptools")`
+* **devtools:** `install.packages("devtools");library(devtools)` 
 * **EML:** **must be installed AFTER `devtools` is loaded in R.
 `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`  
 
@@ -132,12 +133,12 @@ The metadata for the data that we are working with for the Harvard Forest field
 site are stored in both `EML` format and on a web page. Let's explore the web 
 page first.
 
-* <a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank">View Harvard Forest Fisher Tower webpage.</a>
+* <a href="https://harvardforest.fas.harvard.edu/harvard-forest-data-archive" target="_blank">View Harvard Forest Fisher Tower webpage.</a>
 
 Let's begin by visiting that page above. At the top of the page, there is a list
 of data available for Harvard Forest. NOTE: **hf001-06: daily (metric) since 
 2001 (preview)** is the data that we used in the
-<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target=_blank">previous tutorial.</a>
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">previous tutorial.</a>
 
 Scroll down to the **Overview** section on the website. Take note of the 
 information provided in that section and answer the questions in the
@@ -239,7 +240,7 @@ Ecological Metadata Language (EML) is one machine readable metadata format.
 
 While  much of the documentation that we need to work with at the Harvard Forest
 field site is available directly on the 
-<a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank">Harvard Forest Data Archive page</a>,
+<a href="https://harvardforest.fas.harvard.edu/harvard-forest-data-archive" target="_blank">Harvard Forest Data Archive page</a>,
 the website also offers metadata in `EML` format. 
 
 ## Introduction to EML
@@ -305,9 +306,11 @@ To begin, we will load the `EML` package directly from ROpenSci's Git repository
 #install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
 
 # load ROpenSci EML package
-library("EML")
+library(EML)
 # load ggmap for mapping
 library(ggmap)
+# load tmaptools for mapping
+library(tmaptools)
 
 ```
 
@@ -328,7 +331,7 @@ load.
 # import EML from Harvard Forest Met Data
 # note, for this particular tutorial, we will work with an abridged version of the file
 # that you can access directly on the harvard forest website. (see comment below)
-eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+eml_HARV <- read_eml("https://harvardforest1.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf001.xml")
 
 # import a truncated version of the eml file for quicker demonstration
 # eml_HARV <- read_eml("http://neonscience.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
@@ -342,7 +345,7 @@ class(eml_HARV)
 ```
 
 The `eml_read` function creates an `EML` class object. This object can be
-accessed using `slots` in R (`@`) rather than a typical subset `[]` approach.
+accessed using `slots` in R (`$`) rather than a typical subset `[]` approach.
 
 # Explore Metadata Attributes
 
@@ -373,25 +376,18 @@ NOTE: If this were a rectangular extent, we'd want the bounding box not just
 the point. This is important if the data in raster, HDF5, or a similar format. 
 We need the extent to properly geolocate and process the data.
 
-```{r map-location, warning=FALSE, message=FALSE}
+```{r map-location, warning=FALSE, message=FALSE, fig.cap='Map of Massachusetts, U.S.A., showing location of Harvard Forest'}
 
 # grab x coordinate from the coverage information
 XCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$westBoundingCoordinate[[1]]
 # grab y coordinate from the coverage information
 YCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$northBoundingCoordinate[[1]]
-
-# map <- get_map(location='Harvard', maptype = "terrain")
-
-# plot the NW corner of the site.
-map <- get_map(location='massachusetts', maptype = "toner", zoom =8)
-
-ggmap(map, extent=TRUE) +
-  geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
+# make a map and add the xy coordinates to it
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("Massachusetts")$bbox))), zoom = 11, maptype=c("toner")), extent=TRUE) + geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
              color="darkred", size=6, pch=18)
-
 ```
 
-* Learn more about `ggmap`:
+* Learn more about **ggmap**:
 <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf" target="_blank"> A nice cheatsheet created by NCEAS</a>
 
 The above example, demonstrated how we can extract information from an `EML`

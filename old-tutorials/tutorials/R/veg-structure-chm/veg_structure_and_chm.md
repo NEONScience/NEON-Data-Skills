@@ -78,13 +78,13 @@ for the `neonUtilities` package for more details if desired.
 veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic")
 ```
 
-Use the `def.calc.geo.os()` function in the `geoNEON` package to get 
+Use the `getLocTOS()` function in the `geoNEON` package to get 
 precise locations for the tagged plants. Refer to the package 
 documentation for more details.
 
 
 ```R
-vegmap <- def.calc.geo.os(veglist$vst_mappingandtagging, 
+vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
 ```
 
@@ -411,3 +411,8 @@ represents the highest return, but the highest return may slightly
 miss the actual tallest point on a given tree. This is especially 
 likely to happen with conifers, which are the top-of-canopy trees at 
 Wind River.
+
+
+```R
+
+```

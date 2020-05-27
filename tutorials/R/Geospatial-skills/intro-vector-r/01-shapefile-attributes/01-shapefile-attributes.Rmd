@@ -4,7 +4,7 @@ title: "Vector 01: Explore Shapefile Attributes & Plot Shapefile Objects by Attr
 description: "This tutorial provides an overview of how to locate and query shapefile attributes as well as subset shapefiles by specific attribute values in R. It also covers plotting multiple shapefiles by attribute and building a custom plot legend."
 dateCreated: 2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
-contributors: Sarah Newman
+contributors: Sarah Newman, Maya R. Stahl
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
@@ -163,10 +163,10 @@ which describes the type of road (woods road, footpath, boardwalk, or
 stone wall).
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-vector/Attribute_Table.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png" alt="Example attribute tables for each different type of vector object."></a>
     <figcaption>The shapefile format allows us to store attributes for each
-    feature (vector object) stored in the shapefile. The attribute table, is 
+    feature (vector object) stored in the shapefile. The attribute table is 
     similar to a spreadsheet. There is a row for each feature. The first column
     contains the unique ID of the feature. We can add additional columns that
     describe the feature. Image Source: National Ecological Observatory Network
@@ -225,7 +225,7 @@ point_HARV@data  # C Country
 
 ## Explore Values within One Attribute
 We can explore individual values stored within a particular attribute.
-Again, comparing attributes to a spreadsheet or a `data.frame`, this is similar
+Again, comparing attributes to a spreadsheet or a `data.frame` is similar
 to exploring values in a column. We can do this using the `$` and the name of
 the attribute: `objectName$attributeName`. 
 
@@ -266,7 +266,7 @@ that only two feature lines in our spatial object have the attribute
 
 We can plot our subsetted shapefiles.
 
-```{r plot-subset-shapefile}
+```{r plot-subset-shapefile, fig.cap="Foothpaths at NEON Harvard Forest Field Site."}
 # plot just footpaths
 plot(footpath_HARV,
      lwd=6,
@@ -274,7 +274,7 @@ plot(footpath_HARV,
 
 ```
 
-Interesting. Above, it appeared as if we had 2 features in our footpaths subset.
+Interesting! Above, it appeared as if we had 2 features in our footpaths subset.
 Why does the plot look like there is only one feature?
 
 Let's adjust the colors used in our plot. If we have 2 features in our vector
@@ -285,7 +285,7 @@ to our features. We use the syntax
 
 to do this.
 
-```{r plot-subset-shapefile-unique-colors }
+```{r plot-subset-shapefile-unique-colors, fig.cap="Foothpaths at NEON Harvard Forest Field Site with color varied by feature type." }
 # plot just footpaths
 plot(footpath_HARV,
      col=c("green","blue"), # set color for each feature 
@@ -307,7 +307,7 @@ Subset out all:
 For each plot, color each feature using a unique color.
 </div>
 
-```{r challenge-code-feature-subset, results="hide", echo=FALSE}
+```{r challenge-code-feature-subset, results="hide", echo=FALSE, fig.cap=c("Boardwalks at NEON Harvard Forest Field Site with color varied by feature type.", "Stone walls at NEON Harvard Forest Field Site with color varied by feature type.")}
 
 # save an object with only boardwalk lines
 boardwalk_HARV<-lines_HARV[lines_HARV$TYPE == "boardwalk",]
@@ -340,7 +340,7 @@ plot(stoneWall_HARV,
 
 ## Plot Lines by Attribute Value
 To plot vector data with the color determined by a set of attribute values, the 
-attribute values must be class = `factor`. A **factor** is similar to a category
+attribute values must be class = `factor`. A **factor** is similar to a category.
 - you can group vector objects by a particular category value - for example you 
 can group all lines of `TYPE=footpath`. However, in R, a factor can also have 
 a determined *order*. 
@@ -380,15 +380,15 @@ To create this vector we can use the following syntax:
 
 `c("colorOne", "colorTwo","colorThree")[object$factor]`
 
-Note in the above example we have 
+Note in the above example we have: 
 
 1. a vector of colors - one for each factor value (unique attribute value)
-2. the attribute itself (`[object$factor]`) of class `factor`.
+2. the attribute itself (`[object$factor]`) of class `factor`
 
 Let's give this a try.
 
 
-``` {r palette-and-plot}
+``` {r palette-and-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level."}
 # Check the class of the attribute - is it a factor?
 class(lines_HARV$TYPE)
 
@@ -418,7 +418,7 @@ plot(lines_HARV,
 We can also adjust the width of our plot lines using `lwd`. We can set all lines
 to be thicker or thinner using `lwd=`. 
 
-```{r adjust-line-width}
+```{r adjust-line-width, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and uniformly thick line width."}
 # make all lines thicker
 plot(lines_HARV, 
      col=roadColors,
@@ -430,14 +430,14 @@ plot(lines_HARV,
 ### Adjust Line Width by Attribute
 
 If we want a unique line width for each factor level or attribute category
-in our spatial object, we can use the same syntax that we used for colors, above.
+in our spatial object, we can use the same syntax that we used for colors, above:
 
 `lwd=c("widthOne", "widthTwo","widthThree")[object$factor]`
 
 Note that this requires the attribute to be of class `factor`. Let's give it a 
 try.
 
-```{r line-width-unique }
+```{r line-width-unique, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value." }
 class(lines_HARV$TYPE)
 levels(lines_HARV$TYPE)
 # create vector of line widths
@@ -466,7 +466,7 @@ Create a plot of roads using the following line thicknesses:
  
 </div>
 
-```{r bicycle-map, include=TRUE, results="hide", echo=FALSE}
+```{r bicycle-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by specific attribute value."}
 
 # view the factor levels
 levels(lines_HARV$TYPE)
@@ -503,7 +503,7 @@ the default set of colors that R applies to all plots.
 
 Let's add a legend to our plot.
 
-```{r add-legend-to-plot }
+```{r add-legend-to-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."}
 plot(lines_HARV, 
      col=roadColors,
      main="NEON Harvard Forest Field Site\n Roads & Trails\n Default Legend")
@@ -526,7 +526,7 @@ We can tweak the appearance of our legend too.
 
 Let's try it out.
 
-```{r modify-legend-plot }
+```{r modify-legend-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a modified legend." }
 
 plot(lines_HARV, 
      col=roadColors,
@@ -540,14 +540,14 @@ legend("bottomright",
 
 ```
 
-We can modify the colors used to plot our lines by creating a new color vector,
-directly in the plot code too rather than creating a separate object.
+We can modify the colors used to plot our lines by creating a new color vector
+directly in the plot code rather than creating a separate object.
 
 `col=(newColors)[lines_HARV$TYPE]`
 
 Let's try it!
 
-```{r plot-different-colors}
+```{r plot-different-colors, fig.cap="Roads and trails at NEON Harvard Forest Field Site with manually set colors and with a modified legend."}
 
 # manually set the colors for the plot!
 newColors <- c("springgreen", "blue", "magenta", "orange")
@@ -567,7 +567,7 @@ legend("bottomright",
 ```
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
+<i class="fa fa-star"></i> **Data Tip:** You can modify the default R color palette 
 using the palette method. For example `palette(rainbow(6))` or
 `palette(terrain.colors(6))`. You can reset the palette colors using
 `palette("default")`!
@@ -587,7 +587,7 @@ other lines can be grey.
 
 </div>
 
-```{r bicycle-map-2, include=TRUE, results="hide", echo=FALSE}
+```{r bicycle-map-2, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads where Bikes and Horses are Allowed on NEON Harvard Forest Field Site with lines varied by attribute factor and with a modified legend. "}
 # view levels 
 levels(lines_HARV$BicyclesHo)
 # make sure the attribute is of class "Factor"
@@ -646,7 +646,7 @@ use google to find a list of pch symbols that you can use in R.
 
 </div>
 
-``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE}
+``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap=c("Contiguous U.S. State Boundaries with color varied by region and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and one symbol for all types and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and unique symbols for each type and with a modified legend.")}
 ## 1
 # Read the shapefile file
 State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",

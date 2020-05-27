@@ -4,7 +4,7 @@ title: "Hierarchical Data Formats - What is HDF5?"
 description: "An brief introduction to the Hierarchical Data Format 5 (HDF5) file/data model. Learn about how HDF5 is structured and the benefits of using HDF5."
 dateCreated:   2014-11-27
 authors: Leah A. Wasser
-contributors: Elizabeth Webb, Donal O'Leary
+contributors: Elizabeth Webb, Donal O'Leary, Alison Dernbach
 estimatedTime: 0.25 - 0.5 Hours
 packagesLibraries:
 topics: HDF5
@@ -43,8 +43,8 @@ that builds upon both HDF4 and NetCDF (two other hierarchical data formats).
 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/whyHDF5.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/whyHDF5.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/whyHDF5.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/whyHDF5.jpg" alt="Organizations use HDF5 for various data, access, computing, and networking needs"></a>
     <figcaption>Why Use HDF5. Source: <a href="http://www.hdfgroup.org" target="_blank"> The HDF5 Group</a></figcaption>
 </figure>
 
@@ -56,8 +56,8 @@ You might have a data directory with some temperature data for multiple field
 sites. These temperature data are collected every minute and summarized on an 
 hourly, daily and weekly basis. Within **one** HDF5 file, you can store a similar 
 set of data organized in the same way that you might organize files and folders 
-on your computer. However in a HDF5 file, what we call "directories" or "
-folders" on our computers, are called `groups` and what we call files on our 
+on your computer. However in a HDF5 file, what we call "directories" or "folders" 
+on our computers, are called `groups` and what we call files on our 
 computer are called `datasets`. 
 
 ### 2 Important HDF5 Terms
@@ -69,8 +69,8 @@ groups OR datasets within it.
 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure4.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure4.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure4.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure4.jpg" alt="An illustration of a HDF5 file structure which contains groups, datasets and associated metadata"></a>
     <figcaption>An example HDF5 file structure which contains groups, datasets and associated metadata.</figcaption>
 </figure> 
 
@@ -78,8 +78,8 @@ groups OR datasets within it.
 An HDF5 file containing datasets, might be structured like this:
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure3.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure3.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure3.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure3.jpg" alt="The HDF5 illustration from above but the groups are NEON sites and sensor types and datasets are included under sensor types"></a>
     <figcaption>An example HDF5 file structure containing data for multiple field sites and also containing various datasets (averaged at different time intervals).</figcaption>
 </figure> 
 
@@ -106,8 +106,8 @@ dataset, is that this facilitates automation without the need for a separate
 with the dataset, and which we might need to process the dataset.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure2.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5/hdf5_structure2.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure2.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/hdf5_structure2.jpg" alt="An illustration of a HDF5 file structure with a group that contains two datasets and all associated metadata"></a>
     <figcaption>HDF5 files are self describing - this means that all elements 
     (the file itself, groups and datasets) can have associated metadata that 
     describes the information contained within the element.</figcaption>

@@ -4,12 +4,12 @@ title:  "Raster 05: Raster Time Series Data in R"
 description: "This tutorial covers how to work with and plot a raster time series, using an R RasterStack object. It also covers the basics of practical data quality assessment of remote sensing imagery."	
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
-dataProduct: NEON.DP2.30026, NEON.DP3.30026
+dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
 code1: /R/dc-spatial-raster/05-Time-Series-Raster.R	
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-time-series-r
@@ -98,8 +98,9 @@ of data collected at different times for the same **extent** (region) and of the
 same **resolution**.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/GreennessOverTime.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/GreennessOverTime.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/GreennessOverTime.jpg"
+    alt="Graphic depicting a time series of the greenness over time of the United States"></a>
     <figcaption>A multi-band raster dataset can contain time series data. 
     Source: National Ecological Observatory Network (NEON). 
     </figcaption>
@@ -127,8 +128,8 @@ and phenology (life cycle stage) over large areas. Our NDVI data are a Landsat
 derived single band product saved as a GeoTIFF for different times of the year. 
 
 <figure>
- <a href="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"> 
- <img src="http://earthobservatory.nasa.gov/Features/MeasuringVegetation/Images/ndvi_example.jpg"></a>
+ <a href="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg"> 
+ <img src="https://earthobservatory.nasa.gov/ContentFeature/MeasuringVegetation/Images/ndvi_example.jpg" alt="NDVI is calculated from the visible and near-infrared light reflected by vegetation. Healthy vegetation absorbs most of the visible light that hits it, and reflects a large portion of near-infrared light. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light."></a>
     <figcaption>NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -148,8 +149,9 @@ period that NDVI is available.
 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/RGBSTack_1.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBSTack_1.jpg"
+    alt="A graphic depicting the three different color bands (red, green, and blue) of a satellite image and how they create a basic color image when composited."></a>
     <figcaption>A "true" color image consists of 3 bands - red, green and blue. 
     When composited or rendered together in a GIS, or even a image-editor like
     Photoshop the bands create a color image. 
@@ -166,7 +168,9 @@ library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Git/data/" # this will depend on your local environment environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 ```
 
@@ -182,7 +186,7 @@ the list.
 
 # Create list of NDVI file paths
 # assign path to object = cleaner code
-NDVI_HARV_path <- "NEON-DS-Landsat-NDVI/HARV/2011/NDVI" 
+NDVI_HARV_path <- paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/NDVI") 
 all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             full.names = TRUE,
                             pattern = ".tif$")
@@ -231,8 +235,9 @@ you may have noticed that the UTM zone for the NEON collected remote sensing
 data was in Zone 18 rather than Zone 19. Why are the Landsat data in Zone 19?  
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/dc-spatial-raster/UTM_zones_18-19.jpg"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/UTM_zones_18-19.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/UTM_zones_18-19.jpg"
+    alt="Image of the UTM zones of with United States with an inset image of NEON's Harvard Forest tower location demonstrating it is in UTM zone 18."></a>
     <figcaption> Landsat imagery swaths are over 170 km N-S and 180 km E-W. As 
 	a result a given image may overlap two UTM zones. The designated zone is 
 	determined by the zone that the majority of the image is in.  In this
@@ -270,7 +275,7 @@ Answer the following questions about our `RasterStack`.
 Once we have created our `RasterStack`, we can visualize our data. We can use
 the `plot()` command to quickly plot a `RasterStack`.
 
-```{r plot-time-series }
+```{r plot-time-series, fig.cap="Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack"}
 
 # view a plot of all of the rasters
 # 'nc' specifies number of columns (we will have 13 plots)
@@ -302,7 +307,7 @@ using the (`levelplot`) function. This is covered in the NEON Data Skills
 tutorial. 
 </div>
 
-```{r apply-scale-factor }
+```{r apply-scale-factor, fig.cap="Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack with a scale factor of 10,000"}
 
 # apply scale factor to data
 NDVI_HARV_stack <- NDVI_HARV_stack/10000
@@ -337,7 +342,7 @@ at these data that is quantitative?
 Next we will use histograms to explore the distribution of NDVI values stored in
 each raster.
 
-```{r view-stack-histogram }
+```{r view-stack-histogram, fig.cap="Histograms of all the NDVI rasters of NEON's site Harvard Forest in the raster stack"}
 
 # create histograms of each raster
 hist(NDVI_HARV_stack, 
@@ -360,12 +365,12 @@ Let's next view some temperature data for our field site to see whether there
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.
 
-```{r view-temp-data, echo=FALSE, warning=FALSE }
+```{r view-temp-data, fig.cap="Scatterplot of daily mean air temperature at NEON's site Harvard Forest", echo=FALSE, warning=FALSE }
 
 library(ggplot2)
 library(scales)
 harMetDaily <- 
-  read.csv("NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv",
+  read.csv(paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"),
                  stringsAsFactors = FALSE)
 
 # set the field to be a date field
@@ -413,34 +418,34 @@ reset your layout using: `par(mfrow=c(1,1))`.
 
 </div>
 
-```{r view-all-rgb, echo=FALSE}
+```{r view-all-rgb, fig.cap="Two sets of NDVI images for NEON's site Harvard Forest making a small time series", echo=FALSE}
 
 # reset layout
 par(mfrow=c(2,2))
 
 # open up file for Jday 277 
 RGB_277 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif"))
 
 plotRGB(RGB_277)
 
 # open up file for jday 293
 RGB_293 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif"))
 
 plotRGB(RGB_293)
 
 # view a few other images
 # open up file for jday 133
 RGB_133 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif"))
 
 plotRGB(RGB_133, 
         stretch="lin")
 
 # open up file for jday 197
 RGB_197 <- 
-  stack("NEON-DS-Landsat-NDVI/HARV/2011/RGB/197_HARV_landRGB.tif")
+  stack(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/197_HARV_landRGB.tif"))
 
 plotRGB(RGB_197, 
         stretch="lin")

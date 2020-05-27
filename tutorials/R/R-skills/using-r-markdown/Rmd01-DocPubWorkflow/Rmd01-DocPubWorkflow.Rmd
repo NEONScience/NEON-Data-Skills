@@ -4,10 +4,10 @@ title: "Document & Publish Your Workflow: R Markdown & knitr"
 description: "This tutorial introduces the importance of tools supporting documenting & publishing a workflow."
 dateCreated: 2016-01-01
 authors:
-contributors:
+contributors: Ben Shetterly
 estimatedTime:
 packagesLibraries:
-topics: data-management
+topics: data-management, rep-sci
 languagesTool: R
 dataProduct:
 code1:
@@ -94,11 +94,14 @@ The `knitr` package for R allows us to create readable documents from R Markdown
 files.
 
 <figure class="half">
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/rmd-file.png">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/rmd-file.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/rmd-file.png"
+	alt="RStudio window with default template of a new R Markdown file.">
 	</a>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-rmd/knitr-output.png">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/knitr-output.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/knitr-output.png"
+	alt="HTML document generated from knit R Markdown file, including 
+formatted YAML header, text, code, computed data output and scatter plot.">
 	</a>
 	<figcaption>R Markdown script (left) and the HTML produced from the knit R 
 	Markdown script (right). Source: National Ecological Observatory Network (NEON)

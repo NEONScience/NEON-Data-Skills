@@ -4,7 +4,7 @@ title: "Mask a Raster Using Threshold Values in Python"
 description: "In this tutorial, we will learn how to remove parts of a raster based on pixel values using a mask we create." 
 dateCreated: 2017-06-21 
 authors: Bridget Hass
-contributors: 
+contributors: Max Burner
 estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib
 topics: lidar, raster, remote-sensing
@@ -72,8 +72,8 @@ a raster containing only **south facing** pixels where **canopy height > 20m.**
 The graphic below illustrates raster masking.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/spatialData/raster_masks.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_masks.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_masks.jpg"></a>
 	<figcaption> Masks can be used to highlight desired parameters. 
 	Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
@@ -100,7 +100,7 @@ warnings.filterwarnings('ignore')
 
 ```python
 # Define the plot_band_array function from Day 1
-def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='spectral'):
+def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='Spectral'):
     plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
     if cbar == 'on':
         cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 

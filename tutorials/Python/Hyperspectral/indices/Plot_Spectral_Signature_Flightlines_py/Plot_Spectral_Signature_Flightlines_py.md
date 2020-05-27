@@ -88,8 +88,8 @@ For example, the atmosphere, soil, water, and vegetation have spectral signature
 of distinctly different shapes. 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectralSignatures_MoleroGarzo.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/spectralSignatures_MoleroGarzo.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectralSignatures_MoleroGarzo.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectralSignatures_MoleroGarzo.png"></a>
 	<figcaption> Example spectral signatures of atmosphere, soil, water, and vegetation.
 	Source: <a href="http://remotesensing.spiedigitallibrary.org/article.aspx?articleid=1352329"> Molero et al. 2012 JARS </a>
 	</figcaption>
@@ -107,8 +107,8 @@ where we will caluclate a Vegetation Index.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/vegetationSpectrum_MarkElowitz.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral/vegetationSpectrum_MarkElowitz.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/vegetationSpectrum_MarkElowitz.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/vegetationSpectrum_MarkElowitz.png"></a>
 	<figcaption> Details of an example vegetation spectral signature.
 	Source: <a href="http://www.markelowitz.com/Hyperspectral.html"> Mark Elowitz </a>
 	</figcaption>
@@ -798,5 +798,5 @@ ax2.set_ylim(clipExt[2],clipExt[3])
 
     (4305750.0, 4306350.0)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-spectral-sig-py/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
 

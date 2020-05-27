@@ -303,7 +303,7 @@ plot_aop_refl(data_clean[:,:,0],
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_endmember_extraction_py/output_20_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_20_0.png)
 
 
 ## Unsupervised Classification with Spectral Unmixing: 
