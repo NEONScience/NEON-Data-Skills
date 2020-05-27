@@ -4,7 +4,7 @@ title:  "Going On The Grid -- An Intro to Gridding & Spatial Interpolation"
 description: "An overview of the basics needed to begin to exploring converting point data into raster or gridding format."
 dateCreated:   2015-08-13
 authors: Leah Wasser, Tristan Goulden
-contributors:
+contributors: Kelley A. McCahill
 estimatedTime:
 packagesLibraries:
 topics: lidar, raster, remote-sensing, spatial-data-gis
