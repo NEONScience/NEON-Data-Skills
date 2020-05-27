@@ -4,14 +4,14 @@ title: "Compare tree height measured from the ground to a Lidar-based Canopy Hei
 description: "Investigate the relationship between two methods for measuring canopy height"
 dateCreated: 2019-5-21
 authors: Claire K. Lunch
-contributors: 
+contributors: Kelley A. McCahill
 estimatedTime: 60 minutes
 packagesLibraries: neonUtilities, raster
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
 code1: /R/veg-structure-chm/veg_structure_and_chm.ipynb
-tutorialSeries: 
+tutorialSeries: [lidar-topography-r-series]
 urlTitle: tree-heights-veg-structure-chm
 ---
 
@@ -21,10 +21,8 @@ data products to estimate tree height:
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Woody plant vegetation structure**
 
-The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the 
-remote sensing platform. The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected 
-by by field staff on the ground. We will be using data from the Wind River 
-Experimental Forest NEON field site located in Washington state. The 
+The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the remote sensing platform. 
+The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected by by field staff on the ground. We will be using data from the Wind River Experimental Forest NEON field site located in Washington state. The 
 predominant vegetation there are tall evergreen conifers. 
 
 If you are coming to this exercise after following tutorials on data 
@@ -94,8 +92,7 @@ with the annual measurements of height, diameter, etc (the
 the identifier for each tagged plant, but we'll include `namedLocation`, 
 `domainID`, `siteID`, and `plotID` in the list of variables to merge on, to 
 avoid ending up with duplicates of each of those columns. Refer to the 
-variables table and to the <a href="http://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> 
-for Woody plant vegetation structure for more 
+variables table and to the <a href="http://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> for Woody plant vegetation structure for more 
 information about the contents of each data table.
 
 
@@ -216,6 +213,8 @@ lines(c(0,50), c(0,50), col="grey")
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
 
 
+Use the `cor()` function to extract the highest CHM value for each plant's location within the tile:
+
 
 ```R
 cor(bufferCHM,vegsub$height, use="complete")
@@ -292,7 +291,7 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
 
-
+Use the `cor()` function to extract the tallest point (highest CHM value) within the 10m pixels:
 
 ```R
 cor(binCHM, vegbin$height, use="complete")
@@ -355,7 +354,7 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
 
-
+Use the `cor()` function to extract the tallest point (highest CHM value) using the highest, target tree heights (overstory) minus nearby shorter tree heights (understory):
 
 ```R
 cor(filterCHM,vegfil$height)
@@ -388,7 +387,7 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
 
-
+Extract the tallest point value after excluding dead, broken, or damaged plants:
 
 ```R
 cor(filterCHM,vegfil$height)
