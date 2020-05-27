@@ -224,7 +224,7 @@ various methods.
 
 ## Additional Resources
 
-*	What is the LAS format? <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">las file format</a>?
+*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">LAS format?</a>
 *	Using .las with Python? <a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank">las: python ingest</a>
 *	Specifications for <a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank">las v1.3</a>
 
