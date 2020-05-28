@@ -1,29 +1,21 @@
 ---
-layout: post
-title: "Spatial Intro 04: Intro to Coordinate Reference Systems & Spatial
-Projections"
-date: 2015-10-26
-authors: Leah A. Wasser, Megan A. Jones
-contributors: Alison Dernbach
-dateCreated: 2015-10-23
-lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: rgdal, ggplot2, rgeos, raster
-category: [self-paced-tutorial]
-topics: spatial-data-gis
+title: "Spatial Intro 04 Intro to Coordinate Reference Systems & Spatial Projections"
+code1: null
+contributors: null
+dataProduct: null
+dateCreated: '2020-05-26'
+description: This lesson covers the key spatial attributes that are needed to work
+  and spatial resolution with spatial data including Coordinate Reference Systems
+  (CRS), Extent
+estimatedTime: 1 hour
 languagesTool: R
-mainTag: spatial-data-management-series
-workshopSeries: [spatial-data-management-series]
-description: "This lesson covers the key spatial attributes that are needed to work with
-spatial data including: Coordinate Reference Systems (CRS), Extent and spatial resolution."
-code1: /R/dc-spatio-temporal-intro/04-intro-CRS-projection.R
-image:
-  feature: NEONCarpentryHeader_2.png
-  credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
-  creditlink:
-permalink: R/intro-to-coordinate-reference-systems
-comments: true
+packagesLibraries: rgdal, ggplot2, rgeos, raster
+syncID: null
+authors: Leah A. Wasser, Megan A. Jones, Alison Dernbach
+topics: spatial-data-gis
+tutorialSeries: spatial-data-management-series
+urlTitle: null
 ---
-
 
 ## About
 
@@ -79,7 +71,9 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
-of a lesson series introducing #####UPDATE URL BEFORE PUBLISHING##### <a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`* </a>.
+of a lesson series introducing 
+#####UPDATE URL BEFORE PUBLISHING#####
+<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`* </a>.
 It is also part of a larger
 <a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
 that includes working with
@@ -195,11 +189,11 @@ library(raster)
 
 # set working directory to ensure R can find the file we wish to import and where 
 # we want to save our files. Be sure to move the unzipped download into your working directory! 
-wd <- "~/Documents/data/" #This will depend on your local environment 
+wd <- "~/Git/data/" #This will depend on your local environment 
 setwd(wd) 
 
 # read shapefile
-worldBound <- readOGR(dsn="ne_110m_land",
+worldBound <- readOGR(dsn=paste0(wd,"ne_110m_land/"),
                       layer="ne_110m_land")
 
 # convert to dataframe
@@ -371,13 +365,13 @@ newTheme <- list(theme(line = element_blank(),
       legend.position="none")) #turn off legend
 
 ## add graticules
-graticule <- readOGR(dsn="ne_110m_graticules_all",
+graticule <- readOGR(dsn=paste0(wd,"ne_110m_graticules_all"),
                      layer="ne_110m_graticules_15")
 
 # convert spatial object into a ggplot ready data.frame
 graticule_df <- fortify(graticule)
 
-bbox <- readOGR(dsn="ne_110m_graticules_all", layer="ne_110m_wgs84_bounding_box")
+bbox <- readOGR(dsn=paste0(wd,"ne_110m_graticules_all"), layer="ne_110m_wgs84_bounding_box")
 bbox_df<- fortify(bbox)
 
 
@@ -453,7 +447,7 @@ the graphic below optimize?
 
 </div>
 
-```{r challenge-1, echo=FALSE}
+```{r challenge-1-hidden, echo=FALSE, results='hide'}
 
 ## notes about robinson -- you will see distortion above 40 = 45 degrees latitude
 ## it is optimized for the latitudes between 0-45 (north and south).
@@ -498,5 +492,5 @@ minimize visual distortion in a particular region (e.g. Robinson, UTM, State Pla
 In the next tutorial, we will discuss the differences between these CRSs in
 more detail. Feel
 free to skip over this section and come back to it with fresh eyes if the
-concept of a `CRS` is becoming too complex. It's easisest to take on in
+concept of a `CRS` is becoming too complex. It's easiest to take on in
 bite sized pieces!
