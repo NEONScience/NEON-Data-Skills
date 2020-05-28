@@ -213,8 +213,6 @@ lines(c(0,50), c(0,50), col="grey")
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
 
 
-Use the `cor()` function to extract the highest CHM value for each plant's location within the tile:
-
 
 ```R
 cor(bufferCHM,vegsub$height, use="complete")
@@ -291,7 +289,6 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
 
-Use the `cor()` function to extract the tallest point (highest CHM value) within the 10m pixels:
 
 ```R
 cor(binCHM, vegbin$height, use="complete")
@@ -354,7 +351,6 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
 
-Use the `cor()` function to extract the tallest point (highest CHM value) using the highest, target tree heights (overstory) minus nearby shorter tree heights (understory):
 
 ```R
 cor(filterCHM,vegfil$height)
@@ -387,7 +383,6 @@ lines(c(0,50), c(0,50), col="grey")
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
 
-Extract the tallest point value after excluding dead, broken, or damaged plants:
 
 ```R
 cor(filterCHM,vegfil$height)
