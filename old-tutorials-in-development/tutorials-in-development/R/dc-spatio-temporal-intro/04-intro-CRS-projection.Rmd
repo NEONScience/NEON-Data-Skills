@@ -1,17 +1,17 @@
 ---
 title: "Spatial Intro 04 Intro to Coordinate Reference Systems & Spatial Projections"
 code1: null
-contributors: null
-dataProduct: null
-dateCreated: '2020-05-26'
 description: This lesson covers the key spatial attributes that are needed to work
   and spatial resolution with spatial data including Coordinate Reference Systems
   (CRS), Extent
+dateCreated: '2020-05-26'
+authors: Leah A. Wasser, Megan A. Jones
+contributors: Alison Dernbach
+dataProduct: null
 estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: rgdal, ggplot2, rgeos, raster
 syncID: null
-authors: Leah A. Wasser, Megan A. Jones, Alison Dernbach
 topics: spatial-data-gis
 tutorialSeries: spatial-data-management-series
 urlTitle: null
