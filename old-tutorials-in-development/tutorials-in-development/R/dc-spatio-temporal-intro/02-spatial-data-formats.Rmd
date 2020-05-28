@@ -176,7 +176,7 @@ include:
 
 <i class="fa fa-star"></i> **Data Tip:** A shapefile will only contain **one
 type of vector data**: points, lines or polygons.
-{: .notice}
+
 
 ```{r import-vector, warning=FALSE}
 
@@ -409,7 +409,6 @@ within a `tif` or `GeoTIFF` file are also what your camera uses to store
 information about how and when a picture was taken! And how your computer reads
 this metadata and identifies, for example, the make and model of the camera or
 the date the photo was taken.
-{: .notice}
 
 ### Other Raster File Formats
 
