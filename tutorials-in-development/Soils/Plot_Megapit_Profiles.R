@@ -68,9 +68,6 @@ rm(MC)
 # Make a new caopy of the _perhorizon table to begin joining variables with horizon boundary depths
 S =mgp_perhorizon
 
-# let's make a new label by joining the domainID and the siteID (these will be nice for labeling the plots later)
-S$siteLabel=paste(S$domainID, S$siteID, sep="-")
-
 # A few added rows because of 'NA's in the Guanica site data 
 ##### ADD OTHER VARIABLES HERE?
 B=full_join(mgp_perbiogeosample, mgc_perbiogeosample, by=c('horizonID','biogeoID','siteID','horizonName'))
@@ -100,6 +97,18 @@ setdiff(S$horizonID, B$horizonID)
 mgp_perbiogeosample[which(mgp_perbiogeosample$horizonID %in% setdiff(B$horizonID, S$horizonID)),]
 mgc_perbiogeosample[which(mgc_perbiogeosample$horizonID %in% setdiff(B$horizonID, S$horizonID)),]
 
+# let's make a new label by joining the domainID and the siteID (these will be nice for labeling the plots later)
+S$siteLabel=paste(S$domainID, S$siteID, sep="-")
+S$r=S$sandTotal
+S$g=S$siltTotal
+S$b=S$clayTotal
+
+S$r[is.na(S$r)]=100
+S$g[is.na(S$g)]=100
+S$b[is.na(S$b)]=100
+
+S$textureColor=rgb(red=S$r/100, green=S$g/100, blue=S$b/100, alpha=1, maxColorValue = 1)
+
 ## convert NEON soils dataframe into SoilProfileCollection object
 depths(S) <- siteLabel ~ horizonTopDepth + horizonBottomDepth
 
@@ -117,8 +126,10 @@ plotSPC(S[1:5,], name='horizonName', label='siteLabel', color='clayTotal', col.l
 
 # split up plots to get them to all fit
 # this may take some fussing on different computers
-# par(mar=c(0,0,3,0), mfrow=c(2,1))
-# plot(S[1:10], name='horizonName', label='siteLabel', color='clayTotal', col.label='Clay Content (%)')
+
+
+par(mar=c(0,0,3,0), mfrow=c(2,1))
+plot(S[1:10], name='horizonName', label='siteLabel', color='textureColor', col.label='Clay Content (%)')
 # plot(S[1:10], name='horizonName', label='siteLabel', color='carbonTot')#, col.label='Clay Content (%)')
 #plot(S[24:47], name='horizonName', label='siteLabel', color='clayTotal', col.label='Clay Content (%)', legend=F)
 
@@ -128,16 +139,38 @@ plotSPC(S[1:5,], name='horizonName', label='siteLabel', color='clayTotal', col.l
 setwd("~/Git/dev-aten/NEON-Data-Skills/tutorials-in-development/Soils/")
 
 ## Similarity Clustering
+######### Ternary Plot 
+# Vignette: https://cran.r-project.org/web/packages/Ternary/vignettes/Ternary.html
+# install.packages('Ternary')
+library(Ternary)
+par(mfrow=c(1, 1), mar=rep(0.3, 4))
+TernaryPlot(alab="% Sand \u2192", blab="% Silt \u2192", clab="\u2190 % Clay ",
+            lab.col=c('red', 'green3', 'blue'),
+            point='up', lab.cex=2, grid.minor.lines=1, axis.cex=1.75,
+            grid.lty='solid', col=rgb(0.9, 0.9, 0.9), grid.col='white', 
+            axis.col=rgb(0.6, 0.6, 0.6), ticks.col=rgb(0.6, 0.6, 0.6),
+            padding=0.08)
+# Colour the background:
+cols <- TernaryPointValues(rgb)
+
+# resolution = sqrt(ncol(values)) (48) but was showing tiny grey lines in between triangles, so reduced to 45 to make colors smoother
+ColourTernary(cols, spectrum = NULL, resolution=45)
+
 d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), k=0, max_d=100)
 
 # vizualize dissimilarity matrix via divisive hierarchical clustering
 d.diana <- diana(d)
 
+pdf(file="NEON_Soils_Texture_Color_Clusters.pdf", width=24, height=10)
+par(mar=c(12,2,10,1), mfrow=c(1,1), xpd=NA)
+plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, cex.names=.4, name='horizonName', label='siteLabel', color='textureColor', col.label='Texture', col.legend.cex = 1, col.palette=viridis::viridis(10))
+dev.off()
+
 # this function is from the sharpshootR package
 # requires some manual adjustments
 # Scales well to 10"x22" PDF
 # Texture
-pdf(file="NEON_Soils_Texture_Clusters.pdf", width=22, height=14)
+pdf(file="NEON_Soils_Texture_Clusters.pdf", width=24, height=14)
 par(mar=c(8,2,5,1), mfrow=c(3,1), xpd=NA)
 plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, name='horizonName', label='siteLabel', color='sandTotal',col.label='Sand Content (%)', col.legend.cex = 1.2, n.legend=6, col.palette=viridis::viridis(10))
 plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, name='horizonName', label='siteLabel', color='siltTotal',col.label='Silt Content (%)', col.legend.cex = 1.2, n.legend=6, col.palette=viridis::viridis(10))
@@ -148,10 +181,13 @@ dev.off()
 d <- profile_compare(S, vars=c('nitrogenTot','carbonTot', 'sulfurTot'), k=0, max_d=100)
 d.diana <- diana(d)
 
-pdf(file="NEON_Soils_Nutrient_Clusters.pdf", width=22, height=14)
+pdf(file="NEON_Soils_Nutrient_Clusters.pdf", width=24, height=14)
 par(mar=c(8,2,5,1), mfrow=c(3,1), xpd=NA)
 plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, name='horizonName', label='siteLabel', color='nitrogenTot',col.label='Total Nitrogen (g/Kg)', col.legend.cex = 1.2, n.legend=6, col.palette=viridis::viridis(10))
 plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, name='horizonName', label='siteLabel', color='carbonTot',col.label='Total Carbon (g/Kg)', col.legend.cex = 1.2, n.legend=6, col.palette=viridis::viridis(10))
 plotProfileDendrogram(S, d.diana, scaling.factor = .6, y.offset = 2, width=0.25, name='horizonName', label='siteLabel', color='sulfurTot',col.label='Total Sulfur (g/Kg)', col.legend.cex = 1.2, n.legend=6, col.palette=viridis::viridis(10))
 dev.off()
+
+
+
 
