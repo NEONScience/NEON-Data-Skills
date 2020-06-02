@@ -73,22 +73,22 @@ downloadable R script of the entire lesson, available in the footer of each less
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
 of a lesson series introducing 
 #####UPDATE URL BEFORE PUBLISHING#####
-<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`* </a>.
+<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`*</a>.
 It is also part of a larger
 <a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
 that includes working with
-<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`* </a>,
-<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`* </a>, 
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`*</a>,
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`*</a>, 
 and<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> *tabular time series in `R`*</a>.
 
 
 ****
 
 ### Additional Resources
-* Read more on coordinate systems in the
+* Read more about coordinate systems in the
 <a href="https://docs.qgis.org/3.10/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
 QGIS documentation</a>
-* NEON Data Skills Lesson <a href="https://www.neonscience.org/raster-res-extent-pixels-r/" target="_blank">*The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R*</a>
+* NEON Data Skills Lesson <a href="https://www.neonscience.org/raster-res-extent-pixels-r/" target="_blank">*The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R*</a>
 
 </div>
 
@@ -182,6 +182,7 @@ the central meridian on the globe (0,0).
 
 ```{r lat-long-example, fig.cap="A map of the world plotted with X and Y axes labeled in degrees."}
 
+# load libraries
 library(rgdal)
 library(ggplot2)
 library(rgeos)
@@ -189,7 +190,7 @@ library(raster)
 
 # set working directory to ensure R can find the file we wish to import and where 
 # we want to save our files. Be sure to move the unzipped download into your working directory! 
-wd <- "~/Git/data/" #This will depend on your local environment 
+wd <- "~/Documents/data/" #This will depend on your local environment 
 setwd(wd) 
 
 # read shapefile
