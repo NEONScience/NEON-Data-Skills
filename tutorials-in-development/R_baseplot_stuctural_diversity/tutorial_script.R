@@ -174,7 +174,7 @@ round1000 <- function(x){
 #Load TOS Plot Shape Files into R
 #Generate Base Plots Spatial Polygon DF, and plot
 
-SITECODE = 'SOAP'
+SITECODE = 'SCBI'
 #SITECODE = 'ABBY'
 
 NEON_all_plots <- readOGR('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
@@ -529,7 +529,7 @@ calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
   
   #Extract rows for required files, record number of extracted rows
   files_sub <- file_df[file_df$coords %in% boundary_plot$coords,]
-  N <- length(files_sub$coords)
+  N <- nrow(files_sub)
   
   plot_data <- plots_spdf[plots_spdf$plotID == boundary_plot$plotID,]
   
@@ -584,40 +584,61 @@ metric_df <- data.frame(plotID = rep('',N),
 #Add rows for boundary plots
 if(bound_N > 0){
   for(i in seq(1, bound_N)){
-    metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
-    metric_df[i,(2:16)] <- calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df)
+    #Attempt to calculate boundary metrics
+    attempt <- try(calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df))
+    if(class(attempt) != 'try-error'){
+      #If boundary metrics were calculate successfully, assign them as values to row of dataframe
+      metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
+      metric_df[i,(2:16)] <- attempt
+    }else{
+      print(paste0('Unable to calculate boundary metrics for plot ',as.character(boundary_list[[i]]$plotID)))
+    }
+    
   }
 }
 
 
 #Add rows for normal plots
 k <- bound_N + 1
-  
+
+#For each tile  
 for(i in seq(1,length(coord_unique))){
+  
   file_tile <- files_df[i,]
   plot_ids <- coord_df[(coord_df$coord_String == file_tile$coords),]$plotID
   
+  #Get plot located in tile, and make LAS of tile
   coord_plots <- base_plots_SPDF[(base_plots_SPDF$plotID %in% plot_ids),]
   tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
   
   coord_N = length(coord_plots$plotID)
   
+  #For each plot located entirely within current tile
   if(coord_N != 0){
+    #Try to calculate boundary metrics
     for(j in seq(1,coord_N)){
-      metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
-      metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+      attempt <- try(plot_diversity_metrics(coord_plots[j,], tile_LAS))
+      if(class(attempt) != 'try-error'){
+        metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
+        metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+      }else{
+        print(paste0('Unable to calculate metrics for ',as.character(coord_plots[1,]$plotID)))
+      }
       k <- k + 1
     }
   }
 }
+
+#Remove empty rows from dataframe
+metric_df <- metric_df[which(!is.na(metric_df[,2])),]
 
 
 #Sort output dataframe rows by plot id
 metric_df <- arrange(metric_df, plotID)
 
 #Uninstall files when done
-for(file_ in files_df){
-  file.remove(file_)
-}
+#for(file_ in files_df){
+#  file.remove(file_)
+#}
 
 print(metric_df)
