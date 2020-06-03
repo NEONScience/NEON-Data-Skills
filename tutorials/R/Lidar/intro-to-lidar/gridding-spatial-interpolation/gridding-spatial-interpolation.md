@@ -4,7 +4,7 @@ title:  "Going On The Grid -- An Intro to Gridding & Spatial Interpolation"
 description: "An overview of the basics needed to begin to exploring converting point data into raster or gridding format."
 dateCreated:   2015-08-13
 authors: Leah Wasser, Tristan Goulden
-contributors:
+contributors: Kelley A. McCahill
 estimatedTime:
 packagesLibraries:
 topics: lidar, raster, remote-sensing, spatial-data-gis
@@ -427,14 +427,16 @@ The packages and functions maybe useful when creating grids in R.
 
 ### QGIS tools
 
-* Check out the documentation on the 
-<a href="https://docs.qgis.org/2.6/en/docs/user_manual/plugins/plugins_interpolation.html" target="_blank">*Interpolation plugin* </a>
+* Check out the documentation on different interpolation plugins
+<a href="https://docs.qgis.org/3.10/en/docs/user_manual/processing_algs/qgis/interpolation.html" target="_blank">*Interpolation* </a>
 * Check out the documentation on how to convert a vector file to a raster: 
-<a href="https://docs.qgis.org/2.6/en/docs/user_manual/processing_algs/gdalogr/gdal_conversion/rasterize.html" target="_blank">*Rasterize (vector to raster)*</a>.
+<a href="https://docs.qgis.org/3.10/en/docs/user_manual/processing_algs/gdal/vectorconversion.html#rasterize-vector-to-raster" target="_blank">*Rasterize (vector to raster)*</a>.
 
 The QGIS processing toolbox provides easy access to Grass commands. 
 
 ### GrassGIS commands
+* Check out the documentation on GRASS GIS Integration 
+<a href="https://docs.qgis.org/3.10/en/docs/user_manual/grass_integration/grass_integration.html#starting-the-grass-plugin" target="_blank">*Starting the GRASS plugin* </a>
 
 The following commands may be useful if you are working with GrassGIS. 
 

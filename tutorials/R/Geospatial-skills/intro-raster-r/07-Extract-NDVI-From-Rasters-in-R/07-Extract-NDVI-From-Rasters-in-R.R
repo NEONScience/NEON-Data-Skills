@@ -1,14 +1,16 @@
-## ----load-libraries-data------------------------------------------------------------------
+## ----load-libraries-data------------------------------------------------------------------------
 
 library(raster)
 library(rgdal)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Git/data/" # this will depend on your local environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # Create list of NDVI file paths
-all_HARV_NDVI <- list.files("NEON-DS-Landsat-NDVI/HARV/2011/NDVI",
+all_HARV_NDVI <- list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/NDVI"),
                             full.names = TRUE,
                             pattern = ".tif$")
 
@@ -20,7 +22,7 @@ NDVI_HARV_stack <- NDVI_HARV_stack/10000
 
 
 
-## ----calculate-avg-NDVI-------------------------------------------------------------------
+## ----calculate-avg-NDVI-------------------------------------------------------------------------
 # calculate mean NDVI for each raster
 avg_NDVI_HARV <- cellStats(NDVI_HARV_stack,mean)
 
@@ -37,7 +39,7 @@ avg_NDVI_HARV
 avg_NDVI_HARV[1,1]
 
 
-## ----view-dataframe-output----------------------------------------------------------------
+## ----view-dataframe-output----------------------------------------------------------------------
 # view column name slot
 names(avg_NDVI_HARV)
 
@@ -49,7 +51,7 @@ names(avg_NDVI_HARV)
 
 
 
-## ----insert-site-name---------------------------------------------------------------------
+## ----insert-site-name---------------------------------------------------------------------------
 # add a site column to our data
 avg_NDVI_HARV$site <- "HARV"
 
@@ -60,7 +62,7 @@ avg_NDVI_HARV$year <- "2011"
 head(avg_NDVI_HARV)
 
 
-## ----extract-julian-day-------------------------------------------------------------------
+## ----extract-julian-day-------------------------------------------------------------------------
 
 # note the use of the vertical bar character ( | ) is equivalent to "or". This
 # allows us to search for more than one pattern in our text strings.
@@ -81,7 +83,7 @@ avg_NDVI_HARV$julianDay <- julianDays
 class(avg_NDVI_HARV$julianDay)
 
 
-## ----convert-jd---------------------------------------------------------------------------
+## ----convert-jd---------------------------------------------------------------------------------
 # set the origin for the julian date (1 Jan 2011)
 origin <- as.Date("2011-01-01")
 
@@ -101,9 +103,9 @@ class(avg_NDVI_HARV$julianDay)
 
 
 
-## ----challenge-answers, include=TRUE, results="hide", echo=FALSE--------------------------
+## ----challenge-answers, include=TRUE, results="hide", echo=FALSE--------------------------------
 # Create list of NDVI file paths
-NDVI_path_SJER <- "NEON-DS-Landsat-NDVI/SJER/2011/NDVI"
+NDVI_path_SJER <- paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/NDVI")
 all_NDVI_SJER <- list.files(NDVI_path_SJER,
                             full.names = TRUE,
                             pattern = ".tif$")
@@ -144,7 +146,7 @@ avg_NDVI_SJER
 
 
 
-## ----ggplot-data--------------------------------------------------------------------------
+## ----ggplot-data, fig.cap="Scatterplot of mean NDVI for NEON's site Harvard Forest in 2011"-----
 
 # plot NDVI
 ggplot(avg_NDVI_HARV, aes(julianDay, meanNDVI), na.rm=TRUE) +
@@ -155,7 +157,7 @@ ggplot(avg_NDVI_HARV, aes(julianDay, meanNDVI), na.rm=TRUE) +
 
 
 
-## ----challenge-code-ggplot-data, echo=FALSE-----------------------------------------------
+## ----challenge-code-ggplot-data, fig.cap="Scatterplot of mean NDVI for NEON's site San Joaquin Experimental Range in 2011", echo=FALSE----
 
 # plot NDVI
 ggplot(avg_NDVI_SJER, aes(julianDay, meanNDVI)) +
@@ -166,7 +168,7 @@ ggplot(avg_NDVI_SJER, aes(julianDay, meanNDVI)) +
 
 
 
-## ----merge-df-single-plot-----------------------------------------------------------------
+## ----merge-df-single-plot, fig.cap="Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011"----
 # Merge Data Frames
 NDVI_HARV_SJER <- rbind(avg_NDVI_HARV,avg_NDVI_SJER)  
   
@@ -182,7 +184,7 @@ ggplot(NDVI_HARV_SJER, aes(julianDay, meanNDVI, colour=site)) +
 
 
 
-## ----challenge-code-plot2, echo=FALSE-----------------------------------------------------
+## ----challenge-code-plot2, fig.cap="Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis", echo=FALSE----
 # plot NDVI values for both sites
 ggplot(NDVI_HARV_SJER, aes(Date, meanNDVI, colour=site)) +
   geom_point(size=4,aes(group=site)) + 
@@ -194,10 +196,10 @@ ggplot(NDVI_HARV_SJER, aes(Date, meanNDVI, colour=site)) +
 
 
 
-## ----view-all-rgb-Harv--------------------------------------------------------------------
+## ----view-all-rgb-Harv, fig.cap="Time series of RGB images showing greenness over time for NEON's site Harvard Forest"----
 # open up RGB imagery
 
-rgb.allCropped <-  list.files("NEON-DS-Landsat-NDVI/HARV/2011/RGB/", 
+rgb.allCropped <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/RGB/"), 
                               full.names=TRUE, 
                               pattern = ".tif$")
 # create a layout
@@ -214,9 +216,9 @@ par(mfrow=c(1,1))
 
 
 
-## ----view-all-rgb-SJER--------------------------------------------------------------------
+## ----view-all-rgb-SJER, fig.cap="Time series of RGB images showing greenness over time for NEON's site San Joaquin Experimental Range"----
 # open up the cropped files
-rgb.allCropped.SJER <-  list.files("NEON-DS-Landsat-NDVI/SJER/2011/RGB/", 
+rgb.allCropped.SJER <-  list.files(paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB/"), 
                               full.names=TRUE, 
                               pattern = ".tif$")
 # create a layout
@@ -230,7 +232,7 @@ par(mfrow=c(5,4))
 
 for (aFile in rgb.allCropped.SJER)
   {NDVI.rastStack <- stack(aFile)
-  if (aFile =="NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif")
+  if (aFile ==paste0(wd,"NEON-DS-Landsat-NDVI/SJER/2011/RGB//254_SJER_landRGB.tif"))
     {plotRGB(NDVI.rastStack) }
   else { plotRGB(NDVI.rastStack, stretch="lin") }
 }
@@ -240,7 +242,7 @@ par(mfrow=c(1,1))
 
 
 
-## ----remove-bad-values--------------------------------------------------------------------
+## ----remove-bad-values--------------------------------------------------------------------------
 
 # retain only rows with meanNDVI>0.1
 avg_NDVI_HARV_clean<-subset(avg_NDVI_HARV, meanNDVI>0.1)
@@ -250,7 +252,7 @@ avg_NDVI_HARV_clean$meanNDVI<0.1
 
 
 
-## ----plot-clean-HARV----------------------------------------------------------------------
+## ----plot-clean-HARV, fig.cap="Scatterplot of mean NDVI with outliers removed for NEON's site Harvard Forest in 2011"----
 
 # plot without questionable data
 
@@ -262,7 +264,7 @@ ggplot(avg_NDVI_HARV_clean, aes(julianDay, meanNDVI)) +
 
 
 
-## ----head-csv-----------------------------------------------------------------------------
+## ----head-csv-----------------------------------------------------------------------------------
 
 # confirm data frame is the way we want it
 
@@ -270,7 +272,7 @@ head(avg_NDVI_HARV_clean)
 
 
 
-## ----drop-rownames-write-csv--------------------------------------------------------------
+## ----drop-rownames-write-csv--------------------------------------------------------------------
 
 # create new df to prevent changes to avg_NDVI_HARV
 NDVI_HARV_toWrite<-avg_NDVI_HARV_clean
@@ -283,14 +285,14 @@ head(NDVI_HARV_toWrite)
 
 
 
-## ----write-csv, eval=FALSE----------------------------------------------------------------
+## ----write-csv, eval=FALSE----------------------------------------------------------------------
 ## # create a .csv of mean NDVI values being sure to give descriptive name
 ## # write.csv(DateFrameName, file="NewFileName")
-## write.csv(NDVI_HARV_toWrite, file="meanNDVI_HARV_2011.csv")
+## write.csv(NDVI_HARV_toWrite, file=paste0(wd,"meanNDVI_HARV_2011.csv"))
 ## 
 
 
-## ----challenge-code-write-sjer,  include=TRUE, results="hide", echo=FALSE-----------------
+## ----challenge-code-write-sjer,  include=TRUE, results="hide", echo=FALSE-----------------------
 
 # retain only rows with meanNDVI>0.1
 avg_NDVI_SJER_clean<-subset(avg_NDVI_SJER, meanNDVI>0.1)

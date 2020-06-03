@@ -52,14 +52,23 @@ preferably, RStudio loaded on your computer.
 
 * **NAME:** `install.packages("NAME")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
 
 ### Download Data
 
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
 of a lesson series introducing
@@ -78,7 +87,7 @@ and
 * Read more on coordinate systems in the
 <a href="http://docs.qgis.org/2.0/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
 QGIS documentation.</a>
-* NEON Data Skills Lesson <a href="{{ site.baseurl }}/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* NEON Data Skills Lesson <a href="https://www.neonscience.org/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
 
 </div>
 
@@ -118,8 +127,8 @@ DEM@extent
 ```
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
@@ -127,7 +136,7 @@ DEM@extent
 
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialData/raster2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png">
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
@@ -171,15 +180,15 @@ For instance, an image that has a 1 m spatial resolution means that each pixel i
 the image represents a 1 m x 1 m area.
 
 <figure>
-    <a href="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png">
-    <img src="{{ site.baseurl }}/images/hyperspectral/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
 </figure>
 
 <figure>
-    <img src="{{ site.baseurl }}/images/spatialData/raster1.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_multiple_resolutions.png">
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
     extent with fewer pixels will look more blury and will be of lower resolution.

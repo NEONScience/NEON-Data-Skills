@@ -1,10 +1,10 @@
-## ----load-libraries--------------------------------------------------------------------------------------
+## ----load-libraries-----------------------------------------------------------------------------
 # load libraries
 library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "C:/Users/jbrown1/Documents/R Projects/data/" # this will depend on your local environment
+wd <- "~/Git/data/" # this will depend on your local environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
@@ -23,7 +23,7 @@ plot(DSM_HARV,
 
 
 
-## ----elevation-map, fig.cap="Continuous elevation map of NEON's site Harvard Forest"---------------------
+## ----elevation-map, fig.cap="Continuous elevation map of NEON's site Harvard Forest"------------
 # render DSM for tutorial content background
 DSM_HARV <- raster(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
@@ -32,7 +32,7 @@ plot(DSM_HARV, main="Continuous Elevation Map\n NEON Harvard Forest Field Site")
 
 
 
-## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest"----------
+## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest"----
 # Demonstration image for the tutorial
 
 # add a color map with 5 colors
@@ -58,7 +58,7 @@ legend( par()$usr[2], 4713700,
         fill = rev(col))
 
 
-## ----view-resolution-units-------------------------------------------------------------------------------
+## ----view-resolution-units----------------------------------------------------------------------
 # view resolution units
 crs(DSM_HARV)
 
@@ -68,11 +68,11 @@ myCRS
 
 
 
-## ----resolution-units------------------------------------------------------------------------------------
+## ----resolution-units---------------------------------------------------------------------------
 crs(DSM_HARV)
 
 
-## ----set-min-max-----------------------------------------------------------------------------------------
+## ----set-min-max--------------------------------------------------------------------------------
 
 # This is the code if min/max weren't calculated: 
 # DSM_HARV <- setMinMax(DSM_HARV) 
@@ -98,7 +98,7 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
 
 
 
-## ----demonstrate-no-data, fig.cap="Colorized raster image with NoDataValues around the edge removed"-----
+## ----demonstrate-no-data, fig.cap="Colorized raster image with NoDataValues around the edge removed"----
 # reassign cells with 0,0,0 to NA
 # this is simply demonstration code - we will not teach this.
 f <- function(x) {
@@ -141,21 +141,21 @@ hist(DSM_HARV,
 
 
 
-## ----view-raster-bands-----------------------------------------------------------------------------------
+## ----view-raster-bands--------------------------------------------------------------------------
 
 # view number of bands
 nlayers(DSM_HARV)
 
 
 
-## ----view-attributes-gdal--------------------------------------------------------------------------------
+## ----view-attributes-gdal-----------------------------------------------------------------------
 
 # view attributes before opening file
 GDALinfo(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 
 
-## ----challenge-code-attributes, eval=FALSE, echo=FALSE---------------------------------------------------
+## ----challenge-code-attributes, eval=FALSE, echo=FALSE------------------------------------------
 ## GDALinfo(paste0(wd, "NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
 ## 
 ## # ANSWERS ###

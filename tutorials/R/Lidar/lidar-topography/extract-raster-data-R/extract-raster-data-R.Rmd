@@ -99,7 +99,7 @@ California. Last year we went out and laboriously collected field measured
 height of several trees surrounding each of several randomly collected points. 
 It took many sweaty days to complete, now we find out the NEON is collecting 
 lidar data over this same area and will be doing to for the duration of our study!
-Using this data will save us tons of time and $ -- but how do the data compare. 
+Using this data will save us tons of time and $ -- but how does the data compare. 
 
 Let's extract the data from the NEON provided raster (learning three different 
 methods) and then compare them to our ground measured tree heights. 
@@ -116,7 +116,7 @@ information (x,y) where we measured trees.
 Let's start by plotting the plot locations where we measured trees (in red) on a map. 
 
 We will need to convert the plot centroids to a spatial points dataset in R. This
-is why we need to loaded two packages - the spatial package 
+is why we need to load two packages - the spatial package 
 <a href="http://cran.r-project.org/web/packages/sp/index.html" target="_blank">sp</a> –- 
 and a data manipulation package 
 <a href="http://cran.r-project.org/web/packages/dplyr/index.html" target="_blank"> dplyr</a> -- 
@@ -125,6 +125,8 @@ in addition to working with the raster package.
 NOTE: the `sp` library typically installs when you install the raster package. 
 
 ```{r set-up, message=FALSE}
+
+install.packages("maptools")
 
 # Load needed packages
 library(raster)
@@ -138,7 +140,7 @@ library(maptools)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-wd <- "~/Documents/data/" #This will depend on your local environment
+wd <- "C:/Users/mccahill/Documents/GitHub/" #This will depend on your local environment
 setwd(wd)
 ```
 
@@ -210,8 +212,7 @@ Or to see a list of `pch` values (symbols), check out
 ## Spatial Data Need a Coordinate Reference System
 
 We plotted the easting and northing of the points accurately on the map, but 
-our data doesn't yet 
-have a specific Coordinate Reference System attached to it. The CRS is 
+our data doesn't yet have a specific Coordinate Reference System attached to it. The CRS is 
 information that allows a program like QGIS to determine where the data are 
 located, in the world. 
 <a href="http://www.sco.wisc.edu/coordinate-reference-systems/coordinate-reference-systems" target="_blank">
@@ -386,6 +387,7 @@ as we did for the circular plots, but this time with no buffer since we already
 have a polygon to use. 
 
 ```{r square-plot, eval=FALSE}
+#Will need to load 'sp' package 'library(sp)'
 square_max <- raster::extract(chm,             # raster layer
 	polys,   # spatial polygon for extraction
 	fun=max,         # what to value to extract
@@ -617,7 +619,7 @@ ggplot(centroids, aes(x=chmMaxShape, y=insituMaxHeight)) +
   geom_smooth(method = lm) + # add regression line and confidence interval
   ggtitle("Lidar CHM-derived vs. Measured Tree Height") +
   ylab("Maximum Measured Height") +
-  xlab("Maximum Lidar Hright") +
+  xlab("Maximum Lidar Height") +
   theme(panel.background = element_rect(colour = "grey"),
         plot.title = element_text(family="sans", face="bold", size=20, vjust=1.19),
         axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2),
