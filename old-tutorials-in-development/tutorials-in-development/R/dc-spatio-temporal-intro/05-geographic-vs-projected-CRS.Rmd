@@ -110,7 +110,7 @@ In the previous tutorial, we explored two different types of Coordinate Referenc
 Systems:
 
 1. **Geographic coordinate systems:** coordinate systems that span the entire
-globe (e.g. latitude / longitude).
+globe (e.g. latitude / longitude)
 2. **Projected coordinate systems:** coordinate systems that are localized to
 minimize visual distortion in a particular region (e.g. Robinson, UTM, State Plane)
 
@@ -144,21 +144,21 @@ wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 # read shapefile
-worldBound <- readOGR(dsn="ne_110m_land",
+worldBound <- readOGR(dsn=paste0(wd,"ne_110m_land"),
                       layer="ne_110m_land")
 
 # convert to dataframe
 worldBound_df <- fortify(worldBound)
 
 # read grat shapefile
-worldGrat30 <- readOGR(dsn="ne_110m_graticules_all",
+worldGrat30 <- readOGR(dsn=paste0(wd,"ne_110m_graticules_all"),
                       layer="ne_110m_graticules_30")
 
 # convert to dataframe
 worldGrat30_df <- fortify(worldGrat30)
 
 #import box
-wgs84Box <- readOGR(dsn="ne_110m_graticules_all",
+wgs84Box <- readOGR(dsn=paste0(wd,"ne_110m_graticules_all"),
                     layer="ne_110m_wgs84_bounding_box")
 
 wgs84Box_df<- fortify(wgs84Box)
@@ -212,41 +212,19 @@ optimize the relative size and shape of a particular region on the globe.
 
 The **Universal Transverse Mercator** (UTM) system is a commonly used projected
 coordinate reference system. UTM subdivides the globe into zones,
-numbered 0-60 (equivalent to longitude) and regions (north and south)
+numbered 0-60 (equivalent to longitude) and regions (north and south).
 
+UTM zones are also defined using bands, lettered C-X (equivalent to latitude). 
+However, the latitude band designation is often dropped as it isn't esssential to 
+specifying the location.
 
-<i class="fa fa-star"></i> **Data Note:** UTM zones are also defined using bands,
-lettered C-X (equivalent to latitude) however, the band designation is often
-dropped as it isn't esssential to specifying the location.
+The figure below shows the full UTM zone notation including latitude bands. Rather 
+than using "N" or "S" to denote the Northern or Southern hemisphere, the latitude 
+bands are divided so that letters before "M" in the alphabet are south of the equator 
+and, conveniently, letters after "N" are north.
 
-While UTM zones span the entire globe, UTM uses a regional projection and
-associated coordinate system. The coordinate system grid for each
-zone is projected individually using the **Mercator projection**.
-
-The origin (0,0) for each UTM zone and associated region is located at the
-intersection of the equator and a location, 500,000 meters east of the central
-meridian of each zone. The origin location is placed outside of the boundary of
-the UTM zone, to avoid negative Easting numbers.  
-
-
-<figure>
-    <a href="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/utm_zone_characteristics.png">
-    <img src="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/utm_zone_characteristics.png" alt="Two UTM zones, one north and one south. The zones are triangular and become more narrow towards the poles. The origin is at the south west corner of each zone which makes it on the equator for the north zones and near the tip of the triangle for the south zones.">
-    </a>
-    <figcaption>The 0,0 origin of each UTM zone is located in the **bottom left** hand corner (south west) of the zone - exactly 500,000 m EAST from the central meridian of the zone.  
-    Source: Penn State E-education</figcaption>
-</figure>
-
-***
-
-### More on UTM
-
-* <a href="https://www.e-education.psu.edu/natureofgeoinfo/c2_p22.html" target="_blank">
-Penn State E-education overview of UTM</a>
-* <a href="https://www.e-education.psu.edu/natureofgeoinfo/c2_p23.html" target="_blank">
-More about UTM Zones - Penn State E-education</a>
-
-***
+A full **grid zone** reference combines the zone and latitude band for a point. 
+The zone is written first, followed by the latitude band ("17T" for example). 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridded-Utm-zones.jpg">
@@ -256,33 +234,70 @@ More about UTM Zones - Penn State E-education</a>
     Source: Public domain from Earth Observatory, NASA</figcaption>
 </figure>
 
+<i class="fa fa-star"></i> **Data Tip:**  The UTM system doesn't apply to polar
+regions (>80°S or >84°N). The Universal Polar Stereographic (UPS) coordinate system is
+used in these areas. This is where zones A, B and Y, Z are used if you were
+wondering why they weren't in the UTM lettering system. 
+
+While UTM zones span the entire globe, UTM uses a regional projection and
+associated coordinate system to reduce distortion across a large north-south 
+extent. The coordinate system grid for each zone is projected individually using 
+the **Mercator projection**.
+
+The spatial coordinates (easting and northing) for each UTM zone are defined by 
+their position relative to the equator and central meridian for that zone. In the 
+Northern Hemisphere, the northing values start at zero at the equator and increase 
+northward. To avoid negative easting values, the central meridian for each zone is 
+defined as 500,000 meters East. 
+
+Remember, UTM zone distortion errors increase with distance away from the central 
+meridian, so values that are hundreds of kilometers away from 500,000m easting are 
+likely to have substantial distortion. For example, because the (0,0) point is 
+outside of the boundary of a UTM zone, the actual on-the-Earth location that corresponds 
+to (0,0) in one zone may be more precisely described in the next UTM zone to the West. 
+
+The take-home point is that UTM zone coordinates should always be positive, and 
+you are likely to be working with numbers in the hundreds of thousands of meters 
+easting and possibly in the millions of meters northing!
+
+<figure>
+    <a href="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/utm_zone_characteristics.png">
+    <img src="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/utm_zone_characteristics.png" alt="Two UTM zones, one north and one south. The zones are triangular and become more narrow towards the poles. The (0,0) point is at the south west corner of each zone which makes it on the equator for the north zones and near the tip of the triangle for the south zones.">
+    </a>
+    <figcaption>The central meridian of each zone is located at 500,000m easting. The (0,0) point of each UTM zone is located in the **bottom left** hand corner (south west) of the zone.
+    Source: Penn State E-education</figcaption>
+</figure>
+
+
 ### Understanding UTM Coordinates
 
 Let's look at the coordinates for the NEON Harvard Forest Field Site. The UTM coordinates 
-are written as:
+are typically written as:
 
 UTM Zone 18N, 730782m, 4712631m
 
-The N denotes that this point is in the Northern, not Southern, hemisphere. Occassionally, 
-you may see: 
+Note that the N denotes this point is in the Northern, not Southern, hemisphere. 
+Occassionally, you may see the grid zone notation written as: 
 
 Zone 18T, 730782m Easting, 4712631m Northing
 
-<i class="fa fa-star"></i> **Data Tip:**  The UTM system doesn't apply to polar
-regions (>80°N or S). Universal Polar Stereographic (UPS) coordinate system is
-used in these areas. This is where zones A, B and Y, Z are used if you were
-wondering why they weren't in the UTM lettering system.  
+In both cases, the easting and northing coordinate pair is the distance in meters 
+from the (0,0) point of zone 18. Notice that including the latitude band ("T") 
+can be redundant because the northing coordinate supplies the information needed 
+to define the point's latitude.
 
-<div id="challenge" markdown="1">
 
-### Challenge: Practice understanding UTM coordinates
+***
 
-The Penn State E-Education Institute has an interactive tool that you can use to explore UTM coordinate reference systems.
+### More on UTM
 
-<a href="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/flash/coord_practice_utm_v06.swf" target="_blank">Download the UTM interactive tool</a>. Note: You will need Adobe Flash Player to use this tool.
+* <a href="https://www.e-education.psu.edu/natureofgeoinfo/c2_p22.html" target="_blank">
+Penn State E-education overview of UTM</a>
+* <a href="https://www.e-education.psu.edu/natureofgeoinfo/c2_p23.html" target="_blank">
+More about UTM Zones - Penn State E-education</a>
+* <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" target="_blank">Wikipedia's article on UTM coordinate systems</a>
 
-</div>
-
+***
 
 ### Datum
 
