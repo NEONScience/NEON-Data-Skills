@@ -4,22 +4,21 @@ title: "Methods of Exploring NEON Mosquito Data in R Part Four: Culex tarsalis"
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
 dateCreated: 2017-08-04
 authors: Charlotte Roiger 
-contributors: Megan A. Jones, Katie Levan, Cody Flagg
+contributors: Megan A. Jones, Katie Levan, Cody Flagg, Maya R. Stahl
 estimatedTime: 
-packagesLibraries: 
+packagesLibraries: dplyr, ggplot2
 topics: data-analysis, data-visualization
 languagesTool: R
-dataProduct: NEON.DP1.10043.001
+dataProduct: DP1.10043.001
 code1: 
 tutorialSeries: neon-mosquito-data-intro
 urlTitle: tba
 ---
 
-This is part three of a series of tutorials that will teach you how to use NEON 
+This is part four of a series of tutorials that will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
 tarsalis*. This tutorial will focus on examining trends in abundance and 
 mapping the range of *Culex tarsalis*.
-
 
 **R Skill Level:** Intermediate - you've got the basics of `R` down
 
@@ -63,8 +62,7 @@ installed prior to starting the tutorial.
 
 ## Tutorial Set Up
 
-If you are starting this tutorial immediately after the completion of part one
-and part two of the NEON Mosquito Data Visualization series, feel free to skip 
+If you are starting this tutorial immediately after the completion of part one, part two, and part three of the NEON Mosquito Data Visualization series, feel free to skip 
 this portion of the tutorial, make sure to load in the correct libraries. 
 If not, our first step is to set up our working directory, load in the packages 
 and libraries necessary, and download the mosquito data.
@@ -160,7 +158,7 @@ tarssmall <- tars[tars$Year %in% c(2014,2016), ]
 tarsSiteLevel <- ddply(tarssmall,~siteID + domainID + Date + Year, summarize, siteAbundance = sum(newindividualCount))
 
 #merge with location information
-tarsSiteLevel <- merge(x = uniquetrap[,c("siteID", "decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = tarsSiteLevel, by.y = "siteID", by.x = "siteID")
+tarsSiteLevel <- merge(x = uniquetrap[,c("siteID", "decimalLatitude", "decimalLongitude", "elevation.y", "nlcdClass.y")], y = tarsSiteLevel, by.y = "siteID", by.x = "siteID")
 
 tarsSiteLevel$decimalLatitude<- as.numeric(tarsSiteLevel$decimalLatitude)
 tarsSiteLevel$decimalLongitude<- as.numeric(tarsSiteLevel$decimalLongitude)
@@ -175,7 +173,7 @@ applying the temperature lag function to the new *Culex tarsalis* data frame
 
 ```{r apply-templag-again}
 #Applying temperature lag function to tarssmall
-CTTWAMT.mat<- mapply(Templag, tarsSiteLevel$siteid, tarsSiteLevel$date)
+CTTWAMT.mat<- mapply(Templag, tarsSiteLevel$siteID, tarsSiteLevel$Date)
 
 #Create variables in tarsSiteLevel for two week temp lag and degree days
 tarsSiteLevel$TwoWeekAvgMT <-c(unlist(CTTWAMT.mat[1,]))
@@ -200,7 +198,7 @@ taxonomy[grepl("Culex tarsalis", taxonomy$scientificName),]
 Notice how the native status information in the taxonomy data is separated by
 domain in separate columns in a 'wide' format. We need the native status
 information to be in the form of a column or vector to be added to our current
-'tarssmall' data frame, so we use the gather command from the tidyr package
+'tarssmall' data frame, so we use the `gather` command from the `tidyr` package
 to find the columns in the taxonomy data frame that contain native status
 information and transformed that row of information into a new data frame.
 
@@ -220,6 +218,8 @@ tarstax.df <-data.frame("domainID"= unique(domain.df$domainid), "DomainNativeSta
 Once the new data frame containing native status information is created, we 
 merge it with our existing "tarsSiteLevel" data frame and then subset by year. 
 The reason that we choose to subset by year is so we can separate 
+
+# 6/20: Comment is unfinished. 
 
 ```{r finishing-tarsSiteLevel}
 
@@ -273,7 +273,7 @@ there is some sort of seasonal fluctuation in abundance that differs not only
 by month but also by year. Similar to our exploration of species richness in
 part two of this data tutorial we will explore whether the two week average 
 maximum temperature is related to the *Culex tarsalis*. First however we will 
-look at how the two week average maximum temperature fluctuates throught the 
+look at how the two week average maximum temperature fluctuates throughout the 
 years 2014 and 2016.
 
 ```{r Cut-temp-plot}
@@ -358,7 +358,7 @@ remove the pound signs from the beginning of each line of code.
 
 ```{r Author-wd, echo = FALSE}
 
-if(file.exists('~/GitHub/mosquito-intern')){ # This is the author's workign directory
+if(file.exists('~/GitHub/mosquito-intern')){ # This is the author's working directory
   repo_location = '~/GitHub/mosquito-intern'
 }
 
@@ -383,10 +383,11 @@ NEON domain.
 
 #Read in file  
 NEONmap = readShapePoly(paste(repo_location, 'resources/spatial files/NEON-domain-map/NEON_Domains.shp', sep='/'))
+
 # Manipulate for plotting
 NEONmap@data$id = rownames(NEONmap@data)
 
-NEONmap.points = ggplot2::fortify(NEONmap, region="id")
+NEONmap.points = ggplot2::fortify(NEONmap)
 
 NEONmap.df = join(NEONmap.points, NEONmap@data, by="id")
 
@@ -397,6 +398,11 @@ NEONmap.df$nativestat<-ifelse(NEONmap.df$DomainID %in% c(1,2,3,5:17), "Native", 
 
 ```
 
+# 6/20: readShapePoly can be replaced with readOGR
+# NEONmap <- readOGR(dsn=path.expand("working dw here"), layer="layer here")
+
+# 6/20: Line 389 throws error 'Error in fortify.SpatialPolygonsDataFrame(NEONmap, region = "id") : `region' not supported'. I removed 'region = ID' and the code ran. Can add region color codes manually later if needed.
+
 Here is our first visualization of where *Culex tarsalis* is considered to be 
 native. 
 
@@ -405,9 +411,9 @@ native.
 # Map visualization of the range of Culex tarsalis
 ggplot()+
   #geom_polygon maps the shapefiles into a polygon that looks like the united states and color by native status
-  geom_polygon(data = NEONmap.df, aes(long, lat, group=group, fill= as.factor(nativestat)))+
+  geom_polygon(data=NEONmap.df, aes(long, lat, group=group, fill= as.factor(nativestat)))+
   #geom_path creates the domain lines on the map
-  geom_path(data = NEONmap.df, aes(long,lat, group=group), color = 'black')+
+  geom_path(data=NEONmap.df, aes(long,lat, group=group), color = 'black')+
   #manual color native status 
   scale_fill_manual(values = c("lightyellow2", "gold")) +
   labs( x = "Longitude", y ="Latitude")+
@@ -416,6 +422,8 @@ ggplot()+
   theme(plot.title = element_text(size = 16, face = "bold"))
 
 ```
+
+# 6/20: After line 415 throws error code 'Error: 'data' must be uniquely named but has duplicated columns', I added code 'colnames(NEONmap.df) <- make.unique(names(NEONmap.df))' in order to stop the error. 
 
 When we look at the map of NEON domains, it would seem as if *Culex tarsalis* is 
 native to almost all of the continental United States. However this result is
@@ -440,7 +448,7 @@ domain.df <- merge(x = uniquetrap[,c("siteID","decimalLatitude", "decimalLongitu
 domain.df <- merge(x = tars.firstsite[,c("siteID","DomainNativeStatus.value")], y = domain.df, by.x = "siteID", by.y = "siteID", all.y = TRUE)
 
 #create variable to indicate whether Culex tarsalis is present
-domain.df$tarsPresent <- ifelse(is.na(domain.df$DomainNativeStatus.value), "Not Prsent", "Present" )
+domain.df$tarsPresent <- ifelse(is.na(domain.df$DomainNativeStatus.value), "Not Present", "Present" )
 
 #subset domain.df to include only sites sampled in 2014 and 2016
 domain.df<- domain.df[domain.df$siteID %in% idsmall$siteID,]
@@ -455,12 +463,14 @@ ggplot()+
   geom_polygon(data = NEONmap.df, aes(long, lat, group=group, fill= as.factor(nativestat)))+
   geom_path(data = NEONmap.df, aes(long,lat, group=group), color = 'black')+
   scale_fill_manual(values = c("lightyellow2", "gold")) +
-  geom_point(data = domain.df, aes( decimalLatitude, decimalLongitude, color = tarsPresent),size = 2)+
+  geom_point(data = domain.df, aes(decimalLongitude,decimalLatitude, color = tarsPresent),size = 2)+
   labs( x = "Longitude", y ="Latitude")+
   ggtitle("Map of Culex tarsalis Observation and Native Status")+
   theme(plot.title = element_text(size = 16, face = "bold"))
 
 ```
+
+# 6/20: The final map needed the decimalLatitude and decimalLongitude to be switched in the geom_point call.
 
 A second visualization of NEON domains using our newly created indicator
 variable reveals that there are a good deal of sites where *Culex tarsalis* is 
@@ -470,7 +480,7 @@ of the domain that our map is not displaying correctly, or this species just
 was not sampled in these areas during the years 2014 or 2016 and could be found
 in future samples. Regardless of these discrepancies one interesting take away
 from this visualization is that *Culex tarsalis* has been sampled in Alaska 
-where it has previously been absent, suggestingthat this species has undergone
+where it has previously been absent, suggesting that this species has undergone
 a range expansion. 
 
 <div id = "challenge" markdown = "1">
