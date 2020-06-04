@@ -491,34 +491,52 @@ build_metrics_df <- function(this_plots_spdf, this_coords_df, this_files_df, thi
   #Add rows for boundary plots
   if(bound_N > 0){
     for(i in seq(1, bound_N)){
-      DF[i,1] <- as.character(this_boundaries_df[[i]]$plotID)
-      DF[i,(2:16)] <- calculate_boundary_metrics(this_boundaries_df[[i]], this_plots_spdf, this_files_df)
+      #Attempt to calculate boundary metrics
+      attempt <- try(calculate_boundary_metrics(this_boundaries_df[[i]], this_plots_spdf, this_files_df))
+      if(class(attempt) != 'try-error'){
+        #If boundary metrics were calculate successfully, assign them as values to row of dataframe
+        DF[i,1] <- as.character(this_boundaries_df[[i]]$plotID)
+        DF[i,(2:16)] <- attempt
+      }else{
+        print(paste0('Unable to calculate boundary metrics for plot ',as.character(this_boundaries_df[[i]]$plotID)))
+      }
+      
     }
   }
   
   
+  
   #Create metrics data for non-boundary plots by file, and merge with DF
   k <- bound_N + 1
-  for(i in seq(1,length(this_files_df$name))){
+  
+  for(i in 1:nrow(this_files_df)){
+    
     file_tile <- this_files_df[i,]
     plot_ids <- this_coords_df[(this_coords_df$coord_String == file_tile$coords),]$plotID
     
+    #Get plot located in tile, and make LAS of tile
     coord_plots <- this_plots_spdf[(this_plots_spdf$plotID %in% plot_ids),]
-
+    tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
     
     coord_N = length(coord_plots$plotID)
-
     
+    #For each plot located entirely within current tile
     if(coord_N != 0){
-      tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
+      #Try to calculate boundary metrics
       for(j in seq(1,coord_N)){
-        DF[k,1] <- as.character(coord_plots[j,]$plotID)
-        DF[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+        attempt <- try(plot_diversity_metrics(coord_plots[j,], tile_LAS))
+        if(class(attempt) != 'try-error'){
+          DF[k,1] <- as.character(coord_plots[j,]$plotID)
+          DF[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+        }else{
+          print(paste0('Unable to calculate metrics for ',as.character(coord_plots[1,]$plotID)))
+        }
         k <- k + 1
       }
     }
   }
   
+  DF <- DF[!is.na(DF[,2]),]
   DF <- arrange(DF, plotID)
   
   return(DF)
