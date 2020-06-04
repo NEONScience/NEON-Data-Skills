@@ -282,9 +282,10 @@ Occassionally, you may see the grid zone notation written as:
 Zone 18T, 730782m Easting, 4712631m Northing
 
 In both cases, the easting and northing coordinate pair is the distance in meters 
-from the (0,0) point of zone 18. Notice that including the latitude band ("T") 
-can be redundant because the northing coordinate supplies the information needed 
-to define the point's latitude.
+from the (0,0) point of Zone 18. This can become quite confusing when refering to 
+Zone '18S' which usually refers to UTM Zone 18 South (in the southern hemisphere),
+or may also refer to UTM Zone 18S (in the northern hemisphere between Zones 18R 
+and 18T). Be sure to reality check your coordinates when in doubt!
 
 
 ***
