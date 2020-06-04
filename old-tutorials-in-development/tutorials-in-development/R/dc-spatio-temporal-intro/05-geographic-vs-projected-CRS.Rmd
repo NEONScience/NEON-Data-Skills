@@ -283,8 +283,8 @@ Zone 18T, 730782m Easting, 4712631m Northing
 
 In both cases, the easting and northing coordinate pair is the distance in meters 
 from the (0,0) point of Zone 18. This can become quite confusing when refering to 
-Zone '18S' which usually refers to UTM Zone 18 South (in the southern hemisphere),
-or may also refer to UTM Zone 18S (in the northern hemisphere between Zones 18R 
+Zone '18S' which usually refers to UTM Zone 18 South (in the Southern Hemisphere),
+or may also refer to UTM Zone 18S (in the Northern Hemisphere between Zones 18R 
 and 18T). Be sure to reality check your coordinates when in doubt!
 
 
