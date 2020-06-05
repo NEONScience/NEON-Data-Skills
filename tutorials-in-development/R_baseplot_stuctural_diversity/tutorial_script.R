@@ -174,7 +174,7 @@ round1000 <- function(x){
 #Load TOS Plot Shape Files into R
 #Generate Base Plots Spatial Polygon DF, and plot
 
-SITECODE = 'SCBI'
+SITECODE = 'SOAP'
 #SITECODE = 'ABBY'
 
 NEON_all_plots <- readOGR('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
@@ -380,9 +380,12 @@ bound_N <- length(boundary_list)
 coord_unique <- as.vector(coord_df$coord_String)
 
 #Append coordinates from boundary plot nested list to coordinate vector
-for(i in 1:bound_N){
-  coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
+if(bound_N > 0){
+  for(i in 1:bound_N){
+    coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
+  }
 }
+
 
 coord_unique <- unique(coord_unique)
 

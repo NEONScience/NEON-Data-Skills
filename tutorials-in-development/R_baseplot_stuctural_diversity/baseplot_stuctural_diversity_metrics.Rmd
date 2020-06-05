@@ -407,9 +407,12 @@ bound_N <- length(boundary_list)
 coord_unique <- as.vector(coord_df$coord_String)
 
 #Append coordinates from boundary plot nested list to coordinate vector
-for(i in 1:bound_N){
+if(bound_N > 0){
+  for(i in 1:bound_N){
   coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
+  }
 }
+
 
 coord_unique <- unique(coord_unique)
 

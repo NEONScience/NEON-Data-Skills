@@ -308,9 +308,12 @@ get_unique_coordinates <- function(coords_df, boundaries_pdf){
   out_coords <- as.vector(coords_df$coord_String)
   
   #Append coordinates from boundary plot nested list to coordinate vector
-  for(i in seq(1,N)){
-    out_coords <- append(out_coords, boundaries_pdf[[i]][['coords']])
+  if(N > 0){
+    for(i in seq(1,N)){
+      out_coords <- append(out_coords, boundaries_pdf[[i]][['coords']])
+    }
   }
+
   
   out_coords <- unique(out_coords)
   
@@ -636,7 +639,7 @@ main <- function(sitecode){
   #Get unique coordinates, coordinates for each necessary tile
   coord_unique <- get_unique_coordinates(coord_df, boundary_list)
   
-  
+
   #Get most recent date for which data is available
   date <- get_most_recent_date(sitecode, 'DP1.30003.001')
   
