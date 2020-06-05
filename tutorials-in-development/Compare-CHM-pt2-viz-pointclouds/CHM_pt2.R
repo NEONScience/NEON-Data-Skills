@@ -96,11 +96,7 @@ plots_LAS <-
 
 
 
-tree_boxes=veg[veg$plotID=="WREF_084",]
 
-Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
-Thuja_boxes$adjEasting=Thuja_boxes$adjEasting-x[1]
-Thuja_boxes$adjNorthing=Thuja_boxes$adjNorthing-x[2]
 #PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
 
 ## make tree plots
@@ -108,6 +104,11 @@ Thuja_boxes$adjNorthing=Thuja_boxes$adjNorthing-x[2]
 #x = plot(WREF_LAS)
 x=plot(plots_LAS[[3]])
 #quads3d(x=coordinates(base_plots_SPDF)[1:8,1], y=coordinates(base_plots_SPDF)[1:8,2])
+tree_boxes=veg[veg$plotID=="WREF_084",]
+
+Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
+Thuja_boxes$adjEasting=Thuja_boxes$adjEasting-x[1]
+Thuja_boxes$adjNorthing=Thuja_boxes$adjNorthing-x[2]
 
 PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
 PSMEM_boxes$adjEasting=PSMEM_boxes$adjEasting-x[1]
