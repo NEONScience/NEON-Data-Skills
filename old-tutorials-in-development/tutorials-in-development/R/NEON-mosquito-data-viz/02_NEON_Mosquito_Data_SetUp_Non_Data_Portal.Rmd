@@ -4,23 +4,22 @@ title: "Methods of Exploring NEON Mosquito Data in R Part One: Data Set Up"
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
 dateCreated: 2017-08-04
 authors: Charlotte Roiger 
-contributors: Megan A. Jones, Katie Levan, Cody Flagg
+contributors: Megan A. Jones, Katie Levan, Cody Flagg, Maya R. Stahl
 estimatedTime: 
-packagesLibraries: 
+packagesLibraries: dplyr, ggplot2
 topics: data-analysis, data-visualization
 languagesTool: R
-dataProduct: NEON.DP1.10043.001
+dataProduct: DP1.10043.001
 code1: 
 tutorialSeries: neon-mosquito-data-intro
 urlTitle: tba
 ---
 
 
-This is part one of a series of tutorials that will teach you how to use NEON 
+This is part two of a series of tutorials that will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
 tarsalis*. This series will also cover setting up data frames from existing NEON
 data as well as how to obtain location information from NEON APIs. 
-
 
 
 <div id="ds-objectives" markdown="1">
@@ -62,6 +61,8 @@ the necessary data from the NEON API or download the data packet here.
 
 DOWNLOAD BUTTON HERE 
 
+#6/20: Gotta update with tutorial link before publishing.
+
 </div>
 
 
@@ -69,10 +70,13 @@ DOWNLOAD BUTTON HERE
 
 The mosquito data on the NEON Data Portal are divided by type of information 
 into five tables:
- * **mos_trapping**:field collection data. Note: if you download the "basic" package
+ * **mos_trapping**: field collection data. Note: if you download the "basic" package
+ 
+# 6/20: 'Note:' remains unfinished. 
+ 
  * **mos_sorting**: sorting data
- * **mos_expertTaxonomistIDProcessed**: identification and pinning data. Note 
- that in the User Guide this is simply referred to as the **mos_identification** 
+ * **mos_expertTaxonomistIDProcessed**: identification and pinning data. Note: 
+in the User Guide this is simply referred to as the **mos_identification** 
  table. 
  * **mos_expertTaxonomistIDRaw**: the raw identification and pinning data 
  * **mos_archivepooling**: the pooling data for samples that are archived
@@ -126,6 +130,8 @@ str(trap)
 
 ```
 
+# 6/20: Code chunk needs to be updated with the new link for the trapping table, which does not exist. I ran this using trap <- mos$mostrapping without issue (and the other two tables, 'sort' and 'id'), but for people using this tutorial individually from the 01 MOS tutorial, there should either be an edit to include a new .csv or new code to read in the mosquito data and get the tables from there.
+
 This table contains information related to:
 
 * metadata about the sampling event, includes: 
@@ -145,6 +151,8 @@ that we will use to carry out our analysis. For more metadata please see:
 
 *INSERT LINK FOR TRAP METADATA*
 
+# 6/20: Link needs to be updated.
+
 * metadata about the quality of the data 
 
 Unique collection events have a unique `sampleID` with the format = 
@@ -162,7 +170,7 @@ str(sort)
 
 ```
 
-This table contains information about weight of subsamples and weight of bycatch. 
+This table contains information about weight of subsamples and weight of bycatch.
 
 * metadata about the subsampling event, includes:
   + `plotID`: Label of where a sample was collected
@@ -181,6 +189,7 @@ For sake of convenience we have only included the meta data for certain variable
 that we will use to carry out our analysis. For more metadata please see:
 
 *INSERT LINK FOR SORT METADATA*
+# 6/20: Link needs to be updated.
 
 ### Identification Data Table
 
@@ -201,7 +210,7 @@ in each subsample.
   + `plotID`: Label of where a sample was collected
   + `setDate`: When traps were set
   + `collectDate`: The date of trap collection
-  + `sampleID`: Unique label of sample collection events
+  + `archiveID`: Unique label of sample collection events
   + `subsampleID`: Unique label of subsampling collection events
   + `individualCount`: The number of each species found in a subsample
   + `scientificName`: The Scientific name of each species found in a subsample
@@ -214,6 +223,8 @@ target taxa and once identified is either directly archived, or first sent to an
 external lab for Pathogen testing.For more metadata please see:
 
 *INSERT LINK FOR SORT METADATA*
+
+# 6/20: Link needs to be updated.
 
 ### Domain Data Table
 
@@ -267,6 +278,8 @@ Center.
   + `station`: The station id of where each sample was taken.
   + `value`: The maximum temperature given in tenths of a degree Celsius
   + `siteID`: The closest NEON site to a NOAA weather station
+  
+# 5/2020: The three data tables that are supposed to be imported above are not currently located in the folder specified: "R-NEON-mosquito-data-viz". I found the old repo in GitHub and am working with the data there. It's in a retired repo called 'mosquito-intern-master'. 
 
 ## Wrangling the Data
 
@@ -274,7 +287,7 @@ Center.
 
 Before we can begin analyzing our data frames, we need to create a few new 
 variables and collect all the information we need into a unified usable 
-dataframe. To start, we will be extracting latitude and longitude information 
+data frame. To start, we will be extracting latitude and longitude information 
 from NEON's application programming interfaces. To obtain latitude and
 longitude information we first create a vector that contains only the unique
 plot Ids that we then feed into a function called `get_NEON_location.R`, that 
@@ -283,7 +296,7 @@ to create a list of location information from the `get_NEON_location` function.
 
 ```{r location-scraping}
 
-# Create a vector of unique plotIDs from the trap dataframe to speed up the data scraping process
+# Create a vector of unique plotIDs from the trap data frame to speed up the data scraping process
 uniquePlotIDs <- unique(trap$plotID)
 
 # Read in function to obtain neon location 
@@ -294,6 +307,8 @@ source('~/GitHub/mosquito-intern/code/get_NEON_location.R')
 latlon <- lapply(uniquePlotIDs, get_NEON_location, output="latlon")
 
 ```
+
+#6/20: Maybe include a note to change the code to your own wd.
 
 A list isn't the most optimal way of using location information so we use the 
 `do.call` command to go through each item in the list and convert into a row
@@ -314,7 +329,7 @@ names(latlon.df) <- c("plotID", "lat", "lon", "elevation", "nlcdClass")
 Next we need to put together the location and plot identification information 
 with our trapping data. To achieve this goal, we will use the merge command to 
 match each plot ID in our latlon data frame to a plot ID in the trap dataset.
-The merge command allows users to match rows of separate dataframes by certain
+The merge command allows users to match rows of separate data frames by certain
 key variables (in this case by plot ID) to create one unified data frame. For 
 more information on the merge function, please see 
 <a href ="https://www.rdocumentation.org/packages/data.table/versions/1.10.4/topics/merge" >the R documentation</a> 
@@ -341,6 +356,8 @@ trap$decimalLatitude<-ifelse(is.na(trap$lat)==TRUE, trap$pdaDecimalLatitude,trap
 trap$decimalLongitude<-ifelse(is.na(trap$lon)==TRUE, trap$pdaDecimalLongitude,trap$lon)
 
 ```
+
+#6/20: When I run the code I get this error: 'x' is NULL so the result will be NULLError in ans[ypos] <- rep(yes, length.out = len)[ypos] : replacement has length zero. This doesn't appear to affect running the code.
 
 The next step in our data cleaning process is to consolidate all of the 
 information stored in the trapping, identification, and sorting data frames. 
@@ -369,7 +386,7 @@ rows that have repeated Plot IDs.
 ```{r create-unique-trap}
 
 #Creating a dataframe with only the unique plotIDs and lat2 lon2 data for merging
-uniquetrap<-trap[!duplicated(trap[,1]),c("plotID","decimalLatitude","decimalLongitude", "elevation","nlcdClass")]
+uniquetrap <-trap[!duplicated(trap[,1]),c("plotID","decimalLatitude","decimalLongitude", "elevation.y","nlcdClass.y")]
 
 #Merging id df with lat/lon data
 id <- merge(x = uniquetrap, y = id, by.y = "plotID", by.x = "plotID", all.y = TRUE)
@@ -398,7 +415,7 @@ new_trap[, colnames(id)[!colnames(id)%in%colnames(new_trap)]]<-NA
 id <- rbind(id,new_trap)
 ```
 
-###Creating Variables and Obtaining Weather Data 
+### Creating Variables and Obtaining Weather Data 
 
 Now that we have a more complete id dataset, we want to create a couple of 
 variables that could be useful in our analysis. To start, we 
@@ -485,13 +502,12 @@ id$Date<-substr(id$collectDate,1,10)
 
 ```
 
-
 ### Finishing Touches and Filtering Data
 
 Now that we have location and date information in a more usable format we
 are almost ready to start analyzing our NEON data. However we need to add domain
 and taxon rank information to our data frames so we can track changes in
-mosquito ranges and filter  out any observations in our data that are not 
+mosquito ranges and filter out any observations in our data that are not 
 identified down to the species or subspecies level.
 
 ```{r domain-taxonomy}
@@ -503,7 +519,7 @@ id$domainid <- as.character(id$domainid)
 #Rename column names
 colnames(id)[1:2]<-c("siteID", "domainID")
 
-#Merge with taxonomy df for taxson rank
+#Merge with taxonomy df for taxon rank
 id <- merge( x = taxonomy[,c("scientificName", "taxonRank")], y = id, by.x = "scientificName", by.y = "scientificName")
 
 ```
@@ -544,4 +560,6 @@ write.csv(uniquetrap, "NEON-mosquito-data-viz/uniquetrap.csv")
 A link to part two of this tutorial series can be found here. In part two, we 
 will use both the 'idsmall' and the 'uniquetrap' data frames to create a data
 frame that captures the number of species at each site on a given date. 
+
+# 6/20: I believe this above paragraph means a link to part three of the series and a brief description.
 
