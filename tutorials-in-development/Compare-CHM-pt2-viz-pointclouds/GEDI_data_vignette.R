@@ -2,6 +2,7 @@ library(rGEDI)
 library(raster)
 library(sf)
 
+## read in AOP flight box KML here and crop GEDI data by that shapefile
 
 chm=raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
@@ -32,12 +33,12 @@ lr_lon<- extent(chm_WGS)[2]
 # ul_lon<- -13.76913
 # lr_lon<- -13.67646
 
-e=drawExtent()
-
-ul_lat<- e[4]
-lr_lat<- e[3]
-ul_lon<- e[1]
-lr_lon<- e[2]
+# e=drawExtent()
+# 
+# ul_lat<- e[4]
+# lr_lat<- e[3]
+# ul_lon<- e[1]
+# lr_lon<- e[2]
 
 
 # Specifying the date range
@@ -45,7 +46,7 @@ daterange=c("2019-07-01","2020-05-22")
 
 # Get path to GEDI data
 #gLevel1B<-gedifinder(product="GEDI01_B",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
-gLevel2A<-gedifinder(product="GEDI02_A",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
+#gLevel2A<-gedifinder(product="GEDI02_A",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
 #gLevel2B<-gedifinder(product="GEDI02_B",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
 
 # Set output dir for downloading the files
@@ -84,6 +85,9 @@ level1bGeo_spdf<-st_as_sf(level1bGeo,
 #                                         data=level1bGeo)
 
 #level1bGeo_spdf@proj4string=CRS("+init=epsg:4326")
+
+
+## change this to crop by AOP flight box - that's the real about of ALS data that can be compared
 level1bgeo_WREF=st_crop(level1bGeo_spdf, chm_WGS)
 
 # Exporting level1bGeo as ESRI Shapefile
