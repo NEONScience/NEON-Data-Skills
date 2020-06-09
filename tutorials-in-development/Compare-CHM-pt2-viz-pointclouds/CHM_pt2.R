@@ -102,9 +102,14 @@ plots_LAS <-
 ## make tree plots
 
 #x = plot(WREF_LAS)
-x=plot(plots_LAS[[3]])
+
+for(i in 1:length(plots_LAS)){
+  
+
+
+x=plot(plots_LAS[[i]])
 #quads3d(x=coordinates(base_plots_SPDF)[1:8,1], y=coordinates(base_plots_SPDF)[1:8,2])
-tree_boxes=veg[veg$plotID=="WREF_084",]
+tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
 
 Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
 Thuja_boxes$adjEasting=Thuja_boxes$adjEasting-x[1]
@@ -166,6 +171,7 @@ for(i in 1:(nrow(Thuja_boxes))){
           add=T, col="red", lwd=2, lit=F)
 }
 
+}
 ## Download DEM
 # 
 # byTileAOP(dpID="DP3.30024.001", site="WREF", year="2017", 

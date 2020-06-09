@@ -147,7 +147,7 @@ par(oldpar)
 WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz",
                  filter = "-drop_z_below 50 -drop_z_above 1000")
 
-#plot(WREF_LAS)
+plot(WREF_LAS)
 
 WREF_GEDI_footprints=lasclip(WREF_LAS, geometry = level1bgeo_WREF_UTM_buffer)
 
