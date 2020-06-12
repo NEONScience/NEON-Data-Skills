@@ -1,5 +1,5 @@
 ---
-title: "Woody Vegetation Height Differences Tutorial"
+title: "Bseplot Woody Vegetation 03: Height Differences Tutorial"
 code1: null
 contributors: null
 dataProduct: DP1.10098.001
@@ -7,16 +7,16 @@ dateCreated: '2020-06-08'
 description: This tutorial will show how to calculate differences between CHM measured tree height and ground measured tree height for each plot in a NEON site
 estimatedTime: null
 languagesTool: R
-packagesLibraries: sp, raster, neonUtilities, geoNeon
+packagesLibraries: sp, raster, devtools, neonUtilities, geoNeon
 syncID: null
 authors: Maxwell J. Burner
 topics: NEON study plots, API calls, plant diversity, liDAR
-tutorialSeries: 
-urlTitle: baseplot-woody-height-differences
+tutorialSeries: baseplot-woody-vegetation
+urlTitle: baseplot-wv-height-differences
 ---
 
 
-This tutorial will show you how draw on data NEON Woody Plant Vegetation Structure data to to assess how measured heights of trees in NEON baseplots differs between AOP measurements and TOS measurements.
+This tutorial will show you how draw on data NEON Woody Plant Vegetation Structure data to to assess how measured heights of trees in NEON baseplots differs between AOP measurements and TOS measurements in different distributed baseplots of a NEON site.
 
 <div id="ds-objectives" markdown="1">
 
@@ -40,8 +40,9 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 * **sp:** `install.packages("sp")`
 * **raster:** `install.packages("raster")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **geoNeon:** `install.packages("geoNeon")`
+* **devtools:** `install.packages("devtools")`
+* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -70,7 +71,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-In this tutorial we will continue to use woody plant vegetation structure data (DP1.10098.001) to expand our dataframe for comparing vegetation structure between NEON baseplots. Our dataframe at this point has both Terrestrial Observation Sampling data (TOS) and Airborne Observational Photography data (AOP). Both of the particualr data products being used include measurements of tree height. 
+In this tutorial we will continue to use the apparent individual data from NEONS's woody plant vegetation structure product (DP1.10098.001) to expand our dataframe for comparing vegetation structure between NEON baseplots. Our dataframe at this point has both Terrestrial Observation Sampling data (TOS) and Airborne Observational Photography data (AOP). Both of the particualr data products being used include measurements of tree height. 
 
 As discussed in the NEON tutorial [Comparing Tree Height Measured from the Ground to a liDAR-based Canopy Model](https://www.neonscience.org/tree-heights-veg-structure-chm), measurements of tree height by gorund-base observers (TOS data) tend to differ from measurements taken using liDAR (AOP data), often in a predictable manner. This raises the question of whether the numerical relationship between ground-measured tree height and canopy-model tree height could differ between baseplots due to differences in vegetation structure. To assess this, we will expand our vegetation structure dataframe by adding mean plot difference between ground measurements and canopy-model estimates of tree height.
 

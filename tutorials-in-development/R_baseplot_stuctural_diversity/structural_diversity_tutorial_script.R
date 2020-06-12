@@ -1,4 +1,6 @@
 #This is the script version of the code used for the baseplot structural diversity metrics tutorial
+# The code should be identical to that of the tutorial, except that the portion after determining the most recent date for which
+#  data is available is wrapped in an 'if'
 
 
 #LOAD LIBRARIES
@@ -413,247 +415,257 @@ site_req <- GET(paste0(SERVER,'sites/',SITECODE))
 site_data <- fromJSON(content(site_req, as = 'text'), flatten = T, simplifyDataFrame = T)$data
 
 dates <- site_data$dataProducts[site_data$dataProducts$dataProductCode == PRODUCTCODE,]$availableMonths
-DATE <- dates[[1]][length(dates[[1]])]
+DATE <- ''
+
+if(length(dates) == 0){
+  print('This data product not available at selected site')
+}else{
+  DATE <- dates[[1]][length(dates[[1]])]
+}
 
 
 #Remove site request
 rm(site_req, site_data)
 
 
-#Make data request
-data_req <- GET(paste0(SERVER,'data/',PRODUCTCODE,'/',SITECODE,'/',DATE))
-data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyDataFrame = T)
-
-
-
-
-
-
-
-
-rm(data_req)
-
-
-
-
-
-
-#Use data request information to get names and urls of files as a data frame
-
-file_N <- length(coord_unique)
-
-files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
-
-for(i in 1:file_N){
-
+if(DATE != ''){
+  #Make data request
+  data_req <- GET(paste0(SERVER,'data/',PRODUCTCODE,'/',SITECODE,'/',DATE))
+  data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyDataFrame = T)
   
-  #Get name of file
-  file_name <- data_avail$data$files[
-    intersect(
+  
+  
+  
+  
+  
+  
+  
+  rm(data_req)
+  
+  
+  
+  
+  
+  
+  #Use data request information to get names and urls of files as a data frame
+  
+  file_N <- length(coord_unique)
+  
+  files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
+  
+  for(i in 1:file_N){
+    
+    
+    #Get name of file
+    file_name <- data_avail$data$files[
       intersect(
-        grep(in_coords[i], data_avail$data$files$name),
-        grep('.laz', data_avail$data$files$name)),
-      grep('classified_point_cloud', data_avail$data$files$name)
-    ),
-    'name']
-  
-  
-  #Get URL of file
-  file_url <- data_avail$data$files[
-    intersect(
+        intersect(
+          grep(in_coords[i], data_avail$data$files$name),
+          grep('.laz', data_avail$data$files$name)),
+        grep('classified_point_cloud', data_avail$data$files$name)
+      ),
+      'name']
+    
+    
+    #Get URL of file
+    file_url <- data_avail$data$files[
       intersect(
-        grep(in_coords[i], data_avail$data$files$name),
-        grep('.laz', data_avail$data$files$name)),
-      grep('classified_point_cloud', data_avail$data$files$name)
-    ),
-    'url']
-  
-  
-  if(length(file_name) != 0){
-    files_df[i,] <- list(name = file_name, url = file_url, coords = coord_unique[i])
-  }else{
-    print("Warning: There was no LiDAR file for one of the provided coordinates")
-    files_df[i,] <- list(name = 'bad coord', url = 'bad_coord', coords = coord_unique[i])
-  }
-  
-}
-
-#Remove iterating variables and reponses, and any empty rows
-rm(file_name, file_url)
-
-#Seperate out bad coordinates
-
-bad_coords <- files_df[files_df$name == 'bad coord',]$coords
-files_df <- files_df[files_df$name != 'bad coord',]
-
-
-#Remove bad coordinates from coord_unique
-coord_unique <- setdiff(coord_unique, bad_coords)
-
-
-#Remove any non-boundary plots with bad coordinates
-bad_plot_num <- as.character(length(coord_df[coord_df$coord_String %in% bad_coords,'coord_string']))
-print(paste0('Removed ',bad_plot_num,' non-boundary plots with missing tiles'))
-coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
-
-
-#Remove any boundary plots with bad coordinates
-new_list <- list()
-bad_plot_num <- 0
-for(i in 1:length(boundary_list)){
-  alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
-  beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
-  if(!(alpha|beta)){
-    new_list[[i]] <- boundary_list[[i]]
-  }else{
-    bad_plot_num <- bad_plot_num + 1
-  }
-}
-
-boundary_list <- new_list
-if(bad_plot_num > 0){
-  print(paste0('Removed ',as.character(bad_plot_num),' boundary plots with missing tiles'))
-}
-
-
-
-
-#Install any files not already present
-for(i in 1:length(coord_unique)){
-  if(!file.exists(files_df[i,]$name)){
-    #Try downloading file using full URL
-    download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
-    if(!file.exists(files_df[i,]$name)){
-      #Try downloading file using trimmed url
-      download.file(paste0(strsplit(files_df[1,]$url, '.laz')[[1]][1], '.laz'),
-                    destfile = paste0(getwd(),'/',files_df[i,]$name))
-    }
+        intersect(
+          grep(in_coords[i], data_avail$data$files$name),
+          grep('.laz', data_avail$data$files$name)),
+        grep('classified_point_cloud', data_avail$data$files$name)
+      ),
+      'url']
     
-  }
-}
-
-  
-
-
-  
-###FUNCTION: Calculate Boundary Metrics
-  
-#Function takes row of boundary coordinates nested list, plot polygons spatial df, and file df
-#Gets two point cloud files needed for plot and combines them in one object, calculates diversity metrics
-calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
-  
-  #Extract rows for required files, record number of extracted rows
-  files_sub <- file_df[file_df$coords %in% boundary_plot$coords,]
-  N <- nrow(files_sub)
-  
-  plot_data <- plots_spdf[plots_spdf$plotID == boundary_plot$plotID,]
-  
-  #Get first LAS object
-  merged_LAS <- readLAS(paste0(getwd(),'/',files_sub[1,]$name))
     
-  #Get additional LAS objects and combine with first
-  for(i in 2:N){
-    new_LAS <- readLAS(paste0(getwd(),'/',files_sub[i,]$name))
-    merged_LAS <- rbind(merged_LAS, new_LAS)
-  }
-    
-  #calculate metrics
-  metrics <- plot_diversity_metrics(plot_data, merged_LAS)
-  return(metrics)
-}  
-  
-  
-  
-  
-  
-  
-  
-  
-
-
-#Record number of plots not on tile boundaries
-
-norm_N <- nrow(coord_df)
-N <- bound_N + norm_N
-
-#Initialize empty dataframe
-
-  
-metric_df <- data.frame(plotID = rep('',N),
-                        x = rep(NA,N),
-                        y = rep(NA,N),
-                        mean.max.canopy.ht = rep(NA,N),
-                        max.canopy.ht = rep(NA,N), 
-                        rumple = rep(NA,N),
-                        deepgaps = rep(NA,N),
-                        deepgap.fraction = rep(NA,N),
-                        cover.fraction = rep(NA,N),
-                        top.rugosity = rep(NA,N),
-                        vert.sd = rep(NA,N), 
-                        sd.sd = rep(NA,N),
-                        entro = rep(NA,N),
-                        GFP.AOP = rep(NA,N),
-                        VAI.AOP = rep(NA,N),
-                        VCI.AOP = rep(NA,N)) 
-
-#Add rows for boundary plots
-if(bound_N > 0){
-  for(i in seq(1, bound_N)){
-    #Attempt to calculate boundary metrics
-    attempt <- try(calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df))
-    if(class(attempt) != 'try-error'){
-      #If boundary metrics were calculate successfully, assign them as values to row of dataframe
-      metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
-      metric_df[i,(2:16)] <- attempt
+    if(length(file_name) != 0){
+      files_df[i,] <- list(name = file_name, url = file_url, coords = coord_unique[i])
     }else{
-      print(paste0('Unable to calculate boundary metrics for plot ',as.character(boundary_list[[i]]$plotID)))
+      print("Warning: There was no LiDAR file for one of the provided coordinates")
+      files_df[i,] <- list(name = 'bad coord', url = 'bad_coord', coords = coord_unique[i])
     }
     
   }
-}
-
-
-#Add rows for normal plots
-k <- bound_N + 1
-
-#For each tile  
-for(i in seq(1,length(coord_unique))){
   
-  file_tile <- files_df[i,]
-  plot_ids <- coord_df[(coord_df$coord_String == file_tile$coords),]$plotID
+  #Remove iterating variables and reponses, and any empty rows
+  rm(file_name, file_url)
   
-  #Get plot located in tile, and make LAS of tile
-  coord_plots <- base_plots_SPDF[(base_plots_SPDF$plotID %in% plot_ids),]
-  tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
+  #Seperate out bad coordinates
   
-  coord_N = length(coord_plots$plotID)
+  bad_coords <- files_df[files_df$name == 'bad coord',]$coords
+  files_df <- files_df[files_df$name != 'bad coord',]
   
-  #For each plot located entirely within current tile
-  if(coord_N != 0){
-    #Try to calculate boundary metrics
-    for(j in seq(1,coord_N)){
-      attempt <- try(plot_diversity_metrics(coord_plots[j,], tile_LAS))
-      if(class(attempt) != 'try-error'){
-        metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
-        metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
-      }else{
-        print(paste0('Unable to calculate metrics for ',as.character(coord_plots[1,]$plotID)))
-      }
-      k <- k + 1
+  
+  #Remove bad coordinates from coord_unique
+  coord_unique <- setdiff(coord_unique, bad_coords)
+  
+  
+  #Remove any non-boundary plots with bad coordinates
+  bad_plot_num <- as.character(length(coord_df[coord_df$coord_String %in% bad_coords,'coord_string']))
+  print(paste0('Removed ',bad_plot_num,' non-boundary plots with missing tiles'))
+  coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
+  
+  
+  #Remove any boundary plots with bad coordinates
+  new_list <- list()
+  bad_plot_num <- 0
+  for(i in 1:length(boundary_list)){
+    alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
+    beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
+    if(!(alpha|beta)){
+      new_list[[i]] <- boundary_list[[i]]
+    }else{
+      bad_plot_num <- bad_plot_num + 1
     }
   }
+  
+  boundary_list <- new_list
+  if(bad_plot_num > 0){
+    print(paste0('Removed ',as.character(bad_plot_num),' boundary plots with missing tiles'))
+  }
+  
+  
+  
+  
+  #Install any files not already present
+  for(i in 1:length(coord_unique)){
+    if(!file.exists(files_df[i,]$name)){
+      #Try downloading file using full URL
+      download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
+      if(!file.exists(files_df[i,]$name)){
+        #Try downloading file using trimmed url
+        download.file(paste0(strsplit(files_df[1,]$url, '.laz')[[1]][1], '.laz'),
+                      destfile = paste0(getwd(),'/',files_df[i,]$name))
+      }
+      
+    }
+  }
+  
+  
+  
+  
+  
+  ###FUNCTION: Calculate Boundary Metrics
+  
+  #Function takes row of boundary coordinates nested list, plot polygons spatial df, and file df
+  #Gets two point cloud files needed for plot and combines them in one object, calculates diversity metrics
+  calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
+    
+    #Extract rows for required files, record number of extracted rows
+    files_sub <- file_df[file_df$coords %in% boundary_plot$coords,]
+    N <- nrow(files_sub)
+    
+    plot_data <- plots_spdf[plots_spdf$plotID == boundary_plot$plotID,]
+    
+    #Get first LAS object
+    merged_LAS <- readLAS(paste0(getwd(),'/',files_sub[1,]$name))
+    
+    #Get additional LAS objects and combine with first
+    for(i in 2:N){
+      new_LAS <- readLAS(paste0(getwd(),'/',files_sub[i,]$name))
+      merged_LAS <- rbind(merged_LAS, new_LAS)
+    }
+    
+    #calculate metrics
+    metrics <- plot_diversity_metrics(plot_data, merged_LAS)
+    return(metrics)
+  }  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  #Record number of plots not on tile boundaries
+  
+  norm_N <- nrow(coord_df)
+  N <- bound_N + norm_N
+  
+  #Initialize empty dataframe
+  
+  
+  metric_df <- data.frame(plotID = rep('',N),
+                          x = rep(NA,N),
+                          y = rep(NA,N),
+                          mean.max.canopy.ht = rep(NA,N),
+                          max.canopy.ht = rep(NA,N), 
+                          rumple = rep(NA,N),
+                          deepgaps = rep(NA,N),
+                          deepgap.fraction = rep(NA,N),
+                          cover.fraction = rep(NA,N),
+                          top.rugosity = rep(NA,N),
+                          vert.sd = rep(NA,N), 
+                          sd.sd = rep(NA,N),
+                          entro = rep(NA,N),
+                          GFP.AOP = rep(NA,N),
+                          VAI.AOP = rep(NA,N),
+                          VCI.AOP = rep(NA,N)) 
+  
+  #Add rows for boundary plots
+  if(bound_N > 0){
+    for(i in seq(1, bound_N)){
+      #Attempt to calculate boundary metrics
+      attempt <- try(calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df))
+      if(class(attempt) != 'try-error'){
+        #If boundary metrics were calculate successfully, assign them as values to row of dataframe
+        metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
+        metric_df[i,(2:16)] <- attempt
+      }else{
+        print(paste0('Unable to calculate boundary metrics for plot ',as.character(boundary_list[[i]]$plotID)))
+      }
+      
+    }
+  }
+  
+  
+  #Add rows for normal plots
+  k <- bound_N + 1
+  
+  #For each tile  
+  for(i in seq(1,length(coord_unique))){
+    
+    file_tile <- files_df[i,]
+    plot_ids <- coord_df[(coord_df$coord_String == file_tile$coords),]$plotID
+    
+    #Get plot located in tile, and make LAS of tile
+    coord_plots <- base_plots_SPDF[(base_plots_SPDF$plotID %in% plot_ids),]
+    tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
+    
+    coord_N = length(coord_plots$plotID)
+    
+    #For each plot located entirely within current tile
+    if(coord_N != 0){
+      #Try to calculate boundary metrics
+      for(j in seq(1,coord_N)){
+        attempt <- try(plot_diversity_metrics(coord_plots[j,], tile_LAS))
+        if(class(attempt) != 'try-error'){
+          metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
+          metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+        }else{
+          print(paste0('Unable to calculate metrics for ',as.character(coord_plots[1,]$plotID)))
+        }
+        k <- k + 1
+      }
+    }
+  }
+  
+  #Remove empty rows from dataframe
+  metric_df <- metric_df[which(!is.na(metric_df[,2])),]
+  
+  
+  #Sort output dataframe rows by plot id
+  metric_df <- arrange(metric_df, plotID)
+  
+  #Uninstall files when done
+  #for(file_ in files_df){
+  #  file.remove(file_)
+  #}
+  
+  print(metric_df)
+  
 }
 
-#Remove empty rows from dataframe
-metric_df <- metric_df[which(!is.na(metric_df[,2])),]
-
-
-#Sort output dataframe rows by plot id
-metric_df <- arrange(metric_df, plotID)
-
-#Uninstall files when done
-#for(file_ in files_df){
-#  file.remove(file_)
-#}
-
-print(metric_df)

@@ -22,10 +22,10 @@ add_woody_tree_data <- function(in_data, site){
   in_data$genus_count <- NA
   
   
-  for(i in 1:nrow(in_data)){
+  for(i in 1:nrow(DF)){
     
     #Extract plot id
-    plot_id <- in_data[i,'plotID']
+    plot_id <- DF[i,'plotID']
     
     #IF mapping and tagging has entries for that plot
     if((plot_id %in% vst_mappingandtagging$plotID)){
@@ -49,7 +49,7 @@ add_woody_tree_data <- function(in_data, site){
       genus <- genus[genus != 'Unknown']
       
       #Record genera counts
-      in_data[i,'genus_count'] <- length(genus)
+      DF[i,'genus_count'] <- length(genus)
     }
   }
 
@@ -64,19 +64,19 @@ add_woody_tree_data <- function(in_data, site){
   
   
   #  Add empty columns
-  in_data$wood_plants.count <- NA
-  in_data$trees.count <- NA
-  in_data$tree_to_woody_plant.ratio <- NA
-  in_data$tree.mean_height <- NA
-  in_data$tree.max_measured_height <- NA
+  DF$wood_plants.count <- NA
+  DF$trees.count <- NA
+  DF$tree_to_woody_plant.ratio <- NA
+  DF$tree.mean_height <- NA
+  DF$tree.max_measured_height <- NA
   
   
   
-  for(i in 1:nrow(in_data)){
+  for(i in 1:nrow(DF)){
     
     
     #IF there are entries in the apparent Individual dataframe with same plotID as current row
-    if(in_data[i, 'plotID'] %in% unique(vst_apparentindividual$plotID)){
+    if(DF[i, 'plotID'] %in% unique(vst_apparentindividual$plotID)){
       #THEN:
       
       #Filter apparentIndividual dataframe to rows matching plot ID
@@ -91,7 +91,7 @@ add_woody_tree_data <- function(in_data, site){
       #Calculate metrics
       in_data[i, 'wood_plants.count'] <- nrow(in_plants)
       in_data[i,'trees.count'] <- nrow(in_trees)
-      in_data[i,'tree_to_woody_plant.ratio'] <- round(in_data[i, 'trees.count']/in_data[i,'wood_plants.count'], 2)
+      in_data[i,'tree_to_woody_plant.ratio'] <- round(DF[i, 'trees.count']/DF[i,'wood_plants.count'], 2)
       in_data[i, 'tree.mean_height'] <- round(mean(in_trees$height, na.rm = T), 2)
       in_data[i, 'tree.max_measured_height'] <- max(in_trees$height, na.rm = T)
       
@@ -100,6 +100,6 @@ add_woody_tree_data <- function(in_data, site){
     }
   } 
   
-  return(in_data)
+  return(DF)
 }
 
