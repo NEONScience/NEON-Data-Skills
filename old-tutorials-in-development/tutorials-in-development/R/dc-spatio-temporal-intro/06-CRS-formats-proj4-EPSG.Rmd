@@ -187,10 +187,10 @@ Our string for `point_HARV` specifies the UTM projection as follows:`
 
 * **+proj=utm:** the projection is UTM, UTM has several zones.
 * **+zone=18:** the zone is 18
-* **datum=WGS84:** the datum WGS84 (the datum refers to the  0,0 reference for
+* **datum=WGS84:** the datum WGS84 (the datum refers to the 0,0 reference for
 the coordinate system used in the projection)
 * **+units=m:** the units for the coordinates are in METERS.
-* **+ellps=WGS84:** the ellipsoid (how the earth's  roundness is calculated) for
+* **+ellps=WGS84:** the ellipsoid (how the earth's roundness is calculated) for
 the data is WGS84
 
 Note that the `zone` is unique to the UTM projection. Not all `CRS` will have a
@@ -248,8 +248,6 @@ the `rgdal` package in `R`. This can be useful if you need to look up a code
 without using <a href="http://spatialreference.org/" target="_blank">Spatialreference.org</a>.
 
 ``` {r EPSGcode-list}
-#load library
-library('rgdal')
 
 # create data frame of EPSG codes
 epsg = make_EPSG()
@@ -309,7 +307,7 @@ definitions using a combination of elements separated by commas (,) and brackets
 
 Below is an example of WKT for the `CRS` information in EPSG code 4326:
  
-``` {r WKT}
+``` {r WKT, eval=F, purl=F}
 
 GEOGCS["WGS 84",
     DATUM["WGS_1984",
