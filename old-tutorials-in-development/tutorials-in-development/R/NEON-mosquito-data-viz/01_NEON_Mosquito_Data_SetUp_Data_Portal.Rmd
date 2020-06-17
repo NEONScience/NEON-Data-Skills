@@ -4,12 +4,12 @@ title: "Methods of Exploring NEON Mosquito Data in R Part One: Data Set Up"
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
 dateCreated: 2017-08-04
 authors: Charlotte Roiger 
-contributors: Megan A. Jones, Katie Levan, Cody Flagg
+contributors: Megan A. Jones, Katie Levan, Cody Flagg, Maya R. Stahl
 estimatedTime: 
-packagesLibraries: 
+packagesLibraries: dplyr, ggplot2
 topics: data-analysis, data-visualization
-languagesTool: R,
-dataProduct: NEON.DP1.10043.001
+languagesTool: R
+dataProduct: DP1.10043.001
 code1: 
 tutorialSeries: neon-mosquito-data-intro
 urlTitle: tba
@@ -20,8 +20,8 @@ mosquito data to explore mosquito species richness and the abundance of *Culex
 tarsalis*. This series will also cover setting up data frames from existing NEON
 data as well as how to obtain location information from NEON APIs. 
 
-So that the code we are learning here makes sense within an ecological framework, 
-the series that this tutorial is part of will be exploring the questions of
+So that the code we are learning here makes sense within an ecological framework,
+the series that this tutorial is part of will be exploring the questions of:
 * what annual patterns of mosquito abundance and diversity are found? 
 * how has the range of *Culex tarsalis* changed over the first three years of 
 NEON data collection? 
@@ -36,7 +36,7 @@ After completing this tutorial, you will be able to:
 NEON data portal
 * Download precipitation and temperature data from Global Historical Climatology
 Network
-* Merge data frames to create one unified data frame with relevant variables to 
+* Merge data frames to create one unified data frame with relevant variables to
 address research questions
 * Subset data by year
 * Use ggplot2 in R to create visualizations of data trends and maps  
@@ -57,7 +57,7 @@ installed prior to starting the tutorial.
 * **tidyverse:** `install.packages("tidyverse")`
 *	**mosaic:** `install.packages("mosaic")`
 * **ggplot2:** `install.packages("ggplot2")`
-* **devtools:**
+* **devtools:** `install.packages("devtools")`
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -69,15 +69,17 @@ using the API. There is no additional data to download.
 ****
 {% include/_greyBox-wd-rscript.html %}
 
+# 5/20: This should be updated to a full URL rathern than an 'include' link.
+
 ****
 
 </div>
 
 ## NEON mosquito data collection
 
-The data that we will primarily be working with in this tutorial are mosquiot abundance and diversity data collected at reguar intervals at NEON terrestrial field sites. 
+The data that we will primarily be working with in this tutorial are mosquito abundance and diversity data collected at regular intervals at NEON terrestrial field sites. 
 The mosquitos are captured in CO<sub>2</sub> traps and identified to species. 
-These data are available as NEON data product **NEON.DP1.10043.001**. More information
+These data are available as NEON data product **DP1.10043.001**. More information
 about this data product can be found in the 
 <a href="http://data.neonscience.org/data-products/DP1.10043.001" target="_blank">NEON Data Catalog</a>. 
 
@@ -99,6 +101,7 @@ library(httr)
 library(jsonlite)
 library(dplyr, quietly=T)
 library(downloader) 
+library(neonUtilities)
 
 # set working directory to ensure R can find the file we wish to import
 # setwd("working-dir-path-here")
@@ -120,7 +123,7 @@ The next part of the call specifies exactly what data we want from the call.
 
 `<span style="color:#A2A4A3;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A00606">/products/DP1.10043.001</span>`
 
-Here it specifies that we want information about data `products` and specifcially 
+Here it specifies that we want information about data `products` and specifically 
 about the data product `DP1.10043.001` --- the mosquito data. 
 
 We will use the `GET()` function from the httr package to data we are 
@@ -139,15 +142,16 @@ req
 
 ```
 
+# 5/2020: zipsByProduct can be replaced with loadByProduct, which combines zipsByProduct and stackByTable. This might change the workflow a little bit, but should save time.
+
 What we get from this request is a "response" object. When we printed the response
-object we got the URL, date of response, http status ("200" means it was a success, "400s" means there was some type of error), the file content type, and the size of
-the file.  
+object we got the URL, date of response, http status ("200" means it was a success, "400s" means there was some type of error), the file content type, and the size of the file.  
 
 <div id="ds-dataTip" markdown="1"><i class="fa fa-star"></i> **Data Tip:** Type
 `?? httr` into your console to view the "Getting started with httr/httr quickstart
 guide" for more on GET() and response objects. </div>
 
-We can convert it into a JSON file to make it a bit more readable
+We can convert it into a JSON file to make it a bit more readable:
 
 ```{r json-readable}
 # make this JSON readable -> "text"
@@ -214,7 +218,6 @@ options(stringsAsFactors = FALSE)
 
 ```
 
-
 ```{r example-data-portal-pull}
 
 # Clean starting environment
@@ -240,7 +243,6 @@ options(stringsAsFactors = FALSE)
 
 # Mosquito diversity data "DP1.10043.001"
 # contains 6 tables: 'mos_trapping', 'mos_sorting', 'mos_expertTaxonomistIDProcessed', 'mos_expertTaxonomistIDRaw','mos_archivepooling', 'mos_barcoding'
-
 
 # mos = get_data_product(productID = "DP1.10043.001", 
 #                        df = c('mos_trapping', 'mos_sorting', 'mos_expertTaxonomistIDProcessed', 'mos_expertTaxonomistIDRaw','mos_archivepooling', 'mos_barcoding'))
@@ -343,6 +345,7 @@ that we will use to carry out our analysis. For more metadata please see:
 
 **INSERT LINK FOR SORT METADATA**
 
+# 6/20: Link needs to be updated.
 
 Unique collection events have a unique `sampleID` with the format = 
 `plotID.trapID.collectDate.TimeOfCollection`. 
@@ -377,6 +380,8 @@ that we will use to carry out our analysis. For more metadata please see:
 
 **INSERT LINK FOR SORT METADATA**
 
+# 6/20: Link needs to be updated.
+
 ### Identification Data Table
 
 ```{r identification-table-dp}
@@ -404,6 +409,7 @@ The identification table contains information about all mosquitos that were
 found in each subsample. Each sample in the identification dataset contains the
 target taxa and once identified is either directly archived, or first sent to an
 external lab for Pathogen testing.
+
 
 ### Domain Data Table
 
@@ -452,11 +458,13 @@ str(temp.df)
 This table contains temperature information from NOAA National Climatic Data
 Center. 
 
-* metadat about the temperature data, includes:
+* metadata about the temperature data, includes:
   + `date`: The date of when each temperature measurement was taken.
   + `station`: The station id of where each sample was taken.
   + `value`: The maximum temperature given in tenths of a degree Celsius
   + `siteID`: The closest NEON site to a NOAA weather station
+  
+# 5/2020: The three data tables that are supposed to be imported above are not currently located in the folder specified: "R-NEON-mosquito-data-viz". I found the old repo in GitHub and am working with the data there. It's in a retired repo called 'mosquito-intern-master'. 
 
 ## Wrangling the Data
 
@@ -464,7 +472,7 @@ Center.
 
 Before we can begin analyzing our data frames, we need to create a few new 
 variables and collect all the information we need into a unified usable 
-dataframe. The first step in our data wrangling process is to consolidate all of
+data frame. The first step in our data wrangling process is to consolidate all of
 the information stored in the trapping, identification, and sorting data frames. 
 A lot of the information in the sorting data frame is very similar to what is
 found in the identification data frame. But, one key difference is that the 
@@ -474,7 +482,7 @@ columns in the sorting data frame that aren't in the id data frame.
 
 ```{r finding-unique-columns-dp}
 
-# Merge ID with sort
+# Merge id with sort
 cols = colnames(sort)[!colnames(sort)%in%colnames(id)]
 
 # Merge id with subsetted sorting data frame
@@ -490,7 +498,7 @@ rows that have repeated Plot IDs.
 
 ```{r create-unique-trap-dp}
 
-#Creating a dataframe with only the unique plotIDs and lat2 lon2 data for merging
+#Creating a data frame with only the unique plotIDs and lat2 lon2 data for merging
 uniquetrap<-trap[!duplicated(trap$plotID),c("plotID", "decimalLatitude","decimalLongitude", "elevation","nlcdClass")]
 
 #Merging id df with latitude and longitude data
@@ -506,7 +514,7 @@ need to find the rows in the trap data frame where the plot ID is not in the
 id data frame and the target taxon is not present. First we create a subset of
 the trap data frame where mosquitoes were not found in the sample. Since we 
 want to then merge these rows with those in our id data frame we add in columns
-that are present in the id dataframe but not in the trap data frame and row-bind
+that are present in the id data frame but not in the trap data frame and row-bind
 these two data frames together.
 
 ```{r including-trap-zero-dp}
@@ -514,7 +522,7 @@ these two data frames together.
 # Get zero traps from trapping
 new_trap<- trap[!trap$sampleID %in% id$sampleID & trap$targetTaxaPresent=="N",]
 
-#Add columns in new_trap that weren't present in the ID table then add new_trap to ID table
+# Add columns in new_trap that weren't present in the ID table then add new_trap to ID table
 new_trap <- new_trap[, colnames(new_trap)[colnames(new_trap)%in%colnames(id)]]
 
 new_trap[, colnames(id)[!colnames(id)%in%colnames(new_trap)]]<-NA
@@ -527,12 +535,11 @@ id <- rbind(id,new_trap)
 
 Now that we have a more complete id dataset, we want to create a couple of 
 variables that could be useful in our analysis. To start, we 
-will note that the individual count present in each observation of the id data
-frame is only the individual count of each subsample. So to estimate the 
+will note that the individual count present in each observation of the id data frame is only the individual count of each subsample. So to estimate the 
 number of individuals in each sample we will use the sample weight,
 by-catch weight, and subsample weight to generate a sample multiplier. To 
 create the sample multiplier we use an if-else statement to find only the rows
-in the id dataframe where by-catch weight information is present. Then we divide
+in the id data frame where by-catch weight information is present. Then we divide
 the total sample weight by the by-catch weight subtracted from the subsample
 weight. Next we use another if-else statement to replace all instances where
 the sample multiplier is infinity with NAs. We then create a new variable called
@@ -591,8 +598,8 @@ id$HoursOfTrapping <- abs(as.numeric(id$HoursOfTrapping))
 
 In our current id data frame, we have only the set and collect dates of each 
 sample, where the collect date and time is formatted as "YYYY-MM-DDThh:mm".
-However, if we want to look at the Julian date of observation for Culex 
-tarsalis, we might want the date and year when the sample was collected. So we 
+However, if we want to look at the Julian date of observation for *Culex 
+tarsalis*, we might want the date and year when the sample was collected. So we 
 use the `substr` command to collect only the first four characters of the
 "collectDate" variable to pull year information, then we convert year to a 
 factor. However, in the id data frame there are some observations where the 
@@ -616,22 +623,21 @@ id$Date<-substr(id$collectDate,1,10)
 
 ```
 
-
 ### Finishing Touches and Filtering Data
 
 Now that we have location and date information in a more usable format we
 are almost ready to start analyzing our NEON data. However a quick exploration 
 of our resulting identification data frame might reveal that the number of 
 mosquito observations fluctuate greatly for the years 2012, 2013, and 2015. This
-is because of changes in sampling design, making the observationsmfor these 
+is because of changes in sampling design, making the observations for these 
 years less comparable to 2014 and 2016. Due to the changes in sampling
 design for mosquito collection, we will continue on with our analysis and focus 
 in on the data from 2014 and 2016. Another issue that we need to resolve before
 moving forward with this tutorial is when mosquitoes cannot be identified. 
 Since both species richness and an examination of *Culex tarsalis* both depend 
-on species identification we will remove any observations in our data frame 
+on species identification, we will remove any observations in our data frame 
 where samples cannot be identified down to the species or subspecies level in
-our data, Please note that we have decided to include observations where 
+our data. Please note that we have decided to include observations where 
 the "taxonRank" is considered to be blank or "NA" because these observations 
 could represent samples where the target taxon was not present.
 
@@ -664,10 +670,12 @@ write.csv(uniquetrap, "NEON-mosquito-data-viz/uniquetrap.csv")
 
 ```
 
-A link to part two of this tutorial series can be found here. In part two, we 
-will use both the 'idsmall' and the 'uniquetrap' data frames to create a data
-frame that captures the number of species at each site on a given date. 
+# 6/20: Maybe include a note to change the code to your own wd.
 
+A link to part two of this tutorial series can be found here. In part two, we 
+will use both the 'idsmall' and the 'uniquetrap' data frames to create a data frame that captures the number of species at each site on a given date. 
+
+# 6/20: Link needs to be updated.
 
 ## Stack NEON Data
 
@@ -675,3 +683,5 @@ library(devtools)
 install_github("NEONScience/NEON-utilities/neonUtilities", dependencies=TRUE)
 library (neonUtilities)
 stackByTable("NEON_count-mosquitoes.zip")
+
+# 6/20: If loadByProduct is used, stacking NEON data section above can be ignored.

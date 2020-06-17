@@ -4,12 +4,12 @@ title: "Publish Code - From R Markdown to HTML with knitr"
 description: "This tutorial introduces how to use the R knitr package to publish from R Markdown files to HTML (or other) file format."
 dateCreated: 2016-01-01
 authors:
-contributors:
+contributors: Ben Shetterly
 estimatedTime:
-packagesLibraries: [knitr, rmarkdown]
-topics: data-management
+packagesLibraries: knitr, rmarkdown
+topics: data-management, rep-sci
 languagesTool: R
-dataProducts:
+dataProducts: 
 code1:
 tutorialSeries: [RMarkdown]
 urlTitle: rmd-use-knitr
@@ -25,7 +25,7 @@ R Markdown into a rendered document (HTML, PDF, etc).
 At the end of this activity, you will:
 
 * Be able to produce (‘knit’) an HTML file from a R Markdown file.
-* Know how to modify chuck options to change the output in your HTML file.
+* Know how to modify chunk options to change the output in your HTML file.
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -71,7 +71,9 @@ and the size of your data.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"
+	alt="RStudio window with R Markdown template of new document and 'Knit HTML' button 
+circled."></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -105,7 +107,9 @@ What does it look like?
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Rmd-screenshot-html.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Rmd-screenshot-html.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Rmd-screenshot-html.png"
+	alt="RStudio windows of R Markdown file, with activity content added, 
+and HTML document with text, code, output and Digital Surface Model plot figure."></a>
 	<figcaption> R Markdown (left) and the resultant HTML (right) after knitting.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -133,12 +137,4 @@ NEON Institute participants GitHub repository
 need to transfer the files to the **/participants/pre-institute3-rmd/** 
 directory and submitted via a **pull request**.
 
-</div>
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** If you are a frequent user of LaTex,
-you might find
-<a href="http://cdn.screenr.com/video/8352c25b-7324-4134-970b-b7c427381adb.mp4" target="_blank">this video from the creator of knitr </a>
-informational. It introduces R Markdown & knitr in conjunction with LaTex and
-other formats.
 </div>

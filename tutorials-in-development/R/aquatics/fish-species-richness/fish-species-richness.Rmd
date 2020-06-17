@@ -1,0 +1,191 @@
+---
+syncID:
+title: "Exploring Fish Species Richness"
+description: "Use dplyr and ggplot2 to get a visual summary of species richness for all NEON aquatic sites."
+dateCreated: 2020-05-26
+authors: Garrett M. Williams
+contributors: 
+estimatedTime: 
+packagesLibraries: neonUtilities, dplyr, ggplot2
+topics: organisms, data-viz
+languagesTool: R
+dataProduct: DP1.20107.001
+code1: 
+tutorialSeries: 
+urlTitle: fish-species-richness
+---
+
+This template should be used to start new tutorials. If your tutorial is in R 
+or Jupyter Notebooks, or another format that will be converted to markdown. 
+Please include the header above but create the tutorial in the appropriate 
+application. 
+
+All tutorials then have an Info Box with the information necessary for a new user
+to NEON tutorials to complete the tutorial.  
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Download and navigate NEON's electrofishing data
+* Get the data you need with the `select()` and `filter()` funtions from the 
+  dplyr package
+
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R.
+
+### The `dplyr` Package
+You will need a basic understanding of dplyr, especially the piping operator, 
+`%>%`. This can be found in our tutorial <a href="https://www.neonscience.org/grepl-filter-piping-dplyr-r">here</a>.
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **neonUtilites:** `install.packages("neonUtilities")`
+* **dplyr:** `install.packages("dplyr")`
+* **ggplot2:** `install.packages("ggplot2")`
+
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+ 
+</div>
+
+## Getting Started
+
+Don't forget to load packages to your library!
+
+```{r library-packages}
+library(dplyr)
+library(neonUtilities)
+library(ggplot2)
+```
+
+First we need to download the data we want to work with. For simplicity let's look at the most recent electrofishing bout available at the time this was written: Fall 2019.
+
+```{r load-data }
+electrofishing_fall2019 <- loadByProduct(dpID = "DP1.20107.001",
+                                         startdate = "2019-07",
+                                         enddate = "2019-12",
+                                         package = "expanded",
+                                         check.size = FALSE)
+```
+
+If you want, you can omit the `check.size = FALSE` argument. If you do, 
+`loadByProduct` will check the size of the data you want to download and ask your 
+permission to proceed.
+
+Let's take a look at our data!
+```{r structure}
+class(electrofishing_fall2019)
+names(electrofishing_fall2019)
+```
+
+The `electrofishing_fall2019` variable is a list of 8 tables. We can reference 
+these by using the `$` operator (eg. `electrofishing_fall2019$fsh_bulkCount`) to 
+look at each table, but this is cumbersome. To save ourselves some typing, we can 
+list each of the tables to our global environment so we can call them directly. R 
+has a built-in function for this: `list2env()`.
+
+```{r list-to-environment}
+list2env(electrofishing_fall2019, .GlobalEnv)
+```
+
+Your environment panel should now contain an entry for each table in 
+`electrofishing_fall2019`. Now we can call `fsh_bulkCount`, etc. directly.
+
+## Counting Species
+
+Let's start by getting a handle on what we're working with. The `fsh_perFish` 
+table lists all of the fish NEON collected individual data for. If there are too 
+many individuals of a single taxon for NEON technicians to measure efficiently, 
+the first 50 individuals are processed, and the rest are counted in bulk. This 
+information is included in the fsh_bulkCount table.
+
+When dealing with a new dataset, it can be useful to `View()` the variables table 
+(named `variables_20107` for this data product.) RStudio will open this in a new 
+tab.
+
+Since we're just counting unique species for now, we can just use the 
+`fsh_perFish` table to get what we need. We can select the column we want, 
+`scientificName`, with the `select()` function. Let's see how many individual 
+fish measurements NEON made in our Fall 2019 bout:
+
+```{r individual-observations}
+fsh_perFish %>%
+    select(scientificName) %>%
+    summarise(n())            # summarise() is used to provide summary statistics
+                              # n() as an argument means we just want a count
+```
+
+That's a lot of fish! Let's narrow it down with the `distinct()` which will 
+eliminate any repeats.
+
+```{r total-species-1}
+fsh_perFish %>%
+     select(scientificName) %>%
+     distinct(scientificName) %>%
+     summarise(n())
+```
+
+If you wish, you can view the list of species by replacing `summarise(n())` with `View()`.
+
+It is important to keep in mind that many of these species are difficult to 
+identify in the field. Information regarding uncertainty of the ID is recorded in 
+the `identificationQualifier` variable. If an individual couldn't be IDed to 
+species level, the most specific taxon possible was recorded. The variable 
+`taxonRank` contains this information.
+
+Let's see how many species we have that were IDed to species level with no qualifiers regarding that ID. We can do this by piping our data through two `filter()` functions.
+
+```{r total-species-2}
+fsh_perFish %>%
+        filter(is.na(identificationQualifier)) %>%     # make sure identificationQualifier is 'NA'
+        filter(taxonRank == "species") %>%             # NEVER USE `variable == NA` for this
+        select(scientificName) %>%                     # `is.na(variable)` is much more reliable
+        distinct(scientificName) %>%
+        summarise(n())       # NOTE: filters on these columns must be run before
+                             # select() removes those columns from our data
+```
+
+## Grouping by Site and Graphing
+
+Now let's see how many species were found at each site. We'll run the same code 
+as before and store it to a variable, but this time we'll include the `siteID` 
+variable and run `group_by(siteID)` so the `summarise()` function will find a 
+count for each site individually. 
+
+```{r richness-by-site}
+richness_by_site <- fsh_perFish %>%
+        filter(is.na(identificationQualifier)) %>%
+        filter(taxonRank == "species") %>%
+        select(siteID, scientificName) %>%
+        group_by(siteID) %>%                # groups by site
+        distinct(scientificName) %>%
+        summarise(num_species = n()) %>%
+        arrange(-num_species)               # puts rows in decreasing order
+```
+
+Now we can make a graph with ggplot!
+
+```{r richness-by-site-graph}
+ggplot(richness_by_site, aes(x = siteID, y = num_species)) +
+        geom_bar(stat = "identity") +
+        scale_x_discrete(limits = richness_by_site$siteID) +
+        theme(axis.text.x = element_text(angle = 90)) +
+        scale_y_continuous(breaks = seq(from = 0, to = 30, by = 2)) +
+        labs(
+                title = "Total Species Richness by Site",
+                x = "Site ID",
+                y = "Number of Species"
+        )
+```
+
+Looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/MAYF">Mayfield Creek</a> in Domain 8 has far and away the
+highest species richness, but what about other measures of diversity? For that 
+we'll need an idea of population abundance. Since NEON uses a three-pass 
+electrofishing method, we will need to do a bit of processing to get the 
+quantities we need.

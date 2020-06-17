@@ -1,0 +1,718 @@
+---
+title: "Baseplot Structural Diversity Tutorial"
+code1: null
+contributors: null
+dataProduct: DP1.30003.001
+dateCreated: '2020-05-22'
+description: This tutorial will show how to calculate structural diversity metrics
+  for all baseplots at a NEON site.
+estimatedTime: null
+languagesTool: R
+packagesLibraries: sp, raster, lidR, rgdal, downloader, httr, jsonlite, plyr, dplyr
+syncID: null
+authors: Maxwell J. Burner
+topics: NEON study plots, API calls, liDAR
+tutorialSeries: R-liDAR
+urlTitle: baseplot-structural-diversity-metrics
+---
+
+This tutorial will show you how to calculate structural diversity metrics for all distributed baseplots at a NEON site.
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Extract spatial polygons and other information from a spatial polygons dataframe with polygons for all NEON plots
+* Use spatial polygon dataframe information to determine which liDAR tiles cover a given NEON plot
+* Use API calls and the downloader package to get all .laz point clouds needed to cover a set of NEON plots
+* Extract and normalize NEON distributed baseplots from liDAR data to calculate a distribution of structural diversity metrics
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **sp:** `install.packages("sp")`
+* **raster:** `install.packages("raster")`
+* **lidR:** `install.packages("lidR")`
+* **rgdal:** `install.packages("rgdal")`
+* **downloader:** `install.packages("downloader")`
+* **httr:** `install.packages("httr")`
+* **jsonlite:** `install.packages("jsonlite")`
+* **plyr:** `install.packages("plyr")`
+* **dplyr:** `install.packages("dplyr")`
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+This tutorial will teach you how to download data directly from the NEON data 
+portal.  This example data set is provided as an optional download and a backup. 
+
+#### NEON Teaching Data Subset: Discrete Return LiDAR Point Cloud
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 017 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.30003.001, Discrete return LiDAR poitn cloud. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+**Important: This is a provisional data link. It currently points to files not related to this project.**
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+In this tutorial we will learn how to calculate structural diversity metrics for distributed base plots at a NEON site, creating a dataframe with a distribution of values for each different metric.
+
+
+```{r libraries}
+#LOAD LIBRARIES
+library(sp)
+library(raster)
+library(lidR)
+library(rgdal)
+library(downloader)
+library(httr)
+library(jsonlite)
+library(plyr)
+library(dplyr, quietly = T)
+```
+
+
+## Structural Diversity Functions
+
+For the actual calculation of structural diversity metrics, we will use the code from the tutorial on calculating structural diversity metrics with LiDAR data. In addition to the function defined there to calculate structural diversity metrics, we will use another function that encompasses the code used to generate normalized CHM point cloud data for a selected location. Finally, we will define a function that draws on the prior two, effectively calculating structural diversity metrics using polygons to define target area and a liDAR point cloud.
+
+
+```{r structural_diversity_functions}
+#Given a distributed plot spatial dataframe and the LAS object of a lidar point cloud file covering the plot,
+#  this function returns an LAS object containing the plot and a surrounding buffer zone
+
+make_buffered_las <- function(plot_spdf, tile_las, buffer = 50){
+  
+  #Convert plot SPdf to same CRS as tile_las
+  plot_converted <- spTransform(plot_spdf, as.character(tile_las@proj4string))
+  plot_extent <- extent(plot_converted)
+  
+  
+  #Define Plot center and buffer
+  x <- plot_spdf$easting
+  y <- plot_spdf$northing
+  
+  
+  in_radius = 20
+  out_radius = in_radius + buffer
+  
+  
+  #Clip out plot and buffer
+  data.buffered <- lidR::lasclipRectangle(tile_las, xleft = (x - out_radius), xright = (x + out_radius),
+                                          ytop = (y + out_radius), ybottom = (y - out_radius))
+  
+  
+  
+  #Normalize buffered plot LAS
+  dtm <- grid_terrain(data.buffered, 1, kriging(k = 10L))
+  data.buffered <- lasnormalize(data.buffered, dtm)
+  
+  
+  #Extract plot area from normlazed data; in other words, remove buffer
+  data.plot <- lidR::lasclipRectangle(data.buffered, xleft = (x - in_radius), xright = (x + in_radius),
+                                      ytop = (y + in_radius), ybottom = (y - in_radius))
+  
+  #Remove unreliable values
+  data.plot@data$Z[data.plot@data$Z <= .5] <- NA
+  
+  
+  
+  return(data.plot)
+  
+  
+  
+}
+
+#Given am normalized LAS object for a plot, and SP dataframe row for the same plot, this function calculates and returns
+# a named list of diversity indices
+structural_diversity_metrics <- function(data.40m, plot_spatPolyDF) {
+  x <- plot_spatPolyDF$easting
+  y <- plot_spatPolyDF$northing
+  chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
+  mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
+  max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
+  rumple <- rumple_index(chm) 
+  top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
+  cells <- length(chm@data@values) 
+  chm.0 <- chm
+  chm.0[is.na(chm.0)] <- 0 
+  zeros <- which(chm.0@data@values == 0) 
+  deepgaps <- length(zeros) 
+  deepgap.fraction <- deepgaps/cells 
+  cover.fraction <- 1 - deepgap.fraction 
+  vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
+  sd.1m2 <- grid_metrics(data.40m, sd(Z, na.rm = TRUE), 1) 
+  sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
+  Zs <- data.40m@data$Z
+  Zs <- Zs[!is.na(Zs)]
+  entro <- entropy(Zs, by = 1) 
+  gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
+  GFP.AOP <- mean(gap_frac$gf) 
+  LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
+  VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
+  VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
+  out.plot <- list(x, y, mean.max.canopy.ht,max.canopy.ht, 
+                   rumple,deepgaps, deepgap.fraction, 
+                   cover.fraction, top.rugosity, vert.sd, 
+                   sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP) 
+  names(out.plot) <- 
+    c("easting", "northing", "mean.max.canopy.ht.aop",
+      "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
+      "deepgap.fraction.aop", "cover.fraction.aop",
+      "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
+      "entropy.aop", "GFP.AOP.aop",
+      "VAI.AOP.aop", "VCI.AOP.aop")
+  return(out.plot)
+}
+
+
+#Given spatial dataframe row for a distributed plot, and the LAS object of a lidar point cloud covering tile with plot, 
+#  this function calculates diversity metrics for the area around the plot.
+
+
+plot_diversity_metrics <- function(plot_spdf, in_LAS){
+  data.distributed_plot <- make_buffered_las(plot_spdf, in_LAS)
+  return(structural_diversity_metrics(data.distributed_plot, plot_spdf))
+}
+```
+
+## Selecting our Site, Getting Plot Polygons
+
+The first thing we want to do is choose our site. We then use NEON's spatial information on research sites and plots to get a spatial polygons dataframe with rows/polygons for every distributed baseplot in the selected site.
+
+NEON has spatial data on all plots in the file All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp; this is one of the contents of the zip file you can download here:
+
+<a href = "https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V7">NEON Field Sites Spatial Data Maps</a>
+
+
+```{r initial_polygons, echo=FALSE}
+#Load TOS Plot Shape Files into R
+#Generate Base Plots Spatial Polygon DF, and plot
+
+SITECODE = 'SOAP'
+
+NEON_all_plots <- readOGR('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
+base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
+
+rm(NEON_all_plots)
+
+
+#Plot base plots
+plot(base_plots_SPDF, border = 'blue')
+
+```
+
+We will want to extract the data from our new spatial polygons dataframe as an ordinary dataframe, in order to use it in the next step.
+
+```{r polygon_data}
+#Extract data from polygons dataframe
+in_data <- as.data.frame(base_plots_SPDF@data)
+```
+
+
+## Getting Coordinates
+
+NEON liDAR point clouds each cover a 1000m by 1000m tile, and each tile is labeled by the lowest x-coordinate and lowest y-coordinate; these are always multiples of 1000. T
+
+The extracted data includes the longitude and latitude of each base plot's center as the *easting* and *northing* attributes respectively. By rounding these values down to the lowest multiple of 1000, we get the label coordinates of the tile on which the plot falls - provided the plot is entirely located on one tile, rather than falling on the boundary of two adjacent tiles.
+
+
+```{r round_1000}
+####FUNCTION: Round value down to nearest multiple of 1000
+round1000 <- function(x){
+  return(1000*floor(x/1000))
+}
+
+```
+
+So, for each plot in our dataframe, we want to first determine if that plot falls on a tile boundary. FOr those plots that don;t fall on a boundary, we want to determine the label coordinates of the liDAR tile on which they fall. Because we do these same two tasks for every plot, the best approach is to write functions for these purposes.
+
+```{r coordinate_functions_1}
+###FUNCTION: Check if plot is on tile boundary
+
+#Function checks if plot crosses a tile boundary
+#Input is a single plot spdf, output is vector of two boolean values
+#  First output boolean is whether plot crosses a horizontal boundary, second is whether it crosses vertical boundary
+is_on_boundary <- function(x,y){
+  answer <- c(FALSE,FALSE)
+  
+  
+  radius <- 20
+  
+  extent_vec <- c((x - radius),(x + radius),(y - radius),(y + radius))
+  names(extent_vec) <- c('xMin', 'xMax', 'yMin', 'yMax')
+  
+  #If the plot is on a horizontal tile boundary, the nearest horizontal tile boundary below yMax will be above yMin
+  bound_below <- round1000(extent_vec['yMax'])
+  if(bound_below >= extent_vec['yMin']){
+    answer[1] <- TRUE
+  }
+  
+  #If the plot is on a vertical tile boundary, the nearest vertical tile boundary left of xMax will be right of yMin
+  bound_left <- round1000(extent_vec['xMax'])
+  if(bound_left >= extent_vec['xMin']){
+    answer[2] <- TRUE
+  }
+  
+  return(answer)
+}
+
+
+
+
+
+###FUNCTION: Get Plot Coordinates
+
+#Function takes base plot entry, calculates coordinates of tile and returns as a string
+get_plot_coords <- function(plot_spdf){
+  options(scipen = 99999)
+  x <- as.numeric(plot_spdf[19])
+  y <- as.numeric(plot_spdf[20])
+  
+  boundary_vec <- is_on_boundary(x,y)
+  
+  if(boundary_vec[1]|boundary_vec[2]){
+    return('Plot crosses a tile boundary')
+  }
+  #Round to get coordinates of tile
+  my_east <- round1000(x)
+  my_north <- round1000(y)
+  
+  out <- paste0(as.character(my_east),'_',as.character(my_north))
+  return(out)
+}
+
+
+```
+
+Using these functions we create a dataframe, in which each plotID is accompanied by the labels coordinates of the tile on which it falls, or else a tag indicating it falls on a boundary. We can then seperate out the plots that fall on tile boundaries.
+
+```{r build_coord_df}
+#Build Coordinate dataframe, then split by whether plot lays on a tile boundary
+
+coord_df <- data.frame("plotID" = as.character(in_data$plotID),
+                       "coord_String" = apply(in_data, 1, get_plot_coords),
+                       options(stringsAsFactors = FALSE)
+)
+
+rm(in_data)
+
+
+boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
+coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
+```
+
+### Coordinates for Tile Boundary Plots
+
+For the each plot that falls on a tile boundary, we need the label coordinates for every liDAR tile on which that plot lays. The problem is that there is some chance a baseplot will lay on an intersection of four tiles, so the number of coordinate pairs that have to be associated to each plot could be either two or four. To handle this, we use a nested list rather than a dataframe to store information on which boundary plot matches to which tiles.
+
+Again we have to do the same task of getting coordinates for each boundary plot, so we write a funciton to do it for us.
+
+```{r boundary_plot_function}
+###Function: Get Boundary Plot Coords
+
+#Function takes spatialPolygons data frame for one plot that crosses a boundary, returns coordinates for 
+#  each tile the plot crosses. Output is vector of coordinate strings
+get_boundary_plot_coords <- function(plot_spdf_row){
+  options(scipen = 99999)
+  x <- as.numeric(plot_spdf_row[19])
+  y <- as.numeric(plot_spdf_row[20])
+  
+  east <- round1000(x)
+  north <- round1000(y)
+  
+  
+  boundary_vec <- is_on_boundary(x,y)
+  
+  #If tile is on horizontal boundary, get additional northing coordinate
+  if(boundary_vec[1]){
+    east <- c(east, (east + 1000))
+    
+  }
+  #If tile is on horizontal boundary, get additional easting coordinate
+  if(boundary_vec[2]){
+    north <- c(north, (north + 1000))
+  }
+  #If tile crosses both boundaries, make vector of four empty strings. Otherwise, make vector of two empty strings
+  out <- ifelse(boundary_vec[1]&boundary_vec[2],c('','','',''),c('',''))
+  
+  #Build vector of coordinate strings
+  i <- 1
+  for(n_coord in north){
+    for(e_coord in east){
+      out[i] <- paste0(as.character(e_coord),'_',as.character(n_coord))
+      i = i + 1
+    }
+  }
+  
+  return(out)
+}
+```
+
+Our function returns the results as a named list. We can store these in another list, creating our nested list or "pseudo-dataframe" of plot and tile information.
+
+```{r build_boundary_df}
+#Get coordinates for plots on boundary tiles
+
+#Extract data on boundary plots from spatial polygons dataframe
+bad_plots <- as.vector(boundary_df$plotID)
+bad_plots <- base_plots_SPDF[base_plots_SPDF$plotID %in% bad_plots,]
+N <- length(bad_plots)
+
+#make empty "pseudo dataframe" list
+boundary_list <- list()
+rm(boundary_df)
+
+#Fill list with plot IDs and tile coordinates for plots on tile boundaries
+for(i in 1:nrow(bad_plots@data)){
+  row <- list(plotID = '', coords = character())
+  row[['plotID']] <- as.character(bad_plots[i,]$plotID)
+  row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
+  boundary_list[[i]] <- row
+}
+
+
+#Remove object no longer needed
+rm(bad_plots, row)
+```
+
+### Get Unique Coordinates
+
+Now that we know which tile or tiles each plot falls on, we can figure out the list of tiles for which we need to download liDAR point cloud files. To do this we simply gather up all the label coordinate strings from both the coordinates dataframe and the boundary coordinates list into one vector, and remove repeated values to get the list of unique coordinates; each unique coordinate pair corresponds to one of the files we have to download.
+
+```{r get_unique_coordinates}
+#Get unique coordinates, coordinates for each necessary tile
+
+bound_N <- length(boundary_list)
+
+#Get vector of coordinates from plot coordinates dataframe
+coord_unique <- as.vector(coord_df$coord_String)
+
+#Append coordinates from boundary plot nested list to coordinate vector
+if(bound_N > 0){
+  for(i in 1:bound_N){
+  coord_unique <- append(coord_unique, boundary_list[[i]][['coords']])
+  }
+}
+
+
+coord_unique <- unique(coord_unique)
+
+
+```
+
+## Getting File Names and URLs
+
+###API Calls
+
+Now its time for some calls to the NEON API. We already have our site code; we want liDAR point clouds, which is product code DP1.30003.001.
+
+```{r server_and_product}
+SERVER <- 'https://data.neonscience.org/api/v0/'
+PRODUCTCODE <- 'DP1.30003.001'
+```
+
+Getting API information on specific files will also require us to select a date. Since we want the most up-to-date information, we make a call to the *sites/* endpoint to figure out the most recent month for which liDAR pointcloud data is available. liDAR point clouds are NEON data product DP1.30003.001
+
+```{r get_most_recent_date}
+#Make site request to get most recent date for which data is available
+
+
+site_req <- GET(paste0(SERVER,'sites/',SITECODE))
+site_data <- fromJSON(content(site_req, as = 'text'), flatten = T, simplifyDataFrame = T)$data
+
+
+#Get the most recent month for which data is available
+dates <- site_data$dataProducts[site_data$dataProducts$dataProductCode == PRODUCTCODE,]$availableMonths
+DATE <- dates[[1]][length(dates[[1]])]
+
+
+#Remove site request
+rm(site_req, site_data, dates)
+```
+
+Now we can request information on specific data files using the *data/* endpoint.
+
+```{r data_request}
+#Make data request
+data_req <- GET(paste0(SERVER,'data/',PRODUCTCODE,'/',SITECODE,'/',DATE))
+data_avail <- fromJSON(content(data_req, as = 'text'), flatten = T, simplifyDataFrame = T)
+```
+
+
+### Build File Dataframe
+
+Now that we have the results of the data API request, we can get the names and URLs of the files we need. Each file we want has a name of the format:
+
+"NEON_[Domain Number]_[Site Code]_DP1_[easting]_[northing]_classified_point_cloud_colorized.laz"
+
+Importantly, these will be the only .laz files in the list of files returned by the API call, and the [easting]_[northing] section of the name will match the coordinates strings in our list of unique coordinates (this is why the coordinates were stored as a stirng with a '_' separating the two numbers). This means we can use string searching to find the names of the files for the liDAR tiles we need. We then extract the file names and matching URLs into a dataframe.
+
+```{r prepare_files_df}
+#Prepare empty data frame for files
+
+file_N <- length(coord_unique)
+
+files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
+```
+
+HOWEVER, there is one big problem. What if it turns out that no liDAR point cloud files exist with some of the coordinates? We should make allowances for this by allowing that some of the files desired won't be in the final data frame, and we should track those "bad" coordinates for which no liDAR point cloud files are available.
+
+
+```{r build_files_df}
+
+#Prepare storage for bad coordinates
+
+for(i in 1:file_N){
+
+  #Get name of file
+  file_name <- data_avail$data$files[intersect(
+    grep(coord_unique[i], data_avail$data$files$name),
+    grep('.laz', data_avail$data$files$name)
+  ),'name']
+  
+  
+  #Get URL of file
+  file_url <- data_avail$data$files[intersect(
+    grep(coord_unique[i], data_avail$data$files$name),
+    grep('.laz', data_avail$data$files$name)
+  ),'url']
+  
+  
+  if(length(file_name) != 0){
+    files_df[i,] <- list(name = file_name, url = file_url, coords = coord_unique[i])
+  }else{
+      files_df[i,] <- list(name = 'bad coord', url = 'bad_coord', coords = coord_unique[i])
+  }
+
+} 
+  
+
+
+#Remove iterating variables and reponses, seperate good and bad coordinates
+rm(file_name, file_url)
+
+bad_coords <- files_df[files_df$name == 'bad coord',]$coords
+files_df <- files_df[files_df$name != '',]
+
+```
+
+Now that we have idetnified any coordinates for which data is unavailable, we can identify any plots for which we will be unable to calculate structural diveristy metrics. We remove these plots from our plot-coordinate dataframe and our nested list of boundary plots. Finally, we should remove the bad coordinates from our vector of unique coordinates.
+
+```{r remove_plots}
+#Remove any non-boundary plots with bad coordinates
+bad_plot_num <- as.character(length(coord_df[coord_df$coord_String %in% bad_coords,'coord_string']))
+print(paste0('Removed ',bad_plot_num,' non-boundary plots with missing tiles'))
+coord_df <- coord_df[!(coord_df$coord_String %in% bad_coords),]
+
+
+#Remove any boundary plots with bad coordinates
+new_list <- list()
+bad_plot_num <- 0
+for(i in 1:length(boundary_list)){
+  alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
+  beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
+  if(!(alpha|beta)){
+    new_list[[i]] <- boundary_list[[i]]
+  }else{
+    bad_plot_num <- bad_plot_num + 1
+  }
+}
+
+#Remove any bad coordinates from coord_unique
+coord_unique <- setdiff(coord_unique, bad_coords)
+
+
+```
+
+
+## Install Required Files
+
+Now its time to install the required files into our current working directory. We loop through the file dataframe, and for any file not alread present we install it using the downloader packages's download.file function.
+
+I've noticed that sometimes these files won't install properly unless you trim off the "extra" components of the URL, the parts that come after the name of the file in the URL.
+
+```{r install_files}
+#Install any files not already present
+for(i in 1:length(coord_unique)){
+  if(!file.exists(files_df[i,]$name)){
+    #Try downloading file using full URL
+    download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
+    if(!file.exists(files_df[i,]$name)){
+      #Try downloading file using trimmed url
+      download.file(paste0(strsplit(files_df[1,]$url, '.laz')[[1]][1], '.laz'),
+                    destdir = paste0(getwd(),'/',files_df[i,]$name))
+    }
+    
+  }
+}
+```
+
+
+## Calculate Structural Diversity Metrics
+
+Now at last we start calculating diversity metrics for each plot! Since we're doing a lot of repeated tasks, we'll have to define at least one function.
+
+
+### Dealing with Boundary Plots
+
+First off is the issue of plots that fall on the boundary of two or more tiles. For each boundary plot we have to generate a seperate LAS object for each of teh tiles on which it lays, merge these into one LAS, and then use the merged LAS and the boundary plot info to calculate structural diversity metrics.
+
+Luckily, the lidR packages adds expands the **rbind** function (used to combine rows from different data frames) so that it can be used to combine LAS objects. This function calculates structural diversity metrics for a boundary plot, returning the results as a named vector.
+
+
+```{r boundary_metrics_function}
+  ###FUNCTION: Calculate Boundary Metrics
+  
+  #Function takes row of boundary coordinates nested list, plot polygons spatial df, and file df
+  #Gets two point cloud files needed for plot and combines them in one object, calculates diversity metrics
+calculate_boundary_metrics <- function(boundary_plot, plots_spdf, file_df){
+    
+  #Extract rows for required files, record number of extracted rows
+  files_sub <- file_df[file_df$coords %in% boundary_plot$coords,]
+  N <- length(files_sub$coords)
+    
+  plot_data <- plots_spdf[plots_spdf$plotID == boundary_plot$plotID,]
+    
+  #Get first LAS object
+  merged_LAS <- readLAS(paste0(getwd(),'/',files_sub[1,]$name))
+    
+  #Get additional LAS objects and combine with first
+  for(i in 2:N){
+    new_LAS <- readLAS(paste0(getwd(),'/',files_sub[i,]$name))
+    merged_LAS <- rbind(merged_LAS, new_LAS)
+  }
+    
+  #calculate metrics
+  metrics <- plot_diversity_metrics(plot_data, merged_LAS)
+  return(metrics)
+}  
+```
+
+
+### Making the metrics dataframe
+
+With our functions defined, we can proceed with making the final dataframe of structural diversity metrics! First we initialize an "empty" (NA values and empty strings) dataframe for structural diveristy metrics, with as many rows as there are plots. This allocates the memory required befofehand, which is more efficient that generating each dataframe row one at a time then combining them all.
+
+```{r metrics_df_initialize}
+#Initialize empty dataframe
+norm_N <- nrow(coord_df)
+N <- bound_N + norm_N  
+  
+metric_df <- data.frame(plotID = rep('',N),
+                        x = rep(NA,N),
+                        y = rep(NA,N),
+                        mean.max.canopy.ht = rep(NA,N),
+                        max.canopy.ht = rep(NA,N), 
+                        rumple = rep(NA,N),
+                        deepgaps = rep(NA,N),
+                        deepgap.fraction = rep(NA,N),
+                        cover.fraction = rep(NA,N),
+                        top.rugosity = rep(NA,N),
+                        vert.sd = rep(NA,N), 
+                        sd.sd = rep(NA,N),
+                        entro = rep(NA,N),
+                        GFP.AOP = rep(NA,N),
+                        VAI.AOP = rep(NA,N),
+                        VCI.AOP = rep(NA,N)) 
+  
+```
+
+Now we add values for the first few rows, by calculating metrics for each of the boundary plots. 
+
+However, in some cases the .las file will not have enough data for some of the funcitons used in calculating metrics to work. For this reason, we will wrap the call to *calculate_boundary_metrics* in a *try* function; if an error occurs, this will prevent the program from crashing, and return a value of class 'try-error'. We only assign values to the current row of the empty dataframe if the attempt returned a proper named list, rather than a 'try-error'.
+
+```{r boundary_plot_rows}
+
+#Add rows for boundary plots
+if(bound_N > 0){
+  for(i in seq(1, bound_N)){
+    #Attempt to calculate boundary metrics
+    attempt <- try(calculate_boundary_metrics(boundary_list[[i]], base_plots_SPDF, files_df))
+    if(class(attempt) != 'try-error'){
+      #If boundary metrics were calculate successfully, assign them as values to row of dataframe
+      metric_df[i,1] <- as.character(boundary_list[[i]]$plotID)
+      metric_df[i,(2:16)] <- attempt
+    }else{
+      print(paste0('Unable to calculate boundary metrics for plot ',as.character(boundary_list[[i]]$plotID)))
+    }
+    
+  }
+}
+```
+
+When getting structural diversity metrics for plots not falling on a boundary, it is easiest to group the plots by which tile they fall on. For each group we import the corresponding *.laz* file into R as an LAS object, use that object to calculate the metrics for each group, assing the resulting values to our dataframe, then discard the LAS object when it is no longer needed. That way, when dealing with these plots, we never have more than one of the massive LAS objects taking up space in memory at any time.
+
+We use an outer loop with iterator *i* to go through the liDAR tiles, an inner loop with iterator *j* to go through plots in each group of plots that share a boundary tile, and a seperate iterator *k* to keep track of which row in the final metric data frame we are filling.
+
+```{r contained_plot_rows}
+#Create metrics data for non-boundary plots by file, and assign to final dataframe
+k <- bound_N + 1
+  
+#For each tile  
+for(i in seq(1,length(coord_unique))){
+  
+  file_tile <- files_df[i,]
+  plot_ids <- coord_df[(coord_df$coord_String == file_tile$coords),]$plotID
+  
+  #Get plot located in tile, and make LAS of tile
+  coord_plots <- base_plots_SPDF[(base_plots_SPDF$plotID %in% plot_ids),]
+  tile_LAS<- readLAS(paste0(getwd(),'/',file_tile$name))
+  
+  coord_N = length(coord_plots$plotID)
+  
+  #For each plot located entirely within current tile
+  if(coord_N != 0){
+    #Try to calculate boundary metrics
+    for(j in seq(1,coord_N)){
+      attempt <- try(plot_diversity_metrics(coord_plots[j,], tile_LAS))
+      if(class(attempt) != 'try-error'){
+        metric_df[k,1] <- as.character(coord_plots[j,]$plotID)
+        metric_df[k,(2:16)] <- plot_diversity_metrics(coord_plots[j,], tile_LAS)
+      }else{
+        print(paste0('Unable to calculate metrics for ',as.character(coord_plots[1,]$plotID)))
+      }
+      k <- k + 1
+    }
+  }
+}
+  
+rm(tile_LAS)
+
+```
+
+At this point we no longer need the *.laz* files, so we can remove them from our directory. This is also a good time to remove any rows of the dataframe that remained empty as a result of bad data.
+
+```{r remove_files}
+for(file_ in files_df){
+  file.remove(file_)
+}
+
+#Remove any rows for which the first numeric attribute is NA
+metric_df <- metric_df[!is.na(metric_df[,2]),]
+
+```
+
+Finally we have our completed dataframe!
+
+```{r show_results}
+print(metric_df)
+```

@@ -4,18 +4,18 @@ title: "Methods of Exploring NEON Mosquito Data in R Part Three: "
 description: "This is part one of a series of tutorials that show users how to clean and perform an initial analysis of NEON mosquito data."
 dateCreated: 2017-08-04
 authors: Charlotte Roiger 
-contributors: Megan A. Jones, Katie Levan, Cody Flagg
+contributors: Megan A. Jones, Katie Levan, Cody Flagg, Maya R. Stahl
 estimatedTime: 
-packagesLibraries: 
+packagesLibraries: dplyr, ggplot2
 topics: data-analysis, data-visualization
 languagesTool: R
-dataProduct: NEON.DP1.10043.001
+dataProduct: DP1.10043.001
 code1: 
 tutorialSeries: neon-mosquito-data-intro
 urlTitle: tba
 ---
 
-This is part two of a series of tutorials will teach you how to use NEON 
+This is part three of a series of tutorials will teach you how to use NEON 
 mosquito data to explore mosquito species richness and the abundance of *Culex 
 tarsalis*. For this tutorial we will focus in on how to calculate mosquito
 species richness, how to add a variable that takes into account temperature,
@@ -33,13 +33,14 @@ After completing this tutorial series, you will be able to:
 * Create and apply a temperature lag function to the species richness data frame
 * Use `ggplot2` in `R` to create visualizations of data trends and maps  
 
-
 ## Things You Will Need To Complete This Tutorial
 
 You will need the most current version of `R` and, preferably, RStudio loaded on
 your computer to complete this tutorial. You will also need to download the
 NEON mosquito data covered in part one of this tutorial series. Please click
 here to access part one of this tutorial series.
+
+# 6/20: Link needs to be updated.
 
 ### R Libraries to Install:
 
@@ -92,12 +93,12 @@ uniquetrap = read.csv("NEON-mosquito-data-viz/uniquetrap.csv")
 ###Calculating Species Richness and  Obtaining Location Information
 
 Now that we have our data frames in a more usable format, we want to explore 
-Mosquito species richness to see if there is a pattern in relation to 
+mosquito species richness to see if there is a pattern in relation to 
 sample latitude. The first step we need to take to explore this topic is to
 calculate species richness at each site. However if we calculate species 
 richness for each site, we lose some complexity in our data since sites were 
 sampled multiple times. So we want to calculate the species richness per site
-but also take into accound the date at which each sample was taken. To tackle 
+but also take into account the date at which each sample was taken. To tackle 
 this problem we use the `ddply` command from the `plyr` package to count the 
 number of unique scientific names for each plot and date. We also choose to 
 include certain variables in the idsmall data frame that could be relevant to
@@ -112,8 +113,8 @@ specrich <- ddply(idsmall, ~ siteID + domainID + Date, summarize, num_species = 
 
 ```
 
-Next we merge our newply formed species ricness data frame with location
-information and convert latitude and longitude information into  a numeric. To 
+Next we merge our newly formed species ricness data frame with location
+information and convert latitude and longitude information into a numeric. To 
 start exploring species richness we will make a scatter plot of species richness
 over latitude using the package 'ggplot2'. Another factor that we might want to
 take into account is the year in which the sample was taken to see if patterns
@@ -138,7 +139,7 @@ uniquetrap <- uniquetrap[uniquetrap$decimalLatitude!="",]
 uniquetrap <- uniquetrap[!duplicated(uniquetrap$siteID),]
 
 #merge with lat lon data excluding plotID
-specrich <- merge(x = uniquetrap[,c("plotID", "decimalLatitude", "decimalLongitude", "elevation", "nlcdClass")], y = specrich, by.y = "siteID", by.x = "siteID")
+specrich <- merge(x = uniquetrap[,c("plotID", "decimalLatitude", "decimalLongitude", "elevation.y", "nlcdClass.y", "siteID")], y = specrich, by.y = "siteID", by.x = "siteID")
 
 #Changing latitude to a numeric and date to date class
 specrich$decimalLatitude<-as.numeric(specrich$decimalLatitude)
@@ -222,7 +223,7 @@ temperature prior to collection.
 
 <div id = "challenge" markdown = "1">
 
-###Challenge: Creating a Preipitation Lag Function
+###Challenge: Creating a Precipitation Lag Function
 
 Now that we've created and applied a function that can calculate the average 
 maximum temperature over a two week period before collection, try creating a
