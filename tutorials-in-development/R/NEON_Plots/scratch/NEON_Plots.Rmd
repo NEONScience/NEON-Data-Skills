@@ -1,0 +1,166 @@
+### Load packages
+
+library(neonUtilities)
+library(raster)
+library(rgdal)
+library(sp)
+
+### Set the working/plotting directories
+
+wd = "/Users/collin/Documents/GitProjects/NEON-Data-Skills/tutorials-in-development/R/NEON_Plots/data/"
+pd = "/Users/collin/Documents/GitProjects/NEON-Data-Skills/tutorials-in-development/R/NEON_Plots/plot/"
+
+NEON data are numerous and variable.  Dozens of protocols record information about plants, animals and soils; not to mention the instrumented systems which constantly monitor the environment.  How do we ensure that these data are representative of a site?  How do we ensure that disparate data sources will be comparable within and between NEON sites? NEON's nested sampling design is crucial to achieve these two goals.
+
+GIS and site-selection algorithm are combined to produce a stratified, random sampling order of the environment.  This is how the geographic location of plots are determined.  Plots of two types are then established; tower or distributed.  The activities which take place at each plot type vary, but activities are often co-located within plots.
+
+At tower plots.... located within the tower airshed.  These activities take place and are 'co-located' to improve data comparability between observations.  Plots are located in the airshed so that observation data are easily compared to instrumentation data.  Located in the dominant veg type.
+
+At distributed plots...located without the tower airshed, give an idea of the processes at the whole of the site level.  Similar sampling activities take place there (are co-located).  Placed proportional to dominant vegetation types at the site level.
+
+The aim of the NEON project is to document ecological change, and the drivers of change, across time at continental spatial scale.  To achieve this goal, NEON employs a sampling design that explicitly considers both spatial and temporal scales to address this goal.  As a thought exercise, let's imagine two hypothetical sampling designs, and consider their pros and cons.
+
+We can imagine a scenario, where NEON technicians sample densely in space, but not time.  Such a sampling regime would provide excellent 'snapshots' of ecological status.  We would be able to form comparisons of sites relative to one another, but not make strong inference about how patterns are changing with time.  No reason to assume the patterns we spatial patterns we see will maintain across time.
+
+In the second scenario, NEON technicians sample densely in time, but not space.  This regime would document change across time well, but only at a single point.  No reason to assume the temporal patterns we see will be maintained across space.  For instance, we can't assume ecological patterns observed in the Desert Southwest will translate directly to the Arctic Tundra.
+
+Both scenarios have obvious shortcomings that NEON overcomes by employing a spatially balanced, stratified-random sampling design.  In the context of NEON, stratification refers to defining spatially unique clusters, in this case based on climate and vegetation type.  Commonly known as ecodomains, NEON has stratified the continent into 20 distinct ecodomains.  By distributing sampling points across these 20 ecodomains, we ensure that NEON data can describe spatial patterns across the continent.
+
+### Map of all ecodomains here
+
+Still, these ecodomains are too large to sample in their entirety, and so we select sites which are representative of the domain as a whole to monitor.
+
+### Map of SOAPs ecodomain, with SOAP site outline
+
+```{r spatial-data}
+SOAP.hillshade = raster(paste0(wd,'SOAP_HILLSHADE.tif'))
+SOAP.dtm = raster(paste0(wd,'SOAP_DTM.tif'))
+ALL.bound=readOGR(paste0(wd,"Field_Sampling_Boundaries/terrestrialSamplingBoundaries.shp"))
+SOAP.bound=ALL.bound[ALL.bound$siteID=="SOAP",]
+SOAP.bound=spTransform(SOAP.bound, crs(SOAP.dtm))
+ALL.towers=readOGR(paste0(wd,"NEON_Field_Sites/NEON_Field_Sites_v17.shp"))
+SOAP.tower=ALL.towers[ALL.towers$siteID=="SOAP",]
+SOAP.tower=spTransform(SOAP.towers, crs(SOAP.dtm))
+ALL.tosplots=readOGR(paste0(wd,"NEON_TOS_Plot_Polygons/NEON_TOS_Plot_Polygons.shp"))
+SOAP.tosplots=ALL.tosplots[ALL.tosplots$siteID=="SOAP",]
+SOAP.tosplots=spTransform(SOAP.tosplots, crs(SOAP.dtm))
+ALL.airsheds=readOGR(paste0(wd,"90percentfootprint/90percent_footprint.shp"))
+SOAP.airshed=ALL.airsheds[ALL.airsheds$SiteID=="SOAP",]
+SOAP.airshed=spTransform(SOAP.airshed, crs(SOAP.dtm))
+```
+
+```{r soap-plot}
+plot(SOAP.hillshade, col=grey((1:90)/100), alpha=1, legend=F)
+plot(SOAP.dtm, add=T,alpha=.3)
+plot(SOAP.bound, add=T, border="black")
+```
+
+Here we're looking at SOAP, a representative terrestrial site for the "blah" ecodomain. Still this site has an area of ___ ha, making it impractical to sample in detail with standard observation practices.  Instead, we monitor processes at subset of points/grids which are selected to be spatially balanced and randomised.  GIS and site-selection algorithm are combined to produce a stratified, random sampling order of the environment.  This is how the geographic location of plots within a site are determined.  Plots of two types are then established; tower or distributed.  Plots can be further divided according to subtype, which determines the sampling activities or protocols will be co-located within a site.
+
+### SOAP
+
+To learn more, let's focus in one NEON Domain and one NEON site.  SOAP.  It may be useful if we can visualise the plots in space.  Where they sit relative to the tower, relative to each other, and relative to topograhic/environmental features roads/vegetation.
+
+Here we read in the raster map of SOAP, it shows the topography of the site overlaid (colored) by NLCD veg types.
+
+Now let's overlay the shapefiles which have the info re: site boundary, plot locations and typology, tower location, and tower airshed (don't colorise)
+
+```{r soap plot with sites}
+plot(SOAP.hillshade, col=grey((1:90)/100), alpha=1, legend=F)
+plot(SOAP.dtm, add=T,alpha=.3)
+plot(SOAP.bound, add=T, border="black")
+plot(SOAP.tower, add=T, pch=7)
+plot(SOAP.tosplots[SOAP.tosplots$plotType=="tower",], border="blue", add=T)
+#plot(SOAP.tosplots[SOAP.tosplots$plotType=="distributed" & SOAP.tosplots$subtype=="mammalGrid",], border="purple", add=T) # Subset to subplots
+plot(SOAP.tosplots[SOAP.tosplots$plotType=="distributed",], border="purple", add=T)
+plot(SOAP.airshed, add=T, border="orange3")
+# subtypes = c('basePlot','phenology','tickPlot','mosquitoPoint','mammalGrid') # No bird grid?
+# types = c('distributed','tower')
+```
+
+This does a good job to show us how the plots are spatially distributed with respect to one another, the tower, and the airshed.  But each of these plots is different, according to it's type and subtype
+
+Colorise the symbols on the map according to plot type/subtype, we can now see how diverse the plots at the site are.
+
+### The Tower and Soil Array
+
+Let's focus in on the tower for a minute, and talk about the data and protocols there.  The tower itself is located within the dominant vegetation type according to the NLCD mapping.  The tower contains the TIS Instrumentation, temp, eddy, PAR etc...  The eddy co-variance corresponds to the tower 'airshed'.  So, the flux sensor is measuring the movement of CO2 in/out of the airshed.  To strengthen the links between observation and instrumentation data, 'tower plots' are placed within the tower airshed (with some exceptions).
+
+Co-located with the tower is the soil array, which contains additional instrumentation.  You can visit the NEON portal and find data here and here....
+
+### Tower Plots
+
+Tower plots are designed to maximise the interoperability of instrumented and observational datasets.  Multiple protocols take place at tower plots according to a site specific schedule. Tower plots can be divided into two subtypes: base and phenocam.  
+
+## Tower-base plots
+
+4 - 30 / site.  Let's look more closely at the properties of a tower-base plot and what is measured there.  Adjust the map so that only tower, airshed, and tower-base plots are shown.  Tower base plots can be different sizes depending on dominant vegetation type of the SITE, not PLOT.  Tower plots in forested landscape are 40 * 40 m, in non-forested landscapes they are 20*20 m.  The sampling protocols that take place at a subset of tower base plots: 
+
+Below-Ground Biomass
+Canopy Foliage
+Leaf Area Index
+Litterfall Biogeochemistry
+Soil Biogeochemistry
+Soil Microbe Biomass
+Soil N-Trans
+Veg Structure
+Herb Clip
+Leaf Area Index
+Litterfall 
+Plant Diversity
+Vegetation Structure
+Coarse Downed Wood
+
+## Tower-phenocam plots
+
+ 2 / site.  he tower-phenocam plot is also located within dominant vegetation type within the flux airshed (if possible).  Phenocam plots are 200 * 200 m squares.  There may be two tower-pheno plots per site, depending upon the location of the primary plot.  Tower-pheno plots are used for the plant phenology protocol, as well as observed by the PhenoCam.  Only the phenology protocols take place on the phenology subtype plots.
+ 
+### Distributed Plots
+
+Distributed plots are are designed to capture additional site level variability that is missed by tower plots.  Tower plots are always located w/in the dominant vegetation, but distributed plots are, well... 'distributed' across vegetation gradients and capture more variability.  Similar sampling activities occur at distributed plots however, they also encompass additional protocols.  Distributed plots can be divided into a variety of subtypes as well: base, mammal, tick, mosquito and bird.  
+
+## Distributed-base plots
+
+10 - 30 / site.  Similar to tower-base plots, these 40 * 40 m plots are where plant and soil protocols are co-located.  Protocols that take place at distibuted base plots are:
+
+Below-Ground Biomass
+Canopy Foliage
+Leaf Area Index
+Litterfall Biogeochemistry
+Soil Biogeochemistry
+Soil Microbe Biomass
+Soil N-Trans
+Veg Structure
+Herb Clip
+Leaf Area Index
+Litterfall 
+Plant Diversity
+Vegetation Structure
+Coarse Downed Wood
+
+## Distributed mammal grids
+
+3 - 8 / site.  Locations are allocated proportional to NLCD cover types.  90 * 90 m.  Where possible, colocated & offset from distributed base plots.  Otherwise, nearby.
+
+## Distributed tick plots
+
+6 / site. Locations are allocation proportional to NLCD cover types.  40 * 40 m. Co-located but offset from distributed base plots.
+
+## Distributed bird grids
+
+9 / site.  250m * 250m grid. Co-located & offset from base plots.
+
+## Distributed mosquito points
+
+10 / site.  Points.  Not co-located for logistical reasons.  
+
+### Questions I have
+
+What are the purpose of sub-plots?
+Why are some plots divided randomly into sub-plots but not others?
+Why are some tower base plots 20*20 and others 40*40?
+What is the association between HBP and BGB?
+What is the association between HBP and other soils?
+
+
+

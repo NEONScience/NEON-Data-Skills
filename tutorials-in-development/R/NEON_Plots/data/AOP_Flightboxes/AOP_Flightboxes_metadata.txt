@@ -1,0 +1,32 @@
+Tags
+NEON, Airborne Observation Platform, AOP, Remote Sensing, Flight Box, Flight Boundary
+
+Summary
+Polygon flight boundaries (areas) for the field sites NEON will survey with the Airborne Observation Platform. 
+
+
+Description
+Flight boundaries cover aquatic and terrestrial field sites and are assigned either a high (Priority 1), medium (Priority 2) or low (Priority 3) acquisition priority providing airborne sensor operators with greater flexibility in the event poor weather conditions prevent 100% data collection coverage during the scheduled deployment to a given site.
+
+
+Credits
+NEON is sponsored by the National Science Foundation and operated under a cooperative agreement by Battelle.
+
+Limits
+NEON DATA PRODUCTS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE NEON DATA PRODUCTS BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE NEON DATA PRODUCTS.
+Access to NEON field sites is governed by site host policies and permitting requirements. The properties on which NEON infrastructure and observational plots are located are owned by site hosts. Our rights of access and use are defined in formal Land Use Agreements with these landowners and site hosts. Researchers must obtain their own site host permits for their research. Our science and domain field staff can assist in a variety of ways:
+Science staff may assist in evaluating the potential impacts of proposed activities on NEON measurements and observations
+Domain Managers may assist with site host coordination and location of field sampling on site.
+Other assistance may be requested and offered as appropriate.
+
+If you are interested in conducting investigations near NEON infrastructure and/or observational plots, please contact us to discuss your ideas. https://www.neonscience.org/about/contact-us
+ 
+
+Citation
+National Ecological Observatory Network. 2019. Data Product DP4.00132.001, Bathymetric and morphological maps. Provisional data downloaded from http://data.neonscience.org on September 26, 2019. Battelle, Boulder, CO, USA NEON. 2019. 
+
+Maintenance
+As needed
+
+Coordinate System
+WGS1984 
