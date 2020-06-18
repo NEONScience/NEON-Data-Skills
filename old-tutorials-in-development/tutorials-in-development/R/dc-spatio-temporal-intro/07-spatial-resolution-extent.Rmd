@@ -7,7 +7,7 @@ authors: Leah A. Wasser, Megan A. Jones
 contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: raster, rgdal
+packagesLibraries: raster, rgdal, ggplot2
 category: [self-paced-tutorial]
 topics: spatial-data-gis
 languagesTool: R
@@ -53,6 +53,7 @@ preferably, RStudio loaded on your computer.
 
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
+* **ggplot2:** `install.packages("ggplot2")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on 
 Packages in R </a>– Adapted from Software Carpentry.
@@ -168,10 +169,11 @@ of an **individual** object can also be quantified!
 
 Let’s look at the spatial extent of a line shapefile representing roads at the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> NEON Harvard Forest field site</a>.
 
-``` {r vector-extent}
+``` {r vector-extent, fig.cap="Roads at NEON Harvard Forest field site with longitude and latitude labeled on the axes"}
 #load libraries
 library(rgdal)
 library(raster)
+library(ggplot2) #used to plot the vector shapefile
 
 # set working directory to ensure R can find the file we wish to import and where 
 # we want to save our files. Be sure to move the unzipped download into your working directory! 
@@ -180,6 +182,13 @@ setwd(wd)
 
 # import a line shapefile
 lines_HARV <- readOGR(paste0(wd,"NEON-DS-Site-Layout-Files/HARV"), "HARV_roads")
+
+# plot vector shapefile with long and lat on axes
+lines_HARV_df <- fortify(lines_HARV)
+
+ggplot() +
+  geom_path(data=lines_HARV_df, aes(x=long, y=lat, group=group)) +
+  labs(title = "HARV Roads")
 
 # view crs
 crs(lines_HARV)
@@ -202,9 +211,12 @@ in 2 dimensional space.  Tools like `R`, using supporting packages such as
 `rgdal`, and associated raster tools have functions that allow you to view and
 define the extent of a new raster.
 
-``` {r raster-extent}
+``` {r raster-extent, fig.cap="Digital surface model showing continuous elevation of NEON Harvard Forest field site with UTM meters labeled on the x- and y-axes"}
 # load raster
 DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+
+# plot raster
+plot(DSM_HARV, main="Digital Surface Model\nNEON Harvard Forest Field Site")
 
 # view crs to determine units
 crs(DSM_HARV)
@@ -216,7 +228,7 @@ extent(DSM_HARV)
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png"
-    alt="The image on the left has an extent of (8,8) and is less blurry than the image on the right which is stretched to an extent of (16,16)."></a>
+    alt="The image on the left has an extent of (0,8,0,8) and is less blurry than the image on the right which is stretched to an extent of (0,16,0,16)."></a>
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
@@ -235,7 +247,7 @@ Let's explore that next, using a blank raster that we create.
 # create a "blank" raster from the matrix
 myRaster1 <- raster(nrow=4, ncol=4)
 
-# assign some random data to the raster
+# assign data to the raster
 myRaster1[]<- 1:ncell(myRaster1)
 
 # view attributes of the raster
