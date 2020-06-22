@@ -7,9 +7,9 @@ authors: Eric R. Sokol
 contributors: Donal O'Leary
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
-topics: biodiversity, aquatic organisms
+topics:
 languagesTool: R
-dataProduct: DP1.20120.001
+dataProduct:
 code1: R/SFS-2020/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertibrates

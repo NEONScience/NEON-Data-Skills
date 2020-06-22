@@ -7,9 +7,9 @@ authors: Eric R. Sokol
 contributors: Donal O'Leary
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
-topics: biodiversity, aquatic organisms
+topics:
 languagesTool: R
-dataProduct: DP1.20120.001
+dataProduct:
 code1: R/SFS-2020/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertibrates
@@ -99,7 +99,7 @@ Now that the workspace is prepared, we will download NEON macroinvertibrate data
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 1.095396 secs
+    ## Stacking took 1.085189 secs
     ## All unzipped monthly data folders have been removed.
 
 ## Macroinvertebrate Data Munging
@@ -621,39 +621,37 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.2140863 
-    ## Run 1 stress 0.2160446 
-    ## Run 2 stress 0.2282881 
-    ## Run 3 stress 0.2140571 
+    ## Run 1 stress 0.2390889 
+    ## Run 2 stress 0.2185854 
+    ## Run 3 stress 0.2247212 
+    ## Run 4 stress 0.2144989 
+    ## ... Procrustes: rmse 0.01954546  max resid 0.1560903 
+    ## Run 5 stress 0.2276563 
+    ## Run 6 stress 0.2165452 
+    ## Run 7 stress 0.2144495 
+    ## ... Procrustes: rmse 0.02051129  max resid 0.1737659 
+    ## Run 8 stress 0.2413633 
+    ## Run 9 stress 0.2176385 
+    ## Run 10 stress 0.2200232 
+    ## Run 11 stress 0.2260964 
+    ## Run 12 stress 0.2338674 
+    ## Run 13 stress 0.2120058 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02484201  max resid 0.2526633 
-    ## Run 4 stress 0.2186605 
-    ## Run 5 stress 0.2175908 
-    ## Run 6 stress 0.2243299 
-    ## Run 7 stress 0.2239796 
-    ## Run 8 stress 0.2242964 
-    ## Run 9 stress 0.226169 
-    ## Run 10 stress 0.2141104 
-    ## ... Procrustes: rmse 0.02450315  max resid 0.2521444 
-    ## Run 11 stress 0.209966 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.02259119  max resid 0.2546775 
-    ## Run 12 stress 0.2208347 
-    ## Run 13 stress 0.2273503 
-    ## Run 14 stress 0.2104249 
-    ## ... Procrustes: rmse 0.01160543  max resid 0.1399671 
-    ## Run 15 stress 0.2131553 
-    ## Run 16 stress 0.2186318 
-    ## Run 17 stress 0.2254547 
-    ## Run 18 stress 0.2164757 
-    ## Run 19 stress 0.2303861 
-    ## Run 20 stress 0.2120193 
+    ## ... Procrustes: rmse 0.01847415  max resid 0.1566377 
+    ## Run 14 stress 0.2282279 
+    ## Run 15 stress 0.2245397 
+    ## Run 16 stress 0.2168576 
+    ## Run 17 stress 0.2381145 
+    ## Run 18 stress 0.2394089 
+    ## Run 19 stress 0.2161245 
+    ## Run 20 stress 0.2234852 
     ## *** No convergence -- monoMDS stopping criteria:
     ##     20: stress ratio > sratmax
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.209966
+    ## [1] 0.2120058
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
@@ -671,50 +669,50 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     # # How I determined the outlier(s)
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
-    ##                  sampleID     NMDS1       NMDS2 domainID siteID
-    ## 1  POSE.20150721.SURBER.1 1.4318861 -0.38134736      D02   POSE
-    ## 2 ARIK.20160919.KICKNET.3 1.0091420  0.23569204      D10   ARIK
-    ## 3  POSE.20150330.SURBER.1 0.9711197 -0.95001981      D02   POSE
-    ## 4    ARIK.20160919.CORE.3 0.9023961  0.09424011      D10   ARIK
-    ## 5 ARIK.20140714.KICKNET.3 0.8774704 -0.05561697      D10   ARIK
-    ## 6 ARIK.20160919.KICKNET.4 0.8683293 -0.57333108      D10   ARIK
+    ##                  sampleID     NMDS1      NMDS2 domainID siteID
+    ## 1  POSE.20150721.SURBER.1 1.2044248 -0.7533040      D02   POSE
+    ## 2 ARIK.20160919.KICKNET.4 1.0335401  0.2641080      D10   ARIK
+    ## 3 ARIK.20160919.KICKNET.3 0.9705005 -0.1757449      D10   ARIK
+    ## 4    ARIK.20160919.CORE.3 0.8374912 -0.2057339      D10   ARIK
+    ## 5  POSE.20150330.SURBER.1 0.8198711 -0.9891664      D02   POSE
+    ## 6   ARIK.20140714.CORER.3 0.7776404 -0.2581845      D10   ARIK
     ##    namedLocation         collectDate       eventID year
     ## 1 POSE.AOS.reach 2015-07-21 14:43:00 POSE.20150721 2015
     ## 2 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
-    ## 3 POSE.AOS.reach 2015-03-30 14:30:00 POSE.20150330 2015
+    ## 3 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
     ## 4 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
-    ## 5 ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014
-    ## 6 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
+    ## 5 POSE.AOS.reach 2015-03-30 14:30:00 POSE.20150330 2015
+    ## 6 ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014
     ##   habitatType     samplerType benthicArea          inv_dens_unit
     ## 1      riffle          surber       0.093 count per square meter
     ## 2         run modifiedKicknet       0.250 count per square meter
-    ## 3      riffle          surber       0.093 count per square meter
+    ## 3         run modifiedKicknet       0.250 count per square meter
     ## 4        pool            core       0.006 count per square meter
-    ## 5         run modifiedKicknet       0.250 count per square meter
-    ## 6         run modifiedKicknet       0.250 count per square meter
+    ## 5      riffle          surber       0.093 count per square meter
+    ## 6        pool            core       0.006 count per square meter
 
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
-    ##                 sampleID      NMDS1       NMDS2 domainID siteID
-    ## 262 MAYF.20160321.CORE.3 -0.8919394 -0.08143651      D08   MAYF
-    ## 263 MAYF.20170314.CORE.1 -0.9888565  1.35119515      D08   MAYF
-    ## 264 MAYF.20150324.SNAG.3 -1.0368373 -0.51171167      D08   MAYF
-    ## 265 MAYF.20160321.CORE.2 -1.0526174  1.02230383      D08   MAYF
-    ## 266 MAYF.20180326.CORE.3 -1.1293625 -0.34888000      D08   MAYF
-    ## 267 MAYF.20180726.CORE.2 -1.1632705  0.41184096      D08   MAYF
+    ##                   sampleID      NMDS1       NMDS2 domainID siteID
+    ## 262   POSE.20141028.HESS.2 -0.8334921 -1.18127163      D02   POSE
+    ## 263   MAYF.20160321.CORE.3 -0.8480842  0.09888936      D08   MAYF
+    ## 264 POSE.20161031.SURBER.4 -0.8647329 -0.12226121      D02   POSE
+    ## 265   MAYF.20180726.CORE.2 -1.0100747  0.60102051      D08   MAYF
+    ## 266   MAYF.20150324.SNAG.3 -1.0618155 -0.30455872      D08   MAYF
+    ## 267   MAYF.20180326.CORE.3 -1.1209756 -0.15030839      D08   MAYF
     ##      namedLocation         collectDate       eventID year
-    ## 262 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
-    ## 263 MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017
-    ## 264 MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015
-    ## 265 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
-    ## 266 MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018
-    ## 267 MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018
+    ## 262 POSE.AOS.reach 2014-10-28 15:20:00 POSE.20141028 2014
+    ## 263 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
+    ## 264 POSE.AOS.reach 2016-10-31 14:01:00 POSE.20161031 2016
+    ## 265 MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018
+    ## 266 MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015
+    ## 267 MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018
     ##     habitatType samplerType benthicArea          inv_dens_unit
-    ## 262         run        core       0.006 count per square meter
+    ## 262        pool        hess       0.086 count per square meter
     ## 263         run        core       0.006 count per square meter
-    ## 264         run        snag       0.076 count per square meter
+    ## 264      riffle      surber       0.093 count per square meter
     ## 265         run        core       0.006 count per square meter
-    ## 266         run        core       0.006 count per square meter
+    ## 266         run        snag       0.076 count per square meter
     ## 267         run        core       0.006 count per square meter
 
     # Plot samples in community composition space by year
