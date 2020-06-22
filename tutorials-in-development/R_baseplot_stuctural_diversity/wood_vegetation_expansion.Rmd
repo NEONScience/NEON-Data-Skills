@@ -1,0 +1,242 @@
+---
+title: "Baseplot Woody Vegetation 02: Plant Structure Tutorial"
+code1: null
+contributors: null
+dataProduct: DP1.10098.001
+dateCreated: '2020-06-01'
+description: This tutorial will show how to obtain plot-by-plot data on woody vegetation structure for NEON distributed baseplots
+estimatedTime: null
+languagesTool: R
+packagesLibraries: dplyr, devtools, neonUtilities
+syncID: null
+authors: Maxwell J. Burner
+topics: NEON study plots, API calls, plant diversity
+tutorialSeries: baseplot-woody-vegetation
+urlTitle: baseplot-wv-plant-structure
+---
+
+This tutorial will show you how draw on data NEON Woody Plant Vegetation Structure data to expand an existing dataframe of information on NEON site vegetation structure, and how to compare vegetation metrics between different NEON sites.
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Use neonUtilities to get the most up-to-date data on woody vegetation diversity for any NEON site
+* Use mapping and tagging data to calculate a variety of metrics describing woody vegetation characteristics 
+* Combine woody vegetation strucure metrics with an existing dataframe of NEON distributed basePlots
+
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+
+* **dplyr:** `install.packages("dplyr")`
+* **devtools:** `install.packages("devtools")`
+* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+This tutorial will teach you how to download data directly from the NEON data 
+portal.  This example data set is provided as an optional download and a backup. 
+
+#### NEON Teaching Data Subset: Discrete Return LiDAR Point Cloud
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 017 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.30003.001, Discrete return LiDAR poitn cloud. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+**Important: This is a provisional data link. It currently points to files not related to this project.**
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this tutorial we will learn how to expand our dataframe of structural diversity metrics further by drawing on data from NEON Data Product DP1.10098.001, Woody plant vegetation structure. We will use data uploaded using the neonUtilities package to calculate further metrics for quantifying woody plant structure in each plot, add this data to our dataframe, and see a few ways to compare woody vegetation diverisy and structure data between different NEON sites.
+
+```{r load libraries}
+library(downloader)
+library(jsonlite)
+library(httr)
+library(neonUtilities)
+```
+
+##Getting date with NEON Utilities
+
+THe first step is to downlaod the files we need from NEON.
+
+
+Rather than using calls to the API with get like in the last tutorial, we will use the neonUtilities package's loadByProduct function. This convenient function takes a product code, date, and site, and a string indicating whether to get the basic or expanded data package; it then downloads the files from the neon API, and automatically reads them into R as a named list of dataframes.
+
+The list2env funciton lets us automatically load these dataframes into the environment, so we can call them using the names they had in the list, but don't have to call them as elements of the list.
+
+```{r neonUtilities_download}
+PRODUCTCODE <- 'DP1.10098.001'
+SITE <- 'SOAP'
+
+#Obtain woody plant vegetation structure data
+#veglist <- loadByProduct(dpID=PRODUCTCODE, site=SITE, package="basic", check.size = F)
+list2env(veglist, .GlobalEnv)
+
+```
+
+The reason we placed veglist in a token before loading the dataframes is so we cna see the names of the dataframes in list2env with the *names* function. Let's look at the names of the data frames we uploaded, and see what variables are in them.
+
+```{r veglist_contents}
+print('#List Contents#')
+print(names(veglist)) #Print names of list contents
+
+print('')
+print('#Mapping and Tagging#')
+print(names(vst_mappingandtagging)) #Print names of mapping and tagging dataframe
+
+print('')
+print('#Apparent Individual#')
+print(names(vst_apparentindividual)) #Print names of apparent individual dataframe
+```
+
+From the names we can see that the mapping and tagging dataframe contains taxonomic identification information, while the Apparent individual dataframe contains information on physical measurements of trees. We will extract information from both.
+
+
+## Adding Genus Counts
+
+One way to quantify woody plant characteristics at a site would be to count the number of unique species or other taxonomic level at each plot. Let's look at the 'scientificName' attribute of the mapping and tagging dataframe, to see what kind of information in available.
+
+```{r scientificName_unique}
+#Print unique values of scientificName column
+unique(vst_mappingandtagging$scientificName)
+```
+
+In most cases the plant is identified to species level, but in other cases the plant is unknown or only identified to genus level. It seems like the best way to use this information would thus be to count the number of unique genera in each plot; that way we can use all data except the records of unknown plants.
+
+For each row of the input data, each baseplot at the site, we extract all the entries (if any) in the mapping and tagging dataframe that were recorded in that plot. We extract the genus name from each of these (the first word in the scientificName string), other than the rows with scientificName value "Unknown Plant", then count and record the number of unique genera for that plot.
+
+Note that 
+
+```{r genus_counts}
+  #ADD GENUs COUNTS#
+
+
+#add new column to dataframe
+DF$genus_count <- NA
+  
+  
+for(i in 1:nrow(DF)){
+
+    
+  #IF mapping and tagging has entries for that plot
+  if((DF[i,'plotID'] %in% vst_mappingandtagging$plotID)){
+
+    #Extract rows of mapping and tagging that match the plotID of the current plot
+    maptag <- vst_mappingandtagging[vst_mappingandtagging$plotID == DF[i,'plotID'],]
+      
+    #THEN Get all unique sicentific names at plot, and prepare empty vector
+    scientific <- unique(maptag$scientificName)
+    genus <- rep('', length(scientific))
+      
+    #Split scientific names into seperate words
+    scientific <- strsplit(scientific, ' ')
+    
+    #Extract first word, genus name, or each scientific name
+    for(j in 1:length(genus)){
+      genus[j] <- scientific[[j]][[1]]
+    }
+      
+    #Filter out repeated and unknown genera
+    genus <- unique(genus)
+    genus <- genus[genus != 'Unknown']
+      
+    #Record genera counts
+    DF[i,'genus_count'] <- length(genus)
+  }
+}
+
+
+```
+
+
+Let's look at the results; we'll print out the plotID and genus counts for the first ten rows of our structural diversity dataframe.
+
+```{r view_genuscounts}
+print(DF[1:10,c('plotID','genus_count')])
+```
+
+Unfortunately, the mapping and tagging dataframe had no entries for some plots. Does that mean those plots lacked woody vegetation of note? For now we'll leave those NA values where they are.
+
+
+
+## Tree Parameters
+
+The 'Apparent Individual' dataframe records height data for specific trees and woody shrubs within each plot. With this information, we can calculate several metrics that help describe the overall characteristics of the vegetation structure in each plot.
+
+For each plot we'll calculate the number of trees, the number of woody shrubs, the ratio of trees to total woody plants (the proportion of woody vegetation comprised of trees), the mean recorded tree height, and the maximum recorded tree height. Before making any calcualtions we add empty columns to the dataframe to store these measurements. 
+
+```{r add_tree_parameter_columns}
+#  Add empty columns
+DF$wood_plants.count <- NA
+DF$trees.count <- NA
+DF$tree_to_woody_plant.ratio <- NA
+DF$tree.mean_height <- NA
+DF$tree.max_measured_height <- NA
+  
+```
+
+
+Now we calculate the values of these parameters for each plot, using a for loop to run through all the rows/plots in our structural diversity dataframe. 
+
+```{r add_tree_parameter_values}
+  #  For each row in the input dataframe:
+for(i in 1:nrow(DF)){
+
+    
+  #IF there are entries in the apparent Individual dataframe with same plotID as current row
+  if(DF[i, 'plotID'] %in% unique(vst_apparentindividual$plotID)){
+    #THEN:
+      
+    #Filter apparentIndividual dataframe to rows matching plot ID
+    in_plants <- vst_apparentindividual[vst_apparentindividual$plotID == DF[i,'plotID'],]
+      
+    #Remove dead individuals
+    in_plants <- in_plants[in_plants$plantStatus == 'Live',]
+      
+    #Extract rows measuring trees
+    in_trees <- in_plants[which(in_plants$growthForm %in% c('small tree','sapling','single-bole tree', 'multi-bole tree')),]
+      
+    #Calculate metrics
+    DF[i, 'wood_plants.count'] <- nrow(in_plants)
+    DF[i,'trees.count'] <- nrow(in_trees)
+    DF[i,'tree_to_woody_plant.ratio'] <- round(DF[i, 'trees.count']/DF[i,'wood_plants.count'], 2)
+    DF[i, 'tree.mean_height'] <- round(mean(in_trees$height, na.rm = T), 2)
+    DF[i, 'tree.max_measured_height'] <- max(in_trees$height, na.rm = T)
+      
+      
+
+  }
+}
+ 
+```
+
+Looking over the resulting DataFrame reveals a problem; the tree parameters added have NA values for most of the plots. This suggests that the data was only gathered from some plots, or that the plots for which it is missing simply lacked woody vegetation; the latter would explain why most of the rows with NA values for tree parameters also have NA values for genus counts of trees. FOr this reason, we will replace the NA values in genus counts, tree counts, and woody plant counts with 0's; 
+
+```{r zero__counts}
+DF[which(is.na(in_data$genus_count)),'genus_count'] <- 0
+DF[which(is.na(in_data$trees.count)), 'trees.count'] <- 0
+DF[which(is.na(in_data$wood_plants.count)), 'wood_plants.count'] <- 0
+```
+
+
+At this point we have added all we want to our dataset from the mapping and tagging dataframe.
