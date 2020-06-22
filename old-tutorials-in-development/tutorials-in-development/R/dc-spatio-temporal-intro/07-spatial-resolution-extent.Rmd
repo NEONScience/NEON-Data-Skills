@@ -3,13 +3,14 @@ layout: post
 title: "Spatial Intro 08: Intro to Spatial Metadata -- Spatial Resolution and
 Spatial Extent"
 date: 2015-10-22
-authors: [Leah A. Wasser, Megan A. Jones]
-contributors: [ ]
+authors: Leah A. Wasser, Megan A. Jones
+contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: [ ]
+packagesLibraries: raster, rgdal, ggplot2
 category: [self-paced-tutorial]
-tags: [R, spatial-data-gis]
+topics: spatial-data-gis
+languagesTool: R
 mainTag: spatial-data-management-series
 workshopSeries: [spatial-data-management-series]
 description: "This lesson covers the key spatial attributes that are needed to work with
@@ -23,12 +24,11 @@ permalink: R/key-spatial-metadata
 comments: true
 ---
 
-{% include _toc.html %}
 
 ## About
 
 This lesson covers the key spatial attributes that are needed to work with
-spatial data including: Coordinate Reference Systems (CRS), Extent and spatial resolution.
+spatial data including: Coordinate Reference Systems (CRS), extent, and spatial resolution.
 
 **R Skill Level:** Beginner - you've got the basics of `R` down.
 
@@ -41,7 +41,8 @@ After completing this activity, you will:
 * Understand that there are necessary spatial metadata associated with and/or
 embedded in the data
 * Understand that there is potentially ancillary data associated with individual
-elements in vector data files (like NEON tower data (point), road (line), watershed (polygon)).
+elements in vector data files (like NEON tower (point), road (line), and watershed 
+(polygon) data).
 
 
 ## Things You’ll Need To Complete This Lesson
@@ -50,12 +51,42 @@ preferably, RStudio loaded on your computer.
 
 ### Install R Packages
 
-* **NAME:** `install.packages("NAME")`
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rgdal")`
+* **ggplot2:** `install.packages("ggplot2")`
 
-* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on 
+Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
 
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
 
 ****
 
@@ -65,29 +96,30 @@ directory to the location of the downloaded and unzipped data subsets.
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
 
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
+**R Script & Challenge Code:** NEON data lessons often contain challenges that 
+reinforce learned skills. If available, the code for challenge solutions is found in the
 downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
-of a lesson series introducing
-[spatial data and data management in `R` ]({{ site.baseurl }}tutorial/URL).
+of a lesson series introducing 
+#####UPDATE URL BEFORE PUBLISHING#####
+<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`*</a>.
 It is also part of a larger
-[spatio-temporal Data Carpentry Workshop ]({{ site.baseurl }}workshops/spatio-temporal-workshop)
-that includes working with  
-[raster data in `R` ]({{ site.baseurl }}tutorial/spatial-raster-series),
-[vector data in `R` ]({{ site.baseurl }}tutorial/spatial-vector-series)
-and  
-[tabular time series in `R` ]({{ site.baseurl }}tutorial/tabular-time-series).
+<a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
+that includes working with
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`*</a>,
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`*</a>, 
+and<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> *tabular time series in `R`*</a>.
 
 ****
 
 ### Additional Resources
-* Read more on coordinate systems in the
-<a href="http://docs.qgis.org/2.0/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank">
-QGIS documentation.</a>
-* NEON Data Skills Lesson <a href="https://www.neonscience.org/GIS-Spatial-Data/Working-With-Rasters/" target="_blank">The Relationship Between Raster Resolution, Spatial extent & Number of Pixels - in R</a>
+* Read more about coordinate systems in the
+<a href="https://docs.qgis.org/3.10/en/docs/gentle_gis_introduction/coordinate_reference_systems.html" target="_blank"> QGIS documentation</a>
+* <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/What_are_map_projections/003r00000001000000/" target="_blank">ESRI's ArcGIS resource for CRS</a>
+* <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf" target="_blank">NCEAS CRS cheatsheet</a>
+* NEON Data Skills Lesson<a href="https://www.neonscience.org/raster-res-extent-pixels-r/" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R*</a>
 
 </div>
 
@@ -95,81 +127,142 @@ QGIS documentation.</a>
 There are three core spatial metadata elements that are crucial to understand
 in order to effectively work with spatial data:
 
-* **Coordinate Reference System** (CRS),
+* **Coordinate Reference System** (CRS)
 * **Extent**
 * **Resolution**
 
-
+## Coordinate Reference System
+The Coordinate Reference System, or CRS, tells R where the raster is located in 
+geographic space. It also tells R what method should be used to "flatten" or 
+project the raster in geographic space. 
+ 
+It is important when working with spatial data in a program like R to identify 
+the coordinate reference system applied to the data and retain it throughout data 
+processing and analysis.  Otherwise, data from the same location but saved in 
+different projections will not line up in any GIS or other program.
 
 ## Spatial Extent
-The spatial extent of a spatial object is just how much area does it cover. A
-map of Paris has a smaller spatial extent than a map of all of France.  
+The spatial extent of a spatial object is simply how much area does it cover. For 
+example, a map of Paris has a smaller spatial extent than a map of all of France.  
 
 ### Units
 The units of the extent are defined by the coordinate system that the spatial
-data is in.  
+data is in. A UTM coordinate system is in meters, for example. Geographic coordinate 
+reference systems are in latitude and longitude, which is most often recorded in 
+decimal degrees.
 
 ### Extent in Vector Data
-GRAPHIC FROM COLIN
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" 
+    alt=”The three types of vectors (points, lines, and polygons) are represented 
+    within the given (8,8) spatial extent.”></a>
+    <figcaption>The spatial extent of a shapefile or R spatial object represents 
+    the geographic "edge" or location that is the furthest north, south, east, 
+    and west. Thus it represents the overall geographic coverage of the spatial object.
+    </figcaption>
+</figure>
+
+The spatial extent of a vector dataset is determined by the min and max “X,Y” 
+location of **all** the spatial objects stored in the dataset. The spatial extent 
+of an **individual** object can also be quantified!
+
+Let’s look at the spatial extent of a line shapefile representing roads at the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> NEON Harvard Forest field site</a>.
+
+``` {r vector-extent, fig.cap="Roads at NEON Harvard Forest field site with longitude and latitude labeled on the axes"}
+#load libraries
+library(rgdal)
+library(raster)
+library(ggplot2) #used to plot the vector shapefile
+
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the unzipped download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd)
+
+# import a line shapefile
+lines_HARV <- readOGR(paste0(wd,"NEON-DS-Site-Layout-Files/HARV"), "HARV_roads")
+
+# plot vector shapefile with long and lat on axes
+lines_HARV_df <- fortify(lines_HARV)
+
+ggplot() +
+  geom_path(data=lines_HARV_df, aes(x=long, y=lat, group=group)) +
+  labs(title = "HARV Roads")
+
+# view crs
+crs(lines_HARV)
+
+# view extent
+extent(lines_HARV)
+
+```
+
+The CRS is critical to interpreting the object extent values as it specifies 
+units. In this case the units are in meters.
+
+Learn more about vector data extent and other attributes in the NEON Data Skills Lesson<a href="https://www.neonscience.org/dc-shapefile-attributes-r" target="_blank"> *Explore Shapefile Attributes & Plot Shapefile Objects by Attribute Value in R*</a>.
 
 ### Extent in Raster Data
-The spatial extent of a raster, represents the x,y coordinates of the corners
+The spatial extent of a raster represents the "X,Y" coordinates of the corners
 of the raster in geographic space. This information, in addition to the cell
 size or spatial resolution, tells the program how to place or render each pixel
 in 2 dimensional space.  Tools like `R`, using supporting packages such as
 `rgdal`, and associated raster tools have functions that allow you to view and
 define the extent of a new raster.
 
-``` {r view-extent}
-# View the extent of the raster
-DEM@extent
+``` {r raster-extent, fig.cap="Digital surface model showing continuous elevation of NEON Harvard Forest field site with UTM meters labeled on the x- and y-axes"}
+# load raster
+DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
+# plot raster
+plot(DSM_HARV, main="Digital Surface Model\nNEON Harvard Forest Field Site")
+
+# view crs to determine units
+crs(DSM_HARV)
+
+# view the extent of the raster
+extent(DSM_HARV)
 ```
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
-    <figcaption>The spatial resolution of a raster refers the size of each cell
-    in meters. This size in turn relates to the area on the ground that the pixel
-    represents.</figcaption>
-</figure>
-
-
-<figure>
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_streched_extent.png"
+    alt="The image on the left has an extent of (0,8,0,8) and is less blurry than the image on the right which is stretched to an extent of (0,16,0,16)."></a>
     <figcaption>If you double the extent value of a raster - the pixels will be
     stretched over the larger area making it look more "blury".
     </figcaption>
 </figure>
 
 ### Calculating Raster Extent
-To calculate the extent of a raster, we first need the bottom left x,y
-coordinate of the raster. In
-the case of the UTM coordinate system which is in meters, to calculate
-the raster's extent, we can add the number of columns and rows to the x,y corner
-coordinate location of the raster, multiplied by the resolution (the pixel size)
-of the raster.
+To calculate the extent of a raster, we first need the bottom left "X,Y"
+coordinate of the raster. In the case of the UTM coordinate system which is in 
+meters, to calculate the raster's extent, we can add the number of columns and 
+rows to the "X,Y" corner coordinate location of the raster, multiplied by the 
+resolution (the pixel size) of the raster.
 
-Let's explore that next.
+Let's explore that next, using a blank raster that we create.
 
-``` {r calculate-raster-extent}
-# create a raster from the matrix
+``` {r calculate-raster-extent, fig.cap="16 raster cells in various colors plotted between -180 and 180 on the x-axis and -90 and 90 on the y-axis"}
+# create a "blank" raster from the matrix
 myRaster1 <- raster(nrow=4, ncol=4)
 
-# assign some random data to the raster
+# assign data to the raster
 myRaster1[]<- 1:ncell(myRaster1)
 
 # view attributes of the raster
 myRaster1
 
 # is the CRS defined?
-myRaster1@crs
+crs(myRaster1)
 
 # what are the data extents?
-myRaster1@extent
+extent(myRaster1)
 plot(myRaster1, main="Raster with 16 pixels")
 
 ```
+You will notice the CRS is defined on this new raster. These are the default values 
+for something created with the `raster()` function if nothing is defined.
 
 ## Spatial Resolution
 A raster consists of a series of pixels, each with the same dimensions
@@ -181,51 +274,43 @@ the image represents a 1 m x 1 m area.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"
+    alt=”A grid made up of 5 rows and 6 columns where each one meter by one meter 
+    cell is a different shade of blue.”></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell
     in meters. This size in turn relates to the area on the ground that the pixel
     represents.</figcaption>
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_multiple_resolutions.png">
+     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_multiple_resolutions.png">  
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_multiple_resolutions.png"
+    alt=”Four rasters with the same (8,8) extent. The image on the left is the 
+    most blurry with a resolution of 8 meters. The images get more “crisp” with 
+    4 and 2 meter resolutions and the highest resolution, 1 meter, is the most 
+    “crisp” image on the right.”></a>
     <figcaption>A raster at the same extent with more pixels will have a higher
     resolution (it looks more "crisp"). A raster that is stretched over the same
-    extent with fewer pixels will look more blury and will be of lower resolution.
+    extent with fewer pixels will look more blurry and will be of lower resolution.
     </figcaption>
 </figure>
 
-Let's open up a raster in `R` to see how the attributes are stored.
+Let's open up the `DSM_HARV` raster from above to see the attributes including extent 
+and resolution.
 
 ``` {r raster-attributes}
-#load raster library
-library(raster)
-library(rgdal)
-
-# Load raster in an R object called 'DEM'
-DEM <- raster("DigitalTerrainModel/SJER2013_DTM.tif")  
-
-# View raster attributes
-DEM
+# view raster attributes
+DSM_HARV
 
 ```
 
-Notice that this raster (in GeoTIFF format) already has defined:
+Notice that this raster (in GeoTIFF format) has defined:
 
 * extent
 * resolution (1 in both x and y directions), and
-* CRS (units in meters).
+* CRS (units in meters)
 
+For more on the relationship between extent & resolution, check out:
+* <a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank">*Introduction to Working with Raster Data in `R`*</a>  
+* <a href="https://www.neonscience.org/raster-res-extent-pixels-r/" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in `R`*</a>
 
-For more on the relationship between extent & resolution, visit
-
-http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/
-
-***
-***
-
-##Additional Resources
-
-ESRI help on CRS
-QGIS help on CRS
-NCEAS cheatsheets
