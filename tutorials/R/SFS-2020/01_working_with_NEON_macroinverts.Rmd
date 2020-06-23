@@ -32,6 +32,7 @@ the RStudio IDE to work with R.
 
 ### R Packages to Install
 Prior to starting the tutorial ensure that the following packages are installed. 
+
 * **tidyverse:** `install.packages("tidyverse")`
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **vegan:** `install.packages("vegan")`
@@ -273,8 +274,8 @@ table_observation_cleaned %>%
   ggplot(aes(n_taxa, taxonRank)) +
   facet_wrap(~ domainID + siteID) +
   geom_col()
-
-
+```
+```{r long-data-2}
 # library(scales)
 # sum densities by order for each sampleID
 table_observation_by_order <- 
@@ -303,7 +304,8 @@ table_observation_by_order %>%
     theme(axis.text.x = 
               element_text(angle = 45, hjust = 1))
 
-
+```
+```{r long-data-3}
 # faceted densities plot
 table_observation_by_order %>%
   ggplot(aes(
@@ -424,7 +426,6 @@ vegetarian::d(
   q = 1, 
   lev = "alpha")
 
-
 ```
 
 ## Comparing orders of q for NEON data
@@ -434,7 +435,7 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
 ```{r compare-q-NEON}
 
 # Nest data by siteID
-data_nested_by_siteID <- table_sample_by_taxon_density_wide %>% 
+data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
   tibble::rownames_to_column("sampleID") %>%
   left_join(table_sample_info %>% 
                 select(sampleID, siteID)) %>%
