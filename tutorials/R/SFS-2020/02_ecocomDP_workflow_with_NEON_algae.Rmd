@@ -20,8 +20,8 @@ urlTitle: aquatic-diversity-algae
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* Download NEON algae data.
-* Use the ecocomDP package to analyze biodiversity metrics
+* Use the ecocomDP package to download NEON algae data.
+* Analyze biodiversity metrics using the `vegan` package
 
 ## Things You’ll Need To Complete This Tutorial
 
