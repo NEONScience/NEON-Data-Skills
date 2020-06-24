@@ -716,25 +716,16 @@ function that acts on each data column of interest, which we've determined above
 # Aggregate water quality data columns to 30 minute intervals, taking the mean
 # of non-NA values within each 30-minute period. We explain each step in the 
 # dplyr piping operation as code comments:
-waq_mean_30min_down <- waq_down %>% # pass the downstream data frame to the next function
+waq_30min_down <- waq_down %>% # pass the downstream data frame to the next function
               # padr's thicken function adds a new column, roundedTime, that shows the closest 30 min timestamp to
               # to a given observation in time
               padr::thicken(interval = "30 min",by = "endDateTime",colname = "roundedTime",rounding = "down") %>%
               # In 1-min data, there should now be sets of 30 corresponding to each 30-minute roundedTime
               #  We use dplyr to group data by unique roundedTime values, and summarise each 30-min group
-              #  by the the mean, for all data columns provided in waq_strm_cols
-              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(waq_strm_cols), mean, na.rm = TRUE)
+              #  by the the mean, for all data columns provided in waq_strm_cols and waq_final_qf_cols
+              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(waq_strm_cols, waq_final_qf_cols), mean, na.rm = TRUE)
 
-# Aggregate waq's quality flags to 30 minutes by selecting the maximum quality flag value
-waq_finalqf_30min_down <- waq_down %>% 
-              padr::thicken(interval = "30 min",by = "endDateTime",colname = "roundedTime") %>%
-              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(waq_final_qf_cols), max, na.rm = TRUE)
-
-
-# Merge water quality's time-averaged data with the time-aggregated quality flags:
-waq_30min_down <- base::merge(waq_mean_30min_down,waq_finalqf_30min_down,by = "roundedTime")
-View(waq_30min_down)
-
+# Rather than binary values, quality flags are more like "quality metrics", defining the fraction of data flagged within an aggregation interval.
 
 ```
 Now, we have a new dataframe for water quality data and associated final quality
