@@ -238,7 +238,10 @@ plot(alg_spec_accum_result)
 
 ## Compare Observed and Simulated species accumulation curves
 
-```{r compare-obs-sim-SAC, eval=F, comment=NA}
+```{r compare-obs-sim-SAC}
+
+# Load the 'vegan' package to ensue the lines below will work
+library(vegan)
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(

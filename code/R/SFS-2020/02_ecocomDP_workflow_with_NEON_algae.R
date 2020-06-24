@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA---------------------------
+## ----load libraries, eval=F, comment=NA------------------------------------------------------------
 
 # clean out workspace
 
@@ -23,7 +23,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert-----------------------------------------
+## ----download-macroinvert--------------------------------------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -40,7 +40,7 @@ my_search_result_data <-
 
 
 
-## ----view-ecocomDP-str--------------------------------------------
+## ----view-ecocomDP-str-----------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_search_result_data %>% names()
@@ -51,7 +51,7 @@ my_search_result_data$DP1.20120.001$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP----------------------------------------------
+## ----search-ecocomDP-------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -60,7 +60,7 @@ View(my_search_result)
 
 
 
-## ----download-plankton--------------------------------------------
+## ----download-plankton-----------------------------------------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -90,7 +90,7 @@ my_search_result_data[[1]]$tables$observation$unit %>%
 
 
 
-## ----join-obs-taxon-----------------------------------------------
+## ----join-obs-taxon--------------------------------------------------------------------------------
 
 # join observations with taxon info
 alg_observations_with_taxa <- my_search_result_data[[1]]$tables$observation %>%
@@ -103,7 +103,7 @@ alg_observations_with_taxa %>% head()
 
 
 
-## ----plot-taxon-rank----------------------------------------------
+## ----plot-taxon-rank-------------------------------------------------------------------------------
 
 # which taxon rank is most common
 alg_observations_with_taxa %>%
@@ -112,7 +112,7 @@ alg_observations_with_taxa %>%
 
 
 
-## ----SAC-1--------------------------------------------------------
+## ----SAC-1-----------------------------------------------------------------------------------------
 
 # convert densities from per m2 to per cm2
 alg_dens_long <- alg_observations_with_taxa %>%
@@ -135,7 +135,10 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC, eval=F, comment=NA----------------------
+## ----compare-obs-sim-SAC---------------------------------------------------------------------------
+
+# Load the 'vegan' package to ensue the lines below will work
+library(vegan)
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
