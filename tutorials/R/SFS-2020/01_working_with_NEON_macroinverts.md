@@ -1,7 +1,7 @@
 ---
 syncID: e0778998a7ea4b7c93da38a364d12a65
 title: "Explore and work with NEON biodiversity data from aquatic ecosystems"
-description: "Download and explore NEON macroinvertibrate data. This includes instruction on how to convert to long and wide tables, as well as an exploration of alpha, beta, and gamma diversity from Jost (2007)."
+description: "Download and explore NEON macroinvertebrate data. This includes instruction on how to convert to long and wide tables, as well as an exploration of alpha, beta, and gamma diversity from Jost (2007)."
 dateCreated: 2020-06-22
 authors: Eric R. Sokol
 contributors: Donal O'Leary
@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct:
 code1: R/SFS-2020/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
-urlTitle: aquatic-diversity-macroinvertibrates
+urlTitle: aquatic-diversity-macroinvertebrates
 ---
 
 <div id="ds-objectives" markdown="1">
@@ -20,7 +20,7 @@ urlTitle: aquatic-diversity-macroinvertibrates
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* Download NEON macroinvertibrate data.
+* Download NEON macroinvertebrate data.
 * Organize those data into long and wide tables.
 * Calculate alpha, beta, and gamma diversity following Jost (2007).
 
@@ -43,7 +43,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 </div>
 
 ## Introduction
-Biodiversity is an popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertibrate Collection data</a>.
+Biodiversity is an popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.
 
 This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science"> Society for Freshwater Science 2020 "Summer of Science" </a> program.
 
@@ -67,8 +67,8 @@ There are also two optional sections in this code chunk: clearing your environme
     # source("my_neon_token.R") # OPTIONAL - load NEON token
     # See: https://www.neonscience.org/neon-api-tokens-tutorial
 
-## Download NEON Macroinvertibrate Data
-Now that the workspace is prepared, we will download NEON macroinvertibrate data using the neonUtilities function `loadByProduct()`.
+## Download NEON Macroinvertebrate Data
+Now that the workspace is prepared, we will download NEON macroinvertebrate data using the neonUtilities function `loadByProduct()`.
 
 
     # Macroinvert dpid
@@ -85,11 +85,11 @@ Now that the workspace is prepared, we will download NEON macroinvertibrate data
       check.size = F)
 
     ## Finding available files
-    ##   |                                                                   |                                                           |   0%  |                                                                   |=                                                          |   2%  |                                                                   |==                                                         |   4%  |                                                                   |===                                                        |   6%  |                                                                   |=====                                                      |   8%  |                                                                   |======                                                     |  10%  |                                                                   |=======                                                    |  12%  |                                                                   |========                                                   |  13%  |                                                                   |=========                                                  |  15%  |                                                                   |==========                                                 |  17%  |                                                                   |===========                                                |  19%  |                                                                   |============                                               |  21%  |                                                                   |==============                                             |  23%  |                                                                   |===============                                            |  25%  |                                                                   |================                                           |  27%  |                                                                   |=================                                          |  29%  |                                                                   |==================                                         |  31%  |                                                                   |===================                                        |  33%  |                                                                   |====================                                       |  35%  |                                                                   |======================                                     |  37%  |                                                                   |=======================                                    |  38%  |                                                                   |========================                                   |  40%  |                                                                   |=========================                                  |  42%  |                                                                   |==========================                                 |  44%  |                                                                   |===========================                                |  46%  |                                                                   |============================                               |  48%  |                                                                   |==============================                             |  50%  |                                                                   |===============================                            |  52%  |                                                                   |================================                           |  54%  |                                                                   |=================================                          |  56%  |                                                                   |==================================                         |  58%  |                                                                   |===================================                        |  60%  |                                                                   |====================================                       |  62%  |                                                                   |=====================================                      |  63%  |                                                                   |=======================================                    |  65%  |                                                                   |========================================                   |  67%  |                                                                   |=========================================                  |  69%  |                                                                   |==========================================                 |  71%  |                                                                   |===========================================                |  73%  |                                                                   |============================================               |  75%  |                                                                   |=============================================              |  77%  |                                                                   |===============================================            |  79%  |                                                                   |================================================           |  81%  |                                                                   |=================================================          |  83%  |                                                                   |==================================================         |  85%  |                                                                   |===================================================        |  87%  |                                                                   |====================================================       |  88%  |                                                                   |=====================================================      |  90%  |                                                                   |======================================================     |  92%  |                                                                   |========================================================   |  94%  |                                                                   |=========================================================  |  96%  |                                                                   |========================================================== |  98%  |                                                                   |===========================================================| 100%
-    ## 
+    ##   |                                                                        |                                                                |   0%  |                                                                        |=                                                               |   2%  |                                                                        |==                                                              |   4%  |                                                                        |====                                                            |   6%  |                                                                        |=====                                                           |   8%  |                                                                        |======                                                          |  10%  |                                                                        |=======                                                         |  12%  |                                                                        |=========                                                       |  13%  |                                                                        |==========                                                      |  15%  |                                                                        |===========                                                     |  17%  |                                                                        |============                                                    |  19%  |                                                                        |==============                                                  |  21%  |                                                                        |===============                                                 |  23%  |                                                                        |================                                                |  25%  |                                                                        |=================                                               |  27%  |                                                                        |==================                                              |  29%  |                                                                        |====================                                            |  31%  |                                                                        |=====================                                           |  33%  |                                                                        |======================                                          |  35%  |                                                                        |=======================                                         |  37%  |                                                                        |=========================                                       |  38%  |                                                                        |==========================                                      |  40%  |                                                                        |===========================                                     |  42%  |                                                                        |============================                                    |  44%  |                                                                        |==============================                                  |  46%  |                                                                        |===============================                                 |  48%  |                                                                        |================================                                |  50%  |                                                                        |=================================                               |  52%  |                                                                        |==================================                              |  54%  |                                                                        |====================================                            |  56%  |                                                                        |=====================================                           |  58%  |                                                                        |======================================                          |  60%  |                                                                        |=======================================                         |  62%  |                                                                        |=========================================                       |  63%  |                                                                        |==========================================                      |  65%  |                                                                        |===========================================                     |  67%  |                                                                        |============================================                    |  69%  |                                                                        |==============================================                  |  71%  |                                                                        |===============================================                 |  73%  |                                                                        |================================================                |  75%  |                                                                        |=================================================               |  77%  |                                                                        |==================================================              |  79%  |                                                                        |====================================================            |  81%  |                                                                        |=====================================================           |  83%  |                                                                        |======================================================          |  85%  |                                                                        |=======================================================         |  87%  |                                                                        |=========================================================       |  88%  |                                                                        |==========================================================      |  90%  |                                                                        |===========================================================     |  92%  |                                                                        |============================================================    |  94%  |                                                                        |==============================================================  |  96%  |                                                                        |=============================================================== |  98%  |                                                                        |================================================================| 100%
+    ## No basic package files found for site POSE and month 2019-10
     ## Downloading files totaling approximately 1.9 MiB
-    ## Downloading 52 files
-    ##   |                                                                   |                                                           |   0%  |                                                                   |=                                                          |   2%  |                                                                   |==                                                         |   4%  |                                                                   |===                                                        |   6%  |                                                                   |=====                                                      |   8%  |                                                                   |======                                                     |  10%  |                                                                   |=======                                                    |  12%  |                                                                   |========                                                   |  14%  |                                                                   |=========                                                  |  16%  |                                                                   |==========                                                 |  18%  |                                                                   |============                                               |  20%  |                                                                   |=============                                              |  22%  |                                                                   |==============                                             |  24%  |                                                                   |===============                                            |  25%  |                                                                   |================                                           |  27%  |                                                                   |=================                                          |  29%  |                                                                   |===================                                        |  31%  |                                                                   |====================                                       |  33%  |                                                                   |=====================                                      |  35%  |                                                                   |======================                                     |  37%  |                                                                   |=======================                                    |  39%  |                                                                   |========================                                   |  41%  |                                                                   |=========================                                  |  43%  |                                                                   |===========================                                |  45%  |                                                                   |============================                               |  47%  |                                                                   |=============================                              |  49%  |                                                                   |==============================                             |  51%  |                                                                   |===============================                            |  53%  |                                                                   |================================                           |  55%  |                                                                   |==================================                         |  57%  |                                                                   |===================================                        |  59%  |                                                                   |====================================                       |  61%  |                                                                   |=====================================                      |  63%  |                                                                   |======================================                     |  65%  |                                                                   |=======================================                    |  67%  |                                                                   |========================================                   |  69%  |                                                                   |==========================================                 |  71%  |                                                                   |===========================================                |  73%  |                                                                   |============================================               |  75%  |                                                                   |=============================================              |  76%  |                                                                   |==============================================             |  78%  |                                                                   |===============================================            |  80%  |                                                                   |=================================================          |  82%  |                                                                   |==================================================         |  84%  |                                                                   |===================================================        |  86%  |                                                                   |====================================================       |  88%  |                                                                   |=====================================================      |  90%  |                                                                   |======================================================     |  92%  |                                                                   |========================================================   |  94%  |                                                                   |=========================================================  |  96%  |                                                                   |========================================================== |  98%  |                                                                   |===========================================================| 100%
+    ## Downloading 51 files
+    ##   |                                                                        |                                                                |   0%  |                                                                        |=                                                               |   2%  |                                                                        |===                                                             |   4%  |                                                                        |====                                                            |   6%  |                                                                        |=====                                                           |   8%  |                                                                        |======                                                          |  10%  |                                                                        |========                                                        |  12%  |                                                                        |=========                                                       |  14%  |                                                                        |==========                                                      |  16%  |                                                                        |============                                                    |  18%  |                                                                        |=============                                                   |  20%  |                                                                        |==============                                                  |  22%  |                                                                        |===============                                                 |  24%  |                                                                        |=================                                               |  26%  |                                                                        |==================                                              |  28%  |                                                                        |===================                                             |  30%  |                                                                        |====================                                            |  32%  |                                                                        |======================                                          |  34%  |                                                                        |=======================                                         |  36%  |                                                                        |========================                                        |  38%  |                                                                        |==========================                                      |  40%  |                                                                        |===========================                                     |  42%  |                                                                        |============================                                    |  44%  |                                                                        |=============================                                   |  46%  |                                                                        |===============================                                 |  48%  |                                                                        |================================                                |  50%  |                                                                        |=================================                               |  52%  |                                                                        |===================================                             |  54%  |                                                                        |====================================                            |  56%  |                                                                        |=====================================                           |  58%  |                                                                        |======================================                          |  60%  |                                                                        |========================================                        |  62%  |                                                                        |=========================================                       |  64%  |                                                                        |==========================================                      |  66%  |                                                                        |============================================                    |  68%  |                                                                        |=============================================                   |  70%  |                                                                        |==============================================                  |  72%  |                                                                        |===============================================                 |  74%  |                                                                        |=================================================               |  76%  |                                                                        |==================================================              |  78%  |                                                                        |===================================================             |  80%  |                                                                        |====================================================            |  82%  |                                                                        |======================================================          |  84%  |                                                                        |=======================================================         |  86%  |                                                                        |========================================================        |  88%  |                                                                        |==========================================================      |  90%  |                                                                        |===========================================================     |  92%  |                                                                        |============================================================    |  94%  |                                                                        |=============================================================   |  96%  |                                                                        |=============================================================== |  98%  |                                                                        |================================================================| 100%
     ## 
     ## Unpacking zip files using 1 cores.
     ## Stacking operation across a single core.
@@ -100,7 +100,7 @@ Now that the workspace is prepared, we will download NEON macroinvertibrate data
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 1.109177 secs
+    ## Stacking took 1.028056 secs
     ## All unzipped monthly data folders have been removed.
 
 ## Macroinvertebrate Data Munging
@@ -329,7 +329,9 @@ Next, we will perform several operations in a row to re-organize our data. Each 
       distinct() %>%
       group_by(acceptedTaxonID) %>%
       summarize(occurrences = n())
-    
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
     # filter out taxa that are only observed 1 or 2 times
     taxa_list_cleaned <- taxa_occurrence_summary %>%
       filter(occurrences > 2)
@@ -355,7 +357,9 @@ Next, we will perform several operations in a row to re-organize our data. Each 
         sample_count = sampleID %>% unique() %>% length(),
         habitat_count = habitatType %>% 
             unique() %>% length())
-    
+
+    ## `summarise()` regrouping output by 'siteID', 'year' (override with `.groups` argument)
+
     View(sampling_effort_summary)
 
 ## Working with 'Long' data
@@ -374,6 +378,8 @@ For this first step, we will use data in a 'long' table:
       facet_wrap(~ domainID + siteID) +
       geom_col()
 
+    ## `summarise()` regrouping output by 'domainID', 'siteID' (override with `.groups` argument)
+
 ![ ]({{ site.baseurl }}/images/rfigs/R/SFS-2020/01_working_with_NEON_macroinverts/long-data-1.png)
 
     # library(scales)
@@ -384,22 +390,22 @@ For this first step, we will use data in a 'long' table:
         group_by(domainID, siteID, year, 
                  eventID, sampleID, habitatType, order) %>%
         summarize(order_dens = sum(inv_dens, na.rm = TRUE))
-      
-      
+
+    ## `summarise()` regrouping output by 'domainID', 'siteID', 'year', 'eventID', 'sampleID', 'habitatType' (override with `.groups` argument)
+
     # rank occurrence by order
     table_observation_by_order %>% head()
 
     ## # A tibble: 6 x 8
-    ## # Groups:   domainID, siteID, year, eventID, sampleID, habitatType
-    ## #   [2]
-    ##   domainID siteID  year eventID sampleID habitatType order order_dens
-    ##   <chr>    <chr>  <dbl> <chr>   <chr>    <chr>       <chr>      <dbl>
-    ## 1 D02      POSE    2014 POSE.2… POSE.20… riffle      Cole…      516. 
-    ## 2 D02      POSE    2014 POSE.2… POSE.20… riffle      Ephe…     5172. 
-    ## 3 D02      POSE    2014 POSE.2… POSE.20… riffle      Odon…      129. 
-    ## 4 D02      POSE    2014 POSE.2… POSE.20… riffle      Plec…     1290. 
-    ## 5 D02      POSE    2014 POSE.2… POSE.20… riffle      Tric…     8839. 
-    ## 6 D02      POSE    2014 POSE.2… POSE.20… pool        Coll…       34.9
+    ## # Groups:   domainID, siteID, year, eventID, sampleID, habitatType [2]
+    ##   domainID siteID  year eventID   sampleID   habitatType order  order_dens
+    ##   <chr>    <chr>  <dbl> <chr>     <chr>      <chr>       <chr>       <dbl>
+    ## 1 D02      POSE    2014 POSE.201… POSE.2014… riffle      Coleo…      516. 
+    ## 2 D02      POSE    2014 POSE.201… POSE.2014… riffle      Ephem…     5172. 
+    ## 3 D02      POSE    2014 POSE.201… POSE.2014… riffle      Odona…      129. 
+    ## 4 D02      POSE    2014 POSE.201… POSE.2014… riffle      Pleco…     1290. 
+    ## 5 D02      POSE    2014 POSE.201… POSE.2014… riffle      Trich…     8839. 
+    ## 6 D02      POSE    2014 POSE.201… POSE.2014… pool        Colle…       34.9
 
     # stacked rank occurrence plot
     table_observation_by_order %>%
@@ -414,6 +420,8 @@ For this first step, we will use data in a 'long' table:
         geom_col() +
         theme(axis.text.x = 
                   element_text(angle = 45, hjust = 1))
+
+    ## `summarise()` regrouping output by 'order' (override with `.groups` argument)
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/SFS-2020/01_working_with_NEON_macroinverts/long-data-2-1.png)
 
@@ -599,12 +607,11 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
     diversity_partitioning_results %>% select(-data) %>% print()
 
     ## # A tibble: 3 x 8
-    ##   siteID n_samples alpha_q0 alpha_q1 beta_q0 beta_q1 gamma_q0
-    ##   <chr>      <int>    <dbl>    <dbl>   <dbl>   <dbl>    <dbl>
-    ## 1 POSE          77     37.5    14.7     6.89    6.43      258
-    ## 2 MAYF          95     22.4     9.60    9.18    6.62      206
-    ## 3 ARIK          95     23.2     8.34    8.09    5.99      188
-    ## # … with 1 more variable: gamma_q1 <dbl>
+    ##   siteID n_samples alpha_q0 alpha_q1 beta_q0 beta_q1 gamma_q0 gamma_q1
+    ##   <chr>      <int>    <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl>
+    ## 1 POSE          77     37.5    14.7     6.89    6.43      258     94.8
+    ## 2 MAYF          95     22.4     9.60    9.18    6.62      206     63.6
+    ## 3 ARIK          95     23.2     8.34    8.09    5.99      188     50.0
 
     # Note that POSE has the highest mean diversity
 
@@ -621,36 +628,39 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.2140863 
-    ## Run 1 stress 0.2215938 
-    ## Run 2 stress 0.2184402 
-    ## Run 3 stress 0.2162011 
-    ## Run 4 stress 0.2274843 
-    ## Run 5 stress 0.2147134 
-    ## Run 6 stress 0.2216115 
-    ## Run 7 stress 0.21148 
+    ## Run 1 stress 0.2245221 
+    ## Run 2 stress 0.2246011 
+    ## Run 3 stress 0.2134025 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02259628  max resid 0.1631501 
-    ## Run 8 stress 0.2361344 
-    ## Run 9 stress 0.2195116 
-    ## Run 10 stress 0.2201266 
-    ## Run 11 stress 0.2354849 
-    ## Run 12 stress 0.2239208 
-    ## Run 13 stress 0.2403767 
-    ## Run 14 stress 0.2363857 
-    ## Run 15 stress 0.2397343 
-    ## Run 16 stress 0.23507 
-    ## Run 17 stress 0.2176873 
-    ## Run 18 stress 0.2399014 
-    ## Run 19 stress 0.2126425 
-    ## Run 20 stress 0.2225469 
+    ## ... Procrustes: rmse 0.0168205  max resid 0.1560926 
+    ## Run 4 stress 0.2211913 
+    ## Run 5 stress 0.2202788 
+    ## Run 6 stress 0.2127887 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.02296093  max resid 0.1707601 
+    ## Run 7 stress 0.2219338 
+    ## Run 8 stress 0.2134598 
+    ## Run 9 stress 0.2319474 
+    ## Run 10 stress 0.2391925 
+    ## Run 11 stress 0.2232607 
+    ## Run 12 stress 0.2111607 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.01525215  max resid 0.1753431 
+    ## Run 13 stress 0.2129871 
+    ## Run 14 stress 0.2346686 
+    ## Run 15 stress 0.2128329 
+    ## Run 16 stress 0.2127144 
+    ## Run 17 stress 0.2185853 
+    ## Run 18 stress 0.2248215 
+    ## Run 19 stress 0.2408272 
+    ## Run 20 stress 0.2135749 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##      1: no. of iterations >= maxit
-    ##     19: stress ratio > sratmax
+    ##     20: stress ratio > sratmax
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.21148
+    ## [1] 0.2111607
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
@@ -669,50 +679,50 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
     ##                  sampleID     NMDS1       NMDS2 domainID siteID
-    ## 1  POSE.20150721.SURBER.1 1.2526395 -0.80664111      D02   POSE
-    ## 2 ARIK.20160919.KICKNET.3 1.0326995  0.03644715      D10   ARIK
-    ## 3 ARIK.20160919.KICKNET.4 0.9321672  0.57728048      D10   ARIK
-    ## 4    ARIK.20160919.CORE.3 0.8955273 -0.13833915      D10   ARIK
-    ## 5   ARIK.20140714.CORER.3 0.8273678 -0.23831463      D10   ARIK
-    ## 6 ARIK.20140714.KICKNET.3 0.8214610 -0.31231552      D10   ARIK
+    ## 1  POSE.20150721.SURBER.1 1.3743286 -0.43463441      D02   POSE
+    ## 2 ARIK.20150325.KICKNET.4 0.9556392  0.13545097      D10   ARIK
+    ## 3  POSE.20150330.SURBER.1 0.9518940 -0.89465703      D02   POSE
+    ## 4 ARIK.20160919.KICKNET.3 0.9474648 -0.24925412      D10   ARIK
+    ## 5    ARIK.20160919.CORE.3 0.8662992 -0.07417163      D10   ARIK
+    ## 6 ARIK.20140714.KICKNET.3 0.8342681 -0.12539891      D10   ARIK
     ##    namedLocation         collectDate       eventID year habitatType
     ## 1 POSE.AOS.reach 2015-07-21 14:43:00 POSE.20150721 2015      riffle
-    ## 2 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
-    ## 3 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
-    ## 4 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016        pool
-    ## 5 ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014        pool
+    ## 2 ARIK.AOS.reach 2015-03-25 17:15:00 ARIK.20150325 2015         run
+    ## 3 POSE.AOS.reach 2015-03-30 14:30:00 POSE.20150330 2015      riffle
+    ## 4 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
+    ## 5 ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016        pool
     ## 6 ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run
     ##       samplerType benthicArea          inv_dens_unit
     ## 1          surber       0.093 count per square meter
     ## 2 modifiedKicknet       0.250 count per square meter
-    ## 3 modifiedKicknet       0.250 count per square meter
-    ## 4            core       0.006 count per square meter
+    ## 3          surber       0.093 count per square meter
+    ## 4 modifiedKicknet       0.250 count per square meter
     ## 5            core       0.006 count per square meter
     ## 6 modifiedKicknet       0.250 count per square meter
 
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
-    ##                   sampleID      NMDS1      NMDS2 domainID siteID
-    ## 262   MAYF.20160321.CORE.3 -0.8818170  0.1560722      D08   MAYF
-    ## 263 POSE.20161031.SURBER.4 -0.8925151 -0.2455766      D02   POSE
-    ## 264   MAYF.20180726.CORE.2 -1.0292043  0.6692625      D08   MAYF
-    ## 265   MAYF.20150324.SNAG.3 -1.1260758 -0.2365733      D08   MAYF
-    ## 266   MAYF.20180326.CORE.3 -1.1740894 -0.1095106      D08   MAYF
-    ## 267   MAYF.20141114.SNAG.2 -1.2888721 -1.0985501      D08   MAYF
-    ##      namedLocation         collectDate       eventID year
-    ## 262 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
-    ## 263 POSE.AOS.reach 2016-10-31 14:01:00 POSE.20161031 2016
-    ## 264 MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018
-    ## 265 MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015
-    ## 266 MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018
-    ## 267 MAYF.AOS.reach 2014-11-14 16:30:00 MAYF.20141114 2014
-    ##     habitatType samplerType benthicArea          inv_dens_unit
-    ## 262         run        core       0.006 count per square meter
-    ## 263      riffle      surber       0.093 count per square meter
-    ## 264         run        core       0.006 count per square meter
-    ## 265         run        snag       0.076 count per square meter
-    ## 266         run        core       0.006 count per square meter
-    ## 267      riffle        snag       0.106 count per square meter
+    ##                 sampleID      NMDS1       NMDS2 domainID siteID
+    ## 262 MAYF.20160321.CORE.3 -0.8620632 -0.06043082      D08   MAYF
+    ## 263 MAYF.20170314.CORE.1 -0.9262263  1.33587827      D08   MAYF
+    ## 264 MAYF.20160321.CORE.2 -0.9920043  1.01820649      D08   MAYF
+    ## 265 MAYF.20150324.SNAG.3 -1.0104669 -0.47952807      D08   MAYF
+    ## 266 MAYF.20180326.CORE.3 -1.0948834 -0.32808490      D08   MAYF
+    ## 267 MAYF.20180726.CORE.2 -1.1157312  0.41172152      D08   MAYF
+    ##      namedLocation         collectDate       eventID year habitatType
+    ## 262 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run
+    ## 263 MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run
+    ## 264 MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run
+    ## 265 MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015         run
+    ## 266 MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018         run
+    ## 267 MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018         run
+    ##     samplerType benthicArea          inv_dens_unit
+    ## 262        core       0.006 count per square meter
+    ## 263        core       0.006 count per square meter
+    ## 264        core       0.006 count per square meter
+    ## 265        snag       0.076 count per square meter
+    ## 266        core       0.006 count per square meter
+    ## 267        core       0.006 count per square meter
 
     # Plot samples in community composition space by year
     nmds_scores %>%
