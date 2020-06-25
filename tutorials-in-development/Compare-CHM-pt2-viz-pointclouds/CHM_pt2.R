@@ -95,13 +95,15 @@ plots_LAS <-
                    xright = (top_left$X + 40), ytop = (top_left$Y))
 
 
-
+plot(plots_LAS[[1]])
 
 #PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
 
 ## make tree plots
 
 #x = plot(WREF_LAS)
+
+
 
 for(i in 1:length(plots_LAS)){
   
