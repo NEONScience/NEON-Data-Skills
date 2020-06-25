@@ -1,19 +1,18 @@
 ---
-title: "Baseplot Structural Diversity Tutorial"
+title: "Baseplot Woody Vegetation 01: Strutural Diversity Tutorial"
 code1: null
 contributors: null
 dataProduct: DP1.30003.001
 dateCreated: '2020-05-22'
-description: This tutorial will show how to calculate structural diversity metrics
-  for all baseplots at a NEON site.
+description: This tutorial will show how to calculate structural diversity metrics for all baseplots at a NEON site.
 estimatedTime: null
 languagesTool: R
 packagesLibraries: sp, raster, lidR, rgdal, downloader, httr, jsonlite, plyr, dplyr
 syncID: null
 authors: Maxwell J. Burner
 topics: NEON study plots, API calls, liDAR
-tutorialSeries: R-liDAR
-urlTitle: baseplot-structural-diversity-metrics
+tutorialSeries: baseplot_woody-vegetation
+urlTitle: baseplot-wv-strutural-diversity
 ---
 
 This tutorial will show you how to calculate structural diversity metrics for all distributed baseplots at a NEON site.
@@ -432,6 +431,8 @@ PRODUCTCODE <- 'DP1.30003.001'
 
 Getting API information on specific files will also require us to select a date. Since we want the most up-to-date information, we make a call to the *sites/* endpoint to figure out the most recent month for which liDAR pointcloud data is available. liDAR point clouds are NEON data product DP1.30003.001
 
+Of course, there is the possibility that the data product is not collected at the site we chose. In this case, there will be no available months of data. If that happens, we'll have to start over with another site.
+
 ```{r get_most_recent_date}
 #Make site request to get most recent date for which data is available
 
@@ -442,12 +443,23 @@ site_data <- fromJSON(content(site_req, as = 'text'), flatten = T, simplifyDataF
 
 #Get the most recent month for which data is available
 dates <- site_data$dataProducts[site_data$dataProducts$dataProductCode == PRODUCTCODE,]$availableMonths
-DATE <- dates[[1]][length(dates[[1]])]
+
+
+if(length(dates) == 0){
+  print('This data product not available at selected site')
+}else{
+  DATE <- dates[[1]][length(dates[[1]])]
+}
+
+
 
 
 #Remove site request
 rm(site_req, site_data, dates)
 ```
+
+
+
 
 Now we can request information on specific data files using the *data/* endpoint.
 

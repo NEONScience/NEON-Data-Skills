@@ -93,7 +93,7 @@ for (files in rmd.files) {
     dir.create(tut_temp_dir, recursive = TRUE)
     print("Tutorial temp directory created!")
   }
-
+  
   tut_temp_img_path <- file.path(tut_temp_dir,"rfigs")
   
   if (file.exists(tut_temp_img_path)){
@@ -156,7 +156,7 @@ for (files in rmd.files) {
   
   ################# Clean out Dirs  #################
   unlink(paste0(tut_temp_dir,"/*"), recursive = TRUE)
-
+  
   # print when file is knit
   print(paste0("processed: ",files))
   

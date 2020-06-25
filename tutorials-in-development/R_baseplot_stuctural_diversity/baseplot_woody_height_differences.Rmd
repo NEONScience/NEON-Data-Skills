@@ -1,0 +1,531 @@
+---
+title: "Bseplot Woody Vegetation 03: Height Differences Tutorial"
+code1: null
+contributors: null
+dataProduct: DP1.10098.001
+dateCreated: '2020-06-08'
+description: This tutorial will show how to calculate differences between CHM measured tree height and ground measured tree height for each plot in a NEON site
+estimatedTime: null
+languagesTool: R
+packagesLibraries: sp, raster, devtools, neonUtilities, geoNeon
+syncID: null
+authors: Maxwell J. Burner
+topics: NEON study plots, API calls, plant diversity, liDAR
+tutorialSeries: baseplot-woody-vegetation
+urlTitle: baseplot-wv-height-differences
+---
+
+
+This tutorial will show you how draw on data NEON Woody Plant Vegetation Structure data to to assess how measured heights of trees in NEON baseplots differs between AOP measurements and TOS measurements in different distributed baseplots of a NEON site.
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Use neonUtilities to get the most up-to-date data on woody vegetation diversity for any NEON site
+* USe geoNEON to get Canopy Height Model data for Neon Sites
+* Obtain tree location data, and use it to extract CHM data on specific trees in a NEON sampling plot
+* Examine tree-by-tree and plot-by-plot differences between tree height values measured by terrestrial observation teams and tree height values measured by aerial observation photography.
+
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+
+* **sp:** `install.packages("sp")`
+* **raster:** `install.packages("raster")`
+* **devtools:** `install.packages("devtools")`
+* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+This tutorial will teach you how to download data directly from the NEON data 
+portal.  This example data set is provided as an optional download and a backup. 
+
+#### NEON Teaching Data Subset: Discrete Return LiDAR Point Cloud
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 017 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.30003.001, Discrete return LiDAR poitn cloud. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+**Important: This is a provisional data link. It currently points to files not related to this project.**
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+In this tutorial we will continue to use the apparent individual data from NEONS's woody plant vegetation structure product (DP1.10098.001) to expand our dataframe for comparing vegetation structure between NEON baseplots. Our dataframe at this point has both Terrestrial Observation Sampling data (TOS) and Airborne Observational Photography data (AOP). Both of the particualr data products being used include measurements of tree height. 
+
+As discussed in the NEON tutorial [Comparing Tree Height Measured from the Ground to a liDAR-based Canopy Model](https://www.neonscience.org/tree-heights-veg-structure-chm), measurements of tree height by gorund-base observers (TOS data) tend to differ from measurements taken using liDAR (AOP data), often in a predictable manner. This raises the question of whether the numerical relationship between ground-measured tree height and canopy-model tree height could differ between baseplots due to differences in vegetation structure. To assess this, we will expand our vegetation structure dataframe by adding mean plot difference between ground measurements and canopy-model estimates of tree height.
+
+```{r load_libraries}
+library(sp)
+library(raster)
+library(neonUtilities)
+library(geoNEON)
+```
+
+
+## Getting all the Data
+
+### Getting TOS Data with NEON Utilities
+As with the previous tutorial, we will use the neonUtilities library's *loadByProduct* to download data for Woody Plant Vegetation Structure. This time however, we will also use the *getLocTOS* function to get spatial data on named locations from the mapping and tagging data.
+
+For ths tutorial we will use data from the Lower Teakettle site.
+
+```{r neonUtilties_downloads}
+#Get woody vegetation product data and location data
+SITECODE <- 'HARV'
+
+  #Use neonUtilities to get woody plant vegetaton data
+veglist <- loadByProduct(dpID='DP1.10098.001', site=SITECODE, package="basic", check.size = F)
+
+  #Use neonUtilities to get location data
+vegmap <- getLocTOS(veglist$vst_mappingandtagging, 'vst_mappingandtagging')
+```
+
+
+We then combine the vst_apparent individual dataframe from veglist with the vegmap dataframe we obtained, creating a "veg" dataframe with information on tree heights and tree locations.
+
+```{r neonUtilities_merge}
+#Combine apparent_individual data with location data
+veg <- merge(veglist$vst_apparentindividual, vegmap,
+             by = c('individualID','namedLocation','domainID',
+                    'siteID','plotID'))
+```
+
+We want to filter out rows that cannot be used in our analysis. We are using tree height measurements and tree locations, so we want to remove rows that are missing height values, easting values, or northing values.
+
+```{r remove_na_rows}
+#Filter out rows with missing height measurements, missing northing values, or missing easting values
+veg <- veg[which(!is.na(veg$height)),]
+veg <- veg[which(!is.na(veg$adjEasting)),]
+veg <- veg[which(!is.na(veg$adjNorthing)),]
+
+```
+
+### Spatial Polygon Data
+
+We will also need spatial polygons data for the plots we are working with. We can get this as we did in the frst Baseplot Structural Diversity tutorial, using data from shapefiles in *All_NEON_TOS_Plots_V7* folder. Here we'll use a function to generate the initial SpatialPolygons DataFrame and extract the subset relevent for our plot; this way the full dataframe won't remain taking up memory after the functon is run.
+
+
+```{r plot_polygons}
+
+#Function veg dataframe and file location of all plots shapefile, returns sp_df of site base plots for which
+#  woody plant vegetaton data exists
+generate_baseplot_spdf <- function(file_location, in_veg){
+  NEON_all_plots <- readOGR(file_location)
+  site_base_plots <- NEON_all_plots[(NEON_all_plots$plotID %in% in_veg$plotID)&(NEON_all_plots$subtype == 'basePlot'),]
+  return(site_base_plots)
+}
+  
+base_plots_SPDF <- generate_baseplot_spdf('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp', veg)
+
+```
+
+
+### Coordinates, Boundaries, and Files
+
+We will be using CHM data derived from liDAR point clouds, which are stored as files for each 1000 m x 1000 m tile. Thus, we need to know whether or not each plot falls on the boundary between two (or four) tiles, what tile coordinates are associated with each plot, and what liDAR tiles we need. 
+
+This is the same as what we did in the first baseplot structural diversity metrics tutorial in generating coord_df, boundry_list, and coord_unique; we can convert the code from that tutorial into some functions that will take our filtered veg dataframe, and return
+
+```{r coordinate_functions}
+#Functon to round down coordinates to nearest multiple of 1000
+round1000 <- function(x){
+  return(1000*floor(x/1000))
+}
+
+
+###FUNCTION: Check if plot is on tile boundary
+#Input is a single plot spdf, output is vector of two boolean values
+#  First output boolean is whether plot crosses a horizontal boundary, second is whether it crosses vertical boundary
+is_on_boundary <- function(x,y){
+  answer <- c(FALSE,FALSE)
+  
+  
+  radius <- 20
+  
+  extent_vec <- c((x - radius),(x + radius),(y - radius),(y + radius))
+  names(extent_vec) <- c('xMin', 'xMax', 'yMin', 'yMax')
+  
+  #If the plot is on a horizontal tile boundary, the nearest horizontal tile boundary below yMax will be above yMin
+  bound_below <- round1000(extent_vec['yMax'])
+  if(bound_below >= extent_vec['yMin']){
+    answer[1] <- TRUE
+  }
+  
+  #If the plot is on a vertical tile boundary, the nearest vertical tile boundary left of xMax will be right of yMin
+  bound_left <- round1000(extent_vec['xMax'])
+  if(bound_left >= extent_vec['xMin']){
+    answer[2] <- TRUE
+  }
+  
+  return(answer)
+}
+
+
+
+
+#Function takes base plot polygon, calculates coordinates of tile and returns as a string
+get_plot_coords <- function(plot_poly){
+  options(scipen = 99999)
+  x <- as.numeric(plot_poly[19])
+  y <- as.numeric(plot_poly[20])
+  
+  boundary_vec <- is_on_boundary(x,y)
+  
+  if(boundary_vec[1]|boundary_vec[2]){
+    return('Plot crosses a tile boundary')
+  }
+  #Round to get coordinates of tile
+  my_east <- round1000(x)
+  my_north <- round1000(y)
+  
+  out <- paste0(as.character(my_east),'_',as.character(my_north))
+  return(out)
+}
+
+
+
+
+
+#Function takes a spatialPolygons dataframe of NEON baseplots, and returns tile coordinates for each plot
+build_plot_frame <- function(in_polygons){
+  options(stringsAsFactors = FALSE)
+  
+  
+  in_data <- as.data.frame(in_polygons@data)
+  results <- apply(in_data, 1, get_plot_coords)
+  out <- data.frame("plotID" = as.character(in_data$plotID),
+                    "coord_String" = results
+  )
+  
+  return(out)
+}
+
+
+#Function takes spatialPolygons data frame for one plot that crosses a boundary, returns coordinates for 
+#  each tile the plot crosses. Output is vector of coordinate strings
+get_boundary_plot_coords <- function(plot_spdf_row){
+  options(scipen = 99999)
+  x <- as.numeric(plot_spdf_row[19])
+  y <- as.numeric(plot_spdf_row[20])
+  
+  east <- round1000(x)
+  north <- round1000(y)
+  
+  
+  boundary_vec <- is_on_boundary(x,y)
+  
+  #If tile is on horizontal boundary, get additional northing coordinate
+  if(boundary_vec[1]){
+    east <- c(east, (east + 1000))
+    
+  }
+  #If tile is on horizontal boundary, get additional easting coordinate
+  if(boundary_vec[2]){
+    north <- c(north, (north + 1000))
+  }
+  #If tile crosses both boundaries, make vector of four empty strings. Otherwise, make vector of two empty strings
+  out <- ifelse(boundary_vec[1]&boundary_vec[2],c('','','',''),c('',''))
+  
+  #Build vector of coordinate strings
+  i <- 1
+  for(n_coord in north){
+    for(e_coord in east){
+      out[i] <- paste0(as.character(e_coord),'_',as.character(n_coord))
+      i = i + 1
+    }
+  }
+  
+  return(out)
+}
+
+
+#function takes spatial polygons dataframe, dataframe of plots that cross boundaries, returns named nested list 'pseudo-dataframe'
+#  with 'row' for each plot, columns being plot id and list of tiles that plot extends into
+build_plot_pseudo_frame <- function(in_polygons, bad_plot_df){
+  
+  bad_plots <- as.vector(bad_plot_df$plotID)
+  bad_plots <- in_polygons[in_polygons$plotID %in% bad_plots,]
+  N <- length(bad_plots)
+  
+  #make empty pseudo_dataframe
+  out <- list()
+  
+  for(i in 1:nrow(bad_plots@data)){
+    row <- list(plotID = '', coords = character())
+    row[['plotID']] <- as.character(bad_plots[i,]$plotID)
+    row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
+    out[[i]] <- row
+  }
+  
+  return(out)
+}
+
+#Function takes coordinate dataframe and boundary coordinate pseudo-dataframe, returns list of all unique coordinates
+get_unique_coordinates <- function(coords_df, boundaries_pdf){
+  N <- length(boundaries_pdf)
+  
+  #Get vector of coordinates from plot coordinates dataframe
+  out_coords <- as.vector(coords_df$coord_String)
+  
+  #Append coordinates from boundary plot nested list to coordinate vector
+  if(N > 0){
+    for(i in seq(1,N)){
+      out_coords <- append(out_coords, boundaries_pdf[[i]][['coords']])
+    }
+  }
+
+  
+  out_coords <- unique(out_coords)
+  
+  return(out_coords)
+}
+
+```
+
+Using these functions, we generate dataframes and lists with information on which tiles we need, and which tiles are associated with each plot.
+
+
+```{r coordinate_data}
+#Get coordinates for all plots not on a tile boundary, then split by whether plot is on a boundary
+coord_df <- build_plot_frame(base_plots_SPDF)
+  
+boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
+
+
+coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
+  
+#Get coordinates for plots on boundary tiles IF there are any
+boundary_list <- list()
+
+if(nrow(boundary_df) > 0){
+  boundary_list <- build_plot_pseudo_frame(base_plots_SPDF, boundary_df)
+}
+
+
+  
+#Get unique coordinates, coordinates for each necessary tile
+coord_unique <- get_unique_coordinates(coord_df, boundary_list)
+
+
+```
+
+## Getting the CHM Data
+
+### Downloading Files with geoNeon
+
+With list of unique coordinates, we now know the number and coordinates of each Canopy Height Model tile that we need for this analysis. We can download the required data using the *byTileAOP* function from the geoNEON package.
+
+```{r chm_download}
+#Download CHM for each tile coordinate in coord_unique
+
+#for(coord in coord_unique){
+#  parts <- unlist(strsplit(coord, '_'))
+#  tile_east <- as.integer(parts[1])
+#  tile_north <- as.integer(parts[2])
+  
+  
+#  byTileAOP(dpID="DP3.30015.001", site=SITECODE, year="2017", 
+#          easting=tile_east, 
+#          northing=tile_north,
+#          savepath=paste0(getwd(),'/data/lidar_data'),
+#          check.size = F)
+
+#}
+
+#rm(coord)
+```
+
+
+
+### Creating a CHM list
+
+Now we use the *raster* function to read of of the CHMs into R as a raster object. We will store them in a list, each accompanied by a coordinate string for the corresponding tile.
+
+
+```{r chm_reading}
+#Read CHM Data into R as list of Raster Objects
+chm_list <- list()
+
+for(i in 1:length(coord_unique)){
+  this_chm <- raster(paste0(getwd(),"/data/lidar_data/DP3.30015.001/2017/FullSite/D01/2017_HARV_4/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_",SITECODE,"_DP3_",coord_unique[i],"_CHM.tif"))
+  chm_list <- append(chm_list, list(list(coord = coord_unique[i], chm = this_chm)))
+}
+rm(this_chm)
+```
+
+
+
+## Calculating Height Differences
+
+##Height Discrepancy Function
+For each plot we will calculate the mean difference between the height of a tree according to ground based measurements and the height of a tree according to liDAR Canopy Height Model. To accomplish this we use a function containing code from the tutorial *Compare tree height measured...* (see the link above). 
+
+```{r height_discrepancy_function}
+###Function takes vegetation dataframe, plotID, and CHM, plots relationship between CHM heights and measured heights of trees
+# for specific plot
+calculate_height_discrepancy <- function(in_veg, plot_id, in_chm){
+  in_veg <- in_veg[which(in_veg$plotID == plot_id),]
+  
+  
+  #Extract veg data that falls inside CHM
+  vegsub <- in_veg[which(in_veg$adjEasting >= extent(in_chm)[1] &
+                           in_veg$adjEasting <= extent(in_chm)[2] &
+                           in_veg$adjNorthing >= extent(in_chm)[3] & 
+                           in_veg$adjNorthing <= extent(in_chm)[4]),]
+  
+  if(nrow(vegsub) == 0){
+    print('Error: CHM Tile does not contain plot')
+    return(NA)
+  }
+  
+  #Extract CHM data for each tree, with buffer matching coordinate uncertainty
+  bufferCHM <- extract(in_chm, cbind(vegsub$adjEasting, 
+                                     vegsub$adjNorthing),
+                       buffer=vegsub$adjCoordinateUncertainty, 
+                       fun=max)
+  
+  
+  
+  #Comparison Method Two: Tree Based
+  #  Sort veg structure data by height
+  vegsub <- vegsub[order(vegsub$height, decreasing = T),]
+  
+  #  For each tree x, we want to estimate which nearby trees may lay beneath the canopy of x. Iterate over all trees:
+  #Caluclate the distance of each tree from target tree
+  #Choose an estimate for canopy size, and remove trees within that distance of main tree
+  
+  vegfil <- vegsub
+  
+  for(i in 1:nrow(vegsub)){
+    if(is.na(vegfil$height[i])){
+      next
+    }
+    #Calculate distance of each tree from target tree
+    dist <- sqrt((vegsub$adjEasting[i] - vegsub$adjEasting)^2+
+                   (vegsub$adjNorthing[i] - vegsub$adjNorthing)^2)
+    
+    #Choose estimate for canopy size as fraction of height, and remove trees within that distance
+    vegfil$height[which(dist<0.3*vegsub$height[i] & 
+                          vegsub$height<vegsub$height[i])] <- NA
+  }
+  
+  #Remove empty entries
+  vegfil <- vegfil[which(!is.na(vegfil$height)),]
+  
+  
+  #Exclude dead or broken trees
+  vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
+  
+  if(length(vegfil$height) > 0){
+    #Extract raster values based on filtered trees
+    filterCHM <- extract(in_chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
+                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
+    
+
+
+    out <- mean(vegfil$height - filterCHM)
+  }else{
+    print('After filtering, there were no Non-NA values')
+  }
+  return(out)
+}
+
+```
+
+We also need to add an empty column to the structural diversity metrics dataframe, to store the values we are adding.
+
+```{r add_column}
+#Add emtpy column for height discrepancy values
+DF$height_discrepancy <- NA
+```
+
+
+### Adding Data for Non-Boundary Plots
+
+For each row in coord_df, the dataframe of plots for which we have vegetation height TOS measurements and which do not fall on a tile boundary, we calculate the mean difference between TOS measured tree heights and AOP measured tree heights, and save that to our dataframe.
+
+```{r non_boundary_plot_values}
+#Add data for plots not falling on tile boundaries
+
+#  For each non-boundary plot, calculate the height discrepancy and save that value in the dataframe
+for(i in 1:nrow(coord_df)){
+  plot_row <- coord_df[i,]
+  #RUn through CHM list until the CHM for the tile the plot is located on is reached
+  for(entry in chm_list){
+    if(entry$coord == plot_row$coord_String){
+      #Get height discrepancy value
+      height_dif <- calculate_height_discrepancy(veg, coord_df[i, 'plotID'], entry$chm)
+      
+      #Assign resulting value to output dataframe
+      DF[DF$plotID == plot_row$plotID,]$height_discrepancy <- height_dif
+    }
+    
+  }
+}
+
+```
+
+
+### Adding data for Boundary Plots
+
+For plots falling on a boundary things are just a bit more complicated. We have to merge the two (or four) CHMs for tiles on which the plot overlaps, then carry out the calculation using the merged CHM
+
+```{r calculate_boundary_height_difference}
+#Add data for plots falling on tile boundaries
+
+#For each plot falling on a boundary
+for(boundary_plot in boundary_list){
+  
+  #Make list of CHMs needed
+  plot_chms <- list()
+  
+    #Run through CHM list
+  for(chm_entry in chm_list){
+    #Save CHMs for tiles on which the plot is present
+    if(chm_entry$coord %in% boundary_plot$coords){
+      plot_chms <- append(plot_chms, list(chm_entry))
+    }
+  }
+  print(length(plot_chms))
+  #Initialize merged CHM
+  merged_chm <- plot_chms[[1]][['chm']]
+  
+  #Merge additional CHMs into merged CHM
+  for(i in 2:length(plot_chms)){
+    merged_chm <- merge(merged_chm, plot_chms[[i]][['chm']])
+  }
+  
+  #Run height difference calculation
+  height_difference <- calculate_height_discrepancy(veg, boundary_plot$plotID, merged_chm)
+  DF[DF$plotID == boundary_plot$plotID,]$height_discrepancy <- height_difference
+  
+}
+
+
+
+```
+
+And there you have it!
+
+

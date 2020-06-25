@@ -361,17 +361,25 @@ build_file_df <- function(in_coords, DATE, SITECODE){
   for(i in seq(1,file_N)){
     
     #Get name of file
-    file_name <- data_avail$data$files[intersect(
-      grep(in_coords[i], data_avail$data$files$name),
-      grep('.laz', data_avail$data$files$name)
-    ),'name']
+    file_name <- data_avail$data$files[
+      intersect(
+        intersect(
+          grep(in_coords[i], data_avail$data$files$name),
+          grep('.laz', data_avail$data$files$name)),
+      grep('classified_point_cloud', data_avail$data$files$name)
+      ),
+    'name']
     
     
     #Get URL of file
-    file_url <- data_avail$data$files[intersect(
-      grep(in_coords[i], data_avail$data$files$name),
-      grep('.laz', data_avail$data$files$name)
-    ),'url']
+    file_url <- data_avail$data$files[
+      intersect(
+        intersect(
+          grep(in_coords[i], data_avail$data$files$name),
+          grep('.laz', data_avail$data$files$name)),
+        grep('classified_point_cloud', data_avail$data$files$name)
+      ),
+    'url']
     
     
     if(length(file_name) != 0){
