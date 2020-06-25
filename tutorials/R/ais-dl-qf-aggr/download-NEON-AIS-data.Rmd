@@ -723,7 +723,7 @@ waq_30min_down <- waq_down %>% # pass the downstream data frame to the next func
               # In 1-min data, there should now be sets of 30 corresponding to each 30-minute roundedTime
               #  We use dplyr to group data by unique roundedTime values, and summarise each 30-min group
               #  by the the mean, for all data columns provided in waq_strm_cols and waq_final_qf_cols
-              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(waq_strm_cols, waq_final_qf_cols), mean, na.rm = TRUE)
+              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(dplyr::all_of(c(waq_strm_cols, waq_final_qf_cols))), mean, na.rm = TRUE)
 
 # Rather than binary values, quality flags are more like "quality metrics", defining the fraction of data flagged within an aggregation interval.
 
@@ -761,7 +761,7 @@ relationships between variables collected at different time intervals, and may
 also be a required format for model inputs. 
 
 Now that you have the basic tools and knowledge on how to read and wrangle NEON 
-AIS data, go do some science!
+AIS data, go have fun working on your scientific questions!
 
 ## Citations
 
