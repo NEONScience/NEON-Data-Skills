@@ -51,7 +51,7 @@ preferably, RStudio loaded on your computer.
 * **dplyr**: Data manipulation functions
 * **padr**: Time-series data preparation functions
 
-Some of these packages are on CRAN and can be installed by 
+These packages are on CRAN and can be installed by 
 `install.packages()`.
 
 ### Additional Resources
@@ -144,23 +144,40 @@ Now it's time to consider the NEON field site of interest. If not specified,
 the default will download a data product from all sites. The following are 
 4-letter site codes for NEON's 34 aquatics sites as of 2020:
 
-ARIK = Arikaree River CO        BARC = Barco Lake FL          
-BIGC = Upper Big Creek CA       BLDE = Black Deer Creek WY      
-BLUE = Blue River OK            BLWA = Black Warrior River AL
-CARI = Caribou Creek AK         COMO = Como Creek CO          
-CRAM = Crampton Lake WI         CUPE = Rio Cupeyes PR           
-FLNT = Flint River GA           GUIL = Rio Guilarte PR
-HOPB = Lower Hop Brook MA       KING = Kings Creek KS         
-LECO = LeConte Creek TN         LEWI = Lewis Run VA             
-LIRO = Little Rock Lake WI      MART = Marta Creek WA
-MAYF = Mayfield Creek AL        MCDI = McDiffett Creek KS    
-MCRA = McRae Creek OR           OKSR = Oksrukuyik Creek AK      
-POSE = Posey Creek VA           PRIN = Pringle Creek TX       
-PRLA = Prairie Lake ND          PRPO = Prairie Pothole ND     
-REDB = Red Butte Creek UT       SUGG = Suggs Lake FL            
-SYCA = Sycamore Creek AZ        TECR = Teakettle Creek CA        
-TOMB = Lower Tombigbee River AL TOOK = Toolik Lake AK         
-WALK = Walker Branch TN         WLOU = West St Louis Creek CO       
+ARIK = Arikaree River CO        
+BARC = Barco Lake FL          
+BIGC = Upper Big Creek CA       
+BLDE = Black Deer Creek WY      
+BLUE = Blue River OK            
+BLWA = Black Warrior River AL
+CARI = Caribou Creek AK         
+COMO = Como Creek CO          
+CRAM = Crampton Lake WI         
+CUPE = Rio Cupeyes PR           
+FLNT = Flint River GA           
+GUIL = Rio Guilarte PR
+HOPB = Lower Hop Brook MA       
+KING = Kings Creek KS         
+LECO = LeConte Creek TN         
+LEWI = Lewis Run VA             
+LIRO = Little Rock Lake WI      
+MART = Marta Creek WA
+MAYF = Mayfield Creek AL        
+MCDI = McDiffett Creek KS    
+MCRA = McRae Creek OR           
+OKSR = Oksrukuyik Creek AK      
+POSE = Posey Creek VA           
+PRIN = Pringle Creek TX       
+PRLA = Prairie Lake ND          
+PRPO = Prairie Pothole ND     
+REDB = Red Butte Creek UT       
+SUGG = Suggs Lake FL            
+SYCA = Sycamore Creek AZ        
+TECR = Teakettle Creek CA        
+TOMB = Lower Tombigbee River AL 
+TOOK = Toolik Lake AK         
+WALK = Walker Branch TN         
+WLOU = West St Louis Creek CO       
 
 In this exercise, we will want data from only one NEON field site, Pringle 
 Creek, TX (PRIN) from February, 2020. 
@@ -170,13 +187,13 @@ your data, neonUtilities will ignore the `token` input. We set
 `check.size = F` so that the script runs well but remember you always want to 
 check your download size first.
 
-```{r download-data-waq}
+```{r download-data-waq, results='hide'}
 # download data of interest - Water Quality
-waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001", site="PRIN", 
-              										 startdate="2020-02", enddate="2020-02", 
-              										 package="expanded", 
-              										 token = Sys.getenv("NEON_TOKEN"),
-              										 check.size = F)
+waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN", 
+                     startdate="2020-02", enddate="2020-02", 
+                     package="expanded", 
+                     token = Sys.getenv("NEON_TOKEN"),
+                     check.size = F)
 
 ```
 
@@ -196,13 +213,13 @@ the following parameters.
 size between the "expanded" and "basic" packages? 
 </div>
 
-```{r download-data-nsw, echo=FALSE}
+```{r download-data-nsw, results='hide'}
 # download data of interest - Nitrate in Suface Water
-nsw <-  neonUtilities::loadByProduct(dpID="DP1.20033.001", site="PRIN", 
-              											 startdate="2020-02", enddate="2020-02", 
-              											 package="expanded", 
-              											 token = Sys.getenv("NEON_TOKEN"),
-              											 check.size = F)
+nsw <-  loadByProduct(dpID="DP1.20033.001", site="PRIN", 
+                      startdate="2020-02", enddate="2020-02", 
+                      package="expanded", 
+                      token = Sys.getenv("NEON_TOKEN"),
+                      check.size = F)
 
 # #1. 2.0 MiB
 # #2. You can change check.size to True (T), and compare "basic" vs "expaneded"
@@ -210,13 +227,13 @@ nsw <-  neonUtilities::loadByProduct(dpID="DP1.20033.001", site="PRIN",
 
 ```
 
-```{r download-data-eos, echo=FALSE}
+```{r download-data-eos, results='hide'}
 # download data of interest - Elevation of surface water
-eos <- neonUtilities::loadByProduct(dpID="DP1.20016.001", site="PRIN",
-            											 startdate="2020-02", enddate="2020-02",
-            											 package="expanded",
-            											 token = Sys.getenv("NEON_TOKEN"),
-            											 check.size = F)
+eos <- loadByProduct(dpID="DP1.20016.001", site="PRIN",
+                     startdate="2020-02", enddate="2020-02",
+                     package="expanded",
+                     token = Sys.getenv("NEON_TOKEN"),
+                     check.size = F)
 
 
 
@@ -331,8 +348,10 @@ different sensor set locations: upstream and the downstream.
 ```{r split-hor}
 # Split data into separate dataframes by upstream/downstream locations.
 
-waq_up <- waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
-waq_down <- waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
+waq_up <- 
+  waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
+waq_down <- 
+  waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
 
 # Note: The surface water nitrate sensor is only stationed at one location.
 
@@ -369,12 +388,17 @@ The data column we would like to plot is labeled `dissolvedOxygen`.
 ```{r plot-wqual}
 # plot
 wqual <- ggplot() +
-	geom_line(data = waq_up, aes(endDateTime, dissolvedOxygen,color="a"), na.rm=TRUE ) +
-	geom_line(data = waq_down, aes(endDateTime, dissolvedOxygen, color="b"), na.rm=TRUE) +
-	geom_line( na.rm = TRUE) +
+	geom_line(data = waq_up, 
+	          aes(endDateTime, dissolvedOxygen,color="a"), 
+	          na.rm=TRUE ) +
+	geom_line(data = waq_down, 
+	          aes(endDateTime, dissolvedOxygen, color="b"), 
+	          na.rm=TRUE) +
+	geom_line(na.rm = TRUE) +
 	ylim(0, 20) + ylab("Dissolved Oxygen (mg/L)") +
 	xlab(" ") +
-  scale_color_manual(values = c("blue","red"),labels = c("upstream","downstream")) +
+  scale_color_manual(values = c("blue","red"),
+                     labels = c("upstream","downstream")) +
   labs(colour = "") + # Remove legend title
   theme(legend.position = "top") +
   ggtitle("PRIN Upstream and Downstream DO")
@@ -395,11 +419,14 @@ The data columns we would like to plot are labeled `fDOM` and `fDOMExpUncert`.
 ```{r plot-fdom-ucert}
 # plot
 fdomUcert <- ggplot() +
-	geom_line(data = waq_down, aes(endDateTime, fDOM), na.rm=TRUE, color="orange") +
+	geom_line(data = waq_down, 
+	          aes(endDateTime, fDOM), 
+	          na.rm=TRUE, color="orange") +
   geom_ribbon(data=waq_down, 
               aes(x=endDateTime, 
                   ymin = (fDOM - fDOMExpUncert), 
-                  ymax = (fDOM + fDOMExpUncert)), alpha = 0.4, fill = "grey75") +
+                  ymax = (fDOM + fDOMExpUncert)), 
+              alpha = 0.4, fill = "grey75") +
 	geom_line( na.rm = TRUE) +
 	ylim(0, 200) + ylab("fDOM (QSU)") +
 	xlab(" ") +
@@ -417,7 +444,7 @@ for nitrate in surface water.
 
 </div>
 
-```{r challenge-explore-nsw, echo=FALSE}
+```{r challenge-explore-nsw, results='hide'}
 # recall dataframes created in list2env() command, including NSW_15_minute
 
 # which sensor locations?
@@ -431,11 +458,11 @@ Using what you've learned above, plot nitrate in surface water.
 
 ```{r challenge-plot-nsw}
 # plot
-plot_NSW <- ggplot2::ggplot(data = NSW_15_minute,
-                          aes(endDateTime, surfWaterNitrateMean)) +
-                        	geom_line(na.rm=TRUE, color="blue") + 
-                        	ylab("NO3-N (uM)") + xlab(" ") +
-                          ggtitle("PRIN Downstream Nitrate in Surface Water")
+plot_NSW <- ggplot(data = NSW_15_minute,
+                   aes(endDateTime, surfWaterNitrateMean)) +
+                   geom_line(na.rm=TRUE, color="blue") + 
+                   ylab("NO3-N (uM)") + xlab(" ") +
+                   ggtitle("PRIN Downstream Nitrate in Surface Water")
 
 plot_NSW
 
@@ -453,13 +480,17 @@ In time-averaged data, most quality flags have been aggregated into
 quality metrics, with column names denoted with "QM" representing
 the fraction of flagged points within the time averaging window.
 
-```{r view-qf, echo=FALSE}
+```{r view-qf}
 waq_qf_names <- names(waq_down)[grep("QF", names(waq_down))]
 
-print(paste0("Total columns in DP1.20288.001 expanded package = ", as.character(length(waq_qf_names))))
-# water quality has 96 data columns with QF in the name, so let's just look at those corresponding to fDOM
+print(paste0("Total columns in DP1.20288.001 expanded package = ", 
+             as.character(length(waq_qf_names))))
+
+# water quality has 96 data columns with QF in the name, 
+# so let's just look at those corresponding to fDOM
 print("fDOM columns in DP1.20288.001 expanded package:")
-print(waq_qf_names[grep("fDOM",waq_qf_names)])
+print(waq_qf_names[grep("fDOM", waq_qf_names)])
+
 ```
 
 A quality flag (QF) of 0 indicates a pass, 1 indicates a fail, and -1 indicates
@@ -485,16 +516,19 @@ Downing et al. (2012).
 
 Let's consider what types of fDOM quality flags were thrown.
 
-```{r view-qf-fdom, echo=FALSE}
+```{r view-qf-fdom}
 waq_qf_names <- names(waq_down)[grep("QF", names(waq_down))]
 
 print(paste0("Total QF columns: ",length(waq_qf_names)))
-# water quality has 96 data columns with QF in the name, so let us just look at those corresponding to fDOM
+
+# water quality has 96 data columns with QF in the name, 
+# so let us just look at those corresponding to fDOM
 fdom_qf_names <- waq_qf_names[grep("fDOM",waq_qf_names)]
 
 for(col_nam in fdom_qf_names){
   print(paste0(col_nam, " unique values: ", 
-               paste0(unique(waq_down[,col_nam]), collapse = ", ")))
+               paste0(unique(waq_down[,col_nam]), 
+                      collapse = ", ")))
 }
 
 ```
@@ -530,7 +564,8 @@ for (col_nam in fdom_qf_names){
 }
 
 # Let's also check out how many fDOMAbsQF = 2 exist
-print(paste0("fDOMAbsQF = 2: ",length(which(waq_down[,"fDOMAbsQF"] == 2))))
+print(paste0("fDOMAbsQF = 2: ",
+             length(which(waq_down[,"fDOMAbsQF"] == 2))))
 
 print(paste0("Total fDOM observations: ", nrow(waq_down) ))
 ```
@@ -571,9 +606,11 @@ group_labels <- c("fDOMFinalQF = 0", "fDOMFinalQF = 1")
 names(group_labels) <- c("0","1")
 
 # Plot fDOM data, grouping by the fDOMFinalQF value
-ggplot2::ggplot(data = waq_down, aes(x = endDateTime, y = fDOM, group = fDOMFinalQF)) +
+ggplot2::ggplot(data = waq_down, 
+                aes(x = endDateTime, y = fDOM, group = fDOMFinalQF)) +
   ggplot2::geom_step() +
-  facet_grid(fDOMFinalQF ~ ., labeller = labeller(fDOMFinalQF = group_labels)) +
+  facet_grid(fDOMFinalQF ~ ., 
+             labeller = labeller(fDOMFinalQF = group_labels)) +
   ggplot2::ggtitle("PRIN Sensor Set 102 fDOM final QF comparison")
 
 ```
@@ -604,7 +641,8 @@ Let's take a closer look at each `fDOMAbsQF` flag value by grouping data based
 on each `fDOMAbsQF` value:
 
 ```{r view-absQF}
-ggplot2::ggplot(data = waq_down, aes(x = endDateTime, y = fDOM, group = fDOMAbsQF)) +
+ggplot2::ggplot(data = waq_down, 
+                aes(x = endDateTime, y = fDOM, group = fDOMAbsQF)) +
   ggplot2::geom_step() +
   facet_grid(fDOMAbsQF ~ .) +
   ggplot2::ggtitle("PRIN Sensor Set 102 fDOMAbsQF comparison")
@@ -637,7 +675,9 @@ waq_down$aggr_non_abs_QF <- apply( waq_down[,fdom_qf_non_abs_names],1,max, na.rm
 #  iterate over each row.
 
 # Plot fDOM data, grouping by the custom quality flag column's value
-ggplot2::ggplot(data = waq_down, aes(x = endDateTime, y = fDOM, group = aggr_non_abs_QF)) +
+ggplot2::ggplot(data = waq_down, 
+                aes(x = endDateTime, y = fDOM, 
+                    group = aggr_non_abs_QF)) +
   ggplot2::geom_step() +
   facet_grid(aggr_non_abs_QF ~ .) +
   ggplot2::ggtitle("PRIN Sensor Set 102 fDOM custom QF aggregation")
@@ -681,14 +721,17 @@ measurement uncertainty or special, non-binary quality flags like `fDOMAbsQF`.
 # We first need to name each data stream within water quality. 
 # One trick is to find all the variable names by searching for "BetaQF"
 waq_strm_betaqf_cols <- names(waq_down)[grep("BetaQF",names(waq_down))]
-print(paste0("BetaQF column names: ",paste0(waq_strm_betaqf_cols, collapse = ", ")))
+print(paste0("BetaQF column names: ",
+             paste0(waq_strm_betaqf_cols, collapse = ", ")))
 
 # Now let's remove the BetaQF from the column name:
 waq_strm_cols <- base::gsub("BetaQF","",waq_strm_betaqf_cols)
 # To keep column names short, some variable names had to be shortened
 # when appending "BetaQF", so let's add "uration" to "dissolvedOxygenSat"
-waq_strm_cols <- base::gsub("dissolvedOxygenSat","dissolvedOxygenSaturation",waq_strm_cols)
-print(paste0("Water quality sensor data stream names: ", paste0(waq_strm_cols, collapse = ", ")))
+waq_strm_cols <- base::gsub("dissolvedOxygenSat",
+                            "dissolvedOxygenSaturation",waq_strm_cols)
+print(paste0("Water quality sensor data stream names: ", 
+             paste0(waq_strm_cols, collapse = ", ")))
 
 # We will also aggregate the final quality flags:
 waq_final_qf_cols <- names(waq_down)[grep("FinalQF",names(waq_down))]
@@ -711,19 +754,36 @@ by each column, let's employ the `dplyr` pipe operator, `%>%`, and call a
 function that acts on each data column of interest, which we've determined above.
 
 ```{r aggr-waq-padr}
-# Aggregate water quality data columns to 30 minute intervals, taking the mean
-# of non-NA values within each 30-minute period. We explain each step in the 
-# dplyr piping operation as code comments:
-waq_30min_down <- waq_down %>% # pass the downstream data frame to the next function
-              # padr's thicken function adds a new column, roundedTime, that shows the closest 30 min timestamp to
-              # to a given observation in time
-              padr::thicken(interval = "30 min",by = "endDateTime",colname = "roundedTime",rounding = "down") %>%
-              # In 1-min data, there should now be sets of 30 corresponding to each 30-minute roundedTime
-              #  We use dplyr to group data by unique roundedTime values, and summarise each 30-min group
-              #  by the the mean, for all data columns provided in waq_strm_cols and waq_final_qf_cols
-              dplyr::group_by(roundedTime) %>% dplyr::summarise_at(vars(dplyr::all_of(c(waq_strm_cols, waq_final_qf_cols))), mean, na.rm = TRUE)
+# Aggregate water quality data columns to 30 minute intervals, 
+# taking the mean of non-NA values within each 30-minute period. 
+# We explain each step in the dplyr piping operation in code 
+# comments:
 
-# Rather than binary values, quality flags are more like "quality metrics", defining the fraction of data flagged within an aggregation interval.
+waq_30min_down <- waq_down %>% 
+              # pass the downstream data frame to the next function
+              # padr's thicken function adds a new column, roundedTime, 
+              # that shows the closest 30 min timestamp to
+              # to a given observation in time
+  
+              padr::thicken(interval = "30 min",
+                            by = "endDateTime",
+                            colname = "roundedTime",
+                            rounding = "down") %>%
+              # In 1-min data, there should now be sets of 30 
+              # corresponding to each 30-minute roundedTime
+              # We use dplyr to group data by unique roundedTime 
+              # values, and summarise each 30-min group
+              # by the the mean, for all data columns provided 
+              # in waq_strm_cols and waq_final_qf_cols
+  
+              dplyr::group_by(roundedTime) %>% 
+                dplyr::summarise_at(vars(dplyr::all_of(c(waq_strm_cols, 
+                                                  waq_final_qf_cols))), 
+                                    mean, na.rm = TRUE)
+
+# Rather than binary values, quality flags are more like "quality 
+# metrics", defining the fraction of data flagged within an 
+# aggregation interval.
 
 ```
 Now, we have a new dataframe for water quality data and associated final quality
@@ -735,7 +795,10 @@ The following code chunk merges the data:
 
 ```{r combine-nsw-waq}
 # We have to specify the matching column from each dataframe
-all_30min_data_down <- base::merge(x = waq_30min_down, y = eos_down, by.x = "roundedTime", by.y = "endDateTime")
+all_30min_data_down <- base::merge(x = waq_30min_down, 
+                                   y = eos_down, 
+                                   by.x = "roundedTime", 
+                                   by.y = "endDateTime")
 
 # Let's take a peek at the combined data frame's column names:
 colnames(all_30min_data_down)
@@ -748,11 +811,13 @@ frame facilitates direct comparison across different sensors.
 Let's take a look with a plot of specific conductance versus water surface 
 elevation:
 ```{r plot-eos-waq}
-ggplot2::ggplot(data = all_30min_data_down, aes(x = surfacewaterElevMean, y = specificConductance)) +
-  ggplot2::geom_point() + 
-  ggplot2::ggtitle("PRIN specific conductance vs. surface water elevation") + 
-  ggplot2::xlab("Elevation [m ASL]") + 
-  ggplot2::ylab("Specific conductance [uS/cm]")
+
+ggplot(data = all_30min_data_down, 
+       aes(x = surfacewaterElevMean, y = specificConductance)) +
+  geom_point() + 
+  ggtitle("PRIN specific conductance vs. surface water elevation") + 
+  xlab("Elevation [m ASL]") + 
+  ylab("Specific conductance [uS/cm]")
 ```
 Aggregating high frequency time series data is a useful tool for understanding 
 relationships between variables collected at different time intervals, and may
