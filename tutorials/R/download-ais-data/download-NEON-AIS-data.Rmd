@@ -149,13 +149,13 @@ BARC = Barco Lake FL
 BIGC = Upper Big Creek CA       
 BLDE = Black Deer Creek WY      
 BLUE = Blue River OK            
-BLWA = Black Warrior River AL
+BLWA = Black Warrior River AL 
 CARI = Caribou Creek AK         
 COMO = Como Creek CO          
 CRAM = Crampton Lake WI         
 CUPE = Rio Cupeyes PR           
 FLNT = Flint River GA           
-GUIL = Rio Guilarte PR
+GUIL = Rio Guilarte PR 
 HOPB = Lower Hop Brook MA       
 KING = Kings Creek KS         
 LECO = LeConte Creek TN         
@@ -174,7 +174,7 @@ REDB = Red Butte Creek UT
 SUGG = Suggs Lake FL            
 SYCA = Sycamore Creek AZ        
 TECR = Teakettle Creek CA        
-TOMB = Lower Tombigbee River AL 
+TOMB = Lower Tombigbee River AL  
 TOOK = Toolik Lake AK         
 WALK = Walker Branch TN         
 WLOU = West St Louis Creek CO       
@@ -183,9 +183,9 @@ In this exercise, we will want data from only one NEON field site, Pringle
 Creek, TX (PRIN) from February, 2020. 
 
 Now let us download our data. If you are not using a NEON token to download 
-your data, neonUtilities will ignore the `token` input. We set  
-`check.size = F` so that the script runs well but remember you always want to 
-check your download size first.
+your data, neonUtilities will ignore the `token` input. We set `check.size = F`  
+so that the script runs well but remember you always want to check your 
+download size first.
 
 ```{r download-data-waq, results='hide'}
 # download data of interest - Water Quality
@@ -819,6 +819,7 @@ ggplot(data = all_30min_data_down,
   xlab("Elevation [m ASL]") + 
   ylab("Specific conductance [uS/cm]")
 ```
+
 Aggregating high frequency time series data is a useful tool for understanding 
 relationships between variables collected at different time intervals, and may
 also be a required format for model inputs. 
