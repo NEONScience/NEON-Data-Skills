@@ -147,19 +147,19 @@ BARC = Barco Lake FL
 BIGC = Upper Big Creek CA       
 BLDE = Black Deer Creek WY      
 BLUE = Blue River OK            
-BLWA = Black Warrior River AL
+BLWA = Black Warrior River AL        
 CARI = Caribou Creek AK         
 COMO = Como Creek CO          
 CRAM = Crampton Lake WI         
 CUPE = Rio Cupeyes PR           
 FLNT = Flint River GA           
-GUIL = Rio Guilarte PR
+GUIL = Rio Guilarte PR          
 HOPB = Lower Hop Brook MA       
 KING = Kings Creek KS         
 LECO = LeConte Creek TN         
 LEWI = Lewis Run VA             
 LIRO = Little Rock Lake WI      
-MART = Martha Creek WA
+MART = Martha Creek WA            
 MAYF = Mayfield Creek AL        
 MCDI = McDiffett Creek KS    
 MCRA = McRae Creek OR           
@@ -172,7 +172,7 @@ REDB = Red Butte Creek UT
 SUGG = Suggs Lake FL            
 SYCA = Sycamore Creek AZ        
 TECR = Teakettle Creek CA        
-TOMB = Lower Tombigbee River AL 
+TOMB = Lower Tombigbee River AL       
 TOOK = Toolik Lake AK         
 WALK = Walker Branch TN         
 WLOU = West St Louis Creek CO       
@@ -181,9 +181,9 @@ In this exercise, we will want data from only one NEON field site, Pringle
 Creek, TX (PRIN) from February, 2020. 
 
 Now let us download our data. If you are not using a NEON token to download 
-your data, neonUtilities will ignore the `token` input. We set  
-`check.size = F` so that the script runs well but remember you always want to 
-check your download size first.
+your data, neonUtilities will ignore the `token` input. We set `check.size = F`  
+so that the script runs well but remember you always want to check your 
+download size first.
 
 
     # download data of interest - Water Quality
@@ -282,6 +282,7 @@ surface water data products too:
     ## <environment: R_GlobalEnv>
 
 Note that a few more objects were added to the Global Environment, including:
+
 * `NSW_15_minute`
 * `EOS_5_min`
 * `EOS_30_min`
@@ -517,6 +518,7 @@ Using what you've learned above, plot nitrate in surface water.
 ## Examine Quality Flagged Data
 
 Data product quality flags fall under two distinct types:
+
 * Automated quality flags, e.g. range, spike, step, null
 * Manual science review quality flag
 
@@ -603,6 +605,7 @@ Let's consider what types of fDOM quality flags were thrown.
     ## [1] "fDOMFinalQFSciRvw unique values: NA"
 
 QF values generally mean the following:
+
 * 0: Quality test passed
 * 1: Quality test failed
 * -1: Quality test could not be run
@@ -960,6 +963,7 @@ elevation:
     ## Warning: Removed 11 rows containing missing values (geom_point).
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/download-ais-data/download-NEON-AIS-data/plot-eos-waq-1.png)
+
 Aggregating high frequency time series data is a useful tool for understanding 
 relationships between variables collected at different time intervals, and may
 also be a required format for model inputs. 
