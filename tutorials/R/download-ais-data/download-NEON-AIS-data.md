@@ -9,7 +9,7 @@ estimatedTime: 3 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/download-explore/download-NEON-AIS-data.R
+code1: R/download-ais-data/download-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
@@ -159,7 +159,7 @@ KING = Kings Creek KS
 LECO = LeConte Creek TN         
 LEWI = Lewis Run VA             
 LIRO = Little Rock Lake WI      
-MART = Marta Creek WA
+MART = Martha Creek WA
 MAYF = Mayfield Creek AL        
 MCDI = McDiffett Creek KS    
 MCRA = McRae Creek OR           
@@ -197,7 +197,7 @@ check your download size first.
 ### Challenge: Download Other Related Data products
   
 Using what you've learned above, can you modify the code to download data for 
-the following parameters. 
+the following parameters?
 
 * Data Product DP1.20033.001: nitrate in surface water
 * Data Product DP1.20016.001: elevation of surface water

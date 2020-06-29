@@ -1,4 +1,4 @@
-## ----set-up-env, eval=F--------------------------------------------------------------------------------------
+## ----set-up-env, eval=F--------------------------------------------------------------------------------------------
 ## # Install neonUtilities package if you have not yet.
 ## install.packages("neonUtilities")
 ## install.packages("ggplot2")
@@ -6,7 +6,7 @@
 ## install.packages("padr")
 
 
-## ----load-packages-------------------------------------------------------------------------------------------
+## ----load-packages-------------------------------------------------------------------------------------------------
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
 
@@ -17,7 +17,7 @@ library(dplyr)
 library(padr)
 
 
-## ----download-data-waq, results='hide'-----------------------------------------------------------------------
+## ----download-data-waq, results='hide'-----------------------------------------------------------------------------
 # download data of interest - Water Quality
 waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN", 
                      startdate="2020-02", enddate="2020-02", 
@@ -27,7 +27,7 @@ waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN",
 
 
 
-## ----download-data-nsw, results='hide'-----------------------------------------------------------------------
+## ----download-data-nsw, results='hide'-----------------------------------------------------------------------------
 # download data of interest - Nitrate in Suface Water
 nsw <-  loadByProduct(dpID="DP1.20033.001", site="PRIN", 
                       startdate="2020-02", enddate="2020-02", 
@@ -41,7 +41,7 @@ nsw <-  loadByProduct(dpID="DP1.20033.001", site="PRIN",
 
 
 
-## ----download-data-eos, results='hide'-----------------------------------------------------------------------
+## ----download-data-eos, results='hide'-----------------------------------------------------------------------------
 # download data of interest - Elevation of surface water
 eos <- loadByProduct(dpID="DP1.20016.001", site="PRIN",
                      startdate="2020-02", enddate="2020-02",
@@ -53,7 +53,7 @@ eos <- loadByProduct(dpID="DP1.20016.001", site="PRIN",
 
 
 
-## ----loadBy-list---------------------------------------------------------------------------------------------
+## ----loadBy-list---------------------------------------------------------------------------------------------------
 # view all components of the list
 names(waq)
 
@@ -62,23 +62,23 @@ View(waq$waq_instantaneous)
 
 
 
-## ----unlist-vars---------------------------------------------------------------------------------------------
+## ----unlist-vars---------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(waq, .GlobalEnv)
 
 
-## ----unlist-remainder----------------------------------------------------------------------------------------
+## ----unlist-remainder----------------------------------------------------------------------------------------------
 list2env(nsw, .GlobalEnv)
 list2env(eos, .GlobalEnv)
 
 
-## ----waq-hor-num-locations-----------------------------------------------------------------------------------
+## ----waq-hor-num-locations-----------------------------------------------------------------------------------------
 # which sensor locations exist for water quality, DP1.20288.001?
 print("Water quality horizontal positions:")
 unique(waq_instantaneous$horizontalPosition)
 
 
-## ----all-hor-num-locations-----------------------------------------------------------------------------------
+## ----all-hor-num-locations-----------------------------------------------------------------------------------------
 # which sensor locations exist for other data products?
 print("Nitrate in Surface Water horizontal positions: ")
 unique(NSW_15_minute$horizontalPosition)
@@ -87,7 +87,7 @@ print("Elevation of Surface Water horizontal positions: ")
 unique(EOS_30_min$horizontalPosition)
 
 
-## ----split-hor-----------------------------------------------------------------------------------------------
+## ----split-hor-----------------------------------------------------------------------------------------------------
 # Split data into separate dataframes by upstream/downstream locations.
 
 waq_up <- 
@@ -101,7 +101,7 @@ eos_up <- EOS_30_min[(EOS_30_min$horizontalPosition=="110"),]
 eos_down <- EOS_30_min[(EOS_30_min$horizontalPosition=="132"),]
 
 
-## ----column-names--------------------------------------------------------------------------------------------
+## ----column-names--------------------------------------------------------------------------------------------------
 # One option is to view column names in the data frame
 colnames(waq_instantaneous)
 
@@ -109,7 +109,7 @@ colnames(waq_instantaneous)
 View(variables_20288)
 
 
-## ----plot-wqual----------------------------------------------------------------------------------------------
+## ----plot-wqual----------------------------------------------------------------------------------------------------
 # plot
 wqual <- ggplot() +
 	geom_line(data = waq_up, 
@@ -133,7 +133,7 @@ wqual
 
 
 
-## ----plot-fdom-ucert-----------------------------------------------------------------------------------------
+## ----plot-fdom-ucert-----------------------------------------------------------------------------------------------
 # plot
 fdomUcert <- ggplot() +
 	geom_line(data = waq_down, 
@@ -153,7 +153,7 @@ fdomUcert
 
 
 
-## ----challenge-explore-nsw, results='hide'-------------------------------------------------------------------
+## ----challenge-explore-nsw, results='hide'-------------------------------------------------------------------------
 # recall dataframes created in list2env() command, including NSW_15_minute
 
 # which sensor locations?
@@ -163,7 +163,7 @@ unique(NSW_15_minute$horizontalPosition)
 names(NSW_15_minute)
 
 
-## ----challenge-plot-nsw--------------------------------------------------------------------------------------
+## ----challenge-plot-nsw--------------------------------------------------------------------------------------------
 # plot
 plot_NSW <- ggplot(data = NSW_15_minute,
                    aes(endDateTime, surfWaterNitrateMean)) +
@@ -175,7 +175,7 @@ plot_NSW
 
 
 
-## ----view-qf-------------------------------------------------------------------------------------------------
+## ----view-qf-------------------------------------------------------------------------------------------------------
 waq_qf_names <- names(waq_down)[grep("QF", names(waq_down))]
 
 print(paste0("Total columns in DP1.20288.001 expanded package = ", 
@@ -188,7 +188,7 @@ print(waq_qf_names[grep("fDOM", waq_qf_names)])
 
 
 
-## ----view-qf-fdom--------------------------------------------------------------------------------------------
+## ----view-qf-fdom--------------------------------------------------------------------------------------------------
 waq_qf_names <- names(waq_down)[grep("QF", names(waq_down))]
 
 print(paste0("Total QF columns: ",length(waq_qf_names)))
@@ -205,11 +205,11 @@ for(col_nam in fdom_qf_names){
 
 
 
-## ----view-variables-waq, echo =TRUE--------------------------------------------------------------------------
+## ----view-variables-waq, echo =TRUE--------------------------------------------------------------------------------
 print(variables_20288$description[which(variables_20288$fieldName == "fDOMAbsQF")])
 
 
-## ----dig-into-qf, echo=TRUE----------------------------------------------------------------------------------
+## ----dig-into-qf, echo=TRUE----------------------------------------------------------------------------------------
 # Loop across the fDOM QF column names. 
 #  Within each column, count the number of rows that equal '1'.
 print("FLAG TEST - COUNT")
@@ -225,11 +225,11 @@ print(paste0("fDOMAbsQF = 2: ",
 print(paste0("Total fDOM observations: ", nrow(waq_down) ))
 
 
-## ----check-vars----------------------------------------------------------------------------------------------
+## ----check-vars----------------------------------------------------------------------------------------------------
 print(variables_20288[which(variables_20288$fieldName == "fDOMAbsQF"),])
 
 
-## ----omit-finalqf--------------------------------------------------------------------------------------------
+## ----omit-finalqf--------------------------------------------------------------------------------------------------
 # Map QF label names for the plot for the fDOMFinalQF grouping
 group_labels <- c("fDOMFinalQF = 0", "fDOMFinalQF = 1")
 names(group_labels) <- c("0","1")
@@ -244,7 +244,7 @@ ggplot2::ggplot(data = waq_down,
 
 
 
-## ----check-fdom-qf-------------------------------------------------------------------------------------------
+## ----check-fdom-qf-------------------------------------------------------------------------------------------------
 # Find row indices around February 22:
 idxs_Feb22 <- base::which(waq_down$endDateTime > as.POSIXct("2020-02-22"))[1:1440]
 
@@ -256,7 +256,7 @@ for (col_nam in fdom_qf_names){
 
 
 
-## ----view-absQF----------------------------------------------------------------------------------------------
+## ----view-absQF----------------------------------------------------------------------------------------------------
 ggplot2::ggplot(data = waq_down, 
                 aes(x = endDateTime, y = fDOM, group = fDOMAbsQF)) +
   ggplot2::geom_step() +
@@ -264,11 +264,11 @@ ggplot2::ggplot(data = waq_down,
   ggplot2::ggtitle("PRIN Sensor Set 102 fDOMAbsQF comparison")
 
 
-## ----look-at-n03-again---------------------------------------------------------------------------------------
+## ----look-at-n03-again---------------------------------------------------------------------------------------------
 plot_NSW
 
 
-## ----ignore-absQF--------------------------------------------------------------------------------------------
+## ----ignore-absQF--------------------------------------------------------------------------------------------------
 # Remove the absorbance and aggregated quality flag tests from list of fDOM QF tests:
 fdom_qf_non_abs_names <- fdom_qf_names[which(!fdom_qf_names %in% c("fDOMAlphaQF","fDOMBetaQF","fDOMAbsQF","fDOMFinalQF"))]
 
@@ -287,7 +287,7 @@ ggplot2::ggplot(data = waq_down,
 
 
 
-## ----aggregate-waq-prep--------------------------------------------------------------------------------------
+## ----aggregate-waq-prep--------------------------------------------------------------------------------------------
 # Recall we already created the downstream object for water quality, waq_down
 
 # We first need to name each data stream within water quality. 
@@ -320,7 +320,7 @@ if("POSIXct" %in% class(waq_down$endDateTime)){
 
 
 
-## ----aggr-waq-padr-------------------------------------------------------------------------------------------
+## ----aggr-waq-padr-------------------------------------------------------------------------------------------------
 # Aggregate water quality data columns to 30 minute intervals, 
 # taking the mean of non-NA values within each 30-minute period. 
 # We explain each step in the dplyr piping operation in code 
@@ -354,7 +354,7 @@ waq_30min_down <- waq_down %>%
 
 
 
-## ----combine-nsw-waq-----------------------------------------------------------------------------------------
+## ----combine-nsw-waq-----------------------------------------------------------------------------------------------
 # We have to specify the matching column from each dataframe
 all_30min_data_down <- base::merge(x = waq_30min_down, 
                                    y = eos_down, 
@@ -366,7 +366,7 @@ colnames(all_30min_data_down)
 
 
 
-## ----plot-eos-waq--------------------------------------------------------------------------------------------
+## ----plot-eos-waq--------------------------------------------------------------------------------------------------
 
 ggplot(data = all_30min_data_down, 
        aes(x = surfacewaterElevMean, y = specificConductance)) +
