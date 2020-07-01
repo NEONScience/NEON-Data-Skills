@@ -195,7 +195,10 @@ Experimental Forest (WREF).
             name='horizonName', label='siteLabel', 
             color='pMjelm', 
             col.label='Phosphorus (mg/Kg)',
-            col.palette=viridis::viridis(10))
+            col.palette=viridis::viridis(10), cex.names=1, 
+            width = .1, axis.line.offset = -6, 
+            col.legend.cex = 1.5, n.legend=4, 
+            x.idx.offset = 0, n=.88)
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-WREF-1.png)
 
