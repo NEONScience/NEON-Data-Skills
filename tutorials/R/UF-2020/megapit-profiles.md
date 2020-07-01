@@ -170,29 +170,27 @@ a single site, the Smithsonian Environmental Research Center
 (SERC), and plot clay content by depth.
 
 
-    plotSPC(S[which(S@site=="D02-SERC"),],
-            name='horizonName', label='siteLabel',
-            color='clayTotal', col.label='Clay Content (%)',
-            col.palette=viridis::viridis(10))
-
-![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-SERC-1.png)
-
+    # adjust margins
     par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
-    #par(mar=c(1,3,3,4), xpd=NA)
-    #plotSPC(x[1, ], cex.names=1)
-    plotSPC(S[1,], name='horizonName', label='siteLabel', 
+    
+    # Plot SERC clay profile
+    plotSPC(S[which(S@site=="D02-SERC"),], 
+            name='horizonName', label='siteLabel', 
             color='clayTotal', col.label='Clay Content (%)',
             col.palette=viridis::viridis(10), cex.names=1, 
             width = .1, axis.line.offset = -6, 
             col.legend.cex = 1.5, n.legend=6, 
             x.idx.offset = 0, n=.88)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-SERC-2.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-SERC-1.png)
 
 Now let's take a look at phosphorus at Wind River 
 Experimental Forest (WREF).
 
 
+    # adjust margins
+    par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
+    
     plotSPC(S[which(S@site=="D16-WREF"),], 
             name='horizonName', label='siteLabel', 
             color='pMjelm', 
@@ -212,9 +210,9 @@ We can even pass the plotting function multiple sites in order to compare the pe
             color='sandTotal', 
             col.label='Percent Sand (%)',
             col.palette=viridis::viridis(10),
-            n.legend = 7)
+            n.legend = 5)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-five-1.png)
+![ ]({{ site.baseurl }}/images/rfigs/R/UF-2020/megapit-profiles/plot-four-1.png)
 
 
 ## Multivariate Plotting
