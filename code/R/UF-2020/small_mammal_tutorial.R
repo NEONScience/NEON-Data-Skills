@@ -99,6 +99,11 @@ species_count2[is.na(species_count2)] <- 0
 # Make plots per species, with lines for each plot
 # Get the abbreviated names for the species
 species_names <- names(species_count2)[5:ncol(species_count2)]
+
+# Download lookup table of small mammal names:
+download.file(url="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/master/code/R/UF-2020/smallmammals_trapped_listnames.csv", 
+              destfile = "YOUR-PATH-HERE/smallmammals_trapped_listnames.csv")
+
 # Use a lookup table to add the scientific names and popular names to the plots
 # and maybe also the landscape
 mammal_names <- read.csv("Day3/Small_mammals//smallmammals_trapped_listnames.csv")
