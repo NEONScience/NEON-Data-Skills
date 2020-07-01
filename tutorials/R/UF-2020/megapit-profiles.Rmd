@@ -9,12 +9,12 @@ estimatedTime: 45 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/
+code1: R/UF-2020/megapit-profiles.R
 tutorialSeries:
 urlTitle: plot-cluster-megapit-soils-data
 ---
 
-This tutorial covers ...
+This tutorial will show you how to download NEON Megapit soils data, plot soil profiles by texture and chemical proterties, and to cluster the different megapit profiles according to their similarity across multiple dimensions. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -23,9 +23,9 @@ This tutorial covers ...
 After completing this activity, you will be able to:
 
 * Download NEON megapit data using the `neonUtilities` package.
-* Understand downloaded data sets and load them into R for analyses.
 * Join megapit data tables
 * Plot profiles of megapit data by horizon
+* Cluster sites into groups based on physical and chemical properties
 
 ## Things You'll Need To Complete This Tutorial
 To complete this tutorial you will need R (version >3.6) and, 
@@ -34,11 +34,11 @@ preferably, RStudio loaded on your computer.
 ### Install R Packages
 
 * **neonUtilities**: Basic functions for accessing NEON data
-* **soilDB**: 
 * **dplyr**: Data manipulation functions
-* **aqp**: 
-* **cluster**: 
-* **sharpshootR**:
+* **aqp**: Algorithms for Quantitative Pedology
+* **cluster**: Clustering utilities
+* **sharpshootR**: Plotting tools for clustered data
+* **Ternary**: Tools for making Ternary plots
 
 These packages are on CRAN and can be installed by 
 `install.packages()`.
@@ -58,13 +58,11 @@ the R packages needed for data load and analysis.
 
 # Install packages if you have not yet.
 install.packages("neonUtilities")
-install.packages("soilDB")
 install.packages("aqp")
 install.packages("cluster")
 install.packages("sharpshootR")
 install.packages("dplyr")
 install.packages("Ternary")
-
 
 ```
 
@@ -75,7 +73,6 @@ options(stringsAsFactors=F)
 
 # Load required packages
 library(neonUtilities)
-#library(soilDB)
 library(aqp)
 library(cluster)
 library(sharpshootR)
@@ -344,7 +341,7 @@ d.diana.nutrients <- diana(d.nutrients)
 
 Let's make another PDF for our plot. However, this time is itsn't as straightforward to plot the three nutrients of interest as 'rgb' colors, so we will make three separate plots for each nutrient:
 
-```{r plot-texture-clusters}
+```{r plot-nutrient-clusters}
 
 # Open 'pdf' graphic device. Define file name and large dimensions
 pdf(file="NEON_Soils_Nutrient_Clusters.pdf", width=24, height=14)
