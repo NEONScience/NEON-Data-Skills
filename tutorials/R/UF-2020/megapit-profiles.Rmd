@@ -1,17 +1,17 @@
 ---
-syncID: 
-title: ""
-description: ""
+syncID: e606b7e7bfb845b39b931bcd772903a1
+title: "Plotting and Clustering Megapit Soils Data"
+description: "Learn to download, analyze, and visualize NEON soils data."
 dateCreated: 2020-06-30
 authors: Donal O'Leary, Claire Lunch
 contributors: 
-estimatedTime: 
-packagesLibraries: neonUtilities, soilDB
+estimatedTime: 45 minutes
+packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R, API
 code1: R/
 tutorialSeries:
-urlTitle: 
+urlTitle: plot-cluster-megapit-soils-data
 ---
 
 This tutorial covers ...
