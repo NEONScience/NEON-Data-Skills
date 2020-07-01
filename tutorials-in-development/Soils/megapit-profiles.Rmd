@@ -1,0 +1,177 @@
+---
+syncID: 
+title: ""
+description: ""
+dateCreated: 2020-06-30
+authors: Donal O'Leary, Claire Lunch
+contributors: 
+estimatedTime: 
+packagesLibraries: neonUtilities, soilDB
+topics: data-management, rep-sci
+languageTool: R, API
+code1: R/
+tutorialSeries:
+urlTitle: 
+---
+
+This tutorial covers ...
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+* Download NEON megapit data using the `neonUtilities` package.
+* Understand downloaded data sets and load them into R for analyses.
+* Join megapit data tables
+* Plot profiles of megapit data by horizon
+
+## Things You'll Need To Complete This Tutorial
+To complete this tutorial you will need R (version >3.4) and, 
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **neonUtilities**: Basic functions for accessing NEON data
+* **soilDB**: 
+* **dplyr**: Data manipulation functions
+* **aqp**: 
+* **cluster**: 
+* **sharpshootR**:
+
+These packages are on CRAN and can be installed by 
+`install.packages()`.
+
+### Additional Resources
+
+* <a href="https://data.neonscience.org/megapit-info" target="_blank">Images and narrative descriptions of megapit soils</a>
+
+</div>
+
+## Load megapit data to R
+
+Before we get the data, we need to install (if not already done) and load 
+the R packages needed for data load and analysis. 
+
+```{r set-up-env, eval=F}
+
+# Install packages if you have not yet.
+install.packages("neonUtilities")
+install.packages("soilDB")
+install.packages("aqp")
+install.packages("cluster")
+install.packages("sharpshootR")
+install.packages("dplyr")
+
+```
+
+```{r load-packages}
+
+# Set global option to NOT convert all character variables to factors
+options(stringsAsFactors=F)
+
+# Load required packages
+library(neonUtilities)
+library(soilDB)
+library(aqp)
+library(cluster)
+library(sharpshootR)
+library(dplyr)
+
+```
+
+Megapit chemical and physical properties:
+
+* Soil physical properties (Megapit) DP1.00096.001
+* Soil chemical properties (Megapit) DP1.00097.001
+
+In this exercise, we want all available data, so we won't subset by 
+site or date range.
+
+```{r download-data, results='hide'}
+
+MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
+MC <- loadByProduct(dpID = "DP1.00097.001", check.size = F)
+
+# Unlist to environment - see download/explore tutorial for description
+list2env(MP, .GlobalEnv)
+list2env(MC, .GlobalEnv)
+
+```
+
+Quite a bit of data is duplicated between the two data products, since 
+the pit-level and horizon-level data are relevant to both the chemical 
+and physical data. There is a `_perhorizon` table in both data products, 
+containing data about the soil horizon identification and depths.
+
+We'll join the horizon data to the biogeochemistry data in order to 
+see depth profile of biogeochemical characteristics. The variables 
+needed to join correctly are horizon (either name or ID) and either 
+pitID or siteID, but we'll include several other columns that appear 
+in both tables, to avoid creaing duplicate columns.
+
+```{r join-bgc}
+
+S <- mgp_perhorizon
+
+# Join chemical and physical data from biogeo tables
+B <- full_join(mgp_perbiogeosample, 
+               mgc_perbiogeosample, 
+               by=c('horizonID','biogeoID',
+                    'siteID','domainID',
+                    'setDate','collectDate',
+                    'horizonName','pitID',
+                    'biogeoSampleType'))
+
+# Select only 'Regular' samples (not audit)
+B <- B[B$biogeoSampleType=="Regular" & 
+         !is.na(B$biogeoSampleType),]
+
+# Join biogeochem data to horizon data
+S <- left_join(S, B, by=c('horizonID', 'siteID',
+                          'pitID','setDate',
+                          'collectDate',
+                          'domainID',
+                          'horizonName'))
+S <- arrange(S, siteID, horizonTopDepth)
+
+```
+
+We now have a data frame of biogeochemical data, organized 
+by site and horizon. We can convert this to a 
+`SoilProfileCollection` object using the `soilDB` package.
+
+```{r make-SPC-object}
+
+depths(S) <- siteID ~ horizonTopDepth + horizonBottomDepth
+
+```
+
+And using the plotting functions in the `soilDB` package, 
+let's start exploring some depth profiles. We'll start with 
+a single site, the Smithsonian Environmental Research Center 
+(SERC), and plot clay content by depth.
+
+```{r plot-SERC}
+
+plotSPC(S[which(S@site=="SERC"),], 
+        name='horizonName', label='siteID', 
+        color='clayTotal', col.label='Clay Content (%)',
+        col.palette=viridis::viridis(10))
+
+```
+
+Now let's take a look at phosphorus at Wind River 
+Experimental Forest (WREF).
+
+```{r plot-WREF}
+
+plotSPC(S[which(S@site=="WREF"),], 
+        name='horizonName', label='siteID', 
+        color='pMjelm', 
+        col.label='Phosphorus (mg/Kg)',
+        col.palette=viridis::viridis(10))
+
+```
+
