@@ -1,6 +1,9 @@
-## Download fiels sites shapefile
-#LOAD LIBRARIES
-#library(sp)
+# Tutorial In Development
+# By Donal O'Leary and Max Burner
+# NationalEcological Observatory Network
+# July 2, 2020
+
+
 library(raster)
 library(lidR)
 library(rgdal)
@@ -84,27 +87,23 @@ SITECODES = c("OSBS")
 for(SITECODE in SITECODES){
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
 
-#rm(NEON_all_plots)
-
-#Extract data from polygons dataframe
-#in_data <- as.data.frame(base_plots_SPDF@data)
-
+# Make new data.frame of plot coordinates
 coord_df <- data.frame("plotID" = as.character(base_plots_SPDF$plotID),
                        "coord_String" = apply(base_plots_SPDF, 1, get_plot_coords))
 
-#rm(in_data)
 
-
-#boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
+# Remove the plots that cross a mosaic tile boundary
 coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
 
-
+# Count how many plots are in each mosaic tile
 coord_count = coord_df %>% group_by(coord_String) %>%
   summarise(count=n()) %>% arrange(desc(count))
 
+# Convert coord_String to a string (might be a factor?)
 coord_count$coord_String=as.character(coord_count$coord_String)
 ## most base plots is coord_count$coord_String[1]
 
+## Begin API call process
 SERVER <- 'https://data.neonscience.org/api/v0/'
 PRODUCTCODE <- 'DP1.30003.001'
 
@@ -137,7 +136,7 @@ file_url <- data_avail$data$files[intersect(
 ),'url']
 
 
-#Install any files not already present
+# Download any files not already present
 if(!file.exists(file_name)){
   #Try downloading file using full URL
   download.file(file_url, destfile = paste0(getwd(),'/',file_name))
@@ -155,7 +154,7 @@ if(!file.exists(file_name)){
 # filter out vertical outliers (if any)
 site_LAS=readLAS(file_name)
 
-### trim bad lidar point outliers
+### remove outlier lidar point outliers using mean and sd statistics
 Z_sd=sd(site_LAS@data$Z)
 Z_mean=mean(site_LAS@data$Z)
 
@@ -163,29 +162,31 @@ Z_mean=mean(site_LAS@data$Z)
 # You can increase or decrease (from 4) the number of sd's to filter outliers
 f= paste("-drop_z_below",(Z_mean-4*Z_sd),"-drop_z_above",(Z_mean+4*Z_sd))
 
+# Read in LAS file, trimming off vertical outlier points
 site_LAS=readLAS(file_name, filter = f)
 
-#plot(site_LAS)
-## Use max lidar functions to determine which LIDAR tiles contain field plots
- ## Which lidar tile contains the most base plots? Let's just use that one
-
-## Download lidar tile
 
 ## plot lidar w/ base plots:
+# re-project plot shapefile to local UTM zone
 base_plots_SPDF <- st_transform(base_plots_SPDF, as.character(site_LAS@proj4string))
 base_crop=st_crop(base_plots_SPDF, extent(site_LAS))
+
+# Plot LAS and save as an object - this tells you the (x,y) offset
+# Plotting a LAS file offsets all X and Y coordinates by the 
+# Lower left corner, so you need to subtract those offsets from 
+# anything else that you want to plot into the 3D space!
 x = plot(site_LAS)
 #quads3d(x=coordinates(base_plots_SPDF)[1:8,1], y=coordinates(base_plots_SPDF)[1:8,2])
 coords=as.data.frame(st_coordinates(base_crop))
-coords$X=coords$X-x[1]
-coords$Y=coords$Y-x[2]
+coords$X=coords$X-x[1] # offset points in X direction
+coords$Y=coords$Y-x[2] # offset points in Y direction
 coords$Z=rep(base_crop$elevation, each=5)
 c=1:nrow(coords)
-coords=coords[!c%%5==0,]
-#coords$L1=NULL; coords$L2=NULL
-#coords$Z=NULL
-#quads3d(coords[26:29,], add=T, col="red") # WORKS @ z=0
 
+# Remove every 5th point (redundant where square plot returns to origin)
+coords=coords[!c%%5==0,]
+
+# Add plots to 3D space using `quads3d()`
 for(i in 1:(nrow(coords)/4)){
   print(i)
   r=((i-1)*4)+1
@@ -194,7 +195,7 @@ for(i in 1:(nrow(coords)/4)){
 }
 
 
-## Clip out individual plots
+## Clip out individual plots from LiDAR point cloud:
 
 top_left=as.data.frame(st_coordinates(base_crop))
 c=1:nrow(top_left)
@@ -208,7 +209,7 @@ plots_LAS <-
 
 
 
-## Download veg structure
+## Download veg structure to add to 3D space:
 veglist <- loadByProduct(dpID="DP1.10098.001", site=SITECODE, check.size=F)
 
 veglist_mapping <- veglist$vst_mappingandtagging
@@ -230,8 +231,9 @@ for(p in 4){
   
   
   x=plot(plots_LAS[[p]])
-  #quads3d(x=coordinates(base_plots_SPDF)[1:8,1], y=coordinates(base_plots_SPDF)[1:8,2])
+  
   tree_boxes=veg[veg$plotID==base_crop$plotID[p],]
+  tree_boxes=tree_boxes[!is.na(tree_boxes$height),]
   
   trees_ranked = tree_boxes %>% group_by(taxonID) %>%
     summarise(count=n()) %>% arrange(desc(count))
@@ -243,12 +245,17 @@ for(p in 4){
     species_boxes=tree_boxes[tree_boxes$taxonID==trees_ranked$taxonID[s],]
     species_boxes$adjEasting=species_boxes$adjEasting-x[1]
     species_boxes$adjNorthing=species_boxes$adjNorthing-x[2]
+    species_boxes=species_boxes[!is.na(species_boxes$adjEasting),]
     
   # Add individual tree
   for(i in 1:(nrow(species_boxes))){
     print(i)
+    
+    # MAke new data.frame for individual tree
     d=as.data.frame(species_boxes[i,c(58,59,63)])
     d[,3]=as.numeric(d[,3])
+    
+    # Add new rows for four sides of box
     d[2:4,]=d[1,]
     d[1,1]=d[1,1]+2
     d[1,2]=d[1,2]-2
@@ -264,8 +271,7 @@ for(p in 4){
     
     d[,3]=d[,3]+species_boxes[i,16]
     
-    #r=((i-1)*4)+1
-    #quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+50, add=T, col="green")
+    # Plot box
     quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation, 
             add=T, col=colors_vec[s], lwd=2, lit=F)
   }
