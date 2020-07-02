@@ -11,6 +11,9 @@ library(dplyr)
 library(sf)
 library(neonUtilities)
 library(geoNEON)
+library(rgl)
+
+stringsAsFactors=F
 
 ## Define Functions:
 ####FUNCTION: Round value down to nearest multiple of 1000
@@ -63,21 +66,25 @@ get_plot_coords <- function(plot_spdf){
 }
 
 
+## Download plots shapefile
+setwd("~/Downloads/")
+download.file(url="https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V8",
+              destfile = "All_NEON_TOS_Plots_V8.zip")
+unzip(zipfile="All_NEON_TOS_Plots_V8.zip", exdir = "All_NEON_TOS_Plots_V8")
+NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
 
 
 ## Define sites of interest
 
 ### Add base plots?
-SITECODES = c('BART', 'HARV', 'WREF')
-
+#SITECODES = c('BART', 'HARV', 'WREF')
+SITECODES = c("OSBS")
 #SITECODE='BART'
 
 for(SITECODE in SITECODES){
-setwd("~/Downloads/")
-NEON_all_plots <- st_read('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
 
-rm(NEON_all_plots)
+#rm(NEON_all_plots)
 
 #Extract data from polygons dataframe
 #in_data <- as.data.frame(base_plots_SPDF@data)
@@ -94,7 +101,8 @@ coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
 
 coord_count = coord_df %>% group_by(coord_String) %>%
   summarise(count=n()) %>% arrange(desc(count))
-  
+
+coord_count$coord_String=as.character(coord_count$coord_String)
 ## most base plots is coord_count$coord_String[1]
 
 SERVER <- 'https://data.neonscience.org/api/v0/'
@@ -128,8 +136,8 @@ file_url <- data_avail$data$files[intersect(
   grep('.laz', data_avail$data$files$name)
 ),'url']
 
-#Install any files not already present
 
+#Install any files not already present
 if(!file.exists(file_name)){
   #Try downloading file using full URL
   download.file(file_url, destfile = paste0(getwd(),'/',file_name))
@@ -142,13 +150,17 @@ if(!file.exists(file_name)){
 }
 
 
+# Read in LAS file. You will first read it in, then
+# calculate mean and sd of vertical component, then
+# filter out vertical outliers (if any)
 site_LAS=readLAS(file_name)
 
 ### trim bad lidar point outliers
 Z_sd=sd(site_LAS@data$Z)
 Z_mean=mean(site_LAS@data$Z)
 
-#make filter string in form filter = "-drop_z_below 50 -drop_z_above 1000"
+# make filter string in form filter = "-drop_z_below 50 -drop_z_above 1000"
+# You can increase or decrease (from 4) the number of sd's to filter outliers
 f= paste("-drop_z_below",(Z_mean-4*Z_sd),"-drop_z_above",(Z_mean+4*Z_sd))
 
 site_LAS=readLAS(file_name, filter = f)
@@ -182,11 +194,13 @@ for(i in 1:(nrow(coords)/4)){
 }
 
 
+## Clip out individual plots
 
 top_left=as.data.frame(st_coordinates(base_crop))
 c=1:nrow(top_left)
 top_left=top_left[c%%5==1,]
 
+# Make a list of LAS clips of individual plots
 plots_LAS <- 
   lasclipRectangle(site_LAS,
                    xleft = (top_left$X), ybottom = (top_left$Y - 40),
@@ -210,8 +224,9 @@ veg <- merge(veglist$vst_apparentindividual, vegmap,
                   "domainID","siteID","plotID"))
 
 
-for(p in 1:length(plots_LAS)){
-#for(p in 1:2){ 
+#for(p in 5:length(plots_LAS)){ # Uncomment this line to run all plots
+# Just the first two plots
+for(p in 4){ 
   
   
   x=plot(plots_LAS[[p]])
@@ -229,10 +244,10 @@ for(p in 1:length(plots_LAS)){
     species_boxes$adjEasting=species_boxes$adjEasting-x[1]
     species_boxes$adjNorthing=species_boxes$adjNorthing-x[2]
     
-  
+  # Add individual tree
   for(i in 1:(nrow(species_boxes))){
     print(i)
-    d=as.data.frame(species_boxes[i,c(59,60,64)])
+    d=as.data.frame(species_boxes[i,c(58,59,63)])
     d[,3]=as.numeric(d[,3])
     d[2:4,]=d[1,]
     d[1,1]=d[1,1]+2
@@ -251,7 +266,7 @@ for(p in 1:length(plots_LAS)){
     
     #r=((i-1)*4)+1
     #quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+50, add=T, col="green")
-    quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$api.elevation, 
+    quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation, 
             add=T, col=colors_vec[s], lwd=2, lit=F)
   }
   
