@@ -105,7 +105,7 @@ learned skills. If available, the code for challenge solutions is found in the
 downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 
-### Recommended Skills 
+### Recommended Skills
 
 This tutorial will require that you be comfortable navigating HDF5 files, 
 and have an understanding of what spectral signatures are. For additional 
