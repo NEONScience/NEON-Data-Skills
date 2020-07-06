@@ -1,6 +1,6 @@
 ## CHM Tutorial
 
-source("~/Desktop/NEON_TOKEN.r")
+#source("~/Desktop/NEON_TOKEN.r")
 
 library(sp)
 library(raster)
@@ -40,7 +40,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
-          token=NEON_TOKEN,check.size = F,
+          #token=NEON_TOKEN,check.size = F,
           savepath="~/Downloads/")
 chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
