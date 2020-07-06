@@ -179,8 +179,8 @@ round1000 <- function(x){
 #Load TOS Plot Shape Files into R
 #Generate Base Plots Spatial Polygon DF, and plot
 
+
 SITECODE = 'SOAP'
-#SITECODE = 'ABBY'
 
 NEON_all_plots <- readOGR('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
@@ -196,17 +196,6 @@ plot(base_plots_SPDF, border = 'blue')
 
 
 
-
-
-
-
-
-
-
-
-#Get coordinates for all plots not on a tile boundary, then split by whether plot is on a boundary
-
-in_data <- as.data.frame(base_plots_SPDF@data)
 
 
 
@@ -282,12 +271,10 @@ get_plot_coords <- function(plot_spdf){
 
 #Build Coordinate dataframe, then split by whether plot lays on a tile boundary
 
-coord_df <- data.frame("plotID" = as.character(in_data$plotID),
-                       "coord_String" = apply(in_data, 1, get_plot_coords),
-                       options(stringsAsFactors = FALSE)
+coord_df <- data.frame("plotID" = as.character(base_plots_SPDF$plotID),
+                       "coord_String" = apply(base_plots_SPDF@data, 1, get_plot_coords),
+                       stringsAsFactors = FALSE
 )
-
-rm(in_data)
 
 
 boundary_df <- coord_df[coord_df$coord_String == 'Plot crosses a tile boundary',]
@@ -304,14 +291,15 @@ coord_df <- coord_df[coord_df$coord_String != 'Plot crosses a tile boundary',]
 
 
 #Get coordinates for plots on boundary tiles
-
-bad_plots <- as.vector(boundary_df$plotID)
-bad_plots <- base_plots_SPDF[base_plots_SPDF$plotID %in% bad_plots,]
-N <- length(bad_plots)
+if(nrow(boundary_df) > 0){
+  bad_plots <- as.vector(boundary_df$plotID)
+  bad_plots <- base_plots_SPDF[base_plots_SPDF$plotID %in% bad_plots,]
+  N <- length(bad_plots)
+  
+}
 
 #make empty "pseudo dataframe" list
 boundary_list <- list()
-rm(boundary_df)
 
 
 
@@ -358,20 +346,22 @@ get_boundary_plot_coords <- function(plot_spdf_row){
 }
 
 
-
-
-#Fill list with plot IDs and tile coordinates for plots on tile boundaries
-for(i in 1:nrow(bad_plots@data)){
-  row <- list(plotID = '', coords = character())
-  row[['plotID']] <- as.character(bad_plots@data[i,]$plotID)
-  row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
-  boundary_list[[i]] <- row
+if(nrow(boundary_df) != 0){
+  
+  #Fill list with plot IDs and tile coordinates for plots on tile boundaries
+  for(i in 1:nrow(bad_plots@data)){
+    row <- list(plotID = '', coords = character())
+    row[['plotID']] <- as.character(bad_plots@data[i,]$plotID)
+    row[['coords']] <- get_boundary_plot_coords(bad_plots@data[i,])
+    boundary_list[[i]] <- row
+  }
+  
+  
+  #Remove object no longer needed
+  rm(bad_plots, row, boundary_df)
+  
+  
 }
-
-
-#Remove object no longer needed
-rm(bad_plots, row)
-
 
 
 
@@ -460,7 +450,7 @@ if(DATE != ''){
     file_name <- data_avail$data$files[
       intersect(
         intersect(
-          grep(in_coords[i], data_avail$data$files$name),
+          grep(coord_unique[i], data_avail$data$files$name),
           grep('.laz', data_avail$data$files$name)),
         grep('classified_point_cloud', data_avail$data$files$name)
       ),
@@ -471,7 +461,7 @@ if(DATE != ''){
     file_url <- data_avail$data$files[
       intersect(
         intersect(
-          grep(in_coords[i], data_avail$data$files$name),
+          grep(coord_unique[i], data_avail$data$files$name),
           grep('.laz', data_avail$data$files$name)),
         grep('classified_point_cloud', data_avail$data$files$name)
       ),
@@ -507,25 +497,32 @@ if(DATE != ''){
   
   
   #Remove any boundary plots with bad coordinates
-  new_list <- list()
-  bad_plot_num <- 0
-  for(i in 1:length(boundary_list)){
-    alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
-    beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
-    if(!(alpha|beta)){
-      new_list[[i]] <- boundary_list[[i]]
-    }else{
-      bad_plot_num <- bad_plot_num + 1
+  if(bound_N > 0){
+    new_list <- list()
+    bad_plot_num <- 0
+    
+    for(i in 1:length(boundary_list)){
+      alpha <- boundary_list[[i]][['coords']][1] %in% bad_coords
+      beta <- boundary_list[[i]][['coords']][2] %in% bad_coords
+      if(!(alpha|beta)){
+        new_list[[i]] <- boundary_list[[i]]
+      }else{
+        bad_plot_num <- bad_plot_num + 1
+      }
     }
+    
+    boundary_list <- new_list
+    
+    if(bad_plot_num > 0){
+      print(paste0('Removed ',as.character(bad_plot_num),' boundary plots with missing tiles'))
+    }
+    
   }
   
-  boundary_list <- new_list
-  if(bad_plot_num > 0){
-    print(paste0('Removed ',as.character(bad_plot_num),' boundary plots with missing tiles'))
-  }
   
   
-  
+  #Remove any bad coordinates from coord_unique
+  coord_unique <- setdiff(coord_unique, bad_coords)
   
   #Install any files not already present
   for(i in 1:length(coord_unique)){
