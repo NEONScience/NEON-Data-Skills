@@ -28,7 +28,7 @@ After completing this tutorial, you will be able to:
 To complete this tutorial you will need the most current version of R and, 
 preferably, RStudio loaded on your computer.
 
-### R Libraries to Install: 
+### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **plyr**: `install.packages('plyr')`
