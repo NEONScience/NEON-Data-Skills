@@ -183,3 +183,18 @@ plot(diff, main="WGS84 minus NAD83 (m)")
 
 ```
 
+Use extract() function to retrieve values from both rasters for a given GEDI footprint
+
+```{r extract-vert-offsets}
+
+WGS_NAD_diff <- extract(diff, as.data.frame(level1bgeo_WREF[,c(3,2)]))
+
+GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask, as.data.frame(level1bgeo_WREF[,c(3,2)]))
+
+## GEDI elevation is in WGS84, so to concert to NAD83 first subtract WGS_NAD_diff
+
+## Next, to convert GEDI elevations fron NAD83 to GEOID12A, add GEOID12A_NAD_diff (which makes it lower because GEOID12A is lower than NAD83 in N America)
+
+## Check to see if AOP forest floor and GEDI ground spike coincide. 
+
+```
