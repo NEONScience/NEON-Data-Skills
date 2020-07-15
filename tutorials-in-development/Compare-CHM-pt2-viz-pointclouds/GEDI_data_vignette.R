@@ -1,6 +1,15 @@
 library(rGEDI)
 library(raster)
 library(sf)
+library(rgl)
+library(lidR)
+library(neonUtilities)
+
+# 
+# - Resolve datum discrepancy
+# - Make subset of GEDI data in H5 file
+# - Send to Katharyn at this point see if it makes sense
+# - Fill out the rest of the non-code .Rmd information in collaboration with Katharyn 
 
 ## read in AOP flight box KML here and crop GEDI data by that shapefile
 
@@ -12,7 +21,11 @@ plot(chm_WGS)
 
 ## Add base plots
 setwd("~/Downloads/")
-NEON_all_plots <- st_read('All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp')
+download.file(url="https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V8", destfile="All_NEON_TOS_Plots_V8.zip")
+unzip("All_NEON_TOS_Plots_V8.zip")
+NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+
+# Select just the WREF site
 SITECODE = 'WREF'
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
 rm(NEON_all_plots)
@@ -28,11 +41,7 @@ lr_lat<- extent(chm_WGS)[3]
 ul_lon<- extent(chm_WGS)[1]
 lr_lon<- extent(chm_WGS)[2]
 
-# ul_lat<- -44.0654
-# lr_lat<- -44.17246
-# ul_lon<- -13.76913
-# lr_lon<- -13.67646
-
+# Or, if you want to define your own extent using the interactive 'drawExtent' function on a map:
 # e=drawExtent()
 # 
 # ul_lat<- e[4]
@@ -42,11 +51,15 @@ lr_lon<- extent(chm_WGS)[2]
 
 
 # Specifying the date range
-daterange=c("2019-07-01","2020-05-22")
+# GEDI data available from 2019-03-25
+daterange=c("2019-03-25","2020-07-15")
 
 # Get path to GEDI data
-#gLevel1B<-gedifinder(product="GEDI01_B",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
-#gLevel2A<-gedifinder(product="GEDI02_A",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
+# These lines use an API request to determine which orbits are available that intersect the bounding box of interest.
+# Note that you still must download the entire orbit and then subset to your area of interest!
+# Word on the street is that a true spatial subsetting tool is in the works.
+gLevel1B<-gedifinder(product="GEDI01_B",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
+gLevel2A<-gedifinder(product="GEDI02_A",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
 #gLevel2B<-gedifinder(product="GEDI02_B",ul_lat, ul_lon, lr_lat, lr_lon,version="001",daterange=daterange)
 
 # Set output dir for downloading the files
@@ -117,16 +130,19 @@ m
 # 
 # plot(base_crop$geometry, border = 'blue', add=T)
 library(maptools)
-library(sp)
 ## transform to UTM
 level1bgeo_WREF_UTM=st_transform(level1bgeo_WREF, crs=chm$NEON_D16_WREF_DP3_580000_5075000_CHM@crs)
+
+# buffer the GEDI shot center by a radius of 12.5m to represent the full 25m diameter GEDI footprint
 level1bgeo_WREF_UTM_buffer=st_buffer(level1bgeo_WREF_UTM, dist=12.5)
 base_crop_UTM=st_transform(base_crop, crs=chm$NEON_D16_WREF_DP3_580000_5075000_CHM@crs)
 plot(chm)
 plot(level1bgeo_WREF_UTM_buffer, add=T, col="transparent")
 #labels <- layer(sp.text(coordinates(level1bgeo_WREF_UTM_buffer), txt = level1bgeo_WREF_UTM$shot_number, pos = 1))
 plot(base_crop_UTM, add=T, border="blue", col="transparent")
-pointLabel(st_coordinates(level1bgeo_WREF_UTM),labels=substr(level1bgeo_WREF_UTM$shot_number, 15, 17))
+
+# add labes with the last three digits of the GEDI shot_number
+pointLabel(st_coordinates(level1bgeo_WREF_UTM),labels=substr(level1bgeo_WREF_UTM$shot_number, 15, 17), cex=.6)
 ###
 # Extracting GEDI full-waveform for a given shot_number
 wf <- getLevel1BWF(gedilevel1b,shot_number = "34820321600151786")
@@ -143,19 +159,35 @@ grid()
 par(oldpar)
 
 
+byTileAOP(dpID = "DP1.30003.001", site = SITECODE, year = 2017, easting = extent(chm)[1], northing=extent(chm)[3], check.size = F)
+
+
+# ### remove outlier lidar point outliers using mean and sd statistics
+# Z_sd=sd(site_LAS@data$Z)
+# Z_mean=mean(site_LAS@data$Z)
+# 
+# # make filter string in form filter = "-drop_z_below 50 -drop_z_above 1000"
+# # You can increase or decrease (from 4) the number of sd's to filter outliers
+# f= paste("-drop_z_below",(Z_mean-4*Z_sd),"-drop_z_above",(Z_mean+4*Z_sd))
+# 
+# # Read in LAS file, trimming off vertical outlier points
+# site_LAS=readLAS(file_name, filter = f)
+
+
 ## crop pointcloud to GEDI footprints
 WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz",
                  filter = "-drop_z_below 50 -drop_z_above 1000")
 
+#Plot the full LiDAR point cloud mosaic tile (1km^2)
 plot(WREF_LAS)
 
+# Clip the pointcloud by the GEDI footprints created by buffering above. This makes a 'list' of LAS objects
 WREF_GEDI_footprints=lasclip(WREF_LAS, geometry = level1bgeo_WREF_UTM_buffer)
 
+# we can plot individual footprint clips
 plot(WREF_GEDI_footprints[[13]])
 
-shot_n=6
-
-for(shot_n in 1:2){
+for(shot_n in 1:1){
 wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
 
 summary(wf@dt$rxwaveform)
@@ -189,7 +221,7 @@ points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation+20, col="green", add=T)
 #lapply(WREF_GEDI_footprints[2:26], plot, add=T)
 ## Adding 20 to elevation as a quick fix - error introduced in spatial transformation? (elevation here not projected)
 
-# Plot all GEDI cylendars and waveforms at the same time
+# Plot all GEDI cylindars and waveforms at the same time
 
 WREF_GEDI_footprints_combined=lasclip(WREF_LAS, geometry = as_Spatial(st_union(level1bgeo_WREF_UTM_buffer)), radius=12.5)
 
@@ -212,4 +244,14 @@ for(shot in 1:length(level1bgeo_WREF_UTM$shot_number)){
   points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation+20, col="green", add=T)
   
 }
+library(rhdf5)
+h5closeAll()
 
+
+diff=raster("WGS84_NAD83_seperation.tif")
+diff
+chm
+chm_NAD = projectRaster(chm, crs=CRS(diff@crs@projargs))
+chm_NAD
+diff=crop(diff,extent(chm_NAD))
+plot(diff)

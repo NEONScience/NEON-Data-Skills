@@ -1,0 +1,103 @@
+---
+syncID:
+title: "Matching GEDI waveforms with NEON AOP LiDAR pointclouds"
+description: "GEDI has amazing coverage around the globe, but is limited in its spatial resolution. Here, we extract NEON pointcloud data corresponding to individual GEDI waveforms to better understand how the GEDI return waveform gets its shape."
+dateCreated: 2020-07-15
+authors: Donal O'Leary
+contributors: 
+estimatedTime: 1 hour
+packagesLibraries: lidR, rGEDI, raster
+topics: LiDAR
+languagesTool: R
+dataProduct: 
+code1: 
+tutorialSeries: 
+urlTitle: 
+---
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Search for GEDI data based on a NEON site bounding box
+* Extract NEON LiDAR pointcloud data corresponding to a specific GEDI footprint
+* Visualize NEON and GEDI LiDAR data together in 3D
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rGEDI")`
+* **sp:** `install.packages("sp")`
+* **sf:** `install.packages("sf")`
+* **lidR:** `install.packages("lidR")`
+
+########## add more packages here as needed #######
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+############# Possibly add GEDI subset here?? ##############
+
+#### NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.10055.001, Plant phenology observations. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+* National Ecological Observatory Network. 2020. Data Product DP1.00002.001, Single aspirated air temperature. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+### Working Directory
+[Donal to add text]
+
+</div>
+
+## Getting Started
+In this tutorial, we will compare NEON and GEDI LiDAR data by comparing the information that they both capture in the same location. NEON data are actually one of the datasets used by the GEDI mission to calibrate and validate GEDI waveforms, so this makes for a valuable comparison! In order to compare these data, we will need to download GEDI data that overlap a NEON site. However, GEDI data are currently only available to download per complete orbit, which means that the vast majority of the orbit's data does not fall within a NEON site. The GEDI orbit datasets come in HDF5 data format, and contain about 7Gb of data, so you may want to run the first few sections of this tutorial to get the GEDI download started, and refresh your memory of HDF5 files with our <a href="https://www.neonscience.org/intro-hdf5-r-series">Intro to HDF5 series</a>.
+
+First, we will load the required libraries and set our working directory:
+
+```{r load-libraries}
+
+library(rGEDI)
+library(raster)
+library(sf)
+library(rgl)
+library(lidR)
+library(neonUtilities)
+
+wd <- "~/Downloads/" # This will depend on your local environment
+setwd(wd)
+
+```
+
+Next, we will download a Canopy Height Model (CHM) tile from the Wind River Experiemental Forest (WREF) using the `byTileAOP()` function to use as a preliminary map on which to overlay the GEDI data. There is one particularly interesting mosaic tile which we will select using the `easting` and `northing` arguments. We then load the raster into R and make a simple plot. For more information about CHMs, please see our tutorial <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data">What is a CHM?</a>
+
+```{r download-chm}
+
+# Define the SITECODE as a variable because
+# we will use it several times in this tutorial
+SITECODE <- "WREF"
+
+byTileAOP(dpID = "DP3.30015.001", site = SITECODE, year = 2017, 
+          easting = 580000, northing = 5075000, check.size = F)
+
+chm <- raster(paste0(wd, "/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
+
+plot(chm)
+
+```
+
+As you can see, this particular CHM 
+
