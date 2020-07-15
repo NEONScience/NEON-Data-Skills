@@ -76,6 +76,7 @@ library(sf)
 library(rgl)
 library(lidR)
 library(neonUtilities)
+library(viridis)
 
 wd <- "~/Downloads/" # This will depend on your local environment
 setwd(wd)
@@ -91,7 +92,8 @@ Next, we will download a Canopy Height Model (CHM) tile from the Wind River Expe
 SITECODE <- "WREF"
 
 byTileAOP(dpID = "DP3.30015.001", site = SITECODE, year = 2017, 
-          easting = 580000, northing = 5075000, check.size = F)
+          easting = 580000, northing = 5075000, check.size = F,
+          savepath = wd)
 
 chm <- raster(paste0(wd, "/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
 
@@ -99,5 +101,85 @@ plot(chm)
 
 ```
 
-As you can see, this particular CHM 
+As you can see, this particular CHM is showing a conspicuous, triangle-shaped clearcut in this section of the experimental forest, where the tree canopy is much shorter than the towering 60m+ trees in the undisturbed areas. This variation will give us a variety of forest structures to investigate.
+
+
+
+
+
+## Aligning the Vertical Datum
+AOP data are delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the `GEOID12A` vertical datum (roughly matched mean sea level). Meanwhile, GEDI data are delivered with the common `WGS84` ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection.
+
+NOAA has a useful tool called Vdatum that will convert from one datum to another. Unfortunately, it cannot convert from GEOID12A to WGS84 directly. We must first convert from GEOID12A to NAD83, then use a simpler method to adjust for the offset between the NAD83 and WGS84 datums. 
+
+
+When converting from NAD83 to ITRF2000
+
+diff tiff comes from Vdatum
+
+GEOID12A to NAD83 interactive page found here: https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl
+
+Download raster tiles of diff between GEOID12A and NAD83 here:
+https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml
+
+```{r}
+
+# Download binary file of offset from GEOID12A to NAD83
+download.file("https://www.ngs.noaa.gov/PC_PROD/GEOID12A/Format_unix/g2012au0.bin", 
+              destfile = paste0(wd,"/g2012au0.bin"))
+
+
+
+
+# Read header information. See https://www.ngs.noaa.gov/GEOID/GEOID12B/g2012Brme.txt
+
+# File Structure
+# ---------------
+# The files (ASCII and binary) follow the same structure of a one-line header 
+# followed by the data in row-major format. The one-line header contains four 
+# double (real*8) words followed by three long (int*4) words. 
+# These parameters define the geographic extent of the area:
+# 
+# SLAT:  Southernmost North latitude in whole degrees. 
+#        Use a minus sign (-) to indicate South latitudes. 
+# WLON:  Westernmost East longitude in whole degrees. 
+# DLAT:  Distance interval in latitude in whole degrees 
+#        (point spacing in E-W direction)
+# DLON:  Distance interval in longitude in whole degrees 
+#        (point spacing in N-S direction)
+# NLAT:  Number of rows 
+#        (starts with SLAT and moves northward DLAT to next row)
+# NLON:  Number of columns 
+#        (starts with WLON and moves eastward DLON to next column)
+# IKIND: Always equal to one (indicates data are real*4 and endian condition)
+
+to.read = file("~/Downloads/g2012au0.bin", "rb")
+header1=readBin(to.read, double(), endian = "big", n=4)
+header1
+
+header2=readBin(to.read, integer(), endian = "big", n=3)
+header2
+
+GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian = "big", size=4)
+
+```
+
+```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6}
+
+GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
+                             xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
+                             ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]))
+GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = rev(GEOID12A_diff_vals))
+
+## let's crop out only CONUS
+
+diff_resp=resample(diff, GEOID12A_diff_rast)
+diff_resp=crop(diff_resp, GEOID12A_diff_rast)
+GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
+GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
+par(mfrow=c(2,1), mar=c(2.5,2.5, 3.5,1))
+plot(GEOID12A_diff_rast_mask, col=viridis(100),main="GEOID12A minus NAD83 (m)")
+plot(diff, main="WGS84 minus NAD83 (m)")
+
+```
 
