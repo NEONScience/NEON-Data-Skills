@@ -108,6 +108,9 @@ As you can see, this particular CHM is showing a conspicuous, triangle-shaped cl
 
 
 ## Aligning the Vertical Datum
+
+ --- needs information on geoid vs sphereoid ---
+ 
 AOP data are delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the `GEOID12A` vertical datum (roughly matched mean sea level). Meanwhile, GEDI data are delivered with the common `WGS84` ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection.
 
 NOAA has a useful tool called Vdatum that will convert from one datum to another. Unfortunately, it cannot convert from GEOID12A to WGS84 directly. We must first convert from GEOID12A to NAD83, then use a simpler method to adjust for the offset between the NAD83 and WGS84 datums. 
@@ -169,11 +172,14 @@ GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian =
 GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
                              xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
                              ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]))
-GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = rev(GEOID12A_diff_vals))
+GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = GEOID12A_diff_vals)
 
-## let's crop out only CONUS
+# we need to use the 'flip' function to put the map 'upright' because R expects to see raster values from the top left corner and fills by rows, but this dataset is delivered in sucha a way that it describes the bottom left corner and fills by rows up to the top of the image (this is actually the convention for most traditional remote sensing software - and leads to a similar problem that is explained in the Hyperspectral tutorial series.)
+GEOID12A_diff_rast <- flip(GEOID12A_diff_rast, 'y')
 
-diff_resp=resample(diff, GEOID12A_diff_rast)
+## let's crop out only CONUS for plotting purposes - we will still refer to the fill image when extracting values.
+
+diff_resp=resample(diff, GEOID12A_diff_rast) # resample to match pixel size/registration for cropping
 diff_resp=crop(diff_resp, GEOID12A_diff_rast)
 GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
 GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
