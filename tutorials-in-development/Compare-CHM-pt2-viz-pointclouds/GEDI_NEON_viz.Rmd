@@ -110,6 +110,9 @@ As you can see, this particular CHM is showing a conspicuous, triangle-shaped cl
 ## Aligning the Vertical Datum
 
  --- needs information on geoid vs sphereoid ---
+ http://elearning.algonquincollege.com/coursemat/viljoed/gis8746/concepts/geodesy/spheroid.htm
+https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/about-the-geoid-ellipsoid-spheroid-and-datum-and-h.htm
+Note that GEOID12B superscedes GEOID12A, however they are identical everywhere except for Puerto Rico and the US Virgin Islands (https://geodesy.noaa.gov/GEOID/GEOID12B/). If you are working with any NEON data from Puerto Rico, please be aware that these data are delivered in GEOID12A format and may need to be converted to GEOID12B for some purposes.
  
 AOP data are delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the `GEOID12A` vertical datum (roughly matched mean sea level). Meanwhile, GEDI data are delivered with the common `WGS84` ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection.
 
@@ -167,7 +170,7 @@ GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian =
 
 ```
 
-```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6}
+```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6, warning=F}
 
 GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
                              xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
@@ -183,11 +186,20 @@ diff_resp=resample(diff, GEOID12A_diff_rast) # resample to match pixel size/regi
 diff_resp=crop(diff_resp, GEOID12A_diff_rast)
 GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
 GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
-par(mfrow=c(2,1), mar=c(2.5,2.5, 3.5,1))
-plot(GEOID12A_diff_rast_mask, col=viridis(100),main="GEOID12A minus NAD83 (m)")
-plot(diff, main="WGS84 minus NAD83 (m)")
+
 
 ```
+
+```{r plot-both-diff-maps, fig.height=8, fig.width=6}
+
+par(mfrow=c(2,1), mar=c(2.5,2.5, 3.5,1))
+plot(GEOID12A_diff_rast_mask, col=viridis(100),main="GEOID12A minus NAD83 (m)")
+plot(diff_resp, main="WGS84 minus NAD83 (m)")
+
+```
+
+As you can see, the differences between the GEOID12A geoid, and the NAD83 sphereoid vary quite a lot across space, especially in mountainous areas. The magnitude of these differences is also large, upwards of 35m in some areas. Meanwhile, the differences between the NAD83 and WGS84 sphereoids shows a smooth gradient that is relatively small, with total difference less than 2m across the Conterminous USA. 
+
 
 Use extract() function to retrieve values from both rasters for a given GEDI footprint
 
