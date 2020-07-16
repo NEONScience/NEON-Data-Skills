@@ -79,22 +79,22 @@ Once you have an account, you can create an API token for yourself. At
 the bottom of the My Account page, you should see this bar: 
 
 <figure>
-	<a href="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/get-api-token-button.png" alt="Account page on NEON Data Portal showing Get API Token button."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png" alt="Account page on NEON Data Portal showing Get API Token button."></a>
 </figure>
 
 Click the 'GET API TOKEN' button. After a moment, you should see this:
 
 <figure>
-	<a href="{{ site.baseurl }}/images/NEON-api-token/account-page-token-view.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/account-page-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/account-page-token-view.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/account-page-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
 </figure>
 
 Click on the Copy button to copy your API token to the clipboard:
 
 <figure>
-	<a href="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/api-token-copy-button.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
 </figure>
 
 ## Use API token in neonUtilities 
@@ -231,8 +231,8 @@ hidden files shown. Files that begin with `.` are hidden by default, but
 RStudio recognizes files that begin with `.R` and displays them.
 
 <figure>
-	<a href="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png">
-	<img src="{{ site.baseurl }}/images/NEON-api-token/R-environ-file-browse.png" alt="File browse pane in RStudio showing .Renviron file."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/R-environ-file-browse.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/R-environ-file-browse.png" alt="File browse pane in RStudio showing .Renviron file."></a>
 	<figcaption>Screenshot of file browse pane with .Renviron file. 
 	</figcaption>
 </figure>

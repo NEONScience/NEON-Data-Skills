@@ -42,7 +42,7 @@ on your computer to complete this tutorial.
 * **dplyr:** `install.packages("dplyr")`
 * **tidyr:** `install.packages("tidyr")`
 
-<a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
@@ -406,7 +406,7 @@ want to view or aggregate the data differently:
 * or some other segregation of the data.  
 
 Given that in the previous tutorial, 
-<a href="{{ site.baseurl }}/neon-plant-pheno-data-r" target="_blank"> *Work With NEON's Plant Phenology Data*</a>, 
+<a href="https://www.neonscience.org/neon-plant-pheno-data-r" target="_blank"> *Work With NEON's Plant Phenology Data*</a>, 
 we were working with phenology data collected on a daily scale let's aggregate
 to that level.
 
