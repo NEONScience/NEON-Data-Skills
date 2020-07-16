@@ -1,0 +1,536 @@
+---
+syncID: b152963c4883463883c3b6f0de95fd93
+title: "Access and Work with NEON Geolocation Data"
+description: "Use files available on the NEON data portal, NEON API, and  neonUtilities R package to access the locations of NEON sampling events and infrastructure. Calculate more precise locations for certain sampling types and reference ground sampling to airborne data."
+dateCreated: 2019-09-13
+authors: [Claire K. Lunch]
+contributors: Megan Jones
+estimatedTime: 40 minutes
+packagesLibraries: neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: R/spatial-data/spatialData.R
+tutorialSeries:
+urlTitle: neon-spatial-data-basics
+
+---
+
+This tutorial explores NEON geolocation data. The focus is on the locations 
+of NEON observational sampling and sensors; NEON remote sensing data are 
+inherently spatial and have dedicated tutorials. If you are interested in 
+connecting remote sensing with ground-based measurements, the methods in 
+the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">canopy height model tutorial</a> can be generalized to 
+other data products.
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* access NEON spatial data from the website and through data downloaded with the neonUtilities package. 
+* create a simple map with NEON domains and field site locations. 
+* access and plot specific sampling locations for TOS data products. 
+* access and use sensor location data. 
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+</div>
+
+
+## Setup R Environment
+
+We'll need several R packages in this tutorial. Install the packages, if not 
+already installed, and load the libraries for each. 
+
+```{r install, eval=F}
+
+# run once to get the package, and re-run if you need to get updates
+install.packages("sp")  # working with spatial data
+install.packages("rgdal")  # working with spatial data
+install.packages("broom")  # tidy up data
+install.packages("ggplot2")  # plotting
+install.packages("neonUtilities")  # work with NEON data
+install.packages("devtools")  # to use the install_github() function
+devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NEON spatial data
+
+```
+
+
+```{r libraries, results="hide"}
+
+# run every time you start a script
+library(sp)
+library(rgdal)
+library(broom)
+library(ggplot2)
+library(neonUtilities)
+library(geoNEON)
+
+options(stringsAsFactors=F)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. 
+
+wd <- "~/Documents/data/" # This will depend on your local environment
+setwd(wd)
+
+```
+
+## Source 1: NEON spatial data files
+
+NEON spatial data are available in a number of different files depending on what
+spatial data you are interested in. This section covers a variety of spatial 
+data files that can be directly downloaded from the NEONScience.org website 
+instead of being delivered with a downloaded data product. Later in the tutorial
+we'll work with spatial data available with the downloaded data products. 
+
+The goal of this section is to create a map of the entire Observatory that includes
+the NEON domain boundaries and differentiates between aquatic and terrestrial field
+sites. 
+
+### Site locations & domain boundaries
+
+Most NEON spatial spatial data files that are not part of the data downloads, 
+are available on the 
+<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a>, 
+as both shapefiles and kmz files. 
+
+In addition, latitude, longitude, elevation, and some other basic metadata for each site 
+are available for download from the 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a>
+on the NEON website (linked below the table). In this summary of each field site, 
+the geographic coordinates given for each site correspond to the tower 
+location for terrestrial sites and the center of the permitted reach 
+for aquatic sites.
+
+To continue, please download three files from the NEON website: 
+
+* **NEON Domains - Shapefile:** A polygon shapefile defining NEON's domain boundaries. Like all NEON data the Coordinate Reference system is Geographic WGS 84. Available on the <a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a>.
+* **Field Site csv:** generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> (bottom of table). 
+
+The Field Site location data is also available in as a Shapefile and KMZ on the 
+Spatial Data and Maps page. We use the file from the site list to demonstrate 
+alternative ways to work with spatial data. 
+
+## Map NEON domains 
+
+Using the domain shapefile and the field sites list, let's make a map of NEON 
+site locations.
+
+We'll read in the spatial data using the `rgdal` and `sp` packages 
+and plot it using the `ggplot2` package. First, read in the domain 
+shapefile. 
+
+Be sure to move the downloaded data files into the  working directory you set 
+earlier!
+
+```{r load-domains, results="hide"}
+
+# upload data
+neonDomains <- readOGR("NEONDomains_0" , layer="NEON_Domains")
+```
+
+The data come is as a Large SpatialPolygonsDataFrame, which unfortunately, ggplot
+can't use. Therefore, we'll need to make a few changes to the data structure to 
+convert it to a DataFrame that ggplot can use. 
+
+```{r create-df, warning=FALSE}
+
+# First, add a new column termed "id" composed of the row names of the data
+neonDomains@data$id <- rownames(neonDomains@data)
+
+# Now, use tidy() to convert to a dataframe
+# if you previously used fortify(), this does the same thing. 
+neonDomains_points<- tidy(neonDomains, region="id")
+
+# Finally, merge the new data with the data from our spatial object
+neonDomainsDF <- merge(neonDomains_points, neonDomains@data, by = "id")
+```
+Now that the data are in a dataframe, lets check out what data are available 
+for us to plot
+
+```{r explore-domains}
+# view data structure for each variable
+str(neonDomainsDF)
+
+```
+
+We do have **long**itude and **lat**itude data, as well as names of the domains. 
+With this info and now that we have the data in a data frame, we can plot it in 
+ggplot. Let's first plot the domains without the sites. Since we a plotting a 
+map, this means our longitude is plotted on the x axis and latitude is on our 
+y axis. 
+
+```{r plot-domains, fig.width=8, fig.height=6}
+# plot domains
+domainMap <- ggplot(neonDomainsDF) + 
+        geom_map(map = neonDomainsDF,
+                aes(x = long, y = lat, map_id = id),
+                 fill="white", color="black", size=0.3)
+
+domainMap
+
+```
+
+
+## Map NEON field sites
+Now we have a map of all the NEON domains. Onto this map, let's plot the NEON 
+field site locations. To do this we need to load and explore this data. 
+
+```{r load-explore-sites}
+# read in the data
+neonSites <- read.delim("field-sites.csv", sep=",", header=T)
+
+# view data structure for each variable
+str(neonSites)
+```
+
+Here there is lots of associated data about the field sites that may be of 
+interest. For now, we can see that there are both **Latitude** and **Longitude**
+data so we can plot this data onto our previous map. 
+
+```{r plot-sites, fig.width=8, fig.height=6}
+# plot the sites
+neonMap <- domainMap + 
+        geom_point(data=neonSites, 
+                   aes(x=Longitude, y=Latitude))
+
+neonMap 
+
+```
+
+Now we can see all the sites across the Observatory. However, NEON has both
+aquatic and terrestrial sites with important differences between the two. Looking
+back at the variables in this data set, we can see that **Site.Type** designates
+the aquatic and terrestrial sites. However, it goes further and includes whether
+or not they are core or relocatable sites. Let's plot that distinction as well. 
+
+We can do this by adding color to our plot, with terrestrial sites in green and
+aquatic sites in blue. We can choose darker shades for core sites and lighter 
+ones for relocatable sites. 
+
+```{r sites-color, fig.width=8, fig.height=6}
+# color is determined by the order that the unique values show up. Check order
+unique(neonSites$Site.Type)
+
+# add color
+sitesMap <- neonMap + 
+        geom_point(data=neonSites, 
+                      aes(x=Longitude, y=Latitude, color=Site.Type)) + 
+           scale_color_manual(values=c("lightskyblue", "forest green", 
+                                       "blue4", "light green"),
+                              name="",
+                              breaks=unique(neonSites$Site.Type))
+sitesMap
+
+```
+
+
+## Map terrestrial observation plots
+
+The locations of observational sampling plots at terrestrial sites
+are available for download as well from the *NEON Terrestrial Observation System (TOS) sampling locations* file download from the 
+<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a> or from the portal in the 
+<a href="http://data.neonscience.org/documents" target="_blank">document library</a>. 
+The download will be a zip file containing tabular files of plot centroids and 
+point locations, and shapefiles of plot centroids, point locations, and polygons.
+
+The readme file contains descriptions for each variable in the tabular files. 
+
+```{r TOS-readme}
+
+## load TOS plot readme
+rdme <- read.delim('All_NEON_TOS_Plots_V7/readme .csv',
+                   sep=',', header=T)
+
+## View the variables
+rdme[,1]
+
+```
+
+You can use these files to plot the spatial layout of sampling for 
+TOS: mosquitoes, beetles, plants, birds, etc. However, for this tutorial, we'll 
+be using the location data provided with data downloads, as well as 
+methods in the `geoNEON` package, to explore TOS spatial data, instead of 
+these files.
+
+You can, however, modify the code from mapping the domains and field sites to 
+plot the location data if you'd like to do so. 
+
+## Source 2: Spatial data in data downloads
+
+The second source of data is spatial data in and accompanying data directly 
+downloaded from the NEON data portal. How the data are handled are a bit different 
+for the Observational Sampling data and the Instrumented Systems data, so we'll 
+work through working with both types. 
+
+## Locations for observational data
+
+### Plot level locations
+Both aquatic and terrestrial observational data downloads include spatial 
+data in the downloaded files. While the specific layout, varies from data type to
+data type the method for working with the data are similar. Therefore, we'll work
+with NEON Small Mammal Box Trapping data. Our end product for this section is to create a map 
+of all the traps within a small mammal grid that captured a mouse in a given 
+sampling bout.  
+
+First, let's download the small mammal data from one site, Onaqui (ONAQ), in 
+August 2018 to investigate. 
+
+If downloading data using the `neonUtilties` package is new to you, check out the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+
+```{r get-mam-data, results="hide"}
+# load mammal data
+mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
+                     startdate="2018-08", enddate="2018-08",
+                     check.size=F)
+
+```
+
+Data downloaded this way are stored in R as a large list. For this tutorial, 
+we'll work with the individual dataframes within this large list. Alternatively, 
+each dataframe can be assigned as its own object. 
+
+To find the spatial data for any given data product, view the variables files to
+figure out which data table the spatial data are contained in. 
+
+```{r find-sp-data}
+#
+View(mam$variables_10072)
+
+```
+
+Looking through the variables, we can see that the spatial data (decimalLatitude and 
+decimalLongitude) are in the `pertrapnight` table. We can look at the first few
+entries of the table. 
+
+```{r print-mam}
+
+head(mam$mam_pertrapnight[,1:18])
+
+```
+
+Did you notice that traps A1 and G2 in plot ONAQ_020 have the same location data?
+Let's check all the coordinates for all traps within a single plot. 
+
+```{r print-ONAQ020}
+# view all trap locations in one plot
+mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
+                     c("trapCoordinate","decimalLatitude",
+                       "decimalLongitude")]
+
+```
+
+The latitude and longitude are the same for every record! This is because the 
+latitudes and longitudes provided are for the plots, not for the traps. This pattern 
+is the same for other TOS data, the data download contains the plot-level 
+coordinates. This information is in the Data Product User Guide for this, and 
+other, NEON data and understanding nuances like this is one reason it is 
+important to read the Data Product User Guide for data products before starting 
+to use them.
+
+For many analyses, this level of spatial data is sufficient. But for other 
+types of analyses, you may need more precise locations. The `geoNEON` package 
+can get these data for you.
+
+### Sampling locations 
+
+The `getLocTOS()` function in the `geoNEON` package uses the NEON API to 
+access NEON location data and then makes protocol-specific calculations 
+to return precise locations for each sampling effort. This function works for a 
+subset of NEON TOS data products. The list of tables and data products that can 
+be entered is in the 
+<a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" target="_blank">package documentation on GitHub</a>. 
+
+For more information about the NEON 
+API, see the 
+<a href="https://www.neonscience.org/neon-api-usage" target="_blank">API tutorial</a> 
+and the 
+<a href="https://data.neonscience.org/data-api" target="_blank">API web page</a>. 
+For more information about the location calculations used in each data product, 
+see the Data Product User Guide for each product.
+
+The `getLocTOS()` function requires two inputs:
+
+* A data table, that contains spatial data, from a NEON TOS data product
+* The NEON table name of that data table
+
+For small mammal box trap locations, the function call looks like this. This 
+function may take a while to download all the location data. 
+
+```{r mam-getLocTOS, results="hide"}
+# download small mam
+mam.loc <- getLocTOS(data=mam$mam_pertrapnight,
+                           dataProd="mam_pertrapnight")
+
+```
+
+What additional data are now available in the data obtained by `getLocTOS()`?
+
+```{r mam-diff}
+# print variable name that are new
+names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
+
+```
+
+Now we have adjusted latitude, longitude, and elevation, and the 
+corresponding easting and northing UTM data. We also have coordinate uncertainty 
+data for these coordinates. 
+
+We can use the easting and northing data to plot the locations of the mammal traps. 
+
+```{r mam-grids}
+# plot all trap locations at site
+plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
+     xlab="Easting", ylab="Northing")
+
+```
+
+Each trap grid has 100 points (individual trap locations), so even with each
+trap plotted as a dot (.) we can only see a square for each grid. 
+Let's zoom in on a single plot:
+
+```{r plot-ONAQ003, fig.width=6, fig.height=6}
+# plot all trap locations in one grid (plot)
+plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
+     mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
+     pch=".", xlab="Easting", ylab="Northing")
+
+```
+
+This isn't the most interesting plot given that that each small mammal box 
+trapping grid is a 10 x 10 plot of traps. 
+
+Now, let's add a layer of data to see which of these traps caught a mammal during
+the August 2018 sampling bout. To do this we need to look at our variables file
+again and see what variable gives us information about captures. We can see that
+**trapStatus** provides the information on what happened to each trap. It has 
+categorical data on the status: 
+
+* 0 - no data
+* 1 - trap not set
+* 2 - trap disturbed/door closed but empty
+* 3 - trap door open or closed w/ spoor left
+* 4 - >1 capture in one trap
+* 5 - capture
+* 6 - trap set and empty
+
+Therefore, we need to plot all trap locations in this plot (ONAQ_003) for which 
+trapStatus is "5 - capture" (technically, we should add in a capture status of 
+4 as well but for demonstration purposes, keeping it simple). 
+
+```{r plot-captures, fig.width=6, fig.height=6}
+# plot all captures 
+plot(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003")], 
+     mam.loc$adjNorthing[which(mam.loc$plotID == "ONAQ_003")], 
+     pch=".", xlab="Easting", ylab="Northing")
+
+points(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003" & 
+                               mam.loc$trapStatus == "5 - capture")], 
+     mam.loc$adjNorthing[which(mam.loc$plotID =="ONAQ_003" &
+                              mam.loc$trapStatus == "5 - capture")],
+     pch=19, col="blue")
+
+```
+
+In the month of data we're viewing, in this plot, small mammals were caught at 
+27 of the 100 trap locations.
+
+The basic techniques for working with this data can be adapted to other TOS 
+location data for other data products.  
+
+## Locations for sensor data
+
+Downloads of instrument system (IS) data include a file called 
+**sensor_positions.csv**. The sensor positions file contains information 
+about the coordinates of each sensor, relative to a reference location. 
+
+While the specifics vary, techniques are generalizable for working with sensor 
+data and the sensor_positions.csv file. For this tutorial, let's look at the 
+sensor locations for photosynthetically active radiation (PAR; DP1.00024.001) at 
+the NEON Treehaven site (TREE) in July 2018. To reduce our file size, we'll use 
+the 30 minute averaging interval. Our final product from this section is to 
+create a spatially explicit picture of light attenuation through the canopy.
+
+If downloading data using the `neonUtilties` package is new to you, check out the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+
+This function will download <1 MB of data as written so we have `check.size =F` 
+for ease of running the code. 
+
+```{r par-load, results="hide"}
+# load PAR data of interest 
+par <- loadByProduct(dpID="DP1.00024.001", site="TREE",
+                    startdate="2018-07", enddate="2018-07",
+                    avg=30, check.size=F)
+
+```
+
+### Sensor positions file 
+Now we can specifically look at the sensor positions file.
+
+```{r sens-pos}
+# create object for sens. pos. file
+pos <- par$sensor_positions_00024
+
+# view names
+names(pos)
+
+```
+
+The sensor locations are indexed by the `HOR.VER` variable - see the 
+<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
+page for more details. 
+
+Using `unique()` we can view all the locations indexes in this file. 
+
+```{r par-levs}
+# view names
+unique(pos$HOR.VER)
+
+```
+
+PAR data are collected at multiple levels of the NEON tower but along a single 
+vertical plane. We see this reflected in the data where HOR=000 (all data collected)
+at the tower location. The VER index varies (VER = 010 to 060) showing that the 
+vertical position is changing and that PAR is measured at six different levels.
+
+The x, y, and z offsets in the sensor positions file are the relative distance, 
+in meters, to the reference latitude, longitude, and elevation in the file. 
+
+The HOR and VER indices in the sensor positions file correspond to the 
+`verticalPosition` and `horizontalPosition` fields in `par$PARPAR_30min`.
+
+Since our goal is to plot a profile of the PAR through the canopy, we need to 
+start by using the `aggregate()` function to calculate mean PAR at each vertical 
+position on the tower over the month.
+
+``` {r par-ver-mean}
+# calc mean PAR at each level
+parMean <- aggregate(par$PARPAR_30min$PARMean, 
+                   by=list(par$PARPAR_30min$verticalPosition),
+                   FUN=mean, na.rm=T)
+
+```
+
+And now we can plot mean PAR relative to elevation on the tower since that is the 
+zOffset. 
+
+```{r par-plot}
+
+# plot PAR
+plot(parMean$x, pos$zOffset, type="b", pch=20,
+     xlab="Photosynthetically active radiation",
+     ylab="Height above tower base (m)")
+
+```
+
+From our plot we can see that the amount of light (with PAR as a proxy) increases
+higher up in the canopy.  
+
