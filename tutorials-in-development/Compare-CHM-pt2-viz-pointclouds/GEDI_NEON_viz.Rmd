@@ -68,10 +68,11 @@ In this tutorial, we will compare NEON and GEDI LiDAR data by comparing the info
 
 First, we will load the required libraries and set our working directory:
 
-```{r load-libraries}
+```{r load-libraries, warning=FALSE}
 
 library(rGEDI)
 library(raster)
+library(sp)
 library(sf)
 library(rgl)
 library(lidR)
@@ -85,7 +86,7 @@ setwd(wd)
 
 Next, we will download a Canopy Height Model (CHM) tile from the Wind River Experiemental Forest (WREF) using the `byTileAOP()` function to use as a preliminary map on which to overlay the GEDI data. There is one particularly interesting mosaic tile which we will select using the `easting` and `northing` arguments. We then load the raster into R and make a simple plot. For more information about CHMs, please see our tutorial <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data">What is a CHM?</a>
 
-```{r download-chm}
+```{r download-chm, message=FALSE}
 
 # Define the SITECODE as a variable because
 # we will use it several times in this tutorial
@@ -102,6 +103,113 @@ plot(chm)
 ```
 
 As you can see, this particular CHM is showing a conspicuous, triangle-shaped clearcut in this section of the experimental forest, where the tree canopy is much shorter than the towering 60m+ trees in the undisturbed areas. This variation will give us a variety of forest structures to investigate.
+
+## Downloading GEDI data
+This next section on downloading and working with GEDI data is loosely based on the excellent `rGEDI` package tutorial <a href="https://cran.r-project.org/web/packages/rGEDI/vignettes/tutorial.html">posted on CRAN here</a>.
+
+The Global Ecosystem Dynamics Investigation (GEDI) is a NASA mission with the primary data collection being performed by a novel waveform lidar instrument mounted on the International Space Station (ISS). Please see <a href="https://www.sciencedirect.com/science/article/pii/S2666017220300018">this open-access paper</a> published in Science of Remote Sensing that describes this mission in detail. The ISS orbits around the world every 90 minutes, and can be tracked <a href="https://spotthestation.nasa.gov/tracking_map.cfm">on this cool NASA website</a>. 
+
+As described <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/gedi-overview/">here</a> on the Land Processes Distributed Active Archive Center (LP DAAC), "the sole GEDI observable is the waveform from which all other data products are derived. Each waveform is captured with a nominal ~30 m diameter."GEDI has six   As of the date of publication, GEDI data are only offered in HDF5 format, with each file containing the data for a full orbit. The LP DAAC has developed a tool that allows researchers to input a bounding box, which will return a list of every orbit that has a "shot" (waveform return) that falls within that box. Unfortunately, at this time, the tool will not subset out the specific shots that fall within that bounding box; you must download the entire orbit (~7Gb). This functionality may be improved in the future.
+
+Our next few steps involve defining our bounding box, requesting the list of GEDI orbits that contain data relevant to that bounding box, and downloading those data. Let's focus on the extent of our CHM that we downloaded above - but we will first need to re-project the CHM from its UTM projection into WGS84. To do so, we will refer to the EPSG code for WGS84. To look up any of these codes, please see the amazing resource <a href="https://spatialreference.org/ref/epsg/4326/">spatialrerference.org</a>.
+
+```{r project-CHM}
+
+# Project CHM to WGS84
+chm_WGS = projectRaster(chm, crs=CRS("+init=epsg:4326"))
+
+# Study area boundary box coordinates
+ul_lat<- extent(chm_WGS)[4]
+lr_lat<- extent(chm_WGS)[3]
+ul_lon<- extent(chm_WGS)[1]
+lr_lon<- extent(chm_WGS)[2]
+
+```
+
+Next, we use that bounding box information as an input to the 
+
+```{r find-GEDI-orbits}
+
+# Specifying the optional date range, if desired
+# daterange=c("2019-03-25", #first date of GEDI availability
+#            "2020-07-15")
+
+# Get path to GEDI data
+# These lines use an API request to determine which orbits are available 
+# that intersect the bounding box of interest.
+# Note that you still must download the entire orbit and then subset to 
+# your area of interest!
+gLevel1B<-gedifinder(product="GEDI01_B",
+                     ul_lat, ul_lon, lr_lat,lr_lon,
+                     version="001",daterange=NULL)
+
+# View list of available data
+gLevel1B
+
+```
+
+Great! There are several GEDI orbits available that have at least 1 'shot' within our bounding box of interest. For more information about GEDI filename conventions, and other valuable information about GEDI data, <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/gedi-overview/#gedi-temporal-and-spatial-resolution">see this page on the LP DAAC</a>. However, as mentioned before, each of these files are quite large (~7Gb), so let's focus on just the first one for now.
+
+```{r download-GEDI, eval=F, comment=NA}
+
+# Downloading GEDI data
+gediDownload(filepath=gLevel1B[1],outdir=wd)
+
+```
+
+Next, we use the rGEDI package to read in the GEDI data. First, we need to make a 'gedi.level1b' object using the `readLevel1B()` function. Next, we extract the geographic position of each shot from the 'gedi.level1b' object using the `getLevel1BGeo()` function, ,and display the resulting table.
+
+```{r read-GEDI, message=F}
+
+gedilevel1b<-readLevel1B(level1Bpath = file.path(wd, "GEDI01_B_2019206022612_O03482_T00370_02_003_01.h5"))
+level1bGeo<-getLevel1BGeo(level1b=gedilevel1b,select=c("elevation_bin0"))
+head(level1bGeo)
+
+```
+
+## Plot GEDI footprints on CHM
+Let's visualize where the GEDI footprints are located on the CHM tile. To do so, we will need to first convert the GEDI data into a spatial object. For this example, we will use a 'spatial features' object type from the 'sp' package:
+
+```{r GEDI-spatial-df}
+
+# drop any shots with missing latitude/longitude values
+level1bGeo = level1bGeo[!is.na(level1bGeo$latitude_bin0)&
+                          !is.na(level1bGeo$longitude_bin0),]
+
+# Convert the GEDI data.frame into an 'sf' object
+level1bGeo_spdf<-st_as_sf(level1bGeo, 
+                          coords = c("longitude_bin0", "latitude_bin0"),
+                          crs=CRS("+init=epsg:4326"))
+
+
+# crop to the CHM that is in WGS84
+level1bgeo_WREF=st_crop(level1bGeo_spdf, chm_WGS)
+
+```
+
+Next, project the GEDI geospatial data into the UTM zone that the CHM is within (Zone 10 North). Then, we convert the GEDI footprint center (lat/long) into a circle using the `buffer()` function. Finally, we can plot the CHM and overlay the GEDI footprint circles, and label with the last three digits of the 'shot' number.
+
+```{r overly-GEDI-on-chm, warning=F, fig.height=4, fig.width=5}
+
+# project to UTM
+level1bgeo_WREF_UTM=st_transform(
+  level1bgeo_WREF, crs=chm$NEON_D16_WREF_DP3_580000_5075000_CHM@crs)
+
+# buffer the GEDI shot center by a radius of 12.5m 
+# to represent the full 25m diameter GEDI footprint
+level1bgeo_WREF_UTM_buffer=st_buffer(level1bgeo_WREF_UTM, dist=12.5)
+
+# plot CHM and overlay GEDI data
+plot(chm)
+plot(level1bgeo_WREF_UTM_buffer, add=T, col="transparent")
+
+# add labes with the last three digits of the GEDI shot_number
+pointLabel(st_coordinates(level1bgeo_WREF_UTM),
+           labels=substr(level1bgeo_WREF_UTM$shot_number, 15, 17), cex=1)
+
+
+```
+
 
 
 
@@ -214,5 +322,33 @@ GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask, as.data.frame(level1bgeo_W
 ## Next, to convert GEDI elevations fron NAD83 to GEOID12A, add GEOID12A_NAD_diff (which makes it lower because GEOID12A is lower than NAD83 in N America)
 
 ## Check to see if AOP forest floor and GEDI ground spike coincide. 
+
+```
+
+
+##Optional - NEON base plots
+You may also be interested to see if any of the GEDI footprints intersect a NEON base plot, which would allow for a direct comparison of the GEDI waveform with many of the datasets which are collected within the base plots, such as the vegetation structure data product containing height, DBH, and species identification of all trees >10cm DBH. While it is statistically pretty unlikely that a GEDI footprint will intersect with your base plot of interest, it is possible that _some_ GEDI footprint will intersetc with _some_ base plot in your study area, so we may as well take a look:
+
+```{r import and plot base plots}
+
+setwd("~/Downloads/")
+
+# Download the NEON TOS plots polygons directly from the NEON website
+download.file(url="https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V8", 
+              destfile="All_NEON_TOS_Plots_V8.zip")
+unzip("All_NEON_TOS_Plots_V8.zip")
+NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+
+# Select just the WREF site
+SITECODE = 'WREF'
+base_plots_SPDF <- NEON_all_plots[
+  (NEON_all_plots$siteID == SITECODE)&
+    (NEON_all_plots$subtype == 'basePlot'),]
+rm(NEON_all_plots)
+
+base_crop=st_crop(base_plots_SPDF, extent(chm_WGS))
+
+plot(chm_WGS)
+plot(base_crop$geometry, border = 'blue', add=T)
 
 ```
