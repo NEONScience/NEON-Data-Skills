@@ -425,9 +425,13 @@ Use extract() function to retrieve values from both rasters for a given GEDI foo
 
 ```{r extract-vert-offsets}
 
-WGS_NAD_diff <- extract(diff, as.data.frame(level1bgeo_WREF[,c(3,2)]))
+footprint_df=as.data.frame(cbind(level1bgeo_WREF$longitude_lastbin, level1bgeo_WREF$latitude_lastbin))
 
-GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask, as.data.frame(level1bgeo_WREF[,c(3,2)]))
+WGS_NAD_diff <- extract(diff, footprint_df)
+
+GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask,footprint_df)
+
+net_diff=WGS_NAD_diff+GEOID12A_NAD_diff
 
 ## GEDI elevation is in WGS84, so to concert to NAD83 first subtract WGS_NAD_diff
 
@@ -437,6 +441,35 @@ GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask, as.data.frame(level1bgeo_W
 
 ```
 
+
+## Plot vertically corrected GEDI waveform in 3D
+
+Now that we have a vertical offset for each of the GEDI footprints, let's try again to plot the NEON AOP pointcloud data with the GEDI waveform.
+
+```{r plot-GEDI-2}
+
+for(shot_n in 1:1){
+wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+
+summary(wf@dt$rxwaveform)
+
+d=wf@dt
+# normalize rxwaveform
+d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
+d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
+
+#add xy data
+d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]
+d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]
+
+d$y_wf=d$y+d$rxwaveform*30
+summary(d)
+p=plot(WREF_GEDI_footprints[[shot_n]])
+points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation-net_diff[shot_n], col="green", add=T)
+
+}
+
+```
 
 ##Optional - NEON base plots
 You may also be interested to see if any of the GEDI footprints intersect a NEON base plot, which would allow for a direct comparison of the GEDI waveform with many of the datasets which are collected within the base plots, such as the vegetation structure data product containing height, DBH, and species identification of all trees >10cm DBH. While it is statistically pretty unlikely that a GEDI footprint will intersect with your base plot of interest, it is possible that _some_ GEDI footprint will intersetc with _some_ base plot in your study area, so we may as well take a look:
