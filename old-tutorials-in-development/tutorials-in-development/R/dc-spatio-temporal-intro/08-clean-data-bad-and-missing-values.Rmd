@@ -3,12 +3,13 @@ layout: post
 title: "Spatial Intro 07: Cleaning Data -- Missing and Bad Data Values"
 date:   2015-10-23
 authors: []
-contributors: [ ]
+contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: [ ]
+packagesLibraries: rgdal, ggplot2
 category: [self-paced-tutorial]
-tags: [R, spatial-data-gis]
+topics: spatial-data-gis
+languagesTool: R
 mainTag: spatial-data-management-series
 workshopSeries: [spatial-data-management-series]
 description: "This tutorial covers spatial data cleaning - specifically dealing with missing
@@ -22,10 +23,10 @@ permalink: R/missing-bad-data
 comments: true
 ---
 
-{% include _toc.html %}
 
 ## About
-Add description.
+This tutorial covers spatial data cleaning - specifically dealing with missing
+(NA / NAN) values and bad values when working with spatial data in `R`.
 
 **R Skill Level:** Intermediate - you've got the basics of `R` down.
 
@@ -35,7 +36,8 @@ Add description.
 
 After completing this activity, you will:
 
-*
+* Recognize different `NoData` values used
+* Understand how to check for `NoData` values in spatial data
 
 
 ## Things You’ll Need To Complete This Lesson
@@ -44,13 +46,13 @@ preferably, RStudio loaded on your computer.
 
 ### Install R Packages
 
-* **NAME:** `install.packages("NAME")`
+* **rgdal:** `install.packages("rgdal")`
+* **ggplot2:** `install.packages("ggplot2")`
 
-* [More on Packages in R - Adapted from Software Carpentry.](https://www.neonscience.org/R/Packages-In-R/)
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on 
+Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data
-EDIT AS NEEDED
-
 <h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
 
 The LiDAR and imagery data used to create this raster teaching data subset 
@@ -64,9 +66,6 @@ The entire dataset can be accessed by request from the
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
 <a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
-
-
-
 
 
 ****
@@ -83,50 +82,48 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 
 **Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
-of a lesson series introducing
-[spatial data and data management in `R` ](https://www.neonscience.org/tutorial/URL).
+of a lesson series introducing 
+#####UPDATE URL BEFORE PUBLISHING#####
+<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`*</a>.
 It is also part of a larger
-[spatio-temporal Data Carpentry Workshop ](https://www.neonscience.org/workshops/spatio-temporal-workshop)
-that includes working with  
-[raster data in `R` ](https://www.neonscience.org/tutorial/spatial-raster-series),
-[vector data in `R` ](https://www.neonscience.org/tutorial/spatial-vector-series)
-and  
-[tabular time series in `R` ](https://www.neonscience.org/tutorial/tabular-time-series).
+<a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
+that includes working with
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`*</a>,
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`*</a>, 
+and<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> *tabular time series in `R`*</a>.
 
 ****
 
 ### Additional Resources
 
 * <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank">
-Read more about the `raster` package in `R`.</a>
-* <a href="http://neondataskills.org/R/Raster-Data-In-R/" target="_blank" >
-NEON Data Skills: Raster Data in R - The Basics</a>
-* <a href="http://neondataskills.org/R/Image-Raster-Data-In-R/" target="_blank" >
-NEON Data Skills: Image Raster Data in R - An Intro</a>
+Read more about the `raster` package in `R`</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank">
+NEON Data Skills: *Raster Data in R - The Basics*</a>
+* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank">
+NEON Data Skills: *Image Raster Data in R - An Intro*</a>
 
 </div>
 
 ### Clean Data
 No dataset is perfect. It is common to encounter large files containing obviously
-erroneous data (bad data).  It is also common to encounter `NoData`
-values that we need to account for when analyzing our data.
+erroneous data (bad data).  It is also common to encounter `NoData` values that 
+we need to account for when analyzing our data.
 
 ## NoData Values (NA, NAN)
-If we are lucky when working with external data, the `NoData` value is clearly
-specified in the metadata. Sometimes this value is `NA` or `nan` (not a number). However,
-`NA` isn't always used. Text values can make data storage difficult for some
-programs and thus, sometimes you'll encounter a large negative value such as
-`-9999` used as the `NoData` value. At other times, we might see blank values in
-a data file which designate `NoData`. Blanks are particularly problematic
-because we can't be certain if a data value is purposefully missing (not
-measured that day or a bad measurement) or if someone unintentionally deleted
-it.
+If we are lucky when working with external data, the `NoData` value is clearly 
+specified in the metadata. Sometimes this value is `NA` (not available) or `nan` 
+(not a number). However, `NA` isn't always used. Text values can make data storage 
+difficult for some programs and thus, sometimes you'll encounter a large negative 
+value such as `-9999` used as the `NoData` value. At other times, we might see blank 
+values in a data file which designate `NoData`. Blanks are particularly problematic 
+because we can't be certain if a data value is purposefully missing (not measured 
+that day or a bad measurement) or if someone unintentionally deleted it.
 
 <i class="fa fa-star"></i> **Data Tip:**`-9999` is a common value used in
 both the remote sensing field and the atmospheric fields. It is also
-the standard used by the <a href="http://www.neoninc.org" target="_blank">
+the standard used by the <a href="https://www.neonscience.org/" target="_blank">
 National Ecological Observatory Network (NEON)</a>.
-{: .notice}
 
 Because the actual value used to designate missing data can vary depending upon
 what data we are working with, it is important to always check the metadata for
@@ -139,32 +136,37 @@ performing calculations in `R`. However a `NoData` value of `-9999` will be
 recognized as an integer and processed accordingly. If you encounter a numeric
 `NoData` value be sure to assign it to `NA` in `R`:
 `objectName[objectName==-9999] <- NA`
-{: .notice}
+
 
 ### Check for NA values
-We can quickly check for `NoData` values in our data using the`is.na()`
+We can quickly check for `NoData` values in our raster data using the`is.na()`
 function. By asking for the `sum()` of `is.na()` we can see how many NA / missing
-values we have.
+values we have in a dataframe.
 
-REPLACE CODE TO BE FOR THE SAME SMALLISH DATA SET USED FOR BAD DATA VALUES BELOW
-```{r missing values}
+```{r missing-values}
+# load libraries
+library(rgdal)
+library(ggplot2)
 
-# Check for NA values
-sum(is.na(harMet15.09.11$datetime))
-sum(is.na(harMet15.09.11$airt))
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the unzipped download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd)
 
+# create a data frame
+RGB_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif"))
+RGB_HARV_df <- as.data.frame(RGB_HARV, xy = TRUE)
 
-# view rows where the air temperature is NA
-harMet15.09.11[is.na(harMet15.09.11$airt),]
+# check for NA values 
+sum(is.na(RGB_HARV_df$HARV_Ortho_wNA))
+
 ```
 
-The results above tell us there are `NoData` values in the `datetime` column.
-However, there are `NoData` values in other variables.  
+The result above tells us there are `NoData` values in the data.
 
 ### Deal with NoData Values
-When we encounter `NoData` values (blank, NaN, -9999, etc.) in our data we
-need to decide how to deal with them. By default `R` treats `NoData` values
-designated
+When we encounter `NoData` values (blank, NaN, -9999, etc.) in our data we need 
+to decide how to deal with them. By default `R` treats `NoData` values designated 
 with a `NA` as a missing value rather than a zero. This is good, as a value of
 zero (no rain today) is not the same as missing data (e.g. we didn't measure the
 amount of rainfall today).
@@ -175,21 +177,37 @@ How we deal with `NoData` values will depend on:
 * the analysis we are conducting
 * the significance of the gap or missing value
 
+Let's visualize where the `NoData` values are in the `RGB_HARV` raster by highlighting them in pink.
+
+``` {r raster-plot, fig.cap="Monochrome non-rectangular landscape with NA values highlighted in pink on all sides of the landscape to create a rectangular image."}
+#plot the raster
+ggplot() +
+  geom_raster(data = RGB_HARV_df, aes(x = x, y = y, fill = HARV_Ortho_wNA)) +
+  scale_fill_gradient(na.value = "pink") +
+  ggtitle("HARV Orthographic Image")
+```
+
+The shape of a raster is always rectangular. If we have a dataset that isn't 
+rectangular, the pixels at the edge of the raster will have `NoData` values. 
+Highlighting `NoData` values in a different color helps identify where the missing 
+data is.
+
 Sometimes we might need to "gap fill" our data. This means we will interpolate
 or estimate missing values often using statistical methods. Gap filling can be
-complex and is beyond the scope of this lesson. The take away from this lessons
+complex and is beyond the scope of this lesson. The take away from this lesson
 is simply that it is important to acknowledge missing values in your data and to
 carefully consider how you wish to account for them during analysis.
 
 Other resources:
 
-1. <a href="http://www.statmethods.net/input/missingdata.html" target="_blank"> Quick-R: Missing Data</a>
+* <a href="http://www.statmethods.net/input/missingdata.html" target="_blank">Quick-R: Missing Data </a>
 -- R code for dealing with missing data
-2. The Institute for Digital Research and Education has an <a href="http://www.ats.ucla.edu/stat/r/faq/missing.htm" target="_blank"> R FAQ on Missing Values</a>.
+* The Institute for Digital Research and Education has an <a href="https://stats.idre.ucla.edu/r/faq/how-does-r-handle-missing-values/" target="_blank"> `R` FAQ on Missing Values</a>
 
 ## Bad Data Values
-Bad data values are different from `NoDataValue`. Bad data values are values that
+Bad data values are different from `NoDataValue`. Bad data values are values that 
 fall outside of the applicable range of a dataset.
+
 Examples of Bad Data Values:
 
 * The normalized difference vegetation index (NDVI), which is a measure of
@@ -199,18 +217,27 @@ be considered a "bad" or miscalculated value.
 of 1110 is clearly not correct.
 
 ### Find Bad Data Values
-Sometimes a dataset's metadata will tell us the range of expected values for a
-variable or common sense dictates the expected value (as in the Julian day example above).
-Values outside of this range are suspect and we need to consider than
-when we analyze the data. Sometimes, we need to use some common sense and
-scientific insight as we examine the data - just as we would for field data to
-identify questionable values.
+Sometimes a dataset's metadata will tell us the range of expected values for a 
+variable or common sense dictates the expected value (as in the Julian day example 
+above). Values outside of this range are suspect and we need to consider them 
+when we analyze the data. Sometimes, we need to use some common sense and scientific 
+insight as we examine the data - just as we would for field data to identify 
+questionable values.
 
 We can explore the distribution of values contained within our data using the
-`hist` function which produces a histogram. Histograms are often useful in
+`geom_histogram()` function which produces a histogram. Histograms are often useful in
 identifying outliers and bad data values in our raster data.
 
-HIST of SMALLISH DATA SET WITH SOME OUTLANDISH VALUE
+```{r histogram, fig.cap="Histogram with a good bell curve and some values clustered at zero."}
 
+# create and view histogram
+ggplot() +
+  geom_histogram(data = RGB_HARV_df, aes(HARV_Ortho_wNA), bins = 40)
+
+```
+
+In `geom_histogram()`, 30 is the default number of bins for the data. We can define the number of bins by using the `bins` value. 
+
+The shape of this histogram looks reasonable and there are likely no bad data values in this raster.
 
 ### Deal with Bad Data Values
