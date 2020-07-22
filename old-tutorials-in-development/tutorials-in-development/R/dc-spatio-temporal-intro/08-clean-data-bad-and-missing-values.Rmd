@@ -48,6 +48,7 @@ preferably, RStudio loaded on your computer.
 
 * **rgdal:** `install.packages("rgdal")`
 * **ggplot2:** `install.packages("ggplot2")`
+* **raster:** `install.packages("raster")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on 
 Packages in R </a>– Adapted from Software Carpentry.
@@ -112,7 +113,7 @@ we need to account for when analyzing our data.
 
 ## NoData Values (NA, NAN)
 If we are lucky when working with external data, the `NoData` value is clearly 
-specified in the metadata. Sometimes this value is `NA` (not available) or `nan` 
+specified in the metadata. Sometimes this value is `NA` (not available) or `NAN` 
 (not a number). However, `NA` isn't always used. Text values can make data storage 
 difficult for some programs and thus, sometimes you'll encounter a large negative 
 value such as `-9999` used as the `NoData` value. At other times, we might see blank 
@@ -147,6 +148,7 @@ values we have in a dataframe.
 # load libraries
 library(rgdal)
 library(ggplot2)
+library(raster)
 
 # set working directory to ensure R can find the file we wish to import and where 
 # we want to save our files. Be sure to move the unzipped download into your working directory! 
