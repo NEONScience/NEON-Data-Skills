@@ -448,10 +448,11 @@ Now that we have a vertical offset for each of the GEDI footprints, let's try ag
 
 ```{r plot-GEDI-2}
 
-for(shot_n in 1:1){
+# You can enter whichever shots that you want to plot in the for loop here
+for(shot_n in 1:2){
 wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
 
-summary(wf@dt$rxwaveform)
+#summary(wf@dt$rxwaveform)
 
 d=wf@dt
 # normalize rxwaveform
