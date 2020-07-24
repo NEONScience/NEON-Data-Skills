@@ -15,10 +15,6 @@ tutorialSeries: python-neon-api-series
 urlTitle: neon-api-01-introduction-requests
 ---
 
-Introduction to NEON API with Python
-
-Welcome to the "Using the NEON API with Python" Tutorial series. In this tutorial we will learn the basics of using Python to make requests/calls to the NEON API.
-
 <div id="ds-objectives" markdown="1">
 
 ### Objectives
