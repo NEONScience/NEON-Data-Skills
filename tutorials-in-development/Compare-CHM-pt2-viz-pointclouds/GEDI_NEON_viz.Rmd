@@ -64,7 +64,7 @@ Download Dataset</a>
 </div>
 
 ## Getting Started
-In this tutorial, we will compare NEON and GEDI LiDAR data by comparing the information that they both capture in the same location. NEON data are actually one of the datasets used by the GEDI mission to calibrate and validate GEDI waveforms, so this makes for a valuable comparison! In order to compare these data, we will need to download GEDI data that overlap a NEON site. However, GEDI data are currently only available to download per complete orbit, which means that the vast majority of the orbit's data does not fall within a NEON site. The GEDI orbit datasets come in HDF5 data format, and contain about 7Gb of data, so you may want to run the first few sections of this tutorial to get the GEDI download started, and refresh your memory of HDF5 files with our <a href="https://www.neonscience.org/intro-hdf5-r-series">Intro to HDF5 series</a>.
+In this tutorial, we will compare NEON and GEDI LiDAR data by comparing the information that they both capture in the same location. NEON data are actually one of the datasets used by the GEDI mission to calibrate and validate GEDI waveforms, so this makes for a valuable comparison! In order to compare these data, we will need to download GEDI data that overlap a NEON site. Fortunately, Carlos Silva et al. have made a convenient R package clled `rGEDI` and <a href="https://cran.r-project.org/web/packages/rGEDI/vignettes/tutorial.html">this excellent tutorial hosted on CRAN</a> desribing how to work with GEDI data in R. However, GEDI data are currently only available to download per complete orbit, which means that the vast majority of the orbit's data does not fall within a NEON site. The GEDI orbit datasets come in HDF5 data format, and contain about 7Gb of data, so you may want to run the first few sections of this tutorial to get the GEDI download started, and refresh your memory of HDF5 files with our <a href="https://www.neonscience.org/intro-hdf5-r-series">Intro to HDF5 series</a>.
 
 First, we will load the required libraries and set our working directory:
 
@@ -240,7 +240,10 @@ par(oldpar)
 
 ```
 
+This waveform shows some noise above and below the main ecosystem return, with a fairly dense canopy around 520m elevation, an a characteristic ground return spike at about 475m. Still, it is hard to get a good sense of what the ecosystem really looks like from this GEDI waveform. Let's download some NEON AOP pointcloud data to pair up with this waveform to get a better sense of what GEDI is reporting.
+
 ## Download and Plot NEON AOP LiDAR pointcloud data
+Here, we will use the `byTileAOP()` function from the 'neonUtilities' package to download the classified pointcloud mosaic data (DP1.30003.001). Since this is a mosaic tile like the CHM, we can just pass this function the lower left corner of the CHM tile to get the corresponding lidar pointcloud mosaic tile for our analysis.
 
 ```{r download-AOP-lidar eval=F, comment=NA}
 
