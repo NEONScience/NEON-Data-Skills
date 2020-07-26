@@ -4,12 +4,12 @@ title: "Raster 01: Plot Raster Data in R"
 description: "This tutorial explains how to plot a raster in R using R's base plot function. It also covers how to layer a raster on top of a hillshade to produce  an eloquent map."	
 dateCreated: 2015-10-2
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	
+contributors:	Jason Brown
 estimatedTime:	
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
-dataProduct: 
+dataProduct: DP3.30024.001
 code1: /R/dc-spatial-raster/01-Plot-Raster.R	
 tutorialSeries: raster-data-series
 urlTitle: dc-plot-raster-data-r
@@ -99,17 +99,19 @@ library(rgdal)
 library(raster)
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Git/data/" # this will depend on your local environment environment
+# be sure that the downloaded file is in this directory
+setwd(wd)
 
 # import raster
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 ```
 
 First, let's plot our Digital Surface Model object (`DSM_HARV`) using the
 `plot()` function. We add a title using the argument `main="title"`.
 
-```{r hist-raster }
+```{r hist-raster, fig.cap="Digital surface model showing the continuous elevation of NEON's site Harvard Forest"}
 # Plot raster object
 plot(DSM_HARV,
      main="Digital Surface Model\nNEON Harvard Forest Field Site")
@@ -126,7 +128,7 @@ tells R to use fewer or more breaks or bins.
 If we name the histogram, we can also view counts for each bin and assigned
 break values.  
 
-```{r create-histogram-breaks }
+```{r create-histogram-breaks, fig.cap="Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest"}
 # Plot distribution of raster values 
 DSMhist<-hist(DSM_HARV,
      breaks=3,
@@ -161,7 +163,7 @@ occur, we use the following syntax: `breaks=c(value1,value2,value3)`.
 We can include as few or many breaks as we'd like.
 
 
-```{r plot-with-breaks }
+```{r plot-with-breaks, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with three breaks"}
 # plot using breaks.
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -183,7 +185,7 @@ object.
 
 We can label the x- and y-axes of our plot too using `xlab` and `ylab`. 
 
-```{r add-plot-title }
+```{r add-plot-title, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with UTM Westing Coordinate (m) on the x-axis and UTM Northing Coordinate (m) on the y-axis"}
 # Assign color to a object for repeat use/ ease of changing
 myCol = terrain.colors(3)
 
@@ -198,7 +200,7 @@ plot(DSM_HARV,
 
 Or we can also turn off the axes altogether. 
 
-```{r turn-off-axes }
+```{r turn-off-axes,fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with no axes"}
 # or we can turn off the axis altogether
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -246,10 +248,10 @@ transparency factor to created a 3-dimensional shaded effect. A
 hillshade is a raster that maps the shadows and texture that you would see from
 above when viewing terrain.
 
-```{r hillshade }
+```{r hillshade, fig.cap="Hillshade digital surface model showing the elevation of NEON's site Harvard Forest in grayscale"}
 # import DSM hillshade
 DSM_hill_HARV <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_HARV,
@@ -268,7 +270,7 @@ a plot using `legend=FALSE`.
 We can layer another raster on top of our hillshade using by using `add=TRUE`.
 Let's overlay `DSM_HARV` on top of the `hill_HARV`.
 
-``` {r overlay-hillshade}
+``` {r overlay-hillshade, fig.cap="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site Harvard Forest"}
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_HARV,
@@ -309,20 +311,21 @@ Make sure to:
 </div>
 
 
-```{r challenge-hillshade-layering, echo=FALSE}
+```{r challenge-hillshade-layering, fig.cap=c("Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site San Joaquin Experiment Range","Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON's site San Joaquin Experiment Range"), echo=FALSE}
 # CREATE DSM MAPS
 # import DSM 
-DSM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMcrop.tif")
+DSM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMcrop.tif"))
 # import DSM hillshade
 DSM_hill_SJER <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_SJER,
     col=grey(1:100/100),  #create a color ramp of grey colors
     legend=F,
     main="DSM with Hillshade\n NEON SJER Field Site",
-    axes=FALSE)
+    xlab = "UTM Westing Coordinate", 
+    ylab = "UTM Northing Coordinate")
 
 # add the DSM on top of the hillshade
 plot(DSM_SJER,
@@ -333,17 +336,17 @@ plot(DSM_SJER,
 
 # CREATE SJER DTM MAP
 # import DTM 
-DTM_SJER <- raster("NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMcrop.tif")
+DTM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMcrop.tif"))
 # import DTM hillshade
 DTM_hill_SJER <- 
-  raster("NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMhill.tif")
+  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_DTMhill.tif"))
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DTM_hill_SJER,
     col=grey(1:100/100),  #create a color ramp of grey colors
     legend=F,
     main="DTM with Hillshade\n NEON SJER Field Site",
-    axes=FALSE)
+    axes=F)
 
 # add the DSM on top of the hillshade
 plot(DTM_SJER,

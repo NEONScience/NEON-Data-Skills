@@ -1,0 +1,503 @@
+---
+syncID:
+title: "Matching GEDI waveforms with NEON AOP LiDAR pointclouds"
+description: "GEDI has amazing coverage around the globe, but is limited in its spatial resolution. Here, we extract NEON pointcloud data corresponding to individual GEDI waveforms to better understand how the GEDI return waveform gets its shape."
+dateCreated: 2020-07-15
+authors: Donal O'Leary
+contributors: 
+estimatedTime: 1 hour
+packagesLibraries: lidR, rGEDI, raster
+topics: LiDAR
+languagesTool: R
+dataProduct: 
+code1: 
+tutorialSeries: 
+urlTitle: 
+---
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Search for GEDI data based on a NEON site bounding box
+* Extract NEON LiDAR pointcloud data corresponding to a specific GEDI footprint
+* Visualize NEON and GEDI LiDAR data together in 3D
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rGEDI")`
+* **sp:** `install.packages("sp")`
+* **sf:** `install.packages("sf")`
+* **lidR:** `install.packages("lidR")`
+
+########## add more packages here as needed #######
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+############# Possibly add GEDI subset here?? ##############
+
+#### NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.10055.001, Plant phenology observations. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+* National Ecological Observatory Network. 2020. Data Product DP1.00002.001, Single aspirated air temperature. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+### Working Directory
+[Donal to add text]
+
+</div>
+
+## Getting Started
+In this tutorial, we will compare NEON and GEDI LiDAR data by comparing the information that they both capture in the same location. NEON data are actually one of the datasets used by the GEDI mission to calibrate and validate GEDI waveforms, so this makes for a valuable comparison! In order to compare these data, we will need to download GEDI data that overlap a NEON site. Fortunately, Carlos Silva et al. have made a convenient R package clled `rGEDI` and <a href="https://cran.r-project.org/web/packages/rGEDI/vignettes/tutorial.html">this excellent tutorial hosted on CRAN</a> desribing how to work with GEDI data in R. However, GEDI data are currently only available to download per complete orbit, which means that the vast majority of the orbit's data does not fall within a NEON site. The GEDI orbit datasets come in HDF5 data format, and contain about 7Gb of data, so you may want to run the first few sections of this tutorial to get the GEDI download started, and refresh your memory of HDF5 files with our <a href="https://www.neonscience.org/intro-hdf5-r-series">Intro to HDF5 series</a>.
+
+First, we will load the required libraries and set our working directory:
+
+```{r load-libraries, warning=FALSE}
+
+library(rGEDI)
+library(raster)
+library(sp)
+library(sf)
+library(rgl)
+library(lidR)
+library(neonUtilities)
+library(viridis)
+library(maptools)
+
+wd <- "~/Downloads/" # This will depend on your local environment
+setwd(wd)
+
+```
+
+Next, we will download a Canopy Height Model (CHM) tile from the Wind River Experiemental Forest (WREF) using the `byTileAOP()` function to use as a preliminary map on which to overlay the GEDI data. There is one particularly interesting mosaic tile which we will select using the `easting` and `northing` arguments. We then load the raster into R and make a simple plot. For more information about CHMs, please see our tutorial <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data">What is a CHM?</a>
+
+```{r download-chm, message=FALSE}
+
+# Define the SITECODE as a variable because
+# we will use it several times in this tutorial
+SITECODE <- "WREF"
+
+byTileAOP(dpID = "DP3.30015.001", site = SITECODE, year = 2017, 
+          easting = 580000, northing = 5075000, check.size = F,
+          savepath = wd)
+
+chm <- raster(paste0(wd, "/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
+
+plot(chm)
+
+```
+
+As you can see, this particular CHM is showing a conspicuous, triangle-shaped clearcut in this section of the experimental forest, where the tree canopy is much shorter than the towering 60m+ trees in the undisturbed areas. This variation will give us a variety of forest structures to investigate.
+
+## Downloading GEDI data
+This next section on downloading and working with GEDI data is loosely based on the excellent `rGEDI` package tutorial <a href="https://cran.r-project.org/web/packages/rGEDI/vignettes/tutorial.html">posted on CRAN here</a>.
+
+The Global Ecosystem Dynamics Investigation (GEDI) is a NASA mission with the primary data collection being performed by a novel waveform lidar instrument mounted on the International Space Station (ISS). Please see <a href="https://www.sciencedirect.com/science/article/pii/S2666017220300018">this open-access paper</a> published in Science of Remote Sensing that describes this mission in detail. The ISS orbits around the world every 90 minutes, and can be tracked <a href="https://spotthestation.nasa.gov/tracking_map.cfm">on this cool NASA website</a>. 
+
+As described <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/gedi-overview/">here</a> on the Land Processes Distributed Active Archive Center (LP DAAC), "the sole GEDI observable is the waveform from which all other data products are derived. Each waveform is captured with a nominal ~30 m diameter."GEDI has six   As of the date of publication, GEDI data are only offered in HDF5 format, with each file containing the data for a full orbit. The LP DAAC has developed a tool that allows researchers to input a bounding box, which will return a list of every orbit that has a "shot" (waveform return) that falls within that box. Unfortunately, at this time, the tool will not subset out the specific shots that fall within that bounding box; you must download the entire orbit (~7Gb). This functionality may be improved in the future.
+
+Our next few steps involve defining our bounding box, requesting the list of GEDI orbits that contain data relevant to that bounding box, and downloading those data. Let's focus on the extent of our CHM that we downloaded above - but we will first need to re-project the CHM from its UTM projection into WGS84. To do so, we will refer to the EPSG code for WGS84. To look up any of these codes, please see the amazing resource <a href="https://spatialreference.org/ref/epsg/4326/">spatialrerference.org</a>.
+
+```{r project-CHM}
+
+# Project CHM to WGS84
+chm_WGS = projectRaster(chm, crs=CRS("+init=epsg:4326"))
+
+# Study area boundary box coordinates
+ul_lat<- extent(chm_WGS)[4]
+lr_lat<- extent(chm_WGS)[3]
+ul_lon<- extent(chm_WGS)[1]
+lr_lon<- extent(chm_WGS)[2]
+
+```
+
+Next, we use that bounding box information as an input to the 
+
+```{r find-GEDI-orbits}
+
+# Specifying the optional date range, if desired
+# daterange=c("2019-03-25", #first date of GEDI availability
+#            "2020-07-15")
+
+# Get path to GEDI data
+# These lines use an API request to determine which orbits are available 
+# that intersect the bounding box of interest.
+# Note that you still must download the entire orbit and then subset to 
+# your area of interest!
+gLevel1B<-gedifinder(product="GEDI01_B",
+                     ul_lat, ul_lon, lr_lat,lr_lon,
+                     version="001",daterange=NULL)
+
+# View list of available data
+gLevel1B
+
+```
+
+Great! There are several GEDI orbits available that have at least 1 'shot' within our bounding box of interest. For more information about GEDI filename conventions, and other valuable information about GEDI data, <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/gedi-overview/#gedi-temporal-and-spatial-resolution">see this page on the LP DAAC</a>. However, as mentioned before, each of these files are quite large (~7Gb), so let's focus on just the first one for now.
+
+```{r download-GEDI, eval=F, comment=NA}
+
+# Downloading GEDI data
+gediDownload(filepath=gLevel1B[1],outdir=wd)
+
+```
+
+Next, we use the rGEDI package to read in the GEDI data. First, we need to make a 'gedi.level1b' object using the `readLevel1B()` function. Next, we extract the geographic position of each shot from the 'gedi.level1b' object using the `getLevel1BGeo()` function, ,and display the resulting table.
+
+```{r read-GEDI, message=F}
+
+gedilevel1b<-readLevel1B(level1Bpath = file.path(wd, "GEDI01_B_2019206022612_O03482_T00370_02_003_01.h5"))
+level1bGeo<-getLevel1BGeo(level1b=gedilevel1b,select=c("elevation_bin0"))
+head(level1bGeo)
+
+```
+
+## Plot GEDI footprints on CHM
+Let's visualize where the GEDI footprints are located on the CHM tile. To do so, we will need to first convert the GEDI data into a spatial object. For this example, we will use a 'spatial features' object type from the 'sp' package:
+
+```{r GEDI-spatial-df}
+
+# drop any shots with missing latitude/longitude values
+level1bGeo = level1bGeo[!is.na(level1bGeo$latitude_bin0)&
+                          !is.na(level1bGeo$longitude_bin0),]
+
+# Convert the GEDI data.frame into an 'sf' object
+level1bGeo_spdf<-st_as_sf(level1bGeo, 
+                          coords = c("longitude_bin0", "latitude_bin0"),
+                          crs=CRS("+init=epsg:4326"))
+
+
+# crop to the CHM that is in WGS84
+level1bgeo_WREF=st_crop(level1bGeo_spdf, chm_WGS)
+
+```
+
+Next, project the GEDI geospatial data into the UTM zone that the CHM is within (Zone 10 North). Then, we convert the GEDI footprint center (lat/long) into a circle using the `buffer()` function. Finally, we can plot the CHM and overlay the GEDI footprint circles, and label with the last three digits of the 'shot' number.
+
+```{r overly-GEDI-on-chm, warning=F, fig.height=4, fig.width=5}
+
+# project to UTM
+level1bgeo_WREF_UTM=st_transform(
+  level1bgeo_WREF, crs=chm$NEON_D16_WREF_DP3_580000_5075000_CHM@crs)
+
+# buffer the GEDI shot center by a radius of 12.5m 
+# to represent the full 25m diameter GEDI footprint
+level1bgeo_WREF_UTM_buffer=st_buffer(level1bgeo_WREF_UTM, dist=12.5)
+
+# plot CHM and overlay GEDI data
+plot(chm)
+plot(level1bgeo_WREF_UTM_buffer, add=T, col="transparent")
+
+# add labes with the last three digits of the GEDI shot_number
+pointLabel(st_coordinates(level1bgeo_WREF_UTM),
+           labels=substr(level1bgeo_WREF_UTM$shot_number, 15, 17), cex=1)
+
+
+```
+
+## Extract Waveform for a single Shot
+Let's take a look at a waveform for a single GEDI shot. We will use the last three numbers of the shot, shown a labels in the plot above, to select a waveform of interest. In this case, let's plot the the footprint labeled '002' in the northwest of the CHM.
+
+```{r extract-wf, warning=F}
+
+# Extracting GEDI full-waveform for a given shot_number
+wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF_UTM_buffer$shot_number[which(substr(level1bgeo_WREF_UTM$shot_number, 15, 17)=="002")])
+
+# Save current plotting parameters to revert to
+oldpar <- par()
+
+# Set up plotting paramters
+par(mfrow = c(1,2), mar=c(4,4,1,1), cex.axis = 1.5)
+
+# Plot filled-in waveform 
+plot(wf, relative=FALSE, polygon=TRUE, type="l", lwd=2, col="forestgreen",
+     xlab="Waveform Amplitude", ylab="Elevation (m)")
+grid() #add a grid to the plot
+
+# Plot a simple line with no fill
+plot(wf, relative=TRUE, polygon=FALSE, type="l", lwd=2, col="forestgreen",
+     xlab="Waveform Amplitude (%)", ylab="Elevation (m)")
+grid()#add a grid to the plot
+
+# Revert plotting parameters to previous values.
+par(oldpar)
+
+```
+
+This waveform shows some noise above and below the main ecosystem return, with a fairly dense canopy around 520m elevation, an a characteristic ground return spike at about 475m. Still, it is hard to get a good sense of what the ecosystem really looks like from this GEDI waveform. Let's download some NEON AOP pointcloud data to pair up with this waveform to get a better sense of what GEDI is reporting.
+
+## Download and Plot NEON AOP LiDAR pointcloud data
+Here, we will use the `byTileAOP()` function from the 'neonUtilities' package to download the classified pointcloud mosaic data (DP1.30003.001). Since this is a mosaic tile like the CHM, we can just pass this function the lower left corner of the CHM tile to get the corresponding lidar pointcloud mosaic tile for our analysis.
+
+```{r download-AOP-lidar eval=F, comment=NA}
+
+byTileAOP(dpID = "DP1.30003.001", site = SITECODE, year = 2017, 
+          easting = extent(chm)[1], northing=extent(chm)[3], 
+          check.size = F)
+
+```
+
+```{r plot-lidar-pointcloud-bad}
+
+WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz")
+
+plot(WREF_LAS)
+
+```
+
+Oh, yikes! There are a lot of outliers above the actual forest, and a few below. Let's use some simple statistics to throw out those outliers. We will first calculate the mean and standar deviation for the verical axis, and then use the 'filter' options of the `readLAS()` function to eliminate the vertical outliers.
+
+```{r plot-lidar-pointcloud-good}
+
+# ### remove outlier lidar point outliers using mean and sd statistics
+Z_sd=sd(WREF_LAS@data$Z)
+Z_mean=mean(WREF_LAS@data$Z)
+ 
+# make filter string in form filter = "-drop_z_below 50 -drop_z_above 1000"
+# You can increase or decrease (from 4) the number of sd's to filter outliers
+f = paste("-drop_z_below",(Z_mean-4*Z_sd),"-drop_z_above",(Z_mean+4*Z_sd))
+
+# Read in LAS file, trimming off vertical outlier points
+WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz",
+                 filter = f)
+
+#Plot the full LiDAR point cloud mosaic tile (1km^2)
+plot(WREF_LAS)
+
+```
+Ahhh, that's better.
+
+## Clip AOP LiDAR Pointcloud to GEDI footprints
+We can now use the GEDI footprint circles (that we made using the `buffer()` function) to clip out the LiDAR points that correspond with the GEDI footprints:
+
+```{r clip-AOP-to-GEDI}
+
+# Clip the pointcloud by the GEDI footprints created by buffering above. 
+# This makes a 'list' of LAS objects
+WREF_GEDI_footprints=lasclip(WREF_LAS, geometry = level1bgeo_WREF_UTM_buffer)
+
+# we can now plot individual footprint clips
+plot(WREF_GEDI_footprints[[1]])
+
+```
+
+## Plot GEDI Waveform with AOP Pointcloud in 3D space
+Now that we can extract individual waveforms, and the AOP LiDAR pointcloud that corresponds with each GEDI waveform, let's see if we can plot them both in 3D space. We already know how to plot the AOP LiDAR points, so let's write a function to draw the GEDI waveform, too, using the `points3d()` function:
+
+```{r plot-lidar-together-1}
+
+for(shot_n in 1:1){
+wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+
+summary(wf@dt$rxwaveform)
+
+d=wf@dt
+# normalize rxwaveform
+d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
+d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
+
+#add xy data
+d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]
+d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]
+
+d$y_wf=d$y+d$rxwaveform*30
+summary(d)
+
+p=plot(WREF_GEDI_footprints[[shot_n]])
+points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation, col="green", add=T)
+
+}
+
+```
+
+Whoa, it looks like there is a bad vertical mismatch between those two data sources. This is because the two data sources have a different vertical datum. The NEON AOP data are delivered in the GEOID12A, while the GEDI data are delivered in the WGS84 native datum. We will need to convert one to the other to get them to line up correctly.
+
+## Aligning the Vertical Datum
+
+ --- needs information on geoid vs sphereoid ---
+ http://elearning.algonquincollege.com/coursemat/viljoed/gis8746/concepts/geodesy/spheroid.htm
+https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/about-the-geoid-ellipsoid-spheroid-and-datum-and-h.htm
+Note that GEOID12B superscedes GEOID12A, however they are identical everywhere except for Puerto Rico and the US Virgin Islands (https://geodesy.noaa.gov/GEOID/GEOID12B/). If you are working with any NEON data from Puerto Rico, please be aware that these data are delivered in GEOID12A format and may need to be converted to GEOID12B for some purposes.
+ 
+AOP data are delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the `GEOID12A` vertical datum (roughly matched mean sea level). Meanwhile, GEDI data are delivered with the common `WGS84` ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection.
+
+NOAA has a useful tool called Vdatum that will convert from one datum to another. Unfortunately, it cannot convert from GEOID12A to WGS84 directly. We must first convert from GEOID12A to NAD83, then use a simpler method to adjust for the offset between the NAD83 and WGS84 datums. 
+
+
+When converting from NAD83 to ITRF2000
+
+diff tiff comes from Vdatum
+
+GEOID12A to NAD83 interactive page found here: https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl
+
+Download raster tiles of diff between GEOID12A and NAD83 here:
+https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml
+
+```{r}
+
+# Download binary file of offset from GEOID12A to NAD83
+# download.file("https://www.ngs.noaa.gov/PC_PROD/GEOID12A/Format_unix/g2012au0.bin", 
+#               destfile = paste0(wd,"/g2012au0.bin"))
+
+
+
+
+# Read header information. See https://www.ngs.noaa.gov/GEOID/GEOID12B/g2012Brme.txt
+
+# File Structure
+# ---------------
+# The files (ASCII and binary) follow the same structure of a one-line header 
+# followed by the data in row-major format. The one-line header contains four 
+# double (real*8) words followed by three long (int*4) words. 
+# These parameters define the geographic extent of the area:
+# 
+# SLAT:  Southernmost North latitude in whole degrees. 
+#        Use a minus sign (-) to indicate South latitudes. 
+# WLON:  Westernmost East longitude in whole degrees. 
+# DLAT:  Distance interval in latitude in whole degrees 
+#        (point spacing in E-W direction)
+# DLON:  Distance interval in longitude in whole degrees 
+#        (point spacing in N-S direction)
+# NLAT:  Number of rows 
+#        (starts with SLAT and moves northward DLAT to next row)
+# NLON:  Number of columns 
+#        (starts with WLON and moves eastward DLON to next column)
+# IKIND: Always equal to one (indicates data are real*4 and endian condition)
+
+to.read = file("~/Downloads/g2012au0.bin", "rb")
+header1=readBin(to.read, double(), endian = "big", n=4)
+header1
+
+header2=readBin(to.read, integer(), endian = "big", n=3)
+header2
+
+GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian = "big", size=4)
+
+```
+
+```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6, warning=F}
+
+GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
+                             xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
+                             ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]))
+GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = GEOID12A_diff_vals)
+
+# we need to use the 'flip' function to put the map 'upright' because R expects to see raster values from the top left corner and fills by rows, but this dataset is delivered in sucha a way that it describes the bottom left corner and fills by rows up to the top of the image (this is actually the convention for most traditional remote sensing software - and leads to a similar problem that is explained in the Hyperspectral tutorial series.)
+GEOID12A_diff_rast <- flip(GEOID12A_diff_rast, 'y')
+
+## let's crop out only CONUS for plotting purposes - we will still refer to the fill image when extracting values.
+
+diff=raster("~/Downloads/WGS84_NAD83_seperation.tif")
+
+diff_resp=resample(diff, GEOID12A_diff_rast) # resample to match pixel size/registration for cropping
+diff_resp=crop(diff_resp, GEOID12A_diff_rast)
+GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
+GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
+
+
+```
+
+```{r plot-both-diff-maps, fig.height=8, fig.width=6}
+
+par(mfrow=c(2,1), mar=c(2.5,2.5, 3.5,1))
+plot(GEOID12A_diff_rast_mask, col=viridis(100),main="GEOID12A minus NAD83 (m)")
+plot(diff_resp, main="WGS84 minus NAD83 (m)")
+
+```
+
+As you can see, the differences between the GEOID12A geoid, and the NAD83 sphereoid vary quite a lot across space, especially in mountainous areas. The magnitude of these differences is also large, upwards of 35m in some areas. Meanwhile, the differences between the NAD83 and WGS84 sphereoids shows a smooth gradient that is relatively small, with total difference less than 2m across the Conterminous USA. 
+
+
+Use extract() function to retrieve values from both rasters for a given GEDI footprint
+
+```{r extract-vert-offsets}
+
+footprint_df=as.data.frame(cbind(level1bgeo_WREF$longitude_lastbin, level1bgeo_WREF$latitude_lastbin))
+
+WGS_NAD_diff <- extract(diff, footprint_df)
+
+GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask,footprint_df)
+
+net_diff=WGS_NAD_diff+GEOID12A_NAD_diff
+
+## GEDI elevation is in WGS84, so to concert to NAD83 first subtract WGS_NAD_diff
+
+## Next, to convert GEDI elevations fron NAD83 to GEOID12A, add GEOID12A_NAD_diff (which makes it lower because GEOID12A is lower than NAD83 in N America)
+
+## Check to see if AOP forest floor and GEDI ground spike coincide. 
+
+```
+
+
+## Plot vertically corrected GEDI waveform in 3D
+
+Now that we have a vertical offset for each of the GEDI footprints, let's try again to plot the NEON AOP pointcloud data with the GEDI waveform.
+
+```{r plot-GEDI-2}
+
+# You can enter whichever shots that you want to plot in the for loop here
+for(shot_n in 1:2){
+wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+
+#summary(wf@dt$rxwaveform)
+
+d=wf@dt
+# normalize rxwaveform
+d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
+d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
+
+#add xy data
+d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]
+d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]
+
+d$y_wf=d$y+d$rxwaveform*30
+summary(d)
+p=plot(WREF_GEDI_footprints[[shot_n]])
+points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation-net_diff[shot_n], col="green", add=T)
+
+}
+
+```
+
+##Optional - NEON base plots
+You may also be interested to see if any of the GEDI footprints intersect a NEON base plot, which would allow for a direct comparison of the GEDI waveform with many of the datasets which are collected within the base plots, such as the vegetation structure data product containing height, DBH, and species identification of all trees >10cm DBH. While it is statistically pretty unlikely that a GEDI footprint will intersect with your base plot of interest, it is possible that _some_ GEDI footprint will intersetc with _some_ base plot in your study area, so we may as well take a look:
+
+```{r import and plot base plots}
+
+setwd("~/Downloads/")
+
+# Download the NEON TOS plots polygons directly from the NEON website
+download.file(url="https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V8", 
+              destfile="All_NEON_TOS_Plots_V8.zip")
+unzip("All_NEON_TOS_Plots_V8.zip")
+NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+
+# Select just the WREF site
+SITECODE = 'WREF'
+base_plots_SPDF <- NEON_all_plots[
+  (NEON_all_plots$siteID == SITECODE)&
+    (NEON_all_plots$subtype == 'basePlot'),]
+rm(NEON_all_plots)
+
+base_crop=st_crop(base_plots_SPDF, extent(chm_WGS))
+
+plot(chm_WGS)
+plot(base_crop$geometry, border = 'blue', add=T)
+
+```

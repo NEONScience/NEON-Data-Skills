@@ -1,0 +1,174 @@
+---
+title: "NEON Spatial Data"
+contributors: Collin Storlie
+dataProduct: DP3.30024.001
+description: "Downloading and mapping NEON raster data"
+estimatedTime: NULL
+languagesTool: R
+packagesLibraries: raster, neonUtilities, rgdal, ggplot2
+authors: Matthew Helmnus, Donal O'Leary
+topics: spatial, raster, shape
+---
+
+This tutorial will walk through downloading and mapping NEON spatial data
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this activity, you will be able to:
+
+* Import NEON raster data from aerial images using the neonUtilities package
+* Plot raster data using ggplot2
+* Overlay shape files onto your raster maps.
+
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, `RStudio` loaded
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **raster:** `install.packages("raster")`
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **rgdal:** `install.packages("rgdal")`
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data
+
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+AOP Flight Data for a single site and year, SoapRoot Saddle 2019, will be downloaded via the neonUtilities R package.  There are 1462 files totalling ~ 1.8 Gigabytes.  Download may take up to ~30 minutes.  Took me 23 minutes
+
+## Recommended Reading
+
+You may benefit from reviewing these related resources prior to this tutorial: 
+
+* <a href="https://www.neonscience.org/raster-res-extent-pixels-r" target="_blank"> *The Relationship Between Raster Resolution, Spatial Extent & Number of Pixels - in R* tutorial.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank" > Please read through *Raster Data in R - The Basics* tutorial.</a>
+* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> The `raster` R package documentation.</a>
+* <a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle site description.</a> 
+* <a href="https://www.neonscience.org/soaproot-saddle-overview-soap-drone-video" target="_blank"> Short overview video.</a>
+* <a href="https://www.neonscience.org/intro-lidar-r-series" target="_blank"> See the NEON lidar tutorial series. </a>
+* <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank"> What is a CHM, DSM, and DTM? </a>
+</div>
+
+
+# Prompt:
+# Do you think it easy to have code that downloads lidar height and 
+# tree cover for the full AOP footprint, do arithmetic, and then shapefile intersections?
+
+```{r set-up}
+
+# Load the required packages for this tutorial
+
+library(neonUtilities)
+library(raster)
+library(rgdal)
+
+# Create an object which is the file path to your working directory
+# This will be used to read / write files with
+
+wd = "/Users/collin/Documents/GitProjects/NEON-Data-Skills/tutorials-in-development/R/NEON_Raster/data/"
+
+```
+
+We will download the lidar-derived 'Elevation' dataset, which includes the 
+digital terrain model (DTM) and digital surface model (DSM)
+         
+Can download multiple sites e.g., c("SOAP","HARV") and years
+check.size=T is helpful to avoid accidentally downloading many Gbs!
+
+```{r NEON-data-download}
+byFileAOP("DP3.30024.001", site="SOAP", 
+          year="2019", check.size=T) # 1.8 Gb's, 1462 files, started at 08:47, finished at 09:10.  Total 23 minutes.
+```
+
+Let's look at the digital terraim model (DTM) which is a model of the
+Earth's surface with all of the vegetation removed (ground returns only).
+
+List out the files
+The directory structure is provided by the NEON Portal when you download the data
+Full names are provided
+REGEX expression ends in $, means the pattern is searched at the end
+I.e. the files must END in .tif, not just have .tif present within them
+
+
+```{r tif-filepath-vector}
+f <- list.files(path = paste0(wd,"DP3.30024.001/2019/FullSite/D17/2019_SOAP_4/L3/DiscreteLidar/DTMGtif/"), 
+                pattern = ".tif$", full.names = TRUE)
+```
+
+lapply takes a vector a filepaths
+And applies the 'raster' function to them
+Reading in each filepath as a raster and storing it as an element of the list
+Each filepath is 'tile', represents a different location
+
+```{r raster-list}
+rl <- lapply(f, raster)
+```
+
+Merge combines tiles to form a larger map
+
+```{r raster-merge}
+DTM=do.call(merge, c(rl, tolerance = 1)) # Took about an hour with SOAP, need a note about this
+```
+
+Let's save the mosaic to avoid having to combine all the tiles again.
+
+```{r raster-write}
+writeRaster(DTM, filename = paste0(wd,"/DP3.30024.001/2019/DTM.tif"))
+```
+
+if you want to read this in again later:
+
+```{r raster-read}
+DTM=raster(paste0(wd,"/DP3.30024.001/2019/DTM.tif"))
+```
+
+plot the full DTM
+
+```{r raster-plot}
+plot(DTM)
+```
+
+### Download Shape Data
+
+Now let's start working with some NEON shape data.  Click the links to visit the NEON spatial data page, and then click the 'Download button'.
+
+* <a href="https://neon.maps.arcgis.com/home/item.html?id=f27616de7f9f401b8732cdf8902ab1d8" target="_blank"> Flight Boxes </a>
+* <a href="https://neon.maps.arcgis.com/home/item.html?id=4a381f124a73490aa9ad7b1df914d6d8" target="_blank"> Site Sampling Boundaries </a>
+* <a href="https://neon.maps.arcgis.com/home/item.html?id=3af642ac5b5b422fbc8c09132d0e13cb" target="_blank"> Tower Point Locations </a>
+* <a href="https://neon.maps.arcgis.com/home/item.html?id=e05760bfb8224e37bf918ca1d775b20c" target="_blank"> TOS Plot  Points </a>
+* <a href="https://neon.maps.arcgis.com/home/item.html?id=d87cd176dd6a468294fc0ac70918c631" target="_blank"> TIS Airshed Footprint </a>
+
+Unzip the files to a location, preferably a folder within your work directory
+Make a note about how to do this properly, command line and explanation of point'n'click too
+
+##Add flightbox shapedata to the raster
+
+AOP_fb=readOGR(paste0(wd,"/AOP_Flightboxes/AOP_flightboxesAllSites.shp"))
+# What is the projection for this file?
+crs(AOP_fb)
+# Select just SOAP
+SOAP_AOP_fb=AOP_fb[AOP_fb$siteID=="SOAP",]
+# re-project this shapefile into UTM11 to pair with the DTM
+SOAP_AOP_fb=spTransform(SOAP_AOP_fb, crs(DTM))
+plot(SOAP_AOP_fb, add=T)
+
+##Add field site outlines.
+
+field_sampling_boundaries=readOGR(paste0(wd,"Field_Sampling_Boundaries/terrestrialSamplingBoundaries.shp"))
+# What is the projection for this file?
+crs(field_sampling_boundaries)
+# Select just SOAP
+SOAP_field_boundary=field_sampling_boundaries[field_sampling_boundaries$siteID=="SOAP",]
+SOAP_field_boundary=spTransform(SOAP_field_boundary, crs(DTM))
+plot(SOAP_field_boundary, add=T, border="green3")
+
+
+
+
+
+
+

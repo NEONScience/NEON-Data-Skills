@@ -1,4 +1,5 @@
-## Webstie redesign script to convert all graphics URLs to their new location
+## Webstie redesign script to convert all graphics URLs to their new location.
+## This file was needed after we re-organized the structure of the /graphics/ dir
 
 
 ## read in changes (remap_key) and parse out the setion of the URL that is actually relevant

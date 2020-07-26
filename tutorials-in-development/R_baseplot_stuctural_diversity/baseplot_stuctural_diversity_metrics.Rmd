@@ -199,7 +199,7 @@ The first thing we want to do is choose our site. We then use NEON's spatial inf
 
 NEON has spatial data on all plots in the file All_NEON_TOS_Plots_V7/All_NEON_TOS_Plot_Polygons_V7.shp; this is one of the contents of the zip file you can download here:
 
-<a href = "https://www.neonscience.org/sites/default/files/NEON_Field_Sites.zip">NEON Field Sites Spatial Data Maps</a>
+<a href = "https://data.neonscience.org/api/v0/documents/All_NEON_TOS_Plots_V7">NEON Field Sites Spatial Data Maps</a>
 
 
 ```{r initial_polygons, echo=FALSE}
@@ -513,7 +513,7 @@ file_N <- length(coord_unique)
 files_df <- data.frame(name = rep('',file_N), url = rep('', file_N), coords = rep(NA, file_N))
 ```
 
-HOWEVER, there is one big problem. What if it turns out that no liDAR point cloud files exist with some of the coordinates? We should make allowances for this by allowing that some of the files desired won't be in the final data frame, and we shoudl track those "bad" coordinates for which no liDAR point cloud files are available.
+HOWEVER, there is one big problem. What if it turns out that no liDAR point cloud files exist with some of the coordinates? We should make allowances for this by allowing that some of the files desired won't be in the final data frame, and we should track those "bad" coordinates for which no liDAR point cloud files are available.
 
 
 ```{r build_files_df}
@@ -604,7 +604,7 @@ I've noticed that sometimes these files won't install properly unless you trim o
 for(i in 1:length(coord_unique)){
   if(!file.exists(files_df[i,]$name)){
     #Try downloading file using full URL
-    download.file(files_df[i,]$url, destdir = paste0(getwd(),'/',files_df[i,]$name))
+    download.file(files_df[i,]$url, destfile = paste0(getwd(),'/',files_df[i,]$name))
     if(!file.exists(files_df[i,]$name)){
       #Try downloading file using trimmed url
       download.file(paste0(strsplit(files_df[1,]$url, '.laz')[[1]][1], '.laz'),

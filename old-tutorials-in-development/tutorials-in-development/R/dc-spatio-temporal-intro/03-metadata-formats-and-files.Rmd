@@ -2,13 +2,14 @@
 layout: post
 title: "Spatial Intro 03: Data About Data -- Intro to Metadata File Formats and Structure"
 date:   2015-10-27
-authors: [Leah A. Wasser, Megan A. Jones]
-contributors: [ ]
+authors: Leah A. Wasser, Megan A. Jones
+contributors: Alison Dernbach
 dateCreated: 2015-10-27
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: [raster, rgdal, eml, devtools]
+packagesLibraries: raster, rgdal, eml, ggmap, tmaptools
 category: [self-paced-tutorial]
-tags: [R, spatial-data-gis, metadata]
+topics: spatial-data-gis, metadata
+languagesTool: R
 mainTag: spatial-data-management-series
 workshopSeries: [spatial-data-management-series]
 description: "This tutorial covers what metadata are and why we need to work
@@ -24,7 +25,6 @@ permalink: /R/metadata-file-formats-structures
 comments: true
 ---
 
-{% include _toc.html %}
 
 This tutorial covers what metadata are and why we need to work
 with metadata in the context of spatio-temporal data. It
@@ -46,6 +46,10 @@ the data.
 * Understand that collecting data requires and includes collecting the metadata.
 * Be able to create metadata files for different data types.
 
+## Things You’ll Need To Complete This Tutorial
+
+You will need the most current version of R and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
 
 ### Install R Packages
 
@@ -56,26 +60,70 @@ the data.
 
 * **raster:** `install.packages("raster")`
 * **rgdal:** `install.packages("rgdal")`
-* **devtools** `install.packages("devtools")`
-* NOTE: You have to call the devtools library `library(devtools)` first, and then `install_github` will work.
-* **eml** `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`
+* **eml** `install.packages("EML")`
+* **ggmap** `install.packages("ggmap")`
+* **tmaptools** `install.packages("tmaptools")`
 
-* [More on Packages in R - Adapted from Software Carpentry.]({{site.baseurl}}R/Packages-In-R/)
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+## Download Data
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
+
+<h3><a href="https://ndownloader.figshare.com/files/4933582">NEON Teaching Data Subset: Landsat-derived NDVI raster files</a></h3>
+
+
+The imagery data used to create this raster teaching data subset were 
+collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a>
+field sites.  
+The imagery was created by the U.S. Geological Survey (USGS) using a 
+<a href="http://eros.usgs.gov/#/Find_Data/Products_and_Data_Available/MSS" target="_blank" >  multispectral scanner</a>
+on a <a href="http://landsat.usgs.gov" target="_blank" > Landsat Satellite.</a>
+The data files are Geographic Tagged Image-File Format (GeoTIFF).
+
+<a href="https://ndownloader.figshare.com/files/4933582" class="link--button link--arrow">
+Download Dataset</a>
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 
 ### Additional Resources
 
 
-* Information on the
-<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> `raster` R package</a>
+* Read more about the
+<a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> `raster` </a> and <a href="https://cran.r-project.org/web/packages/EML/EML.pdf" target="_blank"> `EML` </a> packages in R.
 
 </div>
 
-```{r elevation-map, include=TRUE, results="hide", echo=FALSE}
+```{r elevation-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Plot of raster data with a color scale in unknown units."}
 library(raster)
 # render DSM for lesson content background
 DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
@@ -198,7 +246,6 @@ that you are working with, **DOWNLOAD AND SAVE IT** immediately to the directory
 on your computer where you saved the data. It is also a good idea to document
 the URL where you found the metadata and the data in a "readme" text file that
 is also stored with the data!
-{: .notice}
 
 
 ## Embedded Metadata - GeoTIFF
@@ -223,7 +270,6 @@ include the following raster metadata:
 <i class="fa fa-star"></i> **Data Note:**  Your camera uses embedded tags to store
 information about pictures that you take including the camera make and model,
 and the time the image was taken.
-{: .notice }
 
 More about the  `.tif` format:
 
@@ -242,8 +288,8 @@ using LiDAR data for the NEON Harvard Forest field site.
 
 
 The code below provides an example of how we can access spatial metadata
-in `R`. We cover this in more detail, in the
-[*Intro to Raster Data in R* tutorial](http://www.neondataskills.org/R/Introduction-to-Raster-Data-In-R).
+in `R`. We cover this in more detail in the <a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank">*Introduction to Working With Raster Data in R*</a> tutorial.
+
 
 ```{r load-libraries }
 
@@ -251,11 +297,15 @@ in `R`. We cover this in more detail, in the
 library(raster)
 library(rgdal)
 
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+# set working directory to ensure R can find the file we wish to import 
+# and where we want to save our files. Be sure to move the download into 
+# your working directory! 
+
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
 
 # read in a GeoTIFF raster file (.tif) using the raster() function
-DSM_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
 
 # view Coordinate Reference System (note, this often contains horizontal units!)
 crs(DSM_HARV)
@@ -320,13 +370,13 @@ Compare the extent and crs to the CHM and DSM. Are they different?
 ```{r challenge-extent, echo=FALSE}
 
 # 1. they should create both objects
-CHM.HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
+CHM.HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif"))
 crs(CHM.HARV)
 extent(CHM.HARV)
 
 # 2. the extent and CRS should be the same
 # 3. The extent and CRS are different.
-ndvi1.HARV <- raster("NEON-DS-Landsat-NDVI/HARV/2011/ndvi/005_HARV_ndvi_crop.tif")
+ndvi1.HARV <- raster(paste0(wd,"NEON-DS-Landsat-NDVI/HARV/2011/ndvi/005_HARV_ndvi_crop.tif"))
 crs(ndvi1.HARV)
 extent(ndvi1.HARV)
 ```
@@ -336,23 +386,18 @@ It appears as if there are some differences between the objects **extent** and
 tutorials? HINT: we will find out!
 
 
-We will work with embedded metadata in both the
-[*Introduction to Working With Vector Data in R*]( http://www.neondataskills.org/tutorial-series/vector-data-series/)
-and
-[*Introduction to Working With Raster Data in R*]( http://www.neondataskills.org/tutorial-series/raster-data-series/)
-series!
+We will work with embedded metadata in both the <a href="https://www.neonscience.org/vector-data-series" target="_blank">*Introduction to Working With Vector Data in R*</a> 
+and the <a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank">*Introduction to Working With Raster Data in R*</a> series!
 
 ## Embedded Metadata - Hierarchical Data Formats (HDF5)
 
-HDF5 is another file type that supports embedded metadata format. Check out the
-[NEON Data Skills HDF5 tutorials](http://www.neondataskills.org/tutorial-series/intro-hdf5-r-series/)  
-to learn more about how HDF5 stores metadata.
+HDF5 is another file type that supports embedded metadata format. Check out the <a href="https://www.neonscience.org/intro-hdf5-r-series" target="_blank">*Introduction to Hierarchical Data Format (HDF5)*</a> series to learn more about how HDF5 stores metadata.
 
 ## Structured Metadata - EML
 
 The Ecological Metadata Language (EML) is a data specification developed
-specifically to document ecological data. An EML file is created using a **XML-
-based format**.
+specifically to document ecological data. An EML file is created using a `XML` 
+based format.
 
 This means that content is embedded within hierarchical tags. For example
 the title of a dataset might be embedded in a `<title>` tag as follows:
@@ -396,46 +441,35 @@ The `EML` package for `R` is designed to open, read and create EML formatted
 metadata. In this tutorial, we will demonstrate how we can use EML
 structured metadata in an automated workflow.
 
-NOTE: To save time, we will not explicitly teach the `EML` package given it is
-still being developed. But we will provide an example of how you can access
-EML metadata programmatically using the `EML` package.
+NOTE: To save time, we will not explicitly teach the `EML` package. But we will provide an example of how you can access EML metadata programmatically using the `EML` package.
 
-To begin, we will load the `EML` package directly from
-<a href="https://github.com/ropensci" target="_blank">ropensci's Git repository </a>.
 
 ```{r install-EML-package, results="hide", warning=FALSE }
-# install R EML tools
-library("devtools")
-install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
+# install EML package
+install.packages("EML")
 
-# load ROpenSci EML package
+# load EML package
 library("EML")
 
-# load ggmap for mapping
-library(ggmap)
+# load ggmap and tmaptools for mapping
+library("ggmap")
+library("tmaptools")
 
-
-# EML / data location
-# http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001
-# table 4 http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-04-monthly-m.csv
 ```
 
 Next, we will read in the Harvard Forest LTER `EML` file directly from the
 online URL using the `read_eml()` function. This file describes multiple data
-products that are available for downloaded on the
-<a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank"> Harvard Forest Data Archive Page for Fisher Meteorological Station.</a>
+products that are available for download on the
+<a href="https://harvardforest1.fas.harvard.edu/exist/apps/datasets/showData.html?id=HF001" target="_blank"> Harvard Forest Data Archive Page </a>for the Fisher Meteorological Station.
 
 Note that because this EML file is large, it takes quite a few seconds for the file to
 load.
 
 
 ```{r read-eml, warning=FALSE, message=FALSE}
-# import EML from Harvard Forest Met Data
 
-# note: the original xml file is below commented out
-# eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
-# import a truncated version of the eml file for quicker demonstration
-eml_HARV <- read_eml("http://neonscience.github.io/NEON-R-Spatio-Temporal-Data-and-Management-Intro/hf001-revised.xml")
+# import EML from Harvard Forest Met Data
+eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
 
 # view size of object
 object.size(eml_HARV)
@@ -446,7 +480,7 @@ class(eml_HARV)
 ```
 
 The `read_eml()` function creates an `EML` class object. This object can be
-accessed using `slots` in `R` (`@`) rather than a typical subset `[ ]` approach.
+accessed using `slots` in `R` (`$`) rather than a typical subset `[ ]` approach.
 
 ## Explore Metadata Attributes
 
@@ -456,12 +490,10 @@ the contact information for the dataset and a description of the methods.
 
 ```{r view-eml-content }
 # view the contact name listed in the file
-
-eml_HARV@dataset@creator
+eml_HARV$dataset$creator
 
 # view information about the methods used to collect the data as described in EML
-eml_HARV@dataset@methods
-
+eml_HARV$dataset$methods
 
 ```
 
@@ -477,29 +509,24 @@ x and y coordinates and create a quick context map. We will use `ggmap` to creat
 (e.g. from a raster, line or polygon object) we'd want the bounding box, not
 just a point within the extent. We need the extent to properly geolocate and
 process the data.
-{: .notice}
 
 
-```{r map-location, warning=FALSE, message=FALSE}
+```{r map-location, warning=FALSE, message=FALSE, fig.cap='Map of Massachusetts, U.S.A., showing location of Harvard Forest'}
 
 # grab x coordinate from the coverage information
-XCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@westBoundingCoordinate@.Data
+XCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$westBoundingCoordinate
 
 # grab y coordinate from the coverage information
-YCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@northBoundingCoordinate@.Data
-
-# map <- get_map(location='Harvard', maptype="terrain")
-
-# plot the NW corner of the site.
-map <- get_map(location='massachusetts', maptype="toner", zoom=8)
-
-ggmap(map, extent=TRUE) +
-  geom_point(aes(x=as.numeric(XCoord), y=as.numeric(YCoord)),
+YCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$northBoundingCoordinate
+  
+# make a map with the x and y coordinates
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("Massachusetts")$bbox))), 
+                    zoom = 11, maptype=c("toner")), extent=TRUE) + geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
              color="darkred", size=6, pch=18)
 
 ```
 
-The above example demonstrates how we can extract information from an **EML**
+The above example demonstrates how we can extract information from an `EML`
 document and use it programmatically in `R`! This is just the beginning of what
 we can do!
 
@@ -511,7 +538,7 @@ Some metadata are stored in a less or non-structured format such as a web page
 or a text file.
 
 Let's visit the
-<a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank"> Harvard Forest Fisher Tower webpage</a>
+<a href="https://harvardforest1.fas.harvard.edu/exist/apps/datasets/showData.html?id=HF001" target="_blank"> Harvard Forest Fisher Tower webpage</a>
 to explore some unstructured metadata.
 
 Visiting this page, we see a list of data files available for Harvard Forest
@@ -549,9 +576,10 @@ on this website? Is there information that you might prefer to find on that page
 
 ```{r challenge-code-metadata, echo=FALSE}
 # Metadata Notes from hf001_10-15-m_Metadata.txt
-# 1. 2001-2015
+# 1. 2001-2019
 # 2. Emery Boos - located at the top of the document, email is available
-# 3. a lat long is available in the metadata at the top, we see the location # described as Prospect Hill Tract (Harvard Forest).
+# 3. a lat long is available in the metadata at the top, we see the location 
+# described as Prospect Hill Tract (Harvard Forest).
 # 4. 342 m elevation, the veg type is not clear in the metadata
 # 5. Found in the methods: Delayed melting of snow and ice (caused by problems with rain gage heater or heavy precipitation) is noted in log - daily values are corrected if necessary but 15-minute values are not. The gauge may underestimate actual precipitation under windy or cold conditions.
 # 6. this could be a discussion. things like units, time zone, etc are all useful
@@ -559,8 +587,7 @@ on this website? Is there information that you might prefer to find on that page
 
 ```
 
-NOTE: This data and metadata are used in the
-[*Introduction to Working With Time Series Data in Text Formats in R* series](http://www.neondataskills.org/tutorial-series/tabular-time-series/).
+NOTE: This data and metadata are used in the <a href="https://www.neonscience.org/tabular-time-series" target="_blank">*Introduction to Working With Time Series Data in Text Formats in R*</a> series.
 
 
 ## Unstructured vs. Structured Metadata
@@ -587,7 +614,7 @@ file that conforms to the Ecological Metadata Language (EML) specifications.
 ### Challenge: Find & Explore Metadata
 
 Refer back to the list of possible data sources at the end of
-[*Answer a Spatio-temporal Research Question with Data: Where to Start?*]({{ site.baseurl}}/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
+[*Answer a Spatio-temporal Research Question with Data: Where to Start?*](https://www.neonscience.org/R/spatio-temporal-research-questions#resources-for-locating-spatial-and-ecological-data).
 Choose a site that is relevant to your interests and then find a dataset. For
 this dataset find the metadata and answer the following questions:
 
