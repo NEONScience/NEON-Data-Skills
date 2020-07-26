@@ -149,8 +149,8 @@ Great! There are several GEDI orbits available that have at least 1 'shot' withi
 ```{r download-GEDI, eval=F, comment=NA}
 
 # Downloading GEDI data, if you haven't already
-if(!file.exists(paste0(wd,gLevel1B[1]))){
-  gediDownload(filepath=gLevel1B[1],outdir=wd)
+if(!file.exists(paste0(wd,basename(gLevel1B[2])))){
+  gediDownload(filepath=gLevel1B[2],outdir=wd)
 }
 
 ```
