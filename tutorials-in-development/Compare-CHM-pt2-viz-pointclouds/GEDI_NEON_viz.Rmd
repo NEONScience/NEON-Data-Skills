@@ -473,6 +473,7 @@ Now that we have a vertical offset for each of the GEDI footprints, let's try ag
 
 # You can enter whichever shots that you want to plot in the for loop here
 for(shot_n in c(1,24,25)){
+#for(shot_n in 1:26){
 
   # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
   # We save the plot as an object 'p' which gives the (x,y) offset for the lower
