@@ -16,7 +16,7 @@ library(neonUtilities)
 library(geoNEON)
 library(rgl)
 
-stringsAsFactors=F
+options(stringsAsFactors=F)
 
 ## Define Functions:
 ####FUNCTION: Round value down to nearest multiple of 1000
