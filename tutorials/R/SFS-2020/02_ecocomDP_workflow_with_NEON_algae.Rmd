@@ -37,6 +37,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 * **devtools:** `install.packages("devtools")`
 * **vegan:** `install.packages("vegan")`
 * **vegetarian:** `install.packages("vegetarian")`
+* **Hmisc:** `install.packages("Hmisc")`
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -101,6 +102,7 @@ library(tidyverse)
 library(neonUtilities)
 library(devtools)
 library(ecocomDP)
+library(vegan)
 
 ```
 
@@ -240,9 +242,6 @@ plot(alg_spec_accum_result)
 
 ```{r compare-obs-sim-SAC}
 
-# Load the 'vegan' package to ensue the lines below will work
-library(vegan)
-
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
   data_set = "observed", 
@@ -272,6 +271,9 @@ for(i in 1:25){
 # plot the "observed" and "simulated" curves with 95% CIs
 data_plot <- spec_resamp_data %>% bind_rows(sim_spec_data) 
 
+# Note that the stat_summary function, as used here, requires
+# the Hmisc package to be installed, though you do not need
+# to load Hmisc using the 'library()' funciton
 data_plot %>%
   ggplot(aes(sampling_effort, richness, 
              color = as.factor(data_set),
