@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Spatial Intro 07: Cleaning Data -- Missing and Bad Data Values"
+title: "Spatial Intro 08: Cleaning Data -- Missing and Bad Data Values"
 date:   2015-10-23
 authors: []
 contributors: Alison Dernbach
 dateCreated: 2015-10-23
 lastModified: `r format(Sys.time(), "%Y-%m-%d")`
-packagesLibraries: rgdal, ggplot2
+packagesLibraries: rgdal, ggplot2, raster
 category: [self-paced-tutorial]
 topics: spatial-data-gis
 languagesTool: R
@@ -16,9 +16,10 @@ description: "This tutorial covers spatial data cleaning - specifically dealing 
 (NA / NAN) values and bad values when working with spatial data in R."
 code1: /R/dc-spatio-temporal-intro/08-clean-data-bad-and-missing-values.R
 image:
-  feature: NEONCarpentryHeader_2.png
-  credit: A collaboration between the National Ecological Observatory Network (NEON) and Data Carpentry
-  creditlink:
+feature: NEONCarpentryHeader_2.png
+credit: A collaboration between the National Ecological Observatory Network 
+(NEON) and Data Carpentry
+creditlink:
 permalink: R/missing-bad-data
 comments: true
 ---
@@ -38,7 +39,7 @@ After completing this activity, you will:
 
 * Recognize different `NoData` values used
 * Understand how to check for `NoData` values in spatial data
-
+* Know how to check for bad data values
 
 ## Things You’ll Need To Complete This Lesson
 To complete this lesson you will need the most current version of R, and
@@ -167,7 +168,7 @@ sum(is.na(RGB_HARV_df$HARV_Ortho_wNA))
 The result above tells us there are `NoData` values in the data.
 
 ### Deal with NoData Values
-When we encounter `NoData` values (blank, NaN, -9999, etc.) in our data we need 
+When we encounter `NoData` values (blank, NAN, -9999, etc.) in our data we need 
 to decide how to deal with them. By default `R` treats `NoData` values designated 
 with a `NA` as a missing value rather than a zero. This is good, as a value of
 zero (no rain today) is not the same as missing data (e.g. we didn't measure the
@@ -190,9 +191,10 @@ ggplot() +
 ```
 
 The shape of a raster is always rectangular. If we have a dataset that isn't 
-rectangular, the pixels at the edge of the raster will have `NoData` values. 
-Highlighting `NoData` values in a different color helps identify where the missing 
-data is.
+rectangular, the pixels at the edge of the raster will have `NoData` values. This 
+can happen when the data were collected by an airplane that only flew over some 
+part of a defined region. Highlighting `NoData` values in a different color helps 
+identify where the missing data is.
 
 Sometimes we might need to "gap fill" our data. This means we will interpolate
 or estimate missing values often using statistical methods. Gap filling can be
@@ -203,14 +205,14 @@ carefully consider how you wish to account for them during analysis.
 Other resources:
 
 * <a href="http://www.statmethods.net/input/missingdata.html" target="_blank">Quick-R: Missing Data </a>
--- R code for dealing with missing data
+-- `R` code for dealing with missing data
 * The Institute for Digital Research and Education has an <a href="https://stats.idre.ucla.edu/r/faq/how-does-r-handle-missing-values/" target="_blank"> `R` FAQ on Missing Values</a>
 
 ## Bad Data Values
-Bad data values are different from `NoDataValue`. Bad data values are values that 
+Bad data values are different from `NoData` values. Bad data values are values that 
 fall outside of the applicable range of a dataset.
 
-Examples of Bad Data Values:
+Examples of bad data values:
 
 * The normalized difference vegetation index (NDVI), which is a measure of
 greenness, has a valid range of -1 to 1. Any value outside of that range would
@@ -226,20 +228,113 @@ when we analyze the data. Sometimes, we need to use some common sense and scient
 insight as we examine the data - just as we would for field data to identify 
 questionable values.
 
-We can explore the distribution of values contained within our data using the
-`geom_histogram()` function which produces a histogram. Histograms are often useful in
-identifying outliers and bad data values in our raster data.
+We can explore the distribution of values contained within our data using the 
+`geom_histogram()` function. Histograms are often useful in identifying outliers 
+and bad data values in our raster data. Additionally, use `summary()` to look at 
+the min and max values and compare them with the expected values.
 
-```{r histogram, fig.cap="Histogram with a good bell curve and some values clustered at zero."}
+<i class="fa fa-star"></i> **Data Tip:** A typical remotely sensed image will have 
+values from 0-255, representing a string of 8 binary numbers that correspond to 
+shades from white to black. Each pixel in an image is assigned one of these values. 
+For more information, see <a href="https://earthobservatory.nasa.gov/features/RemoteSensing/remote_06.php" target="_blank">NASA's Earth Observatory page on Pixels and Bits</a> 
+and an <a href="https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/arcgis-field-data-types.htm" target="_blank">ArcGIS article on data types</a>.
+
+```{r good-histogram, fig.cap="Histogram with a good bell curve and some values clustered at zero."}
 
 # create and view histogram
 ggplot() +
   geom_histogram(data = RGB_HARV_df, aes(HARV_Ortho_wNA), bins = 40)
 
+# compare min and max values with the expected range
+summary(RGB_HARV_df)
+
 ```
 
-In `geom_histogram()`, 30 is the default number of bins for the data. We can define the number of bins by using the `bins` value. 
+<i class="fa fa-star"></i> **Data Tip:** In `geom_histogram()`, 30 is the default 
+number of bins for the data. We can define the number of bins by using the `bins` 
+value. 
 
-The shape of this histogram looks reasonable and there are likely no bad data values in this raster.
+The shape of the histogram above looks reasonable and the min and max values are 
+within the expected 0-255 range. There are likely no bad data values in this raster. 
+
+As mentioned earlier in this tutorial, `NoData` values can also be represented as 
+the integer -9999. Below, we will manually change the `NoData` values in `RGB_HARV` 
+from `NA` to `-9999` and see how that changes the histogram and summary. 
+
+``` {r bad-histogram, fig.cap="Histogram with most values in two columns between 0 and 255 but some values are in a column at -9999."}
+# convert NA values to -9999
+RGB_HARV[is.na(RGB_HARV)]=-9999
+
+# update dataframe 
+RGB_HARV_df <- as.data.frame(RGB_HARV, xy = TRUE)
+
+# plot new histogram
+ggplot() +
+  geom_histogram(data = RGB_HARV_df, aes(HARV_Ortho_wNA), bins = 40)
+
+# look at the new min and max values
+summary(RGB_HARV_df)
+
+```
+
+This histogram contains bad data. The range of values should be 0-255 but the 
+histogram and summary table show many values are `-9999`. 
 
 ### Deal with Bad Data Values
+Sometimes bad data values are actually `NoData` values, like second histogram above. 
+To correct these values we can assign the `NoData` integer (-9999 in this case) 
+to `NA`. The `NoData` value can be found in the data documentation or use the 
+`GDALinfo` function.
+
+``` {r assign-NA, fig.cap="Corrected histogram with a good bell curve and some values clustered at zero."}
+
+# assign NoData integer to NA
+NA_Value <- -9999
+
+# assign NA in dataset
+RGB_HARV[RGB_HARV==NA_Value] <- NA
+
+# update dataframe again
+RGB_HARV_df <- as.data.frame(RGB_HARV, xy = TRUE)
+
+# plot newest histogram
+ggplot() +
+  geom_histogram(data = RGB_HARV_df, aes(HARV_Ortho_wNA), bins = 40)
+
+# look at the newest min and max values
+summary(RGB_HARV_df)
+
+```
+
+Bad data values are not always a `NoData` integer and are sometimes actual data 
+errors (like the 1110 value in the Julian day example above). In these cases, 
+`NA` can be used as a place holder for bad data so those values do not show in 
+the raster plot. 
+
+``` {r bad-data, fig.cap=c("Raster with 100 cells and each cell is one of several colors that represents a number from 0 to 1","Raster with 100 cells like the previouss raster but many of the cells are empty indicating an NA value")} 
+# create a raster
+my_raster <- raster(ncol=10, nrow=10)
+
+# add random values to raster
+values(my_raster) <- runif(ncell(my_raster))
+
+# plot the raster
+plot(my_raster, main="Raster with 100 cells")
+
+# assign NA to certain values
+my_raster[my_raster > 0.6] = NA
+
+# plot raster again
+plot(my_raster, main="Raster with bad data removed")
+```
+
+In the example above, values above 0.6 are considered to be bad data in the raster 
+dataset. By assigning those values to `NA`, they appear blank in the final raster 
+plot. 
+
+Other resources on handling bad data:
+
+* <a href="https://towardsdatascience.com/all-about-missing-data-handling-b94b8b5d2184" target="_blank">An article</a> describing many ways to handle missing or bad data values. 
+* More information on manipulating raster data can be found 
+<a href="https://rspatial.org/raster/spatial/8-rastermanip.html" target="_blank">here</a>.
+* A discussion about errors in GIS data from <a href="https://www.gislounge.com/gis-data-a-look-at-accuracy-precision-and-types-of-errors/" target="_blank">GIS Lounge</a>. 
