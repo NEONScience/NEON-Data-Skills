@@ -233,8 +233,8 @@ We can explore the distribution of values contained within our data using the
 and bad data values in our raster data. Additionally, use `summary()` to look at 
 the min and max values and compare them with the expected values.
 
-<i class="fa fa-star"></i> **Data Tip:** A typical remotely sensed image will have 
-values from 0-255, representing a string of 8 binary numbers that correspond to 
+<i class="fa fa-star"></i> **Data Tip:** Remotely sensed images often have 
+values from 0-255, representing a string of 8 binary numbers that correspond to brightness 
 shades from white to black. Each pixel in an image is assigned one of these values. 
 For more information, see <a href="https://earthobservatory.nasa.gov/features/RemoteSensing/remote_06.php" target="_blank">NASA's Earth Observatory page on Pixels and Bits</a> 
 and an <a href="https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/arcgis-field-data-types.htm" target="_blank">ArcGIS article on data types</a>.
@@ -262,6 +262,7 @@ the integer -9999. Below, we will manually change the `NoData` values in `RGB_HA
 from `NA` to `-9999` and see how that changes the histogram and summary. 
 
 ``` {r bad-histogram, fig.cap="Histogram with most values in two columns between 0 and 255 but some values are in a column at -9999."}
+
 # convert NA values to -9999
 RGB_HARV[is.na(RGB_HARV)]=-9999
 
@@ -283,10 +284,10 @@ histogram and summary table show many values are `-9999`.
 ### Deal with Bad Data Values
 Sometimes bad data values are actually `NoData` values, like second histogram above. 
 To correct these values we can assign the `NoData` integer (-9999 in this case) 
-to `NA`. The `NoData` value can be found in the data documentation or use the 
+to `NA`. The `NoData` value can be found in the data documentation or by using the 
 `GDALinfo` function.
 
-``` {r assign-NA, fig.cap="Corrected histogram with a good bell curve and some values clustered at zero."}
+``` {r assign-NA, fig.cap="Corrected histogram showing a bell curve-shaped distribution with some values clustered at zero."}
 
 # assign NoData integer to NA
 NA_Value <- -9999
@@ -309,9 +310,11 @@ summary(RGB_HARV_df)
 Bad data values are not always a `NoData` integer and are sometimes actual data 
 errors (like the 1110 value in the Julian day example above). In these cases, 
 `NA` can be used as a place holder for bad data so those values do not show in 
-the raster plot. 
+the raster plot. For this example, we will assume that the valid range of values 
+for this hypothetical raster is from 0 - 0.6, and we will assign a value of `NA` to 
+any cells that are greater than 0.6.
 
-``` {r bad-data, fig.cap=c("Raster with 100 cells and each cell is one of several colors that represents a number from 0 to 1","Raster with 100 cells like the previouss raster but many of the cells are empty indicating an NA value")} 
+``` {r bad-data, fig.cap=c("Raster with 100 cells and each cell is one of several colors that represents a number from 0 to 1.","Raster with 100 cells like the previous raster but many of the cells are empty indicating an NA value.")} 
 # create a raster
 my_raster <- raster(ncol=10, nrow=10)
 
@@ -321,7 +324,7 @@ values(my_raster) <- runif(ncell(my_raster))
 # plot the raster
 plot(my_raster, main="Raster with 100 cells")
 
-# assign NA to certain values
+# assign NA to cells with invalid values (greater than 0.6)
 my_raster[my_raster > 0.6] = NA
 
 # plot raster again
