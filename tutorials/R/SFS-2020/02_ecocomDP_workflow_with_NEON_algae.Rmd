@@ -80,6 +80,7 @@ There are also two optional sections in this code chunk: clearing your environme
 library(tidyverse)
 library(neonUtilities)
 library(devtools)
+library(vegan)
 
 # install neon_demo branch of ecocomDP
 devtools::install_github("sokole/ecocomDP@neon_demo")
