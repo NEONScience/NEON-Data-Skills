@@ -17,6 +17,16 @@ urlTitle: fish-population-estimation
 output: html_document
 ---
 
+```{r notes, include=FALSE}
+# REVISIONS TO DO:
+# Fix line lengths
+# Consistent terminology: data frame, table, tibble
+# Consistent syntax: use pipe with map()
+# "I" vs "we"
+# Add assumptions for removal method
+# Remove references to depletion()
+# Move citations?
+```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -84,7 +94,7 @@ library(FSA)
 
 We're going to start by loading in the Fall 2019 Mayfield Creek data we used in the last tutorial.
 
-```{r load-data, include=FALSE}
+```{r load-data}
 electrofishing_fall2019 <- loadByProduct(dpID = "DP1.20107.001",
                                          site = "MAYF",
                                          startdate = "2019-07",
