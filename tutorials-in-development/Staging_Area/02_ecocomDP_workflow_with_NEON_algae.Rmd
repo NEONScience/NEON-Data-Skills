@@ -4,12 +4,12 @@ title: "Explore biodiversity with NEON algae data"
 description: "Download and explore NEON algae data. This includes instruction for using ecocomDP package to analyze biodiversity."
 dateCreated: 2020-06-22
 authors: Eric R. Sokol
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, devtools
-topics:
+topics: data-analysis, organisms, data-viz
 languagesTool: R
-dataProduct:
+dataProduct: DP1.20120.001
 code1: R/SFS-2020/02_ecocomDP_workflow_with_NEON_algae.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-algae
@@ -201,7 +201,7 @@ alg_observations_with_taxa %>% head()
 
 We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:
 
-```{r plot-taxon-rank}
+```{r plot-taxon-rank, fig.cap= "Bar plot showing counts of algae taxonomic ranks at the Arikaree River site."}
 
 # which taxon rank is most common
 alg_observations_with_taxa %>%
@@ -213,7 +213,7 @@ alg_observations_with_taxa %>%
 ## Species Accumulation Curve
 Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data 'wide':
 
-```{r SAC-1}
+```{r SAC-1, fig.cap= "Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples."}
 
 # convert densities from per m2 to per cm2
 alg_dens_long <- alg_observations_with_taxa %>%
@@ -242,7 +242,7 @@ plot(alg_spec_accum_result)
 
 # Load the 'vegan' package to ensue the lines below will work
 library(vegan)
-
+library(Hmisc)
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
   data_set = "observed", 
