@@ -12,13 +12,17 @@ const EXCLUDED_MARKDOWN_FILES = ["readme"];
 // ******************************
 // ******** CLI Script **********
 // ******************************
-
-$commitHash = getLastImportCommitHash() ?? null;
-
-printf(
-    "The last imported commit hash %s!",
-    !empty($commitHash) ? $commitHash : 'is empty'
-);
+//
+//$commitHash = getLastImportCommitHash() ?? null;
+//
+//printf(
+//    "The last imported commit hash %s!",
+//    !empty($commitHash) ? $commitHash : 'is empty'
+//);
+$fileObject = new \SplFileObject(__DIR__ . '/test.md');
+$payload = buildContentPayload($fileObject);
+print_r($payload);
+exit();
 
 foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
     if (!file_exists($markdownFile)) {
@@ -200,21 +204,23 @@ function buildContentPayload(\SplFileObject $fileObject): array
         'content' => null,
     ];
     $fileObject->rewind();
+    $foundMetadata = false;
 
     while ($fileObject->valid()) {
         $buffer = $fileObject->fgets();
 
-        if (strpos(trim($buffer), '---') !== false) {
+        if (strpos(trim($buffer), '---') !== false && !$foundMetadata) {
             while ($innerBuffer = trim($fileObject->fgets())) {
                 if (strpos($innerBuffer, '---') !== false) {
                     continue 2;
                 }
                 list($key, $value) = array_map(
                     'trim',
-                    explode(': ', $innerBuffer)
+                    explode(':', $innerBuffer)
                 );
-                $payload[$key] = preg_replace('/(^[\"\']|[\"\']$)/', '', $value);
+                $payload[$key] = $value;
             };
+            $foundMetadata = true;
         }
         $payload['content'] .= $buffer;
     }
