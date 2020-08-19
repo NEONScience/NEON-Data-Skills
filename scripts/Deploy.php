@@ -12,17 +12,13 @@ const EXCLUDED_MARKDOWN_FILES = ["readme"];
 // ******************************
 // ******** CLI Script **********
 // ******************************
-//
-//$commitHash = getLastImportCommitHash() ?? null;
-//
-//printf(
-//    "The last imported commit hash %s!",
-//    !empty($commitHash) ? $commitHash : 'is empty'
-//);
-$fileObject = new \SplFileObject(__DIR__ . '/test.md');
-$payload = buildContentPayload($fileObject);
-print_r($payload);
-exit();
+
+$commitHash = getLastImportCommitHash() ?? null;
+
+printf(
+    "The last imported commit hash %s!",
+    !empty($commitHash) ? $commitHash : 'is empty'
+);
 
 foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
     if (!file_exists($markdownFile)) {
