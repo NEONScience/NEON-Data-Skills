@@ -214,7 +214,7 @@ function buildContentPayload(\SplFileObject $fileObject): array
                     'trim',
                     explode(':', $innerBuffer)
                 );
-                $payload[$key] = $value;
+                $payload[$key] = preg_replace('/(^[\"\']|[\"\']$)/', '', $value);
             };
             $foundMetadata = true;
         }
