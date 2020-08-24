@@ -200,21 +200,23 @@ function buildContentPayload(\SplFileObject $fileObject): array
         'content' => null,
     ];
     $fileObject->rewind();
+    $foundMetadata = false;
 
     while ($fileObject->valid()) {
         $buffer = $fileObject->fgets();
 
-        if (strpos(trim($buffer), '---') !== false) {
+        if (strpos(trim($buffer), '---') !== false && !$foundMetadata) {
             while ($innerBuffer = trim($fileObject->fgets())) {
                 if (strpos($innerBuffer, '---') !== false) {
                     continue 2;
                 }
                 list($key, $value) = array_map(
                     'trim',
-                    explode(': ', $innerBuffer)
+                    explode(':', $innerBuffer)
                 );
                 $payload[$key] = preg_replace('/(^[\"\']|[\"\']$)/', '', $value);
             };
+            $foundMetadata = true;
         }
         $payload['content'] .= $buffer;
     }
