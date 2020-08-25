@@ -1,0 +1,344 @@
+---
+layout: post
+title: "00-tabular-data-bad-and-missing-values"
+date:   2020-08-06
+authors: []
+contributors: Alison Dernbach
+dateCreated: 2020-08-06
+lastModified: `r format(Sys.time(), "%Y-%m-%d")`
+packagesLibraries: tidyr
+category: [self-paced-tutorial]
+topics: data-management
+languagesTool: R
+mainTag: 
+workshopSeries: 
+description: "This tutorial covers tabular data cleaning - specifically dealing with missing
+(NA / NAN) values and bad values when working with tabular data in R."
+code1: /R/
+image:
+feature:
+credit:
+creditlink:
+permalink: 
+comments: true
+output: html_document
+---
+
+
+## About
+This tutorial covers data cleaning - specifically dealing with missing
+(NA / NAN) values and bad values when working with tabular data in `R`.
+
+**R Skill Level:** Intermediate - you've got the basics of `R` down.
+
+<div id="objectives" markdown="1">
+
+#Goals / Objectives
+
+After completing this activity, you will:
+
+* Recognize different `NoData` values
+* Understand how to check for `NoData` values in tabular data
+* Know how to check for bad data values
+
+## Things You’ll Need To Complete This Lesson
+To complete this lesson you will need the most current version of R, and
+preferably, RStudio loaded on your computer.
+
+### Install R Packages
+
+* **tidyr:** `install.packages("tidyr")`
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on 
+Packages in R </a>– Adapted from Software Carpentry.
+
+### Download Data
+<h3> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></h3>
+
+These remote sensing data files provide information on the vegetation at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a> 
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle</a> 
+field sites. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
+Download Dataset</a>
+
+****
+
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
+
+**Spatial-Temporal Data & Data Management Lesson Series:** This lesson is part
+of a lesson series introducing 
+#####UPDATE URL BEFORE PUBLISHING IF THIS TUTORIAL STAYS IN THIS SERIES#####
+<a href="https://www.neonscience.org/resources/series/NEEDS.URL" target="_blank"> *spatial data and data management in `R`*</a>.
+It is also part of a larger
+<a href="https://www.neonscience.org/sp-temp-data-usgs-20170412" target="_blank"> *Spatio-Temporal Data Carpentry Workshop* </a>
+that includes working with
+<a href="https://www.neonscience.org/resources/series/introduction-working-raster-data-r" target="_blank"> *raster data in `R`*</a>,
+<a href="https://www.neonscience.org/vector-data-series" target="_blank"> *vector data in `R`*</a>, 
+and<a href="https://www.neonscience.org/tabular-time-series" target="_blank"> *tabular time series in `R`*</a>.
+
+****
+
+### Additional Resources
+
+* <a href="http://www.statmethods.net/input/missingdata.html" target="_blank">Quick-R: Missing Data </a>
+-- `R` code for dealing with missing data
+* <a href="https://stats.idre.ucla.edu/r/faq/how-does-r-handle-missing-values/" target="_blank">`R` FAQ on Missing Values </a>from the Institute for Digital Research and Education
+
+</div>
+
+### Clean Data
+No dataset is perfect. It is common to encounter large files containing obviously
+erroneous data (bad data).  It is also common to encounter `NoData` values that 
+we need to account for when analyzing our data.
+
+## NoData Values (NA, NAN)
+If we are lucky when working with external data, the `NoData` value is clearly 
+specified in the metadata. Sometimes this value is `NA` (not available) or `NAN` 
+(not a number). However, `NA` isn't always used. Text values can make data storage 
+difficult for some programs and thus, sometimes you'll encounter a large negative 
+value such as `-9999` used as the `NoData` value. At other times, we might see blank 
+values in a data file which designate `NoData`. Blanks are particularly problematic 
+because we can't be certain if a data value is purposefully missing (not measured 
+that day or a bad measurement) or if someone unintentionally deleted it.
+
+Because the actual value used to designate missing data can vary depending upon
+what data we are working with, it is important to always check the metadata for
+the files associated with the `NoData` value. If the value is `NA`, we are in luck, `R`
+will recognize and flag this value as `NoData`. If the value is numeric (e.g.,
+`-9999`), then we might need to assign this value to `NA`.
+
+<i class="fa fa-star"></i> **Data Tip:** `NA` values can be ignored when
+performing calculations in `R`. However a `NoData` value of `-9999` will be
+recognized as an integer and processed accordingly. If you encounter a numeric
+`NoData` value be sure to assign it to `NA` in `R`:
+`objectName[objectName==-9999] <- NA`
+
+
+### Check for NA values
+We can quickly check for `NoData` values in our data using the`is.na()`
+function. By asking for the `sum()` of `is.na()` we can see how many NA / missing
+values we have in a dataframe.
+
+```{r NA-values}
+
+# set working directory to ensure R can find the file we wish to import and where 
+# we want to save our files. Be sure to move the unzipped download into your working directory! 
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd)
+
+# read csv
+vegData <- read.csv(paste0(wd,"NEONDSFieldSiteSpatialData/NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv"))
+
+# check for NA values in the dbh column
+sum(is.na(vegData$dbh))
+
+```
+
+The result above tells us there are 74 `NoData` values in the `dbh` column.
+
+### Deal with NoData Values
+When we encounter `NoData` values (blank, NAN, -9999, etc.) in our data we need 
+to decide how to deal with them. By default `R` treats `NoData` values designated 
+with a `NA` as a missing value rather than a zero. This is good, as a value of
+zero (no rain today) is not the same as missing data (e.g. we didn't measure the
+amount of rainfall today).
+
+How we deal with `NoData` values will depend on:
+
+* the data type we are working with
+* the analysis we are conducting
+* the significance of the gap or missing value
+
+First, we can see where the `NA` values are in the data set.
+
+``` {r NA-rows, eval=FALSE}
+
+# find the rows with NA values
+vegData[is.na(vegData$dbh),]
+
+```
+
+We can see what rows have `NA` values for `dbh` using the function above. From this 
+information, we may decide to take out rows that contain the `NA` value using 
+the `na.omit` function. Note that this removes **any** row that contains an `NA`. 
+
+``` {r remove-NA-rows}
+
+# create a new data frame without rows containing NAs
+vegDatanoNA <- na.omit(vegData)
+
+```
+
+However, the rows with `NA` values that we just removed do contain good data, 
+so we might not always want to remove the entire row. In this case, we can use 
+`na.rm = TRUE` to remove `NA` values from mathematical operations.
+
+<i class="fa fa-star"></i> **Data Tip:** The functions `mean()`, `median()`, 
+`var()`, `sd()`, `min()` and `max()` all take the `na.rm` argument. The default 
+of `na.rm` is `FALSE` which means if any `NA` is encountered in the data, the 
+output is going to be `NA`. 
+
+``` {r NA-remove}
+
+# mean dbh without removing NAs
+mean(vegData$dbh)
+
+# try again but remove the NAs this time
+mean(vegData$dbh, na.rm = TRUE)
+
+# compare with mean from the new data frame with NAs removed
+mean(vegDatanoNA$dbh)
+
+```
+
+Notice the slight difference in the mean calculations above. What accounts for 
+this difference?
+
+In addition to finding `NoData` values, sometimes we might need to "gap fill" our 
+data. This means we will interpolate or estimate missing values often using 
+statistical methods. Gap filling can be complex and is beyond the scope of this 
+lesson. The take away from this lesson is simply that it is important to 
+acknowledge missing values in your data and to carefully consider how you wish 
+to account for them during analysis.
+
+## Bad Data Values
+Bad data values are different from `NoData` values. Bad data values are values 
+that fall outside of the applicable range of a dataset.
+
+Examples of bad data values:
+
+* The normalized difference vegetation index (NDVI), which is a measure of
+greenness, has a valid range of -1 to 1. Any value outside of that range would
+be considered a "bad" or miscalculated value.
+* If we are using a Julian day (0-365/366) to represent the days of the year. A value
+of 1110 is clearly not correct.
+
+### Find Bad Data Values
+Sometimes a dataset's metadata will tell us the range of expected values for a 
+variable or common sense dictates the expected value (as in the Julian day example 
+above). Values outside of this range are suspect and we need to consider them 
+when we analyze the data. Sometimes, we need to use some common sense and scientific 
+insight as we examine the data - just as we would for field data to identify 
+questionable values.
+
+We can explore the distribution of values contained within our data using the 
+`hist()` function. Histograms are often useful in identifying outliers 
+and bad data values in our raster data. Additionally, use `summary()` to look at 
+the min and max values and compare them with the expected values.
+
+At NEON, the diameter at breast height for woody vegetation is measured at or 
+below 130 cm based on the plant's growth form. In the `dbhheight` column, we 
+should expect to see values no higher than 130 cm. For more information on how 
+DBH is measured, see the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.000987vJ" target="_blank">Measurement of Vegetation Structure </a>protocol.
+
+```{r histogram, fig.cap="Histogram with most values near either 0 or 130 and the rest of the DBH height values at a low frequency between 0 and 130."}
+
+# create and view histogram
+hist(vegData$dbhheight, 
+     breaks = length(unique(vegData$dbhheight)), # the number of breaks 
+     # in the histogram is equal to the number of unique height values
+     xlab = "DBH Height (cm)")
+
+# compare min and max values with the expected range
+summary(vegData$dbhheight)
+
+```
+
+Notice in the histogram and in the data summary that there are `dbhheight` values 
+equal to zero. These are bad data values and are in fact already flagged in the 
+dataset with a `1` in the `dbhqf` column. Look at the metadata that was downloaded 
+with this dataset for more information on this quality flag column. 
+
+``` {r  view-metadata, eval = FALSE}
+
+# read metadata csv
+vegMetadata <- read.csv(paste0(wd,"NEONDSFieldSiteSpatialData/NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr_metadata_desc.csv"))
+
+# view the dataframe
+View(vegMetadata)
+
+```
+
+Now that we know there are bad values in our data, we can start to deal with 
+them appropriately. 
+
+### Deal with Bad Data Values
+As with handling missing values, there are different ways to deal with bad data 
+values. One way is to change those values into `NA` or some other non-integer 
+value so `R` does not recognize it in mathematical operations.
+
+Before changing the zeroes in the `dbhheight` column, let's make sure there aren't 
+actual `NA` values. If there are no `NA` values to take into consideration, then 
+we can change the bad values into `NA` to make it easier to remove them from 
+the dataframe.
+
+``` {r check-and-replace-NA}
+
+# check for NA values in dbhheight
+sum(is.na(vegData$dbhheight))
+
+# change zeroes in dbhheight to NA
+vegData$dbhheight[vegData$dbhheight==0] <- NA
+
+```
+
+Using the `replace_na` function with pipes (`%>%`) from the `tidyr` package, we 
+can replace the `NA` values we just created with `ERROR` to make it obvious that 
+these are bad data values.  
+
+``` {r NA-to-error}
+
+# load library
+library(tidyr)
+
+# replace the NAs with "error"
+vegData$dbhheight %>% replace_na("ERROR")
+
+# if desired, create a new dataframe with the "error" values
+vegErrors <- vegData %>% replace_na(list(dbhheight="ERROR"))
+
+```
+
+<i class="fa fa-star"></i> **Data Tip:** The `tidyr` package won't modify the 
+data in the dataframe and the `replace_na` function will only show a view of the 
+modified data. In order to make those changes permanent, create a new dataframe 
+or assign the modifications to the original data: 
+`vegData <- vegData %>% replace_na("ERROR")`
+
+When dealing with `NoData` values in a previous section, we used `na.omit` to 
+create a new dataframe without **any** `NA` values. Below, use the `complete.cases` 
+function to remove rows containing `NA` values **only** from specified columns. 
+Alternatively, use another function from the `tidyr` package to remove `NA` values. 
+
+``` {r remove-dbhheight-NAs, eval = FALSE}
+
+# remove NAs only from dbhheight column
+vegData2 <- vegData[complete.cases(vegData[,13]),] #dbhheight is column 13
+
+# or use drop_na from the tidyr package
+drop_na(vegData, "dbhheight")
+
+```
+
+Packages such as `tidyr` and `dplyr` are powerful tools for data cleaning and 
+manipulation. This article on <a href="https://towardsdatascience.com/data-cleaning-with-r-and-the-tidyverse-detecting-missing-values-ea23c519bc62" target="_blank">Data Cleaning with R and the Tidyverse </a>
+goes into more detail on these packages.
+
+Other resources on handling bad and missing data:
+
+* <a href="https://towardsdatascience.com/all-about-missing-data-handling-b94b8b5d2184" target="_blank">An article</a> describing many ways to handle missing or bad data values. 
+* For a more in-depth look at missing and bad data values in `R`, check out this paper on <a href="https://cran.r-project.org/doc/contrib/de_Jonge+van_der_Loo-Introduction_to_data_cleaning_with_R.pdf" target="_blank">An Introduction to data cleaning with R</a>. 
