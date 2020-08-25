@@ -22,7 +22,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plotly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>.
 
 <div id="ds-objectives" markdown="1">
 
