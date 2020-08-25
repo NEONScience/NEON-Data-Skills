@@ -208,7 +208,7 @@ mean(vegDatanoNA$dbh)
 Notice the slight difference in the mean calculations above. What accounts for 
 this difference?
 
-*** Alison - not sure if this is supposed to be a rhetorical question, or if you are answering it in the paragrpah below... Tt looks like na.omit() has removed one row that has a valid data value in vegData$dbh. vegData has 362 rows, and there are 74 'NA' values in vegData$dbh, so vegDatanoNA should have 288 rows instead of 287. I think this is the source of the discrepancy between `mean(vegData$dbh, na.rm = TRUE)` and `mean(vegDatanoNA$dbh)`
+*** Alison - not sure if this is supposed to be a rhetorical question, or if you are answering it in the paragrpah below... It looks like na.omit() has removed one row that has a valid data value in vegData$dbh. vegData has 362 rows, and there are 74 'NA' values in vegData$dbh, so vegDatanoNA should have 288 rows instead of 287. I think this is the source of the discrepancy between `mean(vegData$dbh, na.rm = TRUE)` and `mean(vegDatanoNA$dbh)`
 
 In addition to finding `NoData` values, sometimes we might need to "gap fill" our 
 data. This means we will interpolate or estimate missing values often using 
