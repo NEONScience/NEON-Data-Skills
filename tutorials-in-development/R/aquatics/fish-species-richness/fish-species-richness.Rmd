@@ -15,14 +15,6 @@ tutorialSeries:
 urlTitle: fish-species-richness
 ---
 
-This template should be used to start new tutorials. If your tutorial is in R 
-or Jupyter Notebooks, or another format that will be converted to markdown. 
-Please include the header above but create the tutorial in the appropriate 
-application. 
-
-All tutorials then have an Info Box with the information necessary for a new user
-to NEON tutorials to complete the tutorial.  
-
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives 
