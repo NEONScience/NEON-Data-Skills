@@ -550,7 +550,7 @@ And now we can plot mean PAR relative to elevation on the tower since that is th
 
 <i class="fa fa-star"></i> **Data Note:** The tower top level contains two PAR sensors: one facing up and one facing down. The `parMean` data table lumped those two sensors together but they are listed separately in the `pos` table. `plot()` will not work if `x` and `y` variables have different lengths. So, for simplicity, only levels 1 through 5 are included in the plot below (by using `[1:5]`).
 
-```{r par-plot, fig.cap="Points connected by lines showing photosynthetically active radiation increases as the sensor height above te ground increases"}
+```{r par-plot, fig.cap="Points connected by lines showing photosynthetically active radiation increases as the sensor height above the ground increases"}
 
 # plot PAR
 plot(parMean$x[1:5], pos$zOffset[1:5], type="b", pch=20,
