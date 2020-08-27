@@ -74,7 +74,7 @@ This includes some useful functions for transforming data to a more convenient (
 This is a package written by Derek Ogle, Powell Wheeler, and Alexis Dinno, which contains numerous functions for simple fisheries science calculations. In this tutorial, we will be using the `removal` and `depletion` functions to analyze our 3-pass electrofishing data.
 
 Citation: 
-Ogle DH, Wheeler P, Dinno A (2020). FSA: Fisheries Stock Analysis. R package version 0.8.30, https://github.com/droglenc/FSA.
+Ogle DH, Wheeler P, Dinno A (2020). FSA: Fisheries Stock Analysis. R package version 0.8.30, <a href="https://github.com/droglenc/FSA">https://github.com/droglenc/FSA</a>.
 
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
@@ -82,7 +82,7 @@ Ogle DH, Wheeler P, Dinno A (2020). FSA: Fisheries Stock Analysis. R package ver
 </div>
 
 ## Getting started
-Don't forget to load your packages!
+Load required packages into your R environment.
 
 ```{r load-packages}
 library(neonUtilities)
@@ -92,7 +92,8 @@ library(purrr)
 library(FSA)
 ```
 
-We're going to start by loading in the Fall 2019 Mayfield Creek data we used in the last tutorial.
+We're going to start by loading in the Fall 2019 Mayfield Creek data we used in the previous <a href="https://www.neonscience.org/fish-species-richness">fish species richness tutorial</a>.
+*** add link to previous tutorial here
 
 ```{r load-data}
 electrofishing_fall2019 <- loadByProduct(dpID = "DP1.20107.001",
@@ -108,15 +109,15 @@ And once again, we'll use the `list2env` function so to assign each individual t
 list2env(electrofishing_fall2019, .GlobalEnv)
 ```
 
-Since we're concerned with the actual population numbers this time, we need to look at how our data is actually organized. We can use the `variables_20107` table to illuminate some of this, as well as the User Guide, available on the <a href="https://data.neonscience.org/data-products/DP1.20107.001">data portal page</a> for this data product. We have one entry per fish in the `fsh_perFish` table, as well as bulk counts per species in the `fsh_bulkCount` table. We'll need to combine these two sources if we want to have accurate overall counts.
+Since we're concerned with the actual population numbers this time, we need to look at how our data is actually organized. We can use the `variables_20107` table to illuminate some of this, as well as the User Guide, available on the <a href="https://data.neonscience.org/data-products/DP1.20107.001">electrofishing data product overview page</a>. We have one entry per fish in the `fsh_perFish` table, as well as bulk counts per species in the `fsh_bulkCount` table. We'll need to combine these two sources if we want to have accurate overall counts.
 
-Before we get started, we need to examine the machinery we're plugging our data into so we know how to appropriately format that data.
+Before we get started, we need to examine the functions we're plugging our data into so we know how to appropriately format that data.
 
 ## FSA: `removal()` and `depletion()`
 
-These functions take a vector of catch data for multiple electrofishing passes and provides an estimate of the total population. Go ahead and take a look at the documentation for each by running `?removal` and `?depletion`. Note the method argument, which swaps out the specific equations used. The package authors provide an excellent manual <a href="">here</a> which provides citations for these methods. These methods are based on the idea that with each pass you catch a portion of the total remaining population, and your cumulative catch will approach the true population. For simplicity's sake, we'll be using the default methods for each.
+These functions take a vector of catch data for multiple electrofishing passes and provides an estimate of the total population. Go ahead and take a look at the documentation for each by running `?removal` and `?depletion`. Note the method argument, which swaps out the specific equations used. The package authors provide <a href="https://cran.r-project.org/web/packages/FSA/FSA.pdf">an excellent manual here</a> which provides citations for these methods. These methods are based on the idea that with each pass you catch a portion of the total remaining population, and your cumulative catch will approach the true population. For simplicity's sake, we'll be using the default methods for each.
 
-The statistics behind these method is beyond the scope of this tutorial. The important part for coding purposes is how we need to format the input to these functions. `removal` takes a catch argument, which is a vector of counts of a single species at each pass. `depletion` also takes a catch argument, but also requires an `effort` argument of the effort (in seconds) expended at each pass. Let's look at a function call to see what we get.
+The statistics behind these methods is beyond the scope of this tutorial. The important part for coding purposes is how we format the inputs to these functions. `removal` takes a catch argument, which is a vector of counts of a single species at each pass. `depletion` also takes a catch argument, but also requires an `effort` argument of the effort (in seconds) expended at each pass. Let's look at a function call to see what we get.
 
 ```{r depletion-example}
 myCatch <- c(100, 50, 25)
@@ -134,6 +135,7 @@ depletion(catch = myCatch, effort = myEffort)$est
 Since `$est` is a matrix, we can subset *it* with brackets.
 
 ```{r depletion-subsetting-2}
+# print the population estimate
 depletion(catch = myCatch, effort = myEffort)$est[1,1]
 ```
 
@@ -161,6 +163,9 @@ map(df, summary)
 ```
 
 This returns a list, which is a bit unwieldy we can instead format this as a data frame with `map_dfr()` which binds each output as a row or `map_dfc()` which binds them as columns:
+
+*** NOTE: Donal is getting an error with the map_dfr() function below.
+"Error: Internal error in `vec_proxy_assign_opts()`: `proxy` of type `integer` incompatible with `value` proxy of type `double`."
 ```{r map-example-3}
 map_dfr(df, summary)
 map_dfc(df, summary)
@@ -205,10 +210,10 @@ fsh_bulkCount %>%
           scientificName,
           identificationQualifier,
           bulkFishCount,
-          remarks) %>%
-  distinct()
+          remarks) 
 ```
-So it looks like we have a lot of larval Cyprinidae. Let's filter those out.
+Take a look at the 'remarks' column - it looks like we have a lot of larval Cyprinidae. Let's filter those out.
+*** Why are we filterinig out larval fish? Arwe we trying to derive an estimate of adult fish that will be unduly influenced by all of the larval fish? Or why else are these fish problematic?
 
 ```{r data-cleaning-3}
 MAYF_bulkCount <- fsh_bulkCount %>%
@@ -239,7 +244,7 @@ MAYF_count <-  MAYF_count %>%
 
 At the end of this processing, we run the `ungroup()` function. Otherwise we'd run into problems with some of the next steps.
 
-At this point we can go ahead and join the pass data to this data frame, matching based on `namedLocation` and `passNumber`. We only really need the effort expended (`efTime`) so we'll use `select()` to get rid of everything else. I picked a left join because I want to keep everything from the count table, but not necessaritly the per pass table if there's no count data for that pass.
+At this point we can go ahead and join the pass data to this data frame, matching based on `namedLocation` and `passNumber`. We only really need the effort expended (`efTime`) so we'll use `select()` to get rid of everything else. We use the `left_join()` function because we want to keep everything from the count table, but not necessaritly the per pass table if there's no count data for that pass.
 
 ```{r count-dataframe-3}
 MAYF_count <- left_join(MAYF_count,
@@ -250,9 +255,19 @@ MAYF_count <- left_join(MAYF_count,
 
 ## Catch per unit effort
 
-With a count column and an effort column, we have everything we need to find catch per unit effort, or CPUE. All we need is to use `mutate()` to create a CPUE column. Note that if we consult the definition of `efTime` in our `variables_20107` table we see that the time is given in seconds. For more human-readable numbers, we'll convert this to hours. We'll also filter out all but the first pass, to keep things comparable. Lastly, we will group the data by reach and arrange it by from most to least common by CPUE (the `.by_group` argument just tells `arrange()` that we want to sort within the groups, not sort the whole tibble.) Lastly, we can remove the `passNumber` column as we no longer need it.
+With a count column and an effort column, we have everything we need to find catch per unit
+effort, or CPUE. All we need is to use `mutate()` to create a CPUE column. Note that if we
+consult the definition of `efTime` in our `variables_20107` table we see that the time is given
+in seconds. For more human-readable numbers, we'll convert this to hours. We'll also filter out
+all but the first pass, to keep things comparable. Lastly, we will group the data by reach and
+arrange it by from most to least common by CPUE (the `.by_group` argument just tells `arrange()`
+that we want to sort within the groups, not sort the whole tibble.) Lastly, we can remove the
+`passNumber` column as we no longer need it.
 
-Note also that this time, we're saving this as a new object, since we'll need the unfiltered version for our 3 pass reaches.
+Note also that this time, we're saving this as a new object, since we'll need the unfiltered 
+version for our 3 pass reaches.
+
+*** Why do we filter for only passNumber==1? If passNumber ==2, could we divide efTime by 2, or otherwise include those data?
 
 ```{r CPUE-1}
 MAYF_CPUE <- MAYF_count %>%
@@ -265,7 +280,13 @@ MAYF_CPUE <- MAYF_count %>%
 MAYF_CPUE
 ```
 
-At this point, it may be useful to pivot this table into a wider format for readability and analysis. We're going to be using the `pivot_wider()` function. It is *extremely* helpful to read the documentation for this function if you haven't used it before. Run `?pivot_wider` and read the definitions for the first several arguments. We need four things: columns to uniquely identify each observation, a column to get names for our new columns, a column to pull the actual values from, and lastly something to fill in missing values (0 in our case, since our data is starting as one row per fish observed.)
+At this point, it may be useful to pivot this table into a wider format for readability and
+analysis. We're going to be using the `pivot_wider()` function. It is *extremely* helpful to 
+read the documentation for this function if you haven't used it before. Run `?pivot_wider` and
+read the definitions for the first several arguments. We need four things: columns to uniquely
+identify each observation, a column to get names for our new columns, a column to pull the 
+actual values from, and lastly something to fill in missing values (0 in our case, since our 
+data is starting as one row per fish observed.)
 
 ```{r CPUE-2}
 MAYF_CPUE <- MAYF_CPUE %>%
@@ -280,6 +301,7 @@ MAYF_CPUE
 ```
 
 Beautiful!
+*** Please give a bit of a summary of the expected output here so that people know they're on the right track.
 
 ## Useful lists
 
@@ -291,6 +313,8 @@ MAYF_taxaList <- MAYF_perFish %>%
   distinct() %>%
   pull(taxonID)
 ```
+
+*** Could you please add a bit of explanation here as to why some reaches get 3 passes, and others get only 1? And why you would need to know the difference (has to do with effort, right?)
 
 It will also be useful to know which reaches got 3 passes and which got only 1. We can count this by grouping by each reach (represented by the `namedLocation` column) and running `summarise(n())` on the grouped data.
 
@@ -331,7 +355,7 @@ MAYF_3pass_count <- MAYF_3pass_count %>%
 
 ## Preparing to map the `depletion()` function
 
-To review, the `depletion()` function takes two vectors as arguments: one containing catch data, and one containing effort data. So our goal is to have a tibble from which we can pull a column containing catch data for each species, and another similar tibble for the catch data. We can use `pivot_wider()` again for this purpose, this time defining the column names as the *species*. Let's start with the effort data, all of which is contained in the `fsh_perPass` data frame. We'll filter and select the columns and rows we want, then run our pivot. The `pivot_wider()` function leaves a passNumber column, which has served its purpose, so we'll get rid of it.
+To review, the `depletion()` function takes two vectors as arguments: one containing catch data, and one containing effort data. So our goal is to have a tibble from which we can pull a column containing catch data for each species, and another similar tibble for the effort data. We can use `pivot_wider()` again for this purpose, this time defining the column names as the *species*. Let's start with the effort data, all of which is contained in the `fsh_perPass` data frame. We'll filter and select the columns and rows we want, then run our pivot. The `pivot_wider()` function leaves a passNumber column, which has served its purpose, so we'll get rid of it.
 
 ```{r catch-tibble}
 MAYF_effort <- fsh_perPass %>%
@@ -344,6 +368,7 @@ MAYF_effort <- fsh_perPass %>%
 
 MAYF_effort
 ```
+*** I'm a little confused here- what are the three different rows, and what do they correspond to? Is that the total effort (in seconds?) for each of the three passes for each reach?
 
 Nice!
 
@@ -368,7 +393,7 @@ MAYF_3pass_count <- map(MAYF_3pass_count, format_counts)
 MAYF_3pass_count
 ```
 
-Let's build up our loops by starting with the code on to run on one observation, then working our way up. We'll select the first reach (`$MAYF.AOS.fish.point.02`), and the first taxon code (`$ETHLAC`) from the data frame we created. This makes our catch argument very unwieldy, but remember as we loop, we won't need to subset to quite this specific level.
+Let's build up our loops by starting with the code to run on one observation, then working our way up. We'll select the first reach (`$MAYF.AOS.fish.point.02`), and the first taxon code (`$ETHLAC`) from the data frame we created. This makes our catch argument very unwieldy, but remember as we loop, we won't need to subset to quite this specific level.
 
 ```{r removal-1}
 removal(catch = MAYF_3pass_count$MAYF.AOS.fish.point.02$ETHLAC)
@@ -405,3 +430,5 @@ MAYF_3pass_estimates
 ```
 
 What we end up with is three data frames (one for each reach) containing population estimates and standard errors for each species.
+
+*** Could you add a short conclusion to wrap things up? Maybe a review of the steps taken and why?
