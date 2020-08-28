@@ -4,12 +4,12 @@ title: "Explore and work with NEON biodiversity data from aquatic ecosystems"
 description: "Download and explore NEON macroinvertebrate data. This includes instruction on how to convert to long and wide tables, as well as an exploration of alpha, beta, and gamma diversity from Jost (2007)."
 dateCreated: 2020-06-22
 authors: Eric R. Sokol
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
-topics:
+topics: organisms, data-viz
 languagesTool: R
-dataProduct:
+dataProduct: DP1.20120.001
 code1: R/SFS-2020/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertebrates
@@ -263,7 +263,7 @@ View(sampling_effort_summary)
 
 For this first step, we will use data in a 'long' table:
 
-```{r long-data}
+```{r long-data, fig.cap= "Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
 
 # no. taxa by rank by site
 table_observation_cleaned %>% 
@@ -275,7 +275,7 @@ table_observation_cleaned %>%
   facet_wrap(~ domainID + siteID) +
   geom_col()
 ```
-```{r long-data-2}
+```{r long-data-2,  fig.cap= "Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right."}
 # library(scales)
 # sum densities by order for each sampleID
 table_observation_by_order <- 
@@ -305,7 +305,7 @@ table_observation_by_order %>%
               element_text(angle = 45, hjust = 1))
 
 ```
-```{r long-data-3}
+```{r long-data-3, fig.cap= "Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call."}
 # faceted densities plot
 table_observation_by_order %>%
   ggplot(aes(
@@ -492,7 +492,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 # devtools::install_github("sokole/ltermetacommunities/ltmc")
 # library(ltmc)
 # 
-# # Variability in aggregate biomass folloing
+# # Variability in aggregate biomass following
 # # Wang and Loreau (2014)
 # metacommunity_variability_results_POSE <- table_observation %>%
 #   filter(!is.na(inv_dens), siteID == "POSE") %>%
@@ -510,7 +510,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate samples as shown below:
 
-```{r NMDS}
+```{r NMDS, fig.cap=c("Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.","Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).","Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ")}
 
 
 # create ordination using NMDS
