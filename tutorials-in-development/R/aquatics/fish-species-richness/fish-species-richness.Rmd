@@ -168,9 +168,14 @@ ggplot(richness_by_site, aes(x = siteID, y = num_species)) +
 ```
 
 Looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/MAYF">Mayfield Creek</a> in Domain 8 has far and away the
-highest species richness, but what about other measures of diversity? For that 
-we'll need an idea of population abundance. Since NEON uses a three-pass 
-electrofishing method, we will need to do a bit of processing to get the 
-quantities we need.
+highest species richness, but to get a deeper understanding of Mayfield Creek's 
+fish populations we'll need an idea of relative and absolute abundance. Since 
+NEON uses a three-pass electrofishing method, we will need to do a bit of 
+processing to get the quantities we need.
 
-** add transition text to the next tutorial in the series (fish-population-estimation)
+The next tutorial in the series, *Relative and Absolute Fish Population Abundance Estimation*
+will cover processing the Mayfield Creek data to 
+obtain catch per unit effort (CPUE) to determine relative abundance of our species. We will also use a function from the FSA package 
+designed to estimate absolute abundance via a three-pass depletion method. Lastly 
+we will automate the process for each species in each reach (without writing any 
+`for` loops!)
