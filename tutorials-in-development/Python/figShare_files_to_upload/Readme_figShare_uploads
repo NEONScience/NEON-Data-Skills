@@ -1,0 +1,10 @@
+This is a container for files that need to be uploaded to FigShare. 
+These are primarily for python-based tutorials that originally had
+their data stored in a cloud environment.
+
+Please place files in this directory, and update the tutorial progress
+tracking spreadsheet with the name of the file associated with the
+tutorial in question.
+
+Thanks!
+-Donal

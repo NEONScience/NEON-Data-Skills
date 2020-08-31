@@ -5,8 +5,8 @@ description: "GEDI has amazing coverage around the globe, but is limited in its 
 dateCreated: 2020-07-15
 authors: Donal O'Leary
 contributors: 
-estimatedTime: 1 hour
-packagesLibraries: lidR, rGEDI, raster
+estimatedTime: 1.5 hours
+packagesLibraries: lidR, rGEDI, raster, neonUtilities
 topics: LiDAR
 languagesTool: R
 dataProduct: 
@@ -32,13 +32,15 @@ the RStudio IDE to work with R.
 
 ### R Packages to Install
 Prior to starting the tutorial ensure that the following packages are installed. 
+
 * **raster:** `install.packages("raster")`
-* **rgdal:** `install.packages("rGEDI")`
+* **rGEDI:** `install.packages("rGEDI")`
 * **sp:** `install.packages("sp")`
 * **sf:** `install.packages("sf")`
 * **lidR:** `install.packages("lidR")`
-
-########## add more packages here as needed #######
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **viridis:** `install.packages("viridis")`
+* **maptools:** `install.packages("maptools")`
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -46,16 +48,9 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 ############# Possibly add GEDI subset here?? ##############
 
-#### NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature
-
-The data used in this tutorial were collected at the 
-<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>.  
-
-* National Ecological Observatory Network. 2020. Data Product DP1.10055.001, Plant phenology observations. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
-* National Ecological Observatory Network. 2020. Data Product DP1.00002.001, Single aspirated air temperature. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
-
-<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+#### Datum difference between WGS84 and NAD83
+This dataset describes the differences between two common standards for vertical data in North America.
+<a href="https://neondata.sharefile.com/d-sf4e35e969fc43aca" class="link--button link--arrow">
 Download Dataset</a>
 
 ### Working Directory
@@ -127,7 +122,7 @@ lr_lon<- extent(chm_WGS)[2]
 
 ```
 
-Next, we use that bounding box information as an input to the 
+Next, we use that bounding box information as an input to the `gedifinder()` funciton.
 
 ```{r find-GEDI-orbits}
 
@@ -140,7 +135,7 @@ Next, we use that bounding box information as an input to the
 # that intersect the bounding box of interest.
 # Note that you still must download the entire orbit and then subset to 
 # your area of interest!
-gLevel1B<-gedifinder(product="GEDI01_B",
+gLevel1B <- gedifinder(product="GEDI01_B",
                      ul_lat, ul_lon, lr_lat,lr_lon,
                      version="001",daterange=NULL)
 
@@ -153,8 +148,10 @@ Great! There are several GEDI orbits available that have at least 1 'shot' withi
 
 ```{r download-GEDI, eval=F, comment=NA}
 
-# Downloading GEDI data
-gediDownload(filepath=gLevel1B[1],outdir=wd)
+# Downloading GEDI data, if you haven't already
+if(!file.exists(paste0(wd,basename(gLevel1B[2])))){
+  gediDownload(filepath=gLevel1B[2],outdir=wd)
+}
 
 ```
 
@@ -247,11 +244,16 @@ Here, we will use the `byTileAOP()` function from the 'neonUtilities' package to
 
 ```{r download-AOP-lidar eval=F, comment=NA}
 
-byTileAOP(dpID = "DP1.30003.001", site = SITECODE, year = 2017, 
+# Download the pointcloud data if you don't have it already
+if (!file.exists(paste0(wd,"DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz"))){
+  byTileAOP(dpID = "DP1.30003.001", site = SITECODE, year = 2017, 
           easting = extent(chm)[1], northing=extent(chm)[3], 
           check.size = F)
+}
 
 ```
+
+After downloading the point cloud data, let's read them into our R session using the `readLAS()` function from the `lidaR` package, and plot them in 3D. Note, you may need to update your 'XQuartz' if you are using a Mac.
 
 ```{r plot-lidar-pointcloud-bad}
 
@@ -261,7 +263,7 @@ plot(WREF_LAS)
 
 ```
 
-Oh, yikes! There are a lot of outliers above the actual forest, and a few below. Let's use some simple statistics to throw out those outliers. We will first calculate the mean and standar deviation for the verical axis, and then use the 'filter' options of the `readLAS()` function to eliminate the vertical outliers.
+Oh, yikes! There are a lot of outliers above the actual forest, and a few below. Let's use some simple statistics to throw out those outliers. We will first calculate the mean and standard deviation for the verical axis, and then use the 'filter' options of the `readLAS()` function to eliminate the vertical outliers.
 
 ```{r plot-lidar-pointcloud-good}
 
@@ -284,7 +286,7 @@ plot(WREF_LAS)
 Ahhh, that's better.
 
 ## Clip AOP LiDAR Pointcloud to GEDI footprints
-We can now use the GEDI footprint circles (that we made using the `buffer()` function) to clip out the LiDAR points that correspond with the GEDI footprints:
+We can now use the GEDI footprint circles (that we made using the `buffer()` function) to clip out the NEON AOP LiDAR points that correspond with the GEDI footprints:
 
 ```{r clip-AOP-to-GEDI}
 
@@ -303,24 +305,35 @@ Now that we can extract individual waveforms, and the AOP LiDAR pointcloud that 
 ```{r plot-lidar-together-1}
 
 for(shot_n in 1:1){
-wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
 
-summary(wf@dt$rxwaveform)
-
-d=wf@dt
-# normalize rxwaveform
-d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
-d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
-
-#add xy data
-d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]
-d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]
-
-d$y_wf=d$y+d$rxwaveform*30
-summary(d)
-
-p=plot(WREF_GEDI_footprints[[shot_n]])
-points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation, col="green", add=T)
+  # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
+  # We save the plot as an object 'p' which gives the (x,y) offset for the lower
+  # left corner of the plot. The 'rgl' package offsets all (x,y) locations 
+  # to this point, so we will need to subtract these values from any other 
+  # (x,y) points that we want to add to the plot
+  p=plot(WREF_GEDI_footprints[[shot_n]])
+  
+  # Extract the specific waveform from the GEDI data
+  wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+  
+  # Make a new data.frame 'd' to convert the waveform data coordinates into 3D space
+  d=wf@dt
+  
+  # normalize rxwaveform to 0-1
+  d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
+  d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
+  
+  # Add xy data in UTMs, and offset lower left corner of 'p'
+  d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]-p[1]
+  d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]-p[2]
+  
+  # Make a new column 'x_wf' where we place the GEDI waveform in space with the 
+  # NEON AOP LiDAR data, we scale the waveform to 30m in the x-dimension, and 
+  # offset by 12.5m (the radius of the GEDI footprint) in the x-dimension.
+  d$x_wf=d$x+d$rxwaveform*30+12.5
+  
+  # Add GEDI points to 3D space in 'green' color
+  points3d(x=d$x_wf, y=d$y, z=d$elevation, col="green", add=T)
 
 }
 
@@ -328,35 +341,39 @@ points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation, col="green", add=T)
 
 Whoa, it looks like there is a bad vertical mismatch between those two data sources. This is because the two data sources have a different vertical datum. The NEON AOP data are delivered in the GEOID12A, while the GEDI data are delivered in the WGS84 native datum. We will need to convert one to the other to get them to line up correctly.
 
+## Datum, Geoid, and how to best measure the Earth
+We are seeing a vertical mismatch between the NEON and GEDI LiDAR data sources because they are using different standards for measuring the Earth. Here, we will briefly describe the main differences between these two datum models, and then show how to correct for this discrepancy.
+
+### WGS84
+As described in <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">this great Wikipedia article</a> the World Geodedic System (WGS) is a global standard for cartography, geodesy, and navigation including GPS. Most people refer to "WGS84," which is the latest revision to this system in 1984. To describe elevation, WGS84 uses an idealized mathematical model to describe the 'oblate spheroid' of the Earth (basically, it looks kind of like a sphere that is wider around the equator and shorter from pole to pole). This model, called a 'datum,' defines the relative elevational surface of the Earth. However, the Earth isn't exactly this idealized shape - it has a lot of undulations caused by topogrophy and local differences in its gravitational field. In the locations where the natural variations of the Earth do not coencide with the mathematical model, it can be harder to accurately describe the elevation of certain landforms and structures. Still, for a global datum, WGS84 does a great job overall.
+
+### GEOID12A
+While WGS84 is a convenient global standard, precisely describing location information is a common problem in geography, and is often remedied by using a local datum or projection. For latitude and longitude spatial information in North America, this is often done by using the <a href="https://www.ngs.noaa.gov/datums/horizontal/north-american-datum-1983.shtml">North American Datum (NAD83)</a> or various Universal Transverse Mercator (UTM) or State Plane projections based on the NAD83 datum. The NAD83 Datum was developed in 1983 as the horizontal and geometric control datum for the United States, Canada, Mexico, and Central America. This is the official datum for the government of the United States of America, and therefore many public datasets that are specific to this geographic region use this datum. In order to further refine the vertical precision over a wide geographic area, we can model the gravitational field of the Earth - this surface is called a "Geoid". <a href="https://geodesy.noaa.gov/GEOID/geoid_def.html">According to NOAA</a>, a geoid can be defined as "the equipotential surface of the Earth’s gravity field which best fits, in a least squares sense, global mean sea level." For a nice description of the North American geoid, please <a href="https://geodesy.noaa.gov/GEOID/geophysics.shtml">see this page on the NOAA website</a> written by Dr. Allen Joel Anderson. As described by Dr. Anderson, this gravitational field is changing all the time, as can global mean sea level (due to melting glaciers, etc.). Therefore local and regional geoids must be updated regularly to reflect these changes, as shown <a href="https://geodesy.noaa.gov/GEOID/models.shtml">in this list of NOAA geoids</a>. One recent standard from 2012 is <<a href="https://geodesy.noaa.gov/GEOID/GEOID12A/">GEOID12A</a> - this is the geoid selected by NEON as the vertical reference for the Z-dimension of our LiDAR data. Note that GEOID12B superscedes GEOID12A, however they are identical everywhere except for Puerto Rico and the US Virgin Islands <a href="https://geodesy.noaa.gov/GEOID/GEOID12B/">according to NOAA</a>. If you are working with any NEON data from Puerto Rico, please be aware that these data are delivered in GEOID12A format and may need to be converted to GEOID12B for some purposes.
+
+For more information about these standards, please see <a href="https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/about-the-geoid-ellipsoid-spheroid-and-datum-and-h.htm">this ESRI help document</a>.
+
 ## Aligning the Vertical Datum
+AOP data have a relatively small area of coverage, and are therefore delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the GEOID12A vertical datum (roughly equaling mean sea level). Meanwhile, GEDI data are global, so they are delivered with the common WGS84 ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection. In this example, we will keep the NEON LiDAR data in its current datum, and convert the vertical position of the GEDI data from WGS84 into GEOID12A vertical position.
 
- --- needs information on geoid vs sphereoid ---
- http://elearning.algonquincollege.com/coursemat/viljoed/gis8746/concepts/geodesy/spheroid.htm
-https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/about-the-geoid-ellipsoid-spheroid-and-datum-and-h.htm
-Note that GEOID12B superscedes GEOID12A, however they are identical everywhere except for Puerto Rico and the US Virgin Islands (https://geodesy.noaa.gov/GEOID/GEOID12B/). If you are working with any NEON data from Puerto Rico, please be aware that these data are delivered in GEOID12A format and may need to be converted to GEOID12B for some purposes.
- 
-AOP data are delivered with the coordinate reference system (CRS) in the UTM zone in which they were collected, set to the `GEOID12A` vertical datum (roughly matched mean sea level). Meanwhile, GEDI data are delivered with the common `WGS84` ellipsoidal refrence datum. We need to align these vertical datums to ensure that the two data products line up correctly. However, this is not a trivial step, nor as simple as a reprojection.
+NOAA has a useful <a href="https://www.ngs.noaa.gov/INFO/facts/vdatum.shtml">tool called Vdatum</a> that will convert from one datum to another. For this example, we will use Vdatum to convert from WGS84 to NAD83. Seeing as GEOID12A is based on the NAD83 datum, we can first convert the GEDI data's vertical position from WGS84 to NAD83 datum, then apply the offset between NAD83 and GEOID12A. Rather than use the Vdatum tool for each point, we will use a raster created by NEON scientists that reports the vertical difference between WGS84 and NAD83 for all points in the conterminous USA. Please <a href="https://neondata.sharefile.com/d-sf4e35e969fc43aca">visit this Sharepoint page</a> (same as the link at the top of this page) to download the raster. We will then read it into our R session:
 
-NOAA has a useful tool called Vdatum that will convert from one datum to another. Unfortunately, it cannot convert from GEOID12A to WGS84 directly. We must first convert from GEOID12A to NAD83, then use a simpler method to adjust for the offset between the NAD83 and WGS84 datums. 
+```{r read-wgs-nad-diff}
 
+# Edit this filepath as needed for your machine
+datum_diff=raster("~/Downloads/WGS84_NAD83_seperation.tif")
 
-When converting from NAD83 to ITRF2000
+```
 
-diff tiff comes from Vdatum
+###GEOID12A Height Model
+GEOID12A is a surface model that is described in terms of its relative height compared to NAD83. You can use <a href="https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl">this interactive webpage</a> to find the geoid height for any location within North America. However, that would be combersome to have to use this webpage for every location. Instead, we will download a <a href="https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml>binary file from the NOAA website</a> that describes this geoid's height, and convert that into a raster similar to the one that we just downloaded above. We have included comments here from the NOAA website about the structure of the binary file. We use this information to extract the dimensions of this dataset in order to construct a raster in R from these binary data.
 
-GEOID12A to NAD83 interactive page found here: https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl
-
-Download raster tiles of diff between GEOID12A and NAD83 here:
-https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml
-
-```{r}
+```{r download-prep-geoid-height-binary}
 
 # Download binary file of offset from GEOID12A to NAD83
-# download.file("https://www.ngs.noaa.gov/PC_PROD/GEOID12A/Format_unix/g2012au0.bin", 
-#               destfile = paste0(wd,"/g2012au0.bin"))
-
-
-
+if(!file.exists(paste0(wd,"/g2012au0.bin"))){
+  download.file("https://www.ngs.noaa.gov/PC_PROD/GEOID12A/Format_unix/g2012au0.bin", 
+                destfile = paste0(wd,"/g2012au0.bin"))
+}
 
 # Read header information. See https://www.ngs.noaa.gov/GEOID/GEOID12B/g2012Brme.txt
 
@@ -380,22 +397,25 @@ https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml
 #        (starts with WLON and moves eastward DLON to next column)
 # IKIND: Always equal to one (indicates data are real*4 and endian condition)
 
-to.read = file("~/Downloads/g2012au0.bin", "rb")
+to.read = file(paste0(wd,"/g2012au0.bin"), "rb")
 header1=readBin(to.read, double(), endian = "big", n=4)
-header1
+header1 #SLAT, WLON, DLAT, DLON
 
 header2=readBin(to.read, integer(), endian = "big", n=3)
-header2
+header2 #NLAT, NLON, IKIND
 
 GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian = "big", size=4)
 
 ```
 
+
 ```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6, warning=F}
 
+# Create a new raster using the dimensions extracted from the headers
 GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
                              xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
-                             ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]))
+                             ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]),
+                             crs = crs(datum_diff))
 GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = GEOID12A_diff_vals)
 
 # we need to use the 'flip' function to put the map 'upright' because R expects to see raster values from the top left corner and fills by rows, but this dataset is delivered in sucha a way that it describes the bottom left corner and fills by rows up to the top of the image (this is actually the convention for most traditional remote sensing software - and leads to a similar problem that is explained in the Hyperspectral tutorial series.)
@@ -403,15 +423,15 @@ GEOID12A_diff_rast <- flip(GEOID12A_diff_rast, 'y')
 
 ## let's crop out only CONUS for plotting purposes - we will still refer to the fill image when extracting values.
 
-diff=raster("~/Downloads/WGS84_NAD83_seperation.tif")
-
-diff_resp=resample(diff, GEOID12A_diff_rast) # resample to match pixel size/registration for cropping
+diff_resp=resample(datum_diff, GEOID12A_diff_rast) # resample to match pixel size/registration for cropping
 diff_resp=crop(diff_resp, GEOID12A_diff_rast)
 GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
 GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
 
 
 ```
+
+Now that we have the two offset rasters, let's plot them together to compare their spatial patterns.
 
 ```{r plot-both-diff-maps, fig.height=8, fig.width=6}
 
@@ -423,24 +443,24 @@ plot(diff_resp, main="WGS84 minus NAD83 (m)")
 
 As you can see, the differences between the GEOID12A geoid, and the NAD83 sphereoid vary quite a lot across space, especially in mountainous areas. The magnitude of these differences is also large, upwards of 35m in some areas. Meanwhile, the differences between the NAD83 and WGS84 sphereoids shows a smooth gradient that is relatively small, with total difference less than 2m across the Conterminous USA. 
 
+## Extract vertical offset for GEDI shots
+Now that we know the relative vertical offsets between WGS84, NAD83, and GEOID12A for all of the conterminous USA, we can use the `extract()` function to retrieve those relative offsets for any location. By combining those offsets together, we can finally rectify the vertical position of the NEON and GEDI LiDAR data.
 
-Use extract() function to retrieve values from both rasters for a given GEDI footprint
+***** DO I need to convert GEDI x/y locations from WGS84 to NAD83?? *****
+
 
 ```{r extract-vert-offsets}
 
-footprint_df=as.data.frame(cbind(level1bgeo_WREF$longitude_lastbin, level1bgeo_WREF$latitude_lastbin))
+# Make a new DF to store the GEDI footprint (x,y) locations, and the relative datum/geoid offsets
+footprint_df=as.data.frame(
+  cbind(level1bgeo_WREF$longitude_lastbin, level1bgeo_WREF$latitude_lastbin))
 
-WGS_NAD_diff <- extract(diff, footprint_df)
+WGS_NAD_diff <- extract(datum_diff, footprint_df)
 
 GEOID12A_NAD_diff <- extract(GEOID12A_diff_rast_mask,footprint_df)
 
+# Add together the offsets to calculate a vector of net differences in elevation
 net_diff=WGS_NAD_diff+GEOID12A_NAD_diff
-
-## GEDI elevation is in WGS84, so to concert to NAD83 first subtract WGS_NAD_diff
-
-## Next, to convert GEDI elevations fron NAD83 to GEOID12A, add GEOID12A_NAD_diff (which makes it lower because GEOID12A is lower than NAD83 in N America)
-
-## Check to see if AOP forest floor and GEDI ground spike coincide. 
 
 ```
 
@@ -452,25 +472,39 @@ Now that we have a vertical offset for each of the GEDI footprints, let's try ag
 ```{r plot-GEDI-2}
 
 # You can enter whichever shots that you want to plot in the for loop here
-for(shot_n in 1:2){
-wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+for(shot_n in c(1,24,25)){
+#for(shot_n in 1:26){
 
-#summary(wf@dt$rxwaveform)
-
-d=wf@dt
-# normalize rxwaveform
-d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
-d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
-
-#add xy data
-d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]
-d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]
-
-d$y_wf=d$y+d$rxwaveform*30
-summary(d)
-p=plot(WREF_GEDI_footprints[[shot_n]])
-points3d(x=d$x-p[1], y=d$y_wf-p[2]+12.5, z=d$elevation-net_diff[shot_n], col="green", add=T)
-
+  # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
+  # We save the plot as an object 'p' which gives the (x,y) offset for the lower
+  # left corner of the plot. The 'rgl' package offsets all (x,y) locations 
+  # to this point, so we will need to subtract these values from any other 
+  # (x,y) points that we want to add to the plot
+  p=plot(WREF_GEDI_footprints[[shot_n]])
+  
+  # Extract the specific waveform from the GEDI data
+  wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF$shot_number[shot_n])
+  
+  # Make a new data.frame 'd' to convert the waveform data coordinates into 3D space
+  d=wf@dt
+  
+  # normalize rxwaveform to 0-1
+  d$rxwaveform=d$rxwaveform-min(d$rxwaveform)
+  d$rxwaveform=d$rxwaveform/max(d$rxwaveform)
+  
+  # Add xy data in UTMs, and offset lower left corner of 'p'
+  d$x=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[1]-p[1]
+  d$y=st_coordinates(level1bgeo_WREF_UTM[shot_n,])[2]-p[2]
+  
+  # Make a new column 'x_wf' where we place the GEDI waveform in space with the 
+  # NEON AOP LiDAR data, we scale the waveform to 30m in the x-dimension, and 
+  # offset by 12.5m (the radius of the GEDI footprint) in the x-dimension.
+  d$x_wf=d$x+d$rxwaveform*30+12.5
+  
+  # Add GEDI points to 3D space in 'green' color
+  # This time, subtracting the elevation difference for that shot
+  points3d(x=d$x_wf, y=d$y, z=d$elevation-net_diff[shot_n], col="green", add=T)
+  
 }
 
 ```
