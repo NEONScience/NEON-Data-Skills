@@ -4,11 +4,12 @@ title: "Using an API Token when Accessing NEON Data with neonUtilities"
 description: "Get an API token tied to your NEON user account, and use it for faster download speeds when accessing NEON data via the neonUtilities package."
 dateCreated: 2020-05-04
 authors: [Claire K. Lunch]
-contributors:
+contributors: [Maxwell Burner]
 estimatedTime: 20 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
+dataProduct: DP1.10026.001, DP3.30015.001
 code1: R/api-token/neon-api-tokens-tutorial.R
 tutorialSeries:
 urlTitle: neon-api-tokens-tutorial
