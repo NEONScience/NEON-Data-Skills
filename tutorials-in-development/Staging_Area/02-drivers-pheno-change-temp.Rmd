@@ -4,7 +4,7 @@ title: "Work with NEON's Single-Aspirated Air Temperature Data"
 description: "This tutorial demonstrates how to work with NEON single-aspirated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
-contributors: Katie Jones, Cody Flagg, Josh Roberti
+contributors: Katie Jones, Cody Flagg, Josh Roberti, Felipe Sanchez
 estimatedTime:
 packagesLibraries: dplyr, ggplot2, lubridate
 topics: time-series, meteorology
@@ -375,7 +375,7 @@ Let's plot it. (This is a plot of a large amount of data. It can take 1-2 mins
 to process. It is not essential for completing the next steps if this takes too 
 much of your computer memory.)
 
-```{r plot-temp}
+```{r plot-temp, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data shows erroneous sensor readings occured during late April/May 2018."}
 # plot temp data
 tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
     geom_point() +
@@ -431,7 +431,7 @@ sum(SAAT_30minC$finalQF==1)
 
 Now we can plot it with the clean data.
 
-```{r plot-temp-clean}
+```{r plot-temp-clean, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data now has been cleaned of the erroneous sensor readings by filtering out flagged data."}
 # plot temp data
 tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
     geom_point() +
@@ -479,7 +479,7 @@ temp_day <- SAAT_30minC %>%
 
 Now we can plot the cleaned up daily temperature. 
 
-```{r daily-max-plot}
+```{r daily-max-plot, fig.cap="Scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."}
 
 # plot Air Temperature Data across 2018 using daily data
 tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
@@ -508,7 +508,7 @@ follows:
 
 Let's plot just the first three months of the year. 
 
-```{r subset-ggplot-time }
+```{r subset-ggplot-time, fig.cap="Scatter plot showing daily maximum temperatures(of 30 minute interval means) from the beginning of January 2018 through the end of March 2018 at the Smithsonian Conservation Biology Institute (SCBI)."}
 
 # Define Start and end times for the subset as R objects that are the time class
 startTime <- as.Date("2018-01-01")
