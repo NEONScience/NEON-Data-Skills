@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
   Understand the 2013 Colorado Floods'
-code1: teaching-modules/disturb-events-co13/nCLIMDIV-Palmer-Drought-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
 contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
@@ -22,7 +22,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plotly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>.
 
 <div id="ds-objectives" markdown="1">
 

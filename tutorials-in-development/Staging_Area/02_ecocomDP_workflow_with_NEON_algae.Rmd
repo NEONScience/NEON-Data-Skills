@@ -201,7 +201,7 @@ alg_observations_with_taxa %>% head()
 
 We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:
 
-```{r plot-taxon-rank, fig.cap= "Bar plot showing counts of algae taxonomic ranks at the Arikaree River site."}
+```{r plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."}
 
 # which taxon rank is most common
 alg_observations_with_taxa %>%

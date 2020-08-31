@@ -20,7 +20,7 @@ urlTitle: phenocam-api-intro
 The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> *phenocamapi* R package</a> 
 is developed to simplify interacting with the 
 <a href="https://phenocam.sr.unh.edu" target="_blank">PhenoCam network</a> 
-dataset and perform data wrangling steps on PhenoCam sites' data and metadata.
+dataset and perform data wrangling steps on PhenoCam sites' data and metadata. 
 
 This tutorial will show you the basic commands for accessing PhenoCam data
 through the PhenoCam API. The *phenocampapi* R package is developed and maintained by 

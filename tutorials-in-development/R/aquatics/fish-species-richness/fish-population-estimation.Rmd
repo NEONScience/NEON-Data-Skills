@@ -1,0 +1,563 @@
+---
+syncID:
+title: "Relative and Absolute Fish Population Abundance Estimation"
+description: "Use tidyverse functions to automate a fish abundance estimator from the FSA package."
+dateCreated: 2020-08-13
+date: "8/13/2020"
+authors: Garrett M. Williams
+contributors: Dylan Monahan
+estimatedTime: 
+packagesLibraries: neonUtilities, dplyr, FSA, 
+topics: organisms, data-viz
+languagesTool: R
+dataProduct: DP1.20107.001
+code1: 
+tutorialSeries: 
+urlTitle: fish-population-estimation
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Download and navigate NEON's electrofishing data
+* Use `dplyr`'s core database operations, such as `select()`, `filter()`, and `mutate()`
+* Use `map()` from the `purrr` package to automate repetitive tasks
+* Use pivot functions from `tidyr` to transform data to a more convenient format
+
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R.
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed.
+* **neonUtilites:** `install.packages("neonUtilities")`
+* **dplyr:** `install.packages("dplyr")`
+* **tidyr** `install.packages("tidyr")`
+* **purrr** `install.packages("purrr")`
+
+### The `dplyr` Package
+As with the previous tutorial on species richness, you will need a basic understanding of dplyr, especially the piping operator, 
+`%>%`. This can be found in our dplyr tutorial <a href="https://www.neonscience.org/grepl-filter-piping-dplyr-r">here</a>.
+
+### The `purrr` package
+You may be familiar with the `*apply` family of functions from base R (`lapply`, `mapply`, `sapply`, etc.) These functions are a very useful way to avoid writing
+complicated for loops in R. They all do some version of applying a function to each
+element of an object.
+
+While useful, these functions can be somewhat inconsistent in their implementation.
+The order of the arguments is different from function to function, which can make
+piping more complicated than it needs to be. Many are built to coerce the output to
+a simplified format, but the format chosen by the function can change without
+throwing an error message, leading to unpredictable results and a steeper learning
+curve.
+
+For this reason we will be using the `map` family of functions from the `purrr`
+package. They first argument is always the data input, the second the function to be
+applied. It also includes some convenient shortcuts, as we'll see.
+
+### The `tidyr` package
+This includes some useful functions for transforming data to a more efficient (tidy) format.
+
+### The Simple Fisheries Stock Assessment package (`FSA`)
+This is a package written by Derek Ogle, Powell Wheeler, and Alexis Dinno, which
+contains numerous functions for simple fisheries science calculations. In this
+tutorial, we will be using the `removal` function to analyze our 3-pass
+electrofishing data.
+
+Citation: 
+Ogle DH, Wheeler P, Dinno A (2020). FSA: Fisheries Stock Analysis. R package version 0.8.30, <a href="https://github.com/droglenc/FSA">https://github.com/droglenc/FSA</a>.
+
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+</div>
+
+## Getting started
+Load required packages into your R environment.
+
+```{r load-packages}
+library(neonUtilities)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(FSA)
+```
+
+We're going to start by loading in the Fall 2019 Mayfield Creek data we used in the
+previous <a href="https://www.neonscience.org/fish-species-richness">fish species
+richness tutorial</a>.
+
+```{r load-data}
+electrofishing_fall2019 <- loadByProduct(dpID = "DP1.20107.001",
+                                         site = "MAYF",
+                                         startdate = "2019-07",
+                                         enddate = "2019-12",
+                                         package = "expanded",
+                                         check.size = FALSE)
+```
+
+And once again, we'll use the `list2env` function so to assign each individual table to its own variable.
+```{r list-to-environment}
+list2env(electrofishing_fall2019, .GlobalEnv)
+```
+
+Since we're concerned with the actual population numbers this time, we need to look at how our data is actually organized. We can use the `variables_20107` table to
+illuminate some of this, as well as the User Guide, available on the <a href="https://data.neonscience.org/data-products/DP1.20107.001">electrofishing data product overview page</a>. 
+We have one entry per fish in the `fsh_perFish` table, as well as bulk counts per
+species in the `fsh_bulkCount` table. We'll need to combine these two sources if we
+want to have accurate overall counts.
+
+Before we get started, we need to examine the functions we're plugging our data into
+so we know how to appropriately format that data.
+
+## FSA: `removal()`
+
+This function takes a vector of catch data for multiple electrofishing passes and
+provides an estimate of the total population. Go ahead and take a look at the
+documentation by running `?removal`. Note the method argument, which swaps out the
+specific model used. The package authors provide <a href="https://cran.r-project.org/web/packages/FSA/FSA.pdf">an excellent manual here</a>
+which provides citations for these methods. These methods are based on the idea that
+with each pass you catch a portion of the total remaining population, and your
+cumulative catch will approach the true population. For simplicity's sake, we'll be
+using the default methods for each.
+
+The statistics behind these methods is beyond the scope of this tutorial. The
+important part for coding purposes is how we format the inputs to these functions.
+`removal` takes a catch argument, which is a vector of counts of a single species at
+each pass. Let's look at a function call to see what we get.
+
+```{r depletion-example}
+myCatch <- c(100, 50, 25)
+
+removal(myCatch)
+```
+
+This is a lot of information. Most interesting to us is the `$est` vector, which
+actually contains the population estimate in the `No` element, as well as the
+"catchability coefficient" in the `No.se` element. Since `removal()` returns a list,
+we can subset it like any other by adding `$est` after our function call like so:
+
+```{r depletion-subsetting-1}
+removal(myCatch)$est
+```
+
+Since `$est` is a vector, we can subset *it* with brackets. We care most about the
+actual estimate, which is the first element, as well as the standard error in the
+second element.
+
+```{r depletion-subsetting-2}
+# print the population estimate
+removal(myCatch)$est[1:2]
+```
+
+This works great for a single species, but we don't want to have to manually plug in
+catch data. This is where our `map` function comes in.
+
+## `map()` and `map_df()`
+
+`map()` intakes a list and a function and applies the function to every element in
+the list. Note that this includes data frames, since a data frame in R is simply a
+list of vectors where each column is a list element. We can also pass additional
+arguments to the function being repeated.
+
+Let's make a sample data frame of random numbers to experiment with:
+
+```{r map-example-1}
+df <- data.frame(
+  a = sample(1:10, 5),
+  b = sample(5:15, 5),
+  c = sample(10:20, 5)
+)
+df
+```
+
+Say we want to get the maximum and minimum of each column. We'll design a simple
+function that will give us the answer for a single vector, then use `map` to apply
+it to each column
+
+```{r map-example-2}
+max_min <- function(x) {
+  y <- c(Maximum = max(x), Minimum = min(x))
+}
+
+map(df, max_min)
+```
+
+This returns a list, which is a bit unwieldy. We can instead format this as a data
+frame with `map_dfr()` which binds each output as a row or `map_dfc()` which binds
+them as columns:
+
+```{r map-example-3}
+map_dfr(df, max_min)
+map_dfc(df, max_min)
+```
+
+
+What if the function we want to apply needs another argument? We can supply these
+after the first two arguments. Lets choose 3 random numbers from each column with
+`sample`. Note that by default, the data input gets plugged into the *first*
+argument of the function.
+
+```{r map-example-4}
+map_dfr(df, sample, size = 3, replace = FALSE)
+```
+
+We can even define a function in the function call itself. Map uses the `~` operator
+for this purpose. When we do this, we use `.x` to refer to the *current list element*
+we are iterating over.
+
+```{r map-example-5}
+map_dfr(df, ~(.x + 2))
+```
+This method is especially useful when we need to plug our data into an argument
+which isn't the first. In this case we'll need to wrap the function in `~()` and set
+the argument we want to `.x`. Let's use a vector to set the number of repetitions we
+want from the `rep` function.
+
+```{r map-example-6}
+map(1:4, ~(rep(1, times = .x)))
+```
+
+## Formatting for `map()` and `removal()`
+
+Our ultimate function call is going to look something like `map_dfc(fishCatchData, removal)`, 
+we will need a data frame for each reach where each column is a species, containing
+a vector of count data for each pass for that species. Knowing this, we can start
+data-wrangling!
+
+## Cleaning the fish data
+
+First we'll do a simple filter on our `fsh_perFish` table to get rid of anything we
+can only identify to genus and anything with an identification qualifier. This is
+easy enough with the `taxonRank` and `identificationQualifier` columns.
+
+```{r data-cleaning-1}
+MAYF_perFish <- fsh_perFish %>%
+  filter(taxonRank == "species") %>%
+  filter(is.na(identificationQualifier))
+```
+
+We'll need to do the same with our fsh_bulkCount, but since there's no taxonRank
+column, we'll need to take a closer look. Let's look at the taxa we actually have in
+fsh_bulkCount.
+
+```{r data-cleaning-2}
+fsh_bulkCount %>%
+  select (taxonID,
+          scientificName,
+          identificationQualifier,
+          bulkFishCount,
+          namedLocation,
+          remarks)
+```
+Take a look at the 'remarks' column - it looks like we have a lot of larval fish
+from the Cyprinidae family. Let's filter those out since we're only comparing
+species we're sure about for now.
+
+```{r data-cleaning-3}
+MAYF_bulkCount <- fsh_bulkCount %>%
+  filter(taxonID != "CYPSPP3")
+```
+
+## Creating a dataframe of count data
+
+It's fairly easy to count the number of rows for each species within each pass and
+reach with `group_by()` and `summarise()`
+
+```{r count-dataframe-1}
+MAYF_count <- MAYF_perFish %>%
+  group_by(namedLocation, taxonID, passNumber) %>%
+  summarise(bulkFishCount = n())
+
+head(MAYF_count)
+```
+
+Now instead of one row per fish, we have one row per reach/species/pass combination.
+
+Notice within the summarize call, we assign `n()` to the same variable name that was
+used in the MAYF_bulkCount table. This is so we can add the fish from our bulk count
+data to our main count.
+
+We do this by tacking on the rows from MAYF_bulkCount with `bind_rows()`. We then
+regroup the data by reach, pass, and species, then use the `summarise()` function to
+`sum()` the `bulkFishCount` column within each group.
+
+```{r count-dataframe-2}
+MAYF_count <-  MAYF_count %>%
+  bind_rows(MAYF_bulkCount) %>%
+  select(namedLocation, taxonID, passNumber, bulkFishCount) %>%
+  group_by(namedLocation, taxonID, passNumber) %>%
+  summarise (count = sum(bulkFishCount)) %>%
+  ungroup()
+```
+
+At the end of this processing, we run the `ungroup()` function. Otherwise we'd run
+into problems with some of the next steps.
+
+At this point we can go ahead and join the pass data to this data frame, matching
+based on `namedLocation` and `passNumber`. We only really need the effort expended
+(`efTime`) so we'll use `select()` to get rid of everything else. We use the
+`left_join()` function because we want to keep everything from the count table, but
+not necessaritly the per pass table if there's no count data for that pass.
+
+```{r count-dataframe-3}
+MAYF_count <- left_join(MAYF_count,
+                        fsh_perPass,
+                        by = c("namedLocation", "passNumber")) %>%
+              select(namedLocation, passNumber, taxonID, count, efTime)
+```
+
+## Catch per unit effort
+
+With a count column and an effort column, we have everything we need to find catch
+per unit effort, or CPUE. All we need is to use `mutate()` to create a CPUE column.
+Note that if we consult the definition of `efTime` in our `variables_20107` table we
+see that the time is given in seconds. For more human-readable numbers, we'll
+convert this to hours. 
+
+We'll also filter out all but the first pass, so that we can compare all six reaches
+We need the `removal` method to properly include passes 2 and 3 in our analysis. For
+now we're just comparing relative abundance between species. Lastly, we will group
+the data by reach and arrange it by from most to least common by CPUE (the
+`.by_group` argument just tells `arrange()` that we want to sort within the groups,
+not sort the whole data frame.) Lastly, we can remove the `passNumber` column as we
+no longer need it.
+
+Note also that this time, we're saving this as a new object, since we'll need the unfiltered 
+version for our 3 pass reaches.
+
+```{r CPUE-1}
+MAYF_CPUE <- MAYF_count %>%
+  mutate(CPUE = count / (efTime/3600)) %>%
+  filter(passNumber == 1) %>%
+  group_by(namedLocation) %>%
+  arrange(-CPUE, .by_group = TRUE) %>%
+  select(-passNumber)
+
+MAYF_CPUE
+```
+
+At this point, it may be useful to pivot this table into a wider format for readability and
+analysis. We're going to be using the `pivot_wider()` function. It is *extremely* helpful to 
+read the documentation for this function if you haven't used it before. Run `?pivot_wider` and
+read the definitions for the first several arguments. We need four things: columns to uniquely
+identify each observation, a column to get names for our new columns, a column to pull the 
+actual values from, and lastly something to fill in missing values (0 in our case, since our 
+data is starting as one row per fish observed.)
+
+```{r CPUE-2}
+MAYF_CPUE <- MAYF_CPUE %>%
+  pivot_wider(
+    id_cols = c(namedLocation, taxonID),
+    names_from = namedLocation,
+    values_from = CPUE,
+    values_fill = 0
+  )
+
+MAYF_CPUE
+```
+
+We should have seven columns here, `taxonID` contains species codes, and one column
+for each reach containing the catch per unit effort (in fish per hour) of each
+species. Note how the unique `namedLocation` values are now column names.
+
+## Useful lists
+
+It's going to be useful to have a some lists on hand for filtering, and potentially
+to iterate over. First we can make a list of taxa, just like we did in the last
+tutorial. The `pull()` function is useful when we just want to pull out a column as
+a simple vector, rather than the tidyverse's tibble format.
+
+```{r useful-lists-1}
+MAYF_taxaList <- MAYF_perFish %>%
+  select(taxonID) %>%
+  distinct() %>%
+  pull(taxonID)
+```
+Each wadeable stream has ten reaches, three of which are chosen as "fixed" reaches.
+These are sampled twice per year with a three-pass depletion approach. Out of the
+remaining seven, three are chosen "randomly" within a stratified random design to
+ensure habitat types are equally represented.
+
+It will be useful to know which reaches got 3 passes and which got only 1. We can
+count this by grouping by each reach (represented by the `namedLocation` column) and
+running `summarise(n())` on the grouped data.
+
+Then we can filter based on the number of passes and `pull()` out a vector of 3 pass
+and 1 pass reaches.
+
+```{r useful-lists-2}
+MAYF_3pass_reaches <- fsh_perPass %>%
+  select(namedLocation, passNumber) %>%
+  group_by(namedLocation) %>%
+  summarise(passes = n()) %>%
+  filter(passes == 3) %>% 
+  pull(namedLocation)
+
+MAYF_3pass_reaches
+```
+
+## Grouping and splitting the count data
+
+We can now use our list of reaches to filter our count data. Note the `%in%`
+operator, which checks if the value of the left hand side appears anywhere in a
+vector on the right hand side.
+
+```{r splitting-1}
+MAYF_3pass_count <- MAYF_count %>% 
+  filter(namedLocation %in% MAYF_3pass_reaches) %>%
+  group_by(namedLocation)
+```
+
+It will also be useful to split this data frame into three: one for each reach. The
+`group_split()` function to split our table into a list of three tables. We will
+need to name each list element with `set_names()`. We can get the names for each
+table with the `group_keys()` function, which extracts names from a grouped data
+frame. Since the `nm` argument has to be a vector, we have to `pull()` the column
+out as a vector.
+
+Why use `group_keys()` instead of just using the vector of 3-pass reach names we
+already made? In short, `group_keys()` guarantees that we get the keys in the same
+order that `group_split()` will put them in, which makes it a best practice when
+we've been putting the data through multiple transformations.
+
+```{r splitting-2}
+MAYF_3pass_count <- MAYF_3pass_count %>%
+  group_split(.keep = FALSE) %>%
+  set_names(nm = MAYF_3pass_count %>%
+                    group_keys() %>%
+                    pull(namedLocation))
+```
+
+## Preparing to map the `removal()` function
+
+To review, the `removal()` function take a vector containing catch data at each
+pass. So our goal is to have a data frame from which we can pull a column containing
+catch data for each species. We can use `pivot_wider()` again for this purpose, this
+time defining the column names as the *species*.
+
+We must also remember that `MAYF_3pass_count` isn't just one data frame anymore,
+it's a list of three! So we need to pivot each of them in succession with `map()`.
+Let's define a function to plug into our `map()`.
+
+```{r format-function}
+format_counts <- function(x) {
+  x %>% 
+    pivot_wider(id_cols = c(taxonID, passNumber),
+            names_from = taxonID,
+            values_from = count,
+            values_fill = 0) %>% 
+    select(-passNumber)
+}
+```
+
+This is almost the same as what we did to our CPUE data, but with an added
+`values_fill` argument for the `NA` values `pivot_wider()` will create. We also use
+`select` to get rid of the `passNumber` variable as we will no longer need it. 
+
+Now we just have to apply our custom function to each data frame in our list.
+
+```{r map-format-counts}
+MAYF_3pass_count <- map(MAYF_3pass_count, format_counts)
+
+MAYF_3pass_count
+```
+We should now have a list of three data frames, one for each reach. Each data frame
+has one column per species, with the number of fish caught in passes 1, 2, and 3 in
+each row. We'll be running `removal` on each of these columns using nested `map`
+functions.
+
+Let's build up our loops by starting with the code to run on **one** observation,
+then working our way up to the whole dataset. We'll select the first reach
+(`$MAYF.AOS.fish.point.02`), and the first taxon code (`$ETHLAC`) from the data
+frame we created. This makes our catch argument very unwieldy for now, but remember
+as we loop, we won't need to subset to quite this specific level.
+
+```{r removal-1}
+removal(catch = MAYF_3pass_count$MAYF.AOS.fish.point.02$ETHLAC)
+```
+This is great, but to plug this into a larger data frame, we'll need to extract the
+actual estimate and the standard error, which are the first two elements of the
+`$est` element.
+
+```{r removal-2}
+removal(catch = MAYF_3pass_count$MAYF.AOS.fish.point.02$ETHLAC)$est[1:2]
+```
+Much better! Now we can try the first level of looping, which will loop over just
+one of our data frames. We can shave off the `$ETHLAC` specification, since the map
+function will iterate over all of the species columns. Remember that `.x` refers to
+the current element of the thing we're looping over, not the whole thing.
+
+You'll notice we added a `~` before the removal function. Remember that this is how
+we define anonymous functions within a map function. Otherwise, we'd only be able to
+run `removal` by itself with none of our additional subsetting, which is not what we
+want.
+
+```{r removal-3}
+MAYF_3pass_count$MAYF.AOS.fish.point.02 %>%
+  map_dfc(~ removal(catch = .x)$est[1:2])
+```
+
+Excellent! Now we have the estimate in the first row, with standard error in the second for each species.
+
+Now all we need to do is enclose the whole thing in a second map function, so we can
+do this to each data frame within our list. Note now that we have to define our
+`map_dfc()` function as its own anonymous function. IMPORTANT: when we nest map
+functions, it is possible (and necessary!) to have two or more occurances of `.x`
+which refer to two different things.
+
+Remember that `.x` appears within an anonymous function definition which itself is
+an argument of the `map()` function. `.x` points to the current element of the data
+given to its parent map function (*not* its grandparent!) What this boils down to is
+that the first `.x` in the code below is refering to the elements of
+MAYF_3pass_counts (our data frames.) The second `.x` has a different parent, the
+`map_dfc()` function. The data we gave *that* function is a data frame, whose
+elements are the individual species columns. So the second `.x` is refering to the
+species columns, while the first `.x` refers to the data frames they came from.
+
+```{r removal-4 }
+MAYF_3pass_estimates <- 
+  map(
+    MAYF_3pass_count,
+    ~map_dfc(
+      .x,
+      ~removal(catch = .x)$est[1:2]
+      )
+    )
+
+MAYF_3pass_estimates
+```
+
+What we end up with is three data frames (one for each reach) containing population
+estimates and standard errors for each species.
+
+## Conclusion
+
+In this tutorial we learned how powerful `map` and `pivot` functions can be. First
+we joined the appropriate tables to get access to all the information we needed, and
+used `group_by` and `summarize` to count how many observations of each species there
+were. To get catch per unit effort, we first used our typical dplyr functions to
+create a CPUE variable, and then used `pivot_wider` to go from one row per species
+per reach (efficient, but not exactly readable) to a summary table of CPUE for each
+reach.
+
+Then, to run the `removal` function on each species within reach, we needed to
+format the table so that `map` could easily plug in catch data for each species. We
+split the count data into a data frame for each reach (contained within a list,) and
+mapped `pivot_wider` to each table within the list. This created a column for each
+species containing catch data for all three passes for that species. Now that each
+column could be plugged directly into the `removal` function, we used `map`
+functions to do exactly that, using one `map` function to iterate over each table in
+our list, and another `map` within the first to iterate over each column in the tables.
+Finally, we have three tables (one per reach) containing a population estimate for
+each species occuring in that reach, along with the standard error.

@@ -15,14 +15,6 @@ tutorialSeries:
 urlTitle: fish-species-richness
 ---
 
-This template should be used to start new tutorials. If your tutorial is in R 
-or Jupyter Notebooks, or another format that will be converted to markdown. 
-Please include the header above but create the tutorial in the appropriate 
-application. 
-
-All tutorials then have an Info Box with the information necessary for a new user
-to NEON tutorials to complete the tutorial.  
-
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives 
@@ -56,7 +48,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 ## Getting Started
 
-Don't forget to load packages to your library!
+Load required packages to your R session.
 
 ```{r library-packages}
 library(dplyr)
@@ -80,12 +72,11 @@ permission to proceed.
 
 Let's take a look at our data!
 ```{r structure}
-class(electrofishing_fall2019)
-names(electrofishing_fall2019)
+class(electrofishing_fall2019) # loadByProduct() produces a named list
+names(electrofishing_fall2019) # view the names of the items of that list
 ```
 
-The `electrofishing_fall2019` variable is a list of 8 tables. We can reference 
-these by using the `$` operator (eg. `electrofishing_fall2019$fsh_bulkCount`) to 
+The `electrofishing_fall2019` object is a list of 8 tables, plus the readme file. We can reference these by using the `$` operator (eg. `electrofishing_fall2019$fsh_bulkCount`) to 
 look at each table, but this is cumbersome. To save ourselves some typing, we can 
 list each of the tables to our global environment so we can call them directly. R 
 has a built-in function for this: `list2env()`.
@@ -106,23 +97,15 @@ the first 50 individuals are processed, and the rest are counted in bulk. This
 information is included in the fsh_bulkCount table.
 
 When dealing with a new dataset, it can be useful to `View()` the variables table 
-(named `variables_20107` for this data product.) RStudio will open this in a new 
-tab.
+(named `variables_20107` for this data product), which describeds the variables 
+reported in the various tables contained within the download. RStudio will open 
+this in a new tab.
 
-Since we're just counting unique species for now, we can just use the 
-`fsh_perFish` table to get what we need. We can select the column we want, 
-`scientificName`, with the `select()` function. Let's see how many individual 
-fish measurements NEON made in our Fall 2019 bout:
-
-```{r individual-observations}
-fsh_perFish %>%
-    select(scientificName) %>%
-    summarise(n())            # summarise() is used to provide summary statistics
-                              # n() as an argument means we just want a count
-```
-
-That's a lot of fish! Let's narrow it down with the `distinct()` which will 
-eliminate any repeats.
+Since we're counting just the number of species collected, we can use the 
+`fsh_perFish` table to get the information that we need. We can select the column 
+we want, `scientificName`, with the `select()` function, and remove any duplicate 
+species names using the `distinct()` function. `summarize(n())` returns a count of
+resulting vector of unique scientific names.
 
 ```{r total-species-1}
 fsh_perFish %>%
@@ -185,7 +168,14 @@ ggplot(richness_by_site, aes(x = siteID, y = num_species)) +
 ```
 
 Looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/MAYF">Mayfield Creek</a> in Domain 8 has far and away the
-highest species richness, but what about other measures of diversity? For that 
-we'll need an idea of population abundance. Since NEON uses a three-pass 
-electrofishing method, we will need to do a bit of processing to get the 
-quantities we need.
+highest species richness, but to get a deeper understanding of Mayfield Creek's 
+fish populations we'll need an idea of relative and absolute abundance. Since 
+NEON uses a three-pass electrofishing method, we will need to do a bit of 
+processing to get the quantities we need.
+
+The next tutorial in the series, *Relative and Absolute Fish Population Abundance Estimation*
+will cover processing the Mayfield Creek data to 
+obtain catch per unit effort (CPUE) to determine relative abundance of our species. We will also use a function from the FSA package 
+designed to estimate absolute abundance via a three-pass depletion method. Lastly 
+we will automate the process for each species in each reach (without writing any 
+`for` loops!)
