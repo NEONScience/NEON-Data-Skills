@@ -208,27 +208,37 @@ plot(base_plots_SPDF, border = 'blue')
 #Input is a single plot spdf, output is vector of two boolean values
 #  First output boolean is whether plot crosses a horizontal boundary, second is whether it crosses vertical boundary
 is_on_boundary <- function(x,y){
-  answer <- c(FALSE,FALSE)
+  the_names <- c('xMin', 'xMax', 'yMin', 'yMax')
+  
+  tile_diameter <- 1000
+  plot_radius <- 20
+  
+  tile_x <- round1000(x)
+  tile_y <- round1000(y)
+  
+  plot_extent <-   c((x - plot_radius),(x + plot_radius),(y - plot_radius),(y + plot_radius))
+  names(plot_extent) <- the_names
+  
+  tile_extent <- c((tile_x),(tile_x + tile_diameter),(tile_y),(tile_y + tile_diameter))
+  names(tile_extent) <- the_names
   
   
-  radius <- 20
+  out <- c(FALSE, FALSE, FALSE, FALSE)
+  names(out) <- the_names
   
-  extent_vec <- c((x - radius),(x + radius),(y - radius),(y + radius))
-  names(extent_vec) <- c('xMin', 'xMax', 'yMin', 'yMax')
-  
-  #If the plot is on a horizontal tile boundary, the nearest horizontal tile boundary below yMax will be above yMin
-  bound_below <- round1000(extent_vec['yMax'])
-  if(bound_below >= extent_vec['yMin']){
-    answer[1] <- TRUE
+  #If plot left is less than tile left boundary, or plot lower boundary is less than tile lower boundary
+  for(name in c('xMin','yMin')){
+    if(plot_extent[name] <= tile_extent[name]){
+      out[name] <- TRUE
+    }
+  }
+  for(name in c('xMax', 'yMax')){
+    if(plot_extent[name] >= tile_extent[name]){
+      out[name] <- TRUE
+    }
   }
   
-  #If the plot is on a vertical tile boundary, the nearest vertical tile boundary left of xMax will be right of yMin
-  bound_left <- round1000(extent_vec['xMax'])
-  if(bound_left >= extent_vec['xMin']){
-    answer[2] <- TRUE
-  }
-  
-  return(answer)
+  return(out) 
 }
 
 
@@ -245,7 +255,7 @@ get_plot_coords <- function(plot_spdf){
   
   boundary_vec <- is_on_boundary(x,y)
   
-  if(boundary_vec[1]|boundary_vec[2]){
+  if(any(boundary_vec)){
     return('Plot crosses a tile boundary')
   }
   #Round to get coordinates of tile
@@ -308,28 +318,38 @@ boundary_list <- list()
 
 #Function takes spatialPolygons data frame for one plot that crosses a boundary, returns coordinates for 
 #  each tile the plot crosses. Output is vector of coordinate strings
+
 get_boundary_plot_coords <- function(plot_spdf_row){
   options(scipen = 99999)
   x <- as.numeric(plot_spdf_row[19])
   y <- as.numeric(plot_spdf_row[20])
-
   
   east <- round1000(x)
   north <- round1000(y)
-
   
   
   boundary_vec <- is_on_boundary(x,y)
   
-  #If tile is on horizontal boundary, get additional northing coordinate
-  if(boundary_vec[1]){
-    east <- c(east, (east + 1000))
-    
+  #If tile is on left boundary, get easting coordinate of tile to left. If plot crosses right boundary, get
+  # easting coordinate of tile to right
+  if(boundary_vec['xMin']){
+    east <- c(east, east - 1000)
+  } else if(boundary_vec['xMax']){
+    east <- c(east, east + 1000)
   }
-  #If tile is on horizontal boundary, get additional easting coordinate
-  if(boundary_vec[2]){
-    north <- c(north, (north + 1000))
+  
+  
+  
+  #If plot crosses lower tile boundary, get northing of tile below. Otherwise, if plot crosses upper tile boundary, get 
+  # northing of tile above
+  if(boundary_vec['yMin']){
+    north <- c(north, north - 1000)
+  } else if(boundary_vec['yMax']){
+    north <- c(north, north + 1000)
   }
+  
+  
+  
   #If tile crosses both boundaries, make vector of four empty strings. Otherwise, make vector of two empty strings
   out <- ifelse(boundary_vec[1]&boundary_vec[2],c('','','',''),c('',''))
   
@@ -344,6 +364,8 @@ get_boundary_plot_coords <- function(plot_spdf_row){
   
   return(out)
 }
+
+
 
 
 if(nrow(boundary_df) != 0){

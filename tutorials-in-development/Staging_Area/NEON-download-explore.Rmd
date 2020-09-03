@@ -6,9 +6,10 @@ dateCreated: '2018-11-07'
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 estimatedTime: 1 - 2 hours
-packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
+packagesLibraries: [biocManager, devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
 languageTool: R, API
+dataProducts: DP1.10098.001, DP3.30015.001
 code1: R/download-explore/NEON-download-explore.R
 tutorialSeries:
 urlTitle: download-explore-neon-data

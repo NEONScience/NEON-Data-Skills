@@ -4,14 +4,15 @@ title: ""
 description: ""
 dateCreated: 2020-06-30
 authors: Donal O'Leary, Claire Lunch
-contributors: 
+contributors: Maxwell Burner
 estimatedTime: 
-packagesLibraries: neonUtilities, soilDB
+packagesLibraries: neonUtilities, soilDB, dplyr, aqp, cluster, sharpshootR
 topics: data-management, rep-sci
 languageTool: R, API
+dataProduct: DP1.00096.001, DP1.00097.001,
 code1: R/
 tutorialSeries:
-urlTitle: 
+urlTitle: megapit-profiles
 ---
 
 This tutorial covers ...
@@ -143,7 +144,9 @@ S <- arrange(S, siteID, horizonTopDepth)
 
 ```
 
-There are two more things that we will want to do before converting this dataframe into a `SoilProfileCollection` object. First, we will make a new `siteLabel` column to use when plotting seeral pedons at once. 
+There are two more things that we will want to do before converting this 
+dataframe into a `SoilProfileCollection` object. First, we will make a new 
+`siteLabel` column to use when plotting several pedons at once. 
 
 
 ```{r site-labels}
@@ -153,7 +156,9 @@ S$siteLabel=paste(S$domainID, S$siteID, sep="-")
 
 ```
 
-Second, we will convert the soil physical properties (sand, silt, clay percentages) into an RGB color that we can use for plotting later. These steps are much easier to do now while the data are in a simple data.frame.
+Second, we will convert the soil physical properties (sand, silt, clay percentages) 
+into an RGB color that we can use for plotting later. These steps are much easier to 
+do now while the data are in a simple data.frame.
 
 ```{r RGB-colors}
 
@@ -244,7 +249,12 @@ plotSPC(S[7:10,], # pass multiple sites here
 
 ## Multivariate Plotting
 
-When analyzing soils data, we are often interested in more than one variable at a time. A classic example is texture, which in its simplest terms, is described in terms of percent Sand, Silt, and Clay. In order to plot these three variables at a time, we can describe each percentage as a color on the color wheel. Remember, in the section above, we assigned the color Red to Sand, Green to Silt, and Blue to Clay. We can plot these colors on the familiar three-axis plot that is often used to describe soil texture to serve as our color legend. To do this, we will use the `Ternary` package:
+When analyzing soils data, we are often interested in more than one variable at a time. A classic 
+example is texture, which in its simplest terms, is described in terms of percent Sand, Silt, and Clay. 
+In order to plot these three variables at a time, we can describe each percentage as a color on the 
+color wheel. Remember, in the section above, we assigned the color Red to Sand, Green to Silt, and Blue 
+to Clay. We can plot these colors on the familiar three-axis plot that is often used to describe soil 
+texture to serve as our color legend. To do this, we will use the `Ternary` package:
 
 ```{r ternary-plot}
 # Set plot margins
@@ -280,8 +290,12 @@ plotSPC(S[7:10,], # pass multiple sites here
 
 ## Multivariate Clustering
 
-We have 47 Megapit samples across the NEON observatory, spanning a wide range of soil types, textures, and chemical profiles. While it may be helpful from a geographic perspective to group the pedons by Site ID, it may be even more helpful to group the samples by their inherent properties. For example, grouping soils by texture, or by their organic matter content. 
-In order to makethese groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the `cluster` package. First, let's group by soil texture:
+We have 47 Megapit samples across the NEON observatory, spanning a wide range of soil types, 
+textures, and chemical profiles. While it may be helpful from a geographic perspective to group 
+the pedons by Site ID, it may be even more helpful to group the samples by their inherent 
+properties. For example, grouping soils by texture, or by their organic matter content. 
+In order to makethese groupings, we will employ a DIvisive ANAlysis (DIANA) clustering 
+technique using the `cluster` package. First, let's group by soil texture:
 
 ```{r cluster-texture}
 
@@ -299,9 +313,14 @@ plotProfileDendrogram(S, d.diana, scaling.factor = .6,
 
 ```
 
-Well, it seems to have worked and plotted, but it is really hard to see all of this information in the small plotting area.
+Well, it seems to have worked and plotted, but it is really hard to see all of this 
+information in the small plotting area.
 
-In order to visualize these data, we will need to make a plotting area large enough to contain the full plot with labels. To do so, we will open a `PDF` graphics device, generate the plot in that device, then close and save the device using `dev.off()`. It will also be a good idea to check your current working directory, and perhaps change that to where you want to save your PDFs.
+In order to visualize these data, we will need to make a plotting area large enough to 
+contain the full plot with labels. To do so, we will open a `PDF` graphics device, generate 
+the plot in that device, then close and save the device using `dev.off()`. It will also be 
+a good idea to check your current working directory, and perhaps change that to where you 
+want to save your PDFs.
 
 ```{r plot-texture-clusters}
 
@@ -328,7 +347,8 @@ This plot is not shown in this tutorial view, but you can download an example of
 
 ## Clustering by Nutrients
 
-Rather than cluster based on physical properties, we can also cluster based on nutrient contents (nitrogen, carbon, and sulfur):
+Rather than cluster based on physical properties, we can also cluster based on 
+nutrient contents (nitrogen, carbon, and sulfur):
 
 ```{r cluster-nutrients}
 
@@ -342,7 +362,9 @@ d.diana.nutrients <- diana(d.nutrients)
 
 ```
 
-Let's make another PDF for our plot. However, this time is itsn't as straightforward to plot the three nutrients of interest as 'rgb' colors, so we will make three separate plots for each nutrient:
+Let's make another PDF for our plot. However, this time is itsn't as straightforward 
+to plot the three nutrients of interest as 'rgb' colors, so we will make three 
+separate plots for each nutrient:
 
 ```{r plot-texture-clusters}
 

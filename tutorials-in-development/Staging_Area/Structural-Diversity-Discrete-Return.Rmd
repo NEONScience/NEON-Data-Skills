@@ -1,7 +1,7 @@
 ---
 title: "Calculating Forest Structural Diversity Metrics from NEON LiDAR Data"
 code1: R/structural-diversity/Structural-Diversity-Discrete-Return.R
-contributors: Jeff Atkins, Keith Krause, Atticus Stovall
+contributors: Jeff Atkins, Keith Krause, Atticus Stovall, Max Burner
 dataProduct: null
 dateCreated: '2020-05-01'
 description: Read in a NEON LiDAR file (.laz) and calculate several forest structural diversity
@@ -79,16 +79,21 @@ National Ecological Observatory Network</a>.
 
 ## NEON AOP Discrete Return LIDAR
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> The NEON Airborne Observation Platform (AOP) </a>. 
-has several sensors including discrete-return LiDAR, which is useful for measuring forest structural diversity that can be summarized into four categories of metrics: (1) canopy height, (2) canopy cover and openness, and (3) canopy heterogeneity (internal and external), and (4) vegetation area.
+has several sensors including discrete-return LiDAR, which is useful for measuring forest 
+structural diversity that can be summarized into four categories of metrics: (1) canopy height, 
+(2) canopy cover and openness, and (3) canopy heterogeneity (internal and external), and (4) vegetation area.
 
 We will be comparing the structural diversity of two NEON sites that vary in their structural characteristics. 
 
-First, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by Quercus rubra, Acer rubrum, and Aralia nudicaulis.
+First, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">Harvard Forest (HARV)</a>, which is located in Massachusetts. It is a lower elevation, mixed deciduous and evergreen forest dominated by 
+Quercus rubra, Acer rubrum, and Aralia nudicaulis.
 
-Second, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a>, which is a high elevation forested NEON site in California. TEAK is an evergreen forest dominated by Abies magnifica, Abies concolor, Pinus jeffreyi, and Pinus contorta. 
+Second, we will look at <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a>, which is a high elevation forested NEON site in California. TEAK is an evergreen forest dominated by Abiesmagnifica, 
+Abies concolor, Pinus jeffreyi, and Pinus contorta. 
 
-As you can imagine, these two forest types will have both similarities and differences in their structural attributes. We can quantify these attributes by calculating several different structural diversity metrics, and comparing 
-the results.
+As you can imagine, these two forest types will have both similarities and differences in their 
+structural attributes. We can quantify these attributes by calculating several different structural 
+diversity metrics, and comparing the results.
 
 ## Loading the LIDAR Products
 To begin, we first need to load our required R packages, and set our working 
@@ -436,7 +441,8 @@ TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 ```
 
 ## Comparing Metrics Between Forests
-How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
+How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen
+forest from HARV? Let's combine the result data.frames for a direct comparison:
 
 ```{r combine results}
 
