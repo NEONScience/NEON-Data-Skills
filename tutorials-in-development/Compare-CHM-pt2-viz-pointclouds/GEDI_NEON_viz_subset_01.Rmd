@@ -159,7 +159,7 @@ Next, we use the rGEDI package to read in the GEDI data. First, we need to make 
 
 ```{r read-GEDI, message=F}
 
-gedilevel1b<-readLevel1B(level1Bpath = file.path(wd, "GEDI01_B_2019206022612_O03482_T00370_02_003_01.h5"))
+gedilevel1b<-readLevel1B(level1Bpath = file.path(wd, "NEON_GEDI_subset.h5"))
 level1bGeo<-getLevel1BGeo(level1b=gedilevel1b,select=c("elevation_bin0"))
 head(level1bGeo)
 
@@ -203,7 +203,7 @@ plot(level1bgeo_WREF_UTM_buffer, add=T, col="transparent")
 
 # add labes with the last three digits of the GEDI shot_number
 pointLabel(st_coordinates(level1bgeo_WREF_UTM),
-           labels=substr(level1bgeo_WREF_UTM$shot_number, 15, 17), cex=1)
+           labels=level1bgeo_WREF_UTM$shot_number, cex=1)
 
 
 ```
@@ -214,7 +214,8 @@ Let's take a look at a waveform for a single GEDI shot. We will use the last thr
 ```{r extract-wf, warning=F}
 
 # Extracting GEDI full-waveform for a given shot_number
-wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF_UTM_buffer$shot_number[which(substr(level1bgeo_WREF_UTM$shot_number, 15, 17)=="002")])
+###ERROR HERE###
+wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF_UTM_buffer$shot_number[which(level1bgeo_WREF_UTM_buffer$shot_number==1786)])
 
 # Save current plotting parameters to revert to
 oldpar <- par()
