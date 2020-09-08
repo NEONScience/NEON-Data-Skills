@@ -215,7 +215,8 @@ Let's take a look at a waveform for a single GEDI shot. We will use the last thr
 
 # Extracting GEDI full-waveform for a given shot_number
 ###ERROR HERE###
-wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF_UTM_buffer$shot_number[which(level1bgeo_WREF_UTM_buffer$shot_number==1786)])
+wf <- getLevel1BWF(gedilevel1b,shot_number = 20)
+# wf <- getLevel1BWF(gedilevel1b,shot_number = level1bgeo_WREF_UTM_buffer$shot_number[which(level1bgeo_WREF_UTM_buffer$shot_number==1786)])
 
 # Save current plotting parameters to revert to
 oldpar <- par()
@@ -238,7 +239,7 @@ par(oldpar)
 
 ```
 
-This waveform shows some noise above and below the main ecosystem return, with a fairly dense canopy around 520m elevation, an a characteristic ground return spike at about 475m. While the GEDI data are extremely valuable and offer a near-global coverage, it is hard to get a good sense of what the ecosystem really looks like from this GEDI waveform. Let's download some NEON AOP pointcloud data to pair up with this waveform to get a better sense of what GEDI is reporting.
+This waveform shows some noise above and below the main ecosystem return, with a fairly dense canopy around 370m elevation, an a characteristic ground return spike at about 340m. While the GEDI data are extremely valuable and offer a near-global coverage, it is hard to get a good sense of what the ecosystem really looks like from this GEDI waveform. Let's download some NEON AOP pointcloud data to pair up with this waveform to get a better sense of what GEDI is reporting.
 
 ## Download and Plot NEON AOP LiDAR pointcloud data
 Here, we will use the `byTileAOP()` function from the 'neonUtilities' package to download the classified pointcloud mosaic data (DP1.30003.001). Since this is a mosaic tile like the CHM, we can just pass this function the lower left corner of the CHM tile to get the corresponding lidar pointcloud mosaic tile for our analysis.
@@ -296,7 +297,7 @@ We can now use the GEDI footprint circles (that we made using the `buffer()` fun
 WREF_GEDI_footprints=lasclip(WREF_LAS, geometry = level1bgeo_WREF_UTM_buffer)
 
 # we can now plot individual footprint clips
-plot(WREF_GEDI_footprints[[1]])
+plot(WREF_GEDI_footprints[[8]])
 
 ```
 
@@ -305,7 +306,7 @@ Now that we can extract individual waveforms, and the AOP LiDAR pointcloud that 
 
 ```{r plot-lidar-together-1}
 
-for(shot_n in 1:1){
+for(shot_n in 1:21){
 
   # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
   # We save the plot as an object 'p' which gives the (x,y) offset for the lower
@@ -473,7 +474,7 @@ Now that we have a vertical offset for each of the GEDI footprints, let's try ag
 ```{r plot-GEDI-2}
 
 # You can enter whichever shots that you want to plot in the for loop here
-for(shot_n in c(1,24,25)){
+for(shot_n in 1:length(WREF_GEDI_footprints)){
 #for(shot_n in 1:26){
 
   # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
