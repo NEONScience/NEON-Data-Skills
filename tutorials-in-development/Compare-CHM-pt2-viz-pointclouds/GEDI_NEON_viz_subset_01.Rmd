@@ -135,12 +135,12 @@ Next, we use that bounding box information as an input to the `gedifinder()` fun
 # that intersect the bounding box of interest.
 # Note that you still must download the entire orbit and then subset to 
 # your area of interest!
-gLevel1B <- gedifinder(product="GEDI01_B",
-                     ul_lat, ul_lon, lr_lat,lr_lon,
-                     version="001",daterange=NULL)
-
-# View list of available data
-gLevel1B
+# gLevel1B <- gedifinder(product="GEDI01_B",
+#                      ul_lat, ul_lon, lr_lat,lr_lon,
+#                      version="001",daterange=NULL)
+# 
+# # View list of available data
+# gLevel1B
 
 ```
 
@@ -149,9 +149,9 @@ Great! There are several GEDI orbits available that have at least 1 'shot' withi
 ```{r download-GEDI, eval=F, comment=NA}
 
 # Downloading GEDI data, if you haven't already
-if(!file.exists(paste0(wd,basename(gLevel1B[2])))){
-  gediDownload(filepath=gLevel1B[2],outdir=wd)
-}
+# if(!file.exists(paste0(wd,basename(gLevel1B[2])))){
+#   gediDownload(filepath=gLevel1B[2],outdir=wd)
+# }
 
 ```
 
@@ -474,8 +474,8 @@ Now that we have a vertical offset for each of the GEDI footprints, let's try ag
 ```{r plot-GEDI-2}
 
 # You can enter whichever shots that you want to plot in the for loop here
-for(shot_n in 1:length(WREF_GEDI_footprints)){
-#for(shot_n in 1:26){
+#for(shot_n in 1:length(WREF_GEDI_footprints)){
+for(shot_n in c(20)){
 
   # First, plot the NEON AOP LiDAR clipped to the GEDI footprint
   # We save the plot as an object 'p' which gives the (x,y) offset for the lower
