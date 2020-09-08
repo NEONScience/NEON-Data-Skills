@@ -12,7 +12,7 @@ setwd(wd)
 f_full=paste0(wd, "GEDI01_B_2019206022612_O03482_T00370_02_003_01.h5")
 
 # View the list of groups and datasets in the GEDI package, and save a table of that list
-#View(h5ls(f_full, all=T))
+View(h5ls(f_full, all=T))
 t=h5ls(f_full, all=T)
 
 
@@ -154,19 +154,13 @@ for(g in 1:length(group_list)){
 
 # define-datasets-of-interest ---------------------------------------------
 
-View(h5ls(f, all=T))
-select="shot_number"
-d=select
+#View(h5ls(f, all=T))
+select=c("shot_number","geolocation/shot_number")
+#d=select
 for(d in select){
   #print(d)
   d_name=paste(main_beam,d,sep="/")
   print(d_name)
-  
-  # Read the inividual dataset within the Coordinate_System group
-  dat=h5read(f_full,paste0(main_beam,"/",d), bit64conversion='bit64')
-  dat2=as.character(dat)
-  dat3=substr(dat2,11,nchar(dat2[1]))
-  dat4=as.integer(dat3)+1000000
   
   # Read the associated attributes (if any)
   a=h5readAttributes(f_full,paste0(main_beam,"/",d))
@@ -174,17 +168,7 @@ for(d in select){
   fid <- H5Fopen(f)
   h5locobj <- H5Gopen(fid,"/")
   
-  #https://www.rdocumentation.org/packages/rhdf5/versions/2.16.0/topics/h5createDataset
-  h5createDataset(file=f, dataset=d_name, H5type="H5T_STD_U64LE", dims = c(length(dat)))
-  
-  #h5write(dat, file=f, name=d_name)
-  
-  fid <- H5Fopen(f)
-  h5locobj <- H5Gopen(fid,"/")
-  
-  # Write the dataset to the HDF5 file
-  h5writeDataset.integer(dat4, h5loc=h5locobj,
-          name=d_name)
+  h5write((1:length(new_start_vec)), file=f, name=d_name)
   
   ## Write Attributes after data
   if(length(a)>0){
@@ -202,6 +186,64 @@ for(d in select){
 
 View(h5ls(f, all=T))
 
+#View(h5ls(f, all=T))
+select="rx_sample_start_index"
+d=select
+for(d in select){
+  #print(d)
+  d_name=paste(main_beam,d,sep="/")
+  print(d_name)
+  
+  dat=new_start_vec
+  
+  # Read the associated attributes (if any)
+  a=h5readAttributes(f_full,paste0(main_beam,"/",d))
+  
+  # Assign the attributes (if any) to the dataset
+  attributes(dat)=a
+  
+  # Finally, write the dataset to the HDF5 file
+  h5write(obj=dat,file=f,
+          name=paste0(main_beam,"/",d),
+          write.attributes=T)
+  h5closeAll()
+  
+  
+}
+
+#View(h5ls(f, all=T))
+
+
+#View(h5ls(f, all=T))
+select="rxwaveform"
+d=select
+for(d in select){
+  #print(d)
+  d_name=paste(main_beam,d,sep="/")
+  print(d_name)
+  
+  dat=new_wf_vec
+  
+  # Read the associated attributes (if any)
+  a=h5readAttributes(f_full,paste0(main_beam,"/",d))
+  
+  # Assign the attributes (if any) to the dataset
+  attributes(dat)=a
+  
+  # Finally, write the dataset to the HDF5 file
+  h5write(obj=dat,file=f,
+          name=paste0(main_beam,"/",d),
+          write.attributes=T)
+  h5closeAll()
+  
+}
+
+#View(h5ls(f, all=T))
+
+# values to overwrite in new H5:
+# shot_number (1:length(new_start_vec))
+# /rx_sample_start_index --> new_start_vec
+# rxwaveform --> new_wf_vec
 
 ## Data layers used in getLevel1BWF and getLevel1BGeo
 select = unique(
@@ -210,12 +252,12 @@ select = unique(
     "geolocation/latitude_lastbin",
     "geolocation/longitude_bin0",
     "geolocation/longitude_lastbin",
-    "geolocation/shot_number",
+    #"geolocation/shot_number",
     "geolocation/elevation_bin0",
     "geolocation/elevation_lastbin",
-    "rx_sample_count",
-    "rx_sample_start_index",
-    "rxwaveform"
+    "rx_sample_count"#,
+    #"rx_sample_start_index",
+    #"rxwaveform"
   )
 )
 
@@ -227,7 +269,9 @@ for(d in select){
   print(d_name)
   
   # Read the inividual dataset within the Coordinate_System group
-  dat=h5read(f_full,paste0(main_beam,"/",d),bit64conversion='bit64')
+  dat=h5read(f_full,paste0(main_beam,"/",d))
+  dat=dat[shot_number_i %in% shots_from_main_beam]
+  #shot_vec[shot_vec %in% shot_number_i]
   
   # Read the associated attributes (if any)
   a=h5readAttributes(f_full,paste0(main_beam,"/",d))
@@ -237,7 +281,7 @@ for(d in select){
   
   # Finally, write the dataset to the HDF5 file
   h5write(obj=dat,file=f,
-          name=paste0(main_beam,"/1",d),
+          name=paste0(main_beam,"/",d),
           write.attributes=T)
   
   h5closeAll()
