@@ -594,7 +594,7 @@ The default setting for a ggplot bar plot -  `geom_bar()` - is a histogram
 designated by `stat="bin"`. However, in this case, we want to plot count values. 
 We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 
-```{r plot-leaves-total, fig.cap=c("Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a "yes" for the phenophase of interest,"Leaves", and were from the primary plots.","Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a "yes" for the phenophase of interest,"Leaves", and were from the primary plots. Axis labels and title have been added to make the graph more presentable.")}
+```{r plot-leaves-total, fig.cap=c("Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a 'yes' for the phenophase of interest,'Leaves', and were from the primary plots.","Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a 'yes' for the phenophase of interest,'Leaves', and were from the primary plots. Axis labels and title have been added to make the graph more presentable.")}
 
 # plot number of individuals in leaf
 phenoPlot <- ggplot(inStat_T, aes(dateStat, countYes)) +
@@ -617,7 +617,7 @@ phenoPlot
 
 We could also covert this to percentage and plot that. 
 
-```{r plot-leaves-percentage, fig.cap="Bar plot showing the proportion of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). The y-axis represents the percent of individuals that were recorded as a "yes" for the phenophase of interest,"Leaves", and were from the primary plots."}
+```{r plot-leaves-percentage, fig.cap="It might also be useful to visualize the data in different ways while exploring the data. As such, before plotting, we can convert our count data into a percentage by writting an expression that divides the number of individuals with a 'yes' for the phenophase of interest, 'Leaves', by the total number of individuals and then multiplies the result by 100. Using this newly generated dataset of percentages, we can plot the data similarly to how we did in the previous plot. Only this time, the y-axis range goes from 0 to 100 to reflect the percentage data we just generated. The resulting plot now shows a bar plot of the proportion of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). The y-axis represents the percent of individuals that were recorded as a 'yes' for the phenophase of interest,'Leaves', and were from the primary plots."}
 
 # convert to percent
 inStat_T$percent<- ((inStat_T$countYes)/inStat_T$numInd)*100
@@ -672,7 +672,7 @@ range(phe_1sp_2018$dateStat)
 
 How does that look? 
 
-```{r plot-2018, fig.cap="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. Counts represent individuals that were recorded as a "yes" for the phenophase of interest,"Leaves", and were from the primary plots.}
+```{r plot-2018, fig.cap="In the previous step, we filtered our data by date to only include data from 2018. Reviewing the newly generated dataset we get a bar plot showing the count of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. Counts represent individuals that were recorded as a 'yes' for the phenophase of interest,'Leaves', and were from the primary plots.}
 
 # Now let's make the plot look a bit more presentable
 phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
