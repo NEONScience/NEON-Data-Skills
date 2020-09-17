@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, scales, gridExtra, lubridate, ggthemes
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: /R/dc-tabular-time-series/05-Plotting-Time-Series-ggplot-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/05-Plotting-Time-Series-ggplot-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-time-series-plot-ggplot-r
 ---

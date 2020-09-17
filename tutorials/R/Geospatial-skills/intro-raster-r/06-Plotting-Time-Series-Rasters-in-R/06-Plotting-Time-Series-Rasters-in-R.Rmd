@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal, rasterVis
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: /R/dc-spatial-raster/06-Plotting-Time-Series-Rasters-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/06-Plotting-Time-Series-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-rastervis-levelplot-r
 

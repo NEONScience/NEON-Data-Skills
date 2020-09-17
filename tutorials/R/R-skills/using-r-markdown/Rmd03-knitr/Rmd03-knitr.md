@@ -10,7 +10,7 @@ packagesLibraries: [knitr, rmarkdown]
 topics: data-management
 languagesTool: R
 dataProducts:
-code1:
+code1: 
 tutorialSeries: [RMarkdown]
 urlTitle: rmd-use-knitr
 ---

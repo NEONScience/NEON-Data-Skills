@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct:
-code1: HYPERSPECTRAL/RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---

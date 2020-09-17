@@ -10,7 +10,7 @@ packagesLibraries: raster, sp, rgdal
 topics: hyperspectral, spatial-data-gis, remote-sensing, raster
 languagesTool: R
 dataProduct:
-code1: R/primer-raster-data/Image-Raster-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/Image-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
 urlTitle: image-raster-data-r
 ---

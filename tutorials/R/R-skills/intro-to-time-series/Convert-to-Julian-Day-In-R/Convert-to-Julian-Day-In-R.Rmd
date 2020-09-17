@@ -10,7 +10,7 @@ packagesLibraries: lubridate
 topics: time-series
 languagesTool: R
 dataProduct:
-code1: /R/dc-tabular-time-series/Convert-to-Julian-Day-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/Convert-to-Julian-Day-In-R/Convert-to-Julian-Day-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: julian-day-conversion-r
 ---

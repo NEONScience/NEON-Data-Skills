@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand
   the 2013 Colorado Floods'
-code1: teaching-modules/disturb-events-co13/NEON-Boulder-Flood-LiDAR-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/NEON-Boulder-Flood-LiDAR-in-R.R
 contributors: Donal O'Leary, Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'

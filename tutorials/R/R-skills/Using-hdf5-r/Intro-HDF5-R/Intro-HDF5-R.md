@@ -10,7 +10,7 @@ packagesLibraries: rhdf5
 topics: HDF5
 languagesTool: R
 dataProduct:
-code1: /HDF5/Intro-HDF5-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/Intro-HDF5-R.R
 tutorialSeries: intro-hdf5-r-series
 urlTitle: hdf5-intro-r
 ---

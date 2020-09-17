@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/04-csv-to-shapefile-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/04-csv-to-shapefile-in-R.R
 tutorialSeries: vector-data-series
 urlTitle: dc-csv-to-shapefile-r
 ---

@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/03-when-vector-data-dont-line-up-CRS.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/03-when-vector-data-dont-line-up-CRS.R
 tutorialSeries: vector-data-series
 urlTitle: dc-vector-data-reproject-crs-r
 ---

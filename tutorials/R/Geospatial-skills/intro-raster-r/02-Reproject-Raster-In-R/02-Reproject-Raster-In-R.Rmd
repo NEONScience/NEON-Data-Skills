@@ -12,7 +12,7 @@ topics:
 subtopics: data-analysis, raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001
-code1: /R/dc-spatial-raster/02-Reproject-Raster-In-R.R	
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/02-Reproject-Raster-In-R.R
 tutorialSeries: raster-data-series
 urlTitle: dc-reproject-raster-data-r
 

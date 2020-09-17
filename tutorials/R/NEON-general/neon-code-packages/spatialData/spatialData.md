@@ -9,7 +9,7 @@ estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
-code1: R/spatial-data/spatialData.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
 tutorialSeries:
 urlTitle: neon-spatial-data-basics
 

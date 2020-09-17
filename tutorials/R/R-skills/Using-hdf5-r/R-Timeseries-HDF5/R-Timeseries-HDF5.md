@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, ggplot2, dplyr
 topics: HDF5, data-management
 languagesTool: R
 dataProduct:
-code1: /HDF5/R-Timeseries-HDF5.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/R-Timeseries-HDF5.R
 tutorialSeries: intro-hdf5-r-series
 urlTitle: time-series-hdf5-r
 ---

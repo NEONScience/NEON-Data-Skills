@@ -1,7 +1,7 @@
 ---
 syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: hyperspectral/Work-With-Hyperspectral-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
 contributors: Felipe Sanchez
 dataProduct: DP3.30006.001
 dateCreated: 2014-11-26 20:49:52

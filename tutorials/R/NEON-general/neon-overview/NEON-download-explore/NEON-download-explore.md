@@ -9,7 +9,7 @@ estimatedTime: 1 - 2 hours
 packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/download-explore/NEON-download-explore.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
 tutorialSeries:
 urlTitle: download-explore-neon-data
 ---

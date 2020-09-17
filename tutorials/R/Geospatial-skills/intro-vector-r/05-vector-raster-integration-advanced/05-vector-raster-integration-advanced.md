@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/05-vector-raster-integration-advanced.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/05-vector-raster-integration-advanced.R
 tutorialSeries: vector-data-series
 urlTitle: dc-crop-extract-raster-data-r
 ---

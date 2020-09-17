@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with the R Programming Language"
-code1: /R/R-basics/R-Basics-Getting-Started.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/basic-R-skills/R-Basics-Getting-Started/R-Basics-Getting-Started.R
 contributors: Donal O'Leary, Garrett M. Williams
 dataProduct: null
 dateCreated: '2014-11-04'

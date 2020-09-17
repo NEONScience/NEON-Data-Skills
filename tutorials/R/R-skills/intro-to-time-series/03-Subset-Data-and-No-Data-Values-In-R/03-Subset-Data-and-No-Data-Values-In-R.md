@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, lubridate
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: /R/dc-tabular-time-series/03-Subset-Data-and-No-Data-Values-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/03-Subset-Data-and-No-Data-Values-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-subset-data-no-data-values-r
 ---

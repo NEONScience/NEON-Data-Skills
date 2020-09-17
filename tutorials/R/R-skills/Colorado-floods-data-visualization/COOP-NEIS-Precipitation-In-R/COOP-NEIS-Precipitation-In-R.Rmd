@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
   2013 Colorado Floods'
-code1: teaching-modules/disturb-events-co13/COOP-NEIS-Precipitation-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/COOP-NEIS-Precipitation-In-R.R
 contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'

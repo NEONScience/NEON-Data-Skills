@@ -10,7 +10,7 @@ packagesLibraries: rhdf5
 topics: HDF5
 languagesTool: R
 dataProduct:
-code1: /HDF5/create-HDF5-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Create-Hierarchical-Data-Format-HDF5-With-Loops/Create-Hierarchical-Data-Format-HDF5-With-Loops.R
 tutorialSeries: intro-hdf5-r-series
 urlTitle: create-hdf5-loops-r
 ---

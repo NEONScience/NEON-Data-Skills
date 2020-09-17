@@ -1,7 +1,7 @@
 ---
 title: 'Time Series 00: Intro to Time Series Data in R - Managing Date/Time Formats
   & Simple Plots using ggplot2'
-code1: /R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/00-Brief-Tabular-Time-Series-In-R.R
 contributors: Collin Storlie
 dataProduct: DP4.00001.001
 dateCreated: '2015-10-22'

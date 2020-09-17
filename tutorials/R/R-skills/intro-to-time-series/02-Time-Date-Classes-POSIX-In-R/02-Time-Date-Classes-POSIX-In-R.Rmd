@@ -1,6 +1,6 @@
 ---
 title: 'Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt'
-code1: /R/dc-tabular-time-series/02-Time-Date-Classes-POSIX-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/02-Time-Date-Classes-POSIX-In-R/02-Time-Date-Classes-POSIX-In-R.R
 contributors: Leah A. Wasser, Collin J. Storlie
 dataProduct: null
 dateCreated: '2015-10-22'

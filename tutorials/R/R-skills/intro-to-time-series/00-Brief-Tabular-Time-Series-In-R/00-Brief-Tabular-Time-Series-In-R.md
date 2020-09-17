@@ -10,7 +10,7 @@ packagesLibraries: ggplot2
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: /R/dc-tabular-time-series/00-Brief-Tabular-Time-Series-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/00-Brief-Tabular-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
 ---

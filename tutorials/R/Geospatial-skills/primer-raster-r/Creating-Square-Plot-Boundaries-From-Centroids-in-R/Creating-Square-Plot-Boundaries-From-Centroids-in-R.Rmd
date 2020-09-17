@@ -10,7 +10,7 @@ packagesLibraries: sp, rgdal
 topics: spatial-data-gis, raster
 languagesTool: R
 dataProduct:
-code1: /R/primer-raster-data/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 tutorialSeries: primer-raster-data-R
 urlTitle: field-data-polygons-centroids
 ---

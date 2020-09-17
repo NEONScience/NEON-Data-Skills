@@ -9,7 +9,7 @@ topics: data-analysis, modeling, phenology
 languagesTool: R
 packagesLibraries: phenor
 estimatedTime: 40 min
-code1: /R/pheno-cam/phenology_modeling_with_phenor.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/phenology_modeling_with_phenor.R
 urlTitle: phenocam-phenor-modeling
 ---
 

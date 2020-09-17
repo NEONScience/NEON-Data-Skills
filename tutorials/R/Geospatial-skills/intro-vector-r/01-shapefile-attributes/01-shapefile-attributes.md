@@ -9,7 +9,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: /R/dc-spatial-vector/01-shapefile-attributes.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/01-shapefile-attributes.R
 tutorialSeries: vector-data-series
 urlTitle: dc-shapefile-attributes-r
 ---

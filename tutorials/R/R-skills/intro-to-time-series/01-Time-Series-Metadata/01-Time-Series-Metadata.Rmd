@@ -10,7 +10,7 @@ packagesLibraries: EML, ggmap, tmaptools
 topics: metadata, time-series
 languagesTool: R
 dataProduct:
-code1: /R/dc-tabular-time-series/01-Time-Series-Metadata.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/01-Time-Series-Metadata/01-Time-Series-Metadata.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-metadata-importance-eml-r
 ---

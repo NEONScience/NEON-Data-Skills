@@ -10,7 +10,7 @@ packagesLibraries:
 topics: data-analysis
 languagesTool: R
 dataProduct:
-code1: /R/R-basics/R-Basics-Of-Functions.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/basic-R-skills/R-Basics-Of-Functions/R-Basics-Of-Functions.R
 tutorialSeries: R-basics
 urlTitle: work-with-functions-r
 ---

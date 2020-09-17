@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: /R/dc-spatial-raster/05-Time-Series-Raster.R	
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/05-Time-Series-Raster.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-time-series-r
 
