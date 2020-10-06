@@ -1,12 +1,12 @@
 ---
 syncID: 03868e86e4d34d1fa88caacaddf95a57
 title: "Plot Continuous & Discrete Data Together"
-description: "This tutorial discusses ways to plot plant phenology (discrete time series) and single-aspirated temperature (continuous time series) together."
+description: "This tutorial discusses ways to plot plant phenology (discrete time series) and single-aspirated temperature ((near-)continuous time series) together."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg
 estimatedTime:
-packagesLibraries: dplyr, ggplot2, lubridate,, gridExtra, scales
+packagesLibraries: dplyr, ggplot2, lubridate, gridExtra, scales
 topics: timeseries, meteorology, phenology, organisms
 languagesTool: R
 dataProduct: NEON.DP1.10055, 
@@ -17,6 +17,9 @@ urlTitle: neon-pheno-temp-plots-r
 
 This tutorial discusses ways to plot plant phenology (discrete time
 series) and single-aspirated temperature (continuous time series) together.
+It uses data frames created in the first two parts of this series,
+<a href = "https://www.neonscience.org/osis-pheno-temp-series" target = "_blank">*Work with NEON OS & IS Data - Plant Phenology & Temperature*</a>. 
+If you have not completed these tutorials, please download the dataset below.
 
 <div id="ds-objectives" markdown="1">
 
@@ -31,91 +34,101 @@ You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
-* **ggplot2:** `install.packages("ggplot2")`
-* **gridExtra:** `install.packages("gridExtra")`
-* **dplyr:** `install.packages("dplyr")`
-* **lubridate:** `install.packages("lubridate")`
-* **scales:** `install.packages("scales")`
 
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **ggplot2:** `install.packages("ggplot2")`
+* **dplyr:** `install.packages("dplyr")`
+* **gridExtra:** `install.packages("gridExtra")`
 
 <a href="{{ site.baseurl }}/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
-****
-{% include/_greyBox-wd-rscript.html %}
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 </div>
 
-First, we'll set up the environment. If you are continuing from the last 
-tutorial, simply load the new packages, as you already have the data as an R 
-object. 
+
+To start, we need to set up our R environment. If you're continuing from the 
+previous tutorial in this series, you'll only need to load the new packages.
 
 
+    # Install needed package (only uncomment & run if not already installed)
+    #install.packages("dplyr")
+    #install.packages("ggplot2")
+    
     # Load required libraries
     library(ggplot2)
     library(dplyr)
-    library(lubridate)
     library(gridExtra)
-    library(scales)  # use with date_breaks
     
-    # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    options(stringsAsFactors=F) #keep strings as character type not factors
     
+    # set working directory to ensure R can find the file we wish to import and where
+    # we want to save our files. Be sure to move the download into your working directory!
+    wd <- "~/Documents/data/" # Change this to match your local environment
+    setwd(wd)
+
+If you don't already have the R objects, `temp_day` and `phe_1sp_2018`, loaded
+you'll need to load and format those data. If you do, you can skip this code. 
+
+
     # Read in data -> if in series this is unnecessary
-    temp_day <- read.csv('NEON-pheno-temp-timeseries/temp/NEONsaat_daily_SCBI_2016.csv',
-    		stringsAsFactors = FALSE)
+    temp_day <- read.csv('NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv')
     
-    phe_1sp_2016 <- read.csv('NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv',
-    		stringsAsFactors = FALSE)
+    phe_1sp_2018 <- read.csv('NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv')
     
     # Convert dates
-    temp_day$sDate <- as.Date(temp_day$sDate)
-    phe_1sp_2016$date <- as.Date(phe_1sp_2016$date)
+    temp_day$Date <- as.Date(temp_day$Date)
+    # use dateStat - the date the phenophase status was recorded
+    phe_1sp_2018$dateStat <- as.Date(phe_1sp_2018$dateStat)
 
-## Aligned Plots
+## Separate Plots, Same Panel
 
-We've previously looked at the plots apart, but let's plot them in the same 
-pane. 
+In this dataset, we have phenology and temperature data from the Smithsonian
+Conservation Biology Institute (SCBI) NEON field site. There are a variety of ways 
+we may want to look at this data, including aggregated at the site level, by
+a single plot, or viewing all plots at the same time but in separate plots. In 
+the *Work With NEON's Plant Phenology Data* and the 
+*Work with NEON's Single-Aspirated Air Temperature Data* tutorials, we created 
+separate plots of the number of individuals who had leaves at different times 
+of the year and the temperature in 2018.
 
-We can do this with the `grid.arrange()` function from the gridExtra package. 
+However, plot the data next to each other to aid comparisons. The `grid.arrange()` 
+function from the gridExtra package can help us do this. 
 
 
-    phenoPlot <- ggplot(phe_1sp_2016, aes(date, n.y)) +
+    # first, create one plot 
+    phenoPlot <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Total Individuals in Leaf") +
-        xlab("Date") + ylab("Number of Individuals") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-        theme(text = element_text(size=18))
+        xlab("") + ylab("Number of Individuals")
     
-    phenoPlot
+    # create second plot of interest
+    tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
+        geom_point() +
+        ggtitle("Daily Max Air Temperature") +
+        xlab("Date") + ylab("Temp (C)")
+    
+    # Then arrange the plots - this can be done with >2 plots as well.
+    grid.arrange(phenoPlot, tempPlot_dayMax) 
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/stacked-plots-1.png)
 
-    tempPlot_dayMax <- ggplot(temp_day, aes(sDate, dayMax)) +
-        geom_point() +
-        ggtitle("Daily Max Air Temperature") +
-        xlab("") + ylab("Temp (C)") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-        theme(text = element_text(size=18))
-    
-    tempPlot_dayMax
+Now, we can see both plots in the same window.  But, hmmm... the x-axis on both 
+plots is kinda wonky. We want the same spacing in the scale across the year (e.g.,
+July in one should line up with July in the other) plus we want the dates to 
+display in the same format(e.g. 2016-07 vs. Jul vs Jul 2018).
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/stacked-plots-2.png)
-
-    # Output with both plots
-    grid.arrange(phenoPlot, tempPlot_dayMax) 
-
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/stacked-plots-3.png)
-
-
-### Format Dates in Axis Labels
-Hmmm... the x-axis on both plots is kinda wonky. For the pheno data, We might 
-want a different
-date display format (e.g. 2016-07 vs. Jul); for the temp data there are a TON of tick
-marks! These parameters can be adujusted with `scale_x_date`. Let's format the x-axis
+## Format Dates in Axis Labels
+The date format parameter can be adjusted with `scale_x_date`. Let's format the x-axis
 ticks so they read "month" (`%b`) in both graphs. We will use the syntax:
 
 `scale_x_date(labels=date_format("%b"")`
@@ -123,85 +136,124 @@ ticks so they read "month" (`%b`) in both graphs. We will use the syntax:
 Rather than re-coding the entire plot, we can add the `scale_x_date` element
 to the plot object `phenoPlot` we just created. 
 
+
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** You can type `?strptime` into the R 
+<i class="fa fa-star"></i> **Data Tip:** 
+
+1) You can type `?strptime` into the R 
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type `scale_x_date` for a list of parameters that allow you to format dates 
 on the x-axis.
-</div>
 
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+2) If you are working with a date & time
 class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
 </div>
 
 
+
     # format x-axis: dates
     phenoPlot <- phenoPlot + 
-      (scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")))
+      (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
     
-    phenoPlot
+    tempPlot_dayMax <- tempPlot_dayMax +
+      (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
+    
+    # New plot. 
+    grid.arrange(phenoPlot, tempPlot_dayMax) 
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/format-x-axis-labels-1.png)
 
-    tempPlot_dayMax <- tempPlot_dayMax +
-      (scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")))
+But this only solves one of the problems, we still have a different range on the
+x-axis which makes it harder to see trends. 
+
+## Align data sets with different start dates  
+
+Now let's work to align the values on the x-axis. We can do this in two ways, 
+1) setting the x-axis to have the same date range or 2) by filtering the dataset 
+itself to only include the overlapping data. Depending on what you are trying to 
+demonstrate and if you're doing additional analyses and want only the overlapping 
+data, you may prefer one over the other. Let's try both. 
+
+### Set range of x-axis
+Alternatively, we can set the x-axis range for both plots by adding the `limits` 
+parameter to the `scale_x_date()` function. 
+
+
+    # first, lets recreate the full plot and add in the 
+    phenoPlot_setX <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
+        geom_bar(stat="identity", na.rm = TRUE) +
+        ggtitle("Total Individuals in Leaf") +
+        xlab("") + ylab("Number of Individuals") +
+        scale_x_date(breaks = date_breaks("1 month"), 
+                      labels = date_format("%b"),
+                      limits = as.Date(c('2018-01-01','2018-12-31')))
     
-    tempPlot_dayMax
-
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/format-x-axis-labels-2.png)
-
-    # Output with both plots
-    grid.arrange(phenoPlot, tempPlot_dayMax) 
-
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/format-x-axis-labels-3.png)
-
-### Align Datasets
-
-We have different start and end dates, which makes it harder to see trends. 
-Let's align the datasets and replot
-
-
-    # align dates
-    temp_day_fit <- filter(temp_day, sDate >= min(phe_1sp_2016$date) & sDate <= max(phe_1sp_2016$date))
+    # create second plot of interest
+    tempPlot_dayMax_setX <- ggplot(temp_day, aes(Date, dayMax)) +
+        geom_point() +
+        ggtitle("Daily Max Air Temperature") +
+        xlab("Date") + ylab("Temp (C)") +
+        scale_x_date(date_breaks = "1 month", 
+                     labels=date_format("%b"),
+                      limits = as.Date(c('2018-01-01','2018-12-31')))
     
-    # Check it
-    range(phe_1sp_2016$date)
+    # Plot
+    grid.arrange(phenoPlot_setX, tempPlot_dayMax_setX) 
 
-    ## [1] "2016-03-21" "2016-11-23"
+![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/set-x-axis-1.png)
 
-    range(temp_day_fit$sDate)
+Now we can really see the pattern over the full year. This emphasizes the point
+that during much of the late fall, winter, and early spring none of the trees 
+have leaves on them (or that data were not collected - this plot would not 
+distinguish between the two). 
 
-    ## [1] "2016-03-21" "2016-11-23"
+### Subset one data set to match other
+Alternatively, we can simply filter the dataset with the larger date range so 
+the we only plot the data from the overlapping dates. 
+
+
+    # filter to only having overlapping data
+    temp_day_filt <- filter(temp_day, Date >= min(phe_1sp_2018$date) & 
+                             Date <= max(phe_1sp_2018$date))
+    
+    # Check 
+    range(phe_1sp_2018$date)
+
+    ## [1] "2018-04-13" "2018-11-20"
+
+    range(temp_day_fit$Date)
+
+    ## Error in eval(expr, envir, enclos): object 'temp_day_fit' not found
 
     #plot again
-    tempPlot_dayMax_corr <- ggplot(temp_day_fit, aes(sDate, dayMax)) +
+    tempPlot_dayMaxFiltered <- ggplot(temp_day_filt, aes(Date, dayMax)) +
         geom_point() +
         scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
         ggtitle("Daily Max Air Temperature") +
-        xlab("") + ylab("Temp (C)") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-        theme(text = element_text(size=18))
+        xlab("Date") + ylab("Temp (C)")
     
-    grid.arrange(phenoPlot, tempPlot_dayMax_corr)
+    
+    grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 
 ![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/align-datasets-replot-1.png)
+
+With this plot, we really look at the area of overlap in the plotted data (but 
+this does cut out the time where the data are collected but not plotted). 
 
 ## Same plot with two Y-axes
 
 What about layering these plots and having two y-axes (right and left) that have
-the different scale bars. This might look cool. 
+the different scale bars?
 
-However, some argue that you should not do this as it 
-can distort what is actually going on with the data. The author of the ggplot2 
-package is one of these individuals. Therefore, you cannot use `ggplot()` to 
-create a single plot with multiple Y scales. You can read his own discussion of
-the topic on this 
+Some argue that you should not do this as it can distort what is actually going 
+on with the data. The author of the ggplot2 package is one of these individuals. 
+Therefore, you cannot use `ggplot()` to create a single plot with multiple y-axis 
+scales. You can read his own discussion of the topic on this 
 <a href="https://stackoverflow.com/questions/3099219/plot-with-2-y-axes-one-y-axis-on-the-left-and-another-y-axis-on-the-right/3101876#3101876" target="_blank" > StackOverflow post</a>.
 
 ---
 
-However, individuals have found work arounds for these plots. The below code
+However, individuals have found work arounds for these plots. The code below
 is provided as a demonstration of this capability. Note, by showing this code 
 here, we don't necessarily endorse having plots with two y-axes.
 
@@ -215,13 +267,13 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
     library(grid)
     
     
-    #Pheno data as bars, temp as scatter
+    # Plot 1: Pheno data as bars, temp as scatter
     grid.newpage()
-    phenoPlot_2 <- ggplot(phe_1sp_2016, aes(date, n.y)) +
+    phenoPlot_2 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
       geom_bar(stat="identity", na.rm = TRUE) +
-      scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
+      scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")) +
       ggtitle("Total Individuals in Leaf vs. Temp (C)") +
-      xlab("Date") + ylab("Number of Individuals") +
+      xlab(" ") + ylab("Number of Individuals") +
       theme_bw()+
       theme(legend.justification=c(0,1),
             legend.position=c(0,1),
@@ -233,7 +285,7 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
     
     
     tempPlot_dayMax_corr_2 <- ggplot() +
-      geom_point(data = temp_day_fit, aes(sDate, dayMax),color="red") +
+      geom_point(data = temp_day_fit, aes(Date, dayMax),color="red") +
       scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
       xlab("") + ylab("Temp (C)") +
       theme_bw() %+replace% 
@@ -244,29 +296,58 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             panel.grid.minor.y=element_blank(),
             axis.text.y=element_text(size=20,color="red"),
             axis.title.y=element_text(size=20))
-    
+
+    ## Error in fortify(data): object 'temp_day_fit' not found
+
     g1<-ggplot_gtable(ggplot_build(phenoPlot_2))
     g2<-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_2))
-    
+
+    ## Error in ggplot_build(tempPlot_dayMax_corr_2): object 'tempPlot_dayMax_corr_2' not found
+
     pp<-c(subset(g1$layout,name=="panel",se=t:r))
     g<-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name=="panel")]],pp$t,pp$l,pp$b,pp$l)
-    
+
+    ## Error in is.grob(grobs): object 'g2' not found
+
     ia<-which(g2$layout$name=="axis-l")
+
+    ## Error in which(g2$layout$name == "axis-l"): object 'g2' not found
+
     ga <- g2$grobs[[ia]]
+
+    ## Error in eval(expr, envir, enclos): object 'g2' not found
+
     ax <- ga$children[[2]]
+
+    ## Error in eval(expr, envir, enclos): object 'ga' not found
+
     ax$widths <- rev(ax$widths)
+
+    ## Error in rev(ax$widths): object 'ax' not found
+
     ax$grobs <- rev(ax$grobs)
+
+    ## Error in rev(ax$grobs): object 'ax' not found
+
     ax$grobs[[1]]$x <- ax$grobs[[1]]$x - unit(1, "npc") + unit(0.15, "cm")
+
+    ## Error in eval(expr, envir, enclos): object 'ax' not found
+
     g <- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
+
+    ## Error in is.gtable(x): object 'g' not found
+
     g <- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
-    
+
+    ## Error in is.gtable(x): object 'g' not found
+
     grid.draw(g)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/two-y-axes-ggplot-1.png)
+    ## Error in grid.draw(g): object 'g' not found
 
-    #Both pheno data and temp data as line graphs
+    # Plot 2: Both pheno data and temp data as line graphs
     grid.newpage()
-    phenoPlot_3 <- ggplot(phe_1sp_2016, aes(date, n.y)) +
+    phenoPlot_3 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
       geom_line(na.rm = TRUE) +
       scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
       ggtitle("Total Individuals in Leaf vs. Temp (C)") +
@@ -281,7 +362,7 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             axis.title.y=element_text(size=20))
     
     tempPlot_dayMax_corr_3 <- ggplot() +
-      geom_line(data = temp_day_fit, aes(sDate, dayMax),color="red") +
+      geom_line(data = temp_day_fit, aes(Date, dayMax),color="red") +
       scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
       xlab("") + ylab("Temp (C)") +
       theme_bw() %+replace% 
@@ -292,25 +373,52 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             panel.grid.minor.y=element_blank(),
             axis.text.y=element_text(size=20,color="red"),
             axis.title.y=element_text(size=20))
-    
+
+    ## Error in fortify(data): object 'temp_day_fit' not found
+
     g1<-ggplot_gtable(ggplot_build(phenoPlot_3))
     g2<-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_3))
-    
+
+    ## Error in ggplot_build(tempPlot_dayMax_corr_3): object 'tempPlot_dayMax_corr_3' not found
+
     pp<-c(subset(g1$layout,name=="panel",se=t:r))
     g<-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name=="panel")]],pp$t,pp$l,pp$b,pp$l)
-    
+
+    ## Error in is.grob(grobs): object 'g2' not found
+
     ia<-which(g2$layout$name=="axis-l")
+
+    ## Error in which(g2$layout$name == "axis-l"): object 'g2' not found
+
     ga <- g2$grobs[[ia]]
+
+    ## Error in eval(expr, envir, enclos): object 'g2' not found
+
     ax <- ga$children[[2]]
+
+    ## Error in eval(expr, envir, enclos): object 'ga' not found
+
     ax$widths <- rev(ax$widths)
+
+    ## Error in rev(ax$widths): object 'ax' not found
+
     ax$grobs <- rev(ax$grobs)
+
+    ## Error in rev(ax$grobs): object 'ax' not found
+
     ax$grobs[[1]]$x <- ax$grobs[[1]]$x - unit(1, "npc") + unit(0.15, "cm")
+
+    ## Error in eval(expr, envir, enclos): object 'ax' not found
+
     g <- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
+
+    ## Error in is.gtable(x): object 'g' not found
+
     g <- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
-    
+
+    ## Error in is.gtable(x): object 'g' not found
+
     grid.draw(g)
 
-![ ]({{ site.baseurl }}/images/rfigs/R/NEON-pheno-temp-timeseries/03-plot-discrete-continuous-data-pheno-temp/two-y-axes-ggplot-2.png)
-
-
+    ## Error in grid.draw(g): object 'g' not found
 

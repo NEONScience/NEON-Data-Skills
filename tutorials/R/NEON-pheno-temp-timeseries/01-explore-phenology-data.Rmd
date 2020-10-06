@@ -15,10 +15,6 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 Many organisms, including plants, show patterns of change across seasons - 
 the different stages of this observable change are called phenophases. In this 
 tutorial we explore how to work with NEON plant phenophase data. 
@@ -28,8 +24,7 @@ tutorial we explore how to work with NEON plant phenophase data.
 ## Objectives
 After completing this activity, you will be able to:
 
- * work with "stJonesacked" NEON Plant Phenology Observation data. 
- * correctly format date data. 
+ * work with NEON Plant Phenology Observation data. 
  * use dplyr functions to filter data.
  * plot time series data in a bar plot using ggplot the function. 
 
@@ -43,15 +38,18 @@ on your computer to complete this tutorial.
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 
-
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
-****
-{% include/_greyBox-wd-rscript.html %}
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -73,7 +71,7 @@ Why do they change?
 The following sections provide a brief overview of the NEON plant phenology 
 observation data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
 
 *The following description of the NEON Plant Phenology Observation data is modified 
 from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.*
@@ -90,7 +88,7 @@ discrete observations events.
 Sampling occurs at all terrestrial field sites at site and season specific 
 intervals. During Phase I (dominant species) sampling (pre-2021), three species 
 with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
-will begin, with <=20 species with 5 or more individuals sampled will occcur.
+will begin, with <=20 species with 5 or more individuals sampled will occur.
 
 #### Status-based Monitoring
 
@@ -124,8 +122,8 @@ within view of a canopy level, tower-mounted, phenology camera.
 	<a href="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png">
 	<img src="{{ site.baseurl }}/images/NEON-pheno-temp-timeseries/NEONphenoTransect.png"></a>
 	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
-	Point-level geolocations are recorded at eight referecne points along the 
-	perimeter, plot-level geolaocation at the plot centoid (star). 
+	Point-level geolocations are recorded at eight reference points along the 
+	perimeter, plot-level geolocation at the plot centroid (star). 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
 </figure>
@@ -174,6 +172,29 @@ and then return to this tutorial.
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
 
+First, we need to set up our R environment. 
+
+```{r set-up}
+# install needed package (only uncomment & run if not already installed)
+#install.packages("neonUtilities")
+#install.packages("dplyr")
+#install.packages("ggplot2")
+
+# load needed packages
+library(neonUtilities)
+library(dplyr)
+library(ggplot2)
+
+
+options(stringsAsFactors=F) #keep strings as character type not factors
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd <- "~/Documents/data/" # Change this to match your local environment
+setwd(wd)
+
+```
+
 Let's start by loading our data of interest. For this series, we'll work with 
 date from the NEON Domain 02 sites:
 
@@ -183,24 +204,25 @@ date from the NEON Domain 02 sites:
 
 And we'll use data from January 2017 to December 2019. This downloads over 9MB
 of data. If this is too large, use a smaller date range. If you opt to do this, 
-your figures and some output may look differnet later in the tutorial. 
+your figures and some output may look different later in the tutorial. 
 
-```{r loadStuff}
+With this information, we can download our data using the neonUtilities package. 
+If you are not using a NEON token to download your data, remove the 
+`token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
+in the 
+<a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
 
-library(neonUtilities)
-library(dplyr)
-library(ggplot2)
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
 
-options(stringsAsFactors=F) #used to prevent factors
-
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+```{r load-data}
 
 ## Two options for accessing data - programmatic or from the example dataset
 # Read data from data portal 
 
 phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
 										 startdate = "2017-01", enddate="2019-12", 
+										 token = Sys.getenv("NEON_TOKEN"),
 										 check.size = F) 
 # if you aren't sure you can handle the data file size use check.size = T. 
 
@@ -208,15 +230,20 @@ phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"),
 ind <- phe$phe_perindividual  #individual information
 status <- phe$phe_statusintensity  #status & intensity info
 
-## If choosing to use example dataset downloaded from this tutorial.
-# Read in data
-#ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
-#		stringsAsFactors = FALSE )
 
-#status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
-#		stringsAsFactors = FALSE)
+##If choosing to use example dataset downloaded from this tutorial: 
+
+# Stack multiple files within the downloaded phenology data
+#stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack10055", folder = T)
+
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#ind <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_perindividual.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+
+#status <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_statusintensity.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
 
 ```
+
 
 Let's explore the data. Let's get to know what the `ind` dataframe looks like.
 
@@ -226,6 +253,10 @@ names(ind)
 
 # Unsure of what some of the variables are you? Look at the variables table!
 View(phe$variables_10055)
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+#View(var)
 
 # how many rows are in the data?
 nrow(ind)
@@ -361,7 +392,7 @@ ind_lastnoD <- ind_last %>%
 
 Now we can join the two data frames on all the variables with the same name. 
 We use a `left_join()` from the dpylr package because we want to match all the 
-rows from the "left" (first) dateframe to any rows that also occur in the "right"
+rows from the "left" (first) dataframe to any rows that also occur in the "right"
  (second) dataframe.  
  
  Check out RStudio's 
@@ -412,12 +443,12 @@ at the `taxonID` field which give the four letter UDSA plant code for each
 species. But if we don't know all the plant codes, we can get a bit fancier and 
 view both 
 
-```{r filter-species}
+```{r unique-species}
 
 # see which species are present - taxon ID only
 unique(phe_1st$taxonID)
 
-# see which species are present - taxon ID + species name
+# or see which species are present with taxon ID + species name
 unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=' - ')) 
 
 ```
@@ -473,7 +504,7 @@ For this activity, we're going to only look at the primary plots.
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
 the Data Product User Guide and use the variables files with the data download 
-to find the corresponding varibles names.
+to find the corresponding variables names.
 </div>
 
 ```{r filter-plot-type}
@@ -491,7 +522,7 @@ unique(phe_1spPrimary$subtypeSpecification)
 ## Total in Phenophase of Interest
 
 The `phenophaseState` is recorded as "yes" or "no" that the individual is in that
-phenophase. The `phenophaseIntensity` are categories for how much of the indvidual
+phenophase. The `phenophaseIntensity` are categories for how much of the individual
 is in that state. For now, we will stick with `phenophaseState`. 
 
 We can now calculate the total number of individuals with that state. We use 
@@ -620,7 +651,7 @@ and ecosystem function.  (quoted from
 ## Filter by Date
 
 In the next part of this series, we will be exploring temperature as a driver of
-phenology. Temperture date is quite large (NEON provides this in 1 minute or 30
+phenology. Temperature date is quite large (NEON provides this in 1 minute or 30
 minute intervals) so let's trim our phenology date down to only one year so that 
 we aren't working with as large a data. 
 
@@ -667,8 +698,8 @@ instructions for that are provided in the relevant tutorials.
 write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 #If you are using the downloaded example date, this code will write it to the 
-# pheno data file. 
+# pheno data file. Note - this file is already a part of the download.
 
-#write.csv( phe_1sp_2016 , file="NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv", row.names=F)
+#write.csv( phe_1sp_2018 , file="NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
 
 ```
