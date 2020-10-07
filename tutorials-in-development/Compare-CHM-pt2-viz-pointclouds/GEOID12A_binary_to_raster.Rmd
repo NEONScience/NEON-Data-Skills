@@ -1,0 +1,70 @@
+This .Rmd script was removed from the GEDI tutorial. This shows you how to read in a Binary file from NOAA to describe the differences between GEOID12A and NAD83 datums. 
+
+###GEOID12A Height Model
+GEOID12A is a surface model that is described in terms of its relative height compared to NAD83. You can use <a href="https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl">this interactive webpage</a> to find the geoid height for any location within North America. However, that would be combersome to have to use this webpage for every location. Instead, we will download a <a href="https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml>binary file from the NOAA website</a> that describes this geoid's height, and convert that into a raster similar to the one that we just downloaded above. We have included comments here from the NOAA website about the structure of the binary file. We use this information to extract the dimensions of this dataset in order to construct a raster in R from these binary data.
+
+```{r download-prep-geoid-height-binary}
+
+# Download binary file of offset from GEOID12A to NAD83
+if(!file.exists(paste0(wd,"/g2012au0.bin"))){
+  download.file("https://www.ngs.noaa.gov/PC_PROD/GEOID12A/Format_unix/g2012au0.bin", 
+                destfile = paste0(wd,"/g2012au0.bin"))
+}
+
+# Read header information. See https://www.ngs.noaa.gov/GEOID/GEOID12A/g2012Arme.txt
+
+# File Structure
+# ---------------
+# The files (ASCII and binary) follow the same structure of a one-line header 
+# followed by the data in row-major format. The one-line header contains four 
+# double (real*8) words followed by three long (int*4) words. 
+# These parameters define the geographic extent of the area:
+# 
+# SLAT:  Southernmost North latitude in whole degrees. 
+#        Use a minus sign (-) to indicate South latitudes. 
+# WLON:  Westernmost East longitude in whole degrees. 
+# DLAT:  Distance interval in latitude in whole degrees 
+#        (point spacing in E-W direction)
+# DLON:  Distance interval in longitude in whole degrees 
+#        (point spacing in N-S direction)
+# NLAT:  Number of rows 
+#        (starts with SLAT and moves northward DLAT to next row)
+# NLON:  Number of columns 
+#        (starts with WLON and moves eastward DLON to next column)
+# IKIND: Always equal to one (indicates data are real*4 and endian condition)
+
+to.read = file(paste0(wd,"/g2012au0.bin"), "rb")
+header1=readBin(to.read, double(), endian = "big", n=4)
+header1 #SLAT, WLON, DLAT, DLON
+
+header2=readBin(to.read, integer(), endian = "big", n=3)
+header2 #NLAT, NLON, IKIND
+
+GEOID12A_diff_vals=readBin(to.read, n=header2[1]*header2[2], numeric(), endian = "big", size=4)
+
+```
+
+
+```{r make-GEOID12A-diff_raster, fig.height=8, fig.width=6, warning=F}
+
+# Create a new raster using the dimensions extracted from the headers
+GEOID12A_diff_rast <- raster(ncol=header2[2], nrow=header2[1], 
+                             xmn=header1[2]-360, xmx=header1[2]+(header1[4]*header2[2])-360, 
+                             ymn=header1[1], ymx=header1[1]+(header1[3]*header2[1]),
+                             crs = crs(datum_diff))
+GEOID12A_diff_rast <- setValues(GEOID12A_diff_rast, values = GEOID12A_diff_vals)
+
+# we need to use the 'flip' function to put the map 'upright' because R expects to see raster values from the top left corner and fills by rows, but this dataset is delivered in sucha a way that it describes the bottom left corner and fills by rows up to the top of the image (this is actually the convention for most traditional remote sensing software - and leads to a similar problem that is explained in the Hyperspectral tutorial series.)
+GEOID12A_diff_rast <- flip(GEOID12A_diff_rast, 'y')
+
+## let's crop out only CONUS for plotting purposes - we will still refer to the fill image when extracting values.
+
+diff_resp=resample(datum_diff, GEOID12A_diff_rast) # resample to match pixel size/registration for cropping
+diff_resp=crop(diff_resp, GEOID12A_diff_rast)
+GEOID12A_diff_rast=crop(GEOID12A_diff_rast, extent(diff_resp))
+GEOID12A_diff_rast_mask=mask(GEOID12A_diff_rast, diff_resp)
+
+
+```
+
+Now that we have the two offset rasters, let's plot them together to compare their spatial patterns.

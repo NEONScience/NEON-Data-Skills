@@ -1,0 +1,285 @@
+---
+syncID:
+title: "Combining LiDAR pointclouds with observed vegetation structure"
+description: "Align Vegetation Structure data with NEON LiDAR pointclouds in three-dimensional space. Identify different tree species in the pointcloud using the mapping and tagging dataset."
+dateCreated: 2020-09-24
+authors: Donal O'Leary
+contributors: Maxwell Burner
+estimatedTime: 1 Hour
+packagesLibraries: neonUtilities, lidR, rgl, raster, geoNEON
+topics: LiDAR
+languagesTool: R
+dataProduct: DP1.10098.001,DP1.30003.001
+code1: 
+tutorialSeries: 
+urlTitle: 
+---
+
+This template should be used to start new tutorials. If your tutorial is in R 
+or Jupyter Notebooks, or another format that will be converted to markdown. 
+Please include the header above but create the tutorial in the appropriate 
+application. 
+
+All tutorials then have an Info Box with the information necessary for a new user
+to NEON tutorials to complete the tutorial.  
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Create a new NEON Data Skills teaching module. 
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **raster:** `install.packages("raster")`
+* **rgdal:** `install.packages("rgdal")`
+* **sp:** `install.packages("sp")`
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+This tutorial will teach you how to download data directly from the NEON data 
+portal.  This example data set is provided as an optional download and a backup. 
+
+#### NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature
+
+The data used in this tutorial were collected at the 
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>.  
+
+* National Ecological Observatory Network. 2020. Data Product DP1.10055.001, Plant phenology observations. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+* National Ecological Observatory Network. 2020. Data Product DP1.00002.001, Single aspirated air temperature. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+### Working Directory
+[Donal to add text]
+
+## Additional Resources
+You can list any additional resources you'd like to link to if needed. 
+
+* <a href="URL Here" target="_blank"> Resource Name/a>,
+ 
+</div>
+
+```{r load-packages, warning=FALSE, message=FALSE}
+
+library(neonUtilities)
+library(geoNEON)
+library(lidR)
+library(sf)
+library(rgl)
+library(sp)
+library(raster)
+
+options(stringsAsFactors=F) #This line may be redundant for R version 4.0.0+
+
+```
+
+First load veg structure dataset. For a detailed explanation of these steps, please see download-explore tutorial **LINK HERE**
+
+```{r load-veg-str}
+
+veglist <- loadByProduct(dpID="DP1.10098.001", site="SOAP", check.size = F, package="basic")
+
+# retrieve precise XY locations using geoNEON API
+vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
+                    "vst_mappingandtagging")
+
+## Merge tables
+veg <- base::merge(veglist$vst_apparentindividual, vegmap, 
+             by=c('individualID','namedLocation',
+                  'domainID','siteID','plotID'))
+
+```
+
+
+## Download LiDAR and load into R
+
+**ADD HERE** link to download this directly using the API
+
+```{r load-LiDAR}
+
+
+WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2019/FullSite/D16/2019_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz")
+plot(WREF_LAS)
+
+```
+
+Oof, there are a LOT of extreneous points above and below the forest. Fortunately, there is an easy way to filter out points above and below specified elevations (on the Z-axis). Let's take a look at a histogram of point elevations to see where to filter out the extreneous points.
+
+```{r make-LiDAR-histogram}
+
+hist(WREF_LAS@data$Z)
+
+```
+
+We can see here that most points fall between approximately 350 and 550 meters. Therefore, we will use the `filter` argument of the `lidR::readLAS()` function to filter out the points above and below the 'bulk' of the points.
+
+There are also many unneeded attributes assigned to each XYZ point in the LAS object. A LAS object stores the point cloud data in a table, so you can see all of the attributes using the `names()` functions:
+
+```{r read-LAS-attributes}
+
+names(WREF_LAS@data)
+
+```
+
+For this tutorial, we only need the "X" "Y" "Z" "R" "G" and "B" attributes. We can also specify this subset using the `select` attribute in the `readLAS()` function. see `?readLAS()` for more details.
+
+```{r load-LiDAR-with-filter}
+
+WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2019/FullSite/D16/2019_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz",
+                 filter = "-drop_z_below 350 -drop_z_above 550",
+                 select = "xyzRGB")
+
+```
+
+**DATA TIP**
+Finding the best elevations for the upper and lower filter limits can be a challenge, especially in mountainous terrain. If you filter too aggressively in the valleys, the trees on the hillsides might get chopped off! You may need to try a few different options to find your best result. In this case, we could remove many more extreneous points by first clipping the LAS object (WREF_LAS) to a smaller area, and then filtering specifically on that data subset.
+
+Now that we have the LiDAR data subset loaded into a LAS object, let's plot the pointcloud while taking advantage of the "RGB" colorization:
+
+```{r plot-LiDAR-subset}
+
+x=plot(WREF_LAS, color="RGB")
+
+```
+
+So why did we assign the `plot(WREF_LAS)` function to a new variable, `x`? Because when you `plot()` a LAS object, this function returns the lower left corner cooridnates for the plot. This will become important when we start plotting other objects into this thiree-dimensional space.
+```{r add-base-plots-to-LiDAR}
+
+SITECODE = 'WREF'
+
+setwd("~/Downloads/")
+NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITECODE)&(NEON_all_plots$subtype == 'basePlot'),]
+
+rm(NEON_all_plots)
+
+#Plot base plots
+#plot(base_plots_SPDF$geometry, border = 'blue')
+
+base_plots_SPDF <- st_transform(base_plots_SPDF, as.character(WREF_LAS@proj4string))
+
+base_crop=st_crop(base_plots_SPDF, extent(WREF_LAS))
+
+
+###
+
+coords=as.data.frame(st_coordinates(base_crop))
+coords$X=coords$X-x[1]
+coords$Y=coords$Y-x[2]
+coords$Z=rep(base_crop$elevation, each=5)
+c=1:nrow(coords)
+coords=coords[!c%%5==0,]
+#coords$L1=NULL; coords$L2=NULL
+#coords$Z=NULL
+#quads3d(coords[26:29,], add=T, col="red") # WORKS @ z=0
+
+for(i in 1:(nrow(coords)/4)){
+  print(i)
+  r=((i-1)*4)+1
+  quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+50,
+          add=T, col="red", lwd=2, lit=F)
+}
+
+
+```
+
+
+```{r clip-LAS-to-plots}
+
+
+top_left=as.data.frame(st_coordinates(base_crop))
+c=1:nrow(top_left)
+top_left=top_left[c%%5==1,]
+
+plots_LAS <- 
+  lasclipRectangle(WREF_LAS,
+                   xleft = (top_left$X), ybottom = (top_left$Y - 40),
+                   xright = (top_left$X + 40), ytop = (top_left$Y))
+
+
+plot(plots_LAS[[1]], color="RGB")
+
+
+```
+
+```{r plot-level-trees}
+
+
+## Loop through plots and add color boxes for each tree
+#for(i in 1:length(plots_LAS)){
+for(i in 1){
+x=plot(plots_LAS[[i]])
+
+tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
+
+Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
+Thuja_boxes$adjEasting=Thuja_boxes$adjEasting-x[1]
+Thuja_boxes$adjNorthing=Thuja_boxes$adjNorthing-x[2]
+
+PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
+PSMEM_boxes$adjEasting=PSMEM_boxes$adjEasting-x[1]
+PSMEM_boxes$adjNorthing=PSMEM_boxes$adjNorthing-x[2]
+
+
+for(j in 1:(nrow(PSMEM_boxes))){
+  print(j)
+  d=as.data.frame(PSMEM_boxes[j,c("adjNorthing","adjEasting","adjElevation")])
+  d[,3]=as.numeric(d[,3])
+  d[2:4,]=d[1,]
+  d[1,1]=d[1,1]+2
+  d[1,2]=d[1,2]-2
+  
+  d[2,1]=d[2,1]+2
+  d[2,2]=d[2,2]+2
+  
+  d[3,1]=d[3,1]-2
+  d[3,2]=d[3,2]+2
+  
+  d[4,1]=d[4,1]-2
+  d[4,2]=d[4,2]-2
+  
+  d[,3]=d[,3]+PSMEM_boxes[j,"height"]
+  
+  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation, 
+          add=T, col="green", lwd=2, lit=F)
+}
+
+
+for(k in 1:(nrow(Thuja_boxes))){
+  print(k)
+  d=as.data.frame(Thuja_boxes[k,c("adjNorthing","adjEasting","adjElevation")])
+  d[,3]=as.numeric(d[,3])
+  d[2:4,]=d[1,]
+  d[1,1]=d[1,1]+2
+  d[1,2]=d[1,2]-2
+  
+  d[2,1]=d[2,1]+2
+  d[2,2]=d[2,2]+2
+  
+  d[3,1]=d[3,1]-2
+  d[3,2]=d[3,2]+2
+  
+  d[4,1]=d[4,1]-2
+  d[4,2]=d[4,2]-2
+  
+  d[,3]=d[,3]+Thuja_boxes[k,"height"]
+
+  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation,
+          add=T, col="red", lwd=2, lit=F)
+}
+
+}
+
+```
