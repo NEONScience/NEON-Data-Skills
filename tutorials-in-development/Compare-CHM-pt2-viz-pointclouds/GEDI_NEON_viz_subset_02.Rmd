@@ -44,13 +44,21 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
-### Example Data Set
+### Example Data Sets
 
-############# Possibly add GEDI subset here?? ##############
+#### GEDI Example Data Subset
+This dataset has been subset from a full GEDI orbit retaining only the 'shots' that correspond to a single 1km AOP tile, and only the 'datasets' (attributes) that are needed to visualize the GEDI waveform as shown below.
+<a href="https://ndownloader.figshare.com/files/24978809" class="link--button link--arrow">
+Download GEDI Example Dataset</a>
 
 #### Datum difference between WGS84 and NAD83
-This dataset describes the differences between two common standards for vertical data in North America.
-<a href="https://neondata.sharefile.com/d-sf4e35e969fc43aca" class="link--button link--arrow">
+This dataset describes the differences between the common WGS84 and NAD83 standards for vertical data in North America.
+<a href="https://ndownloader.figshare.com/files/24994703" class="link--button link--arrow">
+Download Dataset</a>
+
+#### Datum difference between GEOID12A and NAD83
+This dataset describes the differences between the GEOID12A and NAD83 standards for vertical data in North America.
+<a href="https://ndownloader.figshare.com/files/24994697" class="link--button link--arrow">
 Download Dataset</a>
 
 ### Working Directory
@@ -360,8 +368,7 @@ AOP data have a relatively small area of coverage, and are therefore delivered w
 
 NOAA has a useful <a href="https://www.ngs.noaa.gov/INFO/facts/vdatum.shtml">tool called Vdatum</a> that will convert from one datum to another. For this example, we will use Vdatum to convert from WGS84 to NAD83. Seeing as GEOID12A is based on the NAD83 datum, we can first convert the GEDI data's vertical position from WGS84 to NAD83 datum, then apply the offset between NAD83 and GEOID12A. Rather than use the Vdatum tool for each point, we will use a raster created by NEON scientists that reports the vertical difference between WGS84 and NAD83 for all points in the conterminous USA.
 
-***** Update this link with resampled/masked version of file *****
-Please <a href="https://neondata.sharefile.com/d-sf4e35e969fc43aca">visit this Sharepoint page</a> (same as the link at the top of this page) to download the raster. We will then read it into our R session:
+You can access this dataset by <a href="https://ndownloader.figshare.com/files/24994703">clicking here to download the WGS84-NAD83 datum offset raster</a>.
 
 ```{r read-wgs-nad-diff}
 
@@ -373,7 +380,7 @@ datum_diff=raster(paste0(wd,"WGS84_NAD83_seperation.tif"))
 ###GEOID12A Height Model
 GEOID12A is a surface model that is described in terms of its relative height compared to NAD83. You can use <a href="https://www.ngs.noaa.gov/cgi-bin/GEOID_STUFF/geoid12A_prompt1.prl">this interactive webpage</a> to find the geoid height for any location within North America. However, that would be combersome to have to use this webpage for every location. Instead, you can download a <a href="https://www.ngs.noaa.gov/GEOID/GEOID12A/GEOID12A_CONUS.shtml>binary file from the NOAA website</a> that describes this geoid's height, and convert that into a raster similar to the one that we just downloaded above. To simplify things here, we have already gone through the process of downloading the binary file and converting it to a raster for you to download, which can now easily be read into your R environment.
 
-***** add link to download here and at the top of this page *****
+You can access this dataset by <a href="https://ndownloader.figshare.com/files/24994697">clicking here to download the GEOID12A-NAD83 datum offset raster</a>.
 
 
 ```{r read-in-datum-rasters}
