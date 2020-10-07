@@ -192,19 +192,16 @@ table_observation <- inv_taxonomyProcessed %>%
          scientificName,
          taxonRank) %>%
   
-  # Join the columns selected above with two 
-  # columns from inv_fieldData (the two columns 
-  # are sampleID and benthicArea)
+  # Join the columns selected above with
+  # the inv_fieldData table
   left_join(inv_fieldData %>% 
               select(sampleID, eventID, year, 
                      habitatType, samplerType,
                      benthicArea)) %>%
   
-  # some new columns called 'variable_name', 
-  # 'value', and 'unit', and assign values for 
-  # all rows in the table.
-  # variable_name and unit are both assigned the 
-  # same text strint for all rows. 
+  # make new columns where the
+  # variable name is "inv_dens" and the 
+  # unit is "invert_dens_unit"
   mutate(inv_dens = estimatedTotalCount / benthicArea,
          inv_dens_unit = 'count per square meter')
 
@@ -226,7 +223,7 @@ taxa_occurrence_summary <- table_observation %>%
   select(sampleID, acceptedTaxonID) %>%
   distinct() %>%
   group_by(acceptedTaxonID) %>%
-  summarize(occurrences = n())
+  summarise(occurrences = n())
 
 # filter out taxa that are only observed 1 or 2 times
 taxa_list_cleaned <- taxa_occurrence_summary %>%
@@ -268,7 +265,7 @@ For this first step, we will use data in a 'long' table:
 # no. taxa by rank by site
 table_observation_cleaned %>% 
   group_by(domainID, siteID, taxonRank) %>%
-  summarize(
+  summarise(
     n_taxa = acceptedTaxonID %>% 
         unique() %>% length()) %>%
   ggplot(aes(n_taxa, taxonRank)) +
@@ -283,7 +280,7 @@ table_observation_by_order <-
     filter(!is.na(order)) %>%
     group_by(domainID, siteID, year, 
              eventID, sampleID, habitatType, order) %>%
-    summarize(order_dens = sum(inv_dens, na.rm = TRUE))
+    summarise(order_dens = sum(inv_dens, na.rm = TRUE))
   
   
 # rank occurrence by order
@@ -293,7 +290,7 @@ table_observation_by_order %>% head()
 # stacked rank occurrence plot
 table_observation_by_order %>%
   group_by(order, siteID) %>%
-  summarize(
+  summarise(
     occurrence = (order_dens > 0) %>% sum()) %>%
     ggplot(aes(
         x = reorder(order, -occurrence), 
@@ -348,7 +345,8 @@ table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
                      values_fn = list(inv_dens = sum)) %>%
   column_to_rownames(var = "sampleID") 
 
-# checl col and row sums
+# check col and row sums
+# These should not be zero
 colSums(table_sample_by_taxon_density_wide) %>% min()
 rowSums(table_sample_by_taxon_density_wide) %>% min()
 
@@ -440,7 +438,7 @@ data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
   left_join(table_sample_info %>% 
                 select(sampleID, siteID)) %>%
   tibble::column_to_rownames("sampleID") %>%
-  nest(data = -siteID)
+  nest(data = -siteID) # this uses siteID as grouping variable
 
 # apply the calculation by site  
 data_nested_by_siteID %>% mutate(
