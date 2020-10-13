@@ -1,4 +1,4 @@
-## ----set-up-env, eval=F-------------------------------------------------------------
+## ----set-up-env, eval=F-------------------------------------------------------------------------------
 ## 
 ## # Install packages if you have not yet.
 ## install.packages("neonUtilities")
@@ -10,7 +10,7 @@
 ## 
 
 
-## ----load-packages, message=FALSE---------------------------------------------------
+## ----load-packages, message=FALSE---------------------------------------------------------------------
 
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
@@ -25,29 +25,22 @@ library(Ternary)
 
 
 
-## ----download-data, results='hide'--------------------------------------------------
+## ----download-data, results='hide'--------------------------------------------------------------------
 
 MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
-MC <- loadByProduct(dpID = "DP1.00097.001", check.size = F)
 
 # Unlist to environment - see download/explore tutorial for description
 list2env(MP, .GlobalEnv)
-list2env(MC, .GlobalEnv)
 
 
 
-## ----join-bgc-----------------------------------------------------------------------
+## ----join-bgc-----------------------------------------------------------------------------------------
 
+# duplicate the 'horizon' information into a new table
 S <- mgp_perhorizon
 
-# Join chemical and physical data from biogeo tables
-B <- full_join(mgp_perbiogeosample, 
-               mgc_perbiogeosample, 
-               by=c('horizonID','biogeoID',
-                    'siteID','domainID',
-                    'setDate','collectDate',
-                    'horizonName','pitID',
-                    'biogeoSampleType'))
+# duplicate the biogeochemical information into a new table
+B <- mgp_perbiogeosample
 
 # Select only 'Regular' samples (not audit)
 B <- B[B$biogeoSampleType=="Regular" & 
@@ -63,14 +56,14 @@ S <- arrange(S, siteID, horizonTopDepth)
 
 
 
-## ----site-labels--------------------------------------------------------------------
+## ----site-labels--------------------------------------------------------------------------------------
 
 ## combine 'domainID' and 'siteID' into a new label variable
 S$siteLabel=paste(S$domainID, S$siteID, sep="-")
 
 
 
-## ----RGB-colors---------------------------------------------------------------------
+## ----RGB-colors---------------------------------------------------------------------------------------
 
 # duplicate physical property variables
 S$r=S$sandTotal # Sand is Red 'r'
@@ -91,13 +84,13 @@ S$textureColor=rgb(red=S$r/100,
 
 
 
-## ----make-SPC-object----------------------------------------------------------------
+## ----make-SPC-object----------------------------------------------------------------------------------
 
 depths(S) <- siteLabel ~ horizonTopDepth + horizonBottomDepth
 
 
 
-## ----plot-SERC----------------------------------------------------------------------
+## ----plot-SERC----------------------------------------------------------------------------------------
 
 # adjust margins
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
@@ -114,7 +107,7 @@ plotSPC(S[which(S@site=="D02-SERC"),],
 
 
 
-## ----plot-WREF----------------------------------------------------------------------
+## ----plot-WREF----------------------------------------------------------------------------------------
 
 # adjust margins
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
@@ -130,7 +123,7 @@ plotSPC(S[which(S@site=="D16-WREF"),],
 
 
 
-## ----plot-four----------------------------------------------------------------------
+## ----plot-four----------------------------------------------------------------------------------------
 par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
 plotSPC(S[7:10,], # pass multiple sites here
         name='horizonName', label='siteLabel', 
@@ -141,7 +134,7 @@ plotSPC(S[7:10,], # pass multiple sites here
 
 
 
-## ----ternary-plot-------------------------------------------------------------------
+## ----ternary-plot-------------------------------------------------------------------------------------
 # Set plot margins
 par(mfrow=c(1, 1), mar=rep(.3, 4))
 
@@ -161,7 +154,7 @@ ColourTernary(cols, spectrum = NULL, resolution=45)
 
 
 
-## ----plot-physical-texture----------------------------------------------------------
+## ----plot-physical-texture----------------------------------------------------------------------------
 
 par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
 plotSPC(S[7:10,], # pass multiple sites here
@@ -170,7 +163,7 @@ plotSPC(S[7:10,], # pass multiple sites here
 
 
 
-## ----cluster-texture----------------------------------------------------------------
+## ----cluster-texture----------------------------------------------------------------------------------
 
 d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), 
                      k=0, max_d=100)
@@ -186,7 +179,7 @@ plotProfileDendrogram(S, d.diana, scaling.factor = .6,
 
 
 
-## ----plot-texture-clusters----------------------------------------------------------
+## ----plot-texture-clusters----------------------------------------------------------------------------
 
 # Check and set working directory as needed.
 getwd()
@@ -207,7 +200,7 @@ dev.off()
 
 
 
-## ----cluster-nutrients--------------------------------------------------------------
+## ----cluster-nutrients--------------------------------------------------------------------------------
 
 ## Cluster as above, but for nutrient variables
 d.nutrients <- profile_compare(S, 
@@ -219,7 +212,7 @@ d.diana.nutrients <- diana(d.nutrients)
 
 
 
-## ----plot-nutrient-clusters---------------------------------------------------------
+## ----plot-nutrient-clusters---------------------------------------------------------------------------
 
 # Open 'pdf' graphic device. Define file name and large dimensions
 pdf(file="NEON_Soils_Nutrient_Clusters.pdf", width=24, height=14)
