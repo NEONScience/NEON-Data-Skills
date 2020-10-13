@@ -76,7 +76,7 @@ options(stringsAsFactors=F)
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. 
 
-wd <- "~/Documents/data/" # This will depend on your local environment
+wd <- "~/data/" # This will depend on your local environment
 setwd(wd)
 
 ```
@@ -245,7 +245,7 @@ The readme file contains descriptions for each variable in the tabular files.
 ```{r TOS-readme}
 
 ## load TOS plot readme
-rdme <- read.delim('All_NEON_TOS_Plots_V7/readme .csv',
+rdme <- read.delim('All_NEON_TOS_Plots_V8/readme.csv',
                    sep=',', header=T)
 
 ## View the variables
@@ -453,20 +453,20 @@ about the coordinates of each sensor, relative to a reference location.
 
 While the specifics vary, techniques are generalizable for working with sensor 
 data and the sensor_positions.csv file. For this tutorial, let's look at the 
-sensor locations for photosynthetically active radiation (PAR; DP1.00024.001) at 
+sensor locations for soil temperature (PAR; DP1.00041.001) at 
 the NEON Treehaven site (TREE) in July 2018. To reduce our file size, we'll use 
 the 30 minute averaging interval. Our final product from this section is to 
-create a spatially explicit picture of light attenuation through the canopy.
+create a depth profile of soil temperature in one soil plot.
 
 If downloading data using the `neonUtilties` package is new to you, check out the 
 <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
 
-This function will download <1 MB of data as written so we have `check.size =F` 
-for ease of running the code. 
+This function will download about 7 MB of data as written so we have `check.size =F` 
+for ease of running the code.
 
-```{r par-load, results="hide"}
-# load PAR data of interest 
-par <- loadByProduct(dpID="DP1.00024.001", site="TREE",
+```{r soilT-load, results="hide"}
+# load soil temperature data of interest 
+soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
                     avg=30, check.size=F)
 
@@ -477,10 +477,13 @@ Now we can specifically look at the sensor positions file.
 
 ```{r sens-pos}
 # create object for sens. pos. file
-pos <- par$sensor_positions_00024
+pos <- soilT$sensor_positions_00041
 
 # view names
 names(pos)
+
+# view table
+View(pos)
 
 ```
 
@@ -490,47 +493,87 @@ page for more details.
 
 Using `unique()` we can view all the locations indexes in this file. 
 
-```{r par-levs}
+```{r pos-levs}
 # view names
 unique(pos$HOR.VER)
 
 ```
 
-PAR data are collected at multiple levels of the NEON tower but along a single 
-vertical plane. We see this reflected in the data where HOR=000 (all data collected)
-at the tower location. The VER index varies (VER = 010 to 060) showing that the 
-vertical position is changing and that PAR is measured at six different levels.
+Soil temperature data are collected in 5 instrumented soil plots inside the 
+tower footprint. We see this reflected in the data where HOR = 001 to 005. 
+Within each plot, temperature is measured at 9 depths, seen in VER = 501 to 
+509. At some sites, the number of depths may differ slightly.
 
 The x, y, and z offsets in the sensor positions file are the relative distance, 
 in meters, to the reference latitude, longitude, and elevation in the file. 
 
 The HOR and VER indices in the sensor positions file correspond to the 
-`verticalPosition` and `horizontalPosition` fields in `par$PARPAR_30min`.
+`verticalPosition` and `horizontalPosition` fields in `soilT$ST_30_minute`.
 
-Since our goal is to plot a profile of the PAR through the canopy, we need to 
-start by using the `aggregate()` function to calculate mean PAR at each vertical 
-position on the tower over the month.
+Note that there are two sets of position data for soil plot 001, and that 
+one set has an `end` date in the file. This indicates sensors either 
+moved or were relocated; in this case there was a frost heave incident. 
+You can read about it in the issue log, both in the readme file and on 
+the <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page.
 
-``` {r par-ver-mean}
-# calc mean PAR at each level
-parMean <- aggregate(par$PARPAR_30min$PARMean, 
-                   by=list(par$PARPAR_30min$verticalPosition),
-                   FUN=mean, na.rm=T)
+Since we're working with data from July 2018, and the change in 
+sensor locations is dated Nov 2018, we'll use the original locations.
 
-```
+```{r pos-rem}
 
-And now we can plot mean PAR relative to elevation on the tower since that is the 
-zOffset. 
-
-```{r par-plot}
-
-# plot PAR
-plot(parMean$x, pos$zOffset, type="b", pch=20,
-     xlab="Photosynthetically active radiation",
-     ylab="Height above tower base (m)")
+pos <- pos[-intersect(grep("001.", pos$HOR.VER),
+                      which(pos$end=="")),]
 
 ```
 
-From our plot we can see that the amount of light (with PAR as a proxy) increases
-higher up in the canopy.  
+Our goal is to plot a time series of temperature, stratified by 
+depth, so let's start by joining the data file and sensor positions 
+file, to bring the depth measurements into the same data frame with 
+the data.
+
+``` {r pos-join}
+# paste horizontalPosition and verticalPosition together
+# to match HOR.VER
+soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
+                                    soilT$ST_30_minute$verticalPosition,
+                                    sep=".")
+
+# left join to keep all temperature records
+soilTHV <- merge(soilT$ST_30_minute, pos, 
+                 by="HOR.VER", all.x=T)
+
+```
+
+And now we can plot soil temperature over time for each depth. 
+We'll use `ggplot` since it's well suited to this kind of 
+stratification. Each soil plot is its own panel:
+
+```{r soilT-plot}
+
+gg <- ggplot(soilTHV, 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
+
+```
+
+We can see that as soil depth increases, temperatures 
+become much more stable, while the shallowest measurement 
+has a clear diurnal cycle. We can also see that 
+something has gone wrong with one of the sensors in plot 
+002. To remove those data, use only values where the final 
+quality flag passed, i.e. `finalQF` = 0
+
+```{r soilT-plot-noQF}
+
+gg <- ggplot(subset(soilTHV, finalQF==0), 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
+
+```
 

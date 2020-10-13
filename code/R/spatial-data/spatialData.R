@@ -1,4 +1,4 @@
-## ----install, eval=F-------------------------------------------------
+## ----install, eval=F-------------------------------------------------------------------------------------------
 ## 
 ## # run once to get the package, and re-run if you need to get updates
 ## install.packages("sp")  # working with spatial data
@@ -11,7 +11,7 @@
 ## 
 
 
-## ----libraries, results="hide"---------------------------------------
+## ----libraries, results="hide"---------------------------------------------------------------------------------
 
 # run every time you start a script
 library(sp)
@@ -26,18 +26,18 @@ options(stringsAsFactors=F)
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. 
 
-wd <- "~/Documents/data/" # This will depend on your local environment
+wd <- "~/data/" # This will depend on your local environment
 setwd(wd)
 
 
 
-## ----load-domains, results="hide"------------------------------------
+## ----load-domains, results="hide"------------------------------------------------------------------------------
 
 # upload data
 neonDomains <- readOGR("NEONDomains_0" , layer="NEON_Domains")
 
 
-## ----create-df-------------------------------------------------------
+## ----create-df, warning=FALSE----------------------------------------------------------------------------------
 
 # First, add a new column termed "id" composed of the row names of the data
 neonDomains@data$id <- rownames(neonDomains@data)
@@ -50,13 +50,13 @@ neonDomains_points<- tidy(neonDomains, region="id")
 neonDomainsDF <- merge(neonDomains_points, neonDomains@data, by = "id")
 
 
-## ----explore-domains-------------------------------------------------
+## ----explore-domains-------------------------------------------------------------------------------------------
 # view data structure for each variable
 str(neonDomainsDF)
 
 
 
-## ----plot-domains, fig.width=8, fig.height=6-------------------------
+## ----plot-domains, fig.width=8, fig.height=6-------------------------------------------------------------------
 # plot domains
 domainMap <- ggplot(neonDomainsDF) + 
         geom_map(map = neonDomainsDF,
@@ -67,7 +67,7 @@ domainMap
 
 
 
-## ----load-explore-sites----------------------------------------------
+## ----load-explore-sites----------------------------------------------------------------------------------------
 # read in the data
 neonSites <- read.delim("field-sites.csv", sep=",", header=T)
 
@@ -75,7 +75,7 @@ neonSites <- read.delim("field-sites.csv", sep=",", header=T)
 str(neonSites)
 
 
-## ----plot-sites, fig.width=8, fig.height=6---------------------------
+## ----plot-sites, fig.width=8, fig.height=6---------------------------------------------------------------------
 # plot the sites
 neonMap <- domainMap + 
         geom_point(data=neonSites, 
@@ -85,7 +85,7 @@ neonMap
 
 
 
-## ----sites-color, fig.width=8, fig.height=6--------------------------
+## ----sites-color, fig.width=8, fig.height=6--------------------------------------------------------------------
 # color is determined by the order that the unique values show up. Check order
 unique(neonSites$Site.Type)
 
@@ -101,10 +101,10 @@ sitesMap
 
 
 
-## ----TOS-readme------------------------------------------------------
+## ----TOS-readme------------------------------------------------------------------------------------------------
 
 ## load TOS plot readme
-rdme <- read.delim('All_NEON_TOS_Plots_V7/readme .csv',
+rdme <- read.delim('All_NEON_TOS_Plots_V8/readme.csv',
                    sep=',', header=T)
 
 ## View the variables
@@ -112,7 +112,7 @@ rdme[,1]
 
 
 
-## ----get-mam-data, results="hide"------------------------------------
+## ----get-mam-data, results="hide"------------------------------------------------------------------------------
 # load mammal data
 mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
                      startdate="2018-08", enddate="2018-08",
@@ -120,19 +120,19 @@ mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
 
 
 
-## ----find-sp-data----------------------------------------------------
+## ----find-sp-data----------------------------------------------------------------------------------------------
 #
 View(mam$variables_10072)
 
 
 
-## ----print-mam-------------------------------------------------------
+## ----print-mam-------------------------------------------------------------------------------------------------
 
 head(mam$mam_pertrapnight[,1:18])
 
 
 
-## ----print-ONAQ020---------------------------------------------------
+## ----print-ONAQ020---------------------------------------------------------------------------------------------
 # view all trap locations in one plot
 mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
                      c("trapCoordinate","decimalLatitude",
@@ -140,27 +140,27 @@ mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
 
 
 
-## ----mam-getLocTOS, results="hide"-----------------------------------
+## ----mam-getLocTOS, results="hide"-----------------------------------------------------------------------------
 # download small mam
 mam.loc <- getLocTOS(data=mam$mam_pertrapnight,
                            dataProd="mam_pertrapnight")
 
 
 
-## ----mam-diff--------------------------------------------------------
+## ----mam-diff--------------------------------------------------------------------------------------------------
 # print variable name that are new
 names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
 
 
 
-## ----mam-grids-------------------------------------------------------
+## ----mam-grids-------------------------------------------------------------------------------------------------
 # plot all trap locations at site
 plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
      xlab="Easting", ylab="Northing")
 
 
 
-## ----plot-ONAQ003, fig.width=6, fig.height=6-------------------------
+## ----plot-ONAQ003, fig.width=6, fig.height=6-------------------------------------------------------------------
 # plot all trap locations in one grid (plot)
 plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
      mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
@@ -168,7 +168,7 @@ plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")],
 
 
 
-## ----plot-captures, fig.width=6, fig.height=6------------------------
+## ----plot-captures, fig.width=6, fig.height=6------------------------------------------------------------------
 # plot all captures 
 plot(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003")], 
      mam.loc$adjNorthing[which(mam.loc$plotID == "ONAQ_003")], 
@@ -182,42 +182,70 @@ points(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003" &
 
 
 
-## ----par-load, results="hide"----------------------------------------
-# load PAR data of interest 
-par <- loadByProduct(dpID="DP1.00024.001", site="TREE",
+## ----soilT-load, results="hide"--------------------------------------------------------------------------------
+# load soil temperature data of interest 
+soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
                     avg=30, check.size=F)
 
 
 
-## ----sens-pos--------------------------------------------------------
+## ----sens-pos--------------------------------------------------------------------------------------------------
 # create object for sens. pos. file
-pos <- par$sensor_positions_00024
+pos <- soilT$sensor_positions_00041
 
 # view names
 names(pos)
 
+# view table
+View(pos)
 
 
-## ----par-levs--------------------------------------------------------
+
+## ----pos-levs--------------------------------------------------------------------------------------------------
 # view names
 unique(pos$HOR.VER)
 
 
 
-## ----par-ver-mean----------------------------------------------------
-# calc mean PAR at each level
-parMean <- aggregate(par$PARPAR_30min$PARMean, 
-                   by=list(par$PARPAR_30min$verticalPosition),
-                   FUN=mean, na.rm=T)
+## ----pos-rem---------------------------------------------------------------------------------------------------
+
+pos <- pos[-intersect(grep("001.", pos$HOR.VER),
+                      which(pos$end=="")),]
 
 
 
-## ----par-plot--------------------------------------------------------
+## ----pos-join--------------------------------------------------------------------------------------------------
+# paste horizontalPosition and verticalPosition together
+# to match HOR.VER
+soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
+                                    soilT$ST_30_minute$verticalPosition,
+                                    sep=".")
 
-# plot PAR
-plot(parMean$x, pos$zOffset, type="b", pch=20,
-     xlab="Photosynthetically active radiation",
-     ylab="Height above tower base (m)")
+# left join to keep all temperature records
+soilTHV <- merge(soilT$ST_30_minute, pos, 
+                 by="HOR.VER", all.x=T)
+
+
+
+## ----soilT-plot------------------------------------------------------------------------------------------------
+
+gg <- ggplot(soilTHV, 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
+
+
+
+## ----soilT-plot-noQF-------------------------------------------------------------------------------------------
+
+gg <- ggplot(subset(soilTHV, finalQF==0), 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
 
 
