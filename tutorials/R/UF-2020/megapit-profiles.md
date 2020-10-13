@@ -75,46 +75,33 @@ the R packages needed for data load and analysis.
     library(dplyr)
     library(Ternary)
 
-Megapit chemical and physical properties:
+Megapit physical and chemial properties:
 
-* <a href="https://data.neonscience.org/data-products/DP1.00096.001">Soil physical properties (Megapit) DP1.00096.001</a>
-* <a href="https://data.neonscience.org/data-products/DP1.00097.001">>Soil chemical properties (Megapit) DP1.00097.001</a>
+* <a href="https://data.neonscience.org/data-products/DP1.00096.001">Soil physical and chemical properties, Megapit DP1.00096.001</a>
 
 In this exercise, we want all available data, so we won't subset by 
 site or date range.
 
 
     MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
-    MC <- loadByProduct(dpID = "DP1.00097.001", check.size = F)
     
     # Unlist to environment - see download/explore tutorial for description
     list2env(MP, .GlobalEnv)
-    list2env(MC, .GlobalEnv)
 
-## Merge Tables and Data Products
+## Merge Tables
 
-Quite a bit of data is duplicated between the two data products, since 
-the pit-level and horizon-level data are relevant to both the chemical 
-and physical data. There is a `_perhorizon` table in both data products, 
-containing data about the soil horizon identification and depths.
-
-We'll join the horizon data to the biogeochemistry data in order to 
-see depth profile of biogeochemical characteristics. The variables 
+We'll join the horizon data to the physical and chemical characteristics data in order to 
+see a depth profile of biogeochemical characteristics. The variables 
 needed to join correctly are horizon (either name or ID) and either 
 pitID or siteID, but we'll include several other columns that appear 
 in both tables, to avoid creaing duplicate columns.
 
 
+    # duplicate the 'horizon' information into a new table
     S <- mgp_perhorizon
     
-    # Join chemical and physical data from biogeo tables
-    B <- full_join(mgp_perbiogeosample, 
-                   mgc_perbiogeosample, 
-                   by=c('horizonID','biogeoID',
-                        'siteID','domainID',
-                        'setDate','collectDate',
-                        'horizonName','pitID',
-                        'biogeoSampleType'))
+    # duplicate the biogeochemical information into a new table
+    B <- mgp_perbiogeosample
     
     # Select only 'Regular' samples (not audit)
     B <- B[B$biogeoSampleType=="Regular" & 
@@ -164,7 +151,7 @@ by site and horizon. We can convert this to a
 
 # Plot Simple Soil Profiles
 
-And using the plotting functions in the `aqp` package, 
+Using the plotting functions in the `aqp` package, 
 let's start exploring some depth profiles. We'll start with 
 a single site, the Smithsonian Environmental Research Center 
 (SERC), and plot clay content by depth.
@@ -256,13 +243,13 @@ Now, we can plot the pedons according to their soil texture:
 ## Multivariate Clustering
 
 We have 47 Megapit samples across the NEON observatory, spanning a wide range of soil types, textures, and chemical profiles. While it may be helpful from a geographic perspective to group the pedons by Site ID, it may be even more helpful to group the samples by their inherent properties. For example, grouping soils by texture, or by their organic matter content. 
-In order to makethese groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the `cluster` package. First, let's group by soil texture:
+In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the `cluster` package. First, let's group by soil texture:
 
 
     d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), 
                          k=0, max_d=100)
 
-    ## Computing dissimilarity matrices from 47 profiles [1.28 Mb]
+    ## Computing dissimilarity matrices from 46 profiles [1.24 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana <- diana(d)
@@ -315,7 +302,7 @@ Rather than cluster based on physical properties, we can also cluster based on n
                                    vars=c('nitrogenTot','carbonTot', 'sulfurTot'),
                                    k=0, max_d=100)
 
-    ## Computing dissimilarity matrices from 47 profiles [1.27 Mb]
+    ## Computing dissimilarity matrices from 46 profiles [1.23 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana.nutrients <- diana(d.nutrients)
