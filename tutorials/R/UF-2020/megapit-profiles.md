@@ -287,10 +287,10 @@ In order to visualize these data, we will need to make a plotting area large eno
     # Close and save the device
     dev.off()
 
-    ## quartz_off_screen 
-    ##                 2
+    ## RStudioGD 
+    ##         2
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
 
 ## Clustering by Nutrients
 
@@ -339,7 +339,7 @@ Let's make another PDF for our plot. However, this time is itsn't as straightfor
     # Close and save the device
     dev.off()
 
-    ## quartz_off_screen 
-    ##                 2
+    ## RStudioGD 
+    ##         2
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webbpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Clusters.pdf">PDF here.</a>

@@ -311,7 +311,7 @@ dev.off()
 
 ```
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
 
 ## Clustering by Nutrients
 
@@ -364,4 +364,4 @@ dev.off()
 
 ```
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webbpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Clusters.pdf">PDF here.</a>
