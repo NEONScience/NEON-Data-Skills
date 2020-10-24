@@ -130,13 +130,14 @@ Next, we will perform several operations in a row to re-organize our data. Each 
 # extract location data into a separate table
 table_location <- inv_fieldData %>%
   
-# group by columns with site location information
-  group_by(siteID, 
+# select by columns with site location information
+  select(siteID, 
          domainID,
          namedLocation, 
          decimalLatitude, 
          decimalLongitude, 
-         elevation)%>% 
+         elevation)%>%
+  distinct()
 
   # this will return a summary table with 1 row per site 
 table_location

@@ -1,4 +1,4 @@
-## ----load libraries, message=FALSE--------------------------------------------------------
+## ----load libraries, message=FALSE----------------------------------------------------------
 
 # clean out workspace
 
@@ -16,7 +16,7 @@ library(neonUtilities)
 
 
 
-## ----download-data------------------------------------------------------------------------
+## ----download-data--------------------------------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
@@ -31,7 +31,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-overview--------------------------------------------------------------------
+## ----download-overview----------------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -58,18 +58,19 @@ head(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing, message=FALSE, tidy=TRUE-------------------------------------
+## ----munging-and-organizing, message=FALSE, tidy=TRUE---------------------------------------
 
 # extract location data into a separate table
 table_location <- inv_fieldData %>%
   
-# group by columns with site location information
-  group_by(siteID, 
+# select by columns with site location information
+  select(siteID, 
          domainID,
          namedLocation, 
          decimalLatitude, 
          decimalLongitude, 
-         elevation)%>% 
+         elevation)%>%
+  distinct()
 
   # this will return a summary table with 1 row per site 
 table_location
@@ -182,7 +183,7 @@ taxa_occurrence_summary <- table_observation %>%
 
 
 
-## ----long-data, message=FALSE-------------------------------------------------------------
+## ----long-data, message=FALSE---------------------------------------------------------------
 # create ordered factor for taxon rank 
 table_observation_cleaned$taxonRank <- factor(table_observation_cleaned$taxonRank, levels = c('species','speciesGroup','subgenus','genus','tribe','subfamily','family','suborder','order','subclass','class','phylum'))
 
@@ -196,7 +197,7 @@ table_observation_cleaned %>%
   facet_wrap(~ domainID + siteID) +
   geom_col()
 
-## ----long-data-2, message=FALSE-----------------------------------------------------------
+## ----long-data-2, message=FALSE-------------------------------------------------------------
 # library(scales)
 # sum densities by order for each sampleID
 table_observation_by_order <- 
@@ -232,7 +233,7 @@ table_observation_by_order %>%
 
 
 
-## ----long-data-3--------------------------------------------------------------------------
+## ----long-data-3----------------------------------------------------------------------------
 # faceted densities plot by site
 table_observation_by_order %>%
   ggplot(aes(
@@ -253,7 +254,7 @@ table_observation_by_order %>%
 
 
 
-## ----make-wide----------------------------------------------------------------------------
+## ----make-wide------------------------------------------------------------------------------
 
 # select variables of interest:  site and species density info 
 table_sample_by_taxon_density_long <- table_observation_cleaned %>%
@@ -277,14 +278,14 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha---------------------------------------------------------------------------
+## ----calc-alpha-----------------------------------------------------------------------------
 
 table_sample_by_taxon_density_wide %>%
   vegetarian::d(lev = 'alpha', q = 0)
 
 
 
-## ----simulated-abg------------------------------------------------------------------------
+## ----simulated-abg--------------------------------------------------------------------------
 
 # even distribution, order q = 0 diversity = 10 
 vegetarian::d(
@@ -324,7 +325,7 @@ vegetarian::d(
 
 
 
-## ----compare-q-NEON-----------------------------------------------------------------------
+## ----compare-q-NEON-------------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -373,7 +374,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 
 
-## ----local-regional-var, echo=F-----------------------------------------------------------
+## ----local-regional-var, echo=F-------------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability
@@ -399,7 +400,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 
 
-## ----NMDS---------------------------------------------------------------------------------
+## ----NMDS-----------------------------------------------------------------------------------
 
 
 # create ordination using NMDS
