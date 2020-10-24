@@ -126,11 +126,6 @@ head(categoricalCodes_20120)
 Next, we will perform several operations in a row to re-organize our data. Each step is described by a code comment.
 
 ```{r munging-and-organizing, message=FALSE, tidy=TRUE}
-# create 'mode' function to extract dominant habitat type and substratum size class 
-mode <- function(x) {
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
-}
 
 # extract location data into a separate table
 table_location <- inv_fieldData %>%
@@ -142,9 +137,7 @@ table_location <- inv_fieldData %>%
          decimalLatitude, 
          decimalLongitude, 
          elevation)%>% 
-  # use mode function to extract the most common habitat and substrate per site
-  summarise(dominantHabitat = mode(habitatType), 
-            dominantSubstratum= mode(substratumSizeClass))
+
   # this will return a summary table with 1 row per site 
 table_location
   

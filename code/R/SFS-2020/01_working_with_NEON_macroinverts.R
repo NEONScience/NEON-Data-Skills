@@ -1,4 +1,4 @@
-## ----load libraries---------------------------------------------------------
+## ----load libraries, message=FALSE--------------------------------------------------------
 
 # clean out workspace
 
@@ -16,14 +16,12 @@ library(neonUtilities)
 
 
 
-## ----download-data----------------------------------------------------------
+## ----download-data------------------------------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
-
 # list of sites
 my_site_list <- c('ARIK', 'POSE', 'MAYF')
-
 # get all tables for these sites from the API -- takes < 1 minute
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = my_dpid,
@@ -33,7 +31,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-overview------------------------------------------------------
+## ----download-overview--------------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -60,48 +58,39 @@ head(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing-------------------------------------------------
-
-# extract year from date, add it as a new column
-inv_fieldData <- inv_fieldData %>%
-  mutate(
-    year = collectDate %>% 
-      lubridate::as_date() %>% 
-      lubridate::year())
-
+## ----munging-and-organizing, message=FALSE, tidy=TRUE-------------------------------------
 
 # extract location data into a separate table
 table_location <- inv_fieldData %>%
   
-  # keep only the columns listed below
-  select(siteID, 
+# group by columns with site location information
+  group_by(siteID, 
          domainID,
          namedLocation, 
          decimalLatitude, 
          decimalLongitude, 
-         elevation) %>%
+         elevation)%>% 
+
+  # this will return a summary table with 1 row per site 
+table_location
   
-  # keep rows with unique combinations of values, 
-  # i.e., no duplicate records
-  distinct()
-
-
 
 # create a taxon table, which describes each 
 # taxonID that appears in the data set
 # start with inv_taxonomyProcessed
+
 table_taxon <- inv_taxonomyProcessed %>%
 
   # keep only the coluns listed below
-  select(acceptedTaxonID, taxonRank, scientificName,
-         order, family, genus, 
-         identificationQualifier,
-         identificationReferences) %>%
-
+  select(order, family, genus, scientificName, acceptedTaxonID, taxonRank, identificationQualifier,
+         identificationReferences) %>% 
+  
   # remove rows with duplicate information
-  distinct()
+        distinct() %>%
+  # sort table by taxonomic hierarchy
+        arrange(order, family, genus, scientificName)
 
-
+head(table_taxon)
 
 # taxon table information for all taxa in 
 # our database can be downloaded here:
@@ -109,8 +98,6 @@ table_taxon <- inv_taxonomyProcessed %>%
 # full_taxon_table_from_api <- neonUtilities::getTaxonTable("MACROINVERTEBRATE", token = NEON_TOKEN)
 
 
-
-# Make the observation table.
 # start with inv_taxonomyProcessed
 table_observation <- inv_taxonomyProcessed %>% 
   
@@ -130,23 +117,24 @@ table_observation <- inv_taxonomyProcessed %>%
          scientificName,
          taxonRank) %>%
   
-  # Join the columns selected above with two 
-  # columns from inv_fieldData (the two columns 
-  # are sampleID and benthicArea)
+  # Join the columns selected above with
+  # the inv_fieldData table. These will join 
+  # based on the common variable 'sampleID'
   left_join(inv_fieldData %>% 
-              select(sampleID, eventID, year, 
-                     habitatType, samplerType,
+              select(sampleID, eventID,
+                     habitatType, substratumSizeClass, samplerType,
                      benthicArea)) %>%
   
-  # some new columns called 'variable_name', 
-  # 'value', and 'unit', and assign values for 
-  # all rows in the table.
-  # variable_name and unit are both assigned the 
-  # same text strint for all rows. 
+  # Create new variables:
+  # Adjust invt counts for benthic area of the sampler to get invt density with comparable units
+  # Extract year from date 
   mutate(inv_dens = estimatedTotalCount / benthicArea,
-         inv_dens_unit = 'count per square meter')
+         inv_dens_unit = 'count per square meter',
+          year = collectDate %>% 
+             lubridate::as_date() %>% 
+              lubridate::year())
 
-
+head(table_observation)[,-1] # hides the uid column for viewing purposes 
 
 # extract sample info
 table_sample_info <- table_observation %>%
@@ -156,59 +144,59 @@ table_sample_info <- table_observation %>%
          inv_dens_unit) %>%
   distinct()
 
-
-
-# remove singletons and doubletons
-# create an occurrence summary table
-taxa_occurrence_summary <- table_observation %>%
-  select(sampleID, acceptedTaxonID) %>%
-  distinct() %>%
-  group_by(acceptedTaxonID) %>%
-  summarize(occurrences = n())
-
-# filter out taxa that are only observed 1 or 2 times
-taxa_list_cleaned <- taxa_occurrence_summary %>%
-  filter(occurrences > 2)
-
-# filter observation table based on taxon list above
-table_observation_cleaned <- table_observation %>%
-  filter(acceptedTaxonID %in%
-             taxa_list_cleaned$acceptedTaxonID,
-         !sampleID %in% c("MAYF.20190729.CORE.1",
-                          "POSE.20160718.HESS.1")) 
-                      #this is an outlier sampleID
-
-
-# some summary data
+# create a summary of sampling effort associated with taxonomic data
 sampling_effort_summary <- table_sample_info %>%
   
-  # group by siteID, year
-  group_by(siteID, year, samplerType) %>%
+  # group by siteID, year and sampler 
+  group_by(siteID, year, samplerType) %>%#, habitatType) %>%
   
-  # count samples and habitat types within each event
+  # count events, samples and habitat types within each event
   summarise(
     event_count = eventID %>% unique() %>% length(),
     sample_count = sampleID %>% unique() %>% length(),
-    habitat_count = habitatType %>% 
-        unique() %>% length())
+   habitat_count = habitatType %>% unique() %>% length())
 
-View(sampling_effort_summary)
+View(sampling_effort_summary) # This shows how many samples were returned from the taxonomy lab, compare with inv_fieldData to
+                              # determine if taxonomy data are present from all samples. 
+
+
+# create an occurrence summary table:  number of samples across all sites in which each taxa was present
+taxa_occurrence_summary <- table_observation %>%
+  select(sampleID, acceptedTaxonID) %>%
+  distinct() %>%  
+  group_by(acceptedTaxonID) %>%
+  summarise(occurrences = n())
+
+  # filter out taxa that are only observed 1 or 2 times
+  taxa_list_cleaned <- taxa_occurrence_summary %>%
+    filter(occurrences > 2)
+
+  # filter observation table based on taxon list above to remove rare/uncommon occurrences
+  # this is the table we will use for exploratory analysis
+  table_observation_cleaned <- table_observation %>%
+   filter(acceptedTaxonID %in%
+             taxa_list_cleaned$acceptedTaxonID,
+           !sampleID %in% c("MAYF.20190729.CORE.1",
+                          "POSE.20160718.HESS.1")) #these are outlier sampleIDs
 
 
 
-## ----long-data--------------------------------------------------------------
+
+## ----long-data, message=FALSE-------------------------------------------------------------
+# create ordered factor for taxon rank 
+table_observation_cleaned$taxonRank <- factor(table_observation_cleaned$taxonRank, levels = c('species','speciesGroup','subgenus','genus','tribe','subfamily','family','suborder','order','subclass','class','phylum'))
 
 # no. taxa by rank by site
 table_observation_cleaned %>% 
   group_by(domainID, siteID, taxonRank) %>%
-  summarize(
+  summarise(
     n_taxa = acceptedTaxonID %>% 
-        unique() %>% length()) %>%
+      unique() %>% length()) %>%
   ggplot(aes(n_taxa, taxonRank)) +
   facet_wrap(~ domainID + siteID) +
   geom_col()
 
-## ----long-data-2------------------------------------------------------------
+## ----long-data-2, message=FALSE-----------------------------------------------------------
 # library(scales)
 # sum densities by order for each sampleID
 table_observation_by_order <- 
@@ -216,30 +204,36 @@ table_observation_by_order <-
     filter(!is.na(order)) %>%
     group_by(domainID, siteID, year, 
              eventID, sampleID, habitatType, order) %>%
-    summarize(order_dens = sum(inv_dens, na.rm = TRUE))
+    summarise(order_dens = sum(inv_dens, na.rm = TRUE))
   
   
-# rank occurrence by order
+# rank occurrence by order (# of samples in which order was present)
 table_observation_by_order %>% head()
 
-
-# stacked rank occurrence plot
+# ordered list by occurrence
+order_rank <- table_observation_by_order %>% group_by(order)%>% 
+  summarise(occurrence = (order_dens > 0) %>% sum()) %>%
+  arrange(desc(occurrence))
+  
 table_observation_by_order %>%
-  group_by(order, siteID) %>%
-  summarize(
-    occurrence = (order_dens > 0) %>% sum()) %>%
-    ggplot(aes(
-        x = reorder(order, -occurrence), 
-        y = occurrence,
-        color = siteID,
-        fill = siteID)) +
-    geom_col() +
-    theme(axis.text.x = 
-              element_text(angle = 45, hjust = 1))
+  group_by(siteID , order) %>%
+  mutate(order = order %>% factor(levels = order_rank$order))%>%
+  summarise(
+    occurrence =  (order_dens > 0) %>% sum()) %>%# order_dens >0 is logical argument, sum() counts the number of 'TRUE' results
+   ggplot()+ 
+  geom_col(aes(
+    x = order, 
+    y = occurrence,
+    color = siteID,
+    fill = siteID)) + 
+  theme_bw()+ theme(axis.text.x = 
+          element_text(angle = 45, hjust = 1)) + 
+  ggtitle("Rank occurrence by order")
 
 
-## ----long-data-3------------------------------------------------------------
-# faceted densities plot
+
+## ----long-data-3--------------------------------------------------------------------------
+# faceted densities plot by site
 table_observation_by_order %>%
   ggplot(aes(
     x = reorder(order, -order_dens), 
@@ -249,25 +243,23 @@ table_observation_by_order %>%
   geom_boxplot(alpha = .5) +
   facet_grid(siteID ~ .) +
   theme(axis.text.x = 
-            element_text(angle = 45, hjust = 1))
+            element_text(angle = 45, hjust = 1))+
+   labs(y = "log of invt density (count/m2)",
+            x = "Order",
+            title = "Boxplot: Macroinvertebrate density by order")
 
 
 
 
 
-## ----make-wide--------------------------------------------------------------
 
+## ----make-wide----------------------------------------------------------------------------
 
-# select only site by species density info and remove duplicate records
+# select variables of interest:  site and species density info 
 table_sample_by_taxon_density_long <- table_observation_cleaned %>%
   select(sampleID, acceptedTaxonID, inv_dens) %>%
-  distinct() %>%
+  distinct() %>%  # remove duplicate records
   filter(!is.na(inv_dens))
-
-# table_sample_by_taxon_density_long %>% nrow()
-# table_sample_by_taxon_density_long %>% distinct() %>% nrow()
-
-
 
 # pivot to wide format, sum multiple counts per sampleID
 table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
@@ -278,20 +270,21 @@ table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
                      values_fn = list(inv_dens = sum)) %>%
   column_to_rownames(var = "sampleID") 
 
-# checl col and row sums
+# check col and row sums
+# These should not be zero
 colSums(table_sample_by_taxon_density_wide) %>% min()
 rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha-------------------------------------------------------------
+## ----calc-alpha---------------------------------------------------------------------------
 
 table_sample_by_taxon_density_wide %>%
   vegetarian::d(lev = 'alpha', q = 0)
 
 
 
-## ----simulated-abg----------------------------------------------------------
+## ----simulated-abg------------------------------------------------------------------------
 
 # even distribution, order q = 0 diversity = 10 
 vegetarian::d(
@@ -331,7 +324,7 @@ vegetarian::d(
 
 
 
-## ----compare-q-NEON---------------------------------------------------------
+## ----compare-q-NEON-----------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -339,9 +332,9 @@ data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
   left_join(table_sample_info %>% 
                 select(sampleID, siteID)) %>%
   tibble::column_to_rownames("sampleID") %>%
-  nest(data = -siteID)
+  nest(data = -siteID) # this uses siteID as grouping variable
 
-# apply the calculation by site  
+# apply richness calculation by site  
 data_nested_by_siteID %>% mutate(
   alpha_q0 = purrr::map_dbl(
     .x = data,
@@ -363,14 +356,15 @@ diversity_partitioning_results <-
             abundances = ., lev = 'alpha', q = 0)),
         alpha_q1 = purrr::map_dbl(data, ~ vegetarian::d(
             abundances = ., lev = 'alpha', q = 1)),
+         gamma_q0 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = 'gamma', q = 0)),
+        gamma_q1 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = 'gamma', q = 1)),
         beta_q0 = purrr::map_dbl(data, ~ vegetarian::d(
             abundances = ., lev = 'beta', q = 0)),
         beta_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'beta', q = 1)),
-        gamma_q0 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'gamma', q = 0)),
-        gamma_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'gamma', q = 1)))
+            abundances = ., lev = 'beta', q = 1)))
+       
 
 
 diversity_partitioning_results %>% select(-data) %>% print()
@@ -379,7 +373,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 
 
-## ----local-regional-var, echo=F---------------------------------------------
+## ----local-regional-var, echo=F-----------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability
@@ -391,7 +385,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 # devtools::install_github("sokole/ltermetacommunities/ltmc")
 # library(ltmc)
 # 
-# # Variability in aggregate biomass folloing
+# # Variability in aggregate biomass following
 # # Wang and Loreau (2014)
 # metacommunity_variability_results_POSE <- table_observation %>%
 #   filter(!is.na(inv_dens), siteID == "POSE") %>%
@@ -405,7 +399,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 
 
-## ----NMDS-------------------------------------------------------------------
+## ----NMDS---------------------------------------------------------------------------------
 
 
 # create ordination using NMDS
@@ -414,13 +408,13 @@ my_nmds_result <- table_sample_by_taxon_density_wide %>% vegan::metaMDS()
 # plot stress
 my_nmds_result$stress
 p1 <- vegan::ordiplot(my_nmds_result)
-vegan::ordilabel(p1, "species")
+vegan::ordilabel(p1, "species") # how similar taxon densities are across samples 
 
 # merge NMDS scores with sampleID information for plotting
 nmds_scores <- my_nmds_result %>% vegan::scores() %>%
   as.data.frame() %>%
   tibble::rownames_to_column("sampleID") %>%
-  left_join(table_sample_info)
+  left_join(table_sample_info) 
 
 
 # # How I determined the outlier(s)
