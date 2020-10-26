@@ -108,15 +108,15 @@ all_tabs_inv %>% list2env(.GlobalEnv)
 
 # The variables file describes each field in 
 # the returned data tables
-head(variables_20120)
+View(variables_20120)
 
 # The validation file provides the rules that 
 # constrain data upon ingest into the NEON database:
-head(validation_20120)
+View(validation_20120)
 
 # the categoricalCodes file provides controlled 
 # lists used in the data
-head(categoricalCodes_20120)
+View(categoricalCodes_20120)
 
 ```
 
