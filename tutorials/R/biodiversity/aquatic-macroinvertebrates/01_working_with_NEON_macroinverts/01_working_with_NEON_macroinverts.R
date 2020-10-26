@@ -1,4 +1,4 @@
-## ----load libraries---------------------------------------------------------------------------------
+## ----load libraries-----------------------------------------------------------------------
 
 # clean out workspace
 
@@ -16,7 +16,7 @@ library(neonUtilities)
 
 
 
-## ----download-data----------------------------------------------------------------------------------
+## ----download-data------------------------------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
@@ -33,7 +33,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-overview------------------------------------------------------------------------------
+## ----download-overview--------------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -60,7 +60,7 @@ head(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing-------------------------------------------------------------------------
+## ----munging-and-organizing---------------------------------------------------------------
 
 # extract year from date, add it as a new column
 inv_fieldData <- inv_fieldData %>%
@@ -255,7 +255,7 @@ table_observation_by_order %>%
 
 
 
-## ----make-wide--------------------------------------------------------------------------------------
+## ----make-wide----------------------------------------------------------------------------
 
 
 # select only site by species density info and remove duplicate records
@@ -284,14 +284,14 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha-------------------------------------------------------------------------------------
+## ----calc-alpha---------------------------------------------------------------------------
 
 table_sample_by_taxon_density_wide %>%
   vegetarian::d(lev = 'alpha', q = 0)
 
 
 
-## ----simulated-abg----------------------------------------------------------------------------------
+## ----simulated-abg------------------------------------------------------------------------
 
 # even distribution, order q = 0 diversity = 10 
 vegetarian::d(
@@ -331,7 +331,7 @@ vegetarian::d(
 
 
 
-## ----compare-q-NEON---------------------------------------------------------------------------------
+## ----compare-q-NEON-----------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -379,7 +379,7 @@ diversity_partitioning_results %>% select(-data) %>% print()
 
 
 
-## ----local-regional-var, echo=F---------------------------------------------------------------------
+## ----local-regional-var, echo=F-----------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability
