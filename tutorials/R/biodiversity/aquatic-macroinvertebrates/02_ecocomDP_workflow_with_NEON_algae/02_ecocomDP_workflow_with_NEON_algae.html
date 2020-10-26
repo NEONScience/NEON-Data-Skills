@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Introduction</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Use the ecocomDP package to download NEON algae data.
+* Analyze biodiversity metrics using the vegan package
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+
+* **tidyverse:** install.packages(&ldquo;tidyverse&rdquo;)
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
+* **devtools:** install.packages(&ldquo;devtools&rdquo;)
+* **vegan:** install.packages(&ldquo;vegan&rdquo;)
+* **vegetarian:** install.packages(&ldquo;vegetarian&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+</div>
+
+<h2>Introduction</h2>
+
+<p>In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI).</p>
+
+<h4>What is ecocomDP?</h4>
+
+<p>ecocomDP is both the name of an R package and a data model. </p>
+
+<p>EDI describes the ecocomDP data model as &ldquo;A dataset design pattern for ecological community data to facilitate synthesis and reuse&rdquo;. </p>
+
+<p>See the ecocomDP github repo here:
+<a href="https://github.com/EDIorg/ecocomDP "><a href="https://github.com/EDIorg/ecocomDP">https://github.com/EDIorg/ecocomDP</a></a>.</p>
+
+<figure>
+<a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png">
+<img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
+<figcaption> Data model workflow showing relationships between various tables in ecocomDP model. Source: EDIorg</figcaption>
+</figure>
+
+<p>The motivation is for both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research Network and Macrosystems Biology projects, to be discoverable through a single data search tool, and to be delivered in a standard format. Our objective here is to demonstrate how the workflow will work with NEON biodiversity data packages. </p>
+
+<p>This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science"> Society for Freshwater Science 2020 &ldquo;Summer of Science&rdquo; </a> program.</p>
+
+<h2>Load Libraries and Prepare Workspace</h2>
+
+<p>First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the &#39;R Packages to Install&#39; section above. We load the <code>devtools</code> package here so that we can install the latest development version of the ecocomDP package from Dr. Sokol&#39;s GitHub repository. The ecocomDP package is not yet available through CRAN, and therefore, we must install the package in this manner.</p>
+
+<p>There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearning out your environment will erase <em>all</em> of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won&#39;t be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON <strong>anonymously</strong> track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.</p>
+
+<pre><code># clean out workspace
+
+#rm(list = ls()) # OPTIONAL - clear out your environment
+#gc()            # Uncomment these lines if desired
+
+# load packages
+library(tidyverse)
+library(neonUtilities)
+library(devtools)
+
+# install neon_demo branch of ecocomDP
+devtools::install_github(&quot;sokole/ecocomDP@neon_demo&quot;)
+
+library(ecocomDP)
+
+# source .r file with my NEON_TOKEN
+# source(&quot;my_neon_token.R&quot;) # OPTIONAL - load NEON token
+# See: https://www.neonscience.org/neon-api-tokens-tutorial
+</code></pre>
+
+<h2>Download Macroinvertibrate Data</h2>
+
+<p>In this first step, we show how to search the ecocomDP database for macroinvertibrate data including those from LTER and NEON sites (and others).</p>
+
+<pre><code># search for invertebrate data products
+my_search_result &lt;- 
+    ecocomDP::search_data(text = &quot;invertebrate&quot;)
+
+## Searching data ...
+
+View(my_search_result)
+
+# pull data for the NEON aquatic &quot;Macroinvertebrate
+# collection&quot; data product
+# function not yet compatible with &quot;token&quot; argument 
+# in updated neonUtilities
+my_search_result_data &lt;- 
+    ecocomDP::read_data(id = &quot;DP1.20120.001&quot;,
+                        site = c(&quot;ARIK&quot;, &quot;POSE&quot;))
+
+## Finding available files
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                  |   0%
+  |<br/>
+  |=                                                 |   3%
+  |<br/>
+  |===                                               |   5%
+  |<br/>
+  |====                                              |   8%
+  |<br/>
+  |=====                                             |  10%
+  |<br/>
+  |======                                            |  13%
+  |<br/>
+  |========                                          |  15%
+  |<br/>
+  |=========                                         |  18%
+  |<br/>
+  |==========                                        |  21%
+  |<br/>
+  |============                                      |  23%
+  |<br/>
+  |=============                                     |  26%
+  |<br/>
+  |==============                                    |  28%
+  |<br/>
+  |===============                                   |  31%
+  |<br/>
+  |=================                                 |  33%
+  |<br/>
+  |==================                                |  36%
+  |<br/>
+  |===================                               |  38%
+  |<br/>
+  |=====================                             |  41%
+  |<br/>
+  |======================                            |  44%
+  |<br/>
+  |=======================                           |  46%
+  |<br/>
+  |========================                          |  49%
+  |<br/>
+  |==========================                        |  51%
+  |<br/>
+  |===========================                       |  54%
+  |<br/>
+  |============================                      |  56%
+  |<br/>
+  |=============================                     |  59%
+  |<br/>
+  |===============================                   |  62%
+  |<br/>
+  |================================                  |  64%
+  |<br/>
+  |=================================                 |  67%
+  |<br/>
+  |===================================               |  69%
+  |<br/>
+  |====================================              |  72%
+  |<br/>
+  |=====================================             |  74%
+  |<br/>
+  |======================================            |  77%
+  |<br/>
+  |========================================          |  79%
+  |<br/>
+  |=========================================         |  82%
+  |<br/>
+  |==========================================        |  85%
+  |<br/>
+  |============================================      |  87%
+  |<br/>
+  |=============================================     |  90%
+  |<br/>
+  |==============================================    |  92%
+  |<br/>
+  |===============================================   |  95%
+  |<br/>
+  |================================================= |  97%
+  |<br/>
+  |==================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 1.74008 MB
+    ## Downloading 39 files
+    ## 
+  |<br/>
+  |                                                  |   0%
+  |<br/>
+  |=                                                 |   3%
+  |<br/>
+  |===                                               |   5%
+  |<br/>
+  |====                                              |   8%
+  |<br/>
+  |=====                                             |  11%
+  |<br/>
+  |=======                                           |  13%
+  |<br/>
+  |========                                          |  16%
+  |<br/>
+  |=========                                         |  18%
+  |<br/>
+  |===========                                       |  21%
+  |<br/>
+  |============                                      |  24%
+  |<br/>
+  |=============                                     |  26%
+  |<br/>
+  |==============                                    |  29%
+  |<br/>
+  |================                                  |  32%
+  |<br/>
+  |=================                                 |  34%
+  |<br/>
+  |==================                                |  37%
+  |<br/>
+  |====================                              |  39%
+  |<br/>
+  |=====================                             |  42%
+  |<br/>
+  |======================                            |  45%
+  |<br/>
+  |========================                          |  47%
+  |<br/>
+  |=========================                         |  50%
+  |<br/>
+  |==========================                        |  53%
+  |<br/>
+  |============================                      |  55%
+  |<br/>
+  |=============================                     |  58%
+  |<br/>
+  |==============================                    |  61%
+  |<br/>
+  |================================                  |  63%
+  |<br/>
+  |=================================                 |  66%
+  |<br/>
+  |==================================                |  68%
+  |<br/>
+  |====================================              |  71%
+  |<br/>
+  |=====================================             |  74%
+  |<br/>
+  |======================================            |  76%
+  |<br/>
+  |=======================================           |  79%
+  |<br/>
+  |=========================================         |  82%
+  |<br/>
+  |==========================================        |  84%
+  |<br/>
+  |===========================================       |  87%
+  |<br/>
+  |=============================================     |  89%
+  |<br/>
+  |==============================================    |  92%
+  |<br/>
+  |===============================================   |  95%
+  |<br/>
+  |================================================= |  97%
+  |<br/>
+  |==================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table inv_fieldData
+    ## Stacking table inv_persample
+    ## Stacking table inv_taxonomyProcessed
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 1.028011 secs
+    ## All unzipped monthly data folders have been removed.</p>
+
+<pre><code>## Joining, by = &quot;sampleID&quot;
+</code></pre>
+
+<p>Now that we have downloaded the data, let&#39;s take a look at tht <code>ecocomDP</code> data object structure:</p>
+
+<pre><code># examine the structure of the data object that is returned
+my_search_result_data %&gt;% names()
+
+## [1] &quot;DP1.20120.001&quot;
+
+my_search_result_data$DP1.20120.001 %&gt;% names()
+
+## [1] &quot;metadata&quot; &quot;tables&quot;
+
+my_search_result_data$DP1.20120.001$tables %&gt;% names()
+
+## [1] &quot;location&quot;    &quot;taxon&quot;       &quot;observation&quot;
+
+my_search_result_data$DP1.20120.001$tables$taxon %&gt;% head()
+
+##   taxon_id taxon_rank          taxon_name  authority_system
+## 1   STEFEM    species Stenonema femoratum NEON_external_lab
+## 2    BAESP     family        Baetidae sp. NEON_external_lab
+## 3   PERSP1     family        Perlidae sp. NEON_external_lab
+## 4   CHESP5      genus  Cheumatopsyche sp. NEON_external_lab
+## 5   LEUSP8      genus         Leuctra sp. NEON_external_lab
+## 6    OPTSP      genus     Optioservus sp. NEON_external_lab
+##                            authority_taxon_id
+## 1                         Merritt et al. 2008
+## 2                         Merritt et al. 2008
+## 3 Merritt et al. 2008; Stewart and Stark 2002
+## 4           Merritt et al. 2008; Wiggins 1996
+## 5 Merritt et al. 2008; Stewart and Stark 2002
+## 6                         Merritt et al. 2008
+
+my_search_result_data$DP1.20120.001$tables$observation %&gt;% head()
+
+##                         observation_id
+## 1 9e013f88-8463-4be2-8475-da816cdfa8f6
+## 2 4ab7e7a9-bc7e-451f-9eec-0d25924a4dfd
+## 3 9e958d7e-79d1-45fd-bafd-586964d4d26e
+## 4 c4deafd4-ed61-4a15-9c06-29a27338d5e9
+## 5 a08ab6fd-10e3-4f5f-8bac-b6eb35d21c15
+## 6 130571ba-09fe-4b89-a752-361a710265cb
+##                 event_id                   package_id
+## 1 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+## 2 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+## 3 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+## 4 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+## 5 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+## 6 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
+##      location_id observation_datetime taxon_id
+## 1 POSE.AOS.reach  2014-07-22 13:10:00   STEFEM
+## 2 POSE.AOS.reach  2014-07-22 13:10:00    BAESP
+## 3 POSE.AOS.reach  2014-07-22 13:10:00   PERSP1
+## 4 POSE.AOS.reach  2014-07-22 13:10:00   CHESP5
+## 5 POSE.AOS.reach  2014-07-22 13:10:00   CHESP5
+## 6 POSE.AOS.reach  2014-07-22 13:10:00   LEUSP8
+##   variable_name     value                   unit
+## 1       density  258.0645 count per square meter
+## 2       density  129.0323 count per square meter
+## 3       density  129.0323 count per square meter
+## 4       density 2075.2688 count per square meter
+## 5       density  258.0645 count per square meter
+## 6       density  258.0645 count per square meter
+</code></pre>
+
+<h2>Search ecocomDP</h2>
+
+<p>We can even search for terms in the ecocomDP database using regular expressions:</p>
+
+<pre><code># search for data sets with periphyton or algae
+# regex works!
+my_search_result &lt;- ecocomDP::search_data(text = &quot;periphyt|algae&quot;)
+
+## Searching data ...
+
+View(my_search_result)
+</code></pre>
+
+<p>Let&#39;s download the data for the NEON &ldquo;Periphyton, seston, and phytoplankton collection&rdquo; from &ldquo;ARIK&rdquo; and view its structure:</p>
+
+<pre><code># pull data for the NEON &quot;Periphyton, seston, and phytoplankton collection&quot; 
+# data product
+my_search_result_data &lt;- 
+    ecocomDP::read_data(id = &quot;DP1.20166.001&quot;, site = &quot;ARIK&quot;)
+
+## Finding available files
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                  |   0%
+  |<br/>
+  |===                                               |   6%
+  |<br/>
+  |======                                            |  11%
+  |<br/>
+  |========                                          |  17%
+  |<br/>
+  |===========                                       |  22%
+  |<br/>
+  |==============                                    |  28%
+  |<br/>
+  |=================                                 |  33%
+  |<br/>
+  |===================                               |  39%
+  |<br/>
+  |======================                            |  44%
+  |<br/>
+  |=========================                         |  50%
+  |<br/>
+  |============================                      |  56%
+  |<br/>
+  |===============================                   |  61%
+  |<br/>
+  |=================================                 |  67%
+  |<br/>
+  |====================================              |  72%
+  |<br/>
+  |=======================================           |  78%
+  |<br/>
+  |==========================================        |  83%
+  |<br/>
+  |============================================      |  89%
+  |<br/>
+  |===============================================   |  94%
+  |<br/>
+  |==================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 2.04521 MB
+    ## Downloading 18 files
+    ## 
+  |<br/>
+  |                                                  |   0%
+  |<br/>
+  |===                                               |   6%
+  |<br/>
+  |======                                            |  12%
+  |<br/>
+  |=========                                         |  18%
+  |<br/>
+  |============                                      |  24%
+  |<br/>
+  |===============                                   |  29%
+  |<br/>
+  |==================                                |  35%
+  |<br/>
+  |=====================                             |  41%
+  |<br/>
+  |========================                          |  47%
+  |<br/>
+  |==========================                        |  53%
+  |<br/>
+  |=============================                     |  59%
+  |<br/>
+  |================================                  |  65%
+  |<br/>
+  |===================================               |  71%
+  |<br/>
+  |======================================            |  76%
+  |<br/>
+  |=========================================         |  82%
+  |<br/>
+  |============================================      |  88%
+  |<br/>
+  |===============================================   |  94%
+  |<br/>
+  |==================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table alg_biomass
+    ## Stacking table alg_fieldData
+    ## Stacking table alg_taxonomyProcessed
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 0.7521379 secs
+    ## All unzipped monthly data folders have been removed.</p>
+
+<pre><code># Explore the structure of the returned data object
+my_search_result_data %&gt;% names()
+
+## [1] &quot;DP1.20166.001&quot;
+
+my_search_result_data[[1]] %&gt;% names()
+
+## [1] &quot;metadata&quot; &quot;tables&quot;
+
+my_search_result_data[[1]]$tables %&gt;% names()
+
+## [1] &quot;location&quot;              &quot;taxon&quot;                
+## [3] &quot;observation&quot;           &quot;observation_ancillary&quot;
+
+my_search_result_data[[1]]$tables$location
+
+##   location_id  location_name latitude longitude elevation
+## 1      lo_1_1            D10       NA        NA        NA
+## 2      lo_2_1           ARIK       NA        NA        NA
+## 3      lo_3_1 ARIK.AOS.reach 39.75821 -102.4471    1179.5
+## 4      lo_3_2    ARIK.AOS.S2 39.75836 -102.4486    1178.7
+##   parent_location_id
+## 1               &lt;NA&gt;
+## 2             lo_1_1
+## 3             lo_2_1
+## 4             lo_2_1
+
+my_search_result_data[[1]]$tables$taxon %&gt;% head()
+
+##         taxon_id taxon_rank
+## 1 NEONDREX455000      genus
+## 2 NEONDREX803001      genus
+## 3 NEONDREX170006    species
+## 4 NEONDREX467013    variety
+## 5 NEONDREX510002    species
+## 6  NEONDREX12031    species
+##                                            taxon_name
+## 1                                      Oedogonium sp.
+## 2                                        Anabaena sp.
+## 3            Sellaphora pupula (Kützing) Meresckowsky
+## 4 Pediastrum duplex var. clathratum (Braun) Lagerheim
+## 5                  Scenedesmus ecornis (Ralfs) Chodat
+## 6                Caloneis schumanniana (Grunow) Cleve
+##    authority_system
+## 1 NEON_external_lab
+## 2 NEON_external_lab
+## 3 NEON_external_lab
+## 4 NEON_external_lab
+## 5 NEON_external_lab
+## 6 NEON_external_lab
+##                                                                                                                               authority_taxon_id
+## 1            Wehr, J.D. and R.G. Sheath. 2003. Freshwater Algae of North America: Ecology and Classification. Academic Press, Amsterdam. 918 pp.
+## 2            Wehr, J.D. and R.G. Sheath. 2003. Freshwater Algae of North America: Ecology and Classification. Academic Press, Amsterdam. 918 pp.
+## 3                     Mereschkowsky, C. 1902. On Sellaphora, a new genus of Diatoms. Annals and Magazine of Natural History, 9: 185-195, pl. IV.
+## 4                                                 Prescott, G.W. 1962. Algae of the Western Great Lakes Area. Wm C. Brown. Dubuque, Iowa. 977pp.
+## 5                                                          Uherkovich, G. 1966. Die Scenedesmus-Arten Ungarns. Akademiai Kiado. Budapest. 173pp.
+## 6 Cleve, P.T. 1894. Synopsis of the naviculoid diatoms. Part I. Kongliga svenska Vetenskaps-Akademiens Handlingar, Ny Foljd 26(2): 1-194, 5 pls.
+
+my_search_result_data[[1]]$tables$observation %&gt;% head()
+
+##                         observation_id      event_id
+## 1 b0c9b74a-d3cd-4bb5-b44e-a2361814a47f ARIK.20140715
+## 2 23e8b755-c7a1-4663-bd52-4e1449a57f41 ARIK.20140715
+## 3 969252a8-691d-4f7a-aab5-969f8e8ad166 ARIK.20140715
+## 4 b8aa0bab-3e9d-4a53-a049-acb67ea4e4e6 ARIK.20140715
+## 5 ebebb1a0-f7db-4b23-86cc-1c37e8728bdb ARIK.20140715
+## 6 e1078745-9d0b-421c-8697-88e8deed232a ARIK.20140715
+##                     package_id    location_id
+## 1 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 2 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 3 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 4 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 5 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 6 DP1.20166.001.20201026170802 ARIK.AOS.reach
+##   observation_datetime       taxon_id variable_name
+## 1  2014-07-15 18:00:00  NEONDREX33185  cell density
+## 2  2014-07-15 18:00:00   NEONDREX1024  cell density
+## 3  2014-07-15 18:00:00 NEONDREX110005  cell density
+## 4  2014-07-15 18:00:00  NEONDREX45002  cell density
+## 5  2014-07-15 18:00:00 NEONDREX510001  cell density
+## 6  2014-07-15 18:00:00   NEONDREX1010  cell density
+##      value     unit
+## 1 25936568 cells/m2
+## 2  2803955 cells/m2
+## 3  4205932 cells/m2
+## 4  1401977 cells/m2
+## 5 33702795 cells/m2
+## 6  6308886 cells/m2
+
+# This data product has algal densities reported for both
+# lakes and streams, so densities could be standardized
+# either to volume collected or area sampled. 
+
+# Verify that only benthic algae standardized to area 
+# are returned in this data pull:
+my_search_result_data[[1]]$tables$observation$unit %&gt;%
+    unique()
+
+## [1] &quot;cells/m2&quot;
+</code></pre>
+
+<h2>Join Observation and Taxon info</h2>
+
+<p>Next, we join the observation and taxon information so that we can see the full taxonomic information, rather than just the taxon_id, for each sampling event:</p>
+
+<pre><code># join observations with taxon info
+alg_observations_with_taxa &lt;- my_search_result_data[[1]]$tables$observation %&gt;%
+  filter(!is.na(value)) %&gt;%
+  left_join(my_search_result_data[[1]]$tables$taxon) %&gt;%
+  select(-authority_taxon_id) %&gt;%
+  distinct()
+
+## Joining, by = &quot;taxon_id&quot;
+
+alg_observations_with_taxa %&gt;% head()
+
+##                         observation_id      event_id
+## 1 b0c9b74a-d3cd-4bb5-b44e-a2361814a47f ARIK.20140715
+## 2 23e8b755-c7a1-4663-bd52-4e1449a57f41 ARIK.20140715
+## 3 969252a8-691d-4f7a-aab5-969f8e8ad166 ARIK.20140715
+## 4 b8aa0bab-3e9d-4a53-a049-acb67ea4e4e6 ARIK.20140715
+## 5 ebebb1a0-f7db-4b23-86cc-1c37e8728bdb ARIK.20140715
+## 6 e1078745-9d0b-421c-8697-88e8deed232a ARIK.20140715
+##                     package_id    location_id
+## 1 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 2 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 3 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 4 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 5 DP1.20166.001.20201026170802 ARIK.AOS.reach
+## 6 DP1.20166.001.20201026170802 ARIK.AOS.reach
+##   observation_datetime       taxon_id variable_name
+## 1  2014-07-15 18:00:00  NEONDREX33185  cell density
+## 2  2014-07-15 18:00:00   NEONDREX1024  cell density
+## 3  2014-07-15 18:00:00 NEONDREX110005  cell density
+## 4  2014-07-15 18:00:00  NEONDREX45002  cell density
+## 5  2014-07-15 18:00:00 NEONDREX510001  cell density
+## 6  2014-07-15 18:00:00   NEONDREX1010  cell density
+##      value     unit taxon_rank
+## 1 25936568 cells/m2    species
+## 2  2803955 cells/m2    species
+## 3  4205932 cells/m2    species
+## 4  1401977 cells/m2    variety
+## 5 33702795 cells/m2    species
+## 6  6308886 cells/m2    species
+##                                               taxon_name
+## 1                    Eunotia bilunaris (Ehrenberg) Souza
+## 2               Achnanthidium exiguum (Grunow) Czarnecki
+## 3                    Encyonema silesiacum (Bleisch) Mann
+## 4 Meridion circulare var. constrictum (Ralfs) Van Heurck
+## 5             Scenedesmus quadricauda (Turpin) Brébisson
+## 6         Achnanthidium minutissimum (Kützing) Czarnecki
+##    authority_system
+## 1 NEON_external_lab
+## 2 NEON_external_lab
+## 3 NEON_external_lab
+## 4 NEON_external_lab
+## 5 NEON_external_lab
+## 6 NEON_external_lab
+</code></pre>
+
+<p>We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:</p>
+
+<pre><code># which taxon rank is most common
+alg_observations_with_taxa %&gt;%
+  ggplot(aes(taxon_rank)) +
+  geom_bar()
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png" alt="Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."/></p>
+
+<h2>Species Accumulation Curve</h2>
+
+<p>Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data &#39;wide&#39;:</p>
+
+<pre><code># convert densities from per m2 to per cm2
+alg_dens_long &lt;- alg_observations_with_taxa %&gt;%
+  mutate(dens_cm2 = (value / 10000)) %&gt;%
+  filter(taxon_rank == &quot;species&quot;) %&gt;%
+  select(event_id, taxon_id, dens_cm2)
+
+# make data wide
+alg_dens_wide &lt;- alg_dens_long %&gt;% 
+  pivot_wider(names_from = taxon_id, 
+              values_from = dens_cm2,
+              values_fill = list(dens_cm2 = 0),
+              values_fn = list(dens_cm2 = mean)) %&gt;%
+  tibble::column_to_rownames(&quot;event_id&quot;)
+
+# Calculate and plot species accumulcation curve for the 11 sampling events
+# The CIs are based on random permutations of observed samples
+alg_spec_accum_result &lt;- alg_dens_wide %&gt;% vegan::specaccum(., &quot;random&quot;)
+plot(alg_spec_accum_result)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png" alt="Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples."/></p>
+
+<h2>Compare Observed and Simulated species accumulation curves</h2>
+
+<pre><code># Load the &#39;vegan&#39; package to ensue the lines below will work
+library(vegan)
+
+## Loading required package: permute
+
+## 
+## Attaching package: &#39;permute&#39;
+
+## The following object is masked from &#39;package:devtools&#39;:
+## 
+##     check
+
+## Loading required package: lattice
+
+## This is vegan 2.5-6
+
+library(Hmisc)
+
+## Loading required package: survival
+
+## Loading required package: Formula
+
+## 
+## Attaching package: &#39;Hmisc&#39;
+
+## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     src, summarize
+
+## The following objects are masked from &#39;package:raster&#39;:
+## 
+##     mask, zoom
+
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, units
+
+# Extract the resampling data used in the above algorithm
+spec_resamp_data &lt;- data.frame(
+  data_set = &quot;observed&quot;, 
+  sampling_effort = rep(1:nrow(alg_spec_accum_result$perm), 
+                        each = ncol(alg_spec_accum_result$perm)),
+  richness = c(t(alg_spec_accum_result$perm)))
+
+
+# Fit species accumulation model
+spec_accum_mod_1 &lt;- alg_dens_wide %&gt;% vegan::fitspecaccum(model = &quot;arrh&quot;)
+
+
+# create a &quot;predicted&quot; data set from the model to extrapolate out 
+# beyond the number of samples collected
+sim_spec_data &lt;- data.frame()
+for(i in 1:25){
+  d_tmp &lt;- data.frame(
+    data_set = &quot;predicted&quot;,
+    sampling_effort = i,
+    richness = predict(spec_accum_mod_1, newdata = i))
+
+  sim_spec_data &lt;- sim_spec_data %&gt;%
+    bind_rows(d_tmp)
+}
+
+
+# plot the &quot;observed&quot; and &quot;simulated&quot; curves with 95% CIs
+data_plot &lt;- spec_resamp_data %&gt;% bind_rows(sim_spec_data) 
+
+data_plot %&gt;%
+  ggplot(aes(sampling_effort, richness, 
+             color = as.factor(data_set),
+             fill = as.factor(data_set),
+             linetype = as.factor(data_set))) +
+  stat_summary(fun.data = median_hilow, fun.args = list(conf.int = .95), 
+               geom = &quot;ribbon&quot;, alpha = 0.25) +
+  stat_summary(fun.data = median_hilow, geom = &quot;line&quot;, 
+               size = 1) 
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png" alt=" "/></p>
+
+</body>
+
+</html>
