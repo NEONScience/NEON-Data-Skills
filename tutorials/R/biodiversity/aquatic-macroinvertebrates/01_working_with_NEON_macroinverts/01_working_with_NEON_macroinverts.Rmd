@@ -10,7 +10,7 @@ packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
 topics: organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: R/SFS-2020/01_working_with_NEON_macroinverts.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertebrates
 ---

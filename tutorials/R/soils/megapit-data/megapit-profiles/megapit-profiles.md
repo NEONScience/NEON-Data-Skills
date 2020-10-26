@@ -9,7 +9,7 @@ estimatedTime: 45 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/UF-2020/megapit-profiles.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/megapit-profiles.R
 tutorialSeries:
 urlTitle: plot-cluster-megapit-soils-data
 ---
