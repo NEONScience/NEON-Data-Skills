@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Introduction</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Download NEON macroinvertebrate data.
+* Organize those data into long and wide tables.
+* Calculate alpha, beta, and gamma diversity following Jost (2007).
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+
+* **tidyverse:** install.packages(&ldquo;tidyverse&rdquo;)
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
+* **vegan:** install.packages(&ldquo;vegan&rdquo;)
+* **vegetarian:** install.packages(&ldquo;vegetarian&rdquo;)
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+</div>
+
+<h2>Introduction</h2>
+
+<p>Biodiversity is an popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON&#39;s <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.</p>
+
+<p>This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science"> Society for Freshwater Science 2020 &ldquo;Summer of Science&rdquo; </a> program.</p>
+
+<h2>Load Libraries and Prepare Workspace</h2>
+
+<p>First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the &#39;R Packages to Install&#39; section above.</p>
+
+<p>There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearning out your environment will erase <em>all</em> of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won&#39;t be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON <strong>anonymously</strong> track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.</p>
+
+<pre><code># clean out workspace
+
+#rm(list = ls()) # OPTIONAL - clear out your environment
+#gc()            # Uncomment these lines if desired
+
+# load libraries 
+library(tidyverse)
+
+## ── Attaching packages ───────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+
+## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0
+
+## ── Conflicts ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x tidyr::extract() masks raster::extract()
+## x dplyr::filter()  masks stats::filter()
+## x dplyr::lag()     masks stats::lag()
+## x dplyr::select()  masks raster::select()
+
+library(neonUtilities)
+
+
+# source .r file with my NEON_TOKEN
+# source(&quot;my_neon_token.R&quot;) # OPTIONAL - load NEON token
+# See: https://www.neonscience.org/neon-api-tokens-tutorial
+</code></pre>
+
+<h2>Download NEON Macroinvertebrate Data</h2>
+
+<p>Now that the workspace is prepared, we will download NEON macroinvertebrate data using the neonUtilities function <code>loadByProduct()</code>.</p>
+
+<pre><code># Macroinvert dpid
+my_dpid &lt;- &#39;DP1.20120.001&#39;
+
+# list of sites
+my_site_list &lt;- c(&#39;ARIK&#39;, &#39;POSE&#39;, &#39;MAYF&#39;)
+
+# get all tables for these sites from the API -- takes &lt; 1 minute
+all_tabs_inv &lt;- neonUtilities::loadByProduct(
+  dpID = my_dpid,
+  site = my_site_list,
+  #token = NEON_TOKEN, #Uncomment to use your token
+  check.size = F)
+
+## Finding available files
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                                                            |   0%
+  |<br/>
+  |==                                                                                          |   2%
+  |<br/>
+  |===                                                                                         |   3%
+  |<br/>
+  |=====                                                                                       |   5%
+  |<br/>
+  |======                                                                                      |   7%
+  |<br/>
+  |========                                                                                    |   8%
+  |<br/>
+  |=========                                                                                   |  10%
+  |<br/>
+  |===========                                                                                 |  12%
+  |<br/>
+  |============                                                                                |  14%
+  |<br/>
+  |==============                                                                              |  15%
+  |<br/>
+  |================                                                                            |  17%
+  |<br/>
+  |=================                                                                           |  19%
+  |<br/>
+  |===================                                                                         |  20%
+  |<br/>
+  |====================                                                                        |  22%
+  |<br/>
+  |======================                                                                      |  24%
+  |<br/>
+  |=======================                                                                     |  25%
+  |<br/>
+  |=========================                                                                   |  27%
+  |<br/>
+  |===========================                                                                 |  29%
+  |<br/>
+  |============================                                                                |  31%
+  |<br/>
+  |==============================                                                              |  32%
+  |<br/>
+  |===============================                                                             |  34%
+  |<br/>
+  |=================================                                                           |  36%
+  |<br/>
+  |==================================                                                          |  37%
+  |<br/>
+  |====================================                                                        |  39%
+  |<br/>
+  |=====================================                                                       |  41%
+  |<br/>
+  |=======================================                                                     |  42%
+  |<br/>
+  |=========================================                                                   |  44%
+  |<br/>
+  |==========================================                                                  |  46%
+  |<br/>
+  |============================================                                                |  47%
+  |<br/>
+  |=============================================                                               |  49%
+  |<br/>
+  |===============================================                                             |  51%
+  |<br/>
+  |================================================                                            |  53%
+  |<br/>
+  |==================================================                                          |  54%
+  |<br/>
+  |===================================================                                         |  56%
+  |<br/>
+  |=====================================================                                       |  58%
+  |<br/>
+  |=======================================================                                     |  59%
+  |<br/>
+  |========================================================                                    |  61%
+  |<br/>
+  |==========================================================                                  |  63%
+  |<br/>
+  |===========================================================                                 |  64%
+  |<br/>
+  |=============================================================                               |  66%
+  |<br/>
+  |==============================================================                              |  68%
+  |<br/>
+  |================================================================                            |  69%
+  |<br/>
+  |=================================================================                           |  71%
+  |<br/>
+  |===================================================================                         |  73%
+  |<br/>
+  |=====================================================================                       |  75%
+  |<br/>
+  |======================================================================                      |  76%
+  |<br/>
+  |========================================================================                    |  78%
+  |<br/>
+  |=========================================================================                   |  80%
+  |<br/>
+  |===========================================================================                 |  81%
+  |<br/>
+  |============================================================================                |  83%
+  |<br/>
+  |==============================================================================              |  85%
+  |<br/>
+  |================================================================================            |  86%
+  |<br/>
+  |=================================================================================           |  88%
+  |<br/>
+  |===================================================================================         |  90%
+  |<br/>
+  |====================================================================================        |  92%
+  |<br/>
+  |======================================================================================      |  93%
+  |<br/>
+  |=======================================================================================     |  95%
+  |<br/>
+  |=========================================================================================   |  97%
+  |<br/>
+  |==========================================================================================  |  98%
+  |<br/>
+  |============================================================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 2.541651 MB
+    ## Downloading 59 files
+    ## 
+  |<br/>
+  |                                                                                            |   0%
+  |<br/>
+  |==                                                                                          |   2%
+  |<br/>
+  |===                                                                                         |   3%
+  |<br/>
+  |=====                                                                                       |   5%
+  |<br/>
+  |======                                                                                      |   7%
+  |<br/>
+  |========                                                                                    |   9%
+  |<br/>
+  |==========                                                                                  |  10%
+  |<br/>
+  |===========                                                                                 |  12%
+  |<br/>
+  |=============                                                                               |  14%
+  |<br/>
+  |==============                                                                              |  16%
+  |<br/>
+  |================                                                                            |  17%
+  |<br/>
+  |=================                                                                           |  19%
+  |<br/>
+  |===================                                                                         |  21%
+  |<br/>
+  |=====================                                                                       |  22%
+  |<br/>
+  |======================                                                                      |  24%
+  |<br/>
+  |========================                                                                    |  26%
+  |<br/>
+  |=========================                                                                   |  28%
+  |<br/>
+  |===========================                                                                 |  29%
+  |<br/>
+  |=============================                                                               |  31%
+  |<br/>
+  |==============================                                                              |  33%
+  |<br/>
+  |================================                                                            |  34%
+  |<br/>
+  |=================================                                                           |  36%
+  |<br/>
+  |===================================                                                         |  38%
+  |<br/>
+  |====================================                                                        |  40%
+  |<br/>
+  |======================================                                                      |  41%
+  |<br/>
+  |========================================                                                    |  43%
+  |<br/>
+  |=========================================                                                   |  45%
+  |<br/>
+  |===========================================                                                 |  47%
+  |<br/>
+  |============================================                                                |  48%
+  |<br/>
+  |==============================================                                              |  50%
+  |<br/>
+  |================================================                                            |  52%
+  |<br/>
+  |=================================================                                           |  53%
+  |<br/>
+  |===================================================                                         |  55%
+  |<br/>
+  |====================================================                                        |  57%
+  |<br/>
+  |======================================================                                      |  59%
+  |<br/>
+  |========================================================                                    |  60%
+  |<br/>
+  |=========================================================                                   |  62%
+  |<br/>
+  |===========================================================                                 |  64%
+  |<br/>
+  |============================================================                                |  66%
+  |<br/>
+  |==============================================================                              |  67%
+  |<br/>
+  |===============================================================                             |  69%
+  |<br/>
+  |=================================================================                           |  71%
+  |<br/>
+  |===================================================================                         |  72%
+  |<br/>
+  |====================================================================                        |  74%
+  |<br/>
+  |======================================================================                      |  76%
+  |<br/>
+  |=======================================================================                     |  78%
+  |<br/>
+  |=========================================================================                   |  79%
+  |<br/>
+  |===========================================================================                 |  81%
+  |<br/>
+  |============================================================================                |  83%
+  |<br/>
+  |==============================================================================              |  84%
+  |<br/>
+  |===============================================================================             |  86%
+  |<br/>
+  |=================================================================================           |  88%
+  |<br/>
+  |==================================================================================          |  90%
+  |<br/>
+  |====================================================================================        |  91%
+  |<br/>
+  |======================================================================================      |  93%
+  |<br/>
+  |=======================================================================================     |  95%
+  |<br/>
+  |=========================================================================================   |  97%
+  |<br/>
+  |==========================================================================================  |  98%
+  |<br/>
+  |============================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table inv_fieldData
+    ## Stacking table inv_persample
+    ## Stacking table inv_taxonomyProcessed
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 2.776138 secs
+    ## All unzipped monthly data folders have been removed.</p>
+
+<h2>Macroinvertebrate Data Munging</h2>
+
+<p>Now that we have the data downloaded, we will need to do some &#39;data munging&#39; to reorganize our data into a more useful format for this analysis. First, let&#39;s take a look at some of the tables that were generated by <code>loadByProduct()</code>:</p>
+
+<pre><code># what tables do you get with macroinvertebrate 
+# data product
+names(all_tabs_inv)
+
+## [1] &quot;categoricalCodes_20120&quot; &quot;inv_fieldData&quot;          &quot;inv_persample&quot;         
+## [4] &quot;inv_taxonomyProcessed&quot;  &quot;readme_20120&quot;           &quot;validation_20120&quot;      
+## [7] &quot;variables_20120&quot;
+
+# extract items from list and put in R env. 
+all_tabs_inv %&gt;% list2env(.GlobalEnv)
+
+## &lt;environment: R_GlobalEnv&gt;
+
+# readme has the same informaiton as what you 
+# will find on the landing page on the data portal
+
+# The variables file describes each field in 
+# the returned data tables
+head(variables_20120)
+
+##            table        fieldName
+## 1: inv_fieldData              uid
+## 2: inv_fieldData         domainID
+## 3: inv_fieldData           siteID
+## 4: inv_fieldData    namedLocation
+## 5: inv_fieldData  decimalLatitude
+## 6: inv_fieldData decimalLongitude
+##                                                                                            description
+## 1:                                        Unique ID within NEON database; an identifier for the record
+## 2:                                                                Unique identifier of the NEON domain
+## 3:                                                                                      NEON site code
+## 4:                                               Name of the measurement location in the NEON database
+## 5:  The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area
+## 6: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area
+##    dataType         units downloadPkg       pubFormat primaryKey categoricalCodeName
+## 1:   string          &lt;NA&gt;       basic            asIs          N                    
+## 2:   string          &lt;NA&gt;       basic            asIs          N                    
+## 3:   string          &lt;NA&gt;       basic            asIs          N                    
+## 4:   string          &lt;NA&gt;       basic            asIs          N                    
+## 5:     real decimalDegree       basic *.######(round)          N                    
+## 6:     real decimalDegree       basic *.######(round)          N
+
+# The validation file provides the rules that 
+# constrain data upon ingest into the NEON database:
+head(validation_20120)
+
+##            table           fieldName
+## 1: inv_fielddata                 uid
+## 2: inv_fielddata          locationID
+## 3: inv_fielddata     aquaticSiteType
+## 4: inv_fielddata           startDate
+## 5: inv_fielddata         collectDate
+## 6: inv_fielddata samplingImpractical
+##                                                                         description dataType units
+## 1:                     Unique ID within NEON database; an identifier for the record   string  &lt;NA&gt;
+## 2:                               Identifier for location where sample was collected   string  &lt;NA&gt;
+## 3:                             Type of aquatic site, includes lake, river or stream   string  &lt;NA&gt;
+## 4:                   The start date-time or interval during which an event occurred dateTime  &lt;NA&gt;
+## 5:                                                     Date of the collection event dateTime  &lt;NA&gt;
+## 6: Samples and/or measurements were not collected due to the indicated circumstance   string  &lt;NA&gt;
+##                     parserToCreate
+## 1:                    [CREATE_UID]
+## 2:                                
+## 3:                                
+## 4:          [collectDate][REQUIRE]
+## 5: [CONVERT_TO_UTC(namedLocation)]
+## 6:                                
+##                                                                                                                                                                               entryValidationRulesParser
+## 1:                                                                                                                                                                                                      
+## 2: [NAMED_LOCATION_TYPE(&#39;AOS outlet named location type&#39; OR &#39;AOS inlet named location type&#39; OR &#39;AOS buoy named location type&#39; OR &#39;AOS reach named location type&#39; OR &#39;AOS riparian named location type&#39;)]
+## 3:                                                                                                                                                                                                 [LOV]
+## 4:                                                                                                                                                                                                      
+## 5:                                                                                                                                                                                                      
+## 6:                                                                                                                                                                                                 [LOV]
+##                                                                                                                                                                                                                                                                                                                                                                                      entryValidationRulesForm
+## 1:                                                                                                                                                                                                                                                                                                                                                                                                   [HIDDEN]
+## 2: [REQUIRE][FROM_AOS_SPATIAL(IF(siteType=&#39;lake&#39;),  AOS outlet named location type OR AOS inlet named location type OR AOS buoy named location type OR AOS riparian named location type)][FROM_AOS_SPATIAL(IF(siteType=&#39;stream&#39;), AOS reach named location type)][FROM_AOS_SPATIAL(IF(siteType=&#39;river&#39;),  AOS buoy named location type OR AOS riparian named location type OR AOS reach named location type)]
+## 3:                                                                                                                                                                                                                                                                                                                                                                                                           
+## 4:                                                                                                                                                                                                                                                                                                                                                                          [DEFAULT_TO(collectDate)][HIDDEN]
+## 5:                                                                                                                                                                                                                                                                                                                             [DATE_FORMAT(&#39;YYYY-MM-DDTHH:MM&#39;)][REQUIRE][LESS_THAN_OR_EQUAL_TO (NOW + 24hr)]
+## 6:
+
+# the categoricalCodes file provides controlled 
+# lists used in the data
+head(categoricalCodes_20120)
+
+##                   name                                 pubCode
+## 1:     aquaticSiteType                                    lake
+## 2:     aquaticSiteType                                  stream
+## 3:     aquaticSiteType                                   river
+## 4: biophysicalCriteria                OK - no known exceptions
+## 5: biophysicalCriteria OK - schedule change but conditions met
+## 6: biophysicalCriteria                      conditions not met
+##                                                                                            description
+## 1:                                                                                                lake
+## 2:                                                                                              stream
+## 3:                                                                                               river
+## 4:                                                      Sampling occurred on schedule, no known issues
+## 5: Sampling occurred not within defined sampling window but reflects the target biophysical conditions
+## 6:                                         Sampling does not reflect the target biophysical conditions
+##     startDate endDate
+## 1: 2012-01-01    &lt;NA&gt;
+## 2: 2012-01-01    &lt;NA&gt;
+## 3: 2012-01-01    &lt;NA&gt;
+## 4: 2012-01-01    &lt;NA&gt;
+## 5: 2012-01-01    &lt;NA&gt;
+## 6: 2012-01-01    &lt;NA&gt;
+</code></pre>
+
+<p>Next, we will perform several operations in a row to re-organize our data. Each step is described by a code comment.</p>
+
+<pre><code># extract year from date, add it as a new column
+inv_fieldData &lt;- inv_fieldData %&gt;%
+  mutate(
+    year = collectDate %&gt;% 
+      lubridate::as_date() %&gt;% 
+      lubridate::year())
+
+
+# extract location data into a separate table
+table_location &lt;- inv_fieldData %&gt;%
+
+  # keep only the columns listed below
+  select(siteID, 
+         domainID,
+         namedLocation, 
+         decimalLatitude, 
+         decimalLongitude, 
+         elevation) %&gt;%
+
+  # keep rows with unique combinations of values, 
+  # i.e., no duplicate records
+  distinct()
+
+
+
+# create a taxon table, which describes each 
+# taxonID that appears in the data set
+# start with inv_taxonomyProcessed
+table_taxon &lt;- inv_taxonomyProcessed %&gt;%
+
+  # keep only the coluns listed below
+  select(acceptedTaxonID, taxonRank, scientificName,
+         order, family, genus, 
+         identificationQualifier,
+         identificationReferences) %&gt;%
+
+  # remove rows with duplicate information
+  distinct()
+
+
+
+# taxon table information for all taxa in 
+# our database can be downloaded here:
+# takes 1-2 minutes
+# full_taxon_table_from_api &lt;- neonUtilities::getTaxonTable(&quot;MACROINVERTEBRATE&quot;, token = NEON_TOKEN)
+
+
+
+# Make the observation table.
+# start with inv_taxonomyProcessed
+table_observation &lt;- inv_taxonomyProcessed %&gt;% 
+
+  # select a subset of columns from
+  # inv_taxonomyProcessed
+  select(uid,
+         sampleID,
+         domainID,
+         siteID,
+         namedLocation,
+         collectDate,
+         subsamplePercent,
+         individualCount,
+         estimatedTotalCount,
+         acceptedTaxonID,
+         order, family, genus, 
+         scientificName,
+         taxonRank) %&gt;%
+
+  # Join the columns selected above with two 
+  # columns from inv_fieldData (the two columns 
+  # are sampleID and benthicArea)
+  left_join(inv_fieldData %&gt;% 
+              select(sampleID, eventID, year, 
+                     habitatType, samplerType,
+                     benthicArea)) %&gt;%
+
+  # some new columns called &#39;variable_name&#39;, 
+  # &#39;value&#39;, and &#39;unit&#39;, and assign values for 
+  # all rows in the table.
+  # variable_name and unit are both assigned the 
+  # same text strint for all rows. 
+  mutate(inv_dens = estimatedTotalCount / benthicArea,
+         inv_dens_unit = &#39;count per square meter&#39;)
+
+## Joining, by = &quot;sampleID&quot;
+
+# extract sample info
+table_sample_info &lt;- table_observation %&gt;%
+  select(sampleID, domainID, siteID, namedLocation, 
+         collectDate, eventID, year, 
+         habitatType, samplerType, benthicArea, 
+         inv_dens_unit) %&gt;%
+  distinct()
+
+
+
+# remove singletons and doubletons
+# create an occurrence summary table
+taxa_occurrence_summary &lt;- table_observation %&gt;%
+  select(sampleID, acceptedTaxonID) %&gt;%
+  distinct() %&gt;%
+  group_by(acceptedTaxonID) %&gt;%
+  summarize(occurrences = n())
+
+## `summarise()` ungrouping output (override with `.groups` argument)
+
+# filter out taxa that are only observed 1 or 2 times
+taxa_list_cleaned &lt;- taxa_occurrence_summary %&gt;%
+  filter(occurrences &gt; 2)
+
+# filter observation table based on taxon list above
+table_observation_cleaned &lt;- table_observation %&gt;%
+  filter(acceptedTaxonID %in%
+             taxa_list_cleaned$acceptedTaxonID,
+         !sampleID %in% c(&quot;MAYF.20190729.CORE.1&quot;,
+                          &quot;POSE.20160718.HESS.1&quot;)) 
+                      #this is an outlier sampleID
+
+
+# some summary data
+sampling_effort_summary &lt;- table_sample_info %&gt;%
+
+  # group by siteID, year
+  group_by(siteID, year, samplerType) %&gt;%
+
+  # count samples and habitat types within each event
+  summarise(
+    event_count = eventID %&gt;% unique() %&gt;% length(),
+    sample_count = sampleID %&gt;% unique() %&gt;% length(),
+    habitat_count = habitatType %&gt;% 
+        unique() %&gt;% length())
+
+## `summarise()` regrouping output by &#39;siteID&#39;, &#39;year&#39; (override with `.groups` argument)
+
+View(sampling_effort_summary)
+</code></pre>
+
+<h2>Working with &#39;Long&#39; data</h2>
+
+<p>&#39;Reshaping&#39; your data to use as an input to a particular fuction may require you to consider: do I want &#39;long&#39; or &#39;wide&#39; data? Here&#39;s a link to <a href="https://www.theanalysisfactor.com/wide-and-long-data/">a great article from &#39;the analysis factor&#39; that describes the differences</a>.</p>
+
+<p>For this first step, we will use data in a &#39;long&#39; table:</p>
+
+<pre><code># no. taxa by rank by site
+table_observation_cleaned %&gt;% 
+  group_by(domainID, siteID, taxonRank) %&gt;%
+  summarize(
+    n_taxa = acceptedTaxonID %&gt;% 
+        unique() %&gt;% length()) %&gt;%
+  ggplot(aes(n_taxa, taxonRank)) +
+  facet_wrap(~ domainID + siteID) +
+  geom_col()
+
+## `summarise()` regrouping output by &#39;domainID&#39;, &#39;siteID&#39; (override with `.groups` argument)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/long-data-1.png" alt="Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."/></p>
+
+<pre><code># library(scales)
+# sum densities by order for each sampleID
+table_observation_by_order &lt;- 
+    table_observation_cleaned %&gt;% 
+    filter(!is.na(order)) %&gt;%
+    group_by(domainID, siteID, year, 
+             eventID, sampleID, habitatType, order) %&gt;%
+    summarize(order_dens = sum(inv_dens, na.rm = TRUE))
+
+## `summarise()` regrouping output by &#39;domainID&#39;, &#39;siteID&#39;, &#39;year&#39;, &#39;eventID&#39;, &#39;sampleID&#39;, &#39;habitatType&#39; (override with `.groups` argument)
+
+# rank occurrence by order
+table_observation_by_order %&gt;% head()
+
+## # A tibble: 6 x 8
+## # Groups:   domainID, siteID, year, eventID, sampleID, habitatType [2]
+##   domainID siteID  year eventID       sampleID               habitatType order         order_dens
+##   &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;                  &lt;chr&gt;       &lt;chr&gt;              &lt;dbl&gt;
+## 1 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Coleoptera         516. 
+## 2 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Ephemeroptera     5172. 
+## 3 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Odonata            129. 
+## 4 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Plecoptera        1290. 
+## 5 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Trichoptera       8839. 
+## 6 D02      POSE    2014 POSE.20141028 POSE.20141028.HESS.2   pool        Collembola          34.9
+
+# stacked rank occurrence plot
+table_observation_by_order %&gt;%
+  group_by(order, siteID) %&gt;%
+  summarize(
+    occurrence = (order_dens &gt; 0) %&gt;% sum()) %&gt;%
+    ggplot(aes(
+        x = reorder(order, -occurrence), 
+        y = occurrence,
+        color = siteID,
+        fill = siteID)) +
+    geom_col() +
+    theme(axis.text.x = 
+              element_text(angle = 45, hjust = 1))
+
+## `summarise()` regrouping output by &#39;order&#39; (override with `.groups` argument)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/long-data-2-1.png" alt="Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right."/></p>
+
+<pre><code># faceted densities plot
+table_observation_by_order %&gt;%
+  ggplot(aes(
+    x = reorder(order, -order_dens), 
+    y = log10(order_dens),
+    color = siteID,
+    fill = siteID)) +
+  geom_boxplot(alpha = .5) +
+  facet_grid(siteID ~ .) +
+  theme(axis.text.x = 
+            element_text(angle = 45, hjust = 1))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/long-data-3-1.png" alt="Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call."/></p>
+
+<h3>Making Data &#39;wide&#39;</h3>
+
+<p>For the next process, we will need to make our data table in the &#39;wide&#39; format.</p>
+
+<pre><code># select only site by species density info and remove duplicate records
+table_sample_by_taxon_density_long &lt;- table_observation_cleaned %&gt;%
+  select(sampleID, acceptedTaxonID, inv_dens) %&gt;%
+  distinct() %&gt;%
+  filter(!is.na(inv_dens))
+
+# table_sample_by_taxon_density_long %&gt;% nrow()
+# table_sample_by_taxon_density_long %&gt;% distinct() %&gt;% nrow()
+
+
+
+# pivot to wide format, sum multiple counts per sampleID
+table_sample_by_taxon_density_wide &lt;- table_sample_by_taxon_density_long %&gt;%
+  tidyr::pivot_wider(id_cols = sampleID, 
+                     names_from = acceptedTaxonID,
+                     values_from = inv_dens,
+                     values_fill = list(inv_dens = 0),
+                     values_fn = list(inv_dens = sum)) %&gt;%
+  column_to_rownames(var = &quot;sampleID&quot;) 
+
+# checl col and row sums
+colSums(table_sample_by_taxon_density_wide) %&gt;% min()
+
+## [1] 28
+
+rowSums(table_sample_by_taxon_density_wide) %&gt;% min()
+
+## [1] 18.86792
+</code></pre>
+
+<h2>Multiscale Biodiversity</h2>
+
+<p>Reference:
+Jost, L. 2007. Partitioning diversity into independent alpha and beta components. Ecology 88:2427–2439. <a href="https://doi.org/10.1890/06-1736.1"><a href="https://doi.org/10.1890/06-1736.1">https://doi.org/10.1890/06-1736.1</a></a>.</p>
+
+<p>These metrics are based on Robert Whittaker&#39;s multiplicative diversity where</p>
+
+<ul>
+<li>gamma is regional biodiversity</li>
+<li>alpha is local biodiversity (e.g., the mean diversity at a patch)</li>
+<li>and beta diversity is a measure of among-patch variability in community composition. </li>
+</ul>
+
+<p>Beta could be interpreted as the number of &ldquo;distinct&rdquo; communities present within the region.</p>
+
+<p>The relationship among alpha, beta, and gamma diversity is:
+   <strong>beta = gamma / alpha</strong> </p>
+
+<p>The influence of relative abundances over the calculation of alpha, beta, and gamma diversity metrics is determined by the coefficient q. The coefficient &ldquo;q&rdquo; determines the &ldquo;order&rdquo; of the diversity metric, where q = 0 provides diversity measures based on richness, and higher orders of q give more weight to taxa that have higher abundances in the data. Order q = 1 is related to Shannon diveristy metrics, and order q = 2 is related to Simpson diversity metrics.</p>
+
+<h4>Alpha diversity is average local richness.</h4>
+
+<p>Order q = 0 alpha diversity calcuated for our dataset returns a mean local richness (i.e., species counts) of ~27 taxa per sample across the entire data set.</p>
+
+<pre><code>table_sample_by_taxon_density_wide %&gt;%
+  vegetarian::d(lev = &#39;alpha&#39;, q = 0)
+
+## [1] 27.74303
+</code></pre>
+
+<h4>Comparing alpha diversity calculated using different orders:</h4>
+
+<p>Order q = 1 alpha diversity returns mean number of &ldquo;species equivalents&rdquo; per sample in the data set. This approach incoporates evenness because when abundances are more even across taxa, taxa are weighted more equally toward counting as a &ldquo;species equivalent&rdquo;. For example, if you have a sample with 100 individuals, spread across 10 species, and each species is represented by 10 individuals, the number of order q = 1 species equivalents will equal the richness (10).</p>
+
+<p>Alternatively, if 90 of the 100 individuals in the sample are one species, and the other 10 individuals are spread across the other 9 species, there will only be 1.72 order q = 1 species equivalents, whereas, there are still 10 species in the sample.</p>
+
+<pre><code># even distribution, order q = 0 diversity = 10 
+vegetarian::d(
+  data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
+             spp.d = 10, spp.e = 10, spp.f = 10, 
+             spp.g = 10, spp.h = 10, spp.i = 10, 
+             spp.j = 10),
+  q = 0, 
+  lev = &quot;alpha&quot;)
+
+## [1] 10
+
+# even distribution, order q = 1 diversity = 10
+vegetarian::d(
+  data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
+             spp.d = 10, spp.e = 10, spp.f = 10, 
+             spp.g = 10, spp.h = 10, spp.i = 10, 
+             spp.j = 10),
+  q = 1, 
+  lev = &quot;alpha&quot;)
+
+## [1] 10
+
+# un-even distribution, order q = 0 diversity = 10
+vegetarian::d(
+  data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
+             spp.d = 1, spp.e = 1, spp.f = 1, 
+             spp.g = 1, spp.h = 1, spp.i = 1, 
+             spp.j = 1),
+  q = 0, 
+  lev = &quot;alpha&quot;)
+
+## [1] 10
+
+# un-even distribution, order q = 1 diversity = 1.72
+vegetarian::d(
+  data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
+             spp.d = 1, spp.e = 1, spp.f = 1, 
+             spp.g = 1, spp.h = 1, spp.i = 1, 
+             spp.j = 1),
+  q = 1, 
+  lev = &quot;alpha&quot;)
+
+## [1] 1.718546
+</code></pre>
+
+<h2>Comparing orders of q for NEON data</h2>
+
+<p>Let&#39;s compare the different orders q = 0, 1, and 2 measures of alpha diversity across the samples collected from ARIK, POSE, and MAYF.</p>
+
+<pre><code># Nest data by siteID
+data_nested_by_siteID &lt;- table_sample_by_taxon_density_wide %&gt;%
+  tibble::rownames_to_column(&quot;sampleID&quot;) %&gt;%
+  left_join(table_sample_info %&gt;% 
+                select(sampleID, siteID)) %&gt;%
+  tibble::column_to_rownames(&quot;sampleID&quot;) %&gt;%
+  nest(data = -siteID)
+
+## Joining, by = &quot;sampleID&quot;
+
+# apply the calculation by site  
+data_nested_by_siteID %&gt;% mutate(
+  alpha_q0 = purrr::map_dbl(
+    .x = data,
+    .f = ~ vegetarian::d(abundances = .,
+    lev = &#39;alpha&#39;, 
+    q = 0)))
+
+## # A tibble: 3 x 3
+##   siteID data                 alpha_q0
+##   &lt;chr&gt;  &lt;list&gt;                  &lt;dbl&gt;
+## 1 POSE   &lt;tibble [101 × 390]&gt;     38.8
+## 2 MAYF   &lt;tibble [119 × 390]&gt;     22.2
+## 3 ARIK   &lt;tibble [103 × 390]&gt;     23.3
+
+# Note that POSE has the highest mean diversity
+
+
+
+# Now calculate alpha, beta, and gamma using orders 0 and 1,
+# Note that I don&#39;t make all the argument assignments as explicitly here
+diversity_partitioning_results &lt;- 
+    data_nested_by_siteID %&gt;% 
+    mutate(
+        n_samples = purrr::map_int(data, ~ nrow(.)),
+        alpha_q0 = purrr::map_dbl(data, ~vegetarian::d(
+            abundances = ., lev = &#39;alpha&#39;, q = 0)),
+        alpha_q1 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = &#39;alpha&#39;, q = 1)),
+        beta_q0 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = &#39;beta&#39;, q = 0)),
+        beta_q1 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = &#39;beta&#39;, q = 1)),
+        gamma_q0 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = &#39;gamma&#39;, q = 0)),
+        gamma_q1 = purrr::map_dbl(data, ~ vegetarian::d(
+            abundances = ., lev = &#39;gamma&#39;, q = 1)))
+
+
+diversity_partitioning_results %&gt;% select(-data) %&gt;% print()
+
+## # A tibble: 3 x 8
+##   siteID n_samples alpha_q0 alpha_q1 beta_q0 beta_q1 gamma_q0 gamma_q1
+##   &lt;chr&gt;      &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 POSE         101     38.8    15.5     7.26    6.43      282     99.5
+## 2 MAYF         119     22.2     9.50    9.95    6.86      221     65.2
+## 3 ARIK         103     23.3     8.40    8.25    5.86      192     49.2
+
+# Note that POSE has the highest mean diversity
+</code></pre>
+
+<h2>Using NMDS to ordinate samples</h2>
+
+<p>Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate samples as shown below:</p>
+
+<pre><code># create ordination using NMDS
+my_nmds_result &lt;- table_sample_by_taxon_density_wide %&gt;% vegan::metaMDS()
+
+## Square root transformation
+## Wisconsin double standardization
+## Run 0 stress 0.2134463 
+## Run 1 stress 0.2276519 
+## Run 2 stress 0.2196533 
+## Run 3 stress 0.2164363 
+## Run 4 stress 0.2277719 
+## Run 5 stress 0.2186859 
+## Run 6 stress 0.2265115 
+## Run 7 stress 0.2266958 
+## Run 8 stress 0.2282785 
+## Run 9 stress 0.2185069 
+## Run 10 stress 0.2366561 
+## Run 11 stress 0.2295982 
+## Run 12 stress 0.2294326 
+## Run 13 stress 0.2231172 
+## Run 14 stress 0.2276297 
+## Run 15 stress 0.2414268 
+## Run 16 stress 0.227732 
+## Run 17 stress 0.2308058 
+## Run 18 stress 0.2263086 
+## Run 19 stress 0.2149713 
+## Run 20 stress 0.224901 
+## *** No convergence -- monoMDS stopping criteria:
+##      2: no. of iterations &gt;= maxit
+##     18: stress ratio &gt; sratmax
+
+# plot stress
+my_nmds_result$stress
+
+## [1] 0.2134463
+
+p1 &lt;- vegan::ordiplot(my_nmds_result)
+vegan::ordilabel(p1, &quot;species&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/NMDS-1.png" alt="Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function."/></p>
+
+<pre><code># merge NMDS scores with sampleID information for plotting
+nmds_scores &lt;- my_nmds_result %&gt;% vegan::scores() %&gt;%
+  as.data.frame() %&gt;%
+  tibble::rownames_to_column(&quot;sampleID&quot;) %&gt;%
+  left_join(table_sample_info)
+
+## Joining, by = &quot;sampleID&quot;
+
+# # How I determined the outlier(s)
+nmds_scores %&gt;% arrange(desc(NMDS1)) %&gt;% head()
+
+##                  sampleID     NMDS1       NMDS2 domainID siteID  namedLocation         collectDate
+## 1  POSE.20150721.SURBER.1 1.5742532 -0.02425078      D02   POSE POSE.AOS.reach 2015-07-21 14:43:00
+## 2  POSE.20150330.SURBER.1 1.2299946 -0.75884534      D02   POSE POSE.AOS.reach 2015-03-30 14:30:00
+## 3 ARIK.20160919.KICKNET.3 1.0875597 -0.14280868      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00
+## 4 ARIK.20150325.KICKNET.4 0.9929619 -0.27960972      D10   ARIK ARIK.AOS.reach 2015-03-25 17:15:00
+## 5 ARIK.20160919.KICKNET.4 0.9905714 -0.53136594      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00
+## 6 ARIK.20140714.KICKNET.4 0.9868035 -1.33136322      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00
+##         eventID year habitatType     samplerType benthicArea          inv_dens_unit
+## 1 POSE.20150721 2015      riffle          surber       0.093 count per square meter
+## 2 POSE.20150330 2015      riffle          surber       0.093 count per square meter
+## 3 ARIK.20160919 2016         run modifiedKicknet       0.250 count per square meter
+## 4 ARIK.20150325 2015         run modifiedKicknet       0.250 count per square meter
+## 5 ARIK.20160919 2016         run modifiedKicknet       0.250 count per square meter
+## 6 ARIK.20140714 2014         run modifiedKicknet       0.250 count per square meter
+
+nmds_scores %&gt;% arrange(desc(NMDS1)) %&gt;% tail()
+
+##                 sampleID     NMDS1      NMDS2 domainID siteID  namedLocation         collectDate
+## 318 MAYF.20170314.CORE.1 -1.045603  1.2495550      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00
+## 319 MAYF.20160321.CORE.2 -1.087688  0.9935332      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00
+## 320 MAYF.20180326.CORE.3 -1.095837 -0.5646813      D08   MAYF MAYF.AOS.reach 2018-03-26 14:50:00
+## 321 MAYF.20180726.CORE.2 -1.231606  0.1671310      D08   MAYF MAYF.AOS.reach 2018-07-26 14:17:00
+## 322 MAYF.20190311.CORE.1 -1.440107  0.6270889      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00
+## 323 MAYF.20190311.CORE.2 -1.504627  0.7647755      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00
+##           eventID year habitatType samplerType benthicArea          inv_dens_unit
+## 318 MAYF.20170314 2017         run        core       0.006 count per square meter
+## 319 MAYF.20160321 2016         run        core       0.006 count per square meter
+## 320 MAYF.20180326 2018         run        core       0.006 count per square meter
+## 321 MAYF.20180726 2018         run        core       0.006 count per square meter
+## 322 MAYF.20190311 2019         run        core       0.006 count per square meter
+## 323 MAYF.20190311 2019         run        core       0.006 count per square meter
+
+# Plot samples in community composition space by year
+nmds_scores %&gt;%
+  ggplot(aes(NMDS1, NMDS2, color = siteID, 
+             shape = samplerType)) +
+  geom_point() +
+  facet_wrap(~ as.factor(year))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/NMDS-2.png" alt="Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color)."/></p>
+
+<pre><code># Plot samples in community composition space
+# facet by siteID and habitat type
+# color by year
+nmds_scores %&gt;%
+  ggplot(aes(NMDS1, NMDS2, color = as.factor(year), 
+             shape = samplerType)) +
+  geom_point() +
+  facet_grid(habitatType ~ siteID, scales = &quot;free&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials-in-development/Staging_Area/rfigs/NMDS-3.png" alt="Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. "/></p>
+
+</body>
+
+</html>
