@@ -253,7 +253,7 @@ This waveform shows some noise above and below the main ecosystem return, with a
 ## Download and Plot NEON AOP LiDAR pointcloud data
 Here, we will use the `byTileAOP()` function from the 'neonUtilities' package to download the classified pointcloud mosaic data (DP1.30003.001). Since this is a mosaic tile like the CHM, we can just pass this function the lower left corner of the CHM tile to get the corresponding lidar pointcloud mosaic tile for our analysis.
 
-```{r download-AOP-lidar eval=F, comment=NA}
+```{r download-AOP-lidar, eval=F, comment=NA}
 
 # Download the pointcloud data if you don't have it already
 if (!file.exists(paste0(wd,"DP1.30003.001/2017/FullSite/D16/2017_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.laz"))){

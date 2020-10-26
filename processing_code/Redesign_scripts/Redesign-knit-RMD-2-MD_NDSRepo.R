@@ -24,13 +24,14 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
           "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
-          "R/R-skills/Using-hdf5-r/Intro-HDF5-R")
+          "R/R-skills/Using-hdf5-r/Intro-HDF5-R",
+          "R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2] 
+subDir <- dirs[4] 
 
 # Inputs - Where the git repo is on your computer
 ### CHANGE AFTER MIGRATION
