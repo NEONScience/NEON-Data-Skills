@@ -172,8 +172,7 @@ tutorial we explore how to work with NEON plant phenophase data. </p>
 ## Objectives
 After completing this activity, you will be able to:
 
- * work with &ldquo;stacked&rdquo; NEON Plant Phenology Observation data. 
- * correctly format date data. 
+ * work with NEON Plant Phenology Observation data. 
  * use dplyr functions to filter data.
  * plot time series data in a bar plot using ggplot the function. 
 
@@ -183,18 +182,22 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
 * **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
 * **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
-
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the zipsByProduct() function in the neonUtilities package. 
 
-****
-{% include/_greyBox-wd-rscript.html %}
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -216,7 +219,7 @@ Why do they change? </p>
 <p>The following sections provide a brief overview of the NEON plant phenology 
 observation data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. </p>
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. </p>
 
 <p><em>The following description of the NEON Plant Phenology Observation data is modified 
 from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.</em></p>
@@ -224,16 +227,16 @@ from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_us
 <h3>NEON Plant Phenology Observation Data</h3>
 
 <p>NEON collects plant phenology data and provides it as NEON data product 
-<strong>NEON.DP1.10055</strong>.</p>
+<strong>DP1.10055.001</strong>.</p>
 
 <p>The plant phenology observations data product provides in-situ observations of 
 the phenological status and intensity of tagged plants (or patches) during 
 discrete observations events. </p>
 
 <p>Sampling occurs at all terrestrial field sites at site and season specific 
-intervals. Three species for phenology observation are selected based on relative 
-abundance in the Tower airshed. There are 30 individuals of each target species 
-monitored at each transect. </p>
+intervals. During Phase I (dominant species) sampling (pre-2021), three species 
+with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
+will begin, with &lt;=20 species with 5 or more individuals sampled will occur.</p>
 
 <h4>Status-based Monitoring</h4>
 
@@ -265,10 +268,13 @@ within view of a canopy level, tower-mounted, phenology camera.</p>
 
 <p><figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"
+    alt="Diagram of a phenology transect layout, with meter layout marked. Point-level geolocations are recorded at eight reference
+    points along the perimeter; plot-level geolocation at the plot centroid(star).>
+    </a>
     <figcaption> Diagram of a phenology transect layout, with meter layout marked.
-    Point-level geolocations are recorded at eight referecne points along the 
-    perimeter, plot-level geolaocation at the plot centoid (star). 
+    Point-level geolocations are recorded at eight reference points along the 
+    perimeter, plot-level geolocation at the plot centroid (star). 
     Source: National Ecological Observatory Network (NEON)
     </figcaption>
 </figure></p>
@@ -281,7 +287,7 @@ within view of a canopy level, tower-mounted, phenology camera.</p>
 <li>~50 observation bouts per year. </li>
 <li>no more that 100 sampling points per phenology transect.</li>
 <li>no more than 9 sampling points per phenocam plot. </li>
-<li>1 bout per year to collect annual size and disease status measurements from 
+<li>1 annual measurement per year to collect annual size and disease status measurements from 
 each sampling point.</li>
 </ul>
 
@@ -298,8 +304,8 @@ about the plant: DBH, height, etc. </li>
 
 <p>There are other files in each download including a <strong>readme</strong> with information on 
 the data product and the download; a <strong>variables</strong> file that defines the 
-term descriptions, data types, and units; a <strong>validation</strong> file with ata entry validation and 
-parsing rules; and an <strong>XML</strong> with machine readable metadata. </p>
+term descriptions, data types, and units; a <strong>validation</strong> file with data entry 
+validation and parsing rules; and an <strong>XML</strong> with machine readable metadata. </p>
 
 <h2>Stack NEON Data</h2>
 
@@ -319,33 +325,478 @@ and then return to this tutorial. </p>
 <p>When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. </p>
 
-<p>Let&#39;s start by loading our data of interest. </p>
+<p>First, we need to set up our R environment. </p>
 
-<pre><code>library(dplyr)
+<pre><code># install needed package (only uncomment &amp; run if not already installed)
+#install.packages(&quot;neonUtilities&quot;)
+#install.packages(&quot;dplyr&quot;)
+#install.packages(&quot;ggplot2&quot;)
+
+# load needed packages
+library(neonUtilities)
+library(dplyr)
 library(ggplot2)
-library(lubridate)  
 
 
-# set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+options(stringsAsFactors=F) #keep strings as character type not factors
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd &lt;- &quot;~/Documents/data/&quot; # Change this to match your local environment
+setwd(wd)
+</code></pre>
+
+<p>Let&#39;s start by loading our data of interest. For this series, we&#39;ll work with 
+date from the NEON Domain 02 sites:</p>
+
+<ul>
+<li>Blandy Farm (BLAN)</li>
+<li>Smithsonian Conservation Biology Institute (SCBI)</li>
+<li>Smithsonian Environmental Research Center (SERC)</li>
+</ul>
+
+<p>And we&#39;ll use data from January 2017 to December 2019. This downloads over 9MB
+of data. If this is too large, use a smaller date range. If you opt to do this, 
+your figures and some output may look different later in the tutorial. </p>
+
+<p>With this information, we can download our data using the neonUtilities package. 
+If you are not using a NEON token to download your data, remove the 
+<code>token = Sys.getenv(NEON_TOKEN)</code> line of code (learn more about NEON API tokens 
+in the 
+<a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><em>Using an API Token when Accessing NEON Data with neonUtilities</em> tutorial</a>). </p>
+
+<p>If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. </p>
+
+<pre><code>## Two options for accessing data - programmatic or from the example dataset
+# Read data from data portal 
+
+phe &lt;- loadByProduct(dpID = &quot;DP1.10055.001&quot;, site=c(&quot;BLAN&quot;,&quot;SCBI&quot;,&quot;SERC&quot;), 
+                                         startdate = &quot;2017-01&quot;, enddate=&quot;2019-12&quot;, 
+                                         token = Sys.getenv(&quot;NEON_TOKEN&quot;),
+                                         check.size = F) 
+
+## API token was not recognized. Public rate limit applied.
+## Finding available files
+## 
+</code></pre>
+
+<p>|<br/>
+  |                                                                                                              |   0%
+  |<br/>
+  |=                                                                                                             |   1%
+  |<br/>
+  |==                                                                                                            |   2%
+  |<br/>
+  |===                                                                                                           |   3%
+  |<br/>
+  |=====                                                                                                         |   4%
+  |<br/>
+  |======                                                                                                        |   5%
+  |<br/>
+  |=======                                                                                                       |   6%
+  |<br/>
+  |========                                                                                                      |   7%
+  |<br/>
+  |=========                                                                                                     |   8%
+  |<br/>
+  |==========                                                                                                    |   9%
+  |<br/>
+  |============                                                                                                  |  11%
+  |<br/>
+  |=============                                                                                                 |  12%
+  |<br/>
+  |==============                                                                                                |  13%
+  |<br/>
+  |===============                                                                                               |  14%
+  |<br/>
+  |================                                                                                              |  15%
+  |<br/>
+  |=================                                                                                             |  16%
+  |<br/>
+  |===================                                                                                           |  17%
+  |<br/>
+  |====================                                                                                          |  18%
+  |<br/>
+  |=====================                                                                                         |  19%
+  |<br/>
+  |======================                                                                                        |  20%
+  |<br/>
+  |=======================                                                                                       |  21%
+  |<br/>
+  |========================                                                                                      |  22%
+  |<br/>
+  |=========================                                                                                     |  23%
+  |<br/>
+  |===========================                                                                                   |  24%
+  |<br/>
+  |============================                                                                                  |  25%
+  |<br/>
+  |=============================                                                                                 |  26%
+  |<br/>
+  |==============================                                                                                |  27%
+  |<br/>
+  |===============================                                                                               |  28%
+  |<br/>
+  |================================                                                                              |  29%
+  |<br/>
+  |==================================                                                                            |  31%
+  |<br/>
+  |===================================                                                                           |  32%
+  |<br/>
+  |====================================                                                                          |  33%
+  |<br/>
+  |=====================================                                                                         |  34%
+  |<br/>
+  |======================================                                                                        |  35%
+  |<br/>
+  |=======================================                                                                       |  36%
+  |<br/>
+  |=========================================                                                                     |  37%
+  |<br/>
+  |==========================================                                                                    |  38%
+  |<br/>
+  |===========================================                                                                   |  39%
+  |<br/>
+  |============================================                                                                  |  40%
+  |<br/>
+  |=============================================                                                                 |  41%
+  |<br/>
+  |==============================================                                                                |  42%
+  |<br/>
+  |===============================================                                                               |  43%
+  |<br/>
+  |=================================================                                                             |  44%
+  |<br/>
+  |==================================================                                                            |  45%
+  |<br/>
+  |===================================================                                                           |  46%
+  |<br/>
+  |====================================================                                                          |  47%
+  |<br/>
+  |=====================================================                                                         |  48%
+  |<br/>
+  |======================================================                                                        |  49%
+  |<br/>
+  |========================================================                                                      |  51%
+  |<br/>
+  |=========================================================                                                     |  52%
+  |<br/>
+  |==========================================================                                                    |  53%
+  |<br/>
+  |===========================================================                                                   |  54%
+  |<br/>
+  |============================================================                                                  |  55%
+  |<br/>
+  |=============================================================                                                 |  56%
+  |<br/>
+  |===============================================================                                               |  57%
+  |<br/>
+  |================================================================                                              |  58%
+  |<br/>
+  |=================================================================                                             |  59%
+  |<br/>
+  |==================================================================                                            |  60%
+  |<br/>
+  |===================================================================                                           |  61%
+  |<br/>
+  |====================================================================                                          |  62%
+  |<br/>
+  |=====================================================================                                         |  63%
+  |<br/>
+  |=======================================================================                                       |  64%
+  |<br/>
+  |========================================================================                                      |  65%
+  |<br/>
+  |=========================================================================                                     |  66%
+  |<br/>
+  |==========================================================================                                    |  67%
+  |<br/>
+  |===========================================================================                                   |  68%
+  |<br/>
+  |============================================================================                                  |  69%
+  |<br/>
+  |==============================================================================                                |  71%
+  |<br/>
+  |===============================================================================                               |  72%
+  |<br/>
+  |================================================================================                              |  73%
+  |<br/>
+  |=================================================================================                             |  74%
+  |<br/>
+  |==================================================================================                            |  75%
+  |<br/>
+  |===================================================================================                           |  76%
+  |<br/>
+  |=====================================================================================                         |  77%
+  |<br/>
+  |======================================================================================                        |  78%
+  |<br/>
+  |=======================================================================================                       |  79%
+  |<br/>
+  |========================================================================================                      |  80%
+  |<br/>
+  |=========================================================================================                     |  81%
+  |<br/>
+  |==========================================================================================                    |  82%
+  |<br/>
+  |===========================================================================================                   |  83%
+  |<br/>
+  |=============================================================================================                 |  84%
+  |<br/>
+  |==============================================================================================                |  85%
+  |<br/>
+  |===============================================================================================               |  86%
+  |<br/>
+  |================================================================================================              |  87%
+  |<br/>
+  |=================================================================================================             |  88%
+  |<br/>
+  |==================================================================================================            |  89%
+  |<br/>
+  |====================================================================================================          |  91%
+  |<br/>
+  |=====================================================================================================         |  92%
+  |<br/>
+  |======================================================================================================        |  93%
+  |<br/>
+  |=======================================================================================================       |  94%
+  |<br/>
+  |========================================================================================================      |  95%
+  |<br/>
+  |=========================================================================================================     |  96%
+  |<br/>
+  |===========================================================================================================   |  97%
+  |<br/>
+  |============================================================================================================  |  98%
+  |<br/>
+  |============================================================================================================= |  99%
+  |<br/>
+  |==============================================================================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 10.386083 MB
+    ## Downloading 95 files
+    ## 
+  |<br/>
+  |                                                                                                              |   0%
+  |<br/>
+  |=                                                                                                             |   1%
+  |<br/>
+  |==                                                                                                            |   2%
+  |<br/>
+  |====                                                                                                          |   3%
+  |<br/>
+  |=====                                                                                                         |   4%
+  |<br/>
+  |======                                                                                                        |   5%
+  |<br/>
+  |=======                                                                                                       |   6%
+  |<br/>
+  |========                                                                                                      |   7%
+  |<br/>
+  |=========                                                                                                     |   9%
+  |<br/>
+  |===========                                                                                                   |  10%
+  |<br/>
+  |============                                                                                                  |  11%
+  |<br/>
+  |=============                                                                                                 |  12%
+  |<br/>
+  |==============                                                                                                |  13%
+  |<br/>
+  |===============                                                                                               |  14%
+  |<br/>
+  |================                                                                                              |  15%
+  |<br/>
+  |==================                                                                                            |  16%
+  |<br/>
+  |===================                                                                                           |  17%
+  |<br/>
+  |====================                                                                                          |  18%
+  |<br/>
+  |=====================                                                                                         |  19%
+  |<br/>
+  |======================                                                                                        |  20%
+  |<br/>
+  |=======================                                                                                       |  21%
+  |<br/>
+  |=========================                                                                                     |  22%
+  |<br/>
+  |==========================                                                                                    |  23%
+  |<br/>
+  |===========================                                                                                   |  24%
+  |<br/>
+  |============================                                                                                  |  26%
+  |<br/>
+  |=============================                                                                                 |  27%
+  |<br/>
+  |==============================                                                                                |  28%
+  |<br/>
+  |================================                                                                              |  29%
+  |<br/>
+  |=================================                                                                             |  30%
+  |<br/>
+  |==================================                                                                            |  31%
+  |<br/>
+  |===================================                                                                           |  32%
+  |<br/>
+  |====================================                                                                          |  33%
+  |<br/>
+  |=====================================                                                                         |  34%
+  |<br/>
+  |=======================================                                                                       |  35%
+  |<br/>
+  |========================================                                                                      |  36%
+  |<br/>
+  |=========================================                                                                     |  37%
+  |<br/>
+  |==========================================                                                                    |  38%
+  |<br/>
+  |===========================================                                                                   |  39%
+  |<br/>
+  |============================================                                                                  |  40%
+  |<br/>
+  |==============================================                                                                |  41%
+  |<br/>
+  |===============================================                                                               |  43%
+  |<br/>
+  |================================================                                                              |  44%
+  |<br/>
+  |=================================================                                                             |  45%
+  |<br/>
+  |==================================================                                                            |  46%
+  |<br/>
+  |===================================================                                                           |  47%
+  |<br/>
+  |=====================================================                                                         |  48%
+  |<br/>
+  |======================================================                                                        |  49%
+  |<br/>
+  |=======================================================                                                       |  50%
+  |<br/>
+  |========================================================                                                      |  51%
+  |<br/>
+  |=========================================================                                                     |  52%
+  |<br/>
+  |===========================================================                                                   |  53%
+  |<br/>
+  |============================================================                                                  |  54%
+  |<br/>
+  |=============================================================                                                 |  55%
+  |<br/>
+  |==============================================================                                                |  56%
+  |<br/>
+  |===============================================================                                               |  57%
+  |<br/>
+  |================================================================                                              |  59%
+  |<br/>
+  |==================================================================                                            |  60%
+  |<br/>
+  |===================================================================                                           |  61%
+  |<br/>
+  |====================================================================                                          |  62%
+  |<br/>
+  |=====================================================================                                         |  63%
+  |<br/>
+  |======================================================================                                        |  64%
+  |<br/>
+  |=======================================================================                                       |  65%
+  |<br/>
+  |=========================================================================                                     |  66%
+  |<br/>
+  |==========================================================================                                    |  67%
+  |<br/>
+  |===========================================================================                                   |  68%
+  |<br/>
+  |============================================================================                                  |  69%
+  |<br/>
+  |=============================================================================                                 |  70%
+  |<br/>
+  |==============================================================================                                |  71%
+  |<br/>
+  |================================================================================                              |  72%
+  |<br/>
+  |=================================================================================                             |  73%
+  |<br/>
+  |==================================================================================                            |  74%
+  |<br/>
+  |===================================================================================                           |  76%
+  |<br/>
+  |====================================================================================                          |  77%
+  |<br/>
+  |=====================================================================================                         |  78%
+  |<br/>
+  |=======================================================================================                       |  79%
+  |<br/>
+  |========================================================================================                      |  80%
+  |<br/>
+  |=========================================================================================                     |  81%
+  |<br/>
+  |==========================================================================================                    |  82%
+  |<br/>
+  |===========================================================================================                   |  83%
+  |<br/>
+  |============================================================================================                  |  84%
+  |<br/>
+  |==============================================================================================                |  85%
+  |<br/>
+  |===============================================================================================               |  86%
+  |<br/>
+  |================================================================================================              |  87%
+  |<br/>
+  |=================================================================================================             |  88%
+  |<br/>
+  |==================================================================================================            |  89%
+  |<br/>
+  |===================================================================================================           |  90%
+  |<br/>
+  |=====================================================================================================         |  91%
+  |<br/>
+  |======================================================================================================        |  93%
+  |<br/>
+  |=======================================================================================================       |  94%
+  |<br/>
+  |========================================================================================================      |  95%
+  |<br/>
+  |=========================================================================================================     |  96%
+  |<br/>
+  |==========================================================================================================    |  97%
+  |<br/>
+  |============================================================================================================  |  98%
+  |<br/>
+  |============================================================================================================= |  99%
+  |<br/>
+  |==============================================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table phe_perindividual
+    ## Stacking table phe_statusintensity
+    ## Stacking table phe_perindividualperyear
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 1.546488 secs
+    ## All unzipped monthly data folders have been removed.</p>
+
+<pre><code># if you aren&#39;t sure you can handle the data file size use check.size = T. 
+
+# save dataframes from the downloaded list
+ind &lt;- phe$phe_perindividual  #individual information
+status &lt;- phe$phe_statusintensity  #status &amp; intensity info
 
 
-# Read in data
-ind &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv&#39;, 
-        stringsAsFactors = FALSE )
+##If choosing to use example dataset downloaded from this tutorial: 
 
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/pheno/
-## phe_perindividual.csv&#39;: No such file or directory
+# Stack multiple files within the downloaded phenology data
+#stackByTable(&quot;NEON-pheno-temp-timeseries_v2/filesToStack10055&quot;, folder = T)
 
-## Error in file(file, &quot;rt&quot;): cannot open the connection
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#ind &lt;- readTableNEON(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_perindividual.csv&#39;, &#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
 
-status &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv&#39;, 
-        stringsAsFactors = FALSE)
-
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/pheno/
-## phe_statusintensity.csv&#39;: No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
+#status &lt;- readTableNEON(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_statusintensity.csv&#39;, &#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
 </code></pre>
 
 <p>Let&#39;s explore the data. Let&#39;s get to know what the <code>ind</code> dataframe looks like.</p>
@@ -353,82 +804,144 @@ status &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/phe_statusintensity.
 <pre><code># What are the fieldnames in this dataset?
 names(ind)
 
-## Error in eval(expr, envir, enclos): object &#39;ind&#39; not found
+##  [1] &quot;uid&quot;                         &quot;namedLocation&quot;               &quot;domainID&quot;                   
+##  [4] &quot;siteID&quot;                      &quot;plotID&quot;                      &quot;decimalLatitude&quot;            
+##  [7] &quot;decimalLongitude&quot;            &quot;geodeticDatum&quot;               &quot;coordinateUncertainty&quot;      
+## [10] &quot;elevation&quot;                   &quot;elevationUncertainty&quot;        &quot;subtypeSpecification&quot;       
+## [13] &quot;transectMeter&quot;               &quot;directionFromTransect&quot;       &quot;ninetyDegreeDistance&quot;       
+## [16] &quot;sampleLatitude&quot;              &quot;sampleLongitude&quot;             &quot;sampleGeodeticDatum&quot;        
+## [19] &quot;sampleCoordinateUncertainty&quot; &quot;sampleElevation&quot;             &quot;sampleElevationUncertainty&quot; 
+## [22] &quot;date&quot;                        &quot;editedDate&quot;                  &quot;individualID&quot;               
+## [25] &quot;taxonID&quot;                     &quot;scientificName&quot;              &quot;identificationQualifier&quot;    
+## [28] &quot;taxonRank&quot;                   &quot;growthForm&quot;                  &quot;vstTag&quot;                     
+## [31] &quot;samplingProtocolVersion&quot;     &quot;measuredBy&quot;                  &quot;identifiedBy&quot;               
+## [34] &quot;recordedBy&quot;                  &quot;remarks&quot;                     &quot;dataQF&quot;                     
+## [37] &quot;publicationDate&quot;
+
+# Unsure of what some of the variables are you? Look at the variables table!
+View(phe$variables_10055)
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
+#View(var)
 
 # how many rows are in the data?
 nrow(ind)
 
-## Error in nrow(ind): object &#39;ind&#39; not found
+## [1] 1609
 
 # look at the first six rows of data.
-head(ind)
-
-## Error in head(ind): object &#39;ind&#39; not found
+#head(ind) #this is a good function to use but looks messy so not rendering it 
 
 # look at the structure of the dataframe.
 str(ind)
 
-## Error in str(ind): object &#39;ind&#39; not found
+## &#39;data.frame&#39;:    1609 obs. of  37 variables:
+##  $ uid                        : chr  &quot;59f45c6e-1ddb-42c6-b419-27bc3fd3def2&quot; &quot;85415414-5db1-4ef7-b66b-e8e2081135fa&quot; &quot;aeb0a386-046d-4bcf-a1fe-76b4fbf44db0&quot; &quot;611c26b9-ab3d-4940-bf22-bfab2277801b&quot; ...
+##  $ namedLocation              : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
+##  $ domainID                   : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
+##  $ siteID                     : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
+##  $ plotID                     : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
+##  $ decimalLatitude            : num  39.1 39.1 39.1 39.1 39.1 ...
+##  $ decimalLongitude           : num  -78.1 -78.1 -78.1 -78.1 -78.1 ...
+##  $ geodeticDatum              : chr  NA NA NA NA ...
+##  $ coordinateUncertainty      : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ elevation                  : num  183 183 183 183 183 183 183 183 183 183 ...
+##  $ elevationUncertainty       : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ subtypeSpecification       : chr  &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; ...
+##  $ transectMeter              : num  498 504 506 484 491 476 491 469 497 484 ...
+##  $ directionFromTransect      : chr  &quot;Right&quot; &quot;Right&quot; &quot;Right&quot; &quot;Right&quot; ...
+##  $ ninetyDegreeDistance       : num  2 0.5 1 0.5 0.5 2 0.5 2 1 2 ...
+##  $ sampleLatitude             : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleLongitude            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleGeodeticDatum        : chr  &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; ...
+##  $ sampleCoordinateUncertainty: num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleElevation            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleElevationUncertainty : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date                       : POSIXct, format: &quot;2015-06-25&quot; &quot;2015-06-25&quot; &quot;2015-06-25&quot; &quot;2015-06-25&quot; ...
+##  $ editedDate                 : POSIXct, format: &quot;2015-07-22&quot; &quot;2015-07-22&quot; &quot;2015-07-22&quot; &quot;2015-07-22&quot; ...
+##  $ individualID               : chr  &quot;NEON.PLA.D02.BLAN.06288&quot; &quot;NEON.PLA.D02.BLAN.06287&quot; &quot;NEON.PLA.D02.BLAN.06286&quot; &quot;NEON.PLA.D02.BLAN.06295&quot; ...
+##  $ taxonID                    : chr  &quot;LOMA6&quot; &quot;LOMA6&quot; &quot;LOMA6&quot; &quot;RHDA&quot; ...
+##  $ scientificName             : chr  &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Rhamnus davurica Pall.&quot; ...
+##  $ identificationQualifier    : chr  NA NA NA NA ...
+##  $ taxonRank                  : chr  &quot;species&quot; &quot;species&quot; &quot;species&quot; &quot;species&quot; ...
+##  $ growthForm                 : chr  &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; ...
+##  $ vstTag                     : chr  NA NA NA NA ...
+##  $ samplingProtocolVersion    : chr  NA NA NA NA ...
+##  $ measuredBy                 : chr  &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; ...
+##  $ identifiedBy               : chr  &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; ...
+##  $ recordedBy                 : chr  &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; ...
+##  $ remarks                    : chr  NA NA NA NA ...
+##  $ dataQF                     : chr  NA NA NA NA ...
+##  $ publicationDate            : chr  &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; ...
 </code></pre>
 
-<p>Note that if you first open you data file in Excel, you might see 06/14/2014 as 
+<p>Notice that the neonUtilities package read the data type from the variables file
+and then automatically converts the data to the correct date type in R. </p>
+
+<p>(Note that if you first opened your data file in Excel, you might see 06/14/2014 as 
 the format instead of 2014-06-14. Excel can do some <del>weird</del> interesting things
-to dates.</p>
+to dates.)</p>
 
-<h4>Individual locations</h4>
-
-<p>To get the specific location data of each individual you would need to do some 
-math, or you can use the NEON geolocation 
-<a href="https://github.com/NEONScience/NEON-geolocation" target="_blank"> <strong>geoNEON</strong></a>. </p>
+<h4>Phenology status</h4>
 
 <p>Now let&#39;s look at the status data. </p>
 
 <pre><code># What variables are included in this dataset?
 names(status)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+##  [1] &quot;uid&quot;                           &quot;namedLocation&quot;                 &quot;domainID&quot;                     
+##  [4] &quot;siteID&quot;                        &quot;plotID&quot;                        &quot;date&quot;                         
+##  [7] &quot;editedDate&quot;                    &quot;dayOfYear&quot;                     &quot;individualID&quot;                 
+## [10] &quot;phenophaseName&quot;                &quot;phenophaseStatus&quot;              &quot;phenophaseIntensityDefinition&quot;
+## [13] &quot;phenophaseIntensity&quot;           &quot;samplingProtocolVersion&quot;       &quot;measuredBy&quot;                   
+## [16] &quot;recordedBy&quot;                    &quot;remarks&quot;                       &quot;dataQF&quot;                       
+## [19] &quot;publicationDate&quot;
 
 nrow(status)
 
-## Error in nrow(status): object &#39;status&#39; not found
+## [1] 220242
 
-head(status)
-
-## Error in head(status): object &#39;status&#39; not found
-
+#head(status)   #this is a good function to use but looks messy so not rendering it 
 str(status)
 
-## Error in str(status): object &#39;status&#39; not found
+## &#39;data.frame&#39;:    220242 obs. of  19 variables:
+##  $ uid                          : chr  &quot;d63d6d9e-db96-4dfc-ab0e-d1f8ba74d2e8&quot; &quot;3a646972-d96d-484f-9958-31614950c3c7&quot; &quot;42639aaf-466d-4de7-badd-8164491007e5&quot; &quot;7eebf35b-8fd0-4c32-b6d3-5b3d82ad3dad&quot; ...
+##  $ namedLocation                : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
+##  $ domainID                     : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
+##  $ siteID                       : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
+##  $ plotID                       : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
+##  $ date                         : POSIXct, format: &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; ...
+##  $ editedDate                   : POSIXct, format: &quot;2017-03-31&quot; &quot;2017-03-31&quot; &quot;2017-03-31&quot; &quot;2017-03-31&quot; ...
+##  $ dayOfYear                    : num  55 55 55 55 55 55 55 55 55 55 ...
+##  $ individualID                 : chr  &quot;NEON.PLA.D02.BLAN.06250&quot; &quot;NEON.PLA.D02.BLAN.06250&quot; &quot;NEON.PLA.D02.BLAN.06218&quot; &quot;NEON.PLA.D02.BLAN.06700&quot; ...
+##  $ phenophaseName               : chr  &quot;Leaves&quot; &quot;Colored leaves&quot; &quot;Breaking leaf buds&quot; &quot;Open flowers&quot; ...
+##  $ phenophaseStatus             : chr  &quot;no&quot; &quot;no&quot; &quot;no&quot; &quot;no&quot; ...
+##  $ phenophaseIntensityDefinition: chr  NA NA NA NA ...
+##  $ phenophaseIntensity          : chr  NA NA NA NA ...
+##  $ samplingProtocolVersion      : chr  NA NA NA NA ...
+##  $ measuredBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
+##  $ recordedBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
+##  $ remarks                      : chr  NA NA NA NA ...
+##  $ dataQF                       : chr  &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; ...
+##  $ publicationDate              : chr  &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; ...
 
 # date range
 min(status$date)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+## [1] &quot;2017-02-24 GMT&quot;
 
 max(status$date)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
-</code></pre>
-
-<p>The <code>uid</code> is not important to understanding the data so we are going to remove <code>uid</code>. 
-However, if you are every reporting an error in the data you should include this
-with your report. </p>
-
-<pre><code>ind &lt;- select(ind,-uid)
-
-## Error in select(ind, -uid): object &#39;ind&#39; not found
-
-status &lt;- select (status, -uid)
-
-## Error in select(status, -uid): object &#39;status&#39; not found
+## [1] &quot;2019-12-12 GMT&quot;
 </code></pre>
 
 <h2>Clean up the Data</h2>
 
 <ul>
 <li>remove duplicates (full rows)</li>
-<li>convert date</li>
-<li>retain only the latest <code>editedDate</code> in the perIndividual table.</li>
+<li>convert to date format</li>
+<li>retain only the most recent <code>editedDate</code> in the perIndividual and status table.</li>
 </ul>
 
 <h3>Remove Duplicates</h3>
@@ -438,95 +951,73 @@ a result when all the tables are stacked there are many duplicates. </p>
 
 <p>Let&#39;s remove any duplicates that exist.</p>
 
-<pre><code># remove duplicates
+<pre><code># drop UID as that will be unique for duplicate records
+ind_noUID &lt;- select(ind, -(uid))
+
+status_noUID &lt;- select(status, -(uid))
+
+# remove duplicates
 ## expect many
 
-ind_noD &lt;- distinct(ind)
-
-## Error in distinct(ind): object &#39;ind&#39; not found
-
+ind_noD &lt;- distinct(ind_noUID)
 nrow(ind_noD)
 
-## Error in nrow(ind_noD): object &#39;ind_noD&#39; not found
+## [1] 1596
 
-status_noD&lt;-distinct(status)
-
-## Error in distinct(status): object &#39;status&#39; not found
-
+status_noD&lt;-distinct(status_noUID)
 nrow(status_noD)
 
-## Error in nrow(status_noD): object &#39;status_noD&#39; not found
+## [1] 216837
 </code></pre>
 
 <h3>Variable Overlap between Tables</h3>
 
 <p>From the initial inspection of the data we can see there is overlap in variable
-names between the fields. </p>
+names between the fields.</p>
 
 <p>Let&#39;s see what they are.</p>
 
 <pre><code># where is there an intersection of names
-sameName &lt;- intersect(names(status_noD), names(ind_noD))
+intersect(names(status_noD), names(ind_noD))
 
-## Error in intersect(names(status_noD), names(ind_noD)): object &#39;status_noD&#39; not found
-
-sameName
-
-## Error in eval(expr, envir, enclos): object &#39;sameName&#39; not found
+##  [1] &quot;namedLocation&quot;           &quot;domainID&quot;                &quot;siteID&quot;                  &quot;plotID&quot;                 
+##  [5] &quot;date&quot;                    &quot;editedDate&quot;              &quot;individualID&quot;            &quot;samplingProtocolVersion&quot;
+##  [9] &quot;measuredBy&quot;              &quot;recordedBy&quot;              &quot;remarks&quot;                 &quot;dataQF&quot;                 
+## [13] &quot;publicationDate&quot;
 </code></pre>
 
 <p>There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. </p>
 
 <p>However, some of these will have different values in each table. We want to keep 
-those distinct value and not join on them. </p>
-
-<p>We want to rename common fields before joining:</p>
+those distinct value and not join on them. Therefore, we can rename these 
+fields before joining:</p>
 
 <ul>
+<li>date</li>
 <li>editedDate</li>
 <li>measuredBy</li>
 <li>recordedBy</li>
 <li>samplingProtocolVersion</li>
 <li>remarks</li>
 <li>dataQF</li>
+<li>publicationDate</li>
 </ul>
 
 <p>Now we want to rename the variables that would have duplicate names. We can 
 rename all the variables in the status object to have &ldquo;Stat&rdquo; at the end of the 
 variable name. </p>
 
-<pre><code># rename status editedDate
-status_noD &lt;- rename(status_noD, editedDateStat=editedDate, 
-        measuredByStat=measuredBy, recordedByStat=recordedBy, 
-        samplingProtocolVersionStat=samplingProtocolVersion, 
-        remarksStat=remarks, dataQFStat=dataQF)
-
-## Error in rename(status_noD, editedDateStat = editedDate, measuredByStat = measuredBy, : object &#39;status_noD&#39; not found
+<pre><code># in Status table rename like columns 
+status_noD &lt;- rename(status_noD, dateStat=date, 
+                                         editedDateStat=editedDate, measuredByStat=measuredBy, 
+                                         recordedByStat=recordedBy, 
+                                         samplingProtocolVersionStat=samplingProtocolVersion, 
+                                         remarksStat=remarks, dataQFStat=dataQF, 
+                                         publicationDateStat=publicationDate)
 </code></pre>
 
-<h3>Convert to Date</h3>
-
-<p>Our <code>addDate</code> and <code>date</code> columns are stored as a <code>character</code> class. We need to 
-convert it to a date class. The <code>as.Date()</code> function in base R will do this. </p>
-
-<pre><code># convert column to date class
-ind_noD$editedDate &lt;- as.Date(ind_noD$editedDate)
-
-## Error in as.Date(ind_noD$editedDate): object &#39;ind_noD&#39; not found
-
-str(ind_noD$editedDate)
-
-## Error in str(ind_noD$editedDate): object &#39;ind_noD&#39; not found
-
-status_noD$date &lt;- as.Date(status_noD$date)
-
-## Error in as.Date(status_noD$date): object &#39;status_noD&#39; not found
-
-str(status_noD$date)
-
-## Error in str(status_noD$date): object &#39;status_noD&#39; not found
-</code></pre>
+<h3>Filter to last editedDate</h3>
 
 <p>The individual (ind) table contains all instances that any of the location or 
 taxonomy data of an individual was updated. Therefore there are many rows for
@@ -537,21 +1028,17 @@ ind_last &lt;- ind_noD %&gt;%
     group_by(individualID) %&gt;%
     filter(editedDate==max(editedDate))
 
-## Error in eval(lhs, parent, parent): object &#39;ind_noD&#39; not found
-
-# oh wait, duplicate dates, retain only one
+# oh wait, duplicate dates, retain only the most recent editedDate
 ind_lastnoD &lt;- ind_last %&gt;%
     group_by(editedDate, individualID) %&gt;%
     filter(row_number()==1)
-
-## Error in eval(lhs, parent, parent): object &#39;ind_last&#39; not found
 </code></pre>
 
 <h3>Join Dataframes</h3>
 
 <p>Now we can join the two data frames on all the variables with the same name. 
 We use a <code>left_join()</code> from the dpylr package because we want to match all the 
-rows from the &ldquo;left&rdquo; (first) dateframe to any rows that also occur in the &ldquo;right&rdquo;
+rows from the &ldquo;left&rdquo; (first) dataframe to any rows that also occur in the &ldquo;right&rdquo;
  (second) dataframe.  </p>
 
 <p>Check out RStudio&#39;s 
@@ -561,28 +1048,10 @@ rows from the &ldquo;left&rdquo; (first) dateframe to any rows that also occur i
 <pre><code># Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
 phe_ind &lt;- left_join(status_noD, ind_lastnoD)
 
-## Error in left_join(status_noD, ind_lastnoD): object &#39;status_noD&#39; not found
+## Joining, by = c(&quot;namedLocation&quot;, &quot;domainID&quot;, &quot;siteID&quot;, &quot;plotID&quot;, &quot;individualID&quot;)
 </code></pre>
 
-<p>Ack!  Two different data types.  Why?  Notice that when we checked for intersecting variable names, <code>data</code> was one of these variables. We didn&#39;t change the <code>data</code> column in the ind object from a <code>character</code> class to a date class. But, we actually don&#39;t want to combine these two <code>date</code> columns.</p>
-
-<p>Try it again.  </p>
-
-<p>We can rename the <code>date</code> column in ind so that the two dataframes can now join together.</p>
-
-<pre><code># rename variables in ind
-ind_noD &lt;- rename(ind_noD, addDate = date)
-
-## Error in rename(ind_noD, addDate = date): object &#39;ind_noD&#39; not found
-
-# Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
-phe_ind &lt;- left_join(status_noD, ind_lastnoD)
-
-## Error in left_join(status_noD, ind_lastnoD): object &#39;status_noD&#39; not found
-</code></pre>
-
-<p>Worked this time! 
-Now that we have clean datasets we can begin looking into our particular data to 
+<p>Now that we have clean datasets we can begin looking into our particular data to 
 address our research question: do plants show patterns of changes in phenophase 
 across season?</p>
 
@@ -605,87 +1074,144 @@ siteOfInterest &lt;- &quot;SCBI&quot;
 ## using %in% allows one to add a vector if you want more than one site. 
 ## could also do it with == instead of %in% but won&#39;t work with vectors
 
-phe_1sp &lt;- filter(phe_ind, siteID %in% siteOfInterest)
-
-## Error in filter(phe_ind, siteID %in% siteOfInterest): object &#39;phe_ind&#39; not found
+phe_1st &lt;- filter(phe_ind, siteID %in% siteOfInterest)
 </code></pre>
 
 <h2>Select Species of Interest</h2>
 
-<p>And now select a single species of interest. For now let&#39;s choose the flowering 
-tree <em>Liriodendron tulipifera</em> (LITU). </p>
+<p>Now we may only want to view a single species or a set of species. Let&#39;s first 
+look at the species that are present in our data. We could do this just by looking
+at the <code>taxonID</code> field which give the four letter UDSA plant code for each 
+species. But if we don&#39;t know all the plant codes, we can get a bit fancier and 
+view both </p>
 
-<pre><code># see which species are present
-unique(phe_1sp$taxonID)
+<pre><code># see which species are present - taxon ID only
+unique(phe_1st$taxonID)
 
-## Error in unique(phe_1sp$taxonID): object &#39;phe_1sp&#39; not found
+## [1] &quot;LITU&quot; &quot;JUNI&quot; &quot;MIVI&quot;
 
-speciesOfInterest &lt;- &quot;LITU&quot;
+# or see which species are present with taxon ID + species name
+unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=&#39; - &#39;)) 
+
+## [1] &quot;LITU - Liriodendron tulipifera L.&quot;             &quot;JUNI - Juglans nigra L.&quot;                      
+## [3] &quot;MIVI - Microstegium vimineum (Trin.) A. Camus&quot;
+</code></pre>
+
+<p>For now, let&#39;s choose only the flowering tree <em>Liriodendron tulipifera</em> (LITU). 
+By writing it this way, we could also add a list of species to the <code>speciesOfInterest</code>
+object to select for multiple species. </p>
+
+<pre><code>speciesOfInterest &lt;- &quot;LITU&quot;
 
 #subset to just &quot;LITU&quot;
 # here just use == but could also use %in%
-phe_1sp &lt;- filter(phe_1sp, taxonID==speciesOfInterest)
-
-## Error in filter(phe_1sp, taxonID == speciesOfInterest): object &#39;phe_1sp&#39; not found
+phe_1sp &lt;- filter(phe_1st, taxonID==speciesOfInterest)
 
 # check that it worked
 unique(phe_1sp$taxonID)
 
-## Error in unique(phe_1sp$taxonID): object &#39;phe_1sp&#39; not found
+## [1] &quot;LITU&quot;
 </code></pre>
 
 <h2>Select Phenophase of Interest</h2>
 
 <p>And, perhaps a single phenophase. </p>
 
-<pre><code># see which species are present
+<pre><code># see which phenophases are present
 unique(phe_1sp$phenophaseName)
 
-## Error in unique(phe_1sp$phenophaseName): object &#39;phe_1sp&#39; not found
+## [1] &quot;Falling leaves&quot;       &quot;Open flowers&quot;         &quot;Breaking leaf buds&quot;   &quot;Leaves&quot;               &quot;Colored leaves&quot;      
+## [6] &quot;Increasing leaf size&quot;
 
 phenophaseOfInterest &lt;- &quot;Leaves&quot;
 
-#subset to just the phenosphase of Interest 
+#subset to just the phenosphase of interest 
 phe_1sp &lt;- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
-
-## Error in filter(phe_1sp, phenophaseName %in% phenophaseOfInterest): object &#39;phe_1sp&#39; not found
 
 # check that it worked
 unique(phe_1sp$phenophaseName)
 
-## Error in unique(phe_1sp$phenophaseName): object &#39;phe_1sp&#39; not found
+## [1] &quot;Leaves&quot;
+</code></pre>
+
+<h2>Select only Primary Plots</h2>
+
+<p>NEON plant phenology observations are collected along two types of plots. </p>
+
+<ul>
+<li>Primary plots: an 800 meter square phenology loop transect</li>
+<li>Phenocam plots: a 200 m x 200 m plot located within view of a canopy level, 
+tower-mounted, phenology camera</li>
+</ul>
+
+<p>In the data, these plots are differentiated by the <code>subtypeSpecification</code>. 
+Depending on your question you may want to use only one or both of these plot types. 
+For this activity, we&#39;re going to only look at the primary plots. </p>
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
+the Data Product User Guide and use the variables files with the data download 
+to find the corresponding variables names.
+</div>
+
+<pre><code># what plots are present?
+unique(phe_1sp$subtypeSpecification)
+
+## [1] &quot;primary&quot;  &quot;phenocam&quot;
+
+# filter
+phe_1spPrimary &lt;- filter(phe_1sp, subtypeSpecification == &#39;primary&#39;)
+
+# check that it worked
+unique(phe_1spPrimary$subtypeSpecification)
+
+## [1] &quot;primary&quot;
 </code></pre>
 
 <h2>Total in Phenophase of Interest</h2>
 
 <p>The <code>phenophaseState</code> is recorded as &ldquo;yes&rdquo; or &ldquo;no&rdquo; that the individual is in that
-phenophase. The <code>phenophaseIntensity</code> are categories for how much of the indvidual
+phenophase. The <code>phenophaseIntensity</code> are categories for how much of the individual
 is in that state. For now, we will stick with <code>phenophaseState</code>. </p>
 
-<p>We can now calculate the total individual with that state. </p>
+<p>We can now calculate the total number of individuals with that state. We use 
+<code>n_distinct(indvidualID)</code> count the individuals (and not the records) in case 
+there are duplicate records for an individual. </p>
+
+<p>But later on we&#39;ll also want to calculate the percent of the observed individuals
+in the &ldquo;leaves&rdquo; status, therefore, we&#39;re also adding in a step here to retain the 
+sample size so that we can calculate % later. </p>
 
 <p>Here we use pipes <code>%&gt;%</code> from the dpylr package to &ldquo;pass&rdquo; objects onto the next
 function. </p>
 
-<pre><code># Total in status by day
-sampSize &lt;- count(phe_1sp, date)
+<pre><code># Calculate sample size for later use
+sampSize &lt;- phe_1spPrimary%&gt;%
+  group_by(dateStat)%&gt;%
+  summarize(numInd= n_distinct(individualID))
 
-## Error in count(phe_1sp, date): object &#39;phe_1sp&#39; not found
+## Error in summarize(., numInd = n_distinct(individualID)): argument &quot;by&quot; is missing, with no default
 
-inStat &lt;- phe_1sp %&gt;%
-    group_by(date) %&gt;%
-  count(phenophaseStatus)
+# Total in status by day for distinct individuals
+inStat &lt;- phe_1spPrimary%&gt;%
+  group_by(dateStat, phenophaseStatus)%&gt;%
+  summarize(countYes=n_distinct(individualID))
 
-## Error in eval(lhs, parent, parent): object &#39;phe_1sp&#39; not found
+## Error in summarize(., countYes = n_distinct(individualID)): argument &quot;by&quot; is missing, with no default
 
-inStat &lt;- full_join(sampSize, inStat, by=&quot;date&quot;)
+inStat &lt;- full_join(sampSize, inStat, by=&quot;dateStat&quot;)
 
-## Error in full_join(sampSize, inStat, by = &quot;date&quot;): object &#39;sampSize&#39; not found
+## Error in full_join(sampSize, inStat, by = &quot;dateStat&quot;): object &#39;sampSize&#39; not found
 
 # Retain only Yes
 inStat_T &lt;- filter(inStat, phenophaseStatus %in% &quot;yes&quot;)
 
 ## Error in filter(inStat, phenophaseStatus %in% &quot;yes&quot;): object &#39;inStat&#39; not found
+
+# check that it worked
+unique(inStat_T$phenophaseStatus)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;inStat_T&#39; not found
 </code></pre>
 
 <p>Now that we have the data we can plot it. </p>
@@ -725,24 +1251,24 @@ designated by <code>stat=&quot;bin&quot;</code>. However, in this case, we want 
 We can use <code>geom_bar(stat=&quot;identity&quot;)</code> to force ggplot to plot actual values.</p>
 
 <pre><code># plot number of individuals in leaf
-phenoPlot &lt;- ggplot(inStat_T, aes(date, n.y)) +
+phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) 
 
-## Error in ggplot(inStat_T, aes(date, n.y)): object &#39;inStat_T&#39; not found
+## Error in ggplot(inStat_T, aes(dateStat, countYes)): object &#39;inStat_T&#39; not found
 
 phenoPlot
 
 ## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
 
 # Now let&#39;s make the plot look a bit more presentable
-phenoPlot &lt;- ggplot(inStat_T, aes(date, n.y)) +
+phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Total Individuals in Leaf&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
-## Error in ggplot(inStat_T, aes(date, n.y)): object &#39;inStat_T&#39; not found
+## Error in ggplot(inStat_T, aes(dateStat, countYes)): object &#39;inStat_T&#39; not found
 
 phenoPlot
 
@@ -752,62 +1278,27 @@ phenoPlot
 <p>We could also covert this to percentage and plot that. </p>
 
 <pre><code># convert to percent
-inStat_T$percent&lt;- ((inStat_T$n.y)/inStat_T$n.x)*100
+inStat_T$percent&lt;- ((inStat_T$countYes)/inStat_T$numInd)*100
 
 ## Error in eval(expr, envir, enclos): object &#39;inStat_T&#39; not found
 
 # plot percent of leaves
-phenoPlot_P &lt;- ggplot(inStat_T, aes(date, percent)) +
+phenoPlot_P &lt;- ggplot(inStat_T, aes(dateStat, percent)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Proportion in Leaf&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;% of Individuals&quot;) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
-## Error in ggplot(inStat_T, aes(date, percent)): object &#39;inStat_T&#39; not found
+## Error in ggplot(inStat_T, aes(dateStat, percent)): object &#39;inStat_T&#39; not found
 
 phenoPlot_P
 
 ## Error in eval(expr, envir, enclos): object &#39;phenoPlot_P&#39; not found
 </code></pre>
 
-<p>The plots demonstrate that, while the 2016 data show the nice expected pattern 
-of increasing leaf-out, peak, and drop-off, we seem to be missing the increase 
-in leaf-out in 2015. Looking at the data, we see that there was no data collected
-before May of 2015 &ndash; we&#39;re missing most of leaf out!</p>
-
-<h2>Filter by Date</h2>
-
-<p>That may create problems with downstream analyses. Let&#39;s filter the dataset to 
-include just 2016.</p>
-
-<pre><code># use filter to select only the site of Interest 
-phe_1sp_2016 &lt;- filter(inStat_T, date &gt;= &quot;2016-01-01&quot;)
-
-## Error in filter(inStat_T, date &gt;= &quot;2016-01-01&quot;): object &#39;inStat_T&#39; not found
-
-# did it work?
-range(phe_1sp_2016$date)
-
-## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2016&#39; not found
-</code></pre>
-
-<p>How does that look? </p>
-
-<pre><code># Now let&#39;s make the plot look a bit more presentable
-phenoPlot16 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
-    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
-    ggtitle(&quot;Total Individuals in Leaf&quot;) +
-    xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
-    theme(text = element_text(size=18))
-
-## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object &#39;phe_1sp_2016&#39; not found
-
-phenoPlot16
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot16&#39; not found
-</code></pre>
+<p>The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
+and drop-off.</p>
 
 <h2>Drivers of Phenology</h2>
 
@@ -816,14 +1307,67 @@ are the drivers of phenophases?</p>
 
 <p>The NEON phenology measurements track sensitive and easily observed indicators 
 of biotic responses to climate variability by monitoring the timing and duration 
-of phenological stagesin plant communities. Plant phenology is affected by forces 
+of phenological stages in plant communities. Plant phenology is affected by forces 
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
 feedbacks to trophic interactions, carbon sequestration, community composition 
 and ecosystem function.  (quoted from 
 <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)</p>
 
-<pre><code>## Error in is.data.frame(x): object &#39;phe_1sp_2016&#39; not found
+<h2>Filter by Date</h2>
+
+<p>In the next part of this series, we will be exploring temperature as a driver of
+phenology. Temperature date is quite large (NEON provides this in 1 minute or 30
+minute intervals) so let&#39;s trim our phenology date down to only one year so that 
+we aren&#39;t working with as large a data. </p>
+
+<p>Let&#39;s filter to just 2018 data. </p>
+
+<pre><code># use filter to select only the date of interest 
+phe_1sp_2018 &lt;- filter(inStat_T, dateStat &gt;= &quot;2018-01-01&quot; &amp; dateStat &lt;= &quot;2018-12-31&quot;)
+
+## Error in filter(inStat_T, dateStat &gt;= &quot;2018-01-01&quot; &amp; dateStat &lt;= &quot;2018-12-31&quot;): object &#39;inStat_T&#39; not found
+
+# did it work?
+range(phe_1sp_2018$dateStat)
+
+## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2018&#39; not found
+</code></pre>
+
+<p>How does that look? </p>
+
+<pre><code># Now let&#39;s make the plot look a bit more presentable
+phenoPlot18 &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
+    ggtitle(&quot;Total Individuals in Leaf&quot;) +
+    xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
+    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(text = element_text(size=18))
+
+## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
+
+phenoPlot18
+
+## Error in eval(expr, envir, enclos): object &#39;phenoPlot18&#39; not found
+</code></pre>
+
+<p>Now that we&#39;ve filtered down to just the 2018 data from SCBI for LITU in leaf, 
+we may want to save that subsetted data for another use. To do that you can write
+the data frame to a .csv file. </p>
+
+<p>You do not need to follow this step if you are continuing on to the next tutorials
+in this series as you already have the data frame in your environment. Of course
+if you close R and then come back to it, you will need to re-load this data and 
+instructions for that are provided in the relevant tutorials. </p>
+
+<pre><code># Write .csv - this step is optional 
+# This will write to your current working directory, change as desired.
+write.csv( phe_1sp_2018 , file=&quot;NEONpheno_LITU_Leaves_SCBI_2018.csv&quot;, row.names=F)
+
+#If you are using the downloaded example date, this code will write it to the 
+# pheno data file. Note - this file is already a part of the download.
+
+#write.csv( phe_1sp_2018 , file=&quot;NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv&quot;, row.names=F)
 </code></pre>
 
 </body>

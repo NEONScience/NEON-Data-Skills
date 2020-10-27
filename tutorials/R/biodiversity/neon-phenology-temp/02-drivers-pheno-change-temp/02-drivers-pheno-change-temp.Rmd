@@ -1,30 +1,26 @@
 ---
 syncID: dca9f480763e4d9f816f51abcf77f70a
 title: "Work with NEON's Single-Aspirated Air Temperature Data"
-description: "This tutorial demonstrates how to work with NEON single-asperated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
+description: "This tutorial demonstrates how to work with NEON single-aspirated air temperature data. Specific tasks include conversion to POSIX date/time class, subsetting by date, and plotting the data."
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
-contributors: Katie Jones, Cody Flagg, Josh Roberti
+contributors: Katie Jones, Cody Flagg, Josh Roberti, Felipe Sanchez
 estimatedTime:
 packagesLibraries: dplyr, ggplot2, lubridate
 topics: time-series, meteorology
 languagesTool: R
-dataProduct: NEON.DP1.00002, NEON.DP1.00003
+dataProduct: DP1.00002.001, DP1.00003.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/02-drivers-pheno-change-temp.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
-
 ---
 
-In this tutorial, we explore the NEON single-aspirated air temperature data. We
-start using data that has already been "stacked" using the 
-<a href="https://www.neonscience.org/neonDataStackR-temp" target="_blank"> neonDataStackR package</a>. 
+In this tutorial, we explore the NEON single-aspirated air temperature data. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
 
-This lesson is part of a series on how to work with both discrete and continuous
-time series data. 
-
+This tutorial is part of a series on how to work with both discrete and continuous
+time series data with NEON plant phenology and temperature data products. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -41,46 +37,23 @@ You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-* **scales:** `install.packages("scales")`
 * **tidyr:** `install.packages("tidyr")`
-* **lubridate:** `install.packages("lubridate")`
-
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
-### Download Data
+### Download Data 
 
-<h3> <a href="https://ndownloader.figshare.com/files/9012085">
-NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature</a></h3>
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
-
-The data used in this lesson were collected at the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>. 
-This teaching data subset represent a small subset of the data NEON will collect over 
-30 years and at 20 domains across the United States. NEON data are available on the
-<a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>. 
-
-<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
-Download Dataset</a>
-
-
-
-
-
-****
-**Set Working Directory:** This lesson assumes that you have set your working 
-directory to the location of the downloaded and unzipped data subsets. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
-
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -100,45 +73,55 @@ downloadable R script of the entire lesson, available in the footer of each less
 
 </div>
 
-## Explore Temperature Data 
+## Explore NEON Air Temperature Data 
 
-The following sections provide a brief overview of the NEON single aspirated
-air temperature data. When designing a research project using this data, you 
-need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
-
-### NEON Air Temperature Data
-
-Temperature is continuously monitored by NEON a by two methods. At terrestrial 
-sites temperature for the top of the tower will be derived from the triple 
+Air temperature is continuously monitored by NEON by two methods. At terrestrial 
+sites temperature for the top of the tower will be derived from a triple 
 redundant aspirated air temperature sensor. This is provided as NEON data 
-product **NEON.DP1.00003**.  Single Aspirated Air Temperature 
-Sensors (SAATS) are deployed to develop temperature profiles at the tower at NEON
-terrestrial sites and on the micromet station at NEON aquatic sites. This is 
-provided as NEON data product 
-**NEON.DP1.00002**.
+product **DP1.00003.001**. Single Aspirated Air Temperature Sensors (SAATS) are 
+deployed to develop temperature profiles at the tower at NEON terrestrial sites 
+and on the meteorological stations at NEON aquatic sites. This is provided as 
+NEON data product **DP1.00002.001**. These data are also available as part of the
+NEON Mobile Deployment Platforms. 
 
-#### Single-aspirated Air Temperature
+When designing a research project using this data, you should consult the 
+<a href="http://data.neonscience.org/data-products/DP1.10002.001" target="_blank">documents associated with this or any data product</a> 
+and not rely solely on this summary. 
 
-Temperature profiles will be ascertained by deploying SAATS at various heights 
-on the core tower infrastructure and mobile platforms. Air temperature at 
-aquatic sites will be measured using a single SAAT at a standard height of 3m 
-above ground level. Air temperature for this data product is provided as 
-one- and thirty-minute averages of 1 Hz observations. Temperature observations 
-are made using platinum resistance thermometers, which are housed in a fan 
-aspirated shield to reduce radiative bias. The temperature is measured in Ohms 
-and subsequently converted to degrees Celsius. Details on the conversion can be
-found in the associated Algorithm Theoretic Basis Document (ATBD). 
+### Single-aspirated Air Temperature
 
-#### Available Data Tables
+Air temperature profiles are ascertained by deploying SAATS at various heights 
+on NEON tower infrastructure. Air temperature at aquatic sites is measured 
+using a single SAAT at a standard height of 3m above ground level. Air temperature 
+for this data product is provided as one- and thirty-minute averages of 1 Hz 
+observations. Temperature observations are made using platinum resistance 
+thermometers, which are housed in a fan aspirated shield to reduce radiative 
+bias. The temperature is measured in Ohms and subsequently converted to degrees 
+Celsius during data processing. Details on the conversion can be found in the 
+associated Algorithm Theoretic Basis Document (ATBD) for any instrumented data 
+product. 
 
-When downloaded, data comes with several .csv file for each site and month-year 
-selected. There is a 1-minute average and a 30-minute average for each level at 
-which there is a sensor. It is important to understand the file names to know 
-which file is which. 
+### Available Data Tables
 
-The readme associated with the data provides the following information: 
-The file naming convention for sensor data files is **NEON.DOM.SITE.DPL.PRNUM.REV.TERMS.HOR.VER.TMI.DESC** 
+The SAAT data product has two available data tables that are delivered for each
+site and month-year selected. In addition, there are several metadata files that
+provide you with additional useful information.
+
+* a **readme** with information on the data product and the download; 
+* a **variables** file that defines the term descriptions, data types, and units; 
+* a **validation** file with data entry validation and parsing rules; and 
+* an **XML** file with machine readable metadata. 
+
+For the data tables, there are both a 1-minute average and a 30-minute 
+average available. If you download data directly off the portal, you will get 
+one of these files for each level on the tower for each site & month-year selected. 
+
+### File Naming Conventions
+It is important to understand the file names to know which file is which. The 
+readme associated with the data provides the following information: 
+
+The file naming convention for sensor data files is
+**NEON.DOM.SITE.DPL.PRNUM.REV.TERMS.HOR.VER.TMI.DESC** 
 
 where:
 
@@ -175,74 +158,143 @@ interval is 30-minute averaged data (030; the other option in our data is 1 minu
 averaging. Finally there is the abbreviated description that is more human readable
 and tells us again that it is single-aspirated air temperature at 30 minute averages.  
 
-## Stack NEON Data
+## Access NEON Data
 
-All the above data are delivered in a site and year-month format. When you download data,
-you will get a single zipped file containing a directory for each month and site that you've 
-requested data for. Dealing with these separate files from even one or two sites
-over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
-**neonUtilities** that takes the unzipped downloaded file and joining the data 
-files. 
+There are several ways to access NEON data, directly from the NEON data portal, 
+access through a data partner (select data products only), writing code to 
+directly pull data from the NEON API, or, as we'll use here, using the neonUtilities
+package which is a wrapper for the API with useful function to make working with 
+the data easier. 
 
-For more on this function check out the 
-<a href="{{ site.baseurl }}neonDataStackR" target="_blank"> *Use the neonDataStackR package to access NEON data* tutorial</a>. 
-
-When we do this for our temperature data we get two files, one for 1 minute SAAT
-and 30 minute SAAT, with all the data from your site and date range of interest. 
-
-Let's start by loading our data of interest.
+### Data Downloaded Direct from Portal
+If you prefer to work with data that are downloaded from the data portal, please 
+review the *Getting started* and *Stack the downloaded data* sections of the
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank"> *Download and Explore NEON Data* tutorial</a>. 
+This will get you to the point where you can upload your data from sites or dates
+of interest and resume this tutorial. 
 
 ## Import Data
 
-This tutorial uses 30 minute temperature data from the single aspirated
-temperature sensors mounted on level 03 of the NEON tower.
+First, we need to set up our environment with the packages needed for this tutorial. 
 
+```{r setup-env}
+# Install needed package (only uncomment & run if not already installed)
+#install.packages("neonUtilities")
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+
+
+# Load required libraries
+library(neonUtilities)  # for accessing NEON data
+library(ggplot2)  # for plotting
+library(dplyr)  # for data munging
+library(tidyr)  # for data munging
+
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd <- "~/Documents/data/" # Change this to match your local environment
+setwd(wd)
+```
+
+### Data of Interest
+This tutorial is part of series working with discrete, plant phenology data and 
+(near) continuous temperature data. Our overall "research" question is to see if 
+there is any correlation between the plant phenology and the temperature. 
+Therefore, we will want to work with data that 
+aligns with the plant phenology data that we worked with in the first tutorial. 
+If you are only interested in working with the temperature data, you do not need
+to complete the previous tutorial. 
+
+Our data of interest will be the temperature data from 2018 from NEON's 
+Smithsonian Conservation Biology Institute (SCBI) field site located in Virginia
+near the northern terminus of the Blue Ridge Mountains. 
+
+NEON single aspirated air temperature data is available in two averaging intervals, 
+1 minute and 30 minute intervals. Which data you want to work with is going to 
+depend on your research questions. Here, we're going to only download and work 
+with the 30 minute interval data as we're primarily interest in longer term (daily, 
+weekly, annual) patterns. 
+
+This will download 7.7 MiB of data. `check.size` is set to false (`F`) to improve flow 
+of the script but is always a good idea to view the size with true (`T`) before 
+downloading a new dataset. 
+
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
 
 ```{r import-data}
 
-# Load required libraries
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(lubridate)
-library(scales)
+# download data of interest - Single Aspirated Air Temperature
+saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI", 
+										startdate="2018-01", enddate="2018-12", 
+										package="basic", 
+										avg = "30",
+										token = Sys.getenv("NEON_TOKEN"),
+										check.size = F)
 
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+##If choosing to use example dataset downloaded from this tutorial: 
 
-# Read in data
-temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', stringsAsFactors = FALSE)
+# Stack multiple files within the downloaded phenology data
+#stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack00002", folder = T)
+
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#SAAT_30min <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/SAAT_30min.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
 
 ```
 
-## Explore Temp. Data
+## Explore Temperature Data
 
-Now that you have the data, let's take a look at the readme and understand 
-what's in the data. 
+Now that you have the data, let's take a look at the structure and understand 
+what's in the data. The data (`saat`) come in as a large list of four items. 
 
 ```{r data-structure}
-# Get a general feel for the data: View structure of data frame
-str(temp30_sites)
+# View the list
+View(saat)
+
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
+#View(var)
+
 ```
 
-View readme and variables file. This will guide you on what the data are.
+So what exactly are these four files and why would you want to use them? 
 
-## Select Site(s) of Interest
+* **data file(s)**: There will always be one or more dataframes that include the 
+primary data of the data product you downloaded. Since we downloaded only the 30 
+minute averaged data we only have one data table `SAAT_30min`.
+* **readme_xxxxx**: The readme file, with the corresponding 5 digits from the data
+product number, provides you with important information relevant to the data 
+product and the specific instance of downloading the data.
+* **sensor_positions_xxxxx**: this file contains information about the coordinates 
+of each sensor, relative to a reference location. 
+* **variables_xxxxx**: this file contains all the variables found in the associated
+data table(s). This includes full definitions, units, and other important 
+information. 
 
-Currently, we have data from several sites in our dataset. Let's start by 
-limiting the data to our site of interest. 
+Since we want to work with the individual files, let's create individual objects
+from the large list. There are several ways to do this, including the following 
+two. 
 
-The following format allows us to easily change sites or select data from 
-multiple sites. 
+```{r unlist}
+# if using the pre-downloaded data - you can skip this part.
+# assign individual dataFrames in the list as an object
+#SAAT_30min <- saat$SAAT_30min
 
-```{r filter-site}
+# unlist all objects
+list2env(saat, .GlobalEnv)
 
-# set site of interest
-siteOfInterest <- c("SCBI")
+```
 
-# use filter to select only the site of Interest 
-# using %in% allows one to add a vector if you want more than one site. 
-temp30 <- filter(temp30_sites, siteID%in%siteOfInterest)
+Now we the four files as separate R objects. But what is in our data file?
+
+```{r contents}
+
+# what is in the data?
+str(SAAT_30min)
 
 ```
 
@@ -262,7 +314,7 @@ with a quality flag.
 
 # Are there quality flags in your data? Count 'em up
 
-sum(temp30$finalQF==1)
+sum(SAAT_30min$finalQF==1)
 
 ```
 
@@ -270,16 +322,16 @@ How do we want to deal with this quality flagged data. This may depend on why it
 is flagged and what questions you are asking. The expanded data package will be
 useful for determining this.  
 
-For our demonstration purposes here we will keep the flagged data.  
+For our demonstration purposes here we will keep the flagged data for now.  
 
 What about null (`NA`) data? 
 
 ```{r na-data}
 
 # Are there NA's in your data? Count 'em up
-sum(is.na(temp30$tempSingleMean) )
+sum(is.na(SAAT_30min$tempSingleMean) )
 
-mean(temp30$tempSingleMean)
+mean(SAAT_30min$tempSingleMean)
 ```
 
 Why was there no output? 
@@ -295,246 +347,39 @@ tells R to ignore them for calculation,etc
 ```{r new-df-noNA}
 
 # create new dataframe without NAs
-temp30_noNA <- temp30 %>%
+SAAT_30min_noNA <- SAAT_30min %>%
 	drop_na(tempSingleMean)  # tidyr function
 
 # alternate base R
-# temp30_noNA <- temp30[!is.na(temp30$tempSingleMean),]
+# SAAT_30min_noNA <- SAAT_30min[!is.na(SAAT_30min$tempSingleMean),]
 
 # did it work?
-sum(is.na(temp30_noNA$tempSingleMean))
+sum(is.na(SAAT_30min_noNA$tempSingleMean))
 
 ```
-
-What is the range of dates in our dataset? 
- 
-```{r convert-date-time}
-
-# View the date range
-range(temp30_noNA$startDateTime)
-
-# what format are they in? 
-str(temp30_noNA$startDateTime)
-```
-
-Ah, here we have a date and time format and there are non standard characters in 
-it. Currently our data are in character format. We will need to convert them into 
-a date-time format. 
-
-## R - Date-Time - The POSIX classes
-If we have a column containing both date and time we need to use a class that
-stores both date AND time. Base R offers two closely related classes for date
-and time: `POSIXct` and `POSIXlt`. 
-
-#### POSIXct
-
-The `as.POSIXct` method converts a date-time string into a `POSIXct` class. 
-
-```{r explore-POSIXct }
-# Convert character data to date and time.
-timeDate <- as.POSIXct("2015-10-19 10:15")   
-str(timeDate)
-timeDate
-
-```
-
-`as.POSIXct` stores both a date and time with an associated time zone. The
-default time zone selected, is the time zone that your computer is set to which
-is most often your local time zone (Mountain Daylight Time in this example). 
-
-`POSIXct` stores date and time in seconds with the number of seconds beginning
-at 1 January 1970. Negative numbers are used to store dates prior to 1970. 
-Thus, the `POSIXct` format stores each date and time a single value in units of
-seconds. Storing the data this way, optimizes use in `data.frames` and speeds up
-computation, processing and conversion to other formats. 
-
-```{r explore-POSIXct2 }
-# to see the data in this 'raw' format, i.e., not formatted according to the 
-# class type to show us a date we recognize, use the `unclass()` function.
-unclass(timeDate)
-
-```
-
-Here we see the number of seconds from 1 January 1970 to 9 October 2015
-(`1445271300`). Also, we see that a time zone (`tzone`) is associated with the value in seconds. 
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** The `unclass` method in R allows you
-to view how a particular R object is stored.
-</div>
-
-#### POSIXlt
-The `POSIXct` format is optimized for storage and computation. However, humans 
-aren't quite as computationally efficient as computers! Also, we often want to 
-quickly extract some portion of the data (e.g., months). The `POSIXlt` class 
-stores date and time information in a format that we are used to seeing (e.g., 
-second, min, hour, day of month, month, year, numeric day of year, etc). 
-
-
-```{r explore-POSIXlt }
-# Convert character data to POSIXlt date and time
-timeDatelt<- as.POSIXlt("2015-10-19 10:15")  
-str(timeDatelt)
-timeDatelt
-
-unclass(timeDatelt)
-```
-
-When we convert a string to `POSIXlt`, and view it in R, it still looks
-similar to the `POSIXct` format. However, `unclass()` shows us that the data are
-stored differently. The `POSIXlt` class stores the hour, minute, second, day,
-month, and year separately.
-
-#### Months in POSIXlt 
-`POSIXlt` has a few quirks. First, the month values stored in the `POSIXlt`
-object use `zero-based indexing`. This means that month #1 (January) is stored
-as 0, and month #2 (February) is stored as 1. Notice in the output above,
-October is stored as the 9th month (`$mon = 9`).
-
-#### Years in POSIXlt 
-Years are also stored differently in the `POSIXlt` class. Year values are stored
-using a base index value of 1900. Thus, 2015 is stored as 115 (`$year = 115` 
-- 115 years since 1900).
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** To learn more about how R stores
-information within date-time and other objects check out the R documentation
-by using `?` (e.g., `?POSIXlt`). NOTE: you can use this same syntax to learn
-about particular functions (e.g., `?ggplot`).  
-</div>
-
-Having dates classified as separate components makes `POSIXlt` computationally
-more resource intensive to use in `data.frames`. This slows things down! We will
-thus use `POSIXct` for this tutorial.  
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** There are other R packages that
-support date-time data classes, including `readr`, `zoo` and `chron`.  
-</div>
-
-## Convert to Date-time Class
-
-When we convert from a character to a date-time class we need to tell R how 
-the date and time information are stored in each string. To do this, we can use
-`format=`. Let's have a look at one of our date-time strings to determine it's 
-format.
-
-```{r view-date }
-# view one date-time field
-temp30_noNA$startDateTime[1]
-```
-
-Looking at the results above, we see that our data are stored in the format:
-Year-Month-Day "T" Hour:Minute (`2005-04-26T12:00:00Z`). We can use this 
-information to populate our `format` string using the following designations for 
-the components of the date-time data:
-
-* %Y - year 
-* %m - month
-* %d - day
-* %H:%M:%S - hours:minutes:seconds
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** A list of options for date-time format
-is available in the `strptime` function help: `help(strptime)`. Check it out!
-</div>
-
-The "T" inserted into the middle of `datetime` isn't a standard character for 
-date and time, nor is the "Z" at the end, however we can tell R where the
-characters are so R can ignore them and interpret the correct date and time 
-as follows: `format="%Y-%m-%dT%H:%M:%"`.
-
-All NEON data are reported in UTC which is the same as GMT.
-
-```{r convert-datetime}
-# convert to Date Time 
-temp30_noNA$startDateTime <- as.POSIXct(temp30_noNA$startDateTime,
-																				format = "%Y-%m-%dT%H:%M:%SZ", tz = "GMT")
-# check that conversion worked
-str(temp30_noNA$startDateTime)
-```
-
-Looks good! Except that all the times are in UTC (or GMT), but our phenology are 
-daily data. If we want to match the two up precisely, we'd need our date-time 
-date on a local time zone to correctly aggregate on a date.  
-
-## Convert to Local Time Zone 
-
-Our site of interest **SCBI** is in the eastern US time zone. We want to convert
-to that local time zone so that we can correctly aggreggate date on a daily scale. 
-Depending on your research question, this may not be an imperative step. 
-
-We can find out the correct code for our time zone by looking it up: 
-<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank"> Wikipedia: List of tz database time zones</a>. 
-
-```{r covert-localtz}
-
-## Convert to Local Time Zone 
-
-## Conver to local TZ in new column
-temp30_noNA$dtLocal <- format(temp30_noNA$startDateTime, 
-															tz="America/New_York", usetz=TRUE)
-
-## check it
-head(select(temp30_noNA, startDateTime, dtLocal))
-
-```
-Now we have the startDateTime correctly formatted and can now use any function that 
-needs a date or date-time class of data. 
-
-## Subset by Date
-
-Now that the date is correctly formatted we can easily choose a desired date
-range using the `filter()` function. 
-
-Let's select only the 2016 data. 
-
-```{r subset-date}
-# Limit dataset to dates of interest (2016-01-01 to 2016-12-31)
-# alternatively could use ">=" and start with 2016-01-01 00:00
-temp30_TOI <- filter(temp30_noNA, dtLocal>"2015-12-31 23:59")
-
-# View the date range
-range(temp30_TOI$dtLocal)
-
-```
-
-<div id="ds-challenge" markdown="1">
-### Challenge: Methods Work with Appropriate Classes 
-What happens if you try to subset by date using this method if the 
-data aren't in a date-time class? Hint: Try it out with our previous `temp30` 
-object. 
-
-</div>
-
-For a discussion of date formats is including Date, POSIXct, & POSIXlt see the
-NEON Data Skills tutorial
-<a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> *Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt </a>.*
-
 
 ## Scatterplots with ggplot
 
-We can use ggplot to create scatter plots. To create a bar plot, we change the
-`geom` element from `geom_bar()` to `geom_point()`.  
-
-Now that we have data subsetted, let's plot the data. But which data to select? 
-We have several options: 
+We can use ggplot to create scatter plots. Which data should we plot, as we have 
+several options? 
 
 * **tempSingleMean**: the mean temperature for the interval
 * **tempSingleMinimum**: the minimum temperature during the interval
 * **tempSingleMaximum**: the maximum temperature for the interval
 
 Depending on exactly what question you are asking you may prefer to use one over
-the other. For many applications, the mean temperature of the one or 30 minute
+the other. For many applications, the **mean temperature** of the one or 30 minute
 interval will provide the best representation of the data. 
 
-Let's plot it. 
+Let's plot it. (This is a plot of a large amount of data. It can take 1-2 mins 
+to process. It is not essential for completing the next steps if this takes too 
+much of your computer memory.)
 
-```{r plot-temp}
+```{r plot-temp, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data shows erroneous sensor readings occured during late April/May 2018."}
 # plot temp data
-tempPlot <- ggplot(temp30_TOI, aes(dtLocal, tempSingleMean)) +
+tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
     geom_point() +
-    ggtitle("Single Asperated Air Temperature") +
+    ggtitle("Single Aspirated Air Temperature") +
     xlab("Date") + ylab("Temp (C)") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
@@ -548,7 +393,12 @@ plot.
 
 What patterns can you see in the data? 
 
-Right now we are looking at all the data points in the dataset. However, we may
+Something odd seems to have happened in late April/May 2018. Since it is unlikely 
+Virginia experienced -50C during this time, these are probably erroneous sensor 
+readings and why we should probably remove data that are flagged with those quality
+flags. 
+
+Right now we are also looking at all the data points in the dataset. However, we may
 want to view or aggregate the data differently:  
 
 * aggregated data: min, mean, or max over a some duration
@@ -558,7 +408,43 @@ want to view or aggregate the data differently:
 Given that in the previous tutorial, 
 <a href="https://www.neonscience.org/neon-plant-pheno-data-r" target="_blank"> *Work With NEON's Plant Phenology Data*</a>, 
 we were working with phenology data collected on a daily scale let's aggregate
-to that level.  
+to that level.
+
+To make this plot better, lets do two things
+
+1) Remove flagged data
+2) Aggregate to a daily mean. 
+
+### Subset to remove quality flagged data
+
+We previously saw a fair number of data points that were flagged. Now we'll 
+subset the data to remove those data points. 
+
+```{r remove-qf-data}
+# subset abd add C to name for "clean"
+SAAT_30minC <- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
+
+# Do any quality flags remain? Count 'em up
+sum(SAAT_30minC$finalQF==1)
+
+```
+
+Now we can plot it with the clean data.
+
+```{r plot-temp-clean, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data now has been cleaned of the erroneous sensor readings by filtering out flagged data."}
+# plot temp data
+tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
+    geom_point() +
+    ggtitle("Single Aspirated Air Temperature") +
+    xlab("Date") + ylab("Temp (C)") +
+    theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+    theme(text = element_text(size=18))
+
+tempPlot
+
+```
+
+That looks better! But we still have the 30 min data. 
 
 ## Aggregate Data by Day
 
@@ -578,25 +464,25 @@ means).
 ```{r daily-max-dplyr}
 
 # convert to date, easier to work with
-temp30_TOI$sDate <- as.Date(temp30_TOI$dtLocal)
+SAAT_30minC$Date <- as.Date(SAAT_30minC$startDateTime)
 
 # did it work
-str(temp30_TOI$sDate)
+str(SAAT_30minC$Date)
 
 # max of mean temp each day
-temp_day <- temp30_TOI %>%
-	group_by(sDate) %>%
-	distinct(sDate, .keep_all=T) %>%
+temp_day <- SAAT_30minC %>%
+	group_by(Date) %>%
+	distinct(Date, .keep_all=T) %>%
 	mutate(dayMax=max(tempSingleMean))
 
 ```
 
-Now we can plot the daily temperature. 
+Now we can plot the cleaned up daily temperature. 
 
-```{r basic-ggplot2}
+```{r daily-max-plot, fig.cap="Scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."}
 
-# plot Air Temperature Data across 2016 using daily data
-tempPlot_dayMax <- ggplot(temp_day, aes(sDate, dayMax)) +
+# plot Air Temperature Data across 2018 using daily data
+tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
     geom_point() +
     ggtitle("Daily Max Air Temperature") +
     xlab("") + ylab("Temp (C)") +
@@ -607,9 +493,10 @@ tempPlot_dayMax
 
 ```
 
-What do we gain by this visualization? What do we loose over the 30 minute 
-intervals?  
+Thought questions: 
 
+* What do we gain by this visualization? 
+* What do we loose over the 30 minute intervals?  
 
 ## ggplot - Subset by Time
 Sometimes we want to scale the x- or y-axis to a particular time subset without 
@@ -619,14 +506,13 @@ follows:
 
 `scale_x_date(limits=start.end) +`
 
-
 Let's plot just the first three months of the year. 
 
-```{r subset-ggplot-time }
+```{r subset-ggplot-time, fig.cap="Scatter plot showing daily maximum temperatures(of 30 minute interval means) from the beginning of January 2018 through the end of March 2018 at the Smithsonian Conservation Biology Institute (SCBI)."}
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.Date("2016-01-01")
-endTime <- as.Date("2016-03-31")
+startTime <- as.Date("2018-01-01")
+endTime <- as.Date("2018-03-31")
 
 # create a start and end time R object
 start.end <- c(startTime,endTime)
@@ -634,7 +520,7 @@ str(start.end)
 
 # View data for first 3 months only
 # And we'll add some color for a change. 
-tempPlot_dayMax3m <- ggplot(temp_day, aes(sDate, dayMax)) +
+tempPlot_dayMax3m <- ggplot(temp_day, aes(Date, dayMax)) +
            geom_point(color="blue", size=1) +  # defines what points look like
            ggtitle("Air Temperature\n Jan - March") +
            xlab("Date") + ylab("Air Temperature (C)")+ 
@@ -647,10 +533,19 @@ tempPlot_dayMax3m
 
 ```
 
+Now we have the temperature data matching our Phenology data from the previous 
+tutorial, we want to save it to our computer to use in future analyses (or the
+next tutorial). This is optional if you are continuing as you already have this 
+data in R. 
 
-```{r write-csv, echo=FALSE }
-# Write .csv (this will be read in new in subsuquent lessons)
-write.csv(temp_day, file="NEON-pheno-temp-timeseries/temp/NEONsaat_daily_SCBI_2016.csv", row.names=F)
+```{r write-csv, eval = FALSE}
+# Write .csv - this step is optional 
+# This will write to your current working directory, change as desired.
+write.csv( temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
+
+#If you are using the downloaded example date, this code will write it to the 
+# pheno data file. Note - this file is already a part of the download.
+
+#write.csv(temp_day , file="NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv", row.names=F)
+
 ```
-
-

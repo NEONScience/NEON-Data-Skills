@@ -1,140 +1,108 @@
-## ----import-data--------------------------------------------------------------------------
+## ----setup-env-------------------------------------------------------------------------------------------------------------------------------------
+# Install needed package (only uncomment & run if not already installed)
+#install.packages("neonUtilities")
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+
 
 # Load required libraries
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(lubridate)
-library(scales)
-
-# set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
-
-# Read in data
-temp30_sites <- read.csv('NEON-pheno-temp-timeseries/temp/SAAT_30min.csv', stringsAsFactors = FALSE)
+library(neonUtilities)  # for accessing NEON data
+library(ggplot2)  # for plotting
+library(dplyr)  # for data munging
+library(tidyr)  # for data munging
 
 
-
-## ----data-structure-----------------------------------------------------------------------
-# Get a general feel for the data: View structure of data frame
-str(temp30_sites)
-
-
-## ----filter-site--------------------------------------------------------------------------
-
-# set site of interest
-siteOfInterest <- c("SCBI")
-
-# use filter to select only the site of Interest 
-# using %in% allows one to add a vector if you want more than one site. 
-temp30 <- filter(temp30_sites, siteID%in%siteOfInterest)
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd <- "~/Documents/data/" # Change this to match your local environment
+setwd(wd)
 
 
+## ----import-data-----------------------------------------------------------------------------------------------------------------------------------
 
-## ----qf-data------------------------------------------------------------------------------
+# download data of interest - Single Aspirated Air Temperature
+saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI", 
+										startdate="2018-01", enddate="2018-12", 
+										package="basic", 
+										avg = "30",
+										token = Sys.getenv("NEON_TOKEN"),
+										check.size = F)
+
+##If choosing to use example dataset downloaded from this tutorial: 
+
+# Stack multiple files within the downloaded phenology data
+#stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack00002", folder = T)
+
+# read in data - readTableNEON uses the variables file to assign the correct
+# data type for each variable
+#SAAT_30min <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/SAAT_30min.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
+
+
+
+## ----data-structure--------------------------------------------------------------------------------------------------------------------------------
+# View the list
+View(saat)
+
+# if using the pre-downloaded data, you need to read in the variables file 
+# or open and look at it on your desktop
+#var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv')
+#View(var)
+
+
+
+## ----unlist----------------------------------------------------------------------------------------------------------------------------------------
+# if using the pre-downloaded data - you can skip this part.
+# assign individual dataFrames in the list as an object
+#SAAT_30min <- saat$SAAT_30min
+
+# unlist all objects
+list2env(saat, .GlobalEnv)
+
+
+
+## ----contents--------------------------------------------------------------------------------------------------------------------------------------
+
+# what is in the data?
+str(SAAT_30min)
+
+
+
+## ----qf-data---------------------------------------------------------------------------------------------------------------------------------------
 
 # Are there quality flags in your data? Count 'em up
 
-sum(temp30$finalQF==1)
+sum(SAAT_30min$finalQF==1)
 
 
 
-## ----na-data------------------------------------------------------------------------------
+## ----na-data---------------------------------------------------------------------------------------------------------------------------------------
 
 # Are there NA's in your data? Count 'em up
-sum(is.na(temp30$tempSingleMean) )
+sum(is.na(SAAT_30min$tempSingleMean) )
 
-mean(temp30$tempSingleMean)
+mean(SAAT_30min$tempSingleMean)
 
 
-## ----new-df-noNA--------------------------------------------------------------------------
+## ----new-df-noNA-----------------------------------------------------------------------------------------------------------------------------------
 
 # create new dataframe without NAs
-temp30_noNA <- temp30 %>%
+SAAT_30min_noNA <- SAAT_30min %>%
 	drop_na(tempSingleMean)  # tidyr function
 
 # alternate base R
-# temp30_noNA <- temp30[!is.na(temp30$tempSingleMean),]
+# SAAT_30min_noNA <- SAAT_30min[!is.na(SAAT_30min$tempSingleMean),]
 
 # did it work?
-sum(is.na(temp30_noNA$tempSingleMean))
+sum(is.na(SAAT_30min_noNA$tempSingleMean))
 
 
 
-## ----convert-date-time--------------------------------------------------------------------
-
-# View the date range
-range(temp30_noNA$startDateTime)
-
-# what format are they in? 
-str(temp30_noNA$startDateTime)
-
-
-## ----explore-POSIXct----------------------------------------------------------------------
-# Convert character data to date and time.
-timeDate <- as.POSIXct("2015-10-19 10:15")   
-str(timeDate)
-timeDate
-
-
-
-## ----explore-POSIXct2---------------------------------------------------------------------
-# to see the data in this 'raw' format, i.e., not formatted according to the 
-# class type to show us a date we recognize, use the `unclass()` function.
-unclass(timeDate)
-
-
-
-## ----explore-POSIXlt----------------------------------------------------------------------
-# Convert character data to POSIXlt date and time
-timeDatelt<- as.POSIXlt("2015-10-19 10:15")  
-str(timeDatelt)
-timeDatelt
-
-unclass(timeDatelt)
-
-
-## ----view-date----------------------------------------------------------------------------
-# view one date-time field
-temp30_noNA$startDateTime[1]
-
-
-## ----convert-datetime---------------------------------------------------------------------
-# convert to Date Time 
-temp30_noNA$startDateTime <- as.POSIXct(temp30_noNA$startDateTime,
-																				format = "%Y-%m-%dT%H:%M:%SZ", tz = "GMT")
-# check that conversion worked
-str(temp30_noNA$startDateTime)
-
-
-## ----covert-localtz-----------------------------------------------------------------------
-
-## Convert to Local Time Zone 
-
-## Conver to local TZ in new column
-temp30_noNA$dtLocal <- format(temp30_noNA$startDateTime, 
-															tz="America/New_York", usetz=TRUE)
-
-## check it
-head(select(temp30_noNA, startDateTime, dtLocal))
-
-
-
-## ----subset-date--------------------------------------------------------------------------
-# Limit dataset to dates of interest (2016-01-01 to 2016-12-31)
-# alternatively could use ">=" and start with 2016-01-01 00:00
-temp30_TOI <- filter(temp30_noNA, dtLocal>"2015-12-31 23:59")
-
-# View the date range
-range(temp30_TOI$dtLocal)
-
-
-
-## ----plot-temp----------------------------------------------------------------------------
+## ----plot-temp, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data shows erroneous sensor readings occured during late April/May 2018."----
 # plot temp data
-tempPlot <- ggplot(temp30_TOI, aes(dtLocal, tempSingleMean)) +
+tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
     geom_point() +
-    ggtitle("Single Asperated Air Temperature") +
+    ggtitle("Single Aspirated Air Temperature") +
     xlab("Date") + ylab("Temp (C)") +
     theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
     theme(text = element_text(size=18))
@@ -143,26 +111,48 @@ tempPlot
 
 
 
-## ----daily-max-dplyr----------------------------------------------------------------------
+## ----remove-qf-data--------------------------------------------------------------------------------------------------------------------------------
+# subset abd add C to name for "clean"
+SAAT_30minC <- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
+
+# Do any quality flags remain? Count 'em up
+sum(SAAT_30minC$finalQF==1)
+
+
+
+## ----plot-temp-clean, fig.cap="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data now has been cleaned of the erroneous sensor readings by filtering out flagged data."----
+# plot temp data
+tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
+    geom_point() +
+    ggtitle("Single Aspirated Air Temperature") +
+    xlab("Date") + ylab("Temp (C)") +
+    theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+    theme(text = element_text(size=18))
+
+tempPlot
+
+
+
+## ----daily-max-dplyr-------------------------------------------------------------------------------------------------------------------------------
 
 # convert to date, easier to work with
-temp30_TOI$sDate <- as.Date(temp30_TOI$dtLocal)
+SAAT_30minC$Date <- as.Date(SAAT_30minC$startDateTime)
 
 # did it work
-str(temp30_TOI$sDate)
+str(SAAT_30minC$Date)
 
 # max of mean temp each day
-temp_day <- temp30_TOI %>%
-	group_by(sDate) %>%
-	distinct(sDate, .keep_all=T) %>%
+temp_day <- SAAT_30minC %>%
+	group_by(Date) %>%
+	distinct(Date, .keep_all=T) %>%
 	mutate(dayMax=max(tempSingleMean))
 
 
 
-## ----basic-ggplot2------------------------------------------------------------------------
+## ----daily-max-plot, fig.cap="Scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."----
 
-# plot Air Temperature Data across 2016 using daily data
-tempPlot_dayMax <- ggplot(temp_day, aes(sDate, dayMax)) +
+# plot Air Temperature Data across 2018 using daily data
+tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
     geom_point() +
     ggtitle("Daily Max Air Temperature") +
     xlab("") + ylab("Temp (C)") +
@@ -173,11 +163,11 @@ tempPlot_dayMax
 
 
 
-## ----subset-ggplot-time-------------------------------------------------------------------
+## ----subset-ggplot-time, fig.cap="Scatter plot showing daily maximum temperatures(of 30 minute interval means) from the beginning of January 2018 through the end of March 2018 at the Smithsonian Conservation Biology Institute (SCBI)."----
 
 # Define Start and end times for the subset as R objects that are the time class
-startTime <- as.Date("2016-01-01")
-endTime <- as.Date("2016-03-31")
+startTime <- as.Date("2018-01-01")
+endTime <- as.Date("2018-03-31")
 
 # create a start and end time R object
 start.end <- c(startTime,endTime)
@@ -185,7 +175,7 @@ str(start.end)
 
 # View data for first 3 months only
 # And we'll add some color for a change. 
-tempPlot_dayMax3m <- ggplot(temp_day, aes(sDate, dayMax)) +
+tempPlot_dayMax3m <- ggplot(temp_day, aes(Date, dayMax)) +
            geom_point(color="blue", size=1) +  # defines what points look like
            ggtitle("Air Temperature\n Jan - March") +
            xlab("Date") + ylab("Air Temperature (C)")+ 
@@ -198,7 +188,14 @@ tempPlot_dayMax3m
 
 
 
-## ----write-csv, echo=FALSE----------------------------------------------------------------
-# Write .csv (this will be read in new in subsuquent lessons)
-write.csv(temp_day, file="NEON-pheno-temp-timeseries/temp/NEONsaat_daily_SCBI_2016.csv", row.names=F)
+## ----write-csv, eval = FALSE-----------------------------------------------------------------------------------------------------------------------
+## # Write .csv - this step is optional
+## # This will write to your current working directory, change as desired.
+## write.csv( temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
+## 
+## #If you are using the downloaded example date, this code will write it to the
+## # pheno data file. Note - this file is already a part of the download.
+## 
+## #write.csv(temp_day , file="NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv", row.names=F)
+## 
 

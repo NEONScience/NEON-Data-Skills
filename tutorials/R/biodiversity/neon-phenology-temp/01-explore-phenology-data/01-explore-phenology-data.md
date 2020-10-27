@@ -4,31 +4,27 @@ title: "Work With NEON's Plant Phenology Data"
 description: "Learn to work with NEON plant phenology observation data (NEON.DP1.10055)."
 dateCreated: 2017-08-01
 authors: Megan A. Jones, Natalie Robinson, Lee Stanish
-contributors: Katie Jones, Cody Flagg, Karlee Bradley
+contributors: Katie Jones, Cody Flagg, Karlee Bradley, Felipe Sanchez
 estimatedTime: 
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
 languagesTool: R
-dataProduct: NEON.DP1.10055
+dataProduct: DP1.10055.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/01-explore-phenology-data.R
 tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-plant-pheno-data-r
 ---
 
-
 Many organisms, including plants, show patterns of change across seasons - 
 the different stages of this observable change are called phenophases. In this 
 tutorial we explore how to work with NEON plant phenophase data. 
-
-
 
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
 After completing this activity, you will be able to:
 
- * work with "stacked" NEON Plant Phenology Observation data. 
- * correctly format date data. 
+ * work with NEON Plant Phenology Observation data. 
  * use dplyr functions to filter data.
  * plot time series data in a bar plot using ggplot the function. 
 
@@ -38,43 +34,22 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
-
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-<h3> <a href="https://ndownloader.figshare.com/files/9012085">
-NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature</a></h3>
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the `zipsByProduct()` function in the neonUtilities package. 
 
-
-The data used in this lesson were collected at the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>. 
-This teaching data subset represent a small subset of the data NEON will collect over 
-30 years and at 20 domains across the United States. NEON data are available on the
-<a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>. 
-
-<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
-Download Dataset</a>
-
-
-
-
-
-****
-**Set Working Directory:** This lesson assumes that you have set your working 
-directory to the location of the downloaded and unzipped data subsets. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
-
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 ****
 
@@ -96,7 +71,7 @@ Why do they change?
 The following sections provide a brief overview of the NEON plant phenology 
 observation data. When designing a research project using this data, you 
 need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely soley on this summary. 
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. 
 
 *The following description of the NEON Plant Phenology Observation data is modified 
 from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.*
@@ -104,16 +79,16 @@ from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_us
 ### NEON Plant Phenology Observation Data
 
 NEON collects plant phenology data and provides it as NEON data product 
-**NEON.DP1.10055**.
+**DP1.10055.001**.
 
 The plant phenology observations data product provides in-situ observations of 
 the phenological status and intensity of tagged plants (or patches) during 
 discrete observations events. 
 
 Sampling occurs at all terrestrial field sites at site and season specific 
-intervals. Three species for phenology observation are selected based on relative 
-abundance in the Tower airshed. There are 30 individuals of each target species 
-monitored at each transect. 
+intervals. During Phase I (dominant species) sampling (pre-2021), three species 
+with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
+will begin, with <=20 species with 5 or more individuals sampled will occur.
 
 #### Status-based Monitoring
 
@@ -145,10 +120,13 @@ within view of a canopy level, tower-mounted, phenology camera.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"
+	alt="Diagram of a phenology transect layout, with meter layout marked. Point-level geolocations are recorded at eight reference
+	points along the perimeter; plot-level geolocation at the plot centroid(star).>
+	</a>
 	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
-	Point-level geolocations are recorded at eight referecne points along the 
-	perimeter, plot-level geolaocation at the plot centoid (star). 
+	Point-level geolocations are recorded at eight reference points along the 
+	perimeter, plot-level geolocation at the plot centroid (star). 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
 </figure>
@@ -160,7 +138,7 @@ At each site, there are:
 * ~50 observation bouts per year. 
 * no more that 100 sampling points per phenology transect.
 * no more than 9 sampling points per phenocam plot. 
-* 1 bout per year to collect annual size and disease status measurements from 
+* 1 annual measurement per year to collect annual size and disease status measurements from 
 each sampling point.
 
 
@@ -176,8 +154,8 @@ about the plant: DBH, height, etc.
 
 There are other files in each download including a **readme** with information on 
 the data product and the download; a **variables** file that defines the 
-term descriptions, data types, and units; a **validation** file with ata entry validation and 
-parsing rules; and an **XML** with machine readable metadata. 
+term descriptions, data types, and units; a **validation** file with data entry 
+validation and parsing rules; and an **XML** with machine readable metadata. 
 
 ## Stack NEON Data
 
@@ -197,35 +175,94 @@ and then return to this tutorial.
 When we do this for phenology data we get three files, one for each data table, 
 with all the data from your site and date range of interest. 
 
-Let's start by loading our data of interest. 
+First, we need to set up our R environment. 
 
 
-
+    # install needed package (only uncomment & run if not already installed)
+    #install.packages("neonUtilities")
+    #install.packages("dplyr")
+    #install.packages("ggplot2")
+    
+    # load needed packages
+    library(neonUtilities)
     library(dplyr)
     library(ggplot2)
-    library(lubridate)  
     
     
-    # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    options(stringsAsFactors=F) #keep strings as character type not factors
+    
+    # set working directory to ensure R can find the file we wish to import and where
+    # we want to save our files. Be sure to move the download into your working directory!
+    wd <- "~/Documents/data/" # Change this to match your local environment
+    setwd(wd)
+
+Let's start by loading our data of interest. For this series, we'll work with 
+date from the NEON Domain 02 sites:
+
+* Blandy Farm (BLAN)
+* Smithsonian Conservation Biology Institute (SCBI)
+* Smithsonian Environmental Research Center (SERC)
+
+And we'll use data from January 2017 to December 2019. This downloads over 9MB
+of data. If this is too large, use a smaller date range. If you opt to do this, 
+your figures and some output may look different later in the tutorial. 
+
+With this information, we can download our data using the neonUtilities package. 
+If you are not using a NEON token to download your data, remove the 
+`token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
+in the 
+<a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
+
+If you are using the data downloaded at the start of the tutorial, use the 
+commented out code in the second half of this code chunk. 
+
+
+    ## Two options for accessing data - programmatic or from the example dataset
+    # Read data from data portal 
+    
+    phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
+    										 startdate = "2017-01", enddate="2019-12", 
+    										 token = Sys.getenv("NEON_TOKEN"),
+    										 check.size = F) 
+
+    ## API token was not recognized. Public rate limit applied.
+    ## Finding available files
+    ##   |                                                                                                                      |                                                                                                              |   0%  |                                                                                                                      |=                                                                                                             |   1%  |                                                                                                                      |==                                                                                                            |   2%  |                                                                                                                      |===                                                                                                           |   3%  |                                                                                                                      |=====                                                                                                         |   4%  |                                                                                                                      |======                                                                                                        |   5%  |                                                                                                                      |=======                                                                                                       |   6%  |                                                                                                                      |========                                                                                                      |   7%  |                                                                                                                      |=========                                                                                                     |   8%  |                                                                                                                      |==========                                                                                                    |   9%  |                                                                                                                      |============                                                                                                  |  11%  |                                                                                                                      |=============                                                                                                 |  12%  |                                                                                                                      |==============                                                                                                |  13%  |                                                                                                                      |===============                                                                                               |  14%  |                                                                                                                      |================                                                                                              |  15%  |                                                                                                                      |=================                                                                                             |  16%  |                                                                                                                      |===================                                                                                           |  17%  |                                                                                                                      |====================                                                                                          |  18%  |                                                                                                                      |=====================                                                                                         |  19%  |                                                                                                                      |======================                                                                                        |  20%  |                                                                                                                      |=======================                                                                                       |  21%  |                                                                                                                      |========================                                                                                      |  22%  |                                                                                                                      |=========================                                                                                     |  23%  |                                                                                                                      |===========================                                                                                   |  24%  |                                                                                                                      |============================                                                                                  |  25%  |                                                                                                                      |=============================                                                                                 |  26%  |                                                                                                                      |==============================                                                                                |  27%  |                                                                                                                      |===============================                                                                               |  28%  |                                                                                                                      |================================                                                                              |  29%  |                                                                                                                      |==================================                                                                            |  31%  |                                                                                                                      |===================================                                                                           |  32%  |                                                                                                                      |====================================                                                                          |  33%  |                                                                                                                      |=====================================                                                                         |  34%  |                                                                                                                      |======================================                                                                        |  35%  |                                                                                                                      |=======================================                                                                       |  36%  |                                                                                                                      |=========================================                                                                     |  37%  |                                                                                                                      |==========================================                                                                    |  38%  |                                                                                                                      |===========================================                                                                   |  39%  |                                                                                                                      |============================================                                                                  |  40%  |                                                                                                                      |=============================================                                                                 |  41%  |                                                                                                                      |==============================================                                                                |  42%  |                                                                                                                      |===============================================                                                               |  43%  |                                                                                                                      |=================================================                                                             |  44%  |                                                                                                                      |==================================================                                                            |  45%  |                                                                                                                      |===================================================                                                           |  46%  |                                                                                                                      |====================================================                                                          |  47%  |                                                                                                                      |=====================================================                                                         |  48%  |                                                                                                                      |======================================================                                                        |  49%  |                                                                                                                      |========================================================                                                      |  51%  |                                                                                                                      |=========================================================                                                     |  52%  |                                                                                                                      |==========================================================                                                    |  53%  |                                                                                                                      |===========================================================                                                   |  54%  |                                                                                                                      |============================================================                                                  |  55%  |                                                                                                                      |=============================================================                                                 |  56%  |                                                                                                                      |===============================================================                                               |  57%  |                                                                                                                      |================================================================                                              |  58%  |                                                                                                                      |=================================================================                                             |  59%  |                                                                                                                      |==================================================================                                            |  60%  |                                                                                                                      |===================================================================                                           |  61%  |                                                                                                                      |====================================================================                                          |  62%  |                                                                                                                      |=====================================================================                                         |  63%  |                                                                                                                      |=======================================================================                                       |  64%  |                                                                                                                      |========================================================================                                      |  65%  |                                                                                                                      |=========================================================================                                     |  66%  |                                                                                                                      |==========================================================================                                    |  67%  |                                                                                                                      |===========================================================================                                   |  68%  |                                                                                                                      |============================================================================                                  |  69%  |                                                                                                                      |==============================================================================                                |  71%  |                                                                                                                      |===============================================================================                               |  72%  |                                                                                                                      |================================================================================                              |  73%  |                                                                                                                      |=================================================================================                             |  74%  |                                                                                                                      |==================================================================================                            |  75%  |                                                                                                                      |===================================================================================                           |  76%  |                                                                                                                      |=====================================================================================                         |  77%  |                                                                                                                      |======================================================================================                        |  78%  |                                                                                                                      |=======================================================================================                       |  79%  |                                                                                                                      |========================================================================================                      |  80%  |                                                                                                                      |=========================================================================================                     |  81%  |                                                                                                                      |==========================================================================================                    |  82%  |                                                                                                                      |===========================================================================================                   |  83%  |                                                                                                                      |=============================================================================================                 |  84%  |                                                                                                                      |==============================================================================================                |  85%  |                                                                                                                      |===============================================================================================               |  86%  |                                                                                                                      |================================================================================================              |  87%  |                                                                                                                      |=================================================================================================             |  88%  |                                                                                                                      |==================================================================================================            |  89%  |                                                                                                                      |====================================================================================================          |  91%  |                                                                                                                      |=====================================================================================================         |  92%  |                                                                                                                      |======================================================================================================        |  93%  |                                                                                                                      |=======================================================================================================       |  94%  |                                                                                                                      |========================================================================================================      |  95%  |                                                                                                                      |=========================================================================================================     |  96%  |                                                                                                                      |===========================================================================================================   |  97%  |                                                                                                                      |============================================================================================================  |  98%  |                                                                                                                      |============================================================================================================= |  99%  |                                                                                                                      |==============================================================================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 10.386083 MB
+    ## Downloading 95 files
+    ##   |                                                                                                                      |                                                                                                              |   0%  |                                                                                                                      |=                                                                                                             |   1%  |                                                                                                                      |==                                                                                                            |   2%  |                                                                                                                      |====                                                                                                          |   3%  |                                                                                                                      |=====                                                                                                         |   4%  |                                                                                                                      |======                                                                                                        |   5%  |                                                                                                                      |=======                                                                                                       |   6%  |                                                                                                                      |========                                                                                                      |   7%  |                                                                                                                      |=========                                                                                                     |   9%  |                                                                                                                      |===========                                                                                                   |  10%  |                                                                                                                      |============                                                                                                  |  11%  |                                                                                                                      |=============                                                                                                 |  12%  |                                                                                                                      |==============                                                                                                |  13%  |                                                                                                                      |===============                                                                                               |  14%  |                                                                                                                      |================                                                                                              |  15%  |                                                                                                                      |==================                                                                                            |  16%  |                                                                                                                      |===================                                                                                           |  17%  |                                                                                                                      |====================                                                                                          |  18%  |                                                                                                                      |=====================                                                                                         |  19%  |                                                                                                                      |======================                                                                                        |  20%  |                                                                                                                      |=======================                                                                                       |  21%  |                                                                                                                      |=========================                                                                                     |  22%  |                                                                                                                      |==========================                                                                                    |  23%  |                                                                                                                      |===========================                                                                                   |  24%  |                                                                                                                      |============================                                                                                  |  26%  |                                                                                                                      |=============================                                                                                 |  27%  |                                                                                                                      |==============================                                                                                |  28%  |                                                                                                                      |================================                                                                              |  29%  |                                                                                                                      |=================================                                                                             |  30%  |                                                                                                                      |==================================                                                                            |  31%  |                                                                                                                      |===================================                                                                           |  32%  |                                                                                                                      |====================================                                                                          |  33%  |                                                                                                                      |=====================================                                                                         |  34%  |                                                                                                                      |=======================================                                                                       |  35%  |                                                                                                                      |========================================                                                                      |  36%  |                                                                                                                      |=========================================                                                                     |  37%  |                                                                                                                      |==========================================                                                                    |  38%  |                                                                                                                      |===========================================                                                                   |  39%  |                                                                                                                      |============================================                                                                  |  40%  |                                                                                                                      |==============================================                                                                |  41%  |                                                                                                                      |===============================================                                                               |  43%  |                                                                                                                      |================================================                                                              |  44%  |                                                                                                                      |=================================================                                                             |  45%  |                                                                                                                      |==================================================                                                            |  46%  |                                                                                                                      |===================================================                                                           |  47%  |                                                                                                                      |=====================================================                                                         |  48%  |                                                                                                                      |======================================================                                                        |  49%  |                                                                                                                      |=======================================================                                                       |  50%  |                                                                                                                      |========================================================                                                      |  51%  |                                                                                                                      |=========================================================                                                     |  52%  |                                                                                                                      |===========================================================                                                   |  53%  |                                                                                                                      |============================================================                                                  |  54%  |                                                                                                                      |=============================================================                                                 |  55%  |                                                                                                                      |==============================================================                                                |  56%  |                                                                                                                      |===============================================================                                               |  57%  |                                                                                                                      |================================================================                                              |  59%  |                                                                                                                      |==================================================================                                            |  60%  |                                                                                                                      |===================================================================                                           |  61%  |                                                                                                                      |====================================================================                                          |  62%  |                                                                                                                      |=====================================================================                                         |  63%  |                                                                                                                      |======================================================================                                        |  64%  |                                                                                                                      |=======================================================================                                       |  65%  |                                                                                                                      |=========================================================================                                     |  66%  |                                                                                                                      |==========================================================================                                    |  67%  |                                                                                                                      |===========================================================================                                   |  68%  |                                                                                                                      |============================================================================                                  |  69%  |                                                                                                                      |=============================================================================                                 |  70%  |                                                                                                                      |==============================================================================                                |  71%  |                                                                                                                      |================================================================================                              |  72%  |                                                                                                                      |=================================================================================                             |  73%  |                                                                                                                      |==================================================================================                            |  74%  |                                                                                                                      |===================================================================================                           |  76%  |                                                                                                                      |====================================================================================                          |  77%  |                                                                                                                      |=====================================================================================                         |  78%  |                                                                                                                      |=======================================================================================                       |  79%  |                                                                                                                      |========================================================================================                      |  80%  |                                                                                                                      |=========================================================================================                     |  81%  |                                                                                                                      |==========================================================================================                    |  82%  |                                                                                                                      |===========================================================================================                   |  83%  |                                                                                                                      |============================================================================================                  |  84%  |                                                                                                                      |==============================================================================================                |  85%  |                                                                                                                      |===============================================================================================               |  86%  |                                                                                                                      |================================================================================================              |  87%  |                                                                                                                      |=================================================================================================             |  88%  |                                                                                                                      |==================================================================================================            |  89%  |                                                                                                                      |===================================================================================================           |  90%  |                                                                                                                      |=====================================================================================================         |  91%  |                                                                                                                      |======================================================================================================        |  93%  |                                                                                                                      |=======================================================================================================       |  94%  |                                                                                                                      |========================================================================================================      |  95%  |                                                                                                                      |=========================================================================================================     |  96%  |                                                                                                                      |==========================================================================================================    |  97%  |                                                                                                                      |============================================================================================================  |  98%  |                                                                                                                      |============================================================================================================= |  99%  |                                                                                                                      |==============================================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table phe_perindividual
+    ## Stacking table phe_statusintensity
+    ## Stacking table phe_perindividualperyear
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 1.546488 secs
+    ## All unzipped monthly data folders have been removed.
+
+    # if you aren't sure you can handle the data file size use check.size = T. 
+    
+    # save dataframes from the downloaded list
+    ind <- phe$phe_perindividual  #individual information
+    status <- phe$phe_statusintensity  #status & intensity info
     
     
-    # Read in data
-    ind <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_perindividual.csv', 
-    		stringsAsFactors = FALSE )
+    ##If choosing to use example dataset downloaded from this tutorial: 
+    
+    # Stack multiple files within the downloaded phenology data
+    #stackByTable("NEON-pheno-temp-timeseries_v2/filesToStack10055", folder = T)
+    
+    # read in data - readTableNEON uses the variables file to assign the correct
+    # data type for each variable
+    #ind <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_perindividual.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+    
+    #status <- readTableNEON('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_statusintensity.csv', 'NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
 
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/pheno/
-    ## phe_perindividual.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    status <- read.csv('NEON-pheno-temp-timeseries/pheno/phe_statusintensity.csv', 
-    		stringsAsFactors = FALSE)
-
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/pheno/
-    ## phe_statusintensity.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
 
 Let's explore the data. Let's get to know what the `ind` dataframe looks like.
 
@@ -233,80 +270,141 @@ Let's explore the data. Let's get to know what the `ind` dataframe looks like.
     # What are the fieldnames in this dataset?
     names(ind)
 
-    ## Error in eval(expr, envir, enclos): object 'ind' not found
+    ##  [1] "uid"                         "namedLocation"               "domainID"                   
+    ##  [4] "siteID"                      "plotID"                      "decimalLatitude"            
+    ##  [7] "decimalLongitude"            "geodeticDatum"               "coordinateUncertainty"      
+    ## [10] "elevation"                   "elevationUncertainty"        "subtypeSpecification"       
+    ## [13] "transectMeter"               "directionFromTransect"       "ninetyDegreeDistance"       
+    ## [16] "sampleLatitude"              "sampleLongitude"             "sampleGeodeticDatum"        
+    ## [19] "sampleCoordinateUncertainty" "sampleElevation"             "sampleElevationUncertainty" 
+    ## [22] "date"                        "editedDate"                  "individualID"               
+    ## [25] "taxonID"                     "scientificName"              "identificationQualifier"    
+    ## [28] "taxonRank"                   "growthForm"                  "vstTag"                     
+    ## [31] "samplingProtocolVersion"     "measuredBy"                  "identifiedBy"               
+    ## [34] "recordedBy"                  "remarks"                     "dataQF"                     
+    ## [37] "publicationDate"
 
+    # Unsure of what some of the variables are you? Look at the variables table!
+    View(phe$variables_10055)
+    # if using the pre-downloaded data, you need to read in the variables file 
+    # or open and look at it on your desktop
+    #var <- read.csv('NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv')
+    #View(var)
+    
     # how many rows are in the data?
     nrow(ind)
 
-    ## Error in nrow(ind): object 'ind' not found
+    ## [1] 1609
 
     # look at the first six rows of data.
-    head(ind)
-
-    ## Error in head(ind): object 'ind' not found
-
+    #head(ind) #this is a good function to use but looks messy so not rendering it 
+    
     # look at the structure of the dataframe.
     str(ind)
 
-    ## Error in str(ind): object 'ind' not found
+    ## 'data.frame':	1609 obs. of  37 variables:
+    ##  $ uid                        : chr  "59f45c6e-1ddb-42c6-b419-27bc3fd3def2" "85415414-5db1-4ef7-b66b-e8e2081135fa" "aeb0a386-046d-4bcf-a1fe-76b4fbf44db0" "611c26b9-ab3d-4940-bf22-bfab2277801b" ...
+    ##  $ namedLocation              : chr  "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" ...
+    ##  $ domainID                   : chr  "D02" "D02" "D02" "D02" ...
+    ##  $ siteID                     : chr  "BLAN" "BLAN" "BLAN" "BLAN" ...
+    ##  $ plotID                     : chr  "BLAN_061" "BLAN_061" "BLAN_061" "BLAN_061" ...
+    ##  $ decimalLatitude            : num  39.1 39.1 39.1 39.1 39.1 ...
+    ##  $ decimalLongitude           : num  -78.1 -78.1 -78.1 -78.1 -78.1 ...
+    ##  $ geodeticDatum              : chr  NA NA NA NA ...
+    ##  $ coordinateUncertainty      : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ elevation                  : num  183 183 183 183 183 183 183 183 183 183 ...
+    ##  $ elevationUncertainty       : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ subtypeSpecification       : chr  "primary" "primary" "primary" "primary" ...
+    ##  $ transectMeter              : num  498 504 506 484 491 476 491 469 497 484 ...
+    ##  $ directionFromTransect      : chr  "Right" "Right" "Right" "Right" ...
+    ##  $ ninetyDegreeDistance       : num  2 0.5 1 0.5 0.5 2 0.5 2 1 2 ...
+    ##  $ sampleLatitude             : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleLongitude            : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleGeodeticDatum        : chr  "WGS84" "WGS84" "WGS84" "WGS84" ...
+    ##  $ sampleCoordinateUncertainty: num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleElevation            : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sampleElevationUncertainty : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ date                       : POSIXct, format: "2015-06-25" "2015-06-25" "2015-06-25" "2015-06-25" ...
+    ##  $ editedDate                 : POSIXct, format: "2015-07-22" "2015-07-22" "2015-07-22" "2015-07-22" ...
+    ##  $ individualID               : chr  "NEON.PLA.D02.BLAN.06288" "NEON.PLA.D02.BLAN.06287" "NEON.PLA.D02.BLAN.06286" "NEON.PLA.D02.BLAN.06295" ...
+    ##  $ taxonID                    : chr  "LOMA6" "LOMA6" "LOMA6" "RHDA" ...
+    ##  $ scientificName             : chr  "Lonicera maackii (Rupr.) Herder" "Lonicera maackii (Rupr.) Herder" "Lonicera maackii (Rupr.) Herder" "Rhamnus davurica Pall." ...
+    ##  $ identificationQualifier    : chr  NA NA NA NA ...
+    ##  $ taxonRank                  : chr  "species" "species" "species" "species" ...
+    ##  $ growthForm                 : chr  "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" "Deciduous broadleaf" ...
+    ##  $ vstTag                     : chr  NA NA NA NA ...
+    ##  $ samplingProtocolVersion    : chr  NA NA NA NA ...
+    ##  $ measuredBy                 : chr  "jcoloso@neoninc.org" "jcoloso@neoninc.org" "jcoloso@neoninc.org" "jcoloso@neoninc.org" ...
+    ##  $ identifiedBy               : chr  "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" ...
+    ##  $ recordedBy                 : chr  "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" "shackley@neoninc.org" ...
+    ##  $ remarks                    : chr  NA NA NA NA ...
+    ##  $ dataQF                     : chr  NA NA NA NA ...
+    ##  $ publicationDate            : chr  "20200511T142310Z" "20200511T142310Z" "20200511T142310Z" "20200511T142310Z" ...
 
-Note that if you first open you data file in Excel, you might see 06/14/2014 as 
+Notice that the neonUtilities package read the data type from the variables file
+and then automatically converts the data to the correct date type in R. 
+
+(Note that if you first opened your data file in Excel, you might see 06/14/2014 as 
 the format instead of 2014-06-14. Excel can do some ~~weird~~ interesting things
-to dates.
+to dates.)
 
-#### Individual locations
-
-To get the specific location data of each individual you would need to do some 
-math, or you can use the NEON geolocation 
-<a href="https://github.com/NEONScience/NEON-geolocation" target="_blank"> **geoNEON**</a>. 
-
+#### Phenology status
 Now let's look at the status data. 
 
 
     # What variables are included in this dataset?
     names(status)
 
-    ## Error in eval(expr, envir, enclos): object 'status' not found
+    ##  [1] "uid"                           "namedLocation"                 "domainID"                     
+    ##  [4] "siteID"                        "plotID"                        "date"                         
+    ##  [7] "editedDate"                    "dayOfYear"                     "individualID"                 
+    ## [10] "phenophaseName"                "phenophaseStatus"              "phenophaseIntensityDefinition"
+    ## [13] "phenophaseIntensity"           "samplingProtocolVersion"       "measuredBy"                   
+    ## [16] "recordedBy"                    "remarks"                       "dataQF"                       
+    ## [19] "publicationDate"
 
     nrow(status)
 
-    ## Error in nrow(status): object 'status' not found
+    ## [1] 220242
 
-    head(status)
-
-    ## Error in head(status): object 'status' not found
-
+    #head(status)   #this is a good function to use but looks messy so not rendering it 
     str(status)
 
-    ## Error in str(status): object 'status' not found
+    ## 'data.frame':	220242 obs. of  19 variables:
+    ##  $ uid                          : chr  "d63d6d9e-db96-4dfc-ab0e-d1f8ba74d2e8" "3a646972-d96d-484f-9958-31614950c3c7" "42639aaf-466d-4de7-badd-8164491007e5" "7eebf35b-8fd0-4c32-b6d3-5b3d82ad3dad" ...
+    ##  $ namedLocation                : chr  "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" "BLAN_061.phenology.phe" ...
+    ##  $ domainID                     : chr  "D02" "D02" "D02" "D02" ...
+    ##  $ siteID                       : chr  "BLAN" "BLAN" "BLAN" "BLAN" ...
+    ##  $ plotID                       : chr  "BLAN_061" "BLAN_061" "BLAN_061" "BLAN_061" ...
+    ##  $ date                         : POSIXct, format: "2017-02-24" "2017-02-24" "2017-02-24" "2017-02-24" ...
+    ##  $ editedDate                   : POSIXct, format: "2017-03-31" "2017-03-31" "2017-03-31" "2017-03-31" ...
+    ##  $ dayOfYear                    : num  55 55 55 55 55 55 55 55 55 55 ...
+    ##  $ individualID                 : chr  "NEON.PLA.D02.BLAN.06250" "NEON.PLA.D02.BLAN.06250" "NEON.PLA.D02.BLAN.06218" "NEON.PLA.D02.BLAN.06700" ...
+    ##  $ phenophaseName               : chr  "Leaves" "Colored leaves" "Breaking leaf buds" "Open flowers" ...
+    ##  $ phenophaseStatus             : chr  "no" "no" "no" "no" ...
+    ##  $ phenophaseIntensityDefinition: chr  NA NA NA NA ...
+    ##  $ phenophaseIntensity          : chr  NA NA NA NA ...
+    ##  $ samplingProtocolVersion      : chr  NA NA NA NA ...
+    ##  $ measuredBy                   : chr  "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" ...
+    ##  $ recordedBy                   : chr  "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" "llemmon@neoninc.org" ...
+    ##  $ remarks                      : chr  NA NA NA NA ...
+    ##  $ dataQF                       : chr  "legacyData" "legacyData" "legacyData" "legacyData" ...
+    ##  $ publicationDate              : chr  "20200511T150845Z" "20200511T150845Z" "20200511T150845Z" "20200511T150845Z" ...
 
     # date range
     min(status$date)
 
-    ## Error in eval(expr, envir, enclos): object 'status' not found
+    ## [1] "2017-02-24 GMT"
 
     max(status$date)
 
-    ## Error in eval(expr, envir, enclos): object 'status' not found
-
-The `uid` is not important to understanding the data so we are going to remove `uid`. 
-However, if you are every reporting an error in the data you should include this
-with your report. 
-
-
-    ind <- select(ind,-uid)
-
-    ## Error in select(ind, -uid): object 'ind' not found
-
-    status <- select (status, -uid)
-
-    ## Error in select(status, -uid): object 'status' not found
+    ## [1] "2019-12-12 GMT"
 
 ## Clean up the Data
 
 * remove duplicates (full rows)
-* convert date
-* retain only the latest `editedDate` in the perIndividual table.
+* convert to date format
+* retain only the most recent `editedDate` in the perIndividual and status table.
 
 ### Remove Duplicates
 
@@ -316,94 +414,71 @@ a result when all the tables are stacked there are many duplicates.
 Let's remove any duplicates that exist.
 
 
+    # drop UID as that will be unique for duplicate records
+    ind_noUID <- select(ind, -(uid))
+    
+    status_noUID <- select(status, -(uid))
+    
     # remove duplicates
     ## expect many
     
-    ind_noD <- distinct(ind)
-
-    ## Error in distinct(ind): object 'ind' not found
-
+    ind_noD <- distinct(ind_noUID)
     nrow(ind_noD)
 
-    ## Error in nrow(ind_noD): object 'ind_noD' not found
+    ## [1] 1596
 
-    status_noD<-distinct(status)
-
-    ## Error in distinct(status): object 'status' not found
-
+    status_noD<-distinct(status_noUID)
     nrow(status_noD)
 
-    ## Error in nrow(status_noD): object 'status_noD' not found
+    ## [1] 216837
 
 
 ### Variable Overlap between Tables
 
 From the initial inspection of the data we can see there is overlap in variable
-names between the fields. 
+names between the fields.
 
 Let's see what they are.
 
 
     # where is there an intersection of names
-    sameName <- intersect(names(status_noD), names(ind_noD))
+    intersect(names(status_noD), names(ind_noD))
 
-    ## Error in intersect(names(status_noD), names(ind_noD)): object 'status_noD' not found
-
-    sameName
-
-    ## Error in eval(expr, envir, enclos): object 'sameName' not found
+    ##  [1] "namedLocation"           "domainID"                "siteID"                  "plotID"                 
+    ##  [5] "date"                    "editedDate"              "individualID"            "samplingProtocolVersion"
+    ##  [9] "measuredBy"              "recordedBy"              "remarks"                 "dataQF"                 
+    ## [13] "publicationDate"
 
 There are several fields that overlap between the datasets. Some of these are
 expected to be the same and will be what we join on. 
 
 However, some of these will have different values in each table. We want to keep 
-those distinct value and not join on them. 
+those distinct value and not join on them. Therefore, we can rename these 
+fields before joining:
 
-We want to rename common fields before joining:
-
+* date
 * editedDate
 * measuredBy
 * recordedBy
 * samplingProtocolVersion
 * remarks
 * dataQF
+* publicationDate
 
 Now we want to rename the variables that would have duplicate names. We can 
 rename all the variables in the status object to have "Stat" at the end of the 
 variable name. 
 
 
-    # rename status editedDate
-    status_noD <- rename(status_noD, editedDateStat=editedDate, 
-    		measuredByStat=measuredBy, recordedByStat=recordedBy, 
-    		samplingProtocolVersionStat=samplingProtocolVersion, 
-    		remarksStat=remarks, dataQFStat=dataQF)
+    # in Status table rename like columns 
+    status_noD <- rename(status_noD, dateStat=date, 
+    										 editedDateStat=editedDate, measuredByStat=measuredBy, 
+    										 recordedByStat=recordedBy, 
+    										 samplingProtocolVersionStat=samplingProtocolVersion, 
+    										 remarksStat=remarks, dataQFStat=dataQF, 
+    										 publicationDateStat=publicationDate)
 
-    ## Error in rename(status_noD, editedDateStat = editedDate, measuredByStat = measuredBy, : object 'status_noD' not found
-
-
-### Convert to Date
-
-Our `addDate` and `date` columns are stored as a `character` class. We need to 
-convert it to a date class. The `as.Date()` function in base R will do this. 
-
-
-    # convert column to date class
-    ind_noD$editedDate <- as.Date(ind_noD$editedDate)
-
-    ## Error in as.Date(ind_noD$editedDate): object 'ind_noD' not found
-
-    str(ind_noD$editedDate)
-
-    ## Error in str(ind_noD$editedDate): object 'ind_noD' not found
-
-    status_noD$date <- as.Date(status_noD$date)
-
-    ## Error in as.Date(status_noD$date): object 'status_noD' not found
-
-    str(status_noD$date)
-
-    ## Error in str(status_noD$date): object 'status_noD' not found
+### Filter to last editedDate
 
 The individual (ind) table contains all instances that any of the location or 
 taxonomy data of an individual was updated. Therefore there are many rows for
@@ -414,21 +489,17 @@ some individuals.  We only want the latest `editedDate` on ind.
     ind_last <- ind_noD %>%
     	group_by(individualID) %>%
     	filter(editedDate==max(editedDate))
-
-    ## Error in eval(lhs, parent, parent): object 'ind_noD' not found
-
-    # oh wait, duplicate dates, retain only one
+    
+    # oh wait, duplicate dates, retain only the most recent editedDate
     ind_lastnoD <- ind_last %>%
     	group_by(editedDate, individualID) %>%
     	filter(row_number()==1)
-
-    ## Error in eval(lhs, parent, parent): object 'ind_last' not found
 
 ### Join Dataframes
 
 Now we can join the two data frames on all the variables with the same name. 
 We use a `left_join()` from the dpylr package because we want to match all the 
-rows from the "left" (first) dateframe to any rows that also occur in the "right"
+rows from the "left" (first) dataframe to any rows that also occur in the "right"
  (second) dataframe.  
  
  Check out RStudio's 
@@ -439,26 +510,8 @@ rows from the "left" (first) dateframe to any rows that also occur in the "right
     # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
     phe_ind <- left_join(status_noD, ind_lastnoD)
 
-    ## Error in left_join(status_noD, ind_lastnoD): object 'status_noD' not found
+    ## Joining, by = c("namedLocation", "domainID", "siteID", "plotID", "individualID")
 
-Ack!  Two different data types.  Why?  Notice that when we checked for intersecting variable names, `data` was one of these variables. We didn't change the `data` column in the ind object from a `character` class to a date class. But, we actually don't want to combine these two `date` columns.
-
-Try it again.  
-
-We can rename the `date` column in ind so that the two dataframes can now join together.
-
-
-    # rename variables in ind
-    ind_noD <- rename(ind_noD, addDate = date)
-
-    ## Error in rename(ind_noD, addDate = date): object 'ind_noD' not found
-
-    # Create a new dataframe "phe_ind" with all the data from status and some from ind_lastnoD
-    phe_ind <- left_join(status_noD, ind_lastnoD)
-
-    ## Error in left_join(status_noD, ind_lastnoD): object 'status_noD' not found
-
-Worked this time! 
 Now that we have clean datasets we can begin looking into our particular data to 
 address our research question: do plants show patterns of changes in phenophase 
 across season?
@@ -483,33 +536,43 @@ which site or sites if we want to adapt our code later.
     ## using %in% allows one to add a vector if you want more than one site. 
     ## could also do it with == instead of %in% but won't work with vectors
     
-    phe_1sp <- filter(phe_ind, siteID %in% siteOfInterest)
-
-    ## Error in filter(phe_ind, siteID %in% siteOfInterest): object 'phe_ind' not found
+    phe_1st <- filter(phe_ind, siteID %in% siteOfInterest)
 
 ## Select Species of Interest
 
-And now select a single species of interest. For now let's choose the flowering 
-tree *Liriodendron tulipifera* (LITU). 
+Now we may only want to view a single species or a set of species. Let's first 
+look at the species that are present in our data. We could do this just by looking
+at the `taxonID` field which give the four letter UDSA plant code for each 
+species. But if we don't know all the plant codes, we can get a bit fancier and 
+view both 
 
 
-    # see which species are present
-    unique(phe_1sp$taxonID)
+    # see which species are present - taxon ID only
+    unique(phe_1st$taxonID)
 
-    ## Error in unique(phe_1sp$taxonID): object 'phe_1sp' not found
+    ## [1] "LITU" "JUNI" "MIVI"
+
+    # or see which species are present with taxon ID + species name
+    unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=' - ')) 
+
+    ## [1] "LITU - Liriodendron tulipifera L."             "JUNI - Juglans nigra L."                      
+    ## [3] "MIVI - Microstegium vimineum (Trin.) A. Camus"
+
+For now, let's choose only the flowering tree *Liriodendron tulipifera* (LITU). 
+By writing it this way, we could also add a list of species to the `speciesOfInterest`
+object to select for multiple species. 
+
 
     speciesOfInterest <- "LITU"
     
     #subset to just "LITU"
     # here just use == but could also use %in%
-    phe_1sp <- filter(phe_1sp, taxonID==speciesOfInterest)
-
-    ## Error in filter(phe_1sp, taxonID == speciesOfInterest): object 'phe_1sp' not found
-
+    phe_1sp <- filter(phe_1st, taxonID==speciesOfInterest)
+    
     # check that it worked
     unique(phe_1sp$taxonID)
 
-    ## Error in unique(phe_1sp$taxonID): object 'phe_1sp' not found
+    ## [1] "LITU"
 
 
 ## Select Phenophase of Interest
@@ -517,54 +580,100 @@ tree *Liriodendron tulipifera* (LITU).
 And, perhaps a single phenophase. 
 
 
-    # see which species are present
+    # see which phenophases are present
     unique(phe_1sp$phenophaseName)
 
-    ## Error in unique(phe_1sp$phenophaseName): object 'phe_1sp' not found
+    ## [1] "Falling leaves"       "Open flowers"         "Breaking leaf buds"   "Leaves"               "Colored leaves"      
+    ## [6] "Increasing leaf size"
 
     phenophaseOfInterest <- "Leaves"
     
-    #subset to just the phenosphase of Interest 
+    #subset to just the phenosphase of interest 
     phe_1sp <- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
-
-    ## Error in filter(phe_1sp, phenophaseName %in% phenophaseOfInterest): object 'phe_1sp' not found
-
+    
     # check that it worked
     unique(phe_1sp$phenophaseName)
 
-    ## Error in unique(phe_1sp$phenophaseName): object 'phe_1sp' not found
+    ## [1] "Leaves"
+
+## Select only Primary Plots
+
+NEON plant phenology observations are collected along two types of plots. 
+
+* Primary plots: an 800 meter square phenology loop transect
+* Phenocam plots: a 200 m x 200 m plot located within view of a canopy level, 
+tower-mounted, phenology camera
+
+In the data, these plots are differentiated by the `subtypeSpecification`. 
+Depending on your question you may want to use only one or both of these plot types. 
+For this activity, we're going to only look at the primary plots. 
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
+the Data Product User Guide and use the variables files with the data download 
+to find the corresponding variables names.
+</div>
+
+
+    # what plots are present?
+    unique(phe_1sp$subtypeSpecification)
+
+    ## [1] "primary"  "phenocam"
+
+    # filter
+    phe_1spPrimary <- filter(phe_1sp, subtypeSpecification == 'primary')
+    
+    # check that it worked
+    unique(phe_1spPrimary$subtypeSpecification)
+
+    ## [1] "primary"
 
 ## Total in Phenophase of Interest
 
 The `phenophaseState` is recorded as "yes" or "no" that the individual is in that
-phenophase. The `phenophaseIntensity` are categories for how much of the indvidual
+phenophase. The `phenophaseIntensity` are categories for how much of the individual
 is in that state. For now, we will stick with `phenophaseState`. 
 
-We can now calculate the total individual with that state. 
+We can now calculate the total number of individuals with that state. We use 
+`n_distinct(indvidualID)` count the individuals (and not the records) in case 
+there are duplicate records for an individual. 
+
+But later on we'll also want to calculate the percent of the observed individuals
+in the "leaves" status, therefore, we're also adding in a step here to retain the 
+sample size so that we can calculate % later. 
 
 Here we use pipes `%>%` from the dpylr package to "pass" objects onto the next
 function. 
 
 
-    # Total in status by day
-    sampSize <- count(phe_1sp, date)
+    # Calculate sample size for later use
+    sampSize <- phe_1spPrimary%>%
+      group_by(dateStat)%>%
+      summarize(numInd= n_distinct(individualID))
 
-    ## Error in count(phe_1sp, date): object 'phe_1sp' not found
+    ## Error in summarize(., numInd = n_distinct(individualID)): argument "by" is missing, with no default
 
-    inStat <- phe_1sp %>%
-    	group_by(date) %>%
-      count(phenophaseStatus)
+    # Total in status by day for distinct individuals
+    inStat <- phe_1spPrimary%>%
+      group_by(dateStat, phenophaseStatus)%>%
+      summarize(countYes=n_distinct(individualID))
 
-    ## Error in eval(lhs, parent, parent): object 'phe_1sp' not found
+    ## Error in summarize(., countYes = n_distinct(individualID)): argument "by" is missing, with no default
 
-    inStat <- full_join(sampSize, inStat, by="date")
+    inStat <- full_join(sampSize, inStat, by="dateStat")
 
-    ## Error in full_join(sampSize, inStat, by = "date"): object 'sampSize' not found
+    ## Error in full_join(sampSize, inStat, by = "dateStat"): object 'sampSize' not found
 
     # Retain only Yes
     inStat_T <- filter(inStat, phenophaseStatus %in% "yes")
 
     ## Error in filter(inStat, phenophaseStatus %in% "yes"): object 'inStat' not found
+
+    # check that it worked
+    unique(inStat_T$phenophaseStatus)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'unique': object 'inStat_T' not found
+
 
 Now that we have the data we can plot it. 
 
@@ -601,24 +710,24 @@ We can use `geom_bar(stat="identity")` to force ggplot to plot actual values.
 
 
     # plot number of individuals in leaf
-    phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+    phenoPlot <- ggplot(inStat_T, aes(dateStat, countYes)) +
         geom_bar(stat="identity", na.rm = TRUE) 
 
-    ## Error in ggplot(inStat_T, aes(date, n.y)): object 'inStat_T' not found
+    ## Error in ggplot(inStat_T, aes(dateStat, countYes)): object 'inStat_T' not found
 
     phenoPlot
 
     ## Error in eval(expr, envir, enclos): object 'phenoPlot' not found
 
     # Now let's make the plot look a bit more presentable
-    phenoPlot <- ggplot(inStat_T, aes(date, n.y)) +
+    phenoPlot <- ggplot(inStat_T, aes(dateStat, countYes)) +
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Total Individuals in Leaf") +
         xlab("Date") + ylab("Number of Individuals") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))
 
-    ## Error in ggplot(inStat_T, aes(date, n.y)): object 'inStat_T' not found
+    ## Error in ggplot(inStat_T, aes(dateStat, countYes)): object 'inStat_T' not found
 
     phenoPlot
 
@@ -628,62 +737,26 @@ We could also covert this to percentage and plot that.
 
 
     # convert to percent
-    inStat_T$percent<- ((inStat_T$n.y)/inStat_T$n.x)*100
+    inStat_T$percent<- ((inStat_T$countYes)/inStat_T$numInd)*100
 
     ## Error in eval(expr, envir, enclos): object 'inStat_T' not found
 
     # plot percent of leaves
-    phenoPlot_P <- ggplot(inStat_T, aes(date, percent)) +
+    phenoPlot_P <- ggplot(inStat_T, aes(dateStat, percent)) +
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Proportion in Leaf") +
         xlab("Date") + ylab("% of Individuals") +
         theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
         theme(text = element_text(size=18))
 
-    ## Error in ggplot(inStat_T, aes(date, percent)): object 'inStat_T' not found
+    ## Error in ggplot(inStat_T, aes(dateStat, percent)): object 'inStat_T' not found
 
     phenoPlot_P
 
     ## Error in eval(expr, envir, enclos): object 'phenoPlot_P' not found
 
-The plots demonstrate that, while the 2016 data show the nice expected pattern 
-of increasing leaf-out, peak, and drop-off, we seem to be missing the increase 
-in leaf-out in 2015. Looking at the data, we see that there was no data collected
-before May of 2015 -- we're missing most of leaf out!
-
-## Filter by Date
-
-That may create problems with downstream analyses. Let's filter the dataset to 
-include just 2016.
-
-
-    # use filter to select only the site of Interest 
-    phe_1sp_2016 <- filter(inStat_T, date >= "2016-01-01")
-
-    ## Error in filter(inStat_T, date >= "2016-01-01"): object 'inStat_T' not found
-
-    # did it work?
-    range(phe_1sp_2016$date)
-
-    ## Error in eval(expr, envir, enclos): object 'phe_1sp_2016' not found
-
-How does that look? 
-
-
-    # Now let's make the plot look a bit more presentable
-    phenoPlot16 <- ggplot(phe_1sp_2016, aes(date, n.y)) +
-        geom_bar(stat="identity", na.rm = TRUE) +
-        ggtitle("Total Individuals in Leaf") +
-        xlab("Date") + ylab("Number of Individuals") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
-        theme(text = element_text(size=18))
-
-    ## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object 'phe_1sp_2016' not found
-
-    phenoPlot16
-
-    ## Error in eval(expr, envir, enclos): object 'phenoPlot16' not found
-
+The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
+and drop-off.
 
 ## Drivers of Phenology
 
@@ -692,15 +765,65 @@ are the drivers of phenophases?
 
 The NEON phenology measurements track sensitive and easily observed indicators 
 of biotic responses to climate variability by monitoring the timing and duration 
-of phenological stagesin plant communities. Plant phenology is affected by forces 
+of phenological stages in plant communities. Plant phenology is affected by forces 
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
 feedbacks to trophic interactions, carbon sequestration, community composition 
 and ecosystem function.  (quoted from 
 <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)
 
+## Filter by Date
+
+In the next part of this series, we will be exploring temperature as a driver of
+phenology. Temperature date is quite large (NEON provides this in 1 minute or 30
+minute intervals) so let's trim our phenology date down to only one year so that 
+we aren't working with as large a data. 
+
+Let's filter to just 2018 data. 
 
 
-    ## Error in is.data.frame(x): object 'phe_1sp_2016' not found
+    # use filter to select only the date of interest 
+    phe_1sp_2018 <- filter(inStat_T, dateStat >= "2018-01-01" & dateStat <= "2018-12-31")
+
+    ## Error in filter(inStat_T, dateStat >= "2018-01-01" & dateStat <= "2018-12-31"): object 'inStat_T' not found
+
+    # did it work?
+    range(phe_1sp_2018$dateStat)
+
+    ## Error in eval(expr, envir, enclos): object 'phe_1sp_2018' not found
+
+How does that look? 
 
 
+    # Now let's make the plot look a bit more presentable
+    phenoPlot18 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
+        geom_bar(stat="identity", na.rm = TRUE) +
+        ggtitle("Total Individuals in Leaf") +
+        xlab("Date") + ylab("Number of Individuals") +
+        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+        theme(text = element_text(size=18))
+
+    ## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object 'phe_1sp_2018' not found
+
+    phenoPlot18
+
+    ## Error in eval(expr, envir, enclos): object 'phenoPlot18' not found
+
+Now that we've filtered down to just the 2018 data from SCBI for LITU in leaf, 
+we may want to save that subsetted data for another use. To do that you can write
+the data frame to a .csv file. 
+
+You do not need to follow this step if you are continuing on to the next tutorials
+in this series as you already have the data frame in your environment. Of course
+if you close R and then come back to it, you will need to re-load this data and 
+instructions for that are provided in the relevant tutorials. 
+
+
+    # Write .csv - this step is optional 
+    # This will write to your current working directory, change as desired.
+    write.csv( phe_1sp_2018 , file="NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)
+    
+    #If you are using the downloaded example date, this code will write it to the 
+    # pheno data file. Note - this file is already a part of the download.
+    
+    #write.csv( phe_1sp_2018 , file="NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv", row.names=F)

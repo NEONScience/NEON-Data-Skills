@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Aligned Plots</title>
+<title>Separate Plots, Same Panel</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -164,7 +164,10 @@ hr {
 
 <body>
 <p>This tutorial discusses ways to plot plant phenology (discrete time
-series) and single-aspirated temperature (continuous time series) together.</p>
+series) and single-aspirated temperature (continuous time series) together.
+It uses data frames created in the first two parts of this series,
+<a href = "https://www.neonscience.org/osis-pheno-temp-series" target = "_blank"><em>Work with NEON OS &amp; IS Data - Plant Phenology &amp; Temperature</em></a>. 
+If you have not completed these tutorials, please download the dataset below.</p>
 
 <div id="ds-objectives" markdown="1">
 
@@ -179,110 +182,120 @@ You will need the most current version of R and, preferably, RStudio loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
-* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
-* **gridExtra:** install.packages(&ldquo;gridExtra&rdquo;)
-* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
-* **lubridate:** install.packages(&ldquo;lubridate&rdquo;)
-* **scales:** install.packages(&ldquo;scales&rdquo;)
 
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
+* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
+* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
+* **gridExtra:** install.packages(&ldquo;gridExtra&rdquo;)
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
 
-{% include/dataSubsets/_data_NEON-pheno-temp-timeseries.html %}
+This tutorial is designed to have you download data directly from the NEON
+portal API using the neonUtilities package. However, you can also directly 
+download this data, prepackaged, from FigShare. This data set includes all the 
+files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
+tutorial series. The data are in the format you would receive if downloading them
+using the zipsByProduct() function in the neonUtilities package. 
 
-****
-{% include/_greyBox-wd-rscript.html %}
+<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
 
 </div>
 
-<p>First, we&#39;ll set up the environment. If you are continuing from the last 
-tutorial, simply load the new packages, as you already have the data as an R 
-object. </p>
+<p>To start, we need to set up our R environment. If you&#39;re continuing from the 
+previous tutorial in this series, you&#39;ll only need to load the new packages.</p>
 
-<pre><code># Load required libraries
+<pre><code># Install needed package (only uncomment &amp; run if not already installed)
+#install.packages(&quot;dplyr&quot;)
+#install.packages(&quot;ggplot2&quot;)
+
+# Load required libraries
 library(ggplot2)
 library(dplyr)
-library(lubridate)
 library(gridExtra)
-library(scales)  # use with date_breaks
 
-# set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+## 
+## Attaching package: &#39;gridExtra&#39;
 
-# Read in data -&gt; if in series this is unnecessary
-temp_day &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/temp/NEONsaat_daily_SCBI_2016.csv&#39;,
-        stringsAsFactors = FALSE)
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine
 
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/temp/
-## NEONsaat_daily_SCBI_2016.csv&#39;: No such file or directory
+options(stringsAsFactors=F) #keep strings as character type not factors
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd &lt;- &quot;~/Documents/data/&quot; # Change this to match your local environment
+setwd(wd)
+</code></pre>
+
+<p>If you don&#39;t already have the R objects, <code>temp_day</code> and <code>phe_1sp_2018</code>, loaded
+you&#39;ll need to load and format those data. If you do, you can skip this code. </p>
+
+<pre><code># Read in data -&gt; if in series this is unnecessary
+temp_day &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv&#39;)
+
+## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv&#39;: No such file or directory
 
 ## Error in file(file, &quot;rt&quot;): cannot open the connection
 
-phe_1sp_2016 &lt;- read.csv(&#39;NEON-pheno-temp-timeseries/pheno/NEONpheno_LITU_Leaves_SCBI_2016.csv&#39;,
-        stringsAsFactors = FALSE)
+phe_1sp_2018 &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv&#39;)
 
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries/pheno/
-## NEONpheno_LITU_Leaves_SCBI_2016.csv&#39;: No such file or directory
+## Warning in file(file, &quot;rt&quot;): cannot open file &#39;NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv&#39;: No such file or directory
 
 ## Error in file(file, &quot;rt&quot;): cannot open the connection
 
 # Convert dates
-temp_day$sDate &lt;- as.Date(temp_day$sDate)
+temp_day$Date &lt;- as.Date(temp_day$Date)
+# use dateStat - the date the phenophase status was recorded
+phe_1sp_2018$dateStat &lt;- as.Date(phe_1sp_2018$dateStat)
 
-## Error in as.Date(temp_day$sDate): object &#39;temp_day&#39; not found
-
-phe_1sp_2016$date &lt;- as.Date(phe_1sp_2016$date)
-
-## Error in as.Date(phe_1sp_2016$date): object &#39;phe_1sp_2016&#39; not found
+## Error in as.Date(phe_1sp_2018$dateStat): object &#39;phe_1sp_2018&#39; not found
 </code></pre>
 
-<h2>Aligned Plots</h2>
+<h2>Separate Plots, Same Panel</h2>
 
-<p>We&#39;ve previously looked at the plots apart, but let&#39;s plot them in the same 
-pane. </p>
+<p>In this dataset, we have phenology and temperature data from the Smithsonian
+Conservation Biology Institute (SCBI) NEON field site. There are a variety of ways 
+we may want to look at this data, including aggregated at the site level, by
+a single plot, or viewing all plots at the same time but in separate plots. In 
+the <em>Work With NEON&#39;s Plant Phenology Data</em> and the 
+<em>Work with NEON&#39;s Single-Aspirated Air Temperature Data</em> tutorials, we created 
+separate plots of the number of individuals who had leaves at different times 
+of the year and the temperature in 2018.</p>
 
-<p>We can do this with the <code>grid.arrange()</code> function from the gridExtra package. </p>
+<p>However, plot the data next to each other to aid comparisons. The <code>grid.arrange()</code> 
+function from the gridExtra package can help us do this. </p>
 
-<pre><code>phenoPlot &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
+<pre><code># first, create one plot 
+phenoPlot &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Total Individuals in Leaf&quot;) +
-    xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
-    theme(text = element_text(size=18))
+    xlab(&quot;&quot;) + ylab(&quot;Number of Individuals&quot;)
 
-## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object &#39;phe_1sp_2016&#39; not found
+## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
 
-phenoPlot
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
-
-tempPlot_dayMax &lt;- ggplot(temp_day, aes(sDate, dayMax)) +
+# create second plot of interest
+tempPlot_dayMax &lt;- ggplot(temp_day, aes(Date, dayMax)) +
     geom_point() +
     ggtitle(&quot;Daily Max Air Temperature&quot;) +
-    xlab(&quot;&quot;) + ylab(&quot;Temp (C)&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
-    theme(text = element_text(size=18))
+    xlab(&quot;Date&quot;) + ylab(&quot;Temp (C)&quot;)
 
-## Error in ggplot(temp_day, aes(sDate, dayMax)): object &#39;temp_day&#39; not found
-
-tempPlot_dayMax
-
-## Error in eval(expr, envir, enclos): object &#39;tempPlot_dayMax&#39; not found
-
-# Output with both plots
+# Then arrange the plots - this can be done with &gt;2 plots as well.
 grid.arrange(phenoPlot, tempPlot_dayMax) 
 
 ## Error in arrangeGrob(...): object &#39;phenoPlot&#39; not found
 </code></pre>
 
-<h3>Format Dates in Axis Labels</h3>
+<p>Now, we can see both plots in the same window.  But, hmmm&hellip; the x-axis on both 
+plots is kinda wonky. We want the same spacing in the scale across the year (e.g.,
+July in one should line up with July in the other) plus we want the dates to 
+display in the same format(e.g. 2016-07 vs. Jul vs Jul 2018).</p>
 
-<p>Hmmm&hellip; the x-axis on both plots is kinda wonky. For the pheno data, We might 
-want a different
-date display format (e.g. 2016-07 vs. Jul); for the temp data there are a TON of tick
-marks! These parameters can be adujusted with <code>scale_x_date</code>. Let&#39;s format the x-axis
+<h2>Format Dates in Axis Labels</h2>
+
+<p>The date format parameter can be adjusted with <code>scale_x_date</code>. Let&#39;s format the x-axis
 ticks so they read &ldquo;month&rdquo; (<code>%b</code>) in both graphs. We will use the syntax:</p>
 
 <p><code>scale_x_date(labels=date_format(&quot;%b&quot;&quot;)</code></p>
@@ -291,92 +304,137 @@ ticks so they read &ldquo;month&rdquo; (<code>%b</code>) in both graphs. We will
 to the plot object <code>phenoPlot</code> we just created. </p>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** You can type ?strptime into the R 
+<i class="fa fa-star"></i> **Data Tip:** 
+
+1) You can type ?strptime into the R 
 console to find a list of date format conversion specifications (e.g. %b = month).
 Type scale_x_date for a list of parameters that allow you to format dates 
 on the x-axis.
-</div>
 
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
+2) If you are working with a date & time
 class (e.g. POSIXct), you can use scale_x_datetime instead of scale_x_date.
 </div>
 
 <pre><code># format x-axis: dates
 phenoPlot &lt;- phenoPlot + 
-  (scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)))
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
-
-phenoPlot
+  (scale_x_date(breaks = date_breaks(&quot;1 month&quot;), labels = date_format(&quot;%b&quot;)))
 
 ## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
 
 tempPlot_dayMax &lt;- tempPlot_dayMax +
-  (scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)))
+  (scale_x_date(breaks = date_breaks(&quot;1 month&quot;), labels = date_format(&quot;%b&quot;)))
 
-## Error in eval(expr, envir, enclos): object &#39;tempPlot_dayMax&#39; not found
+## Error in date_breaks(&quot;1 month&quot;): could not find function &quot;date_breaks&quot;
 
-tempPlot_dayMax
-
-## Error in eval(expr, envir, enclos): object &#39;tempPlot_dayMax&#39; not found
-
-# Output with both plots
+# New plot. 
 grid.arrange(phenoPlot, tempPlot_dayMax) 
 
 ## Error in arrangeGrob(...): object &#39;phenoPlot&#39; not found
 </code></pre>
 
-<h3>Align Datasets</h3>
+<p>But this only solves one of the problems, we still have a different range on the
+x-axis which makes it harder to see trends. </p>
 
-<p>We have different start and end dates, which makes it harder to see trends. 
-Let&#39;s align the datasets and replot</p>
+<h2>Align data sets with different start dates</h2>
 
-<pre><code># align dates
-temp_day_fit &lt;- filter(temp_day, sDate &gt;= min(phe_1sp_2016$date) &amp; sDate &lt;= max(phe_1sp_2016$date))
+<p>Now let&#39;s work to align the values on the x-axis. We can do this in two ways, 
+1) setting the x-axis to have the same date range or 2) by filtering the dataset 
+itself to only include the overlapping data. Depending on what you are trying to 
+demonstrate and if you&#39;re doing additional analyses and want only the overlapping 
+data, you may prefer one over the other. Let&#39;s try both. </p>
 
-## Error in filter(temp_day, sDate &gt;= min(phe_1sp_2016$date) &amp; sDate &lt;= max(phe_1sp_2016$date)): object &#39;temp_day&#39; not found
+<h3>Set range of x-axis</h3>
 
-# Check it
-range(phe_1sp_2016$date)
+<p>Alternatively, we can set the x-axis range for both plots by adding the <code>limits</code> 
+parameter to the <code>scale_x_date()</code> function. </p>
 
-## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2016&#39; not found
+<pre><code># first, lets recreate the full plot and add in the 
+phenoPlot_setX &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
+    geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
+    ggtitle(&quot;Total Individuals in Leaf&quot;) +
+    xlab(&quot;&quot;) + ylab(&quot;Number of Individuals&quot;) +
+    scale_x_date(breaks = date_breaks(&quot;1 month&quot;), 
+                  labels = date_format(&quot;%b&quot;),
+                  limits = as.Date(c(&#39;2018-01-01&#39;,&#39;2018-12-31&#39;)))
 
-range(temp_day_fit$sDate)
+## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
+
+# create second plot of interest
+tempPlot_dayMax_setX &lt;- ggplot(temp_day, aes(Date, dayMax)) +
+    geom_point() +
+    ggtitle(&quot;Daily Max Air Temperature&quot;) +
+    xlab(&quot;Date&quot;) + ylab(&quot;Temp (C)&quot;) +
+    scale_x_date(date_breaks = &quot;1 month&quot;, 
+                 labels=date_format(&quot;%b&quot;),
+                  limits = as.Date(c(&#39;2018-01-01&#39;,&#39;2018-12-31&#39;)))
+
+## Error in date_format(&quot;%b&quot;): could not find function &quot;date_format&quot;
+
+# Plot
+grid.arrange(phenoPlot_setX, tempPlot_dayMax_setX) 
+
+## Error in arrangeGrob(...): object &#39;phenoPlot_setX&#39; not found
+</code></pre>
+
+<p>Now we can really see the pattern over the full year. This emphasizes the point
+that during much of the late fall, winter, and early spring none of the trees 
+have leaves on them (or that data were not collected - this plot would not 
+distinguish between the two). </p>
+
+<h3>Subset one data set to match other</h3>
+
+<p>Alternatively, we can simply filter the dataset with the larger date range so 
+the we only plot the data from the overlapping dates. </p>
+
+<pre><code># filter to only having overlapping data
+temp_day_filt &lt;- filter(temp_day, Date &gt;= min(phe_1sp_2018$date) &amp; 
+                         Date &lt;= max(phe_1sp_2018$date))
+
+## Error: Problem with `filter()` input `..1`.
+## x object &#39;phe_1sp_2018&#39; not found
+## ℹ Input `..1` is `Date &gt;= min(phe_1sp_2018$date) &amp; Date &lt;= max(phe_1sp_2018$date)`.
+## ℹ The error occurred in group 1: Date = 2018-01-01.
+
+# Check 
+range(phe_1sp_2018$date)
+
+## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2018&#39; not found
+
+range(temp_day_fit$Date)
 
 ## Error in eval(expr, envir, enclos): object &#39;temp_day_fit&#39; not found
 
 #plot again
-tempPlot_dayMax_corr &lt;- ggplot(temp_day_fit, aes(sDate, dayMax)) +
+tempPlot_dayMaxFiltered &lt;- ggplot(temp_day_filt, aes(Date, dayMax)) +
     geom_point() +
     scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)) +
     ggtitle(&quot;Daily Max Air Temperature&quot;) +
-    xlab(&quot;&quot;) + ylab(&quot;Temp (C)&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
-    theme(text = element_text(size=18))
+    xlab(&quot;Date&quot;) + ylab(&quot;Temp (C)&quot;)
 
-## Error in ggplot(temp_day_fit, aes(sDate, dayMax)): object &#39;temp_day_fit&#39; not found
+## Error in ggplot(temp_day_filt, aes(Date, dayMax)): object &#39;temp_day_filt&#39; not found
 
-grid.arrange(phenoPlot, tempPlot_dayMax_corr)
+grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 
 ## Error in arrangeGrob(...): object &#39;phenoPlot&#39; not found
 </code></pre>
 
+<p>With this plot, we really look at the area of overlap in the plotted data (but 
+this does cut out the time where the data are collected but not plotted). </p>
+
 <h2>Same plot with two Y-axes</h2>
 
 <p>What about layering these plots and having two y-axes (right and left) that have
-the different scale bars. This might look cool. </p>
+the different scale bars?</p>
 
-<p>However, some argue that you should not do this as it 
-can distort what is actually going on with the data. The author of the ggplot2 
-package is one of these individuals. Therefore, you cannot use <code>ggplot()</code> to 
-create a single plot with multiple Y scales. You can read his own discussion of
-the topic on this 
+<p>Some argue that you should not do this as it can distort what is actually going 
+on with the data. The author of the ggplot2 package is one of these individuals. 
+Therefore, you cannot use <code>ggplot()</code> to create a single plot with multiple y-axis 
+scales. You can read his own discussion of the topic on this 
 <a href="https://stackoverflow.com/questions/3099219/plot-with-2-y-axes-one-y-axis-on-the-left-and-another-y-axis-on-the-right/3101876#3101876" target="_blank" > StackOverflow post</a>.</p>
 
 <hr/>
 
-<p>However, individuals have found work arounds for these plots. The below code
+<p>However, individuals have found work arounds for these plots. The code below
 is provided as a demonstration of this capability. Note, by showing this code 
 here, we don&#39;t necessarily endorse having plots with two y-axes.</p>
 
@@ -389,13 +447,13 @@ library(gtable)
 library(grid)
 
 
-#Pheno data as bars, temp as scatter
+# Plot 1: Pheno data as bars, temp as scatter
 grid.newpage()
-phenoPlot_2 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
+phenoPlot_2 &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
   geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
-  scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)) +
+  scale_x_date(breaks = date_breaks(&quot;1 month&quot;), labels = date_format(&quot;%b&quot;)) +
   ggtitle(&quot;Total Individuals in Leaf vs. Temp (C)&quot;) +
-  xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
+  xlab(&quot; &quot;) + ylab(&quot;Number of Individuals&quot;) +
   theme_bw()+
   theme(legend.justification=c(0,1),
         legend.position=c(0,1),
@@ -405,10 +463,10 @@ phenoPlot_2 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
         axis.title.x=element_text(size=20),
         axis.title.y=element_text(size=20))
 
-## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object &#39;phe_1sp_2016&#39; not found
+## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
 
 tempPlot_dayMax_corr_2 &lt;- ggplot() +
-  geom_point(data = temp_day_fit, aes(sDate, dayMax),color=&quot;red&quot;) +
+  geom_point(data = temp_day_fit, aes(Date, dayMax),color=&quot;red&quot;) +
   scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)) +
   xlab(&quot;&quot;) + ylab(&quot;Temp (C)&quot;) +
   theme_bw() %+replace% 
@@ -432,7 +490,7 @@ g2&lt;-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_2))
 
 pp&lt;-c(subset(g1$layout,name==&quot;panel&quot;,se=t:r))
 
-## Error in subset(g1$layout, name == &quot;panel&quot;, se = t:r): object &#39;g1&#39; not found
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;subset&#39;: object &#39;g1&#39; not found
 
 g&lt;-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name==&quot;panel&quot;)]],pp$t,pp$l,pp$b,pp$l)
 
@@ -464,19 +522,19 @@ ax$grobs[[1]]$x &lt;- ax$grobs[[1]]$x - unit(1, &quot;npc&quot;) + unit(0.15, &q
 
 g &lt;- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
 
-## Error: x must be a gtable
+## Error in is.gtable(x): object &#39;g&#39; not found
 
 g &lt;- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
 
-## Error: x must be a gtable
+## Error in is.gtable(x): object &#39;g&#39; not found
 
 grid.draw(g)
 
-## Error in UseMethod(&quot;grid.draw&quot;): no applicable method for &#39;grid.draw&#39; applied to an object of class &quot;H5IdComponent&quot;
+## Error in grid.draw(g): object &#39;g&#39; not found
 
-#Both pheno data and temp data as line graphs
+# Plot 2: Both pheno data and temp data as line graphs
 grid.newpage()
-phenoPlot_3 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
+phenoPlot_3 &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
   geom_line(na.rm = TRUE) +
   scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)) +
   ggtitle(&quot;Total Individuals in Leaf vs. Temp (C)&quot;) +
@@ -490,10 +548,10 @@ phenoPlot_3 &lt;- ggplot(phe_1sp_2016, aes(date, n.y)) +
         axis.title.x=element_text(size=20),
         axis.title.y=element_text(size=20))
 
-## Error in ggplot(phe_1sp_2016, aes(date, n.y)): object &#39;phe_1sp_2016&#39; not found
+## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
 
 tempPlot_dayMax_corr_3 &lt;- ggplot() +
-  geom_line(data = temp_day_fit, aes(sDate, dayMax),color=&quot;red&quot;) +
+  geom_line(data = temp_day_fit, aes(Date, dayMax),color=&quot;red&quot;) +
   scale_x_date(breaks = date_breaks(&quot;months&quot;), labels = date_format(&quot;%b&quot;)) +
   xlab(&quot;&quot;) + ylab(&quot;Temp (C)&quot;) +
   theme_bw() %+replace% 
@@ -517,7 +575,7 @@ g2&lt;-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_3))
 
 pp&lt;-c(subset(g1$layout,name==&quot;panel&quot;,se=t:r))
 
-## Error in subset(g1$layout, name == &quot;panel&quot;, se = t:r): object &#39;g1&#39; not found
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;subset&#39;: object &#39;g1&#39; not found
 
 g&lt;-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name==&quot;panel&quot;)]],pp$t,pp$l,pp$b,pp$l)
 
@@ -549,15 +607,15 @@ ax$grobs[[1]]$x &lt;- ax$grobs[[1]]$x - unit(1, &quot;npc&quot;) + unit(0.15, &q
 
 g &lt;- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
 
-## Error: x must be a gtable
+## Error in is.gtable(x): object &#39;g&#39; not found
 
 g &lt;- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
 
-## Error: x must be a gtable
+## Error in is.gtable(x): object &#39;g&#39; not found
 
 grid.draw(g)
 
-## Error in UseMethod(&quot;grid.draw&quot;): no applicable method for &#39;grid.draw&#39; applied to an object of class &quot;H5IdComponent&quot;
+## Error in grid.draw(g): object &#39;g&#39; not found
 </code></pre>
 
 </body>
