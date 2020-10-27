@@ -767,20 +767,24 @@ phe &lt;- loadByProduct(dpID = &quot;DP1.10055.001&quot;, site=c(&quot;BLAN&quot
   |<br/>
   |=================================================================================================| 100%
     ## 
-    ## Unpacking zip files using 1 cores.</p>
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table phe_perindividual
+    ## Stacking table phe_statusintensity
+    ## Stacking table phe_perindividualperyear
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 1.542033 secs
+    ## All unzipped monthly data folders have been removed.</p>
 
-<pre><code>## Error in names(object) &lt;- nm: &#39;names&#39; attribute [490] must be the same length as the vector [261]
-
-# if you aren&#39;t sure you can handle the data file size use check.size = T. 
+<pre><code># if you aren&#39;t sure you can handle the data file size use check.size = T. 
 
 # save dataframes from the downloaded list
 ind &lt;- phe$phe_perindividual  #individual information
-
-## Error in eval(expr, envir, enclos): object &#39;phe&#39; not found
-
 status &lt;- phe$phe_statusintensity  #status &amp; intensity info
 
-## Error in eval(expr, envir, enclos): object &#39;phe&#39; not found
 
 ##If choosing to use example dataset downloaded from this tutorial: 
 
@@ -799,13 +803,22 @@ status &lt;- phe$phe_statusintensity  #status &amp; intensity info
 <pre><code># What are the fieldnames in this dataset?
 names(ind)
 
-## Error in eval(expr, envir, enclos): object &#39;ind&#39; not found
+##  [1] &quot;uid&quot;                         &quot;namedLocation&quot;               &quot;domainID&quot;                   
+##  [4] &quot;siteID&quot;                      &quot;plotID&quot;                      &quot;decimalLatitude&quot;            
+##  [7] &quot;decimalLongitude&quot;            &quot;geodeticDatum&quot;               &quot;coordinateUncertainty&quot;      
+## [10] &quot;elevation&quot;                   &quot;elevationUncertainty&quot;        &quot;subtypeSpecification&quot;       
+## [13] &quot;transectMeter&quot;               &quot;directionFromTransect&quot;       &quot;ninetyDegreeDistance&quot;       
+## [16] &quot;sampleLatitude&quot;              &quot;sampleLongitude&quot;             &quot;sampleGeodeticDatum&quot;        
+## [19] &quot;sampleCoordinateUncertainty&quot; &quot;sampleElevation&quot;             &quot;sampleElevationUncertainty&quot; 
+## [22] &quot;date&quot;                        &quot;editedDate&quot;                  &quot;individualID&quot;               
+## [25] &quot;taxonID&quot;                     &quot;scientificName&quot;              &quot;identificationQualifier&quot;    
+## [28] &quot;taxonRank&quot;                   &quot;growthForm&quot;                  &quot;vstTag&quot;                     
+## [31] &quot;samplingProtocolVersion&quot;     &quot;measuredBy&quot;                  &quot;identifiedBy&quot;               
+## [34] &quot;recordedBy&quot;                  &quot;remarks&quot;                     &quot;dataQF&quot;                     
+## [37] &quot;publicationDate&quot;
 
 # Unsure of what some of the variables are you? Look at the variables table!
 View(phe$variables_10055)
-
-## Error in View : object &#39;phe&#39; not found
-
 # if using the pre-downloaded data, you need to read in the variables file 
 # or open and look at it on your desktop
 #var &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
@@ -814,7 +827,7 @@ View(phe$variables_10055)
 # how many rows are in the data?
 nrow(ind)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;nrow&#39;: object &#39;ind&#39; not found
+## [1] 1609
 
 # look at the first six rows of data.
 #head(ind) #this is a good function to use but looks messy so not rendering it 
@@ -822,7 +835,44 @@ nrow(ind)
 # look at the structure of the dataframe.
 str(ind)
 
-## Error in str(ind): object &#39;ind&#39; not found
+## &#39;data.frame&#39;:    1609 obs. of  37 variables:
+##  $ uid                        : chr  &quot;59f45c6e-1ddb-42c6-b419-27bc3fd3def2&quot; &quot;85415414-5db1-4ef7-b66b-e8e2081135fa&quot; &quot;aeb0a386-046d-4bcf-a1fe-76b4fbf44db0&quot; &quot;611c26b9-ab3d-4940-bf22-bfab2277801b&quot; ...
+##  $ namedLocation              : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
+##  $ domainID                   : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
+##  $ siteID                     : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
+##  $ plotID                     : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
+##  $ decimalLatitude            : num  39.1 39.1 39.1 39.1 39.1 ...
+##  $ decimalLongitude           : num  -78.1 -78.1 -78.1 -78.1 -78.1 ...
+##  $ geodeticDatum              : chr  NA NA NA NA ...
+##  $ coordinateUncertainty      : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ elevation                  : num  183 183 183 183 183 183 183 183 183 183 ...
+##  $ elevationUncertainty       : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ subtypeSpecification       : chr  &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; ...
+##  $ transectMeter              : num  498 504 506 484 491 476 491 469 497 484 ...
+##  $ directionFromTransect      : chr  &quot;Right&quot; &quot;Right&quot; &quot;Right&quot; &quot;Right&quot; ...
+##  $ ninetyDegreeDistance       : num  2 0.5 1 0.5 0.5 2 0.5 2 1 2 ...
+##  $ sampleLatitude             : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleLongitude            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleGeodeticDatum        : chr  &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; ...
+##  $ sampleCoordinateUncertainty: num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleElevation            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ sampleElevationUncertainty : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date                       : POSIXct, format: &quot;2015-06-25&quot; &quot;2015-06-25&quot; &quot;2015-06-25&quot; ...
+##  $ editedDate                 : POSIXct, format: &quot;2015-07-22&quot; &quot;2015-07-22&quot; &quot;2015-07-22&quot; ...
+##  $ individualID               : chr  &quot;NEON.PLA.D02.BLAN.06288&quot; &quot;NEON.PLA.D02.BLAN.06287&quot; &quot;NEON.PLA.D02.BLAN.06286&quot; &quot;NEON.PLA.D02.BLAN.06295&quot; ...
+##  $ taxonID                    : chr  &quot;LOMA6&quot; &quot;LOMA6&quot; &quot;LOMA6&quot; &quot;RHDA&quot; ...
+##  $ scientificName             : chr  &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Lonicera maackii (Rupr.) Herder&quot; &quot;Rhamnus davurica Pall.&quot; ...
+##  $ identificationQualifier    : chr  NA NA NA NA ...
+##  $ taxonRank                  : chr  &quot;species&quot; &quot;species&quot; &quot;species&quot; &quot;species&quot; ...
+##  $ growthForm                 : chr  &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; ...
+##  $ vstTag                     : chr  NA NA NA NA ...
+##  $ samplingProtocolVersion    : chr  NA NA NA NA ...
+##  $ measuredBy                 : chr  &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; &quot;jcoloso@neoninc.org&quot; ...
+##  $ identifiedBy               : chr  &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; ...
+##  $ recordedBy                 : chr  &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; &quot;shackley@neoninc.org&quot; ...
+##  $ remarks                    : chr  NA NA NA NA ...
+##  $ dataQF                     : chr  NA NA NA NA ...
+##  $ publicationDate            : chr  &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; &quot;20200511T142310Z&quot; ...
 </code></pre>
 
 <p>Notice that the neonUtilities package read the data type from the variables file
@@ -839,25 +889,50 @@ to dates.)</p>
 <pre><code># What variables are included in this dataset?
 names(status)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+##  [1] &quot;uid&quot;                           &quot;namedLocation&quot;                 &quot;domainID&quot;                     
+##  [4] &quot;siteID&quot;                        &quot;plotID&quot;                        &quot;date&quot;                         
+##  [7] &quot;editedDate&quot;                    &quot;dayOfYear&quot;                     &quot;individualID&quot;                 
+## [10] &quot;phenophaseName&quot;                &quot;phenophaseStatus&quot;              &quot;phenophaseIntensityDefinition&quot;
+## [13] &quot;phenophaseIntensity&quot;           &quot;samplingProtocolVersion&quot;       &quot;measuredBy&quot;                   
+## [16] &quot;recordedBy&quot;                    &quot;remarks&quot;                       &quot;dataQF&quot;                       
+## [19] &quot;publicationDate&quot;
 
 nrow(status)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;nrow&#39;: object &#39;status&#39; not found
+## [1] 220242
 
 #head(status)   #this is a good function to use but looks messy so not rendering it 
 str(status)
 
-## Error in str(status): object &#39;status&#39; not found
+## &#39;data.frame&#39;:    220242 obs. of  19 variables:
+##  $ uid                          : chr  &quot;d63d6d9e-db96-4dfc-ab0e-d1f8ba74d2e8&quot; &quot;3a646972-d96d-484f-9958-31614950c3c7&quot; &quot;42639aaf-466d-4de7-badd-8164491007e5&quot; &quot;7eebf35b-8fd0-4c32-b6d3-5b3d82ad3dad&quot; ...
+##  $ namedLocation                : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
+##  $ domainID                     : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
+##  $ siteID                       : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
+##  $ plotID                       : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
+##  $ date                         : POSIXct, format: &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; ...
+##  $ editedDate                   : POSIXct, format: &quot;2017-03-31&quot; &quot;2017-03-31&quot; &quot;2017-03-31&quot; ...
+##  $ dayOfYear                    : num  55 55 55 55 55 55 55 55 55 55 ...
+##  $ individualID                 : chr  &quot;NEON.PLA.D02.BLAN.06250&quot; &quot;NEON.PLA.D02.BLAN.06250&quot; &quot;NEON.PLA.D02.BLAN.06218&quot; &quot;NEON.PLA.D02.BLAN.06700&quot; ...
+##  $ phenophaseName               : chr  &quot;Leaves&quot; &quot;Colored leaves&quot; &quot;Breaking leaf buds&quot; &quot;Open flowers&quot; ...
+##  $ phenophaseStatus             : chr  &quot;no&quot; &quot;no&quot; &quot;no&quot; &quot;no&quot; ...
+##  $ phenophaseIntensityDefinition: chr  NA NA NA NA ...
+##  $ phenophaseIntensity          : chr  NA NA NA NA ...
+##  $ samplingProtocolVersion      : chr  NA NA NA NA ...
+##  $ measuredBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
+##  $ recordedBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
+##  $ remarks                      : chr  NA NA NA NA ...
+##  $ dataQF                       : chr  &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; ...
+##  $ publicationDate              : chr  &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; &quot;20200511T150845Z&quot; ...
 
 # date range
 min(status$date)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+## [1] &quot;2017-02-24 GMT&quot;
 
 max(status$date)
 
-## Error in eval(expr, envir, enclos): object &#39;status&#39; not found
+## [1] &quot;2019-12-12 GMT&quot;
 </code></pre>
 
 <h2>Clean up the Data</h2>
@@ -878,30 +953,20 @@ a result when all the tables are stacked there are many duplicates. </p>
 <pre><code># drop UID as that will be unique for duplicate records
 ind_noUID &lt;- select(ind, -(uid))
 
-## Error in select(ind, -(uid)): object &#39;ind&#39; not found
-
 status_noUID &lt;- select(status, -(uid))
-
-## Error in select(status, -(uid)): object &#39;status&#39; not found
 
 # remove duplicates
 ## expect many
 
 ind_noD &lt;- distinct(ind_noUID)
-
-## Error in distinct(ind_noUID): object &#39;ind_noUID&#39; not found
-
 nrow(ind_noD)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;nrow&#39;: object &#39;ind_noD&#39; not found
+## [1] 1596
 
 status_noD&lt;-distinct(status_noUID)
-
-## Error in distinct(status_noUID): object &#39;status_noUID&#39; not found
-
 nrow(status_noD)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;nrow&#39;: object &#39;status_noD&#39; not found
+## [1] 216837
 </code></pre>
 
 <h3>Variable Overlap between Tables</h3>
@@ -914,7 +979,11 @@ names between the fields.</p>
 <pre><code># where is there an intersection of names
 intersect(names(status_noD), names(ind_noD))
 
-## Error in intersect(names(status_noD), names(ind_noD)): object &#39;status_noD&#39; not found
+##  [1] &quot;namedLocation&quot;           &quot;domainID&quot;                &quot;siteID&quot;                 
+##  [4] &quot;plotID&quot;                  &quot;date&quot;                    &quot;editedDate&quot;             
+##  [7] &quot;individualID&quot;            &quot;samplingProtocolVersion&quot; &quot;measuredBy&quot;             
+## [10] &quot;recordedBy&quot;              &quot;remarks&quot;                 &quot;dataQF&quot;                 
+## [13] &quot;publicationDate&quot;
 </code></pre>
 
 <p>There are several fields that overlap between the datasets. Some of these are
@@ -946,8 +1015,6 @@ status_noD &lt;- rename(status_noD, dateStat=date,
                                          samplingProtocolVersionStat=samplingProtocolVersion, 
                                          remarksStat=remarks, dataQFStat=dataQF, 
                                          publicationDateStat=publicationDate)
-
-## Error in rename(status_noD, dateStat = date, editedDateStat = editedDate, : object &#39;status_noD&#39; not found
 </code></pre>
 
 <h3>Filter to last editedDate</h3>
@@ -961,14 +1028,10 @@ ind_last &lt;- ind_noD %&gt;%
     group_by(individualID) %&gt;%
     filter(editedDate==max(editedDate))
 
-## Error in eval(lhs, parent, parent): object &#39;ind_noD&#39; not found
-
 # oh wait, duplicate dates, retain only the most recent editedDate
 ind_lastnoD &lt;- ind_last %&gt;%
     group_by(editedDate, individualID) %&gt;%
     filter(row_number()==1)
-
-## Error in eval(lhs, parent, parent): object &#39;ind_last&#39; not found
 </code></pre>
 
 <h3>Join Dataframes</h3>
@@ -985,7 +1048,7 @@ rows from the &ldquo;left&rdquo; (first) dataframe to any rows that also occur i
 <pre><code># Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
 phe_ind &lt;- left_join(status_noD, ind_lastnoD)
 
-## Error in left_join(status_noD, ind_lastnoD): object &#39;status_noD&#39; not found
+## Joining, by = c(&quot;namedLocation&quot;, &quot;domainID&quot;, &quot;siteID&quot;, &quot;plotID&quot;, &quot;individualID&quot;)
 </code></pre>
 
 <p>Now that we have clean datasets we can begin looking into our particular data to 
@@ -1012,8 +1075,6 @@ siteOfInterest &lt;- &quot;SCBI&quot;
 ## could also do it with == instead of %in% but won&#39;t work with vectors
 
 phe_1st &lt;- filter(phe_ind, siteID %in% siteOfInterest)
-
-## Error in filter(phe_ind, siteID %in% siteOfInterest): object &#39;phe_ind&#39; not found
 </code></pre>
 
 <h2>Select Species of Interest</h2>
@@ -1027,12 +1088,13 @@ view both </p>
 <pre><code># see which species are present - taxon ID only
 unique(phe_1st$taxonID)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1st&#39; not found
+## [1] &quot;LITU&quot; &quot;JUNI&quot; &quot;MIVI&quot;
 
 # or see which species are present with taxon ID + species name
 unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=&#39; - &#39;)) 
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1st&#39; not found
+## [1] &quot;LITU - Liriodendron tulipifera L.&quot;             &quot;JUNI - Juglans nigra L.&quot;                      
+## [3] &quot;MIVI - Microstegium vimineum (Trin.) A. Camus&quot;
 </code></pre>
 
 <p>For now, let&#39;s choose only the flowering tree <em>Liriodendron tulipifera</em> (LITU). 
@@ -1045,12 +1107,10 @@ object to select for multiple species. </p>
 # here just use == but could also use %in%
 phe_1sp &lt;- filter(phe_1st, taxonID==speciesOfInterest)
 
-## Error in filter(phe_1st, taxonID == speciesOfInterest): object &#39;phe_1st&#39; not found
-
 # check that it worked
 unique(phe_1sp$taxonID)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1sp&#39; not found
+## [1] &quot;LITU&quot;
 </code></pre>
 
 <h2>Select Phenophase of Interest</h2>
@@ -1060,19 +1120,18 @@ unique(phe_1sp$taxonID)
 <pre><code># see which phenophases are present
 unique(phe_1sp$phenophaseName)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1sp&#39; not found
+## [1] &quot;Falling leaves&quot;       &quot;Open flowers&quot;         &quot;Breaking leaf buds&quot;   &quot;Leaves&quot;              
+## [5] &quot;Colored leaves&quot;       &quot;Increasing leaf size&quot;
 
 phenophaseOfInterest &lt;- &quot;Leaves&quot;
 
 #subset to just the phenosphase of interest 
 phe_1sp &lt;- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
 
-## Error in filter(phe_1sp, phenophaseName %in% phenophaseOfInterest): object &#39;phe_1sp&#39; not found
-
 # check that it worked
 unique(phe_1sp$phenophaseName)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1sp&#39; not found
+## [1] &quot;Leaves&quot;
 </code></pre>
 
 <h2>Select only Primary Plots</h2>
@@ -1098,17 +1157,15 @@ to find the corresponding variables names.
 <pre><code># what plots are present?
 unique(phe_1sp$subtypeSpecification)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1sp&#39; not found
+## [1] &quot;primary&quot;  &quot;phenocam&quot;
 
 # filter
 phe_1spPrimary &lt;- filter(phe_1sp, subtypeSpecification == &#39;primary&#39;)
 
-## Error in filter(phe_1sp, subtypeSpecification == &quot;primary&quot;): object &#39;phe_1sp&#39; not found
-
 # check that it worked
 unique(phe_1spPrimary$subtypeSpecification)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;phe_1spPrimary&#39; not found
+## [1] &quot;primary&quot;
 </code></pre>
 
 <h2>Total in Phenophase of Interest</h2>
@@ -1133,28 +1190,24 @@ sampSize &lt;- phe_1spPrimary %&gt;%
   group_by(dateStat) %&gt;%
   summarise(numInd= n_distinct(individualID))
 
-## Error in eval(lhs, parent, parent): object &#39;phe_1spPrimary&#39; not found
+## `summarise()` ungrouping output (override with `.groups` argument)
 
 # Total in status by day for distinct individuals
 inStat &lt;- phe_1spPrimary%&gt;%
   group_by(dateStat, phenophaseStatus)%&gt;%
   summarise(countYes=n_distinct(individualID))
 
-## Error in eval(lhs, parent, parent): object &#39;phe_1spPrimary&#39; not found
+## `summarise()` regrouping output by &#39;dateStat&#39; (override with `.groups` argument)
 
 inStat &lt;- full_join(sampSize, inStat, by=&quot;dateStat&quot;)
-
-## Error in full_join(sampSize, inStat, by = &quot;dateStat&quot;): object &#39;sampSize&#39; not found
 
 # Retain only Yes
 inStat_T &lt;- filter(inStat, phenophaseStatus %in% &quot;yes&quot;)
 
-## Error in filter(inStat, phenophaseStatus %in% &quot;yes&quot;): object &#39;inStat&#39; not found
-
 # check that it worked
 unique(inStat_T$phenophaseStatus)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;unique&#39;: object &#39;inStat_T&#39; not found
+## [1] &quot;yes&quot;
 </code></pre>
 
 <p>Now that we have the data we can plot it. </p>
@@ -1197,13 +1250,12 @@ We can use <code>geom_bar(stat=&quot;identity&quot;)</code> to force ggplot to p
 phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) 
 
-## Error in ggplot(inStat_T, aes(dateStat, countYes)): object &#39;inStat_T&#39; not found
-
 phenoPlot
+</code></pre>
 
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-1.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
 
-# Now let&#39;s make the plot look a bit more presentable
+<pre><code># Now let&#39;s make the plot look a bit more presentable
 phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Total Individuals in Leaf&quot;) +
@@ -1211,19 +1263,15 @@ phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
-## Error in ggplot(inStat_T, aes(dateStat, countYes)): object &#39;inStat_T&#39; not found
-
 phenoPlot
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-2.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots. Axis labels and title have been added to make the graph more presentable."/></p>
 
 <p>We could also covert this to percentage and plot that. </p>
 
 <pre><code># convert to percent
 inStat_T$percent&lt;- ((inStat_T$countYes)/inStat_T$numInd)*100
-
-## Error in eval(expr, envir, enclos): object &#39;inStat_T&#39; not found
 
 # plot percent of leaves
 phenoPlot_P &lt;- ggplot(inStat_T, aes(dateStat, percent)) +
@@ -1233,12 +1281,10 @@ phenoPlot_P &lt;- ggplot(inStat_T, aes(dateStat, percent)) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
-## Error in ggplot(inStat_T, aes(dateStat, percent)): object &#39;inStat_T&#39; not found
-
 phenoPlot_P
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot_P&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-percentage-1.png" alt="It might also be useful to visualize the data in different ways while exploring the data. As such, before plotting, we can convert our count data into a percentage by writting an expression that divides the number of individuals with a &#39;yes&#39; for the phenophase of interest, &#39;Leaves&#39;, by the total number of individuals and then multiplies the result by 100. Using this newly generated dataset of percentages, we can plot the data similarly to how we did in the previous plot. Only this time, the y-axis range goes from 0 to 100 to reflect the percentage data we just generated. The resulting plot now shows a bar plot of the proportion of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). The y-axis represents the percent of individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
 
 <p>The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
 and drop-off.</p>
@@ -1269,12 +1315,10 @@ we aren&#39;t working with as large a data. </p>
 <pre><code># use filter to select only the date of interest 
 phe_1sp_2018 &lt;- filter(inStat_T, dateStat &gt;= &quot;2018-01-01&quot; &amp; dateStat &lt;= &quot;2018-12-31&quot;)
 
-## Error in filter(inStat_T, dateStat &gt;= &quot;2018-01-01&quot; &amp; dateStat &lt;= &quot;2018-12-31&quot;): object &#39;inStat_T&#39; not found
-
 # did it work?
 range(phe_1sp_2018$dateStat)
 
-## Error in eval(expr, envir, enclos): object &#39;phe_1sp_2018&#39; not found
+## [1] &quot;2018-04-13 GMT&quot; &quot;2018-11-20 GMT&quot;
 </code></pre>
 
 <p>How does that look? </p>
@@ -1287,12 +1331,10 @@ phenoPlot18 &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
-## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object &#39;phe_1sp_2018&#39; not found
-
 phenoPlot18
-
-## Error in eval(expr, envir, enclos): object &#39;phenoPlot18&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-2018-1.png" alt="In the previous step, we filtered our data by date to only include data from 2018. Reviewing the newly generated dataset we get a bar plot showing the count of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
 
 <p>Now that we&#39;ve filtered down to just the 2018 data from SCBI for LITU in leaf, 
 we may want to save that subsetted data for another use. To do that you can write
