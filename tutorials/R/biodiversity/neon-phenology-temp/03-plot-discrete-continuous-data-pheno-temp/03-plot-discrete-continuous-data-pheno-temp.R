@@ -18,9 +18,9 @@ setwd(wd)
 
 ## ----load-data-------------------------------------------------------------------------------------------
 # Read in data -> if in series this is unnecessary
-temp_day <- read.csv('NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv')
+temp_day <- read.csv(paste0(wd,'NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv'))
 
-phe_1sp_2018 <- read.csv('NEON-pheno-temp-timeseries/NEONpheno_LITU_Leaves_SCBI_2018.csv')
+phe_1sp_2018 <- read.csv(paste0(wd,'NEON-pheno-temp-timeseries/NEONpheno_LITU_Leaves_SCBI_2018.csv'))
 
 # Convert dates
 temp_day$Date <- as.Date(temp_day$Date)

@@ -81,26 +81,14 @@ you'll need to load and format those data. If you do, you can skip this code.
 
 
     # Read in data -> if in series this is unnecessary
-    temp_day <- read.csv('NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv')
-
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    phe_1sp_2018 <- read.csv('NEON-pheno-temp-timeseries/NEONpheno_LITU_Leaves_SCBI_2018.csv')
-
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/
-    ## NEONpheno_LITU_Leaves_SCBI_2018.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    temp_day <- read.csv(paste0(wd,'NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv'))
+    
+    phe_1sp_2018 <- read.csv(paste0(wd,'NEON-pheno-temp-timeseries/NEONpheno_LITU_Leaves_SCBI_2018.csv'))
+    
     # Convert dates
     temp_day$Date <- as.Date(temp_day$Date)
     # use dateStat - the date the phenophase status was recorded
     phe_1sp_2018$dateStat <- as.Date(phe_1sp_2018$dateStat)
-
-    ## Error in as.Date(phe_1sp_2018$dateStat): object 'phe_1sp_2018' not found
 
 ## Separate Plots, Same Panel
 
@@ -122,9 +110,7 @@ function from the gridExtra package can help us do this.
         geom_bar(stat="identity", na.rm = TRUE) +
         ggtitle("Total Individuals in Leaf") +
         xlab("") + ylab("Number of Individuals")
-
-    ## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object 'phe_1sp_2018' not found
-
+    
     # create second plot of interest
     tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
         geom_point() +
@@ -134,7 +120,7 @@ function from the gridExtra package can help us do this.
     # Then arrange the plots - this can be done with >2 plots as well.
     grid.arrange(phenoPlot, tempPlot_dayMax) 
 
-    ## Error in arrangeGrob(...): object 'phenoPlot' not found
+![One graphic showing two plots arranged vertically by using the grid.arrange function form the gridExtra package. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/stacked-plots-1.png)
 
 Now, we can see both plots in the same window.  But, hmmm... the x-axis on both 
 plots is kinda wonky. We want the same spacing in the scale across the year (e.g.,
@@ -169,7 +155,7 @@ class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
     phenoPlot <- phenoPlot + 
       (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
 
-    ## Error in eval(expr, envir, enclos): object 'phenoPlot' not found
+    ## Error in date_breaks("1 month"): could not find function "date_breaks"
 
     tempPlot_dayMax <- tempPlot_dayMax +
       (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
@@ -179,7 +165,7 @@ class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
     # New plot. 
     grid.arrange(phenoPlot, tempPlot_dayMax) 
 
-    ## Error in arrangeGrob(...): object 'phenoPlot' not found
+![Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read 'month' in both plots. However, it is important to note that this step only partially fixes the problem. The plots still have different ranges on the x-axis, which makes it harder to see trends. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/format-x-axis-labels-1.png)
 
 But this only solves one of the problems, we still have a different range on the
 x-axis which makes it harder to see trends. 
@@ -206,7 +192,7 @@ parameter to the `scale_x_date()` function.
                       labels = date_format("%b"),
                       limits = as.Date(c('2018-01-01','2018-12-31')))
 
-    ## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object 'phe_1sp_2018' not found
+    ## Error in date_breaks("1 month"): could not find function "date_breaks"
 
     # create second plot of interest
     tempPlot_dayMax_setX <- ggplot(temp_day, aes(Date, dayMax)) +
@@ -237,16 +223,11 @@ the we only plot the data from the overlapping dates.
     # filter to only having overlapping data
     temp_day_filt <- filter(temp_day, Date >= min(phe_1sp_2018$date) & 
                              Date <= max(phe_1sp_2018$date))
-
-    ## Error: Problem with `filter()` input `..1`.
-    ## x object 'phe_1sp_2018' not found
-    ## ℹ Input `..1` is `Date >= min(phe_1sp_2018$date) & Date <= max(phe_1sp_2018$date)`.
-    ## ℹ The error occurred in group 1: Date = 2018-01-01.
-
+    
     # Check 
     range(phe_1sp_2018$date)
 
-    ## Error in eval(expr, envir, enclos): object 'phe_1sp_2018' not found
+    ## [1] "2018-04-13" "2018-11-20"
 
     range(temp_day_fit$Date)
 
@@ -259,11 +240,11 @@ the we only plot the data from the overlapping dates.
         ggtitle("Daily Max Air Temperature") +
         xlab("Date") + ylab("Temp (C)")
 
-    ## Error in ggplot(temp_day_filt, aes(Date, dayMax)): object 'temp_day_filt' not found
+    ## Error in date_breaks("months"): could not find function "date_breaks"
 
     grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 
-    ## Error in arrangeGrob(...): object 'phenoPlot' not found
+    ## Error in arrangeGrob(...): object 'tempPlot_dayMaxFiltered' not found
 
 With this plot, we really look at the area of overlap in the plotted data (but 
 this does cut out the time where the data are collected but not plotted). 
@@ -311,7 +292,7 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             axis.title.x=element_text(size=20),
             axis.title.y=element_text(size=20))
 
-    ## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object 'phe_1sp_2018' not found
+    ## Error in date_breaks("1 month"): could not find function "date_breaks"
 
     tempPlot_dayMax_corr_2 <- ggplot() +
       geom_point(data = temp_day_fit, aes(Date, dayMax),color="red") +
@@ -396,7 +377,7 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             axis.title.x=element_text(size=20),
             axis.title.y=element_text(size=20))
 
-    ## Error in ggplot(phe_1sp_2018, aes(dateStat, countYes)): object 'phe_1sp_2018' not found
+    ## Error in date_breaks("months"): could not find function "date_breaks"
 
     tempPlot_dayMax_corr_3 <- ggplot() +
       geom_line(data = temp_day_fit, aes(Date, dayMax),color="red") +
