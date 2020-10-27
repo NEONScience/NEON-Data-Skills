@@ -541,14 +541,14 @@ function.
 
 ```{r calc-total-yes}
 # Calculate sample size for later use
-sampSize <- phe_1spPrimary%>%
-  group_by(dateStat)%>%
-  summarize(numInd= n_distinct(individualID))
+sampSize <- phe_1spPrimary %>%
+  group_by(dateStat) %>%
+  summarise(numInd= n_distinct(individualID))
 
 # Total in status by day for distinct individuals
 inStat <- phe_1spPrimary%>%
   group_by(dateStat, phenophaseStatus)%>%
-  summarize(countYes=n_distinct(individualID))
+  summarise(countYes=n_distinct(individualID))
 
 inStat <- full_join(sampSize, inStat, by="dateStat")
 

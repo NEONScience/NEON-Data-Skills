@@ -68,14 +68,7 @@ previous tutorial in this series, you'll only need to load the new packages.
     library(ggplot2)
     library(dplyr)
     library(gridExtra)
-
-    ## 
-    ## Attaching package: 'gridExtra'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-
+    
     options(stringsAsFactors=F) #keep strings as character type not factors
     
     # set working directory to ensure R can find the file we wish to import and where
@@ -88,15 +81,17 @@ you'll need to load and format those data. If you do, you can skip this code.
 
 
     # Read in data -> if in series this is unnecessary
-    temp_day <- read.csv('NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv')
+    temp_day <- read.csv('NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv')
 
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv': No such file or directory
+    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv': No
+    ## such file or directory
 
     ## Error in file(file, "rt"): cannot open the connection
 
-    phe_1sp_2018 <- read.csv('NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv')
+    phe_1sp_2018 <- read.csv('NEON-pheno-temp-timeseries/NEONpheno_LITU_Leaves_SCBI_2018.csv')
 
-    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv': No such file or directory
+    ## Warning in file(file, "rt"): cannot open file 'NEON-pheno-temp-timeseries/
+    ## NEONpheno_LITU_Leaves_SCBI_2018.csv': No such file or directory
 
     ## Error in file(file, "rt"): cannot open the connection
 
