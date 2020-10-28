@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Get a NEON API Token</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>NEON data can be downloaded from either the NEON Data Portal or the NEON API. 
+When downloading from the Data Portal, you can create a user account. Read 
+about the benefits of an account on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>. You can also use your account to create a token for using the 
+API. Your token is unique to your account, so don&#39;t share it.</p>
+
+<p>Using a token is optional! You can download data without a token, and 
+without a user account. Using a token when downloading data via the API, 
+including when using the neonUtilities package, links your downloads to 
+your user account, as well as enabling faster download speeds. For more 
+information about token usage and benefits, see the 
+<a href="https://data.neonscience.org/data-api" target="_blank">NEON API documentation</a> page.</p>
+
+<p>For now, in addition to faster downloads, using a token helps NEON to track 
+data downloads. Using <strong>anonymized</strong> user information, we can then calculate 
+data access statistics, such as which data products are downloaded most 
+frequently, which data products are downloaded in groups by the same users, 
+and how many users in total are downloading data. This information helps NEON 
+to evaluate the growth and reach of the observatory, and to advocate for 
+training activities, workshops, and software development.</p>
+
+<p>Tokens can be used whenever you use the NEON API. In this tutorial, we&#39;ll 
+focus on using tokens with the neonUtilities R package.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Create a NEON API token 
+ * Use your token when downloading data with neonUtilities 
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (3.4.1 or higher) and, preferably, RStudio 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
+* <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>
+
+</div>
+
+<p>If you&#39;ve never downloaded NEON data using the neonUtilities package before, 
+we recommend starting with the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a> before proceeding with this tutorial.</p>
+
+<p>In the next sections, we&#39;ll get an API token from the NEON Data Portal, and 
+then use it in neonUtilities when downloading data.</p>
+
+<h2>Get a NEON API Token</h2>
+
+<p>The first step is create a NEON user account, if you don&#39;t have one. 
+Follow the instructions on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">Data Portal User Accounts</a> page. If you do already 
+have an account, go to <a href="https://data.neonscience.org/home" target="_blank">the NEON Data Portal</a>, 
+sign in, and go to your My Account profile page.</p>
+
+<p>Once you have an account, you can create an API token for yourself. At 
+the bottom of the My Account page, you should see this bar: </p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png" alt="Account page on NEON Data Portal showing Get API Token button."></a>
+</figure>
+
+<p>Click the &#39;GET API TOKEN&#39; button. After a moment, you should see this:</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/account-page-token-view.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/account-page-token-view.png" alt="Account page on NEON Data Portal showing API token has been created."></a>
+</figure>
+
+<p>Click on the Copy button to copy your API token to the clipboard:</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/api-token-copy-button.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
+</figure>
+
+<h2>Use API token in neonUtilities</h2>
+
+<p>In the next section, we&#39;ll walk through saving your token somewhere secure but 
+accessible to your code. But first let&#39;s try out using the token the easy way.</p>
+
+<p>First, we need to load the <code>neonUtilities</code> package and set the working 
+directory:</p>
+
+<pre><code># install neonUtilities - can skip if already installed, but
+# API tokens are only enabled in neonUtilities v1.3.4 and higher
+# if your version number is lower, re-install
+install.packages(&quot;neonUtilities&quot;)
+
+# load neonUtilities
+library(neonUtilities)
+
+# set working directory
+wd &lt;- &quot;~/data&quot; # this will depend on your local machine
+setwd(wd)
+</code></pre>
+
+<p>NEON API tokens are very long, so it would be annoying to keep pasting the 
+entire text string into functions. Assign your token an object name:</p>
+
+<pre><code>NEON_TOKEN &lt;- &quot;PASTE YOUR TOKEN HERE&quot;
+</code></pre>
+
+<p>Now we&#39;ll use the <code>loadByProduct()</code> function to download data. Your 
+API token is entered as the optional <code>token</code> input parameter. For 
+this example, we&#39;ll download Plant foliar traits (DP1.10026.001).</p>
+
+<pre><code>foliar &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;, site=&quot;all&quot;, 
+                        package=&quot;expanded&quot;, check.size=F,
+                        token=NEON_TOKEN)
+</code></pre>
+
+<p>You should now have data saved in the <code>foliar</code> object; the API 
+silently used your token. If you&#39;ve downloaded data without a 
+token before, you may notice this is faster!</p>
+
+<p>This format applies to all <code>neonUtilities</code> functions that involve 
+downloading data or otherwise accessing the API; you can use the 
+<code>token</code> input with all of them. For example, when downloading 
+remote sensing data:</p>
+
+<pre><code>chm &lt;- byTileAOP(dpID=&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, 
+                 year=2017, check.size=F,
+                 easting=c(571000,578000), 
+                 northing=c(5079000,5080000), 
+                 savepath=wd,
+                 token=NEON_TOKEN)
+</code></pre>
+
+<h2>Token management for open code</h2>
+
+<p>Your API token is unique to your account, so don&#39;t share it!</p>
+
+<p>If you&#39;re writing code that will be shared with colleagues or available 
+publicly, such as in a GitHub repository or supplemental materials of a 
+published paper, you can&#39;t include the line of code above where we assigned 
+your token to <code>NEON_TOKEN</code>, since your token is fully visible in the code 
+there. Instead, you&#39;ll need to save your token locally on your computer, 
+and pull it into your code without displaying it. There are a few ways to 
+do this, we&#39;ll show two options here.</p>
+
+<ul>
+<li><p>Option 1: Save the token in a local file, and <code>source()</code> that file at the 
+start of every script. This is fairly simple but requires a line of code in 
+every script.</p></li>
+<li><p>Option 2: Add the token to a <code>.Renviron</code> file to create an environment 
+variable that gets loaded when you open R. This is a little harder to set 
+up initially, but once it&#39;s done, it&#39;s done globally, and it will work in 
+every script you run.</p></li>
+</ul>
+
+<h2>Option 1: Save token in a local file</h2>
+
+<p>Open a new, empty R script (.R). Put a single line of code in the script:</p>
+
+<pre><code>NEON_TOKEN &lt;- &quot;PASTE YOUR TOKEN HERE&quot;
+</code></pre>
+
+<p>Save this file in a logical place on your machine, somewhere that won&#39;t be 
+visible publicly. Here, let&#39;s call the file <code>neon_token_source.R</code>, and 
+save it to the working directory. Then, at the start of 
+every script where you&#39;re going to use the NEON API, you would run this line 
+of code:</p>
+
+<pre><code>source(paste0(wd, &quot;/neon_token_source.R&quot;))
+</code></pre>
+
+<p>Then you&#39;ll be able to use <code>token=NEON_TOKEN</code> when you run <code>neonUtilities</code> 
+functions, and you can share your code without accidentally sharing your 
+token.</p>
+
+<h2>Option 2: Save token to the R environment</h2>
+
+<p>To create a persistent environment variable, we use a <code>.Renviron</code> file. 
+Before creating a file, check which directory R is using as your home 
+directory:</p>
+
+<pre><code># For Windows:
+Sys.getenv(&quot;R_USER&quot;)
+
+# For Mac/Linux:
+Sys.getenv(&quot;HOME&quot;)
+</code></pre>
+
+<p>Check the home directory to see if you already have a <code>.Renviron</code> file, <strong>using 
+the file browse pane in RStudio</strong>, or using another file browse method with 
+hidden files shown. Files that begin with <code>.</code> are hidden by default, but 
+RStudio recognizes files that begin with <code>.R</code> and displays them.</p>
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/R-environ-file-browse.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/R-environ-file-browse.png" alt="File browse pane in RStudio showing .Renviron file."></a>
+    <figcaption>Screenshot of file browse pane with .Renviron file. 
+    </figcaption>
+</figure>
+
+<p>If you already have a <code>.Renviron</code> file, open it and follow the instructions 
+below to add to it. If you don&#39;t have one, create one using File -&gt; New File 
+-&gt; Text File in the RStudio menus.</p>
+
+<p>Add one line to the text file. In this option, there are no quotes around the 
+token value.</p>
+
+<pre><code>NEON_TOKEN=PASTE YOUR TOKEN HERE
+</code></pre>
+
+<p>Save the file as <code>.Renviron</code>, in the RStudio home directory identified above. 
+Double check the spelling, this will not work if you have a typo. Re-start 
+R to load the environment.</p>
+
+<p>Once your token is assigned to an environment variable, use the function 
+<code>Sys.getenv()</code> to access it. For example, in <code>loadByProduct()</code>:</p>
+
+<pre><code>foliar &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;, site=&quot;all&quot;, 
+                        package=&quot;expanded&quot;, check.size=F,
+                        token=Sys.getenv(&quot;NEON_TOKEN&quot;))
+</code></pre>
+
+</body>
+
+</html>

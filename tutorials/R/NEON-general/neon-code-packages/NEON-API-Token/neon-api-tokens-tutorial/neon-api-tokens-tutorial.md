@@ -10,7 +10,7 @@ packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: DP1.10026.001, DP3.30015.001
-code1: R/api-token/neon-api-tokens-tutorial.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/neon-api-tokens-tutorial.R
 tutorialSeries:
 urlTitle: neon-api-tokens-tutorial
 
@@ -106,42 +106,33 @@ accessible to your code. But first let's try out using the token the easy way.
 First, we need to load the `neonUtilities` package and set the working 
 directory:
 
-```{r loadStuff, eval=FALSE, comment=NA}
 
-# install neonUtilities - can skip if already installed, but
-# API tokens are only enabled in neonUtilities v1.3.4 and higher
-# if your version number is lower, re-install
-install.packages("neonUtilities")
-
-# load neonUtilities
-library(neonUtilities)
-
-# set working directory
-wd <- "~/data" # this will depend on your local machine
-setwd(wd)
-
-```
+    # install neonUtilities - can skip if already installed, but
+    # API tokens are only enabled in neonUtilities v1.3.4 and higher
+    # if your version number is lower, re-install
+    install.packages("neonUtilities")
+    
+    # load neonUtilities
+    library(neonUtilities)
+    
+    # set working directory
+    wd <- "~/data" # this will depend on your local machine
+    setwd(wd)
 
 NEON API tokens are very long, so it would be annoying to keep pasting the 
 entire text string into functions. Assign your token an object name:
 
-```{r nameToken, eval=FALSE, comment=NA}
 
-NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
-
-```
+    NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 Now we'll use the `loadByProduct()` function to download data. Your 
 API token is entered as the optional `token` input parameter. For 
 this example, we'll download Plant foliar traits (DP1.10026.001).
 
-```{r getCFC, eval=FALSE, comment=NA}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token=NEON_TOKEN)
-
-```
+    foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                            package="expanded", check.size=F,
+                            token=NEON_TOKEN)
 
 You should now have data saved in the `foliar` object; the API 
 silently used your token. If you've downloaded data without a 
@@ -152,16 +143,13 @@ downloading data or otherwise accessing the API; you can use the
 `token` input with all of them. For example, when downloading 
 remote sensing data:
 
-```{r getAOP, eval=FALSE, comment=NA}
 
-chm <- byTileAOP(dpID="DP3.30015.001", site="WREF", 
-                 year=2017, check.size=F,
-                 easting=c(571000,578000), 
-                 northing=c(5079000,5080000), 
-                 savepath=wd,
-                 token=NEON_TOKEN)
-
-```
+    chm <- byTileAOP(dpID="DP3.30015.001", site="WREF", 
+                     year=2017, check.size=F,
+                     easting=c(571000,578000), 
+                     northing=c(5079000,5080000), 
+                     savepath=wd,
+                     token=NEON_TOKEN)
 
 ## Token management for open code
 
@@ -188,11 +176,8 @@ every script you run.
 
 Open a new, empty R script (.R). Put a single line of code in the script:
 
-```{r scriptToSource, eval=FALSE, comment=NA}
 
-NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
-
-```
+    NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
 Save this file in a logical place on your machine, somewhere that won't be 
 visible publicly. Here, let's call the file `neon_token_source.R`, and 
@@ -200,11 +185,8 @@ save it to the working directory. Then, at the start of
 every script where you're going to use the NEON API, you would run this line 
 of code:
 
-```{r source, eval=FALSE, comment=NA}
 
-source(paste0(wd, "/neon_token_source.R"))
-
-```
+    source(paste0(wd, "/neon_token_source.R"))
 
 Then you'll be able to use `token=NEON_TOKEN` when you run `neonUtilities` 
 functions, and you can share your code without accidentally sharing your 
@@ -216,15 +198,12 @@ To create a persistent environment variable, we use a `.Renviron` file.
 Before creating a file, check which directory R is using as your home 
 directory:
 
-```{r getdir, eval=FALSE, comment=NA}
 
-# For Windows:
-Sys.getenv("R_USER")
-
-# For Mac/Linux:
-Sys.getenv("HOME")
-
-```
+    # For Windows:
+    Sys.getenv("R_USER")
+    
+    # For Mac/Linux:
+    Sys.getenv("HOME")
 
 Check the home directory to see if you already have a `.Renviron` file, **using 
 the file browse pane in RStudio**, or using another file browse method with 
@@ -245,11 +224,8 @@ below to add to it. If you don't have one, create one using File -> New File
 Add one line to the text file. In this option, there are no quotes around the 
 token value.
 
-```{r Renviron, eval=FALSE, comment=NA}
 
-NEON_TOKEN=PASTE YOUR TOKEN HERE
-
-```
+    NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 Save the file as `.Renviron`, in the RStudio home directory identified above. 
 Double check the spelling, this will not work if you have a typo. Re-start 
@@ -258,12 +234,9 @@ R to load the environment.
 Once your token is assigned to an environment variable, use the function 
 `Sys.getenv()` to access it. For example, in `loadByProduct()`:
 
-```{r useEnvtToken, eval=FALSE, comment=NA}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
-                        package="expanded", check.size=F,
-                        token=Sys.getenv("NEON_TOKEN"))
-
-```
+    foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+                            package="expanded", check.size=F,
+                            token=Sys.getenv("NEON_TOKEN"))
 
 
