@@ -4,8 +4,6 @@
 ## install.packages("neonUtilities")
 ## install.packages("raster")
 ## devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-## install.packages("BiocManager")
-## BiocManager::install("rhdf5")
 ## 
 
 
@@ -15,7 +13,6 @@
 library(neonUtilities)
 library(geoNEON)
 library(raster)
-library(rhdf5)
 
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)

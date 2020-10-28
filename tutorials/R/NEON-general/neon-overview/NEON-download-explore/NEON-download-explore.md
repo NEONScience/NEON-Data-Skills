@@ -3,10 +3,11 @@ syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
 description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
 dateCreated: '2018-11-07'
+dataProducts: DP1.10098.001, DP3.30015.001
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 estimatedTime: 1 - 2 hours
-packagesLibraries: [devtools, geoNEON, neonUtilities, rhdf5, raster]
+packagesLibraries: [devtools, geoNEON, neonUtilities, raster]
 topics: data-management, rep-sci
 languageTool: R, API
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
@@ -53,7 +54,6 @@ preferably, RStudio loaded on your computer.
 * **neonUtilities**: Basic functions for accessing NEON data
 * **raster**: Raster package; needed for remote sensing data
 * **geoNEON**: For working with NEON spatial data
-* **rhdf5**: HDF5 package; optional, needed only for eddy covariance data
 
 Some of these packages are on CRAN and can be installed by 
 `install.packages()`, others need to be installed from 
@@ -64,8 +64,6 @@ other repositories:
     install.packages("neonUtilities")
     install.packages("raster")
     devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-    install.packages("BiocManager")
-    BiocManager::install("rhdf5")
 
 
 ### Additional Resources
@@ -84,9 +82,9 @@ Go to the
 and download some data! Almost any IS or OS data product can be used for this 
 section of the tutorial, but we will proceed assuming you've downloaded 
 Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
-results, download three months of data from two sites. The downloaded file 
+results, download three months of data from one site. The downloaded file 
 should be a zip file named NEON_par.zip. For this tutorial, we will be using 
-PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.
+PAR data from the Wind River Experimental Forest (WREF) in Washington state from October-December 2019.
 
 Now switch over to R and load all the packages installed above.
 
@@ -95,7 +93,6 @@ Now switch over to R and load all the packages installed above.
     library(neonUtilities)
     library(geoNEON)
     library(raster)
-    library(rhdf5)
     
     # Set global option to NOT convert all character variables to factors
     options(stringsAsFactors=F)

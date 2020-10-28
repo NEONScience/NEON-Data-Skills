@@ -205,7 +205,6 @@ preferably, RStudio loaded on your computer.
 * **neonUtilities**: Basic functions for accessing NEON data
 * **raster**: Raster package; needed for remote sensing data
 * **geoNEON**: For working with NEON spatial data
-* **rhdf5**: HDF5 package; optional, needed only for eddy covariance data
 
 Some of these packages are on CRAN and can be installed by 
 install.packages(), others need to be installed from 
@@ -216,8 +215,6 @@ other repositories:
     install.packages(&ldquo;neonUtilities&rdquo;)
     install.packages(&ldquo;raster&rdquo;)
     devtools::install_github(&ldquo;NEONScience/NEON-geolocation/geoNEON&rdquo;)
-    install.packages(&ldquo;BiocManager&rdquo;)
-    BiocManager::install(&ldquo;rhdf5&rdquo;)
 
 
 ### Additional Resources
@@ -236,9 +233,9 @@ other repositories:
 and download some data! Almost any IS or OS data product can be used for this 
 section of the tutorial, but we will proceed assuming you&#39;ve downloaded 
 Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
-results, download three months of data from two sites. The downloaded file 
+results, download three months of data from one site. The downloaded file 
 should be a zip file named NEON_par.zip. For this tutorial, we will be using 
-PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.</p>
+PAR data from the Wind River Experimental Forest (WREF) in Washington state from October-December 2019.</p>
 
 <p>Now switch over to R and load all the packages installed above.</p>
 
@@ -246,7 +243,6 @@ PAR data from the Wind Reiver Experimental Forest (WREF) in Washington state.</p
 library(neonUtilities)
 library(geoNEON)
 library(raster)
-library(rhdf5)
 
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
