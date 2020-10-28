@@ -122,7 +122,7 @@ within view of a canopy level, tower-mounted, phenology camera.
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"
 	alt="Diagram of a phenology transect layout, with meter layout marked. Point-level geolocations are recorded at eight reference
-	points along the perimeter; plot-level geolocation at the plot centroid(star).>
+	points along the perimeter; plot-level geolocation at the plot centroid(star).">
 	</a>
 	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
 	Point-level geolocations are recorded at eight reference points along the 
