@@ -9,7 +9,7 @@ estimatedTime: 3 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci, data-viz
 languageTool: R, API
-code1: R/download-ais-data/download-NEON-AIS-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
