@@ -63,11 +63,13 @@ previous tutorial in this series, you'll only need to load the new packages.
     # Install needed package (only uncomment & run if not already installed)
     #install.packages("dplyr")
     #install.packages("ggplot2")
+    #install.packages("scales")
     
     # Load required libraries
     library(ggplot2)
     library(dplyr)
     library(gridExtra)
+    library(scales)
     
     options(stringsAsFactors=F) #keep strings as character type not factors
     
@@ -154,14 +156,10 @@ class (e.g. POSIXct), you can use `scale_x_datetime` instead of `scale_x_date`.
     # format x-axis: dates
     phenoPlot <- phenoPlot + 
       (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
-
-    ## Error in date_breaks("1 month"): could not find function "date_breaks"
-
+    
     tempPlot_dayMax <- tempPlot_dayMax +
       (scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b")))
-
-    ## Error in date_breaks("1 month"): could not find function "date_breaks"
-
+    
     # New plot. 
     grid.arrange(phenoPlot, tempPlot_dayMax) 
 
@@ -191,9 +189,7 @@ parameter to the `scale_x_date()` function.
         scale_x_date(breaks = date_breaks("1 month"), 
                       labels = date_format("%b"),
                       limits = as.Date(c('2018-01-01','2018-12-31')))
-
-    ## Error in date_breaks("1 month"): could not find function "date_breaks"
-
+    
     # create second plot of interest
     tempPlot_dayMax_setX <- ggplot(temp_day, aes(Date, dayMax)) +
         geom_point() +
@@ -202,13 +198,11 @@ parameter to the `scale_x_date()` function.
         scale_x_date(date_breaks = "1 month", 
                      labels=date_format("%b"),
                       limits = as.Date(c('2018-01-01','2018-12-31')))
-
-    ## Error in date_format("%b"): could not find function "date_format"
-
+    
     # Plot
     grid.arrange(phenoPlot_setX, tempPlot_dayMax_setX) 
 
-    ## Error in arrangeGrob(...): object 'phenoPlot_setX' not found
+![Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read 'month', and scaled so they align with each other. This is achieved by adding the limits parameter to the scale_x_date function in the ggplot call. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/set-x-axis-1.png)
 
 Now we can really see the pattern over the full year. This emphasizes the point
 that during much of the late fall, winter, and early spring none of the trees 
@@ -229,9 +223,9 @@ the we only plot the data from the overlapping dates.
 
     ## [1] "2018-04-13" "2018-11-20"
 
-    range(temp_day_fit$Date)
+    range(temp_day_filt$Date)
 
-    ## Error in eval(expr, envir, enclos): object 'temp_day_fit' not found
+    ## [1] "2018-04-13" "2018-11-20"
 
     #plot again
     tempPlot_dayMaxFiltered <- ggplot(temp_day_filt, aes(Date, dayMax)) +
@@ -239,12 +233,11 @@ the we only plot the data from the overlapping dates.
         scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
         ggtitle("Daily Max Air Temperature") +
         xlab("Date") + ylab("Temp (C)")
-
-    ## Error in date_breaks("months"): could not find function "date_breaks"
-
+    
+    
     grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 
-    ## Error in arrangeGrob(...): object 'tempPlot_dayMaxFiltered' not found
+![Graphic of the arranged plots created in the previous steps with only the data that overlap. This was achieved by filtering the daily max temperature data by the observation date in the total individuals in Leaf dataset. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/align-datasets-replot-1.png)
 
 With this plot, we really look at the area of overlap in the plotted data (but 
 this does cut out the time where the data are collected but not plotted). 
@@ -291,11 +284,10 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             axis.text.y=element_text(size=20),
             axis.title.x=element_text(size=20),
             axis.title.y=element_text(size=20))
-
-    ## Error in date_breaks("1 month"): could not find function "date_breaks"
-
+    
+    
     tempPlot_dayMax_corr_2 <- ggplot() +
-      geom_point(data = temp_day_fit, aes(Date, dayMax),color="red") +
+      geom_point(data = temp_day_filt, aes(Date, dayMax),color="red") +
       scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
       xlab("") + ylab("Temp (C)") +
       theme_bw() %+replace% 
@@ -306,60 +298,25 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             panel.grid.minor.y=element_blank(),
             axis.text.y=element_text(size=20,color="red"),
             axis.title.y=element_text(size=20))
-
-    ## Error in fortify(data): object 'temp_day_fit' not found
-
+    
     g1<-ggplot_gtable(ggplot_build(phenoPlot_2))
-
-    ## Error in ggplot_build(phenoPlot_2): object 'phenoPlot_2' not found
-
     g2<-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_2))
-
-    ## Error in ggplot_build(tempPlot_dayMax_corr_2): object 'tempPlot_dayMax_corr_2' not found
-
+    
     pp<-c(subset(g1$layout,name=="panel",se=t:r))
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'g1' not found
-
     g<-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name=="panel")]],pp$t,pp$l,pp$b,pp$l)
-
-    ## Error in is.gtable(x): object 'g1' not found
-
+    
     ia<-which(g2$layout$name=="axis-l")
-
-    ## Error in which(g2$layout$name == "axis-l"): object 'g2' not found
-
     ga <- g2$grobs[[ia]]
-
-    ## Error in eval(expr, envir, enclos): object 'g2' not found
-
     ax <- ga$children[[2]]
-
-    ## Error in eval(expr, envir, enclos): object 'ga' not found
-
     ax$widths <- rev(ax$widths)
-
-    ## Error in rev(ax$widths): object 'ax' not found
-
     ax$grobs <- rev(ax$grobs)
-
-    ## Error in rev(ax$grobs): object 'ax' not found
-
     ax$grobs[[1]]$x <- ax$grobs[[1]]$x - unit(1, "npc") + unit(0.15, "cm")
-
-    ## Error in eval(expr, envir, enclos): object 'ax' not found
-
     g <- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
-
-    ## Error in is.gtable(x): object 'g' not found
-
     g <- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
-
-    ## Error in is.gtable(x): object 'g' not found
-
+    
     grid.draw(g)
 
-    ## Error in grid.draw(g): object 'g' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-1.png)
 
     # Plot 2: Both pheno data and temp data as line graphs
     grid.newpage()
@@ -376,11 +333,9 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             axis.text.y=element_text(size=20),
             axis.title.x=element_text(size=20),
             axis.title.y=element_text(size=20))
-
-    ## Error in date_breaks("months"): could not find function "date_breaks"
-
+    
     tempPlot_dayMax_corr_3 <- ggplot() +
-      geom_line(data = temp_day_fit, aes(Date, dayMax),color="red") +
+      geom_line(data = temp_day_filt, aes(Date, dayMax),color="red") +
       scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
       xlab("") + ylab("Temp (C)") +
       theme_bw() %+replace% 
@@ -391,58 +346,23 @@ This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10
             panel.grid.minor.y=element_blank(),
             axis.text.y=element_text(size=20,color="red"),
             axis.title.y=element_text(size=20))
-
-    ## Error in fortify(data): object 'temp_day_fit' not found
-
+    
     g1<-ggplot_gtable(ggplot_build(phenoPlot_3))
-
-    ## Error in ggplot_build(phenoPlot_3): object 'phenoPlot_3' not found
-
     g2<-ggplot_gtable(ggplot_build(tempPlot_dayMax_corr_3))
-
-    ## Error in ggplot_build(tempPlot_dayMax_corr_3): object 'tempPlot_dayMax_corr_3' not found
-
+    
     pp<-c(subset(g1$layout,name=="panel",se=t:r))
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'g1' not found
-
     g<-gtable_add_grob(g1, g2$grobs[[which(g2$layout$name=="panel")]],pp$t,pp$l,pp$b,pp$l)
-
-    ## Error in is.gtable(x): object 'g1' not found
-
+    
     ia<-which(g2$layout$name=="axis-l")
-
-    ## Error in which(g2$layout$name == "axis-l"): object 'g2' not found
-
     ga <- g2$grobs[[ia]]
-
-    ## Error in eval(expr, envir, enclos): object 'g2' not found
-
     ax <- ga$children[[2]]
-
-    ## Error in eval(expr, envir, enclos): object 'ga' not found
-
     ax$widths <- rev(ax$widths)
-
-    ## Error in rev(ax$widths): object 'ax' not found
-
     ax$grobs <- rev(ax$grobs)
-
-    ## Error in rev(ax$grobs): object 'ax' not found
-
     ax$grobs[[1]]$x <- ax$grobs[[1]]$x - unit(1, "npc") + unit(0.15, "cm")
-
-    ## Error in eval(expr, envir, enclos): object 'ax' not found
-
     g <- gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
-
-    ## Error in is.gtable(x): object 'g' not found
-
     g <- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
-
-    ## Error in is.gtable(x): object 'g' not found
-
+    
     grid.draw(g)
 
-    ## Error in grid.draw(g): object 'g' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-2.png)
 

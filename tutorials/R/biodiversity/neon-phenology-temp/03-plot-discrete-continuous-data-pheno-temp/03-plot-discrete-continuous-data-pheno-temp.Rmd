@@ -63,11 +63,13 @@ previous tutorial in this series, you'll only need to load the new packages.
 # Install needed package (only uncomment & run if not already installed)
 #install.packages("dplyr")
 #install.packages("ggplot2")
+#install.packages("scales")
 
 # Load required libraries
 library(ggplot2)
 library(dplyr)
 library(gridExtra)
+library(scales)
 
 options(stringsAsFactors=F) #keep strings as character type not factors
 
@@ -221,7 +223,7 @@ temp_day_filt <- filter(temp_day, Date >= min(phe_1sp_2018$date) &
 
 # Check 
 range(phe_1sp_2018$date)
-range(temp_day_fit$Date)
+range(temp_day_filt$Date)
 
 #plot again
 tempPlot_dayMaxFiltered <- ggplot(temp_day_filt, aes(Date, dayMax)) +
@@ -284,7 +286,7 @@ phenoPlot_2 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
 
 
 tempPlot_dayMax_corr_2 <- ggplot() +
-  geom_point(data = temp_day_fit, aes(Date, dayMax),color="red") +
+  geom_point(data = temp_day_filt, aes(Date, dayMax),color="red") +
   scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
   xlab("") + ylab("Temp (C)") +
   theme_bw() %+replace% 
@@ -331,7 +333,7 @@ phenoPlot_3 <- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
         axis.title.y=element_text(size=20))
 
 tempPlot_dayMax_corr_3 <- ggplot() +
-  geom_line(data = temp_day_fit, aes(Date, dayMax),color="red") +
+  geom_line(data = temp_day_filt, aes(Date, dayMax),color="red") +
   scale_x_date(breaks = date_breaks("months"), labels = date_format("%b")) +
   xlab("") + ylab("Temp (C)") +
   theme_bw() %+replace% 
