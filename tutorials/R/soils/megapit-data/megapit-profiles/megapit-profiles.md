@@ -75,68 +75,44 @@ the R packages needed for data load and analysis.
     library(dplyr)
     library(Ternary)
 
-Megapit chemical and physical properties:
+Megapit physical and chemial properties:
 
-* <a href="https://data.neonscience.org/data-products/DP1.00096.001">Soil physical properties (Megapit) DP1.00096.001</a>
-* <a href="https://data.neonscience.org/data-products/DP1.00097.001">>Soil chemical properties (Megapit) DP1.00097.001</a>
+* <a href="https://data.neonscience.org/data-products/DP1.00096.001">Soil physical and chemical properties, Megapit DP1.00096.001</a>
 
 In this exercise, we want all available data, so we won't subset by 
 site or date range.
 
 
     MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
-    MC <- loadByProduct(dpID = "DP1.00097.001", check.size = F)
-
-    ## Error in zipsByProduct(dpID = dpID, site = site, startdate = startdate, : There are no data at the selected site(s).
-
+    
     # Unlist to environment - see download/explore tutorial for description
     list2env(MP, .GlobalEnv)
-    list2env(MC, .GlobalEnv)
 
-    ## Error in list2env(MC, .GlobalEnv): object 'MC' not found
+## Merge Tables
 
-## Merge Tables and Data Products
-
-Quite a bit of data is duplicated between the two data products, since 
-the pit-level and horizon-level data are relevant to both the chemical 
-and physical data. There is a `_perhorizon` table in both data products, 
-containing data about the soil horizon identification and depths.
-
-We'll join the horizon data to the biogeochemistry data in order to 
-see depth profile of biogeochemical characteristics. The variables 
+We'll join the horizon data to the physical and chemical characteristics data in order to 
+see a depth profile of biogeochemical characteristics. The variables 
 needed to join correctly are horizon (either name or ID) and either 
 pitID or siteID, but we'll include several other columns that appear 
 in both tables, to avoid creaing duplicate columns.
 
 
+    # duplicate the 'horizon' information into a new table
     S <- mgp_perhorizon
     
-    # Join chemical and physical data from biogeo tables
-    B <- full_join(mgp_perbiogeosample, 
-                   mgc_perbiogeosample, 
-                   by=c('horizonID','biogeoID',
-                        'siteID','domainID',
-                        'setDate','collectDate',
-                        'horizonName','pitID',
-                        'biogeoSampleType'))
-
-    ## Error in is.data.frame(y): object 'mgc_perbiogeosample' not found
-
+    # duplicate the biogeochemical information into a new table
+    B <- mgp_perbiogeosample
+    
     # Select only 'Regular' samples (not audit)
     B <- B[B$biogeoSampleType=="Regular" & 
              !is.na(B$biogeoSampleType),]
-
-    ## Error in eval(expr, envir, enclos): object 'B' not found
-
+    
     # Join biogeochem data to horizon data
     S <- left_join(S, B, by=c('horizonID', 'siteID',
                               'pitID','setDate',
                               'collectDate',
                               'domainID',
                               'horizonName'))
-
-    ## Error in is.data.frame(y): object 'B' not found
-
     S <- arrange(S, siteID, horizonTopDepth)
 
 There are two more things that we will want to do before converting this dataframe into a `SoilProfileCollection` object. First, we will make a new `siteLabel` column to use when plotting seeral pedons at once. 
@@ -157,21 +133,14 @@ Second, we will convert the soil physical properties (sand, silt, clay percentag
     # set 'na' values to 100 (white)
     S$r[is.na(S$r)]=100
     S$g[is.na(S$g)]=100
-
-    ## Error in `$<-.data.frame`(`*tmp*`, g, value = numeric(0)): replacement has 0 rows, data has 341
-
     S$b[is.na(S$b)]=100
-
-    ## Error in `$<-.data.frame`(`*tmp*`, b, value = numeric(0)): replacement has 0 rows, data has 341
-
+    
     # normalize values to 1 and convert to vector of colors using 'rgb()' function
     S$textureColor=rgb(red=S$r/100, 
                        green=S$g/100, 
                        blue=S$b/100, 
                        alpha=1, 
                        maxColorValue = 1)
-
-    ## Error in S$r/100: non-numeric argument to binary operator
 
 We now have a data frame of biogeochemical data, organized 
 by site and horizon. We can convert this to a 
@@ -182,7 +151,7 @@ by site and horizon. We can convert this to a
 
 # Plot Simple Soil Profiles
 
-And using the plotting functions in the `aqp` package, 
+Using the plotting functions in the `aqp` package, 
 let's start exploring some depth profiles. We'll start with 
 a single site, the Smithsonian Environmental Research Center 
 (SERC), and plot clay content by depth.
@@ -274,28 +243,24 @@ Now, we can plot the pedons according to their soil texture:
 ## Multivariate Clustering
 
 We have 47 Megapit samples across the NEON observatory, spanning a wide range of soil types, textures, and chemical profiles. While it may be helpful from a geographic perspective to group the pedons by Site ID, it may be even more helpful to group the samples by their inherent properties. For example, grouping soils by texture, or by their organic matter content. 
-In order to makethese groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the `cluster` package. First, let's group by soil texture:
+In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the `cluster` package. First, let's group by soil texture:
 
 
     d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), 
                          k=0, max_d=100)
 
-    ## Error in `[.data.frame`(di, , p_i) : undefined columns selected
-
-    ## Error: Error: bad horizon structure in soil id D01-BART
+    ## Computing dissimilarity matrices from 46 profiles [1.24 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana <- diana(d)
-
-    ## Error in inherits(x, "dist"): object 'd' not found
-
+    
     # Plot the resulting dendrogram
     plotProfileDendrogram(S, d.diana, scaling.factor = .6, 
                           y.offset = 2, width=0.25, cex.names=.4, 
                           name='horizonName', label='siteLabel', 
                           color='textureColor')
 
-    ## Error in plotProfileDendrogram(S, d.diana, scaling.factor = 0.6, y.offset = 2, : object 'd.diana' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/cluster-texture-1.png)
 
 Well, it seems to have worked and plotted, but it is really hard to see all of this information in the small plotting area.
 
@@ -318,16 +283,14 @@ In order to visualize these data, we will need to make a plotting area large eno
                           y.offset = 2, width=0.25, cex.names=.4, 
                           name='horizonName', label='siteLabel',
                           color='textureColor')
-
-    ## Error in plotProfileDendrogram(S, d.diana, scaling.factor = 0.6, y.offset = 2, : object 'd.diana' not found
-
+    
     # Close and save the device
     dev.off()
 
     ## quartz_off_screen 
     ##                 2
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a>
 
 ## Clustering by Nutrients
 
@@ -339,14 +302,10 @@ Rather than cluster based on physical properties, we can also cluster based on n
                                    vars=c('nitrogenTot','carbonTot', 'sulfurTot'),
                                    k=0, max_d=100)
 
-    ## Error in `[.data.frame`(di, , p_i) : undefined columns selected
-
-    ## Error: Error: bad horizon structure in soil id D01-BART
+    ## Computing dissimilarity matrices from 46 profiles [1.23 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana.nutrients <- diana(d.nutrients)
-
-    ## Error in inherits(x, "dist"): object 'd.nutrients' not found
 
 Let's make another PDF for our plot. However, this time is itsn't as straightforward to plot the three nutrients of interest as 'rgb' colors, so we will make three separate plots for each nutrient:
 
@@ -364,31 +323,23 @@ Let's make another PDF for our plot. However, this time is itsn't as straightfor
                           col.label='Total Nitrogen (g/Kg)', 
                           col.legend.cex = 1.2, n.legend=6, 
                           col.palette=viridis::viridis(10))
-
-    ## Error in plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = 0.6, : object 'd.diana.nutrients' not found
-
     plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = .6, 
                           y.offset = 2, width=0.25, name='horizonName', 
                           label='siteLabel', color='carbonTot',
                           col.label='Total Carbon (g/Kg)', 
                           col.legend.cex = 1.2, n.legend=6, 
                           col.palette=viridis::viridis(10))
-
-    ## Error in plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = 0.6, : object 'd.diana.nutrients' not found
-
     plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = .6, 
                           y.offset = 2, width=0.25, name='horizonName', 
                           label='siteLabel', color='sulfurTot',
                           col.label='Total Sulfur (g/Kg)', 
                           col.legend.cex = 1.2, n.legend=6, 
                           col.palette=viridis::viridis(10))
-
-    ## Error in plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = 0.6, : object 'd.diana.nutrients' not found
-
+    
     # Close and save the device
     dev.off()
 
     ## quartz_off_screen 
     ##                 2
 
-This plot is not shown in this tutorial view, but you can download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/raw/dev-aten/tutorials-in-development/Soils/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a>
+This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a>
