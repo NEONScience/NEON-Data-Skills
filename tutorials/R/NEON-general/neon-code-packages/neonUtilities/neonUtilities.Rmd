@@ -4,11 +4,12 @@ title: "Use the neonUtilities Package to Access NEON Data"
 description: "Use the neonUtilities R package to download data, and to convert downloaded data from zipped month-by-site files into a table with all data of interest. Temperature data are used as an example. "
 dateCreated: 2017-08-01
 authors: [Claire K. Lunch, Megan A. Jones]
-contributors:
+contributors: [Maxwell Burner]
 estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
+dataProducts: DP1.00003.001, DP1.00002.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/neonUtilities/neonUtilities.R
 tutorialSeries:
 urlTitle: neonDataStackR
