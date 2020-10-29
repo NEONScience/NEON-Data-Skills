@@ -324,12 +324,10 @@ a map, this means our longitude is plotted on the x axis and latitude is on our
 y axis. </p>
 
 <pre><code># plot domains
-domainMap &lt;- ggplot(neonDomainsDF) + 
+domainMap &lt;- ggplot(neonDomainsDF, aes(x=long, y=lat)) + 
         geom_map(map = neonDomainsDF,
-                aes(x = long, y = lat, map_id = id),
+                aes(map_id = id),
                  fill=&quot;white&quot;, color=&quot;black&quot;, size=0.3)
-
-## Warning: Ignoring unknown aesthetics: x, y
 
 domainMap
 </code></pre>

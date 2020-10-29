@@ -177,13 +177,11 @@ y axis.
 
 
     # plot domains
-    domainMap <- ggplot(neonDomainsDF) + 
+    domainMap <- ggplot(neonDomainsDF, aes(x=long, y=lat)) + 
             geom_map(map = neonDomainsDF,
-                    aes(x = long, y = lat, map_id = id),
+                    aes(map_id = id),
                      fill="white", color="black", size=0.3)
-
-    ## Warning: Ignoring unknown aesthetics: x, y
-
+    
     domainMap
 
 ![Map of the United States with each NEON domain outlined](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-domains-1.png)

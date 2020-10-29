@@ -178,9 +178,9 @@ y axis.
 ```{r plot-domains, fig.width=8, fig.height=6, fig.cap="Map of the United States with each NEON domain outlined"}
 
 # plot domains
-domainMap <- ggplot(neonDomainsDF) + 
+domainMap <- ggplot(neonDomainsDF, aes(x=long, y=lat)) + 
         geom_map(map = neonDomainsDF,
-                aes(x = long, y = lat, map_id = id),
+                aes(map_id = id),
                  fill="white", color="black", size=0.3)
 
 domainMap
