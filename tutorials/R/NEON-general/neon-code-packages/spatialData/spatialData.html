@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Setup</title>
+<title>Setup R Environment</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -167,626 +167,949 @@ hr {
 of NEON observational sampling and sensors; NEON remote sensing data are 
 inherently spatial and have dedicated tutorials. If you are interested in 
 connecting remote sensing with ground-based measurements, the methods in 
-the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">canopy height model tutorial</a> can be generalized to 
-other data products.</p>
+the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">canopy height model tutorial</a> 
+can be generalized to other data products.</p>
 
-<h2>Setup</h2>
+<div id="ds-objectives" markdown="1">
 
-<p>We&#39;ll need several R packages in this tutorial. Install the packages and 
-load the libraries for each:</p>
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* access NEON spatial data from the website and through data downloaded with the 
+neonUtilities package. 
+* create a simple map with NEON domains and field site locations. 
+* access and plot specific sampling locations for TOS data products. 
+* access and use sensor location data. 
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+</div>
+
+<h2>Setup R Environment</h2>
+
+<p>We&#39;ll need several R packages in this tutorial. Install the packages, if not 
+already installed, and load the libraries for each. </p>
 
 <pre><code># run once to get the package, and re-run if you need to get updates
-install.packages(&quot;sp&quot;)
-install.packages(&quot;rgdal&quot;)
-install.packages(&quot;rgeos&quot;)
-install.packages(&quot;ggplot2&quot;)
-install.packages(&quot;ggthemes&quot;)
-install.packages(&quot;neonUtilities&quot;)
-install.packages(&quot;devtools&quot;)
-devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+install.packages(&quot;sp&quot;)  # work with spatial data
+install.packages(&quot;rgdal&quot;)  # work with spatial data
+install.packages(&quot;maptools&quot;)  # work with spatial objects
+install.packages(&quot;broom&quot;)  # tidy up data
+install.packages(&quot;ggplot2&quot;)  # plotting
+install.packages(&quot;neonUtilities&quot;)  # work with NEON data
+install.packages(&quot;devtools&quot;)  # to use the install_github() function
+devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)  # work with NEON spatial data
+
 
 
 # run every time you start a script
 library(sp)
 library(rgdal)
-library(rgeos)
+library(maptools)
+library(broom)
 library(ggplot2)
-library(ggthemes)
 library(neonUtilities)
 library(geoNEON)
 
 options(stringsAsFactors=F)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. 
+
+wd &lt;- &quot;~/Documents/data/&quot; # This will depend on your local environment
+setwd(wd)
 </code></pre>
 
-<h2>Spatial data files</h2>
+<h2>Source 1: NEON spatial data files</h2>
 
-<h3>Site locations</h3>
+<p>NEON spatial data are available in a number of different files depending on what 
+spatial data you are interested in. This section covers a variety of spatial 
+data files that can be directly downloaded from the 
+<a href="https://www.neonscience.org" target="_blank">NEONScience.org</a> website 
+instead of being delivered with a downloaded data product. Later in the tutorial 
+we&#39;ll work with spatial data available with the downloaded data products.</p>
 
-<p>Latitude, longitude, elevation, and some other basic metadata for each site 
-are available for download from the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">field sites list page</a> on the NEON website. In this summary by field site, the 
-geographic coordinates given for each site correspond to the tower 
-location for terrestrial sites, and the center of the permitted reach 
+<p>The goal of this section is to create a map of the entire Observatory that includes 
+the NEON domain boundaries and differentiates between aquatic and terrestrial field 
+sites. </p>
+
+<h3>Site locations &amp; domain boundaries</h3>
+
+<p>Most NEON spatial data files that are not part of the data downloads 
+are available on the 
+<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a> 
+as both shapefiles and kmz files. </p>
+
+<p>In addition, latitude, longitude, elevation, and some other basic metadata for each site 
+are available for download from the 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> 
+on the NEON website (linked below the table). In this summary of each field site, 
+the geographic coordinates for each site correspond to the tower 
+location for terrestrial sites and the center of the permitted reach 
 for aquatic sites.</p>
 
-<p>Additional large-scale spatial data files are available on the 
-<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">spatial data and maps page</a>, primarily as shapefiles. 
-Using the domain shapefile and the field sites list, let&#39;s make 
-a map of NEON site locations.</p>
+<p>To continue, please download these files from the NEON website: </p>
 
-<p>We&#39;ll read in the spatial data using the <code>rgdal</code> and <code>sp</code> packages 
-and plot it using the <code>ggplot2</code> package. First, read in the domain 
-shapefile:</p>
+<ul>
+<li><strong>NEON Domains - Shapefile:</strong> A polygon shapefile defining NEON&#39;s domain 
+boundaries. Like all NEON data the Coordinate Reference system is Geographic 
+WGS 84. Available on the <a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a>.</li>
+<li><strong>Field Site csv:</strong> generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> (bottom of table). </li>
+</ul>
 
-<pre><code># modify &quot;~/data&quot; to the filepath where you downloaded the shapefile
-neon.domains &lt;- readOGR(&quot;~/data/NEONDomains_0&quot;, layer=&quot;NEON_Domains&quot;)
+<p>The Field Site location data is also available as a shapefile and KMZ on the 
+Spatial Data and Maps page. We use the file from the site list to demonstrate 
+alternative ways to work with spatial data. </p>
 
-# the next two commands convert the shapefile to a format ggplot 
-# can use
-neon.domains &lt;- SpatialPolygonsDataFrame(gSimplify(neon.domains, tol=0.1, 
-                                                 topologyPreserve=TRUE), 
-                               data=neon.domains@data)
-map &lt;- broom::tidy(neon.domains)
+<h2>Map NEON domains</h2>
+
+<p>Using the domain shapefile and the field sites list, let&#39;s make a map of NEON 
+site locations.</p>
+
+<p>We&#39;ll read in the spatial data using the <code>rgdal</code> and <code>sp</code> packages and plot it 
+using the <code>ggplot2</code> package. First, read in the domain shapefile. </p>
+
+<p>Be sure to move the downloaded and unzipped data files into the working directory 
+you set earlier!</p>
+
+<pre><code># upload data
+neonDomains &lt;- readOGR(paste0(wd,&quot;NEONDomains_0&quot;), layer=&quot;NEON_Domains&quot;)
 </code></pre>
 
-<p>The <code>broom::tidy()</code> function might give you some warnings about factor levels, 
-but it shouldn&#39;t prevent you from continuing on to the next steps.</p>
+<p>The data come as a Large SpatialPolygonsDataFrame, which unfortunately <code>ggplot</code>
+can&#39;t use. Therefore, we&#39;ll need to make a few changes to the data structure to 
+convert it to a dataframe that <code>ggplot</code> can use. </p>
 
-<p>Let&#39;s plot the domains without the sites first:</p>
+<pre><code># first, add a new column termed &quot;id&quot; composed of the row names of the data
+neonDomains@data$id &lt;- rownames(neonDomains@data)
 
-<pre><code>gg &lt;- ggplot() + theme_map()
-gg &lt;- gg + geom_map(data=map, map=map,
-                    aes(x=long, y=lat, map_id=id, group=group),
-                    fill=&quot;white&quot;, color=&quot;black&quot;, size=0.3)
-gg
+# now, use tidy() to convert to a dataframe
+# if you previously used fortify(), this does the same thing 
+neonDomains_points &lt;- tidy(neonDomains, region=&quot;id&quot;)
+
+# finally, merge the new data with the data from our spatial object
+neonDomainsDF &lt;- merge(neonDomains_points, neonDomains@data, by = &quot;id&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-domains-1.png" alt=" "/></p>
+<p>Now that the data are in a dataframe, let&#39;s check out what data are available 
+for us to plot.</p>
 
-<p>Now read in the field sites file, and add points to the map for 
-each site:</p>
+<pre><code># view data structure for each variable
+str(neonDomainsDF)
 
-<pre><code># modify &quot;~/data&quot; to the filepath where you downloaded the file
-sites &lt;- read.delim(&quot;~/data/field-sites.csv&quot;, sep=&quot;,&quot;, header=T)
-
-gg &lt;- gg + geom_point(data=sites, aes(x=Longitude, y=Latitude))
-gg
+## &#39;data.frame&#39;:    28293 obs. of  13 variables:
+##  $ id        : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+##  $ long      : num  -74.3 -74.3 -74.3 -74.3 -74.3 ...
+##  $ lat       : num  40.5 40.5 40.5 40.5 40.5 ...
+##  $ order     : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ hole      : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+##  $ piece     : Factor w/ 19 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ group     : Factor w/ 52 levels &quot;0.1&quot;,&quot;1.1&quot;,&quot;10.1&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ OBJECTID  : int  69 69 69 69 69 69 69 69 69 69 ...
+##  $ Shape_Leng: num  53.7 53.7 53.7 53.7 53.7 ...
+##  $ DomainID  : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ DomainName: chr  &quot;Northeast&quot; &quot;Northeast&quot; &quot;Northeast&quot; &quot;Northeast&quot; ...
+##  $ Shape_Le_1: num  53.7 53.7 53.7 53.7 53.7 ...
+##  $ Shape_Area: num  47.6 47.6 47.6 47.6 47.6 ...
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-sites-1.png" alt=" "/></p>
+<p>We have <strong>long</strong>itude and <strong>lat</strong>itude data, as well as names of the domains. 
+With this information, and now that we have the data in a dataframe, we can plot 
+it in ggplot. Let&#39;s first plot the domains without the sites. Since we are plotting 
+a map, this means our longitude is plotted on the x axis and latitude is on our 
+y axis. </p>
 
-<p>And let&#39;s color code sites, plotting terrestrial sites in green and 
-aquatic sites in blue:</p>
+<pre><code># plot domains
+domainMap &lt;- ggplot(neonDomainsDF) + 
+        geom_map(map = neonDomainsDF,
+                aes(x = long, y = lat, map_id = id),
+                 fill=&quot;white&quot;, color=&quot;black&quot;, size=0.3)
 
-<pre><code>gg &lt;- gg + geom_point(data=sites, 
+## Warning: Ignoring unknown aesthetics: x, y
+
+domainMap
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-domains-1.png" alt="Map of the United States with each NEON domain outlined"/></p>
+
+<h2>Map NEON field sites</h2>
+
+<p>Now that we have a map of all the NEON domains, let&#39;s plot the NEON field site 
+locations on it. To do this, we need to load and explore the field sites data. </p>
+
+<pre><code># read in the data
+neonSites &lt;- read.delim(paste0(wd,&quot;field-sites.csv&quot;), sep=&quot;,&quot;, header=T)
+
+# view data structure for each variable
+str(neonSites)
+
+## &#39;data.frame&#39;:    81 obs. of  36 variables:
+##  $ Site.Name                 : chr  &quot;Little Rock Lake&quot; &quot;West St Louis Creek&quot; &quot;Pu&#39;u Maka&#39;ala Natural Area Reserve&quot; &quot;Flint River&quot; ...
+##  $ Site.ID                   : chr  &quot;LIRO&quot; &quot;WLOU&quot; &quot;PUUM&quot; &quot;FLNT&quot; ...
+##  $ Domain.Name               : chr  &quot;Great Lakes&quot; &quot;Southern Rockies &amp; Colorado Plateau&quot; &quot;Pacific Tropical&quot; &quot;Southeast&quot; ...
+##  $ Domain.Number             : chr  &quot;D05&quot; &quot;D13&quot; &quot;D20&quot; &quot;D03&quot; ...
+##  $ State                     : chr  &quot;WI&quot; &quot;CO&quot; &quot;HI&quot; &quot;GA&quot; ...
+##  $ Nearest.Town              : logi  NA NA NA NA NA NA ...
+##  $ Latitude                  : num  46 39.9 19.6 31.2 38.9 ...
+##  $ Longitude                 : num  -89.7 -105.9 -155.3 -84.4 -96.4 ...
+##  $ Site.Type                 : chr  &quot;Relocatable Aquatic&quot; &quot;Relocatable Aquatic&quot; &quot;Core Terrestrial&quot; &quot;Relocatable Aquatic&quot; ...
+##  $ Site.Subtype              : chr  &quot;Lake&quot; &quot;Wadeable Stream&quot; &quot;&quot; &quot;Non-wadeable River&quot; ...
+##  $ Site.Host                 : chr  &quot;Wisconsin Department of Natural Resources&quot; &quot;U.S. Forest Service&quot; &quot;Hawaii State Forest Reserve System Department of Land and Natural Resources, Division of Forestry and Wildlife&quot; &quot;Private Owner&quot; ...
+##  $ Civil.Construction        : chr  &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; ...
+##  $ Civil.Construction.Text   : logi  NA NA NA NA NA NA ...
+##  $ Sensor.Installation       : chr  &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; ...
+##  $ Sensor.Installation.Text  : logi  NA NA NA NA NA NA ...
+##  $ Field.Sampling            : chr  &quot;Ongoing&quot; &quot;Ongoing&quot; &quot;Ongoing&quot; &quot;Ongoing&quot; ...
+##  $ Field.Sampling.Text       : logi  NA NA NA NA NA NA ...
+##  $ Data.Status               : chr  &quot;Partially Available&quot; &quot;Partially Available&quot; &quot;Partially Available&quot; &quot;Partially Available&quot; ...
+##  $ Data.Status.Text          : logi  NA NA NA NA NA NA ...
+##  $ Construction.Status       : chr  &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; &quot;Complete&quot; ...
+##  $ Construction.Status.Text  : logi  NA NA NA NA NA NA ...
+##  $ Overview                  : chr  &quot;LIRO is a seepage lake located in Wisconsin and is representative of the Great Lakes ecosystems.\nTotal data pr&quot;| __truncated__ &quot;Total data products planned for this site: 79\n&quot; &quot;NEON&#39;s PUUM field site is located in the Pu&#39;u Maka&#39;ala Natural Area Reserve (NAR) on the eastern side of Hawaii&quot;| __truncated__ &quot;Total data products planned for this site: 75\n&quot; ...
+##  $ Site.Access               : chr  &quot;Yes&quot; &quot;Yes&quot; &quot;TBD&quot; &quot;No&quot; ...
+##  $ Mean.Annual.Temperature   : chr  &quot;4.4C/39.92F&quot; &quot;-0.3C/31.46F&quot; &quot;13C/55.4F&quot; &quot;19.5C/67.1F&quot; ...
+##  $ Mean.Annual.Precipitation : chr  &quot;793 mm&quot; &quot;758 mm&quot; &quot;2685 mm&quot; &quot;1307 mm&quot; ...
+##  $ Dominant.NLCD.Classes     : chr  &quot;Deciduous Forest, Mixed Forest&quot; &quot;Evergreen Forest&quot; &quot;Evergreen Forest&quot; &quot;Mixed Forest&quot; ...
+##  $ Elevation                 : chr  &quot;502 m&quot; &quot;3103 m&quot; &quot;1685 m&quot; &quot;45 m&quot; ...
+##  $ Site.Characteristics      : chr  &quot;&quot; &quot;Watershed Size\n5.19 km2\nUSGS HUC: h14010001\nGeology\nSchist, migmatite, and biotitic gneiss.  Paleoproterozoic.\n&quot; &quot;Geology: \nPahoehoe and aa of the Kau Basalt, deposited between 200-750 years ago.\nUSGS HUC: h20010000\nWind D&quot;| __truncated__ &quot;Watershed Size\n29,100 km2\nUSGS HUC: h03130008\nGeology\nUndifferentiated clay, mud, and beach sand. Pleistoce&quot;| __truncated__ ...
+##  $ Data.Collection.Types     : chr  &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this field site collect lidar, spectrometer and high&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ ...
+##  $ Adjacent.Research.Networks: chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;Jones Ecological Research Center\n&quot; ...
+##  $ Field.Office              : chr  &quot;Domain 05\n7647 Notre Dame LaneLand O Lakes, WI 54540\nTelephone: 906.842.2119\nContact us\n&quot; &quot;Domain 10/13\n1685 38th Street, Suite 100Boulder, CO 80301\n​Telephone: 720.836.2439\nContact us\n&quot; &quot;Domain 20\n60 Nowelo StreetHilo, Hawaii  96720\nContact us\n&quot; &quot;Domain 03\n4579 NW 6th Street, Unit B-2Gainesville, FL 32609\nTelephone: 352.505.2019\nContact us\n&quot; ...
+##  $ Gallery                   : chr  &quot;&quot; &quot;WLOU-D13-Stream-Morpology-Map&quot; &quot;&quot; &quot;&quot; ...
+##  $ Thumbnail                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ Overview.Image            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ Google.Maps.Embed.Code    : logi  NA NA NA NA NA NA ...
+##  $ Related.Content           : logi  NA NA NA NA NA NA ...
+</code></pre>
+
+<p>Here there is a lot of associated data about the field sites that may be of 
+interest. For now, we can see that there are both <strong>Latitude</strong> and <strong>Longitude</strong>
+data so we can plot this data onto our previous map. </p>
+
+<pre><code># plot the sites
+neonMap &lt;- domainMap + 
+        geom_point(data=neonSites, 
+                   aes(x=Longitude, y=Latitude))
+
+neonMap 
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-sites-1.png" alt="Same map as above but with dots for the field site locations across the country"/></p>
+
+<p>Now we can see all the sites across the Observatory. However, NEON has both 
+aquatic and terrestrial sites with important differences between the two. Looking 
+back at the variables in this data set, we can see that <code>Site.Type</code> designates 
+the aquatic and terrestrial sites. However, it goes further and includes whether 
+or not they are core or relocatable sites. Let&#39;s plot that distinction as well. </p>
+
+<p>We can do this by adding color to our plot, with terrestrial sites in green and 
+aquatic sites in blue. We can choose darker shades for core sites and lighter 
+ones for relocatable sites. </p>
+
+<pre><code># color is determined by the order that the unique values show up
+# check order
+unique(neonSites$Site.Type)
+
+## [1] &quot;Relocatable Aquatic&quot;     &quot;Core Terrestrial&quot;        &quot;Core Aquatic&quot;           
+## [4] &quot;Relocatable Terrestrial&quot;
+
+# add color
+sitesMap &lt;- neonMap + 
+        geom_point(data=neonSites, 
                       aes(x=Longitude, y=Latitude, color=Site.Type)) + 
-           scale_color_manual(values=c(&quot;blue4&quot;, &quot;springgreen4&quot;, 
-                                       &quot;blue&quot;, &quot;olivedrab&quot;),
+           scale_color_manual(values=c(&quot;lightskyblue&quot;, &quot;forest green&quot;, 
+                                       &quot;blue4&quot;, &quot;light green&quot;),
                               name=&quot;&quot;,
-                              breaks=unique(sites$Site.Type))
-gg
+                              breaks=unique(neonSites$Site.Type))
+sitesMap
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/sites-color-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/sites-color-1.png" alt="Same as maps above but the field site dots are now four different colors"/></p>
 
-<h3>Terrestrial observation plots</h3>
+<h2>Map terrestrial observation plots</h2>
 
-<p>The locations of observational sampling plots at terrestrial sites (TOS)
-are available in the <a href="http://data.neonscience.org/documents" target="_blank">document library</a> 
-on the Data Portal, in the Spatial Data folder, as static files, 
-in both tabular and shapefile formats. Your download will be a zip file 
-containing tabular files of plot centroids and point locations, and 
-shapefiles of plot centroids, point locations, and polygons.</p>
+<p>The <strong>NEON Terrestrial Observation System (TOS) sampling locations</strong> shapefile 
+is available for download from the
+<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank"> Spatial Data and Maps page</a> or from the portal in the
+<a href="http://data.neonscience.org/documents" target="_blank"> document library</a>. 
+The download will be a zip file containing tabular files of plot centroids and 
+point locations, and shapefiles of plot centroids, point locations, and polygons.</p>
 
-<p>The readme file contains descriptions for each of the columns in the 
-tabular files.</p>
+<p>The readme file contains descriptions for each variable in the tabular files. </p>
 
-<p>You can use these files to navigate the spatial layout of sampling for 
-TOS: mosquitoes, beetles, plants, birds, etc. In this tutorial, we&#39;ll be 
-using the location data provided along with data downloads, as well as 
-methods in the <code>geoNEON</code> package, to explore TOS spatial data, instead of 
-these files.</p>
+<pre><code># load TOS plot readme
+rdme &lt;- read.delim(paste0(wd,&#39;All_NEON_TOS_Plots_V8/readme.csv&#39;),
+                   sep=&#39;,&#39;, header=T)
 
-<h2>Spatial data in data downloads</h2>
+# view the variables
+rdme[,1]
 
-<h3>Observational data</h3>
+##  [1] &quot;country&quot;    &quot;state&quot;      &quot;county&quot;     &quot;domain&quot;     &quot;domainID&quot;   &quot;siteNam&quot;    &quot;siteID&quot;    
+##  [8] &quot;plotType&quot;   &quot;subtype&quot;    &quot;subSpec&quot;    &quot;plotID&quot;     &quot;plotSize&quot;   &quot;plotDim&quot;    &quot;pointID&quot;   
+## [15] &quot;latitude&quot;   &quot;longitude&quot;  &quot;datum&quot;      &quot;utmZone&quot;    &quot;easting&quot;    &quot;northng&quot;    &quot;horzUncert&quot;
+## [22] &quot;elevatn&quot;    &quot;vertUncert&quot; &quot;minElev&quot;    &quot;maxElev&quot;    &quot;slope&quot;      &quot;aspect&quot;     &quot;nlcdClass&quot; 
+## [29] &quot;soilOrder&quot;  &quot;crdSource&quot;  &quot;date&quot;       &quot;filtPos&quot;    &quot;plotPdop&quot;   &quot;plotHdop&quot;   &quot;appMods&quot;   
+## [36] &quot;plotEdg&quot;
+</code></pre>
+
+<p>You can use these files to plot the spatial layout of sampling for TOS (mosquitoes, 
+beetles, plants, birds, etc.). However, instead of using these files, for this 
+tutorial we&#39;ll be using the location data provided with the data downloads below, 
+as well as methods in the <code>geoNEON</code> package, to explore TOS spatial data.</p>
+
+<p>You can, however, modify the code above from mapping the domains and field sites to 
+plot the location data if you&#39;d like to do so. </p>
+
+<h2>Source 2: Spatial data in data downloads</h2>
+
+<p>The second source of data is spatial data in and accompanying data directly 
+downloaded from the NEON data portal. How the data are handled are a bit different 
+for the Observational Sampling data and the Instrumented Systems data, so we&#39;ll 
+go through working with both types. </p>
+
+<h2>Locations for observational data</h2>
+
+<h3>Plot level locations</h3>
 
 <p>Both aquatic and terrestrial observational data downloads include spatial 
-data in the downloaded files. Let&#39;s take a look at the small mammal data. 
-Download small mammal data from Yellowstone National Park (YELL), August 2018 to investigate. 
-If downloading data using the <code>neonUtilties</code> package is new to you, check 
-out the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.</p>
+data in the downloaded files. While the specific layout varies from data type to 
+data type the method for working with the data are similar. Therefore, we&#39;ll work 
+with NEON Small Mammal Box Trapping data. Our end product for this section is to 
+create a map of all the traps within a small mammal grid that captured a mouse in a given 
+sampling bout.  </p>
 
-<pre><code>mam &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, site=&quot;YELL&quot;,
+<p>First, let&#39;s download the small mammal data from one site, Onaqui (ONAQ), in 
+August 2018 to investigate. </p>
+
+<p>If downloading data using the <code>neonUtilities</code> package is new to you, check out the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.</p>
+
+<pre><code># load mammal data
+mam &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, site=&quot;ONAQ&quot;,
                      startdate=&quot;2018-08&quot;, enddate=&quot;2018-08&quot;,
                      check.size=F)
 </code></pre>
 
-<p>The spatial data are in the <code>pertrapnight</code> table.</p>
+<p>Data downloaded this way are stored in R as a large list. For this tutorial, 
+we&#39;ll work with the individual dataframes within this large list. Alternatively, 
+each dataframe can be assigned as its own object. </p>
+
+<p>To find the spatial data for any given data product, view the variables files to
+figure out which data table the spatial data are contained in. </p>
+
+<pre><code>View(mam$variables_10072)
+</code></pre>
+
+<p>Looking through the variables, we can see that the spatial data (<code>decimalLatitude</code> 
+and <code>decimalLongitude</code>) are in the <code>pertrapnight</code> table. We can look at the first few
+entries of the table. </p>
 
 <pre><code>head(mam$mam_pertrapnight[,1:18])
 
-##                                    uid                             nightuid
-## 1 96a598bd-6435-40d8-b802-b933375d1706 918a2e3b-9e41-47dd-99c6-db9ab11fe50b
-## 2 2e27b36b-d77a-497c-b00d-3ecdbbaf7aad b9982a39-dd87-4fa4-b709-6f9bc4f1c9e3
-## 3 fcb4ff54-95b7-4992-8491-c6a9ac3201cd 248239a9-ddc3-4321-9c46-29c766870740
-## 4 7a86e44e-d28f-4d8f-97cb-0c1125bab439 248239a9-ddc3-4321-9c46-29c766870740
-## 5 9bdf9ed9-0fca-474b-b633-cdf5ad3427f8 248239a9-ddc3-4321-9c46-29c766870740
-## 6 14effb23-649b-409d-8cc6-ec6066d9c932 918a2e3b-9e41-47dd-99c6-db9ab11fe50b
-##             namedLocation domainID siteID   plotID trapCoordinate    plotType       nlcdClass
-## 1 YELL_001.mammalGrid.mam      D12   YELL YELL_001             I3 distributed      shrubScrub
-## 2 YELL_031.mammalGrid.mam      D12   YELL YELL_031             B2 distributed      shrubScrub
-## 3 YELL_023.mammalGrid.mam      D12   YELL YELL_023             B9 distributed evergreenForest
-## 4 YELL_023.mammalGrid.mam      D12   YELL YELL_023             C5 distributed evergreenForest
-## 5 YELL_023.mammalGrid.mam      D12   YELL YELL_023             F8 distributed evergreenForest
-## 6 YELL_001.mammalGrid.mam      D12   YELL YELL_001             J3 distributed      shrubScrub
-##   decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty elevation
-## 1       44.918169      -110.408714         WGS84                  45.1    1904.1
-## 2       44.956470      -110.510295         WGS84                  45.2    2136.2
-## 3       44.938201      -110.630976         WGS84                  45.1    2062.4
-## 4       44.938201      -110.630976         WGS84                  45.1    2062.4
-## 5       44.938201      -110.630976         WGS84                  45.1    2062.4
-## 6       44.918169      -110.408714         WGS84                  45.1    1904.1
-##   elevationUncertainty             trapStatus  trapType collectDate
-## 1                  0.1 6 - trap set and empty ShermanLF  2018-08-05
-## 2                  0.3 6 - trap set and empty ShermanLF  2018-08-05
-## 3                  0.1 6 - trap set and empty ShermanLF  2018-08-05
-## 4                  0.1 6 - trap set and empty ShermanLF  2018-08-05
-## 5                  0.1 6 - trap set and empty ShermanLF  2018-08-05
-## 6                  0.1 6 - trap set and empty ShermanLF  2018-08-05
+##                                    uid                             nightuid           namedLocation
+## 1 80a67c44-e910-447a-828e-6c055aafcaa8 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam
+## 2 a13e9723-c471-4870-b5e8-e985ab1de97c 98ae24a1-32e8-41d6-8f59-f3760894b25f ONAQ_003.mammalGrid.mam
+## 3 8193f7dc-c323-4081-8a59-044486c7e9a7 7b770b07-b204-4b88-b627-4cea87ee71fc ONAQ_020.mammalGrid.mam
+## 4 db227468-aa3e-47e8-a025-9e7cf882a624 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam
+## 5 33150123-e3f8-40a2-b274-6b97e9101661 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam
+## 6 d6734e56-4b8a-4755-ba3a-b43af6feba7e 1aee40ee-77a3-4317-99bb-731676000400 ONAQ_005.mammalGrid.mam
+##   domainID siteID   plotID trapCoordinate    plotType  nlcdClass decimalLatitude decimalLongitude
+## 1      D15   ONAQ ONAQ_020             I4 distributed shrubScrub        40.18389        -112.4367
+## 2      D15   ONAQ ONAQ_003             J2 distributed shrubScrub        40.20623        -112.4285
+## 3      D15   ONAQ ONAQ_020             E8 distributed shrubScrub        40.18389        -112.4367
+## 4      D15   ONAQ ONAQ_005            B10 distributed shrubScrub        40.18075        -112.4297
+## 5      D15   ONAQ ONAQ_005             J3 distributed shrubScrub        40.18075        -112.4297
+## 6      D15   ONAQ ONAQ_005             G2 distributed shrubScrub        40.18075        -112.4297
+##   geodeticDatum coordinateUncertainty elevation elevationUncertainty             trapStatus   trapType
+## 1         WGS84                  45.1    1627.6                  0.1 6 - trap set and empty ShermanXLK
+## 2         WGS84                  45.4    1604.6                  0.2 6 - trap set and empty ShermanXLK
+## 3         WGS84                  45.1    1627.6                  0.1 6 - trap set and empty ShermanXLK
+## 4         WGS84                  45.3    1607.9                  0.4 6 - trap set and empty ShermanXLK
+## 5         WGS84                  45.3    1607.9                  0.4 6 - trap set and empty ShermanXLK
+## 6         WGS84                  45.3    1607.9                  0.4 6 - trap set and empty ShermanXLK
+##   collectDate
+## 1  2018-08-14
+## 2  2018-08-14
+## 3  2018-08-14
+## 4  2018-08-14
+## 5  2018-08-14
+## 6  2018-08-14
 </code></pre>
 
-<p>But there&#39;s a limitation here - the latitudes and longitudes provided 
-are for the plots, not for the traps. Take a look at the coordinates 
-for all traps within a single plot to see this:</p>
+<p>Did you notice that traps in plot ONAQ_020 have the same location data?
+Let&#39;s check the coordinates for all traps within a single plot. </p>
 
-<pre><code>mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID==&quot;YELL_031&quot;),
+<pre><code># view all trap locations in one plot
+mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID==&quot;ONAQ_020&quot;),
                      c(&quot;trapCoordinate&quot;,&quot;decimalLatitude&quot;,
                        &quot;decimalLongitude&quot;)]
 
 ##     trapCoordinate decimalLatitude decimalLongitude
-## 2               B2        44.95647      -110.510295
-## 10              J8        44.95647      -110.510295
-## 12              J5        44.95647      -110.510295
-## 13              B6        44.95647      -110.510295
-## 20              C7        44.95647      -110.510295
-## 22              G7        44.95647      -110.510295
-## 27              I1        44.95647      -110.510295
-## 30             A10        44.95647      -110.510295
-## 34              E5        44.95647      -110.510295
-## 37              B9        44.95647      -110.510295
-## 40              J2        44.95647      -110.510295
-## 49              I9        44.95647      -110.510295
-## 53             H10        44.95647      -110.510295
-## 54              H7        44.95647      -110.510295
-## 60              D3        44.95647      -110.510295
-## 63              H4        44.95647      -110.510295
-## 64              C6        44.95647      -110.510295
-## 66              I2        44.95647      -110.510295
-## 67              B7        44.95647      -110.510295
-## 70              F9        44.95647      -110.510295
-## 71              J4        44.95647      -110.510295
-## 75              C2        44.95647      -110.510295
-## 77             D10        44.95647      -110.510295
-## 79              I7        44.95647      -110.510295
-## 85              J6        44.95647      -110.510295
-## 87              B4        44.95647      -110.510295
-## 89              I5        44.95647      -110.510295
-## 92              A2        44.95647      -110.510295
-## 94              E3        44.95647      -110.510295
-## 97              B3        44.95647      -110.510295
-## 98              C5        44.95647      -110.510295
-## 101             F7        44.95647      -110.510295
-## 102             H6        44.95647      -110.510295
-## 103             D8        44.95647      -110.510295
-## 105             E9        44.95647      -110.510295
-## 106             J1        44.95647      -110.510295
-## 115             H3        44.95647      -110.510295
-## 116             F3        44.95647      -110.510295
-## 117             G1        44.95647      -110.510295
-## 118             A7        44.95647      -110.510295
-## 120             I3        44.95647      -110.510295
-## 125             G3        44.95647      -110.510295
-## 126             E2        44.95647      -110.510295
-## 129             G5        44.95647      -110.510295
-## 132             I6        44.95647      -110.510295
-## 139             D5        44.95647      -110.510295
-## 141             C9        44.95647      -110.510295
-## 144             B5        44.95647      -110.510295
-## 145             F5        44.95647      -110.510295
-## 148            F10        44.95647      -110.510295
-## 150             A8        44.95647      -110.510295
-## 151             C8        44.95647      -110.510295
-## 152             J7        44.95647      -110.510295
-## 156            E10        44.95647      -110.510295
-## 158             F6        44.95647      -110.510295
-## 159             G6        44.95647      -110.510295
-## 161             A9        44.95647      -110.510295
-## 163             I4        44.95647      -110.510295
-## 164             C1        44.95647      -110.510295
-## 172             H5        44.95647      -110.510295
-## 173            C10        44.95647      -110.510295
-## 180             H2        44.95647      -110.510295
-## 186             I8        44.95647      -110.510295
-## 189             G2        44.95647      -110.510295
-## 195            G10        44.95647      -110.510295
-## 200             H9        44.95647      -110.510295
-## 201             E4        44.95647      -110.510295
-## 203             G9        44.95647      -110.510295
-## 204             D4        44.95647      -110.510295
-## 205             E1        44.95647      -110.510295
-## 211             D1        44.95647      -110.510295
-## 217             D7        44.95647      -110.510295
-## 221            B10        44.95647      -110.510295
-## 222             D2        44.95647      -110.510295
-## 224             A1        44.95647      -110.510295
-## 230             H1        44.95647      -110.510295
-## 231             E7        44.95647      -110.510295
-## 235             C4        44.95647      -110.510295
-## 237             J9        44.95647      -110.510295
-## 241             B1        44.95647      -110.510295
-## 244             J3        44.95647      -110.510295
-## 247             E6        44.95647      -110.510295
-## 249             C3        44.95647      -110.510295
-## 254             F8        44.95647      -110.510295
-## 256             G8        44.95647      -110.510295
-## 261             B8        44.95647      -110.510295
-## 268             F2        44.95647      -110.510295
-## 269             A4        44.95647      -110.510295
-## 271             F4        44.95647      -110.510295
-## 273             H8        44.95647      -110.510295
-## 274             D6        44.95647      -110.510295
-## 277             A5        44.95647      -110.510295
-## 279            J10        44.95647      -110.510295
-## 281             A6        44.95647      -110.510295
-## 282             D9        44.95647      -110.510295
-## 287             E8        44.95647      -110.510295
-## 288             G4        44.95647      -110.510295
-## 290             A3        44.95647      -110.510295
-## 294            I10        44.95647      -110.510295
-## 300             F1        44.95647      -110.510295
-## 305             C2        44.95647      -110.510295
-## 306            D10        44.95647      -110.510295
-## 311             A3        44.95647      -110.510295
-## 316             D5        44.95647      -110.510295
-## 317             E6        44.95647      -110.510295
-## 318             G3        44.95647      -110.510295
-## 326             A5        44.95647      -110.510295
-## 327             H5        44.95647      -110.510295
-## 329             I6        44.95647      -110.510295
-## 333             I1        44.95647      -110.510295
-## 337             F6        44.95647      -110.510295
-## 338             J6        44.95647      -110.510295
-## 340            H10        44.95647      -110.510295
-## 341             I4        44.95647      -110.510295
-## 345             A9        44.95647      -110.510295
-## 347            E10        44.95647      -110.510295
-## 348             G4        44.95647      -110.510295
-## 349             J7        44.95647      -110.510295
-## 352             A4        44.95647      -110.510295
-## 358             D4        44.95647      -110.510295
-## 359             C7        44.95647      -110.510295
-## 363            G10        44.95647      -110.510295
-## 364             I7        44.95647      -110.510295
-## 367             A2        44.95647      -110.510295
-## 369            G10        44.95647      -110.510295
-## 370            J10        44.95647      -110.510295
-## 371             F8        44.95647      -110.510295
-## 375             F4        44.95647      -110.510295
-## 377             B4        44.95647      -110.510295
-## 378             C8        44.95647      -110.510295
-## 379             E7        44.95647      -110.510295
-## 382             B8        44.95647      -110.510295
-## 383             H9        44.95647      -110.510295
-## 385            B10        44.95647      -110.510295
-## 386             J9        44.95647      -110.510295
-## 388             I9        44.95647      -110.510295
-## 389             G6        44.95647      -110.510295
-## 390             A8        44.95647      -110.510295
-## 391             H3        44.95647      -110.510295
-## 392             A6        44.95647      -110.510295
-## 394             J4        44.95647      -110.510295
-## 402            C10        44.95647      -110.510295
-## 404             I5        44.95647      -110.510295
-## 408             F7        44.95647      -110.510295
-## 413             A1        44.95647      -110.510295
-## 416             E3        44.95647      -110.510295
-## 417             D8        44.95647      -110.510295
-## 422             D9        44.95647      -110.510295
-## 423             D2        44.95647      -110.510295
-## 424             F9        44.95647      -110.510295
-## 426             F2        44.95647      -110.510295
-## 429             D7        44.95647      -110.510295
-## 430             I3        44.95647      -110.510295
-## 431             J1        44.95647      -110.510295
-## 438             E1        44.95647      -110.510295
-## 439             B9        44.95647      -110.510295
-## 443             D3        44.95647      -110.510295
-## 444             J8        44.95647      -110.510295
-## 446             H4        44.95647      -110.510295
-## 447             D1        44.95647      -110.510295
-## 449             J3        44.95647      -110.510295
-## 450             H6        44.95647      -110.510295
-## 451            F10        44.95647      -110.510295
-## 452             B7        44.95647      -110.510295
-## 463             F5        44.95647      -110.510295
-## 464             E9        44.95647      -110.510295
-## 465             C4        44.95647      -110.510295
-## 475             H7        44.95647      -110.510295
-## 477            A10        44.95647      -110.510295
-## 481             H2        44.95647      -110.510295
-## 493             E5        44.95647      -110.510295
-## 501             F1        44.95647      -110.510295
-## 507             E8        44.95647      -110.510295
-## 508             E4        44.95647      -110.510295
-## 510             F3        44.95647      -110.510295
-## 513             B6        44.95647      -110.510295
-## 514             G9        44.95647      -110.510295
-## 515             D6        44.95647      -110.510295
-## 517             C6        44.95647      -110.510295
-## 522             B3        44.95647      -110.510295
-## 525            I10        44.95647      -110.510295
-## 526             G2        44.95647      -110.510295
-## 536             I8        44.95647      -110.510295
-## 538             C1        44.95647      -110.510295
-## 540             B5        44.95647      -110.510295
-## 541             H1        44.95647      -110.510295
-## 543             J2        44.95647      -110.510295
-## 554             G5        44.95647      -110.510295
-## 556             H8        44.95647      -110.510295
-## 565             G1        44.95647      -110.510295
-## 571             G7        44.95647      -110.510295
-## 572             G8        44.95647      -110.510295
-## 577             C5        44.95647      -110.510295
-## 578             A7        44.95647      -110.510295
-## 581             J5        44.95647      -110.510295
-## 582             I2        44.95647      -110.510295
-## 585             B1        44.95647      -110.510295
-## 589             B2        44.95647      -110.510295
-## 595             C9        44.95647      -110.510295
-## 596             E2        44.95647      -110.510295
-## 600             C3        44.95647      -110.510295
-## 603             D9        44.95647      -110.510295
-## 605             H4        44.95647      -110.510295
-## 606             C7        44.95647      -110.510295
-## 612            A10        44.95647      -110.510295
-## 616             A2        44.95647      -110.510295
-## 618             B5        44.95647      -110.510295
-## 619             H2        44.95647      -110.510295
-## 622             J5        44.95647      -110.510295
-## 624             A6        44.95647      -110.510295
-## 631             I3        44.95647      -110.510295
-## 633             C8        44.95647      -110.510295
-## 635             A1        44.95647      -110.510295
-## 636             C4        44.95647      -110.510295
-## 637             G8        44.95647      -110.510295
-## 638             J1        44.95647      -110.510295
-## 639             J7        44.95647      -110.510295
-## 640             E4        44.95647      -110.510295
-## 644             E9        44.95647      -110.510295
-## 647            J10        44.95647      -110.510295
-## 648            H10        44.95647      -110.510295
-## 649            E10        44.95647      -110.510295
-## 650             B6        44.95647      -110.510295
-## 652            G10        44.95647      -110.510295
-## 654            C10        44.95647      -110.510295
-## 661            D10        44.95647      -110.510295
-## 662             I7        44.95647      -110.510295
-## 663            F10        44.95647      -110.510295
-## 666             G4        44.95647      -110.510295
-## 668             D1        44.95647      -110.510295
-## 671             J6        44.95647      -110.510295
-## 683             H9        44.95647      -110.510295
-## 685             A7        44.95647      -110.510295
-## 686             J3        44.95647      -110.510295
-## 688             F5        44.95647      -110.510295
-## 697             A3        44.95647      -110.510295
-## 701             H6        44.95647      -110.510295
-## 702             B3        44.95647      -110.510295
-## 706             I8        44.95647      -110.510295
-## 710             B9        44.95647      -110.510295
-## 714             F1        44.95647      -110.510295
-## 715             B7        44.95647      -110.510295
-## 719             H8        44.95647      -110.510295
-## 721             I5        44.95647      -110.510295
-## 724             I4        44.95647      -110.510295
-## 728             C9        44.95647      -110.510295
-## 734             A4        44.95647      -110.510295
-## 735             I9        44.95647      -110.510295
-## 737             C6        44.95647      -110.510295
-## 738             C3        44.95647      -110.510295
-## 740             F8        44.95647      -110.510295
-## 742             C5        44.95647      -110.510295
-## 746             D7        44.95647      -110.510295
-## 751             E2        44.95647      -110.510295
-## 755             I6        44.95647      -110.510295
-## 757             E5        44.95647      -110.510295
-## 761             E8        44.95647      -110.510295
-## 764             H1        44.95647      -110.510295
-## 765             E3        44.95647      -110.510295
-## 766             B1        44.95647      -110.510295
-## 771             G5        44.95647      -110.510295
-## 773             E7        44.95647      -110.510295
-## 780             J9        44.95647      -110.510295
-## 781            I10        44.95647      -110.510295
-## 783             G3        44.95647      -110.510295
-## 786             G9        44.95647      -110.510295
-## 789             D3        44.95647      -110.510295
-## 790             B4        44.95647      -110.510295
-## 792             D5        44.95647      -110.510295
-## 797             J2        44.95647      -110.510295
-## 799             C2        44.95647      -110.510295
-## 803             F6        44.95647      -110.510295
-## 807             A9        44.95647      -110.510295
-## 809             A5        44.95647      -110.510295
-## 810             F3        44.95647      -110.510295
-## 815             D8        44.95647      -110.510295
-## 817             E1        44.95647      -110.510295
-## 818             E6        44.95647      -110.510295
-## 821             G1        44.95647      -110.510295
-## 822             D4        44.95647      -110.510295
-## 827            B10        44.95647      -110.510295
-## 830             D6        44.95647      -110.510295
-## 833             B2        44.95647      -110.510295
-## 842             G7        44.95647      -110.510295
-## 847             I2        44.95647      -110.510295
-## 855             C1        44.95647      -110.510295
-## 857             H7        44.95647      -110.510295
-## 860             H3        44.95647      -110.510295
-## 865             A8        44.95647      -110.510295
-## 870             F7        44.95647      -110.510295
-## 871             H5        44.95647      -110.510295
-## 872             F9        44.95647      -110.510295
-## 875             B8        44.95647      -110.510295
-## 877             J8        44.95647      -110.510295
-## 878             F2        44.95647      -110.510295
-## 880             D2        44.95647      -110.510295
-## 884             G2        44.95647      -110.510295
-## 885             I1        44.95647      -110.510295
-## 891             J4        44.95647      -110.510295
-## 894             G6        44.95647      -110.510295
-## 900             F4        44.95647      -110.510295
+## 1               I4        40.18389        -112.4367
+## 3               E8        40.18389        -112.4367
+## 8               F2        40.18389        -112.4367
+## 15              D6        40.18389        -112.4367
+## 16              G4        40.18389        -112.4367
+## 22              H8        40.18389        -112.4367
+## 27              C5        40.18389        -112.4367
+## 28              F1        40.18389        -112.4367
+## 29              I9        40.18389        -112.4367
+## 34              D9        40.18389        -112.4367
+## 37              A4        40.18389        -112.4367
+## 38              D5        40.18389        -112.4367
+## 39              A6        40.18389        -112.4367
+## 43              B1        40.18389        -112.4367
+## 45              E9        40.18389        -112.4367
+## 47              E2        40.18389        -112.4367
+## 53             H10        40.18389        -112.4367
+## 54              D4        40.18389        -112.4367
+## 56              H5        40.18389        -112.4367
+## 58              B9        40.18389        -112.4367
+## 59              I6        40.18389        -112.4367
+## 60              C6        40.18389        -112.4367
+## 64              J6        40.18389        -112.4367
+## 72              E3        40.18389        -112.4367
+## 73              H7        40.18389        -112.4367
+## 74              C7        40.18389        -112.4367
+## 75              D3        40.18389        -112.4367
+## 77              B5        40.18389        -112.4367
+## 80              F6        40.18389        -112.4367
+## 84              A2        40.18389        -112.4367
+## 85              C1        40.18389        -112.4367
+## 87              H2        40.18389        -112.4367
+## 90              D2        40.18389        -112.4367
+## 91              B2        40.18389        -112.4367
+## 96              G9        40.18389        -112.4367
+## 100             J1        40.18389        -112.4367
+## 103             I7        40.18389        -112.4367
+## 108             B3        40.18389        -112.4367
+## 110             H6        40.18389        -112.4367
+## 113             C4        40.18389        -112.4367
+## 117             J4        40.18389        -112.4367
+## 118             F3        40.18389        -112.4367
+## 120             B8        40.18389        -112.4367
+## 125             J2        40.18389        -112.4367
+## 129             F7        40.18389        -112.4367
+## 131             B6        40.18389        -112.4367
+## 137             E4        40.18389        -112.4367
+## 141             A9        40.18389        -112.4367
+## 145             J3        40.18389        -112.4367
+## 152             G3        40.18389        -112.4367
+## 156            B10        40.18389        -112.4367
+## 158             A3        40.18389        -112.4367
+## 160            C10        40.18389        -112.4367
+## 161             B7        40.18389        -112.4367
+## 162             C2        40.18389        -112.4367
+## 166            F10        40.18389        -112.4367
+## 172             E5        40.18389        -112.4367
+## 173             F4        40.18389        -112.4367
+## 175             J5        40.18389        -112.4367
+## 176             A8        40.18389        -112.4367
+## 179             A1        40.18389        -112.4367
+## 180             G2        40.18389        -112.4367
+## 182             H9        40.18389        -112.4367
+## 184             F8        40.18389        -112.4367
+## 185             G5        40.18389        -112.4367
+## 188             G6        40.18389        -112.4367
+## 190             A5        40.18389        -112.4367
+## 191             F5        40.18389        -112.4367
+## 193            E10        40.18389        -112.4367
+## 195             D1        40.18389        -112.4367
+## 205             G8        40.18389        -112.4367
+## 213             G7        40.18389        -112.4367
+## 214             H1        40.18389        -112.4367
+## 219             A7        40.18389        -112.4367
+## 220             H4        40.18389        -112.4367
+## 222             C3        40.18389        -112.4367
+## 225             C8        40.18389        -112.4367
+## 226             B4        40.18389        -112.4367
+## 227             G1        40.18389        -112.4367
+## 231             I2        40.18389        -112.4367
+## 236            J10        40.18389        -112.4367
+## 239             D8        40.18389        -112.4367
+## 243             J7        40.18389        -112.4367
+## 245             E1        40.18389        -112.4367
+## 247            A10        40.18389        -112.4367
+## 248             H3        40.18389        -112.4367
+## 249            I10        40.18389        -112.4367
+## 263             I3        40.18389        -112.4367
+## 264             F9        40.18389        -112.4367
+## 266             C9        40.18389        -112.4367
+## 267             J8        40.18389        -112.4367
+## 274            G10        40.18389        -112.4367
+## 278             J9        40.18389        -112.4367
+## 281            D10        40.18389        -112.4367
+## 284             I8        40.18389        -112.4367
+## 285             D7        40.18389        -112.4367
+## 287             E6        40.18389        -112.4367
+## 292             I1        40.18389        -112.4367
+## 295             I5        40.18389        -112.4367
+## 299             E7        40.18389        -112.4367
+## 302             E8        40.18389        -112.4367
+## 309             F4        40.18389        -112.4367
+## 310             I9        40.18389        -112.4367
+## 312             D6        40.18389        -112.4367
+## 313             A2        40.18389        -112.4367
+## 317             F8        40.18389        -112.4367
+## 320            C10        40.18389        -112.4367
+## 323             G8        40.18389        -112.4367
+## 328             J1        40.18389        -112.4367
+## 329             E3        40.18389        -112.4367
+## 330             A1        40.18389        -112.4367
+## 333             E4        40.18389        -112.4367
+## 334             B9        40.18389        -112.4367
+## 339             C7        40.18389        -112.4367
+## 344             G7        40.18389        -112.4367
+## 345             G5        40.18389        -112.4367
+## 346             G2        40.18389        -112.4367
+## 348             C9        40.18389        -112.4367
+## 349             B8        40.18389        -112.4367
+## 362             E7        40.18389        -112.4367
+## 368             F1        40.18389        -112.4367
+## 369             E9        40.18389        -112.4367
+## 370             H1        40.18389        -112.4367
+## 371             G4        40.18389        -112.4367
+## 372             H2        40.18389        -112.4367
+## 374             A5        40.18389        -112.4367
+## 378             E2        40.18389        -112.4367
+## 382             B4        40.18389        -112.4367
+## 391             B5        40.18389        -112.4367
+## 394             E6        40.18389        -112.4367
+## 397             A3        40.18389        -112.4367
+## 399             J5        40.18389        -112.4367
+## 400             I2        40.18389        -112.4367
+## 409             C5        40.18389        -112.4367
+## 413             B2        40.18389        -112.4367
+## 415             I1        40.18389        -112.4367
+## 416             G3        40.18389        -112.4367
+## 417             F3        40.18389        -112.4367
+## 418             D7        40.18389        -112.4367
+## 423             F7        40.18389        -112.4367
+## 426             B6        40.18389        -112.4367
+## 433             G1        40.18389        -112.4367
+## 436             G9        40.18389        -112.4367
+## 437             J2        40.18389        -112.4367
+## 443             G6        40.18389        -112.4367
+## 444             B7        40.18389        -112.4367
+## 453             C4        40.18389        -112.4367
+## 454             H6        40.18389        -112.4367
+## 455            D10        40.18389        -112.4367
+## 463             J3        40.18389        -112.4367
+## 464             B1        40.18389        -112.4367
+## 469            G10        40.18389        -112.4367
+## 471             A8        40.18389        -112.4367
+## 474             C8        40.18389        -112.4367
+## 475             F6        40.18389        -112.4367
+## 477             D8        40.18389        -112.4367
+## 479             D1        40.18389        -112.4367
+## 484             I8        40.18389        -112.4367
+## 485             A6        40.18389        -112.4367
+## 488             D9        40.18389        -112.4367
+## 489            E10        40.18389        -112.4367
+## 492             I6        40.18389        -112.4367
+## 493             I5        40.18389        -112.4367
+## 505             H3        40.18389        -112.4367
+## 508             A4        40.18389        -112.4367
+## 509            A10        40.18389        -112.4367
+## 512             D2        40.18389        -112.4367
+## 513             B3        40.18389        -112.4367
+## 514             H7        40.18389        -112.4367
+## 520             C3        40.18389        -112.4367
+## 524             D3        40.18389        -112.4367
+## 525             J9        40.18389        -112.4367
+## 526             H5        40.18389        -112.4367
+## 531             J7        40.18389        -112.4367
+## 534             D5        40.18389        -112.4367
+## 535             J4        40.18389        -112.4367
+## 536             A7        40.18389        -112.4367
+## 538            J10        40.18389        -112.4367
+## 542             F9        40.18389        -112.4367
+## 545             I7        40.18389        -112.4367
+## 547             H9        40.18389        -112.4367
+## 549             I3        40.18389        -112.4367
+## 551            H10        40.18389        -112.4367
+## 552             A9        40.18389        -112.4367
+## 560             E1        40.18389        -112.4367
+## 562             E5        40.18389        -112.4367
+## 563             C1        40.18389        -112.4367
+## 564             H4        40.18389        -112.4367
+## 567             C2        40.18389        -112.4367
+## 568             I4        40.18389        -112.4367
+## 571             F2        40.18389        -112.4367
+## 575            B10        40.18389        -112.4367
+## 578            F10        40.18389        -112.4367
+## 579             D4        40.18389        -112.4367
+## 583             H8        40.18389        -112.4367
+## 584             J6        40.18389        -112.4367
+## 590             J8        40.18389        -112.4367
+## 591             F5        40.18389        -112.4367
+## 598            I10        40.18389        -112.4367
+## 599             C6        40.18389        -112.4367
+## 601             E2        40.18389        -112.4367
+## 602             E1        40.18389        -112.4367
+## 604             J3        40.18389        -112.4367
+## 606            D10        40.18389        -112.4367
+## 607             D9        40.18389        -112.4367
+## 617             F4        40.18389        -112.4367
+## 625             B8        40.18389        -112.4367
+## 626             I7        40.18389        -112.4367
+## 632             E7        40.18389        -112.4367
+## 634            A10        40.18389        -112.4367
+## 636             D8        40.18389        -112.4367
+## 641             B9        40.18389        -112.4367
+## 642             C5        40.18389        -112.4367
+## 645             E3        40.18389        -112.4367
+## 646             A2        40.18389        -112.4367
+## 647             C4        40.18389        -112.4367
+## 648             D1        40.18389        -112.4367
+## 654             A9        40.18389        -112.4367
+## 655             B4        40.18389        -112.4367
+## 661             A3        40.18389        -112.4367
+## 662             A7        40.18389        -112.4367
+## 666             B6        40.18389        -112.4367
+## 667             I8        40.18389        -112.4367
+## 671             B2        40.18389        -112.4367
+## 672             C7        40.18389        -112.4367
+## 676             H6        40.18389        -112.4367
+## 677            F10        40.18389        -112.4367
+## 678            I10        40.18389        -112.4367
+## 686             I3        40.18389        -112.4367
+## 695             H7        40.18389        -112.4367
+## 696             C9        40.18389        -112.4367
+## 709             F6        40.18389        -112.4367
+## 714            C10        40.18389        -112.4367
+## 716             I4        40.18389        -112.4367
+## 722             F1        40.18389        -112.4367
+## 725             E9        40.18389        -112.4367
+## 727             G2        40.18389        -112.4367
+## 728             A8        40.18389        -112.4367
+## 730             G7        40.18389        -112.4367
+## 732             J8        40.18389        -112.4367
+## 737             E8        40.18389        -112.4367
+## 738             B3        40.18389        -112.4367
+## 741             H4        40.18389        -112.4367
+## 747            B10        40.18389        -112.4367
+## 749             F9        40.18389        -112.4367
+## 751             H8        40.18389        -112.4367
+## 752             F5        40.18389        -112.4367
+## 754             G8        40.18389        -112.4367
+## 755             H9        40.18389        -112.4367
+## 756            H10        40.18389        -112.4367
+## 760             G6        40.18389        -112.4367
+## 761             A4        40.18389        -112.4367
+## 762             D2        40.18389        -112.4367
+## 764             F8        40.18389        -112.4367
+## 767             G5        40.18389        -112.4367
+## 769             A6        40.18389        -112.4367
+## 774             C6        40.18389        -112.4367
+## 775             B5        40.18389        -112.4367
+## 778             H1        40.18389        -112.4367
+## 780             G1        40.18389        -112.4367
+## 782             J7        40.18389        -112.4367
+## 785             G4        40.18389        -112.4367
+## 788             J5        40.18389        -112.4367
+## 790             C2        40.18389        -112.4367
+## 792             D4        40.18389        -112.4367
+## 795             A1        40.18389        -112.4367
+## 797             A5        40.18389        -112.4367
+## 800             E4        40.18389        -112.4367
+## 803            G10        40.18389        -112.4367
+## 806             J9        40.18389        -112.4367
+## 807             G3        40.18389        -112.4367
+## 808             C1        40.18389        -112.4367
+## 809             D6        40.18389        -112.4367
+## 813             J6        40.18389        -112.4367
+## 814             D3        40.18389        -112.4367
+## 817             I2        40.18389        -112.4367
+## 820             I6        40.18389        -112.4367
+## 822             F7        40.18389        -112.4367
+## 823            J10        40.18389        -112.4367
+## 830             D5        40.18389        -112.4367
+## 840             J1        40.18389        -112.4367
+## 841             H5        40.18389        -112.4367
+## 843            E10        40.18389        -112.4367
+## 846             D7        40.18389        -112.4367
+## 847             I9        40.18389        -112.4367
+## 850             B7        40.18389        -112.4367
+## 857             I1        40.18389        -112.4367
+## 859             F2        40.18389        -112.4367
+## 864             G9        40.18389        -112.4367
+## 866             J2        40.18389        -112.4367
+## 867             J4        40.18389        -112.4367
+## 868             H2        40.18389        -112.4367
+## 869             C3        40.18389        -112.4367
+## 873             I5        40.18389        -112.4367
+## 875             E5        40.18389        -112.4367
+## 880             H3        40.18389        -112.4367
+## 881             E6        40.18389        -112.4367
+## 888             C8        40.18389        -112.4367
+## 891             F3        40.18389        -112.4367
+## 900             B1        40.18389        -112.4367
 </code></pre>
 
-<p>The latitude and longitude are the same for every record. This pattern 
-is the same for other TOS data, the data download contains the plot-level 
-coordinates.</p>
+<p>The latitude and longitude are the same for every record! This is because the 
+latitudes and longitudes provided are for the plots, not for the traps. Other 
+TOS data has the same pattern: the data download contains the plot-level 
+coordinates. This important information is in the <strong>Data Product User Guide</strong> and 
+can be downloaded from the 
+<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> on a 
+data product&#39;s page. Understanding nuances like this is one reason it is 
+important to read the Data Product User Guide.</p>
 
-<p>For many analyses, this level of spatial data is sufficient! But for other 
+<p>For many analyses, this level of spatial data is sufficient. But for other 
 types of analyses, you may need more precise locations. The <code>geoNEON</code> package 
 can get these data for you.</p>
 
+<h3>Sampling locations</h3>
+
 <p>The <code>getLocTOS()</code> function in the <code>geoNEON</code> package uses the NEON API to 
-access NEON location data, and then makes protocol-specific calculations 
-to return precise sampling locations. For more information about the NEON 
-API, see the <a href="https://www.neonscience.org/neon-api-usage" target="_blank">API tutorial</a> 
-and the <a href="https://data.neonscience.org/data-api" target="_blank">API web page</a>. 
+access NEON location data and then makes protocol-specific calculations 
+to return precise locations for each sampling effort. This function works for a 
+subset of NEON TOS data products. The list of tables and data products that can 
+be entered is in the 
+<a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" target="_blank">package documentation on GitHub</a>. </p>
+
+<p>For more information about the NEON API, see the 
+<a href="https://www.neonscience.org/neon-api-usage" target="_blank">API tutorial</a> 
+and the 
+<a href="https://data.neonscience.org/data-api" target="_blank">API web page</a>. 
 For more information about the location calculations used in each data product, 
 see the Data Product User Guide for each product.</p>
 
 <p>The <code>getLocTOS()</code> function requires two inputs:</p>
 
 <ul>
-<li>A data table from a NEON TOS data product</li>
-<li>The NEON table name of the first input</li>
+<li>A data table that contains spatial data from a NEON TOS data product</li>
+<li>The NEON table name of that data table</li>
 </ul>
 
-<p>The list of tables and data products that can be entered is in the 
-<a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" target="_blank">package documentation on GitHub</a>.</p>
+<p>For small mammal box trap locations, the function call looks like this. This 
+function may take a while to download all the location data. </p>
 
-<p>For small mammals, the function call looks like this:</p>
-
-<pre><code>mam.loc &lt;- getLocTOS(data=mam$mam_pertrapnight,
+<pre><code># download small mam locationso
+mam.loc &lt;- getLocTOS(data=mam$mam_pertrapnight,
                            dataProd=&quot;mam_pertrapnight&quot;)
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
 </code></pre>
 
-<p>What columns have been added by <code>getLocTOS()</code>?</p>
+<p>What additional data are now available in the data obtained by <code>getLocTOS()</code>?</p>
 
-<pre><code>names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
+<pre><code># print variable names that are new
+names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
 
-## [1] &quot;points&quot;                   &quot;utmZone&quot;                  &quot;northing&quot;                
-## [4] &quot;easting&quot;                  &quot;adjCoordinateUncertainty&quot; &quot;adjDecimalLatitude&quot;      
+## [1] &quot;points&quot;                   &quot;utmZone&quot;                  &quot;adjNorthing&quot;             
+## [4] &quot;adjEasting&quot;               &quot;adjCoordinateUncertainty&quot; &quot;adjDecimalLatitude&quot;      
 ## [7] &quot;adjDecimalLongitude&quot;      &quot;adjElevation&quot;             &quot;adjElevationUncertainty&quot;
 </code></pre>
 
 <p>Now we have adjusted latitude, longitude, and elevation, and the 
-corresponding easting and northing. We can use the easting and northing to 
-plot the locations of the mammal traps:</p>
+corresponding easting and northing UTM data. We also have coordinate uncertainty 
+data for these coordinates. </p>
 
-<pre><code>plot(mam.loc$easting, mam.loc$northing, pch=&quot;.&quot;,
+<p>We can use the easting and northing data to plot the locations of the mammal traps. </p>
+
+<pre><code># plot all trap locations at site
+plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=&quot;.&quot;,
      xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/mam-grids-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/mam-grids-1.png" alt="Six square points on a plot each made up of smaller dots that form either a complete square point or a partially filled in square point"/></p>
 
-<p>Each grid has 100 points, so even with each trap plotted as a . we can only 
-see a square for each grid. Let&#39;s zoom in on a single plot:</p>
+<p>Each trap grid has 100 points (individual trap locations), so even with each 
+trap plotted as a dot (.) we can only see a square for each grid. </p>
 
-<pre><code>plot(mam.loc$easting[which(mam.loc$plotID==&quot;YELL_031&quot;)], 
-     mam.loc$northing[which(mam.loc$plotID==&quot;YELL_031&quot;)], 
-     pch=&quot;.&quot;, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+<p>Let&#39;s zoom in on a single plot:</p>
+
+<pre><code># plot all trap locations in one grid (plot)
+plot(mam.loc$adjEasting[which(mam.loc$plotID==&quot;ONAQ_003&quot;)], 
+     mam.loc$adjNorthing[which(mam.loc$plotID==&quot;ONAQ_003&quot;)], 
+     pch=&quot;.&quot;, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;, cex=3)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-YELL_031-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-ONAQ003-1.png" alt="dots on a plot equally spaced in 10 rows and 10 columns"/></p>
 
-<p>Now let&#39;s add a layer of data to see which of these traps caught a mammal:</p>
+<p>This isn&#39;t the most interesting plot given that that each small mammal box 
+trapping grid is a 10 x 10 plot of traps. </p>
 
-<pre><code>plot(mam.loc$easting[which(mam.loc$plotID==&quot;YELL_031&quot;)], 
-     mam.loc$northing[which(mam.loc$plotID==&quot;YELL_031&quot;)], 
+<p>Now, let&#39;s add a layer of data to see which of these traps caught a mammal during 
+the August 2018 sampling bout. To do this we need to look at our variables file 
+again and see what variable gives us information about captures. We can see that 
+<code>trapStatus</code> provides the information on what happened to each trap. It has 
+categorical data on the status: </p>
+
+<ul>
+<li>0 - no data</li>
+<li>1 - trap not set</li>
+<li>2 - trap disturbed/door closed but empty</li>
+<li>3 - trap door open or closed w/ spoor left</li>
+<li>4 - &gt;1 capture in one trap</li>
+<li>5 - capture</li>
+<li>6 - trap set and empty</li>
+</ul>
+
+<p>Therefore, we need to plot all trap locations in this plot (ONAQ_003) for which 
+<code>trapStatus</code> is &ldquo;5 - capture&rdquo; (technically, we should add in a capture status of 
+4 but for demonstration purposes, we&#39;ll keep it simple).</p>
+
+<pre><code># plot all captures 
+plot(mam.loc$adjEasting[which(mam.loc$plotID == &quot;ONAQ_003&quot;)], 
+     mam.loc$adjNorthing[which(mam.loc$plotID == &quot;ONAQ_003&quot;)], 
      pch=&quot;.&quot;, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
 
-points(mam.loc$easting[which(mam.loc$plotID==&quot;YELL_031&quot; &amp; 
-                               mam.loc$trapStatus==&quot;5 - capture&quot;)], 
-     mam.loc$northing[which(mam.loc$plotID==&quot;YELL_031&quot; &amp;
-                              mam.loc$trapStatus==&quot;5 - capture&quot;)],
+points(mam.loc$adjEasting[which(mam.loc$plotID == &quot;ONAQ_003&quot; &amp; 
+                               mam.loc$trapStatus == &quot;5 - capture&quot;)], 
+     mam.loc$adjNorthing[which(mam.loc$plotID ==&quot;ONAQ_003&quot; &amp;
+                              mam.loc$trapStatus == &quot;5 - capture&quot;)],
      pch=19, col=&quot;blue&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-captures-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-captures-1.png" alt="Same plot as above with 100 equally spaced dots but 22 dots are now blue"/></p>
 
-<p>In the month of data we&#39;re viewing, in this plot, animals were caught at 
-50 of the 100 traps.</p>
+<p>In the month of data we&#39;re viewing small mammals were caught at 22 of the 100 
+trap locations in this plot.</p>
 
-<h3>Sensor data</h3>
+<p>The basic techniques for working with this data can be adapted to other TOS 
+location data for other data products.  </p>
+
+<h2>Locations for sensor data</h2>
 
 <p>Downloads of instrument system (IS) data include a file called 
-<code>sensor_positions.csv</code>. The sensor positions file contains information 
-about the coordinates of each sensor, relative to a reference location. 
-Let&#39;s look at the sensor locations for photosynthetically active 
-radiation (PAR) at the Treehaven site (TREE).</p>
+<strong>sensor_positions.csv</strong>. The sensor positions file contains information 
+about the coordinates of each sensor, relative to a reference location. </p>
 
-<p>The sensor positions file isn&#39;t kept by the methods in the <code>neonUtilities</code> 
-package (we plan to add this in the future!), so go to the 
-<a href="https://data.neonscience.org" target="_blank">Data Portal</a> 
-and download the basic PAR (DP1.00024.001) data at TREE for July 2018. Unzip the 
-monthly package, and read the sensor positions file into R:</p>
+<p>While the specifics vary, techniques are generalizable for working with sensor 
+data and the sensor_positions.csv file. For this tutorial, let&#39;s look at the 
+sensor locations for soil temperature (PAR; DP1.00041.001) at<br/>
+the NEON Treehaven site (TREE) in July 2018. To reduce our file size, we&#39;ll use 
+the 30 minute averaging interval. Our final product from this section is to 
+create a depth profile of soil temperature in one soil plot.</p>
 
-<pre><code>pos &lt;- read.delim(&quot;~/data/NEON.D05.TREE.DP1.00024.001.2018-07.basic.20190314T150344Z/NEON.D05.TREE.DP1.00024.001.sensor_positions.20190314T150344Z.csv&quot;,
-                  sep=&quot;,&quot;, header=T)
-names(pos)
+<p>If downloading data using the <code>neonUtilties</code> package is new to you, check out the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.</p>
 
-##  [1] &quot;HOR.VER&quot;            &quot;start&quot;              &quot;end&quot;                &quot;referenceStart&quot;    
-##  [5] &quot;referenceEnd&quot;       &quot;xOffset&quot;            &quot;yOffset&quot;            &quot;zOffset&quot;           
-##  [9] &quot;pitch&quot;              &quot;roll&quot;               &quot;azimuth&quot;            &quot;referenceLatitude&quot; 
-## [13] &quot;referenceLongitude&quot; &quot;referenceElevation&quot;
-</code></pre>
+<p>This function will download about 7 MB of data as written so we have <code>check.size =F</code> 
+for ease of running the code. </p>
 
-<p>The sensor locations are indexed by the HOR.VER indices - see the 
-<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
-page for more details about these indices. Here, the PAR data are collected at 
-each level of the tower (HOR=000), so only the VER index varies (VER=010-060).</p>
-
-<p>The x, y, and z offsets in the sensor positions file are in meters, and are 
-relative to the reference latitude, longitude, and elevation in the file. 
-Let&#39;s use the offsets to create a spatially explicit picture of light 
-attenuation through the canopy.</p>
-
-<p>Load the July 2018 PAR data from TREE into R using <code>loadByProduct()</code>:</p>
-
-<pre><code>pr &lt;- loadByProduct(dpID=&quot;DP1.00024.001&quot;, site=&quot;TREE&quot;,
+<pre><code># load soil temperature data of interest 
+soilT &lt;- loadByProduct(dpID=&quot;DP1.00041.001&quot;, site=&quot;TREE&quot;,
                     startdate=&quot;2018-07&quot;, enddate=&quot;2018-07&quot;,
                     avg=30, check.size=F)
 </code></pre>
 
+<h3>Sensor positions file</h3>
+
+<p>Now we can specifically look at the sensor positions file.</p>
+
+<pre><code># create object for sensor positions file
+pos &lt;- soilT$sensor_positions_00041
+
+# view names
+names(pos)
+
+##  [1] &quot;siteID&quot;               &quot;HOR.VER&quot;              &quot;name&quot;                 &quot;description&quot;         
+##  [5] &quot;start&quot;                &quot;end&quot;                  &quot;referenceName&quot;        &quot;referenceDescription&quot;
+##  [9] &quot;referenceStart&quot;       &quot;referenceEnd&quot;         &quot;xOffset&quot;              &quot;yOffset&quot;             
+## [13] &quot;zOffset&quot;              &quot;pitch&quot;                &quot;roll&quot;                 &quot;azimuth&quot;             
+## [17] &quot;referenceLatitude&quot;    &quot;referenceLongitude&quot;   &quot;referenceElevation&quot;   &quot;publicationDate&quot;
+
+# view table
+View(pos)
+</code></pre>
+
+<p>The sensor locations are indexed by the <code>HOR.VER</code> variable - see the 
+<a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
+page for more details. </p>
+
+<p>Using <code>unique()</code> we can view all the location indexes in this file. </p>
+
+<pre><code># view names
+unique(pos$HOR.VER)
+
+##  [1] &quot;001.501&quot; &quot;001.502&quot; &quot;001.503&quot; &quot;001.504&quot; &quot;001.505&quot; &quot;001.506&quot; &quot;001.507&quot; &quot;001.508&quot; &quot;001.509&quot; &quot;002.501&quot;
+## [11] &quot;002.502&quot; &quot;002.503&quot; &quot;002.504&quot; &quot;002.505&quot; &quot;002.506&quot; &quot;002.507&quot; &quot;002.508&quot; &quot;002.509&quot; &quot;003.501&quot; &quot;003.502&quot;
+## [21] &quot;003.503&quot; &quot;003.504&quot; &quot;003.505&quot; &quot;003.506&quot; &quot;003.507&quot; &quot;003.508&quot; &quot;003.509&quot; &quot;004.501&quot; &quot;004.502&quot; &quot;004.503&quot;
+## [31] &quot;004.504&quot; &quot;004.505&quot; &quot;004.506&quot; &quot;004.507&quot; &quot;004.508&quot; &quot;004.509&quot; &quot;005.501&quot; &quot;005.502&quot; &quot;005.503&quot; &quot;005.504&quot;
+## [41] &quot;005.505&quot; &quot;005.506&quot; &quot;005.507&quot; &quot;005.508&quot; &quot;005.509&quot;
+</code></pre>
+
+<p>Soil temperature data are collected in 5 instrumented soil plots inside the 
+tower footprint. We see this reflected in the data where HOR = 001 to 005. 
+Within each plot, temperature is measured at 9 depths, seen in VER = 501 to 
+509. At some sites, the number of depths may differ slightly.</p>
+
+<p>The x, y, and z offsets in the sensor positions file are the relative distance, 
+in meters, to the reference latitude, longitude, and elevation in the file. </p>
+
 <p>The HOR and VER indices in the sensor positions file correspond to the 
-<code>verticalPosition</code> and <code>horizontalPosition</code> fields in <code>pr$PARPAR_30min</code>, 
-although R has stripped off the leading zeroes from both indices.</p>
+<code>verticalPosition</code> and <code>horizontalPosition</code> fields in <code>soilT$ST_30_minute</code>.</p>
 
-<p>Use the <code>aggregate()</code> function to calculate mean PAR at each vertical 
-position on the tower over the month.</p>
+<p>Note that there are two sets of position data for soil plot 001, and that 
+one set has an <code>end</code> date in the file. This indicates sensors either 
+moved or were relocated; in this case there was a frost heave incident. 
+You can read about it in the issue log, both in the readme file and on 
+the <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page.</p>
 
-<pre><code>pr.mn &lt;- aggregate(pr$PARPAR_30min$PARMean, 
-                   by=list(pr$PARPAR_30min$verticalPosition),
-                   FUN=mean, na.rm=T)
+<p>Since we&#39;re working with data from July 2018, and the change in 
+sensor locations is dated Nov 2018, we&#39;ll use the original locations.</p>
+
+<pre><code>pos &lt;- pos[-intersect(grep(&quot;001.&quot;, pos$HOR.VER),
+                      which(pos$end==&quot;&quot;)),]
 </code></pre>
 
-<p>And now we can plot mean PAR relative to elevation on the tower:</p>
+<p>Our goal is to plot a time series of temperature, stratified by 
+depth, so let&#39;s start by joining the data file and sensor positions 
+file, to bring the depth measurements into the same data frame with 
+the data.</p>
 
-<pre><code>plot(pr.mn$x, pos$zOffset, type=&quot;b&quot;, pch=20,
-     xlab=&quot;Photosynthetically active radiation&quot;,
-     ylab=&quot;Height above tower base (m)&quot;)
+<pre><code># paste horizontalPosition and verticalPosition together
+# to match HOR.VER
+soilT$ST_30_minute$HOR.VER &lt;- paste(soilT$ST_30_minute$horizontalPosition,
+                                    soilT$ST_30_minute$verticalPosition,
+                                    sep=&quot;.&quot;)
+
+# left join to keep all temperature records
+soilTHV &lt;- merge(soilT$ST_30_minute, pos, 
+                 by=&quot;HOR.VER&quot;, all.x=T)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/par-plot-1.png" alt=" "/></p>
+<p>And now we can plot soil temperature over time for each depth. 
+We&#39;ll use <code>ggplot</code> since it&#39;s well suited to this kind of 
+stratification. Each soil plot is its own panel:</p>
+
+<pre><code>gg &lt;- ggplot(soilTHV, 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
+
+## Warning: Removed 1488 row(s) containing missing values (geom_path).
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png" alt="---UPDATE---HERE---"/></p>
+
+<p>We can see that as soil depth increases, temperatures 
+become much more stable, while the shallowest measurement 
+has a clear diurnal cycle. We can also see that 
+something has gone wrong with one of the sensors in plot 
+002. To remove those data, use only values where the final 
+quality flag passed, i.e. <code>finalQF</code> = 0</p>
+
+<pre><code>gg &lt;- ggplot(subset(soilTHV, finalQF==0), 
+             aes(endDateTime, soilTempMean, 
+                 group=zOffset, color=zOffset)) +
+             geom_line() + 
+        facet_wrap(~horizontalPosition)
+gg
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-noQF-1.png" alt=" "/></p>
 
 </body>
 
