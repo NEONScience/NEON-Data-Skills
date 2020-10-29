@@ -19,7 +19,5 @@ for(p in 1:length(ipynb.files)){
                 "; jupyter nbconvert --to html ",basename(ipynb.files[p]),
                 "; jupyter nbconvert --to script ",basename(ipynb.files[p]),
                 "; jupyter nbconvert --to markdown ",basename(ipynb.files[p])))
-  system("mkdir test2")
-  system("pwd")
   
 }
