@@ -269,7 +269,7 @@ S &lt;- arrange(S, siteID, horizonTopDepth)
 <p>There are two more things that we will want to do before converting this dataframe into a <code>SoilProfileCollection</code> object. First, we will make a new <code>siteLabel</code> column to use when plotting seeral pedons at once. </p>
 
 <pre><code>## combine &#39;domainID&#39; and &#39;siteID&#39; into a new label variable
-S$siteLabel=paste(S$domainID, S$siteID, sep=&quot;-&quot;)
+S$siteLabel=sprintf(&quot;%s-%s&quot;, S$domainID, S$siteID)
 </code></pre>
 
 <p>Second, we will convert the soil physical properties (sand, silt, clay percentages) into an RGB color that we can use for plotting later. These steps are much easier to do now while the data are in a simple data.frame.</p>
@@ -299,6 +299,14 @@ by site and horizon. We can convert this to a
 <pre><code>depths(S) &lt;- siteLabel ~ horizonTopDepth + horizonBottomDepth
 </code></pre>
 
+<p>We then move the site-level attributes to the @site &#39;slot&#39; of <code>S</code>, our AQP object.
+ This makes our <code>S</code> object easy to subset to look at a particular site. (Thanks 
+ to Dylan Beaudette of the USDA-NRCS for the helpful tips on how to best use 
+ this package!)</p>
+
+<pre><code> site(S) &lt;- ~ siteID + nrcsDescriptionID
+</code></pre>
+
 <h1>Plot Simple Soil Profiles</h1>
 
 <p>Using the plotting functions in the <code>aqp</code> package, 
@@ -310,7 +318,7 @@ a single site, the Smithsonian Environmental Research Center
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
 
 # Plot SERC clay profile
-plotSPC(S[which(S@site==&quot;D02-SERC&quot;),], 
+plotSPC(subset(S, siteID==&quot;SERC&quot;), 
         name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
         color=&#39;clayTotal&#39;, col.label=&#39;Clay Content (%)&#39;,
         col.palette=viridis::viridis(10), cex.names=1, 
@@ -327,7 +335,7 @@ Experimental Forest (WREF).</p>
 <pre><code># adjust margins
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
 
-plotSPC(S[which(S@site==&quot;D16-WREF&quot;),], 
+plotSPC(subset(S, siteID==&quot;WREF&quot;),  
         name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
         color=&#39;pMjelm&#39;, 
         col.label=&#39;Phosphorus (mg/Kg)&#39;,
@@ -344,7 +352,7 @@ plotSPC(S[which(S@site==&quot;D16-WREF&quot;),],
 <p>We can even pass the plotting function multiple sites in order to compare the pedons directly:</p>
 
 <pre><code>par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(S[7:10,], # pass multiple sites here
+plotSPC(subset(S, siteID %in% c(&#39;JERC&#39;, &#39;OSBS&#39;, &#39;LAJA&#39;)), # pass multiple sites here
         name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
         color=&#39;sandTotal&#39;, 
         col.label=&#39;Percent Sand (%)&#39;,
@@ -352,7 +360,7 @@ plotSPC(S[7:10,], # pass multiple sites here
         n.legend = 5)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-four-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png" alt=" "/></p>
 
 <h2>Multivariate Plotting</h2>
 
@@ -381,7 +389,7 @@ ColourTernary(cols, spectrum = NULL, resolution=45)
 <p>Now, we can plot the pedons according to their soil texture:</p>
 
 <pre><code>par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(S[7:10,], # pass multiple sites here
+plotSPC(subset(S, siteID %in% c(&#39;JERC&#39;, &#39;OSBS&#39;, &#39;LAJA&#39;)), # pass multiple sites here
         name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
         color=&#39;textureColor&#39;)
 </code></pre>
@@ -396,7 +404,7 @@ In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clu
 <pre><code>d &lt;- profile_compare(S, vars=c(&#39;clayTotal&#39;,&#39;sandTotal&#39;, &#39;siltTotal&#39;), 
                      k=0, max_d=100)
 
-## Computing dissimilarity matrices from 46 profiles [1.24 Mb]
+## Computing dissimilarity matrices from 47 profiles [1.28 Mb]
 
 # vizualize dissimilarity matrix via divisive hierarchical clustering
 d.diana &lt;- diana(d)
@@ -449,7 +457,7 @@ d.nutrients &lt;- profile_compare(S,
                                vars=c(&#39;nitrogenTot&#39;,&#39;carbonTot&#39;, &#39;sulfurTot&#39;),
                                k=0, max_d=100)
 
-## Computing dissimilarity matrices from 46 profiles [1.23 Mb]
+## Computing dissimilarity matrices from 47 profiles [1.27 Mb]
 
 # vizualize dissimilarity matrix via divisive hierarchical clustering
 d.diana.nutrients &lt;- diana(d.nutrients)

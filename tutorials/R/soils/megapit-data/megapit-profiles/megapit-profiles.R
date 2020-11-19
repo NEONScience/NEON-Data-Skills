@@ -1,4 +1,4 @@
-## ----set-up-env, eval=F-------------------------------------------------------------------------------
+## ----set-up-env, eval=F--------------------------------------------------------------
 ## 
 ## # Install packages if you have not yet.
 ## install.packages("neonUtilities")
@@ -10,7 +10,7 @@
 ## 
 
 
-## ----load-packages, message=FALSE---------------------------------------------------------------------
+## ----load-packages, message=FALSE----------------------------------------------------
 
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
@@ -25,7 +25,7 @@ library(Ternary)
 
 
 
-## ----download-data, results='hide'--------------------------------------------------------------------
+## ----download-data, results='hide'---------------------------------------------------
 
 MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
 
@@ -34,7 +34,7 @@ list2env(MP, .GlobalEnv)
 
 
 
-## ----join-bgc-----------------------------------------------------------------------------------------
+## ----join-bgc------------------------------------------------------------------------
 
 # duplicate the 'horizon' information into a new table
 S <- mgp_perhorizon
@@ -56,14 +56,14 @@ S <- arrange(S, siteID, horizonTopDepth)
 
 
 
-## ----site-labels--------------------------------------------------------------------------------------
+## ----site-labels---------------------------------------------------------------------
 
 ## combine 'domainID' and 'siteID' into a new label variable
-S$siteLabel=paste(S$domainID, S$siteID, sep="-")
+S$siteLabel=sprintf("%s-%s", S$domainID, S$siteID)
 
 
 
-## ----RGB-colors---------------------------------------------------------------------------------------
+## ----RGB-colors----------------------------------------------------------------------
 
 # duplicate physical property variables
 S$r=S$sandTotal # Sand is Red 'r'
@@ -84,19 +84,25 @@ S$textureColor=rgb(red=S$r/100,
 
 
 
-## ----make-SPC-object----------------------------------------------------------------------------------
+## ----make-SPC-object-----------------------------------------------------------------
 
 depths(S) <- siteLabel ~ horizonTopDepth + horizonBottomDepth
 
 
 
-## ----plot-SERC----------------------------------------------------------------------------------------
+## ----move-site-attributes------------------------------------------------------------
+
+ site(S) <- ~ siteID + nrcsDescriptionID
+
+
+
+## ----plot-SERC-----------------------------------------------------------------------
 
 # adjust margins
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
 
 # Plot SERC clay profile
-plotSPC(S[which(S@site=="D02-SERC"),], 
+plotSPC(subset(S, siteID=="SERC"), 
         name='horizonName', label='siteLabel', 
         color='clayTotal', col.label='Clay Content (%)',
         col.palette=viridis::viridis(10), cex.names=1, 
@@ -107,12 +113,12 @@ plotSPC(S[which(S@site=="D02-SERC"),],
 
 
 
-## ----plot-WREF----------------------------------------------------------------------------------------
+## ----plot-WREF-----------------------------------------------------------------------
 
 # adjust margins
 par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
 
-plotSPC(S[which(S@site=="D16-WREF"),], 
+plotSPC(subset(S, siteID=="WREF"),  
         name='horizonName', label='siteLabel', 
         color='pMjelm', 
         col.label='Phosphorus (mg/Kg)',
@@ -123,9 +129,9 @@ plotSPC(S[which(S@site=="D16-WREF"),],
 
 
 
-## ----plot-four----------------------------------------------------------------------------------------
+## ----plot-three----------------------------------------------------------------------
 par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(S[7:10,], # pass multiple sites here
+plotSPC(subset(S, siteID %in% c('JERC', 'OSBS', 'LAJA')), # pass multiple sites here
         name='horizonName', label='siteLabel', 
         color='sandTotal', 
         col.label='Percent Sand (%)',
@@ -134,7 +140,7 @@ plotSPC(S[7:10,], # pass multiple sites here
 
 
 
-## ----ternary-plot-------------------------------------------------------------------------------------
+## ----ternary-plot--------------------------------------------------------------------
 # Set plot margins
 par(mfrow=c(1, 1), mar=rep(.3, 4))
 
@@ -154,16 +160,16 @@ ColourTernary(cols, spectrum = NULL, resolution=45)
 
 
 
-## ----plot-physical-texture----------------------------------------------------------------------------
+## ----plot-physical-texture-----------------------------------------------------------
 
 par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(S[7:10,], # pass multiple sites here
+plotSPC(subset(S, siteID %in% c('JERC', 'OSBS', 'LAJA')), # pass multiple sites here
         name='horizonName', label='siteLabel', 
         color='textureColor')
 
 
 
-## ----cluster-texture----------------------------------------------------------------------------------
+## ----cluster-texture-----------------------------------------------------------------
 
 d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), 
                      k=0, max_d=100)
@@ -179,7 +185,7 @@ plotProfileDendrogram(S, d.diana, scaling.factor = .6,
 
 
 
-## ----plot-texture-clusters----------------------------------------------------------------------------
+## ----plot-texture-clusters-----------------------------------------------------------
 
 # Check and set working directory as needed.
 getwd()
@@ -200,7 +206,7 @@ dev.off()
 
 
 
-## ----cluster-nutrients--------------------------------------------------------------------------------
+## ----cluster-nutrients---------------------------------------------------------------
 
 ## Cluster as above, but for nutrient variables
 d.nutrients <- profile_compare(S, 
@@ -212,7 +218,7 @@ d.diana.nutrients <- diana(d.nutrients)
 
 
 
-## ----plot-nutrient-clusters---------------------------------------------------------------------------
+## ----plot-nutrient-clusters----------------------------------------------------------
 
 # Open 'pdf' graphic device. Define file name and large dimensions
 pdf(file="NEON_Soils_Nutrient_Clusters.pdf", width=24, height=14)

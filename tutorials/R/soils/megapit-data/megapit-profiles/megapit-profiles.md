@@ -120,7 +120,7 @@ There are two more things that we will want to do before converting this datafra
 
 
     ## combine 'domainID' and 'siteID' into a new label variable
-    S$siteLabel=paste(S$domainID, S$siteID, sep="-")
+    S$siteLabel=sprintf("%s-%s", S$domainID, S$siteID)
 
 Second, we will convert the soil physical properties (sand, silt, clay percentages) into an RGB color that we can use for plotting later. These steps are much easier to do now while the data are in a simple data.frame.
 
@@ -149,6 +149,14 @@ by site and horizon. We can convert this to a
 
     depths(S) <- siteLabel ~ horizonTopDepth + horizonBottomDepth
 
+We then move the site-level attributes to the @site 'slot' of `S`, our AQP object.
+ This makes our `S` object easy to subset to look at a particular site. (Thanks 
+ to Dylan Beaudette of the USDA-NRCS for the helpful tips on how to best use 
+ this package!)
+
+
+     site(S) <- ~ siteID + nrcsDescriptionID
+
 # Plot Simple Soil Profiles
 
 Using the plotting functions in the `aqp` package, 
@@ -161,7 +169,7 @@ a single site, the Smithsonian Environmental Research Center
     par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
     
     # Plot SERC clay profile
-    plotSPC(S[which(S@site=="D02-SERC"),], 
+    plotSPC(subset(S, siteID=="SERC"), 
             name='horizonName', label='siteLabel', 
             color='clayTotal', col.label='Clay Content (%)',
             col.palette=viridis::viridis(10), cex.names=1, 
@@ -178,7 +186,7 @@ Experimental Forest (WREF).
     # adjust margins
     par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
     
-    plotSPC(S[which(S@site=="D16-WREF"),], 
+    plotSPC(subset(S, siteID=="WREF"),  
             name='horizonName', label='siteLabel', 
             color='pMjelm', 
             col.label='Phosphorus (mg/Kg)',
@@ -195,14 +203,14 @@ We can even pass the plotting function multiple sites in order to compare the pe
 
 
     par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-    plotSPC(S[7:10,], # pass multiple sites here
+    plotSPC(subset(S, siteID %in% c('JERC', 'OSBS', 'LAJA')), # pass multiple sites here
             name='horizonName', label='siteLabel', 
             color='sandTotal', 
             col.label='Percent Sand (%)',
             col.palette=viridis::viridis(10),
             n.legend = 5)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-four-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png)
 
 
 ## Multivariate Plotting
@@ -233,7 +241,7 @@ Now, we can plot the pedons according to their soil texture:
 
 
     par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-    plotSPC(S[7:10,], # pass multiple sites here
+    plotSPC(subset(S, siteID %in% c('JERC', 'OSBS', 'LAJA')), # pass multiple sites here
             name='horizonName', label='siteLabel', 
             color='textureColor')
 
@@ -249,7 +257,7 @@ In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clu
     d <- profile_compare(S, vars=c('clayTotal','sandTotal', 'siltTotal'), 
                          k=0, max_d=100)
 
-    ## Computing dissimilarity matrices from 46 profiles [1.24 Mb]
+    ## Computing dissimilarity matrices from 47 profiles [1.28 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana <- diana(d)
@@ -302,7 +310,7 @@ Rather than cluster based on physical properties, we can also cluster based on n
                                    vars=c('nitrogenTot','carbonTot', 'sulfurTot'),
                                    k=0, max_d=100)
 
-    ## Computing dissimilarity matrices from 46 profiles [1.23 Mb]
+    ## Computing dissimilarity matrices from 47 profiles [1.27 Mb]
 
     # vizualize dissimilarity matrix via divisive hierarchical clustering
     d.diana.nutrients <- diana(d.nutrients)
