@@ -2,7 +2,7 @@
 
 rm(list=ls())
 
-input.path="~/Git/dev-aten/NEON-Data-Skills/tutorials/Python/NEON-API-python"
+input.path="~/Git/dev-aten/NEON-Data-Skills/tutorials/Python"
 
 # Find all files to change
 ipynb.files <- list.files(input.path,

@@ -5,14 +5,17 @@
 ## read in changes (remap_key) and parse out the setion of the URL that is actually relevant
 # Turn this into a before,after paired list
 
-raw.prefix = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/"
+raw.prefix = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/"
 #"https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/NEON-API-How-To.R"
 
+
+input.path="~/Git/dev-aten/NEON-Data-Skills/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/"
+
 # Find all files to change
-Rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials/R",
+Rmd.files <- list.files(input.path,
                               pattern="\\.Rmd$", full.names = T, recursive = TRUE)
 # Same files, but without prefix
-Rmd.files.short <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials/R",
+Rmd.files.short <- list.files(input.path,
                         pattern="\\.Rmd$", full.names = F, recursive = TRUE)
 
 R.files=sub(pattern = "(.*)\\..*$", replacement = "\\1.R", Rmd.files.short)
@@ -36,16 +39,16 @@ for (i in 1:length(Rmd.files)){
   close(fileConn)     
   
   ## now do .md file too
-  file=md.files[i]
-  print(file)
-  # open .md (or .Rmd) file
-  fileConn <- file(file)
-  fl <- readLines(fileConn)
-  
-  p="^code1:.*$"
-  fl2=sub(p,R.URL[i],fl)
-  #head(fl2,13)
-  # write modified .md file out
-  writeLines(fl2, fileConn)
-  close(fileConn)     
+  # file=md.files[i]
+  # print(file)
+  # # open .md (or .Rmd) file
+  # fileConn <- file(file)
+  # fl <- readLines(fileConn)
+  # 
+  # p="^code1:.*$"
+  # fl2=sub(p,R.URL[i],fl)
+  # #head(fl2,13)
+  # # write modified .md file out
+  # writeLines(fl2, fileConn)
+  # close(fileConn)     
 } #END file
