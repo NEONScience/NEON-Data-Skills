@@ -472,6 +472,3 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 Go to our tutorial 
 <a href="image-raster-data-r" target="_blank">*Image Raster Data in R - An Intro* </a>
 to learn more about working with image formatted rasters in R.
-
-
-test
