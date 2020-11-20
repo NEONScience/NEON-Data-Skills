@@ -34,8 +34,7 @@ dirs <- c("R/eddy4r",
 subDir <- dirs[4] 
 
 # Inputs - Where the git repo is on your computer
-### CHANGE AFTER MIGRATION
-gitRepoPath <-"~/Git/dev-aten/NEON-Data-Skills"
+gitRepoPath <-"~/Git/main/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
@@ -51,9 +50,7 @@ gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root
 wd_processing_doc <- "~/Git/data"
 
 # set the base url for images and links in the md file
-### CHANGE AFTER MIGRATION
-### CHANGE NOW
-base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/"
+base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"
 
 # how to reference raw images on github:
 # https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
