@@ -13,6 +13,8 @@ This repo contains the materials used to build the NEON Data Skills resources
 that are available for use on 
 [the NEON Data Skills section of the NEON website](https://www.neonscience.org/resources/learning-hub/tutorials).
 
+__Version 2.0__ Note that as of 11/20/2020 NEON has updated this repo to version __2.0__ with several changes. This transition coencides with the upgrade to the [www.neonscience.org](http://www.neonscience.org "National Ecological Observatory Network") website. Most notably, the default repository has been changed from 'master' to 'main', and the 'master' repository is now deprecated and will not be maintained. 
+
 <!-- ****** Usage ****** -->
 Usage
 -----
@@ -24,7 +26,7 @@ requests are reviewed for scientific accuracy and educational pedagogy. Individu
 who make significant contributions can request to be listed as contributors on 
 individual tutorials. 
 
-Please start by copying the template (/tutorials-in-development/tutorialTemplate.md) if you 
+Please start by copying the template (/tutorials-in-development/0_templates_style_guide/tutorial-template-*.*) if you 
 are creating a new tutorial. 
 
 ### Questions?
