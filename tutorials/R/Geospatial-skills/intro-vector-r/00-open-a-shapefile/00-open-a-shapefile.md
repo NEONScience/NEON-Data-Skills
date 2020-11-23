@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/00-open-a-shapefile.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/00-open-a-shapefile.R
 tutorialSeries: vector-data-series
 urlTitle: dc-open-shapefiles-r
 ---
@@ -331,7 +331,7 @@ Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
     plot(aoiBoundary_HARV, col="cyan1", border="black", lwd=3,
          main="AOI Boundary Plot")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-shapefile-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-shapefile-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Import Line and Point Shapefiles
@@ -366,7 +366,7 @@ lines, we use `\n` where the line should break.
     # use the pch element to adjust the symbology of the points
     plot(point_HARV, add  = TRUE, pch = 19, col = "purple")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-multiple-shapefiles-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-multiple-shapefiles-1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -390,7 +390,7 @@ the <a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank" 
 tutorials. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/challenge-vector-raster-overlay-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/challenge-vector-raster-overlay-1.png)
 
 ***
 

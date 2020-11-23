@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
@@ -159,7 +159,7 @@ of this page.
             r=1,g=2,b=3, scale=300, 
             stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
 
 ## Interactive `click` Function from `raster` Package
 
@@ -257,7 +257,7 @@ plot the spectral signatures.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/plot-spectral-signatures-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/plot-spectral-signatures-1.png)
 
 Nice! However, there seems to be something weird going on in the wavelengths 
 near 1400nm and 1850 nm...
@@ -290,7 +290,7 @@ reflectance measurements are obscured by atmospheric absorbtion.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorbtion-bands-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorbtion-bands-1.png)
 
 Now we can clearly see that the noisy sections of each spectral signature are 
 within the atmospheric absorbtion bands. For our final step, let's take all 
@@ -315,7 +315,7 @@ remove the noisy sections from the plot.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorbtion-band-reflectances-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorbtion-band-reflectances-1.png)
 
 There you have it, spectral signatures for five different land cover types, 
 with the readings from the atmospheric absorbtion bands removed.

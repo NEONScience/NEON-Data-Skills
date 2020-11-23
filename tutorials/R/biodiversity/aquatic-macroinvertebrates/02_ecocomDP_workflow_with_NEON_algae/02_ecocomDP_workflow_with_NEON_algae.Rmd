@@ -10,7 +10,7 @@ packagesLibraries: tidyverse, neonUtilities, devtools
 topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-algae
 ---

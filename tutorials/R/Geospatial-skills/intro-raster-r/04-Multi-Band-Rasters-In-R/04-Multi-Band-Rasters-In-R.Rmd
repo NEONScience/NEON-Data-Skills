@@ -11,7 +11,7 @@ topics: data-viz, raster, spatial-data-gis
 subtopics: 
 languagesTool: R
 dataProduct: DP1.30010.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-multiband-rasters-r
 

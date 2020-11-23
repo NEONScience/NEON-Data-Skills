@@ -10,7 +10,7 @@ packagesLibraries:
 topics: hyperspectral, remote-sensing,spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/Introduction-to-Raster-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/Introduction-to-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
 urlTitle: raster-data-r
 
@@ -235,7 +235,7 @@ This is an easy and quick data checking tool. Are there any totally weird values
          col= "purple", 
          maxpixels=22000000)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/histogram-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/histogram-1.png)
 
 It looks like we have a lot of land around 325m and 425m. 
 
@@ -250,7 +250,7 @@ a simple plot with the `plot()` function.
     plot(DEM, 
     		 main="Digital Elevation Model, SJER") # add title with main
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-raster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-raster-1.png)
 
 R has an `image()` function that allows you to control the way a raster is
 rendered on the screen. The `plot()` function in R has a base setting for the number
@@ -261,19 +261,19 @@ better for rendering larger rasters.
     # create a plot of our raster
     image(DEM)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-1.png)
 
     # specify the range of values that you want to plot in the DEM
     # just plot pixels between 250 and 300 m in elevation
     image(DEM, zlim=c(250,300))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-2.png)
 
     # we can specify the colors too
     col <- terrain.colors(5)
     image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-3.png)
 
 ### Plotting with Colors
 
@@ -318,7 +318,7 @@ the colors change if we want too.
     
     plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-with-breaks-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-with-breaks-1.png)
 
 We can also customize the legend appearance. 
 
@@ -338,7 +338,7 @@ We can also customize the legend appearance.
             legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
             fill = col)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/legend-play-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/legend-play-1.png)
 
 Notice that the legend is in reverse order in the previous plot. Let’s fix that.
 We need to both reverse the order we have the legend laid out and reverse the 
@@ -356,7 +356,7 @@ the color fill with the `rev()` colors.
             legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
             fill = rev(col))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/flip-legend-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/flip-legend-1.png)
 
 Try the code again but only make one of the changes -- reverse order or reverse
 colors-- what happens? 
@@ -374,7 +374,7 @@ We can add a custom color map with fewer breaks as well.
     brk <- c(200, 300, 350, 400,500)
     plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/add-color-map-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/add-color-map-1.png)
 
 A discrete dataset has a set of unique categories or classes. One example could 
 be land use classes. The example below shows elevation zones generated using the 
@@ -409,7 +409,7 @@ all values within the raster by 2.
     #plot the new DEM
     plot(DEM2, main="DEM with all values doubled")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/raster-math-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/raster-math-1.png)
 
 
 ## Cropping Rasters in R
@@ -448,7 +448,7 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
     #plot cropped DEM
     plot(DEMcrop2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/cropDEMManual-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/cropDEMManual-1.png)
  
 
 
@@ -465,7 +465,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 `low elevation`. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/challenge-code-name-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/challenge-code-name-1.png)
 
 
 ## Image (RGB) Data in R

@@ -1,5 +1,6 @@
-# Replace graphics links with static URLs 
-# Use gsub() to find instances of {{ site.baseurl }} AND {{site.baseurl}}
+# this script changes the full URLs for graphics and figures for the NEON tutorials
+# Used during the transition from 'dev-aten' to 'main' branches in coordination with website upgrade
+# Donal O'Leary - 11/20/2020
 
 master_dir <- "~/Git/main/NEON-Data-Skills"
 
@@ -23,9 +24,9 @@ rep_graphics_url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Ski
 figures.base <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/"
 rep_figures_url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/"
 
-# Finally, replace relative URL pathway references
-rel.base <- "href=\"/"
-rep_rel_url <- "href=\"https://www.neonscience.org/"
+# # Finally, replace relative URL pathway references
+# rel.base <- "href=\"/"
+# rep_rel_url <- "href=\"https://www.neonscience.org/"
 
 # Test a single file
 #file=Rmd.files[26]

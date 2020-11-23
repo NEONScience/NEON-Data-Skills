@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
@@ -339,7 +339,7 @@ the bands in the list.
     # plot one raster in the stack to make sure things look OK.
     plot(rgbStack$Band_14, main="Band 14")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-raster-stack-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-raster-stack-1.png)
 
 We can play with the color ramps too if we want:
 
@@ -348,19 +348,19 @@ We can play with the color ramps too if we want:
     myCol <- terrain.colors(25)
     image(rgbStack$Band_14, main="Band 14", col=myCol)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-1.png)
 
     # adjust the zlims or the stretch of the image
     myCol <- terrain.colors(25)
     image(rgbStack$Band_14, main="Band 14", col=myCol, zlim = c(0,.5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-2.png)
 
     # try a different color palette
     myCol <- topo.colors(15, alpha = 1)
     image(rgbStack$Band_14, main="Band 14", col=myCol, zlim=c(0,.5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-3.png)
 
 
 The `plotRGB` function allows you to combine three bands to create an image. 
@@ -372,7 +372,7 @@ The `plotRGB` function allows you to combine three bands to create an image.
             r=1,g=2,b=3,
             stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-RGB-Image-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-RGB-Image-1.png)
 
 <i class="fa fa-star"></i>**A note about image stretching:** Notice that we use the argument
 `stretch="lin"` in this plotting function, which automatically stretches the 
@@ -456,7 +456,7 @@ the best way to calculate NDVI from hyperspectral data!
     ndvi_calc <- calc(ndvi_stack,NDVI)
     plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-1.png)
 
     # Now, play with breaks and colors to create a meaningful map
     # add a color map with 4 colors
@@ -467,7 +467,7 @@ the best way to calculate NDVI from hyperspectral data!
     # plot the image using breaks
     plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-2.png)
 
 	
 <div id="ds-challenge" markdown="1">

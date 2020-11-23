@@ -10,7 +10,7 @@ packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
 topics: organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/01_working_with_NEON_macroinverts.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertebrates
 ---
@@ -531,7 +531,7 @@ For this first step, we will use data in a 'long' table:
 
     ## `summarise()` regrouping output by 'domainID', 'siteID' (override with `.groups` argument)
 
-![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
+![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
 
     # library(scales)
     # sum densities by order for each sampleID
@@ -576,7 +576,7 @@ For this first step, we will use data in a 'long' table:
 
     ## `summarise()` regrouping output by 'order' (override with `.groups` argument)
 
-![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
+![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
 
     # faceted densities plot
     table_observation_by_order %>%
@@ -590,7 +590,7 @@ For this first step, we will use data in a 'long' table:
       theme(axis.text.x = 
                 element_text(angle = 45, hjust = 1))
 
-![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
+![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
 
 ### Making Data 'wide'
 For the next process, we will need to make our data table in the 'wide' format.
@@ -815,7 +815,7 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
 
-![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
+![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
 
     # merge NMDS scores with sampleID information for plotting
     nmds_scores <- my_nmds_result %>% vegan::scores() %>%
@@ -895,7 +895,7 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_wrap(~ as.factor(year))
 
-![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
+![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
 
     # Plot samples in community composition space
     # facet by siteID and habitat type
@@ -906,4 +906,4 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_grid(habitatType ~ siteID, scales = "free")
 
-![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)
+![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)

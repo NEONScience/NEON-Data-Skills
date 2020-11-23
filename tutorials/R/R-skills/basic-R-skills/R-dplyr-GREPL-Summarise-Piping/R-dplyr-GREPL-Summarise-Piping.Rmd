@@ -1,6 +1,6 @@
 ---
 title: "Filter, Piping, and GREPL Using R DPLYR - An Intro"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/basic-R-skills/R-dplyr-GREPL-Summarise-Piping/R-dplyr-GREPL-Summarise-Piping.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/basic-R-skills/R-dplyr-GREPL-Summarise-Piping/R-dplyr-GREPL-Summarise-Piping.R
 contributors: Garrett M. Williams
 dataProduct: DP1.10072.001
 dateCreated: '2015-05-27'

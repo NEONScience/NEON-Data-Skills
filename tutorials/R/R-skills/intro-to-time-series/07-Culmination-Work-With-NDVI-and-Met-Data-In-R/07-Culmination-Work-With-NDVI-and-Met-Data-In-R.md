@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, scales, gridExtra, grid, dplyr, reshape2
 topics: time-series, phenology
 languagesTool:
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/07-Culmination-Work-With-NDVI-and-Met-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/07-Culmination-Work-With-NDVI-and-Met-Data-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-culm-activity-ndvi-met-data-r
 ---
@@ -255,7 +255,7 @@ These NDVI data were derived from a raster and are now integers in a
             plot.title = element_text(lineheight=.8, face="bold",size = 20),
             text = element_text(size=20))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-NDVI-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-NDVI-1.png)
 
 ## Two y-axes or Side-by-Side Plots?
 When we have different types of data like NDVI (scale: 0-1 index units),
@@ -284,7 +284,7 @@ back to
 <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-PAR-NDVI-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-PAR-NDVI-1.png)
 
 The figures from this Challenge are nice but a bit confusing as the dates on the
 x-axis don't exactly line up. To fix this we can **assign the same min and max 
@@ -318,7 +318,7 @@ We can also assign the date format for the x-axis and clearly label both axes.
     # Output with both plots
     grid.arrange(plot2.par.2011, plot2.NDVI.2011) 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-same-xaxis-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-same-xaxis-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Air Temperature and NDVI
@@ -329,4 +329,4 @@ Second, plot PAR, air temperature and NDVI in a single pane for ease of
 comparison.  
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-2.png)

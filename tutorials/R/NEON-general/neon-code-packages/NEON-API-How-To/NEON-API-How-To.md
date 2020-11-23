@@ -10,7 +10,7 @@ packagesLibraries: [httr, jsonlite, devtools, downloader, geoNEON, neonUtilities
 topics: data-management, rep-sci
 languagesTool: R, API
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/NEON-API-How-To.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/NEON-API-How-To.R
 tutorialSeries: 
 urlTitle: neon-api-usage
 ---
@@ -602,7 +602,7 @@ pulled have actual data in them, let's make a quick graphic:
     barplot(clusterBySp$total, names.arg=clusterBySp$scientificName, 
             ylab="Total", cex.names=0.5, las=2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-bird-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-bird-data-1.png)
 
 Wow! There are lots of *Agelaius phoeniceus* (Red-winged Blackbirds) at WOOD in July. 
 
@@ -691,7 +691,7 @@ a quick look at it, let's plot the mean soil temperature by date.
                                            format="%Y-%m-%d T %H:%M:%S Z"), 
          pch=".", xlab="Date", ylab="T")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-soil-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-soil-data-1.png)
 
 As we'd expect we see daily fluctuation in soil temperature. 
 
@@ -966,7 +966,7 @@ initial download:
             circles=brd.point.loc$coordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-extr-NL-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-extr-NL-1.png)
 
 And use `getLocTOS()` to calculate the point locations of observations.
 
@@ -1109,7 +1109,7 @@ And use `getLocTOS()` to calculate the point locations of observations.
             circles=brd.point.pt$adjCoordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-calc-NL-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/brd-calc-NL-1.png)
 
 Now you can see the individual points where the respective point counts were 
 located. 

@@ -10,7 +10,7 @@ packagesLibraries:
 topics: hyperspectral, remote-sensing,spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/Raster-Res-Extent-Pixels.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/Raster-Res-Extent-Pixels.R
 tutorialSeries: primer-raster-data-R
 urlTitle: raster-res-extent-pixels-r
 ---
@@ -226,7 +226,7 @@ Let's get back to looking at more attributes.
     # plot raster
     plot(myRaster1, main="Raster with 16 pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/create-raster-cont-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/create-raster-cont-1.png)
 
 Here we see our raster with the value of 1 to 16 in each pixel. 
 
@@ -264,7 +264,7 @@ numerical data).
     # plot 
     plot(myRaster2, main="Raster with 32 pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-1.png)
 
     ## LOWER RESOLUTION
     myRaster3 <- raster(nrow=2, ncol=2)
@@ -282,7 +282,7 @@ numerical data).
 
     plot(myRaster3, main="Raster with 4 pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-2.png)
 
     ## SINGLE PIXEL RASTER
     myRaster4 <- raster(nrow=1, ncol=1)
@@ -300,7 +300,7 @@ numerical data).
 
     plot(myRaster4, main="Raster with 1 pixel")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-3.png)
 
 To more easily compare them, let's create a graphic layout with 4 rasters in it. 
 Notice that each raster has the same extent but each a different resolution 
@@ -316,7 +316,7 @@ because it has a different number of pixels spread out over the same extent.
     plot(myRaster3, main="Raster with 4 pixels")
     plot(myRaster4, main="Raster with 2 pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/quad-layout-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/quad-layout-1.png)
 
     # change graphical parameter back to 1x1 
     par(mfrow=c(1,1))
@@ -512,7 +512,7 @@ Now we have an extent associated with our raster which places it in space!
     # plot new raster
     plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/plot-raster-our-extent-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/plot-raster-our-extent-1.png)
 
 Notice that the coordinates show up on our plot now. 
 

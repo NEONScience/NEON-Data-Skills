@@ -10,7 +10,7 @@ packagesLibraries: ggplot2
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/00-Brief-Tabular-Time-Series-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/00-Brief-Tabular-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-brief-tabular-time-series-qplot-r
 ---
@@ -388,7 +388,7 @@ object that the variables are stored in.
           data=harMet.daily,
           main="Daily Air Temperature\nNEON Harvard Forest Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/plot-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/plot-data-1.png)
 
 We have successfully plotted some data. However, what is happening on the 
 x-axis?
@@ -443,7 +443,7 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
           data=harMet.daily,
           main="Daily Air Temperature w/ Date Assigned\nNEON Harvard Forest Field Site")  
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/qplot-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/qplot-data-1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -459,5 +459,5 @@ Hint: you can modify the X and Y axis labels using `xlab="label text"` and
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-2.png)
 

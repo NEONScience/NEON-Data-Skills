@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
   2013 Colorado Floods'
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/COOP-NEIS-Precipitation-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/COOP-NEIS-Precipitation-In-R.R
 contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
@@ -329,7 +329,7 @@ values, are labelled with the placeholder `999.99`. Do we have any NoData values
     # or other "weird" values that might be NA if we didn't know the NA value
     hist(precip.boulder$HPCP)
 
-![Histogram displaying the frquency of total precipitation in inches for the recorded hour.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/no-data-values-hist-1.png)
+![Histogram displaying the frquency of total precipitation in inches for the recorded hour.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/no-data-values-hist-1.png)
 
 Looking at the histogram, it looks like we have mostly low values (which makes sense) but a few values
 up near 1000 -- likely 999.99. We can assign these entries to be `NA`, the value that
@@ -377,7 +377,7 @@ Now that we've cleaned up the data, we can view it. To do this we will plot usin
     ## Warning: Removed 94 rows containing missing values
     ## (position_stack).
 
-![Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-precip-hourly-1.png)
+![Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-precip-hourly-1.png)
 
 As we can see, plots of hourly date lead to very small numbers and is difficult
 to represent all information on a figure. Hint: If you can't see any bars on your
@@ -416,7 +416,7 @@ with only dates (no time) and then re-plot.
     ## Warning: Removed 94 rows containing missing values
     ## (position_stack).
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-summaries-1.png)
+![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-summaries-1.png)
 
 R will automatically combine all data from the same day and plot it as one entry.  
 
@@ -477,7 +477,7 @@ Now we can plot the daily data.
     
     precPlot_daily
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-prec-plot-1.png)
+![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-prec-plot-1.png)
 
 Compare this plot to the plot we created using the first method. Are they the same? 
 
@@ -516,7 +516,7 @@ scale on the x-axis with `scale_x_date()`.
     ## Warning: Removed 777 rows containing missing values
     ## (position_stack).
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-Aug-Oct-2013-1.png)
+![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-Aug-Oct-2013-1.png)
 
 Now we can easily see the dramatic rainfall event in mid-September! 
 
@@ -551,7 +551,7 @@ Now let's create a subset of the data and plot it.
     
     precPlot_flood2 
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/subset-data-1.png)
+![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/subset-data-1.png)
 
 
 ## Interactive Plots - Plotly
@@ -581,7 +581,7 @@ The full dataset takes considerable time to download, so we recommend you use th
 
 As an added challenge, aggregate the data by month instead of by day.  
 
-![Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/all-boulder-station-data-1.png)
+![Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/all-boulder-station-data-1.png)
 
 
 

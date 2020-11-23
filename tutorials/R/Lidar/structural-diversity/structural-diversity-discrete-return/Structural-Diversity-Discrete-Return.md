@@ -1,6 +1,6 @@
 ---
 title: "Calculating Forest Structural Diversity Metrics from NEON LiDAR Data"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/structural-diversity/structural-diversity-discrete-return/Structural-Diversity-Discrete-Return.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/structural-diversity/structural-diversity-discrete-return/Structural-Diversity-Discrete-Return.R
 contributors: Jeff Atkins, Keith Krause, Atticus Stovall
 dataProduct: null
 dateCreated: '2020-05-01'
@@ -237,7 +237,7 @@ our structural diversity metrics.
     #visualize CHM
     plot(chm) 
 
-![Canopy Height Model (CHM) of HARV study area](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/structural-diversity/structural-diversity/rfigs/calculate-structural-diversity-metrics-1.png)
+![Canopy Height Model (CHM) of HARV study area](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/structural-diversity/structural-diversity/rfigs/calculate-structural-diversity-metrics-1.png)
 
     #MEAN OUTER CANOPY HEIGHT (MOCH)
     #calculate MOCH, the mean CHM height value

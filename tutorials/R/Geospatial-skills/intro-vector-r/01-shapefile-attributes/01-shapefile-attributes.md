@@ -9,7 +9,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/01-shapefile-attributes.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/01-shapefile-attributes.R
 tutorialSeries: vector-data-series
 urlTitle: dc-shapefile-attributes-r
 ---
@@ -345,7 +345,7 @@ We can plot our subsetted shapefiles.
          lwd=6,
          main="NEON Harvard Forest Field Site\n Footpaths")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-1.png)
 
 Interesting. Above, it appeared as if we had 2 features in our footpaths subset.
 Why does the plot look like there is only one feature?
@@ -365,7 +365,7 @@ to do this.
          lwd=6,
          main="NEON Harvard Forest Field Site\n Footpaths \n Feature one = blue, Feature two= green")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-unique-colors-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-unique-colors-1.png)
 
 Now, we see that there are in fact two features in our plot! 
 
@@ -380,7 +380,7 @@ Subset out all:
 For each plot, color each feature using a unique color.
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-2.png)
 
 ## Plot Lines by Attribute Value
 To plot vector data with the color determined by a set of attribute values, the 
@@ -475,7 +475,7 @@ Let's give this a try.
          lwd=3,
          main="NEON Harvard Forest Field Site\n Roads & Trails")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/palette-and-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/palette-and-plot-1.png)
 
 ### Adjust Line Width
 We can also adjust the width of our plot lines using `lwd`. We can set all lines
@@ -488,7 +488,7 @@ to be thicker or thinner using `lwd=`.
          main="NEON Harvard Forest Field Site\n Roads & Trails\n All Lines Thickness=6",
          lwd=6)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/adjust-line-width-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/adjust-line-width-1.png)
 
 ### Adjust Line Width by Attribute
 
@@ -518,7 +518,7 @@ try.
          main="NEON Harvard Forest Field Site\n Roads & Trails \n Line width varies by TYPE Attribute Value",
          lwd=lineWidths)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/line-width-unique-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/line-width-unique-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Line Width by Attribute 
@@ -536,7 +536,7 @@ Create a plot of roads using the following line thicknesses:
  
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
@@ -574,7 +574,7 @@ Let's add a legend to our plot.
     			 # the legend
           fill=roadPalette) # color palette to use to fill objects in legend.
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/add-legend-to-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/add-legend-to-plot-1.png)
 
 We can tweak the appearance of our legend too.
 
@@ -594,7 +594,7 @@ Let's try it out.
            bty="n", # turn off the legend border
            cex=.8) # decrease the font / legend size
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/modify-legend-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/modify-legend-plot-1.png)
 
 We can modify the colors used to plot our lines by creating a new color vector,
 directly in the plot code too rather than creating a separate object.
@@ -621,7 +621,7 @@ Let's try it!
            fill=newColors, 
            bty="n", cex=.8)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-different-colors-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-different-colors-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
@@ -644,7 +644,7 @@ other lines can be grey.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-2-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-2-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Polygon by Attribute
@@ -666,4 +666,4 @@ use google to find a list of pch symbols that you can use in R.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-3.png)

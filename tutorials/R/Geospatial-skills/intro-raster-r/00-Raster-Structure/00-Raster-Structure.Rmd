@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001, DP1.30010.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/00-Raster-Structure.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 urlTitle: dc-raster-data-r
 ---

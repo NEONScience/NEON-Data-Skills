@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/03-when-vector-data-dont-line-up-CRS.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/03-when-vector-data-dont-line-up-CRS.R
 tutorialSeries: vector-data-series
 urlTitle: dc-vector-data-reproject-crs-r
 ---
@@ -200,7 +200,7 @@ Next, let's plot the U.S. states data.
     plot(State.Boundary.US, 
          main="Map of Continental US State Boundaries\n US Census Bureau Data")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/find-coordinates-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/find-coordinates-1.png)
 
 ## U.S. Boundary Layer  
 
@@ -242,7 +242,7 @@ make our map pop!
          border="gray18",
          add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/check-out-coordinates-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/check-out-coordinates-1.png)
 
 Next, let's add the location of a flux tower where our study area is.
 As we are adding these layers, take note of the class of each object. 
@@ -269,7 +269,7 @@ As we are adding these layers, take note of the class of each object.
          col = "purple",
          main="Harvard Fisher Tower Location")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/explore-units-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/explore-units-1.png)
 
 The plot above demonstrates that the tower point location data are readable and 
 will plot! Let's next add it as a layer on top of the U.S. states and boundary
@@ -293,7 +293,7 @@ layers in our basemap plot.
          col = "purple",
          add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/layer-point-on-states-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/layer-point-on-states-1.png)
 
 What do you notice about the resultant plot? Do you see the tower location in 
 purple in the Massachusetts area? No! What went wrong?
@@ -475,7 +475,7 @@ Once our data are reprojected, we can try to plot again.
          col = "purple",
          add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/plot-again-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/plot-again-1.png)
 
 Reprojecting our data ensured that things line up on our map! It will also 
 allow us to perform any required geoprocessing (spatial calculations /
@@ -495,4 +495,4 @@ the Tower location point.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/challenge-code-MASS-Map-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/challenge-code-MASS-Map-1.png)

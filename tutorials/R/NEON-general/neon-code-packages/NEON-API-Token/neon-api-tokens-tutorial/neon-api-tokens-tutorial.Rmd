@@ -10,7 +10,7 @@ packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: DP1.10026.001, DP3.30015.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/neon-api-tokens-tutorial.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/neon-api-tokens-tutorial.R
 tutorialSeries:
 urlTitle: neon-api-tokens-tutorial
 

@@ -10,7 +10,7 @@ packagesLibraries: raster, sp, rgdal, maptools, rgeos, dplyr, ggplot
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool:
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/extract-raster-data-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/extract-raster-data-R.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: extract-values-rasters-r
 ---
@@ -202,7 +202,7 @@ the data.
     # plot raster
     plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-CHM-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-CHM-1.png)
 
 
 Since both files have eastings and northings we can use this data to plot onto 
@@ -220,7 +220,7 @@ our existing raster.
     # plot location of each tree measured
     points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-veg-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-veg-1.png)
 
 Now we have a plot of our CHM showing trees of different (categorical) heights. 
 Why might we have chosen these breaks? 
@@ -420,7 +420,7 @@ through several plots and create histograms using a `for loop`.
       hist(cent_heightList[[i]], main=(paste("plot",i)))
       }
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-3.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-4.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-5.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-3.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-4.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-5.png)
 
 Looking at these distributions, the area has some pretty short trees -- plot 5 
 (really, SJER120 since we didn't match up the plotIDs) looks almost bare!
@@ -484,7 +484,7 @@ requires the `rgeos` package, installed.
 
     plot(centShape)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/read-shapefile-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/read-shapefile-1.png)
 
 Then we can simply use the extract function again. Here we specify not weighting
 the values returned and we directly add the data to our centroids file instead
@@ -697,7 +697,7 @@ We can make a simple plot using the base R `plot()` function:
     #create basic plot
     plot(x = centroids$chmMaxShape, y=centroids$insituMaxHeight)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-data-1.png)
 
 Or we can use the `ggplot()` function from the **ggplot2** package. For more on 
 using the **ggplot2** package see our tutorial, 
@@ -715,7 +715,7 @@ In reality, we know that the trees in these plots are the same height regardless
       ylab("Maximum measured height") + 
       xlab("Maximum lidar pixel")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-w-ggplot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-w-ggplot-1.png)
 
 
 We can also add a regression fit to our plot. Explore the `ggplot()` options and 
@@ -736,7 +736,7 @@ customize your plot.
             axis.title.x = element_text(family="sans", face="bold", size=14, angle=00, hjust=0.54, vjust=-.2),
             axis.title.y = element_text(family="sans", face="bold", size=14, angle=90, hjust=0.54, vjust=1))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/ggplot-data-full-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/ggplot-data-full-1.png)
 
 You have now successfully compared lidar derived vegetation height, within plots, 
 to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it's hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.

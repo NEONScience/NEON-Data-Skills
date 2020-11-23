@@ -11,7 +11,7 @@ topics:
 subtopics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/07-Extract-NDVI-From-Rasters-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-ndvi-calc-raster-time-series
 
@@ -338,7 +338,7 @@ in `ggplot()` see the tutorial on
       xlab("Julian Days") + ylab("Mean NDVI") +
       theme(text = element_text(size=20))
 
-![Scatterplot of mean NDVI for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png)
+![Scatterplot of mean NDVI for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png)
 
 <div id="ds-challenge" markdown="1">
 
@@ -348,7 +348,7 @@ Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>
 
-![Scatterplot of mean NDVI for NEON's site San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png)
+![Scatterplot of mean NDVI for NEON's site San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png)
 
 ## Compare NDVI from Two Different Sites in One Plot
 Comparison of plots is often easiest when both plots are side by side. Or, even 
@@ -370,7 +370,7 @@ of columns and exact same column names to be bound.
     	# scale_colour : match previous plots
       theme(text = element_text(size=20))
 
-![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png)
+![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot NDVI with Date
@@ -379,7 +379,7 @@ on the x-axis.
 
 </div>
 
-![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png)
+![Scatterplot comparing mean NDVI for NEON's sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png)
 
 ## Remove Outlier Data
 As we look at these plots we see variation in greenness across the year.
@@ -412,7 +412,7 @@ However the code demonstrates one way to plot multiple RGB rasters in a grid.
     # reset layout
     par(mfrow=c(1,1))
 
-![Time series of RGB images showing greenness over time for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png)
+![Time series of RGB images showing greenness over time for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png)
 
 Notice that the data points with very low NDVI values can be associated with
 images that are filled with clouds. Thus, we can attribute the low NDVI values
@@ -446,7 +446,7 @@ Is the same thing happening at SJER?
     # reset layout
     par(mfrow=c(1,1))
 
-![Time series of RGB images showing greenness over time for NEON's site San Joaquin Experimental Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png)
+![Time series of RGB images showing greenness over time for NEON's site San Joaquin Experimental Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png)
 
 Without significant additional processing, we will not be able to retrieve a
 strong reflection from vegetation, from a remotely sensed image that is 
@@ -488,7 +488,7 @@ Now we can create another plot without the suspect data.
       xlab("Julian Days") + ylab("Mean NDVI") +
       theme(text = element_text(size=20))
 
-![Scatterplot of mean NDVI with outliers removed for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png)
+![Scatterplot of mean NDVI with outliers removed for NEON's site Harvard Forest in 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png)
   
 Now our outlier data points are removed and the pattern of "green-up" and
 "brown-down" makes a bit more sense.

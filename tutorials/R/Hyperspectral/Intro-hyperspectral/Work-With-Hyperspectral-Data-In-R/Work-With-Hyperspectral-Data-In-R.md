@@ -1,7 +1,7 @@
 ---
 syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
 contributors: null
 dataProduct: null
 dateCreated: 2014-11-26 20:49:52
@@ -452,13 +452,13 @@ make sure processing is being performed correctly and all is well with the image
     # plot the image
     image(b9)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-1.png)
 
     # oh, that is hard to visually interpret.
     # what happens if we plot a log of the data?
     image(log(b9))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-2.png)
 
 What do you notice about the first image? It's washed out and lacking any detail. What 
 could be causing this? It got better when plotting the log of the values, but 
@@ -472,17 +472,17 @@ our data to figure out what is going on.
     # and distribution of values.
     hist(b9,breaks=40,col="darkmagenta")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-1.png)
 
     # View values between 0 and 5000
     hist(b9,breaks=40,col="darkmagenta",xlim = c(0, 5000))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-2.png)
 
     # View higher values
     hist(b9, breaks=40,col="darkmagenta",xlim = c(5000, 15000),ylim=c(0,100))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-3.png)
 
 As you're examining the histograms above, keep in mind that reflectance values 
 range between 0-1. The **data scale factor** in the metadata tells us to divide 
@@ -519,7 +519,7 @@ Remember that the metadata for the `Reflectance` dataset designated -9999 as
     # plot the image now
     image(b9)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/set-values-NA-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/set-values-NA-1.png)
 
 ### Reflectance Values and Image Stretch
 
@@ -546,7 +546,7 @@ reflectance values to factor out those larger values.
 
     image(log(b9))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-log-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-log-1.png)
 
 The log applied to our image increases the contrast making it look more like an 
 image. However, look at the images below. The top one is what our log adjusted 
@@ -582,7 +582,7 @@ as other GIS and imaging processing software like QGIS and ENVI do.
     b9 <- t(b9)
     image(log(b9), main="Transposed Image")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/transpose-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/transpose-data-1.png)
 
 
 ## Create a Georeferenced Raster
@@ -642,7 +642,7 @@ EPSG to a CRS string. Then we can assign that CRS to the raster object.
           ylab = "UTM Northing",
           main = "Properly Oriented Raster")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/define-CRS-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/define-CRS-1.png)
 
 Next we define the extents of our raster. The extents will be used to calculate 
 the raster's resolution. Fortunately, the spatial extent is provided in the
@@ -704,7 +704,7 @@ We can adjust the colors of our raster too if we want.
           col=col, 
           zlim=c(0,3000))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-colors-raster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-colors-raster-1.png)
 
 
 We've now created a raster from band 9 reflectance data. We can export the data

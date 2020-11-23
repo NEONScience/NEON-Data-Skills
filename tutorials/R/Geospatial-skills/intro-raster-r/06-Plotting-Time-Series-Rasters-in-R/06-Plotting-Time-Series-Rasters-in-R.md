@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal, rasterVis
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/06-Plotting-Time-Series-Rasters-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/06-Plotting-Time-Series-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-rastervis-levelplot-r
 
@@ -122,7 +122,7 @@ We can use the `plot` function to plot our raster time series data.
     # nc specifies number of columns
     plot(NDVI_HARV_stack, nc = 4)
 
-![Plot of all the NDVI rasters for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png)
+![Plot of all the NDVI rasters for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** The range of values for NDVI is 0-1. 
@@ -149,7 +149,7 @@ function. We use `main="TITLE"` to add a title to the entire plot series.
     levelplot(NDVI_HARV_stack,
               main="Landsat NDVI\nNEON Harvard Forest")
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/levelplot-time-series-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/levelplot-time-series-1.png)
 
 ## Adjust the Color Ramp
 Next, let's adjust the color ramp used to render the rasters. First, we
@@ -166,7 +166,7 @@ NDVI (greenness) data using the `colorRampPalette()` function in combination wit
             main="Landsat NDVI -- Improved Colors \nNEON Harvard Forest Field Site",
             col.regions=cols)
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a new color palette](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/change-color-ramp-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a new color palette](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/change-color-ramp-1.png)
 
 The yellow to green color ramp visually represents NDVI well given it's a
 measure of greenness. Someone looking at the plot can quickly understand that
@@ -244,7 +244,7 @@ the new labels using `names.attr=rasterNames`.
               main="Landsat NDVI - Julian Days \nHarvard Forest 2011",
               names.attr=rasterNames)
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 4x4layout, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/create-levelplot-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 4x4layout, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/create-levelplot-1.png)
 
 We can adjust the columns of our plot too using `layout=c(cols,rows)`. Below
 we adjust the layout to be a matrix of 5 columns and 3 rows.
@@ -257,7 +257,7 @@ we adjust the layout to be a matrix of 5 columns and 3 rows.
               main="Landsat NDVI - Julian Days \nHarvard Forest 2011",
               names.attr=rasterNames)
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 5x3 layout, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/adjust-layout-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 5x3 layout, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/adjust-layout-1.png)
 
 Finally, `scales` allows us to modify the x and y-axis scale. Let's simply
 remove the axis ticks from the plot with `scales =list(draw=FALSE)`.
@@ -271,7 +271,7 @@ remove the axis ticks from the plot with `scales =list(draw=FALSE)`.
               names.attr=rasterNames,
               scales=list(draw=FALSE )) # remove axes labels & ticks
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, no axes, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/remove-axis-ticks-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, no axes, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/remove-axis-ticks-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Divergent Color Ramps 
@@ -291,4 +291,4 @@ better than a sequential color ramp (like "YlGn")? Can you think of other data
 sets where a divergent color ramp may be best? 
 </div>
 
-![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 5x3 layout, a divergent color palette, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png)
+![Levelplot of all the NDVI rasters for NEON's site Harvard Forest with a legend, a 5x3 layout, a divergent color palette, and each raster labeled with the Julian Day](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png)

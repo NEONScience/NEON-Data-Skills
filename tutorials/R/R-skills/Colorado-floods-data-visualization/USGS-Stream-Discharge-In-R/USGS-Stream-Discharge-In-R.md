@@ -1,6 +1,6 @@
 ---
 title: 'Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods'
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/USGS-Stream-Discharge-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/USGS-Stream-Discharge-In-R.R
 contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
@@ -338,7 +338,7 @@ be, `NA` or `-9999` are common values
     # check for "strange" values that could be an NA indicator
     hist(discharge$disValue)
 
-![Histogram of discharge value. X-axis represents discharge values and the Y-axis shows the frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/no-data-values-1.png)
+![Histogram of discharge value. X-axis represents discharge values and the Y-axis shows the frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/no-data-values-1.png)
 
 Excellent! The data contains no NoData values.  
 
@@ -353,7 +353,7 @@ package to create our plot.
       ggtitle("Stream Discharge (CFS) for Boulder Creek") +
       xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
 
-![Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
+![Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
 
 #### Questions: 
 
@@ -384,7 +384,7 @@ October 15 2013.
     ## Warning: Removed 9892 rows containing missing values
     ## (geom_point).
 
-![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/define-time-subset-1.png)
+![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/define-time-subset-1.png)
 
 We get a warning message because we are "ignoring" lots of the data in the
 dataset.

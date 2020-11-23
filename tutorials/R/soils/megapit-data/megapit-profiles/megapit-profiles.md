@@ -9,7 +9,7 @@ estimatedTime: 45 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/megapit-profiles.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/megapit-profiles.R
 tutorialSeries:
 urlTitle: plot-cluster-megapit-soils-data
 ---
@@ -177,7 +177,7 @@ a single site, the Smithsonian Environmental Research Center
             col.legend.cex = 1.5, n.legend=6, 
             x.idx.offset = 0, n=.88)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-SERC-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-SERC-1.png)
 
 Now let's take a look at phosphorus at Wind River 
 Experimental Forest (WREF).
@@ -195,7 +195,7 @@ Experimental Forest (WREF).
             col.legend.cex = 1.5, n.legend=4, 
             x.idx.offset = 0, n=.88)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-WREF-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-WREF-1.png)
 
 ## Plotting Multiple Sites
 
@@ -210,7 +210,7 @@ We can even pass the plotting function multiple sites in order to compare the pe
             col.palette=viridis::viridis(10),
             n.legend = 5)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png)
 
 
 ## Multivariate Plotting
@@ -235,7 +235,7 @@ When analyzing soils data, we are often interested in more than one variable at 
     # Add colors to Ternary plot
     ColourTernary(cols, spectrum = NULL, resolution=45)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/ternary-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/ternary-plot-1.png)
 
 Now, we can plot the pedons according to their soil texture:
 
@@ -245,7 +245,7 @@ Now, we can plot the pedons according to their soil texture:
             name='horizonName', label='siteLabel', 
             color='textureColor')
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-physical-texture-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-physical-texture-1.png)
 
 
 ## Multivariate Clustering
@@ -268,7 +268,7 @@ In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clu
                           name='horizonName', label='siteLabel', 
                           color='textureColor')
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/cluster-texture-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/cluster-texture-1.png)
 
 Well, it seems to have worked and plotted, but it is really hard to see all of this information in the small plotting area.
 

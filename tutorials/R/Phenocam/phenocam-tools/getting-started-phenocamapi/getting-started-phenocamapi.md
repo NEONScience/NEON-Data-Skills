@@ -10,7 +10,7 @@ packagesLibraries: phenocamapi, data.table, lubridate, jpeg
 topics: remote-sensing, phenology, time-series, data-analysis
 languagesTool: R
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/getting-started-phenocamapi.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/getting-started-phenocamapi.R
 tutorialSeries: phenocam-intro
 urlTitle: phenocam-api-intro
 ---
@@ -158,7 +158,7 @@ plot the data.
            pch = c(19, 1, 17, 25, 12, 23), 
            col =  c('green', 'darkgreen', 'brown',  'orange',  'yellow',  'red' ))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-MAT-MAP-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-MAT-MAP-1.png)
 
 
 ### Filtering using attributes
@@ -335,7 +335,7 @@ Factors to Date to correctly plot.
 
     mtext('Duke Forest, Hardwood', font = 2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-gcc90-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-gcc90-1.png)
 
 
 ## Download midday images
@@ -379,7 +379,7 @@ them and plot
       rasterImage(img, 0, 0, 1, 1)
     }
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/midday-download-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/midday-download-1.png)
 
 
 ### Download midday images for a given time range
@@ -527,7 +527,7 @@ this code may take a while to run through the loop).
     }
     mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-monthly-forest-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-monthly-forest-1.png)
 
 The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
 

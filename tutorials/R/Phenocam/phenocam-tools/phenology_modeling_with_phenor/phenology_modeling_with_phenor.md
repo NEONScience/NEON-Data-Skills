@@ -9,7 +9,7 @@ topics: data-analysis, modeling, phenology
 languagesTool: R
 packagesLibraries: phenor
 estimatedTime: 40 min
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/phenology_modeling_with_phenor.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/phenology_modeling_with_phenor.R
 urlTitle: phenocam-phenor-modeling
 ---
 
@@ -189,7 +189,7 @@ subset the transition date (`td`) for each year when 25% of the greenness amplit
            pch = 19,
            col = "red")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/plot-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/plot-data-1.png)
 
 Now we can se the transition date for each year of interest and the annual 
 patterns of the Gcc. 
@@ -240,7 +240,7 @@ Now we can again plot the annual pattern with the transition dates.
            pch = 19,
            col = "red")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/plot-manual-thresholds-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/plot-manual-thresholds-1.png)
 
 With the above examples you can get a feeling of how to manually re-process
 PhenoCam time series. 
@@ -437,7 +437,7 @@ processed using the settings we used above.
       par_ranges = sprintf("%s/extdata/parameter_ranges.csv", path.package("phenor")),
       plot = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/model-param-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/model-param-1.png)
 
     ## 
     ## Call:
@@ -524,7 +524,7 @@ Let's view our model.
     raster::plot(cmip5_projection_2090, main = "DOY")
     maps::map("world", add = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/map-model-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/map-model-1.png)
 
 Maybe more intersting is showing the difference between the start (2010) and the
 end (2090) of the century.
@@ -537,7 +537,7 @@ end (2090) of the century.
                  main = expression(Delta * "DOY"))
     maps::map("world", add = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/map-model-diff-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/phenology_modeling_with_phenor/rfigs/map-model-diff-1.png)
 
 What can you take away from these model visualizations?
 

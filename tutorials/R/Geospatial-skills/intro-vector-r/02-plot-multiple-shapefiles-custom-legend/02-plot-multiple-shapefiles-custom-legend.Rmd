@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/02-plot-multiple-shapefiles-custom-legend.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/02-plot-multiple-shapefiles-custom-legend.R
 tutorialSeries: vector-data-series
 urlTitle: dc-plot-shapefiles-r
 ---

@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
   Understand the 2013 Colorado Floods'
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
 contributors: Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
@@ -291,7 +291,7 @@ Next, let's plot the data using `ggplot()`.
     # view the plot
     palmer.drought
 
-![Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/create-quick-palmer-plot-1.png)
+![Bar graph of the Palmer Drought Severity Index for Colorado during years 1991 through 2015. X-axis is Date and Y-axis is drought index.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/create-quick-palmer-plot-1.png)
 
 Great - we've successfully created a plot! 
 
@@ -320,7 +320,7 @@ at a quick summary of our data to help us out.
     		 xlab="Palmer Drought Severity Index (PDSI)",  # x-axis label
          col="wheat3")  #  the color of the bars
 
-![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/summary-stats-1.png)
+![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/summary-stats-1.png)
 
 Now we can see that the "median" year is slightly wet (0.180) but the 
 "mean" year is slightly dry (-0.310), although both are within the "near-normal" 
@@ -454,7 +454,7 @@ If you choose to explore other time frames or spatial scales you may
 come across data that appear as if they have a negative value `-99.99`. 
 If this were real, it would be a *very severe* drought!   
 
-![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-NDV-plot-only-1.png)
+![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-NDV-plot-only-1.png)
 
 This value is just a common placeholder for a **No Data Value**. 
 
@@ -489,7 +489,7 @@ value to NA and plot the data.
          main="Histogram of PDSI values",
          col="springgreen4")
 
-![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-1.png)
+![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency. Histogram shows existing -99.99 values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-1.png)
 
     # easy to see the "wrong" values near 100
     # check for these values using min() - what is the minimum value?
@@ -507,7 +507,7 @@ value to NA and plot the data.
          main="Histogram of PDSI value with NA value assigned",
          col="springgreen4")
 
-![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-2.png)
+![Histogram showing the frequency of Palmer Drought Severity Indices. X-axis is Palmer Drought Severity Indices and Y-axis is frequency.-99.99 values have been assigned to NA,therefore not included.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-2.png)
 
     # that looks better!  
     
@@ -521,7 +521,7 @@ value to NA and plot the data.
     ## Warning: Removed 2 rows containing missing values
     ## (geom_bar).
 
-![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-3.png)
+![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-3.png)
 
     # The warning message lets you know that two "entries" will be missing from the
     # graph -- these are the ones we assigned NA. 

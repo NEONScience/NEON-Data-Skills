@@ -10,7 +10,7 @@ packagesLibraries: raster, sp, rgdal
 topics: hyperspectral, spatial-data-gis, remote-sensing, raster
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/Image-Raster-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/Image-Raster-Data-In-R.R
 tutorialSeries: primer-raster-data-R
 urlTitle: image-raster-data-r
 ---
@@ -191,7 +191,7 @@ This has now created a stack of rasters three thick. Let's view them.
     # plot stack
     plot(rgbRaster)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/view-stack-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/view-stack-1.png)
 
 From the attributes we see the CRS, resolution, and extent of all three rasters. 
 The we can see each raster plotted. Notice the different shading between the 
@@ -228,7 +228,7 @@ Let's try it.
     # plot an RGB version of the stack
     plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/plot-rgb-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/plot-rgb-1.png)
 
 Note: read the `raster` package documentation for other arguments that can be 
 added (like `scale`) to improve or modify the image. 
@@ -251,7 +251,7 @@ values in the pixels.
     ## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
     ## raster cells were used. 100000 values used.
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/hist-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/hist-1.png)
 
 Note about the warning messages: R defaults to only showing the first 100,000 
 values in the histogram so if you have a large raster you may not be seeing all 
@@ -273,14 +273,14 @@ single raster.
     # view cropped stack
     plot(rgbRaster_crop)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/stack-crop-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/stack-crop-1.png)
 
  <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Cropped RGB
 Plot this new cropped stack as an RGB image. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/challenge-code-plot-crop-rgb-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/challenge-code-plot-crop-rgb-1.png)
 
 
 
@@ -330,7 +330,7 @@ Use `object.size()` to see the size of an R object.
     # view raster brick
     plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/rBrick-size-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/rBrick-size-1.png)
 
 Notice the faster plotting? For a smaller raster like this the difference is 
 slight, but for larger raster it can be considerable. 
@@ -371,8 +371,8 @@ raster than we just created above.
     # view raster
     plot(multiRasterB)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-1.png)
 
     plotRGB(multiRasterB,r=1,g=2,b=3, stretch="lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-2.png)

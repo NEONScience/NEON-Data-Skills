@@ -11,7 +11,7 @@ topics: data-viz, raster, spatial-data-gis
 subtopics: 
 languagesTool: R
 dataProduct: DP1.30010.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-multiband-rasters-r
 
@@ -151,11 +151,11 @@ would render as a single image in grayscale. We will therefore use a grayscale
 palette to render individual bands. 
 </div>
 
-![Red, green, and blue bands of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
+![Red, green, and blue bands of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
 
 Or we can composite all three bands together to make a color image.
 
-![Composite image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png)
+![Composite image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png)
 
 In a multi-band dataset, the rasters will always have the same *extent*,
 *CRS* and *resolution*.  
@@ -185,7 +185,7 @@ in the first band. We can plot this band using the plot function.
          axes=FALSE,
          main="RGB Imagery - Band 1-Red\nNEON Harvard Forest Field Site") 
 
-![Red band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png)
+![Red band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png)
 
     # view attributes: Check out dimension, CRS, resolution, values attributes, and 
     # band.
@@ -254,7 +254,7 @@ want to work with). To import the green band, we would use `band=2`.
          axes=FALSE,
          main="RGB Imagery - Band 2- Green\nNEON Harvard Forest Field Site")
 
-![Green band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png)
+![Green band of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png)
 
     # view attributes of band 2 
     RGB_band2_HARV
@@ -382,7 +382,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     plot(RGB_stack_HARV, 
          col=grayscale_colors)
 
-![Histograms of each RGB band showing the distribution of values for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png)![Raster of each RGB band for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png)
+![Histograms of each RGB band showing the distribution of values for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png)![Raster of each RGB band for NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png)
 
     # revert to a single plot layout 
     par(mfrow=c(1,1)) 
@@ -392,7 +392,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
          main="Band 2\n NEON Harvard Forest Field Site",
          col=grayscale_colors)
 
-![Band 2 of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png)
+![Band 2 of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png)
 
 
 ### Create A Three Band Image
@@ -414,7 +414,7 @@ Let's plot our 3-band image.
     plotRGB(RGB_stack_HARV, 
             r = 1, g = 2, b = 3)
 
-![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png)
+![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png)
 
 The image above looks pretty good. We can explore whether applying a stretch to
 the image might improve clarity and contrast using  `stretch="lin"` or 
@@ -451,14 +451,14 @@ the image might improve clarity and contrast using  `stretch="lin"` or
             scale=800,
             stretch = "lin")
 
-![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png)
+![Composite RGB image of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png)
 
     plotRGB(RGB_stack_HARV,
             r = 1, g = 2, b = 3, 
             scale=800,
             stretch = "hist")
 
-![Composite RGB image of NEON's site Harvard Forest with slightly more contrast](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png)
+![Composite RGB image of NEON's site Harvard Forest with slightly more contrast](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png)
 
 In this case, the stretch doesn't enhance the contrast our image significantly
 given the distribution of reflectance (or brightness) values is distributed well
@@ -485,7 +485,7 @@ tutorial.
 
 </div>
 
-![Composite RGB image of NEON's site Harvard Forest with NAvalues removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png)
+![Composite RGB image of NEON's site Harvard Forest with NAvalues removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
@@ -533,7 +533,7 @@ You use `plotRGB` to block a `RasterBrick` too.
     # plot brick
     plotRGB(RGB_brick_HARV)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-brick-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-brick-1.png)
 
 
 <div id="ds-challenge" markdown="1">

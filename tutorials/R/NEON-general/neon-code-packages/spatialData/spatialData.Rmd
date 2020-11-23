@@ -10,7 +10,7 @@ packagesLibraries: sp, rgdal, maptools, broom, ggplot2, neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: DP1.10072.001, DP1.00024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
 tutorialSeries:
 urlTitle: neon-spatial-data-basics
 

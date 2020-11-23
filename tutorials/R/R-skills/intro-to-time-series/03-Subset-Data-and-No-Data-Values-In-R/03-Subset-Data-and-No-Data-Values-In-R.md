@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, lubridate
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/03-Subset-Data-and-No-Data-Values-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/03-Subset-Data-and-No-Data-Values-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-subset-data-no-data-values-r
 ---
@@ -196,7 +196,7 @@ instead of the 15-minute data. What will need to change in your subsetting code?
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-2.png)
 
 ## Managing Missing Data: NoData values
 
@@ -379,4 +379,4 @@ and y-axes. Also give the plot a title!
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/Challenge-code-harMet.daily-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/Challenge-code-harMet.daily-1.png)

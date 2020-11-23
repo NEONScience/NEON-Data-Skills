@@ -10,7 +10,7 @@ packagesLibraries: hazer, jpeg, data.table
 topics: remote-sensing, phenology, time-series, data-analysis
 languagesTool: R
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/detecting-foggy-phenocam-images.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/detecting-foggy-phenocam-images.R
 tutorialSeries: phenocam-intro
 urlTitle: phenocam-hazer-intro
 ---
@@ -52,7 +52,7 @@ image is an example image that comes with the *hazer* package.
     par(mar=c(0,0,3,0))  
     plotRGBArray(rgb_array, bty = 'n', main = 'Point Reyes National Seashore')
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/read-image-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/read-image-1.png)
 
 When we work with images, all data we work with is generally on the scale of each
 individual pixel in the image. Therefore, for large images we will be working with
@@ -80,7 +80,7 @@ density distribution of each color channel.
     lines(density(green_vector), col = 'green', lwd = 2)
     lines(density(blue_vector), col = 'blue', lwd = 2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/histogram-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/histogram-1.png)
 
 In *hazer* we can also extract three basic elements of an RGB image :
 
@@ -104,7 +104,7 @@ can extract and show the brightness matrix using the `getBrightness()` function.
     par(mar=c(0,0,3,0))
     plotRGBArray(brightness_mat, bty = 'n', main = 'Brightness matrix')
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-1.png)
 
 Here the grayscale is used to show the value of each pixel's maximum brightness 
 of the R, G or B color channel. 
@@ -124,7 +124,7 @@ perform some statistics or we can just use the mean of this matrix.
     par(mar=c(5,4,4,2))
     hist(brightness_mat)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-adv-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/brightness-adv-1.png)
 
 Why are we getting so many images up in the high range of the brightness? Where
 does this correlate to on the RGB image? 
@@ -154,7 +154,7 @@ Similarly, we can extract and show the darkness matrix using the `getDarkness()`
     par(mar=c(5,4,4,2))
     hist(darkness_mat)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/darkness-2.png)
 
 ## Contrast
 
@@ -184,7 +184,7 @@ The contrast of the image can quickly be extracted using the `getContrast()` fun
     par(mar=c(5,4,4,2))
     hist(contrast_mat)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/contrast-2.png)
 
 
 ## Image fogginess & haziness
@@ -451,7 +451,7 @@ compare top five images with low and high haze values.
     
     mtext('Separating out foggy images of Point Reyes, CA', font = 2, outer = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/plot-foggy-clear-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/detecting-foggy-phenocam-images/rfigs/plot-foggy-clear-1.png)
 
 Let's classify those into hazy and non-hazy as per the PhenoCam standard of 0.4. 
 

@@ -10,7 +10,7 @@ estimatedTime: 1 - 2 hours
 packagesLibraries: [devtools, geoNEON, neonUtilities, raster]
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
 tutorialSeries:
 urlTitle: download-explore-neon-data
 ---
@@ -293,7 +293,7 @@ tower level:
          data=par30[which(par30$verticalPosition=="080"),],
          type="l")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-1.png)
 
 Looks good! The sun comes up and goes down every day, and some days 
 are cloudy. If you want to dig in a little deeper, try plotting PAR 
@@ -353,7 +353,7 @@ we divide by 2 to convert diameters to radii after unit conversion.
             circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
             xlab="Easting", ylab="Northing", inches=F)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-vst-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-vst-1.png)
 
 ## Navigate data downloads: AOP
 
@@ -370,7 +370,7 @@ The `raster` package includes plotting functions:
 
     plot(chm, col=topo.colors(6))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-aop-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-aop-1.png)
 
 
 

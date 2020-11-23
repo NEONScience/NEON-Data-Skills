@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/create-canopy-height-model-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/create-canopy-height-model-in-R.R
 tutorialSeries: [intro-lidar-r-series]
 urlTitle: create-chm-rasters-r
 ---
@@ -133,7 +133,7 @@ buildings, etc).
     # plot the DSM
     plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/import-dsm-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/import-dsm-1.png)
 
 Note the resolution, extent, and coordinate reference system (CRS) of the raster. 
 To do later steps, our DTM will need to be the same. 
@@ -148,7 +148,7 @@ represents the ground (terrain) elevation.
     
     plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/plot-DTM-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/plot-DTM-1.png)
 
 With both of these rasters now loaded, we can create the Canopy Height Model 
 (CHM). The 
@@ -181,7 +181,7 @@ trees with negative heights!
 
     plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/calculate-plot-CHM-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/calculate-plot-CHM-1.png)
 
 We've now created a CHM from our DSM and DTM. What do you notice about the 
 canopy cover at this location in the San Joaquin Experimental Range? 
@@ -192,7 +192,7 @@ canopy cover at this location in the San Joaquin Experimental Range?
 Convert the CHM from meters to feet. Plot it. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/challenge-code-raster-math-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/challenge-code-raster-math-1.png)
 
 If, in your work you need to create lots of CHMs from different rasters, an 
 efficient way to do this would be to create a function to create your CHMs. 

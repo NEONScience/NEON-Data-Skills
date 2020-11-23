@@ -10,7 +10,7 @@ packagesLibraries: sp, rgdal, maptools, broom, ggplot2, neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: DP1.10072.001, DP1.00024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
 tutorialSeries:
 urlTitle: neon-spatial-data-basics
 
@@ -184,7 +184,7 @@ y axis.
     
     domainMap
 
-![Map of the United States with each NEON domain outlined](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-domains-1.png)
+![Map of the United States with each NEON domain outlined](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-domains-1.png)
 
 
 ## Map NEON field sites
@@ -248,7 +248,7 @@ data so we can plot this data onto our previous map.
     
     neonMap 
 
-![Same map as above but with dots for the field site locations across the country](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-sites-1.png)
+![Same map as above but with dots for the field site locations across the country](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-sites-1.png)
 
 Now we can see all the sites across the Observatory. However, NEON has both 
 aquatic and terrestrial sites with important differences between the two. Looking 
@@ -278,7 +278,7 @@ ones for relocatable sites.
                                   breaks=unique(neonSites$Site.Type))
     sitesMap
 
-![Same as maps above but the field site dots are now four different colors](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/sites-color-1.png)
+![Same as maps above but the field site dots are now four different colors](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/sites-color-1.png)
 
 
 ## Map terrestrial observation plots
@@ -767,7 +767,7 @@ We can use the easting and northing data to plot the locations of the mammal tra
     plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
          xlab="Easting", ylab="Northing")
 
-![Six square points on a plot each made up of smaller dots that form either a complete square point or a partially filled in square point](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/mam-grids-1.png)
+![Six square points on a plot each made up of smaller dots that form either a complete square point or a partially filled in square point](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/mam-grids-1.png)
 
 Each trap grid has 100 points (individual trap locations), so even with each 
 trap plotted as a dot (.) we can only see a square for each grid. 
@@ -780,7 +780,7 @@ Let's zoom in on a single plot:
          mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
          pch=".", xlab="Easting", ylab="Northing", cex=3)
 
-![dots on a plot equally spaced in 10 rows and 10 columns](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-ONAQ003-1.png)
+![dots on a plot equally spaced in 10 rows and 10 columns](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-ONAQ003-1.png)
 
 This isn't the most interesting plot given that that each small mammal box 
 trapping grid is a 10 x 10 plot of traps. 
@@ -815,7 +815,7 @@ Therefore, we need to plot all trap locations in this plot (ONAQ_003) for which
                                   mam.loc$trapStatus == "5 - capture")],
          pch=19, col="blue")
 
-![Same plot as above with 100 equally spaced dots but 22 dots are now blue](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-captures-1.png)
+![Same plot as above with 100 equally spaced dots but 22 dots are now blue](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-captures-1.png)
 
 In the month of data we're viewing small mammals were caught at 22 of the 100 
 trap locations in this plot.
@@ -937,7 +937,7 @@ stratification. Each soil plot is its own panel:
 
     ## Warning: Removed 1488 row(s) containing missing values (geom_path).
 
-![---UPDATE---HERE---](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png)
+![---UPDATE---HERE---](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png)
 
 We can see that as soil depth increases, temperatures 
 become much more stable, while the shallowest measurement 
@@ -954,4 +954,4 @@ quality flag passed, i.e. `finalQF` = 0
             facet_wrap(~horizontalPosition)
     gg
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-noQF-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-noQF-1.png)

@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, scales, gridExtra, grid, dplyr, reshape2
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/06-Plotting-Facets-And-Group-By-Time-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/06-Plotting-Facets-And-Group-By-Time-In-R.R
 tutorialSeries: tabular-time-series 
 urlTitle: dc-time-series-plot-facets-ndvi-r
 ---
@@ -136,7 +136,7 @@ object `AirTempDaily`.
     
     AirTempDaily
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
@@ -180,7 +180,7 @@ labelled panel.
     ## * Plot is missing `year`
     ## * Layer 1 is missing `year`
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-1.png)
 
 Oops - what happened? The plot did not render because we added the `year` column
 after creating the `ggplot` object `AirTempDaily`. Let's rerun the plotting code
@@ -199,7 +199,7 @@ to ensure our newly added column is recognized.
     # facet plot by year
     AirTempDaily + facet_grid(. ~ year)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-2-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-2-1.png)
 
 The faceted plot is interesting, however the x-axis on each plot is formatted
 as: month-day-year starting in 2009 and ending in 2011. This means that the data
@@ -228,7 +228,7 @@ year day, see the
     # create faceted panel
     AirTempDaily_jd + facet_grid(. ~ year)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-precip-jd-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-precip-jd-1.png)
 
 Using Julian day, our plots are easier to visually compare. Arranging our plots 
 this way, side by side, allows us to quickly scan for differences along the
@@ -243,7 +243,7 @@ We can rearrange the facets in different ways, too.
     # move labels to the RIGHT and stack all plots
     AirTempDaily_jd + facet_grid(year ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-1.png)
 
 If we use `facet_wrap` we can specify the number of columns.
 
@@ -251,7 +251,7 @@ If we use `facet_wrap` we can specify the number of columns.
     # display in two columns
     AirTempDaily_jd + facet_wrap(~year, ncol = 2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-columns-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-columns-1.png)
 
 ## Graph Two Variables on One Plot
 Next, let's explore the relationship between two variables - air temperature
@@ -272,7 +272,7 @@ the ground).
     
     airSoilTemp_Plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-soilt-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-soilt-1.png)
 
 The plot above suggests a relationship between the air and soil temperature as
 we might expect. However, it clumps all three years worth of data into one plot.
@@ -286,7 +286,7 @@ plot we created above.
     # create faceted panel
     airSoilTemp_Plot + facet_grid(year ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/faceted-temp-plots-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/faceted-temp-plots-1.png)
 
 Have a close look at the data. Are there any noticeable min/max temperature 
 differences between the three years?
@@ -303,7 +303,7 @@ a year column.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-answer-temp-month-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-answer-temp-month-1.png)
 
 ## Faceted Plots & Categorical Groups
 
@@ -345,7 +345,7 @@ which tells R to extract the month name (`%B`) from the date field.
     # create faceted panel
     airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/extract-month-name-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/extract-month-name-1.png)
 
 Great! We've created a nice set of plots by month. However, how are the plots 
 ordered? It looks like R is ordering things alphabetically, yet we know
@@ -385,7 +385,7 @@ need to rerun our `ggplot` code.
     # create faceted panel
     airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-month-levels-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-month-levels-1.png)
 
 ## Subset by Season - *Advanced Topic*
 Sometimes we want to group data by custom time periods. For example, we might
@@ -482,7 +482,7 @@ Now that we have a season column, we can plot our data by season!
     # run this code to plot the same plot as before but with one plot per season
     airSoilTemp_Plot + facet_grid(. ~ season)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season-1.png)
 
 Note, that once again, we re-ran our `ggplot` code to make sure our new column
 is recognized by R. We can experiment with various facet layouts next.
@@ -492,7 +492,7 @@ is recognized by R. We can experiment with various facet layouts next.
     # facet_grid():
     airSoilTemp_Plot + facet_grid(season ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season2-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season2-1.png)
 
 Once again, R is arranging the plots in an alphabetical order not an order
 relevant to the data. 
@@ -514,7 +514,7 @@ neatly plot multiple variables using facets as follows:
 3. Create a plot of air vs soil temperature grouped by year and season.
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-2.png)
 
 ## Work with Year-Month Data: base R and zoo Package 
 Some data will have month formatted in `Year-Month` 
@@ -583,4 +583,4 @@ site.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-code-plot-yearmonth-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-code-plot-yearmonth-data-1.png)

@@ -10,7 +10,7 @@ packagesLibraries:
 topics: hyperspectral, remote-sensing,spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/Raster-Res-Extent-Pixels.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/Raster-Res-Extent-Pixels.R
 tutorialSeries: primer-raster-data-R
 urlTitle: raster-res-extent-pixels-r
 ---

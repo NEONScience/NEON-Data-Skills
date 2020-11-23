@@ -10,7 +10,7 @@ packagesLibraries: xROI, raster, rgdal, sp
 topics: remote-sensing, phenology, time-series, data-analysis
 languagesTool: R, bash
 dataProduct: DP1.00033.001, DP1.00042.001, DP1.20002.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/extracting-timeseries-with-xroi/extracting-timeseries-with-xroi.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/extracting-timeseries-with-xroi/extracting-timeseries-with-xroi.R
 tutorialSeries: phenocam-intro
 urlTitle: phenocam-xroi-intro
 ---

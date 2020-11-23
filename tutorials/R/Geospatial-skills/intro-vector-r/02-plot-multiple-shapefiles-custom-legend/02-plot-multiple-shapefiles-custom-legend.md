@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/02-plot-multiple-shapefiles-custom-legend.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/02-plot-multiple-shapefiles-custom-legend.R
 tutorialSeries: vector-data-series
 urlTitle: dc-plot-shapefiles-r
 ---
@@ -176,7 +176,7 @@ by factor level or category.
          main="NEON Harvard Forest Field Site\n Roads & Trails \nLine Width Varies by Type Attribute Value",
          lwd=lineWidth)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-unique-lines-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-unique-lines-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
@@ -216,7 +216,7 @@ Let's add a legend to our plot.
            bty="n", # turn off the legend border
            cex=.8) # decrease the font / legend size
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-legend-to-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-legend-to-plot-1.png)
 
 However, what if we want to create a more complex plot with many shapefiles
 and unique symbols that need to be represented clearly in a legend?
@@ -245,7 +245,7 @@ the tower location and road data on top using `add=TRUE`.
          pch = 19, 
          col = "purple")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-many-shapefiles-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-many-shapefiles-1.png)
 
     # assign plot to an object for easy modification!
     plot_HARV<- recordPlot()
@@ -282,7 +282,7 @@ them. We will start with the labels.
            bty="n", # turn off the legend border
            cex=.8) # decrease the font / legend size
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/create-custom-labels-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/create-custom-labels-1.png)
 
 Now we have a legend with the labels identified. Let's add colors to each legend
 element next. We can use the vectors of colors that we created earlier to do this.
@@ -309,7 +309,7 @@ element next. We can use the vectors of colors that we created earlier to do thi
            bty="n", # turn off the legend border
            cex=.8) # decrease the font / legend size
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-colors-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-colors-1.png)
 
 Great - now we have a legend however this legend uses boxes to symbolize each 
 element in the plot. It might be better if the lines were symbolized as a line 
@@ -342,7 +342,7 @@ type `?pch` into the R console.
            col=plotColors,
            cex=.8)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/custom-symbols-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/custom-symbols-1.png)
 
 Now we've added a point symbol to represent our point element in the plot. However
 it might be more useful to use line symbols in our legend
@@ -387,7 +387,7 @@ symbol, but to instead use a line.
            col=plotColors,
            cex=.8)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/refine-legend-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/refine-legend-1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -407,4 +407,4 @@ Create a custom legend.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-2.png)

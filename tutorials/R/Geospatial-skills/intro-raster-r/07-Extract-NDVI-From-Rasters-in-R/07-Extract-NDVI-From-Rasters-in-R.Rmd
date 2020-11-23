@@ -11,7 +11,7 @@ topics:
 subtopics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/07-Extract-NDVI-From-Rasters-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-ndvi-calc-raster-time-series
 

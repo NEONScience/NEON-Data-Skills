@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/05-Time-Series-Raster.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/05-Time-Series-Raster.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-time-series-r
 
@@ -294,7 +294,7 @@ the `plot()` command to quickly plot a `RasterStack`.
          zlim = c(1500, 10000), 
          nc = 4)
 
-![Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png)
+![Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png)
 
 Have a look at the range of NDVI values observed in the plot above. We know that
 the accepted values for NDVI range from 0-1. Why does our data range from
@@ -327,7 +327,7 @@ tutorial.
          zlim = c(.15, 1),  
          nc = 4)
 
-![Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack with a scale factor of 10,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png)
+![Plots of all the NDVI rasters of NEON's site Harvard Forest in the raster stack with a scale factor of 10,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png)
 
 ## Take a Closer Look at Our Data
 Let's take a closer look at the plots of our data. Note that Massachusetts, 
@@ -357,7 +357,7 @@ each raster.
     hist(NDVI_HARV_stack, 
          xlim = c(0, 1))
 
-![Histograms of all the NDVI rasters of NEON's site Harvard Forest in the raster stack](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png)
+![Histograms of all the NDVI rasters of NEON's site Harvard Forest in the raster stack](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png)
 
 It seems like things get green in the spring and summer like we expect, but the 
 data at Julian days 277 and 293 are unusual. It appears as if the vegetation got
@@ -382,7 +382,7 @@ browning seen in the NDVI data.
     ## 
     ##     col_factor
 
-![Scatterplot of daily mean air temperature at NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png)
+![Scatterplot of daily mean air temperature at NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png)
 
 There are no significant peaks or dips in the temperature during the late summer
 or early fall time period that might account for patterns seen in the NDVI data.
@@ -407,7 +407,7 @@ reset your layout using: `par(mfrow=c(1,1))`.
 
 </div>
 
-![Two sets of NDVI images for NEON's site Harvard Forest making a small time series](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png)
+![Two sets of NDVI images for NEON's site Harvard Forest making a small time series](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png)
 
 ## Explore The Data's Source
 The third challenge question, "Does the RGB imagery from these two days explain 

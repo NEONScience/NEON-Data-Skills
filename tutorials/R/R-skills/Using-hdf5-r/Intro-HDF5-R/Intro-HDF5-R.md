@@ -10,7 +10,7 @@ packagesLibraries: rhdf5
 topics: HDF5
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/Intro-HDF5-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/Intro-HDF5-R.R
 tutorialSeries: intro-hdf5-r-series
 urlTitle: hdf5-intro-r
 ---
@@ -276,7 +276,7 @@ in R.
     # create a quick plot of the data
     hist(testSubset2)
 
-![Histogram showing frequency of temperature values](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/rfigs/access-plot-data-1.png)
+![Histogram showing frequency of temperature values](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/Intro-HDF5-R/rfigs/access-plot-data-1.png)
 
  <div id="ds-challenge" markdown="1">
 ### Challenge: Work with HDF5 Files

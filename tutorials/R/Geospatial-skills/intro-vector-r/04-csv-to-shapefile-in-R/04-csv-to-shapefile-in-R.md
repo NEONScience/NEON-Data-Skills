@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/04-csv-to-shapefile-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/04-csv-to-shapefile-in-R.R
 tutorialSeries: vector-data-series
 urlTitle: dc-csv-to-shapefile-r
 ---
@@ -372,7 +372,7 @@ We now have a spatial R object, we can plot our newly created spatial object.
     plot(plot.locationsSp_HARV, 
          main="Map of Plot Locations")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-points-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-points-1.png)
 
 ## Define Plot Extent
 
@@ -412,7 +412,7 @@ To begin, let's plot our `aoiBoundary` object with our vegetation plots.
     plot(plot.locationsSp_HARV, 
          pch=8, add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-1.png)
 
     # no plots added, why? CRS?
     # view CRS of each
@@ -472,7 +472,7 @@ so what is going on?
            lty=c(1,1),
            lwd=6)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/compare-extents-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/compare-extents-1.png)
 
 The **extents** of our two objects are **different**. `plot.locationsSp_HARV` is
 much larger than `aoiBoundary_HARV`. When we plot `aoiBoundary_HARV` first, R
@@ -529,7 +529,7 @@ values from the spatial object that has a larger extent. Let's try it.
            col=c("purple","darkgreen"),
            cex=.8)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/set-plot-extent-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/set-plot-extent-1.png)
 
 <div id="ds-challenge" markdown="1">
 ## Challenge - Import & Plot Additional Points
@@ -553,7 +553,7 @@ for more on working with geographic coordinate systems. You may want to "borrow"
 the projection from the objects used in that tutorial!
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-2.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-3.png)
 
 ## Export a Shapefile
 

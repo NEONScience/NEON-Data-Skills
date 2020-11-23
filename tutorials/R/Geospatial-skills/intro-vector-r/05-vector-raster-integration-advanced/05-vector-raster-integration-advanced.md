@@ -10,7 +10,7 @@ packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/05-vector-raster-integration-advanced.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/05-vector-raster-integration-advanced.R
 tutorialSeries: vector-data-series
 urlTitle: dc-crop-extract-raster-data-r
 ---
@@ -118,7 +118,7 @@ and a raster file, that we will introduce this tutorial:
 
 * A canopy height model (CHM) in GeoTIFF format -- green
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extents-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extents-1.png)
 
 
 
@@ -177,7 +177,7 @@ spatial object as the cropping boundary.
     plot(chm_HARV,
          main="LiDAR CHM - Not Cropped\nNEON Harvard Forest Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-1.png)
 
     # crop the chm
     chm_HARV_Crop <- crop(x = chm_HARV, y = aoiBoundary_HARV)
@@ -191,14 +191,14 @@ spatial object as the cropping boundary.
     plot(chm_HARV_Crop,
          add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-2.png)
 
 We can see from the plot above that the full CHM extent (plotted in green) is
 much larger than the resulting cropped raster. Our new cropped CHM now has the 
 same extent as the `aoiBoundary_HARV` object that was used as a crop extent 
 (blue boarder below).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-crop-extent-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-crop-extent-1.png)
 
 We can look at the extent of all the other objects. 
 
@@ -246,7 +246,7 @@ you have these plot locations as the spatial R spatial object
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-crop-raster-points-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-crop-raster-points-1.png)
 
 In the plot above, created in the challenge, all the vegetation plot locations
 (blue) appear on the Canopy Height Model raster layer except for one. One is
@@ -260,7 +260,7 @@ will not expand the extent in areas where there are no data. Thus, extent of our
 vegetation plot layer will still extend further west than the extent of our 
 (cropped) raster data (dark green).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/raster-extents-cropped-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/raster-extents-cropped-1.png)
 
 ## Define an Extent
 We can also use an `extent()` method to define an extent to be used as a cropping
@@ -292,7 +292,7 @@ raster.
     plot(CHM_HARV_manualCrop, 
          add = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/crop-using-drawn-extent-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/crop-using-drawn-extent-1.png)
 
 Notice that our manual `new.extent` (in red) is smaller than the
 `aoiBoundary_HARV` and that the raster is now the same as the `new.extent`
@@ -374,7 +374,7 @@ site.
          col="springgreen",
          xlab="Tree Height", ylab="Frequency of Pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extract-histogram-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extract-histogram-1.png)
 
     # view summary of values
     summary(tree_height$HARV_chmCrop)
@@ -468,4 +468,4 @@ function in base-R.
 </div>
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-extract-plot-tHeight-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-extract-plot-tHeight-1.png)

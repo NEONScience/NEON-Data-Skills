@@ -10,7 +10,7 @@ packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProducts: DP1.00003.001, DP1.00002.001, DP3.30026.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/neonUtilities/neonUtilities.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonUtilities/neonUtilities.R
 tutorialSeries:
 urlTitle: neonDataStackR
 

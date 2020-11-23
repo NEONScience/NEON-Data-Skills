@@ -1,7 +1,7 @@
 ---
 syncID: 884cc5915a3842c1ab6617b060797fab
 title: "Subsetting NEON HDF5 hyperspectral files to reduce file size"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/Subset-HDF5-hyperspectral.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/Subset-HDF5-hyperspectral.R
 contributors: Megan Jones
 dataProudct: DP3.30006.001, DP1.30006.001, DP1.30008.001, DP4.00200.001
 dateCreated: 2020-02-04
@@ -341,7 +341,7 @@ default behavior for this, and many other, functions).
     # Make a plot to view this band
     image(log(b58), col=grey(0:100/100))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-1.png)
 
 As we can see here, this hyperspectral reflectance tile contains a school campus 
 that is under construction. There are many different land cover types contained 
@@ -373,7 +373,7 @@ rows.
     # Make a plot to view this band
     image(log(b58), col=grey(0:100/100))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-subset-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/Subset-HDF5-hyperspectral/rfigs/plot-example-band-subset-1.png)
 
 Perfect - now we have a spatial subset that includes all of the different land 
 cover types that we are interested in investigating. 

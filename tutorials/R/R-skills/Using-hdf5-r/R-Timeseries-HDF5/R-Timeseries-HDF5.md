@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, ggplot2, dplyr
 topics: HDF5, data-management
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/R-Timeseries-HDF5.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/R-Timeseries-HDF5.R
 tutorialSeries: intro-hdf5-r-series
 urlTitle: time-series-hdf5-r
 ---
@@ -282,7 +282,7 @@ of 6 booms (booms 1-5 and the tower top).
     # generate a quick plot of the data, type=l for "line"
     plot(temp$mean,type='l')
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/readPlotData-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/readPlotData-1.png)
 
 We can make our plot look nicer by adding date values to the x axis. However, in 
 order to list dates on the X axis, we need to assign the date field a date format 
@@ -304,7 +304,7 @@ list dates, we need to specify the format that the date field is in.
     
     OSBS_Plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plot-temp-data-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plot-temp-data-1.png)
 
 Let's have a close look at this plot. Notice anything unusual with it?
 
@@ -347,7 +347,7 @@ can use the `attributes` function to set the time zone.
     # let's check out the plot
     OSBS_Plot2
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/fix-time-zone-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/fix-time-zone-1.png)
 
 Now the temperature peaks occur mid-afternoon when we'd expect them. 
 
@@ -573,7 +573,7 @@ Once the dates have been formatted we can create a plot with cleaner X axis labe
     
     OSBS_allPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plotBoomData-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/plotBoomData-1.png)
 
 ## Data from different sites
 
@@ -619,5 +619,5 @@ re-use most of the code that we just built.
     
     compPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/compareGroupData-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Using-hdf5-r/R-Timeseries-HDF5/rfigs/compareGroupData-1.png)
 

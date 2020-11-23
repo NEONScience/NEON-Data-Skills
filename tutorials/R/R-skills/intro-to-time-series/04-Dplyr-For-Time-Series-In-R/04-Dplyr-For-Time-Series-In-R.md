@@ -10,7 +10,7 @@ packagesLibraries: ggplot2, dplyr, lubridate
 topics: time-series, phenology
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/04-Dplyr-For-Time-Series-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/04-Dplyr-For-Time-Series-In-R.R
 tutorialSeries: tabular-time-series
 urlTitle: dc-time-series-subset-dplyr-r
 
@@ -131,7 +131,7 @@ air temperature, precipitation, and PAR (photosynthetic active radiation - or
 the amount of visible light). Using the 15-minute averaged data, we could easily
 plot each of these variables.  
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/15-min-plots-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/15-min-plots-1.png)
 
 However, summarizing the data at a coarser scale (e.g., daily, weekly, by
 season, or by year) may be easier to visually interpret during initial stages of
@@ -338,7 +338,7 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/pipe-demo-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/pipe-demo-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  Older `dplyr` versions used the `%.%`
@@ -457,7 +457,7 @@ data_frame `total.prec`.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-answer-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-answer-1.png)
 
 ### Mutate - Add data_frame Columns to dplyr Output
 We can use the `mutate()` function of `dplyr` to add additional columns of
@@ -589,5 +589,5 @@ Name the new data frame `harTemp.monthly.09.11`. Plot your output.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-2.png)
 

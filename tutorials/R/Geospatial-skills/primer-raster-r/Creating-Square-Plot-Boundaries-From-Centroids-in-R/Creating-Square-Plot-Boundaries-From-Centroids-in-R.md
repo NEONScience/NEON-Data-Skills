@@ -10,7 +10,7 @@ packagesLibraries: sp, rgdal
 topics: spatial-data-gis, raster
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/Creating-Square-Plot-Boundaries-From-Centroids-in-R.R
 tutorialSeries: primer-raster-data-R
 urlTitle: field-data-polygons-centroids
 ---
@@ -254,7 +254,7 @@ Let's create a simple plot to see our new SpatialPolygon data.
     # plot the new polygons
     plot(polys)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polys-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polys-plot-1.png)
 
 Yay! We created polygons for all of our plots! 
 
@@ -286,7 +286,7 @@ Let's see if it worked with another simple plot.
     # plot the new polygons
     plot(polysB)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysB-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysB-plot-1.png)
 
 Good. The two methods return the same plots. We now have our new plots saved as 
 a SpatialPolygon but how do we share that with our colleagues? One way is to turn
@@ -308,7 +308,7 @@ Let's check out the results before we export. And we can add color this time.
 
     plot(polys.df, col=rainbow(50, alpha=0.5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysdf-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysdf-plot-1.png)
 
 When we want to export a spatial object from R as a shapefile, `writeOGR()` is a 
 nice function. It writes not only the shapefile, but also the associated 

@@ -10,7 +10,7 @@ packagesLibraries: ggplot, plotly
 topics: data-viz
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/data-visualization-tools/DataVis-plotly-R/DataVis-plotly-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/data-visualization-tools/DataVis-plotly-R/DataVis-plotly-R.R
 tutorialSeries:
 urlTitle: plotly
 ---
@@ -103,7 +103,7 @@ ggplot objects into interactive plots with `ggplotly()`.
     unemployment <- ggplot(economics, aes(date,unemploy)) + geom_line()
     unemployment
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/data-visualization-tools/DataVis-plotly-R/rfigs/ggplotly-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/data-visualization-tools/DataVis-plotly-R/rfigs/ggplotly-1.png)
 
 To make your plotly plot in R, run the following line:
 

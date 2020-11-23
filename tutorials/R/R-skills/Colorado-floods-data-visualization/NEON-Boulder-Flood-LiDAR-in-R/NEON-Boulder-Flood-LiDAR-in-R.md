@@ -1,7 +1,7 @@
 ---
 title: 'Data Activity: Visualize Elevation Change using LiDAR in R to Better Understand
   the 2013 Colorado Floods'
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/NEON-Boulder-Flood-LiDAR-in-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/NEON-Boulder-Flood-LiDAR-in-R.R
 contributors: Donal O'Leary, Felipe Sanchez
 dataProduct: null
 dateCreated: '2015-05-18'
@@ -198,7 +198,7 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             alpha=0.3,   # sets how transparent the object will be (0=transparent, 1=not transparent)
             add=TRUE)  # add=TRUE (or T), add plot to the previous plotting frame
 
-![Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
+![Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
 
     # plot Post-flood w/ hillshade
     # note, no add=T in this code, so new plotting frame. 
@@ -213,7 +213,7 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             alpha=0.3,
             add=T)
 
-![Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
+![Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
 
 #### Questions? 
 
@@ -236,7 +236,7 @@ DTMs.
             main="Digital Elevation Model of Difference (DoD)",
             axes=FALSE)
 
-![Digital Elevation Model of Difference showing the difference between digital elevation models (DTM).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
+![Digital Elevation Model of Difference showing the difference between digital elevation models (DTM).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
 
 Here we have our DoD, but it is a bit hard to read. What does the scale bar tell
 us?  
@@ -252,7 +252,7 @@ the values in the `DoD` raster object.
     # histogram of values in DoD
     hist(DoD)
 
-![Histogram of values showing the distribution of values in the Digital Elevation Model of Difference. The values are plotted on the X-axis and the frquency on the Y-axis.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/hist-DoD-1.png)
+![Histogram of values showing the distribution of values in the Digital Elevation Model of Difference. The values are plotted on the X-axis and the frquency on the Y-axis.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/hist-DoD-1.png)
 
 Most of the areas have a very small elevation change. To make the map easier to
 read, we can do two things. 
@@ -298,7 +298,7 @@ Let's now implement these two changes in our code.
             alpha=0.3,
             add =T)
 
-![Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
+![Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
 
 #### Question
 Do you think this is the best color scheme or set point for the breaks? Create

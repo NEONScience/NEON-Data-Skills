@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: data-analysis, raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/03-Raster-Calculations-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/03-Raster-Calculations-In-R.R
 tutorialSeries: raster-data-series
 urlTitle: dc-raster-calculations-r
 

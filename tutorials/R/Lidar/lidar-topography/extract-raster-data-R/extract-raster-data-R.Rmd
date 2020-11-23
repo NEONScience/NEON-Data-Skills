@@ -10,7 +10,7 @@ packagesLibraries: raster, sp, rgdal, maptools, rgeos, dplyr, ggplot
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool:
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/extract-raster-data-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/extract-raster-data-R.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: extract-values-rasters-r
 ---

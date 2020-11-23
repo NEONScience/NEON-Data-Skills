@@ -10,7 +10,7 @@ packagesLibraries:
 topics: data-analysis
 languagesTool: R
 dataProduct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/basic-R-skills/R-Basics-Of-Packages/R-Basics-Of-Packages.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/basic-R-skills/R-Basics-Of-Packages/R-Basics-Of-Packages.R
 tutorialSeries: R-basics
 urlTitle: packages-in-r
 ---

@@ -10,7 +10,7 @@ packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001, DP1.30010.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/00-Raster-Structure.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/00-Raster-Structure.R
 tutorialSeries: raster-data-series
 urlTitle: dc-raster-data-r
 ---
@@ -146,7 +146,7 @@ we'll use a naming convention of `datatype_HARV`.
     plot(DSM_HARV, 
          main="NEON Digital Surface Model\nHarvard Forest")
 
-![Digital surface model showing the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png)
+![Digital surface model showing the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png)
 
 
 ## Types of Data Stored in Raster Format
@@ -171,7 +171,7 @@ The legend shows the continuous range of values in the data from around 300 to
     # code output here - DEM rendered on the screen
     plot(DSM_HARV, main="Continuous Elevation Map\n NEON Harvard Forest Field Site")
 
-![Continuous elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png)
+![Continuous elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png)
 
 Some rasters contain categorical data where each pixel represents a discrete
 class such as a landcover type (e.g., "forest" or "grassland") rather than a
@@ -223,7 +223,7 @@ The legend of this map shows the colors representing each discrete class.
             legend = c("High Elevation", "Middle","Low Elevation"), 
             fill = rev(col))
 
-![Classified elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png)
+![Classified elevation map of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png)
 
 ## What is a GeoTIFF??
 Raster data can come in many different formats. In this tutorial, we will use the 
@@ -426,7 +426,7 @@ The camera did not collect data in these areas.
     plotRGB(RGB_stack, r = 1, g = 2, b = 3, 
             axes=TRUE, main="Raster With NoData Values\nRendered in Black")
 
-![Colorized raster image with NoDataValues around the edge rendered in black](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png)
+![Colorized raster image with NoDataValues around the edge rendered in black](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png)
 
 In the next image, the black edges have been assigned `NoDataValue`. R doesn't 
 render pixels that contain a specified `NoDataValue`. R assigns missing data 
@@ -447,7 +447,7 @@ with the `NoDataValue` as `NA`.
     plotRGB(newRGBImage, r = 1, g = 2, b = 3,
             axes=TRUE, main="Raster With No Data Values\nNoDataValue= NA")
 
-![Colorized raster image with NoDataValues around the edge removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png)
+![Colorized raster image with NoDataValues around the edge removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png)
 
 ### NoData Value Standard 
 
@@ -500,7 +500,7 @@ identifying outliers and bad data values in our raster data.
     ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
     ## were used. 100000 values used.
 
-![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
+![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
 
 
 Notice that a warning is shown when R creates the histogram. 
@@ -534,7 +534,7 @@ in a histogram can be problematic when dealing with very large datasets.
          ylab="Frequency",
          col="wheat4")
 
-![Histogram showing the distribution of digital surface model values with all pixel values included](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png)
+![Histogram showing the distribution of digital surface model values with all pixel values included](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png)
 
 Note that the shape of both histograms looks similar to the previous one that
  was created using a representative 10,000 pixel subset of our raster data. The 

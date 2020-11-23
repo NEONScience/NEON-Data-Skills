@@ -10,7 +10,7 @@ packagesLibraries: tidyverse, neonUtilities, devtools
 topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-algae
 ---
@@ -634,7 +634,7 @@ We can also make a quick plot to see which taxon rank (i.e., what level of taxon
       ggplot(aes(taxon_rank)) +
       geom_bar()
 
-![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
+![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
 
 ## Species Accumulation Curve
 Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data 'wide':
@@ -659,7 +659,7 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
     alg_spec_accum_result <- alg_dens_wide %>% vegan::specaccum(., "random")
     plot(alg_spec_accum_result)
 
-![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
+![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
 
 ## Compare Observed and Simulated species accumulation curves
 
@@ -740,4 +740,4 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
       stat_summary(fun.data = median_hilow, geom = "line", 
                    size = 1) 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
