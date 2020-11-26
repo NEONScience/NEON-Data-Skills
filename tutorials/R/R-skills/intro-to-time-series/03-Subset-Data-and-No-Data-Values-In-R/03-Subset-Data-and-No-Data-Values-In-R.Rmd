@@ -246,7 +246,7 @@ in the metadata. No data values can be stored differently:
 * **A Designated Numeric Value (e.g. -9999):** Character strings such as `NA` can 
 not always be stored along side of numeric values in some file formats. Sometimes 
 you'll encounter numeric placeholders for `noData` values such as
-`-9999` (a value often used in the GIS / Remote Sensing and Micrometerology 
+`-9999` (a value often used in the GIS / Remote Sensing and Micrometeorology 
 domains.
 * **Blank Values:** sometimes `noData` values are left blank. Blanks are 
 particularly problematic because we can't be certain if a data value is 

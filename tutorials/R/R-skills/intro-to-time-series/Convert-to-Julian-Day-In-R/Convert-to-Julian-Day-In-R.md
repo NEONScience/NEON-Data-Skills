@@ -99,7 +99,7 @@ class.
     # set working directory to ensure R can find the file we wish to import
     # setwd("working-dir-path-here")
     
-    # Load csv file of daily meterological data from Harvard Forest
+    # Load csv file of daily meteorological data from Harvard Forest
     # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
     harMet_DailyNoJD <- read.csv(
       file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv",

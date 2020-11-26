@@ -281,7 +281,7 @@ the points to be treated as spatial objects.
     ## min values  : SJER1068, center, 4107527.074, 254738.618,      NA 
     ## max values  :  SJER952, center, 4112167.778, 258497.102,      NA
 
-We now have our centoid data as a spatial points data frame. This will allow us
+We now have our centroid data as a spatial points data frame. This will allow us
 to work with them as spatial data along with other spatial data -- like rasters. 
 
 
@@ -309,7 +309,7 @@ Values for all pixels in the specified raster that fall within the circular
 buffer are extracted. In this case, we can tell R to extract the maximum value 
 of all pixels using the `fun=max` argument.
 
-### Method 1: Extract Data From a Cirular Buffer
+### Method 1: Extract Data From a Circular Buffer
 
 In the first, example we'll presume our insitu sampling took place within a 
 circular plot with a 20m radius. Therefore, we will use a buffer of 20m. 
@@ -703,7 +703,7 @@ Or we can use the `ggplot()` function from the **ggplot2** package. For more on
 using the **ggplot2** package see our tutorial, 
 <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank"> *Plot Time Series with ggplot2 in R*</a>. 
 
-In reality, we know that the trees in these plots are the same height regardless of if we measure them with lidar or from the ground. However, there may be certain biases in our measurements, and it wil be interesting to see if one method measures the trees as being taller than the other. To make this comparison, we will add what is called a "1:1" line, i.e., the line where all of the points would fall if both methods measured the trees as exactly the same height. Let's make this "1:1" line dashed and slightly transparent so that it doesn't obscure any of our points.
+In reality, we know that the trees in these plots are the same height regardless of if we measure them with lidar or from the ground. However, there may be certain biases in our measurements, and it will be interesting to see if one method measures the trees as being taller than the other. To make this comparison, we will add what is called a "1:1" line, i.e., the line where all of the points would fall if both methods measured the trees as exactly the same height. Let's make this "1:1" line dashed and slightly transparent so that it doesn't obscure any of our points.
 
 
     # create plot

@@ -237,7 +237,7 @@ land cover types, we will first reshape our data using the `melt()` function, th
 plot the spectral signatures.
 
 
-    # Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
+    # Use the melt() function to reshape the dataframe into a format that ggplot prefers
     Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
     ## Warning in melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance"): The melt

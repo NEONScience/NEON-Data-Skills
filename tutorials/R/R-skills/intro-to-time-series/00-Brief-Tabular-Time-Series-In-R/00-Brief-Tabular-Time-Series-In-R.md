@@ -305,7 +305,7 @@ For example:
 
     ## [1] "character"
 
-    # subract a-b 
+    # subtract a-b 
     a-b
 
     ## Error in a - b: non-numeric argument to binary operator
@@ -323,7 +323,7 @@ You can not subtract two **character** values given they are not numbers.
 
     ## [1] "numeric"
 
-    # subract a-b 
+    # subtract a-b 
     c-d
 
     ## [1] 1

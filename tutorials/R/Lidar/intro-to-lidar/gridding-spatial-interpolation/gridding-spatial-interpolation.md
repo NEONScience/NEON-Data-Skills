@@ -95,7 +95,7 @@ cell.
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridded.png"></a>
     <figcaption>When you directly grid a dataset, values will only be calculated
 	for cells that overlap with data points. Thus, data gaps will not be filled. 
-	Source: National Ecological Osbervatory Network 
+	Source: National Ecological Observatory Network 
 	</figcaption>
 </figure>
 
@@ -148,7 +148,7 @@ lays out the strengths of some of the more common interpolation methods.
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridMethod_FeaturesTbl.png" target="_blank">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridMethod_FeaturesTbl.png"></a>
     <figcaption>Abbreviations: TIN=Triangulated Irregular Network, IDW=Inverse 
-    Distance Weighted interpolation.  Source: National Ecological Osbervatory Network </figcaption>
+    Distance Weighted interpolation.  Source: National Ecological Observatory Network </figcaption>
 </figure>
 
 We will focus on deterministic methods in this tutorial.
@@ -399,7 +399,7 @@ spacing of a dataset. It also may yield the largest file size!
 	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/tin.png" target="_blank">
 	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/tin.png"></a>
 	 <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
-	the NEON San Joachiun (SJER) field site.</figcaption>
+	the NEON San Joaquin (SJER) field site.</figcaption>
  </figure>
 
 * For more on the TIN process see this information from ESRI: 

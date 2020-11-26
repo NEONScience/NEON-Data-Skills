@@ -599,7 +599,7 @@ We previously saw a fair number of data points that were flagged. Now we'll
 subset the data to remove those data points. 
 
 
-    # subset abd add C to name for "clean"
+    # subset and add C to name for "clean"
     SAAT_30minC <- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
     
     # Do any quality flags remain? Count 'em up

@@ -235,7 +235,7 @@ b <- "sparrow"
 class(a)
 class(b)
 
-# subract a-b 
+# subtract a-b 
 a-b
 
 ```
@@ -248,7 +248,7 @@ c <- 2
 d <- 1
 class(c)
 class(d)
-# subract a-b 
+# subtract a-b 
 c-d
 
 ```

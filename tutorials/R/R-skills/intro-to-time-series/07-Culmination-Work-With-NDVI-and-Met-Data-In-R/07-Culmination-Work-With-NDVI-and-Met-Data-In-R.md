@@ -129,7 +129,7 @@ We need to read in two datasets: the 2009-2011 micrometeorological data and the
     library(ggplot2)  # for creating graphs
     library(scales)   # to access breaks/formatting functions
     library(gridExtra) # for arranging plots
-    library(grid)   # for arrangeing plots
+    library(grid)   # for arranging plots
     library(dplyr)  # for subsetting by season
     
     # set working directory to ensure R can find the file we wish to import

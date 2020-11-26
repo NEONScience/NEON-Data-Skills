@@ -103,7 +103,7 @@ time for analysis. In this example, we
 will take a full HDF5 file of NEON hyperspectral reflectance data 
 from the San Joaquin Experimental Range (SJER) that has a file size 
 of ~652 Mb and make a new HDF5 file with a reduced spatial extent, 
-and a reduced spectral resolution, yeilding a file of only ~50.1 Mb. 
+and a reduced spectral resolution, yielding a file of only ~50.1 Mb. 
 This reduction in file size will make it easier and faster to conduct 
 your analysis and to share your data with others. We will then use this 
 subsetted file in the <a href="https://www.neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a>.
@@ -356,7 +356,7 @@ rows are counted from the bottom to the top, and columns are counted from the
 left to the right. If we want to sample the bottom right quadrant of this image, 
 we need to select rows 1 through 500 (bottom half), and columns 501 through 1000 
 (right half). Note that, as above, the `index=` argument in `h5read()` requires 
-a `list` of three dimenstions for this example - in the order of bands, columns, 
+a `list` of three dimensions for this example - in the order of bands, columns, 
 rows. 
 
 

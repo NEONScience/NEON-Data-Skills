@@ -45,7 +45,7 @@ By forking the NEON repo, we created a copy of it in our github.com account.
  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/git_fork_emphasis.png" width="70%"
  alt="Graphic showing a fork of the central repository, which creates an exact copy of the repository in our own github account.">
  </a>
- <figcaption>When you fork a reposiotry on the github.com website, you are creating a
+ <figcaption>When you fork a repository on the github.com website, you are creating a
  duplicate copy of it in your github.com account. This is useful as a backup
  of the material. It also allows you to edit the material without modifying
  the original repository.
