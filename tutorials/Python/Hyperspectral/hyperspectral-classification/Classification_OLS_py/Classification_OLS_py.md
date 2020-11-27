@@ -140,7 +140,7 @@ matplotlib.pyplot.show()
     (200, 2)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_0_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_0_1.png)
 
 
 ```python
@@ -155,7 +155,7 @@ matplotlib.pyplot.plot(range(NSampsClass, NSamps), TargetOutputs[range(NSampsCla
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_1_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_1_0.png)
 
 
 
@@ -192,7 +192,7 @@ matplotlib.pyplot.title('TrainingOutputs (Magenta) vs Desired Outputs (Black)')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_4_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_4_0.png)
 
 
 ```python
@@ -211,7 +211,7 @@ matplotlib.pyplot.title('Ordinary Least Squares')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_5_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_5_0.png)
 
 
 ```python
@@ -240,7 +240,7 @@ matplotlib.pyplot.title('Ridge Regression')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_7_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_7_0.png)
 
 
 First, let's save this project with the name: OLSandRidgeRegress2DYourName. 
@@ -260,7 +260,7 @@ matplotlib.pyplot.title('TrainingOutputs (Magenta) vs Desired Outputs (Black)')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/classification_OLS/output_9_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_9_0.png)
 
 
 

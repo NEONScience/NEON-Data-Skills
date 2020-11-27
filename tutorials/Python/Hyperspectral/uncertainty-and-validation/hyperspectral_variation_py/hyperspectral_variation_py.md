@@ -99,12 +99,12 @@ overlapping.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_BRDF_flightlines.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_BRDF_flightlines.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/ORNL_BRDF_flightlines.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/ORNL_BRDF_flightlines.jpg"></a>
 </figure>
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_NumberSamples.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/ORNL_NumberSamples.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/ORNL_NumberSamples.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/ORNL_NumberSamples.png"></a>
 	<figcaption> Top: Flight lines from a bi-directional reflectance distribution 
 	function flight at ORNL. Bottom: A graphical representation of the number of 
 	samples in each area of the sampling.  
@@ -352,7 +352,7 @@ fig.savefig('BRDF_uncertainty_at_' + str(x_coord) +'_'+ str(y_coord)+'.png',dpi=
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/hyperspectral-variation/output_17_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-variation/output_17_0.png)
 
 
 The result is a plot with all the curves in which we can visualize the difference 

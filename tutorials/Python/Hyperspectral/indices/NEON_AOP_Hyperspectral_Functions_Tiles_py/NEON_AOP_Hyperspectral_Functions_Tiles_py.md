@@ -360,7 +360,7 @@ plot_aop_refl(sercb56,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_16_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_16_0.png)
 
 ## RGB Plots - Band Stacking
 It is often useful to look at several bands together. We can extract and stack three reflectance bands in the red, green, and blue (RGB) spectrums to produce a color image that looks like what we see with our eyes; this is your typical camera image. In the next part of this tutorial, we will learn to stack multiple bands and make a geotif raster from the compilation of these bands. We can see that different combinations of bands allow for different visualizations of the remotely-sensed objects and also conveys useful information about the chemical makeup of the Earth's surface. 
@@ -370,8 +370,8 @@ spectrum (400-700 nm) and at specific points that correspond to what we see
 as red, green, and blue.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGBcombined.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrum_RGBcombined.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrum_RGBcombined.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrum_RGBcombined.png"></a>
 	<figcaption> NEON Imaging Spectrometer bands and their respective center wavelengths (nm). Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
@@ -439,7 +439,7 @@ plot_aop_refl(SERCrgb,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_25_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_25_0.png)
 
 You'll notice that this image is very dark; it is possible to make out some of the features (roads, buildings), but it is not ideal. Since colorlimits don't apply to 3-band images, we have to use some other image processing tools to enhance the visibility of this image. 
 
@@ -450,8 +450,8 @@ We can also try out some image processing routines to better visualize the refle
 Histogram equalization is a method in image processing of contrast adjustment using the image's histogram. Stretching the histogram can improve the contrast of a displayed image by eliminating very high or low reflectance values that skew the display of the image. 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/histogram_equalization.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/histogram_equalization.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/histogram_equalization.png"></a>
 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
 using the image's histogram. Stretching the histogram can improve the contrast 
 of a displayed image, as we will show how to do below.
@@ -492,7 +492,7 @@ plot_aop_rgb(SERCrgb,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_30_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_30_0.png)
 
 ## False Color Image - Color Infrared (CIR)
 We can also create an image from bands outside of the visible spectrum. An image containing one or more bands outside of the visible range is called a **false-color image**. Here we'll use the green and blue bands as before, but we replace the red band with a near-infrared (NIR) band. 
@@ -520,7 +520,7 @@ plot_aop_rgb(SERCcir,
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_32_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/output_32_1.png)
 
 ## Demo: Exploring Band Combinations Interactively
 
@@ -564,7 +564,7 @@ def RGBplot_widget(R,G,B):
 interact(RGBplot_widget, R=(1,426,1), G=(1,426,1), B=(1,426,1))
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/rgb_widget.gif)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/rgb_widget.gif)
 
 ## Demo: Interactive Linear Stretch & Equalization
 
@@ -586,7 +586,7 @@ def linearStretch(percent):
 interact(linearStretch,percent=(0,20,1))
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/linear_contrast.gif)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/NEON_AOP_Hyperspectral_Functions_Tiles_py/linear_contrast.gif)
 
 
 ## References

@@ -1504,7 +1504,7 @@ show(CHMtile)
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neonUtilitiesPython_files/neonUtilitiesPython_40_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonUtilitiesPython_files/neonUtilitiesPython_40_0.png)
 
 
 

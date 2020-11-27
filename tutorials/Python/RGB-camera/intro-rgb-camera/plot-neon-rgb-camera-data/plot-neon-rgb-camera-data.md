@@ -293,7 +293,7 @@ plot_band_array(SERC_RGBcam_array,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
 
 Lastly, we can plot a histogram of the first band (red), which we can extract by using `splicing`. Since Python is 0-based, to extract all values of the first band, we can use: `SERC_RGBcam_array[:,:,0]`. *Notes*: It speeds up the algorithm to flatten the 2-D array into one dimension using `numpy.ravel`; `20` specifies the number of bins. 
 
@@ -311,7 +311,7 @@ plt.xlabel('Brightness'); plt.ylabel('Frequency')
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
 
 ## Challenge Exercises
 

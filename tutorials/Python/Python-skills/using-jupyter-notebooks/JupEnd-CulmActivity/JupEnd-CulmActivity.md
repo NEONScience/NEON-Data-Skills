@@ -74,8 +74,8 @@ To ensure that the correct kernel will operate, navigate to **Kernel** in the me
 select **Kernel/Restart Kernel And Clear All Outputs**. 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png" alt="Navigate to 'Kernel' in the top navigation bar, then select 'Restart & Clear Output'."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png" alt="Navigate to 'Kernel' in the top navigation bar, then select 'Restart & Clear Output'."></a>
 	<figcaption> To ensure that the correct kernel will operate, navigate to 
 	Kernel in the menu, select "Restart/Restart & Clear Output". 
 	Source: National Ecological Observatory Network (NEON)  

@@ -92,8 +92,8 @@ The formula for NDVI is:
 **NDVI = (NIR - VIS)/(NIR+ VIS)**
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/ndvi_tree.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-indices/ndvi_tree.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/ndvi_tree.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/ndvi_tree.png"></a>
 	<figcaption> NDVI is calculated from the visible and near-infrared light
     reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of
@@ -188,7 +188,7 @@ plot_band_array(ndvi,clipExtent,(0,np.max(ndvi)),\
                 title='SERC Subset NDVI \n (VIS = Band 58, NIR = Band 90)',cmap_title='NDVI',colormap='seismic')
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks/output_8_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/calc-ndvi-extract-spec-masks/output_8_0.png)
 
 
 
@@ -212,7 +212,7 @@ plot_band_array(ndvi_gtpt6,clipExtent,(0.6,1),title='SERC Subset NDVI > 0.6 \n (
     Mean NDVI > 0.6: 0.87
     
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks/output_10_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/calc-ndvi-extract-spec-masks/output_10_1.png)
 
 
 
@@ -289,5 +289,5 @@ ax.set_xlabel("Wavelength, nm"); ax.set_ylabel("Reflectance")
 ax.grid('on'); 
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/py-figs/calc-ndvi-extract-spec-masks/output_16_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/calc-ndvi-extract-spec-masks/output_16_0.png)
 
