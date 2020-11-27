@@ -36,7 +36,8 @@ for (i in 1:length(Rmd.files)){
   fileConn <- file(file)
   fl <- readLines(fileConn)
   
-  p="^code1:.*$"
+  ## Had to modify this because beginning and end of line are different in ipynb files
+  p="code1:.*ipynb"
   fl2=sub(p,R.URL[i],fl)
   #head(fl2,13)
   # write modified .md file out
