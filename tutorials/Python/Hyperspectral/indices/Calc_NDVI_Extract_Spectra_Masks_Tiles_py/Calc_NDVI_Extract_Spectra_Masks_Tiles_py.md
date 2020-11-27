@@ -238,7 +238,7 @@ def plot_aop_rgb(rgbArray,ext,ls_pct=5,plot_title=''):
 ```
 
 
-![png](Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_4_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/Calc_NDVI_Extract_Spectra_Masks_Tiles_py/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_4_0.png)
 
 
 ### Read in SERC Reflectance Tile
@@ -287,7 +287,7 @@ plot_aop_refl(ndvi,sercRefl_md['spatial extent'],
 ```
 
 
-![png](Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_13_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/Calc_NDVI_Extract_Spectra_Masks_Tiles_py/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_13_0.png)
 
 
 ## Extract Spectra Using Masks
@@ -319,7 +319,7 @@ plot_aop_refl(ndvi_gtpt6,
 ```
 
 
-![png](Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_16_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/Calc_NDVI_Extract_Spectra_Masks_Tiles_py/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_16_0.png)
 
 
 ## Calculate the mean spectra, thresholded by NDVI 
@@ -395,5 +395,5 @@ ax.grid('on');
 ```
 
 
-![png](Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_24_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/Calc_NDVI_Extract_Spectra_Masks_Tiles_py/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_files/Calc_NDVI_Extract_Spectra_Masks_Tiles_py_24_0.png)
 
