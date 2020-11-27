@@ -1,24 +1,29 @@
 ## Webstie redesign script to convert all graphics URLs to their new location.
 ## This file was needed after we re-organized the structure of the /graphics/ dir
 
+## Updated to work with ipynb files
+
 
 ## read in changes (remap_key) and parse out the section of the URL that is actually relevant
 # Turn this into a before,after paired list
 
-raw.prefix = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/"
+## Must set the raw.prefix to 'end' at the same point where the input.path is looking, so that you can append
+## the files.short to the prefix to create correct R.URL
+
+raw.prefix = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/"
 #"https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/NEON-API-How-To.R"
 
 
-input.path="~/Git/dev-aten/NEON-Data-Skills/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/"
+input.path="~/Git/main/NEON-Data-Skills/tutorials/Python/"
 
 # Find all files to change
 Rmd.files <- list.files(input.path,
-                              pattern="\\.Rmd$", full.names = T, recursive = TRUE)
+                              pattern="\\.ipynb$", full.names = T, recursive = TRUE)
 # Same files, but without prefix
 Rmd.files.short <- list.files(input.path,
-                        pattern="\\.Rmd$", full.names = F, recursive = TRUE)
+                        pattern="\\.ipynb$", full.names = F, recursive = TRUE)
 
-R.files=sub(pattern = "(.*)\\..*$", replacement = "\\1.R", Rmd.files.short)
+R.files=sub(pattern = "(.*)\\..*$", replacement = "\\1.ipynb", Rmd.files.short)
 md.files=sub(pattern = "(.*)\\..*$", replacement = "\\1.md", Rmd.files)
 R.URL=paste0("code1: ",raw.prefix, R.files)
 
