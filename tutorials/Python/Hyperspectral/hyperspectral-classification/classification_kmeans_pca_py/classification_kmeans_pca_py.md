@@ -10,7 +10,7 @@ packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/classification_kmeans_pca_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: classification-kmeans-pca-python
 ---
@@ -34,7 +34,7 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<a href="https://neondata.sharefile.com/share/view/s89752829ccb4ce1a/fo396a43-51ec-4b14-a1fb-b5e70f0b7e1b" class="button-arrow" target="_blank">
+ <a href="https://neondata.sharefile.com/share/view/s89752829ccb4ce1a/fo396a43-51ec-4b14-a1fb-b5e70f0b7e1b" class="button-arrow" target="_blank">
 Download the spectral classification teaching data subset</a>
 
 </div>
@@ -55,7 +55,6 @@ To learn more about the Spcral Python packages read:
 Read more on KMeans clustering from <a href="http://www.spectralpython.net/algorithms.html#k-means-clustering" target="_blank">Spectral Python</a>. 
 
 To visualize how the algorithm works, it's easier look at a 2D data set. In the example below, watch how the cluster centers shift with progressive iterations, 
-
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/KMeans2D.gif">
@@ -132,8 +131,8 @@ For this example, we will read in a reflectance tile in ENVI format. NEON provid
 
 
 ```python
-img = envi.open('../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.hdr',
-                '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat')
+img = envi.open('/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.hdr',
+                '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat')
 ```
 
 Note that the information is stored differently when read in with `envi.open`. We can find the wavelength information in `img.bands.centers`. Let's take a look at the first and last wavelengths values: 
@@ -174,7 +173,7 @@ img.params
 
 
 
-    <bound method SpyFile.params of 	Data Source:   './../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat'
+    <bound method SpyFile.params of 	Data Source:   '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat'
     	# Rows:           1000
     	# Samples:        1000
     	# Bands:           426
@@ -195,23 +194,23 @@ for item in md:
 ```
 
     Metadata Contents:
-    	 dataset names
-    	 wavelength
-    	 coordinate system string
-    	 file type
-    	 reflectance scale factor
-    	 header offset
-    	 data ignore value
-    	 map info
-    	 interleave
-    	 samples
-    	 bands
-    	 byte order
-    	 wavelength units
-    	 data type
     	 description
+    	 samples
     	 lines
+    	 bands
+    	 data type
+    	 interleave
+    	 file type
+    	 header offset
+    	 byte order
+    	 map info
+    	 coordinate system string
+    	 wavelength
     	 fwhm
+    	 wavelength units
+    	 reflectance scale factor
+    	 data ignore value
+    	 dataset names
 
 
 To access any of these metadata items, use the syntax `md['description']` or `md['map info']`:
@@ -256,6 +255,10 @@ print(view)
     
 
 
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_21_1.png)
+
+
 When dealing with NEON hyperspectral data, we first want to remove the water vapor & noisy bands, keeping only the valid bands. To speed up the classification algorithms for demonstration purposes, we'll look at a subset of the data using `read_subimage`, a built in method to subset by area and bands. Type `help(img.read_subimage)` to see how it works. 
 
 
@@ -272,7 +275,7 @@ view = imshow(img_subset,bands=(58,34,19),stretch=0.01,title="RGB Image of 2017 
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_kmeans_pca_py/output_25_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_25_0.png)
 
 
 Now that we have the image subsetted, lets run the `k-means` algorithm. Type `help(kmeans)` to show how the function works. To run the k-means algorithm on the image and create 5 clusters, using a maximum of 50 iterations, use the following syntax:
@@ -282,26 +285,25 @@ Now that we have the image subsetted, lets run the `k-means` algorithm. Type `he
 (m,c) = kmeans(img_subset,5,50) 
 ```
 
-    Initializing clusters along diagonal of N-dimensional bounding box.
-    Iteration 1...  0.Iteration 1...27267 pixels reassigned.
-    Iteration 2...  0.Iteration 2...3969 pixels reassigned.
-    Iteration 3...  0.Iteration 3...1690 pixels reassigned.
-    Iteration 4...  0.Iteration 4...1141 pixels reassigned.
-    Iteration 5...  0.Iteration 5...811 pixels reassigned.
-    Iteration 6...  0.Iteration 6...440 pixels reassigned.
-    Iteration 7...  0.Iteration 7...236 pixels reassigned.
-    Iteration 8...  0.Iteration 8...143 pixels reassigned.
-    Iteration 9...  0.Iteration 9...87 pixels reassigned.
-    Iteration 10...  0.0Iteration 10...46 pixels reassigned.
-    Iteration 11...  0.0Iteration 11...20 pixels reassigned.
-    Iteration 12...  0.0Iteration 12...5 pixels reassigned.
-    Iteration 13...  0.0Iteration 13...2 pixels reassigned.
-    Iteration 14...  0.0Iteration 14...1 pixels reassigned.
-    Iteration 15...  0.0Iteration 15...0 pixels reassigned.
-    kmeans terminated with 5 clusters after 14 iterations.
+    spectral:INFO: k-means iteration 1 - 27267 pixels reassigned.
+    spectral:INFO: k-means iteration 2 - 3969 pixels reassigned.
+    spectral:INFO: k-means iteration 3 - 1690 pixels reassigned.
+    spectral:INFO: k-means iteration 4 - 1141 pixels reassigned.
+    spectral:INFO: k-means iteration 5 - 811 pixels reassigned.
+    spectral:INFO: k-means iteration 6 - 440 pixels reassigned.
+    spectral:INFO: k-means iteration 7 - 236 pixels reassigned.
+    spectral:INFO: k-means iteration 8 - 143 pixels reassigned.
+    spectral:INFO: k-means iteration 9 - 87 pixels reassigned.
+    spectral:INFO: k-means iteration 10 - 46 pixels reassigned.
+    spectral:INFO: k-means iteration 11 - 20 pixels reassigned.
+    spectral:INFO: k-means iteration 12 - 5 pixels reassigned.
+    spectral:INFO: k-means iteration 13 - 2 pixels reassigned.
+    spectral:INFO: k-means iteration 14 - 1 pixels reassigned.
+    spectral:INFO: k-means iteration 15 - 0 pixels reassigned.
+    spectral:INFO: kmeans terminated with 5 clusters after 14 iterations.
 
 
-Note that the algorithm terminated after 14 iterations, when the pixels stopped being reassigned. 
+Note that the algorithm terminated afte 14 iterations, when the pixels stopped being reassigned. 
 
 **Data Tip**: You can iterrupt the algorithm with a keyboard interrupt (CTRL-C) if you notice that the number of reassigned pixels drops off. Kmeans catches the KeyboardInterrupt exception and returns the clusters generated at the end of the previous iteration. If you are running the algorithm interactively, this feature allows you to set the max number of iterations to an arbitrarily high number and then stop the algorithm when the clusters have converged to an acceptable level. If you happen to set the max number of iterations too small (many pixels are still migrating at the end of the final iteration), you can simply call kmeans again to resume processing by passing the cluster centers generated by the previous call as the optional `start_clusters` argument to the function.
 
@@ -322,7 +324,6 @@ print(c.shape)
 %matplotlib inline
 import pylab
 pylab.figure()
-pylab.hold(1)
 for i in range(c.shape[0]):
     pylab.plot(c[i])
 pylab.show
@@ -334,12 +335,13 @@ pylab.ylabel('Reflectance')
 
 
 
-    Text(0,0.5,'Reflectance')
+    Text(0, 0.5, 'Reflectance')
 
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_kmeans_pca_py/output_31_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_31_1.png)
+
 
 
 ```python
@@ -365,7 +367,7 @@ view.show_data
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_kmeans_pca_py/output_32_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_32_1.png)
 
 
 ## Challenges: K-Means
@@ -385,7 +387,7 @@ xdata = pc.transform(img_subset)
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_kmeans_pca_py/output_35_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_35_0.png)
 
 
 In the covariance matrix display, lighter values indicate strong positive covariance, darker values indicate strong negative covariance, and grey values indicate covariance near zero.
@@ -412,5 +414,6 @@ v = imshow(img_pc[:,:,:5], stretch_all=True)
     (200, 200, 5)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_kmeans_pca_py/output_38_1.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_kmeans_pca_py/classification_kmeans_pca_py_files/classification_kmeans_pca_py_38_1.png)
 
