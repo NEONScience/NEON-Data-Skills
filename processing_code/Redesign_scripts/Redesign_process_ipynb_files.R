@@ -16,14 +16,15 @@ basename(ipynb.files)
 dirname(ipynb.files)
 
 
-for(p in 1:length(ipynb.files)){
+#for(p in 1:length(ipynb.files)){
+for(p in 1){ #run just first file in list
   
   print(paste("file #",p,ipynb.files[p]))
   
   # First, clear and run the notebook to ensure it all works properly
   system(paste0("cd ",dirname(ipynb.files[p]),
   "; jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ",basename(ipynb.files[p]),
-  "; jupyter nbconvert --to notebook --execute --inplace ",basename(ipynb.files[p])))
+  "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=py37 --to notebook --execute --inplace ",basename(ipynb.files[p])))
   
   system(paste0("cd ",dirname(ipynb.files[p]),
                 "; jupyter nbconvert --to html ",basename(ipynb.files[p]),
@@ -64,3 +65,4 @@ for(p in 1:length(ipynb.files)){
   close(fileConn)    
   
 }
+

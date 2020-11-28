@@ -10,7 +10,7 @@ packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/classification_endmember_extraction_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: classification-endmember-python
 ---
@@ -54,12 +54,30 @@ or if already in a Jupyter Notebook:
 1. PySpTools: Download <a href="https://pypi.python.org/pypi/pysptools" target="_blank">pysptools-0.14.2.tar.gz</a>.
 2. Run the following code in a Notebook code cell. 
 
-```python 
+
+```python
 import sys
-!{sys.executable} -m pip install "C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz
+#!{sys.executable} -m pip install "C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz
+!{sys.executable} -m pip install "/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz"
 !conda install --yes --prefix {sys.prefix} scikit-learn
 !conda install --yes --prefix {sys.prefix} cvxopt
 ```
+
+    [33mWARNING: Requirement '/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz' looks like a filename, but the file does not exist[0m
+    Processing /Users/olearyd/Downloads/pysptools-0.15.0.tar.gz
+    [31mERROR: Could not install packages due to an EnvironmentError: [Errno 2] No such file or directory: '/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz'
+    [0m
+    Collecting package metadata (current_repodata.json): - \ | / - \ | / - done
+    Solving environment: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ done
+    
+    # All requested packages already installed.
+    
+    Collecting package metadata (current_repodata.json): - \ | / - \ | / - \ | / - done
+    Solving environment: | / - \ | / - \ | / - \ | / - \ | / - done
+    
+    # All requested packages already installed.
+    
+
 
 We will also use the following user-defined functions: 
 
@@ -68,6 +86,23 @@ We will also use the following user-defined functions:
 * **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
 
 Once PySpTools is installed, import the following packages. 
+
+import h5py, os, copy
+import matplotlib.pyplot as plt
+import numpy as np
+import pysptools.util as util
+import pysptools.eea as eea #endmembers extraction algorithms
+import pysptools.abundance_maps as amap
+import pysptools.classification as cls
+import pysptools.material_count as cnt
+
+%matplotlib inline
+
+#for clean output, to not print warnings, don't use when developing script
+import warnings
+warnings.filterwarnings('ignore')
+
+Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 
 ```python
@@ -86,8 +121,6 @@ import pysptools.material_count as cnt
 import warnings
 warnings.filterwarnings('ignore')
 ```
-
-Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 
 ```python
@@ -160,13 +193,15 @@ def read_neon_reflh5(refl_filename):
     hdf5_file.close        
     
     return reflArray, metadata
+
 ```
 
 Now that the function is defined, we can call it to read in the sample reflectance file. Note that if your data is stored in a different location, you'll have to change the relative path, or include the absolute path. 
 
 
 ```python
-h5refl_filename = '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
+#h5refl_filename = '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
+h5refl_filename = '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
 data,metadata = read_neon_reflh5(h5refl_filename)
 ```
 
@@ -177,6 +212,18 @@ Let's take a quick look at the data contained in the `metadata` dictionary with 
 for key in sorted(metadata.keys()):
   print(key)
 ```
+
+    bad_band_window1
+    bad_band_window2
+    data ignore value
+    epsg
+    interleave
+    map info
+    projection
+    reflectance scale factor
+    spatial extent
+    wavelength
+
 
     bad_band_window1
     bad_band_window2
@@ -239,6 +286,7 @@ def clean_neon_refl_data(data,metadata):
     metadata_clean['wavelength'] = [metadata['wavelength'][i] for i in valid_band_range]
     
     return data_clean, metadata_clean
+
 ```
 
 Now, use this function to pre-process the data:
@@ -260,12 +308,21 @@ print('Cleaned Data Dimensions:',data_clean.shape)
     Cleaned Data Dimensions: (1000, 1000, 360)
 
 
+    Raw Data Dimensions: (1000, 1000, 426)
+    Cleaned Data Dimensions: (1000, 1000, 360)
+
+
 Note that we have retained 360 of the 426 bands. This still contains plenty of information, in your processing, you may wish to subset even further. Let's take a look at a histogram of the cleaned data:
 
 
 ```python
 plt.hist(data_clean[~np.isnan(data_clean)],50);
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_20_0.png)
+
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_17_0.png)
 
@@ -292,8 +349,10 @@ def plot_aop_refl(band_array,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_19_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_22_0.png)
 
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_19_0.png)
 
 
 ```python
@@ -303,7 +362,10 @@ plot_aop_refl(data_clean[:,:,0],
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_20_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_24_0.png)
+
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_20_0.png)
 
 
 ## Unsupervised Classification with Spectral Unmixing: 
@@ -325,6 +387,7 @@ First we need to define the endmember extraction algorithm, and use the `extract
 
 
 ```python
+#eea = data_clean
 ee = eea.NFINDR()
 U = ee.extract(data_clean,4,maxit=5,
                normalize=False,ATGP_init=True)
@@ -344,6 +407,8 @@ type(metadata_clean['wavelength'])
 
 
 
+    list
+
 
 ```python
 ee_axes = {} # set ee_axes data type to dictionary
@@ -359,6 +424,9 @@ Now that the axes are defined, we can display the spectral endmembers with `ee.d
 ```python
 ee.display(axes=ee_axes,suffix='SERC')
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_32_0.png)
 
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_28_0.png)
@@ -378,6 +446,25 @@ Use `am.display` to plot these abundance maps:
 ```python
 am.display(colorMap='jet',columns=4,suffix='SERC')
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_36_0.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_36_1.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_36_2.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_36_3.png)
+
+
+
+    <Figure size 432x288 with 0 Axes>
 
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_32_0.png)
@@ -413,6 +500,13 @@ print('EM4:',np.mean(amaps[:,:,3]))
     EM4: 0.026367119
 
 
+    Abundance Map Mean Values:
+    EM1: 0.59177357
+    EM2: 0.00089541974
+    EM3: 0.3809638
+    EM4: 0.026367119
+
+
 You can also look at histogram of each abundance map:
 
 
@@ -432,6 +526,9 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,2]),bins=50,range=[0,0.5])
 ax4 = fig.add_subplot(2,4,4); plt.title('EM4')
 amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05]) 
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_40_0.png)
 
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_36_0.png)
@@ -456,6 +553,8 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 ```
 
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_44_0.png)
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_40_0.png)
 
@@ -478,6 +577,7 @@ and the
 
 **Hint**: use the SAM function below, and refer to the SID syntax used above. 
 
+
 ```python
 def SAM(data,E,thrs=None):
     sam = cls.SAM()
@@ -496,10 +596,11 @@ def SAM(data,E,thrs=None):
 * To extract every 10th element from the array `A`, use `A[0::10]`
 * Import the package `time` to track the amount of time it takes to run a script. 
 
+
 ```python
-start_time = time.time()
+#start_time = time.time()
 # code
-elapsed_time = time.time() - start_time
+#elapsed_time = time.time() - start_time
 ```
 
 ## What Next?
