@@ -522,4 +522,4 @@ plot_band_array(sercSubset_FCI,clipExt,(0,0.5),title='SERC Subset CIR Image',cba
     Band 19 Center Wavelength = 674.11 nm
     
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/SERC-subset-CIR-image.png)

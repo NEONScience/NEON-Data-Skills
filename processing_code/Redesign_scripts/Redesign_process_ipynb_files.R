@@ -17,7 +17,7 @@ dirname(ipynb.files)
 
 
 #for(p in 1:length(ipynb.files)){
-for(p in 1){ #run just first file in list
+for(p in 4){ #run just 'n'th file in list
   
   print(paste("file #",p,ipynb.files[p]))
   
