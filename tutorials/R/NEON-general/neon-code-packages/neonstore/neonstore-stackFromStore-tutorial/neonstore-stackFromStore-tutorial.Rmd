@@ -1,0 +1,199 @@
+---
+syncID: 
+title: "Using the neonstore Package to Download and Store NEON Data"
+description: "Download data using the neonstore package to maintain a reproducible local archive for your analyses, and stack archived data using the stackFromStore() function in neonUtilities."
+dateCreated: 2020-12-07
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonstore, neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonstore/neonstore-stackFromStore-tutorial/neonstore-stackFromStore-tutorial.R
+tutorialSeries:
+urlTitle: neonstore-stackFromStore-tutorial
+
+---
+
+Data storage and management have important implications for scientific 
+reproducibility. This tutorial covers one possible workflow for managing 
+NEON data downloads reproducibly, using a community-developed R package, 
+**neonstore**.
+
+NEON data are initially published as provisional, i.e. subject to change. 
+Data in the provisional state may be re-processed and re-published on an 
+as-needed basis, usually due to data quality procedures. Beginning in 2021, 
+an annual static Release of NEON data will be published, containing most or 
+all NEON data up to a data-specific provisional lag time. Data in a 
+Release will be associated with a Digital Object Identifier (DOI) and will 
+not change throughout the lifetime of the observatory.
+
+For more information about Data Releases and NEON's data processing 
+pipelines, see the <a href="https://www.neonscience.org/data-samples/data-management" target="_blank">Data Management</a> pages on the NEON website, and the data 
+pipeline videos on the <a href="https://www.youtube.com/user/NEONBetaEDU" target="_blank">NEON Science YouTube page</a>.
+
+Since NEON data may change over time, either between Releases or during the 
+provisional period, it's wise to keep the original data files used in a 
+particular analysis or paper, in addition to any subsequent updated versions 
+of those data files. The neonstore package offers a smooth, straightforward 
+way to do this, and handles the file organization for you.
+
+In this tutorial, we'll download data from three data products, examine the 
+file structure neonstore places them in, and use the neonUtilities package to 
+extract and stack a subset of data from each data product.
+
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Download and manage NEON data using the neonstore package 
+ * Extract and stack data from your neonstore archive 
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (3.4.1 or higher) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonstore**: `install.packages("neonstore")`
+* **neonUtilities:** `install.packages("neonUtilities")`
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+* <a href="https://github.com/cboettig/neonstore" target="_blank">neonstore on GitHub</a>
+
+</div>
+
+
+## Set Up R and Local Storage Location
+
+First install and load the necessary packages.
+
+```{r setup}
+
+# install packages. can skip this step if already installed
+install.packages("neonstore")
+install.packages("neonUtilities")
+
+# load packages
+library(neonstore)
+library(neonUtilities)
+
+```
+
+By default, neonstore will choose a directory to save the downloaded 
+data. You can see where this is by checking the `neon_dir()` 
+setting:
+
+``` {r check-dir}
+
+neon_dir()
+
+```
+
+Optional: Set the environment variable `NEONSTORE_HOME` to override 
+the default directory and specify a file location you want to use 
+to store your NEON data files.
+
+``` {r set-dir}
+
+# set to the file path you want to use
+Sys.setenv(NEONSTORE_HOME = "~/data/neonstore")
+
+```
+
+You can also `NEONSTORE_HOME` as a permanent environment variable, to 
+avoid having to set it each time you use it. For instructions on setting 
+a permanent environment variable, see the final section in the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API Token Tutorial</a>.
+
+## Download Data
+
+Let's imagine we're attempting to predict ecosystem carbon fluxes based 
+on plant community composition and climate. We'll need to download three 
+data products: Bundled eddy covariance (DP4.00200.001), Plant presence 
+and percent cover (DP1.10058.001), and Single-aspirated air temperature 
+(DP1.00002.001).
+
+For simplicity, let's assume we're interested in only 2019 data, and only 3 
+sites, spanning a large latitudinal gradient: Toolik Lake (TOOL), Wind River 
+(WREF), and Guanica (GUAN).
+
+Download the data for each data product and site using the neonstore function 
+`neon_download()`:
+
+```{r download, eval=F, results="hide"}
+
+neon_download(product="DP4.00200.001", 
+              start_date="2019-01-01",
+              end_date="2020-01-01",
+              type="basic",
+              site=c("TOOL","WREF","GUAN"))
+
+neon_download(product="DP1.00002.001", 
+              start_date="2019-01-01",
+              end_date="2020-01-01",
+              type="basic",
+              site=c("TOOL","WREF","GUAN"))
+
+neon_download(product="DP1.10058.001", 
+              start_date="2019-01-01",
+              end_date="2020-01-01",
+              type="expanded",
+              site=c("TOOL","WREF","GUAN"))
+
+```
+
+Let's take a look at the file structure created for these data. 
+Here the folders are expanded to see the Toolik data folders, 
+and the data folder is opened for the eddy covariance data from 
+May 2019.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png" alt="Folder structure of neonstore archive."></a>
+</figure>
+
+There is a folder for each data product, with subfolders for each site, 
+and sub-subfolders for each month, which contain the data files.
+
+We just downloaded the currently available data, which are the most 
+recent. Remember that one of our goals here is to retain traceable files 
+even when data are updated. If you attempt to re-download the same data 
+immediately, neon_download() will detect that the available files match 
+the files you already have, and decline to download again:
+
+```{r download, eval=F}
+
+neon_download(product="DP1.10058.001", 
+              start_date="2019-01-01",
+              end_date="2020-01-01",
+              type="expanded",
+              site=c("TOOL","WREF","GUAN"))
+
+```
+
+What would happen if files had been updated between the two downloads? We 
+can't try that out in real time, because files are updated only 
+occasionally, but here is an example folder containing multiple downloads 
+of updated data:
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/updated-files.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/updated-files.png" alt="Folder containing multiple files with differing publication dates."></a>
+</figure>
+
+You can see there are two copies of each file. The final 16-character 
+string in each file name, before the file extension, is a publication 
+time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of 
+files were published on October 19, 2020, and the second set on November 
+30, 2020. neonstore retains both.
+
+## 
+
+
