@@ -74,7 +74,7 @@ loaded on your computer to complete this tutorial.
 
 First install and load the necessary packages.
 
-```{r setup}
+```{r setup, eval=c(3,4)}
 
 # install packages. can skip this step if already installed
 install.packages("neonstore")
@@ -165,10 +165,10 @@ and sub-subfolders for each month, which contain the data files.
 We just downloaded the currently available data, which are the most 
 recent. Remember that one of our goals here is to retain traceable files 
 even when data are updated. If you attempt to re-download the same data 
-immediately, neon_download() will detect that the available files match 
+immediately, `neon_download()` will detect that the available files match 
 the files you already have, and decline to download again:
 
-```{r download, eval=F}
+```{r download-again, eval=F}
 
 neon_download(product="DP1.10058.001", 
               start_date="2019-01-01",
@@ -194,6 +194,90 @@ time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of
 files were published on October 19, 2020, and the second set on November 
 30, 2020. neonstore retains both.
 
-## 
+## Extract and Stack Data
+
+To work with the downloaded data, you'll generally want to merge the 
+site-month tables, or extract variables from the H5 files, in the case of 
+the eddy covariance data. The `stackFromStore()` function in neonUtilities 
+can help you do this.
+
+To learn about the basic stacking functionality in neonUtilities, consult 
+the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download & Explore Tutorial</a> and the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Eddy Flux Tutorial</a>. 
+The `stackFromStore()` function is a wrapper for the stacking functions 
+described in those tutorials. In this tutorial we'll cover the use 
+of `stackFromStore()`, but won't go into background detail about the 
+stacking functions.
+
+`stackFromStore()` pulls a subset of data from the neonstore archive, based 
+on the input criteria, and stacks the data files. Let's get the Toolik and 
+Wind River temperature, just from March and April 2019:
+
+```{r stack-T, results="hide"}
+
+temp <- stackFromStore(filepaths=neon_dir(),
+                       dpID="DP1.00002.001", 
+                       startdate="2019-03",
+                       enddate="2019-04",
+                       package="basic",
+                       site=c("TOOL","WREF"))
+
+```
+
+Note that the neonstore directory is an input to the function, to tell it 
+where to find the data. You can spell it out explicitly, or get it via 
+neonstore using the `neon_dir()` function.
+
+Important: the basic vs. expanded package specification is repeated here. 
+If you attempt to stack the expanded package from a basic package 
+download, or vice versa, the stacking is likely to go awry. If you need 
+the flexibility to work with either package locally, download both.
+
+## Extract Data by Publication Date
+
+As we've discussed, one of the major advantages of neonstore is its 
+ability to store multiple versions of the same data with different 
+publication dates. The default behavior in `stackFromStore()` is to 
+return the most recently published data, but you can override this 
+with the `pubdate=` input.
+
+The `pubdate=` input will return the most recently published data with 
+a publication date earlier than `pubdate`, i.e., the latest date before 
+the `pubdate`. In general this should match the data you would have gotten 
+if you had downloaded the data from the data portal on the date specified 
+in `pubdate`. However, in NEON data processing the publication workflow 
+generates the files and attaches the timestamps, and only after this is 
+complete for a batch of files, the entire batch refreshes to the data 
+portal and API. So the publication timestamp is generally slightly 
+earlier than the date and time when the data became available.
+
+And of course the availability is limited to files in your local storage; 
+if a given set of files were re-published multiple times in between your 
+downloads, you'll only have the versions you downloaded.
+
+Let's get the Plant presence and percent cover data with a publication 
+date no later than Sept 29, 2020. Start date, end date, and sites are 
+unspecified to include all available.
+
+```{r stack-div, results="hide"}
+
+pppc <- stackFromStore(filepaths=neon_dir(),
+                       dpID="DP1.10058.001", 
+                       pubdate="2020-09-29",
+                       package="expanded")
+
+```
+
+And now check which data were included based on these criteria:
+
+```{r which-div}
+
+unique(pppc$div_1m2Data$siteID)
+min(pppc$div_1m2Data$endDate)
+max(pppc$div_1m2Data$endDate)
+
+```
+
+Only the WREF and TOOL data are included in this set; the GUAN data 
+hadn't been published yet on 29-Sept-2020.
 
 
