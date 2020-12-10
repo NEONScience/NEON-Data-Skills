@@ -459,7 +459,7 @@ From this map we can see that SID did a pretty good job of identifying the water
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png" width="300" height="300"></a>
 	<figcaption> The NEON SJER field site. Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
 </figure>
