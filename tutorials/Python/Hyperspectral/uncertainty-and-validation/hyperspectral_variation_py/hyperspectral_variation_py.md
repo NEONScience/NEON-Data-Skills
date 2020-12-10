@@ -330,7 +330,7 @@ plt.show()
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_18_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/BRDF_uncertainty_at_740600_3982000.png)
 
 
 The result is a plot with all the curves in which we can visualize the difference in the observations simply by chaging the flight direction with repect to the ground target.
