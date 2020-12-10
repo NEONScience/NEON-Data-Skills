@@ -13083,7 +13083,7 @@ title: "Unsupervised Spectral Classification in Python: Endmember Extraction"
 description: "Learn to classify spectral data using Endmember Extraction, Spectral Information Divergence, and Spectral Angle Mapping."
 dateCreated: 2018-07-10 
 authors: Bridget Hass
-contributors:
+contributors: Donal O'Leary
 estimatedTime:
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
@@ -13116,8 +13116,11 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://neondata.sharefile.com/d-s1dc135daffd4e65b" class="btn btn-success">
-Download the spectral classification teaching data subset</a>
+This tutorial uses a 1km AOP Hyperspectral Reflectance 'tile' from the SERC site. <a href="https://ndownloader.figshare.com/files/25752665">
+Download the spectral classification teaching data subset here</a>.
+
+<a href="https://ndownloader.figshare.com/files/25752665" class="link--button link--arrow">
+Download Dataset</a>
 
 </div>
 </div>
@@ -13145,7 +13148,7 @@ Download the spectral classification teaching data subset</a>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="c1">#!{sys.executable} -m pip install &quot;C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz</span>
+<span class="c1">#You will need to download the package using the link above and re-point the filepath to the tar.gz file below</span>
 <span class="o">!{</span>sys.executable<span class="o">}</span> -m pip install <span class="s2">&quot;/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz&quot;</span>
 <span class="o">!</span>conda install --yes --prefix <span class="o">{</span>sys.prefix<span class="o">}</span> scikit-learn
 <span class="o">!</span>conda install --yes --prefix <span class="o">{</span>sys.prefix<span class="o">}</span> cvxopt
@@ -13316,7 +13319,8 @@ warnings.filterwarnings('ignore')</p>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#h5refl_filename = &#39;../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># You will need to download the example dataset using the link above, </span>
+<span class="c1"># then update the filepath below to fit your local file structure</span>
 <span class="n">h5refl_filename</span> <span class="o">=</span> <span class="s1">&#39;/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5&#39;</span>
 <span class="n">data</span><span class="p">,</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">read_neon_reflh5</span><span class="p">(</span><span class="n">h5refl_filename</span><span class="p">)</span>
 </pre></div>
@@ -13532,14 +13536,6 @@ Cleaned Data Dimensions: (1000, 1000, 360)
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_19_0.png" alt=" "></p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13830,8 +13826,8 @@ EM4: 0.026367119
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_40_0.png" alt=" "></p>
 <p>From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the <a href="https://viewer.nationalmap.gov/" target="_blank">USA Topo Base map</a>.</p>
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/site-images/SERC_368000_4307000_UStopo.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/site-images/SERC_368000_4307000_UStopo.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png"></a>
     <figcaption> The NEON SJER field site. Source: National Ecological Observatory Network (NEON) 
     </figcaption>
 </figure><h2 id="Challenges">Challenges<a class="anchor-link" href="#Challenges">&#182;</a></h2><ol>
