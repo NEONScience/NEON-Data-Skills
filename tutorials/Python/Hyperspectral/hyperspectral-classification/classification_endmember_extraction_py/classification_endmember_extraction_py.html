@@ -13148,7 +13148,8 @@ Download Dataset</a>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="c1">#You will need to download the package using the link above and re-point the filepath to the tar.gz file below</span>
+<span class="c1"># You will need to download the package using the link above </span>
+<span class="c1"># and re-point the filepath to the tar.gz file below</span>
 <span class="o">!{</span>sys.executable<span class="o">}</span> -m pip install <span class="s2">&quot;/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz&quot;</span>
 <span class="o">!</span>conda install --yes --prefix <span class="o">{</span>sys.prefix<span class="o">}</span> scikit-learn
 <span class="o">!</span>conda install --yes --prefix <span class="o">{</span>sys.prefix<span class="o">}</span> cvxopt
@@ -13169,32 +13170,6 @@ Download Dataset</a>
 <li><strong><code>plot_aop_refl</code></strong>: function to plot a band of NEON hyperspectral data for reference</li>
 </ul>
 <p>Once PySpTools is installed, import the following packages.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>import h5py, os, copy
-import matplotlib.pyplot as plt
-import numpy as np
-import pysptools.util as util
-import pysptools.eea as eea #endmembers extraction algorithms
-import pysptools.abundance_maps as amap
-import pysptools.classification as cls
-import pysptools.material_count as cnt</p>
-<p>%matplotlib inline</p>
-<h1 id="for-clean-output,-to-not-print-warnings,-don't-use-when-developing-script">for clean output, to not print warnings, don't use when developing script<a class="anchor-link" href="#for-clean-output,-to-not-print-warnings,-don't-use-when-developing-script">&#182;</a></h1><p>import warnings
-warnings.filterwarnings('ignore')</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Define the function <code>read_neon_reflh5</code> to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows.</p>
 
 </div>
 </div>
@@ -13224,6 +13199,14 @@ warnings.filterwarnings('ignore')</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Define the function <code>read_neon_reflh5</code> to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">

@@ -64,7 +64,8 @@
 
 
 import sys
-#You will need to download the package using the link above and re-point the filepath to the tar.gz file below
+# You will need to download the package using the link above 
+# and re-point the filepath to the tar.gz file below
 get_ipython().system('{sys.executable} -m pip install "/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz"')
 get_ipython().system('conda install --yes --prefix {sys.prefix} scikit-learn')
 get_ipython().system('conda install --yes --prefix {sys.prefix} cvxopt')
@@ -77,23 +78,6 @@ get_ipython().system('conda install --yes --prefix {sys.prefix} cvxopt')
 # * **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
 # 
 # Once PySpTools is installed, import the following packages. 
-
-# import h5py, os, copy
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import pysptools.util as util
-# import pysptools.eea as eea #endmembers extraction algorithms
-# import pysptools.abundance_maps as amap
-# import pysptools.classification as cls
-# import pysptools.material_count as cnt
-# 
-# %matplotlib inline
-# 
-# #for clean output, to not print warnings, don't use when developing script
-# import warnings
-# warnings.filterwarnings('ignore')
-
-# Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 # In[ ]:
 
@@ -113,6 +97,8 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 import warnings
 warnings.filterwarnings('ignore')
 
+
+# Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 # In[ ]:
 
