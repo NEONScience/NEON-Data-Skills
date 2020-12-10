@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# ---
 # syncID: 84457ead9b964c8d916eacde9f271ec7
 # title: "Assessing Spectrometer Accuracy using Validation Tarps with Python"
 # description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
@@ -15,6 +16,7 @@
 # code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py.ipynb
 # tutorialSeries: rs-uncertainty-py-series
 # urlTitle: hyperspectral-validation-py
+# ---
 
 # 
 # 
