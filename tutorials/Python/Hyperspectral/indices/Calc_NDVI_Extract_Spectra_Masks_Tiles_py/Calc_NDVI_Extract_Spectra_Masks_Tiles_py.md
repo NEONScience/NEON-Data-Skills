@@ -16,7 +16,7 @@ urlTitle: calc-ndvi-tiles-py
 ---
 
 In this tutorial, we will calculate the Normalized Difference Vegetation Index 
-(NDVI). 
+(NDVI).
 
 This tutorial uses the mosaiced or tiled NEON data product. For a tutorial 
 using the flightline data, please see <a href="/calc-ndvi-py" target="_blank"> Calculate NDVI & Extract Spectra Using Masks in Python - Flightline Data</a>.
