@@ -325,13 +325,15 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left',bbox_to_anchor=(1,0.5))
 plt.title('BRDF Reflectance Curves at ' + str(x_coord) +' '+ str(y_coord))
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Refelctance (%)')
-#fig.savefig('BRDF_uncertainty_at_' + str(x_coord) +'_'+ str(y_coord)+'.png',dpi=500,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+fig.savefig('BRDF_uncertainty_at_' + str(x_coord) +'_'+ str(y_coord)+'.png',dpi=500,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 plt.show()
 ```
 
 
 ![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/BRDF_uncertainty_at_740600_3982000.png)
 
+
+It is possible that the figure above does not display properly, which is why we use the `fig.save()` method above to store the resulting figure as its own PNG file in the same directory as this Jupyter Notebook file.
 
 The result is a plot with all the curves in which we can visualize the difference in the observations simply by chaging the flight direction with repect to the ground target.
 
