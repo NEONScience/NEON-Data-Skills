@@ -1,4 +1,3 @@
----
 syncID: 84457ead9b964c8d916eacde9f271ec7
 title: "Assessing Spectrometer Accuracy using Validation Tarps with Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
@@ -10,10 +9,10 @@ packagesLibraries: numpy, gdal, matplotlib
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: python
 dataProduct: 
-code1: Python/remote-sensing/uncertainty/hyperspectral-validation.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py.ipynb
 tutorialSeries: rs-uncertainty-py-series
 urlTitle: hyperspectral-validation-py
----
+
 
 
 In this tutorial we will learn how to retrieve relfectance curves from a 
@@ -45,17 +44,20 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
-
 To complete this tutorial, you will use data available from the NEON 2017 Data
-Institute teaching dataset available for download. 
+Institute.
 
-Caution: This dataset includes all the data for the 2017 Data Institute, 
-including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
-Ensure that you have sufficient space on your 
-hard drive before you begin the download. If not, download to an external 
-hard drive and make sure to correct for the change in file path when working 
-through the tutorial.
+This tutorial uses the following files:
+
+<ul>
+<li>CHEQ_Tarp_03_02_refl_bavg.txt (9 KB)</li>
+<li>CHEQ_Tarp_48_01_refl_bavg.txt (9 KB)</li>
+<li>NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5 (2.7 GB)</li>
+</ul>
+
+Which may be downloaded <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" target="_blank">from our ShareFile directory here<a/>.
+<a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" class="link--button link--arrow">
+Download Dataset</a>
 
 The LiDAR and imagery data used to create this raster teaching data subset 
 were collected over the 
@@ -65,11 +67,7 @@ and processed at NEON headquarters.
 The entire dataset can be accessed on the 
 <a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
 
-<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
-Download Dataset</a>
-
-
-
+These data are a part of the NEON 2017 Remote Sensing Data Institute. The complete archive may be found here -<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
 
 
 ### Recommended prerequisites
@@ -136,6 +134,7 @@ We'll start by adding all of the necessary libraries to our python script.
 
 
 
+
 ```python
 import h5py
 import csv
@@ -151,8 +150,7 @@ warnings.filterwarnings('ignore')
 %matplotlib inline
 ```
 
-As well as our function to read the hdf5 reflectance files and associated 
-metadata.
+As well as our function to read the hdf5 reflectance files and associated metadata
 
 
 ```python
@@ -201,28 +199,23 @@ def h5refl2array(h5_filename):
     return reflArray, metadata, wavelengths
 ```
 
-Define the location where you are holding the data for the data institute. The 
-h5_filename will be the flightline which contains the tarps, and the 
-tarp_48_filename and tarp_03_filename contain the field validated spectra 
-for the white and black tarp respectively, organized by wavelength and reflectance.
+Define the location where you are holding the data for the data institute. The h5_filename will be the flightline which contains the tarps, and the tarp_48_filename and tarp_03_filename contain the field validated spectra for the white and black tarp respectively, organized by wavelength and reflectance.
 
 
 ```python
 print('Start CHEQ tarp uncertainty script')
 
-h5_filename = 'C:/RSDI_2017/data/CHEQ/H5/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5'
-tarp_48_filename = 'C:/RSDI_2017/data/CHEQ/H5/CHEQ_Tarp_48_01_refl_bavg.txt'
-tarp_03_filename = 'C:/RSDI_2017/data/CHEQ/H5/CHEQ_Tarp_03_02_refl_bavg.txt'
-
+## You will need to change these filepaths according to your own machine
+## As you can see here, I saved the files downloaded above into my ~/Git/data/ directory
+h5_filename = '/Users/olearyd/Git/data/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5'
+tarp_48_filename = '/Users/olearyd/Git/data/CHEQ_Tarp_48_01_refl_bavg.txt'
+tarp_03_filename = '/Users/olearyd/Git/data/CHEQ_Tarp_03_02_refl_bavg.txt'
 ```
 
     Start CHEQ tarp uncertainty script
-    
 
-We want to pull the spectra from the airborne data from the center of the 
-tarp to minimize any errors introduced by infiltrating light in adjecent 
-pixels, or through errors in ortho-rectification (source 2). We have pre-determined 
-the coordinates for the center of each tarp which are as follows:
+
+We want to pull the spectra from the airborne data from the center of the tarp to minimize any errors introduced by infiltrating light in adjecent pixels, or through errors in ortho-rectification (source 2). We have pre-determined the coordinates for the center of each tarp which are as follows:
 
 48% reflectance tarp UTMx: 727487, UTMy: 5078970
 
@@ -237,8 +230,7 @@ the coordinates for the center of each tarp which are as follows:
 	</figcaption>
 </figure>
 
-
-Let's define these coordinates.
+Let's define these coordaintes
 
 
 ```python
@@ -246,21 +238,14 @@ tarp_48_center = np.array([727487,5078970])
 tarp_03_center = np.array([727497,5078970])
 ```
 
-Now we'll use our function designed for NEON AOP's HDF5 files to access the 
-hyperspectral data.
+Now we'll use our function designed for NEON AOP's HDF5 files to access the hyperspectral data
 
 
 ```python
 [reflArray,metadata,wavelengths] = h5refl2array(h5_filename)
 ```
 
-Within the reflectance curves there are areas with noisey data due to 
-atmospheric windows in the water absorption bands. For this exercise we do not 
-want to plot these areas as they obscure detailes in the plots due to their 
-anamolous values. The meta data assocaited with these band locations is 
-contained in the metadata gatherd by our function. We will pull out these areas 
-as 'bad band windows' and determine which indexes in the reflectance curves 
-contain the bad bands.
+Within the reflectance curves there are areas with noisey data due to atmospheric windows in the water absorption bands. For this exercise we do not want to plot these areas as they obscure detailes in the plots due to their anamolous values. The meta data assocaited with these band locations is contained in the metadata gatherd by our function. We will pull out these areas as 'bad band windows' and determine which indexes in the reflectance curves contain the bad bands
 
 
 ```python
@@ -279,9 +264,7 @@ Now join the list of indexes together into a single variable
 index_bad_windows = index_bad_window1+index_bad_window2
 ```
 
-The reflectance data is saved in files which are *tab delimited.* We will use a 
-numpy function `genfromtxt` to quickly import the tarp reflectance curves observed 
-with the ASD using the `\t` delimeter to indicate tabs are used.
+The reflectance data is saved in files which are 'tab delimited.' We will use a numpy function (genfromtxt) to quickly import the tarp reflectance curves observed with the ASD using the '\t' delimeter to indicate tabs are used.
 
 
 ```python
@@ -289,8 +272,7 @@ tarp_48_data = np.genfromtxt(tarp_48_filename, delimiter = '\t')
 tarp_03_data = np.genfromtxt(tarp_03_filename, delimiter = '\t')
 ```
 
-Now we'll set all the data inside of those windows to NaNs (not a number) so 
-they will not be included in the plots.
+Now we'll set all the data inside of those windows to NaNs (not a number) so they will not be included in the plots
 
 
 ```python
@@ -298,12 +280,7 @@ tarp_48_data[index_bad_windows] = np.nan
 tarp_03_data[index_bad_windows] = np.nan
 ```
 
-The next step is to determine which pixel in the reflectance data belongs to the 
-center of each tarp. To do this, we will subtract the tarp center pixel 
-location from the upper left corner pixels specified in the map info of the H5 
-file. This information is saved in the metadata dictionary output from our 
-function that reads NEON AOP HDF5 files. The difference between these coordinates 
-gives us the x and y index of the reflectance curve. 
+The next step is to determine which pixel in the reflectance data belongs to the center of each tarp. To do this, we will subtract the tarp center pixel location from the upper left corner pixels specified in the map info of the H5 file. This information is saved in the metadata dictionary output from our function that reads NEON AOP HDF5 files. The difference between these coordaintes gives us the x and y index of the reflectance curve. 
 
 
 ```python
@@ -314,10 +291,7 @@ x_tarp_03_index = int((tarp_03_center[0] - metadata['ext_dict']['xMin'])/float(m
 y_tarp_03_index = int((metadata['ext_dict']['yMax'] - tarp_03_center[1])/float(metadata['res']['pixelHeight']))
 ```
 
-Next, we will plot both the curve from the airborne data taken at the center of 
-the tarps as well as the curves obtained from the ASD data to provide a 
-visualisation of their consistency for both tarps. Once generated, we will also 
-save the figure to a pre-determined location.
+Next, we will plot both the curve from the airborne data taken at the center of the tarps as well as the curves obtained from the ASD data to provide a visualisation of their consistency for both tarps. Once generated, we will also save the figure to a pre-determined location.
 
 
 ```python
@@ -329,7 +303,7 @@ plt.plot(wavelengths,tarp_48_data[:,1], label = 'ASD Reflectance')
 plt.title('CHEQ 20160912 48% tarp')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Refelctance (%)')
 plt.legend()
-plt.savefig('CHEQ_20160912_48_tarp.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_48_tarp.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 plt.figure(2)
 tarp_03_reflectance = np.asarray(reflArray[y_tarp_03_index,x_tarp_03_index,:], dtype=np.float32)/ metadata['scaleFactor']
@@ -339,29 +313,31 @@ plt.plot(wavelengths,tarp_03_data[:,1],label = 'ASD Reflectance')
 plt.title('CHEQ 20160912 3% tarp')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Refelctance (%)')
 plt.legend()
-plt.savefig('CHEQ_20160912_3_tarp.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_3_tarp.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-validation/output_21_0.png)
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-validation/output_21_1.png)
+    <matplotlib.legend.Legend at 0x7fb36d43c850>
 
 
-This produces plots showing the results of the ASD and airborne measurements 
-over the 48% tarp. Visually, the comparison between the two appears to be fairly 
-good. However, over the 3% tarp we appear to be over-estimating the reflectance. 
-Large absolute differences could be associated with ATCOR input parameters 
-(source 4). For example, the user must input the local visibility, which is 
-related to aerosal optical thickness (AOT). We don't measure this at every site, 
-therefore input a standard parameter for all sites. 
 
-Given the 3% reflectance tarp has much lower overall reflactance, it may be more 
-informative to determine what the absolute difference between the two curves are 
-and plot that as well.
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_1.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_2.png)
+
+
+
+
+This produces plots showing the results of the ASD and airborne measurements over the 48% tarp. Visually, the comparison between the two appears to be fairly good. However, over the 3% tarp we appear to be over-estimating the reflectance. Large absolute differences could be associated with ATCOR input parameters (source 4). For example, the user must input the local visibility, which is related to aerosal optical thickness (AOT). We don't measure this at every site, therefore input a standard parameter for all sites. 
+
+Given the 3% reflectance tarp has much lower overall reflactance, it may be more informative to determine what the absolute difference between the two curves are and plot that as well.
 
 
 ```python
@@ -369,31 +345,36 @@ plt.figure(3)
 plt.plot(wavelengths,tarp_48_reflectance-tarp_48_data[:,1])
 plt.title('CHEQ 20160912 48% tarp absolute difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Refelctance Difference (%)')
-plt.savefig('CHEQ_20160912_48_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_48_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 plt.figure(4)
 plt.plot(wavelengths,tarp_03_reflectance-tarp_03_data[:,1])
 plt.title('CHEQ 20160912 3% tarp absolute difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Refelctance Difference (%)')
-plt.savefig('CHEQ_20160912_3_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_3_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-validation/output_23_0.png)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
+
+    Text(0, 0.5, 'Absolute Refelctance Difference (%)')
 
 
-From this we are able to see that the 48% tarp actually has larger absolute 
-differences than the 3% tarp. The 48% tarp performs poorly at the shortest and 
-longest waveleghts as well as near the edges of the 'bad band windows.' This is 
-related to difficulty in calibrating the sensor in these sensitive areas 
-(source 1).
 
-Let's now determine the result of the percent difference, which is the metric 
-used by ATCOR to report accuracy. We can do this by calculating the ratio of 
-the absolute difference between curves to the total reflectance. 
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_1.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_2.png)
+
+
+
+
+From this we are able to see that the 48% tarp actually has larger absolute differences than the 3% tarp. The 48% tarp performs poorly at the shortest and longest waveleghts as well as near the edges of the 'bad band windows.' This is related to difficulty in calibrating the sensor in these sensitive areas (source 1).
+
+Let's now determine the result of the percent difference, which is the metric used by ATCOR to report accuracy. We can do this by calculating the ratio of the absolute difference between curves to the total reflectance 
 
 
 
@@ -405,28 +386,34 @@ plt.plot(wavelengths,100*np.divide(tarp_48_reflectance-tarp_48_data[:,1],tarp_48
 plt.title('CHEQ 20160912 48% tarp percent difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Percent Refelctance Difference')
 plt.ylim((-100,100))
-plt.savefig('CHEQ_20160912_48_tarp_relative_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_48_tarp_relative_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 plt.figure(6)
 plt.plot(wavelengths,100*np.divide(tarp_03_reflectance-tarp_03_data[:,1],tarp_03_data[:,1]))
 plt.title('CHEQ 20160912 3% tarp percent difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Percent Refelctance Difference')
 plt.ylim((-100,150))
-plt.savefig('CHEQ_20160912_3_tarp_relative_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
+#plt.savefig('CHEQ_20160912_3_tarp_relative_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-validation/output_25_0.png)
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-validation/output_25_1.png)
+    (-100, 150)
 
 
 
-From these plots we can see that even though the absolute error on the 48% tarp 
-was larger, the relative error on the 48% tarp is generally much smaller. The 3% tarp 
-can have errors exceeding 50% for most of the tarp. This indicates that targets 
-with low reflectance values may have higher relative errors.
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_1.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_2.png)
+
+
+
+
+From these plots we can see that even though the absolute error on the 48% tarp was larger, the relative error on the 48% tarp is generally much smaller. The 3% tarp can have errors exceeding 50% for most of the tarp. This indicates that targets with low reflectance values may have higher relative errors.
 
 
