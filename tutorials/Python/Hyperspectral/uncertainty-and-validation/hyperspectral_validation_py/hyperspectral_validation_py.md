@@ -58,6 +58,7 @@ This tutorial uses the following files:
 </ul>
 
 Which may be downloaded <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" target="_blank">from our ShareFile directory here<a/>.
+
 <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" class="link--button link--arrow">
 Download Dataset</a>
 
@@ -323,7 +324,7 @@ plt.legend()
 
 
 
-    <matplotlib.legend.Legend at 0x7fbb583fd550>
+    <matplotlib.legend.Legend at 0x7fcbdbad8410>
 
 
 
