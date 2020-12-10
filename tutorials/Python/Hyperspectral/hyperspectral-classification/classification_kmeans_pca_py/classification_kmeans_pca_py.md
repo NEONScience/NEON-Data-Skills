@@ -4,7 +4,7 @@ title: "Unsupervised Spectral Classification in Python: KMeans & PCA"
 description: "Learn to classify spectral data using KMeans and Principal Components Analysis (PCA)."
 dateCreated: 2018-07-10 
 authors: Bridget Hass
-contributors:
+contributors: Donal O'Leary
 estimatedTime:
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
@@ -34,8 +34,11 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://neondata.sharefile.com/share/view/s89752829ccb4ce1a/fo396a43-51ec-4b14-a1fb-b5e70f0b7e1b" class="button-arrow" target="_blank">
-Download the spectral classification teaching data subset</a>
+This tutorial uses a 1km AOP Hyperspectral Reflectance 'tile' from the SERC site. <a href="https://ndownloader.figshare.com/files/25752968">
+Download the spectral classification teaching data subset here</a>.
+
+<a href="https://ndownloader.figshare.com/files/25752968" class="link--button link--arrow">
+Download Dataset</a>
 
 </div>
 
@@ -131,6 +134,9 @@ For this example, we will read in a reflectance tile in ENVI format. NEON provid
 
 
 ```python
+# You will need to download the example dataset above,
+# extract the files therein,
+# and update the filepaths below per your local machine
 img = envi.open('/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.hdr',
                 '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.dat')
 ```
