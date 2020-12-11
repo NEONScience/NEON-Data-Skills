@@ -4,7 +4,7 @@ title: "Calculate NDVI & Extract Spectra Using Masks in Python - Tiled Data"
 description: "Learn to calculate Normalized Difference Vegetation Index (NDVI) and extract spectral using masks with Python and NEON tiled hyperspectral data products." 
 dateCreated: 2018-07-05 
 authors: Bridget Hass
-contributors: 
+contributors: Donal O'Leary
 estimatedTime: 
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, 
@@ -16,7 +16,7 @@ urlTitle: calc-ndvi-tiles-py
 ---
 
 In this tutorial, we will calculate the Normalized Difference Vegetation Index 
-(NDVI).
+(NDVI). 
 
 This tutorial uses the mosaiced or tiled NEON data product. For a tutorial 
 using the flightline data, please see <a href="/calc-ndvi-py" target="_blank"> Calculate NDVI & Extract Spectra Using Masks in Python - Flightline Data</a>.
@@ -40,9 +40,26 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-{% include/dataSubsets/_data_DI18.html %}
+To complete this tutorial, you will use data available from the NEON 2017 Data
+Institute.
 
-[[nid:7489]]
+This tutorial uses the following files:
+
+<ul>
+    <li> <a href="https://www.neonscience.org/sites/default/files/neon_aop_spectral_python_functions_tiled_data.zip">neon_aop_spectral_python_functions_tiled_data.zip (10 KB)</a> <- Click to Download</li>
+    <li><a href="https://ndownloader.figshare.com/files/25752665" target="_blank">NEON_D02_SERC_DP3_368000_4306000_reflectance.h5 (618 MB)</a> <- Click to Download</li>
+</ul>
+
+<a href="https://ndownloader.figshare.com/files/25752665" class="link--button link--arrow">
+Download Dataset</a>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a>
+and processed at NEON headquarters.
+The entire dataset can be accessed on the 
+<a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
 
 </div>
 
@@ -245,6 +262,7 @@ def plot_aop_rgb(rgbArray,ext,ls_pct=5,plot_title=''):
 
 
 ```python
+# Note you will need to update this filepath for your local machine
 sercRefl, sercRefl_md = aop_h5refl2array('/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5')
 ```
 
