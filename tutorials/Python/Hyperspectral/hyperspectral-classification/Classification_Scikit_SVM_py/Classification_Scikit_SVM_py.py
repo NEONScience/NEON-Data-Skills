@@ -59,6 +59,7 @@
 # <a href="https://ndownloader.figshare.com/files/8731963">
 # Download Dr. Paul Gader's Classification 3 PPT</a>
 # 
+# </div>
 
 # In[1]:
 
@@ -431,9 +432,3 @@ plt.show()
 # 
 # You could try different Magic Numbers using Cross Validation, etc.  Stay tuned
 # for a tutorial on this topic. 
-
-# In[ ]:
-
-
-
-

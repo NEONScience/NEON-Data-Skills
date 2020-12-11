@@ -56,6 +56,7 @@ Download Dr. Paul Gader's Classification 2 PPT</a>
 <a href="https://ndownloader.figshare.com/files/8731963">
 Download Dr. Paul Gader's Classification 3 PPT</a>
 
+</div>
 
 
 ```python
@@ -476,8 +477,3 @@ Error analysis can be used to identify characteristics of errors.
 
 You could try different Magic Numbers using Cross Validation, etc.  Stay tuned
 for a tutorial on this topic. 
-
-
-```python
-
-```
