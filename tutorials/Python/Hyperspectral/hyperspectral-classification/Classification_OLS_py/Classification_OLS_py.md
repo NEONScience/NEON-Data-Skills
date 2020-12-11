@@ -10,7 +10,7 @@ packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Classification_OLS_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: classification-ols-python
 ---
