@@ -4,7 +4,7 @@ title: "Classification of Hyperspectral Data with Support Vector Machine (SVM) U
 description: "Learn to classify spectral data using the Support Vector Machine (SVM) method." 
 dateCreated: 2017-06-19 
 authors: Paul Gader
-contributors: 
+contributors: Donal O'Leary
 estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
@@ -36,26 +36,26 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://ndownloader.figshare.com/files/8730436" class="btn btn-success">
+ <a href="https://ndownloader.figshare.com/files/8730436">
 Download the spectral classification teaching data subset</a>
+
+<a href="https://ndownloader.figshare.com/files/8730436" class="link--button link--arrow">
+Download Dataset</a>
 
 ### Additional Materials
 
 This tutorial was prepared in conjunction with a presentation on spectral classification
 that can be downloaded. 
 
-<a href="https://ndownloader.figshare.com/files/8730613" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8730613">
 Download Dr. Paul Gader's Classification 1 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731960" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731960">
 Download Dr. Paul Gader's Classification 2 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731963" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731963">
 Download Dr. Paul Gader's Classification 3 PPT</a>
 
-
-
-</div>
 
 
 ```python
@@ -71,10 +71,12 @@ from scipy import io
 from sklearn import linear_model as lmd
 ```
 
+Note that you will need to update these filepaths according to your local machine.
+
 
 ```python
-InFile1          = 'LinSepC1.mat'
-InFile2          = 'LinSepC2.mat'
+InFile1          = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/LinSepC1.mat'
+InFile2          = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/LinSepC2.mat'
 C1Dict           = io.loadmat(InFile1)
 C2Dict           = io.loadmat(InFile2)
 C1               = C1Dict['LinSepC1']
@@ -125,6 +127,21 @@ LinMod = lmd.LinearRegression.fit
 
 
 ```python
+LinMod = lmd.LinearRegression.fit
+```
+
+
+```python
+LinMod = lmd.LinearRegression.fit
+```
+
+
+```python
+LinMod = lmd.LinearRegression.fit
+```
+
+
+```python
 M = lmd.LinearRegression()
 ```
 
@@ -133,7 +150,7 @@ M = lmd.LinearRegression()
 print(M)
 ```
 
-    LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+    LinearRegression()
 
 
 
@@ -151,7 +168,7 @@ R = lmd.LinearRegression.score(LinMod, AllSamps, TargetOutputs, sample_weight=No
 print(R)
 ```
 
-    0.911269176982
+    0.9112691769822485
 
 
 
@@ -162,7 +179,7 @@ LinMod
 
 
 
-    LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+    LinearRegression()
 
 
 
@@ -175,7 +192,7 @@ w
 
 
 
-    array([[ 0.81592447,  0.94178188]])
+    array([[0.81592447, 0.94178188]])
 
 
 
@@ -221,10 +238,7 @@ InitSVM
 
 
 
-    SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-      decision_function_shape=None, degree=3, gamma='auto', kernel='rbf',
-      max_iter=-1, probability=False, random_state=None, shrinking=True,
-      tol=0.001, verbose=False)
+    SVC()
 
 
 
@@ -245,7 +259,9 @@ plt.plot(y)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_25_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_30_0.png)
+
 
 
 ```python
@@ -259,7 +275,8 @@ plt.plot(d)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_27_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_32_0.png)
 
 
 ## Include Outliers
@@ -270,14 +287,15 @@ We can also try it with outliers.
 Let's start by looking at some spectra.
 
 
+
 ```python
 ### Look at some Pine and Oak spectra from
 ### NEON Site D03 Ordway-Swisher Biological Station
 ### at UF
 ### Pinus palustris
 ### Quercus virginiana
-InFile1 = 'Pines.mat'
-InFile2 = 'Oaks.mat'
+InFile1 = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/Pines.mat'
+InFile2 = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/Oaks.mat'
 C1Dict  = io.loadmat(InFile1)
 C2Dict  = io.loadmat(InFile2)
 Pines   = C1Dict['Pines']
@@ -286,7 +304,7 @@ Oaks    = C2Dict['Oaks']
 
 
 ```python
-WvFile  = 'NEONWvsNBB.mat'
+WvFile  = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/NEONWvsNBB.mat'
 WvDict  = io.loadmat(WvFile)
 Wv      = WvDict['NEONWvsNBB']
 ```
@@ -346,7 +364,8 @@ plt.plot(Targets)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_37_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_41_0.png)
 
 
 
@@ -381,7 +400,9 @@ plt.xlim((Wv[1], Wv[NBands-1]))
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_40_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_44_0.png)
+
 
 
 ```python
@@ -392,7 +413,17 @@ InitSVM= SVC()
 ```python
 TrainedSVM=InitSVM.fit(TrainSet, Targets)
 ```
+
+
+```python
 d = TrainedSVM.decision_function(TrainSet)
+print(d)
+```
+
+    [-0.26050536 -0.45009774 -0.4508219  ...  1.70930028  1.79781222
+      1.66711708]
+
+
 
 ```python
 plt.figure(4)
@@ -400,8 +431,8 @@ plt.plot(d)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_44_0.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_48_0.png)
 
 
 Does this seem to be too good to be true?
@@ -433,8 +464,8 @@ plt.plot(dtest)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_SVM/output_49_0.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_Scikit_SVM_py/Classification_Scikit_SVM_py_files/Classification_Scikit_SVM_py_53_0.png)
 
 
 Yeah, too good to be true...What can we do?
@@ -447,3 +478,6 @@ You could try different Magic Numbers using Cross Validation, etc.  Stay tuned
 for a tutorial on this topic. 
 
 
+```python
+
+```
