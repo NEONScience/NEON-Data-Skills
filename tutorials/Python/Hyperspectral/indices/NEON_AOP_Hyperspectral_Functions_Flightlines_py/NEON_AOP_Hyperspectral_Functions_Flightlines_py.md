@@ -46,17 +46,18 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
-
 To complete this tutorial, you will use data available from the NEON 2017 Data
-Institute teaching dataset available for download. 
+Institute.
 
-Caution: This dataset includes all the data for the 2017 Data Institute, 
-including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
-Ensure that you have sufficient space on your 
-hard drive before you begin the download. If not, download to an external 
-hard drive and make sure to correct for the change in file path when working 
-through the tutorial.
+This tutorial uses the following files:
+
+<ul>
+    <li> <a href="https://www.neonscience.org/sites/default/files/neon_aop_refl_hdf5_functions.py_.zip">neon_aop_refl_hdf5_functions.py_.zip (5 KB)</a> <- Click to Download</li>
+    <li><a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo2c5fc2-6f9e-4c25-97c2-ca8125c3a53a" target="_blank">NEON_D02_SERC_DP1_20160807_160559_reflectance.h5 (3.55 GB)</a> <- Click to Download</li>
+</ul>
+
+<a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo2c5fc2-6f9e-4c25-97c2-ca8125c3a53a" class="link--button link--arrow">
+Download Dataset</a>
 
 The LiDAR and imagery data used to create this raster teaching data subset 
 were collected over the 
@@ -66,16 +67,7 @@ and processed at NEON headquarters.
 The entire dataset can be accessed on the 
 <a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
 
-<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
-Download Dataset</a>
-
-
-
-
-
-[[nid:6792]]
-
-[[nid:6791]]
+These data are a part of the NEON 2017 Remote Sensing Data Institute. The complete archive may be found here -<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
 
 
 </div>
