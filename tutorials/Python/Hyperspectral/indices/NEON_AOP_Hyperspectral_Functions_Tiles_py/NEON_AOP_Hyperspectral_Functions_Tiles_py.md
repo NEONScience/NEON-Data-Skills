@@ -254,7 +254,8 @@ Now that we have an idea of how this function works, let's try it out. First, de
 
 
 ```python
-serc_h5_tile = ('../data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5') 
+# Note that you will need to update this filepath according to your local machine
+serc_h5_tile = ('/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5') 
 ```
 
 Now that we've specified our reflectance tile, we can call `aop_h5refl2array` to read in the reflectance tile as a python array called `sercRefl` , and the associated metadata into a dictionary `sercMetadata`
