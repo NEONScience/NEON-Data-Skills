@@ -1,31 +1,29 @@
 ---
 syncID: 8491e02fec01499281d05f3b92409e27
 title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines" 
-description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
+description: "Learn how to read NEON AOP hyperspectral HDF5 flightline dataset using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2017-04-10 
 authors: Bridget Hass
-contributors: Donal O'Leary
+contributors: 
 estimatedTime: 
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP1.30008
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py.ipynb
+code1: Python/remote-sensing/hyperspectral-data/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: neon-aop-hdf5-py
 ---
 
-In this introductory tutorial, we discuss how to read NEON AOP hyperspectral flightline
-data using Python. We develop and practice skills and use several tools to manipulate and 
+In this introductory tutorial, we discuss how to read NEON AOP hyperspectral HDF5 
+datasets using Python. We develop and practice skills and use several tools to manipulate and 
 visualize the spectral data. By the end of this tutorial, you will become 
-familiar with the Python syntax.
+familiar with the Python syntax (and Jupyter Notebook platform, if using).
 
-If you are interested in learning how to do this for mosaic/tiled NEON AOP hyperspectral data, 
-please see <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-aop-hdf5-tile-py" target="_blank"> NEON AOP Hyperspectral Data in HDF5 format with Python - Tiles</a>.
 
+<div id="ds-objectives" markdown="1">
 
 ### Learning Objectives
-
 After completing this tutorial, you will be able to:
 
 *  Import and use Python packages `numpy, pandas, matplotlib, h5py, and gdal`.
@@ -53,18 +51,17 @@ of an image (if you complete the optional extension) .
 
 ### Download Data
 
+<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
+
 To complete this tutorial, you will use data available from the NEON 2017 Data
-Institute.
+Institute teaching dataset available for download. 
 
-This tutorial uses the following files:
-
-<ul>
-    <li> <a href="https://www.neonscience.org/sites/default/files/neon_aop_refl_hdf5_functions.py_.zip">neon_aop_refl_hdf5_functions.py_.zip (5 KB)</a> <- Click to Download</li>
-    <li><a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo2c5fc2-6f9e-4c25-97c2-ca8125c3a53a" target="_blank">NEON_D02_SERC_DP1_20160807_160559_reflectance.h5 (3.55 GB)</a> <- Click to Download</li>
-</ul>
-
-<a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo2c5fc2-6f9e-4c25-97c2-ca8125c3a53a" class="link--button link--arrow">
-Download Dataset</a>
+Caution: This dataset includes all the data for the 2017 Data Institute, 
+including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
+Ensure that you have sufficient space on your 
+hard drive before you begin the download. If not, download to an external 
+hard drive and make sure to correct for the change in file path when working 
+through the tutorial.
 
 The LiDAR and imagery data used to create this raster teaching data subset 
 were collected over the 
@@ -74,8 +71,14 @@ and processed at NEON headquarters.
 The entire dataset can be accessed on the 
 <a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
 
-These data are a part of the NEON 2017 Remote Sensing Data Institute. The complete archive may be found here -<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
+<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
+Download Dataset</a>
 
+
+
+
+
+</div>
 
 Hyperspectral remote sensing data is a useful tool for measuring changes to our 
 environment at the Earth’s surface. In this tutorial we explore how to extract 
@@ -87,7 +90,7 @@ For more information on spectral remote sensing watch this video.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
-## Set up
+## Set up 
 
 Before we start coding, make sure you are using the correct version of Python. 
 The `gdal` package is currently compatible with Python versions 3.4 and earlier (May 2017). 
@@ -95,19 +98,17 @@ For this tutorial, we will use Python version 3.4.
 
 
 ```python
-#Check that you are using the correct version of Python (should be 3.4+, otherwise gdal won't work)
+# Check that you are using the correct version of Python 
+# As of May 2017, should be 3.4, otherwise gdal won't work)
 import sys
 sys.version
 ```
 
+    '3.4.5 |Anaconda custom (64-bit)| (default, Jul 5 2016, 14:53:07) [MSC v.1600 64 bit (AMD64)]'
 
 
-
-    '3.7.7 (default, Mar 23 2020, 17:31:31) \n[Clang 4.0.1 (tags/RELEASE_401/final)]'
-
-
-
-First let's import the required packages and set our display preferences so that plots are inline and plot warnings are off:
+First, let's import the required packages and set our display preferences so 
+that plots are inline and plot warnings are off. 
 
 
 ```python
@@ -120,18 +121,26 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-## Read hdf5 file into Python
+## Read HDF5 file into Python
 
-```f = h5py.File('file.h5','r')``` reads in an h5 file to the variable f. If the h5 file is stored in a different directory, make sure to include the relative path to that directory (In this example, the path is ../data/SERC/hypserspectral)
+We can use the following command to read in an h5 file to the variable "f".
+
+`f = h5py.File('file.h5','r')`
+
+ If the h5 file is stored in a different directory, make sure to include the 
+relative path to that directory. For example, if our data were in the directory
+ ../data/SERC/hypserspectral, we would load the data like this.
 
 
 ```python
-f = h5py.File('/Users/olearyd/Git/data/NEON_D02_SERC_DP1_20160807_160559_reflectance.h5','r')
+f = h5py.File('../data/SERC/hyperspectral/NEON_D02_SERC_DP1_20160807_160559_reflectance.h5','r') 
 ```
 
 ## Explore the Files
 
-We can look inside the HDF5 dataset with the ```h5py visititems``` function. The ```list_dataset``` function defined below displays all datasets stored in the hdf5 file and their locations within the hdf5 file:
+We can look inside the HDF5 dataset with the `h5py visititems` function. The 
+`list_dataset` function defined below displays all datasets stored in the hdf5 
+file and their locations within the hdf5 file. 
 
 
 ```python
@@ -173,9 +182,10 @@ f.visititems(list_dataset)
     SERC/Reflectance/Metadata/to-sensor_Azimuth_Angle
     SERC/Reflectance/Metadata/to-sensor_Zenith_Angle
     SERC/Reflectance/Reflectance_Data
+    
 
-
-We can display the name, shape, and type of each of these datasets using the ```ls_dataset``` function defined below, which is also called with ```visititems```: 
+We can display the name, shape, and type of each of these datasets using the 
+`ls_dataset` function defined below, which is also called with `visititems`. 
 
 
 ```python
@@ -217,9 +227,11 @@ f.visititems(ls_dataset)
     <HDF5 dataset "to-sensor_Azimuth_Angle": shape (10852, 1106), type "<f4">
     <HDF5 dataset "to-sensor_Zenith_Angle": shape (10852, 1106), type "<f4">
     <HDF5 dataset "Reflectance_Data": shape (10852, 1106, 426), type "<i2">
+    
 
-
-Now that we see the general structure of the hdf5 file, let's take a look at some of the information that is stored inside. Let's start by extracting the reflectance data, which is nested under SERC/Reflectance/Reflectance_Data.  
+Now that we see the general structure of the HDF5 file, let's take a look at 
+some of the information that is stored inside. Let's start by extracting the 
+reflectance data, which is nested under SERC/Reflectance/Reflectance_Data.  
 
 
 ```python
@@ -228,7 +240,7 @@ print(serc_refl)
 ```
 
     <HDF5 group "/SERC/Reflectance" (2 members)>
-
+    
 
 The two members of the HDF5 group /SERC/Reflectance are *Metadata* and 
 *Reflectance_Data*. Let's save the reflectance data as the variable `serc_reflArray`. 
@@ -240,9 +252,11 @@ print(serc_reflArray)
 ```
 
     <HDF5 dataset "Reflectance_Data": shape (10852, 1106, 426), type "<i2">
+    
 
 
-We can extract the shape as follows: 
+
+We can extract the shape as follows
 
 
 ```python
@@ -251,7 +265,7 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
 ```
 
     SERC Reflectance Data Dimensions: (10852, 1106, 426)
-
+    
 
 This corresponds to (y,x, # of bands), where (x,y) are the dimensions of the 
 reflectance array in pixels (1m x 1m). Shape, in Python, is read Y, X, and 
@@ -262,7 +276,7 @@ contains 426 wavelength bands. Let's take a look at the wavelength values.
 
 
 ```python
-#View wavelength information and values
+# View wavelength information and values
 
 wavelengths = serc_refl['Metadata']['Spectral_Data']['Wavelength']
 print(wavelengths)
@@ -271,7 +285,7 @@ print(wavelengths)
 print('min wavelength:', np.amin(wavelengths),'nm')
 print('max wavelength:', np.amax(wavelengths),'nm')
 
-#show the band width 
+# show the band width 
 print('band width =',(wavelengths.value[1]-wavelengths.value[0]),'nm')
 print('band width =',(wavelengths.value[-1]-wavelengths.value[-2]),'nm')
 ```
@@ -280,10 +294,12 @@ print('band width =',(wavelengths.value[-1]-wavelengths.value[-2]),'nm')
     min wavelength: 383.6579 nm
     max wavelength: 2511.9379 nm
     band width = 5.0077 nm
-    band width = 5.007799999999861 nm
+    band width = 5.0078 nm
+    
 
-
-The wavelengths recorded range from 383.66 - 2511.94 nm, and each band covers a range of ~5 nm. Now let's extract spatial information, which is stored under SERC/Reflectance/Metadata/Coordinate_System/Map_Info:
+The wavelengths recorded range from 383.66 - 2511.94 nm, and each band covers a 
+range of ~5 nm. Now let's extract spatial information, which is stored under 
+SERC/Reflectance/Metadata/Coordinate_System/Map_Info:
 
 
 ```python
@@ -293,7 +309,7 @@ print('SERC Map Info:\n',serc_mapInfo.value)
 
     SERC Map Info:
      b'UTM, 1.000, 1.000, 367167.000, 4310980.000, 1.0000000000e+000, 1.0000000000e+000, 18, North, WGS-84, units=Meters'
-
+    
 
 **Understanding the output:**
 
@@ -311,7 +327,6 @@ Let's extract relevant information from the Map_Info metadata to define the
 spatial extent of this dataset:
 
 
-
 ```python
 #First convert mapInfo to a string, and divide into separate strings using a comma separator
 mapInfo_string = str(serc_mapInfo.value) #convert to string
@@ -320,9 +335,11 @@ print(mapInfo_split)
 ```
 
     ["b'UTM", ' 1.000', ' 1.000', ' 367167.000', ' 4310980.000', ' 1.0000000000e+000', ' 1.0000000000e+000', ' 18', ' North', ' WGS-84', " units=Meters'"]
+    
 
-
-Now we can extract the spatial information we need from the map info values, convert them to the appropriate data types (eg. float) and store it in a way that will enable us to access and apply it later: 
+Now we can extract the spatial information we need from the map info values, 
+convert them to the appropriate data types (eg. float) and store it in a way 
+that will enable us to access and apply it later: 
 
 
 ```python
@@ -355,13 +372,12 @@ print('serc_extDict:',serc_extDict)
     Resolution: (1.0, 1.0)
     serc_ext: (367167.0, 368273.0, 4300128.0, 4310980.0)
     serc_extDict: {'xMin': 367167.0, 'xMax': 368273.0, 'yMin': 4300128.0, 'yMax': 4310980.0}
-
+    
 
 ## Extract a Single Band from Array
 
 
 ```python
-print('b56 wavelngth:',wavelengths[56],"nanometers")
 b56 = serc_reflArray[:,:,55].astype(np.float)
 print('b56 type:',type(b56))
 print('b56 shape:',b56.shape)
@@ -369,22 +385,23 @@ print('Band 56 Reflectance:\n',b56)
 # plt.hist(b56.flatten())
 ```
 
-    b56 wavelngth: 664.0901 nanometers
     b56 type: <class 'numpy.ndarray'>
     b56 shape: (10852, 1106)
     Band 56 Reflectance:
-     [[-9999. -9999. -9999. ... -9999. -9999. -9999.]
-     [-9999. -9999. -9999. ... -9999. -9999. -9999.]
-     [-9999. -9999. -9999. ... -9999. -9999. -9999.]
-     ...
-     [-9999. -9999. -9999. ... -9999. -9999. -9999.]
-     [-9999. -9999. -9999. ... -9999. -9999. -9999.]
-     [-9999. -9999. -9999. ... -9999. -9999. -9999.]]
+     [[-9999. -9999. -9999. ..., -9999. -9999. -9999.]
+     [-9999. -9999. -9999. ..., -9999. -9999. -9999.]
+     [-9999. -9999. -9999. ..., -9999. -9999. -9999.]
+     ..., 
+     [-9999. -9999. -9999. ..., -9999. -9999. -9999.]
+     [-9999. -9999. -9999. ..., -9999. -9999. -9999.]
+     [-9999. -9999. -9999. ..., -9999. -9999. -9999.]]
+    
 
+## Scale factor and No Data Value
 
-##  Scale factor and No Data Value
-
-This array represents the unscaled reflectance for band 56. Recall from exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and the Scale_Factor=10000.0.
+This array represents the unscaled reflectance for band 56. Recall from 
+exploring the HDF5 value in HDFViewer that the Data_Ignore_Value=-9999, and 
+the Scale_Factor=10000.0.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/hdfview_SERCrefl.png">
@@ -395,7 +412,7 @@ This array represents the unscaled reflectance for band 56. Recall from explorin
 </figure>
 
 
-We can extract and apply the no data value and scale factor as follows:
+We can extract and apply the no data value and scale factor.
 
 
 ```python
@@ -413,17 +430,19 @@ print('Cleaned Band 56 Reflectance:\n',b56)
     Scale Factor: 10000.0
     Data Ignore Value: -9999.0
     Cleaned Band 56 Reflectance:
-     [[nan nan nan ... nan nan nan]
-     [nan nan nan ... nan nan nan]
-     [nan nan nan ... nan nan nan]
-     ...
-     [nan nan nan ... nan nan nan]
-     [nan nan nan ... nan nan nan]
-     [nan nan nan ... nan nan nan]]
+     [[ nan  nan  nan ...,  nan  nan  nan]
+     [ nan  nan  nan ...,  nan  nan  nan]
+     [ nan  nan  nan ...,  nan  nan  nan]
+     ..., 
+     [ nan  nan  nan ...,  nan  nan  nan]
+     [ nan  nan  nan ...,  nan  nan  nan]
+     [ nan  nan  nan ...,  nan  nan  nan]]
+    
 
+## Plot Histogram 
 
-##  Plot histogram 
-
+We can use functions from the `matplotlib` package to plot a histogram of the 
+reflectance data. 
 
 ```python
 plt.hist(b56[~np.isnan(b56)],50);
@@ -431,20 +450,18 @@ plt.title('Histogram of SERC Band 56 Reflectance')
 plt.xlabel('Reflectance'); plt.ylabel('Frequency')
 ```
 
+    <matplotlib.text.Text at 0x9b5b940>
 
 
-
-    Text(0, 0.5, 'Frequency')
-
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_31_1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_29_1.png)
 
 
 ## Plot Single Band
 
-Now we can plot this band using the Python package ```matplotlib.pyplot```, which we imported at the beginning of the lesson as ```plt```. Note that the default colormap is jet unless otherwise specified. We will explore using different colormaps a little later. 
+Now we can plot this band using the Python package `matplotlib.pyplot`, which we i
+mported at the beginning of the lesson as `plt`. Note that the default colormap 
+is "jet" unless otherwise specified. We will explore using different colormaps 
+a little later. 
 
 
 ```python
@@ -471,18 +488,16 @@ plt.xlabel('Reflectance'); plt.ylabel('Frequency')
 ax3.set_xlim([0,0.5])
 ```
 
-
-
-
     (0, 0.5)
 
 
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_31_1.png)
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_33_1.png)
 
-
-Note from both the plot and histogram of the reflectance values that almost all of the reflectance values range from 0.0-0.35. In order to see more contrast in the plot, we try out a couple things: 
+Note from both the plot and histogram of the reflectance values that almost all 
+of the reflectance values range from 0.0-0.35. In order to see more contrast in 
+the plot, we try out a couple things: 
 
 1. adjust the color limits to only show the relevant range using the `imshow clim` option 
 2. apply linear contrast stretch or histogram equalization 
@@ -514,19 +529,26 @@ ax1.ticklabel_format(useOffset=False, style='plain') #do not use scientific nota
 rotatexlabels = plt.setp(ax3.get_xticklabels(),rotation=270) #rotate x tick labels 90 degree
 ```
 
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_35_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_33_0.png)
 
 
 ## Extension: Plot a subset a flightline
 
-You may want to zoom in on a specific region within a flightline for further analysis. To do this, we need to subset the data, which requires the following steps:
+You may want to zoom in on a specific region within a flightline for 
+further analysis. To do this, we need to subset the data, which requires the 
+following steps:
 
-1. Define the spatial extent of the data subset (or clip) that we want to zoom in on.
-2. Determine the pixel indices of the full flightline that correspond to these spatial extents.
+1. Define the spatial extent of the data subset (or clip) that we want to zoom 
+in on.
+2. Determine the pixel indices of the full flightline that correspond to these 
+spatial extents.
 3. Subscript the full flightline array with these indices to create a subset.
 
-For this exercise, we will zoom in on a region in the middle of this SERC flight line, around UTM y = 4306000 m. We will load the function ```calc_clip_index```, which reads in a dictionary of the spatial extent of the clipped region of interest, and a dictionary of the full extent of the array you are subsetting, and returns the pixel indices corresponding to the full flightline array. 
+For this exercise, we will zoom in on a region in the middle of this SERC flight 
+line, around UTM y = 4306000 m. We will load the function `calc_clip_index`, 
+which reads in a dictionary of the spatial extent of the clipped region of 
+interest, and a dictionary of the full extent of the array you are subsetting, 
+and returns the pixel indices corresponding to the full flightline array. 
 
 
 ```python
@@ -554,7 +576,8 @@ clipExtent['yMin'] = 4305750
 clipExtent['yMax'] = 4306350
 ```
 
-Use this function to find the indices corresponding to the clip extent that we specified above for SERC:
+Use this function to find the indices corresponding to the clip extent that we 
+specified above for SERC:
 
 
 ```python
@@ -562,10 +585,11 @@ serc_subInd = calc_clip_index(clipExtent,serc_extDict)
 print('SERC Subset Index:',serc_subInd)
 ```
 
-    SERC Subset Index: {'xMin': 233, 'xMax': 933, 'yMax': 5230, 'yMin': 4630}
+    SERC Subset Index: {'xMin': 233, 'xMax': 933, 'yMin': 4630, 'yMax': 5230}
+    
 
-
-We can now use these indices to create a subsetted array, with dimensions 600 x 700 x 426.
+We can now use these indices to create a subsetted array, with dimensions 
+600 x 700 x 426.
 
 
 ```python
@@ -575,9 +599,10 @@ print('SERC Reflectance Subset Dimensions:',serc_subArray.shape)
 ```
 
     SERC Reflectance Subset Dimensions: (600, 700, 426)
+    
 
-
-Extract band 56 from this subset, and clean by applying the no data value and scale factor:
+Extract band 56 from this subset, and clean by applying the no data value and 
+scale factor.
 
 
 ```python
@@ -587,7 +612,8 @@ serc_b56_subset = serc_b56_subset/scaleFactor
 #print(serc_b56_subset)
 ```
 
-Take a quick look at the minimum, maximum, and mean reflectance values in this subsetted area: 
+Take a quick look at the minimum, maximum, and mean reflectance values in 
+this subsetted area.
 
 
 ```python
@@ -601,9 +627,10 @@ print('max reflectance:',round(np.nanmax(serc_b56_subset),2))
     min reflectance: 0.0
     mean reflectance: 0.05
     max reflectance: 1.59
+    
 
-
-Lastly, plot the data and a histogram of the reflectance values to see what the distribution looks like.
+Lastly, plot the data and a histogram of the reflectance values to see what the 
+distribution looks like.
 
 
 ```python
@@ -622,15 +649,10 @@ plt.xlabel('Reflectance'); plt.ylabel('Frequency')
 ```
 
 
+    <matplotlib.text.Text at 0xad94358>
 
 
-    Text(0, 0.5, 'Frequency')
-
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_48_1.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_46_1.png)
 
 Note that most of the reflectance values are < 0.5, but the colorbar scale 
 ranges from 0 - 1.6. This results in a low-contrast image; with this colormap, 
@@ -678,8 +700,10 @@ of a displayed image, as we will show how to do below.
 </figure>
 
 
+
 *The following tutorial section is adapted from skikit-image's tutorial
 <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
+
 
 Let's start with trying a 2% and 5% linear contrast stretch:
 
@@ -709,12 +733,14 @@ rotatexlabels = plt.setp(ax2.get_xticklabels(),rotation=90) #rotate x tick label
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_52_0.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_50_0.png)
 
 
-Notice that the 8% stretch image (right) washes out some of the objects with higher reflectance (eg. the dock & buildings), but does a better job showing contrast of the vegetation (eg. grass, trees, shadows). 
+Notice that the 8% stretch image (right) washes out some of the objects with 
+higher reflectance (eg. the dock & buildings), but does a better job showing 
+contrast of the vegetation (eg. grass, trees, shadows). 
 
-### Explore the contrast stretch feature interactively using Python widgets
+### Explore the contrast stretch feature interactively using Python widgets 
 
 
 ```python
@@ -734,14 +760,7 @@ interact(linearStretch,percent=(0,100,1))
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_55_0.png)
-
-
-
-
-
-    <function __main__.linearStretch(percent)>
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_53_0.png)
 
 
 ### Apply Adaptive Histogram Equalization to Improve Image Contrast
@@ -777,38 +796,35 @@ ax_cdf.set_ylabel('Fraction of Total Intensity')
 
     img_adapteq min: 0.0
     img_adapteq max: 1.0
+    
+
+    <matplotlib.text.Text at 0x45bad208>
 
 
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_55_2.png)
 
 
-
-    Text(0, 0.5, 'Fraction of Total Intensity')
-
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_57_2.png)
-
-
-With contrast-limited adaptive histogram equalization, you can see more detail in the image, and the highly reflective objects are not washed out, as they were in the linearly-stretched images. 
+With contrast-limited adaptive histogram equalization, you can see more detail 
+in the image, and the highly reflective objects are not washed out, as they were 
+in the linearly-stretched images. 
 
 ## Download Function Module 
 
 All of the functions we just wrote are available as a Python module. 
-<a href="https://www.neonscience.org/sites/default/files/neon_aop_refl_hdf5_functions.py_.zip">neon_aop_refl_hdf5_functions.py_.zip (5 KB)</a> <- Click to Download
+
+[[nid:6792]]
 
 
 ## Challenge Code Solutions
 
 ### Challenge: Plot options to visualize the data
 
-
 ```python
 fig = plt.figure(figsize=(15,12))
 
 #spectral Colormap, 0-0.08
 ax1 = fig.add_subplot(2,2,1)
-serc_subset_plot = plt.imshow(serc_b56_subset,extent=serc_subExt,cmap='Spectral',clim=(0,0.08)) 
+serc_subset_plot = plt.imshow(serc_b56_subset,extent=serc_subExt,cmap='spectral',clim=(0,0.08)) 
 cbar = plt.colorbar(serc_subset_plot); cbar.set_label('Reflectance')
 plt.title('Subset SERC Band 56 Reflectance\n spectral colormap, 0-0.08'); 
 ax1.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
@@ -841,5 +857,4 @@ rotatexlabels = plt.setp(ax4.get_xticklabels(),rotation=90) #rotate x tick label
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_60_0.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_48_0.png)
