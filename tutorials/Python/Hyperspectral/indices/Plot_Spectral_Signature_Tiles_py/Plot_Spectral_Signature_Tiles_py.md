@@ -4,13 +4,13 @@ title: "Plot a Spectral Signature in Python - Tiled Data"
 description: "Learn how to extract and plot a spectral profile from a single pixel of a reflectance band using NEON tiled hyperspectral data." 
 dateCreated: 2018-07-04 
 authors: Bridget Hass
-contributors: 
+contributors: Donal O'Leary
 estimatedTime: 
 packagesLibraries: numpy, pandas, matplotlib, h5py,IPython.display
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
-code1: Python/remote-sensing/hyperspectral-data/Plot_Spectral_Signature_Tiles_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/Plot_Spectral_Signature_Tiles_py/Plot_Spectral_Signature_Tiles_py.ipynb
 tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: plot-spec-sig-tiles-python
 ---

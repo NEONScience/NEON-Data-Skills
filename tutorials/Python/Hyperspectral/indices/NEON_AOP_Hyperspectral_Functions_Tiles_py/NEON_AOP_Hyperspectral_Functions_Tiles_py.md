@@ -10,7 +10,7 @@ packagesLibraries: numpy, matplotlib, h5py, os, copy, skimage, IPython.html.widg
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP3.30006, NEON.DP3.30008
-code1: Python/remote-sensing/hyperspectral-data/NEON_AOP_Hyperspectral_Functions_Tiles_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/NEON_AOP_Hyperspectral_Functions_Tiles_py/NEON_AOP_Hyperspectral_Functions_Tiles_py.ipynb
 tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: neon-hsi-aop-functions-tiles-py
 ---

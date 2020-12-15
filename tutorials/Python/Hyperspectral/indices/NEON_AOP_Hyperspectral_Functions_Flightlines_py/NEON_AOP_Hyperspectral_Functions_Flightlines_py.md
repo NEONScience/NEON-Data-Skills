@@ -10,7 +10,7 @@ packagesLibraries: numpy, pandas, gdal, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/NEON_AOP_Hyperspectral_Functions_Flightlines_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/indices/NEON_AOP_Hyperspectral_Functions_Flightlines_py/NEON_AOP_Hyperspectral_Functions_Flightlines_py.ipynb
 tutorialSeries: intro-hsi-flightline-py-series
 urlTitle: neon-hsi-aop-functions-python
 ---
