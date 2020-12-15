@@ -734,7 +734,7 @@ interact(linearStretch,percent=(0,100,1))
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_55_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_53_0.png)
 
 
 
