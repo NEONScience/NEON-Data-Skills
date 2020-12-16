@@ -4,13 +4,13 @@ title: "Classify a Raster Using Threshold Values in Python - 2018"
 description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." 
 dateCreated: 2018-07-04 
 authors: Bridget Hass
-contributors: Max Burner
+contributors: Donal O'Leary, Max Burner
 estimatedTime: 
-packagesLibraries: numpy, gdal, matplotlib, os, copy
+packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
 topics: lidar, raster, remote-sensing
 languagesTool: python
 dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-code1: Python/remote-sensing/lidar/classify_raster_with_threshold-2018-py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: classify-raster-thresholds-2018-py
 ---
@@ -36,48 +36,14 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<h3> NEON Teaching Data Subset: Data Institute 2018</h3> 
+For this lesson, we will be using a 1km tile of a Canopy Height Model derived from lidar data collected at the Smithsonian Environmental Research Center (SERC) NEON site. <a href="https://ndownloader.figshare.com/files/25787420">Download Data Here</a>.
 
-To complete these materials, you will use data available from the NEON 2018 Data
-Institute teaching datasets available for download. 
-
-The combined data sets below contain about 10 GB of data. Please consider how 
-large your hard drive is prior to downloading. If needed you may want to use an 
-external hard drive. 
-
-The LiDAR and imagery data used to create this raster teaching data subset 
-were collected over the 
-<a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a>
-and processed at NEON headquarters.
-All NEON data products can be accessed on the 
-<a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
-
-<a href="https://neondata.sharefile.com/d-s7788427bae04c6c9" target="_blank"class="link--button link--arrow">
-Download Lidar & Hyperspectral Dataset</a>
-
-<a href="https://neondata.sharefile.com/d-s58db39240bf49ac8" target="_blank" class="link--button link--arrow">
-Download the Biomass Calculation Dataset</a>
-
-The link below contains all the data from the 2017 Data Institute (17 GB). <strong>For 2018, we ONLY 
-need the data in the CHEQ, F07A, and PRIN subfolders.</strong> To minimize the size of your
-download, please select only these subdirectories to download.
-
-<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" target="_blank"class="link--button link--arrow">
-Download Uncertainty Exercises Dataset</a>
-
-
-
-
-
-[[nid:7512]]
+<a href="https://ndownloader.figshare.com/files/25787420" class="link--button link--arrow">
+Download Dataset</a>
 
 </div>
 
-In this tutorial, we will work with the NEON AOP L3 LiDAR ecoysystem structure 
-(Canopy Height Model) data product. For more information about NEON data products 
-and the CHM product DP3.30015.001, see the 
-<a href="http://data.neonscience.org/data-products/DP3.30015.001" target="_blank">NEON Data Product Catalog</a>. 
+In this tutorial, we will work with the NEON AOP L3 LiDAR ecoysystem structure (Canopy Height Model) data product. For more information about NEON data products and the CHM product DP3.30015.001, see the <a href="http://data.neonscience.org/data-products/DP3.30015.001" target="_blank">NEON Data Product Catalog</a>. 
 
 First, let's import the required packages and set our plot display to be in-line:
 
@@ -97,7 +63,8 @@ Let's look at the SERC Canopy Height Model (CHM) to start. We can open and read 
 
 
 ```python
-chm_filename = '../data/lidar/NEON_D02_SERC_DP3_368000_4306000_CHM.tif'
+# Note that you will need to update the filepath below according to your local machine
+chm_filename = '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_CHM.tif'
 chm_dataset = gdal.Open(chm_filename)
 ```
 
@@ -185,7 +152,7 @@ print('SERC CHM Statistics: Minimum=%.2f, Maximum=%.2f, Mean=%.3f, StDev=%.3f' %
 
     no data value: -9999.0
     scale factor: 1.0
-    SERC CHM Statistics: Minimum=0.00, Maximum=32.55, Mean=7.698, StDev=9.057
+    SERC CHM Statistics: Minimum=0.00, Maximum=33.06, Mean=7.684, StDev=9.012
 
 
 ### Use ReadAsArray
@@ -201,18 +168,18 @@ print('SERC CHM Array:\n',chm_array) #display array values
 ```
 
     SERC CHM Array:
-     [[16.51000023 16.82999992 16.54999924 ...  0.          0.
+     [[15.82999992 16.30999947 16.61000061 ...  0.          0.
        0.        ]
-     [11.81999969 14.68999958 14.40999985 ...  0.          0.
+     [12.64000034 15.22999954  7.86000013 ...  0.          0.
        0.        ]
-     [12.01000023 12.81000042  3.18000007 ...  0.          0.
+     [12.01000023 13.02999973  8.07999992 ...  0.          0.
        0.        ]
      ...
-     [27.30999947 26.87000084 26.64999962 ...  0.          0.
+     [28.11000061 27.35000038 27.04000092 ...  0.          0.
        0.        ]
-     [26.71999931 27.11000061 27.11000061 ...  0.          0.
+     [27.37000084 28.02000046 27.30999947 ...  0.          0.
        0.        ]
-     [26.87999916 27.05999947 27.12999916 ...  0.          0.
+     [26.85000038 27.61000061 27.43000031 ...  0.          0.
        0.        ]]
 
 
@@ -237,7 +204,7 @@ print('% non-zero:',round(100*np.count_nonzero(chm_array)/(rows*cols),2))
 ```
 
     % NaN: 0.0
-    % non-zero: 49.1
+    % non-zero: 50.18
 
 
 ## Plot Canopy Height Data
@@ -246,8 +213,8 @@ To get a better idea of the dataset, we can use a similar function to `plot_aop_
 
 
 ```python
-def plot_spatial_array(band_array,spatial_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
-    plot = plt.imshow(band_array,extent=spatial_extent,clim=colorlimit); 
+def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cmap_title='',colormap=''):
+    plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
     cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
     cbar.set_label(cmap_title,rotation=90,labelpad=20);
     plt.title(title); ax = plt.gca(); 
@@ -256,15 +223,20 @@ def plot_spatial_array(band_array,spatial_extent,colorlimit,ax=plt.gca(),title='
 ```
 
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py_files/classify_raster_with_threshold-2018-py_21_0.png)
+
+
 ### Histogram of Data 
 
 As we did with the reflectance tile, it is often useful to plot a histogram of the geotiff data in order to get a sense of the range and distribution of values. First we'll make a copy of the array and remove the `nan` values. 
 
 
 ```python
-plt.hist(chm_array[~np.isnan(chm_array)],100);
-ax = plt.gca()
-ax.set_ylim([0,15000]) #adjust the y limit to zoom in on area of interest
+import copy
+chm_nonan_array = copy.copy(chm_array)
+chm_nonan_array = chm_nonan_array[~np.isnan(chm_array)]
+plt.hist(chm_nonan_array,weights=np.zeros_like(chm_nonan_array)+1./
+         (chm_array.shape[0]*chm_array.shape[1]),bins=50);
 plt.title('Distribution of SERC Canopy Height')
 plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 ```
@@ -272,18 +244,44 @@ plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 
 
 
-    Text(0,0.5,'Relative Frequency')
+    Text(0, 0.5, 'Relative Frequency')
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify_raster_with_threshold-2018-py/output_24_1.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py_files/classify_raster_with_threshold-2018-py_23_1.png)
 
 
 On your own, adjust the number of bins, and range of the y-axis to get a good idea of the distribution of the canopy height values. We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
 
+
+```python
+chm_nonzero_array = copy.copy(chm_array)
+chm_nonzero_array[chm_array==0]=np.nan
+chm_nonzero_nonan_array = chm_nonzero_array[~np.isnan(chm_nonzero_array)]
+# Use weighting to plot relative frequency
+plt.hist(chm_nonzero_nonan_array,bins=50);
+
+# plt.hist(chm_nonzero_nonan_array.flatten(),50) 
+plt.title('Distribution of SERC Non-Zero Canopy Height')
+plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
+```
+
+
+
+
+    Text(0, 0.5, 'Relative Frequency')
+
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py_files/classify_raster_with_threshold-2018-py_25_1.png)
+
+
 Note that it appears that the trees don't have a smooth or normal distribution, but instead appear blocked off in chunks. This is an artifact of the Canopy Height Model algorithm, which bins the trees into 5m increments (this is done to avoid another artifact of "pits" (Khosravipour et al., 2014). 
 
 From the histogram we can see that the majority of the trees are < 30m. We can re-plot the CHM array, this time adjusting the color bar limits to better visualize the variation in canopy height. We will plot the non-zero array so that CHM=0 appears white. 
+
 
 ```python
 plot_band_array(chm_array,
@@ -295,10 +293,11 @@ plot_band_array(chm_array,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify_raster_with_threshold-2018-py/output_26_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py_files/classify_raster_with_threshold-2018-py_27_0.png)
+
 
 ## Threshold Based Raster Classification
-Next, we will create a classified raster object. To do this, we will use the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
+Next, we will create a classified raster object. To do this, we will use the se the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
 - Class 1: **CHM = 0 m** 
 - Class 2: **0m < CHM <= 10m**
 - Class 3: **10m < CHM <= 20m**
@@ -344,12 +343,12 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box,class5_box],
 
 
 
-    <matplotlib.legend.Legend at 0x124a0c588>
+    <matplotlib.legend.Legend at 0x7fa6324cfbd0>
 
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify_raster_with_threshold-2018-py/output_30_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py_files/classify_raster_with_threshold-2018-py_31_1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -361,7 +360,6 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box,class5_box],
 </div>
 
 <div id="ds-challenge" markdown="1">
-
 **Challenge: Try Another Classification**
 
 Create the following threshold classified outputs:
@@ -383,11 +381,9 @@ Create the following threshold classified outputs:
 	</figcaption>
 </figure>
 
-**Data Institute Participants:** When you are finished, export your outputs to 
-HTML by selecting File > Download As > HTML (.html). Save the file as 
-LastName_Tues_classifyThreshold.html. Add this to the Tuesday directory in your 
-DI-NEON-participants Git directory and push them to your fork in GitHub. Merge 
-with the central repository using a pull request.
+Be sure to document your workflow as you go using Jupyter Markdown cells. 
+
+**Data Institute Participants:** When you are finished, export your outputs to HTML by selecting File > Download As > HTML (.html). Save the file as LastName_Tues_classifyThreshold.html. Add this to the Tuesday directory in your DI-NEON-participants Git directory and push them to your fork in GitHub. Merge with the central repository using a pull request. 
 
 </div>
 
