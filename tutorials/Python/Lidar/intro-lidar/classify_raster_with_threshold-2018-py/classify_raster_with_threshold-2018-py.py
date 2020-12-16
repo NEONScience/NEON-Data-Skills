@@ -237,7 +237,7 @@ plot_band_array(chm_array,
 
 
 # ## Threshold Based Raster Classification
-# Next, we will create a classified raster object. To do this, we will use the se the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
+# Next, we will create a classified raster object. To do this, we will use the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into five groups:
 # - Class 1: **CHM = 0 m** 
 # - Class 2: **0m < CHM <= 10m**
 # - Class 3: **10m < CHM <= 20m**
