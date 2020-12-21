@@ -65,9 +65,6 @@ for the Harvard Forest and other field sites located across the United States.
 <a href="https://ndownloader.figshare.com/files/3701572" class="link--button link--arrow"> Download Dataset</a>
 
 
-
-
-
 ****
 
 **Set Working Directory:** This lesson assumes that you have set your working 

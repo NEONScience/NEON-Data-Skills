@@ -4,9 +4,9 @@ title: "Time Series 01: Why Metadata Are Important: How to Work with Metadata in
 description: "This tutorial covers what metadata are, and why we need to work with metadata. It covers the 3 most common metadata formats: text file format, web page format and Ecological Metadata Language (EML)."
 dateCreated:  2015-10-22
 authors: Leah A. Wasser, Megan A. Jones, Marisa Guarinello
-contributors:
+contributors: Collin Storlie
 estimatedTime:
-packagesLibraries: eml, ggmap
+packagesLibraries: EML, ggmap, tmaptools
 topics: metadata, time-series
 languagesTool: R
 dataProduct:
@@ -47,7 +47,8 @@ install `EML` directly from GitHub (the package is in development and is not
 yet on CRAN). You will need to install `devtools` to do this. 
  
 * **ggmap:** `install.packages("ggmap")`
-* **devtools:** `install.packages("devtools")` 
+* **tmaptools:** `install.packages("tmaptools")`
+* **devtools:** `install.packages("devtools");library(devtools)` 
 * **EML:** **must be installed AFTER `devtools` is loaded in R.
 `install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))`  
 
@@ -62,9 +63,6 @@ These data are proxy data for what will be available for 30 years on the
 for the Harvard Forest and other field sites located across the United States.
 
 <a href="https://ndownloader.figshare.com/files/3701572" class="link--button link--arrow"> Download Dataset</a>
-
-
-
 
 
 ****
@@ -132,12 +130,12 @@ The metadata for the data that we are working with for the Harvard Forest field
 site are stored in both `EML` format and on a web page. Let's explore the web 
 page first.
 
-* <a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank">View Harvard Forest Fisher Tower webpage.</a>
+* <a href="https://harvardforest.fas.harvard.edu/harvard-forest-data-archive" target="_blank">View Harvard Forest Fisher Tower webpage.</a>
 
 Let's begin by visiting that page above. At the top of the page, there is a list
 of data available for Harvard Forest. NOTE: **hf001-06: daily (metric) since 
 2001 (preview)** is the data that we used in the
-<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target=_blank">previous tutorial.</a>
+<a href="https://www.neonscience.org/dc-brief-tabular-time-series-qplot-r" target="_blank">previous tutorial.</a>
 
 Scroll down to the **Overview** section on the website. Take note of the 
 information provided in that section and answer the questions in the
@@ -212,7 +210,7 @@ Ecological Metadata Language (EML) is one machine readable metadata format.
 
 While  much of the documentation that we need to work with at the Harvard Forest
 field site is available directly on the 
-<a href="http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001" target="_blank">Harvard Forest Data Archive page</a>,
+<a href="https://harvardforest.fas.harvard.edu/harvard-forest-data-archive" target="_blank">Harvard Forest Data Archive page</a>,
 the website also offers metadata in `EML` format. 
 
 ## Introduction to EML
@@ -278,9 +276,11 @@ To begin, we will load the `EML` package directly from ROpenSci's Git repository
     #install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
     
     # load ROpenSci EML package
-    library("EML")
+    library(EML)
     # load ggmap for mapping
     library(ggmap)
+    # load tmaptools for mapping
+    library(tmaptools)
 
 Next, we will read in the LTER `EML` file - directly from the online URL using
 `eml_read`. This file documents multiple data products that can be downloaded.
@@ -299,7 +299,7 @@ load.
     # import EML from Harvard Forest Met Data
     # note, for this particular tutorial, we will work with an abridged version of the file
     # that you can access directly on the harvard forest website. (see comment below)
-    eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+    eml_HARV <- read_eml("https://harvardforest1.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf001.xml")
     
     # import a truncated version of the eml file for quicker demonstration
     # eml_HARV <- read_eml("http://neonscience.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
@@ -315,7 +315,7 @@ load.
     ## [1] "emld" "list"
 
 The `eml_read` function creates an `EML` class object. This object can be
-accessed using `slots` in R (`@`) rather than a typical subset `[]` approach.
+accessed using `slots` in R (`$`) rather than a typical subset `[]` approach.
 
 # Explore Metadata Attributes
 
@@ -326,14 +326,29 @@ the contact information for the dataset and a description of the methods.
 
     # view the contact name listed in the file
     
-    eml_HARV@dataset@creator
+    eml_HARV$dataset$creator
 
-    ## Error in eval(expr, envir, enclos): trying to get slot "dataset" from an object (class "emld") that is not an S4 object
+    ## $individualName
+    ## $individualName$givenName
+    ## [1] "Emery"
+    ## 
+    ## $individualName$surName
+    ## [1] "Boose"
 
     # view information about the methods used to collect the data as described in EML
-    eml_HARV@dataset@methods
+    eml_HARV$dataset$methods
 
-    ## Error in eval(expr, envir, enclos): trying to get slot "dataset" from an object (class "emld") that is not an S4 object
+    ## $methodStep
+    ## $methodStep$description
+    ## $methodStep$description$section
+    ## $methodStep$description$section[[1]]
+    ## [1] "<title>Observation periods</title><para>15-minute: 15 minutes, ending with given time. Hourly: 1 hour, ending with given time. Daily: 1 day, midnight to midnight. All times are Eastern Standard Time.</para>"
+    ## 
+    ## $methodStep$description$section[[2]]
+    ## [1] "<title>Instruments</title><para>Air temperature and relative humidity: Vaisala HMP45C (2.2m above ground). Precipitation: Met One 385 heated rain gage (top of gage 1.6m above ground). Global solar radiation: Licor LI200X pyranometer (2.7m above ground). PAR radiation: Licor LI190SB quantum sensor (2.7m above ground). Net radiation: Kipp and Zonen NR-LITE net radiometer (5.0m above ground). Barometric pressure: Vaisala CS105 barometer. Wind speed and direction: R.M. Young 05103 wind monitor (10m above ground). Soil temperature: Campbell 107 temperature probe (10cm below ground). Data logger: Campbell Scientific CR10X.</para>"
+    ## 
+    ## $methodStep$description$section[[3]]
+    ## [1] "<title>Instrument and flag notes</title><para>Air temperature. Daily air temperature is estimated from other stations as needed to complete record.</para><para>Precipitation. Daily precipitation is estimated from other stations as needed to complete record. Delayed melting of snow and ice (caused by problems with rain gage heater or heavy precipitation) is noted in log - daily values are corrected if necessary but 15-minute values are not.  The gage may underestimate actual precipitation under windy or cold conditions.</para><para>Radiation. Whenever possible, snow and ice are removed from radiation instruments after precipitation events.  Depth of snow or ice on instruments and time of removal are noted in log, but values are not corrected or flagged.</para><para>Wind speed and direction. During ice storms, values are flagged as questionable when there is evidence (from direct observation or the 15-minute record) that ice accumulation may have affected the instrument's operation.</para>"
 
 ## Identify & Map Data Location
 
@@ -349,30 +364,16 @@ We need the extent to properly geolocate and process the data.
 
 
     # grab x coordinate from the coverage information
-    XCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@westBoundingCoordinate@.Data
-
-    ## Error in eval(expr, envir, enclos): trying to get slot "dataset" from an object (class "emld") that is not an S4 object
-
+    XCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$westBoundingCoordinate[[1]]
     # grab y coordinate from the coverage information
-    YCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@northBoundingCoordinate@.Data
-
-    ## Error in eval(expr, envir, enclos): trying to get slot "dataset" from an object (class "emld") that is not an S4 object
-
-    # map <- get_map(location='Harvard', maptype = "terrain")
-    
-    # plot the NW corner of the site.
-    map <- get_map(location='massachusetts', maptype = "toner", zoom =8)
-
-    ## Error: Google now requires an API key.
-    ##        See ?register_google for details.
-
-    ggmap(map, extent=TRUE) +
-      geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
+    YCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$northBoundingCoordinate[[1]]
+    # make a map and add the xy coordinates to it
+    ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("Massachusetts")$bbox))), zoom = 11, maptype=c("toner")), extent=TRUE) + geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
                  color="darkred", size=6, pch=18)
 
-    ## Error: ggmap plots objects of class ggmap, see ?get_map
+![Map of Massachusetts, U.S.A., showing location of Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/01-Time-Series-Metadata/rfigs/map-location-1.png)
 
-* Learn more about `ggmap`:
+* Learn more about **ggmap**:
 <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf" target="_blank"> A nice cheatsheet created by NCEAS</a>
 
 The above example, demonstrated how we can extract information from an `EML`

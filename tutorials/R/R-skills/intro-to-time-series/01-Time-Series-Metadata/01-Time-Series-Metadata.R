@@ -1,4 +1,4 @@
-## ----metadata-challenge-1, echo=FALSE-----------------------------------------------------
+## ----metadata-challenge-1, echo=FALSE----------------------------------------------------
 # Metadata Notes from hf001_10-15-m_Metadata.txt
 #  1. 2001-2015
 #  2. Emery Boos - located at the top of the document, email is available
@@ -11,7 +11,7 @@
 
 
 
-## ----metadata-challenge-2, echo=FALSE-----------------------------------------------------
+## ----metadata-challenge-2, echo=FALSE----------------------------------------------------
 # Metadata Notes from hf001_10-15-m_Metadata.txt
 # 1. airt, s10t, prec, parr
 
@@ -29,7 +29,7 @@
 # towards the top of the document.
 
 
-## ----install-EML-package, results="hide", warning=FALSE-----------------------------------
+## ----install-EML-package, results="hide", warning=FALSE----------------------------------
 # install R EML tool 
 # load devtools (if you need to install "EML")
 #library("devtools")
@@ -38,13 +38,15 @@
 #install_github("ropensci/EML", build=FALSE, dependencies=c("DEPENDS", "IMPORTS"))
 
 # load ROpenSci EML package
-library("EML")
+library(EML)
 # load ggmap for mapping
 library(ggmap)
+# load tmaptools for mapping
+library(tmaptools)
 
 
 
-## ----read-eml-----------------------------------------------------------------------------
+## ----read-eml----------------------------------------------------------------------------
 # data location
 # http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001
 # table 4 http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-04-monthly-m.csv
@@ -52,7 +54,7 @@ library(ggmap)
 # import EML from Harvard Forest Met Data
 # note, for this particular tutorial, we will work with an abridged version of the file
 # that you can access directly on the harvard forest website. (see comment below)
-eml_HARV <- read_eml("http://harvardforest.fas.harvard.edu/data/eml/hf001.xml")
+eml_HARV <- read_eml("https://harvardforest1.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf001.xml")
 
 # import a truncated version of the eml file for quicker demonstration
 # eml_HARV <- read_eml("http://neonscience.github.io/NEON-R-Tabular-Time-Series/hf001-revised.xml")
@@ -65,32 +67,24 @@ class(eml_HARV)
 
 
 
-## ----view-eml-content---------------------------------------------------------------------
+## ----view-eml-content--------------------------------------------------------------------
 # view the contact name listed in the file
 
-eml_HARV@dataset@creator
+eml_HARV$dataset$creator
 
 # view information about the methods used to collect the data as described in EML
-eml_HARV@dataset@methods
+eml_HARV$dataset$methods
 
 
 
 
-## ----map-location, warning=FALSE, message=FALSE-------------------------------------------
+## ----map-location, warning=FALSE, message=FALSE, fig.cap='Map of Massachusetts, U.S.A., showing location of Harvard Forest'----
 
 # grab x coordinate from the coverage information
-XCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@westBoundingCoordinate@.Data
-
+XCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$westBoundingCoordinate[[1]]
 # grab y coordinate from the coverage information
-YCoord <- eml_HARV@dataset@coverage@geographicCoverage[[1]]@boundingCoordinates@northBoundingCoordinate@.Data
-
-# map <- get_map(location='Harvard', maptype = "terrain")
-
-# plot the NW corner of the site.
-map <- get_map(location='massachusetts', maptype = "toner", zoom =8)
-
-ggmap(map, extent=TRUE) +
-  geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
+YCoord <- eml_HARV$dataset$coverage$geographicCoverage$boundingCoordinates$northBoundingCoordinate[[1]]
+# make a map and add the xy coordinates to it
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("Massachusetts")$bbox))), zoom = 11, maptype=c("toner")), extent=TRUE) + geom_point(aes(x=as.numeric(XCoord),y=as.numeric(YCoord)), 
              color="darkred", size=6, pch=18)
-
 
