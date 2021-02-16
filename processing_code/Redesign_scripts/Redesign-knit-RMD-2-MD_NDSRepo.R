@@ -25,13 +25,14 @@ require(markdown)
 dirs <- c("R/eddy4r",
           "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
           "R/R-skills/Using-hdf5-r/Intro-HDF5-R",
-          "R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts")
+          "R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts",
+          "R/R-skills/intro-to-time-series/01-Time-Series-Metadata")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[4] 
+subDir <- dirs[5] 
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/Git/main/NEON-Data-Skills"
