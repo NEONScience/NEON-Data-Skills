@@ -5,7 +5,7 @@
 # 2) purls them to .R files
 # it then cleans up all image directories, etc from the working dir!
 ##################
-
+ 
 require(knitr)
 require(markdown)
 
