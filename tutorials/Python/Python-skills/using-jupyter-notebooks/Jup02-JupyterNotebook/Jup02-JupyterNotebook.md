@@ -111,8 +111,8 @@ something like this.  Note that the home directory will be whatever directory yo
 have navigated to in your terminal before launching Jupyter Notebooks.  
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/startingNotebook_GriffinChure.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/reproducible-science/startingNotebook_GriffinChure.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/reproducible-science/startingNotebook_GriffinChure.png"></a>
 	<figcaption> Upon opening the application, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks </a>
 	</figcaption>
@@ -128,8 +128,8 @@ Python kernels and one Matlab kernel. When starting a notebook, you should choos
 Once you start a new notebook, you will be brought to the following screen.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/toolbars_GriffinChure.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/reproducible-science/toolbars_GriffinChure.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/reproducible-science/toolbars_GriffinChure.png"></a>
 	<figcaption> Upon opening a new Python notebook, you should see a screen similar to this one. 
 	Source: Griffin Chure's <a href="http://bi1.caltech.edu/code/t0b_jupyter_notebooks.html" target="_blank"> Tutorial 0b: Using Jupyter Notebooks</a>
 	</figcaption>
@@ -157,15 +157,6 @@ the **Kernel** menu.
 When you select or switch a kernel, you may want to use the navigate to **Kernel** in the menu, 
 select **Restart/ClearOutlook**.  The Restart/ClearOutlook option ensures that 
 the correct kernel will operate.
-
- <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/pre-institute-content/pre-institute3-jupPy/jupPy-kernel.png"></a>
-	<figcaption> To ensure that the correct kernel will operate, navigate to 
-	Kernel in the menu, select Restart/ClearOutlook.. 
-	Source: National Ecological Observatory Network (NEON)  
-	</figcaption>
-</figure>
 
 You can always check what version of Python you are running by typing the following 
 into a code cell. 
