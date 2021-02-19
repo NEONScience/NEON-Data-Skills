@@ -53,8 +53,8 @@ on Remote Sensing with Reproducible Workflows, however, you can adapt them to
 the specific Python version and packages you wish to work with.  
 
 If you haven't yet created a Python 3.8 environment (released October 2019), you'll need to do 
-that now. Refer back to the Python section of the <a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">installation instructions</a>, 
-and create the 3.8 environment. After installing Anaconda Navigator onto your computer, open the Anaconda Prompt applicationand type the following into the prompy window:
+that now. You can use the single line provided below, or refer back to the Python section of the <a href="https://www.neonscience.org/setup-git-bash-python" target="_blank">installation instructions</a>, 
+for more details. To create this Python 3.8 environment, you must first install Anaconda Navigator onto your computer, then open the Anaconda Prompt application (or your terminal) and type the following into the prompt window:
 
 `conda create -n p38 python=3.8 anaconda`
 
