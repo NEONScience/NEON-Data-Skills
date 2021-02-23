@@ -78,7 +78,7 @@ archives. US Country and State Boundary layers are from the
 
 ## Set Up For NEON Data Skills Tutorials
 Many NEON data tutorials utilize teaching data subsets which are hosted on the 
-NEON Data Skills fig**share** repository. If a data subset is required for a 
+NEON Data Skills **figshare** repository. If a data subset is required for a 
 tutorial it can be downloaded at the top of each tutorial in the **Download 
 Data** section. 
 
@@ -93,10 +93,15 @@ that R cannot find the file.
 written assuming the working directory is the parent directory to the 
 uncompressed .zip file of downloaded data. This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 
-</div>
+Generally, these tutorials have a default working directory of **~/Documents/data**. 
+If you are working on a Mac, we suggest that you save your downloaded datasets 
+in a directory with the same name and location so that you don't have to edit 
+the code for the tutorial that you are working on. Most windows machines cannot 
+use the tilde "~" notation, therefore you must define the working directory 
+explicitly.</div>
 
 * Wondering why we're saying **directory** instead of **folder**?  See our
- discussion of Directory vs. Folder at the end of this tutorial. 
+ discussion of Directory vs. Folder in the middle of this tutorial. 
 
 ## Download & Uncompress the Data
 
@@ -232,6 +237,10 @@ noted.
 Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
 the format of the operating system you are currently using.
 
+Tip: When typing in the Rstudio console or an R script, if you surround your 
+filepath with quotes you can take advantage of the 'tab-completion' feature. 
+To use this feature, begin typing your filepath (e.g., "~/" or "C:") and then hit the tab button, which should pop up a list of possible directories and files that you could be pointing to. This method is awesome for avoiding typos in complex or long filepaths!
+
 Bonus: Write the path as for one of the other operating systems. 
 </div>
 
@@ -344,18 +353,36 @@ We want to set our working directory to the **data** directory.
 
 ### Set the Working Directory: Base Path in Script
 We can set the working directory using the code `setwd("PATH")` where PATH is 
-the full path to the desired directory. 
+the full path to the desired directory. You can enter "PATH" as a string (as 
+shown below), or save the file path as a string to a variable (e.g., 
+`wd <- "~/Documents/data"`) and then set the working directory based on 
+that variable (e.g., `setwd(wd)`).
 
-Now, set your working directory to the directory where you have the data saved. 
-There is no R output from `setwd()`. If we want to check that the working
-directory is correctly set we can use `getwd()`.
+This latter method is used in many of the NEON Data Skills tutorials because 
+of the advantages that this method provides. First, this method is extermely 
+flexible across different comput environments and formats, including personal 
+computers, Linux-based servers on 'the cloud' (e.g., CyVerse), and when using 
+Rmarkdown (.Rmd) documents. Second this method allows the tutorial's 
+user to set their working directory once as a string and then to reuse that 
+string as needed to reference input files, or make output files. For example, 
+some functions must have a full filepath to an input file (such as when reading 
+in HDF5 files). Third, this method simplifies the process that NEON uses internally 
+to create and update these tutorials. All in all, using saving filepaths and working 
+directory as a string input makes the code more explicit and determanistic without 
+relying on working knowledge of relative filepaths, making your code more 
+producible and easier for an outsider to interpret.
+
+Now, use these techniques to set your working directory to the directory where 
+you have the data saved. There is no R output from `setwd()`. If we want to check 
+that the working directory is correctly set we can use `getwd()`.
 
 #### Example Windows File Path
 Notice the the backslashes used in Windows paths must be changed to slashes in
 R. 
 
 	# set the working directory to `data` folder
-	setwd("C:/Users/neon/Documents/data")
+	wd <- "C:/Users/neon/Documents/data"
+	setwd(wd)
 
 	# check to ensure path is correct
 	getwd()
@@ -363,7 +390,8 @@ R.
 
 #### Example Mac OS X File Path
 	# set the working directory to `data` folder
-	setwd("/Users/neon/Documents/data")
+	wd <- "/Users/neon/Documents/data"
+	setwd(wd)
 
 	# check to ensure path is correct
 	getwd()
@@ -402,6 +430,16 @@ contents of the working directory in the Files pane.
 
 
 ### Set the Working Directory: Using R GUI
+You can also set the working directory using the Rstudio graphical user interface. 
+This method is easy for beginners to learn, but it also makes your code less 
+reproducible because it relies on a person to follow certain instructions, which 
+is a process that introduces human error. It may also be unclear for an observer 
+to determine where your input data are stored, which can make troubleshooting 
+more difficult as well. Use this method when getting started, or when you will 
+find it helpful to use a graphical user interface to navigate your files. 
+Note that this method will run a single line `setwd()` command in the console 
+when you select your working directory, so you can copy/paste that line into 
+your script for future use!
 
 #### Windows Operating Systems: 
 
