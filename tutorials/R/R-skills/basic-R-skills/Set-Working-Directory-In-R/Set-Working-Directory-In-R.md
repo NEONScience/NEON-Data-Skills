@@ -241,11 +241,11 @@ Tip: When typing in the Rstudio console or an R script, if you surround your
 filepath with quotes you can take advantage of the 'tab-completion' feature. 
 To use this feature, begin typing your filepath (e.g., "~/" or "C:") and then hit the tab button, which should pop up a list of possible directories and files that you could be pointing to. This method is awesome for avoiding typos in complex or long filepaths!
 
-Bonus: Write the path as for one of the other operating systems. 
+Bonus Points: Write the path as for one of the other operating systems. 
 </div>
 
 ### Relative Path
-A relative path is a path to a directory or file that is starts from the
+A relative path is a path to a directory or file that starts from the
 location determined by the working directory. If our working directory is set
 to the **data** directory,
 
@@ -360,20 +360,21 @@ that variable (e.g., `setwd(wd)`).
 
 This latter method is used in many of the NEON Data Skills tutorials because 
 of the advantages that this method provides. First, this method is extermely 
-flexible across different comput environments and formats, including personal 
-computers, Linux-based servers on 'the cloud' (e.g., CyVerse), and when using 
+flexible across different compute environments and formats, including personal 
+computers, Linux-based servers on 'the cloud' (e.g., AWS, CyVerse), and when using 
 Rmarkdown (.Rmd) documents. Second this method allows the tutorial's 
 user to set their working directory once as a string and then to reuse that 
 string as needed to reference input files, or make output files. For example, 
 some functions must have a full filepath to an input file (such as when reading 
 in HDF5 files). Third, this method simplifies the process that NEON uses internally 
-to create and update these tutorials. All in all, using saving filepaths and working 
-directory as a string input makes the code more explicit and determanistic without 
+to create and update these tutorials. All in all, saving the working 
+directory as a string variable makes the code more explicit and determanistic without 
 relying on working knowledge of relative filepaths, making your code more 
 producible and easier for an outsider to interpret.
 
-Now, use these techniques to set your working directory to the directory where 
-you have the data saved. There is no R output from `setwd()`. If we want to check 
+To practice, use these techniques to set your working directory to the directory where 
+you have the data saved, and check that you set the working directory correctly. 
+There is no R output from `setwd()`. If we want to check 
 that the working directory is correctly set we can use `getwd()`.
 
 #### Example Windows File Path
@@ -417,7 +418,7 @@ contents of the working directory in the Files pane.
 You can also set the working directory using the Rstudio and/or R graphical user interface (GUI). 
 This method is easy for beginners to learn, but it also makes your code less 
 reproducible because it relies on a person to follow certain instructions, which 
-is a process that introduces human error. It may also be unclear for an observer 
+is a process that introduces human error. It may also be impossible for an observer 
 to determine where your input data are stored, which can make troubleshooting 
 more difficult as well. Use this method when getting started, or when you will 
 find it helpful to use a graphical user interface to navigate your files. 
