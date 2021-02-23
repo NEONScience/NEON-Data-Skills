@@ -1,15 +1,16 @@
-## convert python files to .md, .py, .html files and make figures
+## convert python-based tutorial .ipynb files to 
+## .md, .py, .html files, make figures, and 
+## update URLs to figures in the .md file
 
 rm(list=ls())
 
 #### MUST CHANGE FOR LOCAL MACHINE ####
-# This should point to the sbsolute path to your tutorials dir
+# This should point to the absolute path to your tutorials dir
 # and must include the (.*) after /tutorials/
 pattern="/Users/olearyd/Git/main/NEON-Data-Skills/tutorials/(.*)"
 #### MUST CHANGE FOR LOCAL MACHINE ####
 
-# script will search recursively in this file for all .ipynb files
-# Suggested that you 
+# Script will search recursively in this file for all .ipynb files
 input.path="~/Git/main/NEON-Data-Skills/tutorials/Python/Hyperspectral/indices/Cal_NDVI_Extract_Spectra_Masks_Flightlines_py/"
 
 # Find all files to change
