@@ -414,6 +414,16 @@ contents of the working directory in the Files pane.
 
 
 ### Set the Working Directory: Using RStudio GUI
+You can also set the working directory using the Rstudio and/or R graphical user interface (GUI). 
+This method is easy for beginners to learn, but it also makes your code less 
+reproducible because it relies on a person to follow certain instructions, which 
+is a process that introduces human error. It may also be unclear for an observer 
+to determine where your input data are stored, which can make troubleshooting 
+more difficult as well. Use this method when getting started, or when you will 
+find it helpful to use a graphical user interface to navigate your files. 
+Note that this method will run a single line `setwd()` command in the console 
+when you select your working directory, so you can copy/paste that line into 
+your script for future use!
 
 1. Go to `Session` in menu bar,
 2. select `Select Working Directory`,
@@ -430,16 +440,6 @@ contents of the working directory in the Files pane.
 
 
 ### Set the Working Directory: Using R GUI
-You can also set the working directory using the Rstudio graphical user interface. 
-This method is easy for beginners to learn, but it also makes your code less 
-reproducible because it relies on a person to follow certain instructions, which 
-is a process that introduces human error. It may also be unclear for an observer 
-to determine where your input data are stored, which can make troubleshooting 
-more difficult as well. Use this method when getting started, or when you will 
-find it helpful to use a graphical user interface to navigate your files. 
-Note that this method will run a single line `setwd()` command in the console 
-when you select your working directory, so you can copy/paste that line into 
-your script for future use!
 
 #### Windows Operating Systems: 
 
