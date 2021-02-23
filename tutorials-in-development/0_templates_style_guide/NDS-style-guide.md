@@ -197,7 +197,7 @@ be updating that tutorial ASAP
 ## Additional Resources
 You can list any additional resources you'd like to link to if needed. 
 
-* <a href="URL Here" target="_blank"> Resource Name/a>,
+* <a href="URL Here" target="_blank"> Resource Name</a>,
  
 </div>
 

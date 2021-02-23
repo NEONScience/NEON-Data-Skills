@@ -108,7 +108,7 @@ will appear correctly. (Spaces at beginning of each line only added so as not to
     *see list in processing_code/_data/languagesTool.yml for the correct list. If you would like to add a term please include in your PR message. 
     dataProduct: DP1.0001.01
     *all NEON data products used in the tutorial written in the above format. (no .yml for this list). 
-    code1: don't worry about this field, a NEON Data Skills team member will populate this for you as a part of the publishing process
+    code1: a URL to where the code for this tutorial is located on GitHub. Don't worry about this field, a NEON Data Skills team member will populate this for you as a part of the publishing process
     tutorialSeries: 
     *if the tutorial is part of a series, this metadata isn't used by the Drupal site but is useful for tutorial management
     urlTitle: styles-css 
