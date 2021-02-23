@@ -18,14 +18,11 @@ urlTitle: set-working-directory-r
 
 
 The primary goal of this tutorial is to explain how to set a working directory 
-in R. The working directory is where your R session interacts with your hard drive. 
-This is where you can read data that you want to use, and save new information such 
-as derived data products, tables, maps, and figures. It is a good practice to store 
-your information in an organized set of directories, so you will often want to change 
-your working directory depending on what kinds of information that you need to access.
-This tutorial teaches how to download and unzip the data files that accompany many 
-NEON Data Skills tutorials, and also covers the concept of file paths. You can read 
-from top to bottom, or use the menu bar at left to navigate to your desired topic.
+in R. The working directory points to a directory or folder on the computer 
+where data that you wish to work with in R is stored. Along the way it teaches
+how to download and unzip the data files that accompany many NEON Data Skills 
+tutorials and the concepts of file paths – use the menu bar at right to navigate 
+to your desired topic.
 
 <div id="ds-objectives" markdown="1">
 

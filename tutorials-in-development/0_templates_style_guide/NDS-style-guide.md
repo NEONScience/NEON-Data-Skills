@@ -162,7 +162,7 @@ known use cases, as of early 2020 we are migrating to a new method to
 define and call the working directory for tutorials that read in or write
 out data. 
 
-We accomplish this by explicetly defining the working directory at the
+We accomplish this by explicitly defining the working directory at the
 beginning of the tutorial, and then using paste0(wd, ...) to give the full
 file path each and every time that we read or write data. Note that the 
 working directory definition includes a `/` character at the end of the
