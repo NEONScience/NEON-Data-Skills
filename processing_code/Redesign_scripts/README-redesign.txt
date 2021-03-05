@@ -10,5 +10,4 @@
 	4) Run "Redesign_replace_graphics_URLs.R" 
 		a. This replaces all {{ site.baseurl }} references with the appropriate link to a permanent URL
 	5) Next step would be to replace the _includes HTML with appropriate HTML/md text
-	6) Also, need to re-map graphics filepaths when available
-	7) Add 'knit' command to processing_code to make HTML as well
+	6) Also, need to re-map graphics filepaths when available Redesign_remap_graphics_URLs.R - this will search for filenames of graphics that have been moved and update the links accordingly.
