@@ -4,7 +4,7 @@ title: "Unsupervised Spectral Classification in Python: Endmember Extraction"
 description: "Learn to classify spectral data using Endmember Extraction, Spectral Information Divergence, and Spectral Angle Mapping."
 dateCreated: 2018-07-10 
 authors: Bridget Hass
-contributors:
+contributors: Donal O'Leary
 estimatedTime:
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
@@ -34,8 +34,11 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://neondata.sharefile.com/d-s1dc135daffd4e65b" class="btn btn-success">
-Download the spectral classification teaching data subset</a>
+This tutorial uses a 1km AOP Hyperspectral Reflectance 'tile' from the SERC site. <a href="https://ndownloader.figshare.com/files/25752665">
+Download the spectral classification teaching data subset here</a>.
+
+<a href="https://ndownloader.figshare.com/files/25752665" class="link--button link--arrow">
+Download Dataset</a>
 
 </div>
 
@@ -57,7 +60,8 @@ or if already in a Jupyter Notebook:
 
 ```python
 import sys
-#!{sys.executable} -m pip install "C:\Users\bhass\Downloads\pysptools-0.14.2.tar.gz
+# You will need to download the package using the link above 
+# and re-point the filepath to the tar.gz file below
 !{sys.executable} -m pip install "/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz"
 !conda install --yes --prefix {sys.prefix} scikit-learn
 !conda install --yes --prefix {sys.prefix} cvxopt
@@ -70,23 +74,6 @@ We will also use the following user-defined functions:
 * **`plot_aop_refl`**: function to plot a band of NEON hyperspectral data for reference
 
 Once PySpTools is installed, import the following packages. 
-
-import h5py, os, copy
-import matplotlib.pyplot as plt
-import numpy as np
-import pysptools.util as util
-import pysptools.eea as eea #endmembers extraction algorithms
-import pysptools.abundance_maps as amap
-import pysptools.classification as cls
-import pysptools.material_count as cnt
-
-%matplotlib inline
-
-#for clean output, to not print warnings, don't use when developing script
-import warnings
-warnings.filterwarnings('ignore')
-
-Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 
 ```python
@@ -105,6 +92,8 @@ import pysptools.material_count as cnt
 import warnings
 warnings.filterwarnings('ignore')
 ```
+
+Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
 
 ```python
@@ -184,7 +173,8 @@ Now that the function is defined, we can call it to read in the sample reflectan
 
 
 ```python
-#h5refl_filename = '../data/Hyperspectral/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
+# You will need to download the example dataset using the link above, 
+# then update the filepath below to fit your local file structure
 h5refl_filename = '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5'
 data,metadata = read_neon_reflh5(h5refl_filename)
 ```
@@ -287,9 +277,7 @@ Note that we have retained 360 of the 426 bands. This still contains plenty of i
 plt.hist(data_clean[~np.isnan(data_clean)],50);
 ```
 
-
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_17_0.png)
-
 
 Lastly, let's take a look at the data using the function `plot_aop_refl` function:
 
@@ -311,8 +299,6 @@ def plot_aop_refl(band_array,
     ax.ticklabel_format(useOffset=False, style='plain'); 
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); 
 ```
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_19_0.png)
 
 
 ```python
@@ -472,8 +458,8 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 From this map we can see that SID did a pretty good job of identifying the water (dark blue), roads/buildings (orange), and vegetation (blue). We can compare it to the <a href="https://viewer.nationalmap.gov/" target="_blank">USA Topo Base map</a>.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/site-images/SERC_368000_4307000_UStopo.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/site-images/SERC_368000_4307000_UStopo.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SERC_368000_4307000_UStopo.png" width="300" height="300"></a>
 	<figcaption> The NEON SJER field site. Source: National Ecological Observatory Network (NEON) 
 	</figcaption>
 </figure>

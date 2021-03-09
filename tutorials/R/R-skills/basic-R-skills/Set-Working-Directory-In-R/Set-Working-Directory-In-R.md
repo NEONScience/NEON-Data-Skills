@@ -3,7 +3,7 @@ syncID: 4ceab45849cd4a459da8f61d33906706
 title: "Download a NEON Teaching Data Subset & Set A Working Directory In R"
 description: "This tutorial explains how to set a working directory in R. The working directory points to a directory or folder on the computer where data that you wish to work with in R is stored."
 dateCreated:  2015-12-07
-authors: Megan A. Jones
+authors: Megan A. Jones, Donal O'Leary
 contributors: Leah A. Wasser, Garrett M. Williams
 estimatedTime:
 packagesLibraries:
@@ -18,11 +18,14 @@ urlTitle: set-working-directory-r
 
 
 The primary goal of this tutorial is to explain how to set a working directory 
-in R. The working directory points to a directory or folder on the computer 
-where data that you wish to work with in R is stored. Along the way it teaches
-how to download and unzip the data files that accompany many NEON Data Skills 
-tutorials and the concepts of file paths – use the menu bar at right to navigate 
-to your desired topic.
+in R. The working directory is where your R session interacts with your hard drive. 
+This is where you can read data that you want to use, and save new information such 
+as derived data products, tables, maps, and figures. It is a good practice to store 
+your information in an organized set of directories, so you will often want to change 
+your working directory depending on what kinds of information that you need to access.
+This tutorial teaches how to download and unzip the data files that accompany many 
+NEON Data Skills tutorials, and also covers the concept of file paths. You can read 
+from top to bottom, or use the menu bar at left to navigate to your desired topic.
 
 <div id="ds-objectives" markdown="1">
 
@@ -75,7 +78,7 @@ archives. US Country and State Boundary layers are from the
 
 ## Set Up For NEON Data Skills Tutorials
 Many NEON data tutorials utilize teaching data subsets which are hosted on the 
-NEON Data Skills fig**share** repository. If a data subset is required for a 
+NEON Data Skills **figshare** repository. If a data subset is required for a 
 tutorial it can be downloaded at the top of each tutorial in the **Download 
 Data** section. 
 
@@ -90,10 +93,15 @@ that R cannot find the file.
 written assuming the working directory is the parent directory to the 
 uncompressed .zip file of downloaded data. This allows for multiple data 
 subsets to be accessed in the tutorial without resetting the working directory. 
-</div>
+Generally, these tutorials have a default working directory of **~/Documents/data**. 
+If you are working on a Mac, we suggest that you save your downloaded datasets 
+in a directory with the same name and location so that you don't have to edit 
+the code for the tutorial that you are working on. Most windows machines cannot 
+use the tilde "~" notation, therefore you must define the working directory 
+explicitly.</div>
 
 * Wondering why we're saying **directory** instead of **folder**?  See our
- discussion of Directory vs. Folder at the end of this tutorial. 
+ discussion of Directory vs. Folder in the middle of this tutorial. 
 
 ## Download & Uncompress the Data
 
@@ -109,8 +117,8 @@ data subset is for those wishing to practice these skills in a Challenge
 activity and will be downloaded at that time. 
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/download-data-screenshot.png" alt="Example Download Data box containing two download buttons, one labeled 'Download NEON Teaching Data Subset: Meteorological Data for Harvard Forest' and another labeled 'Download NEON Teaching Data Subset: Site Layout Shapefiles"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/download-data-screenshot.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/download-data-screenshot.png" alt="Example Download Data box containing two download buttons, one labeled 'Download NEON Teaching Data Subset: Meteorological Data for Harvard Forest' and another labeled 'Download NEON Teaching Data Subset: Site Layout Shapefiles"></a>
 	 <figcaption> Screenshot of the <b>Download Data </b> button at the top of 
 	 NEON Data Skills tutorials. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -127,8 +135,8 @@ Note: You may have previously specified a specific directory (folder) for files
 downloaded from the internet, if so, the .zip file will download there.
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/downloads_folder.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/downloads_folder.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/downloads_folder.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/downloads_folder.png"></a>
 	 <figcaption> Screenshot of the computer's Downloads folder containing the
 	 new <b>NEONDSMetTimeSeries.zip </b> file. Source: National Ecological
 	 Observatory Network (NEON) 
@@ -168,8 +176,8 @@ completed the challenge above. If you did not, your directory should look the
 same but without that directory. 
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/neon-documents-contents.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/neon-documents-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/neon-documents-contents.png"></a>
 	 <figcaption> Screenshot of the <b>neon</b> directory with the nested 
 	 <b>Documents</b>, <b>data</b>, <b>NEON-DS-Met-Time-Series</b>, and other 
 	 directories. Source: National Ecological Observatory Network
@@ -229,11 +237,15 @@ noted.
 Write out the full path for the `NEON-DS-Site-Layout-Shapefiles` directory. Use
 the format of the operating system you are currently using.
 
-Bonus: Write the path as for one of the other operating systems. 
+Tip: When typing in the Rstudio console or an R script, if you surround your 
+filepath with quotes you can take advantage of the 'tab-completion' feature. 
+To use this feature, begin typing your filepath (e.g., "~/" or "C:") and then hit the tab button, which should pop up a list of possible directories and files that you could be pointing to. This method is awesome for avoiding typos in complex or long filepaths!
+
+Bonus Points: Write the path as for one of the other operating systems. 
 </div>
 
 ### Relative Path
-A relative path is a path to a directory or file that is starts from the
+A relative path is a path to a directory or file that starts from the
 location determined by the working directory. If our working directory is set
 to the **data** directory,
 
@@ -243,8 +255,8 @@ we can then create a relative path for all directories and files within the
 **data** directory. 
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/data-folder-contents.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/data-folder-contents.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/data-folder-contents.png"></a>
 	 <figcaption> Screenshot of the data directory containing the both NEON Data 
 	 Skills Teaching Subsets. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -341,18 +353,37 @@ We want to set our working directory to the **data** directory.
 
 ### Set the Working Directory: Base Path in Script
 We can set the working directory using the code `setwd("PATH")` where PATH is 
-the full path to the desired directory. 
+the full path to the desired directory. You can enter "PATH" as a string (as 
+shown below), or save the file path as a string to a variable (e.g., 
+`wd <- "~/Documents/data"`) and then set the working directory based on 
+that variable (e.g., `setwd(wd)`).
 
-Now, set your working directory to the directory where you have the data saved. 
-There is no R output from `setwd()`. If we want to check that the working
-directory is correctly set we can use `getwd()`.
+This latter method is used in many of the NEON Data Skills tutorials because 
+of the advantages that this method provides. First, this method is extermely 
+flexible across different compute environments and formats, including personal 
+computers, Linux-based servers on 'the cloud' (e.g., AWS, CyVerse), and when using 
+Rmarkdown (.Rmd) documents. Second this method allows the tutorial's 
+user to set their working directory once as a string and then to reuse that 
+string as needed to reference input files, or make output files. For example, 
+some functions must have a full filepath to an input file (such as when reading 
+in HDF5 files). Third, this method simplifies the process that NEON uses internally 
+to create and update these tutorials. All in all, saving the working 
+directory as a string variable makes the code more explicit and determanistic without 
+relying on working knowledge of relative filepaths, making your code more 
+producible and easier for an outsider to interpret.
+
+To practice, use these techniques to set your working directory to the directory where 
+you have the data saved, and check that you set the working directory correctly. 
+There is no R output from `setwd()`. If we want to check 
+that the working directory is correctly set we can use `getwd()`.
 
 #### Example Windows File Path
 Notice the the backslashes used in Windows paths must be changed to slashes in
 R. 
 
 	# set the working directory to `data` folder
-	setwd("C:/Users/neon/Documents/data")
+	wd <- "C:/Users/neon/Documents/data"
+	setwd(wd)
 
 	# check to ensure path is correct
 	getwd()
@@ -360,7 +391,8 @@ R.
 
 #### Example Mac OS X File Path
 	# set the working directory to `data` folder
-	setwd("/Users/neon/Documents/data")
+	wd <- "/Users/neon/Documents/data"
+	setwd(wd)
 
 	# check to ensure path is correct
 	getwd()
@@ -373,8 +405,8 @@ contents of the working directory in the Files pane.
 
 
  <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-working-directory.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-working-directory.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/RStudio-working-directory.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/RStudio-working-directory.png"></a>
 	 <figcaption> The Files pane in RStudio shows the contents of the current
 	 working directory. Source: National Ecological Observatory Network
 	 (NEON) 
@@ -383,6 +415,16 @@ contents of the working directory in the Files pane.
 
 
 ### Set the Working Directory: Using RStudio GUI
+You can also set the working directory using the Rstudio and/or R graphical user interface (GUI). 
+This method is easy for beginners to learn, but it also makes your code less 
+reproducible because it relies on a person to follow certain instructions, which 
+is a process that introduces human error. It may also be impossible for an observer 
+to determine where your input data are stored, which can make troubleshooting 
+more difficult as well. Use this method when getting started, or when you will 
+find it helpful to use a graphical user interface to navigate your files. 
+Note that this method will run a single line `setwd()` command in the console 
+when you select your working directory, so you can copy/paste that line into 
+your script for future use!
 
 1. Go to `Session` in menu bar,
 2. select `Select Working Directory`,
@@ -390,8 +432,8 @@ contents of the working directory in the Files pane.
 4. in the new window that appears, select the appropriate directory. 
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-GUI-setWD.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/RStudio-GUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/RStudio-GUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/RStudio-GUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the RStudio GUI.
 	 Source: National Ecological Observatory Network (NEON) 
 	 </figcaption>
@@ -407,8 +449,8 @@ contents of the working directory in the Files pane.
 3. in the new window that appears, select the appropriate directory.
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Windows-RGUI-setWD.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Windows-RGUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/Windows-RGUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/Windows-RGUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the R GUI in Windows.
 	 Source: National Ecological Observatory Network (NEON) 
 	 </figcaption>
@@ -421,8 +463,8 @@ contents of the working directory in the Files pane.
 3. in the new window that appears, select the appropriate directory.
 
 <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Mac-RGUI-setWD.png">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/set-working-dir/Mac-RGUI-setWD.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/Mac-RGUI-setWD.png">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/Mac-RGUI-setWD.png"></a>
 	 <figcaption> How to set the working directory using the R GUI in Mac OS X. 
 	 Source: National Ecological Observatory Network (NEON)  
 	 </figcaption>

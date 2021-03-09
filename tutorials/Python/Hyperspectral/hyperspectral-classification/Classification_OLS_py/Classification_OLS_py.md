@@ -4,13 +4,13 @@ title: "Classification of Hyperspectral Data with Ordinary Least Squares in Pyth
 description: "Learn to classify spectral data using the Ordinary Least Squares method." 
 dateCreated: 2017-06-21 
 authors: Paul Gader
-contributors: 
+contributors: Donal O'Leary
 estimatedTime: 
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Classification_OLS_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: classification-ols-python
 ---
@@ -36,26 +36,31 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://ndownloader.figshare.com/files/8730436" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8730436">
 Download the spectral classification teaching data subset</a>
+
+<a href="https://ndownloader.figshare.com/files/8730436" class="link--button link--arrow">
+Download Dataset</a>
 
 ### Additional Materials
 
 This tutorial was prepared in conjunction with a presentation on spectral classification
 that can be downloaded. 
 
-<a href="https://ndownloader.figshare.com/files/8730613" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8730613">
 Download Dr. Paul Gader's Classification 1 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731960" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731960">
 Download Dr. Paul Gader's Classification 2 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731963" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731963">
 Download Dr. Paul Gader's Classification 3 PPT</a>
 
 </div>
 
 Classification with Ordinary Least Squares solves the 2-class least squares problem. 
+
+First, we load the required packages and set initial variables.
 
 
 ```python
@@ -65,23 +70,26 @@ import matplotlib.pyplot as mplt
 from scipy import linalg
 from scipy import io
 
-```
 
-Let's load the data. 
+### Ordinary Least Squares
+### SOLVES 2-CLASS LEAST SQUARES PROBLEM
 
-
-```python
 ### LOAD DATA ###
 ### IF LoadClasses IS True, THEN LOAD DATA FROM FILES ###
 ### OTHERSIE, RANDOMLY GENERATE DATA ###
-
-LoadClasses    = False
+LoadClasses    = True
 TrainOutliers  = False
 TestOutliers   = False
 NOut           = 20
 NSampsClass    = 200
 NSamps         = 2*NSampsClass
 
+```
+
+Next, we read in the example data. Note that you will need to update the filepaths below to work on your machine.
+
+
+```python
 if LoadClasses:
     
     ### GET FILENAMES %%%
@@ -89,12 +97,14 @@ if LoadClasses:
     ### LinSepC1, LinSepC2,LinSepC2Outlier (Still Linearly Separable) ###
     ### NonLinSepC1, NonLinSepC2, NonLinSepC22 ###
     
-    InFile1          = 'NonLinSepC1.mat'
-    InFile2          = 'NonLinSepC22.mat'
+    
+    ## You will need to update these filepaths for your machine:
+    InFile1          = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/NonLinSepC1.mat'
+    InFile2          = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/NonLinSepC2.mat'
     C1Dict           = io.loadmat(InFile1)
     C2Dict           = io.loadmat(InFile2)
     C1               = C1Dict['NonLinSepC1']
-    C2               = C2Dict['NonLinSepC22']
+    C2               = C2Dict['NonLinSepC2']
     
     if TrainOutliers:
         ### Let's Make Some Noise ###
@@ -123,10 +133,10 @@ else:
 
 ```
 
-Now we can plot the data
+Now we can plot the data.
+
 
 ```python
-
 ### PLOT DATA ###
 matplotlib.pyplot.figure(1)
 matplotlib.pyplot.plot(C1[:NSampsClass, 0], C1[:NSampsClass, 1], 'bo')
@@ -134,18 +144,14 @@ matplotlib.pyplot.plot(C2[:NSampsClass, 0], C2[:NSampsClass, 1], 'ro')
 matplotlib.pyplot.show()
 ```
 
-    [[ 0.15  0.1 ]
-     [ 0.1   0.15]]
-    (200, 2)
-    (200, 2)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_6_0.png)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_0_1.png)
 
 
 ```python
 ### SET UP TARGET OUTPUTS ###
-TargetOutputs = np.ones((NSamps,1))
+TargetOutputs          = np.ones((NSamps,1))
 TargetOutputs[NSampsClass:NSamps] = -TargetOutputs[NSampsClass:NSamps]
 
 ### PLOT TARGET OUTPUTS ###
@@ -155,7 +161,8 @@ matplotlib.pyplot.plot(range(NSampsClass, NSamps), TargetOutputs[range(NSampsCla
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_1_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_7_0.png)
 
 
 
@@ -173,9 +180,12 @@ w
 ```
 
 
-    array([[-0.60882271],
-           [-0.78680753],
-           [ 0.72667843]])
+
+
+    array([[ 1.00766843],
+           [ 1.16641088],
+           [-0.29237104]])
+
 
 
 
@@ -192,14 +202,16 @@ matplotlib.pyplot.title('TrainingOutputs (Magenta) vs Desired Outputs (Black)')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_4_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_10_0.png)
+
 
 
 ```python
 ### CALCULATE AND PLOT LINEAR DISCRIMINANT ###
 Slope     = -w[1]/w[0]
 Intercept = -w[2]/w[0]
-Domain    = np.linspace(-1.1, 1.1, 60)
+Domain    = np.linspace(-1.1, 1.1, 60)  # set up the descision surface domain, -1.1 to 1.1 (looking at the data), do it 60 times
 Disc      = Slope*Domain+Intercept
 
 matplotlib.pyplot.figure(4)
@@ -211,7 +223,9 @@ matplotlib.pyplot.title('Ordinary Least Squares')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_5_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_11_0.png)
+
 
 
 ```python
@@ -240,11 +254,11 @@ matplotlib.pyplot.title('Ridge Regression')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_7_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_13_0.png)
 
 
-First, let's save this project with the name: OLSandRidgeRegress2DYourName. 
-Take a new project for spectra.
+Save this project with the name: OLSandRidgeRegress2DPGader.  Make a New Project for Spectra.
 
 
 ```python
@@ -260,8 +274,8 @@ matplotlib.pyplot.title('TrainingOutputs (Magenta) vs Desired Outputs (Black)')
 matplotlib.pyplot.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_OLS/output_9_0.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_OLS_py/Classification_OLS_py_files/Classification_OLS_py_15_0.png)
 
 
 
@@ -289,10 +303,10 @@ print(Corr1r + Corr2r, 'Correctly Classified for a ', round(100*CorrClassRater),
 ```
 
     Result for Ordinary Least Squares
-    373 Correctly Classified for a  93.0 % Correct Classification 
+    397 Correctly Classified for a  99.0 % Correct Classification 
     
     Result for Ridge Regression
-    373 Correctly Classified for a  93.0 % Correct Classification 
+    397 Correctly Classified for a  99.0 % Correct Classification 
     
 
 
@@ -318,17 +332,18 @@ print('Confusion Matrix for Ridge Regression \n', Cm, '\n')
 ```
 
     Confusion Matrix for OLS Regression 
-     [[ 93.   7.]
-     [  6.  94.]] 
+     [[100.   0.]
+     [  1.  99.]] 
     
     Confusion Matrix for Ridge Regression 
-     [[ 93.   7.]
-     [  6.  94.]] 
+     [[100.   0.]
+     [  1.  99.]] 
     
 
- <div id="ds-challenge" markdown="1">
 
-**Challenge: Ordinary Least Square**
-Run Ordinary Least Squares and Ridge Regression on Spectra and plot the weights.
+EXERCISE:  Run Ordinary Least Squares and Ridge Regression on Spectra and plot the weights
 
-</div>
+
+```python
+
+```

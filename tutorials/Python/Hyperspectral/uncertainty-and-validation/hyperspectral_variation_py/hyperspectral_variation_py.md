@@ -15,6 +15,7 @@ tutorialSeries: rs-uncertainty-py-series
 urlTitle: hyperspectral-variation-py
 ---
 
+
 This tutorial teaches how to open a NEON AOP HDF5 file with a function, 
 batch processing several HDF5 files, relative comparison between several 
 NIS observations of the same target from different view angles, error checking. 
@@ -42,10 +43,13 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
-
 To complete this tutorial, you will use data available from the NEON 2017 Data
 Institute teaching dataset available for download. 
+
+This tutorial will use the files contained in the 'F07A' Directory in <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo0c2f24-c7d2-4c77-b297-015366afa9f4" target="_blank">this ShareFile Directory</a>. You will want to download the entire directory as a single ZIP file, then extract that file into a location where you store your data.
+
+<a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fo0c2f24-c7d2-4c77-b297-015366afa9f4" class="link--button link--arrow">
+Download Dataset</a>
 
 Caution: This dataset includes all the data for the 2017 Data Institute, 
 including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
@@ -62,12 +66,7 @@ and processed at NEON headquarters.
 The entire dataset can be accessed on the 
 <a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
 
-<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
-Download Dataset</a>
-
-
-
-
+These data are a part of the NEON 2017 Remote Sensing Data Institute. The complete archive may be found here -<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
 
 
 ### Recommended Prerequisites
@@ -124,6 +123,7 @@ removed in order to reduce file size.
 
 We'll start off by again adding necessary libraries and our NEON AOP HDF5 reader 
 function.
+
 
 
 ```python
@@ -187,19 +187,16 @@ print('Starting BRDF Analysis')
 ```
 
     Starting BRDF Analysis
-    
 
-First we will define the extents of the rectangular array containing the 
-section from each BRDF flightline. 
+
+First we will define the extents of the rectangular array containing the section from each BRDF flightline. 
 
 
 ```python
 BRDF_rectangle = np.array([[740315,3982265],[740928,3981839]],np.float)
 ```
 
-Next we will define the coordinates of the target of interest. These can be 
-set as any coordinate pait that falls within the rectangle above, therefore 
-the coordaintes must be in UTM Zone 16 N.  
+Next we will define the coordinates of the target of interest. These can be set as any coordinate pait that falls within the rectangle above, therefore the coordaintes must be in UTM Zone 16 N.  
 
 
 ```python
@@ -207,9 +204,7 @@ x_coord = 740600
 y_coord = 3982000
 ```
 
-To prevent the function of failing, we will first check to ensure the 
-coordinates are within the rectangular bounding box. If they are not, 
-we throw an error message and exit from the script.
+To prevent the function of failing, we will first check to ensure the coordinates are within the rectangular bounding box. If they are not, we throw an error message and exit from the script.
 
 
 ```python
@@ -223,18 +218,17 @@ else:
 ```
 
     Point in bounding area
-    
 
-Now we will define the location of the all the subset NEON AOP h5 files from the 
-BRDF flight.
+
+Now we will define the location of the all the subset NEON AOP h5 files from the BRDF flight
 
 
 ```python
-h5_directory = "C:/RSDI_2017/data/F07A/"
+## You will need to update this filepath for your local data directory
+h5_directory = "/Users/olearyd/Git/data/F07A/"
 ```
 
-Now we will grab all files / folders within the defined directory and then 
-cycle through them and retain only the h5 files.
+Now we will grab all files / folders within the defined directory and then cycle through them and retain only the h5files
 
 
 ```python
@@ -242,8 +236,7 @@ files = os.listdir(h5_directory)
 h5_files = [i for i in files if i.endswith('.h5')]
 ```
 
-Now we will print the h5 files to make sure they have been included and set up a 
-figure for plotting all of the reflectance curves.
+Now we will print the h5 files to make sure they have been included and set up a figure for plotting all of the reflectance curves
 
 
 ```python
@@ -253,44 +246,30 @@ fig=plt.figure()
 ax = plt.subplot(111)
 ```
 
-     ['NEON_D07_F07A_DP1_20160611_160444_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_160846_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_161228_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_161532_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_162007_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_162514_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_162951_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_163424_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_163945_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_164259_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_164809_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_165240_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_165711_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_170118_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_170538_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_170922_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_171403_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5', 
-	'NEON_D07_F07A_DP1_20160611_172430_reflectance_modify.h5']
+    ['NEON_D07_F07A_DP1_20160611_162007_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_172430_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_170118_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_164259_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_171403_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_160846_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_170922_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_162514_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_160444_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_170538_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_163945_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_163424_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_165240_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_161228_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_162951_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_161532_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_165711_reflectance_modify.h5', 'NEON_D07_F07A_DP1_20160611_164809_reflectance_modify.h5']
 
-Now we will begin cycling through all of the h5 files and retrieving the 
-information we need also print the file that is currently being processed.
 
-Inside the for loop we will:
 
-1. Read in the reflectance data and the associated metadata, but construct the 
-file name from the generated file list
-1. Determine the indexes of the water vapor bands (bad band windows) in order to 
-mask out all of the bad bands
-1. Read in the reflectance dataset using the NEON AOP H5 reader function
-1. Check the first value the first value of the reflectance curve (actually any 
-value). If it is equivalent to the NO DATA value, then coordainte chosen did not 
-intersect a pixel for the flight line. We will just continue and move to the 
-next line.
-1. Apply NaN values to the areas contianing the bad bands
-1. Split the contents of the file name so we can get the line number for 
-labelling in the plot.
-1. Plot the curve
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_14_1.png)
+
+
+Now we will begin cycling through all of the h5 files and retrieving the information we need also print the file that is currently being processed
+
+Inside the for loop we will
+
+1) read in the reflectance data and the associated metadata, but construct the file name from the generated file list
+
+2) Determine the indexes of the water vapor bands (bad band windows) in order to mask out all of the bad bands
+
+3) Read in the reflectance dataset using the NEON AOP H5 reader function
+
+4) Check the first value the first value of the reflectance curve (actually any value). If it is equivalent to the NO DATA value, then coordainte chosen did not intersect a pixel for the flight line. We will just continue and move to the next line.
+
+5) Apply NaN values to the areas contianing the bad bands
+
+6) Split the contents of the file name so we can get the line number for labelling in the plot.
+
+7) Plot the curve
 
 
 
@@ -316,30 +295,28 @@ for file in h5_files:
     ax.plot(wavelengths,reflectance_curve/metadata['scaleFactor'],label = filename_split[5]+' Reflectance')
 ```
 
-    Working on NEON_D07_F07A_DP1_20160611_160444_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_160846_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_161228_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_161532_reflectance_modify.h5
     Working on NEON_D07_F07A_DP1_20160611_162007_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_162514_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_162951_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_163424_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_163945_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_164259_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_164809_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_165240_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_165711_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_170118_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_170538_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_170922_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_171403_reflectance_modify.h5
-    Working on NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5
     Working on NEON_D07_F07A_DP1_20160611_172430_reflectance_modify.h5
-    
+    Working on NEON_D07_F07A_DP1_20160611_170118_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_164259_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_171403_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_160846_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_170922_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_162514_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_160444_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_170538_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_171852_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_163945_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_163424_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_165240_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_161228_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_162951_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_161532_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_165711_reflectance_modify.h5
+    Working on NEON_D07_F07A_DP1_20160611_164809_reflectance_modify.h5
 
-This plots the reflectance curves from all lines onto the same plot. Now, we 
-will add the appropriate legend and plot labels, display and save the plot 
-with the coordaintes in the file name so we can repeat the position of the target.
+
+This plots the reflectance curves from all lines onto the same plot. Now, we will add the appropriate legend and plot labels, display and save the plot with the coordaintes in the file name so we can repeat the position of the target
 
 
 ```python
@@ -352,14 +329,14 @@ fig.savefig('BRDF_uncertainty_at_' + str(x_coord) +'_'+ str(y_coord)+'.png',dpi=
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-variation/output_17_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/BRDF_uncertainty_at_740600_3982000.png)
 
 
-The result is a plot with all the curves in which we can visualize the difference 
-in the observations simply by chaging the flight direction with repect to the 
-ground target.
+It is possible that the figure above does not display properly, which is why we use the `fig.save()` method above to store the resulting figure as its own PNG file in the same directory as this Jupyter Notebook file.
 
-Experiment with changing the coordinate to analyze different targets within the 
-rectangle.
+The result is a plot with all the curves in which we can visualize the difference in the observations simply by chaging the flight direction with repect to the ground target.
+
+Experiment with changing the coordinates to analyze different targets within the rectangle.
 
 

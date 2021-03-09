@@ -1,13 +1,13 @@
 # Replace graphics links with static URLs 
 # Use gsub() to find instances of {{ site.baseurl }} AND {{site.baseurl}}
 
-master_dir <- "~/Git/dev-aten/NEON-Data-Skills"
+master_dir <- "~/Git/main/NEON-Data-Skills/tutorials/R/R-skills/Colorado-floods-data-visualization/Disturb-Event-Detailed-Lesson"
 
 # Find all .Rmd files
 # Do this again for .md files!
-Rmd.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials",
+Rmd.files <- list.files(master_dir,
                         pattern="\\.Rmd$", full.names = TRUE, recursive = TRUE)
-md.files <- list.files("~/Git/dev-aten/NEON-Data-Skills/tutorials",
+md.files <- list.files(master_dir,
                         pattern="\\.md$", full.names = TRUE, recursive = TRUE)
 
 all.files=c(Rmd.files, md.files)
@@ -18,7 +18,7 @@ all.files=c(Rmd.files, md.files)
 # First, replace the image references
 img.base <- "{{ site.baseurl }}/images/"
 img.base2 <- "{{site.baseurl}}/images/"
-rep_graphics_url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/"
+rep_graphics_url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/"
 
 # Next, replace neonscience.org baseurl references
 neon.base <- "{{ site.baseurl }}/"

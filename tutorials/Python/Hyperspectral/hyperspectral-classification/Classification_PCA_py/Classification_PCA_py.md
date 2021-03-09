@@ -4,13 +4,13 @@ title: "Classification of Hyperspectral Data with Principal Components Analysis 
 description: "Learn to classify spectral data using the Principal Components Analysis (PCA) method."
 dateCreated: 2017-06-21 
 authors: Paul Gader
-contributors:
+contributors: Donal O'Leary
 estimatedTime:
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
 dataProduct: NEON.DP1.30006, NEON.DP3.30006, NEON.DP1.30008
-code1: Python/remote-sensing/hyperspectral-data/Classification_PCA.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: classification-pca-python
 ---
@@ -36,21 +36,24 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
- <a href="https://ndownloader.figshare.com/files/8730436" class="btn btn-success">
+ <a href="https://ndownloader.figshare.com/files/8730436">
 Download the spectral classification teaching data subset</a>
+
+<a href="https://ndownloader.figshare.com/files/8730436" class="link--button link--arrow">
+Download Dataset</a>
 
 ### Additional Materials
 
 This tutorial was prepared in conjunction with a presentation on spectral classification
 that can be downloaded. 
 
-<a href="https://ndownloader.figshare.com/files/8730613" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8730613">
 Download Dr. Paul Gader's Classification 1 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731960" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731960">
 Download Dr. Paul Gader's Classification 2 PPT</a>
 
-<a href="https://ndownloader.figshare.com/files/8731963" class="btn btn-success">
+<a href="https://ndownloader.figshare.com/files/8731963">
 Download Dr. Paul Gader's Classification 3 PPT</a>
 
 </div>
@@ -58,6 +61,7 @@ Download Dr. Paul Gader's Classification 3 PPT</a>
 
 ## Set up
 First, we'll start by setting up the necessary environment. 
+
 
 ```python
 import numpy as np
@@ -82,10 +86,11 @@ def PlotSpectraAndMean(Spectra, Wv, fignum):
 ```
 
 Now we can load the spectra. 
+Note that you will need to update the filepath below for your local file structure.
 
 
 ```python
-filename   = 'OSBSTinyIm.mat'
+filename   = '/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/OSBSTinyIm.mat'
 ImDict     = io.loadmat(filename)
 OSBSTinyIm = ImDict['OSBSTinyIm']
 TinySize   = np.shape(OSBSTinyIm)
@@ -104,7 +109,7 @@ Now we can extract wavelengths.
 ```python
 ### LOAD WAVELENGTHS WITH WATER BANDS ###
 ### AND BAD BEGINNING AND ENDING BANDS REMOVED ###
-Wv = io.loadmat("NEONWvsNBB")
+Wv = io.loadmat('/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/NEONWvsNBB.mat')
 Wv = Wv['NEONWvsNBB']
 print(np.shape(Wv))
 
@@ -115,7 +120,9 @@ plt.show()
 
     (346, 1)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_6_1.png)
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_7_1.png)
 
 
 Let's load indices for Red, Green, and Blue for NEON hyperspectral data.
@@ -128,7 +135,7 @@ Offset     = 7
 
 ### LOAD & PRINT THE INDICES FOR THE COLORS   ###
 ### AND DIG THEM OUT OF MANY LAYERS OF ARRAYS ###
-NEONColors = io.loadmat('NEONColors.mat')
+NEONColors = io.loadmat('/Users/olearyd/Git/data/RSDI2017-Data-SpecClass/NEONColors.mat')
 NEONRed    = NEONColors['NEONRed']
 NEONGreen  = NEONColors['NEONGreen']
 NEONBlue   = NEONColors['NEONBlue']
@@ -151,7 +158,7 @@ print('Wavelengths: {0:4d} {1:4d} {2:4d} {3:4d}'.format(NEONRedWv, NEONGreenWv, 
     Wavelengths:  645  535  440 1005
 
 
-Now we can make a color image and display it.
+Now we can make a color image and display it
 
 
 ```python
@@ -162,11 +169,12 @@ plt.imshow(RGBIm)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_10_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_11_0.png)
 
 
-
-Now let's turn the image into a sequence of vectors so we can use matrix algebra.
+Now let's turn the image into a sequence of vectors
+so we can use matrix algebra
 
 
 ```python
@@ -185,7 +193,11 @@ np.shape(TinyVecs)
 ```
 
 
+
+
     (346, 12028)
+
+
 
 
 ```python
@@ -198,7 +210,8 @@ mymu        = PlotSpectraAndMean(SomeSpectra, Wv, 3)
     (346,)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_13_1.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_14_1.png)
 
 
 
@@ -207,11 +220,13 @@ np.shape(mymu)
 ```
 
 
+
+
     (346,)
 
 
 
-Let's plot some spectra.
+Let's plot some spectra
 
 
 ```python
@@ -226,10 +241,12 @@ plt.ylabel('Reflectance')
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_16_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_17_0.png)
 
 
-Compute the average spectrum and plot it.
+Compute the Average Spectrum and plot it
+
 
 
 ```python
@@ -242,7 +259,8 @@ plt.ylabel('Reflectance')
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_18_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_19_0.png)
 
 
 Now we want to subtract the mean from every sample.
@@ -253,7 +271,11 @@ np.shape(mu)
 ```
 
 
+
+
     (346,)
+
+
 
 
 ```python
@@ -268,7 +290,8 @@ plt.plot(Wv, muz, 'k')
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_21_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_22_0.png)
 
 
 Let's calculate the covariance.
@@ -280,11 +303,14 @@ np.shape(C)
 ```
 
 
+
+
     (346, 346)
 
 
+
 We can look at some of the values but there are too many to look at them all.
-We can also view C as an image. 
+We can also view C as an image.
 
 
 ```python
@@ -293,7 +319,9 @@ plt.imshow(C)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_25_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_26_0.png)
+
 
 
 ```python
@@ -345,8 +373,6 @@ for rn in range(5, 50, 5):
 
 Notice that there are no negative values.  Why?
 
-
-
 What if we normalize the vectors to have Norm 1 (a common strategy).
 
 
@@ -358,7 +384,9 @@ plt.plot(Norms)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_29_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_30_0.png)
+
 
 
 ```python
@@ -366,7 +394,11 @@ np.shape(Norms)
 ```
 
 
+
+
     (12028,)
+
+
 
 
 ```python
@@ -374,7 +406,10 @@ np.shape(TinyVecs)
 ```
 
 
+
+
     (346, 12028)
+
 
 
 
@@ -396,19 +431,20 @@ print('{0:4f} {1:4f}'.format(BigNorm, LitNorm))
 ### Too many Norms.  How do we fix?
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_33_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_33_0.png)
 
 
     1.000000 1.000000
 
- <div id="ds-challenge" markdown="1">
+
+<div id="ds-challenge" markdown="1">
 
 **Challenge: Plotting Spectra with Mean Function**
 
  Turn the script for plotting spectra and their mean above into a function. 
 
 </div>
-
 
 
 ```python
@@ -421,7 +457,8 @@ MuNorm          = PlotSpectraAndMean(SomeSpectraNorm, Wv, 3)
     (346,)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_35_1.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_35_1.png)
 
 
 
@@ -432,8 +469,8 @@ plt.imshow(CNorm)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_36_0.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_36_0.png)
 
 
 
@@ -511,8 +548,8 @@ plt.hist(NDVIVals)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_40_0.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_40_0.png)
 
 
 
@@ -523,7 +560,9 @@ plt.imshow(HiNDVI)
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_41_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_41_0.png)
+
 
 
 ```python
@@ -552,7 +591,9 @@ plt.colorbar()
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_43_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_43_0.png)
+
 
 ## PCA 
 
@@ -574,7 +615,7 @@ print(V[0,0])
     (346,)
     (346, 346)
     (346, 12028)
-    -0.0124822914573
+    -0.01248229145732034
 
 
 
@@ -594,8 +635,8 @@ plt.show()
     (346,)
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_47_1.png)
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/Classification_PCA_py/Classification_PCA_py_files/Classification_PCA_py_46_1.png)
 
 
 
@@ -676,8 +717,6 @@ ax.scatter(TinyVecsPCA[0,range(NSamps)],TinyVecsPCA[1,range(NSamps)],TinyVecsPCA
 plt.show()
 ```
 
-
-
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_1.png)
 
 
@@ -694,15 +733,14 @@ for coord in range(3):
     plt.show()
 ```
 
-
-
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_2.png)
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_3.png)
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_3.png)
 
- <div id="ds-challenge" markdown="1">
+
+<div id="ds-challenge" markdown="1">
 
 **Challenge: PCA Classification Function**
 
@@ -711,3 +749,6 @@ Write a function that calculates PCA of spectra and plots the first 3 components
 </div>
 
 
+```python
+
+```

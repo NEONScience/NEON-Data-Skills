@@ -450,7 +450,7 @@ summary {
 <p><a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow"> Download Dataset (.zip of .csv files)</a></p>
 <h3 id="working-directory">Working Directory</h3>
 <p>Setting and understanding the working directory is a common challenge for most beginner R programmers. To make matters worse, the working directory becomes much more complicated when ‘knitting’ an .Rmd file to a .md file, when running individual .Rmd file code chunks, and when doing any of the above programmatically as a batch using the ‘processing_code’ files. In order to ensure expected behavior for all known use cases, as of early 2020 we are migrating to a new method to define and call the working directory for tutorials that read in or write out data.</p>
-<p>We accomplish this by explicetly defining the working directory at the beginning of the tutorial, and then using paste0(wd, …) to give the full file path each and every time that we read or write data. Note that the working directory definition includes a <code>/</code> character at the end of the string so that you can easily append this <code>wd</code> with a filename or directory extension to make a complete filepath.</p>
+<p>We accomplish this by explicitly defining the working directory at the beginning of the tutorial, and then using paste0(wd, …) to give the full file path each and every time that we read or write data. Note that the working directory definition includes a <code>/</code> character at the end of the string so that you can easily append this <code>wd</code> with a filename or directory extension to make a complete filepath.</p>
 <p>For example, here are the first few lines of the recently updated ‘work with hyperspectral data’ tutorial (bold added for emphasis):</p>
 <p><code># set working directory to ensure R can find the file we wish to import</code> <code># and where we want to save our files. Be sure to move the download into</code> <code># your working directory!</code></p>
 <pre><code>`wd &lt;- &quot;~/Documents/data/&quot; #This will depend on your local environment` 
@@ -468,7 +468,7 @@ summary {
 <h2 id="additional-resources">Additional Resources</h2>
 <p>You can list any additional resources you’d like to link to if needed.</p>
 <ul>
-<li><a href="URL Here" target="_blank"> Resource Name/a&gt;,</li>
+<li><a href="URL Here" target="_blank"> Resource Name</a>,</li>
 </ul>
 </div>
 <hr />
