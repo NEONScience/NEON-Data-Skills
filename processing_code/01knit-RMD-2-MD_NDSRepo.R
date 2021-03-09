@@ -5,7 +5,7 @@
 # 2) purls them to .R files
 # it then cleans up all image directories, etc from the working dir!
 ##################
- 
+
 require(knitr)
 require(markdown)
 
@@ -14,19 +14,16 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/eddy4r",
-          "R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R",
-          "R/R-skills/Using-hdf5-r/Intro-HDF5-R",
-          "R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts",
-          "R/R-skills/intro-to-time-series/01-Time-Series-Metadata")
+          "R/NEON-general/neon-code-packages/NEON-API-How-To")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[5] 
+subDir <- dirs[2] 
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Git/main/NEON-Data-Skills"
+gitRepoPath <-"~/GitHub/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 

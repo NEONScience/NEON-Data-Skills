@@ -56,16 +56,16 @@ preferably, RStudio loaded on your computer.
 * **dplyr:** `install.packages("dplyr")`
 * **devtools:** `install.packages("devtools")`
 * **downloader:** `install.packages("downloader")`
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
-* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
 
-Note, you must have devtools installed & loaded, prior to loading geoNEON or neonUtilities. 
+Note, you must have devtools installed & loaded, prior to loading geoNEON. 
 
 ### Additional Resources
 
 * <a href="http://data.neonscience.org/data-api" target="_blank">Webpage for the NEON API</a>
 * <a href="https://github.com/NEONScience/neon-data-api" target="_blank">GitHub repository for the NEON API</a>
-* <a href="https://github.com/ropenscilabs/nneo" target="_blank"> ROpenSci wrapper for the NEON API</a> (not covered in this tutorial)
+* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download & Explore NEON Data</a> tutorial
 
 </div>
 
@@ -353,7 +353,7 @@ avail.soil <- jsonlite::fromJSON(content(req.soil, as="text"), simplifyDataFrame
 temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
-tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
+tmp <- GET(temp.urls[grep("MOAB/2017-08", temp.urls)])
 tmp.files <- jsonlite::fromJSON(content(tmp, as="text"))
 length(tmp.files$data$files$name) # There are a lot of available files
 tmp.files$data$files$name[1:10]   # Let's print the first 10
@@ -363,37 +363,36 @@ tmp.files$data$files$name[1:10]   # Let's print the first 10
 These file names start and end the same way as the observational files, but the 
 middle is a little more cryptic. The structure from beginning to end is: 
 
-**NEON.[domain number].[site code].[data product ID].00000.
+**NEON.[domain number].[site code].[data product ID].
 [soil plot number].[depth].[averaging interval].[data table name].
 [year]-[month].[data package].[date of file creation]**
 
-So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
-2017-03.basic.20170804T063725Z.csv** is the: 
+So **NEON.D13.MOAB.DP1.00041.001.00000.003.506.030.ST_30_minute.
+2017-08.expanded.20200620T054008Z.csv** is the: 
 
 * NEON (`NEON.`)
 * Domain 13 (`.D13.`)
 * Moab field site (`.MOAB.`) 
 * soil temperature data (`.DP1.00041.001.`)
-* (internal NEON identifier, always 00000 in published data) (`.00000.`)
-* collected in Soil Plot 2, (`.002.`)
-* at the 4th depth below the surface (`.504.`)
+* collected in Soil Plot 3, (`.003.`)
+* at the 6th depth below the surface (`.506.`)
 * and reported as a 30-minute mean of (`.030.` and `.ST_30_minute.`)
-* only for the period of March 2017 (`.2017-03.`)
-* and provided in a basic data package (`.basic.`)
-* published on Aug 4, 2017 at 06:37:25 GMT (`.20170804T063725Z.`).
+* only for the period of Aug 2017 (`.2017-08.`)
+* and provided in the basic data package (`.basic.`)
+* published on June 20, 2020 at 05:40:08 GMT (`.20200620T054008Z.`).
 
-More information about interpreting file names can be found in the readme that 
-accompanies each download.
+More information about interpreting file names can be found on the 
+<a href="https://www.neonscience.org/data-samples/data-management/data-formats-conventions" target="_blank">Data Formats</a> page.
 
 Let's get data (and the URL) for only the plot and depth described above by selecting 
-`002.504.030` and the word `basic` in the file name.
+`003.506.030` and the word `basic` in the file name.
 
 Go get it:
 
 ``` {r os-get-soil-data}
 
 soil.temp <- read.delim(tmp.files$data$files$url
-                        [intersect(grep("002.504.030", 
+                        [intersect(grep("003.506.030", 
                                         tmp.files$data$files$name),
                                    grep("basic", 
                                         tmp.files$data$files$name))], 
@@ -412,7 +411,8 @@ plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime,
 
 ```
 
-As we'd expect we see daily fluctuation in soil temperature. 
+As we'd expect we see daily fluctuation in soil temperature, and some change 
+in temperature over the month as well.
 
 
 ## Remote sensing data (AOP)
@@ -491,8 +491,9 @@ How to get spatial data and what to do with it depends on which type of
 data you're working with.
 
 #### Instrumentation data (both aquatic and terrestrial)
-Stay tuned - spatial data for instruments are in the process of entry into 
-the NEON database.
+The sensor_positions files, which are included in the list of available files, 
+contain spatial coordinates for each sensor in the data. See the final section 
+of the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-spatial-data-basics" target="_blank">Geolocation tutorial</a> for guidance in using these files.
 
 #### Observational data - Aquatic
 Latitude, longitude, elevation, and associated uncertainties are included in 
@@ -555,7 +556,7 @@ brd.point.loc <- getLocByName(brd.point)
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+symbols(brd.point.loc$easting, brd.point.loc$northing, 
         circles=brd.point.loc$coordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -570,7 +571,7 @@ brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.pt$easting, brd.point.pt$northing, 
+symbols(brd.point.pt$adjEasting, brd.point.pt$adjNorthing, 
         circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -694,9 +695,7 @@ am.list$data
 At the top of this tutorial, we installed the `neonUtilities` package. 
 This is a custom R package that stacks the monthly files provided by 
 the NEON data portal into a single continuous file for each type of 
-data table in the download. It currently handles files downloaded from 
-the data portal, but not files pulled from the API. That functionality 
-will be added soon!
+data table in the download.
 
 For a guide to using `neonUtilities` on data downloaded from the portal, 
-look <a href="https://www.neonscience.org/neonDataStackR" target="_blank">here</a>.
+check out the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
