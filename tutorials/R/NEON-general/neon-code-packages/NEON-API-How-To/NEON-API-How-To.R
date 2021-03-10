@@ -1,4 +1,4 @@
-## ----os-avail-query-----------------------------------------------------------------------
+## ----os-avail-query--------------------------------------------------------------------------------------
 
 # Load the necessary libraries
 library(httr)
@@ -11,7 +11,7 @@ req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
 req
 
 
-## ----os-query-contents--------------------------------------------------------------------
+## ----os-query-contents-----------------------------------------------------------------------------------
 
 # View requested data
 req.content <- content(req, as="parsed")
@@ -19,7 +19,7 @@ names(req.content$data)
 
 
 
-## ----os-query-contents-examples-----------------------------------------------------------
+## ----os-query-contents-examples--------------------------------------------------------------------------
 
 # View Abstract
 req.content$data$productAbstract
@@ -29,7 +29,7 @@ req.content$data$siteCodes[[27]]
 
 
 
-## ----os-query-fromJSON--------------------------------------------------------------------
+## ----os-query-fromJSON-----------------------------------------------------------------------------------
 # make this JSON readable -> "text"
 req.text <- content(req, as="text")
 
@@ -39,7 +39,7 @@ avail
 
 
 
-## ----os-query-avail-data------------------------------------------------------------------
+## ----os-query-avail-data---------------------------------------------------------------------------------
 
 # get data availability list for the product
 bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
@@ -48,7 +48,7 @@ bird.urls[1:10] #show first 10 URLs available
 
 
 
-## ----os-query-bird-data-urls--------------------------------------------------------------
+## ----os-query-bird-data-urls-----------------------------------------------------------------------------
 # get data availability for WOOD July 2015
 brd <- GET(bird.urls[grep("WOOD/2015-07", bird.urls)])
 brd.files <- jsonlite::fromJSON(content(brd, as="text"))
@@ -58,7 +58,7 @@ brd.files$data$files
 
 
 
-## ----os-get-bird-data---------------------------------------------------------------------
+## ----os-get-bird-data------------------------------------------------------------------------------------
 
 # Get both files
 brd.count <- read.delim(brd.files$data$files$url
@@ -77,7 +77,7 @@ brd.point <- read.delim(brd.files$data$files$url
 
 
 
-## ----os-plot-bird-data--------------------------------------------------------------------
+## ----os-plot-bird-data-----------------------------------------------------------------------------------
 # Cluster by species 
 clusterBySp <- brd.count %>%
   dplyr::group_by(scientificName) %>%
@@ -92,7 +92,7 @@ barplot(clusterBySp$total, names.arg=clusterBySp$scientificName,
 
 
 
-## ----soil-data----------------------------------------------------------------------------
+## ----soil-data-------------------------------------------------------------------------------------------
 # Request soil temperature data availability info
 req.soil <- GET("http://data.neonscience.org/api/v0/products/DP1.00041.001")
 
@@ -104,17 +104,17 @@ avail.soil <- jsonlite::fromJSON(content(req.soil, as="text"), simplifyDataFrame
 temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
 
 # get data availability from location/date of interest
-tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
+tmp <- GET(temp.urls[grep("MOAB/2017-08", temp.urls)])
 tmp.files <- jsonlite::fromJSON(content(tmp, as="text"))
 length(tmp.files$data$files$name) # There are a lot of available files
 tmp.files$data$files$name[1:10]   # Let's print the first 10
 
 
 
-## ----os-get-soil-data---------------------------------------------------------------------
+## ----os-get-soil-data------------------------------------------------------------------------------------
 
 soil.temp <- read.delim(tmp.files$data$files$url
-                        [intersect(grep("002.504.030", 
+                        [intersect(grep("003.506.030", 
                                         tmp.files$data$files$name),
                                    grep("basic", 
                                         tmp.files$data$files$name))], 
@@ -122,7 +122,7 @@ soil.temp <- read.delim(tmp.files$data$files$url
 
 
 
-## ----os-plot-soil-data--------------------------------------------------------------------
+## ----os-plot-soil-data-----------------------------------------------------------------------------------
 # plot temp ~ date
 plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime, 
                                        format="%Y-%m-%d T %H:%M:%S Z"), 
@@ -130,7 +130,7 @@ plot(soil.temp$soilTempMean~as.POSIXct(soil.temp$startDateTime,
 
 
 
-## ----aop-data-----------------------------------------------------------------------------
+## ----aop-data--------------------------------------------------------------------------------------------
 # Request camera data availability info
 req.aop <- GET("http://data.neonscience.org/api/v0/products/DP1.30010.001")
 
@@ -152,7 +152,7 @@ head(cam.files$data$files$name, 10)
 
 
 
-## ----download-aop-data, eval=FALSE--------------------------------------------------------
+## ----download-aop-data, eval=FALSE-----------------------------------------------------------------------
 ## 
 ## download(cam.files$data$files$url[grep("20170328192931",
 ##                                        cam.files$data$files$name)],
@@ -160,13 +160,13 @@ head(cam.files$data$files$name, 10)
 ## 
 
 
-## ----get-bird-NLs-------------------------------------------------------------------------
+## ----get-bird-NLs----------------------------------------------------------------------------------------
 # view named location
 head(brd.point$namedLocation)
 
 
 
-## ----brd-ex-NL----------------------------------------------------------------------------
+## ----brd-ex-NL-------------------------------------------------------------------------------------------
 # location data 
 req.loc <- GET("http://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd")
 
@@ -176,7 +176,7 @@ brd.WOOD_013
 
 
 
-## ----brd-extr-NL--------------------------------------------------------------------------
+## ----brd-extr-NL-----------------------------------------------------------------------------------------
 
 # load the geoNEON package
 library(geoNEON)
@@ -186,44 +186,44 @@ brd.point.loc <- getLocByName(brd.point)
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+symbols(brd.point.loc$easting, brd.point.loc$northing, 
         circles=brd.point.loc$coordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 
 
-## ----brd-calc-NL--------------------------------------------------------------------------
+## ----brd-calc-NL-----------------------------------------------------------------------------------------
 
 brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
 
 # plot bird point locations 
 # note that decimal degrees is also an option in the data
-symbols(brd.point.pt$easting, brd.point.pt$northing, 
+symbols(brd.point.pt$adjEasting, brd.point.pt$adjNorthing, 
         circles=brd.point.pt$adjCoordinateUncertainty, 
         xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
 
 
-## ----get-loons----------------------------------------------------------------------------
+## ----get-loons-------------------------------------------------------------------------------------------
 loon.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?family=Gaviidae&offset=0&limit=500")
 
 
-## ----parse-loons--------------------------------------------------------------------------
+## ----parse-loons-----------------------------------------------------------------------------------------
 loon.list <- jsonlite::fromJSON(content(loon.req, as="text"))
 
 
-## ----display-loons------------------------------------------------------------------------
+## ----display-loons---------------------------------------------------------------------------------------
 loon.list$data
 
 
-## ----get-mammals--------------------------------------------------------------------------
+## ----get-mammals-----------------------------------------------------------------------------------------
 mam.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?taxonTypeCode=SMALL_MAMMAL&offset=0&limit=500&verbose=true")
 mam.list <- jsonlite::fromJSON(content(mam.req, as="text"))
 mam.list$data[1:10,]
 
 
-## ----get-verbena--------------------------------------------------------------------------
+## ----get-verbena-----------------------------------------------------------------------------------------
 am.req <- GET("http://data.neonscience.org/api/v0/taxonomy/?scientificname=Abronia%20minor%20Standl.")
 am.list <- jsonlite::fromJSON(content(am.req, as="text"))
 am.list$data
