@@ -3,11 +3,11 @@ syncID: 5f9c4048a27749c19ee8ecfc78806363
 title: "Download and Explore NEON Data"
 description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
 dateCreated: '2018-11-07'
-dataProducts: DP1.10098.001, DP3.30015.001
+dataProducts: DP1.00024.001, DP1.20063.001, DP3.30015.001
 authors: [Claire K. Lunch]
 contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
 estimatedTime: 1 - 2 hours
-packagesLibraries: [devtools, geoNEON, neonUtilities, raster]
+packagesLibraries: [devtools, neonUtilities, raster]
 topics: data-management, rep-sci
 languageTool: R, API
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
@@ -50,20 +50,14 @@ preferably, RStudio loaded on your computer.
 
 ### Install R Packages
 
-* **devtools**: Needed to install packages from GitHub
 * **neonUtilities**: Basic functions for accessing NEON data
 * **raster**: Raster package; needed for remote sensing data
-* **geoNEON**: For working with NEON spatial data
 
-Some of these packages are on CRAN and can be installed by 
-`install.packages()`, others need to be installed from 
-other repositories:
+Both of these packages can be installed from CRAN:
 
 
-    install.packages("devtools")
     install.packages("neonUtilities")
     install.packages("raster")
-    devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 
 ### Additional Resources
@@ -71,7 +65,6 @@ other repositories:
 * <a href="https://www.neonscience.org/neonDataStackR" target="_blank">Tutorial for neonUtilities.</a> Some overlap with this tutorial but goes into more detail about the neonUtilities package.
 * <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial for using neonUtilities from a Python environment.</a>
 * <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
-* <a href="https://github.com/NEONScience/NEON-geolocation/geoNEON" target="_blank">GitHub repository for geoNEON</a>
 
 </div>
 
@@ -84,14 +77,14 @@ section of the tutorial, but we will proceed assuming you've downloaded
 Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
 results, download three months of data from one site. The downloaded file 
 should be a zip file named NEON_par.zip. For this tutorial, we will be using 
-PAR data from the Wind River Experimental Forest (WREF) in Washington state from October-December 2019.
+PAR data from the Wind River Experimental Forest (WREF) in Washington state 
+from September-November 2019.
 
 Now switch over to R and load all the packages installed above.
 
 
     # load packages
     library(neonUtilities)
-    library(geoNEON)
     library(raster)
     
     # Set global option to NOT convert all character variables to factors
@@ -176,12 +169,14 @@ download. The DPID can be found on the
 Explore Data Products page</a>.
 It will be in the form DP#.#####.###
 
-Here, we'll download woody vegetation structure data from 
-Wind River Experimental Forest (WREF).
+Here, we'll download aquatic plant chemistry data from 
+three lake sites: Prairie Lake (PRLA), Suggs Lake (SUGG), 
+and Toolik Lake (TOOK).
 
 
-    veg_str <- loadByProduct(dpID="DP1.10098.001", site="WREF", 
-                  package="expanded", check.size=T)
+    apchem <- loadByProduct(dpID="DP1.20063.001", 
+                      site=c("PRLA","SUGG","TOOK"), 
+                      package="expanded", check.size=T)
 
 
 The object returned by `loadByProduct()` is a named list of data 
@@ -189,15 +184,15 @@ frames. To work with each of them, select them from the list
 using the `$` operator.
 
 
-    names(veg_str)
-    View(veg_str$vst_perplotperyear)
+    names(apchem)
+    View(apchem$apl_plantExternalLabDataPerSample)
 
 If you prefer to extract each table from the list and work 
 with it as an independent object, you can use the 
 `list2env()` function:
 
 
-    list2env(veg_str, .GlobalEnv)
+    list2env(apchem, .GlobalEnv)
 
     ## <environment: R_GlobalEnv>
 
@@ -207,18 +202,26 @@ also saving the variables file, both so you'll have it to refer to, and
 so you can use it with `readTableNEON()` (see below).
 
 
-    write.csv(vst_apparentindividual, 
-              "~/Downloads/vst_apparentindividual.csv", 
+    write.csv(apl_clipHarvest, 
+              "~/Downloads/apl_clipHarvest.csv", 
               row.names=F)
-    write.csv(variables_10098, 
-              "~/Downloads/variables_10098.csv", 
+    write.csv(apl_biomass, 
+              "~/Downloads/apl_biomass.csv", 
+              row.names=F)
+    write.csv(apl_plantExternalLabDataPerSample, 
+              "~/Downloads/apl_plantExternalLabDataPerSample.csv", 
+              row.names=F)
+    write.csv(variables_20063, 
+              "~/Downloads/variables_20063.csv", 
               row.names=F)
 
 But, if you want to save files locally and load them into R (or another 
 platform) each time you run a script, instead of downloading from the API 
 every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
 instead of `loadByProduct()`, as we did in the first section above. Details
-can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>. You can also try out the 
+community-developed `neonstore` package, which is designed for 
+maintaining a local store of the NEON data you use.
 
 ## Download remote sensing data: byFileAOP() and byTileAOP()
 
@@ -302,12 +305,16 @@ through the canopy.
 
 ## Navigate data downloads: OS
 
-Let's take a look at the vegetation structure data. OS data products 
+Let's take a look at the aquatic plant data. OS data products 
 are simple in that the data generally tabular, and data volumes are 
 lower than the other NEON data types, but they are complex in that 
 almost all consist of multiple tables containing information collected 
-at different times in different ways. Complexity in working with OS 
-data involves bringing those data together.
+at different times in different ways. For example, samples collected 
+in the field may be shipped to a laboratory for analysis. Data 
+associated with the field collection will appear in one data table, 
+and the analytical results will appear in another. Complexity in 
+working with OS data usually involves bringing data together from 
+multiple measurements or scales of analysis.
 
 As with the IS data, the variables file can tell you more about 
 the data. OS data also come with a validation file, which contains 
@@ -315,45 +322,68 @@ information about the validation and controlled data entry that
 were applied to the data:
 
 
-    View(variables_10098)
+    View(variables_20063)
     
-    View(validation_10098)
+    View(validation_20063)
 
 OS data products each come with a Data Product User Guide, 
-which can be downloaded with the data or accessed from the 
-document library on the Data Portal. Here, we'll use 
-information that can be found in the User Guide about 
-how to (1) calculate stem locations for each tree and (2) how 
-to join the mapping and individual data.
+which can be downloaded with the data, or accessed from the 
+document library on the Data Portal, or the <a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
+page for the data product. The User Guide is designed to give 
+a basic introduction to the data product, including a brief 
+summary of the protocol and descriptions of data format and 
+structure.
 
-First, use the `geoNEON` package to calculate stem locations:
-
-
-    names(vst_mappingandtagging) #this object was created using list2env() above
-    vegmap <- geoNEON::getLocTOS(vst_mappingandtagging, "vst_mappingandtagging")
-    names(vegmap)
-
-And now merge the mapping data with the individual measurements. 
-`individualID` is the linking variable, the others are included 
-to avoid having duplicate columns.
+To get started with the aquatic plant chemistry data, let's 
+take a look at carbon isotope ratios in plants across the three 
+sites we downloaded. The chemical analytes are reported in the 
+`apl_plantExternalLabDataPerSample` table, and the table is in 
+long format, with one record per sample per analyte, so we'll 
+subset to only the carbon isotope analyte:
 
 
-    veg <- merge(vst_apparentindividual, vegmap, by=c("individualID","namedLocation",
-                                      "domainID","siteID","plotID"))
+    boxplot(analyteConcentration~siteID, 
+            data=apl_plantExternalLabDataPerSample, 
+            subset=analyte=="d13C",
+            xlab="Site", ylab="d13C")
 
-Using the merged data, now we can map the stems in plot 85 
-(plot chosen at random). Note that the coordinates are in 
-meters but stem diameters are in cm. Furthermore, the symbols()
-function wants the radii, not the diameters, of the circles, so
-we divide by 2 to convert diameters to radii after unit conversion.
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/13C-by-site-1.png)
+
+We see plants at Suggs and Toolik are quite low in 13C, with more 
+spread at Toolik than Suggs, and plants at Prairie Lake are relatively 
+enriched. Clearly the next question is what species these data represent. 
+But taxonomic data aren't present in the `apl_plantExternalLabDataPerSample` 
+table, they're in the `apl_biomass` table. We'll need to join the two 
+tables to get chemistry by taxon.
+
+The Data Relationships section of the User Guide can help you determine 
+which fields to use as the key to join the tables. Here, `sampleID` is 
+the joining variable. We'll also include the basic spatial variables, to 
+avoid creating unnecessary duplicates of those columns.
 
 
-    symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
-            veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
-            xlab="Easting", ylab="Northing", inches=F)
+    apct <- merge(apl_biomass, 
+                  apl_plantExternalLabDataPerSample, 
+                  by=c("sampleID","namedLocation",
+                       "domainID","siteID"))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-vst-1.png)
+Using the merged data, now we can plot carbon isotope ratio 
+for each taxon.
+
+
+    par(mar=c(12,4,0.25,1))
+
+
+    boxplot(analyteConcentration~scientificName, 
+            data=apct, subset=analyte=="d13C", 
+            xlab=NA, ylab="d13C", 
+            las=2, cex.axis=0.7)
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-13C-by-tax-1.png)
+
+And now we can see most of the sampled plants have carbon 
+isotope ratios around -30, with just two species accounting 
+for most of the more enriched samples.
 
 ## Navigate data downloads: AOP
 
@@ -372,5 +402,8 @@ The `raster` package includes plotting functions:
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-aop-1.png)
 
-
+Now we can see canopy height across the downloaded tile; 
+the tallest trees are over 60 meters, not surprising in 
+the Pacific Northwest. There is a clearing or clear 
+cut in the lower right corner.
 
