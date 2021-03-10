@@ -27,6 +27,7 @@ Rmd.files <- list.files("~/Git/main/NEON-Data-Skills/tutorials/R/R-skills/Colora
 # 
 # all.files=c(Rmd.files, md.files, html.files, ipynb.files)
 
+all.files = Rmd.files
 
 for (file in all.files){
   print(file)

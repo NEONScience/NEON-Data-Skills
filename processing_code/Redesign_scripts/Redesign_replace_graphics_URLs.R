@@ -1,7 +1,7 @@
 # Replace graphics links with static URLs 
 # Use gsub() to find instances of {{ site.baseurl }} AND {{site.baseurl}}
 
-master_dir <- "~/Git/main/NEON-Data-Skills/tutorials/R/R-skills/Colorado-floods-data-visualization/Disturb-Event-Detailed-Lesson"
+master_dir <- "~/Git/main/NEON-Data-Skills/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/"
 
 # Find all .Rmd files
 # Do this again for .md files!
