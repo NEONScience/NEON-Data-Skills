@@ -41,6 +41,50 @@ BiocManager::install('rhdf5')
 install.packages('neonUtilities')
 ```
 
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpxzHtY4/downloaded_packages
+
+
+    Bioconductor version 3.11 (BiocManager 1.30.10), R 4.0.2 (2020-06-22)
+    
+    Installing package(s) 'rhdf5'
+    
+
+
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpxzHtY4/downloaded_packages
+
+
+    Old packages: 'aqp', 'backports', 'BH', 'bookdown', 'boot', 'broom', 'callr',
+      'class', 'cli', 'clipr', 'cluster', 'codetools', 'colorspace', 'cowplot',
+      'cpp11', 'crayon', 'crosstalk', 'crul', 'data.table', 'DBI', 'dbplyr',
+      'desc', 'dplyr', 'DT', 'e1071', 'EML', 'fansi', 'farver', 'fastmap',
+      'forcats', 'foreach', 'foreign', 'formattable', 'Formula', 'FSA', 'furrr',
+      'future', 'gargle', 'ggrepel', 'ggthemes', 'gh', 'git2r', 'googleAuthR',
+      'hexbin', 'Hmisc', 'hms', 'htmltools', 'htmlwidgets', 'httpuv', 'igraph',
+      'isoband', 'iterators', 'janitor', 'jqr', 'jsonlite', 'kableExtra',
+      'KernSmooth', 'knitr', 'labeling', 'leaflet', 'lidR', 'lifecycle', 'lme4',
+      'lubridate', 'magrittr', 'MASS', 'Matrix', 'MatrixModels', 'matrixStats',
+      'memoise', 'mgcv', 'mime', 'nlme', 'nnet', 'openxlsx', 'pbkrtest', 'pillar',
+      'pkgbuild', 'pkgload', 'plotly', 'plotrix', 'prettydoc', 'processx',
+      'promises', 'ps', 'quantreg', 'rappdirs', 'raster', 'Rcpp', 'RcppArmadillo',
+      'RcppEigen', 'readr', 'rentrez', 'reprex', 'rgdal', 'rGEDI', 'rgl', 'rio',
+      'ritis', 'rlang', 'rlas', 'rmarkdown', 'RMySQL', 'rotl', 'rprojroot',
+      'rredlist', 'rstudioapi', 'rvest', 'sf', 'sharpshootR', 'shiny',
+      'shinythemes', 'shinyWidgets', 'soilDB', 'sp', 'spacetime', 'SparseM',
+      'spatial', 'stars', 'statmod', 'taxize', 'Ternary', 'testthat', 'tibble',
+      'tidyr', 'tinytex', 'tmaptools', 'units', 'usethis', 'V8', 'vctrs', 'vegan',
+      'withr', 'xfun', 'zoo'
+    
+
+
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpxzHtY4/downloaded_packages
+
+
 
 ```R
 options(stringsAsFactors=F)
@@ -71,14 +115,23 @@ The download may take a while, especially if you're on a slow network.
 zipsByProduct(dpID="DP4.00200.001", package="basic", 
               site=c("NIWO", "HARV"), 
               startdate="2018-06", enddate="2018-07",
-              savepath="/data", 
+              savepath="/Users/olearyd/Git/data/", 
               check.size=F)
 ```
 
-    Downloading files totaling approximately 313.289221 MB
+    Finding available files
+      |======================================================================| 100%
+    
+    Downloading files totaling approximately 93.42944 MB
+
+
+    /Users/olearyd/Git/data//filesToStack00200 already exists. Download will proceed, but check for duplicate files.
+    
+
+
     Downloading 4 files
       |======================================================================| 100%
-    4 files downloaded to /data/filesToStack00200
+    4 files successfully downloaded to /Users/olearyd/Git/data//filesToStack00200
 
 
 ## 2. Data Levels
@@ -122,7 +175,7 @@ including the `filestoStack00200` folder created by the function, and
 
 
 ```R
-flux <- stackEddy(filepath="/data/filesToStack00200/",
+flux <- stackEddy(filepath="/Users/olearyd/Git/data/filesToStack00200/",
                  level="dp04")
 ```
 
@@ -144,12 +197,12 @@ names(flux)
 ```
 
 
-<ol class=list-inline>
-	<li>'HARV'</li>
-	<li>'NIWO'</li>
-	<li>'variables'</li>
-	<li>'objDesc'</li>
-</ol>
+<style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'HARV'</li><li>'NIWO'</li><li>'variables'</li><li>'objDesc'</li></ol>
 
 
 
@@ -161,19 +214,19 @@ head(flux$NIWO)
 ```
 
 
-<table>
-<caption>A data.frame: 6 × 26</caption>
+<table class="dataframe">
+<caption>A data.frame: 6 × 34</caption>
 <thead>
-	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.fluxCo2.nsae.flux</th><th scope=col>data.fluxCo2.stor.flux</th><th scope=col>data.fluxCo2.turb.flux</th><th scope=col>data.fluxH2o.nsae.flux</th><th scope=col>data.fluxH2o.stor.flux</th><th scope=col>data.fluxH2o.turb.flux</th><th scope=col>data.fluxMome.turb.veloFric</th><th scope=col>data.fluxTemp.nsae.flux</th><th scope=col>⋯</th><th scope=col>data.foot.stat.veloFric</th><th scope=col>data.foot.stat.distZaxsMeasDisp</th><th scope=col>data.foot.stat.distZaxsRgh</th><th scope=col>data.foot.stat.distZaxsAbl</th><th scope=col>data.foot.stat.distXaxs90</th><th scope=col>data.foot.stat.distXaxsMax</th><th scope=col>data.foot.stat.distYaxs90</th><th scope=col>qfqm.fluxCo2.stor.qfFinl</th><th scope=col>qfqm.fluxH2o.stor.qfFinl</th><th scope=col>qfqm.fluxTemp.stor.qfFinl</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.fluxCo2.nsae.flux</th><th scope=col>data.fluxCo2.stor.flux</th><th scope=col>data.fluxCo2.turb.flux</th><th scope=col>data.fluxH2o.nsae.flux</th><th scope=col>data.fluxH2o.stor.flux</th><th scope=col>data.fluxH2o.turb.flux</th><th scope=col>data.fluxMome.turb.veloFric</th><th scope=col>data.fluxTemp.nsae.flux</th><th scope=col>⋯</th><th scope=col>qfqm.fluxCo2.stor.qfFinl</th><th scope=col>qfqm.fluxCo2.turb.qfFinl</th><th scope=col>qfqm.fluxH2o.nsae.qfFinl</th><th scope=col>qfqm.fluxH2o.stor.qfFinl</th><th scope=col>qfqm.fluxH2o.turb.qfFinl</th><th scope=col>qfqm.fluxMome.turb.qfFinl</th><th scope=col>qfqm.fluxTemp.nsae.qfFinl</th><th scope=col>qfqm.fluxTemp.stor.qfFinl</th><th scope=col>qfqm.fluxTemp.turb.qfFinl</th><th scope=col>qfqm.foot.turb.qfFinl</th></tr>
+	<tr><th></th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>0.1111935</td><td>-0.06191186</td><td>0.1731053</td><td>19.401824</td><td> 3.2511265</td><td>16.150697</td><td>0.19707045</td><td>  4.1712006</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.03221479</td><td>1000</td><td>333.60</td><td>133.44</td><td>25.02</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>2</th><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>0.9328922</td><td> 0.08534117</td><td>0.8475510</td><td>10.444936</td><td>-1.1768333</td><td>11.621770</td><td>0.19699723</td><td> -0.9163691</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.33007082</td><td>1000</td><td>258.54</td><td>108.42</td><td>50.04</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>3</th><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>0.4673682</td><td> 0.02177216</td><td>0.4455960</td><td> 5.140617</td><td>-4.3112673</td><td> 9.451884</td><td>0.06518208</td><td> -2.9814957</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.12876068</td><td>1000</td><td>308.58</td><td>125.10</td><td>58.38</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>4</th><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>0.7263614</td><td> 0.24944366</td><td>0.4769178</td><td> 9.017467</td><td> 0.1980776</td><td> 8.819389</td><td>0.12964000</td><td>-13.3556222</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>75.06</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>5</th><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>0.4740572</td><td> 0.22524363</td><td>0.2488136</td><td> 3.180386</td><td> 0.1316297</td><td> 3.048756</td><td>0.17460706</td><td> -5.3406503</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>66.72</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>6</th><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>0.8807022</td><td> 0.07078007</td><td>0.8099221</td><td> 4.398761</td><td>-0.2989443</td><td> 4.697706</td><td>0.10477970</td><td> -7.2739206</td><td>⋯</td><td>0.2</td><td>8.34</td><td>0.83400000</td><td>1000</td><td>208.50</td><td> 83.40</td><td>41.70</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>1</th><td>2018-06-01 00:00:00</td><td>2018-06-01 00:29:59</td><td>0.1713858</td><td>-0.06348163</td><td>0.2348674</td><td>15.876622</td><td> 3.3334970</td><td>12.543125</td><td>0.2047081</td><td>  4.7565505</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>2018-06-01 00:30:00</td><td>2018-06-01 00:59:59</td><td>0.9251711</td><td> 0.08748146</td><td>0.8376896</td><td> 8.089274</td><td>-1.2063258</td><td> 9.295600</td><td>0.1923735</td><td> -0.2717454</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>2018-06-01 01:00:00</td><td>2018-06-01 01:29:59</td><td>0.5005812</td><td> 0.02231698</td><td>0.4782642</td><td> 5.290594</td><td>-4.4190781</td><td> 9.709672</td><td>0.1200918</td><td> -4.2055147</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>2018-06-01 01:30:00</td><td>2018-06-01 01:59:59</td><td>0.8032820</td><td> 0.25569306</td><td>0.5475889</td><td> 9.190214</td><td> 0.2030371</td><td> 8.987177</td><td>0.1177545</td><td>-13.3834484</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>2018-06-01 02:00:00</td><td>2018-06-01 02:29:59</td><td>0.4897685</td><td> 0.23090472</td><td>0.2588638</td><td> 3.111909</td><td> 0.1349363</td><td> 2.976973</td><td>0.1589189</td><td> -5.1854815</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>2018-06-01 02:30:00</td><td>2018-06-01 02:59:59</td><td>0.9223979</td><td> 0.06228581</td><td>0.8601121</td><td> 4.613676</td><td>-0.3929445</td><td> 5.006621</td><td>0.1114406</td><td> -7.7365481</td><td>⋯</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -192,7 +245,7 @@ flux$objDesc[which(flux$objDesc$Object %in% term),]
 ```
 
 
-<table>
+<table class="dataframe">
 <caption>A data.frame: 6 × 2</caption>
 <thead>
 	<tr><th></th><th scope=col>Object</th><th scope=col>Description</th></tr>
@@ -225,37 +278,74 @@ flux$variables
 ```
 
 
-<table>
-<caption>A data.frame: 24 × 5</caption>
+<table class="dataframe">
+<caption>A data.frame: 76 × 5</caption>
 <thead>
 	<tr><th></th><th scope=col>category</th><th scope=col>system</th><th scope=col>variable</th><th scope=col>stat</th><th scope=col>units</th></tr>
 	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>data</td><td>fluxCo2 </td><td>nsae</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
-	<tr><th scope=row>2</th><td>data</td><td>fluxCo2 </td><td>stor</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
-	<tr><th scope=row>3</th><td>data</td><td>fluxCo2 </td><td>turb</td><td>                </td><td>umolCo2 m-2 s-1</td></tr>
-	<tr><th scope=row>4</th><td>data</td><td>fluxH2o </td><td>nsae</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>5</th><td>data</td><td>fluxH2o </td><td>stor</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>6</th><td>data</td><td>fluxH2o </td><td>turb</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>7</th><td>data</td><td>fluxMome</td><td>turb</td><td>                </td><td>m s-1          </td></tr>
-	<tr><th scope=row>8</th><td>data</td><td>fluxTemp</td><td>nsae</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>9</th><td>data</td><td>fluxTemp</td><td>stor</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>10</th><td>data</td><td>fluxTemp</td><td>turb</td><td>                </td><td>W m-2          </td></tr>
-	<tr><th scope=row>11</th><td>data</td><td>foot    </td><td>stat</td><td>angZaxsErth     </td><td>deg            </td></tr>
-	<tr><th scope=row>12</th><td>data</td><td>foot    </td><td>stat</td><td>distReso        </td><td>m              </td></tr>
-	<tr><th scope=row>13</th><td>data</td><td>foot    </td><td>stat</td><td>veloYaxsHorSd   </td><td>m s-1          </td></tr>
-	<tr><th scope=row>14</th><td>data</td><td>foot    </td><td>stat</td><td>veloZaxsHorSd   </td><td>m s-1          </td></tr>
-	<tr><th scope=row>15</th><td>data</td><td>foot    </td><td>stat</td><td>veloFric        </td><td>m s-1          </td></tr>
-	<tr><th scope=row>16</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsMeasDisp</td><td>m              </td></tr>
-	<tr><th scope=row>17</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsRgh     </td><td>m              </td></tr>
-	<tr><th scope=row>18</th><td>data</td><td>foot    </td><td>stat</td><td>distZaxsAbl     </td><td>m              </td></tr>
-	<tr><th scope=row>19</th><td>data</td><td>foot    </td><td>stat</td><td>distXaxs90      </td><td>m              </td></tr>
-	<tr><th scope=row>20</th><td>data</td><td>foot    </td><td>stat</td><td>distXaxsMax     </td><td>m              </td></tr>
-	<tr><th scope=row>21</th><td>data</td><td>foot    </td><td>stat</td><td>distYaxs90      </td><td>m              </td></tr>
-	<tr><th scope=row>22</th><td>qfqm</td><td>fluxCo2 </td><td>stor</td><td>                </td><td>NA             </td></tr>
-	<tr><th scope=row>23</th><td>qfqm</td><td>fluxH2o </td><td>stor</td><td>                </td><td>NA             </td></tr>
-	<tr><th scope=row>24</th><td>qfqm</td><td>fluxTemp</td><td>stor</td><td>                </td><td>NA             </td></tr>
+	<tr><th scope=row>1</th><td>data</td><td>fluxCo2 </td><td>nsae</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>2</th><td>data</td><td>fluxCo2 </td><td>nsae</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>3</th><td>data</td><td>fluxCo2 </td><td>nsae</td><td>flux    </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>4</th><td>data</td><td>fluxCo2 </td><td>stor</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>5</th><td>data</td><td>fluxCo2 </td><td>stor</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>6</th><td>data</td><td>fluxCo2 </td><td>stor</td><td>flux    </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>7</th><td>data</td><td>fluxCo2 </td><td>turb</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>8</th><td>data</td><td>fluxCo2 </td><td>turb</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>9</th><td>data</td><td>fluxCo2 </td><td>turb</td><td>flux    </td><td>umolCo2 m-2 s-1</td></tr>
+	<tr><th scope=row>10</th><td>data</td><td>fluxH2o </td><td>nsae</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>11</th><td>data</td><td>fluxH2o </td><td>nsae</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>12</th><td>data</td><td>fluxH2o </td><td>nsae</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>13</th><td>data</td><td>fluxH2o </td><td>stor</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>14</th><td>data</td><td>fluxH2o </td><td>stor</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>15</th><td>data</td><td>fluxH2o </td><td>stor</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>16</th><td>data</td><td>fluxH2o </td><td>turb</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>17</th><td>data</td><td>fluxH2o </td><td>turb</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>18</th><td>data</td><td>fluxH2o </td><td>turb</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>19</th><td>data</td><td>fluxMome</td><td>turb</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>20</th><td>data</td><td>fluxMome</td><td>turb</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>21</th><td>data</td><td>fluxMome</td><td>turb</td><td>veloFric</td><td>m s-1          </td></tr>
+	<tr><th scope=row>22</th><td>data</td><td>fluxTemp</td><td>nsae</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>23</th><td>data</td><td>fluxTemp</td><td>nsae</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>24</th><td>data</td><td>fluxTemp</td><td>nsae</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>25</th><td>data</td><td>fluxTemp</td><td>stor</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>26</th><td>data</td><td>fluxTemp</td><td>stor</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>27</th><td>data</td><td>fluxTemp</td><td>stor</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>28</th><td>data</td><td>fluxTemp</td><td>turb</td><td>timeBgn </td><td>NA             </td></tr>
+	<tr><th scope=row>29</th><td>data</td><td>fluxTemp</td><td>turb</td><td>timeEnd </td><td>NA             </td></tr>
+	<tr><th scope=row>30</th><td>data</td><td>fluxTemp</td><td>turb</td><td>flux    </td><td>W m-2          </td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>47</th><td>qfqm</td><td>fluxCo2 </td><td>stor</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>48</th><td>qfqm</td><td>fluxCo2 </td><td>stor</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>49</th><td>qfqm</td><td>fluxCo2 </td><td>stor</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>50</th><td>qfqm</td><td>fluxCo2 </td><td>turb</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>51</th><td>qfqm</td><td>fluxCo2 </td><td>turb</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>52</th><td>qfqm</td><td>fluxCo2 </td><td>turb</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>53</th><td>qfqm</td><td>fluxH2o </td><td>nsae</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>54</th><td>qfqm</td><td>fluxH2o </td><td>nsae</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>55</th><td>qfqm</td><td>fluxH2o </td><td>nsae</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>56</th><td>qfqm</td><td>fluxH2o </td><td>stor</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>57</th><td>qfqm</td><td>fluxH2o </td><td>stor</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>58</th><td>qfqm</td><td>fluxH2o </td><td>stor</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>59</th><td>qfqm</td><td>fluxH2o </td><td>turb</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>60</th><td>qfqm</td><td>fluxH2o </td><td>turb</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>61</th><td>qfqm</td><td>fluxH2o </td><td>turb</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>62</th><td>qfqm</td><td>fluxMome</td><td>turb</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>63</th><td>qfqm</td><td>fluxMome</td><td>turb</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>64</th><td>qfqm</td><td>fluxMome</td><td>turb</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>65</th><td>qfqm</td><td>fluxTemp</td><td>nsae</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>66</th><td>qfqm</td><td>fluxTemp</td><td>nsae</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>67</th><td>qfqm</td><td>fluxTemp</td><td>nsae</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>68</th><td>qfqm</td><td>fluxTemp</td><td>stor</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>69</th><td>qfqm</td><td>fluxTemp</td><td>stor</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>70</th><td>qfqm</td><td>fluxTemp</td><td>stor</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>71</th><td>qfqm</td><td>fluxTemp</td><td>turb</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>72</th><td>qfqm</td><td>fluxTemp</td><td>turb</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>73</th><td>qfqm</td><td>fluxTemp</td><td>turb</td><td>qfFinl </td><td>NA</td></tr>
+	<tr><th scope=row>74</th><td>qfqm</td><td>foot    </td><td>turb</td><td>timeBgn</td><td>NA</td></tr>
+	<tr><th scope=row>75</th><td>qfqm</td><td>foot    </td><td>turb</td><td>timeEnd</td><td>NA</td></tr>
+	<tr><th scope=row>76</th><td>qfqm</td><td>foot    </td><td>turb</td><td>qfFinl </td><td>NA</td></tr>
 </tbody>
 </table>
 
@@ -300,7 +390,7 @@ axis.POSIXct(1, x=timeB, format="%Y-%m-%d")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_20_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro_files/eddy_intro_20_0.png)
 
 
 Like a lot of flux data, these data have some stray spikes, but there 
@@ -319,7 +409,7 @@ axis.POSIXct(1, x=timeB, format="%Y-%m-%d %H:%M:%S")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_22_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro_files/eddy_intro_22_0.png)
 
 
 Note the timing of C uptake; the UTC time zone is clear here, where 
@@ -363,7 +453,11 @@ pr <- loadByProduct("DP1.00024.001", site="NIWO", avg=30,
                     package="basic", check.size=F)
 ```
 
-    Downloading files totaling approximately 1.281789 MB
+    Input parameter avg is deprecated; use timeIndex to download by time interval.
+    Finding available files
+      |======================================================================| 100%
+    
+    Downloading files totaling approximately 1.293498 MB
     Downloading 11 files
       |======================================================================| 100%
     
@@ -372,7 +466,7 @@ pr <- loadByProduct("DP1.00024.001", site="NIWO", avg=30,
     Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
     Finished: Stacked 1 data tables and 2 metadata tables!
-    Stacking took 0.2982938 secs
+    Stacking took 0.1349671 secs
 
 
 `pr` is another named list, and again, metadata and units can be found in 
@@ -415,7 +509,7 @@ plot(fx.pr$data.fluxCo2.nsae.flux~fx.pr$PARMean,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_33_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro_files/eddy_intro_33_0.png)
 
 
 If you're interested in data in the eddy covariance bundle besides the 
@@ -431,7 +525,7 @@ the same syntax as for the Level 4 data.
 
 
 ```R
-prof <- stackEddy(filepath="/data/filesToStack00200/",
+prof <- stackEddy(filepath="/Users/olearyd/Git/data/filesToStack00200/",
                  level="dp03")
 ```
 
@@ -449,19 +543,19 @@ head(prof$NIWO)
 ```
 
 
-<table>
+<table class="dataframe">
 <caption>A data.frame: 6 × 506</caption>
 <thead>
-	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.1 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.2 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.3 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.4 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.5 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.6 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.7 m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.0.8 m</th><th scope=col>⋯</th><th scope=col>qfqm.tempStor.rateTemp.7.5 m</th><th scope=col>qfqm.tempStor.rateTemp.7.6 m</th><th scope=col>qfqm.tempStor.rateTemp.7.7 m</th><th scope=col>qfqm.tempStor.rateTemp.7.8 m</th><th scope=col>qfqm.tempStor.rateTemp.7.9 m</th><th scope=col>qfqm.tempStor.rateTemp.8 m</th><th scope=col>qfqm.tempStor.rateTemp.8.1 m</th><th scope=col>qfqm.tempStor.rateTemp.8.2 m</th><th scope=col>qfqm.tempStor.rateTemp.8.3 m</th><th scope=col>qfqm.tempStor.rateTemp.8.4 m</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+	<tr><th></th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.1.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.2.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.3.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.4.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.5.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.6.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.7.m</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.X0.8.m</th><th scope=col>⋯</th><th scope=col>qfqm.tempStor.rateTemp.X7.5.m</th><th scope=col>qfqm.tempStor.rateTemp.X7.6.m</th><th scope=col>qfqm.tempStor.rateTemp.X7.7.m</th><th scope=col>qfqm.tempStor.rateTemp.X7.8.m</th><th scope=col>qfqm.tempStor.rateTemp.X7.9.m</th><th scope=col>qfqm.tempStor.rateTemp.X8.m</th><th scope=col>qfqm.tempStor.rateTemp.X8.1.m</th><th scope=col>qfqm.tempStor.rateTemp.X8.2.m</th><th scope=col>qfqm.tempStor.rateTemp.X8.3.m</th><th scope=col>qfqm.tempStor.rateTemp.X8.4.m</th></tr>
+	<tr><th></th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>2</th><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004673503</td><td> 0.0004331343</td><td> 0.0003989183</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>3</th><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005025472</td><td> 0.0004925052</td><td> 0.0004824631</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>4</th><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013735225</td><td> 0.0014498989</td><td> 0.0015262753</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>5</th><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0008510161</td><td> 0.0010453695</td><td> 0.0012397230</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>6</th><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0007653319</td><td>-0.0004659209</td><td>-0.0001665099</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>1</th><td>2018-06-01 00:00:00</td><td>2018-06-01 00:29:59</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>-0.0002681938</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>2018-06-01 00:30:00</td><td>2018-06-01 00:59:59</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004878799</td><td> 0.0004673503</td><td> 0.0004331343</td><td> 0.0003989183</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>2018-06-01 01:00:00</td><td>2018-06-01 01:29:59</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005085725</td><td> 0.0005025472</td><td> 0.0004925052</td><td> 0.0004824631</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>2018-06-01 01:30:00</td><td>2018-06-01 01:59:59</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013276966</td><td> 0.0013735225</td><td> 0.0014498989</td><td> 0.0015262753</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>2018-06-01 02:00:00</td><td>2018-06-01 02:29:59</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0007344040</td><td> 0.0008510161</td><td> 0.0010453695</td><td> 0.0012397230</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>2018-06-01 02:30:00</td><td>2018-06-01 02:59:59</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0009449785</td><td>-0.0007653319</td><td>-0.0004659209</td><td>-0.0001665099</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -477,7 +571,7 @@ with the same syntax:
 
 
 ```R
-prof.l2 <- stackEddy(filepath="/data/filesToStack00200/",
+prof.l2 <- stackEddy(filepath="/Users/olearyd/Git/data/filesToStack00200/",
                  level="dp02")
 ```
 
@@ -495,19 +589,19 @@ head(prof.l2$HARV)
 ```
 
 
-<table>
+<table class="dataframe">
 <caption>A data.frame: 6 × 9</caption>
 <thead>
 	<tr><th></th><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rateRtioMoleDryCo2.mean</th><th scope=col>data.h2oStor.rateRtioMoleDryH2o.mean</th><th scope=col>data.tempStor.rateTemp.mean</th><th scope=col>qfqm.co2Stor.rateRtioMoleDryCo2.qfFinl</th><th scope=col>qfqm.h2oStor.rateRtioMoleDryH2o.qfFinl</th><th scope=col>qfqm.tempStor.rateTemp.qfFinl</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>010</td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>         NaN</td><td>NaN</td><td> 2.583333e-05</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>2</th><td>010</td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td> 0.002194788</td><td>NaN</td><td>-2.008056e-04</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>3</th><td>010</td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>-0.010752434</td><td>NaN</td><td>-1.901111e-04</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>4</th><td>010</td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td> 0.002556148</td><td>NaN</td><td>-7.419444e-05</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>5</th><td>010</td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>-0.015977747</td><td>NaN</td><td>-1.537083e-04</td><td>1</td><td>1</td><td>0</td></tr>
-	<tr><th scope=row>6</th><td>010</td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>-0.000537461</td><td>NaN</td><td>-1.874861e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>1</th><td>010</td><td>2018-06-01 00:00:00</td><td>2018-06-01 00:29:59</td><td>         NaN</td><td>NaN</td><td> 2.583333e-05</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>010</td><td>2018-06-01 00:30:00</td><td>2018-06-01 00:59:59</td><td> 0.002666576</td><td>NaN</td><td>-2.008056e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>010</td><td>2018-06-01 01:00:00</td><td>2018-06-01 01:29:59</td><td>-0.011224223</td><td>NaN</td><td>-1.901111e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>010</td><td>2018-06-01 01:30:00</td><td>2018-06-01 01:59:59</td><td> 0.006133056</td><td>NaN</td><td>-7.419444e-05</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>010</td><td>2018-06-01 02:00:00</td><td>2018-06-01 02:29:59</td><td>-0.019554655</td><td>NaN</td><td>-1.537083e-04</td><td>1</td><td>1</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>010</td><td>2018-06-01 02:30:00</td><td>2018-06-01 02:59:59</td><td>-0.007855632</td><td>NaN</td><td>-1.874861e-04</td><td>1</td><td>1</td><td>0</td></tr>
 </tbody>
 </table>
 
@@ -538,24 +632,24 @@ to a single NEON HDF5 file:
 
 
 ```R
-vars <- getVarsEddy("/data/filesToStack00200/NEON.D01.HARV.DP4.00200.001.nsae.2018-07.basic.h5")
+vars <- getVarsEddy("/Users/olearyd/Git/data/filesToStack00200/NEON.D01.HARV.DP4.00200.001.nsae.2018-07.basic.20201020T201317Z.h5")
 head(vars)
 ```
 
 
-<table>
+<table class="dataframe">
 <caption>A data.frame: 6 × 12</caption>
 <thead>
 	<tr><th></th><th scope=col>site</th><th scope=col>level</th><th scope=col>category</th><th scope=col>system</th><th scope=col>hor</th><th scope=col>ver</th><th scope=col>tmi</th><th scope=col>name</th><th scope=col>otype</th><th scope=col>dclass</th><th scope=col>dim</th><th scope=col>oth</th></tr>
 	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>5</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
-	<tr><th scope=row>6</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
-	<tr><th scope=row>7</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>44640</td><td>NA</td></tr>
-	<tr><th scope=row>9</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
-	<tr><th scope=row>10</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
-	<tr><th scope=row>11</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1488 </td><td>NA</td></tr>
+	<tr><th scope=row>5</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>43200</td><td>NA</td></tr>
+	<tr><th scope=row>6</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>43200</td><td>NA</td></tr>
+	<tr><th scope=row>7</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>01m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>43200</td><td>NA</td></tr>
+	<tr><th scope=row>9</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedXaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1440 </td><td>NA</td></tr>
+	<tr><th scope=row>10</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedYaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1440 </td><td>NA</td></tr>
+	<tr><th scope=row>11</th><td>HARV</td><td>dp01</td><td>data</td><td>amrs</td><td>000</td><td>060</td><td>30m</td><td>angNedZaxs</td><td>H5I_DATASET</td><td>COMPOUND</td><td>1440 </td><td>NA</td></tr>
 </tbody>
 </table>
 
@@ -570,7 +664,7 @@ profiles:
 
 
 ```R
-iso <- stackEddy(filepath="/data/filesToStack00200/",
+iso <- stackEddy(filepath="/Users/olearyd/Git/data/filesToStack00200/",
                level="dp01", var=c("rtioMoleDryCo2","rtioMoleDryH2o",
                                    "dlta13CCo2","dlta18OH2o"), avg=30)
 ```
@@ -589,19 +683,19 @@ head(iso$HARV)
 ```
 
 
-<table>
+<table class="dataframe">
 <caption>A data.frame: 6 × 84</caption>
 <thead>
 	<tr><th></th><th scope=col>verticalPosition</th><th scope=col>timeBgn</th><th scope=col>timeEnd</th><th scope=col>data.co2Stor.rtioMoleDryCo2.mean</th><th scope=col>data.co2Stor.rtioMoleDryCo2.min</th><th scope=col>data.co2Stor.rtioMoleDryCo2.max</th><th scope=col>data.co2Stor.rtioMoleDryCo2.vari</th><th scope=col>data.co2Stor.rtioMoleDryCo2.numSamp</th><th scope=col>data.co2Turb.rtioMoleDryCo2.mean</th><th scope=col>data.co2Turb.rtioMoleDryCo2.min</th><th scope=col>⋯</th><th scope=col>ucrt.isoCo2.rtioMoleDryCo2.se</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoCo2.rtioMoleDryH2o.se</th><th scope=col>ucrt.isoH2o.dlta18OH2o.mean</th><th scope=col>ucrt.isoH2o.dlta18OH2o.vari</th><th scope=col>ucrt.isoH2o.dlta18OH2o.se</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.mean</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.vari</th><th scope=col>ucrt.isoH2o.rtioMoleDryH2o.se</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dttm&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>⋯</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>010</td><td>2018-06-01T00:00:00.000Z</td><td>2018-06-01T00:29:59.000Z</td><td>509.3375</td><td>451.4786</td><td>579.3518</td><td>845.0795</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
-	<tr><th scope=row>2</th><td>010</td><td>2018-06-01T00:30:00.000Z</td><td>2018-06-01T00:59:59.000Z</td><td>502.2736</td><td>463.5470</td><td>533.6622</td><td>161.3652</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.764965</td><td>0.08848440</td><td>0.01226428</td><td>0.014335993</td><td>0.02544454</td><td>0.003017400</td><td>0.008116413</td><td>0.06937514</td><td>0.009640249</td><td>0.006855142</td></tr>
-	<tr><th scope=row>3</th><td>010</td><td>2018-06-01T01:00:00.000Z</td><td>2018-06-01T01:29:59.000Z</td><td>521.6139</td><td>442.8649</td><td>563.0518</td><td>547.9924</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
-	<tr><th scope=row>4</th><td>010</td><td>2018-06-01T01:30:00.000Z</td><td>2018-06-01T01:59:59.000Z</td><td>469.6317</td><td>432.6588</td><td>508.7463</td><td>396.8379</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.149078</td><td>0.08917388</td><td>0.01542679</td><td>0.017683602</td><td>0.01373503</td><td>0.002704220</td><td>0.008582764</td><td>0.08489408</td><td>0.008572288</td><td>0.005710986</td></tr>
-	<tr><th scope=row>5</th><td>010</td><td>2018-06-01T02:00:00.000Z</td><td>2018-06-01T02:29:59.000Z</td><td>484.7725</td><td>436.2842</td><td>537.4641</td><td>662.9449</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
-	<tr><th scope=row>6</th><td>010</td><td>2018-06-01T02:30:00.000Z</td><td>2018-06-01T02:59:59.000Z</td><td>476.8554</td><td>443.7055</td><td>515.6598</td><td>246.6969</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>0.670111</td><td>        NA</td><td>        NA</td><td>0.005890447</td><td>0.01932110</td><td>0.002095066</td><td>0.008049170</td><td>0.02813808</td><td>0.002551672</td><td>0.002654748</td></tr>
+	<tr><th scope=row>1</th><td>010</td><td>2018-06-01 00:00:00</td><td>2018-06-01 00:29:59</td><td>509.3375</td><td>451.4786</td><td>579.3518</td><td>845.0795</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>2</th><td>010</td><td>2018-06-01 00:30:00</td><td>2018-06-01 00:59:59</td><td>502.2736</td><td>463.5470</td><td>533.6622</td><td>161.3652</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.764965</td><td>0.08848440</td><td>0.01226428</td><td>0.014335993</td><td>0.02544454</td><td>0.003017400</td><td>0.008116413</td><td>0.06937514</td><td>0.009640249</td><td>0.006855142</td></tr>
+	<tr><th scope=row>3</th><td>010</td><td>2018-06-01 01:00:00</td><td>2018-06-01 01:29:59</td><td>521.6139</td><td>442.8649</td><td>563.0518</td><td>547.9924</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>4</th><td>010</td><td>2018-06-01 01:30:00</td><td>2018-06-01 01:59:59</td><td>469.6317</td><td>432.6588</td><td>508.7463</td><td>396.8379</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>1.149078</td><td>0.08917388</td><td>0.01542679</td><td>0.017683602</td><td>0.01373503</td><td>0.002704220</td><td>0.008582764</td><td>0.08489408</td><td>0.008572288</td><td>0.005710986</td></tr>
+	<tr><th scope=row>5</th><td>010</td><td>2018-06-01 02:00:00</td><td>2018-06-01 02:29:59</td><td>484.7725</td><td>436.2842</td><td>537.4641</td><td>662.9449</td><td>235</td><td>NA</td><td>NA</td><td>⋯</td><td>      NA</td><td>       NaN</td><td>       NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td><td>       NaN</td><td>        NaN</td><td>         NA</td></tr>
+	<tr><th scope=row>6</th><td>010</td><td>2018-06-01 02:30:00</td><td>2018-06-01 02:59:59</td><td>476.8554</td><td>443.7055</td><td>515.6598</td><td>246.6969</td><td>175</td><td>NA</td><td>NA</td><td>⋯</td><td>0.670111</td><td>        NA</td><td>        NA</td><td>0.005890447</td><td>0.01932110</td><td>0.002095066</td><td>0.008049170</td><td>0.02813808</td><td>0.002551672</td><td>0.002654748</td></tr>
 </tbody>
 </table>
 
@@ -630,8 +724,14 @@ the profiles.
 
 
 ```R
+install.packages("ggplot2")
 library(ggplot2)
 ```
+
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpxzHtY4/downloaded_packages
+
 
 
 ```R
@@ -644,11 +744,11 @@ g
 ```
 
     Warning message:
-    “Removed 2 rows containing missing values (geom_path).”
+    “Removed 3 row(s) containing missing values (geom_path).”
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_50_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro_files/eddy_intro_50_1.png)
 
 
 
@@ -662,11 +762,11 @@ g
 ```
 
     Warning message:
-    “Removed 55 rows containing missing values (geom_path).”
+    “Removed 79 row(s) containing missing values (geom_path).”
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/eddy_intro_files/eddy_intro_51_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro_files/eddy_intro_51_1.png)
 
 
 The legends are omitted for space, see if you can work out the times 
