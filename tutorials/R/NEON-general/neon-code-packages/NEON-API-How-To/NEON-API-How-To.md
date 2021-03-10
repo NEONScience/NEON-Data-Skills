@@ -56,16 +56,16 @@ preferably, RStudio loaded on your computer.
 * **dplyr:** `install.packages("dplyr")`
 * **devtools:** `install.packages("devtools")`
 * **downloader:** `install.packages("downloader")`
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
-* **neonUtilities:** `devtools::install_github("NEONScience/NEON-utilities/neonUtilities")`
 
-Note, you must have devtools installed & loaded, prior to loading geoNEON or neonUtilities. 
+Note, you must have devtools installed & loaded, prior to loading geoNEON. 
 
 ### Additional Resources
 
 * <a href="http://data.neonscience.org/data-api" target="_blank">Webpage for the NEON API</a>
 * <a href="https://github.com/NEONScience/neon-data-api" target="_blank">GitHub repository for the NEON API</a>
-* <a href="https://github.com/ropenscilabs/nneo" target="_blank"> ROpenSci wrapper for the NEON API</a> (not covered in this tutorial)
+* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download & Explore NEON Data</a> tutorial
 
 </div>
 
@@ -139,10 +139,10 @@ identifier for the data product:
     req
 
     ## Response [https://data.neonscience.org/api/v0/products/DP1.10003.001]
-    ##   Date: 2020-03-20 01:56
+    ##   Date: 2021-03-09 23:50
     ##   Status: 200
     ##   Content-Type: application/json;charset=UTF-8
-    ##   Size: 24.2 kB
+    ##   Size: 37.4 kB
 
 The object returned from `GET()` has many layers of information. Entering the 
 name of the object gives you some basic information about what you downloaded. 
@@ -156,18 +156,14 @@ list. This is typical of JSON-formatted data returned by APIs. We can use the
     req.content <- content(req, as="parsed")
     names(req.content$data)
 
-    ##  [1] "productCodeLong"              "productCode"                 
-    ##  [3] "productCodePresentation"      "productName"                 
-    ##  [5] "productDescription"           "productStatus"               
-    ##  [7] "productCategory"              "productHasExpanded"          
-    ##  [9] "productScienceTeamAbbr"       "productScienceTeam"          
-    ## [11] "productPublicationFormatType" "productAbstract"             
-    ## [13] "productDesignDescription"     "productStudyDescription"     
-    ## [15] "productBasicDescription"      "productExpandedDescription"  
-    ## [17] "productSensor"                "productRemarks"              
-    ## [19] "themes"                       "changeLogs"                  
-    ## [21] "specs"                        "keywords"                    
-    ## [23] "siteCodes"
+    ##  [1] "productCodeLong"              "productCode"                  "productCodePresentation"     
+    ##  [4] "productName"                  "productDescription"           "productStatus"               
+    ##  [7] "productCategory"              "productHasExpanded"           "productScienceTeamAbbr"      
+    ## [10] "productScienceTeam"           "productPublicationFormatType" "productAbstract"             
+    ## [13] "productDesignDescription"     "productStudyDescription"      "productBasicDescription"     
+    ## [16] "productExpandedDescription"   "productSensor"                "productRemarks"              
+    ## [19] "themes"                       "changeLogs"                   "specs"                       
+    ## [22] "keywords"                     "releases"                     "siteCodes"
 
 You can see all of the infoamtion by running the line `print(req.content)`, but
 this will result in a very long printout in your console. Instead, you can view
@@ -177,7 +173,7 @@ list items individually. Here, we highlight a couple of interesting examples:
     # View Abstract
     req.content$data$productAbstract
 
-    ## [1] "This data product contains the quality-controlled, native sampling resolution data from NEON's breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see the user guide, protocols, and science design listed in the Documentation section in [this data product's details webpage](https://data.neonscience.org/data-products/DP1.10003.001). \n\nLatency:\nThe expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata:  120\n\nbrd_perpoint:  120\n\nbrd_personnel:  120\n\nbrd_references:  120"
+    ## [1] "This data product contains the quality-controlled, native sampling resolution data from NEON's breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see protocol [NEON.DOC.014041](http://data.neonscience.org/api/v0/documents/NEON.DOC.014041vF): TOS Protocol and Procedure: Breeding Landbird Abundance and Diversity and science design [NEON.DOC.000916](http://data.neonscience.org/api/v0/documents/NEON.DOC.000916vB): TOS Science Design for Breeding Landbird Abundance and Diversity.\n\nLatency: The expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata: 120\n\nbrd_perpoint: 120\n\nbrd_personnel: 120\n\nbrd_references: 120"
 
     # View Available months and associated URLs for Onaqui, Utah - ONAQ
     req.content$data$siteCodes[[27]]
@@ -198,6 +194,9 @@ list items individually. Here, we highlight a couple of interesting examples:
     ## $availableMonths[[4]]
     ## [1] "2019-05"
     ## 
+    ## $availableMonths[[5]]
+    ## [1] "2020-05"
+    ## 
     ## 
     ## $availableDataUrls
     ## $availableDataUrls[[1]]
@@ -211,6 +210,38 @@ list items individually. Here, we highlight a couple of interesting examples:
     ## 
     ## $availableDataUrls[[4]]
     ## [1] "https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2019-05"
+    ## 
+    ## $availableDataUrls[[5]]
+    ## [1] "https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2020-05"
+    ## 
+    ## 
+    ## $availableReleases
+    ## $availableReleases[[1]]
+    ## $availableReleases[[1]]$release
+    ## [1] "PROVISIONAL"
+    ## 
+    ## $availableReleases[[1]]$availableMonths
+    ## $availableReleases[[1]]$availableMonths[[1]]
+    ## [1] "2020-05"
+    ## 
+    ## 
+    ## 
+    ## $availableReleases[[2]]
+    ## $availableReleases[[2]]$release
+    ## [1] "RELEASE-2021"
+    ## 
+    ## $availableReleases[[2]]$availableMonths
+    ## $availableReleases[[2]]$availableMonths[[1]]
+    ## [1] "2017-05"
+    ## 
+    ## $availableReleases[[2]]$availableMonths[[2]]
+    ## [1] "2018-05"
+    ## 
+    ## $availableReleases[[2]]$availableMonths[[3]]
+    ## [1] "2018-06"
+    ## 
+    ## $availableReleases[[2]]$availableMonths[[4]]
+    ## [1] "2019-05"
 
 To get a more accessible view of which sites have data for which months, you'll 
 need to extract data from the nested list. There are a variety of ways to do this, 
@@ -262,10 +293,10 @@ version is not as human readable but is readable by the `fromJSON()` function.
     ## [1] "TOS Data Product Type"
     ## 
     ## $data$productAbstract
-    ## [1] "This data product contains the quality-controlled, native sampling resolution data from NEON's breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see the user guide, protocols, and science design listed in the Documentation section in [this data product's details webpage](https://data.neonscience.org/data-products/DP1.10003.001). \n\nLatency:\nThe expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata:  120\n\nbrd_perpoint:  120\n\nbrd_personnel:  120\n\nbrd_references:  120"
+    ## [1] "This data product contains the quality-controlled, native sampling resolution data from NEON's breeding landbird sampling. Breeding landbirds are defined as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” (Ralph et al. 1993). The breeding landbird point counts product provides records of species identification of all individuals observed during the 6-minute count period, as well as metadata which can be used to model detectability, e.g., weather, distances from observers to birds, and detection methods. The NEON point count method is adapted from the Integrated Monitoring in Bird Conservation Regions (IMBCR): Field protocol for spatially-balanced sampling of landbird populations (Hanni et al. 2017; http://bit.ly/2u2ChUB). For additional details, see protocol [NEON.DOC.014041](http://data.neonscience.org/api/v0/documents/NEON.DOC.014041vF): TOS Protocol and Procedure: Breeding Landbird Abundance and Diversity and science design [NEON.DOC.000916](http://data.neonscience.org/api/v0/documents/NEON.DOC.000916vB): TOS Science Design for Breeding Landbird Abundance and Diversity.\n\nLatency: The expected time from data and/or sample collection in the field to data publication is as follows, for each of the data tables (in days) in the downloaded data package. See the Data Product User Guide for more information.\n \nbrd_countdata: 120\n\nbrd_perpoint: 120\n\nbrd_personnel: 120\n\nbrd_references: 120"
     ## 
     ## $data$productDesignDescription
-    ## [1] "Depending on the size of the site, sampling for this product occurs either at either randomly distributed individual points or grids of nine points each. At larger sites, point count sampling occurs at five to fifteen 9-point grids, with grid centers collocated with distributed base plot centers (where plant, beetle, and/or soil sampling may also occur), if possible. At smaller sites (i.e., sites that cannot accommodate a minimum of 5 grids) point counts occur at the southwest corner (point 21) of 5-25 distributed base plots. Point counts are conducted once per breeding season at large sites and twice per breeding season at smaller sites. Point counts are six minutes long, with each minute tracked by the observer, following a two-minute settling-in period. All birds are recorded to species and sex, whenever possible, and the distance to each individual or flock is measured with a laser rangefinder, except in the case of flyovers."
+    ## [1] "Depending on the size of the site, sampling for this product occurs at either randomly distributed individual points or grids of nine points each. At larger sites, point count sampling occurs at five to ten 9-point grids, with grid centers collocated with distributed base plot centers (where plant, beetle, and/or soil sampling may also occur), if possible. At smaller sites (i.e., sites that cannot accommodate a minimum of 5 grids) point counts occur at the southwest corner (point 21) of 5-25 distributed base plots. Point counts are conducted once per breeding season at large sites and twice per breeding season at smaller sites. Point counts are six minutes long, with each minute tracked by the observer, following a two-minute settling-in period. All birds are recorded to species and sex, whenever possible, and the distance to each individual or flock is measured with a laser rangefinder, except in the case of flyovers."
     ## 
     ## $data$productStudyDescription
     ## [1] "This sampling occurs at all NEON terrestrial sites."
@@ -280,125 +311,241 @@ version is not as human readable but is readable by the `fromJSON()` function.
     ## NULL
     ## 
     ## $data$productRemarks
-    ## [1] "Queries for this data product will return data collected during the date range specified for brd_perpoint and brd_countdata, but will return data from all dates for brd_personnel (quiz scores may occur over time periods which are distinct from when sampling occurs) and brd_references (which apply to a broad range of sampling dates). A record from brd_perPoint should have 6+ child records in brd_countdata, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables. Taxonomic IDs of species of concern have been 'fuzzed'; see data package readme files for more information."
+    ## [1] "Queries for this data product will return data collected during the date range specified for `brd_perpoint` and `brd_countdata`, but will return data from all dates for `brd_personnel` (quiz scores may occur over time periods which are distinct from when sampling occurs) and `brd_references` (which apply to a broad range of sampling dates). A record from `brd_perPoint` should have 6+ child records in `brd_countdata`, at least one per pointCountMinute. Duplicates or missing data may exist where protocol and/or data entry aberrations have occurred; users should check data carefully for anomalies before joining tables. Taxonomic IDs of species of concern have been 'fuzzed'; see data package readme files for more information."
     ## 
     ## $data$themes
     ## [1] "Organisms, Populations, and Communities"
     ## 
     ## $data$changeLogs
-    ## NULL
+    ##      id parentIssueID            issueDate         resolvedDate       dateRangeStart         dateRangeEnd
+    ## 1 16607            NA 2020-10-28T00:00:00Z 2020-01-01T00:00:00Z 2013-01-01T00:00:00Z 2020-01-01T00:00:00Z
+    ## 2 17938            NA 2021-01-06T00:00:00Z                 <NA> 2020-03-23T00:00:00Z 2021-06-01T00:00:00Z
+    ##   locationAffected
+    ## 1              All
+    ## 2              All
+    ##                                                                                                                                                                                                            issue
+    ## 1                                                                                                                                 There was not a way to indicate that a scheduled sampling event did not occur.
+    ## 2 Safety measures to protect personnel during the COVID-19 pandemic resulted in reduced or eliminated sampling activities for extended periods at NEON sites. Data availability may be reduced during this time.
+    ##                                                                                                                                                                                                                                                                                                                                   resolution
+    ## 1 The fields samplingImpracticalRemarks and samplingImpractical were added prior to the 2020 field season. The contractor supplies the samplingImpracticalRemarks field, and this field autopopulates the samplingImpractical field. The samplingImpractical field has a value other than OK if something prevented sampling from occurring.
+    ## 2                                                                                                                                                                                                                                                                                                                                       <NA>
     ## 
     ## $data$specs
-    ##   specId             specNumber
-    ## 1   3656      NEON.DOC.000916vC
-    ## 2   2565 NEON_bird_userGuide_vA
-    ## 3   3729      NEON.DOC.014041vJ
+    ##   specId             specNumber        specType specSize
+    ## 1   3656      NEON.DOC.000916vC application/pdf  2827241
+    ## 2   5183 NEON_bird_userGuide_vB application/pdf   295419
+    ## 3   3729      NEON.DOC.014041vJ application/pdf  5026183
+    ##                                                         specDescription
+    ## 1      TOS Science Design for Breeding Landbird Abundance and Diversity
+    ## 2     NEON USER GUIDE TO BREEDING LANDBIRD POINT COUNTS (DP1.10003.001)
+    ## 3 TOS Protocol and Procedure: Breeding Landbird Abundance and Diversity
     ## 
     ## $data$keywords
-    ##  [1] "birds"                 "diversity"             "taxonomy"             
-    ##  [4] "community composition" "distance sampling"     "avian"                
-    ##  [7] "species composition"   "population"            "vertebrates"          
-    ## [10] "invasive"              "introduced"            "native"               
-    ## [13] "landbirds"             "animals"               "Animalia"             
-    ## [16] "Aves"                  "Chordata"              "point counts"         
+    ##  [1] "vertebrates"           "birds"                 "diversity"             "taxonomy"             
+    ##  [5] "community composition" "distance sampling"     "avian"                 "species composition"  
+    ##  [9] "population"            "Aves"                  "Chordata"              "point counts"         
+    ## [13] "landbirds"             "invasive"              "introduced"            "native"               
+    ## [17] "animals"               "Animalia"             
+    ## 
+    ## $data$releases
+    ##        release       generationDate                                                       url
+    ## 1 RELEASE-2021 2021-01-23T02:30:02Z https://data.neonscience.org/api/v0/releases/RELEASE-2021
+    ##   productDoi.generationDate                     productDoi.url
+    ## 1      2021-01-25T18:14:30Z https://doi.org/10.48443/s730-dy13
     ## 
     ## $data$siteCodes
-    ##    siteCode                                                                 availableMonths
-    ## 1      ABBY                                     2017-05, 2017-06, 2018-06, 2018-07, 2019-05
-    ## 2      BARR                                                       2017-07, 2018-07, 2019-06
-    ## 3      BART                                     2015-06, 2016-06, 2017-06, 2018-06, 2019-06
-    ## 4      BLAN                            2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 5      BONA                                              2017-06, 2018-06, 2018-07, 2019-06
-    ## 6      CLBJ                                              2017-05, 2018-04, 2019-04, 2019-05
-    ## 7      CPER                   2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06
-    ## 8      DCFS                                     2017-06, 2017-07, 2018-07, 2019-06, 2019-07
-    ## 9      DEJU                                                       2017-06, 2018-06, 2019-06
-    ## 10     DELA                                              2015-06, 2017-06, 2018-05, 2019-06
-    ## 11     DSNY                                     2015-06, 2016-05, 2017-05, 2018-05, 2019-05
-    ## 12     GRSM                                     2016-06, 2017-05, 2017-06, 2018-05, 2019-05
-    ## 13     GUAN                                     2015-05, 2017-05, 2018-05, 2019-05, 2019-06
-    ## 14     HARV                            2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
-    ## 15     HEAL                                     2017-06, 2018-06, 2018-07, 2019-06, 2019-07
-    ## 16     JERC                                              2016-06, 2017-05, 2018-06, 2019-06
-    ## 17     JORN                                     2017-04, 2017-05, 2018-04, 2018-05, 2019-04
-    ## 18     KONA                                                       2018-05, 2018-06, 2019-06
-    ## 19     KONZ                                              2017-06, 2018-05, 2018-06, 2019-06
-    ## 20     LAJA                                              2017-05, 2018-05, 2019-05, 2019-06
-    ## 21     LENO                                                       2017-06, 2018-05, 2019-06
-    ## 22     MLBS                                                                2018-06, 2019-05
-    ## 23     MOAB                                              2015-06, 2017-05, 2018-05, 2019-05
-    ## 24     NIWO                                              2015-07, 2017-07, 2018-07, 2019-07
-    ## 25     NOGP                                                       2017-07, 2018-07, 2019-07
-    ## 26     OAES                                     2017-05, 2017-06, 2018-04, 2018-05, 2019-05
-    ## 27     ONAQ                                              2017-05, 2018-05, 2018-06, 2019-05
-    ## 28     ORNL                                     2016-05, 2016-06, 2017-05, 2018-06, 2019-05
-    ## 29     OSBS                                              2016-05, 2017-05, 2018-05, 2019-05
-    ## 30     PUUM                                                                         2018-04
-    ## 31     RMNP                            2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07
-    ## 32     SCBI 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 33     SERC                                              2017-05, 2017-06, 2018-05, 2019-05
-    ## 34     SJER                                                       2017-04, 2018-04, 2019-04
-    ## 35     SOAP                                                       2017-05, 2018-05, 2019-05
-    ## 36     SRER                                              2017-05, 2018-04, 2018-05, 2019-04
-    ## 37     STEI                   2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
-    ## 38     STER                   2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06
-    ## 39     TALL                                     2015-06, 2016-07, 2017-06, 2018-06, 2019-05
-    ## 40     TEAK                                              2017-06, 2018-06, 2019-06, 2019-07
-    ## 41     TOOL                                                       2017-06, 2018-07, 2019-06
-    ## 42     TREE                                              2016-06, 2017-06, 2018-06, 2019-06
-    ## 43     UKFS                                                       2017-06, 2018-06, 2019-06
-    ## 44     UNDE                                     2016-06, 2016-07, 2017-06, 2018-06, 2019-06
-    ## 45     WOOD                                     2015-07, 2017-07, 2018-07, 2019-06, 2019-07
-    ## 46     WREF                                                       2018-06, 2019-05, 2019-06
-    ## 47     YELL                                                                2018-06, 2019-06
-    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              availableDataUrls
-    ## 1                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2019-05
-    ## 2                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2019-06
-    ## 3                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2019-06
-    ## 4                                                                                                                                                                                                                 https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-06
-    ## 5                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2019-06
-    ## 6                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-05
-    ## 7                                                                                                                                            https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2019-06
-    ## 8                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-07
-    ## 9                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2019-06
-    ## 10                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2019-06
-    ## 11                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2019-05
-    ## 12                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2019-05
-    ## 13                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-06
-    ## 14                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2019-06
-    ## 15                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-07
-    ## 16                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2019-06
-    ## 17                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2019-04
-    ## 18                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2019-06
-    ## 19                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2019-06
-    ## 20                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-06
-    ## 21                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2019-06
-    ## 22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2019-05
-    ## 23                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2019-05
-    ## 24                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2019-07
-    ## 25                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2019-07
-    ## 26                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2019-05
-    ## 27                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2019-05
-    ## 28                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2019-05
-    ## 29                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2019-05
-    ## 30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/PUUM/2018-04
-    ## 31                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-07
-    ## 32 https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-06
-    ## 33                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2019-05
-    ## 34                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2019-04
-    ## 35                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2019-05
-    ## 36                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2019-04
-    ## 37                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-06
-    ## 38                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-06
-    ## 39                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2019-05
-    ## 40                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-07
-    ## 41                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2019-06
-    ## 42                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2019-06
-    ## 43                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2019-06
-    ## 44                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2019-06
-    ## 45                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-07
-    ## 46                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-06
-    ## 47                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2019-06
+    ##    siteCode
+    ## 1      ABBY
+    ## 2      BARR
+    ## 3      BART
+    ## 4      BLAN
+    ## 5      BONA
+    ## 6      CLBJ
+    ## 7      CPER
+    ## 8      DCFS
+    ## 9      DEJU
+    ## 10     DELA
+    ## 11     DSNY
+    ## 12     GRSM
+    ## 13     GUAN
+    ## 14     HARV
+    ## 15     HEAL
+    ## 16     JERC
+    ## 17     JORN
+    ## 18     KONA
+    ## 19     KONZ
+    ## 20     LAJA
+    ## 21     LENO
+    ## 22     MLBS
+    ## 23     MOAB
+    ## 24     NIWO
+    ## 25     NOGP
+    ## 26     OAES
+    ## 27     ONAQ
+    ## 28     ORNL
+    ## 29     OSBS
+    ## 30     PUUM
+    ## 31     RMNP
+    ## 32     SCBI
+    ## 33     SERC
+    ## 34     SJER
+    ## 35     SOAP
+    ## 36     SRER
+    ## 37     STEI
+    ## 38     STER
+    ## 39     TALL
+    ## 40     TEAK
+    ## 41     TOOL
+    ## 42     TREE
+    ## 43     UKFS
+    ## 44     UNDE
+    ## 45     WOOD
+    ## 46     WREF
+    ## 47     YELL
+    ##                                                                                      availableMonths
+    ## 1                                                        2017-05, 2017-06, 2018-06, 2018-07, 2019-05
+    ## 2                                                                          2017-07, 2018-07, 2019-06
+    ## 3                                      2015-06, 2016-06, 2017-06, 2018-06, 2019-06, 2020-06, 2020-07
+    ## 4                                      2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06, 2020-06
+    ## 5                                               2017-06, 2018-06, 2018-07, 2019-06, 2020-06, 2020-07
+    ## 6                                               2017-05, 2018-04, 2019-04, 2019-05, 2020-04, 2020-05
+    ## 7                             2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06, 2020-05
+    ## 8                                               2017-06, 2017-07, 2018-07, 2019-06, 2019-07, 2020-07
+    ## 9                                                                 2017-06, 2018-06, 2019-06, 2020-06
+    ## 10                                                       2015-06, 2017-06, 2018-05, 2019-06, 2020-05
+    ## 11                                                       2015-06, 2016-05, 2017-05, 2018-05, 2019-05
+    ## 12                                              2016-06, 2017-05, 2017-06, 2018-05, 2019-05, 2020-06
+    ## 13                                              2015-05, 2017-05, 2018-05, 2019-05, 2019-06, 2020-07
+    ## 14                                     2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06, 2020-06
+    ## 15                                              2017-06, 2018-06, 2018-07, 2019-06, 2019-07, 2020-06
+    ## 16                                                       2016-06, 2017-05, 2018-06, 2019-06, 2020-05
+    ## 17                                              2017-04, 2017-05, 2018-04, 2018-05, 2019-04, 2020-05
+    ## 18                                                       2018-05, 2018-06, 2019-06, 2020-05, 2020-06
+    ## 19                                                       2017-06, 2018-05, 2018-06, 2019-06, 2020-05
+    ## 20                                                       2017-05, 2018-05, 2019-05, 2019-06, 2020-07
+    ## 21                                                                2017-06, 2018-05, 2019-06, 2020-05
+    ## 22                                                                         2018-06, 2019-05, 2020-05
+    ## 23                                              2015-06, 2017-05, 2018-05, 2019-05, 2020-05, 2020-06
+    ## 24                                                       2015-07, 2017-07, 2018-07, 2019-07, 2020-07
+    ## 25                                                                2017-07, 2018-07, 2019-07, 2020-07
+    ## 26                                              2017-05, 2017-06, 2018-04, 2018-05, 2019-05, 2020-05
+    ## 27                                                       2017-05, 2018-05, 2018-06, 2019-05, 2020-05
+    ## 28                                              2016-05, 2016-06, 2017-05, 2018-06, 2019-05, 2020-05
+    ## 29                                                       2016-05, 2017-05, 2018-05, 2019-05, 2020-06
+    ## 30                                                                                           2018-04
+    ## 31                            2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07, 2020-06, 2020-07
+    ## 32 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06, 2020-05, 2020-06
+    ## 33                                              2017-05, 2017-06, 2018-05, 2019-05, 2020-05, 2020-06
+    ## 34                                                                         2017-04, 2018-04, 2019-04
+    ## 35                                                                         2017-05, 2018-05, 2019-05
+    ## 36                                                       2017-05, 2018-04, 2018-05, 2019-04, 2020-04
+    ## 37                            2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06, 2020-06
+    ## 38                            2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06, 2020-06
+    ## 39                                     2015-06, 2016-07, 2017-06, 2018-06, 2019-05, 2020-05, 2020-06
+    ## 40                                                                2017-06, 2018-06, 2019-06, 2019-07
+    ## 41                                                                         2017-06, 2018-07, 2019-06
+    ## 42                                                       2016-06, 2017-06, 2018-06, 2019-06, 2020-06
+    ## 43                                                       2017-06, 2018-06, 2019-06, 2020-05, 2020-06
+    ## 44                                              2016-06, 2016-07, 2017-06, 2018-06, 2019-06, 2020-06
+    ## 45                                              2015-07, 2017-07, 2018-07, 2019-06, 2019-07, 2020-07
+    ## 46                                                                         2018-06, 2019-05, 2019-06
+    ## 47                                                                         2018-06, 2019-06, 2020-06
+    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        availableDataUrls
+    ## 1                                                                                                                                                                                                                                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/ABBY/2019-05
+    ## 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BARR/2019-06
+    ## 3                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2020-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BART/2020-07
+    ## 4                                                                                                                                                                                                                                                                                      https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BLAN/2020-06
+    ## 5                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2020-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/BONA/2020-07
+    ## 6                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2020-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/CLBJ/2020-05
+    ## 7                                                                                                                                                                                                                 https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/CPER/2020-05
+    ## 8                                                                                                                                                                                                                                                                                                                                                           https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/DCFS/2020-07
+    ## 9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DEJU/2020-06
+    ## 10                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DELA/2020-05
+    ## 11                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/DSNY/2019-05
+    ## 12                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GRSM/2020-06
+    ## 13                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/GUAN/2020-07
+    ## 14                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HARV/2020-06
+    ## 15                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/HEAL/2020-06
+    ## 16                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/JERC/2020-05
+    ## 17                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2019-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/JORN/2020-05
+    ## 18                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONA/2020-06
+    ## 19                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/KONZ/2020-05
+    ## 20                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/LAJA/2020-07
+    ## 21                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/LENO/2020-05
+    ## 22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MLBS/2020-05
+    ## 23                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/MOAB/2020-06
+    ## 24                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NIWO/2020-07
+    ## 25                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/NOGP/2020-07
+    ## 26                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OAES/2020-05
+    ## 27                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ONAQ/2020-05
+    ## 28                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/ORNL/2020-05
+    ## 29                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/OSBS/2020-06
+    ## 30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   https://data.neonscience.org/api/v0/data/DP1.10003.001/PUUM/2018-04
+    ## 31                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2020-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/RMNP/2020-07
+    ## 32 https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SCBI/2020-06
+    ## 33                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SERC/2020-06
+    ## 34                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2017-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SJER/2019-04
+    ## 35                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SOAP/2019-05
+    ## 36                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2019-04, https://data.neonscience.org/api/v0/data/DP1.10003.001/SRER/2020-04
+    ## 37                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STEI/2020-06
+    ## 38                                                                                                                                                                                                                https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2013-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2015-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2016-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2017-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2018-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/STER/2020-06
+    ## 39                                                                                                                                                                                                                                                                                     https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2015-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/TALL/2020-06
+    ## 40                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TEAK/2019-07
+    ## 41                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/TOOL/2019-06
+    ## 42                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/TREE/2020-06
+    ## 43                                                                                                                                                                                                                                                                                                                                                                                                                               https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2020-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/UKFS/2020-06
+    ## 44                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2016-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2017-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/UNDE/2020-06
+    ## 45                                                                                                                                                                                                                                                                                                                                                          https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2017-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2018-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2019-07, https://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2020-07
+    ## 46                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-05, https://data.neonscience.org/api/v0/data/DP1.10003.001/WREF/2019-06
+    ## 47                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2018-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2019-06, https://data.neonscience.org/api/v0/data/DP1.10003.001/YELL/2020-06
+    ##                                                                                                               availableReleases
+    ## 1                                                                     RELEASE-2021, 2017-05, 2017-06, 2018-06, 2018-07, 2019-05
+    ## 2                                                                                       RELEASE-2021, 2017-07, 2018-07, 2019-06
+    ## 3                                      PROVISIONAL, RELEASE-2021, 2020-06, 2020-07, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+    ## 4                                      PROVISIONAL, RELEASE-2021, 2020-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 5                                               PROVISIONAL, RELEASE-2021, 2020-06, 2020-07, 2017-06, 2018-06, 2018-07, 2019-06
+    ## 6                                               PROVISIONAL, RELEASE-2021, 2020-04, 2020-05, 2017-05, 2018-04, 2019-04, 2019-05
+    ## 7                             PROVISIONAL, RELEASE-2021, 2020-05, 2013-06, 2015-05, 2016-05, 2017-05, 2017-06, 2018-05, 2019-06
+    ## 8                                               PROVISIONAL, RELEASE-2021, 2020-07, 2017-06, 2017-07, 2018-07, 2019-06, 2019-07
+    ## 9                                                                 PROVISIONAL, RELEASE-2021, 2020-06, 2017-06, 2018-06, 2019-06
+    ## 10                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2015-06, 2017-06, 2018-05, 2019-06
+    ## 11                                                                    RELEASE-2021, 2015-06, 2016-05, 2017-05, 2018-05, 2019-05
+    ## 12                                              PROVISIONAL, RELEASE-2021, 2020-06, 2016-06, 2017-05, 2017-06, 2018-05, 2019-05
+    ## 13                                              PROVISIONAL, RELEASE-2021, 2020-07, 2015-05, 2017-05, 2018-05, 2019-05, 2019-06
+    ## 14                                     PROVISIONAL, RELEASE-2021, 2020-06, 2015-05, 2015-06, 2016-06, 2017-06, 2018-06, 2019-06
+    ## 15                                              PROVISIONAL, RELEASE-2021, 2020-06, 2017-06, 2018-06, 2018-07, 2019-06, 2019-07
+    ## 16                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2016-06, 2017-05, 2018-06, 2019-06
+    ## 17                                              PROVISIONAL, RELEASE-2021, 2020-05, 2017-04, 2017-05, 2018-04, 2018-05, 2019-04
+    ## 18                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2018-05, 2018-06, 2019-06
+    ## 19                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2017-06, 2018-05, 2018-06, 2019-06
+    ## 20                                                       PROVISIONAL, RELEASE-2021, 2020-07, 2017-05, 2018-05, 2019-05, 2019-06
+    ## 21                                                                PROVISIONAL, RELEASE-2021, 2020-05, 2017-06, 2018-05, 2019-06
+    ## 22                                                                         PROVISIONAL, RELEASE-2021, 2020-05, 2018-06, 2019-05
+    ## 23                                              PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2015-06, 2017-05, 2018-05, 2019-05
+    ## 24                                                       PROVISIONAL, RELEASE-2021, 2020-07, 2015-07, 2017-07, 2018-07, 2019-07
+    ## 25                                                                PROVISIONAL, RELEASE-2021, 2020-07, 2017-07, 2018-07, 2019-07
+    ## 26                                              PROVISIONAL, RELEASE-2021, 2020-05, 2017-05, 2017-06, 2018-04, 2018-05, 2019-05
+    ## 27                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2017-05, 2018-05, 2018-06, 2019-05
+    ## 28                                              PROVISIONAL, RELEASE-2021, 2020-05, 2016-05, 2016-06, 2017-05, 2018-06, 2019-05
+    ## 29                                                       PROVISIONAL, RELEASE-2021, 2020-06, 2016-05, 2017-05, 2018-05, 2019-05
+    ## 30                                                                                                        RELEASE-2021, 2018-04
+    ## 31                            PROVISIONAL, RELEASE-2021, 2020-06, 2020-07, 2017-06, 2017-07, 2018-06, 2018-07, 2019-06, 2019-07
+    ## 32 PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2015-06, 2016-05, 2016-06, 2017-05, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 33                                              PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2017-05, 2017-06, 2018-05, 2019-05
+    ## 34                                                                                      RELEASE-2021, 2017-04, 2018-04, 2019-04
+    ## 35                                                                                      RELEASE-2021, 2017-05, 2018-05, 2019-05
+    ## 36                                                       PROVISIONAL, RELEASE-2021, 2020-04, 2017-05, 2018-04, 2018-05, 2019-04
+    ## 37                            PROVISIONAL, RELEASE-2021, 2020-06, 2016-05, 2016-06, 2017-06, 2018-05, 2018-06, 2019-05, 2019-06
+    ## 38                            PROVISIONAL, RELEASE-2021, 2020-06, 2013-06, 2015-05, 2016-05, 2017-05, 2018-05, 2019-05, 2019-06
+    ## 39                                     PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2015-06, 2016-07, 2017-06, 2018-06, 2019-05
+    ## 40                                                                             RELEASE-2021, 2017-06, 2018-06, 2019-06, 2019-07
+    ## 41                                                                                      RELEASE-2021, 2017-06, 2018-07, 2019-06
+    ## 42                                                       PROVISIONAL, RELEASE-2021, 2020-06, 2016-06, 2017-06, 2018-06, 2019-06
+    ## 43                                                       PROVISIONAL, RELEASE-2021, 2020-05, 2020-06, 2017-06, 2018-06, 2019-06
+    ## 44                                              PROVISIONAL, RELEASE-2021, 2020-06, 2016-06, 2016-07, 2017-06, 2018-06, 2019-06
+    ## 45                                              PROVISIONAL, RELEASE-2021, 2020-07, 2015-07, 2017-07, 2018-07, 2019-06, 2019-07
+    ## 46                                                                                      RELEASE-2021, 2018-06, 2019-05, 2019-06
+    ## 47                                                                         PROVISIONAL, RELEASE-2021, 2020-06, 2018-06, 2019-06
 
 The object contains a lot of information about the data product, including: 
 
@@ -417,7 +564,7 @@ calls ourselves in the next steps.
     bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
     length(bird.urls) #total number of URLs
 
-    ## [1] 204
+    ## [1] 252
 
     bird.urls[1:10] #show first 10 URLs available
 
@@ -451,57 +598,63 @@ you need to iterate this code, GET fails if you give it more than one URL.
     # view just the available data files 
     brd.files$data$files
 
-    ##                               crc32
-    ## 1  f37931d46213246dccf2a161211c9afe
-    ## 2  d84b496cf950b5b96e762473beda563a
-    ## 3  df102cb4cfdce092cda3c0942c9d9b67
-    ## 4  e67f1ae72760a63c616ec18108453aaa
-    ## 5  4438e5e050fc7be5949457f42089a397
-    ## 6  6d15da01c03793da8fc6d871e6659ea8
-    ## 7  e0adb3146b5cce59eea09864145efcb1
-    ## 8  2ad379ae44f4e87996bdc3dee70a0794
-    ## 9  6ba91b6e109ff14d1911dcaad9febeb9
-    ## 10 680a2f53c0a9d1b0ab4f8814bda5b399
-    ## 11 e67f1ae72760a63c616ec18108453aaa
-    ## 12 a2c47410a6a0f49d0b1cf95be6238604
-    ## 13 f37931d46213246dccf2a161211c9afe
-    ## 14 d76cfc5443ac27a058fab1d319d31d34
-    ## 15 22e3353dabb8b154768dc2eee9873718
-    ## 16 6d15da01c03793da8fc6d871e6659ea8
     ##                                                                               name   size
-    ## 1      NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv  23521
-    ## 2                          NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  12784
-    ## 3           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  70539
-    ## 4                       NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
-    ## 5                   NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip  67816
-    ## 6                      NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
-    ## 7     NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv 346679
-    ## 8  NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv 367402
-    ## 9           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml  78750
-    ## 10                         NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt  13063
-    ## 11                      NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv   7337
-    ## 12                          NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv  46349
-    ## 13  NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv  23521
-    ## 14        NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv   1012
-    ## 15               NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip  79998
-    ## 16                     NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv  10084
-    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        url
-    ## 1         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=de1bd5b1fab84b8a689025ce3dbff6bb67e7c33ee767a24202d334263b2d7164
-    ## 2                             https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=4cfbbe4f29d6fb449ba4a7824e2d7208a966f5fed7ed4f95fed8177e91f0f3ce
-    ## 3              https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=1652d0a02c7043b3abe8cedf0870143a1c5ee6aff83656d9100f4913ae356871
-    ## 4                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=7ca394e4f4781a57ba5fe27aea33efb5163c88ee1e6e76a603f3770b0e120e13
-    ## 5                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=6f984f61ee29ac693d83c18edf675192c0b74e684e5c2d6d1b6ec31ccf2b826d
-    ## 6                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fa90734065c4904424c6752d6538271cbe6bebcd7cf371b52777aaa1cb82ea3c
-    ## 7        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=2a54ceb4b09443804dac4e06decafacb647338ed4eae6cd9f92b87cb6a5d2525
-    ## 8  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e0010bc4bf141a80e7786e40cb66129b678c998934b22f6047e4a98db0b5ee78
-    ## 9           https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20191107T152331Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=046256d84e2c030aafd631e5cb0e0bb2e3862fcbfb1f4c1fab0f18a13d8c83b9
-    ## 10                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20191107T152331Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=423419f3fb91a015bd586ee6b5d034cafbf727acacac5fce36bed2570ef8a7d8
-    ## 11                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=0e2d8cea8d352581b419981184f85463884510d129ab1c50251de88784cb7c49
-    ## 12                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=607cddbda93e59cd69c2b0a07b8789a9ad542a4d8bfc2182c16412080c591b6a
-    ## 13  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=42bb21b974fada807205bf7ed65cbf96efa2b1315603421f40a774c1e9d3013b
-    ## 14        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=936ecdac97dc86fbf95b7f349cca61bb777bfbeb35f2871737788619246b331a
-    ## 15               https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20191107T152331Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=430638cd7e295d5eb882068895b8a0e6d692daf837543487cd825f4d16b7c2dd
-    ## 16                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/PROV/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20191107T152331Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200320T015624Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=pub-internal-read%2F20200320%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=d39d5b4e4d917bbbc17d9bc55f272a5169ae0f6174f7ff5993b1deba07ede487
+    ## 1                          NEON.D09.WOOD.DP1.10003.001.readme.20210123T023002Z.txt   9207
+    ## 2                      NEON.D09.WOOD.DP0.10003.001.validation.20201223T141702Z.csv  11357
+    ## 3                NEON.D09.WOOD.DP0.10003.001.categoricalCodes.20201223T141702Z.csv   9521
+    ## 4                NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20201223T141702Z.zip  87636
+    ## 5          NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.20201223T141702Z.csv  63796
+    ## 6  NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20201223T141702Z.csv 371251
+    ## 7           NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20210123T023002Z.xml 178787
+    ## 8   NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20201223T141702Z.csv  23883
+    ## 9         NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20201223T141702Z.csv   1178
+    ## 10                      NEON.D09.WOOD.DP1.10003.001.variables.20201223T141702Z.csv   8670
+    ## 11                  NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20201223T141702Z.zip  71662
+    ## 12    NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20201223T141702Z.csv 350528
+    ## 13     NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20201223T141702Z.csv  23883
+    ## 14                     NEON.D09.WOOD.DP0.10003.001.validation.20201223T141702Z.csv  11357
+    ## 15                         NEON.D09.WOOD.DP1.10003.001.readme.20210123T023002Z.txt   8913
+    ## 16          NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20210123T023002Z.xml 161547
+    ## 17               NEON.D09.WOOD.DP0.10003.001.categoricalCodes.20201223T141702Z.csv   9521
+    ## 18                      NEON.D09.WOOD.DP1.10003.001.variables.20201223T141702Z.csv   8670
+    ##                                 md5 crc32
+    ## 1  6ed97825bf5b1fc8537dc81cfd531872    NA
+    ## 2  e5b23aad062e41b93631d8c47278a1db    NA
+    ## 3  115177f66ca9b88b28a473f7d476d23c    NA
+    ## 4  31c7ef400f956b364a2af17de244bc17    NA
+    ## 5  893ed864cf0d421da609e856bd3b028f    NA
+    ## 6  3606c59c60c9eb3da0edd7ccd732b230    NA
+    ## 7  e5352a63118c5ce3ad78110a497f5393    NA
+    ## 8  bed5c479043d45cf81f67bdc9936f0bf    NA
+    ## 9  0bcf6823e84b58e1f1de655b51087cd0    NA
+    ## 10 437dd6434e1cd8538dc9676dcf6ca7f9    NA
+    ## 11 022598a3792de3e1366465f0142ac9e5    NA
+    ## 12 555d89c54bd03b8af08be121341d5e56    NA
+    ## 13 bed5c479043d45cf81f67bdc9936f0bf    NA
+    ## 14 e5b23aad062e41b93631d8c47278a1db    NA
+    ## 15 04e8bb1969e9b2b630d10679afe073a7    NA
+    ## 16 16674c19c1f66b3d662eafd3a3128ec3    NA
+    ## 17 115177f66ca9b88b28a473f7d476d23c    NA
+    ## 18 437dd6434e1cd8538dc9676dcf6ca7f9    NA
+    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   url
+    ## 1                 https://neon-prod-pub-1.s3.data.neonscience.org/release/tag/RELEASE-2021/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.readme.20210123T023002Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=547681725eef6816ffb823004ead962dfd1aacf92f255ca325158b8f2465a519
+    ## 2                                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.validation.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fce32f120631af83bb9c81728d58709637895ee4dcb308c9d9587e38438bc922
+    ## 3                                https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP0.10003.001.categoricalCodes.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=b6a440902a89347a78c8164ad84feaa41d116d7dfcc33e932ad6b2d66923dfd9
+    ## 4                                https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.2015-07.expanded.20201223T141702Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=c2ac5b87f4671e5eea523938506f409bc98ee3c9660d99a577fd0b88fc4f0e86
+    ## 5                          https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.Bird_Conservancy_of_the_Rockies.brd_personnel.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=a66745da0c7bc67ff5b1d47f79c2565c973b8af93b12616117c097958104f455
+    ## 6                  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.expanded.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=26f085b9282668c09b3683bebf61e7fe13b9a904ad8d89b1cb7ce17ecf9666e0
+    ## 7  https://neon-prod-pub-1.s3.data.neonscience.org/release/tag/RELEASE-2021/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20210123T023002Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=de9341178a05bb3cf8d7e88efccf1029af7a7085786fee25363450c8ca1b395b
+    ## 8                   https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.expanded.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=bce008aa377243041e683aa4eea371c7918cc836c32e490923c06a577e3355a0
+    ## 9                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.brd_references.expanded.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=4fa46fe4f9ddd23d609e0f770d0ce927970acc3a1a79469392befc864bab52a5
+    ## 10                                      https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/expanded/NEON.D09.WOOD.DP1.10003.001.variables.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=43b2ad84e0b93dd7b4b4c4308c786909bdc39ec5e3c9074955925f6f84395145
+    ## 11                                     https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.2015-07.basic.20201223T141702Z.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=28c62ce9891ec21d2b9790e4ec4e425acfc9e1a0133b0998ee68fb4a066a22ee
+    ## 12                       https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_countdata.2015-07.basic.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=6179554c8778edcd382085bf6cae8992ddec8e1e0f5cb7f8d68c4319ff799a0b
+    ## 13                        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.brd_perpoint.2015-07.basic.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=bc866da78bf5d1c3fe6b6ca251d2bfa1cddfd7c94ac9c88d8d0bed4f256751da
+    ## 14                                        https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.validation.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=14911e9366063510d0ef08e5a920f9db6dc84355e6deab10899e4c921dc40e9b
+    ## 15                   https://neon-prod-pub-1.s3.data.neonscience.org/release/tag/RELEASE-2021/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.readme.20210123T023002Z.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=6a20f66863db4214d7d8334c35612acc8d89b739de6bd5ddc22324d06686b4a2
+    ## 16    https://neon-prod-pub-1.s3.data.neonscience.org/release/tag/RELEASE-2021/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.EML.20150701-20150705.20210123T023002Z.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=fdf5b851c875b87a84c9138b932525b9381e195c1ff04926be5a72e5f144636a
+    ## 17                                  https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP0.10003.001.categoricalCodes.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=1959b9dd1183e735e149e4671d08fc4f9730d1a37d0a4187c0109077f6c769e3
+    ## 18                                         https://neon-prod-pub-1.s3.data.neonscience.org/NEON.DOM.SITE.DP1.10003.001/WOOD/20150701T000000--20150801T000000/basic/NEON.D09.WOOD.DP1.10003.001.variables.20201223T141702Z.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210309T235036Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=pub-internal-read%2F20210309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=8423d5aa9449dd9bab8374bcec801ef59b4647c45f1ac3f7c761d15839a87924
 
 In this output, `name` and `url` are key fields. It provides us with the names 
 of the files available for this site and month, and URLs where we can get the 
@@ -625,58 +778,57 @@ queries for Soil Temperature, DP1.00041.001. Let's use data from Moab in March
     temp.urls <- unlist(avail.soil$data$siteCodes$availableDataUrls)
     
     # get data availability from location/date of interest
-    tmp <- GET(temp.urls[grep("MOAB/2017-03", temp.urls)])
+    tmp <- GET(temp.urls[grep("MOAB/2017-08", temp.urls)])
     tmp.files <- jsonlite::fromJSON(content(tmp, as="text"))
     length(tmp.files$data$files$name) # There are a lot of available files
 
-    ## [1] 188
+    ## [1] 190
 
     tmp.files$data$files$name[1:10]   # Let's print the first 10
 
-    ##  [1] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
-    ##  [2] "NEON.D13.MOAB.DP1.00041.001.002.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [3] "NEON.D13.MOAB.DP1.00041.001.002.503.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [4] "NEON.D13.MOAB.DP1.00041.001.005.508.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
-    ##  [5] "NEON.D13.MOAB.DP1.00041.001.001.508.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [6] "NEON.D13.MOAB.DP1.00041.001.005.507.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [7] "NEON.D13.MOAB.DP1.00041.001.001.502.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [8] "NEON.D13.MOAB.DP1.00041.001.001.509.030.ST_30_minute.2017-03.basic.20170804T063725Z.csv"
-    ##  [9] "NEON.D13.MOAB.DP1.00041.001.001.506.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv" 
-    ## [10] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-03.basic.20170804T063725Z.csv"
+    ##  [1] "NEON.D13.MOAB.DP1.00041.001.005.501.030.ST_30_minute.2017-08.basic.20200620T054008Z.csv"
+    ##  [2] "NEON.D13.MOAB.DP1.00041.001.002.504.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ##  [3] "NEON.D13.MOAB.DP1.00041.001.004.505.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ##  [4] "NEON.D13.MOAB.DP1.00041.001.001.501.030.ST_30_minute.2017-08.basic.20200620T054008Z.csv"
+    ##  [5] "NEON.D13.MOAB.DP1.00041.001.003.508.030.ST_30_minute.2017-08.basic.20200620T054008Z.csv"
+    ##  [6] "NEON.D13.MOAB.DP1.00041.001.001.504.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ##  [7] "NEON.D13.MOAB.DP1.00041.001.004.504.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ##  [8] "NEON.D13.MOAB.DP1.00041.001.003.508.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ##  [9] "NEON.D13.MOAB.DP1.00041.001.003.506.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv" 
+    ## [10] "NEON.D13.MOAB.DP1.00041.001.001.507.001.ST_1_minute.2017-08.basic.20200620T054008Z.csv"
 
 These file names start and end the same way as the observational files, but the 
 middle is a little more cryptic. The structure from beginning to end is: 
 
-**NEON.[domain number].[site code].[data product ID].00000.
+**NEON.[domain number].[site code].[data product ID].
 [soil plot number].[depth].[averaging interval].[data table name].
 [year]-[month].[data package].[date of file creation]**
 
-So **NEON.D13.MOAB.DP1.00041.001.00000.002.504.030.ST_30_minute.
-2017-03.basic.20170804T063725Z.csv** is the: 
+So **NEON.D13.MOAB.DP1.00041.001.00000.003.506.030.ST_30_minute.
+2017-08.expanded.20200620T054008Z.csv** is the: 
 
 * NEON (`NEON.`)
 * Domain 13 (`.D13.`)
 * Moab field site (`.MOAB.`) 
 * soil temperature data (`.DP1.00041.001.`)
-* (internal NEON identifier, always 00000 in published data) (`.00000.`)
-* collected in Soil Plot 2, (`.002.`)
-* at the 4th depth below the surface (`.504.`)
+* collected in Soil Plot 3, (`.003.`)
+* at the 6th depth below the surface (`.506.`)
 * and reported as a 30-minute mean of (`.030.` and `.ST_30_minute.`)
-* only for the period of March 2017 (`.2017-03.`)
-* and provided in a basic data package (`.basic.`)
-* published on Aug 4, 2017 at 06:37:25 GMT (`.20170804T063725Z.`).
+* only for the period of Aug 2017 (`.2017-08.`)
+* and provided in the basic data package (`.basic.`)
+* published on June 20, 2020 at 05:40:08 GMT (`.20200620T054008Z.`).
 
-More information about interpreting file names can be found in the readme that 
-accompanies each download.
+More information about interpreting file names can be found on the 
+<a href="https://www.neonscience.org/data-samples/data-management/data-formats-conventions" target="_blank">Data Formats</a> page.
 
 Let's get data (and the URL) for only the plot and depth described above by selecting 
-`002.504.030` and the word `basic` in the file name.
+`003.506.030` and the word `basic` in the file name.
 
 Go get it:
 
 
     soil.temp <- read.delim(tmp.files$data$files$url
-                            [intersect(grep("002.504.030", 
+                            [intersect(grep("003.506.030", 
                                             tmp.files$data$files$name),
                                        grep("basic", 
                                             tmp.files$data$files$name))], 
@@ -693,7 +845,8 @@ a quick look at it, let's plot the mean soil temperature by date.
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-How-To/rfigs/os-plot-soil-data-1.png)
 
-As we'd expect we see daily fluctuation in soil temperature. 
+As we'd expect we see daily fluctuation in soil temperature, and some change 
+in temperature over the month as well.
 
 
 ## Remote sensing data (AOP)
@@ -724,16 +877,11 @@ we'll look at the flight over San Joaquin Experimental Range (SJER) in March
     # this list of files is very long, so we'll just look at the first ten
     head(cam.files$data$files$name, 10)
 
-    ##  [1] "17032816_EH021656(20170328184247)-0498_ort.tif"
-    ##  [2] "17032816_EH021656(20170328184725)-0521_ort.tif"
-    ##  [3] "17032816_EH021656(20170328193635)-0935_ort.tif"
-    ##  [4] "17032816_EH021656(20170328200600)-1201_ort.tif"
-    ##  [5] "17032816_EH021656(20170328191712)-0762_ort.tif"
-    ##  [6] "17032816_EH021656(20170328194816)-1039_ort.tif"
-    ##  [7] "17032816_EH021656(20170328195705)-1115_ort.tif"
-    ##  [8] "17032816_EH021656(20170328174846)-0049_ort.tif"
-    ##  [9] "17032816_EH021656(20170328181119)-0239_ort.tif"
-    ## [10] "17032816_EH021656(20170328184233)-0495_ort.tif"
+    ##  [1] "17032816_EH021656(20170328184327)-0507_ort.tif" "17032816_EH021656(20170328191148)-0721_ort.tif"
+    ##  [3] "17032816_EH021656(20170328200008)-1155_ort.tif" "17032816_EH021656(20170328190210)-0653_ort.tif"
+    ##  [5] "17032816_EH021656(20170328195154)-1065_ort.tif" "17032816_EH021656(20170328195740)-1122_ort.tif"
+    ##  [7] "17032816_EH021656(20170328175153)-0067_ort.tif" "17032816_EH021656(20170328194702)-1023_ort.tif"
+    ##  [9] "17032816_EH021656(20170328195246)-1077_ort.tif" "17032816_EH021656(20170328175804)-0128_ort.tif"
 
 File names for AOP data are more variable than for IS or OS data; 
 different AOP data products use different naming conventions. 
@@ -778,8 +926,9 @@ How to get spatial data and what to do with it depends on which type of
 data you're working with.
 
 #### Instrumentation data (both aquatic and terrestrial)
-Stay tuned - spatial data for instruments are in the process of entry into 
-the NEON database.
+The sensor_positions files, which are included in the list of available files, 
+contain spatial coordinates for each sensor in the data. See the final section 
+of the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-spatial-data-basics" target="_blank">Geolocation tutorial</a> for guidance in using these files.
 
 #### Observational data - Aquatic
 Latitude, longitude, elevation, and associated uncertainties are included in 
@@ -803,8 +952,8 @@ data products, both aquatic and terrestrial.
     # view named location
     head(brd.point$namedLocation)
 
-    ## [1] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
-    ## [4] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
+    ## [1] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
+    ## [5] "WOOD_013.birdGrid.brd" "WOOD_013.birdGrid.brd"
 
 Here we see the first six entries in the `namedLocation` column which tells us
 the names of the Terrestrial Observation plots where the bird surveys were 
@@ -822,11 +971,11 @@ We can query the locations endpoint of the API for the first named location,
     brd.WOOD_013
 
     ## $data
-    ## $data$locationDescription
-    ## [1] "Plot \"WOOD_013\" at site \"WOOD\""
-    ## 
     ## $data$locationName
     ## [1] "WOOD_013.birdGrid.brd"
+    ## 
+    ## $data$locationDescription
+    ## [1] "Plot \"WOOD_013\" at site \"WOOD\""
     ## 
     ## $data$locationType
     ## [1] "OS Plot - brd"
@@ -876,6 +1025,9 @@ We can query the locations endpoint of the API for the first named location,
     ## $data$zOffset
     ## [1] 0
     ## 
+    ## $data$offsetLocation
+    ## NULL
+    ## 
     ## $data$locationProperties
     ##                             locationPropertyName locationPropertyValue
     ## 1                    Value for Coordinate source            GeoXH 6000
@@ -910,20 +1062,20 @@ We can query the locations endpoint of the API for the first named location,
     ## [1] "https://data.neonscience.org/api/v0/locations/WOOD"
     ## 
     ## $data$locationChildren
-    ## [1] "WOOD_013.birdGrid.brd.B3" "WOOD_013.birdGrid.brd.C1" "WOOD_013.birdGrid.brd.A1"
-    ## [4] "WOOD_013.birdGrid.brd.B1" "WOOD_013.birdGrid.brd.C2" "WOOD_013.birdGrid.brd.B2"
-    ## [7] "WOOD_013.birdGrid.brd.A2" "WOOD_013.birdGrid.brd.C3" "WOOD_013.birdGrid.brd.A3"
+    ## [1] "WOOD_013.birdGrid.brd.B2" "WOOD_013.birdGrid.brd.A2" "WOOD_013.birdGrid.brd.C3"
+    ## [4] "WOOD_013.birdGrid.brd.A3" "WOOD_013.birdGrid.brd.B3" "WOOD_013.birdGrid.brd.C1"
+    ## [7] "WOOD_013.birdGrid.brd.A1" "WOOD_013.birdGrid.brd.B1" "WOOD_013.birdGrid.brd.C2"
     ## 
     ## $data$locationChildrenUrls
-    ## [1] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B3"
-    ## [2] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C1"
-    ## [3] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A1"
-    ## [4] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B1"
-    ## [5] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C2"
-    ## [6] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B2"
-    ## [7] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A2"
-    ## [8] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C3"
-    ## [9] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A3"
+    ## [1] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B2"
+    ## [2] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A2"
+    ## [3] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C3"
+    ## [4] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A3"
+    ## [5] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B3"
+    ## [6] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C1"
+    ## [7] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.A1"
+    ## [8] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.B1"
+    ## [9] "https://data.neonscience.org/api/v0/locations/WOOD_013.birdGrid.brd.C2"
 
 Note spatial information under `$data$[nameOfCoordinate]` and under 
 `$data$locationProperties`. Also note `$data$locationChildren`: these are the 
@@ -942,27 +1094,11 @@ initial download:
     # extract the spatial data
     brd.point.loc <- getLocByName(brd.point)
 
-    ## 
-  |                                                                                        
-  |                                                                                  |   0%
-  |                                                                                        
-  |============                                                                      |  14%
-  |                                                                                        
-  |=======================                                                           |  29%
-  |                                                                                        
-  |===================================                                               |  43%
-  |                                                                                        
-  |===============================================                                   |  57%
-  |                                                                                        
-  |===========================================================                       |  71%
-  |                                                                                        
-  |======================================================================            |  86%
-  |                                                                                        
-  |==================================================================================| 100%
+    ##   |                                                                                                         |                                                                                                 |   0%  |                                                                                                         |==============                                                                                   |  14%  |                                                                                                         |============================                                                                     |  29%  |                                                                                                         |==========================================                                                       |  43%  |                                                                                                         |=======================================================                                          |  57%  |                                                                                                         |=====================================================================                            |  71%  |                                                                                                         |===================================================================================              |  86%  |                                                                                                         |=================================================================================================| 100%
 
     # plot bird point locations 
     # note that decimal degrees is also an option in the data
-    symbols(brd.point.loc$api.easting, brd.point.loc$api.northing, 
+    symbols(brd.point.loc$easting, brd.point.loc$northing, 
             circles=brd.point.loc$coordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -973,139 +1109,11 @@ And use `getLocTOS()` to calculate the point locations of observations.
 
     brd.point.pt <- getLocTOS(brd.point, "brd_perpoint")
 
-    ## 
-  |                                                                                        
-  |                                                                                  |   0%
-  |                                                                                        
-  |=                                                                                 |   2%
-  |                                                                                        
-  |===                                                                               |   3%
-  |                                                                                        
-  |====                                                                              |   5%
-  |                                                                                        
-  |=====                                                                             |   6%
-  |                                                                                        
-  |=======                                                                           |   8%
-  |                                                                                        
-  |========                                                                          |  10%
-  |                                                                                        
-  |=========                                                                         |  11%
-  |                                                                                        
-  |==========                                                                        |  13%
-  |                                                                                        
-  |============                                                                      |  14%
-  |                                                                                        
-  |=============                                                                     |  16%
-  |                                                                                        
-  |==============                                                                    |  17%
-  |                                                                                        
-  |================                                                                  |  19%
-  |                                                                                        
-  |=================                                                                 |  21%
-  |                                                                                        
-  |==================                                                                |  22%
-  |                                                                                        
-  |====================                                                              |  24%
-  |                                                                                        
-  |=====================                                                             |  25%
-  |                                                                                        
-  |======================                                                            |  27%
-  |                                                                                        
-  |=======================                                                           |  29%
-  |                                                                                        
-  |=========================                                                         |  30%
-  |                                                                                        
-  |==========================                                                        |  32%
-  |                                                                                        
-  |===========================                                                       |  33%
-  |                                                                                        
-  |=============================                                                     |  35%
-  |                                                                                        
-  |==============================                                                    |  37%
-  |                                                                                        
-  |===============================                                                   |  38%
-  |                                                                                        
-  |=================================                                                 |  40%
-  |                                                                                        
-  |==================================                                                |  41%
-  |                                                                                        
-  |===================================                                               |  43%
-  |                                                                                        
-  |====================================                                              |  44%
-  |                                                                                        
-  |======================================                                            |  46%
-  |                                                                                        
-  |=======================================                                           |  48%
-  |                                                                                        
-  |========================================                                          |  49%
-  |                                                                                        
-  |==========================================                                        |  51%
-  |                                                                                        
-  |===========================================                                       |  52%
-  |                                                                                        
-  |============================================                                      |  54%
-  |                                                                                        
-  |==============================================                                    |  56%
-  |                                                                                        
-  |===============================================                                   |  57%
-  |                                                                                        
-  |================================================                                  |  59%
-  |                                                                                        
-  |=================================================                                 |  60%
-  |                                                                                        
-  |===================================================                               |  62%
-  |                                                                                        
-  |====================================================                              |  63%
-  |                                                                                        
-  |=====================================================                             |  65%
-  |                                                                                        
-  |=======================================================                           |  67%
-  |                                                                                        
-  |========================================================                          |  68%
-  |                                                                                        
-  |=========================================================                         |  70%
-  |                                                                                        
-  |===========================================================                       |  71%
-  |                                                                                        
-  |============================================================                      |  73%
-  |                                                                                        
-  |=============================================================                     |  75%
-  |                                                                                        
-  |==============================================================                    |  76%
-  |                                                                                        
-  |================================================================                  |  78%
-  |                                                                                        
-  |=================================================================                 |  79%
-  |                                                                                        
-  |==================================================================                |  81%
-  |                                                                                        
-  |====================================================================              |  83%
-  |                                                                                        
-  |=====================================================================             |  84%
-  |                                                                                        
-  |======================================================================            |  86%
-  |                                                                                        
-  |========================================================================          |  87%
-  |                                                                                        
-  |=========================================================================         |  89%
-  |                                                                                        
-  |==========================================================================        |  90%
-  |                                                                                        
-  |===========================================================================       |  92%
-  |                                                                                        
-  |=============================================================================     |  94%
-  |                                                                                        
-  |==============================================================================    |  95%
-  |                                                                                        
-  |===============================================================================   |  97%
-  |                                                                                        
-  |================================================================================= |  98%
-  |                                                                                        
-  |==================================================================================| 100%
+    ##   |                                                                                                         |                                                                                                 |   0%  |                                                                                                         |==                                                                                               |   2%  |                                                                                                         |===                                                                                              |   3%  |                                                                                                         |=====                                                                                            |   5%  |                                                                                                         |======                                                                                           |   6%  |                                                                                                         |========                                                                                         |   8%  |                                                                                                         |=========                                                                                        |  10%  |                                                                                                         |===========                                                                                      |  11%  |                                                                                                         |============                                                                                     |  13%  |                                                                                                         |==============                                                                                   |  14%  |                                                                                                         |===============                                                                                  |  16%  |                                                                                                         |=================                                                                                |  17%  |                                                                                                         |==================                                                                               |  19%  |                                                                                                         |====================                                                                             |  21%  |                                                                                                         |======================                                                                           |  22%  |                                                                                                         |=======================                                                                          |  24%  |                                                                                                         |=========================                                                                        |  25%  |                                                                                                         |==========================                                                                       |  27%  |                                                                                                         |============================                                                                     |  29%  |                                                                                                         |=============================                                                                    |  30%  |                                                                                                         |===============================                                                                  |  32%  |                                                                                                         |================================                                                                 |  33%  |                                                                                                         |==================================                                                               |  35%  |                                                                                                         |===================================                                                              |  37%  |                                                                                                         |=====================================                                                            |  38%  |                                                                                                         |======================================                                                           |  40%  |                                                                                                         |========================================                                                         |  41%  |                                                                                                         |==========================================                                                       |  43%  |                                                                                                         |===========================================                                                      |  44%  |                                                                                                         |=============================================                                                    |  46%  |                                                                                                         |==============================================                                                   |  48%  |                                                                                                         |================================================                                                 |  49%  |                                                                                                         |=================================================                                                |  51%  |                                                                                                         |===================================================                                              |  52%  |                                                                                                         |====================================================                                             |  54%  |                                                                                                         |======================================================                                           |  56%  |                                                                                                         |=======================================================                                          |  57%  |                                                                                                         |=========================================================                                        |  59%  |                                                                                                         |===========================================================                                      |  60%  |                                                                                                         |============================================================                                     |  62%  |                                                                                                         |==============================================================                                   |  63%  |                                                                                                         |===============================================================                                  |  65%  |                                                                                                         |=================================================================                                |  67%  |                                                                                                         |==================================================================                               |  68%  |                                                                                                         |====================================================================                             |  70%  |                                                                                                         |=====================================================================                            |  71%  |                                                                                                         |=======================================================================                          |  73%  |                                                                                                         |========================================================================                         |  75%  |                                                                                                         |==========================================================================                       |  76%  |                                                                                                         |===========================================================================                      |  78%  |                                                                                                         |=============================================================================                    |  79%  |                                                                                                         |===============================================================================                  |  81%  |                                                                                                         |================================================================================                 |  83%  |                                                                                                         |==================================================================================               |  84%  |                                                                                                         |===================================================================================              |  86%  |                                                                                                         |=====================================================================================            |  87%  |                                                                                                         |======================================================================================           |  89%  |                                                                                                         |========================================================================================         |  90%  |                                                                                                         |=========================================================================================        |  92%  |                                                                                                         |===========================================================================================      |  94%  |                                                                                                         |============================================================================================     |  95%  |                                                                                                         |==============================================================================================   |  97%  |                                                                                                         |===============================================================================================  |  98%  |                                                                                                         |=================================================================================================| 100%
 
     # plot bird point locations 
     # note that decimal degrees is also an option in the data
-    symbols(brd.point.pt$easting, brd.point.pt$northing, 
+    symbols(brd.point.pt$adjEasting, brd.point.pt$adjNorthing, 
             circles=brd.point.pt$adjCoordinateUncertainty, 
             xlab="Easting", ylab="Northing", tck=0.01, inches=F)
 
@@ -1179,24 +1187,24 @@ possible, and the matches are indicated in the column headers.
 
     loon.list$data
 
-    ##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName dwc:scientificNameAuthorship
-    ## 1          BIRD    ARLO            ARLO      Gavia arctica                   (Linnaeus)
-    ## 2          BIRD    COLO            COLO        Gavia immer                   (Brunnich)
-    ## 3          BIRD    PALO            PALO     Gavia pacifica                   (Lawrence)
-    ## 4          BIRD    RTLO            RTLO     Gavia stellata                (Pontoppidan)
-    ## 5          BIRD    YBLO            YBLO      Gavia adamsii                 (G. R. Gray)
-    ##   dwc:taxonRank dwc:vernacularName    dwc:nameAccordingToID dwc:kingdom dwc:phylum
-    ## 1       species        Arctic Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
-    ## 2       species        Common Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
-    ## 3       species       Pacific Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
-    ## 4       species  Red-throated Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
-    ## 5       species Yellow-billed Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata
-    ##   dwc:class   dwc:order dwc:family dwc:genus gbif:subspecies gbif:variety
-    ## 1      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
-    ## 2      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
-    ## 3      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
-    ## 4      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
-    ## 5      Aves Gaviiformes   Gaviidae     Gavia              NA           NA
+    ##   taxonTypeCode taxonID acceptedTaxonID dwc:scientificName dwc:scientificNameAuthorship dwc:taxonRank
+    ## 1          BIRD    ARLO            ARLO      Gavia arctica                   (Linnaeus)       species
+    ## 2          BIRD    COLO            COLO        Gavia immer                   (Brunnich)       species
+    ## 3          BIRD    PALO            PALO     Gavia pacifica                   (Lawrence)       species
+    ## 4          BIRD    RTLO            RTLO     Gavia stellata                (Pontoppidan)       species
+    ## 5          BIRD    YBLO            YBLO      Gavia adamsii                 (G. R. Gray)       species
+    ##   dwc:vernacularName    dwc:nameAccordingToID dwc:kingdom dwc:phylum dwc:class   dwc:order dwc:family
+    ## 1        Arctic Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae
+    ## 2        Common Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae
+    ## 3       Pacific Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae
+    ## 4  Red-throated Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae
+    ## 5 Yellow-billed Loon doi: 10.1642/AUK-15-73.1    Animalia   Chordata      Aves Gaviiformes   Gaviidae
+    ##   dwc:genus gbif:subspecies gbif:variety
+    ## 1     Gavia              NA           NA
+    ## 2     Gavia              NA           NA
+    ## 3     Gavia              NA           NA
+    ## 4     Gavia              NA           NA
+    ## 5     Gavia              NA           NA
 
 To get the entire list for a particular taxonomic type, use the 
 `taxonTypeCode` query. Be cautious with this query, the PLANT taxonomic 
@@ -1213,39 +1221,28 @@ the first 10 taxa:
     mam.list <- jsonlite::fromJSON(content(mam.req, as="text"))
     mam.list$data[1:10,]
 
-    ##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName
-    ## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii
-    ## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres
-    ## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus
-    ## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus
-    ## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni
-    ## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.
-    ## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra
-    ## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa
-    ## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes
-    ## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus
-    ##    dwc:scientificNameAuthorship dwc:taxonRank            dwc:vernacularName
-    ## 1           Audubon and Bachman       species     Harriss Antelope Squirrel
-    ## 2                       Merriam       species       Texas Antelope Squirrel
-    ## 3                       Merriam       species Whitetailed Antelope Squirrel
-    ## 4                       Goldman    subspecies                          <NA>
-    ## 5                       Merriam       species     Nelsons Antelope Squirrel
-    ## 6                          <NA>         genus                          <NA>
-    ## 7                        Taylor    subspecies                          <NA>
-    ## 8                    Rafinesque       species                      Sewellel
-    ## 9                       Merriam       species              Whitefooted Vole
-    ## 10                         True       species                 Red Tree Vole
-    ##    taxonProtocolCategory dwc:nameAccordingToID
-    ## 1          opportunistic  isbn: 978 0801882210
-    ## 2          opportunistic  isbn: 978 0801882210
-    ## 3          opportunistic  isbn: 978 0801882210
-    ## 4          opportunistic  isbn: 978 0801882210
-    ## 5          opportunistic  isbn: 978 0801882210
-    ## 6          opportunistic  isbn: 978 0801882210
-    ## 7             non-target  isbn: 978 0801882210
-    ## 8             non-target  isbn: 978 0801882210
-    ## 9                 target  isbn: 978 0801882210
-    ## 10                target  isbn: 978 0801882210
+    ##    taxonTypeCode taxonID acceptedTaxonID               dwc:scientificName dwc:scientificNameAuthorship
+    ## 1   SMALL_MAMMAL    AMHA            AMHA        Ammospermophilus harrisii          Audubon and Bachman
+    ## 2   SMALL_MAMMAL    AMIN            AMIN       Ammospermophilus interpres                      Merriam
+    ## 3   SMALL_MAMMAL    AMLE            AMLE        Ammospermophilus leucurus                      Merriam
+    ## 4   SMALL_MAMMAL    AMLT            AMLT Ammospermophilus leucurus tersus                      Goldman
+    ## 5   SMALL_MAMMAL    AMNE            AMNE         Ammospermophilus nelsoni                      Merriam
+    ## 6   SMALL_MAMMAL    AMSP            AMSP             Ammospermophilus sp.                         <NA>
+    ## 7   SMALL_MAMMAL    APRN            APRN            Aplodontia rufa nigra                       Taylor
+    ## 8   SMALL_MAMMAL    APRU            APRU                  Aplodontia rufa                   Rafinesque
+    ## 9   SMALL_MAMMAL    ARAL            ARAL                Arborimus albipes                      Merriam
+    ## 10  SMALL_MAMMAL    ARLO            ARLO            Arborimus longicaudus                         True
+    ##    dwc:taxonRank            dwc:vernacularName taxonProtocolCategory dwc:nameAccordingToID
+    ## 1        species     Harriss Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 2        species       Texas Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 3        species Whitetailed Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 4     subspecies                          <NA>         opportunistic  isbn: 978 0801882210
+    ## 5        species     Nelsons Antelope Squirrel         opportunistic  isbn: 978 0801882210
+    ## 6          genus                          <NA>         opportunistic  isbn: 978 0801882210
+    ## 7     subspecies                          <NA>            non-target  isbn: 978 0801882210
+    ## 8        species                      Sewellel            non-target  isbn: 978 0801882210
+    ## 9        species              Whitefooted Vole                target  isbn: 978 0801882210
+    ## 10       species                 Red Tree Vole                target  isbn: 978 0801882210
     ##                                                                                                                                                 dwc:nameAccordingToTitle
     ## 1  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 2  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
@@ -1257,83 +1254,72 @@ the first 10 taxa:
     ## 8  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 9  Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
     ## 10 Wilson D. E. and D. M. Reeder. 2005. Mammal Species of the World; A Taxonomic and Geographic Reference. Third edition. Johns Hopkins University Press; Baltimore, MD.
-    ##    dwc:kingdom gbif:subkingdom gbif:infrakingdom gbif:superdivision gbif:division
-    ## 1     Animalia              NA                NA                 NA            NA
-    ## 2     Animalia              NA                NA                 NA            NA
-    ## 3     Animalia              NA                NA                 NA            NA
-    ## 4     Animalia              NA                NA                 NA            NA
-    ## 5     Animalia              NA                NA                 NA            NA
-    ## 6     Animalia              NA                NA                 NA            NA
-    ## 7     Animalia              NA                NA                 NA            NA
-    ## 8     Animalia              NA                NA                 NA            NA
-    ## 9     Animalia              NA                NA                 NA            NA
-    ## 10    Animalia              NA                NA                 NA            NA
-    ##    gbif:subdivision gbif:infradivision gbif:parvdivision gbif:superphylum dwc:phylum
-    ## 1                NA                 NA                NA               NA   Chordata
-    ## 2                NA                 NA                NA               NA   Chordata
-    ## 3                NA                 NA                NA               NA   Chordata
-    ## 4                NA                 NA                NA               NA   Chordata
-    ## 5                NA                 NA                NA               NA   Chordata
-    ## 6                NA                 NA                NA               NA   Chordata
-    ## 7                NA                 NA                NA               NA   Chordata
-    ## 8                NA                 NA                NA               NA   Chordata
-    ## 9                NA                 NA                NA               NA   Chordata
-    ## 10               NA                 NA                NA               NA   Chordata
-    ##    gbif:subphylum gbif:infraphylum gbif:superclass dwc:class gbif:subclass gbif:infraclass
-    ## 1              NA               NA              NA  Mammalia            NA              NA
-    ## 2              NA               NA              NA  Mammalia            NA              NA
-    ## 3              NA               NA              NA  Mammalia            NA              NA
-    ## 4              NA               NA              NA  Mammalia            NA              NA
-    ## 5              NA               NA              NA  Mammalia            NA              NA
-    ## 6              NA               NA              NA  Mammalia            NA              NA
-    ## 7              NA               NA              NA  Mammalia            NA              NA
-    ## 8              NA               NA              NA  Mammalia            NA              NA
-    ## 9              NA               NA              NA  Mammalia            NA              NA
-    ## 10             NA               NA              NA  Mammalia            NA              NA
-    ##    gbif:superorder dwc:order gbif:suborder gbif:infraorder gbif:section gbif:subsection
-    ## 1               NA  Rodentia            NA              NA           NA              NA
-    ## 2               NA  Rodentia            NA              NA           NA              NA
-    ## 3               NA  Rodentia            NA              NA           NA              NA
-    ## 4               NA  Rodentia            NA              NA           NA              NA
-    ## 5               NA  Rodentia            NA              NA           NA              NA
-    ## 6               NA  Rodentia            NA              NA           NA              NA
-    ## 7               NA  Rodentia            NA              NA           NA              NA
-    ## 8               NA  Rodentia            NA              NA           NA              NA
-    ## 9               NA  Rodentia            NA              NA           NA              NA
-    ## 10              NA  Rodentia            NA              NA           NA              NA
-    ##    gbif:superfamily    dwc:family gbif:subfamily gbif:tribe gbif:subtribe        dwc:genus
-    ## 1                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 2                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 3                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 4                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 5                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 6                NA     Sciuridae        Xerinae  Marmotini            NA Ammospermophilus
-    ## 7                NA Aplodontiidae           <NA>       <NA>            NA       Aplodontia
-    ## 8                NA Aplodontiidae           <NA>       <NA>            NA       Aplodontia
-    ## 9                NA    Cricetidae    Arvicolinae       <NA>            NA        Arborimus
-    ## 10               NA    Cricetidae    Arvicolinae       <NA>            NA        Arborimus
-    ##    dwc:subgenus gbif:subspecies gbif:variety gbif:subvariety gbif:form gbif:subform
-    ## 1          <NA>              NA           NA              NA        NA           NA
-    ## 2          <NA>              NA           NA              NA        NA           NA
-    ## 3          <NA>              NA           NA              NA        NA           NA
-    ## 4          <NA>              NA           NA              NA        NA           NA
-    ## 5          <NA>              NA           NA              NA        NA           NA
-    ## 6          <NA>              NA           NA              NA        NA           NA
-    ## 7          <NA>              NA           NA              NA        NA           NA
-    ## 8          <NA>              NA           NA              NA        NA           NA
-    ## 9          <NA>              NA           NA              NA        NA           NA
-    ## 10         <NA>              NA           NA              NA        NA           NA
-    ##    speciesGroup dwc:specificEpithet dwc:infraspecificEpithet
-    ## 1          <NA>            harrisii                     <NA>
-    ## 2          <NA>           interpres                     <NA>
-    ## 3          <NA>            leucurus                     <NA>
-    ## 4          <NA>            leucurus                   tersus
-    ## 5          <NA>             nelsoni                     <NA>
-    ## 6          <NA>                 sp.                     <NA>
-    ## 7          <NA>                rufa                    nigra
-    ## 8          <NA>                rufa                     <NA>
-    ## 9          <NA>             albipes                     <NA>
-    ## 10         <NA>         longicaudus                     <NA>
+    ##    dwc:kingdom gbif:subkingdom gbif:infrakingdom gbif:superdivision gbif:division gbif:subdivision
+    ## 1     Animalia              NA                NA                 NA            NA               NA
+    ## 2     Animalia              NA                NA                 NA            NA               NA
+    ## 3     Animalia              NA                NA                 NA            NA               NA
+    ## 4     Animalia              NA                NA                 NA            NA               NA
+    ## 5     Animalia              NA                NA                 NA            NA               NA
+    ## 6     Animalia              NA                NA                 NA            NA               NA
+    ## 7     Animalia              NA                NA                 NA            NA               NA
+    ## 8     Animalia              NA                NA                 NA            NA               NA
+    ## 9     Animalia              NA                NA                 NA            NA               NA
+    ## 10    Animalia              NA                NA                 NA            NA               NA
+    ##    gbif:infradivision gbif:parvdivision gbif:superphylum dwc:phylum gbif:subphylum gbif:infraphylum
+    ## 1                  NA                NA               NA   Chordata             NA               NA
+    ## 2                  NA                NA               NA   Chordata             NA               NA
+    ## 3                  NA                NA               NA   Chordata             NA               NA
+    ## 4                  NA                NA               NA   Chordata             NA               NA
+    ## 5                  NA                NA               NA   Chordata             NA               NA
+    ## 6                  NA                NA               NA   Chordata             NA               NA
+    ## 7                  NA                NA               NA   Chordata             NA               NA
+    ## 8                  NA                NA               NA   Chordata             NA               NA
+    ## 9                  NA                NA               NA   Chordata             NA               NA
+    ## 10                 NA                NA               NA   Chordata             NA               NA
+    ##    gbif:superclass dwc:class gbif:subclass gbif:infraclass gbif:superorder dwc:order gbif:suborder
+    ## 1               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 2               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 3               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 4               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 5               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 6               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 7               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 8               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 9               NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ## 10              NA  Mammalia            NA              NA              NA  Rodentia            NA
+    ##    gbif:infraorder gbif:section gbif:subsection gbif:superfamily    dwc:family gbif:subfamily gbif:tribe
+    ## 1               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 2               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 3               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 4               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 5               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 6               NA           NA              NA               NA     Sciuridae        Xerinae  Marmotini
+    ## 7               NA           NA              NA               NA Aplodontiidae           <NA>       <NA>
+    ## 8               NA           NA              NA               NA Aplodontiidae           <NA>       <NA>
+    ## 9               NA           NA              NA               NA    Cricetidae    Arvicolinae       <NA>
+    ## 10              NA           NA              NA               NA    Cricetidae    Arvicolinae       <NA>
+    ##    gbif:subtribe        dwc:genus dwc:subgenus gbif:subspecies gbif:variety gbif:subvariety gbif:form
+    ## 1             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 2             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 3             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 4             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 5             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 6             NA Ammospermophilus         <NA>              NA           NA              NA        NA
+    ## 7             NA       Aplodontia         <NA>              NA           NA              NA        NA
+    ## 8             NA       Aplodontia         <NA>              NA           NA              NA        NA
+    ## 9             NA        Arborimus         <NA>              NA           NA              NA        NA
+    ## 10            NA        Arborimus         <NA>              NA           NA              NA        NA
+    ##    gbif:subform speciesGroup dwc:specificEpithet dwc:infraspecificEpithet
+    ## 1            NA         <NA>            harrisii                     <NA>
+    ## 2            NA         <NA>           interpres                     <NA>
+    ## 3            NA         <NA>            leucurus                     <NA>
+    ## 4            NA         <NA>            leucurus                   tersus
+    ## 5            NA         <NA>             nelsoni                     <NA>
+    ## 6            NA         <NA>                 sp.                     <NA>
+    ## 7            NA         <NA>                rufa                    nigra
+    ## 8            NA         <NA>                rufa                     <NA>
+    ## 9            NA         <NA>             albipes                     <NA>
+    ## 10           NA         <NA>         longicaudus                     <NA>
 
 To get information about a single taxon, use the `scientificname` 
 query. This query will not do a fuzzy match, so you need to query 
@@ -1360,23 +1346,19 @@ result:
     am.list <- jsonlite::fromJSON(content(am.req, as="text"))
     am.list$data
 
-    ##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName dwc:scientificNameAuthorship
-    ## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.                      Standl.
-    ##   dwc:taxonRank  dwc:vernacularName                       dwc:nameAccordingToID dwc:kingdom
-    ## 1       species little sand verbena http://plants.usda.gov (accessed 8/25/2014)     Plantae
-    ##      dwc:phylum     dwc:class      dwc:order    dwc:family dwc:genus gbif:subspecies
-    ## 1 Magnoliophyta Magnoliopsida Caryophyllales Nyctaginaceae   Abronia              NA
-    ##   gbif:variety
-    ## 1           NA
+    ##   taxonTypeCode taxonID acceptedTaxonID    dwc:scientificName dwc:scientificNameAuthorship dwc:taxonRank
+    ## 1         PLANT   ABMI2           ABMI2 Abronia minor Standl.                      Standl.       species
+    ##    dwc:vernacularName                       dwc:nameAccordingToID dwc:kingdom    dwc:phylum     dwc:class
+    ## 1 little sand verbena http://plants.usda.gov (accessed 8/25/2014)     Plantae Magnoliophyta Magnoliopsida
+    ##        dwc:order    dwc:family dwc:genus gbif:subspecies gbif:variety
+    ## 1 Caryophyllales Nyctaginaceae   Abronia              NA           NA
 
 ## Stacking NEON data 
 
 At the top of this tutorial, we installed the `neonUtilities` package. 
 This is a custom R package that stacks the monthly files provided by 
 the NEON data portal into a single continuous file for each type of 
-data table in the download. It currently handles files downloaded from 
-the data portal, but not files pulled from the API. That functionality 
-will be added soon!
+data table in the download.
 
 For a guide to using `neonUtilities` on data downloaded from the portal, 
-look <a href="https://www.neonscience.org/neonDataStackR" target="_blank">here</a>.
+check out the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
