@@ -38,13 +38,18 @@ for(p in 1:length(ipynb.files)){
   system(paste0("cd ",dirname(ipynb.files[p]),
   "; jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ",basename(ipynb.files[p]),
   #"; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=py37 --to notebook --execute --inplace ",basename(ipynb.files[p])))
+  # Note that for the R-based Jupyter Notebooks we must use the "ir" kernel (basically, the R kernel)
+  # IRKernel must be installed to your base conda environment using "conda install -c r r-irkernel"
+  # and you may also need to install IRKernel through R using these instructions: https://irkernel.github.io/installation/#binary-panel
   "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=ir --to notebook --execute --inplace ",basename(ipynb.files[p])))
   
   # script name must end with upper-case ".R" to be parsed correctly by Drupal
   # So we generate the ".r" and ".R" names to rename to upper-case in the last step
   # renaming in UNIX command line is best done with the 'mv' (move) command
+  # Finally, make sure that the `code1:` in the .ipynb and .md files point to the correct URL with upper-case R!
   script_name_little = paste0(substr(basename(ipynb.files[p]), 1, nchar(basename(ipynb.files[p]))-5),"r")
   script_name_big = paste0(substr(basename(ipynb.files[p]), 1, nchar(basename(ipynb.files[p]))-5),"R")
+  
   # Take the freshly ran .ipynb file (with all code chunk outputs) and 
   # convert to the desired formats
   system(paste0("cd ",dirname(ipynb.files[p]),

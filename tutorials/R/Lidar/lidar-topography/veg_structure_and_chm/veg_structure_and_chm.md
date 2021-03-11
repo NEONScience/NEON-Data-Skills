@@ -16,7 +16,7 @@ urlTitle: tree-heights-veg-structure-chm
 ---
 
 This data tutorial provides instruction on working with two different NEON 
-data products to estimate tree height:  
+data products to estimate tree height: 
 
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Woody plant vegetation structure**
@@ -61,16 +61,16 @@ library(geoNEON)
 
     
     The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
     
     The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
     
     The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
     
     The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
 
 
     Skipping install of 'geoNEON' from a github remote, the SHA1 (85b9956c) has not changed since last install.
@@ -112,7 +112,7 @@ veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic", che
     Copied the most recent publication of categoricalCodes file to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
     Finished: Stacked 3 data tables and 3 metadata tables!
-    Stacking took 0.2170782 secs
+    Stacking took 0.2927909 secs
 
 
 Use the `getLocTOS()` function in the `geoNEON` package to get 
