@@ -10,13 +10,13 @@ packagesLibraries: neonUtilities, raster
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm.r
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm.R
 tutorialSeries: 
 urlTitle: tree-heights-veg-structure-chm
 ---
 
 This data tutorial provides instruction on working with two different NEON 
-data products to estimate tree height: 
+data products to estimate tree height:  
 
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Woody plant vegetation structure**
