@@ -11,7 +11,7 @@ pattern="/Users/olearyd/Git/main/NEON-Data-Skills/tutorials/(.*)"
 #### MUST CHANGE FOR LOCAL MACHINE ####
 
 # Script will search recursively in this file for all .ipynb files
-input.path="~/Git/main/NEON-Data-Skills/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro"
+input.path="~/Git/main/NEON-Data-Skills/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm"
 
 # Find all files to change
 ipynb.files <- list.files(input.path,
@@ -40,12 +40,18 @@ for(p in 1:length(ipynb.files)){
   #"; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=py37 --to notebook --execute --inplace ",basename(ipynb.files[p])))
   "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=ir --to notebook --execute --inplace ",basename(ipynb.files[p])))
   
+  # script name must end with upper-case ".R" to be parsed correctly by Drupal
+  # So we generate the ".r" and ".R" names to rename to upper-case in the last step
+  # renaming in UNIX command line is best done with the 'mv' (move) command
+  script_name_little = paste0(substr(basename(ipynb.files[p]), 1, nchar(basename(ipynb.files[p]))-5),"r")
+  script_name_big = paste0(substr(basename(ipynb.files[p]), 1, nchar(basename(ipynb.files[p]))-5),"R")
   # Take the freshly ran .ipynb file (with all code chunk outputs) and 
   # convert to the desired formats
   system(paste0("cd ",dirname(ipynb.files[p]),
                 "; jupyter nbconvert --to html ",basename(ipynb.files[p]),
                 "; jupyter nbconvert --to script ",basename(ipynb.files[p]),
-                "; jupyter nbconvert --to markdown ",basename(ipynb.files[p])))
+                "; jupyter nbconvert --to markdown ",basename(ipynb.files[p]),
+                "; mv ",script_name_little," ",script_name_big))
 
   # ClearOutputPreprocessor will clear all chunk output and restart the kernel - leaving a blank Notebook ready to run
   # This is desirable for the notebook that people download, but not for the markdown that is shown on the website
