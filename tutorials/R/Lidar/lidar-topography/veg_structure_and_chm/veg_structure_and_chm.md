@@ -10,8 +10,8 @@ packagesLibraries: neonUtilities, raster
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
-code1: /R/veg-structure-chm/veg_structure_and_chm.ipynb
-tutorialSeries: [lidar-topography-r-series]
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm.r
+tutorialSeries: 
 urlTitle: tree-heights-veg-structure-chm
 ---
 
@@ -59,6 +59,25 @@ library(neonUtilities)
 library(geoNEON)
 ```
 
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+    
+    The downloaded binary packages are in
+    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpMl3JbP/downloaded_packages
+
+
+    Skipping install of 'geoNEON' from a github remote, the SHA1 (85b9956c) has not changed since last install.
+      Use `force = TRUE` to force installation
+    
+
+
 ## 2. Vegetation structure data
 
 Download the vegetation structure data using the `loadByProduct()` function in
@@ -67,24 +86,47 @@ the `neonUtilities` package. Inputs needed to the function are:
 * `dpID`: data product ID; woody vegetation structure = DP1.10098.001
 * `site`: 4-letter site code; Wind River = WREF
 * `package`: basic or expanded; we'll download basic here
+* `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `True` when downloading a dataset for the first time.
 
 Refer to the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial</a> 
 for the `neonUtilities` package for more details if desired.
 
 
 ```R
-veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic")
+veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic", check.size = FALSE)
 ```
 
-Use the `def.calc.geo.os()` function in the `geoNEON` package to get 
+    Finding available files
+      |======================================================================| 100%
+    
+    Downloading files totaling approximately 0.074276 MB
+    Downloading 6 files
+      |======================================================================| 100%
+    
+    Unpacking zip files using 1 cores.
+    Stacking operation across a single core.
+    Stacking table vst_apparentindividual
+    Stacking table vst_mappingandtagging
+    Stacking table vst_perplotperyear
+    Copied the most recent publication of validation file to /stackedFiles
+    Copied the most recent publication of categoricalCodes file to /stackedFiles
+    Copied the most recent publication of variable definition file to /stackedFiles
+    Finished: Stacked 3 data tables and 3 metadata tables!
+    Stacking took 0.2170782 secs
+
+
+Use the `getLocTOS()` function in the `geoNEON` package to get 
 precise locations for the tagged plants. Refer to the package 
 documentation for more details.
 
 
 ```R
-vegmap <- def.calc.geo.os(veglist$vst_mappingandtagging, 
+vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
 ```
+
+      |======================================================================| 100%
+
 
 Merge the mapped locations of individuals (the `vst_mappingandtagging` table) 
 with the annual measurements of height, diameter, etc (the 
@@ -92,7 +134,8 @@ with the annual measurements of height, diameter, etc (the
 the identifier for each tagged plant, but we'll include `namedLocation`, 
 `domainID`, `siteID`, and `plotID` in the list of variables to merge on, to 
 avoid ending up with duplicates of each of those columns. Refer to the 
-variables table and to the <a href="http://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> for Woody plant vegetation structure for more 
+variables table and to the <a href="http://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> 
+for Woody plant vegetation structure for more 
 information about the contents of each data table.
 
 
@@ -103,18 +146,21 @@ veg <- merge(veglist$vst_apparentindividual, vegmap,
 ```
 
 Let's see what the data look like! Make a stem map of the plants in 
-plot WREF_075. Note that stemDiameter is in centimeters.
+plot WREF_075. Note that the `circles` argument of the `symbols()` function expects a radius, but 
+stemDiameter is just that, a diameter, so we will need to divide by two. 
+stemDiameter is also in centimeters, but the mapping scale is in meters, 
+so we need to divide by 100 also to get the scale right.
 
 
 ```R
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100, 
+        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
         inches=F, xlab="Easting", ylab="Northing")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_11_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_11_0.png)
 
 
 And now overlay the estimated uncertainty in the location of each stem, 
@@ -124,7 +170,7 @@ in blue:
 ```R
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100, 
+        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
         inches=F, xlab="Easting", ylab="Northing")
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -133,7 +179,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
 
 
 ## 3. Canopy height model data
@@ -156,9 +202,21 @@ tile. Load the data tile into the environment using the `raster` package.
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
-          savepath="/data")
-chm <- raster("/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+          check.size = FALSE, savepath="/Users/olearyd/Git/data")
+chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 ```
+
+    Downloading files totaling approximately 4.035953 MB 
+    Downloading 6 files
+      |======================================================================| 100%
+    Successfully downloaded  6  files.
+    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shp downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shx downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    NEON_D16_WREF_DP3_580000_5075000_CHM.tif downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif
+    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.prj downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.dbf downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.kml downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/kmls
+
 
 Let's view the tile.
 
@@ -168,7 +226,7 @@ plot(chm, col=topo.colors(5))
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
 
 
 ## 4. Comparing the two datasets
@@ -210,7 +268,7 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
 
 
 
@@ -219,7 +277,7 @@ cor(bufferCHM,vegsub$height, use="complete")
 ```
 
 
-0.428952897424419
+0.365055163085433
 
 
 There are a lot of points clustered on the 1-1 line, but there is also a 
@@ -267,7 +325,7 @@ plot(CHM10, col=topo.colors(5))
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_28_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_28_0.png)
 
 
 Use the `extract()` function again to get the values from each pixel. We 
@@ -287,7 +345,8 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
+
 
 
 ```R
@@ -295,7 +354,7 @@ cor(binCHM, vegbin$height, use="complete")
 ```
 
 
-0.330111962496679
+0.356551096832678
 
 
 The understory points are thinned out substantially, but so are the rest. 
@@ -349,7 +408,8 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
+
 
 
 ```R
@@ -357,7 +417,7 @@ cor(filterCHM,vegfil$height)
 ```
 
 
-0.736503668596511
+0.727322864797764
 
 
 This is quite a bit better! There are still several understory points we 
@@ -381,7 +441,8 @@ lines(c(0,50), c(0,50), col="grey")
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
+
 
 
 ```R
@@ -389,7 +450,7 @@ cor(filterCHM,vegfil$height)
 ```
 
 
-0.819112115567101
+0.813526237334543
 
 
 Nice!
