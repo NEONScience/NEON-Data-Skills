@@ -523,10 +523,7 @@ avoid creating unnecessary duplicates of those columns.</p>
 <p>Using the merged data, now we can plot carbon isotope ratio 
 for each taxon.</p>
 
-<pre><code>par(mar=c(12,4,0.25,1))
-
-
-boxplot(analyteConcentration~scientificName, 
+<pre><code>boxplot(analyteConcentration~scientificName, 
         data=apct, subset=analyte==&quot;d13C&quot;, 
         xlab=NA, ylab=&quot;d13C&quot;, 
         las=2, cex.axis=0.7)
