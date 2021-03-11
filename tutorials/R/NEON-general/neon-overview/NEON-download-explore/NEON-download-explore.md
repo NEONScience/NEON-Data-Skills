@@ -15,6 +15,8 @@ tutorialSeries:
 urlTitle: download-explore-neon-data
 ---
 
+
+
 This tutorial covers downloading NEON data, using the Data Portal and 
 the neonUtilities R package, as well as basic instruction in beginning to 
 explore and work with the downloaded data, including guidance in 
@@ -371,7 +373,6 @@ Using the merged data, now we can plot carbon isotope ratio
 for each taxon.
 
 
-    par(mar=c(12,4,0.25,1))
 
 
     boxplot(analyteConcentration~scientificName, 
@@ -396,6 +397,8 @@ We'll use it to read in the tile we downloaded:
     chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
 The `raster` package includes plotting functions:
+
+
 
 
     plot(chm, col=topo.colors(6))
