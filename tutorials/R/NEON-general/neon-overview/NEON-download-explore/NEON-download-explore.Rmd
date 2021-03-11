@@ -15,6 +15,11 @@ tutorialSeries:
 urlTitle: download-explore-neon-data
 ---
 
+```{r opts-set, echo=FALSE}
+library(knitr)
+opts_knit$set(global.par = TRUE)
+```
+
 This tutorial covers downloading NEON data, using the Data Portal and 
 the neonUtilities R package, as well as basic instruction in beginning to 
 explore and work with the downloaded data, including guidance in 
@@ -417,7 +422,7 @@ apct <- merge(apl_biomass,
 Using the merged data, now we can plot carbon isotope ratio 
 for each taxon.
 
-```{r set-graph-param, eval=TRUE, results='hide', message=F, warning=F}
+```{r set-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F}
 
 par(mar=c(12,4,0.25,1))
 
@@ -450,6 +455,12 @@ chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/Discre
 ```
 
 The `raster` package includes plotting functions:
+
+```{r reset-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F}
+
+par(mar=c(5,4,4,1))
+
+```
 
 ```{r plot-aop, eval=TRUE}
 

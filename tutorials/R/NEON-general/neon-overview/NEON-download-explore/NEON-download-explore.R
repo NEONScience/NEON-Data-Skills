@@ -1,3 +1,8 @@
+## ----opts-set, echo=FALSE------------------------------------------------------------------------------
+library(knitr)
+opts_knit$set(global.par = TRUE)
+
+
 ## ----packages, eval=FALSE------------------------------------------------------------------------------
 ## 
 ## install.packages("neonUtilities")
@@ -120,7 +125,7 @@ apct <- merge(apl_biomass,
 
 
 
-## ----set-graph-param, eval=TRUE, results='hide', message=F, warning=F----------------------------------
+## ----set-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F--------------------------
 
 par(mar=c(12,4,0.25,1))
 
@@ -138,6 +143,12 @@ boxplot(analyteConcentration~scientificName,
 ## ----read-aop, eval=TRUE-------------------------------------------------------------------------------
 
 chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+
+
+
+## ----reset-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F------------------------
+
+par(mar=c(5,4,4,1))
 
 
 
