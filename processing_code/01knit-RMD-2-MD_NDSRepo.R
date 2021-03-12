@@ -13,7 +13,7 @@ require(markdown)
 # You can choose a high-level directory and this script will search
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
-dirs <- c("R/eddy4r",
+dirs <- c("R/eddy-covariance/intro-to-eddy4R/eddy_intro",
           "R/NEON-general/neon-code-packages/NEON-API-How-To",
           "R/NEON-general/neon-overview/NEON-download-explore")
 
@@ -21,7 +21,7 @@ dirs <- c("R/eddy4r",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[3] 
+subDir <- dirs[1] 
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
@@ -31,7 +31,7 @@ gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "~/Downloads"
+wd_processing_doc <- "/Users/clunch"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"
@@ -62,10 +62,10 @@ rmd.files
 
 setwd(wd_processing_doc)
 
-for (files in rmd.files) {
+for (f in rmd.files) {
   
   ## to get rid of gitRepoPath root
-  subPath=sub(gitRepoPath, "", dirname(files) )
+  subPath=sub(gitRepoPath, "", dirname(f) )
   
   tut_temp_dir <- paste0(wd_processing_doc, subPath)
   
@@ -90,10 +90,10 @@ for (files in rmd.files) {
   subPath_img <- file.path(subPath, "rfigs")
   
   # copy .Rmd file to data working directory
-  #file.copy(from = files, to=tut_temp_dir, overwrite = TRUE)
+  #file.copy(from = f, to=tut_temp_dir, overwrite = TRUE)
   
   # get the file's name to make output filenames
-  input=basename(files)
+  input=basename(f)
   
   
   # setup path to images
@@ -109,7 +109,7 @@ for (files in rmd.files) {
   
   # create output file names - add a date at the beginning to Jekyll recognizes
   # it as a post
-  fileName <- sub("\\.Rmd$","",basename(files))
+  fileName <- sub("\\.Rmd$","",basename(f))
   outPath <- paste0(tut_temp_dir, "/", fileName)
   mdFile <- paste0(outPath, ".md")
   rCodeOutput <- paste0(outPath, ".R")
@@ -120,20 +120,20 @@ for (files in rmd.files) {
   setwd(wd_processing_doc)
   # knit Rmd to jekyll flavored md format
   # Still calling file in original github location, not in temp
-  knit(files, output = mdFile, envir = parent.frame())
+  knit(f, output = mdFile, envir = parent.frame())
   
   # make an HTML version too
   markdown::markdownToHTML(mdFile, output = htmlFile)
   
   # purl the code to R
-  purl(files, output = rCodeOutput)
+  purl(f, output = rCodeOutput)
   
   # COPY image directory, rmd file OVER to the GIT SITE###
   # only copy over if there are images for the lesson
   if (dir.exists(tut_temp_dir)){
     # copy image directory over
     file.copy(tut_temp_dir, 
-              dirname(dirname(files)), ## gets one level higher so that files copied to correct location
+              dirname(dirname(f)), ## gets one level higher so that f copied to correct location
               recursive=TRUE)
   }
   
@@ -141,7 +141,7 @@ for (files in rmd.files) {
   unlink(paste0(tut_temp_dir,"/*"), recursive = TRUE)
   
   # print when file is knit
-  print(paste0("processed: ",files))
+  print(paste0("processed: ",f))
   
 } # END 'files'
 
