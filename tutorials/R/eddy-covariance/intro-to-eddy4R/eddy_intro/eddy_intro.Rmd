@@ -1,0 +1,481 @@
+---
+syncID: 3857005e98a544a88a5e58625e32b514
+title: "Introduction to working with NEON eddy flux data"
+description: Download and navigate NEON eddy flux data, including basic transformations and merges
+dateCreated:  '2019-07-09'
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 1 hour
+packagesLibraries: [rhdf5, neonUtilities, ggplot2]
+topics: HDF5, eddy-covariance, eddy-flux
+languageTool: R
+dataProducts: DP4.00200.001
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro.R
+tutorialSeries: 
+urlTitle: eddy-data-intro
+---
+
+This data tutorial provides an introduction to working with NEON eddy 
+flux data, using the `neonUtilities` R package. If you are new to NEON 
+data, we recommend starting with a more general tutorial, such as the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a> 
+or the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a>. 
+Some of the functions and techniques described in those tutorials will 
+be used here, as well as functions and data formats that are unique to 
+the eddy flux system.
+
+This tutorial assumes general familiarity with eddy flux data and 
+associated concepts.
+
+## 1. Setup
+
+Start by installing and loading packages and setting options. 
+To work with the NEON flux data, we need the `rhdf5` package, 
+which is hosted on Bioconductor, and requires a different 
+installation process than CRAN packages:
+
+
+```{r install, eval=FALSE}
+
+install.packages('BiocManager')
+BiocManager::install('rhdf5')
+install.packages('neonUtilities')
+
+```
+
+
+
+```{r package-load}
+
+options(stringsAsFactors=F)
+
+library(neonUtilities)
+
+```
+
+Use the `zipsByProduct()` function from the `neonUtilities` package to 
+download flux data from two sites and two months. The transformations 
+and functions below will work on any time range and site(s), but two 
+sites and two months allows us to see all the available functionality 
+while minimizing download size.
+
+Inputs to the `zipsByProduct()` function:
+
+* `dpID`: DP4.00200.001, the bundled eddy covariance product
+* `package`: basic (the expanded package is not covered in this tutorial)
+* `site`: NIWO = Niwot Ridge and HARV = Harvard Forest
+* `startdate`: 2018-06 (both dates are inclusive)
+* `enddate`: 2018-07 (both dates are inclusive)
+* `savepath`: modify this to something logical on your machine
+* `check.size`: T if you want to see file size before downloading, otherwise F
+
+The download may take a while, especially if you're on a slow network. 
+For faster downloads, consider using an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.
+
+
+```{r download, results="hide", message=FALSE}
+
+zipsByProduct(dpID="DP4.00200.001", package="basic", 
+              site=c("NIWO", "HARV"), 
+              startdate="2018-06", enddate="2018-07",
+              savepath="~/Downloads", 
+              check.size=F)
+
+```
+
+## 2. Data Levels
+
+There are five levels of data contained in the eddy flux bundle. For full 
+details, refer to the <a href="http://data.neonscience.org/api/v0/documents/NEON.DOC.004571vA" target="_blank">NEON algorithm document</a>.
+
+Briefly, the data levels are:
+
+* Level 0' (dp0p): Calibrated raw observations
+* Level 1 (dp01): Time-aggregated observations, e.g. 30-minute mean gas concentrations
+* Level 2 (dp02): Time-interpolated data, e.g. rate of change of a gas concentration
+* Level 3 (dp03): Spatially interpolated data, i.e. vertical profiles
+* Level 4 (dp04): Fluxes
+
+The dp0p data are available in the expanded data package and are beyond 
+the scope of this tutorial.
+
+The dp02 and dp03 data are used in storage calculations, and the dp04 data 
+include both the storage and turbulent components. Since many users will 
+want to focus on the net flux data, we'll start there.
+
+## 3. Extract Level 4 data (Fluxes!)
+
+To extract the Level 4 data from the HDF5 files and merge them into a 
+single table, we'll use the `stackEddy()` function from the `neonUtilities` 
+package.
+
+`stackEddy()` requires two inputs:
+
+* `filepath`: Path to a file or folder, which can be any one of:
+    1. A zip file of eddy flux data downloaded from the NEON data portal
+    2. A folder of eddy flux data downloaded by the `zipsByProduct()` function
+    3. The folder of files resulting from unzipping either of 1 or 2
+    4. One or more HDF5 files of NEON eddy flux data
+* `level`: dp01-4
+
+Input the filepath you downloaded to using `zipsByProduct()` earlier, 
+including the `filestoStack00200` folder created by the function, and 
+`dp04`:
+
+
+```{r stack-dp04, results="hide"}
+
+flux <- stackEddy(filepath="~/Downloads/filesToStack00200",
+                 level="dp04")
+
+```
+
+We now have an object called `flux`. It's a named list containing four 
+tables: one table for each site's data, and `variables` and `objDesc` 
+tables.
+
+```{r see-names}
+
+names(flux)
+
+```
+
+Let's look at the contents of one of the site data files:
+
+```{r flux-head}
+
+head(flux$NIWO)
+
+```
+
+The `variables` and `objDesc` tables can help you interpret the column 
+headers in the data table. The `objDesc` table contains definitions for 
+many of the terms used in the eddy flux data product, but it isn't 
+complete. To get the terms of interest, we'll break up the column headers 
+into individual terms and look for them in the `objDesc` table:
+
+
+```{r obj-desc-terms}
+
+term <- unlist(strsplit(names(flux$NIWO), split=".", fixed=T))
+flux$objDesc[which(flux$objDesc$Object %in% term),]
+
+```
+
+For the terms that aren't captured here, `fluxCo2`, `fluxH2o`, and `fluxTemp` 
+are self-explanatory. The flux components are
+
+* `turb`: Turbulent flux
+* `stor`: Storage
+* `nsae`: Net surface-atmosphere exchange
+
+The `variables` table contains the units for each field:
+
+```{r see-variables}
+
+flux$variables
+
+```
+
+Let's plot some data! First, a brief aside about time stamps, since 
+these are time series data.
+
+### Time stamps
+
+NEON sensor data come with time stamps for both the start and end of 
+the averaging period. Depending on the analysis you're doing, you may 
+want to use one or the other; for general plotting, re-formatting, and 
+transformations, I prefer to use the start time, because there 
+are some small inconsistencies between data products in a few of the 
+end time stamps.
+
+Note that **all** NEON data use UTC time, aka Greenwich Mean Time. 
+This is true across NEON's instrumented, observational, and airborne 
+measurements. When working with NEON data, it's best to keep 
+everything in UTC as much as possible, otherwise it's very easy to 
+end up with data in mismatched times, which can cause insidious and 
+hard-to-detect problems. In the code below, time stamps and time 
+zones have been handled by `stackEddy()` and `loadByProduct()`, so we 
+don't need to do anything additional. But if you're writing your own 
+code and need to convert times, remember that if the time zone isn't 
+specified, R will default to the local time zone it detects on your 
+operating system.
+
+```{r plot-fluxes}
+
+plot(flux$NIWO$data.fluxCo2.nsae.flux~flux$NIWO$timeBgn, 
+     pch=".", xlab="Date", ylab="CO2 flux")
+
+```
+
+There is a clear diurnal pattern, and an increase in daily carbon 
+uptake as the growing season progresses.
+
+Let's trim down to just two days of data to see a few other details.
+
+```{r plot-two-days}
+
+plot(flux$NIWO$data.fluxCo2.nsae.flux~flux$NIWO$timeBgn, 
+     pch=20, xlab="Date", ylab="CO2 flux",
+     xlim=c(as.POSIXct("2018-07-07", tz="GMT"),
+            as.POSIXct("2018-07-09", tz="GMT")),
+    ylim=c(-20,20), xaxt="n")
+axis.POSIXct(1, x=flux$NIWO$timeBgn, 
+             format="%Y-%m-%d %H:%M:%S")
+
+```
+
+Note the timing of C uptake; the UTC time zone is clear here, where 
+uptake occurs at times that appear to be during the night.
+
+## 4. Merge flux data with other sensor data
+
+Many of the data sets we would use to interpret and model flux data are 
+measured as part of the NEON project, but are not present in the eddy flux 
+data product bundle. In this section, we'll download PAR data and merge 
+them with the flux data; the steps taken here can be applied to any of the 
+NEON instrumented (IS) data products.
+
+### Download PAR data
+
+To get NEON PAR data, use the `loadByProduct()` function from the 
+`neonUtilities` package. `loadByProduct()` takes the same inputs as 
+`zipsByProduct()`, but it loads the downloaded data directly into the 
+current R environment.
+
+Let's download PAR data matching the Niwot Ridge flux data. The inputs 
+needed are:
+
+* `dpID`: DP1.00024.001
+* `site`: NIWO
+* `startdate`: 2018-06
+* `enddate`: 2018-07
+* `package`: basic
+* `timeIndex`: 30
+
+The new input here is `timeIndex=30`, which downloads only the 30-minute data. 
+Since the flux data are at a 30-minute resolution, we can save on 
+download time by disregarding the 1-minute data files (which are of course 
+30 times larger). The `timeIndex` input can be left off if you want to download 
+all available averaging intervals.
+
+```{r download-par, results="hide"}
+
+pr <- loadByProduct("DP1.00024.001", site="NIWO", 
+                    timeIndex=30, package="basic", 
+                    startdate="2018-06", enddate="2018-07",
+                    check.size=F)
+
+```
+
+`pr` is another named list, and again, metadata and units can be found in 
+the `variables` table. The `PARPAR_30min` table contains a `verticalPosition` 
+field. This field indicates the position on the tower, with 10 being the 
+first tower level, and 20, 30, etc going up the tower.
+
+### Join PAR to flux data
+
+We'll connect PAR data from the tower top to the flux data.
+
+```{r get-tower-top}
+
+pr.top <- pr$PARPAR_30min[which(pr$PARPAR_30min$verticalPosition==
+                                max(pr$PARPAR_30min$verticalPosition)),]
+
+```
+
+As noted above, `loadByProduct()` automatically converts time stamps 
+to a recognized date-time format when it reads the data. However, the 
+field names for the time stamps differ between the flux data and the 
+other meteorological data: the start of the averaging interval is 
+`timeBgn` in the flux data and `startDateTime` in the PAR data.
+
+Let's create a new variable in the PAR data:
+
+```{r time-stamp-match}
+
+pr.top$timeBgn <- pr.top$startDateTime
+
+```
+
+And now use the matching time stamp fields to merge the flux and PAR data.
+
+```{r merge}
+
+fx.pr <- merge(pr.top, flux$NIWO, by="timeBgn")
+
+```
+
+And now we can plot net carbon exchange as a function of light availability:
+
+```{r plot-par-flux}
+
+plot(fx.pr$data.fluxCo2.nsae.flux~fx.pr$PARMean,
+     pch=".", ylim=c(-20,20),
+     xlab="PAR", ylab="CO2 flux")
+
+```
+
+If you're interested in data in the eddy covariance bundle besides the 
+net flux data, the rest of this tutorial will guide you through how to 
+get those data out of the bundle.
+
+## 5. Vertical profile data (Level 3)
+
+The Level 3 (`dp03`) data are the spatially interpolated profiles of 
+the rates of change of CO<sub>2</sub>, H<sub>2</sub>O, and temperature.
+Extract the Level 3 data from the HDF5 file using `stackEddy()` with 
+the same syntax as for the Level 4 data.
+
+
+```{r stack-dp03, results="hide", message=FALSE}
+
+prof <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+                 level="dp03")
+
+```
+
+As with the Level 4 data, the result is a named list with data tables 
+for each site.
+
+```{r head-dp03}
+
+head(prof$NIWO)
+
+```
+
+
+## 6. Un-interpolated vertical profile data (Level 2)
+
+The Level 2 data are interpolated in time but not in space. They 
+contain the rates of change at each of the measurement heights.
+
+Again, they can be extracted from the HDF5 files using `stackEddy()` 
+with the same syntax:
+
+
+```{r stack-dp02, results="hide", message=FALSE}
+
+prof.l2 <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+                 level="dp02")
+
+```
+
+
+```{r head-dp02}
+
+head(prof.l2$HARV)
+
+```
+
+Note that here, as in the PAR data, there is a `verticalPosition` field. 
+It has the same meaning as in the PAR data, indicating the tower level of 
+the measurement.
+
+## 7. Calibrated raw data (Level 1)
+
+Level 1 (`dp01`) data are calibrated, and aggregated in time, but 
+otherwise untransformed. Use Level 1 data for raw gas 
+concentrations and atmospheric stable isotopes.
+
+Using `stackEddy()` to extract Level 1 data requires additional 
+inputs. The Level 1 files are too large to simply pull out all the 
+variables by default, and they include multiple averaging intervals, 
+which can't be merged. So two additional inputs are needed:
+
+* `avg`: The averaging interval to extract
+* `var`: One or more variables to extract
+
+What variables are available, at what averaging intervals? Another 
+function in the `neonUtilities` package, `getVarsEddy()`, returns 
+a list of HDF5 file contents. It requires only one input, a filepath 
+to a single NEON HDF5 file:
+
+
+```{r get-vars}
+
+vars <- getVarsEddy("~/Downloads/filesToStack00200/NEON.D01.HARV.DP4.00200.001.nsae.2018-07.basic.20201020T201317Z.h5")
+head(vars)
+
+```
+
+Inputs to `var` can be any values from the `name` field in the table 
+returned by `getVarsEddy()`. Let's take a look at CO<sub>2</sub> and 
+H<sub>2</sub>O, <sup>13</sup>C in CO<sub>2</sub> and <sup>18</sup>O in 
+H<sub>2</sub>O, at 30-minute aggregation. Let's look at Harvard Forest 
+for these data, since deeper canopies generally have more interesting 
+profiles:
+
+
+```{r stack-dp01, results="hide", message=FALSE}
+
+iso <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+               level="dp01", var=c("rtioMoleDryCo2","rtioMoleDryH2o",
+                                   "dlta13CCo2","dlta18OH2o"), avg=30)
+
+```
+
+
+```{r head-dp01}
+
+head(iso$HARV)
+
+```
+
+Let's plot vertical profiles of CO<sub>2</sub> and <sup>13</sup>C in CO<sub>2</sub> 
+on a single day. 
+
+Here we'll use the time stamps in a different way, using `grep()` to select 
+all of the records for a single day. And discard the `verticalPosition` 
+values that are string values - those are the calibration gases.
+
+
+```{r get-one-day, warning=FALSE}
+
+iso.d <- iso$HARV[grep("2018-06-25", iso$HARV$timeBgn, fixed=T),]
+iso.d <- iso.d[-which(is.na(as.numeric(iso.d$verticalPosition))),]
+
+```
+
+`ggplot` is well suited to these types of data, let's use it to plot 
+the profiles. If you don't have the package yet, use `install.packages()` 
+to install it first.
+
+
+```{r gg, results="hide", message=FALSE}
+
+library(ggplot2)
+
+```
+
+Now we can plot CO<sub>2</sub> relative to height on the tower, 
+with separate lines for each time interval.
+
+```{r plot-co2-profile, message=FALSE, warning=FALSE}
+
+g <- ggplot(iso.d, aes(y=verticalPosition)) + 
+  geom_path(aes(x=data.co2Stor.rtioMoleDryCo2.mean, 
+                group=timeBgn, col=timeBgn)) + 
+  theme(legend.position="none") + 
+  xlab("CO2") + ylab("Tower level")
+g
+
+```
+
+And the same plot for <sup>13</sup>C in CO<sub>2</sub>:
+
+```{r plot-iso-profile, message=FALSE, warning=FALSE}
+
+g <- ggplot(iso.d, aes(y=verticalPosition)) + 
+  geom_path(aes(x=data.isoCo2.dlta13CCo2.mean, 
+                group=timeBgn, col=timeBgn)) + 
+  theme(legend.position="none") + 
+  xlab("d13C") + ylab("Tower level")
+g
+
+```
+
+The legends are omitted for space, see if you can use the 
+concentration and isotope ratio buildup and drawdown below the 
+canopy to work out the times of day the different colors represent.
+
