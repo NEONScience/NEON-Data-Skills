@@ -92,7 +92,7 @@ for the `neonUtilities` package for more details if desired.
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 0.269464 secs
+    ## Stacking took 0.1722422 secs
 
 Use the `getLocTOS()` function in the `geoNEON` package to get 
 precise locations for the tagged plants. Refer to the package 
@@ -110,7 +110,7 @@ with the annual measurements of height, diameter, etc (the
 the identifier for each tagged plant, but we'll include `namedLocation`, 
 `domainID`, `siteID`, and `plotID` in the list of variables to merge on, to 
 avoid ending up with duplicates of each of those columns. Refer to the 
-variables table and to the <a href="http://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> 
+variables table and to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> 
 for Woody plant vegetation structure for more 
 information about the contents of each data table.
 
