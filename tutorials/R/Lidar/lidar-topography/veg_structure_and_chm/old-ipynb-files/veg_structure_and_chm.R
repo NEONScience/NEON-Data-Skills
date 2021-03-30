@@ -1,54 +1,29 @@
-## ----load_packages------------------------------------------------------------------------
-
 options(stringsAsFactors=F)
 
-# install.packages("neonUtilities")
-# install.packages("sp")
-# install.packages("raster")
-# install.packages("devtools")
-# devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+install.packages("neonUtilities")
+install.packages("sp")
+install.packages("raster")
+install.packages("devtools")
+devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 library(sp)
 library(raster)
 library(neonUtilities)
 library(geoNEON)
 
-
-
-## ----veglist------------------------------------------------------------------------------
-
-veglist <- loadByProduct(dpID="DP1.10098.001", 
-                         site="WREF", 
-                         package="basic", 
-                         check.size = FALSE)
-
-
-
-## ----vegmap-------------------------------------------------------------------------------
+veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic", check.size = FALSE)
 
 vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
-
-
-
-## ----veg_merge----------------------------------------------------------------------------
 
 veg <- merge(veglist$vst_apparentindividual, vegmap, 
              by=c("individualID","namedLocation",
                   "domainID","siteID","plotID"))
 
-
-
-## ----plot-1-------------------------------------------------------------------------------
-
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
         circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
         inches=F, xlab="Easting", ylab="Northing")
-
-
-
-## ----plot-2-------------------------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -59,74 +34,37 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
         circles=veg$adjCoordinateUncertainty[which(veg$plotID=="WREF_075")], 
         inches=F, add=T, fg="lightblue")
 
-
-
-## ----get-chm------------------------------------------------------------------------------
-
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
           check.size = FALSE, savepath="/Users/olearyd/Git/data")
 chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
-
-
-## ----plot-chm-----------------------------------------------------------------------------
-
 plot(chm, col=topo.colors(5))
-
-
-
-## ----vegsub-------------------------------------------------------------------------------
 
 vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
                       veg$adjEasting <= extent(chm)[2] &
                       veg$adjNorthing >= extent(chm)[3] & 
                       veg$adjNorthing <= extent(chm)[4]),]
 
-
-
-## ----buffer-chm---------------------------------------------------------------------------
-
-bufferCHM <- extract(chm, 
-                     cbind(vegsub$adjEasting,
-                           vegsub$adjNorthing),
+bufferCHM <- extract(chm, cbind(vegsub$adjEasting, 
+                                vegsub$adjNorthing),
                      buffer=vegsub$adjCoordinateUncertainty, 
                      fun=max)
 plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
      ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
-
-
-## ----corr-buffer--------------------------------------------------------------------------
-
 cor(bufferCHM,vegsub$height, use="complete")
-
-
-
-## ----round-x-y----------------------------------------------------------------------------
 
 easting10 <- 10*floor(vegsub$adjEasting/10)
 northing10 <- 10*floor(vegsub$adjNorthing/10)
 vegsub <- cbind(vegsub, easting10, northing10)
 
-
-
-## ----vegbin-------------------------------------------------------------------------------
-
 vegbin <- stats::aggregate(vegsub, by=list(vegsub$easting10, vegsub$northing10), FUN=max)
-
-
-
-## ----CHM-10-------------------------------------------------------------------------------
 
 CHM10 <- raster::aggregate(chm, fact=10, fun=max)
 plot(CHM10, col=topo.colors(5))
-
-
-
-## ----adj-tree-coord-----------------------------------------------------------------------
 
 vegbin$easting10 <- vegbin$easting10+5
 vegbin$northing10 <- vegbin$northing10+5
@@ -136,21 +74,9 @@ plot(binCHM~vegbin$height, pch=20,
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
-
-
-## ----cor-2--------------------------------------------------------------------------------
-
 cor(binCHM, vegbin$height, use="complete")
 
-
-
-## ----vegsub-2-----------------------------------------------------------------------------
-
 vegsub <- vegsub[order(vegsub$height, decreasing=T),]
-
-
-
-## ----vegfil-------------------------------------------------------------------------------
 
 vegfil <- vegsub
 for(i in 1:nrow(vegsub)) {
@@ -164,25 +90,13 @@ for(i in 1:nrow(vegsub)) {
 
 vegfil <- vegfil[which(!is.na(vegfil$height)),]
 
-
-
-## ----filter-chm---------------------------------------------------------------------------
-
 filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
                          buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
 plot(filterCHM~vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
-
-
-## ----cor-3--------------------------------------------------------------------------------
-
 cor(filterCHM,vegfil$height)
-
-
-
-## ----live-trees---------------------------------------------------------------------------
 
 vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
 filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
@@ -191,10 +105,4 @@ plot(filterCHM~vegfil$height, pch=20,
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
-
-
-## ----cor-4--------------------------------------------------------------------------------
-
 cor(filterCHM,vegfil$height)
-
-

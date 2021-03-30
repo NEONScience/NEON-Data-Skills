@@ -35,47 +35,26 @@ skip ahead to section 4.
 You will need the most current version of R loaded on your computer to complete this tutorial.
 
 </div>
-
 ## 1. Setup
 
-Start by installing and loading packages and setting options. One of the 
+Start by installing and loading packages (if necessary) and setting options. One of the 
 packages we'll be using, `geoNEON`, is only available via GitHub, so it's 
 installed using the `devtools` package. The other packages can be 
 installed directly from CRAN.
 
 
-```R
-options(stringsAsFactors=F)
-
-install.packages("neonUtilities")
-install.packages("sp")
-install.packages("raster")
-install.packages("devtools")
-devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-
-library(sp)
-library(raster)
-library(neonUtilities)
-library(geoNEON)
-```
-
+    options(stringsAsFactors=F)
     
-    The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
+    # install.packages("neonUtilities")
+    # install.packages("sp")
+    # install.packages("raster")
+    # install.packages("devtools")
+    # devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
     
-    The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
-    
-    The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
-    
-    The downloaded binary packages are in
-    	/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpaHhh7z/downloaded_packages
-
-
-    Skipping install of 'geoNEON' from a github remote, the SHA1 (85b9956c) has not changed since last install.
-      Use `force = TRUE` to force installation
-    
+    library(sp)
+    library(raster)
+    library(neonUtilities)
+    library(geoNEON)
 
 
 ## 2. Vegetation structure data
@@ -92,41 +71,38 @@ Refer to the <a href="https://www.neonscience.org/neonDataStackR" target="_blank
 for the `neonUtilities` package for more details if desired.
 
 
-```R
-veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", package="basic", check.size = FALSE)
-```
+    veglist <- loadByProduct(dpID="DP1.10098.001", 
+                             site="WREF", 
+                             package="basic", 
+                             check.size = FALSE)
 
-    Finding available files
-      |======================================================================| 100%
-    
-    Downloading files totaling approximately 0.074276 MB
-    Downloading 6 files
-      |======================================================================| 100%
-    
-    Unpacking zip files using 1 cores.
-    Stacking operation across a single core.
-    Stacking table vst_apparentindividual
-    Stacking table vst_mappingandtagging
-    Stacking table vst_perplotperyear
-    Copied the most recent publication of validation file to /stackedFiles
-    Copied the most recent publication of categoricalCodes file to /stackedFiles
-    Copied the most recent publication of variable definition file to /stackedFiles
-    Finished: Stacked 3 data tables and 3 metadata tables!
-    Stacking took 0.2927909 secs
-
+    ## Finding available files
+    ##   |                                                                                          |                                                                                  |   0%  |                                                                                          |==============                                                                    |  17%  |                                                                                          |===========================                                                       |  33%  |                                                                                          |=========================================                                         |  50%  |                                                                                          |=======================================================                           |  67%  |                                                                                          |====================================================================              |  83%  |                                                                                          |==================================================================================| 100%
+    ## 
+    ## Downloading files totaling approximately 0.321278 MB
+    ## Downloading 6 files
+    ##   |                                                                                          |                                                                                  |   0%  |                                                                                          |================                                                                  |  20%  |                                                                                          |=================================                                                 |  40%  |                                                                                          |=================================================                                 |  60%  |                                                                                          |==================================================================                |  80%  |                                                                                          |==================================================================================| 100%
+    ## 
+    ## Unpacking zip files using 1 cores.
+    ## Stacking operation across a single core.
+    ## Stacking table vst_apparentindividual
+    ## Stacking table vst_mappingandtagging
+    ## Stacking table vst_perplotperyear
+    ## Copied the most recent publication of validation file to /stackedFiles
+    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
+    ## Copied the most recent publication of variable definition file to /stackedFiles
+    ## Finished: Stacked 3 data tables and 3 metadata tables!
+    ## Stacking took 0.269464 secs
 
 Use the `getLocTOS()` function in the `geoNEON` package to get 
 precise locations for the tagged plants. Refer to the package 
 documentation for more details.
 
 
-```R
-vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
-                          "vst_mappingandtagging")
-```
+    vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
+                              "vst_mappingandtagging")
 
-      |======================================================================| 100%
-
+    ##   |                                                                                          |                                                                                  |   0%  |                                                                                          |                                                                                  |   1%  |                                                                                          |=                                                                                 |   1%  |                                                                                          |=                                                                                 |   2%  |                                                                                          |==                                                                                |   2%  |                                                                                          |==                                                                                |   3%  |                                                                                          |===                                                                               |   3%  |                                                                                          |===                                                                               |   4%  |                                                                                          |====                                                                              |   4%  |                                                                                          |====                                                                              |   5%  |                                                                                          |=====                                                                             |   6%  |                                                                                          |======                                                                            |   7%  |                                                                                          |======                                                                            |   8%  |                                                                                          |=======                                                                           |   8%  |                                                                                          |=======                                                                           |   9%  |                                                                                          |========                                                                          |  10%  |                                                                                          |=========                                                                         |  11%  |                                                                                          |==========                                                                        |  12%  |                                                                                          |===========                                                                       |  13%  |                                                                                          |============                                                                      |  14%  |                                                                                          |============                                                                      |  15%  |                                                                                          |=============                                                                     |  16%  |                                                                                          |==============                                                                    |  17%  |                                                                                          |===============                                                                   |  18%  |                                                                                          |===============                                                                   |  19%  |                                                                                          |================                                                                  |  19%  |                                                                                          |================                                                                  |  20%  |                                                                                          |=================                                                                 |  20%  |                                                                                          |=================                                                                 |  21%  |                                                                                          |==================                                                                |  21%  |                                                                                          |==================                                                                |  22%  |                                                                                          |===================                                                               |  23%  |                                                                                          |===================                                                               |  24%  |                                                                                          |====================                                                              |  24%  |                                                                                          |====================                                                              |  25%  |                                                                                          |=====================                                                             |  25%  |                                                                                          |=====================                                                             |  26%  |                                                                                          |======================                                                            |  26%  |                                                                                          |======================                                                            |  27%  |                                                                                          |=======================                                                           |  28%  |                                                                                          |=======================                                                           |  29%  |                                                                                          |========================                                                          |  29%  |                                                                                          |========================                                                          |  30%  |                                                                                          |=========================                                                         |  30%  |                                                                                          |=========================                                                         |  31%  |                                                                                          |==========================                                                        |  31%  |                                                                                          |==========================                                                        |  32%  |                                                                                          |===========================                                                       |  33%  |                                                                                          |============================                                                      |  34%  |                                                                                          |=============================                                                     |  35%  |                                                                                          |=============================                                                     |  36%  |                                                                                          |==============================                                                    |  37%  |                                                                                          |===============================                                                   |  38%  |                                                                                          |================================                                                  |  39%  |                                                                                          |=================================                                                 |  40%  |                                                                                          |==================================                                                |  41%  |                                                                                          |==================================                                                |  42%  |                                                                                          |===================================                                               |  42%  |                                                                                          |===================================                                               |  43%  |                                                                                          |====================================                                              |  44%  |                                                                                          |=====================================                                             |  45%  |                                                                                          |=====================================                                             |  46%  |                                                                                          |======================================                                            |  46%  |                                                                                          |======================================                                            |  47%  |                                                                                          |=======================================                                           |  47%  |                                                                                          |=======================================                                           |  48%  |                                                                                          |========================================                                          |  48%  |                                                                                          |========================================                                          |  49%  |                                                                                          |=========================================                                         |  49%  |                                                                                          |=========================================                                         |  50%  |                                                                                          |=========================================                                         |  51%  |                                                                                          |==========================================                                        |  51%  |                                                                                          |==========================================                                        |  52%  |                                                                                          |===========================================                                       |  52%  |                                                                                          |===========================================                                       |  53%  |                                                                                          |============================================                                      |  53%  |                                                                                          |============================================                                      |  54%  |                                                                                          |=============================================                                     |  54%  |                                                                                          |=============================================                                     |  55%  |                                                                                          |==============================================                                    |  56%  |                                                                                          |===============================================                                   |  57%  |                                                                                          |===============================================                                   |  58%  |                                                                                          |================================================                                  |  58%  |                                                                                          |================================================                                  |  59%  |                                                                                          |=================================================                                 |  60%  |                                                                                          |==================================================                                |  61%  |                                                                                          |===================================================                               |  62%  |                                                                                          |====================================================                              |  63%  |                                                                                          |=====================================================                             |  64%  |                                                                                          |=====================================================                             |  65%  |                                                                                          |======================================================                            |  66%  |                                                                                          |=======================================================                           |  67%  |                                                                                          |========================================================                          |  68%  |                                                                                          |========================================================                          |  69%  |                                                                                          |=========================================================                         |  69%  |                                                                                          |=========================================================                         |  70%  |                                                                                          |==========================================================                        |  70%  |                                                                                          |==========================================================                        |  71%  |                                                                                          |===========================================================                       |  71%  |                                                                                          |===========================================================                       |  72%  |                                                                                          |============================================================                      |  73%  |                                                                                          |============================================================                      |  74%  |                                                                                          |=============================================================                     |  74%  |                                                                                          |=============================================================                     |  75%  |                                                                                          |==============================================================                    |  75%  |                                                                                          |==============================================================                    |  76%  |                                                                                          |===============================================================                   |  76%  |                                                                                          |===============================================================                   |  77%  |                                                                                          |================================================================                  |  78%  |                                                                                          |================================================================                  |  79%  |                                                                                          |=================================================================                 |  79%  |                                                                                          |=================================================================                 |  80%  |                                                                                          |==================================================================                |  80%  |                                                                                          |==================================================================                |  81%  |                                                                                          |===================================================================               |  81%  |                                                                                          |===================================================================               |  82%  |                                                                                          |====================================================================              |  83%  |                                                                                          |=====================================================================             |  84%  |                                                                                          |======================================================================            |  85%  |                                                                                          |======================================================================            |  86%  |                                                                                          |=======================================================================           |  87%  |                                                                                          |========================================================================          |  88%  |                                                                                          |=========================================================================         |  89%  |                                                                                          |==========================================================================        |  90%  |                                                                                          |===========================================================================       |  91%  |                                                                                          |===========================================================================       |  92%  |                                                                                          |============================================================================      |  92%  |                                                                                          |============================================================================      |  93%  |                                                                                          |=============================================================================     |  94%  |                                                                                          |==============================================================================    |  95%  |                                                                                          |==============================================================================    |  96%  |                                                                                          |===============================================================================   |  96%  |                                                                                          |===============================================================================   |  97%  |                                                                                          |================================================================================  |  97%  |                                                                                          |================================================================================  |  98%  |                                                                                          |================================================================================= |  98%  |                                                                                          |================================================================================= |  99%  |                                                                                          |==================================================================================|  99%  |                                                                                          |==================================================================================| 100%
 
 Merge the mapped locations of individuals (the `vst_mappingandtagging` table) 
 with the annual measurements of height, diameter, etc (the 
@@ -139,11 +115,9 @@ for Woody plant vegetation structure for more
 information about the contents of each data table.
 
 
-```R
-veg <- merge(veglist$vst_apparentindividual, vegmap, 
-             by=c("individualID","namedLocation",
-                  "domainID","siteID","plotID"))
-```
+    veg <- merge(veglist$vst_apparentindividual, vegmap, 
+                 by=c("individualID","namedLocation",
+                      "domainID","siteID","plotID"))
 
 Let's see what the data look like! Make a stem map of the plants in 
 plot WREF_075. Note that the `circles` argument of the `symbols()` function expects a radius, but 
@@ -152,35 +126,27 @@ stemDiameter is also in centimeters, but the mapping scale is in meters,
 so we need to divide by 100 also to get the scale right.
 
 
-```R
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
-        inches=F, xlab="Easting", ylab="Northing")
-```
+    symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
+            veg$adjNorthing[which(veg$plotID=="WREF_075")], 
+            circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
+            inches=F, xlab="Easting", ylab="Northing")
 
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_11_0.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-1-1.png)
 
 And now overlay the estimated uncertainty in the location of each stem, 
 in blue:
 
 
-```R
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
-        inches=F, xlab="Easting", ylab="Northing")
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$adjCoordinateUncertainty[which(veg$plotID=="WREF_075")], 
-        inches=F, add=T, fg="lightblue")
-```
+    symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
+            veg$adjNorthing[which(veg$plotID=="WREF_075")], 
+            circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
+            inches=F, xlab="Easting", ylab="Northing")
+    symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
+            veg$adjNorthing[which(veg$plotID=="WREF_075")], 
+            circles=veg$adjCoordinateUncertainty[which(veg$plotID=="WREF_075")], 
+            inches=F, add=T, fg="lightblue")
 
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_13_0.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-2-1.png)
 
 ## 3. Canopy height model data
 
@@ -198,36 +164,30 @@ The download will include several metadata files as well as the data
 tile. Load the data tile into the environment using the `raster` package.
 
 
-```R
-byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
-          easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
-          northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
-          check.size = FALSE, savepath="/Users/olearyd/Git/data")
-chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
-```
+    byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
+              easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
+              northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
+              check.size = FALSE, savepath="/Users/olearyd/Git/data")
 
-    Downloading files totaling approximately 4.035953 MB 
-    Downloading 6 files
-      |======================================================================| 100%
-    Successfully downloaded  6  files.
-    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shp downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shx downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D16_WREF_DP3_580000_5075000_CHM.tif downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.prj downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.dbf downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.kml downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/kmls
+    ## Downloading files totaling approximately 4.035953 MB 
+    ## Downloading 6 files
+    ##   |                                                                                          |                                                                                  |   0%  |                                                                                          |================                                                                  |  20%  |                                                                                          |=================================                                                 |  40%  |                                                                                          |=================================================                                 |  60%  |                                                                                          |==================================================================                |  80%  |                                                                                          |==================================================================================| 100%
+    ## Successfully downloaded  6  files.
+    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.kml downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/kmls
+    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shx downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    ## NEON_D16_WREF_DP3_580000_5075000_CHM.tif downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif
+    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shp downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.dbf downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
+    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.prj downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
 
+    chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
 Let's view the tile.
 
 
-```R
-plot(chm, col=topo.colors(5))
-```
+    plot(chm, col=topo.colors(5))
 
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_17_0.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-chm-1.png)
 
 ## 4. Comparing the two datasets
 
@@ -242,12 +202,10 @@ within this tile, using the `extent()` function from the raster package.
 This step isn't strictly necessary, but it will make the processing faster.
 
 
-```R
-vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
-                      veg$adjEasting <= extent(chm)[2] &
-                      veg$adjNorthing >= extent(chm)[3] & 
-                      veg$adjNorthing <= extent(chm)[4]),]
-```
+    vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
+                          veg$adjEasting <= extent(chm)[2] &
+                          veg$adjNorthing >= extent(chm)[3] & 
+                          veg$adjNorthing <= extent(chm)[4]),]
 
 Starting with a very simple first pass: use the `extract()` function 
 from the `raster` package to get the CHM value matching the coordinates 
@@ -257,28 +215,21 @@ Then make a scatter plot of each tree's height vs. the CHM value at its
 location.
 
 
-```R
-bufferCHM <- extract(chm, cbind(vegsub$adjEasting, 
-                                vegsub$adjNorthing),
-                     buffer=vegsub$adjCoordinateUncertainty, 
-                     fun=max)
-plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
-     ylab="Canopy height model")
-lines(c(0,50), c(0,50), col="grey")
-```
+    bufferCHM <- extract(chm, 
+                         cbind(vegsub$adjEasting,
+                               vegsub$adjNorthing),
+                         buffer=vegsub$adjCoordinateUncertainty, 
+                         fun=max)
+    plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
+         ylab="Canopy height model")
+    lines(c(0,50), c(0,50), col="grey")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png)
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_21_0.png)
+    cor(bufferCHM,vegsub$height, use="complete")
 
-
-
-```R
-cor(bufferCHM,vegsub$height, use="complete")
-```
-
-
-0.365055163085433
-
+    ## [1] 0.3650552
 
 There are a lot of points clustered on the 1-1 line, but there is also a 
 cloud of points above the line, where the measured height is lower than 
@@ -301,32 +252,24 @@ with the same numbering as the raster pixels (the rasters/pixels are
 numbered by their southwest corners).
 
 
-```R
-easting10 <- 10*floor(vegsub$adjEasting/10)
-northing10 <- 10*floor(vegsub$adjNorthing/10)
-vegsub <- cbind(vegsub, easting10, northing10)
-```
+    easting10 <- 10*floor(vegsub$adjEasting/10)
+    northing10 <- 10*floor(vegsub$adjNorthing/10)
+    vegsub <- cbind(vegsub, easting10, northing10)
 
 Use the `aggregate()` function to get the tallest tree in each 10m bin.
 
 
-```R
-vegbin <- stats::aggregate(vegsub, by=list(vegsub$easting10, vegsub$northing10), FUN=max)
-```
+    vegbin <- stats::aggregate(vegsub, by=list(vegsub$easting10, vegsub$northing10), FUN=max)
 
 To get the CHM values for the 10m bins, use the `raster` package version 
 of the `aggregate()` function. Let's take a look at the lower-resolution 
 image we get as a result.
 
 
-```R
-CHM10 <- raster::aggregate(chm, fact=10, fun=max)
-plot(CHM10, col=topo.colors(5))
-```
+    CHM10 <- raster::aggregate(chm, fact=10, fun=max)
+    plot(CHM10, col=topo.colors(5))
 
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_28_0.png)
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/CHM-10-1.png)
 
 Use the `extract()` function again to get the values from each pixel. We 
 don't need a buffer this time, since we've put both datasets onto the same 
@@ -334,28 +277,20 @@ grid. But our grids are numbered by the corners, so add 5 to each tree
 coordinate to make sure it's in the correct pixel.
 
 
-```R
-vegbin$easting10 <- vegbin$easting10+5
-vegbin$northing10 <- vegbin$northing10+5
-binCHM <- extract(CHM10, cbind(vegbin$easting10, 
-                               vegbin$northing10))
-plot(binCHM~vegbin$height, pch=20, 
-     xlab="Height", ylab="Canopy height model")
-lines(c(0,50), c(0,50), col="grey")
-```
+    vegbin$easting10 <- vegbin$easting10+5
+    vegbin$northing10 <- vegbin$northing10+5
+    binCHM <- extract(CHM10, cbind(vegbin$easting10, 
+                                   vegbin$northing10))
+    plot(binCHM~vegbin$height, pch=20, 
+         xlab="Height", ylab="Canopy height model")
+    lines(c(0,50), c(0,50), col="grey")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/adj-tree-coord-1.png)
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_30_0.png)
+    cor(binCHM, vegbin$height, use="complete")
 
-
-
-```R
-cor(binCHM, vegbin$height, use="complete")
-```
-
-
-0.356551096832678
-
+    ## [1] 0.3565511
 
 The understory points are thinned out substantially, but so are the rest. 
 We've lost a lot of data by going to a lower resolution.
@@ -365,9 +300,7 @@ using the trees as the starting point instead of map area. Start by sorting
 the veg structure data by height.
 
 
-```R
-vegsub <- vegsub[order(vegsub$height, decreasing=T),]
-```
+    vegsub <- vegsub[order(vegsub$height, decreasing=T),]
 
 Now, for each tree, let's estimate which nearby trees might be beneath 
 its canopy, and discard those points. To do this:
@@ -380,45 +313,35 @@ be improved on!
 3. Iterate over all trees.
 
 
-```R
-vegfil <- vegsub
-for(i in 1:nrow(vegsub)) {
-    if(is.na(vegfil$height[i]))
-        next
-    dist <- sqrt((vegsub$adjEasting[i]-vegsub$adjEasting)^2 + 
-                (vegsub$adjNorthing[i]-vegsub$adjNorthing)^2)
-    vegfil$height[which(dist<0.3*vegsub$height[i] & 
-                        vegsub$height<vegsub$height[i])] <- NA
-}
-
-vegfil <- vegfil[which(!is.na(vegfil$height)),]
-```
+    vegfil <- vegsub
+    for(i in 1:nrow(vegsub)) {
+        if(is.na(vegfil$height[i]))
+            next
+        dist <- sqrt((vegsub$adjEasting[i]-vegsub$adjEasting)^2 + 
+                    (vegsub$adjNorthing[i]-vegsub$adjNorthing)^2)
+        vegfil$height[which(dist<0.3*vegsub$height[i] & 
+                            vegsub$height<vegsub$height[i])] <- NA
+    }
+    
+    vegfil <- vegfil[which(!is.na(vegfil$height)),]
 
 Now extract the raster values, as above. Let's also increase the buffer size 
 a bit, to better account for the uncertainty in the Lidar data as well as 
 the uncertainty in the ground locations.
 
 
-```R
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
-     xlab="Height", ylab="Canopy height model")
-lines(c(0,50), c(0,50), col="grey")
-```
+    filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
+                             buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
+    plot(filterCHM~vegfil$height, pch=20, 
+         xlab="Height", ylab="Canopy height model")
+    lines(c(0,50), c(0,50), col="grey")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/filter-chm-1.png)
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_37_0.png)
+    cor(filterCHM,vegfil$height)
 
-
-
-```R
-cor(filterCHM,vegfil$height)
-```
-
-
-0.727322864797764
-
+    ## [1] 0.7273229
 
 This is quite a bit better! There are still several understory points we 
 failed to exclude, but we were able to filter out most of the understory 
@@ -431,27 +354,19 @@ likely, and it's also less likely to get a good Lidar return. Exclude all
 trees that aren't alive:
 
 
-```R
-vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
-     xlab="Height", ylab="Canopy height model")
-lines(c(0,50), c(0,50), col="grey")
-```
+    vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
+    filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
+                             buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
+    plot(filterCHM~vegfil$height, pch=20, 
+         xlab="Height", ylab="Canopy height model")
+    lines(c(0,50), c(0,50), col="grey")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/live-trees-1.png)
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm_files/veg_structure_and_chm_40_0.png)
+    cor(filterCHM,vegfil$height)
 
-
-
-```R
-cor(filterCHM,vegfil$height)
-```
-
-
-0.813526237334543
-
+    ## [1] 0.8135262
 
 Nice!
 
