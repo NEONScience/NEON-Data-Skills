@@ -8,7 +8,7 @@
 # dateCreated: 2018-07-05 
 # authors: Bridget Hass
 # contributors: Donal O'Leary
-# estimatedTime: 
+# estimatedTime: 0.5 hours
 # packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 # topics: hyperspectral-remote-sensing, HDF5, remote-sensing, 
 # languagesTool: python

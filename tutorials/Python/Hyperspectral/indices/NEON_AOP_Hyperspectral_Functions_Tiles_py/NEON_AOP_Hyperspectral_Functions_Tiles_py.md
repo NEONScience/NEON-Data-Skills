@@ -5,7 +5,7 @@ description: "Learn to efficiently work with tiled NEON AOP spectral data using 
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: Donal O'Leary
-estimatedTime: 
+estimatedTime: 0.5 hours
 packagesLibraries: numpy, matplotlib, h5py, os, copy, skimage, IPython.html.widgets
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python

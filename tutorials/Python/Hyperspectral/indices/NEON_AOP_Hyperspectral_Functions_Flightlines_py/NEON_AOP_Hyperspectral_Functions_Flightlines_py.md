@@ -4,8 +4,8 @@ title: "Band Stacking, RGB & False Color Images, and Interactive Widgets in Pyth
 description: "Learn to efficiently work with flightline NEON AOP spectral data using functions."
 dateCreated: 2017-06-19 
 authors: Bridget Hass
-contributors:
-estimatedTime:
+contributors: Donal O'Leary
+estimatedTime: 0.5 hours
 packagesLibraries: numpy, pandas, gdal, matplotlib, h5py
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
