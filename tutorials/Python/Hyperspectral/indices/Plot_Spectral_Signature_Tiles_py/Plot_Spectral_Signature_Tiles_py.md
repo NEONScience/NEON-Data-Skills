@@ -5,7 +5,7 @@ description: "Learn how to extract and plot a spectral profile from a single pix
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: Donal O'Leary
-estimatedTime: 
+estimatedTime: 0.5 hours
 packagesLibraries: numpy, pandas, matplotlib, h5py,IPython.display
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
