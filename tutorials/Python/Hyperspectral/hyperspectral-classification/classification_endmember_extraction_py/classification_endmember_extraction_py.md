@@ -5,7 +5,7 @@ description: "Learn to classify spectral data using Endmember Extraction, Spectr
 dateCreated: 2018-07-10 
 authors: Bridget Hass
 contributors: Donal O'Leary
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -66,6 +66,75 @@ import sys
 !conda install --yes --prefix {sys.prefix} scikit-learn
 !conda install --yes --prefix {sys.prefix} cvxopt
 ```
+
+    [33mWARNING: Requirement '/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz' looks like a filename, but the file does not exist[0m
+    Processing /Users/olearyd/Downloads/pysptools-0.15.0.tar.gz
+    [31mERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/Users/olearyd/Downloads/pysptools-0.15.0.tar.gz'
+    [0m
+    Collecting package metadata (current_repodata.json): - \ | / - \ | / - \ | / - \ done
+    Solving environment: / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+    
+    ## Package Plan ##
+    
+      environment location: /opt/anaconda3/envs/py37
+    
+      added / updated specs:
+        - scikit-learn
+    
+    
+    The following packages will be downloaded:
+    
+        package                    |            build
+        ---------------------------|-----------------
+        openssl-1.1.1k             |       h9ed2024_0         2.2 MB
+        scikit-learn-0.24.1        |   py37hb2f4e1b_0         4.8 MB
+        ------------------------------------------------------------
+                                               Total:         7.0 MB
+    
+    The following packages will be UPDATED:
+    
+      openssl                                 1.1.1j-h9ed2024_0 --> 1.1.1k-h9ed2024_0
+      scikit-learn                        0.23.2-py37h959d312_0 --> 0.24.1-py37hb2f4e1b_0
+    
+    
+    
+    Downloading and Extracting Packages
+    openssl-1.1.1k       | 2.2 MB    | ##################################### | 100% 
+    scikit-learn-0.24.1  | 4.8 MB    | ##################################### | 100% 
+    Preparing transaction: \ done
+    Verifying transaction: / - \ | / - done
+    Executing transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | done
+    Collecting package metadata (current_repodata.json): - \ | / - \ | done
+    Solving environment: - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done
+    
+    ## Package Plan ##
+    
+      environment location: /opt/anaconda3/envs/py37
+    
+      added / updated specs:
+        - cvxopt
+    
+    
+    The following packages will be downloaded:
+    
+        package                    |            build
+        ---------------------------|-----------------
+        cvxopt-1.2.0               |   py37hde55871_0         444 KB
+        ------------------------------------------------------------
+                                               Total:         444 KB
+    
+    The following packages will be DOWNGRADED:
+    
+      cvxopt                               1.2.0-py37hcab12e0_0 --> 1.2.0-py37hde55871_0
+    
+    
+    
+    Downloading and Extracting Packages
+    cvxopt-1.2.0         | 444 KB    | ##################################### | 100% 
+    Preparing transaction: | done
+    Verifying transaction: - done
+    Executing transaction: | done
+
 
 We will also use the following user-defined functions: 
 
@@ -199,6 +268,18 @@ for key in sorted(metadata.keys()):
     wavelength
 
 
+    bad_band_window1
+    bad_band_window2
+    data ignore value
+    epsg
+    interleave
+    map info
+    projection
+    reflectance scale factor
+    spatial extent
+    wavelength
+
+
 Now we can define a function that cleans the reflectance cube. Note that this also removes the water vapor bands, stored in the metadata as `bad_band_window1` and `bad_band_window2`, as well as the last 10 bands, which tend to be noisy. It is important to remove these values before doing classification or other analysis.
 
 
@@ -270,12 +351,20 @@ print('Cleaned Data Dimensions:',data_clean.shape)
     Cleaned Data Dimensions: (1000, 1000, 360)
 
 
+    Raw Data Dimensions: (1000, 1000, 426)
+    Cleaned Data Dimensions: (1000, 1000, 360)
+
+
 Note that we have retained 360 of the 426 bands. This still contains plenty of information, in your processing, you may wish to subset even further. Let's take a look at a histogram of the cleaned data:
 
 
 ```python
 plt.hist(data_clean[~np.isnan(data_clean)],50);
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_19_0.png)
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_17_0.png)
 
@@ -301,11 +390,19 @@ def plot_aop_refl(band_array,
 ```
 
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_21_0.png)
+
+
+
 ```python
 plot_aop_refl(data_clean[:,:,0],
               metadata_clean['spatial extent'],
               (0,0.2))
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_22_0.png)
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_20_0.png)
 
@@ -342,6 +439,13 @@ In order to display these endmember spectra, we need to define the endmember axe
 type(metadata_clean['wavelength'])
 ```
 
+
+
+
+    list
+
+
+
     list
 
 
@@ -360,6 +464,10 @@ Now that the axes are defined, we can display the spectral endmembers with `ee.d
 ee.display(axes=ee_axes,suffix='SERC')
 ```
 
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_30_0.png)
+
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_28_0.png)
 
 
@@ -377,6 +485,26 @@ Use `am.display` to plot these abundance maps:
 ```python
 am.display(colorMap='jet',columns=4,suffix='SERC')
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_34_0.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_34_1.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_34_2.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_34_3.png)
+
+
+
+    <Figure size 432x288 with 0 Axes>
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_32_0.png)
 
@@ -411,6 +539,13 @@ print('EM4:',np.mean(amaps[:,:,3]))
     EM4: 0.026367119
 
 
+    Abundance Map Mean Values:
+    EM1: 0.59177357
+    EM2: 0.00089541974
+    EM3: 0.3809638
+    EM4: 0.026367119
+
+
 You can also look at histogram of each abundance map:
 
 
@@ -430,6 +565,10 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,2]),bins=50,range=[0,0.5])
 ax4 = fig.add_subplot(2,4,4); plt.title('EM4')
 amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05]) 
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_38_0.png)
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_36_0.png)
 
@@ -451,6 +590,10 @@ Now we can call this function using the three endmembers (classes) that contain 
 U2 = U[[0,2,3],:]
 SID(data_clean, U2, [0.8,0.3,0.03])
 ```
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/hyperspectral-classification/classification_endmember_extraction_py/classification_endmember_extraction_py_files/classification_endmember_extraction_py_42_0.png)
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_endmember_extraction_py/output_40_0.png)
 

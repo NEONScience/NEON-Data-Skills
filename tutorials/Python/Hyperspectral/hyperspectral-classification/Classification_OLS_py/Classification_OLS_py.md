@@ -5,7 +5,7 @@ description: "Learn to classify spectral data using the Ordinary Least Squares m
 dateCreated: 2017-06-21 
 authors: Paul Gader
 contributors: Donal O'Leary
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -303,10 +303,10 @@ print(Corr1r + Corr2r, 'Correctly Classified for a ', round(100*CorrClassRater),
 ```
 
     Result for Ordinary Least Squares
-    397 Correctly Classified for a  99.0 % Correct Classification 
+    397 Correctly Classified for a  99 % Correct Classification 
     
     Result for Ridge Regression
-    397 Correctly Classified for a  99.0 % Correct Classification 
+    397 Correctly Classified for a  99 % Correct Classification 
     
 
 

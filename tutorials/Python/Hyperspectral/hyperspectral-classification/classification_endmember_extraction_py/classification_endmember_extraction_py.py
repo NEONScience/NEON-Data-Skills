@@ -8,7 +8,7 @@
 # dateCreated: 2018-07-10 
 # authors: Bridget Hass
 # contributors: Donal O'Leary
-# estimatedTime:
+# estimatedTime: 1 hour
 # packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 # topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 # languagesTool: python
@@ -60,7 +60,7 @@
 # 1. PySpTools: Download <a href="https://pypi.python.org/pypi/pysptools" target="_blank">pysptools-0.14.2.tar.gz</a>.
 # 2. Run the following code in a Notebook code cell. 
 
-# In[ ]:
+# In[1]:
 
 
 import sys
@@ -79,7 +79,7 @@ get_ipython().system('conda install --yes --prefix {sys.prefix} cvxopt')
 # 
 # Once PySpTools is installed, import the following packages. 
 
-# In[ ]:
+# In[2]:
 
 
 import h5py, os, copy
@@ -100,7 +100,7 @@ warnings.filterwarnings('ignore')
 
 # Define the function `read_neon_reflh5` to read in the h5 file, without cleaning it (applying the no-data value and scale factor); we will do that with a separate function that also removes the water vapor bad band windows. 
 
-# In[ ]:
+# In[3]:
 
 
 def read_neon_reflh5(refl_filename):
@@ -176,7 +176,7 @@ def read_neon_reflh5(refl_filename):
 
 # Now that the function is defined, we can call it to read in the sample reflectance file. Note that if your data is stored in a different location, you'll have to change the relative path, or include the absolute path. 
 
-# In[ ]:
+# In[4]:
 
 
 # You will need to download the example dataset using the link above, 
@@ -187,7 +187,7 @@ data,metadata = read_neon_reflh5(h5refl_filename)
 
 # Let's take a quick look at the data contained in the `metadata` dictionary with a `for loop`:
 
-# In[ ]:
+# In[5]:
 
 
 for key in sorted(metadata.keys()):
@@ -208,7 +208,7 @@ for key in sorted(metadata.keys()):
 # 
 # Now we can define a function that cleans the reflectance cube. Note that this also removes the water vapor bands, stored in the metadata as `bad_band_window1` and `bad_band_window2`, as well as the last 10 bands, which tend to be noisy. It is important to remove these values before doing classification or other analysis.
 
-# In[ ]:
+# In[6]:
 
 
 def clean_neon_refl_data(data,metadata):
@@ -260,7 +260,7 @@ def clean_neon_refl_data(data,metadata):
 
 # Now, use this function to pre-process the data:
 
-# In[ ]:
+# In[7]:
 
 
 data_clean,metadata_clean = clean_neon_refl_data(data,metadata)
@@ -268,7 +268,7 @@ data_clean,metadata_clean = clean_neon_refl_data(data,metadata)
 
 # Let's see the dimensions of the data before and after cleaning:
 
-# In[ ]:
+# In[8]:
 
 
 print('Raw Data Dimensions:',data.shape)
@@ -281,7 +281,7 @@ print('Cleaned Data Dimensions:',data_clean.shape)
 # 
 # Note that we have retained 360 of the 426 bands. This still contains plenty of information, in your processing, you may wish to subset even further. Let's take a look at a histogram of the cleaned data:
 
-# In[ ]:
+# In[9]:
 
 
 plt.hist(data_clean[~np.isnan(data_clean)],50);
@@ -291,7 +291,7 @@ plt.hist(data_clean[~np.isnan(data_clean)],50);
 # 
 # Lastly, let's take a look at the data using the function `plot_aop_refl` function:
 
-# In[ ]:
+# In[10]:
 
 
 def plot_aop_refl(band_array,
@@ -311,7 +311,7 @@ def plot_aop_refl(band_array,
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); 
 
 
-# In[ ]:
+# In[11]:
 
 
 plot_aop_refl(data_clean[:,:,0],
@@ -339,7 +339,7 @@ plot_aop_refl(data_clean[:,:,0],
 # 
 # First we need to define the endmember extraction algorithm, and use the `extract` method to extract the endmembers from our data cube. You have to specify the # of endmembers you want to find, and can optionally specify a maximum number of iterations (by default it will use 3p, where p is the 3rd dimension of the HSI cube (m x n x p). For this example, we will specify a small # of iterations in the interest of time. 
 
-# In[ ]:
+# In[12]:
 
 
 #eea = data_clean
@@ -350,7 +350,7 @@ U = ee.extract(data_clean,4,maxit=5,
 
 # In order to display these endmember spectra, we need to define the endmember axes `dictionary`. Specifically we want to show the wavelength values on the x-axis. The `metadata['wavelength']` is a `list`, but the ee_axes requires a `float` data type, so we have to cast it to the right data type. 
 
-# In[ ]:
+# In[13]:
 
 
 type(metadata_clean['wavelength'])
@@ -358,7 +358,7 @@ type(metadata_clean['wavelength'])
 
 #     list
 
-# In[ ]:
+# In[14]:
 
 
 ee_axes = {} # set ee_axes data type to dictionary
@@ -370,7 +370,7 @@ ee_axes['y']='Reflectance' #y axis label
 
 # Now that the axes are defined, we can display the spectral endmembers with `ee.display`:
 
-# In[ ]:
+# In[15]:
 
 
 ee.display(axes=ee_axes,suffix='SERC')
@@ -381,7 +381,7 @@ ee.display(axes=ee_axes,suffix='SERC')
 # 
 # Now that we have extracted the spectral endmembers, we can take a look at the abundance maps for each member. These show the fractional components of each of the endmembers. 
 
-# In[ ]:
+# In[16]:
 
 
 am = amap.FCLS() #define am object using the amap 
@@ -390,7 +390,7 @@ amaps = am.map(data_clean,U,normalize=False) #create abundance maps for the HSI 
 
 # Use `am.display` to plot these abundance maps:
 
-# In[ ]:
+# In[17]:
 
 
 am.display(colorMap='jet',columns=4,suffix='SERC')
@@ -413,7 +413,7 @@ am.display(colorMap='jet',columns=4,suffix='SERC')
 # 
 # Print mean values of each abundance map to better estimate thresholds to use in the classification routines. 
 
-# In[ ]:
+# In[18]:
 
 
 print('Abundance Map Mean Values:')
@@ -432,7 +432,7 @@ print('EM4:',np.mean(amaps[:,:,3]))
 # 
 # You can also look at histogram of each abundance map:
 
-# In[ ]:
+# In[19]:
 
 
 import matplotlib.pyplot as plt
@@ -456,7 +456,7 @@ amap1_hist = plt.hist(np.ndarray.flatten(amaps[:,:,3]),bins=50,range=[0,0.05])
 # 
 # Below we define a function to compute and display Spectral Information Diverngence (SID):
 
-# In[ ]:
+# In[20]:
 
 
 def SID(data,E,thrs=None):
@@ -467,7 +467,7 @@ def SID(data,E,thrs=None):
 
 # Now we can call this function using the three endmembers (classes) that contain the most information: 
 
-# In[ ]:
+# In[21]:
 
 
 U2 = U[[0,2,3],:]
@@ -495,7 +495,7 @@ SID(data_clean, U2, [0.8,0.3,0.03])
 # 
 # **Hint**: use the SAM function below, and refer to the SID syntax used above. 
 
-# In[ ]:
+# In[22]:
 
 
 def SAM(data,E,thrs=None):
@@ -515,7 +515,7 @@ def SAM(data,E,thrs=None):
 # * To extract every 10th element from the array `A`, use `A[0::10]`
 # * Import the package `time` to track the amount of time it takes to run a script. 
 
-# In[ ]:
+# In[23]:
 
 
 #start_time = time.time()

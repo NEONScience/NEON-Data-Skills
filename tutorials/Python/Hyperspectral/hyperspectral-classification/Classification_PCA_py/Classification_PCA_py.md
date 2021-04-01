@@ -5,7 +5,7 @@ description: "Learn to classify spectral data using the Principal Components Ana
 dateCreated: 2017-06-21 
 authors: Paul Gader
 contributors: Donal O'Leary
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -717,7 +717,12 @@ ax.scatter(TinyVecsPCA[0,range(NSamps)],TinyVecsPCA[1,range(NSamps)],TinyVecsPCA
 plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_1.png)
+
+    <IPython.core.display.Javascript object>
+
+
+
+<div id='293f0161-4afb-4647-9406-8649283f7db5'></div>
 
 
 We can also display principal components as images
@@ -733,11 +738,28 @@ for coord in range(3):
     plt.show()
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_2.png)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_3.png)
+    <IPython.core.display.Javascript object>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classification_PCA/output_100_3.png)
+
+
+<div id='156bbf1f-54c4-4e12-80c9-51de46d317cd'></div>
+
+
+
+    <IPython.core.display.Javascript object>
+
+
+
+<div id='a04dc8e6-da25-4dc6-93fe-5b499aeb3f12'></div>
+
+
+
+    <IPython.core.display.Javascript object>
+
+
+
+<div id='e7ae9033-1ec9-4b72-b9b2-3e8d96b9873d'></div>
 
 
 <div id="ds-challenge" markdown="1">

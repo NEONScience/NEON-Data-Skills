@@ -8,7 +8,7 @@
 # dateCreated: 2017-06-19 
 # authors: Paul Gader
 # contributors: Donal O'Leary
-# estimatedTime: 
+# estimatedTime: 1 hour
 # packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot
 # topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 # languagesTool: python
