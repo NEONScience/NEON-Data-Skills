@@ -330,7 +330,7 @@ plt.show()
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_18_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/BRDF_uncertainty_at_740600_3982000.png)
 
 
 It is possible that the figure above does not display properly, which is why we use the `fig.save()` method above to store the resulting figure as its own PNG file in the same directory as this Jupyter Notebook file.
