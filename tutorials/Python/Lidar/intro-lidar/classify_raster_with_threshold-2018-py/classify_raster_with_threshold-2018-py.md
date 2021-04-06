@@ -5,7 +5,7 @@ description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, as
 dateCreated: 2018-07-04 
 authors: Bridget Hass
 contributors: Donal O'Leary, Max Burner
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
 topics: lidar, raster, remote-sensing
 languagesTool: python
@@ -343,7 +343,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box,class5_box],
 
 
 
-    <matplotlib.legend.Legend at 0x7f9a916ca990>
+    <matplotlib.legend.Legend at 0x7ffd379dad50>
 
 
 
