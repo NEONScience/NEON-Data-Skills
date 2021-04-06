@@ -4,8 +4,8 @@ title: "NEON AOP Hyperspectral Data in HDF5 format with Python - Flightlines"
 description: "Learn how to read NEON AOP hyperspectral flightline data using Python and develop skills to manipulate and visualize spectral data."
 dateCreated: 2017-04-10 
 authors: Bridget Hass
-contributors: Donal O'Leary 
-estimatedTime: 
+contributors: Donal O'Leary
+estimatedTime: 1 hour
 packagesLibraries: numpy, h5py, gdal, matplotlib.pyplot
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: python
@@ -734,7 +734,7 @@ interact(linearStretch,percent=(0,100,1))
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-NEON-HDF5-reflectance/output_53_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/intro-hyperspectral/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_files/Intro_NEON_AOP_HDF5_Reflectance_Flightlines_py_55_0.png)
 
 
 
