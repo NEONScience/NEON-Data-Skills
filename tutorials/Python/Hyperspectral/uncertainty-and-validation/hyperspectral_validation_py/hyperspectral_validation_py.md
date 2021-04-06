@@ -4,8 +4,8 @@ title: "Assessing Spectrometer Accuracy using Validation Tarps with Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
-contributors:
-estimatedTime:
+contributors: Donal O'Leary
+estimatedTime: 0.5 hour
 packagesLibraries: numpy, gdal, matplotlib
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: python
@@ -324,16 +324,16 @@ plt.legend()
 
 
 
-    <matplotlib.legend.Legend at 0x7fcbdbad8410>
+    <matplotlib.legend.Legend at 0x7fab677c25d0>
 
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_1.png)
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_22_2.png)
 
 
 
@@ -366,11 +366,11 @@ plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Refelctance Difference (%)')
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_1.png)
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_24_2.png)
 
 
 
@@ -408,11 +408,11 @@ plt.ylim((-100,150))
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_1.png)
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_validation_py/hyperspectral_validation_py_files/hyperspectral_validation_py_26_2.png)
 
 
 

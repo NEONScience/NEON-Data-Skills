@@ -4,8 +4,8 @@ title: "Hyperspectral Variation Uncertainty Analysis in Python"
 description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
-contributors: 
-estimatedTime: 
+contributors: Donal O'Leary
+estimatedTime: 0.5 hour
 packagesLibraries: numpy, gdal, matplotlib
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: python
@@ -250,7 +250,7 @@ ax = plt.subplot(111)
 
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_14_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_14_1.png)
 
 
 Now we will begin cycling through all of the h5 files and retrieving the information we need also print the file that is currently being processed
@@ -330,7 +330,7 @@ plt.show()
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_variation_py/hyperspectral_variation_py_files/BRDF_uncertainty_at_740600_3982000.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Hyperspectral/uncertainty-and-validation//hyperspectral_variation_py/hyperspectral_variation_py_files/hyperspectral_variation_py_18_0.png)
 
 
 It is possible that the figure above does not display properly, which is why we use the `fig.save()` method above to store the resulting figure as its own PNG file in the same directory as this Jupyter Notebook file.
