@@ -13,7 +13,7 @@
 # topics: data-management,rep-sci
 # languagesTool: python
 # dataProduct: 
-# code1: /Python/neonUtilities/neonUtilitiesPython.py
+# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython.py
 # tutorialSeries: 
 # urlTitle: neon-utilities-python
 # ---
