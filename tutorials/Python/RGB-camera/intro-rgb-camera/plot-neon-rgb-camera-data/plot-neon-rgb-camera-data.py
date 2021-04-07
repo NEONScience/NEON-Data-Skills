@@ -38,7 +38,7 @@
 # 
 # As part of the 
 # <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborne Operation Platform's</a> 
-# suite of remote sensing instruments, the digital camera producing high-resolution (0.25 m) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
+# suite of remote sensing instruments, the digital camera producing high-resolution (10 cm) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
 # 
 # **Note:** Don't worry about understanding everything in the `raster2array` function at this point. If you are curious, we encourage you to read the docstrings, but we will go into more detail during the data institute. 
 # 
