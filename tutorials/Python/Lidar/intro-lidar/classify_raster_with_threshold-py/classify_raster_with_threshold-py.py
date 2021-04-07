@@ -18,7 +18,6 @@
 # urlTitle: classify-raster-thresholds-py
 # ---
 
-# # Classify a Raster Using Threshold Values in Python
 # 
 # In this tutorial, we will learn how to:
 # 1. Read NEON LiDAR Raster Geotifs (eg. CHM, Slope Aspect) into Python numpy arrays with gdal.
