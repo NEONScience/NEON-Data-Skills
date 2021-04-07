@@ -9,11 +9,10 @@ estimatedTime: 0.5 hour
 packagesLibraries: 
 topics: data-analysis, data-visualization, spatial-data-gis 
 languagesTool: python
-dataProduct: 
+dataProduct: DP3.30010.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data.ipynb
 tutorialSeries: jupyter-notebooks
 urlTitle: plot-neon-rgb-py
-
 ---
 
 
