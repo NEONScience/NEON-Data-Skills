@@ -13107,10 +13107,10 @@ urlTitle: plot-neon-rgb-py</p>
 <li>Plot a histogram of a single band of an RGB Camera Tile</li>
 </ul>
 <h3 id="Download-the-Data">Download the Data<a class="anchor-link" href="#Download-the-Data">&#182;</a></h3><p>Download the NEON GeoTiFF file of the 
-<a href="https://neondata.sharefile.com/d-s274babd550a45e7a">camera (RGB) imagery tile</a>
+<a href="https://ndownloader.figshare.com/files/27465803">camera (RGB) imagery tile</a>
 collected over the Smithsonian Environmental Research Station (SERC) NEON field site. Place this data in a location where you know where it is. You will need to know the file path to this data.</p>
 <h3 id="Background">Background<a class="anchor-link" href="#Background">&#182;</a></h3><p>As part of the 
-<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborne Operation Platform's</a> 
 suite of remote sensing instruments, the digital camera producing high-resolution (0.25 m) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data.</p>
 <p><strong>Note:</strong> Don't worry about understanding everything in the <code>raster2array</code> function at this point. If you are curious, we encourage you to read the docstrings, but we will go into more detail during the data institute.</p>
 <p><strong>Data Tip:</strong> To run a cell you can either select <code>Cell &gt; Run Cells</code> with your cursor in the cell you want to run, or use the shortcut key <code>Shift + Enter</code>. For more handy shortcuts, refer to the tab <code>Help &gt; Keyboard Shortcuts</code>.</p>
@@ -13164,10 +13164,7 @@ suite of remote sensing instruments, the digital camera producing high-resolutio
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Data Institue Participants</strong>: You should be running <code>3.5.x</code>. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing <code>activate p35</code> in Windows or <code>source activate p35</code> in Mac if you followed the pre-institute computer set-up instructions. Once you see <code>(p35)</code> at the beginning of your command prompt, you can type <code>jupyter notebook</code> to run your notebook.</p>
-<p>
-<center><strong>Activating `Python 3.5` environment from the command prompt.</strong></center>
-<img src="/activate_py35.png" style="width: 600px;"/>
-</p><p><strong>Other tutorial users</strong>: Jupyter Notebooks is not required to complete this tutorial. However, as of June 2018 the GDAL package wasn't fully compatible with Python 3.6 so we recommend using a Python 3.5 environment.</p>
+<p><strong>Other tutorial users</strong>: Jupyter Notebooks is not required to complete this tutorial. This tutorial was processed using Python version 3.7.7.</p>
 
 </div>
 </div>
@@ -13196,11 +13193,9 @@ suite of remote sensing instruments, the digital camera producing high-resolutio
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If you get the following message</p>
-<p>
-<center><strong>ModuleNotFoundError</strong></center>
-<img src="No_module_named_gdal.png" style="width: 600px;"/>
-</p><p><strong>Troubleshooting steps</strong> --&gt; try one of the following:</p>
+<p>If you get the following message:
+    <code>ModuleNotFoundError: No Module Named GDAL</code></p>
+<p><strong>Troubleshooting steps</strong> --&gt; try one of the following:</p>
 <ul>
 <li>from a Jupyter Python cell, run the command:
 <code>!conda install gdal</code></li>
@@ -13511,6 +13506,7 @@ scaleFactor
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Defining the function above will initially produce a blank plotting area (that's ok!).</p>
 <p>Now run this function using the inputs you defined earlier:</p>
 
 </div>

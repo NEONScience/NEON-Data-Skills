@@ -32,13 +32,13 @@
 # ### Download the Data 
 # 
 # Download the NEON GeoTiFF file of the 
-# <a href="https://neondata.sharefile.com/d-s274babd550a45e7a">camera (RGB) imagery tile</a>
+# <a href="https://ndownloader.figshare.com/files/27465803">camera (RGB) imagery tile</a>
 # collected over the Smithsonian Environmental Research Station (SERC) NEON field site. Place this data in a location where you know where it is. You will need to know the file path to this data.  
 # 
 # ### Background
 # 
 # As part of the 
-# <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
+# <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborne Operation Platform's</a> 
 # suite of remote sensing instruments, the digital camera producing high-resolution (0.25 m) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
 # 
 # **Note:** Don't worry about understanding everything in the `raster2array` function at this point. If you are curious, we encourage you to read the docstrings, but we will go into more detail during the data institute. 
@@ -57,12 +57,7 @@ sys.version
 
 # **Data Institue Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
 # 
-# <p>
-# <center><strong>Activating `Python 3.5` environment from the command prompt.</strong></center>
-# <img src="/activate_py35.png" style="width: 600px;"/>
-# </p>
-# 
-# **Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. However, as of June 2018 the GDAL package wasn't fully compatible with Python 3.6 so we recommend using a Python 3.5 environment. 
+# **Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. This tutorial was processed using Python version 3.7.7.
 
 # Now that you are in the right environment, first we will import the gdal package, which contains tools for programming and manipulating the Geospatial Data Abstraction Library (GDAL). For more information on GDAL, please refer to <a href="http://www.gdal.org/" target="_blank">gdal.org</a>.
 
@@ -72,13 +67,8 @@ sys.version
 import gdal
 
 
-# If you get the following message 
-# 
-# <p>
-# <center><strong>ModuleNotFoundError</strong></center>
-# <img src="No_module_named_gdal.png" style="width: 600px;"/>
-# </p>
-# 
+# If you get the following message:
+#     `ModuleNotFoundError: No Module Named GDAL`
 # 
 # **Troubleshooting steps** --> try one of the following:
 # - from a Jupyter Python cell, run the command:
@@ -240,6 +230,8 @@ def plot_band_array(band_array,
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
 
 
+# Defining the function above will initially produce a blank plotting area (that's ok!).
+# 
 # Now run this function using the inputs you defined earlier:
 
 # In[9]:
