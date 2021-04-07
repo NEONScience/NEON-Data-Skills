@@ -47,11 +47,7 @@ The entire dataset can be accessed by request from the
 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
 
-  
-
-<a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow"> 
-
-Download Dataset</a> 
+<a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow"> Download Dataset</a> 
 
 
 ```python
@@ -455,7 +451,7 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box],
 
 
 
-    <matplotlib.legend.Legend at 0x7fe301f19250>
+    <matplotlib.legend.Legend at 0x7ff182d04c10>
 
 
 
@@ -627,7 +623,7 @@ ax.legend(handles=[blue_box,red_box],handlelength=0.7,bbox_to_anchor=(1.05, 0.45
 
 
 
-    <matplotlib.legend.Legend at 0x7fe300809ed0>
+    <matplotlib.legend.Legend at 0x7ff187f7d890>
 
 
 
@@ -766,7 +762,7 @@ ax.legend(handles=[blue_box,red_box],handlelength=0.7,
 
 
 
-    <matplotlib.legend.Legend at 0x7fe305f67d50>
+    <matplotlib.legend.Legend at 0x7ff187f6ed90>
 
 
 

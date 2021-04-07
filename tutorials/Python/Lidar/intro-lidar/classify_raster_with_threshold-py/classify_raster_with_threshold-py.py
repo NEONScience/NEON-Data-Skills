@@ -50,11 +50,7 @@
 # 
 # <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
 # 
-#   
-# 
-# <a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow"> 
-# 
-# Download Dataset</a> 
+# <a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow"> Download Dataset</a> 
 
 # In[1]:
 
