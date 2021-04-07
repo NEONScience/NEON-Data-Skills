@@ -164,6 +164,7 @@ plot(neonMercator)
 ```
 
 ## Map NEON field sites
+
 Now that we have a map of all the NEON domains, let's plot the NEON field site 
 locations on it. To do this, we need to load and explore the field sites data. 
 
@@ -178,31 +179,34 @@ str(neonSites)
 ```
 
 Here there is a lot of associated data about the field sites that may be of 
-interest. For now, we can see that there are both **Latitude** and **Longitude**
-data so we can plot this data onto our previous map. 
+interest, such as site descriptions and dominant vegetation types. For mapping 
+purposes, we can see that there are both **Latitude** and **Longitude**
+data, so we can plot this data onto our previous map. 
 
-```{r plot-sites, fig.width=8, fig.height=6, fig.cap="Same map as above but with dots for the field site locations across the country"}
+```{r plot-sites, fig.width=8, fig.height=6, fig.cap="NEON domain map with site dots added"}
 
-# plot the sites
-neonMap <- domainMap + 
-        geom_point(data=neonSites, 
-                   aes(x=Longitude, y=Latitude))
-
-neonMap 
+plot(neonDomains)
+points(neonSites$Latitude~neonSites$Longitude,
+       pch=20)
 
 ```
 
-Now we can see all the sites across the Observatory. However, NEON has both 
-aquatic and terrestrial sites with important differences between the two. Looking 
-back at the variables in this data set, we can see that `Site.Type` designates 
-the aquatic and terrestrial sites. However, it goes further and includes whether 
-or not they are core or relocatable sites. Let's plot that distinction as well. 
+Now we can see all the sites across the Observatory. Note that we've switched 
+back to the Lat-Long projection, which makes it simple to plot the site 
+locations onto the map using their latitude and longitude. To plot them on 
+the Mercator projection, we would need to convert the site latitude and 
+longitude values into a SpatialPoints object, and then perform the same 
+conversion. See `sp` package documentation if you are interested in doing 
+this.
 
-We can do this by adding color to our plot, with terrestrial sites in green and 
-aquatic sites in blue. We can choose darker shades for core sites and lighter 
-ones for relocatable sites. 
+NEON has both aquatic and terrestrial sites, with important differences 
+between the two. Looking back at the variables in this data set, we can 
+see that `Site.Type` designates the aquatic and terrestrial sites. 
 
-```{r sites-color, fig.width=8, fig.height=6, fig.cap="Same as maps above but the field site dots are now four different colors"}
+Let's differentiate the site types by adding color to our plot, with 
+terrestrial sites in green and aquatic sites in blue.
+
+```{r sites-color, fig.width=8, fig.height=6, fig.cap="NEON domain map with site dots color-coded for aquatic and terrestrial sites"}
 
 # color is determined by the order that the unique values show up
 # check order
