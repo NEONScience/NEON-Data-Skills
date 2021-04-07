@@ -33,7 +33,7 @@ This will be accomplished by:
   *Import file onto Jupyter Notebooks
   *Check the raster size
 
-
+</div>
 
 ## Assignment: Open a Tiff File in Jupyter Notebook 
 
