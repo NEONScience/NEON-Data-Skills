@@ -1,42 +1,47 @@
----
-syncID: 7e916532e9fa49aeba7464350e661778
-title: "Create a Hillshade from a Terrain Raster in Python"
-description: "Learn how to create a hillshade from a terrain raster in Python." 
-dateCreated: 2017-06-21 
-authors: Bridget Hass
-contributors: Donal O'Leary
-estimatedTime: 0.5 hour
-packagesLibraries: numpy, gdal, matplotlib
-topics: lidar, raster, remote-sensing
-languagesTool: python
-dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py.ipynb
-tutorialSeries: intro-lidar-py-series
-urlTitle: create-hillshade-py
----
+#!/usr/bin/env python
+# coding: utf-8
 
-# Create a Hillshade from a Terrain Raster in Python 
+# ---
+# syncID: 7e916532e9fa49aeba7464350e661778
+# title: "Create a Hillshade from a Terrain Raster in Python"
+# description: "Learn how to create a hillshade from a terrain raster in Python." 
+# dateCreated: 2017-06-21 
+# authors: Bridget Hass
+# contributors: Donal O'Leary
+# estimatedTime: 0.5 hour
+# packagesLibraries: numpy, gdal, matplotlib
+# topics: lidar, raster, remote-sensing
+# languagesTool: python
+# dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
+# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py.ipynb
+# tutorialSeries: intro-lidar-py-series
+# urlTitle: create-hillshade-py
+# ---
 
-In this tutorial, we will learn how to create a hillshade from a terrain raster in Python. 
+# # Create a Hillshade from a Terrain Raster in Python 
+# 
+# In this tutorial, we will learn how to create a hillshade from a terrain raster in Python. 
+# 
+# First, let's import the required packages and set plot display to inline:
 
-First, let's import the required packages and set plot display to inline:
+# In[1]:
 
 
-```python
 from osgeo import gdal
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+get_ipython().run_line_magic('matplotlib', 'inline')
 import warnings
 warnings.filterwarnings('ignore')
-```
-
-We also need to import the following functions created in previous lessons:
-- ```raster2array.py```
-- ```plotbandarray.py```
 
 
-```python
+# We also need to import the following functions created in previous lessons:
+# - ```raster2array.py```
+# - ```plotbandarray.py```
+
+# In[2]:
+
+
 # %load ../neon_aop_python_functions/raster2array.py
 
 # raster2array.py reads in the first band of geotif file and returns an array and associated 
@@ -114,10 +119,11 @@ def raster2array(geotif_file):
     
     elif metadata['bands'] > 1:
         print('More than one band ... fix function for case of multiple bands')
-```
 
 
-```python
+# In[3]:
+
+
 # %load ../neon_aop_python_functions/plot_band_array.py
 
 def plot_band_array(band_array,refl_extent,title,cbar_label,colormap='spectral',alpha=1):
@@ -127,24 +133,25 @@ def plot_band_array(band_array,refl_extent,title,cbar_label,colormap='spectral',
     plt.title(title); ax = plt.gca(); 
     ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degree
-```
-
-###  Calculate Hillshade
-
-<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif" style="width: 250px;"/>
-<center><font size="2">http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade.htm</font></center>
 
 
-Hillshade is used to visualize the hypothetical illumination value (from 0-255) of each pixel on a surface given a specified light source. To calculate hillshade, we need the zenith (altitude) and azimuth of the illumination source, as well as the slope and aspect of the terrain. The formula for hillshade is:
+# ###  Calculate Hillshade
+# 
+# <img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif" style="width: 250px;"/>
+# <center><font size="2">http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade.htm</font></center>
+# 
+# 
+# Hillshade is used to visualize the hypothetical illumination value (from 0-255) of each pixel on a surface given a specified light source. To calculate hillshade, we need the zenith (altitude) and azimuth of the illumination source, as well as the slope and aspect of the terrain. The formula for hillshade is:
+# 
+# $$Hillshade = 255.0 * (( cos(zenith_I)*cos(slope_T))+(sin(zenith_I)*sin(slope_T)*cos(azimuth_I-aspect_T))$$
+# 
+# Where all angles are in radians. 
+# 
+# For more information about how hillshades work, refer to the ESRI ArcGIS Help page: http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works. 
 
-$$Hillshade = 255.0 * (( cos(zenith_I)*cos(slope_T))+(sin(zenith_I)*sin(slope_T)*cos(azimuth_I-aspect_T))$$
-
-Where all angles are in radians. 
-
-For more information about how hillshades work, refer to the ESRI ArcGIS Help page: http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works. 
+# In[4]:
 
 
-```python
 #https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
 
 def hillshade(array,azimuth,angle_altitude):
@@ -159,39 +166,34 @@ def hillshade(array,azimuth,angle_altitude):
     shaded = np.sin(altituderad)*np.sin(slope) + np.cos(altituderad)*np.cos(slope)*np.cos((azimuthrad - np.pi/2.) - aspect)
     
     return 255*(shaded + 1)/2
-```
-
-Now that we have a function to generate hillshade, we need to read in the NEON LiDAR Digital Terrain Model (DTM) geotif using the ```raster2array``` function and then calculate hillshade using the ```hillshade``` function. We can then plot both using the ```plot_band_array``` function. 
 
 
-```python
+# Now that we have a function to generate hillshade, we need to read in the NEON LiDAR Digital Terrain Model (DTM) geotif using the ```raster2array``` function and then calculate hillshade using the ```hillshade``` function. We can then plot both using the ```plot_band_array``` function. 
+
+# In[5]:
+
+
 # Use raster2array to convert TEAK DTM Geotif to array & plot
 #dtm_array, dtm_metadata = raster2array('2013_TEAK_1_326000_4103000_DTM.tif')
 
 dtm_array, dtm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_DTM.tif')
 plot_band_array(dtm_array,dtm_metadata['extent'],'TEAK DTM','Elevation, m',colormap='gist_earth')
 ax = plt.gca(); plt.grid('on')
-```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py_files/create_hillshade_from_terrain_raster_py_9_0.png)
+# In[6]:
 
 
-
-```python
 # Use hillshade function on a DTM Geotiff
 hs_array = hillshade(dtm_array,225,45)
 plot_band_array(hs_array,dtm_metadata['extent'],'TEAK Hillshade, Aspect=225°',
                 'Hillshade',colormap='Greys',alpha=0.8)
 ax = plt.gca(); plt.grid('on') 
-```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py_files/create_hillshade_from_terrain_raster_py_10_0.png)
+# In[7]:
 
 
-
-```python
 #Overlay transparent hillshade on DTM:
 fig = plt.figure(frameon=False)
 im1 = plt.imshow(dtm_array,cmap='terrain_r',extent=dtm_metadata['extent']); 
@@ -201,37 +203,24 @@ ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use sc
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 plt.grid('on'); # plt.colorbar(); 
 plt.title('TEAK Hillshade + DTM')
-```
 
 
+# ### Calculate CHM & Overlay on Top of Hillshade
+
+# In[8]:
 
 
-    Text(0.5, 1.0, 'TEAK Hillshade + DTM')
-
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py_files/create_hillshade_from_terrain_raster_py_11_1.png)
-
-
-### Calculate CHM & Overlay on Top of Hillshade
-
-
-```python
 #Calculate CHM from DSM & DTM:
 dsm_array, dsm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_DSM.tif')
 teak_chm = dsm_array - dtm_array;
 
 plot_band_array(teak_chm,dtm_metadata['extent'],'TEAK Canopy Height Model','Canopy Height, m',colormap='Greens')
 ax = plt.gca(); plt.grid('on')
-```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py_files/create_hillshade_from_terrain_raster_py_13_0.png)
+# In[9]:
 
 
-
-```python
 #Overlay transparent hillshade on DTM:
 fig = plt.figure(frameon=False)
 
@@ -250,40 +239,30 @@ ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use sc
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 plt.grid('on'); # plt.colorbar(); 
 plt.title('TEAK 2013 \n Terrain, Hillshade, & Canopy Height')
-```
 
 
+# ## Links to Tutorials on Creating Hillshades:
+# 
+# **Python Hillshade:**
+# - http://geoexamples.blogspot.com/2014/03/shaded-relief-images-using-gdal-python.html
+# - http://pangea.stanford.edu/~samuelj/musings/dems-in-python-pt-3-slope-and-hillshades-.html
+# 
+# **ESRI ArcGIS Hillshade Algorithm:**
+# - http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works
+# 
+# **GitHub Hillshade Functions/Tutorials:**
+# - https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
+# - https://github.com/clhenrick/gdal_hillshade_tutorial
+# 
+# **GDAL Hillshade:**
+# - http://www.gdal.org/gdaldem.html
+# - http://gis.stackexchange.com/questions/144535/how-to-create-transparent-hillshade/144700
+
+# ## Scratch Code
+
+# In[10]:
 
 
-    Text(0.5, 1.0, 'TEAK 2013 \n Terrain, Hillshade, & Canopy Height')
-
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py_files/create_hillshade_from_terrain_raster_py_14_1.png)
-
-
-## Links to Tutorials on Creating Hillshades:
-
-**Python Hillshade:**
-- http://geoexamples.blogspot.com/2014/03/shaded-relief-images-using-gdal-python.html
-- http://pangea.stanford.edu/~samuelj/musings/dems-in-python-pt-3-slope-and-hillshades-.html
-
-**ESRI ArcGIS Hillshade Algorithm:**
-- http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works
-
-**GitHub Hillshade Functions/Tutorials:**
-- https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
-- https://github.com/clhenrick/gdal_hillshade_tutorial
-
-**GDAL Hillshade:**
-- http://www.gdal.org/gdaldem.html
-- http://gis.stackexchange.com/questions/144535/how-to-create-transparent-hillshade/144700
-
-## Scratch Code
-
-
-```python
 #Importing the TEAK CHM Geotiff resulted in v. sparse data ?
 chm_array, chm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_pit_free_CHM.tif')
 
@@ -302,54 +281,10 @@ chm_nonzero_array[chm_array==0]=np.nan
 print('TEAK CHM nonzero array:\n',chm_nonzero_array)
 print(np.nanmin(chm_nonzero_array))
 print(np.nanmax(chm_nonzero_array))
-```
 
-    TEAK CHM Array
-    : [[ 0.          0.          0.         ...  0.          0.
-       0.        ]
-     [ 0.          0.          0.         ...  0.          0.
-       0.        ]
-     [ 0.          0.          0.         ...  0.          0.
-       0.        ]
-     ...
-     [28.65999985 28.37999916 19.11000061 ...  0.          0.
-       0.        ]
-     [29.37999916 29.19000053 28.39999962 ...  0.          0.
-       0.        ]
-     [30.25       29.51000023 29.         ...  0.          0.
-       0.        ]]
-    array_cols: 1000
-    array_rows: 1000
-    bands: 1
-    bandstats: {'min': 0.0, 'max': 59.96, 'mean': 8.84, 'stdev': 11.82}
-    driver: GeoTIFF
-    ext_dict: {'xMin': 326000.0, 'xMax': 327000.0, 'yMin': 4103000.0, 'yMax': 4104000.0}
-    extent: (326000.0, 327000.0, 4103000.0, 4104000.0)
-    geotransform: (326000.0, 1.0, 0.0, 4104000.0, 0.0, -1.0)
-    noDataValue: -9999.0
-    pixelHeight: -1.0
-    pixelWidth: 1.0
-    projection: PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32611"]]
-    scaleFactor: 1.0
-    TEAK CHM nonzero array:
-     [[        nan         nan         nan ...         nan         nan
-              nan]
-     [        nan         nan         nan ...         nan         nan
-              nan]
-     [        nan         nan         nan ...         nan         nan
-              nan]
-     ...
-     [28.65999985 28.37999916 19.11000061 ...         nan         nan
-              nan]
-     [29.37999916 29.19000053 28.39999962 ...         nan         nan
-              nan]
-     [30.25       29.51000023 29.         ...         nan         nan
-              nan]]
-    2.0
-    62.66999816894531
+
+# In[ ]:
 
 
 
-```python
 
-```
