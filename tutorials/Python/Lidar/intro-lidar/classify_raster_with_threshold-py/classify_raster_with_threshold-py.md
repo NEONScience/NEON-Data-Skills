@@ -4,70 +4,54 @@ title: "Classify a Raster Using Threshold Values in Python - 2017"
 description: "Learn how to read NEON lidar raster GeoTIFFs (e.g., CHM, slope, aspect) into Python numpy arrays with gdal and create a classified raster object." 
 dateCreated: 2017-06-21 
 authors: Bridget Hass
-contributors: Max Burner
-estimatedTime: 
+contributors: Max Burner, Donal O'Leary
+estimatedTime: 1 hour
 packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
 topics: lidar, raster, remote-sensing
 languagesTool: python
 dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-code1: Python/remote-sensing/lidar/classify_raster_with_threshold_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: classify-raster-thresholds-py
 ---
 
-In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS 
-(e.g., CHM, slope aspect) into Python `numpy` arrays with gdal and create a 
-classified raster object.
+# Classify a Raster Using Threshold Values in Python
 
-<div id="ds-objectives" markdown="1">
+In this tutorial, we will learn how to:
+1. Read NEON LiDAR Raster Geotifs (eg. CHM, Slope Aspect) into Python numpy arrays with gdal.
+2. Create a classified raster object.
 
-### Objectives
+First, let's import the required packages and set our plot display to be in line:
 
-After completing this tutorial, you will be able to:
+<h3><a href="https://ndownloader.figshare.com/files/21754221"> 
 
-* Read NEON lidar raster GeoTIFFS (e.g., CHM, slope aspect) into Python numpy arrays with gdal.
-* Create a classified raster object.
+Download NEON Teaching Data Subset: Imaging Spectrometer Data - HDF5 </a></h3> 
 
-### Install Python Packages
+  
 
-* **numpy**
-* **gdal** 
-* **matplotlib** 
+These hyperspectral remote sensing data provide information on the 
 
-### Download Data
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a>  
 
-<h3> <a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a></h3> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin  
 
-To complete this tutorial, you will use data available from the NEON 2017 Data
-Institute teaching dataset available for download. 
+Exerimental Range field site</a> in March of 2019. 
 
-Caution: This dataset includes all the data for the 2017 Data Institute, 
-including hyperspectral and lidar datasets and is therefore a large file (12 GB). 
-Ensure that you have sufficient space on your 
-hard drive before you begin the download. If not, download to an external 
-hard drive and make sure to correct for the change in file path when working 
-through the tutorial.
+The data were collected over the San Joaquin field site located in California  
 
-The LiDAR and imagery data used to create this raster teaching data subset 
-were collected over the 
-<a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a>
-and processed at NEON headquarters.
-The entire dataset can be accessed on the 
-<a href="http://data.neonscience.org" target="_blank"> NEON data portal</a>.
+(Domain 17) and processed at NEON headquarters. This data subset is derived from  
 
-<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db" class="link--button link--arrow">
-Download Dataset</a>
+the mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5.  
 
+The entire dataset can be accessed by request from the  
 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
 
+  
 
+<a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow"> 
 
-
-</div>
-
-
-First, let's import the required packages and set our plot display to be in line. 
+Download Dataset</a> 
 
 
 ```python
@@ -81,19 +65,17 @@ warnings.filterwarnings('ignore')
 
 ### Open a Geotif with GDAL
 
-Let's look at the SERC Canopy Height Model (CHM) to start. We can open and read 
-this in Python using the `gdal.Open` function.
+Let's look at the SERC Canopy Height Model (CHM) to start. We can open and read this in Python using the ```gdal.Open``` function:
 
 
 ```python
-chm_filename = '../data/SERC/lidar/2016_SERC_1_367000_4306000_pit_free_CHM.tif'
+chm_filename = '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_CHM.tif'
+#chm_filename = 'NEON_D02_SERC_DP3_367000_4306000_CHM.tif'
 chm_dataset = gdal.Open(chm_filename)
 ```
 
-### Read information from GeoTIFF Tags
-The GeoTIFF file format comes with associated metadata containing information 
-about the location and coordinate system/projection. Once we have read in the 
-dataset, we can access this information with the following commands.
+### Read information from Geotif Tags
+The Geotif file format comes with associated metadata containing information about the location and coordinate system/projection. Once we have read in the dataset, we can access this information with the following commands: 
 
 
 ```python
@@ -108,47 +90,41 @@ print('driver:',chm_dataset.GetDriver().LongName)
     # of rows: 1000
     # of bands: 1
     driver: GeoTIFF
-    
 
-### GetProjection 
-We can use `GetProjection` to see information about the coordinate system and 
-EPSG code. 
+
+### ```GetProjection``` 
+We can use ```GetProjection``` to see information about the coordinate system and EPSG code. 
 
 
 ```python
 print('projection:',chm_dataset.GetProjection())
 ```
 
-    projection: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32618"]]
-    
+    projection: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32618"]]
 
-### GetGeoTransform
 
-The `geotransform` contains information about the origin (upper-left corner) of 
-the raster, the pixel size, and the rotation angle of the data. All NEON data 
-in the latest format have zero rotation. In this example, the values correspond 
-to: 
+### ```GetGeoTransform```
+
+The geotransform contains information about the origin (upper-left corner) of the raster, the pixel size, and the rotation angle of the data. All NEON data in the latest format have zero rotation. In this example, the values correspond to: 
 
 
 ```python
 print('geotransform:',chm_dataset.GetGeoTransform())
 ```
 
-    geotransform: (367000.0, 1.0, 0.0, 4307000.0, 0.0, -1.0)
-    
+    geotransform: (368000.0, 1.0, 0.0, 4307000.0, 0.0, -1.0)
+
 
 In this case, the geotransform values correspond to:
 
-1. Left-Most X Coordinate = `367000.0`
-2. W-E Pixel Resolution = `1.0`
-3. Rotation (0 if Image is North-Up) = `0.0`
-4. Upper Y Coordinate = `4307000.0`
-5. Rotation (0 if Image is North-Up) = `0.0`
-6. N-S Pixel Resolution = `-1.0` 
+1. Top-Left X Coordinate = ```358816.0```
+2. W-E Pixel Resolution = ```1.0```
+3. Rotation (0 if Image is North-Up) = ```0.0```
+4. Top-Left Y Coordinate = ```4313476.0```
+5. Rotation (0 if Image is North-Up) = ```0.0```
+6. N-S Pixel Resolution = ```-1.0``` 
 
-We can convert this information into a spatial extent (xMin, xMax, yMin, yMax) 
-by combining information about the origin, number of columns & rows, and pixel 
-size, as follows.
+We can convert this information into a spatial extent (xMin, xMax, yMin, yMax) by combining information about the origin, number of columns & rows, and pixel size, as follows:
 
 
 ```python
@@ -162,13 +138,11 @@ chm_ext = (xMin,xMax,yMin,yMax)
 print('chm raster extent:',chm_ext)
 ```
 
-    chm raster extent: (367000.0, 368000.0, 4306000.0, 4307000.0)
-    
+    chm raster extent: (368000.0, 369000.0, 4306000.0, 4307000.0)
 
-### GetRasterBand 
-We can read in a single raster band with ```GetRasterBand``` and access 
-information about this raster band such as the No Data Value, Scale Factor, 
-and Statitiscs as follows.
+
+### ```GetRasterBand``` 
+We can read in a single raster band with ```GetRasterBand``` and access information about this raster band such as the No Data Value, Scale Factor, and Statitiscs as follows:
 
 
 ```python
@@ -182,15 +156,12 @@ print('SERC CHM Statistics: Minimum=%.2f, Maximum=%.2f, Mean=%.3f, StDev=%.3f' %
 
     no data value: -9999.0
     scale factor: 1.0
-    SERC CHM Statistics: Minimum=0.00, Maximum=40.67, Mean=7.617, StDev=10.785
-    
+    SERC CHM Statistics: Minimum=0.00, Maximum=33.06, Mean=7.684, StDev=9.012
 
-### ReadAsArray
 
-Finally we can convert the raster to an array using the ReadAsArray command. 
-Use the extension ```astype(np.float)``` to ensure the array contains 
-floating-point numbers. Once we generate the array, we want to set No Data 
-Values to NaN, and apply the scale factor: 
+### ```ReadAsArray``` 
+
+Finally we can convert the raster to an array using the ReadAsArray command. Use the extension ```astype(np.float)``` to ensure the array contains floating-point numbers. Once we generate the array, we want to set No Data Values to NaN, and apply the scale factor: 
 
 
 ```python
@@ -201,24 +172,24 @@ print('SERC CHM Array:\n',chm_array) #display array values
 ```
 
     SERC CHM Array:
-     [[ 22.60000038  24.29999924  26.92000008 ...,  15.81999969  16.68000031
-       16.20000076]
-     [ 23.18000031  25.22999954  25.62000084 ...,  13.86999989  12.84000015
-       12.17000008]
-     [ 25.19000053  26.          26.29000092 ...,  12.38000011  12.10999966
-       12.23999977]
-     ..., 
-     [  0.           0.           0.         ...,  25.53000069  25.12000084
-       26.34000015]
-     [  0.           0.           0.         ...,  26.57999992  26.14999962
-       25.94000053]
-     [  0.           0.           0.         ...,  26.12999916  25.85000038
-       25.54000092]]
-    
+     [[15.82999992 16.30999947 16.61000061 ...  0.          0.
+       0.        ]
+     [12.64000034 15.22999954  7.86000013 ...  0.          0.
+       0.        ]
+     [12.01000023 13.02999973  8.07999992 ...  0.          0.
+       0.        ]
+     ...
+     [28.11000061 27.35000038 27.04000092 ...  0.          0.
+       0.        ]
+     [27.37000084 28.02000046 27.30999947 ...  0.          0.
+       0.        ]
+     [26.85000038 27.61000061 27.43000031 ...  0.          0.
+       0.        ]]
+
 
 ### Array Statistics 
 
-To get a better idea of the dataset, print some basic statistics.
+To get a better idea of the dataset, print some basic statistics:
 
 
 ```python
@@ -236,31 +207,33 @@ print('% non-zero:',round(100*np.count_nonzero(chm_array)/(rows*cols),2))
 
     SERC CHM Array Statistics:
     min: 0.0
-    max: 41.31
-    mean: 7.6
+    max: 33.58
+    mean: 7.81
     % NaN: 0.0
-    % non-zero: 39.5
-    
+    % non-zero: 50.18
+
 
 
 ```python
-# Define the plot_band_array function from Day 1
-def plot_band_array(band_array,refl_extent,colorlimit,ax=plt.gca(),title='',cbar ='on',cmap_title='',colormap='Spectral'):
-    plot = plt.imshow(band_array,extent=refl_extent,clim=colorlimit); 
-    if cbar == 'on':
-        cbar = plt.colorbar(plot,aspect=40); plt.set_cmap(colormap); 
-        cbar.set_label(cmap_title,rotation=90,labelpad=20);
+# Plot array
+# We can use our plot_band_array function from Day 1
+# %load plot_band_array
+def plot_band_array(band_array,refl_extent,title,cmap_title,colormap='Spectral'):
+    plt.imshow(band_array,extent=refl_extent); 
+    cbar = plt.colorbar(); plt.set_cmap(colormap); 
+    cbar.set_label(cmap_title,rotation=270,labelpad=20)
     plt.title(title); ax = plt.gca(); 
-    ax.ticklabel_format(useOffset=False, style='plain'); #do not use scientific notation #
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90); #rotate x tick labels 90 degrees
+    ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
+    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 ```
 
 
 ```python
-plot_band_array(chm_array,chm_ext,(0,80),title='SERC Canopy Height',cmap_title='Canopy Height, m')
+plot_band_array(chm_array,chm_ext,'SERC Canopy Height','Canopy Height, m')
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_19_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_21_0.png)
 
 
 ### Plot Histogram of Data 
@@ -276,15 +249,18 @@ plt.title('Distribution of SERC Canopy Height')
 plt.xlabel('Tree Height (m)'); plt.ylabel('Relative Frequency')
 ```
 
-    <matplotlib.text.Text at 0x95a12e8>
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_21_1.png)
+
+    Text(0, 0.5, 'Relative Frequency')
 
 
-We can see that most of the values are zero. In SERC, many of the zero CHM 
-values correspond to bodies of water as well as regions of land without trees. 
-Let's look at a  histogram and plot the data without zero values.
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_23_1.png)
+
+
+We can see that most of the values are zero. In SERC, many of the zero CHM values correspond to bodies of water as well as regions of land without trees. Let's look at a  histogram and plot the data without zero values: 
 
 
 ```python
@@ -306,36 +282,38 @@ print('mean:',round(np.mean(chm_nonzero_nonan_array),2),'m')
 ```
 
     min: 2.0 m
-    max: 41.31 m
-    mean: 19.23 m
-    
+    max: 33.58 m
+    mean: 15.57 m
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/DI-remote-sensing-Python/classify_raster_with_threshold_notebook/output_23_1.png)
 
-From the histogram we can see that the majority of the trees are < 45m. We can 
-replot the CHM array, this time adjusting the color bar to better visualize the 
-variation in canopy height. We will plot the non-zero array so that CHM=0 
-appears white. 
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_25_1.png)
+
+
+From the histogram we can see that the majority of the trees are < 45m. We can replot the CHM array, this time adjusting the color bar to better visualize the variation in canopy height. We will plot the non-zero array so that CHM=0 appears white. 
 
 
 ```python
-plot_band_array(chm_array,chm_ext,(0,45),title='SERC Canopy Height',cmap_title='Canopy Height, m',colormap='BuGn')
+plt.imshow(chm_array,extent=chm_ext,clim=(0,45))
+cbar = plt.colorbar(); plt.set_cmap('BuGn'); 
+cbar.set_label('Canopy Height, m',rotation=270,labelpad=20)
+plt.title('SERC Non-Zero CHM, <45m'); ax = plt.gca(); 
+ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
+rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 ```
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_25_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_27_0.png)
 
 
-### Read in a GeoTIFF raster and associated metadata
+### Create a ```raster2array``` function to automate conversion of Geotif to array:
 
-Now that we have a basic understanding of how GDAL reads in a GeoTIFF file, we 
-can write a function to read in a NEON geotif, convert it to a numpy array, and 
-store the associated metadata in a Python dictionary in order to more efficiently 
-carry out further analysis.
+Now that we have a basic understanding of how GDAL reads in a Geotif file, we can write a function to read in a NEON geotif, convert it to a numpy array, and store the associated metadata in a Python dictionary in order to more efficiently carry out further analysis:
 
 
 ```python
 # raster2array.py reads in the first band of geotif file and returns an array and associated 
-# metadata dictionary
+# metadata dictionary containing ...
 
 from osgeo import gdal
 import numpy as np
@@ -353,7 +331,11 @@ def raster2array(geotif_file):
     mapinfo = dataset.GetGeoTransform()
     metadata['pixelWidth'] = mapinfo[1]
     metadata['pixelHeight'] = mapinfo[5]
-
+#     metadata['xMin'] = mapinfo[0]
+#     metadata['yMax'] = mapinfo[3]
+#     metadata['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
+#     metadata['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
+    
     metadata['ext_dict'] = {}
     metadata['ext_dict']['xMin'] = mapinfo[0]
     metadata['ext_dict']['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
@@ -387,9 +369,10 @@ def raster2array(geotif_file):
 
 
 ```python
-SERC_chm_array, SERC_chm_metadata = raster2array('../data/SERC/lidar/SERC_CHM.tif')
+SERC_chm_array, SERC_chm_metadata = raster2array(chm_filename)
 
 print('SERC CHM Array:\n',SERC_chm_array)
+# print(chm_metadata)
 
 #print metadata in alphabetical order
 for item in sorted(SERC_chm_metadata):
@@ -397,37 +380,40 @@ for item in sorted(SERC_chm_metadata):
 ```
 
     SERC CHM Array:
-     [[ nan  nan  nan ...,  nan  nan  nan]
-     [ nan  nan  nan ...,  nan  nan  nan]
-     [ nan  nan  nan ...,  nan  nan  nan]
-     ..., 
-     [ nan  nan  nan ...,  nan  nan  nan]
-     [ nan  nan  nan ...,  nan  nan  nan]
-     [ nan  nan  nan ...,  nan  nan  nan]]
-    array_cols: 11197
-    array_rows: 14997
+     [[15.82999992 16.30999947 16.61000061 ...  0.          0.
+       0.        ]
+     [12.64000034 15.22999954  7.86000013 ...  0.          0.
+       0.        ]
+     [12.01000023 13.02999973  8.07999992 ...  0.          0.
+       0.        ]
+     ...
+     [28.11000061 27.35000038 27.04000092 ...  0.          0.
+       0.        ]
+     [27.37000084 28.02000046 27.30999947 ...  0.          0.
+       0.        ]
+     [26.85000038 27.61000061 27.43000031 ...  0.          0.
+       0.        ]]
+    array_cols: 1000
+    array_rows: 1000
     bands: 1
-    bandstats: {'stdev': 12.54, 'mean': 10.66, 'max': 48.45, 'min': 0.0}
+    bandstats: {'min': 0.0, 'max': 33.06, 'mean': 7.68, 'stdev': 9.01}
     driver: GeoTIFF
-    ext_dict: {'yMin': 4298479.0, 'xMin': 358816.0, 'xMax': 370013.0, 'yMax': 4313476.0}
-    extent: (358816.0, 370013.0, 4298479.0, 4313476.0)
-    geotransform: (358816.0, 1.0, 0.0, 4313476.0, 0.0, -1.0)
+    ext_dict: {'xMin': 368000.0, 'xMax': 369000.0, 'yMin': 4306000.0, 'yMax': 4307000.0}
+    extent: (368000.0, 369000.0, 4306000.0, 4307000.0)
+    geotransform: (368000.0, 1.0, 0.0, 4307000.0, 0.0, -1.0)
     noDataValue: -9999.0
     pixelHeight: -1.0
     pixelWidth: 1.0
-    projection: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32618"]]
+    projection: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32618"]]
     scaleFactor: 1.0
-    
+
 
 ## Threshold Based Raster Classification
-Next, we will create a classified raster object. To do this, we will use the se 
-the numpy.where function to create a new raster based off boolean classifications. 
-Let's classify the canopy height into four groups:
-
-* Class 1: **CHM = 0 m** 
-* Class 2: **0m < CHM <= 20m**
-* Class 3: **20m < CHM <= 40m**
-* Class 4: **CHM > 40m**
+Next, we will create a classified raster object. To do this, we will use the numpy.where function to create a new raster based off boolean classifications. Let's classify the canopy height into four groups:
+- Class 1: **CHM = 0 m** 
+- Class 2: **0m < CHM <= 20m**
+- Class 3: **20m < CHM <= 40m**
+- Class 4: **CHM > 40m**
 
 
 ```python
@@ -462,111 +448,129 @@ ax.legend(handles=[class1_box,class2_box,class3_box,class4_box],
 ```
 
     Min: 1.0
-    Max: 4.0
-    Mean: 1.59
-    
-
-    <matplotlib.legend.Legend at 0xc877240>
+    Max: 3.0
+    Mean: 1.66
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_30_2.png)
 
 
-<div id="ds-challenge" markdown="1">
 
-**Challenge: Document Your Workflow**
-
-1. Look at the code that you created for this tutorials. Now imagine yourself 
-months in the future. Comment your script (Markdown sections and code comments) 
-so that your methods and process is clear and reproducible for yourself or 
-others to follow in the future. 
-2. In commenting your script, synthesize and interpret the outputs. Do they tell you anything 
-about the vegetation structure at the field site? 
-
-</div>
+    <matplotlib.legend.Legend at 0x7fe301f19250>
 
 
-<div id="ds-challenge" markdown="1">
 
-**Challenge: Try out other Classifications**
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_32_2.png)
+
+
+## Export classified raster to a geotif
+
+
+```python
+# %load ../hyperspectral_hdf5/array2raster.py
+"""
+Array to Raster Function from https://pcjericks.github.io/py-gdalogr-cookbook/raster_layers.html)
+"""
+import gdal, osr #ogr, os, osr
+import numpy as np
+
+def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
+
+    cols = array.shape[1]
+    rows = array.shape[0]
+    originX = rasterOrigin[0]
+    originY = rasterOrigin[1]
+
+    driver = gdal.GetDriverByName('GTiff')
+    outRaster = driver.Create(newRasterfn, cols, rows, 1, gdal.GDT_Byte)
+    outRaster.SetGeoTransform((originX, pixelWidth, 0, originY, 0, pixelHeight))
+    outband = outRaster.GetRasterBand(1)
+    outband.WriteArray(array)
+    outRasterSRS = osr.SpatialReference()
+    outRasterSRS.ImportFromEPSG(epsg)
+    outRaster.SetProjection(outRasterSRS.ExportToWkt())
+    outband.FlushCache()
+```
+
+
+```python
+#array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array)
+epsg = 32618 #WGS84, UTM Zone 18N
+rasterOrigin = (SERC_chm_metadata['ext_dict']['xMin'],SERC_chm_metadata['ext_dict']['yMax'])
+print('raster origin:',rasterOrigin)
+array2raster('/Users/olearyd/Git/data/SERC_CHM_Classified.tif',rasterOrigin,1,-1,chm_reclass,epsg)
+
+```
+
+    raster origin: (368000.0, 4307000.0)
+
+
+## Challenge 1: Document Your Workflow 
+1. Look at the code that you created for this lesson. Now imagine yourself months in the future. Document your script so that your methods and process is clear and reproducible for yourself or others to follow in the future. 
+2. In documenting your script, synthesize the outputs. Do they tell you anything about the vegetation structure at the field site? 
+
+## Challenge 2: Try out other Classifications
 Create the following threshold classified outputs:
-
 1. A raster where NDVI values are classified into the following categories:
     * Low greenness: NDVI < 0.3
     * Medium greenness: 0.3 < NDVI < 0.6
     * High greenness: NDVI > 0.6
-2. A raster where aspect is classified into North and South facing slopes. 
+2. A raster where aspect is classified into North and South facing slopes: 
 
-Be sure to document your workflow as you go using a combination of Jupyter 
-Markdown cells and code comments. When you are finished, explore your outputs to 
-HTML by selecting File > Download As > HTML (.html). 
-
-Data Institute Participants: Save the file as LastName_Tues_classifyThreshold.html. 
-Add this to the Tuesday materials directory in the **DI17-NEON-participants** GitHub
-repo. Remember to push from your local repo to your fork, and then complete the 
-Pull Request to the central repository. 
-
-</div>
-
+Be sure to document your workflow as you go using Jupyter Markdown cells. When you are finished, explore your outputs to HTML  by selecting File > Download As > HTML (.html). Save the file as LastName_Tues_classifyThreshold.html. Add this to the Tuesday directory in your DI17-NEON-participants Git directory and push them to your fork in GitHub. Merge with the central repository using a pull request. 
 
 ## Aspect Raster Classification on TEAK Dataset (California)
 
-Next, we will create a classified raster object based on slope using the TEAK 
-dataset. This time, our classifications will be:
+Next, we will create a classified raster object based on slope using the TEAK dataset. This time, our classifications will be:
 - **North Facing Slopes**: 0-45 & 315-360 degrees ; class=1
 - **South Facing Slopes**: 135-225 degrees ; class=2
 - **East & West Facing Slopes**: 45-135 & 225-315 degrees ; unclassified
 
+<p>
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg" style="width: 250px;"/>
+<center><font size="2">Figure: (Boz et al. 2015)</font></center>
+<center><font size="2">http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html</font></center>
+</p>
 
- <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg"></a>
-	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
-	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
-	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>
-	</figcaption>
-</figure>
+**Further Reading:** There are a range of applications for aspect classification. The link above shows an example of classifying LiDAR aspect data to determine suitability of roofs for PV (photovoltaic) systems. Can you think of any other applications where aspect classification might be useful?
 
+**Data Tip:** You can calculate aspect in Python from a digital elevation (or surface) model using the pyDEM package: https://earthlab.github.io/tutorials/get-slope-aspect-from-digital-elevation-model/
 
-**Further Reading:** 
-There are a range of applications for aspect classification. 
-<a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html" target="_blank">Boz et al. (2015) </a> 
-provide an example of classifying LiDAR aspect data to determine suitability of 
-roofs for PV (photovoltaic) systems. Can you think of any other applications 
-where aspect classification might be useful?
-
-<div id="ds-dataTip" markdown="1"><i class="fa fa-star"></i> **Data Tip:** You can calculate aspect in Python from 
-a digital elevation (or surface) model using the pyDEM package from the 
-<a href="https://earthlab.github.io/tutorials/get-slope-aspect-from-digital-elevation-model/" target="_blank">CU-Boulder
-Earth Lab.</a>
-</div>
-
-
-
-### Import Data
-
-First, we can import the TEAK aspect raster GeoTIFF and convert it to an array 
-using the `raster2array` function.
+**Let's get started.** First we can import the TEAK aspect raster geotif and convert it to an array using the ```raster2array``` function:
 
 
 ```python
-TEAK_aspect_tif = '../data/TEAK/lidar/2013_TEAK_1_326000_4103000_DTM_aspect.tif'
+TEAK_aspect_tif = '/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_DTM_aspect.tif'
 TEAK_asp_array, TEAK_asp_metadata = raster2array(TEAK_aspect_tif)
+print('TEAK Aspect Array:\n',TEAK_asp_array)
 
 #print metadata in alphabetical order
 for item in sorted(TEAK_asp_metadata):
     print(item + ':', TEAK_asp_metadata[item])
 
-plot_band_array(TEAK_asp_array,TEAK_asp_metadata['extent'],(0,360),title='TEAK Aspect',cmap_title='Aspect, deg')
+plot_band_array(TEAK_asp_array,TEAK_asp_metadata['extent'],'TEAK Aspect','Aspect, degrees')
 ```
 
+    TEAK Aspect Array:
+     [[ 57.15999985  62.50999832  65.08999634 ... 181.94999695 186.82000732
+      188.80999756]
+     [ 57.99000168  65.77999878  70.5        ... 182.96000671 187.66000366
+      188.80999756]
+     [ 57.36000061  65.19999695  70.23999786 ... 183.80999756 188.00999451
+      188.53999329]
+     ...
+     [271.51998901 274.27999878 283.25       ... 132.80000305 119.55000305
+      109.        ]
+     [265.73001099 279.27999878 322.32000732 ... 135.53999329 127.58999634
+      118.41000366]
+     [255.38999939 259.70001221 281.70001221 ... 125.73000336 127.26999664
+      125.08000183]]
     array_cols: 1000
     array_rows: 1000
     bands: 1
-    bandstats: {'stdev': 66.57, 'mean': 115.59, 'max': 359.99, 'min': 0.0}
+    bandstats: {'min': 0.0, 'max': 359.99, 'mean': 115.59, 'stdev': 66.57}
     driver: GeoTIFF
-    ext_dict: {'yMin': 4103000.0, 'xMin': 326000.0, 'xMax': 327000.0, 'yMax': 4104000.0}
+    ext_dict: {'xMin': 326000.0, 'xMax': 327000.0, 'yMin': 4103000.0, 'yMax': 4104000.0}
     extent: (326000.0, 327000.0, 4103000.0, 4104000.0)
     geotransform: (326000.0, 1.0, 0.0, 4104000.0, 0.0, -1.0)
     noDataValue: -9999.0
@@ -574,9 +578,11 @@ plot_band_array(TEAK_asp_array,TEAK_asp_metadata['extent'],(0,360),title='TEAK A
     pixelWidth: 1.0
     projection: PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32611"]]
     scaleFactor: 1.0
-    
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_33_1.png)
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_38_1.png)
+
 
 
 ```python
@@ -590,13 +596,12 @@ print('Min:',np.nanmin(asp_reclass))
 print('Max:',np.nanmax(asp_reclass))
 print('Mean:',round(np.nanmean(asp_reclass),2))
 
-# Scale plot 
 def forceAspect(ax,aspect=1):
     im = ax.get_images()
     extent =  im[0].get_extent()
     ax.set_aspect(abs((extent[1]-extent[0])/(extent[3]-extent[2]))/aspect)
 
-# plot_band_array(aspect_reclassified,asp_ext,'North and South Facing Slopes \n TEAK')
+# plot_band_array(aspect_reclassified,asp_ext,'North and South Facing Slopes \n HOPB')
 from matplotlib import colors
 fig, ax = plt.subplots()
 cmapNS = colors.ListedColormap(['blue','red'])
@@ -617,43 +622,232 @@ ax.legend(handles=[blue_box,red_box],handlelength=0.7,bbox_to_anchor=(1.05, 0.45
     Min: 1.0
     Max: 2.0
     Mean: 1.7
-    
-
-    <matplotlib.legend.Legend at 0xc02c748>
-
-
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/classify-raster-thresholds/output_34_2.png)
-
-
-<div id="ds-challenge" markdown="1">
-**Challenge: Add docstrings**
-
-Clear code is important -- with this in mind add docstrings to the neon_aop_lidar_raster_functions.py 
-module. 
-
-1. Include a description of the module and a list of the functions it contains. 
-1. Include the following information for each function. (Refer to 
-<a href="http://www.python.org/dev/peps/pep-0257/" target="_blank"> the Python Developer's Guide on documentstrings</a> 
-for more information.) Use triple quotes to start and end a doc string ( """ docstring here """)
-
-* description of the function 
-* parameters (inputs)
-* returns (outputs)
-* See also ( list & briefly describe related functions)
-* Notes
-* Examples (how to execute the function. 
-
- 
-1. Save the updated commented module to a python .py file from Jupyter using the 
-magic command: %%writefile neon_aop_lidar_raster_fucntions.py.  Alternatively, you 
-can copy it into a text editor or Spyder (a Python IDE) and save it as a .py file. 
-1. Once saved and re-loaded, use the `help(function)` or `function?` to view the 
-docstrings you wrote. 
-
-</div>
 
 
 
 
 
+    <matplotlib.legend.Legend at 0x7fe300809ed0>
+
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_39_2.png)
+
+
+
+```python
+TEAK_asp_array
+```
+
+
+
+
+    array([[ 57.15999985,  62.50999832,  65.08999634, ..., 181.94999695,
+            186.82000732, 188.80999756],
+           [ 57.99000168,  65.77999878,  70.5       , ..., 182.96000671,
+            187.66000366, 188.80999756],
+           [ 57.36000061,  65.19999695,  70.23999786, ..., 183.80999756,
+            188.00999451, 188.53999329],
+           ...,
+           [271.51998901, 274.27999878, 283.25      , ..., 132.80000305,
+            119.55000305, 109.        ],
+           [265.73001099, 279.27999878, 322.32000732, ..., 135.53999329,
+            127.58999634, 118.41000366],
+           [255.38999939, 259.70001221, 281.70001221, ..., 125.73000336,
+            127.26999664, 125.08000183]])
+
+
+
+
+```python
+TEAKepsg = 32611 #WGS84 UTM Zone 11N
+TEAKorigin = (TEAK_asp_metadata['ext_dict']['xMin'], TEAK_asp_metadata['ext_dict']['yMax'])
+print('TEAK raster origin: ',TEAKorigin)
+array2raster('/Users/olearyd/Git/data/teak_nsAspect.tif',TEAKorigin,1,-1,TEAK_asp_array,TEAKepsg)
+```
+
+    TEAK raster origin:  (326000.0, 4104000.0)
+
+
+
+```python
+TEAK_asp_metadata['projection']
+```
+
+
+
+
+    'PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32611"]]'
+
+
+
+## References 
+
+Bayrakci Boz, M.; Calvert, K.; Brownson, J.R.S. An automated model for rooftop PV systems assessment in ArcGIS using LIDAR. AIMS Energy 2015, 3, 401–420.
+
+## Scratch / Test Code
+
+
+```python
+#SERC Aspect Classification - doesn't work well because there is no significant terrain 
+SERC_asp_array, SERC_asp_metadata = raster2array(chm_filename)
+print('SERC Aspect Array:\n',SERC_asp_array)
+
+#print metadata in alphabetical order
+for item in sorted(SERC_asp_metadata):
+    print(item + ':', SERC_chm_metadata[item])
+
+plot_band_array(SERC_asp_array,SERC_asp_metadata['extent'],'SERC Aspect','Aspect, degrees')
+
+import copy
+aspect_array = copy.copy(SERC_asp_array)
+asp_reclass = copy.copy(aspect_array)
+asp_reclass[np.where(((aspect_array>=0) & (aspect_array<=45)) | (aspect_array>=315))] = 1 #North - Class 1
+asp_reclass[np.where((aspect_array>=135) & (aspect_array<=225))] = 2 #South - Class 2
+asp_reclass[np.where(((aspect_array>45) & (aspect_array<135)) | ((aspect_array>225) & (aspect_array<315)))] = np.nan #W & E - Unclassified
+
+# print(aspect_reclassified.dtype)
+# print('Reclassified Aspect Matrix:',asp_reclass.shape)
+# print(aspect_reclassified)
+print('Min:',np.nanmin(asp_reclass))
+print('Max:',np.nanmax(asp_reclass))
+print('Mean:',round(np.nanmean(asp_reclass),2))
+
+# plot_band_array(aspect_reclassified,asp_ext,'North and South Facing Slopes \n HOPB')
+from matplotlib import colors
+fig, ax = plt.subplots()
+cmapNS = colors.ListedColormap(['blue','red'])
+plt.imshow(asp_reclass,extent=SERC_asp_metadata['extent'],cmap=cmapNS)
+plt.title('SERC \n N and S Facing Slopes')
+ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
+rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
+
+# Create custom legend to label N & S
+import matplotlib.patches as mpatches
+blue_box = mpatches.Patch(color='blue', label='North')
+red_box = mpatches.Patch(color='red', label='South')
+ax.legend(handles=[blue_box,red_box],handlelength=0.7,
+          bbox_to_anchor=(1.05, 0.45), loc='lower left', borderaxespad=0.)
+```
+
+    SERC Aspect Array:
+     [[15.82999992 16.30999947 16.61000061 ...  0.          0.
+       0.        ]
+     [12.64000034 15.22999954  7.86000013 ...  0.          0.
+       0.        ]
+     [12.01000023 13.02999973  8.07999992 ...  0.          0.
+       0.        ]
+     ...
+     [28.11000061 27.35000038 27.04000092 ...  0.          0.
+       0.        ]
+     [27.37000084 28.02000046 27.30999947 ...  0.          0.
+       0.        ]
+     [26.85000038 27.61000061 27.43000031 ...  0.          0.
+       0.        ]]
+    array_cols: 1000
+    array_rows: 1000
+    bands: 1
+    bandstats: {'min': 0.0, 'max': 33.06, 'mean': 7.68, 'stdev': 9.01}
+    driver: GeoTIFF
+    ext_dict: {'xMin': 368000.0, 'xMax': 369000.0, 'yMin': 4306000.0, 'yMax': 4307000.0}
+    extent: (368000.0, 369000.0, 4306000.0, 4307000.0)
+    geotransform: (368000.0, 1.0, 0.0, 4307000.0, 0.0, -1.0)
+    noDataValue: -9999.0
+    pixelHeight: -1.0
+    pixelWidth: 1.0
+    projection: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32618"]]
+    scaleFactor: 1.0
+    Min: 1.0
+    Max: 1.0
+    Mean: 1.0
+
+
+
+
+
+    <matplotlib.legend.Legend at 0x7fe305f67d50>
+
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_45_2.png)
+
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-py/classify_raster_with_threshold-py_files/classify_raster_with_threshold-py_45_3.png)
+
+
+
+```python
+#Test out slope reclassification on subset of SERC aspect array:
+import copy
+aspect_subset = aspect_array[1000:1005,1000:1005]
+print(aspect_subset)
+
+asp_sub_reclass = copy.copy(aspect_subset)
+asp_sub_reclass[np.where(((aspect_subset>=0) & (aspect_subset<=45)) | (aspect_subset>=315))] = 1 #North - Class 1
+asp_sub_reclass[np.where((aspect_subset>=135) & (aspect_subset<=225))] = 2 #South - Class 2
+asp_sub_reclass[np.where(((aspect_subset>45) & (aspect_subset<135)) | ((aspect_subset>225) & (aspect_subset<315)))] = np.nan #W & E - Unclassified
+
+print('Reclassified Aspect Subset:\n',asp_sub_reclass)
+```
+
+    []
+    Reclassified Aspect Subset:
+     []
+
+
+
+```python
+# Another way to read in a Geotif from a gdal workshop:
+# http://download.osgeo.org/gdal/workshop/foss4ge2015/workshop_gdal.pdf
+ds = gdal.Open(chm_filename)
+print('File list:', ds.GetFileList())
+print('Width:', ds.RasterXSize)
+print('Height:', ds.RasterYSize)
+print('Coordinate system:', ds.GetProjection())
+gt = ds.GetGeoTransform() # captures origin and pixel size
+print('Origin:', (gt[0], gt[3]))
+print('Pixel size:', (gt[1], gt[5]))
+print('Upper Left Corner:', gdal.ApplyGeoTransform(gt,0,0))
+print('Upper Right Corner:', gdal.ApplyGeoTransform(gt,ds.RasterXSize,0))
+print('Lower Left Corner:', gdal.ApplyGeoTransform(gt,0,ds.RasterYSize))
+print('Lower Right Corner:',gdal.ApplyGeoTransform(gt,ds.RasterXSize,ds.RasterYSize))
+print('Center:', gdal.ApplyGeoTransform(gt,ds.RasterXSize/2,ds.RasterYSize/2))
+print('Metadata:', ds.GetMetadata())
+print('Image Structure Metadata:', ds.GetMetadata('IMAGE_STRUCTURE'))
+print('Number of Bands:', ds.RasterCount)
+for i in range(1, ds.RasterCount+1):
+    band = ds.GetRasterBand(i) # in GDAL, band are indexed starting at 1!
+    interp = band.GetColorInterpretation()
+    interp_name = gdal.GetColorInterpretationName(interp)
+    (w,h)=band.GetBlockSize()
+    print('Band %d, block size %dx%d, color interp %s' % (i,w,h,interp_name))
+    ovr_count = band.GetOverviewCount()
+    for j in range(ovr_count):
+        ovr_band = band.GetOverview(j) # but overview bands starting at 0
+        print(' Overview %d: %dx%d'%(j, ovr_band.XSize, ovr_band.YSize))
+```
+
+    File list: ['/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_CHM.tif', '/Users/olearyd/Git/data/NEON_D02_SERC_DP3_368000_4306000_CHM.tif.aux.xml']
+    Width: 1000
+    Height: 1000
+    Coordinate system: PROJCS["WGS 84 / UTM zone 18N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-75],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32618"]]
+    Origin: (368000.0, 4307000.0)
+    Pixel size: (1.0, -1.0)
+    Upper Left Corner: [368000.0, 4307000.0]
+    Upper Right Corner: [369000.0, 4307000.0]
+    Lower Left Corner: [368000.0, 4306000.0]
+    Lower Right Corner: [369000.0, 4306000.0]
+    Center: [368500.0, 4306500.0]
+    Metadata: {'AREA_OR_POINT': 'Area', 'TIFFTAG_ARTIST': 'Created by the National Ecological Observatory Network (NEON)', 'TIFFTAG_COPYRIGHT': 'The National Ecological Observatory Network is a project sponsored by the National Science Foundation and managed under cooperative agreement by Battelle Ecology. This material is based in part upon work supported by the National Science Foundation under Grant No. DBI-0752017.', 'TIFFTAG_DATETIME': 'Flown on 2017073113', 'TIFFTAG_IMAGEDESCRIPTION': 'Ecosystem Structure - NEON.DP3.30015 acquired at SERC by Optech, Inc Gemini 11SEN287 as part of 2017-P1C1', 'TIFFTAG_MAXSAMPLEVALUE': '34', 'TIFFTAG_MINSAMPLEVALUE': '0', 'TIFFTAG_RESOLUTIONUNIT': '2 (pixels/inch)', 'TIFFTAG_SOFTWARE': 'Tif file created with a Matlab script (write_gtiff_v01.m) written by Tristan Goulden (tgoulden@battelleecology.org) with data processed from the following scripts: combine_CHM_gtif_v01.m, extract_height_chm_v01.m, LasTools_workflow_2017_season.csh which implemented LAStools version 170728.', 'TIFFTAG_XRESOLUTION': '1', 'TIFFTAG_YRESOLUTION': '1'}
+    Image Structure Metadata: {'INTERLEAVE': 'BAND'}
+    Number of Bands: 1
+    Band 1, block size 1000x1, color interp Gray
+
+
+
+```python
+
+```
