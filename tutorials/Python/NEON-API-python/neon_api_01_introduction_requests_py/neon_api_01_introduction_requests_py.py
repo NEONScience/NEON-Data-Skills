@@ -13,7 +13,7 @@
 # topics:
 # languagesTool: python
 # dataProduct: DP3.10003.001
-# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/Python/NEON-API-python/neon_api_01_introduction_requests_py/neon_api_01_introduction_requests_py.py
+# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-API-python/neon_api_01_introduction_requests_py/neon_api_01_introduction_requests_py.py
 # tutorialSeries: python-neon-api-series
 # urlTitle: neon-api-01-introduction-requests
 # ---
