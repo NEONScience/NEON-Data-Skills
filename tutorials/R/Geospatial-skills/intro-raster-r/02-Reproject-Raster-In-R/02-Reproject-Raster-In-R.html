@@ -275,7 +275,7 @@ plot(DTM_HARV,
      legend=FALSE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/import-DTM-hillshade-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/import-DTM-hillshade-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Our results are curious - the Digital Terrain Model (<code>DTM_HARV</code>) did not plot on
 top of our hillshade. The hillshade plotted just fine on it&#39;s own. Let&#39;s try to 
@@ -294,7 +294,7 @@ plot(DTM_HARV,
      main=&quot;Digital Terrain Model\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-DTM-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-DTM-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Our DTM seems to contain data and plots just fine. Let&#39;s next check the
  Coordinate Reference System (CRS) and compare it to our hillshade.</p>
@@ -303,13 +303,12 @@ plot(DTM_HARV,
 crs(DTM_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 # view crs for hillshade
 crs(DTM_hill_HARV)
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 </code></pre>
 
 <p>Aha! <code>DTM_HARV</code> is in the UTM projection. <code>DTM_hill_HARV</code> is in
@@ -352,12 +351,11 @@ DTM_hill_UTMZ18N_HARV &lt;- projectRaster(DTM_hill_HARV,
 crs(DTM_hill_UTMZ18N_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 crs(DTM_hill_HARV)
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
 # compare attributes of DTM_hill_UTMZ18N to DTM_hill
 extent(DTM_hill_UTMZ18N_HARV)
@@ -427,7 +425,7 @@ plot(DTM_HARV,
      legend=F)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-projected-raster-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/plot-projected-raster-1.png" alt=" "/></p>
 
 <p>We have now successfully draped the Digital Terrain Model on top of our
 hillshade to produce a nice looking, textured map! </p>
@@ -441,7 +439,11 @@ field site using the SJER_DSMhill_WGS84.tif and SJER_dsmCrop.tif files.
 Reproject the data as necessary to make things line up!
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/challenge-code-reprojection-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site San Joaquin Experimental Range"/></p>
+<pre><code>## Warning in projectRaster(DTM_hill_SJER, crs = crs(DTM_SJER), res = 1):
+## input and ouput crs are the same
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/challenge-code-reprojection-1.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site San Joaquin Experimental Range"/></p>
 
 <div id="ds-challenge" markdown="1">
 If you completed the San Joaquin plotting challenge in the

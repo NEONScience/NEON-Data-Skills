@@ -5,7 +5,7 @@ description: "This tutorial explains how to plot a raster in R using R's base pl
 dateCreated: 2015-10-2
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
@@ -134,8 +134,8 @@ break values.
          col="wheat3",  # changes bin color
          xlab= "Elevation (m)")  # label the x-axis
 
-    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
-    ## were used. 100000 values used.
+    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot =
+    ## plot, ...): 4% of the raster cells were used. 100000 values used.
 
 ![Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/create-histogram-breaks-1.png)
 
@@ -146,7 +146,7 @@ break values.
 
     DSMhist$counts
 
-    ## [1] 31850 67690   460
+    ## [1] 32124 67392   484
 
 Warning message!? Remember, the default for the histogram is to include only a
 subset of 100,000 values. We could force it to show all the pixel values or we

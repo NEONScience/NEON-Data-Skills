@@ -5,7 +5,7 @@ description: "This spatial data tutorial explains the how to open and plot shape
 dateCreated: 2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
 contributors: Sarah Newman, Maya R. Stahl
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R

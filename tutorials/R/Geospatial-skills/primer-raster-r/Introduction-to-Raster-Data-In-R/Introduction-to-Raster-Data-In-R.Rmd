@@ -5,7 +5,7 @@ description: "This tutorial explains the fundamental principles, functions and m
 dateCreated:  2014-11-26
 authors: Leah A. Wasser
 contributors: Megan A. Jones
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries:
 topics: hyperspectral, remote-sensing,spatial-data-gis
 languagesTool: R

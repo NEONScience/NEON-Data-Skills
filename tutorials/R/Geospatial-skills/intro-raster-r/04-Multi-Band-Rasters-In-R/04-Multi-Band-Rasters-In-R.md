@@ -5,7 +5,7 @@ description: "This tutorial explores how to import and plot a multi-band raster 
 dateCreated:2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 1 hour
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 subtopics: 
@@ -196,7 +196,7 @@ in the first band. We can plot this band using the plot function.
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho 
     ## values     : 0, 255  (min, max)
@@ -264,7 +264,7 @@ want to work with). To import the green band, we would use `band=2`.
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho 
     ## values     : 0, 255  (min, max)
@@ -311,7 +311,7 @@ To bring in all bands of a multi-band raster, we use the`stack()` function.
     ## dimensions : 2317, 3073, 7120141, 3  (nrow, ncol, ncell, nlayers)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## names      : HARV_RGB_Ortho.1, HARV_RGB_Ortho.2, HARV_RGB_Ortho.3 
     ## min values :                0,                0,                0 
     ## max values :              255,              255,              255
@@ -332,7 +332,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho.1 
     ## values     : 0, 255  (min, max)
@@ -344,7 +344,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho.2 
     ## values     : 0, 255  (min, max)
@@ -356,7 +356,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho.3 
     ## values     : 0, 255  (min, max)
@@ -369,7 +369,7 @@ attributes for using an index value: `RGB_stack_HARV[[1]]`. We can also use the
     ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
     ## resolution : 0.25, 0.25  (x, y)
     ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
     ## names      : HARV_RGB_Ortho.1 
     ## values     : 0, 255  (min, max)
@@ -513,7 +513,7 @@ and `brick` R objects.
     # view size of the RGB_stack object that contains our 3 band image
     object.size(RGB_stack_HARV)
 
-    ## 44248 bytes
+    ## 50104 bytes
 
     # convert stack to a brick
     RGB_brick_HARV <- brick(RGB_stack_HARV)
@@ -521,7 +521,7 @@ and `brick` R objects.
     # view size of the brick
     object.size(RGB_brick_HARV)
 
-    ## 13856 bytes
+    ## 170898632 bytes
 
 Notice that in the `RasterBrick`, all of the bands are stored within the actual 
 object. Thus, the `RasterBrick` object size is much larger than the
@@ -548,4 +548,6 @@ We can view various methods available to call on an R object with
 </div>
 
 
+    ## Warning in .S3methods(generic.function, class, envir): 'class' is of
+    ## length > 1; only the first element will be used
 

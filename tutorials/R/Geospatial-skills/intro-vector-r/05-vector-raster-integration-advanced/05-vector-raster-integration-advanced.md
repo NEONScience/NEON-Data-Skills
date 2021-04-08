@@ -4,8 +4,8 @@ title: "Vector 05: Crop Raster Data and Extract Summary Pixels Values From Raste
 description: "This tutorial covers how to modify (crop) a raster extent using the extent of a vector shapefile. It also covers extracting pixel values from defined locations stored in a spatial object."
 dateCreated:  2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
-contributors: Sarah Newman
-estimatedTime:
+contributors: Sarah Newman, Maya R. Stahl
+estimatedTime: 1 hour
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
@@ -99,7 +99,7 @@ We often work with spatial layers that have different spatial extents.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" alt="The three different vector types represented within a given spatial extent."></a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial 
@@ -118,7 +118,7 @@ and a raster file, that we will introduce this tutorial:
 
 * A canopy height model (CHM) in GeoTIFF format -- green
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extents-1.png)
+![Comparison of extents of Roads, Plot Locations, Fisher Tower location, and Canopy Height Model at NEON Harvard Forest Field Site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extents-1.png)
 
 
 
@@ -126,10 +126,10 @@ Frequent use cases of cropping a raster file include reducing file size and
 creating maps.
 
 Sometimes we have a raster file that is much larger than our study area or area
-of interest. It is often most efficient to crop the raster to the extent of our
-study area to keep reduce file sizes as we process our data.
+of interest. In this case, it is often most efficient to crop the raster to the extent of our
+study area to reduce file sizes as we process our data.
 
-Cropping a raster can also be useful when creating pretty maps so that the
+Cropping a raster can also be useful when creating visually appealing maps so that the
 raster layer matches the extent of the desired vector layers.
 
 ### Import Data
@@ -177,7 +177,7 @@ spatial object as the cropping boundary.
     plot(chm_HARV,
          main="LiDAR CHM - Not Cropped\nNEON Harvard Forest Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-1.png)
+![NEON Harvard Forest Field Site with a Canopy Height Model overlay.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-1.png)
 
     # crop the chm
     chm_HARV_Crop <- crop(x = chm_HARV, y = aoiBoundary_HARV)
@@ -191,14 +191,14 @@ spatial object as the cropping boundary.
     plot(chm_HARV_Crop,
          add=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-2.png)
+![Comparison of original Canopy Height Model extent compared to cropped Canopy Height Model extent.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/Crop-by-vector-extent-2.png)
 
 We can see from the plot above that the full CHM extent (plotted in green) is
 much larger than the resulting cropped raster. Our new cropped CHM now has the 
 same extent as the `aoiBoundary_HARV` object that was used as a crop extent 
 (blue boarder below).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-crop-extent-1.png)
+![NEON Harvard Forest Field Site with a Canopy Height Model overlay cropped to the same extent.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-crop-extent-1.png)
 
 We can look at the extent of all the other objects. 
 
@@ -229,7 +229,7 @@ We can look at the extent of all the other objects.
     ## ymax       : 4713359
 
 Which object has the largest extent?  Our plot location extent is not the 
-largest but is larger than the AOI Boundary. It would be nice to see our
+largest but it is larger than the AOI Boundary. It would be nice to see our
 vegetation plot locations with the Canopy Height Model information.
 
 <div id="ds-challenge" markdown="1">
@@ -246,7 +246,7 @@ you have these plot locations as the spatial R spatial object
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-crop-raster-points-1.png)
+![Vegetation plots at NEON Harvard Forest Field Site with a Canopy Height Model overlay; note that one vegetation plot appears outside of the overlay.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-crop-raster-points-1.png)
 
 In the plot above, created in the challenge, all the vegetation plot locations
 (blue) appear on the Canopy Height Model raster layer except for one. One is
@@ -260,7 +260,7 @@ will not expand the extent in areas where there are no data. Thus, extent of our
 vegetation plot layer will still extend further west than the extent of our 
 (cropped) raster data (dark green).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/raster-extents-cropped-1.png)
+![Comparison of extents of Roads, Plot Locations, and both the full-sized and cropped Canopy Height Models at NEON Harvard Forest Field Site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/raster-extents-cropped-1.png)
 
 ## Define an Extent
 We can also use an `extent()` method to define an extent to be used as a cropping
@@ -292,14 +292,14 @@ raster.
     plot(CHM_HARV_manualCrop, 
          add = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/crop-using-drawn-extent-1.png)
+![NEON Harvard Forest Field Site with a manually cropped Canopy Height Model overlay.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/crop-using-drawn-extent-1.png)
 
-Notice that our manual `new.extent` (in red) is smaller than the
+Notice that our manually set `new.extent` (in red) is smaller than the
 `aoiBoundary_HARV` and that the raster is now the same as the `new.extent`
 object.
  
 See the documentation for the `extent()` function for more ways
-to create an `extent` object: `??raster::extent`
+to create an `extent` object using `??raster::extent`
 
 
 ## Extract Raster Pixels Values Using Vector Polygons
@@ -309,7 +309,7 @@ for example, plot locations that we are sampling on the ground.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferSquare.png">
-    <img src="{{ site.baseulr }}/images/spatialData/BufferSquare.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferSquare.png" alt="Extraction of raster information using a polygon boundary."></a>
     <figcaption> Extract raster information using a polygon boundary. We can
     extract all pixel values within 20m of our x,y point of interest. These can 
     then be summarized into some value of interest (e.g. mean, maximum, total).
@@ -320,10 +320,11 @@ for example, plot locations that we are sampling on the ground.
 To do this in R, we use the `extract()` function. The `extract()` function
 requires:
 
-* The raster that we wish to extract values from,
+* The raster that we wish to extract values from
 * The vector layer containing the polygons that we wish to use as a boundary or 
-boundaries,
-* we can tell it to store the output values in a `data.frame` using
+boundaries
+
+NOTE: We can tell it to store the output values in a `data.frame` using
 `df=TRUE` (optional, default is to NOT return a `data.frame`) .
 
 We will begin by extracting all canopy height pixel values located within our
@@ -353,18 +354,18 @@ Forest field site.
     ## [1] 18450
 
 When we use the extract command, R extracts the value for each pixel located 
-within the boundary of the polygon being used to perform the extraction - in
-this case the `aoiBoundary` object (1 single polygon). In this case, the
+within the boundary of the polygon being used to perform the extraction, in
+this case the `aoiBoundary` object (1 single polygon). Using the `aoiBoundary` as the boundary polygon, the
 function extracted values from 18,450 pixels.
 
-The `extract` function returns a `list` of values as default. You can tell R 
+The `extract` function returns a `list` of values as default, but you can tell R 
 to summarize the data in some way or to return the data as a `data.frame`
 (`df=TRUE`).
 
 We can create a histogram of tree height values within the boundary to better
 understand the structure or height distribution of trees. We can also use the 
 `summary()` function to view descriptive statistics including min, max and mean
-height values. These values help us better understand vegetation at our field
+height values to help us better understand vegetation at our field
 site.
 
 
@@ -374,7 +375,7 @@ site.
          col="springgreen",
          xlab="Tree Height", ylab="Frequency of Pixels")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extract-histogram-1.png)
+![Distribution of Canopy Height Model values at NEON Harvard Forest Field Site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/view-extract-histogram-1.png)
 
     # view summary of values
     summary(tree_height$HARV_chmCrop)
@@ -419,7 +420,7 @@ The units of the buffer are the same units of the data `CRS`.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/BufferCircular.png" alt="Extraction of raster information using a buffer region."></a>
      <figcaption> Extract raster information using a buffer region. All pixels
     that are touched by the buffer region are included in the extract. 
     Source: National Ecological Observatory Network (NEON).
@@ -434,7 +435,7 @@ Let's put this into practice by figuring out the average tree height in the
     crs(point_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
     # extract the average tree height (height is given by the raster pixel value)
     # at the tower location
@@ -468,4 +469,4 @@ function in base-R.
 </div>
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-extract-plot-tHeight-1.png)
+![Average tree height value for the area within 20m of each vegetation plot location at the NEON Harvard Forest Field Site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/05-vector-raster-integration-advanced/rfigs/challenge-code-extract-plot-tHeight-1.png)

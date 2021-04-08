@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 # load packages
 library(raster)
 library(rgdal)
@@ -10,7 +10,7 @@ setwd(wd)
 
 
 
-## ----import-NDVI-rasters------------------------------------------------------------------------
+## ----import-NDVI-rasters-----------------------------------------------
 
 # Create list of NDVI file paths
 # assign path to object = cleaner code
@@ -24,14 +24,14 @@ all_NDVI_HARV
 
 
 
-## ----create-timeSeries-raster-stack-------------------------------------------------------------
+## ----create-timeSeries-raster-stack------------------------------------
 
 # Create a raster stack of the NDVI time series
 NDVI_HARV_stack <- stack(all_NDVI_HARV)
 
 
 
-## ----explore-RasterStack-tags-------------------------------------------------------------------
+## ----explore-RasterStack-tags------------------------------------------
 # view crs of rasters
 crs(NDVI_HARV_stack)
 
@@ -46,7 +46,7 @@ xres(NDVI_HARV_stack)
 
 
 
-## ----challenge-code-raster-metadata, eval=FALSE, echo=FALSE-------------------------------------
+## ----challenge-code-raster-metadata, eval=FALSE, echo=FALSE------------
 ## # 1. UTM zone 19 WGS 84
 ## # 2. 30x30 meters
 ## # 3. meters

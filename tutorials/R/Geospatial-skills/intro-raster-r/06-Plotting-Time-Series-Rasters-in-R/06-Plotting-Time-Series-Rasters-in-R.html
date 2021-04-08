@@ -244,6 +244,57 @@ please create it now. </p>
 library(raster)
 library(rgdal)
 library(rasterVis)
+
+## Loading required package: terra
+
+## terra version 1.1.4
+
+## 
+## Attaching package: &#39;terra&#39;
+
+## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, fill, pack, separate
+
+## The following object is masked from &#39;package:zoo&#39;:
+## 
+##     time&lt;-
+
+## The following object is masked from &#39;package:grid&#39;:
+## 
+##     depth
+
+## The following object is masked from &#39;package:scales&#39;:
+## 
+##     rescale
+
+## The following object is masked from &#39;package:ggmap&#39;:
+## 
+##     inset
+
+## The following object is masked from &#39;package:rgdal&#39;:
+## 
+##     project
+
+## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     collapse, desc, near
+
+## The following object is masked from &#39;package:knitr&#39;:
+## 
+##     spin
+
+## Loading required package: lattice
+
+## Loading required package: latticeExtra
+
+## 
+## Attaching package: &#39;latticeExtra&#39;
+
+## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     layer
+
 library(RColorBrewer)
 
 # set working directory to ensure R can find the file we wish to import
@@ -256,6 +307,62 @@ all_NDVI_HARV &lt;- list.files(paste0(wd,&quot;NEON-DS-Landsat-NDVI/HARV/2011/ND
 
 # Create a time series raster stack
 NDVI_HARV_stack &lt;- stack(all_NDVI_HARV)
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
 
 # apply scale factor
 NDVI_HARV_stack &lt;- NDVI_HARV_stack/10000
@@ -270,7 +377,7 @@ NDVI_HARV_stack &lt;- NDVI_HARV_stack/10000
 plot(NDVI_HARV_stack, nc = 4)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png" alt="Plot of all the NDVI rasters for NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/plot-time-series-1.png" alt="Plot of all the NDVI rasters for NEON&#39;s site Harvard Forest"/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** The range of values for NDVI is 0-1. 
@@ -299,7 +406,7 @@ levelplot(NDVI_HARV_stack,
           main=&quot;Landsat NDVI\nNEON Harvard Forest&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/levelplot-time-series-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/levelplot-time-series-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest"/></p>
 
 <h2>Adjust the Color Ramp</h2>
 
@@ -317,7 +424,7 @@ levelplot(NDVI_HARV_stack,
         col.regions=cols)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/change-color-ramp-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a new color palette"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/change-color-ramp-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a new color palette"/></p>
 
 <p>The yellow to green color ramp visually represents NDVI well given it&#39;s a
 measure of greenness. Someone looking at the plot can quickly understand that
@@ -351,9 +458,10 @@ represents. The current names come from the band (layer names) stored in the
 <pre><code># view names for each raster layer
 names(NDVI_HARV_stack)
 
-##  [1] &quot;X005_HARV_ndvi_crop&quot; &quot;X037_HARV_ndvi_crop&quot; &quot;X085_HARV_ndvi_crop&quot; &quot;X133_HARV_ndvi_crop&quot;
-##  [5] &quot;X181_HARV_ndvi_crop&quot; &quot;X197_HARV_ndvi_crop&quot; &quot;X213_HARV_ndvi_crop&quot; &quot;X229_HARV_ndvi_crop&quot;
-##  [9] &quot;X245_HARV_ndvi_crop&quot; &quot;X261_HARV_ndvi_crop&quot; &quot;X277_HARV_ndvi_crop&quot; &quot;X293_HARV_ndvi_crop&quot;
+##  [1] &quot;X005_HARV_ndvi_crop&quot; &quot;X037_HARV_ndvi_crop&quot; &quot;X085_HARV_ndvi_crop&quot;
+##  [4] &quot;X133_HARV_ndvi_crop&quot; &quot;X181_HARV_ndvi_crop&quot; &quot;X197_HARV_ndvi_crop&quot;
+##  [7] &quot;X213_HARV_ndvi_crop&quot; &quot;X229_HARV_ndvi_crop&quot; &quot;X245_HARV_ndvi_crop&quot;
+## [10] &quot;X261_HARV_ndvi_crop&quot; &quot;X277_HARV_ndvi_crop&quot; &quot;X293_HARV_ndvi_crop&quot;
 ## [13] &quot;X309_HARV_ndvi_crop&quot;
 
 # use gsub to modify label names.that we&#39;ll use for the plot 
@@ -362,10 +470,12 @@ rasterNames  &lt;- gsub(&quot;X&quot;,&quot;Day &quot;, names(NDVI_HARV_stack))
 # view Names
 rasterNames
 
-##  [1] &quot;Day 005_HARV_ndvi_crop&quot; &quot;Day 037_HARV_ndvi_crop&quot; &quot;Day 085_HARV_ndvi_crop&quot;
-##  [4] &quot;Day 133_HARV_ndvi_crop&quot; &quot;Day 181_HARV_ndvi_crop&quot; &quot;Day 197_HARV_ndvi_crop&quot;
-##  [7] &quot;Day 213_HARV_ndvi_crop&quot; &quot;Day 229_HARV_ndvi_crop&quot; &quot;Day 245_HARV_ndvi_crop&quot;
-## [10] &quot;Day 261_HARV_ndvi_crop&quot; &quot;Day 277_HARV_ndvi_crop&quot; &quot;Day 293_HARV_ndvi_crop&quot;
+##  [1] &quot;Day 005_HARV_ndvi_crop&quot; &quot;Day 037_HARV_ndvi_crop&quot;
+##  [3] &quot;Day 085_HARV_ndvi_crop&quot; &quot;Day 133_HARV_ndvi_crop&quot;
+##  [5] &quot;Day 181_HARV_ndvi_crop&quot; &quot;Day 197_HARV_ndvi_crop&quot;
+##  [7] &quot;Day 213_HARV_ndvi_crop&quot; &quot;Day 229_HARV_ndvi_crop&quot;
+##  [9] &quot;Day 245_HARV_ndvi_crop&quot; &quot;Day 261_HARV_ndvi_crop&quot;
+## [11] &quot;Day 277_HARV_ndvi_crop&quot; &quot;Day 293_HARV_ndvi_crop&quot;
 ## [13] &quot;Day 309_HARV_ndvi_crop&quot;
 
 # Remove HARV_NDVI_crop from the second part of the string 
@@ -374,8 +484,9 @@ rasterNames  &lt;- gsub(&quot;_HARV_ndvi_crop&quot;,&quot;&quot;,rasterNames)
 # view names for each raster layer
 rasterNames
 
-##  [1] &quot;Day 005&quot; &quot;Day 037&quot; &quot;Day 085&quot; &quot;Day 133&quot; &quot;Day 181&quot; &quot;Day 197&quot; &quot;Day 213&quot; &quot;Day 229&quot; &quot;Day 245&quot;
-## [10] &quot;Day 261&quot; &quot;Day 277&quot; &quot;Day 293&quot; &quot;Day 309&quot;
+##  [1] &quot;Day 005&quot; &quot;Day 037&quot; &quot;Day 085&quot; &quot;Day 133&quot; &quot;Day 181&quot; &quot;Day 197&quot;
+##  [7] &quot;Day 213&quot; &quot;Day 229&quot; &quot;Day 245&quot; &quot;Day 261&quot; &quot;Day 277&quot; &quot;Day 293&quot;
+## [13] &quot;Day 309&quot;
 </code></pre>
 
 <div id="ds-dataTip" markdown="1">
@@ -398,7 +509,7 @@ levelplot(NDVI_HARV_stack,
           names.attr=rasterNames)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/create-levelplot-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 4x4layout, and each raster labeled with the Julian Day"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/create-levelplot-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 4x4layout, and each raster labeled with the Julian Day"/></p>
 
 <p>We can adjust the columns of our plot too using <code>layout=c(cols,rows)</code>. Below
 we adjust the layout to be a matrix of 5 columns and 3 rows.</p>
@@ -411,7 +522,7 @@ levelplot(NDVI_HARV_stack,
           names.attr=rasterNames)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/adjust-layout-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 5x3 layout, and each raster labeled with the Julian Day"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/adjust-layout-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 5x3 layout, and each raster labeled with the Julian Day"/></p>
 
 <p>Finally, <code>scales</code> allows us to modify the x and y-axis scale. Let&#39;s simply
 remove the axis ticks from the plot with <code>scales =list(draw=FALSE)</code>.</p>
@@ -425,7 +536,7 @@ levelplot(NDVI_HARV_stack,
           scales=list(draw=FALSE )) # remove axes labels &amp; ticks
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/remove-axis-ticks-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, no axes, and each raster labeled with the Julian Day"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/remove-axis-ticks-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, no axes, and each raster labeled with the Julian Day"/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Divergent Color Ramps 
@@ -445,7 +556,7 @@ better than a sequential color ramp (like &ldquo;YlGn&rdquo;)? Can you think of 
 sets where a divergent color ramp may be best? 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 5x3 layout, a divergent color palette, and each raster labeled with the Julian Day"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/rfigs/challenge-code-levelplot-divergent-1.png" alt="Levelplot of all the NDVI rasters for NEON&#39;s site Harvard Forest with a legend, a 5x3 layout, a divergent color palette, and each raster labeled with the Julian Day"/></p>
 
 </body>
 

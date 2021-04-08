@@ -1,7 +1,7 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 
 # load packages
-library(rgdal)  # for vector work; sp package should always load with rgdal. 
+library(rgdal)  # for vector work; sp package should always load with rgdal 
 library (raster)   # for metadata/attributes- vectors or rasters
 
 # set working directory to data folder
@@ -9,7 +9,7 @@ library (raster)   # for metadata/attributes- vectors or rasters
 
 
 
-## ----read-csv-----------------------------------------------------------------------------
+## ----read-csv----------------------------------------------------------
 
 # Read the .csv file
 plot.locations_HARV <- 
@@ -21,14 +21,14 @@ str(plot.locations_HARV)
 
 
 
-## ----find-coordinates---------------------------------------------------------------------
+## ----find-coordinates--------------------------------------------------
 
 # view column names
 names(plot.locations_HARV)
 
 
 
-## ----check-out-coordinates----------------------------------------------------------------
+## ----check-out-coordinates---------------------------------------------
 # view first 6 rows of the X and Y columns
 head(plot.locations_HARV$easting)
 head(plot.locations_HARV$northing)
@@ -40,14 +40,14 @@ head(plot.locations_HARV[,2])
 
 
 
-## ----view-CRS-info------------------------------------------------------------------------
+## ----view-CRS-info-----------------------------------------------------
 # view first 6 rows of the X and Y columns
 head(plot.locations_HARV$geodeticDa)
 head(plot.locations_HARV$utmZone)
 
 
 
-## ----explore-units------------------------------------------------------------------------
+## ----explore-units-----------------------------------------------------
 
 # Import the line shapefile
 lines_HARV <- readOGR( "NEON-DS-Site-Layout-Files/HARV/", "HARV_roads")
@@ -60,7 +60,7 @@ extent(lines_HARV)
 
 
 
-## ----crs-object---------------------------------------------------------------------------
+## ----crs-object--------------------------------------------------------
 # create crs object
 utm18nCRS <- crs(lines_HARV)
 utm18nCRS
@@ -68,7 +68,7 @@ utm18nCRS
 class(utm18nCRS)
 
 
-## ----convert-csv-shapefile----------------------------------------------------------------
+## ----convert-csv-shapefile---------------------------------------------
 # note that the easting and northing columns are in columns 1 and 2
 plot.locationsSp_HARV <- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
                     plot.locations_HARV,    #the R object to convert
@@ -79,7 +79,7 @@ crs(plot.locationsSp_HARV)
 
 
 
-## ----assign-crs, eval=FALSE---------------------------------------------------------------
+## ----assign-crs, eval=FALSE--------------------------------------------
 ## # first, convert the data.frame to spdf
 ## r <- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
 ##                     plot.locations_HARV)
@@ -94,20 +94,20 @@ crs(plot.locationsSp_HARV)
 ## 
 
 
-## ----plot-data-points---------------------------------------------------------------------
+## ----plot-data-points, fig.cap="NEON Harvard Forest plot locations."----
 # plot spatial object
 plot(plot.locationsSp_HARV, 
      main="Map of Plot Locations")
 
 
 
-## ----create-aoi-boundary------------------------------------------------------------------
+## ----create-aoi-boundary-----------------------------------------------
 # create boundary object 
 aoiBoundary_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
                             "HarClip_UTMZ18")
 
 
-## ----plot-data----------------------------------------------------------------------------
+## ----plot-data, fig.cap="Area of Interest Boundary (NEON Harvard Forest Field Site)."----
 # plot Boundary
 plot(aoiBoundary_HARV,
      main="AOI Boundary\nNEON Harvard Forest Field Site")
@@ -123,7 +123,7 @@ crs(plot.locationsSp_HARV)
 
 
 
-## ----compare-extents----------------------------------------------------------------------
+## ----compare-extents, fig.cap="Comparison of extent boundaries between plot locations and AOI spatial object at NEON Harvard Forest Field Site."----
 # view extent of each
 extent(aoiBoundary_HARV)
 extent(plot.locationsSp_HARV)
@@ -154,7 +154,7 @@ legend("bottomright",
 
 
 
-## ----set-plot-extent----------------------------------------------------------------------
+## ----set-plot-extent, fig.cap="Plot locations and AOI boundary at NEON Harvard Forest Field Site with modified extents."----
 
 plotLoc.extent <- extent(plot.locationsSp_HARV)
 plotLoc.extent
@@ -187,7 +187,7 @@ legend("bottomright",
 
 
 
-## ----challenge-code-phen-plots, echo=FALSE, results="hide", warning=FALSE-----------------
+## ----challenge-code-phen-plots, echo=FALSE, results="hide", warning=FALSE, fig.cap=c("Vegetation and phenology plot locations at NEON Harvard Forest Field Site; one phenology plot is missing.", "Comparison of extent boundaries between vegetation and phenology plot locations at NEON Harvard Forest Field Site.", "Vegetation and phenology plot locations at NEON Harvard Forest Field Site; all points are visible.")----
 ## 1
 # Read the .csv file
 newPlot.locations_HARV <- 
@@ -289,7 +289,7 @@ legend("bottomright",
        cex=1.3)
 
 
-## ----write-shapefile, warnings="hide", eval=FALSE-----------------------------------------
+## ----write-shapefile, warnings="hide", eval=FALSE----------------------
 ## # write a shapefile
 ## writeOGR(plot.locationsSp_HARV, getwd(),
 ##          "PlotLocations_HARV", driver="ESRI Shapefile")

@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 
 # load required libraries
 # for vector work; sp package will load with rgdal.
@@ -11,7 +11,7 @@ library(raster)
 # setwd("pathToDirHere")
 
 
-## ----Import-Shapefile---------------------------------------------------------------------
+## ----Import-Shapefile--------------------------------------------------
 
 # Import a polygon shapefile: readOGR("path","fileName")
 # no extension needed as readOGR only imports shapefiles
@@ -21,7 +21,7 @@ aoiBoundary_HARV <- readOGR(dsn=path.expand("NEON-DS-Site-Layout-Files/HARV"),
 
 
 
-## ----view-metadata------------------------------------------------------------------------
+## ----view-metadata-----------------------------------------------------
 # view just the class for the shapefile
 class(aoiBoundary_HARV)
 
@@ -35,19 +35,19 @@ extent(aoiBoundary_HARV)
 aoiBoundary_HARV
 
 
-## ----Shapefile-attributes-2---------------------------------------------------------------
+## ----Shapefile-attributes-2--------------------------------------------
 # alternate way to view attributes 
 aoiBoundary_HARV@data
 
 
 
-## ----shapefile-summary--------------------------------------------------------------------
+## ----shapefile-summary-------------------------------------------------
 # view a summary of metadata & attributes associated with the spatial object
 summary(aoiBoundary_HARV)
 
 
 
-## ----plot-shapefile-----------------------------------------------------------------------
+## ----plot-shapefile, fig.cap="Area of Interest Boundary (NEON Harvard Forest Field Site)"----
 # create a plot of the shapefile
 # 'lwd' sets the line width
 # 'col' sets internal color
@@ -57,7 +57,7 @@ plot(aoiBoundary_HARV, col="cyan1", border="black", lwd=3,
 
 
 
-## ----import-point-line, echo=FALSE, results="hide"----------------------------------------
+## ----import-point-line, echo=FALSE, results="hide"---------------------
 # import line shapefile
 lines_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",layer = "HARV_roads")
 # import point shapefile
@@ -87,7 +87,7 @@ attributes(lines_HARV)
 
 
 
-## ----plot-multiple-shapefiles-------------------------------------------------------------
+## ----plot-multiple-shapefiles, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads."----
 # Plot multiple shapefiles
 plot(aoiBoundary_HARV, col = "lightgreen", 
      main="NEON Harvard Forest\nField Site")
@@ -97,7 +97,7 @@ plot(lines_HARV, add = TRUE)
 plot(point_HARV, add  = TRUE, pch = 19, col = "purple")
 
 
-## ----challenge-vector-raster-overlay, echo=FALSE------------------------------------------
+## ----challenge-vector-raster-overlay, echo=FALSE, fig.cap="NEON Harvard Forest Field Site showing tower location and surrounding roads with a Canopy Height Model overlay."----
 
 # import CHM
 chm_HARV <- raster("NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")

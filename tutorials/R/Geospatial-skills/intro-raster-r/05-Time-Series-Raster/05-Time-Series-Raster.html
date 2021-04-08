@@ -363,6 +363,62 @@ function. </p>
 
 <pre><code># Create a raster stack of the NDVI time series
 NDVI_HARV_stack &lt;- stack(all_NDVI_HARV)
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
 </code></pre>
 
 <p>We can explore the GeoTIFF tags (the embedded metadata) in a <code>stack</code> using the
@@ -445,7 +501,7 @@ plot(NDVI_HARV_stack,
      nc = 4)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/plot-time-series-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
 
 <p>Have a look at the range of NDVI values observed in the plot above. We know that
 the accepted values for NDVI range from 0-1. Why does our data range from
@@ -479,7 +535,7 @@ plot(NDVI_HARV_stack,
      nc = 4)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack with a scale factor of 10,000"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/apply-scale-factor-1.png" alt="Plots of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack with a scale factor of 10,000"/></p>
 
 <h2>Take a Closer Look at Our Data</h2>
 
@@ -511,7 +567,7 @@ hist(NDVI_HARV_stack,
      xlim = c(0, 1))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png" alt="Histograms of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-stack-histogram-1.png" alt="Histograms of all the NDVI rasters of NEON&#39;s site Harvard Forest in the raster stack"/></p>
 
 <p>It seems like things get green in the spring and summer like we expect, but the 
 data at Julian days 277 and 293 are unusual. It appears as if the vegetation got
@@ -529,15 +585,7 @@ thereafter. </p>
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.</p>
 
-<pre><code>## 
-## Attaching package: &#39;scales&#39;
-
-## The following object is masked from &#39;package:readr&#39;:
-## 
-##     col_factor
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png" alt="Scatterplot of daily mean air temperature at NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png" alt="Scatterplot of daily mean air temperature at NEON&#39;s site Harvard Forest"/></p>
 
 <p>There are no significant peaks or dips in the temperature during the late summer
 or early fall time period that might account for patterns seen in the NDVI data.</p>
@@ -562,7 +610,7 @@ reset your layout using: par(mfrow=c(1,1)).
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png" alt="Two sets of NDVI images for NEON&#39;s site Harvard Forest making a small time series"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-all-rgb-1.png" alt="Two sets of NDVI images for NEON&#39;s site Harvard Forest making a small time series"/></p>
 
 <h2>Explore The Data&#39;s Source</h2>
 

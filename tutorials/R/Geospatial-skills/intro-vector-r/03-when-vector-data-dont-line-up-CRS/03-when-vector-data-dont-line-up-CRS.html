@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Working With Spatial Data From Different Sources</title>
+<title><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -192,13 +192,55 @@ on your computer to complete this tutorial.
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Data to Download
-{% include/dataSubsets/_data_Site-Layout-Files.html %}
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
 
-{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
+
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
@@ -207,13 +249,13 @@ on your computer to complete this tutorial.
 <p>To support a project, we often need to gather spatial datasets for from 
 different sources and/or data that cover different spatial <code>extents</code>. Spatial
 data from different sources and that cover different extents are often in
-different Coordinate Reference Systems (CRS). </p>
+different <strong><em>Coordinate Reference Systems (CRS)</em></strong>. </p>
 
 <p>Some reasons for data being in different CRS include:</p>
 
 <ol>
 <li>The data are stored in a particular CRS convention used by the data
-provider which might be a federal agency, or a state planning office.</li>
+provider; perhaps a federal agency or a state planning office.</li>
 <li>The data are stored in a particular CRS that is customized to a region.
 For instance, many states prefer to use a <strong>State Plane</strong> projection customized
 for that state.</li>
@@ -221,7 +263,7 @@ for that state.</li>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/USMapDifferentProjections_MCorey_Opennews-org.jpg" alt="Examples of how different projections will alter the shape of a map in different ways.">
     </a>
     <figcaption>Maps of the United States using data in different projections. 
     Notice the differences in shape associated with each different projection.
@@ -244,7 +286,7 @@ seems proportionally larger or smaller than they actually are!</p>
 <p>In this tutorial we will learn how to identify and manage spatial data 
 in different projections. We will learn how to <code>reproject</code> the data so that they
 are in the same projection to support plotting / mapping. Note that these skills
-are also required for any geoprocessing / spatial analysis. Data need to be in
+are also required for any geoprocessing / spatial analysis, as data need to be in
 the same CRS to ensure accurate results.</p>
 
 <p>We will use the <code>rgdal</code> and <code>raster</code> libraries in this tutorial. </p>
@@ -272,7 +314,7 @@ attributes to them if need be - for project specific mapping.</p>
 
 <p>We will use the <code>readOGR()</code> function to import the
 <code>/US-Boundary-Layers/US-State-Boundaries-Census-2014</code> layer into R. This layer
-contains the boundaries of all continental states in the U.S. Please note that
+contains the boundaries of all continental states in the U.S.. Please note that
 these data have been modified and reprojected from the original data downloaded
 from the Census website to support the learning goals of this tutorial.</p>
 
@@ -286,8 +328,8 @@ State.Boundary.US &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Laye
 ## It has 10 fields
 ## Integer64 fields read as strings:  ALAND AWATER
 
-## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-State-Boundaries-
-## Census-2014&quot;): Z-dimension discarded
+## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-
+## State-Boundaries-Census-2014&quot;): Z-dimension discarded
 
 # look at the data structure
 class(State.Boundary.US)
@@ -301,18 +343,18 @@ class(State.Boundary.US)
 z (vertical dimension or height) data by default. This is because not all
 shapefiles contain z dimension data. </p>
 
-<p>Next, let&#39;s plot the U.S. states data.</p>
+<p>Now, let&#39;s plot the U.S. states data.</p>
 
 <pre><code># view column names
 plot(State.Boundary.US, 
      main=&quot;Map of Continental US State Boundaries\n US Census Bureau Data&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/find-coordinates-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/find-coordinates-1.png" alt="Continental U.S. state boundaries."/></p>
 
 <h2>U.S. Boundary Layer</h2>
 
-<p>We can add a boundary layer of the United States to our map - to make it look
+<p>We can add a boundary layer of the United States to our map to make it look
 nicer. We will import 
 <code>NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States</code>.
 If we specify a thicker line width using <code>lwd=4</code> for the border layer, it will 
@@ -328,8 +370,8 @@ Country.Boundary.US &lt;- readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-La
 ## It has 9 fields
 ## Integer64 fields read as strings:  ALAND AWATER
 
-## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-Boundary-Dissolved-
-## States&quot;): Z-dimension discarded
+## Warning in readOGR(&quot;NEON-DS-Site-Layout-Files/US-Boundary-Layers&quot;, &quot;US-
+## Boundary-Dissolved-States&quot;): Z-dimension discarded
 
 # look at the data structure
 class(Country.Boundary.US)
@@ -350,7 +392,7 @@ plot(Country.Boundary.US,
      add=TRUE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/check-out-coordinates-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/check-out-coordinates-1.png" alt="Continental U.S. state boundaries with the U.S. boundary emphasized with a thicker border."/></p>
 
 <p>Next, let&#39;s add the location of a flux tower where our study area is.
 As we are adding these layers, take note of the class of each object. </p>
@@ -377,7 +419,7 @@ plot(point_HARV,
      main=&quot;Harvard Fisher Tower Location&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/explore-units-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/explore-units-1.png" alt="Fisher Tower location represented by a point."/></p>
 
 <p>The plot above demonstrates that the tower point location data are readable and 
 will plot! Let&#39;s next add it as a layer on top of the U.S. states and boundary
@@ -401,10 +443,10 @@ plot(point_HARV,
      add=TRUE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/layer-point-on-states-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/layer-point-on-states-1.png" alt="Continental U.S. state boundaries with the U.S. boundary emphasized with a thicker border; note that the Fisher Tower point is not currently visible."/></p>
 
 <p>What do you notice about the resultant plot? Do you see the tower location in 
-purple in the Massachusetts area? No! What went wrong?</p>
+purple in the Massachusetts area? No! So what went wrong?</p>
 
 <p>Let&#39;s check out the CRS (<code>crs()</code>) of both datasets to see if we can identify any
 issues that might cause the point location to not plot properly on top of our
@@ -414,18 +456,16 @@ U.S. boundary layers.</p>
 crs(point_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 # view crs of census data
 crs(State.Boundary.US)
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
 crs(Country.Boundary.US)
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 </code></pre>
 
 <p>It looks like our data are in different CRS. We can tell this by looking at
@@ -447,12 +487,12 @@ projection (<code>proj=</code>) and datum (<code>datum=</code>).</p>
 <p><code>+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0</code> </p>
 
 <ul>
-<li><strong>proj=utm:</strong> the projection is UTM, UTM has several zones.</li>
+<li><strong>proj=utm:</strong> the projection is UTM</li>
 <li><strong>zone=18:</strong> the zone is 18</li>
 <li><strong>datum=WGS84:</strong> the datum WGS84 (the datum refers to the  0,0 reference for
 the coordinate system used in the projection)</li>
-<li><strong>units=m:</strong> the units for the coordinates are in METERS.</li>
-<li><strong>ellps=WGS84:</strong> the ellipsoid (how the earth&#39;s  roundness is calculated) for 
+<li><strong>units=m:</strong> the units for the coordinates are in METERS</li>
+<li><strong>ellps=WGS84:</strong> the ellipsoid (how the earth&#39;s roundness is calculated) for 
 the data is WGS84</li>
 </ul>
 
@@ -469,10 +509,8 @@ the lat/long projection as follows: </p>
 <ul>
 <li><strong>proj=longlat:</strong> the data are in a geographic (latitude and longitude)
 coordinate system</li>
-<li><strong>datum=WGS84:</strong> the datum WGS84 (the datum refers to the  0,0 reference for
-the coordinate system used in the projection) </li>
-<li><strong>ellps=WGS84:</strong> the ellipsoid (how the earth&#39;s roundness is calculated)
-is WGS84</li>
+<li><strong>datum=WGS84:</strong> the datum is WGS84</li>
+<li><strong>ellps=WGS84:</strong> the ellipsoid is WGS84</li>
 </ul>
 
 <p>Note that there are no specified units above. This is because this geographic 
@@ -510,9 +548,9 @@ extent(State.Boundary.US)
 </code></pre>
 
 <p>Note the difference in the units for each object. The extent for
-<code>State.Boundary.US</code> is in latitude and longitude which yields smaller numbers
-representing decimal degree units. Our tower location point is in UTM, is 
-represented in meters.</p>
+<code>State.Boundary.US</code> is in latitude and longitude, which yields smaller numbers
+representing decimal degree units; however, our tower location point
+is in UTM, which is represented in meters. </p>
 
 <hr/>
 
@@ -538,8 +576,8 @@ the datum, units and other information that R needs to <strong>reproject</strong
 <p>The <code>spTransform()</code> function requires two inputs:</p>
 
 <ol>
-<li>the name of the object that you wish to transform</li>
-<li>the CRS that you wish to transform that object too. In this case we can 
+<li>The name of the object that you wish to transform</li>
+<li>The CRS that you wish to transform that object too. In this case we can 
 use the <code>crs()</code> of the <code>State.Boundary.US</code> object as follows:
 <code>crs(State.Boundary.US)</code></li>
 </ol>
@@ -550,7 +588,7 @@ original spatial object has a CRS assigned to it AND if that CRS is the
 correct CRS!
 </div>
 
-<p>Next, let&#39;s reproject our point layer into the geographic - latitude and
+<p>Next, let&#39;s reproject our point layer into the geographic latitude and
 longitude <code>WGS84</code> coordinate reference system (CRS).</p>
 
 <pre><code># reproject data
@@ -560,8 +598,7 @@ point_HARV_WGS84 &lt;- spTransform(point_HARV,
 # what is the CRS of the new object
 crs(point_HARV_WGS84)
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
 # does the extent look like decimal degrees?
 extent(point_HARV_WGS84)
@@ -593,7 +630,7 @@ plot(point_HARV_WGS84,
      add=TRUE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/plot-again-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/plot-again-1.png" alt="Continental U.S. state boundaries with the U.S. country border emphasized with a thicker border and with the Fisher Tower represented as a point."/></p>
 
 <p>Reprojecting our data ensured that things line up on our map! It will also 
 allow us to perform any required geoprocessing (spatial calculations /
@@ -613,7 +650,7 @@ the Tower location point.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/challenge-code-MASS-Map-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/03-when-vector-data-dont-line-up-CRS/rfigs/challenge-code-MASS-Map-1.png" alt="A close-up view of the northeastern U.S. with the Fisher Tower location as a point symbol."/></p>
 
 </body>
 

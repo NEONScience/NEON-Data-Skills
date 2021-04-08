@@ -285,7 +285,7 @@ DSM_HARV
 ## dimensions : 1367, 1697, 2319799  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
 ## names      : HARV_dsmCrop 
 ## values     : 305.07, 416.07  (min, max)
@@ -296,7 +296,7 @@ plot(DSM_HARV,
      main=&quot;NEON Digital Surface Model\nHarvard Forest&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <h2>Types of Data Stored in Raster Format</h2>
 
@@ -322,7 +322,7 @@ DSM_HARV &lt;- raster(paste0(wd, &quot;NEON-DS-Airborne-Remote-Sensing/HARV/DSM/
 plot(DSM_HARV, main=&quot;Continuous Elevation Map\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png" alt="Continuous elevation map of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/elevation-map-1.png" alt="Continuous elevation map of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Some rasters contain categorical data where each pixel represents a discrete
 class such as a landcover type (e.g., &ldquo;forest&rdquo; or &ldquo;grassland&rdquo;) rather than a
@@ -378,7 +378,7 @@ legend( par()$usr[2], 4713700,
         fill = rev(col))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png" alt="Classified elevation map of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png" alt="Classified elevation map of NEON&#39;s site Harvard Forest"/></p>
 
 <h2>What is a GeoTIFF??</h2>
 
@@ -461,14 +461,14 @@ method. We can assign this string to an R object, too.</p>
 crs(DSM_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 # assign crs to an object (class) to use for reprojection and other tasks
 myCRS &lt;- crs(DSM_HARV)
 myCRS
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 </code></pre>
 
 <p>The <code>CRS</code> of our <code>DSM_HARV</code> object tells us that our data are in the UTM 
@@ -541,7 +541,7 @@ coordinate reference system string <code>crs()</code>. Notice our data contains:
 <pre><code>crs(DSM_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 </code></pre>
 
 <h2>Calculate Raster Min and Max Values</h2>
@@ -595,7 +595,7 @@ plotRGB(RGB_stack, r = 1, g = 2, b = 3,
         axes=TRUE, main=&quot;Raster With NoData Values\nRendered in Black&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png" alt="Colorized raster image with NoDataValues around the edge rendered in black"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png" alt="Colorized raster image with NoDataValues around the edge rendered in black"/></p>
 
 <p>In the next image, the black edges have been assigned <code>NoDataValue</code>. R doesn&#39;t 
 render pixels that contain a specified <code>NoDataValue</code>. R assigns missing data 
@@ -603,11 +603,11 @@ with the <code>NoDataValue</code> as <code>NA</code>.</p>
 
 <pre><code># reassign cells with 0,0,0 to NA
 # this is simply demonstration code - we will not teach this.
-f &lt;- function(x) {
+func &lt;- function(x) {
   x[rowSums(x == 0) == 3, ] &lt;- NA
   x}
 
-newRGBImage &lt;- calc(RGB_stack, f)
+newRGBImage &lt;- calc(RGB_stack, func)
 
 
 par(col.axis=&quot;white&quot;,col.lab=&quot;white&quot;,tck=0)
@@ -616,7 +616,7 @@ plotRGB(newRGBImage, r = 1, g = 2, b = 3,
         axes=TRUE, main=&quot;Raster With No Data Values\nNoDataValue= NA&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png" alt="Colorized raster image with NoDataValues around the edge removed"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png" alt="Colorized raster image with NoDataValues around the edge removed"/></p>
 
 <h3>NoData Value Standard</h3>
 
@@ -668,11 +668,11 @@ hist(DSM_HARV,
      ylab=&quot;Frequency&quot;,
      col=&quot;wheat&quot;)
 
-## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
-## were used. 100000 values used.
+## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot =
+## plot, ...): 4% of the raster cells were used. 100000 values used.
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png" alt="Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png" alt="Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000"/></p>
 
 <p>Notice that a warning is shown when R creates the histogram. </p>
 
@@ -706,7 +706,7 @@ hist(DSM_HARV,
      col=&quot;wheat4&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png" alt="Histogram showing the distribution of digital surface model values with all pixel values included"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram2-1.png" alt="Histogram showing the distribution of digital surface model values with all pixel values included"/></p>
 
 <p>Note that the shape of both histograms looks similar to the previous one that
  was created using a representative 10,000 pixel subset of our raster data. The 

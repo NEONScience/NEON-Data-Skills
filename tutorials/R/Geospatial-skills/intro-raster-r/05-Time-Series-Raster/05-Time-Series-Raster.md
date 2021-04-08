@@ -5,11 +5,11 @@ description: "This tutorial covers how to work with and plot a raster time serie
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
-dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
+dataProduct: DP2.30026.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/05-Time-Series-Raster.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-time-series-r
@@ -213,6 +213,62 @@ function.
     # Create a raster stack of the NDVI time series
     NDVI_HARV_stack <- stack(all_NDVI_HARV)
 
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
 We can explore the GeoTIFF tags (the embedded metadata) in a `stack` using the
 same syntax that we used on single-band raster objects in R including: `crs()`
 (coordinate reference system), `extent()` and `res()` (resolution; specifically
@@ -373,14 +429,6 @@ thereafter.
 Let's next view some temperature data for our field site to see whether there 
 were some unusual fluctuations that may explain this pattern of greening and
 browning seen in the NDVI data.
-
-
-    ## 
-    ## Attaching package: 'scales'
-
-    ## The following object is masked from 'package:readr':
-    ## 
-    ##     col_factor
 
 ![Scatterplot of daily mean air temperature at NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/05-Time-Series-Raster/rfigs/view-temp-data-1.png)
 

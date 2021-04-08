@@ -262,7 +262,7 @@ plot(DSM_HARV,
      main=&quot;Digital Surface Model\nNEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png" alt="Digital surface model showing the continuous elevation of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png" alt="Digital surface model showing the continuous elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <h2>Plotting Data Using Breaks</h2>
 
@@ -282,11 +282,11 @@ DSMhist&lt;-hist(DSM_HARV,
      col=&quot;wheat3&quot;,  # changes bin color
      xlab= &quot;Elevation (m)&quot;)  # label the x-axis
 
-## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
-## were used. 100000 values used.
+## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot =
+## plot, ...): 4% of the raster cells were used. 100000 values used.
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/create-histogram-breaks-1.png" alt="Histogram of digital surface model showing the distribution of the elevation of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/create-histogram-breaks-1.png" alt="Histogram of digital surface model showing the distribution of the elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code># Where are breaks and how many pixels in each category?
 DSMhist$breaks
@@ -295,7 +295,7 @@ DSMhist$breaks
 
 DSMhist$counts
 
-## [1] 31850 67690   460
+## [1] 32124 67392   484
 </code></pre>
 
 <p>Warning message!? Remember, the default for the histogram is to include only a
@@ -327,7 +327,7 @@ plot(DSM_HARV,
      main=&quot;Digital Surface Model (DSM)\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/plot-with-breaks-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with three breaks"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/plot-with-breaks-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with three breaks"/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
@@ -355,7 +355,7 @@ plot(DSM_HARV,
      ylab = &quot;UTM Northing Coordinate (m)&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/add-plot-title-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with UTM Westing Coordinate (m) on the x-axis and UTM Northing Coordinate (m) on the y-axis"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/add-plot-title-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with UTM Westing Coordinate (m) on the x-axis and UTM Northing Coordinate (m) on the y-axis"/></p>
 
 <p>Or we can also turn off the axes altogether. </p>
 
@@ -367,7 +367,7 @@ plot(DSM_HARV,
      axes=FALSE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/turn-off-axes-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with no axes"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/turn-off-axes-1.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest with no axes"/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Using Custom Breaks
@@ -381,7 +381,7 @@ the range of pixel values.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-code-plotting-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-code-plotting-1.png" alt=" "/></p>
 
 <h2>Layering Rasters</h2>
 
@@ -402,7 +402,7 @@ plot(DSM_hill_HARV,
     axes=FALSE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hillshade-1.png" alt="Hillshade digital surface model showing the elevation of NEON&#39;s site Harvard Forest in grayscale"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hillshade-1.png" alt="Hillshade digital surface model showing the elevation of NEON&#39;s site Harvard Forest in grayscale"/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
@@ -427,7 +427,7 @@ plot(DSM_HARV,
      legend=F)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/overlay-hillshade-1.png" alt="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/overlay-hillshade-1.png" alt="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <p>The alpha value determines how transparent the colors will be (0 being
 transparent, 1 being opaque). Note that here we used the color palette
@@ -454,7 +454,7 @@ Make sure to:
  
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-1.png" alt="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON&#39;s site San Joaquin Experiment Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-2.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site San Joaquin Experiment Range"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-1.png" alt="Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON&#39;s site San Joaquin Experiment Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-2.png" alt="Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON&#39;s site San Joaquin Experiment Range"/></p>
 
 </body>
 

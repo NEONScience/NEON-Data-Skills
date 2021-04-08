@@ -348,13 +348,13 @@ plot(DTM_HARV,
      main=&quot;Digital Terrain Model \n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-1.png" alt="Digital terrain model showing the ground surface of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code>plot(DSM_HARV,
      main=&quot;Digital Surface Model \n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-2.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/load-plot-data-2.png" alt="Digital surface model showing the elevation of NEON&#39;s site Harvard Forest"/></p>
 
 <h2>Two Ways to Perform Raster Calculations</h2>
 
@@ -388,7 +388,7 @@ plot(CHM_HARV,
      axes=FALSE) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-math-1.png" alt="Canopy height model showing the height of the trees of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-math-1.png" alt="Canopy height model showing the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Let&#39;s have a look at the distribution of values in our newly created
 Canopy Height Model (CHM).</p>
@@ -401,7 +401,7 @@ hist(CHM_HARV,
   xlab=&quot;Tree Height (m) &quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/create-hist-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/create-hist-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?</p>
@@ -422,7 +422,7 @@ a appropriate color palette for the data, plot title and no axes ticks / labels.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-2.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with six breaks"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-3.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with four breaks"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-1.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-2.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with six breaks"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-CHM-HARV-3.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest with four breaks"/></p>
 
 <h2>Overlay Function: Efficient Raster Calculations</h2>
 
@@ -466,7 +466,7 @@ plot(CHM_ov_HARV,
   main=&quot;Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-overlay-1.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest produced by the overlay() function"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/raster-overlay-1.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest produced by the overlay() function"/></p>
 
 <p>How do the plots of the CHM created with manual raster math and the <code>overlay()</code>
 function compare?  </p>
@@ -543,7 +543,7 @@ both datasets!
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-1.png" alt="Histogram of digital terrain model showing the distribution of the ground surface of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-2.png" alt="Histogram of digital surface model showing the distribution of the elevation of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-3.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-4.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-5.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-1.png" alt="Histogram of digital terrain model showing the distribution of the ground surface of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-2.png" alt="Histogram of digital surface model showing the distribution of the elevation of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-3.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site San Joaquin Experimental Range"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-4.png" alt="Canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/rfigs/challenge-code-SJER-CHM-5.png" alt="Histogram of canopy height model showing the distribution of the height of the trees of NEON&#39;s site Harvard Forest"/></p>
 
 <p>What do these two histograms tell us about the vegetation structure at Harvard 
 and SJER?</p>

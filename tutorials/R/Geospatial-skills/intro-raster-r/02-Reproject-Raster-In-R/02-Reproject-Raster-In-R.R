@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 # load raster package
 library(raster)
 library(rgdal)
@@ -43,7 +43,7 @@ plot(DTM_HARV,
 
 
 
-## ----explore-crs--------------------------------------------------------------------------------
+## ----explore-crs-------------------------------------------------------
 # view crs for DTM
 crs(DTM_HARV)
 
@@ -51,7 +51,7 @@ crs(DTM_HARV)
 crs(DTM_hill_HARV)
 
 
-## ----reproject-raster---------------------------------------------------------------------------
+## ----reproject-raster--------------------------------------------------
 
 # reproject to UTM
 DTM_hill_UTMZ18N_HARV <- projectRaster(DTM_hill_HARV, 
@@ -67,13 +67,13 @@ extent(DTM_hill_HARV)
 
 
 
-## ----challenge-code-extent-crs, echo=FALSE------------------------------------------------------
+## ----challenge-code-extent-crs, echo=FALSE-----------------------------
 # The extent for DTM_hill_UTMZ18N_HARV is in UTMs so the extent is in meters. 
 # The extent for DTM_hill_HARV is still in lat/long so the extent is expressed
 # in decimal degrees.  
 
 
-## ----view-resolution----------------------------------------------------------------------------
+## ----view-resolution---------------------------------------------------
 
 # compare resolution
 res(DTM_hill_UTMZ18N_HARV)
@@ -90,7 +90,7 @@ res(DTM_hill_UTMZ18N_HARV)
 
 
 
-## ----plot-projected-raster----------------------------------------------------------------------
+## ----plot-projected-raster---------------------------------------------
 # plot newly reprojected hillshade
 plot(DTM_hill_UTMZ18N_HARV,
     col=grey(1:100/100),
@@ -132,7 +132,7 @@ plot(DTM_SJER,
 
 
 
-## ----challenge-code-reprojection2, echo=FALSE---------------------------------------------------
+## ----challenge-code-reprojection2, echo=FALSE--------------------------
 # The maps look identical. Which is what they should be as the only difference
 # is this one was reprojected from WGS84 to UTM prior to plotting.  
 

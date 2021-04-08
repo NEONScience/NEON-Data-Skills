@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Raster Data</title>
+<title> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -190,7 +190,21 @@ on your computer to complete this tutorial.
 
 ### Download Data
 
-{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></h3>
+
+These remote sensing data files provide information on the vegetation at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a> 
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle</a> 
+field sites. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 This data download contains several files. You will only need the RGB .tif files
 for this tutorial. The path to this file is: NEON-DS-Field-Site-Spatial-Data/SJER/RGB/* . 
@@ -265,6 +279,10 @@ library(rgdal)
 
 # set the working directory to the data
 #setwd(&quot;pathToDirHere&quot;)
+wd &lt;- (&quot;C:/Users/mccahill/Documents/Github/&quot;)
+setwd(wd)
+
+## Error in setwd(wd): cannot change working directory
 </code></pre>
 
 <p>Next, let&#39;s create a raster stack with bands representing </p>
@@ -278,9 +296,22 @@ library(rgdal)
 <p>This can be done by individually assigning each file path as an object. </p>
 
 <pre><code># import tiffs
-band19 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif&quot;
-band34 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif&quot;
-band58 &lt;- &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif&quot;
+band19 &lt;- paste0(wd, &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif&quot;)
+band34 &lt;- paste0(wd, &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif&quot;)
+band58 &lt;- paste0(wd, &quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif&quot;)
+
+# View their attributes to check that they loaded correctly:
+band19
+
+## [1] &quot;C:/Users/mccahill/Documents/Github/NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif&quot;
+
+band34
+
+## [1] &quot;C:/Users/mccahill/Documents/Github/NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band34.tif&quot;
+
+band58
+
+## [1] &quot;C:/Users/mccahill/Documents/Github/NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band58.tif&quot;
 </code></pre>
 
 <p>Note that if we wanted to create a stack from all the files in a directory (folder)
@@ -289,14 +320,22 @@ you can easily do this with the <code>list.files()</code> function. We would use
 rasters.</p>
 
 <pre><code># create list of files to make raster stack
-rasterlist1 &lt;-  list.files(&#39;RGB&#39;, full.names=TRUE)
+rasterlist1 &lt;- list.files(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB&quot;, full.names=TRUE))
+
+rasterlist1
+
+## character(0)
 </code></pre>
 
-<p>Or, if your directory is consistes of some .tif files and other file types you 
+<p>Or, if your directory consists of some .tif files and other file types you 
 don&#39;t want in your stack, you can ask R to only list those files with a .tif 
 extension.</p>
 
-<pre><code>rasterlist2 &lt;-  list.files(&#39;RGB&#39;, full.names=TRUE, pattern=&quot;tif&quot;) 
+<pre><code>rasterlist2 &lt;-  list.files(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB&quot;, full.names=TRUE, pattern=&quot;tif&quot;))
+
+rasterlist2
+
+## character(0)
 </code></pre>
 
 <p>Back to creating our raster stack with three bands.  We only want three of the 
@@ -306,29 +345,26 @@ from the bands we loaded individually. We do this with the <code>stack()</code> 
 <pre><code># create raster stack
 rgbRaster &lt;- stack(band19,band34,band58)
 
+## Error in .local(.Object, ...) :
+
+## Error in .rasterObjectFromFile(x, band = band, objecttype = &quot;RasterLayer&quot;, : Cannot create a RasterLayer object from this file. (file does not exist)
+
 # example syntax for stack from a list
 #rstack1 &lt;- stack(rasterlist1)
 </code></pre>
 
-<p>This has now created a stack of rasters three thick. Let&#39;s view them. </p>
+<p>This has now created a stack that is three rasters thick. Let&#39;s view them. </p>
 
 <pre><code># check attributes
 rgbRaster
 
-## class      : RasterStack 
-## dimensions : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
-## resolution : 1, 1  (x, y)
-## extent     : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names      : band19, band34, band58 
-## min values :     84,    116,    123 
-## max values :  13805,  15677,  14343
+## Error in eval(expr, envir, enclos): object &#39;rgbRaster&#39; not found
 
 # plot stack
 plot(rgbRaster)
-</code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/view-stack-1.png" alt=" "/></p>
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;rgbRaster&#39; not found
+</code></pre>
 
 <p>From the attributes we see the CRS, resolution, and extent of all three rasters. 
 The we can see each raster plotted. Notice the different shading between the 
@@ -365,9 +401,9 @@ following arguments: </p>
 
 <pre><code># plot an RGB version of the stack
 plotRGB(rgbRaster,r=3,g=2,b=1, stretch = &quot;lin&quot;)
-</code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/plot-rgb-1.png" alt=" "/></p>
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plotRGB&#39;: object &#39;rgbRaster&#39; not found
+</code></pre>
 
 <p>Note: read the <code>raster</code> package documentation for other arguments that can be 
 added (like <code>scale</code>) to improve or modify the image. </p>
@@ -380,17 +416,8 @@ values in the pixels. </p>
 <pre><code># view histogram of reflectance values for all rasters
 hist(rgbRaster)
 
-## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
-## raster cells were used. 100000 values used.
-
-## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
-## raster cells were used. 100000 values used.
-
-## Warning in .hist1(raster(x, y[i]), maxpixels = maxpixels, main = main[y[i]], : 42% of the
-## raster cells were used. 100000 values used.
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;hist&#39;: object &#39;rgbRaster&#39; not found
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/hist-1.png" alt=" "/></p>
 
 <p>Note about the warning messages: R defaults to only showing the first 100,000 
 values in the histogram so if you have a large raster you may not be seeing all 
@@ -408,11 +435,13 @@ rgbCrop &lt;- c(256770.7,256959,4112140,4112284)
 # crop to desired extent
 rgbRaster_crop &lt;- crop(rgbRaster, rgbCrop)
 
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;crop&#39;: object &#39;rgbRaster&#39; not found
+
 # view cropped stack
 plot(rgbRaster_crop)
-</code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/stack-crop-1.png" alt=" "/></p>
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;rgbRaster_crop&#39; not found
+</code></pre>
 
 <p><div id="ds-challenge" markdown="1"></p>
 
@@ -421,7 +450,8 @@ plot(rgbRaster_crop)
 <p>Plot this new cropped stack as an RGB image. 
 </div></p>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/challenge-code-plot-crop-rgb-1.png" alt=" "/></p>
+<pre><code>## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plotRGB&#39;: object &#39;rgbRaster_crop&#39; not found
+</code></pre>
 
 <h2>Raster Bricks in R</h2>
 
@@ -435,18 +465,12 @@ doesn&#39;t have to spend energy finding the data - it is contained within the o
 <pre><code># create raster brick
 rgbBrick &lt;- brick(rgbRaster)
 
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;brick&#39;: object &#39;rgbRaster&#39; not found
+
 # check attributes
 rgbBrick
 
-## class      : RasterBrick 
-## dimensions : 502, 477, 239454, 3  (nrow, ncol, ncell, nlayers)
-## resolution : 1, 1  (x, y)
-## extent     : 256521, 256998, 4112069, 4112571  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : memory
-## names      : band19, band34, band58 
-## min values :     84,    116,    123 
-## max values :  13805,  15677,  14343
+## Error in eval(expr, envir, enclos): object &#39;rgbBrick&#39; not found
 </code></pre>
 
 <p>While the brick might seem similar to the stack (see attributes above), we can 
@@ -462,17 +486,17 @@ see that it&#39;s very different when we look at the size of the object.</p>
 <pre><code># view object size
 object.size(rgbBrick)
 
-## 5760536 bytes
+## Error in structure(.Call(C_objectSize, x), class = &quot;object_size&quot;): object &#39;rgbBrick&#39; not found
 
 object.size(rgbRaster)
 
-## 44128 bytes
+## Error in structure(.Call(C_objectSize, x), class = &quot;object_size&quot;): object &#39;rgbRaster&#39; not found
 
 # view raster brick
 plotRGB(rgbBrick,r=3,g=2,b=1, stretch = &quot;Lin&quot;)
-</code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/rBrick-size-1.png" alt=" "/></p>
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plotRGB&#39;: object &#39;rgbBrick&#39; not found
+</code></pre>
 
 <p>Notice the faster plotting? For a smaller raster like this the difference is 
 slight, but for larger raster it can be considerable. </p>
@@ -492,9 +516,13 @@ R-&gt;G-&gt;B to start!!!</p>
 <pre><code># Make a new stack in the order we want the data in 
 orderRGBstack &lt;- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
 
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;stack&#39;: object &#39;rgbRaster&#39; not found
+
 # write the geotiff
 # change overwrite=TRUE to FALSE if you want to make sure you don&#39;t overwrite your files!
-writeRaster(orderRGBstack,&quot;rgbRaster.tif&quot;,&quot;GTiff&quot;, overwrite=TRUE)
+writeRaster(orderRGBstack,paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif&quot;),&quot;GTiff&quot;, overwrite=TRUE)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;writeRaster&#39;: object &#39;orderRGBstack&#39; not found
 </code></pre>
 
 <h2>Import A Multi-Band Image into R</h2>
@@ -504,21 +532,28 @@ a stack rather than a raster (which brings in just one band). Let&#39;s import t
 raster than we just created above.</p>
 
 <pre><code># import multi-band raster as stack
-multiRasterS &lt;- stack(&quot;rgbRaster.tif&quot;) 
+multiRasterS &lt;- stack(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif&quot;)) 
+
+## Error in .local(.Object, ...) :
+
+## Error in .rasterObjectFromFile(x, objecttype = &quot;RasterBrick&quot;, ...): Cannot create a RasterLayer object from this file. (file does not exist)
 
 # import multi-band raster direct to brick
-multiRasterB &lt;- brick(&quot;rgbRaster.tif&quot;) 
+multiRasterB &lt;- brick(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif&quot;)) 
+
+## Error in .local(.Object, ...) :
+
+## Error in .rasterObjectFromFile(x, objecttype = &quot;RasterBrick&quot;, ...): Cannot create a RasterLayer object from this file. (file does not exist)
 
 # view raster
 plot(multiRasterB)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;multiRasterB&#39; not found
+
+plotRGB(multiRasterB,r=1,g=2,b=3, stretch=&quot;lin&quot;)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plotRGB&#39;: object &#39;multiRasterB&#39; not found
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-1.png" alt=" "/></p>
-
-<pre><code>plotRGB(multiRasterB,r=1,g=2,b=3, stretch=&quot;lin&quot;)
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Image-Raster-Data-In-R/rfigs/import-multi-raster-2.png" alt=" "/></p>
 
 </body>
 

@@ -4,18 +4,18 @@ title: "Vector 00: Open and Plot Shapefiles in R - Getting Started with Point, L
 description: "This spatial data tutorial explains the how to open and plot shapefiles containing point, line and polygon vector data in R."
 dateCreated: 2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
-contributors: Sarah Newman
-estimatedTime:
+contributors: Sarah Newman, Maya R. Stahl
+estimatedTime: 30 minutes
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: 
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/00-open-a-shapefile.R
 tutorialSeries: vector-data-series
 urlTitle: dc-open-shapefiles-r
 ---
 
-In this tutorial, we will open and plot point, line and polygon vector data 
+In this tutorial, we will open and plot point, line and polygon vector data
 stored in shapefile format in R.
 
 <div id="ds-objectives" markdown="1">
@@ -41,7 +41,6 @@ on your computer to complete this tutorial.
 * **sp:** `install.packages("sp")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
 
 ## Download Data
 <h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
@@ -85,7 +84,7 @@ with: point, line or polygon.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/pnt_line_poly.png" alt = "The three different types of vector objects: points, lines, and polygons." > </a>
     <figcaption> There are 3 types of vector objects: points, lines or 
     polygons. Each object type has a different structure. 
     Image Source: National Ecological Observatory Network (NEON) 
@@ -221,7 +220,7 @@ We can view shapefile metadata using the `class`, `crs` and `extent` methods:
     crs(aoiBoundary_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
     # view just the extent for the shapefile
     extent(aoiBoundary_HARV)
@@ -238,7 +237,7 @@ We can view shapefile metadata using the `class`, `crs` and `extent` methods:
     ## class       : SpatialPolygonsDataFrame 
     ## features    : 1 
     ## extent      : 732128, 732251.1, 4713209, 4713359  (xmin, xmax, ymin, ymax)
-    ## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## variables   : 1
     ## names       : id 
     ## value       :  1
@@ -249,7 +248,7 @@ in the CRS **UTM zone 18N**. The CRS is critical to interpreting the object
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" alt="The three different vector types represented within a given spatial extent." > </a>
     <figcaption>The spatial extent of a shapefile or R spatial object represents
     the geographic "edge" or location that is the furthest north, south east and 
     west. Thus is represents the overall geographic coverage of the spatial object. 
@@ -270,7 +269,7 @@ attributes stored with it.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png" alt="Example attribute tables for each different type of vector object."></a>
     <figcaption>Each spatial feature in an R spatial object has the same set of 
     associated attributes that describe or characterize the feature.
     Attribute data are stored in a separate *.dbf file. Attribute data can be
@@ -311,7 +310,7 @@ includes the **class**, the number of **features**, the **extent**, and the
     ## y 4713209 4713359.2
     ## Is projected: TRUE 
     ## proj4string :
-    ## [+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0]
+    ## [+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs]
     ## Data attributes:
     ##       id           
     ##  Length:1          
@@ -331,7 +330,7 @@ Next, let's visualize the data in our R `spatialpolygonsdataframe` object using
     plot(aoiBoundary_HARV, col="cyan1", border="black", lwd=3,
          main="AOI Boundary Plot")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-shapefile-1.png)
+![Area of Interest Boundary (NEON Harvard Forest Field Site)](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-shapefile-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Import Line and Point Shapefiles
@@ -366,7 +365,7 @@ lines, we use `\n` where the line should break.
     # use the pch element to adjust the symbology of the points
     plot(point_HARV, add  = TRUE, pch = 19, col = "purple")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-multiple-shapefiles-1.png)
+![NEON Harvard Forest Field Site showing tower location and surrounding roads.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/plot-multiple-shapefiles-1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -390,7 +389,7 @@ the <a href="https://www.neonscience.org/dc-plot-raster-data-r" target="_blank" 
 tutorials. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/challenge-vector-raster-overlay-1.png)
+![NEON Harvard Forest Field Site showing tower location and surrounding roads with a Canopy Height Model overlay.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/00-open-a-shapefile/rfigs/challenge-vector-raster-overlay-1.png)
 
 ***
 

@@ -5,7 +5,7 @@ description: "This tutorial explores how to import and plot a multi-band raster 
 dateCreated:2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 1 hour
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 subtopics: 

@@ -6,7 +6,7 @@ description: "This tutorial explores issues associated with working with rasters
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: 
 subtopics: data-analysis, raster, spatial-data-gis

@@ -6,7 +6,7 @@ description: "This tutorial explores issues associated with working with rasters
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: 
 subtopics: data-analysis, raster, spatial-data-gis
@@ -160,13 +160,12 @@ Our DTM seems to contain data and plots just fine. Let's next check the
     crs(DTM_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
     # view crs for hillshade
     crs(DTM_hill_HARV)
 
-    ## CRS arguments:
-    ##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
 Aha! `DTM_HARV` is in the UTM projection. `DTM_hill_HARV` is in
 `Geographic WGS84` - which is represented by latitude and longitude values.
@@ -206,12 +205,11 @@ function as follows: `crs=crs(DTM_HARV)`.
     crs(DTM_hill_UTMZ18N_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
     crs(DTM_hill_HARV)
 
-    ## CRS arguments:
-    ##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
     # compare attributes of DTM_hill_UTMZ18N to DTM_hill
     extent(DTM_hill_UTMZ18N_HARV)
@@ -296,6 +294,10 @@ field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files.
 
 Reproject the data as necessary to make things line up!
 </div>
+
+
+    ## Warning in projectRaster(DTM_hill_SJER, crs = crs(DTM_SJER), res = 1):
+    ## input and ouput crs are the same
 
 ![Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON's site San Joaquin Experimental Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/02-Reproject-Raster-In-R/rfigs/challenge-code-reprojection-1.png)
 

@@ -5,7 +5,7 @@ description: "This tutorial covers how to subtract one raster from another using
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: data-analysis, raster, spatial-data-gis
 languagesTool: R

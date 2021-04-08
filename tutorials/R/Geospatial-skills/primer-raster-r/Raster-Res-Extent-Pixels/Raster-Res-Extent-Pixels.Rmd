@@ -5,7 +5,7 @@ description: "Learn about the key attributes needed to work with raster data in 
 dateCreated:  2014-11-03
 authors: Leah A. Wasser
 contributors:
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries:
 topics: hyperspectral, remote-sensing,spatial-data-gis
 languagesTool: R
