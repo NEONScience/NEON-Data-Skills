@@ -259,7 +259,7 @@ However, individuals have found work arounds for these plots. The code below
 is provided as a demonstration of this capability. Note, by showing this code 
 here, we don't necessarily endorse having plots with two y-axes.
 
-This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html" target="_blank">Jake Heare</a>. 
+This code is adapted from code by <a href="http://heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html" target="_blank">Jake Heare</a>. 
 
 
     # Source: http://heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html
