@@ -213,19 +213,27 @@ In most tutorials, code is embedded within code chunks.
 * `eval = FALSE, comment = NA`: Used when you do not want to evaluate the chunk 
 but you do want to keep the code non-commented out in the .R script. (You'll 
 almost always want to include `comment=NA`when using `eval=FALSE`)
+
 * `eval =TRUE, purl = FALSE`: Used when you do not want to include a code chunk 
 in the .R but you do want it to show in the .md. Relatively few use cases. 
+
 * `include = FALSE, purl = FALSE`: Used when you do not want to show a chunk in 
 the .md or the .R files. Typically used for set up of the .RMD or to create a 
 graphic to supplement text in a .RMD that isn't part of the actual code of the 
-lesson. 
+lesson.
+
 * `echo=FALSE, results="hide"`: Used when you want to evaluate the code but you
 don't want the code or results to show in the .md (website) but you do want the 
-code to appear in .R. Frequently used  for the "answers" in Challenges code sections. 
+code to appear in .R. Frequently used  for the "answers" in Challenges code sections.
+
 * `fig.cap=c("Fig cap 1", "Fig cap 2", ...)`: Used to provide figure captions (alt 
 text) for figures produced within the code chunk. By providing a vector of captions, 
 you can define figure captions/alt text for multiple figures produced within that
 code chunk.
+
+* `results="hide", eval=FALSE, comment=NA` used with `include=FALSE, message=FALSE, warning=FALSE, purl=FALSE` below, this can be the first code chunk that is shown in the tutorial, but might include a piece of code that we don't want to run in an automated process (such as a `loadByProduct()` call with `check.size=T`). The code in this chunk will be shown in the .md and .R files, and will not be commented out in the .R file, but will not be evaluated when knitting.
+
+* `include=FALSE, message=FALSE, warning=FALSE, purl=FALSE` combined with `results="hide", eval=FALSE, comment=NA` above, this code chunk can contain code that is completely 'hidden' from the user (not 'included' in the .md file, not 'purl'ed into the .R file, etc.), but still evaluates and shows the outputs. These two code chunk options are used one after the other as an automatable workaround for a function that requires human input, such as `loadByProduct()` with `check.size=T`.
 
 ***
 
@@ -482,7 +490,7 @@ f.visititems(ls_dataset)
 
 ## Include Files - Deprecated
 
-**2/2020 - decided to not use these but to instead have template language. This 
+**2/2020 - The NEON Data Skills team decided to not use these but to instead have template language. This 
 info will remain here for now but will be removed once the transition away from 
 these are complete.**
 
