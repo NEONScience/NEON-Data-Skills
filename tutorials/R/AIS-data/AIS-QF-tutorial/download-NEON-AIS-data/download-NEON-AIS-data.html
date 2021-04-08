@@ -271,11 +271,11 @@ you are using this function within a script or batch process you
 will want to set this to F.</li>
 <li><code>token</code>: this allows you to input your NEON API token to obtain faster 
 downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><strong>Using an API Token when Accessing NEON Data with neonUtilities</strong> tutorial</a>. </li>
+Learn more about NEON API tokens in the <a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><strong>Using an API Token when Accessing NEON Data with neonUtilities</strong> tutorial</a>. </li>
 </ul>
 
 <p>There are additional inputs you can learn about in the 
-<a href="https//:www.neonscience.org/neonDataStackR" target="_blank"><strong>Use the neonUtilities R Package to Access NEON Data</strong> tutorial</a>. </p>
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank"><strong>Use the neonUtilities R Package to Access NEON Data</strong> tutorial</a>. </p>
 
 <p>The <code>dpID</code> is the data product identifier of the data you want to 
 download. The DPID can be found on the 
@@ -601,7 +601,8 @@ colnames(waq_instantaneous)
 ## [115] &quot;fDOMBetaQF&quot;                      &quot;fDOMTempQF&quot;                     
 ## [117] &quot;fDOMAbsQF&quot;                       &quot;fDOMFinalQF&quot;                    
 ## [119] &quot;fDOMFinalQFSciRvw&quot;               &quot;buoyNAFlag&quot;                     
-## [121] &quot;spectrumCount&quot;                   &quot;publicationDate&quot;
+## [121] &quot;spectrumCount&quot;                   &quot;publicationDate&quot;                
+## [123] &quot;release&quot;
 
 # Alternatively, view the variables object corresponding to the data product for more information
 View(variables_20288)
@@ -640,7 +641,7 @@ wqual &lt;- ggplot() +
 wqual
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-wqual-1.png" alt="Line plot of dissolved oxygen in mg/L measured at the upstream(blue) and downstream(red) stations of the Pringle Creek site."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-wqual-1.png" alt="Line plot of dissolved oxygen in mg/L measured at the upstream(blue) and downstream(red) stations of the Pringle Creek site."/></p>
 
 <p>Now let&#39;s try plotting fDOM. fDOM is only measured at the downstream location.
 NEON also provides uncertainty values for each measurement. Let&#39;s also consider 
@@ -666,7 +667,7 @@ fdomUcert &lt;- ggplot() +
 fdomUcert
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-fdom-ucert-1.png" alt="Line plot of fDOM(QSU) with expected uncertainty from the downstream station of Pringle Creek."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-fdom-ucert-1.png" alt="Line plot of fDOM(QSU) with expected uncertainty from the downstream station of Pringle Creek."/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Nitrate in Surface Water Data
@@ -697,7 +698,7 @@ plot_NSW &lt;- ggplot(data = NSW_15_minute,
 plot_NSW
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/challenge-plot-nsw-1.png" alt="Nitrate in surface water(uM) from the downstream station of Pringle Creek. Note that there is missing data from February 18th through February 24th."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/challenge-plot-nsw-1.png" alt="Nitrate in surface water(uM) from the downstream station of Pringle Creek. Note that there is missing data from February 18th through February 24th."/></p>
 
 <h2>Examine Quality Flagged Data</h2>
 
@@ -903,7 +904,7 @@ ggplot2::ggplot(data = waq_down,
   ggplot2::ggtitle(&quot;PRIN Sensor Set 102 fDOM final QF comparison&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/omit-finalqf-1.png" alt="Line plots of fDOM data that received a quality flag of zero(top), and data that received a data quality flag of one(bottom). Note how the bottom plot has many spikes in the data and were appropriately given a flag value of one."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/omit-finalqf-1.png" alt="Line plots of fDOM data that received a quality flag of zero(top), and data that received a data quality flag of one(bottom). Note how the bottom plot has many spikes in the data and were appropriately given a flag value of one."/></p>
 
 <p>The top panel corresponding to <code>fDOMFinalQF = 0</code> represents all fDOM data 
 that were not flagged.  Conversely, the <code>fDOMFinalQF = 1</code> represents all
@@ -956,7 +957,7 @@ on each <code>fDOMAbsQF</code> value:</p>
 ## Warning: Removed 233 row(s) containing missing values (geom_path).
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/view-absQF-1.png" alt="Line plots of fDOM absorbance quality flag (fDOMAbsQF) values that received a quality flag of -1,0,1, and 2.  Note how the plot corresponding to values flagged as 1 correspond to the same time frame of data missing in the surface water nitrate generated earlier."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/view-absQF-1.png" alt="Line plots of fDOM absorbance quality flag (fDOMAbsQF) values that received a quality flag of -1,0,1, and 2.  Note how the plot corresponding to values flagged as 1 correspond to the same time frame of data missing in the surface water nitrate generated earlier."/></p>
 
 <p>The <code>fDOMAbsQF = 1</code> is the most common quality flag from any single test. 
 This means the absorbance correction could not be applied to fDOM data. This 
@@ -970,7 +971,7 @@ Here is a reminder of our nitrate data:</p>
 <pre><code>plot_NSW
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/look-at-n03-again-1.png" alt="Nitrate in surface water(uM) from the downstream station of Pringle Creek. Note that there is missing data from February 18th through February 24th."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/look-at-n03-again-1.png" alt="Nitrate in surface water(uM) from the downstream station of Pringle Creek. Note that there is missing data from February 18th through February 24th."/></p>
 
 <p>Some types of automated quality flags may be worth ignoring. Rather than use 
 the <code>FinalQF</code> column to omit any quality flags, let&#39;s create a custom final 
@@ -994,7 +995,7 @@ ggplot2::ggplot(data = waq_down,
   ggplot2::ggtitle(&quot;PRIN Sensor Set 102 fDOM custom QF aggregation&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/ignore-absQF-1.png" alt="Line plots of fDOM data where a custom quality flag has been generated by omitting the fDOMAbsQF. Note the increase in available data using the custom quality flag aggregation that ignored fDOMAbsQF."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/ignore-absQF-1.png" alt="Line plots of fDOM data where a custom quality flag has been generated by omitting the fDOMAbsQF. Note the increase in available data using the custom quality flag aggregation that ignored fDOMAbsQF."/></p>
 
 <p>Using the custom quality flag aggregation that ignored <code>fDOMAbsQF</code>, the 
 aggregated <code>aggr_non_abs_QF</code> column we created increases the quantity of 
@@ -1149,7 +1150,7 @@ colnames(all_30min_data_down)
 ## [57] &quot;validCalPassQM&quot;                  &quot;validCalNAQM&quot;                   
 ## [59] &quot;sWatElevAlphaQM&quot;                 &quot;sWatElevBetaQM&quot;                 
 ## [61] &quot;sWatElevFinalQF&quot;                 &quot;sWatElevFinalQFSciRvw&quot;          
-## [63] &quot;publicationDate&quot;
+## [63] &quot;publicationDate&quot;                 &quot;release&quot;
 </code></pre>
 
 <p>We now have matching time stamps for water quality and any other 30-minute<br/>
@@ -1169,7 +1170,7 @@ elevation:</p>
 ## Warning: Removed 5 rows containing missing values (geom_point).
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-eos-waq,%20Scatter%20plot%20of%20specific%20conductance%20(uS/cm" alt=" "/> and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation.&ldquo;-1.png)</p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-eos-waq-1.png" alt="Scatter plot of specific conductance (uS/cm) and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation."/></p>
 
 <p>Aggregating high frequency time series data is a useful tool for understanding 
 relationships between variables collected at different time intervals, and may

@@ -123,10 +123,10 @@ you are using this function within a script or batch process you
 will want to set this to F.
 * `token`: this allows you to input your NEON API token to obtain faster 
 downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
+Learn more about NEON API tokens in the <a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
 There are additional inputs you can learn about in the 
-<a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
 
 The `dpID` is the data product identifier of the data you want to 
 download. The DPID can be found on the 
@@ -813,7 +813,7 @@ frame facilitates direct comparison across different sensors.
 
 Let's take a look with a plot of specific conductance versus water surface 
 elevation:
-```{r plot-eos-waq, Scatter plot of specific conductance (uS/cm) and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation." }
+```{r plot-eos-waq, fig.cap="Scatter plot of specific conductance (uS/cm) and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation." }
 
 ggplot(data = all_30min_data_down, 
        aes(x = surfacewaterElevMean, y = specificConductance)) +
