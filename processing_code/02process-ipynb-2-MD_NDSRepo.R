@@ -11,7 +11,7 @@ pattern="/Users/olearyd/Git/main/NEON-Data-Skills/tutorials/(.*)"
 #### MUST CHANGE FOR LOCAL MACHINE ####
 
 # Script will search recursively in this file for all .ipynb files
-input.path="~/Git/main/NEON-Data-Skills/tutorials/Python/Hyperspectral/indices/Cal_NDVI_Extract_Spectra_Masks_Flightlines_py/"
+input.path="~/Git/main/NEON-Data-Skills/tutorials/Python/Lidar/lidar-biomass"
 
 # Find all files to change
 ipynb.files <- list.files(input.path,

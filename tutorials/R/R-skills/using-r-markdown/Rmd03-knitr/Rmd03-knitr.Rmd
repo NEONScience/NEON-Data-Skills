@@ -5,7 +5,7 @@ description: "This tutorial introduces how to use the R knitr package to publish
 dateCreated: 2016-01-01
 authors:
 contributors: Ben Shetterly
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: knitr, rmarkdown
 topics: data-management, rep-sci
 languagesTool: R

@@ -5,7 +5,7 @@ description: "This tutorial cover how to use R Markdown files to document code."
 dateCreated: 2016-01-01
 authors:
 contributors: Ben Shetterly
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries: knitr, rmarkdown, rgdal, raster
 topics: data-management, rep-sci
 languagesTool: R

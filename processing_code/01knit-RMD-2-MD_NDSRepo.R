@@ -15,7 +15,8 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/eddy-covariance/intro-to-eddy4R/eddy_intro",
           "R/NEON-general/neon-code-packages/neonstore",
-          "R/R-skills/basic-R-skills")
+          #"~/Git/main/NEON-Data-Skills/tutorials/R/R-skills/Colorado-floods-data-visualization"
+          "R/R-skills/using-r-markdown")
 
 #################### Set up Input Variables #############################
 
