@@ -5,7 +5,7 @@ description: "This tutorial covers how to set up a repository to update your loc
 dateCreated: 2017-06-20
 authors: Megan A. Jones
 contributors: Felipe Sanchez
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: data-management, rep-sci
 languagesTool: git

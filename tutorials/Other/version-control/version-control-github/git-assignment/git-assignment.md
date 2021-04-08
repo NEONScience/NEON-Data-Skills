@@ -5,7 +5,7 @@ description: "Data Institute Assignment: The page lists the requirements for the
 dateCreated: 2016-06-02
 authors: Megan A. Jones
 contributors:
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries:
 topics: data management, rep-sci
 language: 

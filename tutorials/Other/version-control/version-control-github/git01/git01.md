@@ -5,7 +5,7 @@ description: "This tutorial introduces the importance of version control in scie
 dateCreated: 2016-05-06
 authors: Megan A. Jones
 contributors: Felipe Sanchez
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: data-management, rep-sci
 languagesTool: git

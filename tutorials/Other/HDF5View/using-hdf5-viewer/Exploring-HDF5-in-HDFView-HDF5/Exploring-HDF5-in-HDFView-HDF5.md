@@ -5,7 +5,7 @@ description: "Explore HDF5 files and the groups and datasets contained within, u
 dateCreated: 2014-11-19
 authors: Leah A. Wasser
 contributors: Alison Dernbach
-estimatedTime: 0.25 - 0.5 Hours
+estimatedTime: 0.5 Hours
 packagesLibraries:
 topics: HDF5
 languagesTool: HDF5View
