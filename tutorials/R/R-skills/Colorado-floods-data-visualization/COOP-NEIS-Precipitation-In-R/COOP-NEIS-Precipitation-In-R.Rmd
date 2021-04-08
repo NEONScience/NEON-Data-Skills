@@ -2,12 +2,12 @@
 title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
   2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/COOP-NEIS-Precipitation-In-R.R
-contributors: Felipe Sanchez
-dataProduct: null
+contributors: Felipe Sanchez, Donal O'Leary
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This lesson walks through the steps need to download and visualize precipitation
   data in R to better understand the drivers and impacts of the 2013 Colorado floods.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: ggplot2, plotly
 syncID: 53641e3826d3401abc682d5896010539

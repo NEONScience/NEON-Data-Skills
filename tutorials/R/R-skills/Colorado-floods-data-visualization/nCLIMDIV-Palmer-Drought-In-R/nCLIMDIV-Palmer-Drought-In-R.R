@@ -1,4 +1,4 @@
-## ----load-libraries--------------------------
+## ----load-libraries----------------------------------------------------
 
 library(ggplot2)   # create efficient, professional plots
 library(plotly)    # create interactive plots
@@ -15,9 +15,9 @@ library(plotly)    # create interactive plots
 library(webshot) # embed the plotly plots
 
 
-## ----import-drought-data---------------------
+## ----import-drought-data-----------------------------------------------
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/Git/data/" # This will depend on your local environment
 setwd(wd)
 
 # Import CO state-wide nCLIMDIV data
@@ -27,13 +27,13 @@ nCLIMDIV <- read.csv(paste0(wd,"disturb-events-co13/drought/CDODiv8506877122044_
 str(nCLIMDIV)
 
 
-## ----convert-year-month, eval= FALSE, comment=NA----
+## ----convert-year-month, eval= FALSE, comment=NA-----------------------
 # convert to date, and create a new Date column 
 nCLIMDIV$Date <- as.Date(nCLIMDIV$YearMonth, format="%Y%m")
 
 
 
-## ----convert-date----------------------------
+## ----convert-date------------------------------------------------------
 #add a day of the month to each year-month combination
 nCLIMDIV$Date <- paste0(nCLIMDIV$YearMonth,"01")
 
@@ -70,7 +70,7 @@ hist(nCLIMDIV$PDSI,   # the date we want to use
 
 
 
-## ----set-plotly-creds, eval=FALSE, comment=NA----
+## ----set-plotly-creds, eval=FALSE, comment=NA--------------------------
 # set plotly user name
 Sys.setenv("plotly_username"="YOUR_plotly_username")
 
@@ -79,7 +79,7 @@ Sys.setenv("plotly_api_key"="YOUR_api_key")
 
 
 
-## ----create-ggplotly-drought, eval=FALSE, comment=NA----
+## ----create-ggplotly-drought, eval=FALSE, comment=NA-------------------
 
 # Use existing ggplot plot & view as plotly plot in R
 palmer.drought_ggplotly <- ggplotly(palmer.drought)  
@@ -99,7 +99,7 @@ palmer.drought_plotly
 
 
 
-## ----post-plotly, eval=FALSE, comment=NA-----
+## ----post-plotly, eval=FALSE, comment=NA-------------------------------
 # publish plotly plot to your plot.ly online account when you are happy with it
 # skip this step if you haven't connected a Plotly account
 
@@ -255,7 +255,7 @@ ggplot(data=nCLIMDIV_US,
 
 
 
-## ----subset-decade---------------------------
+## ----subset-decade-----------------------------------------------------
 
 # subset out data between 2005 and 2015 
 nCLIMDIV2005.2015 <- subset(nCLIMDIV,    # our R object dataset 
@@ -281,7 +281,7 @@ palmer_plotly0515 <- plot_ly(nCLIMDIV2005.2015,    # the R object dataset
 palmer_plotly0515
 
 
-## ----plotlyPost, eval=FALSE, comment=NA------
+## ----plotlyPost, eval=FALSE, comment=NA--------------------------------
 # publish plotly plot to your plot.ly online account when you are happy with it
 # skip this step if you haven't connected a Plotly account
 

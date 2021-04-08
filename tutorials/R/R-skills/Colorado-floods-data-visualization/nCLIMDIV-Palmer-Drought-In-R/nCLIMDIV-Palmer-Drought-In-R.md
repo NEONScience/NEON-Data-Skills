@@ -2,13 +2,13 @@
 title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
   Understand the 2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
-contributors: Felipe Sanchez
-dataProduct: null
+contributors: Felipe Sanchez, Donal O'Leary
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This tutorial walks through how to download and visualize Palmer Drought
   Severity Index data in R. The data specifically downloaded for this activity allows
   one to to better understand a driver of the 2013 Colorado floods.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: ggplot2, plotly
 syncID: f596d3620a6449089341d08bc3375b43
@@ -22,7 +22,7 @@ urlTitle: da-viz-nclimdiv-palmer-drought-data-r
 This tutorial focuses on how to visualize Palmer Drought Severity Index data in 
 R and Plotly. The tutorial is part of the Data Activities that can be used 
 with the 
-<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>.
+<a href="https://www.neonscience.org/overview-disturbance-events-co13flood/" target="_blank"> *Quantifying The Drivers and Impacts of Natural Disturbance Events Teaching Module*</a>. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -196,7 +196,7 @@ data to tell R to use that first row as a list of column names rather than a row
 
 
     ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-    wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+    wd <- "~/Git/data/" # This will depend on your local environment
     setwd(wd)
     
     # Import CO state-wide nCLIMDIV data
@@ -272,7 +272,7 @@ month.
     # check to see it works
     str(nCLIMDIV$Date)
 
-    ##  Date[1:300], format: "1991-01-01" "1991-02-01" ...
+    ##  Date[1:300], format: "1991-01-01" "1991-02-01" "1991-03-01" "1991-04-01" ...
 
 We've now successfully converted our integer class `YearMonth` column into the 
 `Date` column in a date class. 
@@ -309,10 +309,8 @@ at a quick summary of our data to help us out.
     #view summary stats of the Palmer Drought Severity Index
     summary(nCLIMDIV$PDSI)
 
-    ##    Min. 1st Qu.  Median    Mean 3rd Qu. 
-    ##  -9.090  -1.702   0.180  -0.310   1.705 
-    ##    Max. 
-    ##   5.020
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  -9.090  -1.702   0.180  -0.310   1.705   5.020
 
     #view histogram of the data
     hist(nCLIMDIV$PDSI,   # the date we want to use
@@ -482,7 +480,7 @@ value to NA and plot the data.
     # check to see it works
     str(nCLIMDIV_US$Date)
 
-    ##  Date[1:312], format: "1990-01-01" "1990-02-01" ...
+    ##  Date[1:312], format: "1990-01-01" "1990-02-01" "1990-03-01" "1990-04-01" ...
 
     # view histogram of data -- great way to check the data range
     hist(nCLIMDIV_US$PDSI,
@@ -518,8 +516,7 @@ value to NA and plot the data.
            xlab("Year") + ylab("Palmer Drought Severity Index") +
            ggtitle("Palmer Drought Severity Index - Colorado\n1991 thru 2015")
 
-    ## Warning: Removed 2 rows containing missing values
-    ## (geom_bar).
+    ## Warning: Removed 2 rows containing missing values (geom_bar).
 
 ![Bar graph of the Palmer Drought Severity Index for Colorado during years 1990 through 2015. X-axis is Date and Y-axis is drought index. No data values have been removed.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/rfigs/palmer-no-data-values-3.png)
 
@@ -555,13 +552,13 @@ Let's subset the data.
     # check to make sure it worked
     head(nCLIMDIV2005.2015$Date)  # head() shows first 6 lines
 
-    ## [1] "2005-01-01" "2005-02-01" "2005-03-01"
-    ## [4] "2005-04-01" "2005-05-01" "2005-06-01"
+    ## [1] "2005-01-01" "2005-02-01" "2005-03-01" "2005-04-01" "2005-05-01"
+    ## [6] "2005-06-01"
 
     tail(nCLIMDIV2005.2015$Date)  # tail() shows last 6 lines
 
-    ## [1] "2015-07-01" "2015-08-01" "2015-09-01"
-    ## [4] "2015-10-01" "2015-11-01" "2015-12-01"
+    ## [1] "2015-07-01" "2015-08-01" "2015-09-01" "2015-10-01" "2015-11-01"
+    ## [6] "2015-12-01"
 
 Now we can plot this decade of data. Hint, we can copy/paste and edit the 
 previous code.

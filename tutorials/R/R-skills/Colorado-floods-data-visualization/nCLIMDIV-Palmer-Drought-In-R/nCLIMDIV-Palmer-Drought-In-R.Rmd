@@ -2,13 +2,13 @@
 title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
   Understand the 2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
-contributors: Felipe Sanchez
-dataProduct: null
+contributors: Felipe Sanchez, Donal O'Leary
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This tutorial walks through how to download and visualize Palmer Drought
   Severity Index data in R. The data specifically downloaded for this activity allows
   one to to better understand a driver of the 2013 Colorado floods.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: ggplot2, plotly
 syncID: f596d3620a6449089341d08bc3375b43
@@ -207,7 +207,7 @@ data to tell R to use that first row as a list of column names rather than a row
 
 ```{r import-drought-data }
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/Git/data/" # This will depend on your local environment
 setwd(wd)
 
 # Import CO state-wide nCLIMDIV data
