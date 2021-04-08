@@ -1,4 +1,4 @@
-## ----comment--------------------------------------------------
+## ----comment--------------------------------------------------------------------------
 # this is a comment. It allows text that is ignored by the program.
 # for clean, easy to read comments, use a space between the # and text. 
 
@@ -7,7 +7,7 @@
 
 
 
-## ----basic-output1--------------------------------------------
+## ----basic-output1--------------------------------------------------------------------
 # basic math
 3 + 5
 
@@ -15,14 +15,14 @@
 
 
 
-## ----basic-output2--------------------------------------------
+## ----basic-output2--------------------------------------------------------------------
 # have R write words
 
 writeLines("Hello World")
 
 
 
-## ----basic-input----------------------------------------------
+## ----basic-input----------------------------------------------------------------------
 
 # assigning values to objects 
 secondsPerHour <- 60 * 60
@@ -36,18 +36,18 @@ temp_HARV <- 90
 par.OSBS <- 180
 
 
-## ----basic-output3--------------------------------------------
+## ----basic-output3--------------------------------------------------------------------
 secondsPerHour
 hoursPerYear
 
 
-## ----basic-output4--------------------------------------------
+## ----basic-output4--------------------------------------------------------------------
 secondsPerYear <- secondsPerHour * hoursPerYear
 
 secondsPerYear
 
 
-## ----assignment-operator--------------------------------------
+## ----assignment-operator--------------------------------------------------------------
 # this is preferred syntax
 a <- 1 + 2 
 
@@ -55,7 +55,7 @@ a <- 1 + 2
 a = 1 + 2 
 
 
-## ----ls-rm-funcs, eval=FALSE, comment=NA----------------------
+## ----ls-rm-funcs, eval=FALSE, comment=NA----------------------------------------------
 
 # assign value "5" to object "x"
 x <- 5
@@ -74,7 +74,7 @@ ls()
 
 
 
-## ----basic-data-----------------------------------------------
+## ----basic-data-----------------------------------------------------------------------
 # assign word "april" to x"
 x <- "april"
 
@@ -102,7 +102,7 @@ class(z)
 
 
 
-## ----vector---------------------------------------------------
+## ----vector---------------------------------------------------------------------------
 
 x <- vector()
     
@@ -126,7 +126,7 @@ length(x)
 class(x)
 
 
-## ----integers-------------------------------------------------
+## ----integers-------------------------------------------------------------------------
 # a numeric vector with integers (L)
 x1 <- c(1L, 2L, 3L)
 x1
@@ -137,14 +137,14 @@ x2 <- as.integer(x)
 class(x2)
 
 
-## ----log-vect-------------------------------------------------
+## ----log-vect-------------------------------------------------------------------------
 # logical vector 
 y <- c(TRUE, TRUE, FALSE, FALSE)
 y
 class(y)
 
 
-## ----char-vect------------------------------------------------
+## ----char-vect------------------------------------------------------------------------
 # character vector
 z <- c("Sarah", "Tracy", "Jon")
 z
@@ -160,14 +160,14 @@ str(z)
 
 
 
-## ----add-vector-----------------------------------------------
+## ----add-vector-----------------------------------------------------------------------
 # c function combines z and "Annette" into a single vector
 # store result back to z
 z <- c(z, "Annette")
 z
 
 
-## ----sequence-------------------------------------------------
+## ----sequence-------------------------------------------------------------------------
 # simple series 
 1:10
 
@@ -178,7 +178,7 @@ seq(10)
 seq(from = 1, to = 10, by = 0.1)
 
 
-## -------------------------------------------------------------
+## -------------------------------------------------------------------------------------
 # infinity return
 1/0
 
@@ -186,7 +186,7 @@ seq(from = 1, to = 10, by = 0.1)
 0/0
 
 
-## ----indexing-------------------------------------------------
+## ----indexing-------------------------------------------------------------------------
 # index
 z[2]
 
@@ -200,7 +200,7 @@ z[1:3]
 
 
 
-## ----length---------------------------------------------------
+## ----length---------------------------------------------------------------------------
 
 # length of an object
 length(1:10)
@@ -211,7 +211,7 @@ nchar("NEON Data Skills")
 
 
 
-## ----challenge-code-types-hetero------------------------------
+## ----challenge-code-types-hetero------------------------------------------------------
 n <- c(1.7, "a")
 n
 
@@ -222,7 +222,7 @@ p <- c("a", TRUE)
 p
 
 
-## ----coercion-------------------------------------------------
+## ----coercion-------------------------------------------------------------------------
 # making values numeric
 as.numeric("1")
 
@@ -233,7 +233,7 @@ as.character(1)
 as.factor(c("male", "female"))
 
 
-## ----matrix---------------------------------------------------
+## ----matrix---------------------------------------------------------------------------
 # create an empty matrix that is 2x2
 m <- matrix(nrow = 2, ncol = 2)
 m
@@ -242,7 +242,7 @@ m
 dim(m)
 
 
-## ----matrix2--------------------------------------------------
+## ----matrix2--------------------------------------------------------------------------
 # create a matrix. Notice R fills them by columns by default
 m2 <- matrix(1:6, nrow = 2, ncol = 3)
 m2
@@ -252,7 +252,7 @@ m2_row <- matrix(c(1:6), nrow = 2, ncol = 3, byrow = TRUE)
 m2_row
 
 
-## ----matrix3--------------------------------------------------
+## ----matrix3--------------------------------------------------------------------------
 # create vector with 1:10
 m3 <- 1:10
 m3
@@ -277,7 +277,7 @@ rbind(x, y)
 
 
 
-## ----matrix-index---------------------------------------------
+## ----matrix-index---------------------------------------------------------------------
 z <- matrix(c("a", "b", "c", "d", "e", "f"), nrow = 3, ncol = 2)
 z
 
@@ -294,7 +294,7 @@ class(z[, 2])
 z[2, ]
 
 
-## ----list-----------------------------------------------------
+## ----list-----------------------------------------------------------------------------
 
 x <- list(1, "a", TRUE, 1 + (0 + 4i))
 x
@@ -312,7 +312,7 @@ x <- as.list(x)
 
 
 
-## ----analytics------------------------------------------------
+## ----analytics------------------------------------------------------------------------
 # note 'iris' is an example data frame included with R
 # the head() function simply calls the first 6 rows of the data frame
 xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
@@ -330,39 +330,39 @@ xlist$data
 
 
 
-## ----factors--------------------------------------------------
+## ----factors--------------------------------------------------------------------------
 
 x <- factor(c("yes", "no", "no", "yes", "yes"))
 x
 
 
 
-## ----conv-char------------------------------------------------
+## ----conv-char------------------------------------------------------------------------
 
 as.character(x)
 
 
 
-## ----conv-factor1---------------------------------------------
+## ----conv-factor1---------------------------------------------------------------------
 as.numeric(x)
 
 
-## ----conv-factor2---------------------------------------------
+## ----conv-factor2---------------------------------------------------------------------
 
-f <- factor(c(1, 5, 5, 10, 2, 2, 2))
+fac <- factor(c(1, 5, 5, 10, 2, 2, 2))
 
-levels(f)       ## returns just the four levels present in our factor
+levels(fac)       ## returns just the four levels present in our factor
 
-as.numeric(f)   ## wrong! returns the assigned integer for each level
+as.numeric(fac)   ## wrong! returns the assigned integer for each level
                 ## integer corresponds to the position of that number in levels(f)
 
-as.character(f) ## returns a character string of each number
+as.character(fac) ## returns a character string of each number
 
-as.numeric(as.character(f)) ## coerce the character strings to numbers
+as.numeric(as.character(fac)) ## coerce the character strings to numbers
 
 
 
-## ----name-----------------------------------------------------
+## ----name-----------------------------------------------------------------------------
 # the default result (because N comes before Y alphabetically)
 x <- factor(c("yes", "no", "yes"))
 x
@@ -372,14 +372,14 @@ x <- factor(c("yes", "no", "yes"), levels = c("yes", "no"))
 x
 
 
-## ----dataframes-----------------------------------------------
+## ----dataframes-----------------------------------------------------------------------
 # create a dataframe
 dat <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
 dat
 
 
 
-## ----list2----------------------------------------------------
+## ----list2----------------------------------------------------------------------------
 
 list() 
 
@@ -389,12 +389,12 @@ class(iris)
 
 
 
-## ----list3----------------------------------------------------
+## ----list3----------------------------------------------------------------------------
 # see the class of a single variable column within iris: "Sepal.Length"
 class(iris$Sepal.Length)
 
 
-## ----funct----------------------------------------------------
+## ----funct----------------------------------------------------------------------------
 # create a list of 1 to 10
 x <- 1:10 
 
@@ -403,7 +403,7 @@ y <- sum(x)
 y
 
 
-## ----help-----------------------------------------------------
+## ----help-----------------------------------------------------------------------------
 # call up a help search
 help.start()
 

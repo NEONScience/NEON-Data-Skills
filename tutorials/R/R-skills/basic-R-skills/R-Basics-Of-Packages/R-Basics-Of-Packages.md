@@ -5,7 +5,7 @@ description: "This tutorial provides the basics of installing and working with p
 dateCreated: 2014-10-27
 authors: Leah A. Wasser - Modified From Data Carpentry and Software Carpentry 
 contributors: Garrett M. Williams
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: data-analysis
 languagesTool: R

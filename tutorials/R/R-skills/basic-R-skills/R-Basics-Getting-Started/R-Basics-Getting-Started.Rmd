@@ -5,9 +5,9 @@ contributors: Donal O'Leary, Garrett M. Williams
 dataProduct: null
 dateCreated: '2014-11-04'
 description: This tutorial presents the basics of using R.
-estimatedTime: null
+estimatedTime: 30 minutes
 languagesTool: R
-packagesLibaries: null
+packagesLibaries: 
 syncID: 8346bef7292b46a09a76a0171b05662c
 authors: Leah A. Wasser - Adapted from Software Carpentry
 topics: data-analysis
@@ -720,16 +720,16 @@ To convert a factor to a numeric vector, go via a character. Compare
 
 ``` {r conv-factor2 }
 
-f <- factor(c(1, 5, 5, 10, 2, 2, 2))
+fac <- factor(c(1, 5, 5, 10, 2, 2, 2))
 
-levels(f)       ## returns just the four levels present in our factor
+levels(fac)       ## returns just the four levels present in our factor
 
-as.numeric(f)   ## wrong! returns the assigned integer for each level
+as.numeric(fac)   ## wrong! returns the assigned integer for each level
                 ## integer corresponds to the position of that number in levels(f)
 
-as.character(f) ## returns a character string of each number
+as.character(fac) ## returns a character string of each number
 
-as.numeric(as.character(f)) ## coerce the character strings to numbers
+as.numeric(as.character(fac)) ## coerce the character strings to numbers
 
 ``` 
 

@@ -5,7 +5,7 @@ description: "This tutorial teaches the basics of creating a function in R."
 dateCreated: 2015-10-23
 authors: Leah A. Wasser - Adapted from Software Carpentry
 contributors: Garrett M. Williams
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: data-analysis
 languagesTool: R

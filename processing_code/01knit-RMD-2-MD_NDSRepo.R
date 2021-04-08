@@ -5,7 +5,7 @@
 # 2) purls them to .R files
 # it then cleans up all image directories, etc from the working dir!
 ##################
-
+rm(list=ls())
 require(knitr)
 require(markdown)
 
@@ -15,23 +15,23 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/eddy-covariance/intro-to-eddy4R/eddy_intro",
           "R/NEON-general/neon-code-packages/neonstore",
-          "R/NEON-general/neon-overview/NEON-download-explore")
+          "R/R-skills/basic-R-skills")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2] 
+subDir <- dirs[3] 
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/GitHub/NEON-Data-Skills"
+gitRepoPath <-"~/Git/main/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "/Users/clunch"
+wd_processing_doc <- "/Users/olearyd/Git/data"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"

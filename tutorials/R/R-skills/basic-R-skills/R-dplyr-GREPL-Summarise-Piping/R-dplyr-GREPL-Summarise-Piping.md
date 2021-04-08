@@ -304,7 +304,7 @@ We can use the `dplyr` function `filter()` in combination with the base function
                        'female Peromyscus spp. at Harvard Forest.',
                        sep = ' '))
 
-    ## [1] "In 2014, NEON technicians captured 618 female Peromyscus spp. at Harvard Forest."
+    ## [1] "In 2014, NEON technicians captured 558 female Peromyscus spp. at Harvard Forest."
 
 ## group_by() + summarise()
 An alternative to using the filter function to subset the data (and make a new 
@@ -338,7 +338,9 @@ code, using `group_by` and `summarise`.
     
     # step 2: summarize the number of individuals of each using the new df
     countsBySpSex <- summarise(dataBySpSex, n_individuals = n())
-    
+
+    ## `summarise()` regrouping output by 'scientificName' (override with `.groups` argument)
+
     # view the data (just top 10 rows)
     head(countsBySpSex, 10)
 
@@ -346,7 +348,7 @@ code, using `group_by` and `summarise`.
     ## # Groups:   scientificName [5]
     ##    scientificName          sex   n_individuals
     ##    <chr>                   <chr>         <int>
-    ##  1 Blarina brevicauda      F                60
+    ##  1 Blarina brevicauda      F                50
     ##  2 Blarina brevicauda      M                 8
     ##  3 Blarina brevicauda      U                22
     ##  4 Blarina brevicauda      <NA>             19
@@ -355,7 +357,7 @@ code, using `group_by` and `summarise`.
     ##  7 Mammalia sp.            <NA>              1
     ##  8 Microtus pennsylvanicus F                 2
     ##  9 Myodes gapperi          F               103
-    ## 10 Myodes gapperi          M               109
+    ## 10 Myodes gapperi          M                99
 
 Note: the output of step 1 (`dataBySpSex`) does not look any different than the 
 original dataframe (`myData`), but the application of subsequent functions (e.g.,
@@ -401,14 +403,16 @@ females, `grepl` to get only Peromyscus spp., `group_by` individual species, and
                       filter(grepl('Peromyscus', scientificName), sex == "F") %>%
                       group_by(scientificName) %>%
                       summarise(n_individuals = n())
-    
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
     # view the data
     dataBySpFem
 
     ## # A tibble: 3 x 2
     ##   scientificName         n_individuals
     ##   <chr>                          <int>
-    ## 1 Peromyscus leucopus              515
+    ## 1 Peromyscus leucopus              455
     ## 2 Peromyscus maniculatus            98
     ## 3 Peromyscus sp.                     5
 
@@ -438,7 +442,7 @@ to accomplish the same task.
     dataBySpFem_agg
 
     ##           scientificName n_individuals
-    ## 1    Peromyscus leucopus           515
+    ## 1    Peromyscus leucopus           455
     ## 2 Peromyscus maniculatus            98
     ## 3         Peromyscus sp.             5
 
@@ -463,7 +467,7 @@ to accomplish the same task.
     dataBySpFem_byHand
 
     ##           scientificName n_individuals
-    ## 1    Peromyscus leucopus           515
+    ## 1    Peromyscus leucopus           455
     ## 2 Peromyscus maniculatus            98
     ## 3         Peromyscus sp.             5
 

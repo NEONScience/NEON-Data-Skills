@@ -5,7 +5,7 @@ description: "A brief overview of available resource to get started learning R."
 dateCreated: 2018-04-19
 authors: Megan A. Jones
 contributors: Garrett M. Williams
-estimatedTime:
+estimatedTime: 20 minutes
 packagesLibaries:
 topics: data-management
 languagesTool: R

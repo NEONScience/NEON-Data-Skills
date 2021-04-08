@@ -1,22 +1,22 @@
-## ----example-nested-functions, eval=FALSE---------------------
+## ----example-nested-functions, eval=FALSE---------------------------------------------
 ## function3(function2(function1(my_data)))
 
 
-## ----example-piped-functions, eval=FALSE----------------------
+## ----example-piped-functions, eval=FALSE----------------------------------------------
 ## my_data %>%
 ##   function1() %>%
 ##   function2() %>%
 ##   function3()
 
 
-## ----example-mammal-data, eval=FALSE--------------------------
+## ----example-mammal-data, eval=FALSE--------------------------------------------------
 ## 	myMammalData %>%                     # start with a data frame
 ## 		filter(sex=='M') %>%               # first filter for rows where sex is male
 ## 		summarise (mean_weight = mean(weight))  # find the mean of the weight
 ##                                             # column, store as mean_weight
 
 
-## ----load-dplyr-library-import-data, eval=FALSE, comment=NA----
+## ----load-dplyr-library-import-data, eval=FALSE, comment=NA---------------------------
 
 # load packages
 library(dplyr)
@@ -33,7 +33,7 @@ loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV",
 # if you'd like, check out the data
 str(loadData)
 
-## ----load-dplyr-library-import-data-hidden, include=FALSE-----
+## ----load-dplyr-library-import-data-hidden, include=FALSE-----------------------------
 
 library(dplyr)
 library(neonUtilities)
@@ -46,7 +46,7 @@ loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV",
 
 
 
-## ----extract-pertrapnight-------------------------------------
+## ----extract-pertrapnight-------------------------------------------------------------
 
 myData <- loadData$mam_pertrapnight
 
@@ -54,7 +54,7 @@ class(myData) # Confirm that 'myData' is a data.frame
 
 
 
-## ----dplyr-filter-function------------------------------------
+## ----dplyr-filter-function------------------------------------------------------------
 
 # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
 # two equals signs (==) signifies "is"
@@ -67,7 +67,7 @@ data_PeroManicFemales <- filter(myData,
 
 
 
-## ----dplyr-filter-print---------------------------------------
+## ----dplyr-filter-print---------------------------------------------------------------
 # how many female P. maniculatus are in the dataset
 # would could simply count the number of rows in the new dataset
 nrow(data_PeroManicFemales)
@@ -79,7 +79,7 @@ print(paste('In 2014, NEON technicians captured',
                    sep = ' '))
 
 
-## ----dplyr-filter-function-uncertainty------------------------
+## ----dplyr-filter-function-uncertainty------------------------------------------------
 
 # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
 # two equals signs (==) signifies "is"
@@ -93,7 +93,7 @@ nrow(data_PeroManicFemalesCertain)
 
 
 
-## ----using grepl with the dplyr filter function---------------
+## ----using grepl with the dplyr filter function---------------------------------------
 
 # combine filter & grepl to get all Peromyscus (a part of the 
 # scientificName string)
@@ -109,7 +109,7 @@ print(paste('In 2014, NEON technicians captured',
 
 
 
-## ----dplyr-group_by-summarise---------------------------------
+## ----dplyr-group_by-summarise---------------------------------------------------------
 # how many of each species & sex were there?
 # step 1: group by species & sex
 dataBySpSex <- group_by(myData, scientificName, sex)
@@ -122,7 +122,7 @@ head(countsBySpSex, 10)
 
 
 
-## ----compare-classes------------------------------------------
+## ----compare-classes------------------------------------------------------------------
 
 # View class of 'myData' object
 class(myData)
@@ -131,13 +131,13 @@ class(myData)
 class(dataBySpSex)
 
 
-## ----compare-classes-2, eval=FALSE, comment=NA----------------
+## ----compare-classes-2, eval=FALSE, comment=NA----------------------------------------
 # View help file for group_by() function
 ?group_by()
 
 
 
-## ----dplyr-piping-combine-functions---------------------------
+## ----dplyr-piping-combine-functions---------------------------------------------------
 
 # combine several functions to get a summary of the numbers of individuals of 
 # female Peromyscus species in our dataset.
@@ -155,7 +155,7 @@ dataBySpFem
 
 
 
-## ----same-but-base-r------------------------------------------
+## ----same-but-base-r------------------------------------------------------------------
 # For reference, the same output but using R's base functions
 
 # First, subset the data to only female Peromyscus

@@ -5,9 +5,9 @@ contributors: Donal O'Leary, Garrett M. Williams
 dataProduct: null
 dateCreated: '2014-11-04'
 description: This tutorial presents the basics of using R.
-estimatedTime: null
+estimatedTime: 30 minutes
 languagesTool: R
-packagesLibaries: null
+packagesLibaries: 
 syncID: 8346bef7292b46a09a76a0171b05662c
 authors: Leah A. Wasser - Adapted from Software Carpentry
 topics: data-analysis
@@ -465,14 +465,12 @@ You can also create vectors as a sequence of numbers.
     # specify values for seq()
     seq(from = 1, to = 10, by = 0.1)
 
-    ##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1
-    ## [13]  2.2  2.3  2.4  2.5  2.6  2.7  2.8  2.9  3.0  3.1  3.2  3.3
-    ## [25]  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1  4.2  4.3  4.4  4.5
-    ## [37]  4.6  4.7  4.8  4.9  5.0  5.1  5.2  5.3  5.4  5.5  5.6  5.7
-    ## [49]  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5  6.6  6.7  6.8  6.9
-    ## [61]  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9  8.0  8.1
-    ## [73]  8.2  8.3  8.4  8.5  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3
-    ## [85]  9.4  9.5  9.6  9.7  9.8  9.9 10.0
+    ##  [1]  1.0  1.1  1.2  1.3  1.4  1.5  1.6  1.7  1.8  1.9  2.0  2.1  2.2  2.3  2.4  2.5
+    ## [17]  2.6  2.7  2.8  2.9  3.0  3.1  3.2  3.3  3.4  3.5  3.6  3.7  3.8  3.9  4.0  4.1
+    ## [33]  4.2  4.3  4.4  4.5  4.6  4.7  4.8  4.9  5.0  5.1  5.2  5.3  5.4  5.5  5.6  5.7
+    ## [49]  5.8  5.9  6.0  6.1  6.2  6.3  6.4  6.5  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3
+    ## [65]  7.4  7.5  7.6  7.7  7.8  7.9  8.0  8.1  8.2  8.3  8.4  8.5  8.6  8.7  8.8  8.9
+    ## [81]  9.0  9.1  9.2  9.3  9.4  9.5  9.6  9.7  9.8  9.9 10.0
 
 You can also get non-numeric outputs. 
 
@@ -657,7 +655,7 @@ Another way to shape your matrix is to bind columns `cbind()` or rows `rbind()`.
 
     class(m3)
 
-    ## [1] "matrix"
+    ## [1] "matrix" "array"
 
     # create matrix from two vectors
     x <- 1:3
@@ -878,23 +876,23 @@ To see the integer version of the factor levels, use `as.numeric`
 To convert a factor to a numeric vector, go via a character. Compare
 
 
-    f <- factor(c(1, 5, 5, 10, 2, 2, 2))
+    fac <- factor(c(1, 5, 5, 10, 2, 2, 2))
     
-    levels(f)       ## returns just the four levels present in our factor
+    levels(fac)       ## returns just the four levels present in our factor
 
     ## [1] "1"  "2"  "5"  "10"
 
-    as.numeric(f)   ## wrong! returns the assigned integer for each level
+    as.numeric(fac)   ## wrong! returns the assigned integer for each level
 
     ## [1] 1 3 3 4 2 2 2
 
                     ## integer corresponds to the position of that number in levels(f)
     
-    as.character(f) ## returns a character string of each number
+    as.character(fac) ## returns a character string of each number
 
     ## [1] "1"  "5"  "5"  "10" "2"  "2"  "2"
 
-    as.numeric(as.character(f)) ## coerce the character strings to numbers
+    as.numeric(as.character(fac)) ## coerce the character strings to numbers
 
     ## [1]  1  5  5 10  2  2  2
 
@@ -1032,10 +1030,7 @@ how it works, and usually sample examples at the very bottom. You can use
 
     # call up a help search
     help.start()
-
-    ## If nothing happens, you should open
-    ## 'http://127.0.0.1:11579/doc/html/index.html' yourself
-
+    
     # help (documentation) for a package
     ??ggplot2
     
