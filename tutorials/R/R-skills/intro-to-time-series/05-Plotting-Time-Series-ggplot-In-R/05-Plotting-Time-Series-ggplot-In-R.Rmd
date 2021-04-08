@@ -5,7 +5,7 @@ description: "This tutorial uses ggplot2 to create customized plots of time seri
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 contributors: Michael Patterson, Collin J. Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, scales, gridExtra, lubridate, ggthemes
 topics: time-series, phenology
 languagesTool: R

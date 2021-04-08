@@ -9,7 +9,7 @@ description: This tutorial will demonstrate how to import a time series dataset 
   in .csv format into R. It will explore data classes and will walk through how to
   convert date data, stored as a character string, into a date class that R can recognize
   and plot efficiently.
-estimatedTime: null
+estimatedTime: 30 minutes
 languagesTool: R
 packagesLibraries: ggplot2
 syncID: e833b177aa534b27b7dc35e264615e17

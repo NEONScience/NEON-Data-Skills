@@ -5,7 +5,7 @@ description: "Learn the basics of how to use the plotly package to create intera
 dateCreated: 2014-12-06
 authors: Megan A. Jones, Leah A. Wasser
 contributors: Donal O'Leary
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot, plotly
 topics: data-viz
 languagesTool: R

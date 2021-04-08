@@ -4,8 +4,8 @@ title: "Time Series 05: Plot Time Series with ggplot2 in R"
 description: "This tutorial uses ggplot2 to create customized plots of time series data. We will learn how to adjust x- and y-axis ticks using the scales package, how to add trend lines to a scatter plot and how to customize plot labels, colors and overall theme."
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: Michael Patterson
-estimatedTime:
+contributors: Michael Patterson, Collin J. Storlie
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, scales, gridExtra, lubridate, ggthemes
 topics: time-series, phenology
 languagesTool: R
@@ -40,7 +40,7 @@ your computer to complete this tutorial.
 * **ggplot2:** `install.packages("ggplot2")`
 * **scales:** `install.packages("scales")`
 * **gridExtra:** `install.packages("gridExtra")`
-* **ggthemes:** `install.packages("ggthemes")`
+* **ggthemes:** `install.packages("ggthemes", dependencies = TRUE)`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -85,9 +85,8 @@ downloadable R script of the entire lesson, available in the footer of each less
  Interactive Data Viz Using R, ggplot2 and PLOTLY</a>.
 * Data Carpentry's 
  <a href="http://www.datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html" target="_blank"> Data Visualization with ggplot2 lesson</a>.
-* Hadley Wickham's 
- <a href="http://docs.ggplot2.org/" target="_blank"> documentation</a> 
- on the `ggplot2` package. 
+* <a href="https://ggplot2.tidyverse.org/" target="_blank"> 
+Hadley Wickham's documentation.</a>
 
 </div>
 
@@ -115,27 +114,41 @@ If this subset is not already loaded, please load it now.
     library(gridExtra) # for arranging plots
     
     # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    wd <- "~/Documents/"
     
     # daily HARV met data, 2009-2011
     harMetDaily.09.11 <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
       stringsAsFactors = FALSE)
-    
+
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
+    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
+    ## Met_HARV_Daily_2009_2011.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     # covert date to Date class
     harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
     
     # monthly HARV temperature data, 2009-2011
     harTemp.monthly.09.11<-read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Temp_HARV_Monthly_09_11.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Temp_HARV_Monthly_09_11.csv"),
       stringsAsFactors=FALSE
       )
-    
+
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
+    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
+    ## Temp_HARV_Monthly_09_11.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     # datetime field is actually just a date 
     #str(harTemp.monthly.09.11) 
     
     # convert datetime from chr to date class & rename date for clarification
     harTemp.monthly.09.11$date <- as.Date(harTemp.monthly.09.11$datetime)
+
+    ## Error in as.Date(harTemp.monthly.09.11$datetime): object 'harTemp.monthly.09.11' not found
 
 ## Plot with qplot
 We can use the `qplot()` function in the `ggplot2` package to quickly plot a
@@ -149,7 +162,7 @@ average time series data.
           main="Air temperature Harvard Forest\n 2009-2011",
           xlab="Date", ylab="Temperature (°C)")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/qplot-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/qplot-1.png)
 
 The resulting plot displays the pattern of air temperature increasing and 
 decreasing over three years. While `qplot()` is a quick way to plot data, our 
@@ -182,7 +195,7 @@ Let's create an air temperature scatterplot.
     ggplot(harMetDaily.09.11, aes(date, airt)) +
                geom_point(na.rm=TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-1.png)
 
 ## Customize A Scatterplot
 We can customize our plot in many ways. For instance, we can change the size and 
@@ -196,7 +209,7 @@ element.
     ggplot(harMetDaily.09.11, aes(date, airt)) +
                geom_point(na.rm=TRUE, color="blue", size=3, pch=18)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-colors-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored blue.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-colors-1.png)
 
 ## Modify Title & Axis Labels
 We can modify plot attributes by adding elements using the `+` symbol.
@@ -210,7 +223,7 @@ labels using `+ xlab("TEXT") + ylab("TEXT")`.
                ggtitle("Air Temperature 2009-2011\n NEON Harvard Forest Field Site") +
                xlab("Date") + ylab("Air Temperature (C)")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-labels-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored blue and axis labels have been specified.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-labels-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  Use `help(ggplot2)` to review the many
@@ -235,7 +248,7 @@ and modify the plot later. Let's create a new plot and call it `AirTempDaily`.
     # render the plot
     AirTempDaily
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-labels-named-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple and axis labels have been specified.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/basic-ggplot2-labels-named-1.png)
 
 ### Format Dates in Axis Labels
 We can adjust the date display format (e.g. 2009-07 vs. Jul 09) and the number 
@@ -262,7 +275,7 @@ on the x-axis.
     
     AirTempDailyb
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-labels-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple and axis ticks and labels have been specified.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-labels-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
@@ -288,7 +301,7 @@ month).
     
     AirTempDaily_6mo
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-label-ticks-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at 6 month intervals with user specified formatting.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-label-ticks-1.png)
 
     # format x-axis: dates
     AirTempDaily_1y <- AirTempDaily + 
@@ -297,7 +310,7 @@ month).
     
     AirTempDaily_1y
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-label-ticks-2.png)
+![A scatterplot showing the relationship between time and daily air temperature at  Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at yearly intervals with user specified formatting.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/format-x-axis-label-ticks-2.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  We can adjust the tick spacing and
@@ -337,7 +350,7 @@ follows:
     
     AirTempDaily_2011
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/subset-ggplot-time-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest for the year 2009. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at yearly intervals with user specified formatting.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/subset-ggplot-time-1.png)
 
 ## ggplot() Themes
 We can use the `theme()` element to adjust figure elements.
@@ -350,7 +363,7 @@ There are some nice pre-defined themes that we can use as a starting place.
     
     AirTempDaily_bw
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/nice-font-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now white instead of grey.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/nice-font-1.png)
 
 Using the `theme_bw()` we now have a white background rather than grey.
 
@@ -367,18 +380,18 @@ mentioning. Feel free to experiment with the code below to install `ggthemes`.
     
     AirTempDaily_economist
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/install-new-themes-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now blue instead of grey and has white grid marks.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/install-new-themes-1.png)
 
     AirTempDaily_strata<-AirTempDaily_1y +
       theme_stata()
     
     AirTempDaily_strata
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/install-new-themes-2.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now white instead of grey, has grey grid marks and a blue border.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/install-new-themes-2.png)
 
 ### More on Themes
 
-* <a href="http://docs.ggplot2.org/0.9.2.1/theme.html" target="_blank"> 
+* <a href="https://ggplot2.tidyverse.org/" target="_blank"> 
 Hadley Wickham's documentation.</a>
 * <a href="http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/#use-a-new-theme-theme_xx" target="_blank">Zev Ross on themes.</a>
 *  <a href="https://github.com/jrnold/ggthemes" target="_blank">
@@ -398,7 +411,7 @@ style.
     
     AirTempDaily_custom
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/increase-font-size-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis label text is specified, plot label text is specified, plot label text is bolded and axis ticks are shown at yearly intervals with user specified formatting.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/increase-font-size-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Total Daily Precipitation
@@ -413,7 +426,7 @@ x-axis.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-ggplot-precip-1.png)
+![A scatterplot showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-ggplot-precip-1.png)
 
 ## Bar Plots with ggplot
 We can use ggplot to create bar plots too. Let's create a bar plot of total 
@@ -438,7 +451,7 @@ plot actual values.
     
     PrecipDailyBarA
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_bar-1.png)
+![A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_bar-1.png)
 
 Note that some of the bars in the resulting plot appear grey rather than black.
 This is because R will do it's best to adjust colors of bars that are closely
@@ -464,7 +477,7 @@ Bonus: Style your plot with a `ggtheme` of choice.
 
     ## Warning: Removed 729 rows containing missing values (position_stack).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_bar-subset-1.png)
+![A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_bar-subset-1.png)
 
 ## Color
 We can change the bar fill color by within the
@@ -483,7 +496,7 @@ There are many color cheatsheets out there to help with color selection!
     
     PrecipDailyBarB
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-color-1.png)
+![A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user. Bars have been colored blue.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-color-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  For more information on color,
@@ -509,7 +522,7 @@ instead of `bar` or `point`.
     
     AirTempDaily_line
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_lines-1.png)
+![A lineplot showing the relationship between time and daily air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-geom_lines-1.png)
 
 Note that lines may not be the best way to represent air temperature data given
 lines suggest that the connecting points are directly related. It is important
@@ -524,7 +537,7 @@ the `AirTempDaily`, a `geom_point` plot. What happens?
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-geom_lines&points-1.png)
+![A lineplot with points added showing the relationship between time and daily air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-geom_lines&points-1.png)
 
 ## Trend Lines
 We can add a trend line, which is a statistical transformation of our data to
@@ -554,7 +567,7 @@ particular statistical transformation is appropriate for the data.
 
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-trend-line-1.png)
+![A scatterplot showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user. A green trend line has been added using the default method.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/ggplot-trend-line-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: A Trend in Precipitation? 
@@ -569,7 +582,10 @@ Create a bar plot of total daily precipitation. Add a:
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-linear-trend-1.png)
+
+    ## `geom_smooth()` using formula 'y ~ x'
+
+![A neatly formatted barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-linear-trend-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Monthly Air Temperature
@@ -580,7 +596,10 @@ label axes and adjust the plot ticks as you see fit.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/plot-airtemp-Monthly-1.png)
+
+    ## Error in ggplot(harTemp.monthly.09.11, aes(date, mean_airt)): object 'harTemp.monthly.09.11' not found
+
+    ## Error in eval(expr, envir, enclos): object 'AirTempMonthly' not found
 
 ## Display Multiple Figures in Same Panel
 It is often useful to arrange plots in a panel rather than displaying them 
@@ -603,7 +622,7 @@ we'll specify one column.
     # stack plots in one column 
     grid.arrange(AirTempDaily, AirTempMonthly, ncol=1)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/compare-precip-1.png)
+    ## Error in arrangeGrob(...): object 'AirTempMonthly' not found
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Create Panel of Plots
@@ -613,7 +632,8 @@ on top of each other.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-grid-arrange-1.png)
+
+    ## Error in arrangeGrob(...): object 'AirTempMonthly' not found
 
 ## Additional ggplot2 Resources
 In this tutorial, we've covered the basics of `ggplot`. There are many great 
@@ -621,4 +641,4 @@ resources the cover refining `ggplot` figures. A few are below:
 
 * ggplot2 Cheatsheet from Zev Ross: <a href="http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/" target="_blank"> ggplot2 Cheatsheet</a>  
 * ggplot2 documentation index: 
- <a href="http://docs.ggplot2.org/current/index.html#" target="_blank"> ggplot2 Documentation</a>    
+ <a href="https://ggplot2.tidyverse.org/#" target="_blank"> ggplot2 Documentation</a>    

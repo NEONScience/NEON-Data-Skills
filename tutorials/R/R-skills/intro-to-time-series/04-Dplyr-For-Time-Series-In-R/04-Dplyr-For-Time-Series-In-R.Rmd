@@ -5,7 +5,7 @@ description: "In this tutorial, we will use the group_by, summarize and mutate f
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 contributors: Michael Patterson, Donal O'Leary, Collin J. Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, dplyr, lubridate
 topics: time-series, phenology
 languagesTool: R

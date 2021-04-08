@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Convert Between Time Formats - Julian Days</title>
+<title> <a href="https://ndownloader.figshare.com/files/3701572" > NEON Teaching Data Subset: Meteorological Data for Harvard Forest</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -188,10 +188,32 @@ You will need the most current version of R and, preferably, RStudio loaded on y
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
-{% include/dataSubsets/_data_Met-Time-Series.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/3701572" > NEON Teaching Data Subset: Meteorological Data for Harvard Forest</a></h3>
+
+The data used in this lesson were collected at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest field site</a>. 
+These data are proxy data for what will be available for 30 years on the
+ <a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>
+for the Harvard Forest and other field sites located across the United States.
+
+<a href="https://ndownloader.figshare.com/files/3701572" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ****
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
@@ -224,22 +246,30 @@ class.</p>
 library(lubridate)  #work with dates
 
 # set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+wd &lt;- &quot;~/Documents/&quot;
 
-# Load csv file of daily meterological data from Harvard Forest
+# Load csv file of daily meteorological data from Harvard Forest
 # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
 harMet_DailyNoJD &lt;- read.csv(
-  file=&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv&quot;,
+  file=paste0(wd,&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv&quot;),
   stringsAsFactors = FALSE
   )
+
+## Warning in file(file, &quot;rt&quot;): cannot open file &#39;/Users/olearyd/Documents/
+## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv&#39;:
+## No such file or directory
+
+## Error in file(file, &quot;rt&quot;): cannot open the connection
 
 # what data class is the date column? 
 str(harMet_DailyNoJD$date)
 
-##  chr [1:5345] &quot;2/11/01&quot; &quot;2/12/01&quot; &quot;2/13/01&quot; &quot;2/14/01&quot; &quot;2/15/01&quot; &quot;2/16/01&quot; &quot;2/17/01&quot; ...
+## Error in str(harMet_DailyNoJD$date): object &#39;harMet_DailyNoJD&#39; not found
 
 # convert &quot;date&quot; from chr to a Date class and specify current date format
 harMet_DailyNoJD$date&lt;- as.Date(harMet_DailyNoJD$date, &quot;%m/%d/%y&quot;)
+
+## Error in as.Date(harMet_DailyNoJD$date, &quot;%m/%d/%y&quot;): object &#39;harMet_DailyNoJD&#39; not found
 </code></pre>
 
 <h2>Convert with yday()</h2>
@@ -257,14 +287,16 @@ contains the Julian day data.  </p>
 <pre><code># convert with yday into a new column &quot;julian&quot;
 harMet_DailyNoJD$julian &lt;- yday(harMet_DailyNoJD$date)  
 
+## Error in yday(harMet_DailyNoJD$date): object &#39;harMet_DailyNoJD&#39; not found
+
 # make sure it worked all the way through. 
 head(harMet_DailyNoJD$julian) 
 
-## [1] 42 43 44 45 46 47
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;harMet_DailyNoJD&#39; not found
 
 tail(harMet_DailyNoJD$julian)
 
-## [1] 268 269 270 271 272 273
+## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;tail&#39;: object &#39;harMet_DailyNoJD&#39; not found
 </code></pre>
 
 <div id="ds-dataTip" markdown="1">

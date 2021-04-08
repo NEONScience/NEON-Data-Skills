@@ -5,7 +5,7 @@ description: "This tutorial explores how to deal with NoData values encountered 
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 contributors: Leah A. Wasser, Collin J. Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, lubridate
 topics: time-series, phenology
 languagesTool: R

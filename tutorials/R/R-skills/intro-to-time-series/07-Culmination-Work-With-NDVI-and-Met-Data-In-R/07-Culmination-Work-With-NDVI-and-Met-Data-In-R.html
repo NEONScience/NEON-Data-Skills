@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Plot NDVI &amp; PAR using Daily Data</title>
+<title> <a href="https://ndownloader.figshare.com/files/3701572" > NEON Teaching Data Subset: Meteorological Data for Harvard Forest</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -166,8 +166,7 @@ hr {
 <p>This tutorial is a culmination activity for the series on 
 <a href="https://www.neonscience.org/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
 Other related series include:
-<a href="https://www.neonscience.org/spatial-data-management-series" target="_blank"> intro to spatio-temporal data and data management</a>,
-<a href="https://www.neonscience.org/raster-data-series" target="_blank"> working with raster time-series data in R</a>,
+<a href="https://www.neonscience.org/raster-data-series" target="_blank"> working with raster time-series data in R</a>
 and
 <a href="https://www.neonscience.org/vector-data-series" target="_blank"> working with vector data in R </a>.</p>
 
@@ -195,11 +194,33 @@ your computer to complete this tutorial.
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ### Download Data 
-{% include/dataSubsets/_data_Met-Time-Series.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/3701572" > NEON Teaching Data Subset: Meteorological Data for Harvard Forest</a></h3>
+
+The data used in this lesson were collected at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest field site</a>. 
+These data are proxy data for what will be available for 30 years on the
+ <a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>
+for the Harvard Forest and other field sites located across the United States.
+
+<a href="https://ndownloader.figshare.com/files/3701572" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 ****
 
@@ -256,15 +277,15 @@ library(lubridate) # for working with dates
 library(ggplot2)  # for creating graphs
 library(scales)   # to access breaks/formatting functions
 library(gridExtra) # for arranging plots
-library(grid)   # for arrangeing plots
+library(grid)   # for arranging plots
 library(dplyr)  # for subsetting by season
 
 # set working directory to ensure R can find the file we wish to import
-# setwd(&quot;working-dir-path-here&quot;)
+wd &lt;- &quot;~/Git/data/&quot;
 
 # read in the Harvard micro-meteorological data; if you don&#39;t already have it
 harMetDaily.09.11 &lt;- read.csv(
-  file=&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv&quot;,
+  file=paste0(wd,&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv&quot;),
   stringsAsFactors = FALSE
   )
 
@@ -322,7 +343,7 @@ str(harMetDaily.09.11)
 
 # read in the NDVI CSV data; if you dont&#39; already have it 
 NDVI.2011 &lt;- read.csv(
-  file=&quot;NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv&quot;, 
+  file=paste0(wd,&quot;NEON-DS-Met-Time-Series/HARV/NDVI/meanNDVI_HARV_2011.csv&quot;), 
   stringsAsFactors = FALSE
   )
 
@@ -384,7 +405,7 @@ ggplot(NDVI.2011, aes(Date, meanNDVI))+
         text = element_text(size=20))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-NDVI-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-NDVI-1.png" alt="A scatterplot showing the relationship between date and mean NDVI value at Harvard Forest during the year 2011."/></p>
 
 <h2>Two y-axes or Side-by-Side Plots?</h2>
 
@@ -414,7 +435,7 @@ back to
 <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank">*Plotting Time Series with ggplot in R* tutorial</a>.
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-PAR-NDVI-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-PAR-NDVI-1.png" alt="Two scatterplots combined in a single image.  Above: a scatterplot showing the relationship between date and daily photosynthetically active radiation at Harvard Forest during 2011.  Below: A scatterplot showing the relationship between date and daily NDVI at Harvard Forest during 2011."/></p>
 
 <p>The figures from this Challenge are nice but a bit confusing as the dates on the
 x-axis don&#39;t exactly line up. To fix this we can <strong>assign the same min and max 
@@ -448,7 +469,7 @@ plot2.NDVI.2011 &lt;- plot.NDVI.2011 +
 grid.arrange(plot2.par.2011, plot2.NDVI.2011) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-same-xaxis-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/plot-same-xaxis-1.png" alt="Two scatterplots combined in a single image.  Above: a scatterplot showing the relationship between date and daily photosynthetically active radiation at Harvard Forest during 2011.  Below: A scatterplot showing the relationship between date and daily NDVI at Harvard Forest during 2011. Notice x-axis scales are now concordant between top and bottom panels."/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Air Temperature and NDVI
@@ -459,7 +480,7 @@ Second, plot PAR, air temperature and NDVI in a single pane for ease of
 comparison.  
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-1.png" alt="A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/07-Culmination-Work-With-NDVI-and-Met-Data-In-R/rfigs/challengeplot-same-xaxis-2.png" alt="Three scatterplots combined in a single image.  Above: a scatterplot showing the relationship between date and daily photosynthetically active radiation at Harvard Forest during 2011.  Middle: A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011.  Below: A scatterplot showing the relationship between date and daily NDVI at Harvard Forest during 2011. Notice x-axis scales are now concordant between the three panels."/></p>
 
 </body>
 

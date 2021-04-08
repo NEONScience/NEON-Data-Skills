@@ -5,7 +5,7 @@ description: "This tutorial covers what metadata are, and why we need to work wi
 dateCreated:  2015-10-22
 authors: Leah A. Wasser, Megan A. Jones, Marisa Guarinello
 contributors: Collin Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: EML, ggmap, tmaptools
 topics: metadata, time-series
 languagesTool: R
@@ -307,7 +307,7 @@ load.
     # view size of object
     object.size(eml_HARV)
 
-    ## 1299552 bytes
+    ## 1299568 bytes
 
     # view the object class
     class(eml_HARV)

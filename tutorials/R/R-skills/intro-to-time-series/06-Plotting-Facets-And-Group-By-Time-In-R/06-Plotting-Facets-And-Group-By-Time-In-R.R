@@ -1,4 +1,4 @@
-## ----load-data----------------------------------------------------------------------------
+## ----load-data---------------------------------------------------------
 
 # Remember it is good coding technique to add additional libraries to the top of
 # your script 
@@ -6,15 +6,15 @@ library(lubridate) # for working with dates
 library(ggplot2)  # for creating graphs
 library(scales)   # to access breaks/formatting functions
 library(gridExtra) # for arranging plots
-library(grid)   # for arrangeing plots
+library(grid)   # for arranging plots
 library(dplyr)  # for subsetting by season
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Documents/"
 
 # daily HARV met data, 2009-2011
 harMetDaily.09.11 <- read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
   stringsAsFactors = FALSE
   )
 
@@ -23,7 +23,7 @@ harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 
 
-## ----plot-airt----------------------------------------------------------------------------
+## ----plot-airt, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. Plot title, font, axis scale and axis labels have been specified by the user."----
 
 AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
@@ -37,7 +37,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
 AirTempDaily
 
 
-## ----plot-by-year-------------------------------------------------------------------------
+## ----plot-by-year------------------------------------------------------
 
 # add year column to daily values
 harMetDaily.09.11$year <- year(harMetDaily.09.11$date)
@@ -48,12 +48,12 @@ tail(harMetDaily.09.11$year)
 
 
 
-## ----plot-facet-year----------------------------------------------------------------------
+## ----plot-facet-year---------------------------------------------------
 # run this code to plot the same plot as before but with one plot per season
 AirTempDaily + facet_grid(. ~ year)
 
 
-## ----plot-facet-year-2--------------------------------------------------------------------
+## ----plot-facet-year-2, fig.cap="A three-panel scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. Left Panel: 2009. Center Panel: 2010. Right Panel: 2011. Notice each subplot has the time axis scale, covering the whole period 2009 - 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point() +
@@ -68,7 +68,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
 AirTempDaily + facet_grid(. ~ year)
 
 
-## ----plot-precip-jd-----------------------------------------------------------------------
+## ----plot-precip-jd, fig.cap="A three-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Left Panel: 2009. Center Panel: 2010. Right Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 AirTempDaily_jd <- ggplot(harMetDaily.09.11, aes(jd, airt)) +
            geom_point() +
@@ -83,21 +83,21 @@ AirTempDaily_jd + facet_grid(. ~ year)
 
 
 
-## ----rearrange-facets---------------------------------------------------------------------
+## ----rearrange-facets, fig.cap="A three-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Panel: 2009. Middle Panel: 2010. Bottom Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # move labels to the RIGHT and stack all plots
 AirTempDaily_jd + facet_grid(year ~ .)
 
 
 
-## ----rearrange-facets-columns-------------------------------------------------------------
+## ----rearrange-facets-columns, fig.cap="A multi-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Left Panel: 2009. Top Right Panel: 2010. Bottom Left Panel: 2011. Bottom Right Panel: Blank. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # display in two columns
 AirTempDaily_jd + facet_wrap(~year, ncol = 2)
 
 
 
-## ----plot-airt-soilt----------------------------------------------------------------------
+## ----plot-airt-soilt, fig.cap="A scatterplot showing the relationship between daily air temperature and daily soil temperature at Harvard Forest between 2009 and 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 airSoilTemp_Plot <- ggplot(harMetDaily.09.11, aes(airt, s10t)) +
            geom_point() +
@@ -111,12 +111,12 @@ airSoilTemp_Plot
 
 
 
-## ----faceted-temp-plots-------------------------------------------------------------------
+## ----faceted-temp-plots, fig.cap="A three-panel scatterplot showing the relationship between daily air temperature and daily soil temperature at Harvard Forest between 2009 and 2011. Top Panel: 2009. Middle Panel: 2010. Bottom Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 # create faceted panel
 airSoilTemp_Plot + facet_grid(year ~ .)
 
 
-## ----challenge-answer-temp-month, echo=FALSE----------------------------------------------
+## ----challenge-answer-temp-month, echo=FALSE,  fig.cap="A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Panels run left-to-right, top-to-bottom, starting with January in top-left position. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # add month column to daily values
 harMetDaily.09.11$month <- month(harMetDaily.09.11$date)
@@ -135,7 +135,7 @@ airSoilTemp_Plot + facet_wrap(~month, nc=3)
 
 
 
-## ----extract-month-name-------------------------------------------------------------------
+## ----extract-month-name, fig.cap="A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Notice panels are now placed in alphabetical order by month. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 # add text month name column
 harMetDaily.09.11$month_name <- format(harMetDaily.09.11$date,"%B")
 
@@ -157,7 +157,7 @@ airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
 
 
-## ----factor-------------------------------------------------------------------------------
+## ----factor------------------------------------------------------------
 # order the factors
 harMetDaily.09.11$month_name = factor(harMetDaily.09.11$month_name, 
                                       levels=c('January','February','March',
@@ -166,7 +166,7 @@ harMetDaily.09.11$month_name = factor(harMetDaily.09.11$month_name,
                                                'November','December'))
 
 
-## ----plot-by-month-levels-----------------------------------------------------------------
+## ----plot-by-month-levels, fig.cap="A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Panels run left-to-right, top-to-bottom, starting with January in top-left position. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # recreate plot
 airSoilTemp_Plot <- ggplot(harMetDaily.09.11, aes(airt, s10t)) +
@@ -182,7 +182,7 @@ airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
 
 
-## ----subsetting-by-season-1---------------------------------------------------------------
+## ----subsetting-by-season-1--------------------------------------------
 
 # add month to data_frame - note we already performed this step above.
 harMetDaily.09.11$month  <- month(harMetDaily.09.11$date)
@@ -192,7 +192,7 @@ head(harMetDaily.09.11$month)
 tail(harMetDaily.09.11$month)
 
 
-## ----subsetting-by-season-2---------------------------------------------------------------
+## ----subsetting-by-season-2--------------------------------------------
 
 harMetDaily.09.11 <- harMetDaily.09.11 %>% 
   mutate(season = 
@@ -210,7 +210,7 @@ tail(harMetDaily.09.11$season)
 
 
 
-## ----plot-by-season-----------------------------------------------------------------------
+## ----plot-by-season, fig.cap="A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Panels run left-to-right: fall, spring, summer and winter.. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # recreate plot
 airSoilTemp_Plot <- ggplot(harMetDaily.09.11, aes(airt, s10t)) +
@@ -226,7 +226,7 @@ airSoilTemp_Plot + facet_grid(. ~ season)
 
 
 
-## ----plot-by-season2----------------------------------------------------------------------
+## ----plot-by-season2,fig.cap="A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Panels run top-to-bottom: fall, spring, summer and winter.. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 
 # for a landscape orientation of the plots we change the order of arguments in
 # facet_grid():
@@ -234,7 +234,7 @@ airSoilTemp_Plot + facet_grid(season ~ .)
 
 
 
-## ----assigning-level-to-season, include=TRUE, results="hide", echo=FALSE------------------
+## ----assigning-level-to-season, include=TRUE, results="hide", echo=FALSE, fig.cap=c("A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Top-left: winter.  Top-right: spring. Bottom-left: summer. Bottom-right: fall. Plot titles, fonts, axis scales and axes labels have been specified by the user.","A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season and year at Harvard Forest between 2009 and 2011. Columns are left-to-right: winter, spring, summer and fall.  Rows are top-to-bottom: 2009, 2010 and 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.")----
 # 1
 # create factor / assign levels
 harMetDaily.09.11$season<- factor(harMetDaily.09.11$season, 
@@ -260,10 +260,10 @@ airSoilTemp_Plot_season + facet_wrap(~ season, nc=2)
 airSoilTemp_Plot_season + facet_grid(year ~ season)
 
 
-## ----view-year-month-data, echo=FALSE-----------------------------------------------------
+## ----view-year-month-data, echo=FALSE----------------------------------
 
 met_monthly_HARV <- read.csv(
-  "NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv",
+  paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv"),
   stringsAsFactors = FALSE
   )
 
@@ -271,11 +271,11 @@ met_monthly_HARV <- read.csv(
 head(met_monthly_HARV$date)
 
 
-## ----challenge-code-convert-monthly-data, results="hide", echo=FALSE, message=FALSE-------
+## ----challenge-code-convert-monthly-data, results="hide", echo=FALSE, message=FALSE----
 
 # read in the data
 met_monthly_HARV <- read.csv(
-  "NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv",
+  paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv"),
   stringsAsFactors = FALSE
   )
 # base R
@@ -300,7 +300,7 @@ class(met_monthly_HARV$date_zoo)
 
 
 
-## ----challenge-code-plot-yearmonth-data, include=TRUE, results="hide", echo=FALSE---------
+## ----challenge-code-plot-yearmonth-data, include=TRUE, results="hide", echo=FALSE, fig.cap="A multi-panel scatterplot showing the relationship between time and monthly average air temperature according to year at Harvard Forest between 2001 and 2015. Top-left: winter.  Panels run left-to-right, top-to-bottom, starting with 2001 in the top-left corner. Plot titles, fonts, axis scales and axes labels have been specified by the user."----
 # add year- for facetted plot
 met_monthly_HARV$year <- year(met_monthly_HARV$date_base)
 

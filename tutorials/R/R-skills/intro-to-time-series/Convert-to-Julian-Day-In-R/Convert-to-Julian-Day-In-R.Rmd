@@ -5,7 +5,7 @@ description: "This tutorial explains why Julian days are useful and teaches how 
 dateCreated: 2015-10-18
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
 contributors: Collin J. Storlie
-estimatedTime:
+estimatedTime: 20 minutes
 packagesLibraries: lubridate
 topics: time-series
 languagesTool: R

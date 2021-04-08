@@ -1,4 +1,4 @@
-## ----load-data----------------------------------------------------------------------------
+## ----load-data---------------------------------------------------------
 # Remember it is good coding technique to add additional packages to the top of
 # your script 
 library(lubridate) # for working with dates
@@ -7,11 +7,11 @@ library(scales)   # to access breaks/formatting functions
 library(gridExtra) # for arranging plots
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Documents/"
 
 # daily HARV met data, 2009-2011
 harMetDaily.09.11 <- read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
   stringsAsFactors = FALSE)
 
 # covert date to Date class
@@ -19,7 +19,7 @@ harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
 # monthly HARV temperature data, 2009-2011
 harTemp.monthly.09.11<-read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Temp_HARV_Monthly_09_11.csv",
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Temp_HARV_Monthly_09_11.csv"),
   stringsAsFactors=FALSE
   )
 
@@ -30,7 +30,7 @@ harTemp.monthly.09.11<-read.csv(
 harTemp.monthly.09.11$date <- as.Date(harTemp.monthly.09.11$datetime)
 
 
-## ----qplot--------------------------------------------------------------------------------
+## ----qplot, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011"----
 # plot air temp
 qplot(x=date, y=airt,
       data=harMetDaily.09.11, na.rm=TRUE,
@@ -38,21 +38,21 @@ qplot(x=date, y=airt,
       xlab="Date", ylab="Temperature (°C)")
 
 
-## ----basic-ggplot2------------------------------------------------------------------------
+## ----basic-ggplot2, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011"----
 # plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE)
 
 
 
-## ----basic-ggplot2-colors-----------------------------------------------------------------
+## ----basic-ggplot2-colors, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored blue."----
 # plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=3, pch=18)
 
 
 
-## ----basic-ggplot2-labels-----------------------------------------------------------------
+## ----basic-ggplot2-labels, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored blue and axis labels have been specified."----
 # plot Air Temperature Data across 2009-2011 using daily data
 ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="blue", size=1) + 
@@ -61,7 +61,7 @@ ggplot(harMetDaily.09.11, aes(date, airt)) +
 
 
 
-## ----basic-ggplot2-labels-named-----------------------------------------------------------
+## ----basic-ggplot2-labels-named, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple and axis labels have been specified."----
 # plot Air Temperature Data across 2009-2011 using daily data
 AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_point(na.rm=TRUE, color="purple", size=1) + 
@@ -73,7 +73,7 @@ AirTempDaily
 
 
 
-## ----format-x-axis-labels-----------------------------------------------------------------
+## ----format-x-axis-labels, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple and axis ticks and labels have been specified."----
 # format x-axis: dates
 AirTempDailyb <- AirTempDaily + 
   (scale_x_date(labels=date_format("%b %y")))
@@ -81,7 +81,7 @@ AirTempDailyb <- AirTempDaily +
 AirTempDailyb
 
 
-## ----format-x-axis-label-ticks------------------------------------------------------------
+## ----format-x-axis-label-ticks, fig.cap=c("A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at 6 month intervals with user specified formatting.","A scatterplot showing the relationship between time and daily air temperature at  Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at yearly intervals with user specified formatting.")----
 # format x-axis: dates
 AirTempDaily_6mo <- AirTempDaily + 
     (scale_x_date(breaks=date_breaks("6 months"),
@@ -98,7 +98,7 @@ AirTempDaily_1y
 
 
 
-## ----subset-ggplot-time-------------------------------------------------------------------
+## ----subset-ggplot-time, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest for the year 2009. The plotting points are now colored purple, axis labels are specified, and axis ticks are shown at yearly intervals with user specified formatting."----
 
 # Define Start and end times for the subset as R objects that are the time class
 startTime <- as.Date("2011-01-01")
@@ -122,7 +122,7 @@ AirTempDaily_2011
 
 
 
-## ----nice-font----------------------------------------------------------------------------
+## ----nice-font, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now white instead of grey."----
 # Apply a black and white stock ggplot theme
 AirTempDaily_bw<-AirTempDaily_1y +
   theme_bw()
@@ -130,7 +130,7 @@ AirTempDaily_bw<-AirTempDaily_1y +
 AirTempDaily_bw
 
 
-## ----install-new-themes-------------------------------------------------------------------
+## ----install-new-themes, fig.cap=c("A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now blue instead of grey and has white grid marks.","A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis labels are specified, axis ticks are shown at yearly intervals with user specified formatting and the background is now white instead of grey, has grey grid marks and a blue border.")----
 # install additional themes
 # install.packages('ggthemes', dependencies = TRUE)
 library(ggthemes)
@@ -146,7 +146,7 @@ AirTempDaily_strata
 
 
 
-## ----increase-font-size-------------------------------------------------------------------
+## ----increase-font-size, fig.cap="A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. The plotting points are now colored purple, axis label text is specified, plot label text is specified, plot label text is bolded and axis ticks are shown at yearly intervals with user specified formatting."----
 # format x axis with dates
 AirTempDaily_custom<-AirTempDaily_1y +
   # theme(plot.title) allows to format the Title separately from other text
@@ -158,7 +158,7 @@ AirTempDaily_custom
 
 
 
-## ----challenge-code-ggplot-precip, echo=FALSE---------------------------------------------
+## ----challenge-code-ggplot-precip, echo=FALSE, fig.cap="A scatterplot showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 # plot precip
 PrecipDaily <- ggplot(harMetDaily.09.11, aes(date, prec)) +
            geom_point() +
@@ -172,7 +172,7 @@ PrecipDaily <- ggplot(harMetDaily.09.11, aes(date, prec)) +
 PrecipDaily
 
 
-## ----ggplot-geom_bar----------------------------------------------------------------------
+## ----ggplot-geom_bar, fig.cap="A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 # plot precip
 PrecipDailyBarA <- ggplot(harMetDaily.09.11, aes(date, prec)) +
     geom_bar(stat="identity", na.rm = TRUE) +
@@ -185,7 +185,7 @@ PrecipDailyBarA <- ggplot(harMetDaily.09.11, aes(date, prec)) +
 PrecipDailyBarA
 
 
-## ----ggplot-geom_bar-subset, results="hide", include=TRUE, echo=FALSE---------------------
+## ----ggplot-geom_bar-subset, results="hide", include=TRUE, echo=FALSE, fig.cap="A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 # Define Start and end times for the subset as R objects that are the date class
 startTime2 <- as.Date("2010-01-01")
 endTime2 <- as.Date("2011-01-01")
@@ -207,7 +207,7 @@ ggplot(harMetDaily.09.11, aes(date, prec)) +
 
 
 
-## ----ggplot-color-------------------------------------------------------------------------
+## ----ggplot-color, fig.cap="A barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user. Bars have been colored blue."----
 # specifying color by name
 PrecipDailyBarB <- PrecipDailyBarA+
   geom_bar(stat="identity", colour="darkblue")
@@ -216,7 +216,7 @@ PrecipDailyBarB
 
 
 
-## ----ggplot-geom_lines--------------------------------------------------------------------
+## ----ggplot-geom_lines,fig.cap="A lineplot showing the relationship between time and daily air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 AirTempDaily_line <- ggplot(harMetDaily.09.11, aes(date, airt)) +
            geom_line(na.rm=TRUE) +  
            ggtitle("Air Temperature Harvard Forest\n 2009-2011") +
@@ -229,18 +229,18 @@ AirTempDaily_line <- ggplot(harMetDaily.09.11, aes(date, airt)) +
 AirTempDaily_line
 
 
-## ----challenge-code-geom_lines&points, echo=FALSE-----------------------------------------
+## ----challenge-code-geom_lines&points, echo=FALSE, fig.cap="A lineplot with points added showing the relationship between time and daily air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 AirTempDaily + geom_line(na.rm=TRUE) 
 
 
-## ----ggplot-trend-line--------------------------------------------------------------------
+## ----ggplot-trend-line, fig.cap="A scatterplot showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user. A green trend line has been added using the default method."----
 # adding on a trend lin using loess
 AirTempDaily_trend <- AirTempDaily + stat_smooth(colour="green")
 
 AirTempDaily_trend
 
 
-## ----challenge-code-linear-trend, echo=FALSE----------------------------------------------
+## ----challenge-code-linear-trend, echo=FALSE, fig.cap="A neatly formatted barchart showing the relationship between time and daily precipitation at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 ggplot(harMetDaily.09.11, aes(date, prec)) +
       geom_bar(stat="identity", colour="darkorchid4") + #dark orchid 4 = #68228B
       ggtitle("Daily Precipitation with Linear Trend\n Harvard Forest") +
@@ -251,7 +251,7 @@ ggplot(harMetDaily.09.11, aes(date, prec)) +
       stat_smooth(method="lm", colour="grey")
 
 
-## ----plot-airtemp-Monthly, echo=FALSE-----------------------------------------------------
+## ----plot-airtemp-Monthly, echo=FALSE, fig.cap="A neatly formatted scatterplot showing the relationship between time and monthly average air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user."----
 AirTempMonthly <- ggplot(harTemp.monthly.09.11, aes(date, mean_airt)) +
     geom_point() +
     ggtitle("Average Monthly Air Temperature\n 2009-2011\n NEON Harvard Forest") +
@@ -264,12 +264,12 @@ AirTempMonthly
 
 
 
-## ----compare-precip-----------------------------------------------------------------------
+## ----compare-precip, fig.cap="Two scatterplots combined in a single image.  Above: the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011.  Below: the relationship between time and monthly average air temperature at Harvard Forest between 2009 and 2011"----
 # note - be sure library(gridExtra) is loaded!
 # stack plots in one column 
 grid.arrange(AirTempDaily, AirTempMonthly, ncol=1)
 
 
-## ----challenge-code-grid-arrange, echo=FALSE----------------------------------------------
+## ----challenge-code-grid-arrange, echo=FALSE, fig.cap="Two scatterplots combined in a single image.  Left: the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011.  Right: the relationship between time and monthly average air temperature at Harvard Forest between 2009 and 2011"----
 grid.arrange(AirTempDaily, AirTempMonthly, ncol=2)
 

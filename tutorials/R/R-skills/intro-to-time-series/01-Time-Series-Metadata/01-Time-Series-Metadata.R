@@ -1,4 +1,4 @@
-## ----metadata-challenge-1, echo=FALSE----------------------------------------------------
+## ----metadata-challenge-1, echo=FALSE----------------------------------
 # Metadata Notes from hf001_10-15-m_Metadata.txt
 #  1. 2001-2015
 #  2. Emery Boos - located at the top of the document, email is available
@@ -11,7 +11,7 @@
 
 
 
-## ----metadata-challenge-2, echo=FALSE----------------------------------------------------
+## ----metadata-challenge-2, echo=FALSE----------------------------------
 # Metadata Notes from hf001_10-15-m_Metadata.txt
 # 1. airt, s10t, prec, parr
 
@@ -29,7 +29,7 @@
 # towards the top of the document.
 
 
-## ----install-EML-package, results="hide", warning=FALSE----------------------------------
+## ----install-EML-package, results="hide", warning=FALSE----------------
 # install R EML tool 
 # load devtools (if you need to install "EML")
 #library("devtools")
@@ -46,7 +46,7 @@ library(tmaptools)
 
 
 
-## ----read-eml----------------------------------------------------------------------------
+## ----read-eml----------------------------------------------------------
 # data location
 # http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001
 # table 4 http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-04-monthly-m.csv
@@ -67,7 +67,7 @@ class(eml_HARV)
 
 
 
-## ----view-eml-content--------------------------------------------------------------------
+## ----view-eml-content--------------------------------------------------
 # view the contact name listed in the file
 
 eml_HARV$dataset$creator
