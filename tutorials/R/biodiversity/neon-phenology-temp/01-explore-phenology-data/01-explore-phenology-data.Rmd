@@ -5,7 +5,7 @@ description: "Learn to work with NEON plant phenology observation data (NEON.DP1
 dateCreated: 2017-08-01
 authors: Megan A. Jones, Natalie Robinson, Lee Stanish
 contributors: Katie Jones, Cody Flagg, Karlee Bradley, Felipe Sanchez
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
 languagesTool: R

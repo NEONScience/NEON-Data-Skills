@@ -5,7 +5,7 @@ description: "This tutorial discusses ways to plot plant phenology (discrete tim
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg, Felipe Sanchez
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: dplyr, ggplot2, lubridate, gridExtra, scales
 topics: timeseries, meteorology, phenology, organisms
 languagesTool: R

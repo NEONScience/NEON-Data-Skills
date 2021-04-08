@@ -1,4 +1,4 @@
-## ----setup-env-------------------------------------------------------------------------------------------
+## ----setup-env---------------------------------------------------------
 # Install needed package (only uncomment & run if not already installed)
 #install.packages("neonUtilities")
 #install.packages("ggplot2")
@@ -19,7 +19,7 @@ wd <- "~/Documents/data/" # Change this to match your local environment
 setwd(wd)
 
 
-## ----import-data-----------------------------------------------------------------------------------------
+## ----import-data-------------------------------------------------------
 
 # download data of interest - Single Aspirated Air Temperature
 saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI", 
@@ -40,7 +40,7 @@ saat<-loadByProduct(dpID="DP1.00002.001", site="SCBI",
 
 
 
-## ----data-structure--------------------------------------------------------------------------------------
+## ----data-structure----------------------------------------------------
 # View the list
 View(saat)
 
@@ -51,7 +51,7 @@ View(saat)
 
 
 
-## ----unlist----------------------------------------------------------------------------------------------
+## ----unlist------------------------------------------------------------
 # if using the pre-downloaded data - you can skip this part.
 # assign individual dataFrames in the list as an object
 #SAAT_30min <- saat$SAAT_30min
@@ -61,14 +61,14 @@ list2env(saat, .GlobalEnv)
 
 
 
-## ----contents--------------------------------------------------------------------------------------------
+## ----contents----------------------------------------------------------
 
 # what is in the data?
 str(SAAT_30min)
 
 
 
-## ----qf-data---------------------------------------------------------------------------------------------
+## ----qf-data-----------------------------------------------------------
 
 # Are there quality flags in your data? Count 'em up
 
@@ -76,7 +76,7 @@ sum(SAAT_30min$finalQF==1)
 
 
 
-## ----na-data---------------------------------------------------------------------------------------------
+## ----na-data-----------------------------------------------------------
 
 # Are there NA's in your data? Count 'em up
 sum(is.na(SAAT_30min$tempSingleMean) )
@@ -84,7 +84,7 @@ sum(is.na(SAAT_30min$tempSingleMean) )
 mean(SAAT_30min$tempSingleMean)
 
 
-## ----new-df-noNA-----------------------------------------------------------------------------------------
+## ----new-df-noNA-------------------------------------------------------
 
 # create new dataframe without NAs
 SAAT_30min_noNA <- SAAT_30min %>%
@@ -111,8 +111,8 @@ tempPlot
 
 
 
-## ----remove-qf-data--------------------------------------------------------------------------------------
-# subset abd add C to name for "clean"
+## ----remove-qf-data----------------------------------------------------
+# subset and add C to name for "clean"
 SAAT_30minC <- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
 
 # Do any quality flags remain? Count 'em up
@@ -133,7 +133,7 @@ tempPlot
 
 
 
-## ----daily-max-dplyr-------------------------------------------------------------------------------------
+## ----daily-max-dplyr---------------------------------------------------
 
 # convert to date, easier to work with
 SAAT_30minC$Date <- as.Date(SAAT_30minC$startDateTime)
@@ -188,7 +188,7 @@ tempPlot_dayMax3m
 
 
 
-## ----write-csv, eval = FALSE-----------------------------------------------------------------------------
+## ----write-csv, eval = FALSE-------------------------------------------
 ## # Write .csv - this step is optional
 ## # This will write to your current working directory, change as desired.
 ## write.csv( temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
