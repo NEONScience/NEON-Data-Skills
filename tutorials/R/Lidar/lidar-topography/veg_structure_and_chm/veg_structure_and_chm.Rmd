@@ -5,7 +5,7 @@ description: "Investigate the relationship between two methods for measuring can
 dateCreated: 2019-5-21
 authors: Claire K. Lunch
 contributors: Kelley A. McCahill
-estimatedTime: 60 minutes
+estimatedTime: 1 hour
 packagesLibraries: neonUtilities, raster
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R

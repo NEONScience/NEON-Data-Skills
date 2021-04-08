@@ -5,7 +5,7 @@ description: "An overview of the basics needed to begin to exploring converting 
 dateCreated:   2015-08-13
 authors: Leah Wasser, Tristan Goulden
 contributors: Kelley A. McCahill
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: lidar, raster, remote-sensing, spatial-data-gis
 languagesTool:

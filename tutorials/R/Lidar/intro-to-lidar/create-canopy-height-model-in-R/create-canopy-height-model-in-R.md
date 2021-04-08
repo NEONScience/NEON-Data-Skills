@@ -107,8 +107,10 @@ surface model (DSM) and the digital terrain model (DTM).
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Documents/data/" #This will depend on your local environment
+    wd="C:/Users/mccahill/Documents/GitHub/" #This will depend on your local environment
     setwd(wd)
+
+    ## Error in setwd(wd): cannot change working directory
 
 First, we will import the Digital Surface Model (DSM). The 
 <a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
@@ -118,22 +120,20 @@ buildings, etc).
 
     # assign raster to object
     dsm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
-    
+
+    ## Error in .local(.Object, ...) :
+
+    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+
     # view info about the raster.
     dsm
 
-    ## class      : RasterLayer 
-    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
-    ## names      : SJER2013_DSM
+    ## Error in eval(expr, envir, enclos): object 'dsm' not found
 
     # plot the DSM
     plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/import-dsm-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'dsm' not found
 
 Note the resolution, extent, and coordinate reference system (CRS) of the raster. 
 To do later steps, our DTM will need to be the same. 
@@ -145,10 +145,14 @@ represents the ground (terrain) elevation.
 
     # import the digital terrain model
     dtm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
-    
+
+    ## Error in .local(.Object, ...) :
+
+    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+
     plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/plot-DTM-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'dtm' not found
 
 With both of these rasters now loaded, we can create the Canopy Height Model 
 (CHM). The 
@@ -166,22 +170,17 @@ trees with negative heights!
 
     # use raster math to create CHM
     chm <- dsm - dtm
-    
+
+    ## Error in eval(expr, envir, enclos): object 'dsm' not found
+
     # view CHM attributes
     chm
 
-    ## class      : RasterLayer 
-    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : -1.399994, 40.29001  (min, max)
+    ## Error in eval(expr, envir, enclos): object 'chm' not found
 
     plot(chm, main="Lidar Canopy Height Model \n SJER, California")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/calculate-plot-CHM-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'chm' not found
 
 We've now created a CHM from our DSM and DTM. What do you notice about the 
 canopy cover at this location in the San Joaquin Experimental Range? 
@@ -192,7 +191,10 @@ canopy cover at this location in the San Joaquin Experimental Range?
 Convert the CHM from meters to feet. Plot it. 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/challenge-code-raster-math-1.png)
+
+    ## Error in eval(expr, envir, enclos): object 'chm' not found
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'chm_ft' not found
 
 If, in your work you need to create lots of CHMs from different rasters, an 
 efficient way to do this would be to create a function to create your CHMs. 
@@ -206,29 +208,21 @@ efficient way to do this would be to create a function to create your CHMs.
         
     # use the function to create the final CHM
     chm2 <- canopyCalc(dsm,dtm)
+
+    ## Error in canopyCalc(dsm, dtm): object 'dtm' not found
+
     chm2
 
-    ## class      : RasterLayer 
-    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : -40.29001, 1.399994  (min, max)
+    ## Error in eval(expr, envir, enclos): object 'chm2' not found
 
     # or use the overlay function
     chm3 <- overlay(dsm,dtm,fun = canopyCalc) 
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'overlay': object 'dsm' not found
+
     chm3 
 
-    ## class      : RasterLayer 
-    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : -40.29001, 1.399994  (min, max)
+    ## Error in eval(expr, envir, enclos): object 'chm3' not found
 
 As with any raster, we can write out the CHM as a GeoTiff using the 
 `writeRaster()` function. 

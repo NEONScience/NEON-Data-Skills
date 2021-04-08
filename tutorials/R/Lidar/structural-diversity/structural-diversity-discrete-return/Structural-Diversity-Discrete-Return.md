@@ -6,7 +6,7 @@ dataProduct: null
 dateCreated: '2020-05-01'
 description: Read in a NEON LiDAR file (.laz) and calculate several forest structural diversity
   metrics.
-estimatedTime: 0.5 hour
+estimatedTime: 30 minutes
 languagesTool: R
 packagesLibraries: lidR, gstat
 syncID: 7a3d01f3a2a84e6092774e2d21e13a16
@@ -98,11 +98,7 @@ downloaded from the NEON Data Portal.
     ############### Packages ################### 
     library(lidR)
 
-    ## Loading required package: raster
-
-    ## Loading required package: sp
-
-    ## lidR 2.2.4 using 4 threads. Help on <gis.stackexchange.com>. Bug report on <github.com/Jean-Romain/lidR>.
+    ## lidR 3.0.3 using 1 threads. Help on <gis.stackexchange.com>. Bug report on <github.com/Jean-Romain/lidR>.
 
     library(gstat)
     
@@ -188,8 +184,8 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     #by adjusting the 'drop_z_' arguments when reading in the .laz files.
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 7 degenerated ground points. Some X Y coordinates were repeated but with different Z
-    ## coordinates. min Z were retained.
+    ## Warning: There were 7 degenerated ground points. Some X Y coordinates
+    ## were repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
@@ -237,7 +233,7 @@ our structural diversity metrics.
     #visualize CHM
     plot(chm) 
 
-![Canopy Height Model (CHM) of HARV study area](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/structural-diversity/structural-diversity/rfigs/calculate-structural-diversity-metrics-1.png)
+![Canopy Height Model (CHM) of HARV study area](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/structural-diversity/structural-diversity-discrete-return/rfigs/calculate-structural-diversity-metrics-1.png)
 
     #MEAN OUTER CANOPY HEIGHT (MOCH)
     #calculate MOCH, the mean CHM height value
@@ -278,9 +274,7 @@ our structural diversity metrics.
     #in the plot point cloud
     vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
 
-    ## Warning: 'lasmetrics' is deprecated.
-    ## Use 'cloud_metrics' instead.
-    ## See help("Deprecated")
+    ## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function "lasmetrics"
 
     #SD of VERTICAL SD of HEIGHT
     #rasterize plot point cloud and calculate the standard deviation 
@@ -345,7 +339,9 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
                            cover.fraction,top.rugosity, vert.sd, 
                            sd.sd, entro,GFP.AOP, VAI.AOP, VCI.AOP),
                          ncol = 15)) 
-    
+
+    ## Error in matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht, rumple, deepgaps, : object 'vert.sd' not found
+
     #provide descriptive names for the calculated metrics
     colnames(HARV_structural_diversity) <- 
        c("easting", "northing", "mean.max.canopy.ht.aop",
@@ -353,16 +349,13 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
          "deepgap.fraction.aop","cover.fraction.aop", 
          "top.rugosity.aop", "vert.sd.aop", "sd.sd.aop", 
          "entropy.aop", "GFP.AOP.aop", "VAI.AOP.aop", "VCI.AOP.aop") 
-    
+
+    ## Error in colnames(HARV_structural_diversity) <- c("easting", "northing", : object 'HARV_structural_diversity' not found
+
     #View the results
     HARV_structural_diversity 
 
-    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-    ## 1  727500  4702500               17.47636           24.1664   2.807299            7             0.004375
-    ##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop
-    ## 1           0.995625         4.323543    5.941824  2.272381   0.9147319    0.863887     6.65967
-    ##   VCI.AOP.aop
-    ## 1   0.6393701
+    ## Error in eval(expr, envir, enclos): object 'HARV_structural_diversity' not found
 
 ## Combining Everything Into One Function
 Now that we have run through how to measure each structural diversity metric, let's create a 
@@ -380,10 +373,11 @@ diversity with HARV.
     
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates were repeated. They were removed.
+    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates
+    ## were repeated. They were removed.
 
-    ## Warning: There were 41 degenerated ground points. Some X Y coordinates were repeated but with different Z
-    ## coordinates. min Z were retained.
+    ## Warning: There were 41 degenerated ground points. Some X Y coordinates
+    ## were repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
@@ -445,16 +439,7 @@ diversity with HARV.
     
     TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 
-    ## Warning: 'lasmetrics' is deprecated.
-    ## Use 'cloud_metrics' instead.
-    ## See help("Deprecated")
-
-    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-    ## 1  316400  4091700               18.26802          40.60467   5.060158           76               0.0475
-    ##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop
-    ## 1             0.9525         10.18562    11.56424  4.320685   0.8390816   0.9683643    2.455946
-    ##   VCI.AOP.aop
-    ## 1   0.6766286
+    ## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function "lasmetrics"
 
 ## Comparing Metrics Between Forests
 How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
@@ -462,19 +447,15 @@ How does the structural diversity of the evergreen TEAK forest compare to the mi
 
     combined_results=rbind(HARV_structural_diversity, 
                            TEAK_structural_diversity)
-    
+
+    ## Error in rbind(HARV_structural_diversity, TEAK_structural_diversity): object 'HARV_structural_diversity' not found
+
     # Add row names for clarity
     row.names(combined_results)=c("HARV","TEAK")
-    
+
+    ## Error in row.names(combined_results) = c("HARV", "TEAK"): object 'combined_results' not found
+
     # Take a look to compare
     combined_results
 
-    ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop
-    ## HARV  727500  4702500               17.47636          24.16640   2.807299            7
-    ## TEAK  316400  4091700               18.26802          40.60467   5.060158           76
-    ##      deepgap.fraction.aop cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop
-    ## HARV             0.004375           0.995625         4.323543    5.941824  2.272381   0.9147319
-    ## TEAK             0.047500           0.952500        10.185618   11.564239  4.320685   0.8390816
-    ##      GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
-    ## HARV   0.8638870    6.659670   0.6393701
-    ## TEAK   0.9683643    2.455946   0.6766286
+    ## Error in eval(expr, envir, enclos): object 'combined_results' not found
