@@ -3,7 +3,7 @@ syncID: 147dae35152d46cebc3e1eb62b77bc7d
 title: "Install Git, Bash Shell, R & RStudio"
 description: "This page outlines the tools and resources that you will need to complete the Data Institute activities."
 dateCreated: 2014-05-06
-authors: [Materials adapted from Software Carpentry by NEON staff]
+authors: Materials adapted from Software Carpentry by NEON staff
 contributors:
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries:
@@ -16,25 +16,21 @@ urlTitle: setup-git-bash-rstudio
 ---
 
 
-This page outlines the tools and resources that you will need to complete 
-the Data Institute activities. Please be sure to have **the laptop you will be 
-bringing to the Institute** setup by **2 June 2016** to ensure you are 
-prepared to begin the pre-Institute materials. 
+This page outlines the tools and resources that you will need to get started working on the many R-based tutorials that NEON provides.
 
 ## Checklist
-This checklist includes the tools that need to be set-up on your computer for the 
-Institute. Detailed directions to accomplish each objective are below. 
+This checklist includes the tools that need to be set-up on your computer. Detailed directions to accomplish each objective are below. 
 
 * Install Bash shell (or shell of preference) 
 * Install Git 
 * Install R & RStudio
 
-<h3 id="bash-setup">Bash/Shell Setup</h3>
+<h2 id="bash-setup">Bash/Shell Setup</h2>
 
-<h4 id="shell-windows">Install Bash for Windows</h4>
+<h3 id="shell-windows">Install Bash for Windows</h3>
 <ol>
 <li>Download the Git for Windows <a href="https://git-for-windows.github.io/" target="_blank">installer</a>.</li>
-<li>Run the installer and follow the steps bellow:
+<li>Run the installer and follow the steps below (these may look slightly different depending on Git version number):
   <ol>
 	<!-- Git 2.6.1 Setup -->
 	<!-- Welcome to the Git Setup Wizard -->
@@ -79,7 +75,7 @@ Institute. Detailed directions to accomplish each objective are below.
 <p>This will provide you with both Git and Bash in the Git Bash program.</p>
 
 
-<h4 id="shell-macosx">Install Bash for Mac OS X</h4>
+<h3 id="shell-macosx">Install Bash for Mac OS X</h3>
 <p>
 The default shell in all versions of Mac OS X is bash, so no
 need to install anything.  You access bash from the Terminal
@@ -89,7 +85,7 @@ Terminal in your dock for this workshop.
 </p>
 
 
-<h4 id="shell-linux">Install Bash for Linux</h4>
+<h3 id="shell-linux">Install Bash for Linux</h3>
 <p>
 The default shell is usually Bash, but if your
 machine is set up differently you can run it by opening a
@@ -100,7 +96,7 @@ install anything.
 <p>
 </p>
 
-<h3 id="git-setup">Git Setup</h3>
+<h2 id="git-setup">Git Setup</h2>
 
 Git is a version control system that lets you track who made changes to what
 when and has options for easily updating a shared or public version of your code
@@ -112,10 +108,10 @@ version 9 or above).
 Git installation instructions borrowed and modified from
 <a href="http://software-carpentry.org/" target="_blank"> Software Carpentry</a>.</p>
 
-<h4 id="git-windows">Git for Windows</h4>
+<h3 id="git-windows">Git for Windows</h3>
 Git should be installed on your computer as part of your Bash install.
 
-<h4 id="git-mac">Git on Mac OS X</h4>
+<h3 id="git-mac">Git on Mac OS X</h3>
 <a href="https://www.youtube.com/watch?v=9LQhwETCdwY" target="_blank">Video Tutorial</a>
 <p>
 
@@ -135,7 +131,7 @@ use git. Make sure you update XCODE.
   Read more - a Stack Overflow Issue.</a>
 </div>
 
-<h4 id="git-linux">Git on Linux</h4>
+<h3 id="git-linux">Git on Linux</h3>
 
 If Git is not already available on your machine you can try to
 install it via your distro's package manager. For Debian/Ubuntu run
@@ -144,9 +140,9 @@ install it via your distro's package manager. For Debian/Ubuntu run
 <p>
 </p>
 
-<h3 id="R-setup"> Setting Up R & RStudio</h3>
+<h2 id="R-setup"> Setting Up R & RStudio</h2>
 
-<h4 id="R-windows">Windows R/RStudio Setup</h4>
+<h3 id="R-windows">Windows R/RStudio Setup</h3>
 
 *  Please visit the <a href="https://cran.r-project.org/" target="_blank">CRAN Website</a> to download the latest version of R for windows.
 * Run the .exe file that was just downloaded
@@ -157,7 +153,7 @@ install it via your distro's package manager. For Debian/Ubuntu run
 
 Once R and RStudio are installed, click to open RStudio. If you don't get any error messages you are set.  If there is an error message, you will need to re-install the program. 
 
-<h4 id="R-mac"> Mac R/RStudio Setup</h4>
+<h3 id="R-mac"> Mac R/RStudio Setup</h3>
 
 * Go to <a href="http://cran.r-project.org" target="_blank">CRAN</a> and click on <i>Download
 R for (Mac) OS X</i>
@@ -171,7 +167,7 @@ will download.
 Once R and RStudio are installed, click to open RStudio. If you don't get any error messages you are set.  If there is an error message, you will need to re-install the program. 
 
 
-<h4 id="R-linux"> Linux R/RStudio Setup</h4>
+<h3 id="R-linux"> Linux R/RStudio Setup</h3>
 
 * R is available through most Linux package managers. 
 You can download the binary files for your distribution
