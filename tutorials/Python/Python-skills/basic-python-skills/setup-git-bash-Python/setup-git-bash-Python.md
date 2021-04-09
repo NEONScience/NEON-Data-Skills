@@ -7,7 +7,7 @@ dateCreated: 2017-04-10
 dateUpdated: 2020-04-20
 authors: Materials adapted from Data Carpentry by NEON staff
 contributors: 
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: 
 topics: data-management 
 languagesTool: Git, Bash, Python
