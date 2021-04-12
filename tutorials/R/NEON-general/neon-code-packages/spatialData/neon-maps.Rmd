@@ -221,19 +221,16 @@ superimposed over the other.
 ## Map locations at a specific site
 
 Also available on the
-<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank"> Spatial Data and Maps page</a> are shapefiles containing location data at the 
+<a href="https://www.neonscience.org/data-samples/data/spatial-data-maps" target="_blank"> Spatial Data and Maps page</a> are shapefiles containing location data at the 
 within-site level.
 
+If you are interested in maps of NEON sampling locations and regions, 
+explore the downloads available for Terrestrial Observation Sampling 
+Locations, Flight Boundaries, and Aquatic Sites Watersheds. These 
+downloads contain shapefiles of these locations, and the terrestrial 
+sampling file also contains spatial data in tabular form.
 
-The readme file contains descriptions for each variable in the tabular files. 
+If you are interested in learning how to work with sampling location 
+data that are provided along with downloads of NEON sensor and 
+observational data, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-spatial-data-basics" target="_blank">Geolocation Data</a> tutorial.
 
-```{r TOS-readme}
-
-# load TOS plot readme
-rdme <- read.delim(paste0(wd,'All_NEON_TOS_Plots_V8/readme.csv'),
-                   sep=',', header=T)
-
-# view the variables
-rdme[,1]
-
-```
