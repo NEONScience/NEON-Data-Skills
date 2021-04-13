@@ -20,8 +20,21 @@ This tutorial explores NEON geolocation data. The focus is on the locations
 of NEON observational sampling and sensor data; NEON remote sensing data are 
 inherently spatial and have dedicated tutorials. If you are interested in 
 connecting remote sensing with ground-based measurements, the methods in 
-the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">canopy height model tutorial</a> 
-can be generalized to other data products.
+the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">vegetation structure and canopy height model</a> 
+tutorial can be generalized to other data products.
+
+In planning your analyses, consider what level of spatial resolution is 
+required. There is no reason to carefully map each measurement if precise 
+spatial locations aren't required to address your hypothesis! For example, 
+if you want to use the Woody vegetation structure 
+data product to calculate a site-scale estimate of biomass and production, 
+the spatial coordinates of each tree are probably not needed. If 
+you want to explore relationships between vegetation and beetle communities, 
+you will need to identify the sampling plots where NEON measures both beetles 
+and vegetation, but finer-scale coordinates may not be needed. Finally, if 
+you want to relate vegetation measurements to airborne remote sensing data, 
+you will need very accurate coordinates for each measurement on the ground.
+
 
 <div id="ds-objectives" markdown="1">
 
@@ -127,6 +140,40 @@ head(vst$vst_perplotperyear)
 
 As noted above, the spatial data here are at the plot level; the 
 latitude and longitude represent the centroid of the sampling plot. 
+We can map these plots on the landscape using the `easting` and 
+`northing` variables; these are the UTM coordinates. At this site, 
+tower plots are 40 m x 40 m, and distributed plots are 20 m x 20 m; 
+we can use the `symbols()` function to draw boxes of the correct 
+size.
+
+We'll also use the `treesPresent` variable to subset to only 
+those plots where trees were found and measured.
+
+```{r plot-plots, fig.cap="All vegetation structure plots at WREF"}
+
+# start by subsetting data to plots with trees
+vst.trees <- vst$vst_perplotperyear[which(
+        vst$vst_perplotperyear$treesPresent=="Y"),]
+
+# make variable for plot sizes
+plot.size <- numeric(nrow(vst.trees))
+
+# populate plot sizes in new variable
+plot.size[which(vst.trees$plotType=="tower")] <- 40
+plot.size[which(vst.trees$plotType=="distributed")] <- 20
+
+# create map of plots
+symbols(vst.trees$easting,
+        vst.trees$northing,
+        squares=plot.size, inches=F,
+        xlab="Easting", ylab="Northing")
+
+```
+
+We can see where the plots are located across the landscape, and 
+we can see the denser cluster of plots in the area near the 
+micrometeorology tower.
+
 For many analyses, this level of spatial data may be sufficient. 
 Calculating the precise location of each tree is only required for 
 certain hypotheses; consider whether you need these data when 
@@ -202,8 +249,8 @@ Now we have adjusted latitude, longitude, and elevation, and the
 corresponding easting and northing UTM data. We also have coordinate 
 uncertainty data for these coordinates. 
 
-We can use the easting and northing data to plot the locations of the 
-individual trees.
+As we did with the plots above, we can use the easting and northing 
+data to plot the locations of the individual trees.
 
 ```{r vst-all-trees, fig.cap="All mapped tree locations at WREF"}
 
@@ -213,10 +260,9 @@ plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
 
 ```
 
-Here we see a set of little boxes scattered across the landscape. 
-We've plotted each individual tree as a `.`, but by plotting all 
-the trees across the site, all we can see at this scale is the cluster 
-of dots that make up each plot.
+We can see the mapped trees in the same plots we mapped above. 
+We've plotted each individual tree as a `.`, so all we can see at 
+this scale is the cluster of dots that make up each plot.
 
 Let's zoom in on a single plot:
 

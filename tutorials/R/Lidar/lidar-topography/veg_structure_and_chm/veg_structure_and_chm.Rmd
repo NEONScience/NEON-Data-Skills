@@ -37,25 +37,39 @@ You will need the most current version of R loaded on your computer to complete 
 </div>
 ## 1. Setup
 
-Start by installing and loading packages (if necessary) and setting options. One of the 
-packages we'll be using, `geoNEON`, is only available via GitHub, so it's 
-installed using the `devtools` package. The other packages can be 
-installed directly from CRAN.
+Start by installing and loading packages (if necessary) and setting 
+options. One of the packages we'll be using, `geoNEON`, is only 
+available via GitHub, so it's installed using the `devtools` package. 
+The other packages can be installed directly from CRAN.
 
-```{r load_packages}
+Installation can be run once, then periodically to get package updates.
 
-options(stringsAsFactors=F)
+```{r install_packages, eval=FALSE}
 
-# install.packages("neonUtilities")
-# install.packages("sp")
-# install.packages("raster")
-# install.packages("devtools")
-# devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+install.packages("neonUtilities")
+install.packages("sp")
+install.packages("raster")
+install.packages("devtools")
+devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+
+```
+
+Now load packages. This needs to be done every time you run code. 
+We'll also set a working directory for data downloads.
+
+```{r load-packages, results="hide"}
 
 library(sp)
 library(raster)
 library(neonUtilities)
 library(geoNEON)
+
+options(stringsAsFactors=F)
+
+# set working directory
+# adapt directory path for your system
+wd <- "~/data"
+setwd(wd)
 
 ```
 
@@ -73,7 +87,7 @@ the `neonUtilities` package. Inputs needed to the function are:
 Refer to the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial</a> 
 for the `neonUtilities` package for more details if desired.
 
-```{r veglist}
+```{r veglist, results="hide"}
 
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
@@ -86,7 +100,7 @@ Use the `getLocTOS()` function in the `geoNEON` package to get
 precise locations for the tagged plants. Refer to the package 
 documentation for more details.
 
-```{r vegmap}
+```{r vegmap, results="hide"}
 
 vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
@@ -113,9 +127,9 @@ veg <- merge(veglist$vst_apparentindividual, vegmap,
 
 Let's see what the data look like! Make a stem map of the plants in 
 plot WREF_075. Note that the `circles` argument of the `symbols()` function expects a radius, but 
-stemDiameter is just that, a diameter, so we will need to divide by two. 
-stemDiameter is also in centimeters, but the mapping scale is in meters, 
-so we need to divide by 100 also to get the scale right.
+`stemDiameter` is just that, a diameter, so we will need to divide by two. 
+And `stemDiameter` is in centimeters, but the mapping scale is in meters, 
+so we also need to divide by 100 to get the scale right.
 
 ```{r plot-1}
 
@@ -157,13 +171,14 @@ the data product ID, DP3.30015.001.
 The download will include several metadata files as well as the data 
 tile. Load the data tile into the environment using the `raster` package.
 
-```{r get-chm}
+```{r get-chm, results="hide"}
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
-          check.size = FALSE, savepath="/Users/olearyd/Git/data")
-chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+          check.size = FALSE, savepath=wd)
+
+chm <- raster(paste0(wd, "/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
 
 ```
 
@@ -210,15 +225,19 @@ bufferCHM <- extract(chm,
                            vegsub$adjNorthing),
                      buffer=vegsub$adjCoordinateUncertainty, 
                      fun=max)
+
 plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
      ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
 ```
 
+How strong is the correlation between the ground and lidar 
+measurements?
+
 ```{r corr-buffer}
 
-cor(bufferCHM,vegsub$height, use="complete")
+cor(bufferCHM, vegsub$height, use="complete")
 
 ```
 
@@ -314,6 +333,8 @@ within that radius. The radius I used is 0.3 times the height, based on
 some rudimentary googling about Douglas fir allometry. It could definitely 
 be improved on!
 3. Iterate over all trees.
+
+We'll use a simple `for` loop to do this:
 
 ```{r vegfil}
 
