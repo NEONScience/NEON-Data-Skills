@@ -35,7 +35,7 @@ View(vst$variables_10098)
 
 ## ----print-vst-pppy--------------------------------------------------------------------------------------
 
-head(vst$vst_perplotperyear)
+View(vst$vst_perplotperyear)
 
 
 
@@ -62,7 +62,7 @@ symbols(vst.trees$easting,
 
 ## ----print-vst-mat---------------------------------------------------------------------------------------
 
-head(vst$vst_mappingandtagging)
+View(vst$vst_mappingandtagging)
 
 
 
@@ -84,7 +84,6 @@ names(vst.loc)[which(!names(vst.loc) %in%
 
 ## ----vst-all-trees, fig.cap="All mapped tree locations at WREF"------------------------------------------
 
-# plot all trap locations at site
 plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
      xlab="Easting", ylab="Northing")
 
@@ -92,7 +91,6 @@ plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
 
 ## ----plot-WREF_085, fig.width=6, fig.height=6, fig.cap="Tree locations in plot WREF_085"-----------------
 
-# plot all trap locations in one grid (plot)
 plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
      vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
      pch=20, xlab="Easting", ylab="Northing")

@@ -129,12 +129,12 @@ View(vst$variables_10098)
 
 Looking through the variables, we can see that the spatial data 
 (`decimalLatitude` and `decimalLongitude`, etc) are in the 
-`vst_perplotperyear` table. Let's take a look at the first few entries of 
+`vst_perplotperyear` table. Let's take a look at 
 the table. 
 
 ```{r print-vst-pppy}
 
-head(vst$vst_perplotperyear)
+View(vst$vst_perplotperyear)
 
 ```
 
@@ -185,7 +185,7 @@ suggesting we can find mapping data there. Let's take a look.
 
 ```{r print-vst-mat}
 
-head(vst$vst_mappingandtagging)
+View(vst$vst_mappingandtagging)
 
 ```
 
@@ -254,7 +254,6 @@ data to plot the locations of the individual trees.
 
 ```{r vst-all-trees, fig.cap="All mapped tree locations at WREF"}
 
-# plot all trap locations at site
 plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
      xlab="Easting", ylab="Northing")
 
@@ -268,7 +267,6 @@ Let's zoom in on a single plot:
 
 ```{r plot-WREF_085, fig.width=6, fig.height=6, fig.cap="Tree locations in plot WREF_085"}
 
-# plot all trap locations in one grid (plot)
 plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
      vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
      pch=20, xlab="Easting", ylab="Northing")
