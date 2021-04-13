@@ -5,7 +5,7 @@ description: "Use files available on the NEON data portal, NEON API, and  neonUt
 dateCreated: 2019-09-13
 authors: Claire K. Lunch
 contributors: Megan Jones, Alison Dernbach, Donal O'Leary
-estimatedTime: 40 minutes
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, neonUtilities, geoNEON
 topics: data-management, rep-sci
 languageTool: R
