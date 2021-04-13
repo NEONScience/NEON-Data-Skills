@@ -117,68 +117,11 @@ to figure out which data table the spatial data are contained in.
 
 Looking through the variables, we can see that the spatial data 
 (`decimalLatitude` and `decimalLongitude`, etc) are in the 
-`vst_perplotperyear` table. Let's take a look at the first few entries of 
+`vst_perplotperyear` table. Let's take a look at 
 the table. 
 
 
-    head(vst$vst_perplotperyear)
-
-    ##                                    uid         namedLocation       date domainID siteID   plotID plotType
-    ## 1 6c6ace2b-d997-47ef-8d19-a69c1e25625b WREF_089.basePlot.vst 2017-10-16      D16   WREF WREF_089    tower
-    ## 2 a56539a3-712c-4b98-bc61-954573155307 WREF_082.basePlot.vst 2017-10-17      D16   WREF WREF_082    tower
-    ## 3 d38bcae3-531e-448a-b8b1-a7b5abf2a339 WREF_077.basePlot.vst 2017-10-18      D16   WREF WREF_077    tower
-    ## 4 abaa00db-a9ab-4eee-9dac-e9a9f0658393 WREF_083.basePlot.vst 2017-10-18      D16   WREF WREF_083    tower
-    ## 5 93ebf7e2-5418-455b-b0a9-fc36fd810ab3 WREF_081.basePlot.vst 2017-10-20      D16   WREF WREF_081    tower
-    ## 6 24847019-db06-467f-99cc-76f3bb03fbf0 WREF_086.basePlot.vst 2017-10-20      D16   WREF WREF_086    tower
-    ##         nlcdClass decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty  easting northing
-    ## 1 evergreenForest        45.82292        -121.9606         WGS84                  20.3 580741.2  5074899
-    ## 2 evergreenForest        45.83146        -121.9570         WGS84                  20.2 581009.7  5075851
-    ## 3 evergreenForest        45.82313        -121.9587         WGS84                  20.2 580889.2  5074923
-    ## 4 evergreenForest        45.82287        -121.9629         WGS84                  20.2 580563.9  5074890
-    ## 5 evergreenForest        45.82305        -121.9532         WGS84                  20.2 581310.4  5074920
-    ## 6 evergreenForest        45.82228        -121.9571         WGS84                  20.2 581011.0  5074831
-    ##   utmZone elevation elevationUncertainty       eventID eventType dataCollected subplotsSampled
-    ## 1     10N     384.8                  0.3 vst_WREF_2017      <NA>          <NA>         21 | 41
-    ## 2     10N     360.7                  0.2 vst_WREF_2017      <NA>          <NA>         21 | 41
-    ## 3     10N     379.8                  0.3 vst_WREF_2017      <NA>          <NA>         21 | 39
-    ## 4     10N     396.9                  0.4 vst_WREF_2017      <NA>          <NA>         21 | 23
-    ## 5     10N     361.7                  0.3 vst_WREF_2017      <NA>          <NA>         23 | 41
-    ## 6     10N     374.5                  0.3 vst_WREF_2017      <NA>          <NA>         21 | 23
-    ##   samplingProtocolVersion targetTaxaPresent treesPresent treesAbsentList shrubsPresent shrubsAbsentList
-    ## 1       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ## 2       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ## 3       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ## 4       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ## 5       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ## 6       NEON.DOC.000987vG                 Y            Y    presentInAll             Y     presentInAll
-    ##   lianasPresent lianasAbsentList nestedSubplotAreaShrubSapling nestedSubplotAreaLiana
-    ## 1             N             <NA>                           100           noneSelected
-    ## 2             N             <NA>                            10           noneSelected
-    ## 3             N             <NA>                            25           noneSelected
-    ## 4             N             <NA>                           100           noneSelected
-    ## 5             N             <NA>                            25           noneSelected
-    ## 6             N             <NA>                           100           noneSelected
-    ##   totalSampledAreaTrees totalSampledAreaShrubSapling totalSampledAreaLiana
-    ## 1                   800                          400                   800
-    ## 2                   800                           40                   800
-    ## 3                   800                          100                   800
-    ## 4                   800                          400                   800
-    ## 5                   800                          100                   800
-    ## 6                   800                          400                   800
-    ##                                                       remarks                    measuredBy
-    ## 1                                                        <NA> Jzemaitis@battelleecology.org
-    ## 2                                                        <NA> Jzemaitis@battelleecology.org
-    ## 3 Original record mistakenly deleted. This is the new record.    Eolsen@battelleecology.org
-    ## 4                                                        <NA>    Eolsen@battelleecology.org
-    ## 5                                                        <NA> Kchilders@battelleecology.org
-    ## 6                                                        <NA>    Eolsen@battelleecology.org
-    ##                        recordedBy dataQF  publicationDate      release
-    ## 1      Eolsen@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
-    ## 2       Jbush@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
-    ## 3     dweller@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
-    ## 4   Kchilders@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
-    ## 5      Eolsen@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
-    ## 6 jhausknecht@battelleecology.org   <NA> 20210114T173808Z RELEASE-2021
+    View(vst$vst_perplotperyear)
 
 As noted above, the spatial data here are at the plot level; the 
 latitude and longitude represent the centroid of the sampling plot. 
@@ -225,50 +168,7 @@ a table in this data product called `vst_mappingandtagging`,
 suggesting we can find mapping data there. Let's take a look.
 
 
-    head(vst$vst_mappingandtagging)
-
-    ##                                    uid         namedLocation       date       eventID domainID siteID
-    ## 1 c7636d1a-e56e-46f1-9327-e68c60754591 WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ## 2 63eecd39-fc75-4f80-9493-d0d3acf57d4f WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ## 3 84229195-9f5a-4e85-b7ef-2aede94995ff WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ## 4 118be810-9607-48d1-bfbc-a2bf88e976fb WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ## 5 6db91b15-bcd6-472e-abc3-3d879dc64db7 WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ## 6 3eb26c5d-a9fc-4a31-a8a8-bf130f3debbc WREF_089.basePlot.vst 2017-10-16 vst_WREF_2017      D16   WREF
-    ##     plotID subplotID nestedSubplotID pointID stemDistance stemAzimuth recordType            individualID
-    ## 1 WREF_089        21               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04897
-    ## 2 WREF_089        21               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04884
-    ## 3 WREF_089        41               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04991
-    ## 4 WREF_089        41               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04993
-    ## 5 WREF_089        21               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04888
-    ## 6 WREF_089        41               1    <NA>           NA          NA       <NA> NEON.PLA.D16.WREF.04999
-    ##   supportingStemIndividualID previouslyTaggedAs samplingProtocolVersion taxonID
-    ## 1                       <NA>               <NA>       NEON.DOC.000987vG    GASH
-    ## 2                       <NA>               <NA>       NEON.DOC.000987vG    TSHE
-    ## 3                       <NA>               <NA>       NEON.DOC.000987vG    ACCI
-    ## 4                       <NA>               <NA>       NEON.DOC.000987vG    ABAM
-    ## 5                       <NA>               <NA>       NEON.DOC.000987vG    TSHE
-    ## 6                       <NA>               <NA>       NEON.DOC.000987vG    ABAM
-    ##                                         scientificName taxonRank identificationReferences morphospeciesID
-    ## 1                             Gaultheria shallon Pursh   species                     <NA>            <NA>
-    ## 2                      Tsuga heterophylla (Raf.) Sarg.   species                     <NA>            <NA>
-    ## 3                                Acer circinatum Pursh   species                     <NA>            <NA>
-    ## 4 Abies amabilis (Douglas ex Loudon) Douglas ex Forbes   species                     <NA>            <NA>
-    ## 5                      Tsuga heterophylla (Raf.) Sarg.   species                     <NA>            <NA>
-    ## 6 Abies amabilis (Douglas ex Loudon) Douglas ex Forbes   species                     <NA>            <NA>
-    ##   morphospeciesIDRemarks identificationQualifier remarks                    measuredBy
-    ## 1                   <NA>                    <NA>    <NA> Jzemaitis@battelleecology.org
-    ## 2                   <NA>                    <NA>    <NA> Jzemaitis@battelleecology.org
-    ## 3                   <NA>                    <NA>    <NA>    Eolsen@battelleecology.org
-    ## 4                   <NA>                    <NA>    <NA>    Eolsen@battelleecology.org
-    ## 5                   <NA>                    <NA>    <NA> Jzemaitis@battelleecology.org
-    ## 6                   <NA>                    <NA>    <NA>    Eolsen@battelleecology.org
-    ##                      recordedBy dataQF  publicationDate     release
-    ## 1    Eolsen@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
-    ## 2    Eolsen@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
-    ## 3 Jzemaitis@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
-    ## 4 Jzemaitis@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
-    ## 5    Eolsen@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
-    ## 6 Jzemaitis@battelleecology.org   <NA> 20210405T212135Z PROVISIONAL
+    View(vst$vst_mappingandtagging)
 
 Here we see data fields for `stemDistance` and `stemAzimuth`. Looking 
 back at the `variables_10098` file, we see these fields contain the 
@@ -332,7 +232,6 @@ As we did with the plots above, we can use the easting and northing
 data to plot the locations of the individual trees.
 
 
-    # plot all trap locations at site
     plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
          xlab="Easting", ylab="Northing")
 
@@ -345,7 +244,6 @@ this scale is the cluster of dots that make up each plot.
 Let's zoom in on a single plot:
 
 
-    # plot all trap locations in one grid (plot)
     plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
          vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
          pch=20, xlab="Easting", ylab="Northing")
